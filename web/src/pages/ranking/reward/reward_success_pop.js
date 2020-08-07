@@ -10,7 +10,7 @@ import RandomBoxPop from './reward_randombox_pop'
 import CloseBtn from '../static/ic_close.svg'
 
 export default (props) => {
-  const {setPopup, rewardPop, setRewardPop, rankType, dateType} = props
+  const {setPopup, rewardPop, formData, setRewardPop, rankType, dateType} = props
   const [randomPopup, setRandomPopup] = useState(false)
 
   const closePopup = () => {
@@ -102,6 +102,7 @@ export default (props) => {
         <RandomBoxPop
           randomPopup={randomPopup}
           setRandomPopup={setRandomPopup}
+          formData={formData}
           setPopup={setPopup}
           rewardPop={rewardPop}
           setRewardPop={setRewardPop}

@@ -5,7 +5,8 @@ import Lottie from 'react-lottie'
 import {Context} from 'context'
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
-
+import Utility, {dateFormatter} from 'components/lib/utility'
+import moment from 'moment'
 //components
 import NoResult from 'components/ui/noResult'
 import RankList from './rankList'
@@ -19,35 +20,25 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '일간', '주간']
+const dateArray = ['오늘', '주간', '월간']
 
 let moreState = false
 
 export default (props) => {
   let timer
   const history = useHistory()
-
   const context = useContext(Context)
-  const {
-    typeState,
-    dateType,
-    setDateType,
-    rankType,
-    setRankType,
-    list,
-    fetchRank,
-    myInfo,
-    setMyInfo,
-    nextList,
-    setCurrentPage,
-    resetFn
-  } = props
+  const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
+
   const [myProfile, setMyProfile] = useState(false)
+
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
   })
+
   const [popup, setPopup] = useState(false)
+  const [test, setTest] = useState(false)
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
@@ -55,23 +46,21 @@ export default (props) => {
       return (
         <button
           key={index}
-          className={dateType === index ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
+          className={formData.dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
           onClick={() => {
-            setCurrentPage()
-            setDateType(index)
-            fetchRank(rankType, index)
-            setMyInfo({
-              isReward: false,
-              myGiftPoint: 0,
-              myListenerPoint: 0,
-              myRank: 0,
-              myUpDown: '',
-              myBroadPoint: 0,
-              myLikePoint: 0,
-              myPoint: 0,
-              myListenPoint: 0,
-              time: ''
-            })
+            handleEv('dateType', index + 1)
+            // setMyInfo({
+            //   isReward: false,
+            //   myGiftPoint: 0,
+            //   myListenerPoint: 0,
+            //   myRank: 0,
+            //   myUpDown: '',
+            //   myBroadPoint: 0,
+            //   myLikePoint: 0,
+            //   myPoint: 0,
+            //   myListenPoint: 0,
+            //   time: ''
+            // })
           }}>
           {item}
         </button>
@@ -96,13 +85,6 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (typeState) {
-      setRankType(typeState)
-      fetchRank(typeState, dateType)
-    } else {
-      fetchRank(rankType, dateType)
-    }
-
     creatMyRank()
   }, [])
 
@@ -114,10 +96,51 @@ export default (props) => {
     } else {
       return (
         <>
-          <RankListTop list={list.slice(0, 3)} rankType={rankType} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} rankType={rankType} />
+          <RankListTop list={list.slice(0, 3)} myMemNo={myProfile.memNo} />
+          <RankList list={list.slice(3)} />
         </>
       )
+    }
+  }
+
+  const handleTest = () => {
+    let cy = formData.currentDate.getFullYear()
+    let cm = formData.currentDate.getMonth() + 1
+    let cd = formData.currentDate.getDate()
+    if (formData.dateType === 1) {
+      const cDt = new Date()
+
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM && cd === yd) {
+        return false
+      } else {
+        return true
+      }
+    } else if (formData.dateType === 2) {
+      const cDt = convertMonday()
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM && cd === yd) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      const cDt = convertMonth()
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM) {
+        return false
+      } else {
+        return true
+      }
     }
   }
 
@@ -141,68 +164,16 @@ export default (props) => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
-  useEffect(() => {
-    //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
-
-  useEffect(() => {
-    window.removeEventListener('scroll', scrollEvent)
-    window.addEventListener('scroll', scrollEvent)
-    return () => {
-      window.removeEventListener('scroll', scrollEvent)
-    }
-  }, [context.logoChange])
-
-  //checkScroll
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      //스크롤이벤트체크
-      /*
-       * @가속처리
-       */
-      if (moreState && windowBottom >= docHeight - 400) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-
-  const showMoreList = () => {
-    setList(list.concat(nextList))
-    fetchRank(rankType, dateType, 'next')
-  }
-
-  const scrollEvent = () => {
-    const headerHeight = 48
-
-    if (window.scrollY >= headerHeight) {
-      context.action.updateLogoChange(true)
-    } else if (window.scrollY < headerHeight) {
-      context.action.updateLogoChange(false)
-    }
-  }
-
   //clickState === 1 :탭 버튼이 변경되었을 경우
   //clickState === 2 :보상받기를 클릭했을 경우
   const rankingReward = (clickState) => {
-    if (dateType === 0) return null
+    if (formData.dateType === 0) return null
 
     async function feachrankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: rankType === 'dj' ? 1 : 2,
-          rankType: dateType
+          rankSlct: formData.rankType === 'dj' ? 1 : 2,
+          rankType: formData.dateType
         }
       })
 
@@ -223,19 +194,219 @@ export default (props) => {
     feachrankingReward()
   }
 
+  const formatDate = () => {
+    const formDt = formData.currentDate
+    let formYear = formDt.getFullYear()
+    let formMonth = formDt.getMonth() + 1
+    let formDate = formDt.getDate()
+    console.log(formDt)
+
+    const cDate = new Date()
+    let year = cDate.getFullYear()
+    let month = cDate.getMonth() + 1
+    let date = cDate.getDate()
+
+    if (formData.dateType === 1) {
+      if (year === formYear && month === formMonth && formDate === date) {
+        return (
+          <div className="titleWrap">
+            오늘
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else if (year === formYear && month === formMonth && formDate === date - 1) {
+        return (
+          <div className="titleWrap">
+            어제
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else {
+        return (
+          <>
+            <div className="titleWrap">
+              일간 순위
+              <img
+                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+                className="benefitSize"
+                onClick={() => {
+                  history.push('/rank/guide?guideType=benefit')
+                }}
+              />
+            </div>
+            <span>{`${formYear}.${formMonth}.${formDate}`}</span>
+          </>
+        )
+      }
+    } else if (formData.dateType === 2) {
+      const currentWeek = convertMonday()
+      year = currentWeek.getFullYear()
+      month = currentWeek.getMonth() + 1
+      date = currentWeek.getDate()
+
+      const week = convertMonday()
+      const weekAgo = new Date(week.setDate(week.getDate() - 7))
+      let wYear = weekAgo.getFullYear()
+      let wMonth = weekAgo.getMonth() + 1
+      let wDate = weekAgo.getDate()
+
+      if (year === formYear && month === formMonth && formDate === date) {
+        return (
+          <div className="titleWrap">
+            이번주
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
+        return (
+          <div className="titleWrap">
+            지난주
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else {
+        const a = new Date(formDt.getTime())
+        const b = new Date(a.setDate(a.getDate() + 6))
+        const rangeMonth = b.getMonth() + 1
+        const rangeDate = b.getDate()
+
+        return (
+          <>
+            <div className="titleWrap">
+              주간 순위
+              <img
+                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+                className="benefitSize"
+                onClick={() => {
+                  history.push('/rank/guide?guideType=benefit')
+                }}
+              />
+            </div>
+            <span>{`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`}</span>
+          </>
+        )
+      }
+    } else {
+      date = 1
+      const aMonth = new Date().getMonth()
+      console.log(formMonth)
+      console.log(aMonth)
+      if (year === formYear && month === formMonth) {
+        return (
+          <div className="titleWrap">
+            이번달
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else if (year === formYear && aMonth === formMonth) {
+        return (
+          <div className="titleWrap">
+            지난달
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
+          </div>
+        )
+      } else {
+        // if (formMonth < 10) {
+        //   formMonth = '0' + formMonth
+        // }
+        return (
+          <>
+            <div className="titleWrap">
+              월간 순위
+              <img
+                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+                className="benefitSize"
+                onClick={() => {
+                  history.push('/rank/guide?guideType=benefit')
+                }}
+              />
+            </div>
+            <span>{`${formYear}.${formMonth}`}</span>
+          </>
+        )
+      }
+    }
+
+    // return a.getFullYear() + '.' + (a.getMonth() + 1) + '.' + a.getDate()
+  }
+
+  const convertMonday = () => {
+    let toDay = new Date()
+    const day = toDay.getDay()
+    let c = 0
+
+    if (day === 0) {
+      c = 1
+    } else if (day === 1) {
+      c = 0
+    } else {
+      c = 1 - day
+    }
+    toDay.setDate(toDay.getDate() + c)
+    return toDay
+  }
+
+  const convertMonth = () => {
+    let today = new Date()
+
+    const year = today.getFullYear()
+    const month = today.getMonth() + 1
+
+    return new Date(`${year}-${month}-1`)
+  }
+
   useEffect(() => {
-    rankingReward(1)
-  }, [dateType, rankType])
+    if (myInfo.isReward) {
+      rankingReward()
+    }
+  }, [formData])
 
   useEffect(() => {
     if (!popup) {
-      resetFn()
+      handleEv('')
     }
   }, [popup])
 
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
+
       {myInfo.isReward ? (
         <>
           <div>
@@ -252,21 +423,13 @@ export default (props) => {
             </div>
           </div>
 
-          {popup && (
-            <PopupSuccess
-              setPopup={setPopup}
-              rewardPop={rewardPop}
-              setRewardPop={setRewardPop}
-              rankType={rankType}
-              dateType={dateType}
-            />
-          )}
+          {popup && <PopupSuccess setPopup={setPopup} formData={formData} rewardPop={rewardPop} setRewardPop={setRewardPop} />}
         </>
       ) : (
         <>
           {myProfile && (
             <div className="myRanking myRanking__profile">
-              <Lottie
+              {/* <Lottie
                 width={420}
                 height={130}
                 options={{
@@ -274,7 +437,7 @@ export default (props) => {
                   autoPlay: true,
                   path: `https://image.dalbitlive.com/ani/lottie/ranking_bg.json`
                 }}
-              />
+              /> */}
               <div
                 className="myRanking__profile__wrap"
                 onClick={() => {
@@ -283,7 +446,7 @@ export default (props) => {
                 <div className="myRanking__left myRanking__left--profile">
                   <p
                     className="myRanking__left--title colorWhite 
-      ">
+                  ">
                     내 랭킹
                   </p>
                   <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
@@ -300,7 +463,7 @@ export default (props) => {
                     <div className="profileItme">
                       <p className="nickNameBox">{myProfile.nickNm}</p>
                       <div className="countBox countBox--profile">
-                        {rankType == 'dj' && (
+                        {formData.rankType == 'dj' && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -326,7 +489,7 @@ export default (props) => {
                             </div>
                           </>
                         )}
-                        {rankType == 'fan' && (
+                        {formData.rankType == 'fan' && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -350,6 +513,28 @@ export default (props) => {
           )}
         </>
       )}
+
+      <div className="detaillView">
+        <button
+          className="prevButton"
+          onClick={() => {
+            handleEv('currentDate', 'back')
+          }}>
+          이전
+        </button>
+
+        <div className="title">{formatDate()}</div>
+
+        <button
+          className="nextButton"
+          onClick={() => {
+            if (handleTest()) {
+              handleEv('currentDate', 'front')
+            }
+          }}>
+          다음
+        </button>
+      </div>
 
       {creatResult()}
     </>

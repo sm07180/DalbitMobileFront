@@ -19,13 +19,25 @@ const rankArray = ['dj', 'fan', 'level']
 
 let moreState = false
 
+// let toDay = new Date()
+
 export default (props) => {
   let currentPage = 1
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(0)
+
+  const [formData, setFormData] = useState({
+    rankType: 'dj',
+    dateType: 1,
+    currentDate: new Date()
+  })
+
   const [nextList, setNextList] = useState(false)
   const [levelShowState, setLevelShowState] = useState(false)
   const [levelList, setLevelList] = useState([])
+  const [rakingDate, setRakingDate] = useState({
+    date: ''
+  })
 
   // const {type, date} = qs.parse(location.search)
 
@@ -97,6 +109,31 @@ export default (props) => {
     feachLevelList()
   }
 
+  const convertMonday = () => {
+    let toDay = new Date()
+    const day = toDay.getDay()
+    let c = 0
+
+    if (day === 0) {
+      c = 1
+    } else if (day === 1) {
+      c = 0
+    } else {
+      c = 1 - day
+    }
+    toDay.setDate(toDay.getDate() + c)
+    return toDay
+  }
+
+  const convertMonth = () => {
+    let today = new Date()
+
+    const year = today.getFullYear()
+    const month = today.getMonth() + 1
+
+    return new Date(`${year}-${month}-1`)
+  }
+
   const createRankButton = () => {
     return rankArray.map((item, index) => {
       const createDateButtonItem = () => {
@@ -112,17 +149,19 @@ export default (props) => {
       return (
         <button
           key={index}
-          className={rankType === item ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+          className={formData.rankType === item ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
           onClick={() => {
-            setRankType(item)
-
+            setFormData({
+              rankType: item,
+              dateType: 1,
+              currentDate: new Date()
+            })
             if (item === 'level') {
               setLevelShowState(true)
               levelListView()
             } else {
               setLevelShowState(false)
               currentPage = 1
-              fetchRank(item, dateType)
             }
           }}>
           {createDateButtonItem()}
@@ -133,44 +172,59 @@ export default (props) => {
 
   async function fetchRank(type, dateType, next) {
     props.location.state = ''
-    let res = ''
+
     currentPage = next ? ++currentPage : currentPage
+
+    let month = formData.currentDate.getMonth() + 1
+    let date = formData.currentDate.getDate()
+    if (month < 10) {
+      month = '0' + month
+    }
+
+    if (date < 10) {
+      date = '0' + date
+    }
+
+    let formatDate = `${formData.currentDate.getFullYear()}-${month}-${date}`
+
+    const res = await Api.get_ranking({
+      param: {
+        rankSlct: formData.rankType === 'dj' ? 1 : 2,
+        rankType: formData.dateType,
+        page: currentPage,
+        records: 500,
+        rankingDate: formatDate
+      }
+    })
 
     if (currentPage > 10) {
       return
     }
-    if (type === 'dj') {
-      res = await Api.get_dj_ranking({
-        params: {
-          rankType: dateType,
-          page: currentPage,
-          records: 500
-        }
-      })
-    } else if (type === 'fan') {
-      res = await Api.get_fan_ranking({
-        params: {
-          rankType: dateType,
-          page: currentPage,
-          records: 500
-        }
-      })
-    }
-
+    // if (type === 'dj') {
+    //   res = await Api.get_dj_ranking({
+    //     params: {
+    //       rankType: dateType,
+    //       page: currentPage,
+    //       records: 500
+    //     }
+    //   })
+    // } else if (type === 'fan') {
+    //   res = await Api.get_fan_ranking({
+    //     params: {
+    //       rankType: dateType,
+    //       page: currentPage,
+    //       records: 500
+    //     }
+    //   })
+    // }
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
+
       if (res.code === '0') {
         if (!next) setList(0)
         moreState = false
       } else {
-        if (next) {
-          moreState = true
-          setNextList(res.data.list)
-        } else {
-          setList(res.data.list)
-          fetchRank(type, dateType, 'next')
-        }
-
+        setList(res.data.list)
         setMyInfo({
           isReward: res.data.isReward,
           myGiftPoint: res.data.myGiftPoint,
@@ -186,9 +240,79 @@ export default (props) => {
       }
     } else if (res.result === 'success') {
     } else {
+      console.log(res)
       context.action.alert({
         msg: res.massage
       })
+    }
+  }
+
+  const handleEv = (something, value) => {
+    let someDate
+    switch (something) {
+      case 'dateType':
+        if (value === 2) {
+          someDate = convertMonday()
+        } else if (value === 1) {
+          someDate = new Date()
+        } else {
+          someDate = convertMonth()
+        }
+
+        setFormData({
+          ...formData,
+          dateType: value,
+          currentDate: someDate
+        })
+        break
+      case 'currentDate':
+        someDate = handleDate(value)
+        setFormData({
+          ...formData,
+          currentDate: someDate
+        })
+        break
+      default:
+        setFormData({
+          ...formData
+        })
+    }
+  }
+
+  const handleDate = (some) => {
+    let day1 = formData.currentDate
+    let year = day1.getFullYear()
+    let month = day1.getMonth()
+    let date = day1.getDate()
+    if (some === 'back') {
+      switch (formData.dateType) {
+        case 1:
+          return new Date(day1.setDate(day1.getDate() - 1))
+
+        case 2:
+          return new Date(day1.setDate(day1.getDate() - 7))
+        case 3:
+          if (month === 0) {
+            return new Date(`${year - 1}-12-${date}`)
+          } else {
+            return new Date(`${year}-${month}-${date}`)
+          }
+      }
+    } else {
+      switch (formData.dateType) {
+        case 1:
+          return new Date(day1.setDate(day1.getDate() + 1))
+        case 2:
+          return new Date(day1.setDate(day1.getDate() + 7))
+        case 3:
+          month += 1
+
+          if (month === 12) {
+            return new Date(`${year + 1}-1-${date}`)
+          } else {
+            return new Date(`${year}-${month + 1}-${date}`)
+          }
+      }
     }
   }
 
@@ -196,13 +320,48 @@ export default (props) => {
     currentPage = 1
   }
 
-  const resetFn = () => {
-    fetchRank(rankType, dateType)
-  }
-
+  useEffect(() => {
+    fetchRank()
+  }, [formData])
   //가이드에 따른 분기
   const {title} = props.match.params
   if (title === 'guide') return <RankGuide></RankGuide>
+
+  const test = () => {
+    const formDt = formData.currentDate
+    let formYear = formDt.getFullYear()
+    let formMonth = formDt.getMonth() + 1
+    let formDate = formDt.getDate()
+
+    const cDate = new Date()
+    let year = cDate.getFullYear()
+    let month = cDate.getMonth() + 1
+    let date = cDate.getDate()
+    if (formData.dateType === 1) {
+      if (year === formYear && month === formMonth && formDate === date) {
+        return '실시간 집계'
+      } else {
+        return ''
+      }
+    } else if (formData.dateType === 2) {
+      const currentWeek = convertMonday()
+      year = currentWeek.getFullYear()
+      month = currentWeek.getMonth() + 1
+      date = currentWeek.getDate()
+
+      if (year === formYear && month === formMonth && formDate === date) {
+        return '실시간 집계'
+      } else {
+        return ''
+      }
+    } else {
+      if (year === formYear && month === formMonth) {
+        return '실시간 집계'
+      } else {
+        return ''
+      }
+    }
+  }
 
   return (
     <>
@@ -220,8 +379,8 @@ export default (props) => {
               <div className="rankTab">{createRankButton()}</div>
 
               <div className="rankTopBox__update">
-                {rankType !== 'level' ? myInfo.time : ''}
-                <button onClick={() => props.history.push('/rank/guide')} className="rankTopBox__img">
+                {rankType !== 'level' ? `${test()}` : ''}
+                <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
                   <img src={hint} alt="힌트보기" />
                 </button>
               </div>
@@ -231,20 +390,15 @@ export default (props) => {
               <LevelList levelList={levelList}></LevelList>
             ) : (
               <RankListWrap
-                dateType={dateType}
-                setDateType={setDateType}
-                rankType={rankType}
-                setRankType={setRankType}
                 list={list}
+                formData={formData}
+                handleEv={handleEv}
                 typeState={typeState}
-                fetchRank={fetchRank}
                 myInfo={myInfo}
                 setMyInfo={setMyInfo}
                 nextList={nextList}
-                setCurrentPage={setCurrentPage}
-                resetFn={resetFn}></RankListWrap>
+                setCurrentPage={setCurrentPage}></RankListWrap>
             )}
-
             {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
           </div>
         </div>
