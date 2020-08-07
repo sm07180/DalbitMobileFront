@@ -1,9 +1,10 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState, useContext} from 'react'
 import styled from 'styled-components'
 
 //context
 import Room, {RoomJoin} from 'context/room'
-
+import Api from 'context/api'
+import {Context} from 'context'
 import noBgAudioIcon from '../static/audio_s.svg'
 import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
@@ -17,8 +18,11 @@ import Util from 'components/lib/utility.js'
 import EntryImg from '../static/person_w_s.svg'
 
 const makeContents = (props) => {
+  const context = useContext(Context)
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
+
+  //------------------------------------------
 
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
@@ -38,19 +42,42 @@ const makeContents = (props) => {
         os,
         isNew
       } = list
-      console.log('rt', roomType)
-      console.log(categoryList)
+
+      const alertCheck = (roomNo) => {
+        if (sessionStorage.getItem('operater') === 'true') {
+          context.action.confirm_admin({
+            //콜백처리
+            callback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 1
+              })
+            },
+            //캔슬콜백처리
+            cancelCallback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 0
+              })
+            },
+            msg: '관리자로 입장하시겠습니까?'
+          })
+        } else {
+          RoomJoin({
+            roomNo: roomNo
+          })
+        }
+      }
       return (
-        <LiveList
-          key={`live-${idx}`}
-          onClick={() => {
-            RoomJoin(roomNo + '')
-          }}>
+        <LiveList key={`live-${idx}`} onClick={() => alertCheck(roomNo)}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
-              <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
+              {categoryList && (
+                <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
+              )}
+
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
               {isNew === true && <span className="new-dj-icon">신입</span>}
@@ -98,9 +125,7 @@ const makeContents = (props) => {
               <div
                 className="half-live"
                 style={{backgroundImage: `url(${firstList.bjProfImg['thumb190x190']})`}}
-                onClick={() => {
-                  RoomJoin(firstList.roomNo + '')
-                }}>
+                onClick={() => alertCheck(roomNo)}>
                 <div className="top-status">
                   {firstList.entryType === 2 ? (
                     <span className="twenty-icon">20</span>
@@ -127,9 +152,7 @@ const makeContents = (props) => {
                 <div
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
-                  onClick={() => {
-                    RoomJoin(lastList.roomNo + '')
-                  }}>
+                  onClick={() => alertCheck(roomNo)}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (
                       <span className="twenty-icon">20</span>
@@ -345,27 +368,6 @@ const LiveList = styled.div`
   padding: 0 7px;
   margin: 20px -8px;
   width: 100%;
-
-  :before {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-
-    box-sizing: border-box;
-    border-radius: 15px;
-    background: #f5f5f5;
-
-    content: '';
-  }
-  @media (hover: hover) {
-    &:hover:before {
-      display: block;
-    }
-  }
 
   .txt_boost {
     color: #ec455f;

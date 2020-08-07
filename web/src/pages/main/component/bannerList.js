@@ -12,6 +12,7 @@ import {Hybrid} from 'context/hybrid'
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
+  const [bannerView, setBannerView] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
@@ -32,7 +33,19 @@ export default React.forwardRef((props, ref) => {
         history.push(linkUrl)
       }
     } else {
-      history.push(linkUrl)
+      if(linkUrl.startsWith('http://') || linkUrl.startsWith('https://')){
+        location.href = linkUrl
+      }else{
+        history.push(linkUrl)
+      }
+    }
+  }
+
+  const buttonToogle = () => {
+    if (bannerView === false) {
+      setBannerView(true)
+    } else {
+      setBannerView(false)
     }
   }
 
@@ -44,6 +57,33 @@ export default React.forwardRef((props, ref) => {
       return (
         <div className="banner" key={`banner-${idx}`}>
           <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
+        </div>
+      )
+    })
+  }
+
+  const basicSliderList = () => {
+    if (!list) return null
+    return list.map((banner, idx) => {
+      const {bannerUrl, linkUrl, title, linkType} = banner
+
+      return (
+        <div className="basicBanner" key={`banner-${idx}`}>
+          {idx === 0 ? (
+            <>
+              <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            </>
+          ) : (
+            ''
+          )}
+
+          <img
+            src={bannerUrl}
+            alt={title}
+            onClick={() => {
+              goEvent(linkUrl, linkType)
+            }}
+          />
         </div>
       )
     })
@@ -71,10 +111,11 @@ export default React.forwardRef((props, ref) => {
     resistanceRatio: 0,
     loop: true,
     autoplay: {
-      delay: 5000
+      delay: 3000
     },
     pagination: {
       el: '.swiper-pagination',
+      type: 'fraction',
       clickable: true
     },
     on: {
@@ -85,13 +126,99 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
-  return <Banner ref={ref}>{list && <Swiper {...params}>{createSliderList()}</Swiper>}</Banner>
+  useEffect(() => {}, [])
+
+  return (
+    <Banner ref={ref}>
+      <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
+        <div className="bannerNumber"></div>
+        {list && (
+          <>
+            <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            <Swiper {...params}>{createSliderList()}</Swiper>
+          </>
+        )}
+      </div>
+      <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
+    </Banner>
+  )
 })
 
 const Banner = styled.div`
-  overflow: hidden;
+  div.swiper-pagination-fraction {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    bottom: 7px;
+    right: 46px;
+    width: 45px;
+    height: 24px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+
+    .swiper-pagination-total {
+      opacity: 0.5;
+    }
+  }
+
+  .bannerNumber {
+    border: solid 1px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    width: 45px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    p {
+      opacity: 0.5;
+    }
+  }
+
+  .slideWrap {
+    position: relative;
+
+    &.active {
+      display: none;
+    }
+  }
+  .bannerView {
+    display: none;
+    img {
+      width: 100%;
+    }
+    &.active {
+      display: block;
+    }
+  }
+
+  .moreButton {
+    width: 30px;
+    height: 24px;
+    position: absolute;
+    right: 11px;
+    bottom: 7px;
+    z-index: 2;
+    background: #fff url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+
+    &.active {
+      background: #fff url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+    }
+  }
+
+  .basicBanner {
+    margin-bottom: 10px;
+    position: relative;
+  }
 
   .swiper-container {
+    height: auto;
     .banner {
       img {
         width: 100%;
@@ -99,6 +226,9 @@ const Banner = styled.div`
     }
     .swiper-pagination-bullet-active {
       background: #ec455f;
+    }
+    .swiper-pagination {
+      display: none;
     }
   }
 

@@ -1632,6 +1632,16 @@ export default class API {
    * @param int records                       //페이지당 리스트 수
    * @create 이은비 2020.03.11
    */
+
+  static get_ranking = async (obj) => {
+    const {param} = obj
+    return await ajax({
+      url: '/rank/page',
+      method: 'GET',
+      params: param
+    })
+  }
+
   static get_fan_ranking = async (obj) => {
     const {url, method, params} = obj || {}
     return await ajax({

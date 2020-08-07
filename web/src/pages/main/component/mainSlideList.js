@@ -3,8 +3,6 @@ import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Swiper from 'react-id-swiper'
-import styled from 'styled-components'
-import LiveIcon from '../static/live_l@3x.png'
 
 import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -17,7 +15,7 @@ export default (props) => {
   const swiperParams = {
     loop: true,
     autoplay: {
-      delay: 2000,
+      delay: 3500,
       disableOnInteraction: false
     },
     pagination: {
@@ -27,8 +25,8 @@ export default (props) => {
   }
 
   return (
-    <TopSlider>
-      <Swiper {...swiperParams} className="topSlide">
+    <div className="topSlide">
+      <Swiper {...swiperParams}>
         {list instanceof Array &&
           list.map((bannerData, index) => {
             const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
@@ -53,11 +51,32 @@ export default (props) => {
                         }
                       }
                     } else {
-                      RoomJoin(roomNo)
+                      if (sessionStorage.getItem('operater') === 'true') {
+                        context.action.confirm_admin({
+                          //콜백처리
+                          callback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 1
+                            })
+                          },
+                          //캔슬콜백처리
+                          cancelCallback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 0
+                            })
+                          },
+                          msg: '관리자로 입장하시겠습니까?'
+                        })
+                      } else {
+                        RoomJoin({
+                          roomNo: roomNo
+                        })
+                      }
                     }
                   }
                   if (roomType === 'link') {
-                    console.log('link')
                     context.action.updatenoticeIndexNum(roomNo)
                     if (roomNo !== '' && !roomNo.startsWith('http')) {
                       history.push(`${roomNo}`)
@@ -66,7 +85,29 @@ export default (props) => {
                     }
                   } else {
                     if (isHybrid() && roomNo) {
-                      RoomJoin(roomNo)
+                      if (sessionStorage.getItem('operater') === 'true') {
+                        context.action.confirm_admin({
+                          //콜백처리
+                          callback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 1
+                            })
+                          },
+                          //캔슬콜백처리
+                          cancelCallback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              shadow: 0
+                            })
+                          },
+                          msg: '관리자로 입장하시겠습니까?'
+                        })
+                      } else {
+                        RoomJoin({
+                          roomNo: roomNo
+                        })
+                      }
                     }
                   }
                 }}>
@@ -96,163 +137,6 @@ export default (props) => {
             )
           })}
       </Swiper>
-    </TopSlider>
+    </div>
   )
 }
-
-const TopSlider = styled.div`
-  .topSlide {
-    width: 100%;
-    height: 220px;
-    background: #eee;
-    overflow: hidden;
-    position: relative;
-    margin-top: 40px;
-
-    &__buttonWrap {
-      position: absolute;
-      top: 24px;
-      padding: 0px 20px;
-      box-sizing: border-box;
-      width: 100%;
-      height: 60px;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 1;
-    }
-    &__bg {
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
-      width: 100%;
-      height: 220px;
-      &.broadcast {
-        &::after {
-          display: block;
-          content: '';
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.3);
-        }
-      }
-    }
-    &__itemWrap {
-      position: absolute;
-      top: 24px;
-      width: 100%;
-      padding: 0px 20px;
-      display: flex;
-      z-index: 1;
-      box-sizing: border-box;
-    }
-
-    &__number {
-      display: flex;
-      line-height: 25px;
-      justify-content: center;
-      margin-left: auto;
-      width: 58px;
-      height: 25px;
-      background: rgba(0, 0, 0, 0.5);
-      color: #fff;
-      font-size: 14px;
-      border-radius: 14px;
-    }
-
-    &__iconWrap {
-      em {
-        position: absolute;
-        left: 16px;
-        top: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 52px;
-        height: 18px;
-        margin-right: 4px;
-        color: #fff;
-        font-style: normal;
-        font-size: 11px;
-        line-height: 18px;
-        border-radius: 20px;
-      }
-      .eventIcon {
-        background: #febd56;
-      }
-
-      .specialIcon {
-        background: #ec455f;
-      }
-
-      .adminIcon {
-        background: #3386f2;
-      }
-
-      span {
-        position: absolute;
-        right: 8px;
-        top: 8px;
-        &.liveIcon {
-          width: 42px;
-          height: 42px;
-          margin: 0;
-          font-size: 0;
-          background: url(${LiveIcon}) no-repeat 0 0;
-          background-size: contain;
-        }
-      }
-    }
-    &__infoWrap {
-      position: absolute;
-      bottom: 10px;
-      left: 0;
-      display: flex;
-      flex-direction: row;
-      align-content: center;
-      width: 100%;
-      padding: 0 16px;
-
-      .thumb {
-        display: block;
-        width: 48px;
-        height: 48px;
-        margin-right: 8px;
-        border-radius: 50%;
-        border: solid 1px rgba(255, 255, 255, 0.5);
-      }
-      .text {
-        display: flex;
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-        font-weight: bold;
-        line-height: 1.4;
-        .title {
-          display: block;
-          color: #fff;
-        }
-        .nickname {
-          display: block;
-          color: rgb(255, 179, 0);
-        }
-      }
-    }
-  }
-  .swiper-pagination-fraction {
-    bottom: 5px;
-    padding-right: 14px;
-    text-align: right;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.6);
-    span {
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .swiper-pagination-current {
-      color: #fff;
-    }
-  }
-`

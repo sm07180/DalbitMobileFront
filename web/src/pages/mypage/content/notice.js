@@ -19,7 +19,7 @@ import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
-
+import {DalbitTextArea} from '../content/textarea'
 // concat
 let currentPage = 1
 let timer
@@ -56,7 +56,7 @@ const Notice = (props) => {
   //공지컨텐트 등록 온체인지
   const textChangeContent = (e) => {
     const target = e.currentTarget
-    if (target.value.length > 189) return
+    if (target.value.length > 200) return
     setCommentContent(target.value)
   }
   //api
@@ -329,11 +329,13 @@ const Notice = (props) => {
           </div>
 
           <div className="contentWrite">
-            <textarea
+            <DalbitTextArea
+              state={comentContent}
+              setState={setCommentContent}
+              rows={10}
+              maxLength={200}
+              className="MsgText"
               placeholder="작성하고자 하는 글의 내용을 입력해주세요."
-              maxLength="189"
-              onChange={textChangeContent}
-              value={comentContent}
             />
           </div>
           <div className="checkbox-wrap">

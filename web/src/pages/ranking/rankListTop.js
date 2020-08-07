@@ -17,8 +17,7 @@ export default (props) => {
   const history = useHistory()
   //context
   const context = useContext(Context)
-  const rankType = props.rankType
-  const {list, myMemNo} = props
+  const {list, myMemNo, formData} = props
 
   const creatList = () => {
     return (
@@ -28,19 +27,19 @@ export default (props) => {
             {list.map((item, index) => {
               const {
                 gender,
-                gift,
+
                 grade,
                 nickNm,
                 rank,
                 profImg,
                 level,
                 upDown,
-                listen,
-                listeners,
-                likes,
-                broadcast,
-                fan,
-                dj,
+                listenPoint,
+                listenerPoint,
+                goodPoint,
+                broadcastPoint,
+                fanPoint,
+                djPoint,
                 isSpecial,
                 roomNo,
                 memNo,
@@ -118,11 +117,11 @@ export default (props) => {
                     onClick={() => {
                       history.push(`/mypage/${memNo}`)
                     }}>
-                    {rankType == 'dj' && (
+                    {formData.rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                          {Util.printNumber(dj)}
+                          {Util.printNumber(djPoint)}
                         </span>
 
                         <div className="countBoxInner">
@@ -132,26 +131,26 @@ export default (props) => {
                           </span> */}
                           <span className="countBox__item">
                             <img src={people} />
-                            {Util.printNumber(listeners)}
+                            {Util.printNumber(listenerPoint)}
                           </span>
                           <span className="countBox__item">
                             <img src={like} />
-                            {Util.printNumber(likes)}
+                            {Util.printNumber(goodPoint)}
                           </span>
 
                           <span className="countBox__item">
                             <img src={time} />
-                            {Util.printNumber(broadcast)}
+                            {Util.printNumber(broadcastPoint)}
                           </span>
                         </div>
                       </>
                     )}
 
-                    {rankType == 'fan' && (
+                    {formData.rankType == 'fan' && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} />
-                          {Util.printNumber(fan)}
+                          {Util.printNumber(fanPoint)}
                         </span>
                         {/* <span className="countBox__item">
                           <img src={moon} />
@@ -159,7 +158,7 @@ export default (props) => {
                         </span> */}
                         <span className="countBox__item">
                           <img src={time} />
-                          {Util.printNumber(listen)}
+                          {Util.printNumber(listenPoint)}
                         </span>
                       </>
                     )}
@@ -185,7 +184,29 @@ export default (props) => {
                       <img
                         src={live}
                         onClick={() => {
-                          RoomJoin(roomNo + '')
+                          if (sessionStorage.getItem('operater') === 'true') {
+                            context.action.confirm_admin({
+                              //콜백처리
+                              callback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo + '',
+                                  shadow: 1
+                                })
+                              },
+                              //캔슬콜백처리
+                              cancelCallback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo + '',
+                                  shadow: 0
+                                })
+                              },
+                              msg: '관리자로 입장하시겠습니까?'
+                            })
+                          } else {
+                            RoomJoin({
+                              roomNo: roomNo + ''
+                            })
+                          }
                         }}
                         className="liveBox__img"
                       />

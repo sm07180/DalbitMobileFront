@@ -131,10 +131,10 @@ export default function Service() {
           </div>
           <div className="serviceWrap__caption--box">
             <span>
-              고객센터 (국내) <span className="bold">1522-0251</span> {makeCallBtn('1522-0251')}
+              <span>고객센터 (국내)</span> <span className="bold">1522-0251</span> {makeCallBtn('1522-0251')}
             </span>
             <span>
-              고객센터 (해외) <span className="bold">+82-1522-0251</span> {makeCallBtn('+82-1522-0251')}
+              <span>고객센터 (해외)</span> <span className="bold">+82-1522-0251</span> {makeCallBtn('+82-1522-0251')}
             </span>
             <span className="gray">(상담시간 : 평일 09:30 ~ 17:30 토/일/공휴일 제외)</span>
           </div>

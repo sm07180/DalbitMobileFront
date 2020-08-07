@@ -54,7 +54,7 @@ export default function Detail() {
     if(mypageNewStg.notice === undefined || mypageNewStg.notice === null || mypageNewStg.notice === ''){
       mypageNewStg.notice = [parseInt(noticeIdx)]
     }else{
-      if(mypageNewStg.notice.find(e => e === noticeIdx) !== undefined) {
+      if(mypageNewStg.notice.find(e => e === noticeIdx) === undefined) {
         mypageNewStg.notice.push(parseInt(noticeIdx))
       }
     }
