@@ -42,7 +42,7 @@
       align-items: center;
       border: 6px solid #5640bd;
       background: #5640bd;
-      letter-spacing: -0.5px;
+      letter-spacing: -1px;
       font-size: 14px;
 
       label {
@@ -60,6 +60,8 @@
         padding: 0 9px;
         box-sizing: border-box;
         background-color: #fff;
+        font-size: 14px;
+        letter-spacing: -1px;
 
         .time {
           width: 48%;
@@ -499,7 +501,7 @@
             border-radius: 8px;
             background-color: #fff;
             line-height: 22px;
-            font-size: 14px;
+            font-size: 11px;
             letter-spacing: -0.5px;
 
             label {

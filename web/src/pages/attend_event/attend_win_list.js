@@ -16,8 +16,6 @@ export default (props) => {
   }
   const {winList} = props
 
-  console.log('winList', winList)
-
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -64,7 +62,7 @@ export default (props) => {
               <tbody>
                 {!winList.length ? (
                   <tr>
-                    <td colSpan="3">당첨자가 없습니다.</td>
+                    <td colSpan="3">8월 16일(일) 당첨자 명단 공개!</td>
                   </tr>
                 ) : (
                   winList.map((item, index) => {

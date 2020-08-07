@@ -221,7 +221,10 @@ export default (props) => {
 
         globalCtx.action.alert({
           msg: `<div class="attend-alert-box" ><p class="title">다시 한 번 축하드립니다!</p><p class="sub-title">평일 기준 7일 이내 입력하신 번호로
-          기프티콘을 전송해드립니다.</p></div>`
+          기프티콘을 전송해드립니다.</p></div>`,
+          callback: () => {
+            location.reload()
+          }
         })
       } else {
         globalCtx.action.alert({
@@ -288,11 +291,16 @@ export default (props) => {
 
         <div className="gifticon-win-wrap" onClick={() => props.history.push('/attend_event/winList')}>
           <div className="gifticon-win-box">
-            <label>기프티콘 당첨자</label>
-            <div className="gifticon-win-list">
-              {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
-              {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
-            </div>
+            <label>기프티콘 당첨자 &gt;</label>
+
+            {winList.length === 0 ? (
+              <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
+            ) : (
+              <div className="gifticon-win-list">
+                {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
+                {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
+              </div>
+            )}
           </div>
         </div>
 
@@ -348,7 +356,7 @@ export default (props) => {
                       <button onClick={clickSaveButton}>저장</button>
                     </div>
 
-                    <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수된 휴대폰 번호는 중복으로 참여할 수 없습니다.</p>
+                    <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.</p>
                   </div>
                 )}
               </div>
