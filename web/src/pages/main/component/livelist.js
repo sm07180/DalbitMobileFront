@@ -369,27 +369,6 @@ const LiveList = styled.div`
   margin: 20px -8px;
   width: 100%;
 
-  :before {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-
-    box-sizing: border-box;
-    border-radius: 15px;
-    background: #f5f5f5;
-
-    content: '';
-  }
-  @media (hover: hover) {
-    &:hover:before {
-      display: block;
-    }
-  }
-
   .txt_boost {
     color: #ec455f;
   }
