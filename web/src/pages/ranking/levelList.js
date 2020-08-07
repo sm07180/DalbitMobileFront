@@ -37,7 +37,7 @@ export default (props) => {
                 <div className="countBox">
                   <span>
                     <img src={levelIcon} /> Lv.{level}
-                  </span>{' '}
+                  </span>
                   <span>
                     <img src={fanIcon} /> {fanCnt}
                   </span>
