@@ -33,7 +33,11 @@ export default React.forwardRef((props, ref) => {
         history.push(linkUrl)
       }
     } else {
-      history.push(linkUrl)
+      if(linkUrl.startsWith('http://') || linkUrl.startsWith('https://')){
+        location.href = linkUrl
+      }else{
+        history.push(linkUrl)
+      }
     }
   }
 
