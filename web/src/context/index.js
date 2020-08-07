@@ -202,6 +202,10 @@ const GlobalProvider = (props) => {
       const {msg} = obj
       setMessage({type: 'confirm', visible: true, ...obj})
     },
+    confirm_admin: (obj) => {
+      const {msg} = obj
+      setMessage({type: 'confirm_admin', visible: true, ...obj})
+    },
     //login 상태
     updateLogin: (bool) => {
       setlogin(bool)

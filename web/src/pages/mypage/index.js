@@ -245,7 +245,7 @@ const Sub2 = styled.div`
             display: block;
             width: 24px;
             height: 24px;
-            margin-left: -24px;
+            margin-left: -28px;
             background: url(${newCircle});
           }
         }

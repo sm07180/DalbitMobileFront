@@ -861,6 +861,7 @@ const NameWrap = styled.div`
 
   .expBtnWrap {
     display: flex;
+    margin-top: 6px;
     > a {
       display: flex;
       align-items: center;
@@ -942,7 +943,7 @@ const NameWrap = styled.div`
     line-height: 24px;
     min-height: 24px;
     font-weight: 800;
-    margin-top: 14px;
+    margin-top: 10px;
   }
   .specialIcon {
     display: inline-block;
