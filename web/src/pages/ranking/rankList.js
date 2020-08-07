@@ -3,7 +3,8 @@ import {useHistory} from 'react-router-dom'
 
 import {RoomJoin} from 'context/room'
 import Util from 'components/lib/utility.js'
-
+// context
+import {Context} from 'context'
 //static
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -14,6 +15,7 @@ import time from './static/time_g_s.svg'
 
 export default (props) => {
   //context
+  const context = useContext(Context)
   const history = useHistory()
   const rankType = props.rankType
   const {list} = props

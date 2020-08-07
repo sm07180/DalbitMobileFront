@@ -2,13 +2,15 @@ import React from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Room, {RoomJoin} from 'context/room'
-
+// context
+import {Context} from 'context'
 //static
 import live from './static/live.svg'
 import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 
 export default (props) => {
+  const context = useContext(Context)
   const history = useHistory()
   const {levelList} = props
 
@@ -69,7 +71,7 @@ export default (props) => {
                         })
                       } else {
                         RoomJoin({
-                          roomNo: profile.roomNo
+                          roomNo: roomNo
                         })
                       }
                     }}
