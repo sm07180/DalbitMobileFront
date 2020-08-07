@@ -240,7 +240,6 @@ export default (props) => {
       }
     } else if (res.result === 'success') {
     } else {
-      console.log(res)
       context.action.alert({
         msg: res.massage
       })
@@ -337,28 +336,32 @@ export default (props) => {
     let year = cDate.getFullYear()
     let month = cDate.getMonth() + 1
     let date = cDate.getDate()
-    if (formData.dateType === 1) {
-      if (year === formYear && month === formMonth && formDate === date) {
-        return '실시간 집계'
-      } else {
-        return ''
-      }
-    } else if (formData.dateType === 2) {
-      const currentWeek = convertMonday()
-      year = currentWeek.getFullYear()
-      month = currentWeek.getMonth() + 1
-      date = currentWeek.getDate()
-
-      if (year === formYear && month === formMonth && formDate === date) {
-        return '실시간 집계'
-      } else {
-        return ''
-      }
+    if (formData.rankType === 'level') {
+      return ''
     } else {
-      if (year === formYear && month === formMonth) {
-        return '실시간 집계'
+      if (formData.dateType === 1) {
+        if (year === formYear && month === formMonth && formDate === date) {
+          return '실시간 집계'
+        } else {
+          return ''
+        }
+      } else if (formData.dateType === 2) {
+        const currentWeek = convertMonday()
+        year = currentWeek.getFullYear()
+        month = currentWeek.getMonth() + 1
+        date = currentWeek.getDate()
+
+        if (year === formYear && month === formMonth && formDate === date) {
+          return '실시간 집계'
+        } else {
+          return ''
+        }
       } else {
-        return ''
+        if (year === formYear && month === formMonth) {
+          return '실시간 집계'
+        } else {
+          return ''
+        }
       }
     }
   }
