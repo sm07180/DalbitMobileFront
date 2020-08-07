@@ -518,16 +518,16 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const MyProfile = styled.div`
-   display: flex;
+  display: flex;
   flex-direction: row;
-    background-color:#fff;
-    border-top-left-radius:20px;
-    border-top-right-radius:20px;
+  background-color:#fff;
+  border-top-left-radius:20px;
+  border-top-right-radius:20px;
   margin: 0 auto 0 auto;
   padding: 40px 16px 57px 16px;
-position: relative;
-z-index:3;
-.closeBtn {
+  position: relative;
+  z-index:3;
+  .closeBtn {
     position: absolute;
     width: 32px;
     height: 32px;
@@ -590,29 +590,28 @@ z-index:3;
           background-color: #eeeeee;
         }
         .icoImg {
-            margin:0 auto;
-            display: inline-block;
-            width:24px;
-            height:24px;
-            background:url(${GrayHeart})no-repeat center center /cover;
-            &.type1 {
-              background:url(${BlueHoleIcon})no-repeat center center /cover;
-            }
-            &.type2 {
-              background:url(${StarIcon})no-repeat center center /cover;
-            }
+          margin:0 auto;
+          display: inline-block;
+          width:24px;
+          height:24px;
+          background:url(${GrayHeart})no-repeat center center /cover;
+          &.type1 {
+            background:url(${BlueHoleIcon})no-repeat center center /cover;
+          }
+          &.type2 {
+            background:url(${StarIcon})no-repeat center center /cover;
+          }
         }
         .icotitle {
-            float:right;
-            margin-left:2px;
-            line-height:24px;
-                            font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                letter-spacing: normal;
-                text-align: center;
-                color: #424242;
+          float:right;
+          line-height:24px;
+          font-size: 16px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: normal;
+          text-align: center;
+          color: #424242;
         }
         .cntTitle {
             
@@ -704,7 +703,7 @@ const ContentWrap = styled.div`
   order: 2;
   @media (max-width: ${WIDTH_TABLET_S}) {
     width: 100%;
-    margin: 16px auto 0 auto;
+    margin: 13px auto 0 auto;
     order: 3;
     & > div {
       display: flex;
