@@ -9,6 +9,7 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 import Alert from './content/alert'
 import Confirm from './content/confirm'
+import ConfirmAdmin from './content/confirm_admin'
 import Toast from './content/toast'
 
 export default (props) => {
@@ -37,6 +38,12 @@ export default (props) => {
           return (
             <Message>
               <Confirm />
+            </Message>
+          )
+        if (type === 'confirm_admin')
+          return (
+            <Message>
+              <ConfirmAdmin />
             </Message>
           )
         if (type === 'toast') return <Toast />
