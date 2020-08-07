@@ -18,7 +18,7 @@ let touchEndX = null
 let touchStartStatus = false
 let direction = null
 
-export default props => {
+export default (props) => {
   const context = useContext(Context)
   const {list} = props
   const history = useHistory()
@@ -26,11 +26,11 @@ export default props => {
   const [selectedBIdx, setSelectedBIdx] = useState(null)
   const slideWrapRef = useRef()
 
-  const selectBroadcast = idx => {
+  const selectBroadcast = (idx) => {
     setSelectedBIdx(idx)
   }
 
-  const clickSwipEvent = e => {
+  const clickSwipEvent = (e) => {
     const target = e.currentTarget
     const bIdx = Number(target.getAttribute('data-idx'))
     selectBroadcast(bIdx)
@@ -44,14 +44,14 @@ export default props => {
 
   const emojiSplitRegex = /([\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D])/g
 
-  const touchStartEvent = e => {
+  const touchStartEvent = (e) => {
     if (Array.isArray(list) && list.length > 1) {
       touchStartStatus = true
       touchStartX = e.touches[0].clientX
     }
   }
 
-  const touchMoveEvent = e => {
+  const touchMoveEvent = (e) => {
     const slideWrapNode = slideWrapRef.current
     touchEndX = e.touches[0].clientX
 
@@ -63,7 +63,7 @@ export default props => {
     slideWrapNode.style.transitionDuration = '0ms'
   }
 
-  const touchEndEvent = e => {
+  const touchEndEvent = (e) => {
     if (!touchEndX || !touchStartStatus) {
       return
     }
@@ -170,7 +170,7 @@ export default props => {
   const nextBIdx = selectedBIdx + 1 < list.length ? selectedBIdx + 1 : 0
   //클릭 배너 이동
   const {customHeader, token} = context || Room.context
-  const clickSlideDisplay = data => {
+  const clickSlideDisplay = (data) => {
     const {roomType, roomNo} = data
 
     if (roomType === 'link') {
@@ -184,7 +184,29 @@ export default props => {
       }
     } else {
       if (isHybrid() && roomNo) {
-        RoomJoin(roomNo)
+        if (sessionStorage.getItem('operater') === 'true') {
+          context.action.confirm_admin({
+            //콜백처리
+            callback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 1
+              })
+            },
+            //캔슬콜백처리
+            cancelCallback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 0
+              })
+            },
+            msg: '관리자로 입장하시겠습니까?'
+          })
+        } else {
+          RoomJoin({
+            roomNo: roomNo
+          })
+        }
       }
     }
   }

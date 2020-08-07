@@ -128,8 +128,12 @@ export default React.forwardRef((props, ref) => {
     <Banner ref={ref}>
       <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
         <div className="bannerNumber"></div>
-        <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
-        {list && <Swiper {...params}>{createSliderList()}</Swiper>}
+        {list && (
+          <>
+            <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            <Swiper {...params}>{createSliderList()}</Swiper>
+          </>
+        )}
       </div>
       <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
     </Banner>
