@@ -28,94 +28,94 @@ export default () => {
   function update(event) {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
-          let pushMsg = event.detail
-          if (__NODE_ENV === 'dev') {
-              alert('fore pushMsg :' + pushMsg)
-          }
+        let pushMsg = event.detail
+        if (__NODE_ENV === 'dev') {
+          alert('fore pushMsg :' + pushMsg)
+        }
 
-          const isJsonString = (str) => {
-              try {
-                  var parsed = JSON.parse(str)
-                  return typeof parsed === 'object'
-              } catch (e) {
-                  if (__NODE_ENV === 'dev') {
-                      alert(e)
-                  }
-                  return false
-              }
+        const isJsonString = (str) => {
+          try {
+            var parsed = JSON.parse(str)
+            return typeof parsed === 'object'
+          } catch (e) {
+            if (__NODE_ENV === 'dev') {
+              alert(e)
+            }
+            return false
           }
+        }
 
-          if (typeof pushMsg === 'string'){
-              pushMsg = decodeURIComponent(pushMsg)
-              if (isJsonString(pushMsg)) {
-                  pushMsg = JSON.parse(pushMsg)
-              } else {
-                  return false
-              }
+        if (typeof pushMsg === 'string') {
+          pushMsg = decodeURIComponent(pushMsg)
+          if (isJsonString(pushMsg)) {
+            pushMsg = JSON.parse(pushMsg)
+          } else {
+            return false
           }
+        }
 
-          const {isLogin} = context.token
-          const {push_type} = pushMsg
-          let room_no, mem_no, board_idx
+        const {isLogin} = context.token
+        const {push_type} = pushMsg
+        let room_no, mem_no, board_idx
 
-          //개발쪽만 적용
-          if (__NODE_ENV === 'dev') {
-              alert('fore isLogin :' + isLogin)
-              alert('fore push_type :' + JSON.stringify(pushMsg))
-          }
+        //개발쪽만 적용
+        if (__NODE_ENV === 'dev') {
+          alert('fore isLogin :' + isLogin)
+          alert('fore push_type :' + JSON.stringify(pushMsg))
+        }
 
-          if(pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== ''){
-              pushClick(pushMsg.push_idx)
-          }
+        if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
+          pushClick(pushMsg.push_idx)
+        }
 
-          switch (push_type + '') {
-              case '1': //-----------------방송방 [room_no]
-                  context.action.updateStickerMsg(pushMsg)
-                  context.action.updateSticker(true) //true,false
-                  break
-              case '2': //------------------메인
-                  window.location.href = '/'
-                  break
-              case '31': //-----------------마이페이지>팬 보드
-                  context.action.updateNews(true) //true,false
-                  break
-              case '32': //-----------------마이페이지>내 지갑
-                  context.action.updateNews(true) //true,false
-                  break
-              case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
-                  break
-              case '34': //-----------------마이페이지>알림>해당 알림 글
-                  context.action.alert({msg: pushMsg.contents})
-                  break
-              case '35': //-----------------마이페이지
-                  context.action.alert({msg: pushMsg.contents})
-                  break
-              case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
-                  context.action.updateStickerMsg(pushMsg)
-                  context.action.updateSticker(true) //true,false
-                  break
-              case '37': //------------------1:1 문의 답변
-                  context.action.updateNews(true) //true,false
-                  break
-              case '38': //------------------스타의 방송공지 등록
-                  context.action.updateNews(true) //true,false
-                  break
-              case '4': //------------------등록 된 캐스트(미정)
-                  //window.location.href = `/`
-                  break
-              case '5': //------------------스페셜 DJ 선정 페이지(미정)
-                  context.action.updateNews(true) //true,false
-                  break
-              case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
-                  break
-              case '7': //------------------공지사항 페이지 [board_idx](미정)
-                  context.action.alert({msg: pushMsg.contents})
-                  break
-              default:
-                  //------------------기본값
-                  //window.location.href = `/`
-                  break
-          }
+        switch (push_type + '') {
+          case '1': //-----------------방송방 [room_no]
+            context.action.updateStickerMsg(pushMsg)
+            context.action.updateSticker(true) //true,false
+            break
+          case '2': //------------------메인
+            window.location.href = '/'
+            break
+          case '31': //-----------------마이페이지>팬 보드
+            context.action.updateNews(true) //true,false
+            break
+          case '32': //-----------------마이페이지>내 지갑
+            context.action.updateNews(true) //true,false
+            break
+          case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
+            break
+          case '34': //-----------------마이페이지>알림>해당 알림 글
+            context.action.alert({msg: pushMsg.contents})
+            break
+          case '35': //-----------------마이페이지
+            context.action.alert({msg: pushMsg.contents})
+            break
+          case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
+            context.action.updateStickerMsg(pushMsg)
+            context.action.updateSticker(true) //true,false
+            break
+          case '37': //------------------1:1 문의 답변
+            context.action.updateNews(true) //true,false
+            break
+          case '38': //------------------스타의 방송공지 등록
+            context.action.updateNews(true) //true,false
+            break
+          case '4': //------------------등록 된 캐스트(미정)
+            //window.location.href = `/`
+            break
+          case '5': //------------------스페셜 DJ 선정 페이지(미정)
+            context.action.updateNews(true) //true,false
+            break
+          case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
+            break
+          case '7': //------------------공지사항 페이지 [board_idx](미정)
+            context.action.alert({msg: pushMsg.contents})
+            break
+          default:
+            //------------------기본값
+            //window.location.href = `/`
+            break
+        }
         break
       case 'native-auth-check': //----------------------Native RoomCheck
         const _cookie = decodeURIComponent(Utility.getCookie('authToken'))
@@ -144,6 +144,7 @@ export default () => {
               setTimeout(() => {
                 window.location.href = '/'
               }, 500)
+              window.sessionStorage.removeItem('operater')
             } else {
               context.action.alert({
                 msg: res.message
@@ -215,7 +216,7 @@ export default () => {
               sessionRoomNo = ''
             }
           }
-          google_result.data["room_no"] = sessionRoomNo
+          google_result.data['room_no'] = sessionRoomNo
           //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
@@ -268,40 +269,40 @@ export default () => {
                 window.location.replace('/signup?' + qs.stringify(google_result.data))
               }
             } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
-                let msg = loginInfo.data.opMsg
-                if (msg === undefined || msg === null || msg === '') {
-                    msg = loginInfo.message
-                }
-                globalCtx.action.alert({
-                    title: '달빛라이브 사용 제한',
-                    msg: `${msg}`,
-                    callback: () => {
-                        if (webview && webview === 'new') {
-                            Hybrid('CloseLayerPopUp')
-                        }
-                    }
-                })
-            } else if (loginInfo.code === '-6') {
-                context.action.confirm({
-                  msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
-                  callback: () => {
-                    const callResetListen = async (mem_no) => {
-                      const fetchResetListen = await Api.postResetListen({
-                        memNo: mem_no
-                      })
-                      if (fetchResetListen.result === 'success') {
-                        setTimeout(() => {
-                          googleLogin()
-                        }, 700)
-                      }else{
-                        globalCtx.action.alert({
-                          msg: `${loginInfo.message}`
-                        })
-                      }
-                    }
-                    callResetListen(loginInfo.data.memNo)
+              let msg = loginInfo.data.opMsg
+              if (msg === undefined || msg === null || msg === '') {
+                msg = loginInfo.message
+              }
+              globalCtx.action.alert({
+                title: '달빛라이브 사용 제한',
+                msg: `${msg}`,
+                callback: () => {
+                  if (webview && webview === 'new') {
+                    Hybrid('CloseLayerPopUp')
                   }
-                });
+                }
+              })
+            } else if (loginInfo.code === '-6') {
+              context.action.confirm({
+                msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
+                callback: () => {
+                  const callResetListen = async (mem_no) => {
+                    const fetchResetListen = await Api.postResetListen({
+                      memNo: mem_no
+                    })
+                    if (fetchResetListen.result === 'success') {
+                      setTimeout(() => {
+                        googleLogin()
+                      }, 700)
+                    } else {
+                      globalCtx.action.alert({
+                        msg: `${loginInfo.message}`
+                      })
+                    }
+                  }
+                  callResetListen(loginInfo.data.memNo)
+                }
+              })
             } else {
               context.action.alert({
                 title: '로그인 실패',
@@ -348,7 +349,7 @@ export default () => {
   function pushBack(event) {
     let pushMsg = event.detail
     if (__NODE_ENV === 'dev') {
-        alert('back pushMsg :' + pushMsg)
+      alert('back pushMsg :' + pushMsg)
     }
 
     const isJsonString = (str) => {
@@ -364,24 +365,23 @@ export default () => {
     }
 
     async function pushClick(pushIdx) {
-        const res = await Api.push_click({
-            data: {
-                pushIdx: pushIdx
-            }
-        })
-        if (res.result === 'success') {
-            // console.log('성공')
-        } else if (res.result === 'fail') {
+      const res = await Api.push_click({
+        data: {
+          pushIdx: pushIdx
         }
+      })
+      if (res.result === 'success') {
+        // console.log('성공')
+      } else if (res.result === 'fail') {
+      }
     }
 
-
-    if (typeof pushMsg === 'string'){
+    if (typeof pushMsg === 'string') {
       pushMsg = decodeURIComponent(pushMsg)
       if (isJsonString(pushMsg)) {
-          pushMsg = JSON.parse(pushMsg)
+        pushMsg = JSON.parse(pushMsg)
       } else {
-          return false
+        return false
       }
     }
 
@@ -414,9 +414,9 @@ export default () => {
     }
     //---------------------[분기처리시작]
 
-      if(pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== ''){
-          pushClick(pushMsg.push_idx)
-      }
+    if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
+      pushClick(pushMsg.push_idx)
+    }
 
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
@@ -428,54 +428,54 @@ export default () => {
         break
       case '31': //-----------------마이페이지>팬 보드
         mem_no = pushMsg.mem_no
-        if(mem_no != undefined){
-            if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+        if (mem_no != undefined) {
+          if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
         }
         break
       case '32': //-----------------마이페이지>내 지갑
-          mem_no = pushMsg.mem_no
-        if(mem_no != undefined){
-            if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
+        mem_no = pushMsg.mem_no
+        if (mem_no != undefined) {
+          if (isLogin) window.location.href = `/mypage/${mem_no}/wallet`
         }
         break
       case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
         break
       case '34': //-----------------마이페이지>알림>해당 알림 글
         mem_no = pushMsg.mem_no
-        if(mem_no != undefined){
-            // if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
-            if (isLogin) window.location.href = `/menu/alarm`
+        if (mem_no != undefined) {
+          // if (isLogin) window.location.href = `/mypage/${mem_no}/alert`
+          if (isLogin) window.location.href = `/menu/alarm`
         }
         break
       case '35': //-----------------마이페이지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-            // if (isLogin) window.location.href = `/mypage/${mem_no}/`
-            if (isLogin) window.location.href = `/menu/profile`
+          // if (isLogin) window.location.href = `/mypage/${mem_no}/`
+          if (isLogin) window.location.href = `/menu/profile`
         }
         break
       case '36': //-----------------레벨 업 DJ 마이페이지 [mem_no]
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-            if (isLogin) window.location.href = `/mypage/${mem_no}/`
+          if (isLogin) window.location.href = `/mypage/${mem_no}/`
         }
         break
       case '37': //-----------------1:1 문의 답변
-          mem_no = pushMsg.mem_no
-          if (mem_no !== undefined) {
-              if (isLogin) window.location.href = `/customer/personal/qnaList`
-          }
-          break
+        mem_no = pushMsg.mem_no
+        if (mem_no !== undefined) {
+          if (isLogin) window.location.href = `/customer/personal/qnaList`
+        }
+        break
       case '38': //-----------------스타의 방송공지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-            if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
+          if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
         }
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
         if (redirect_url !== undefined) {
-            if (isLogin) window.location.href = redirect_url
+          if (isLogin) window.location.href = redirect_url
         }
         break
       case '4': //------------------등록 된 캐스트(미정)
@@ -504,19 +504,21 @@ export default () => {
     }
   }
 
-  function nativeGetTid(event){
+  function nativeGetTid(event) {
     //alert('app에서 전달받음.')
-    let nativeTid = event.detail;
-    if(event.detail.isExist == null){ //IOS
+    let nativeTid = event.detail
+    if (event.detail.isExist == null) {
+      //IOS
       //alert('IOS 입니다.')
-    }else{  //ANDROID
+    } else {
+      //ANDROID
       //alert('안드로이드 입니다.')
-      if(event.detail.isExist){
-        if(event.detail.tid == ''){
+      if (event.detail.isExist) {
+        if (event.detail.tid == '') {
           nativeTid = 'adbrix'
         }
-      }else{
-        nativeTid = '';
+      } else {
+        nativeTid = ''
       }
     }
     context.action.updateNativeTid(nativeTid)

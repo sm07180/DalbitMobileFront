@@ -56,7 +56,7 @@ const Notice = (props) => {
   //공지컨텐트 등록 온체인지
   const textChangeContent = (e) => {
     const target = e.currentTarget
-    if (target.value.length > 189) return
+    if (target.value.length > 200) return
     setCommentContent(target.value)
   }
   //api

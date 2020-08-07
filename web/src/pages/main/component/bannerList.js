@@ -33,7 +33,11 @@ export default React.forwardRef((props, ref) => {
         history.push(linkUrl)
       }
     } else {
-      history.push(linkUrl)
+      if(linkUrl.startsWith('http://') || linkUrl.startsWith('https://')){
+        location.href = linkUrl
+      }else{
+        history.push(linkUrl)
+      }
     }
   }
 
@@ -107,7 +111,7 @@ export default React.forwardRef((props, ref) => {
     resistanceRatio: 0,
     loop: true,
     autoplay: {
-      delay: 5000
+      delay: 3000
     },
     pagination: {
       el: '.swiper-pagination',
@@ -128,8 +132,12 @@ export default React.forwardRef((props, ref) => {
     <Banner ref={ref}>
       <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
         <div className="bannerNumber"></div>
-        <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
-        {list && <Swiper {...params}>{createSliderList()}</Swiper>}
+        {list && (
+          <>
+            <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            <Swiper {...params}>{createSliderList()}</Swiper>
+          </>
+        )}
       </div>
       <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
     </Banner>
@@ -139,16 +147,16 @@ export default React.forwardRef((props, ref) => {
 const Banner = styled.div`
   div.swiper-pagination-fraction {
     display: flex !important;
-    bottom: 0px;
-    left: 0px;
-    background-color: rgba(0, 0, 0, 0.5);
-    width: 45px;
     justify-content: center;
-    letter-spacing: 3px;
-    color: white;
-    font-size: 12px;
-    height: 18px;
     align-items: center;
+    bottom: 7px;
+    right: 46px;
+    width: 45px;
+    height: 24px;
+    font-size: 12px;
+    letter-spacing: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
 
     .swiper-pagination-total {
       opacity: 0.5;
@@ -191,16 +199,16 @@ const Banner = styled.div`
   }
 
   .moreButton {
-    width: 24px;
+    width: 30px;
     height: 24px;
     position: absolute;
-    right: 0px;
-    bottom: 0px;
+    right: 11px;
+    bottom: 7px;
     z-index: 2;
-    background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g_up.svg') center no-repeat #fff;
+    background: #fff url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
 
     &.active {
-      background: url('https://image.dalbitlive.com//svg/20200804/arrow_down_g.svg') center no-repeat #fff;
+      background: #fff url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
     }
   }
 
