@@ -190,6 +190,8 @@ export default (props) => {
             </tr>
           </tbody>
         </table>
+
+        <div className="tableNotice">※ 월간 랭킹은 제외됩니다.</div>
       </div>
     </div>
   )
