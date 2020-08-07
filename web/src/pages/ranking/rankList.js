@@ -17,8 +17,8 @@ export default (props) => {
   //context
   const context = useContext(Context)
   const history = useHistory()
-  const rankType = props.rankType
-  const {list} = props
+
+  const {list, formData} = props
 
   const creatList = () => {
     return (
@@ -27,17 +27,16 @@ export default (props) => {
           {list.map((item, index) => {
             const {
               gender,
-              gift,
               nickNm,
               rank,
               profImg,
               upDown,
-              listen,
-              listeners,
-              likes,
-              broadcast,
-              fan,
-              dj,
+              listenPoint,
+              listenerPoint,
+              goodPoint,
+              broadcastPoint,
+              fanPoint,
+              djPoint,
               isSpecial,
               roomNo,
               memNo
@@ -70,20 +69,20 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 'dj' && (
+                  {formData.rankType == 'dj' && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {Util.printNumber(dj)}
+                        {Util.printNumber(djPoint)}
                       </p>
                     </>
                   )}
 
-                  {rankType == 'fan' && (
+                  {formData.rankType == 'fan' && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {Util.printNumber(fan)}
+                        {Util.printNumber(fanPoint)}
                       </p>
                     </>
                   )}
@@ -110,30 +109,30 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {rankType == 'dj' && (
+                        {formData.rankType == 'dj' && (
                           <>
                             <span className="countBox__item">
                               <img src={people} />
-                              {Util.printNumber(listeners)}
+                              {Util.printNumber(listenerPoint)}
                             </span>
 
                             <span className="countBox__item">
                               <img src={like} />
-                              {Util.printNumber(likes)}
+                              {Util.printNumber(goodPoint)}
                             </span>
 
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(broadcast)}
+                              {Util.printNumber(broadcastPoint)}
                             </span>
                           </>
                         )}
 
-                        {rankType == 'fan' && (
+                        {formData.rankType == 'fan' && (
                           <>
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(listen)}
+                              {Util.printNumber(listenPoint)}
                             </span>
                           </>
                         )}

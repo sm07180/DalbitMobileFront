@@ -96,8 +96,8 @@ export default (props) => {
     } else {
       return (
         <>
-          <RankListTop list={list.slice(0, 3)} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} />
+          <RankListTop list={list.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
+          <RankList list={list.slice(3)} formData={formData} />
         </>
       )
     }
@@ -388,11 +388,11 @@ export default (props) => {
     return new Date(`${year}-${month}-1`)
   }
 
-  useEffect(() => {
-    if (myInfo.isReward) {
-      rankingReward()
-    }
-  }, [formData])
+  // useEffect(() => {
+  //   if (myInfo.isReward) {
+  //     if (popup) rankingReward()
+  //   }
+  // }, [formData])
 
   useEffect(() => {
     if (!popup) {
@@ -409,7 +409,7 @@ export default (props) => {
           <div>
             <div className="rewordBox">
               <p className="rewordBox__top">
-                {rewardPop.text} <span>축하합니다</span>
+                {formData.dateType === 1 ? '일간' : '주간'} DJ 랭킹 {myInfo.myRank}위 <span>축하합니다</span>
               </p>
 
               <div className="rewordBox__character1"></div>
