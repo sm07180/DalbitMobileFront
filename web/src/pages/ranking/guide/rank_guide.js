@@ -9,9 +9,14 @@ import './rank_guide.scss'
 //static
 import closeBtn from '../static/ic_back.svg'
 
+import {useHistory} from 'react-router-dom'
+
 export default (props) => {
   //const [guideType, setGuideType] = useState('benefit')
-  const [guideType, setGuideType] = useState('howUse')
+  // const [guideType, setGuideType] = useState('howUse')
+  const history = useHistory()
+
+  const guideType = history.location.search.split('guideType=')[1] || 'howUse'
 
   const goBack = () => {
     window.history.back()
@@ -26,20 +31,22 @@ export default (props) => {
             <img src={closeBtn} alt="뒤로가기" />
           </button>
         </div>
-
-        {/*<div className="rankTab guideTab">
+        <div className="rankTab guideTab">
           <button
             className={`rankTab__btn ${guideType === 'benefit' ? 'rankTab__btn--active' : ''} `}
-            onClick={() => setGuideType('benefit')}>
+            onClick={() => {
+              history.push('/rank/guide?guideType=benefit')
+            }}>
             혜택
           </button>
           <button
             className={`rankTab__btn ${guideType === 'howUse' ? 'rankTab__btn--active' : ''} `}
-            onClick={() => setGuideType('howUse')}>
+            onClick={() => {
+              history.push('/rank/guide?guideType=howUse')
+            }}>
             랭킹 산정 방식
           </button>
-        </div>*/}
-
+        </div>
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
           {guideType === 'howUse' && <HowUse></HowUse>}

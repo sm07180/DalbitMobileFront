@@ -147,6 +147,36 @@ export default function Qna() {
   const checkDelicate = () => {
     if (delicate) {
       fetchData()
+    } else {
+      let contents;
+      
+      if(name === "") {
+        contents = '이름 또는 닉네임을\n입력해주세요.'
+      } else if (name.length <= 1) {
+        contents = '이름 또는 닉네임을\n정확하게 입력해주세요.'
+      } else if(faqNum === 0) {
+        contents = '문의 유형을 선택해주세요.'
+      } else if(title === "") {
+        contents = '제목을 입력해주세요.'
+      } else if(content === "") {
+        contents = '문의내용을 입력해주세요.'
+      } else if((!context.token.isLogin && !checks[0])) {
+        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
+
+      } else if((!context.token.isLogin && checks[0] && phone === "")) {
+        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
+      } else if((!context.token.isLogin && checks[0] && phone.length < 9)) {
+        contents = "정확한\n휴대폰 번호를 입력해주세요."
+      } else if(!agree) {
+        contents = "개인정보 수집 및 이용에\n동의해주세요."
+      }
+
+      context.action.alert({
+        msg: contents,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
 
@@ -407,7 +437,9 @@ export default function Qna() {
               type="tel"
               value={phone}
               onChange={(e) => {
-                if (e.target.value.length < 16) setPhone(e.target.value)
+                if (e.target.value.length < 16 && !isNaN(e.target.value)) {
+                  setPhone(e.target.value)
+                }
               }}
               placeholder="휴대폰 번호를 입력하세요."
             />
