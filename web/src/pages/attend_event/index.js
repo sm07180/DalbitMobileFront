@@ -57,19 +57,6 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    async function fetchEventAttendCheck() {
-      const {result, data} = await API.getEventAttendCheck()
-      if (result === 'success') {
-        const {isCheck} = data
-        console.log('체크성공')
-      } else {
-        //실패
-      }
-    }
-    fetchEventAttendCheck()
-  }, [])
-
-  useEffect(() => {
     async function fetchEventAttendWinList() {
       const {result, data, message} = await API.getEventAttendWinList()
       if (result === 'success') {
