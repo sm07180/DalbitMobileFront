@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Room, {RoomJoin} from 'context/room'
