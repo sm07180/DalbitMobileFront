@@ -64,6 +64,10 @@ export default (props) => {
         break
     }
   }
+
+  const btnClose = () => {
+    context.action.alert({visible: false})
+  }
   //useEffect
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -75,7 +79,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <button className="btnClose" {...cancel}>
+      <button className="btnClose" onClick={btnClose}>
         <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} />
       </button>
       <div className="wrap-message">
