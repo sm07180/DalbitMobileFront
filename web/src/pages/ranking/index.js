@@ -30,7 +30,6 @@ export default (props) => {
 
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(0)
-
   const [formData, setFormData] = useState({
     rankType: 'dj',
     dateType: 1,
@@ -38,7 +37,6 @@ export default (props) => {
   })
 
   const [nextList, setNextList] = useState(false)
-  const [levelShowState, setLevelShowState] = useState(false)
   const [levelList, setLevelList] = useState([])
   const [rakingDate, setRakingDate] = useState({
     date: ''
@@ -173,13 +171,6 @@ export default (props) => {
               dateType: 1,
               currentDate: new Date()
             })
-            if (item === 'level') {
-              setLevelShowState(true)
-              levelListView()
-            } else {
-              setLevelShowState(false)
-              currentPage = 1
-            }
           }}>
           {createDateButtonItem()}
         </button>
@@ -208,32 +199,12 @@ export default (props) => {
       param: {
         rankSlct: formData.rankType === 'dj' ? 1 : 2,
         rankType: formData.dateType,
-        page: currentPage,
+        page: 1,
         records: 500,
         rankingDate: formatDate
       }
     })
 
-    if (currentPage > 10) {
-      return
-    }
-    // if (type === 'dj') {
-    //   res = await Api.get_dj_ranking({
-    //     params: {
-    //       rankType: dateType,
-    //       page: currentPage,
-    //       records: 500
-    //     }
-    //   })
-    // } else if (type === 'fan') {
-    //   res = await Api.get_fan_ranking({
-    //     params: {
-    //       rankType: dateType,
-    //       page: currentPage,
-    //       records: 500
-    //     }
-    //   })
-    // }
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
       //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
 
@@ -343,7 +314,11 @@ export default (props) => {
   }
 
   useEffect(() => {
-    fetchRank()
+    if (formData.rankType !== 'level') {
+      fetchRank()
+    } else {
+      levelListView()
+    }
   }, [formData])
 
   //가이드에 따른 분기
@@ -407,13 +382,13 @@ export default (props) => {
 
               <div className="rankTopBox__update">
                 {rankType !== 'level' ? `${test()}` : ''}
-                <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
+                {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
                   <img src={hint} alt="힌트보기" />
-                </button>
+                </button> */}
               </div>
             </div>
 
-            {levelShowState ? (
+            {formData.rankType === 'level' ? (
               <LevelList levelList={levelList}></LevelList>
             ) : (
               <RankListWrap

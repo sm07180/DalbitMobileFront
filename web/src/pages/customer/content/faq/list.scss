@@ -6,7 +6,8 @@ $COLOR_MAIN: #632beb;
 
     & > input {
       width: 100%;
-      padding: 14px 16px;
+      padding: 0 16px;
+      height: 50px;
       border: 2px solid #632beb;
       border-radius: 28px;
       font-size: 14px;
@@ -16,10 +17,6 @@ $COLOR_MAIN: #632beb;
       color: #757575;
       font-size: 14px;
       font-weight: 600;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.14;
-      letter-spacing: normal;
       text-align: left;
     }
 
@@ -100,9 +97,9 @@ $COLOR_MAIN: #632beb;
       width: 24px;
       height: 24px;
       // background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
-      &.on {
-        // background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
-      }
+      //  &.on {
+      //  // background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
+      // }
 
       @media (max-width: $WIDTH_MOBILE) {
         position: absolute;

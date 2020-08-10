@@ -20,7 +20,8 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '주간', '월간']
+// const dateArray = ['오늘', '주간', '월간']
+const dateArray = ['오늘', '주간']
 
 let moreState = false
 
@@ -36,7 +37,6 @@ export default (props) => {
     text: '',
     rewardDal: 0
   })
-
   const [popup, setPopup] = useState(false)
   const [test, setTest] = useState(false)
 
@@ -305,7 +305,10 @@ export default (props) => {
                 }}
               />
             </div>
-            <span>{`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`}</span>
+            <span>
+              {/* {`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`} */}
+              {myInfo.time}
+            </span>
           </>
         )
       }
@@ -445,6 +448,30 @@ export default (props) => {
     <>
       <div className="todayList">{createDateButton()}</div>
 
+      <div className="detaillView">
+        <button
+          className={`prevButton ${handlePrevLast() && 'active'}`}
+          onClick={() => {
+            if (handlePrevLast()) {
+              handleEv('currentDate', 'back')
+            }
+          }}>
+          이전
+        </button>
+
+        <div className="title">{formatDate()}</div>
+
+        <button
+          className={`nextButton ${handleTest() && 'active'}`}
+          onClick={() => {
+            if (handleTest()) {
+              handleEv('currentDate', 'front')
+            }
+          }}>
+          다음
+        </button>
+      </div>
+
       {myInfo.isReward ? (
         <>
           <div>
@@ -551,30 +578,6 @@ export default (props) => {
           )}
         </>
       )}
-
-      <div className="detaillView">
-        <button
-          className={`prevButton ${handlePrevLast() && 'active'}`}
-          onClick={() => {
-            if (handlePrevLast()) {
-              handleEv('currentDate', 'back')
-            }
-          }}>
-          이전
-        </button>
-
-        <div className="title">{formatDate()}</div>
-
-        <button
-          className={`nextButton ${handleTest() && 'active'}`}
-          onClick={() => {
-            if (handleTest()) {
-              handleEv('currentDate', 'front')
-            }
-          }}>
-          다음
-        </button>
-      </div>
 
       {creatResult()}
     </>

@@ -15,6 +15,7 @@ import {DalbitTextArea} from './content/textarea'
 import camera from 'images/camera.svg'
 import MaleIcon from './static/ico_male.svg'
 import FeMaleIcon from './static/ico_female.svg'
+import calIcon from './static/calender_b.svg'
 
 export default (props) => {
   // ctx
@@ -428,9 +429,9 @@ export default (props) => {
                   ) : (
                     <>
                       {profile.gender === 'm' ? (
-                        <GenderTab className={profile.gender === 'm' ? '' : 'off'}>남자</GenderTab>
+                        <GenderTab className={`one-btn man ${profile.gender === 'm' ? '' : 'off'}`}>남자</GenderTab>
                       ) : (
-                        <GenderTab className={profile.gender === 'f' ? 'woman' : 'off woman'}>여자</GenderTab>
+                        <GenderTab className={`one-btn woman ${profile.gender === 'f' ? '' : 'off'}`}>여자</GenderTab>
                       )}
                     </>
                   )}
@@ -537,6 +538,18 @@ const GenderTab = styled.div`
   border-radius: 12px 0 0 12px;
   padding-left: 16px;
 
+  &.one-btn {
+    text-align: center;
+    &.woman {
+      color: #f35da3 !important;
+      border: 1px solid #f35da3;
+    }
+    &.man {
+      color: #27a2db !important;
+      border: 1px solid #27a2db;
+    }
+  }
+
   ::after {
     display: inline-block;
     width: 24px;
@@ -576,6 +589,9 @@ const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
   border: 1px solid #e0e0e0;
+  &.after {
+    border: 0;
+  }
   border-radius: 12px;
   margin-top: 24px;
   position: relative;
@@ -626,6 +642,7 @@ const BirthDate = styled.div`
   font-weight: 600;
   color: #9e9e9e;
   border-bottom: none;
+  background: #f5f5f5 url(${calIcon}) no-repeat right 8px top 24px;
 `
 
 const PasswordRedirectBtn = styled.button`
@@ -695,7 +712,7 @@ const PasswordWrap = styled.div`
 
 const UserId = styled.div`
   position: relative;
-  padding: 29px 16px 11px 16px;
+  padding: 20px 16px 0px 16px;
   height: 58px;
   background-color: #f5f5f5;
   box-sizing: border-box;
@@ -716,13 +733,19 @@ const UserId = styled.div`
     line-height: 1.08;
     color: #000000;
   }
+
+  span:nth-child(2) {
+    display: inline-block;
+    line-height: 36px;
+    height: 36px;
+  }
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
   display: block;
   border: 1px solid #e0e0e0;
-  padding: 29px 16px 11px 16px;
+  padding: 20px 16px 0px 16px;
   width: 100%;
-  max-height: 58px;
+  height: 58px;
   border-radius: 12px;
   background-color: #fff;
   font-size: 16px;

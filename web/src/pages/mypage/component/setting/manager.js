@@ -451,7 +451,7 @@ const SearchArea = styled.div`
   button {
     position: absolute;
     right: 10px;
-    top: 6px;
+    top: 3px;
     width: 36px;
     height: 36px;
     background: url(${SearchIconGray}) no-repeat center / cover;
@@ -628,6 +628,8 @@ const Content = styled.div`
           transform: skew(-0.03deg);
         }
         span:first-child {
+          line-height: 21px;
+          height: 21px;
           font-size: 16px;
           font-weight: 600;
           letter-spacing: normal;
@@ -636,6 +638,8 @@ const Content = styled.div`
         }
 
         span:last-child {
+          line-height: 16px;
+          height: 16px;
           font-size: 12px;
           text-align: left;
           color: #000000;
