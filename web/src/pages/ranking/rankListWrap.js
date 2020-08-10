@@ -20,7 +20,7 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '주간']
+const dateArray = ['오늘', '주간', '월간']
 
 let moreState = false
 
@@ -311,7 +311,7 @@ export default (props) => {
       }
     } else {
       date = 1
-      const aMonth = new Date().getMonth()
+
       if (year === formYear && month === formMonth) {
         return (
           <div className="titleWrap">
@@ -325,7 +325,7 @@ export default (props) => {
             />
           </div>
         )
-      } else if (year === formYear && aMonth === formMonth) {
+      } else if (year === formYear && month - 1 === formMonth) {
         return (
           <div className="titleWrap">
             지난달
@@ -385,7 +385,7 @@ export default (props) => {
     const year = today.getFullYear()
     const month = today.getMonth() + 1
 
-    return new Date(`${year}-${month}-1`)
+    return new Date(`${year}-0${month}-01`)
   }
 
   // useEffect(() => {
