@@ -161,11 +161,12 @@ const App = () => {
         document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
       })
 
-      // window.location.reload()
-
       globalCtx.action.alert({
         title: tokenInfo.messageKey,
-        msg: tokenInfo.message
+        msg: tokenInfo.message,
+        callback: () => {
+          window.location.reload()
+        }
       })
     }
 
