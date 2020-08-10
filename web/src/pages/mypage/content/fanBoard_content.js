@@ -277,7 +277,7 @@ export default (props) => {
 const BigReply = styled.div`
   width: 100%;
   background-color: #fff;
-  min-height: 196px;
+  /* min-height: 196px; */
   margin-bottom: 12px;
   .detailwapper {
     position: relative;
@@ -350,7 +350,7 @@ const BigReply = styled.div`
   }
   .content_area {
     padding: 16px 65px 16px 21px;
-    min-height: 100px;
+    /* min-height: 100px; */
     border-top: 1px solid #eeeeee;
     border-bottom: 1px solid #eeeeee;
 

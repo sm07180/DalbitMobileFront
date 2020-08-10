@@ -308,8 +308,8 @@ const Content = styled.div`
       }
     }
     p {
-      min-width: 168px;
-      max-width: 180px;
+      width: 100%;
+      padding-right: 55px;
       margin-top: 4px;
       color: #616161;
       font-size: 12px;
