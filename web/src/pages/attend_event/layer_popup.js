@@ -1,4 +1,3 @@
-import {COLOR_MAIN} from 'context/color'
 import React, {useEffect, useRef, useState} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
@@ -6,7 +5,7 @@ import Lottie from 'react-lottie'
 import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
-  const {setPopup, statusList} = props
+  const {setPopup, statusList, setStatusList} = props
 
   // reference
   const layerWrapRef = useRef()

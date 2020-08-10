@@ -499,3 +499,88 @@
     }
   }
 }
+
+.main-banner {
+  .slideWrap {
+    position: relative;
+
+    &.active {
+      display: none;
+    }
+
+    .swiper-container {
+      height: auto;
+      .banner {
+        img {
+          width: 100%;
+        }
+      }
+      .swiper-pagination-fraction {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        bottom: 7px;
+        right: 46px;
+        left: auto;
+        width: 45px;
+        height: 24px;
+        font-size: 12px;
+        letter-spacing: 3px;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: white;
+        border-radius: 24px;
+        .swiper-pagination-total {
+          font-weight: normal;
+        }
+      }
+    }
+
+    .bannerNumber {
+      border: solid 1px;
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      width: 45px;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      p {
+        opacity: 0.5;
+      }
+    }
+
+    .moreButton {
+      position: absolute;
+      right: 11px;
+      bottom: 7px;
+      z-index: 2;
+      width: 33px;
+      height: 24px;
+      border-radius: 24px;
+      background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+
+      &.active {
+        background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+      }
+    }
+
+    .basicBanner {
+      margin-bottom: 10px;
+      position: relative;
+    }
+  }
+
+  .bannerView {
+    display: none;
+    img {
+      width: 100%;
+    }
+    &.active {
+      display: block;
+    }
+  }
+}

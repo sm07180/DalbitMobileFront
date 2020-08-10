@@ -421,6 +421,7 @@ export default () => {
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
+        //RoomJoin(room_no)
         if (sessionStorage.getItem('operater') === 'true') {
           context.action.confirm_admin({
             //콜백처리
