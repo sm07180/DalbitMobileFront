@@ -85,7 +85,7 @@ export default (props) => {
       params: {
         memNo: urlrStr,
         page: currentPage,
-        records: 4
+        records: 8
       }
     })
     if (res.result === 'success') {
