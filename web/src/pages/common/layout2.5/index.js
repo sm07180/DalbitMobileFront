@@ -1,27 +1,27 @@
 /**
  *
  */
-import React, { useMemo, useContext } from 'react';
-import styled from 'styled-components';
+import React, {useMemo, useContext} from 'react'
+import styled from 'styled-components'
 //context
-import { Context } from 'context';
+import {Context} from 'context'
 
 //layout
-import { Global } from 'App';
-import Gnb from 'pages/common/gnb';
-import NewPlayer from 'pages/common/newPlayer';
-import Popup from 'pages/common/popup';
-import Message from 'pages/common/message';
-import TopScrollBtn from 'pages/main/component/top_scroll_btn.js';
-import Ip from 'pages/common/ip';
-import Sticker from 'pages/common/sticker';
+import {Global} from 'App'
+import Gnb from 'pages/common/gnb'
+import NewPlayer from 'pages/common/newPlayer'
+import Popup from 'pages/common/popup'
+import Message from 'pages/common/message'
+import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
+import Ip from 'pages/common/ip'
+import Sticker from 'pages/common/sticker'
 //
-const Layout = props => {
-  const { children, webview } = props;
-  const context = useContext(Context);
+const Layout = (props) => {
+  const {children, webview} = props
+  const context = useContext(Context)
   const playerCls = useMemo(() => {
-    return context.player ? 'player_show' : '';
-  });
+    return context.player ? 'player_show' : ''
+  })
   //---------------------------------------------------------------------
 
   return (
@@ -32,9 +32,7 @@ const Layout = props => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>
-        {children}
-      </Article>
+      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* 레이어팝업 */}
@@ -44,9 +42,9 @@ const Layout = props => {
       {/* IP노출 */}
       <Ip {...props} />
     </React.Fragment>
-  );
-};
-export default Layout;
+  )
+}
+export default Layout
 //---------------------------------------------------------------------
 
 const Article = styled.article`
@@ -61,4 +59,4 @@ const Article = styled.article`
   &.player_show {
     padding-bottom: 60px;
   }
-`;
+`

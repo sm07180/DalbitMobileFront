@@ -127,11 +127,11 @@ const App = () => {
         }
 
         const appIsFirst = Utility.getCookie('appIsFirst')
-        if(appIsFirst !== 'N'){
-            Utility.setCookie('appIsFirst', 'N')
-            if(tokenInfo.data.isLogin === false){
-              window.location.href = '/login'
-            }
+        if (appIsFirst !== 'N') {
+          Utility.setCookie('appIsFirst', 'N')
+          if (tokenInfo.data.isLogin === false) {
+            window.location.href = '/login'
+          }
         }
       }
       if (tokenInfo.data && tokenInfo.data.memNo) {
@@ -147,10 +147,26 @@ const App = () => {
 
       //모든 처리 완료
       setReady(true)
-    } else {
+    } else if (result === 'fail') {
+      const yesterDay = (() => {
+        const date = new Date()
+        date.setDate(date.getDate() - 1)
+        return date.toUTCString()
+      })()
+
+      const splited = document.cookie.split(';')
+      splited.forEach((bundle) => {
+        let [key, value] = bundle.split('=')
+        key = key.trim()
+        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
+      })
+
       globalCtx.action.alert({
         title: tokenInfo.messageKey,
-        msg: tokenInfo.message
+        msg: tokenInfo.message,
+        callback: () => {
+          window.location.reload()
+        }
       })
     }
 

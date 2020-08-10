@@ -175,7 +175,7 @@ export default (props) => {
               <td rowSpan="3" className="note">
                 스페셜DJ 총점 100점 기준
                 <br />
-                <i>월 누적 최대 15점</i>까지만 인정
+                <i>월 누적 최대 10점</i>까지만 인정
               </td>
             </tr>
 
