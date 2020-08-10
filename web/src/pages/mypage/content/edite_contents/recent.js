@@ -406,7 +406,7 @@ const Wrap = styled.div`
     &__registDt {
       margin-bottom: 4px;
       font-size: 12px;
-      line-height: 1.08;
+      line-height: 16px;
       text-align: left;
       color: #424242;
     }
@@ -416,7 +416,7 @@ const Wrap = styled.div`
       span {
         margin-right: 4px;
         font-size: 12px;
-        line-height: 1.08;
+        line-height: 16px;
         letter-spacing: normal;
         text-align: left;
         color: #424242;
@@ -428,6 +428,7 @@ const Wrap = styled.div`
           display: inline-block;
           vertical-align: middle;
           width: 16px;
+          line-height: 16px;
           height: 16px;
           content: '';
           background: url(${PtimeIcon});
@@ -439,6 +440,7 @@ const Wrap = styled.div`
           margin-right: 1px;
           display: inline-block;
           vertical-align: middle;
+          line-height: 16px;
           width: 16px;
           height: 16px;
           content: '';
@@ -446,6 +448,8 @@ const Wrap = styled.div`
         }
       }
       &__lastTime {
+        display: flex;
+        align-items: center;
         position: relative;
         &:before {
           margin-right: 1px;

@@ -446,6 +446,8 @@ const Wrap = styled.div`
         }
       }
       &__lastTime {
+        display: flex;
+        align-items: center;
         position: relative;
         &:before {
           margin-right: 1px;
@@ -550,6 +552,10 @@ const Wrap = styled.div`
             line-height: 1.43;
             text-align: left;
             color: #757575;
+            letter-spacing: normal;
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
           }
         }
         .txtcount {

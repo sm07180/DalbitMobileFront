@@ -446,6 +446,8 @@ const Wrap = styled.div`
         }
       }
       &__lastTime {
+        display: flex;
+        align-items: center;
         position: relative;
         &:before {
           margin-right: 1px;
