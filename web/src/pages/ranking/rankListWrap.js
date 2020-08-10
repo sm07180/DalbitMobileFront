@@ -21,7 +21,7 @@ import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
 // const dateArray = ['오늘', '주간', '월간']
-const dateArray = ['오늘', '주간']
+const dateArray = ['오늘', '주간', '월간']
 
 let moreState = false
 
@@ -30,7 +30,10 @@ export default (props) => {
   const history = useHistory()
   const context = useContext(Context)
   const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
-
+  const [dateTitle, setDateTitle] = useState({
+    header: '오늘',
+    date: ''
+  })
   const [myProfile, setMyProfile] = useState(false)
 
   const [rewardPop, setRewardPop] = useState({
@@ -87,6 +90,10 @@ export default (props) => {
   useEffect(() => {
     creatMyRank()
   }, [])
+
+  useEffect(() => {
+    formatDate()
+  }, [myInfo])
 
   const creatResult = () => {
     if (list === -1) {
@@ -207,47 +214,20 @@ export default (props) => {
 
     if (formData.dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
-        return (
-          <div className="titleWrap">
-            오늘
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '오늘',
+          date: ''
+        })
       } else if (year === formYear && month === formMonth && formDate === date - 1) {
-        return (
-          <div className="titleWrap">
-            어제
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '어제',
+          date: ''
+        })
       } else {
-        return (
-          <>
-            <div className="titleWrap">
-              일간 순위
-              <img
-                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-                className="benefitSize"
-                onClick={() => {
-                  history.push('/rank/guide?guideType=benefit')
-                }}
-              />
-            </div>
-            <span>{`${formYear}.${formMonth}.${formDate}`}</span>
-          </>
-        )
+        setDateTitle({
+          header: '일간 순위',
+          date: `${formYear}.${formMonth}.${formDate}`
+        })
       }
     } else if (formData.dateType === 2) {
       const currentWeek = convertMonday()
@@ -262,108 +242,44 @@ export default (props) => {
       let wDate = weekAgo.getDate()
 
       if (year === formYear && month === formMonth && formDate === date) {
-        return (
-          <div className="titleWrap">
-            이번주
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '이번주',
+          date: ''
+        })
       } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
-        return (
-          <div className="titleWrap">
-            지난주
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '지난주',
+          date: ''
+        })
       } else {
         const a = new Date(formDt.getTime())
         const b = new Date(a.setDate(a.getDate() + 6))
         const rangeMonth = b.getMonth() + 1
         const rangeDate = b.getDate()
-
-        return (
-          <>
-            <div className="titleWrap">
-              주간 순위
-              <img
-                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-                className="benefitSize"
-                onClick={() => {
-                  history.push('/rank/guide?guideType=benefit')
-                }}
-              />
-            </div>
-            <span>
-              {/* {`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`} */}
-              {myInfo.time}
-            </span>
-          </>
-        )
+        console.log(myInfo.time)
+        setDateTitle({
+          header: '주간 순위',
+          date: myInfo.time
+        })
       }
     } else {
-      date = 1
-
       if (year === formYear && month === formMonth) {
-        return (
-          <div className="titleWrap">
-            이번달
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '이번달',
+          date: ''
+        })
       } else if (year === formYear && month - 1 === formMonth) {
-        return (
-          <div className="titleWrap">
-            지난달
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
-            />
-          </div>
-        )
+        setDateTitle({
+          header: '지난달',
+          date: ''
+        })
       } else {
-        // if (formMonth < 10) {
-        //   formMonth = '0' + formMonth
-        // }
-        return (
-          <>
-            <div className="titleWrap">
-              월간 순위
-              <img
-                src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-                className="benefitSize"
-                onClick={() => {
-                  history.push('/rank/guide?guideType=benefit')
-                }}
-              />
-            </div>
-            <span>{`${formYear}.${formMonth}`}</span>
-          </>
-        )
+        setDateTitle({
+          header: '월간 순위',
+          date: `${formYear}.${formMonth}`
+        })
       }
     }
-
-    // return a.getFullYear() + '.' + (a.getMonth() + 1) + '.' + a.getDate()
   }
 
   const convertMonday = () => {
@@ -459,7 +375,13 @@ export default (props) => {
           이전
         </button>
 
-        <div className="title">{formatDate()}</div>
+        <div className="title">
+          <div className="titleWrap">
+            {dateTitle.header}
+            <img src="https://image.dalbitlive.com/images/api/20200806/benefit.png" className="benefitSize" />
+          </div>
+          <span>{dateTitle.date}</span>
+        </div>
 
         <button
           className={`nextButton ${handleTest() && 'active'}`}
