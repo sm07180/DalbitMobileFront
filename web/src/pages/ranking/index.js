@@ -130,8 +130,11 @@ export default (props) => {
 
     const year = today.getFullYear()
     const month = today.getMonth() + 1
-
-    return new Date(`${year}-${month}-1`)
+    if (month < 10) {
+      return new Date(`${year}-0${month}-01`)
+    } else {
+      return new Date(`${year}-${month}-01`)
+    }
   }
 
   const createRankButton = () => {
@@ -281,7 +284,7 @@ export default (props) => {
   const handleDate = (some) => {
     let day1 = formData.currentDate
     let year = day1.getFullYear()
-    let month = day1.getMonth()
+    let month = day1.getMonth() + 1
     let date = day1.getDate()
     if (some === 'back') {
       switch (formData.dateType) {
@@ -291,10 +294,14 @@ export default (props) => {
         case 2:
           return new Date(day1.setDate(day1.getDate() - 7))
         case 3:
-          if (month === 0) {
-            return new Date(`${year - 1}-12-${date}`)
+          if (month === 1) {
+            return new Date(`${year - 1}-12-01`)
           } else {
-            return new Date(`${year}-${month}-${date}`)
+            month -= 1
+            if (month < 10) {
+              month = '0' + month
+            }
+            return new Date(`${year}-${month}-01`)
           }
       }
     } else {
@@ -304,12 +311,14 @@ export default (props) => {
         case 2:
           return new Date(day1.setDate(day1.getDate() + 7))
         case 3:
-          month += 1
-
           if (month === 12) {
-            return new Date(`${year + 1}-1-${date}`)
+            return new Date(`${year + 1}-01-01`)
           } else {
-            return new Date(`${year}-${month + 1}-${date}`)
+            month += 1
+            if (month < 10) {
+              month = '0' + month
+            }
+            return new Date(`${year}-${month}-01`)
           }
       }
     }
