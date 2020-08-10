@@ -28,7 +28,8 @@ export default (props) => {
   let timer
   const history = useHistory()
   const context = useContext(Context)
-  const {list, formData, handleEv, myInfo, setMyInfo, rankSlct, nextList, setCurrentPage} = props
+  const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
+
   const [myProfile, setMyProfile] = useState(false)
 
   const [rewardPop, setRewardPop] = useState({
@@ -192,8 +193,6 @@ export default (props) => {
     feachrankingReward()
   }
 
-  console.log(rankSlct)
-
   const formatDate = () => {
     const formDt = formData.currentDate
     let formYear = formDt.getFullYear()
@@ -305,7 +304,10 @@ export default (props) => {
                 }}
               />
             </div>
-            <span>{`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`}</span>
+            <span>
+              {/* {`${formYear}.${formMonth}.${formDate}-${rangeMonth}.${rangeDate}`} */}
+              {myInfo.time}
+            </span>
           </>
         )
       }
