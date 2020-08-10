@@ -79,7 +79,7 @@ export default (props) => {
         </table>
       </div>
 
-      <div className="tableBox">
+      {/* <div className="tableBox">
         <p className="tableBox__title">LEVEL 랭킹 조건</p>
 
         <div className="conditionBox">
@@ -102,7 +102,7 @@ export default (props) => {
             <p className="conditionItem__content">팬랭킹 존재</p>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="noticeBox">
         <p className="noticeBox__title">
@@ -121,12 +121,11 @@ export default (props) => {
       </div>
 
       <div className="noticeBox">
-        <p className="noticeBox__title">
-          <img src={hintIcon} /> LEVEL 랭킹 집계 및 갱신
-        </p>
-
-        <ul>
-          <li className="noticeBox__item">· 매일 LEVEL 랭킹 조건 데이터 집계 및 00시 갱신</li>
+        <p className="tableBox__title tableBox__title--lastTitle">LEVEL 랭킹</p>
+        <ul className="">
+          <li className="noticeBox__item">· 조건) 최근 7일 간 접속 기록 존재</li>
+          <li className="noticeBox__item">· 최고 레벨 순 TOP 200</li>
+          <li className="noticeBox__item">· 매일 데이터 집계 및 00시 갱신</li>
         </ul>
       </div>
     </div>
