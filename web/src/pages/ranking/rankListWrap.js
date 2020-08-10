@@ -20,7 +20,7 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '주간', '월간']
+const dateArray = ['오늘', '주간']
 
 let moreState = false
 
@@ -96,8 +96,8 @@ export default (props) => {
     } else {
       return (
         <>
-          <RankListTop list={list.slice(0, 3)} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} />
+          <RankListTop list={list.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
+          <RankList list={list.slice(3)} formData={formData} />
         </>
       )
     }
@@ -388,11 +388,52 @@ export default (props) => {
     return new Date(`${year}-${month}-1`)
   }
 
-  useEffect(() => {
-    if (myInfo.isReward) {
-      rankingReward()
+  // useEffect(() => {
+  //   if (myInfo.isReward) {
+  //     if (popup) rankingReward()
+  //   }
+  // }, [formData])
+
+  const handlePrevLast = () => {
+    let cy = formData.currentDate.getFullYear()
+    let cm = formData.currentDate.getMonth() + 1
+    let cd = formData.currentDate.getDate()
+    if (formData.dateType === 1) {
+      const cDt = new Date('2020-07-01')
+
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM && cd === yd) {
+        return false
+      } else {
+        return true
+      }
+    } else if (formData.dateType === 2) {
+      const cDt = new Date('2020-07-06')
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM && cd === yd) {
+        return false
+      } else {
+        return true
+      }
+    } else {
+      const cDt = new Date('2020-07-01')
+      let ye = cDt.getFullYear()
+      let yM = cDt.getMonth() + 1
+      let yd = cDt.getDate()
+
+      if (cy === ye && cm === yM) {
+        return false
+      } else {
+        return true
+      }
     }
-  }, [formData])
+  }
 
   useEffect(() => {
     if (!popup) {
@@ -409,7 +450,7 @@ export default (props) => {
           <div>
             <div className="rewordBox">
               <p className="rewordBox__top">
-                {rewardPop.text} <span>축하합니다</span>
+                {formData.dateType === 1 ? '일간' : '주간'} DJ 랭킹 {myInfo.myRank}위 <span>축하합니다</span>
               </p>
 
               <div className="rewordBox__character1"></div>
@@ -513,9 +554,11 @@ export default (props) => {
 
       <div className="detaillView">
         <button
-          className="prevButton"
+          className={`prevButton ${handlePrevLast() && 'active'}`}
           onClick={() => {
-            handleEv('currentDate', 'back')
+            if (handlePrevLast()) {
+              handleEv('currentDate', 'back')
+            }
           }}>
           이전
         </button>
@@ -523,7 +566,7 @@ export default (props) => {
         <div className="title">{formatDate()}</div>
 
         <button
-          className="nextButton"
+          className={`nextButton ${handleTest() && 'active'}`}
           onClick={() => {
             if (handleTest()) {
               handleEv('currentDate', 'front')

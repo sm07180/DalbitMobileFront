@@ -136,7 +136,7 @@
       color: #bdbdbd;
       background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_g.svg') left center no-repeat;
       padding-left: 24px;
-      &:hover {
+      &.active {
         color: #000;
         font-weight: 700;
         background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_b_on.svg') left center no-repeat;
@@ -149,7 +149,7 @@
       padding-right: 24px;
       background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_g.svg') right center no-repeat;
 
-      &:hover {
+      &.active {
         color: #000;
         font-weight: 700;
 
