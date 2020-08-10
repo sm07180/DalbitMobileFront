@@ -176,6 +176,7 @@ export default (props) => {
                 스페셜DJ 총점 100점 기준
                 <br />
                 <i>월 누적 최대 10점</i>까지만 인정
+                <br />※ 가산점은 DJ 일간 랭킹만 반영됩니다.
               </td>
             </tr>
 
@@ -190,8 +191,6 @@ export default (props) => {
             </tr>
           </tbody>
         </table>
-
-        <div className="tableNotice">※ 월간 랭킹은 제외됩니다.</div>
       </div>
     </div>
   )
