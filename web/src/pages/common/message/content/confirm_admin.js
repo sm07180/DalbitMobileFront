@@ -64,6 +64,10 @@ export default (props) => {
         break
     }
   }
+
+  const btnClose = () => {
+    context.action.alert({visible: false})
+  }
   //useEffect
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -75,8 +79,8 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <button className="btnClose" {...cancel}>
-        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} />
+      <button className="btnClose">
+        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} onClick={btnClose} />
       </button>
       <div className="wrap-message">
         {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
