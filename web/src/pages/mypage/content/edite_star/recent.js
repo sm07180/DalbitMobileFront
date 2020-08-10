@@ -413,6 +413,7 @@ const Wrap = styled.div`
         margin-right: 4px;
         font-size: 12px;
         line-height: 16px;
+        height: 16px;
         letter-spacing: normal;
         text-align: left;
         color: #424242;
@@ -548,6 +549,7 @@ const Wrap = styled.div`
           &::placeholder {
             font-size: 14px;
             line-height: 1.43;
+            letter-spacing: -0.4px;
             text-align: left;
             color: #757575;
             font-weight: normal;
@@ -605,11 +607,12 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 6px;
     align-items: center;
 
     &__garbageBtn {
       display: inline-block;
+      margin-left: 6px;
       width: 24px;
       height: 24px;
       background: url(${GarBageIcon});

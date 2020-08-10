@@ -414,9 +414,10 @@ const Wrap = styled.div`
       display: flex;
       flex-direction: row;
       span {
-        margin-right: 4px;
+        margin-right: 6px;
         font-size: 12px;
-        line-height: 1.08;
+        line-height: 16px;
+        height: 16px;
         letter-spacing: normal;
         text-align: left;
         color: #424242;
@@ -551,6 +552,7 @@ const Wrap = styled.div`
             font-size: 14px;
             line-height: 1.43;
             text-align: left;
+            letter-spacing: -0.4px;
             color: #757575;
             letter-spacing: normal;
             font-weight: normal;
@@ -609,11 +611,12 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 6px;
     align-items: center;
 
     &__garbageBtn {
       display: inline-block;
+      margin-left: 6px;
       width: 24px;
       height: 24px;
       background: url(${GarBageIcon});
