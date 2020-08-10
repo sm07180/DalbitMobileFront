@@ -175,6 +175,7 @@ const Alert = styled.section`
     top: 2px;
     right: 2px;
     cursor: pointer;
+    z-index: 1;
     img {
       width: 40px;
       height: 40px;
