@@ -4,6 +4,8 @@ import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
 import {Context} from 'context'
 import Utility from 'components/lib/utility'
+import Swiper from 'react-id-swiper'
+
 // component
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
@@ -21,9 +23,6 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const [phone, setPhone] = useState('')
-  const [btnState, setBtnState] = useState({
-    phone: false
-  })
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
     totalExp: 0,
@@ -46,6 +45,11 @@ export default (props) => {
         const {status, dateList, summary} = data
         setSummaryList(summary)
         setStatusList(status)
+        //타이머맞추기
+        if (status.phone_input === '1') {
+          intervalFormatter(status.input_enddate)
+        }
+
         setDateList(dateList)
       } else {
         //실패\
@@ -166,35 +170,15 @@ export default (props) => {
     }
   }
 
-  function reducer(state, action) {
-    const {name, value} = action
-    //휴대폰번호
-    if (name === 'phone' && value.length === 11) {
-      setBtnState({
-        ...btnState,
-        phone: true
-      })
-    } else {
-      setBtnState({
-        ...btnState,
-        phone: false
-      })
-    }
-
-    return {
-      ...state,
-      [name]: value
-    }
-  }
-
   const clickSaveButton = () => {
-    const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
+    const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
     if (!phone) {
       return globalCtx.action.alert({
         msg: `핸드폰 번호는 필수입력 값입니다.`
       })
     }
-    if (!rgEx.test(phone)) {
+
+    if (!rgEx.test(phone) || phone.length < 11) {
       return globalCtx.action.alert({
         msg: `올바른 핸드폰 번호가 아닙니다.`
       })
@@ -242,21 +226,46 @@ export default (props) => {
     let test = (time - now) / 1000
 
     intervalId = setInterval(() => {
-      console.log(typeof test)
       const text = `${Utility.leadingZeros(Math.floor(test / 60), 2)}:${Utility.leadingZeros(Math.floor(test % 60), 2)}`
       test--
 
       setTimeText(text)
-
       if (test < 0) {
         clearInterval(intervalId)
+        setTimeText('00:00')
       }
     }, 1000)
   }
 
-  useEffect(() => {
-    intervalFormatter()
-  }, [])
+  const makePhoneInputBox = () => {
+    const boxHtml = (
+      <div className="gifticon-benefit-input">
+        <p className="title">
+          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
+        </p>
+
+        <div className="input-box">
+          <input
+            type="tel"
+            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
+            id="phone"
+            name="phone"
+            value={phone}
+            onChange={inputHandle}
+          />
+          <button onClick={clickSaveButton}>저장</button>
+        </div>
+
+        <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.</p>
+      </div>
+    )
+
+    if (statusList.phone_input === '0') {
+      return null
+    } else {
+      return boxHtml
+    }
+  }
 
   const {title} = props.match.params
   if (title === 'winList') return <WinList winList={winList} />
@@ -309,7 +318,7 @@ export default (props) => {
                   <p className="description">
                     매주 자동 추첨!
                     <br />
-                    7일 연속 출석 성공한 날<span>스타벅스 아메리카노(10명)</span>
+                    7일 연속 출석 성공한 날<span>스타벅스 아메리카노</span>
                   </p>
                 </div>
                 <div className="gifticon-benefit-item">
@@ -318,11 +327,13 @@ export default (props) => {
                   </div>
                   <p className="luna-date">{lunarDate}</p>
                   <p className="description">
-                    매일 보름달이 뜨는 날!<span>BHC 뿌링클 세트(3명)</span>
+                    매일 보름달이 뜨는 날!<span>BHC 뿌링클 세트</span>
                   </p>
                 </div>
 
-                {statusList.phone_input ? (
+                {makePhoneInputBox()}
+
+                {/* {statusList.phone_input ? (
                   <>
                     {statusList.phone_input === '0' ? (
                       ''
@@ -351,8 +362,34 @@ export default (props) => {
                     )}
                   </>
                 ) : (
-                  ''
-                )}
+                  <>
+                    {statusList.bonus === '2' ? (
+                      <div className="gifticon-benefit-input">
+                        <p className="title">
+                          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
+                        </p>
+
+                        <div className="input-box">
+                          <input
+                            type="tel"
+                            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
+                            id="phone"
+                            name="phone"
+                            value={phone}
+                            onChange={inputHandle}
+                          />
+                          <button onClick={clickSaveButton}>저장</button>
+                        </div>
+
+                        <p className="note">
+                          ※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.
+                        </p>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                  </>
+                )} */}
               </div>
             </div>
 
