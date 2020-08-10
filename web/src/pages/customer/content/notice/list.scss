@@ -15,11 +15,11 @@ $COLOR_MAIN: #632beb;
     & em {
       display: inline-block;
       width: 16px;
-      height: 16px;
+      height: 29px;
       margin-right: 6px;
       background-position: center center;
-      background-size: cover;
-      background-image: url('../static/ic_new.svg');
+      // background-size: 16px;
+      background: url('../static/ic_new.svg') center no-repeat;
     }
     @media (max-width: $WIDTH_MOBILE) {
       flex-wrap: wrap;
@@ -50,7 +50,7 @@ $COLOR_MAIN: #632beb;
       width: 52px;
       color: $COLOR_MAIN;
       margin-right: 5px;
-      padding: 8px 0px;
+      line-height: 29px;
       background-color: #eeeeee;
       border-radius: 12px;
       font-size: 10px;
@@ -59,6 +59,8 @@ $COLOR_MAIN: #632beb;
     }
     &__title {
       width: 70%;
+      line-height: 29px;
+      height: 29px;
       font-size: 14px;
       overflow-x: hidden;
       white-space: nowrap;

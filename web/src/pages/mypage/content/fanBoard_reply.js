@@ -439,6 +439,7 @@ const Reply = styled.div`
     padding: 4px 0;
     span {
       height: 26px;
+      line-height: 26px;
       font-size: 14px;
       line-height: 2.14;
       letter-spacing: -0.35px;
@@ -526,6 +527,7 @@ const Reply = styled.div`
             span:first-child {
               margin-left: 8px;
               font-size: 14px;
+              line-height: 21px;
               font-weight: 600;
               letter-spacing: normal;
               text-align: left;
@@ -536,6 +538,7 @@ const Reply = styled.div`
               font-size: 12px;
               text-align: left;
               color: #9e9e9e;
+              line-height: 16px;
             }
           }
         }
