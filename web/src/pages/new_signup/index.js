@@ -69,7 +69,7 @@ export default (props) => {
   ]
 
   function reducer(state, action) {
-    const {name, value} = action
+    let {name, value} = action
 
     //휴대폰번호
     if (name === 'memId' && value.length === 11) {
@@ -112,6 +112,10 @@ export default (props) => {
       } else if (value === 'n' && state.term1 === 'y' && state.term2 === 'y' && state.term3 === 'y' && state.term4 === 'y') {
         termsSetting = {term1: 'n', term2: 'n', term3: 'n', term4: 'n'}
       }
+    }
+
+    if (name === 'loginPwd' || name === 'loginPwdCheck') {
+      value = value.toLowerCase()
     }
 
     return {
