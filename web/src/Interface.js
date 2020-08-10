@@ -495,6 +495,18 @@ export default () => {
           if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
         }
         break
+      case '41': //-----------------랭킹 > DJ > 일간
+        if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`
+        break
+      case '42': //-----------------랭킹 > DJ > 주간
+        if (isLogin) window.location.href = `/rank?rankType=1&dateType=2`
+        break
+      case '43': //-----------------랭킹 > FAN > 일간
+        if (isLogin) window.location.href = `/rank?rankType=2&dateType=1`
+        break
+      case '44': //-----------------랭킹 > FAN > 주간
+        if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
+        break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
         if (redirect_url !== undefined) {
