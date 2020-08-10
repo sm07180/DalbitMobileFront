@@ -96,6 +96,7 @@ export default (props) => {
 
         if (status.gifticon_check === '1') {
           intervalFormatter(status.input_enddate)
+
           if (status.gifticon_win === '1') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
@@ -235,8 +236,6 @@ export default (props) => {
   const [timeText, setTimeText] = useState('')
   const intervalFormatter = (date) => {
     if (!date) return null
-    console.log(date)
-    // let time = date.replace(/\s/gi, '').substring(13, 18)
 
     let time = +new Date(date)
     let now = +new Date()
@@ -323,28 +322,36 @@ export default (props) => {
                   </p>
                 </div>
 
-                {statusList.phone_input === '0' ? (
-                  ''
+                {statusList.phone_input ? (
+                  <>
+                    {statusList.phone_input === '0' ? (
+                      ''
+                    ) : (
+                      <div className="gifticon-benefit-input">
+                        <p className="title">
+                          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
+                        </p>
+
+                        <div className="input-box">
+                          <input
+                            type="tel"
+                            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
+                            id="phone"
+                            name="phone"
+                            value={phone}
+                            onChange={inputHandle}
+                          />
+                          <button onClick={clickSaveButton}>저장</button>
+                        </div>
+
+                        <p className="note">
+                          ※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.
+                        </p>
+                      </div>
+                    )}
+                  </>
                 ) : (
-                  <div className="gifticon-benefit-input">
-                    <p className="title">
-                      기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
-                    </p>
-
-                    <div className="input-box">
-                      <input
-                        type="tel"
-                        placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
-                        id="phone"
-                        name="phone"
-                        value={phone}
-                        onChange={inputHandle}
-                      />
-                      <button onClick={clickSaveButton}>저장</button>
-                    </div>
-
-                    <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.</p>
-                  </div>
+                  ''
                 )}
               </div>
             </div>

@@ -127,7 +127,7 @@ const Content = styled.div`
       border-radius: 12px;
       background-color: #fff;
       text-align: left;
-      padding: 14px 0 14px 16px;
+      padding: 0 0 0 16px;
       font-size: 14px;
       font-weight: 800;
       color: #000000;

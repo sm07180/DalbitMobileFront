@@ -290,7 +290,7 @@ const Content = styled.div`
   }
 
   .info-wrap {
-    margin-top: 30px;
+    margin-top: 22px;
     h5 {
       display: flex;
       margin-bottom: 8px;
@@ -301,7 +301,7 @@ const Content = styled.div`
       font-weight: bold;
       span {
         display: inline-block;
-        margin-top: -8px;
+
         margin-left: auto;
         color: ${COLOR_MAIN};
         font-weight: 800;
