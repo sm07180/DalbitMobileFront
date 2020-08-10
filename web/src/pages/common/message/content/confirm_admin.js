@@ -75,7 +75,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <button className="btnClose" {...cancel}>
+      <button className="btnClose" onClick={() => context.action.alert({visible: false})}>
         <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} />
       </button>
       <div className="wrap-message">
