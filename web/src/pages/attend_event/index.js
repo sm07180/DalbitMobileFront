@@ -332,64 +332,6 @@ export default (props) => {
                 </div>
 
                 {makePhoneInputBox()}
-
-                {/* {statusList.phone_input ? (
-                  <>
-                    {statusList.phone_input === '0' ? (
-                      ''
-                    ) : (
-                      <div className="gifticon-benefit-input">
-                        <p className="title">
-                          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
-                        </p>
-
-                        <div className="input-box">
-                          <input
-                            type="tel"
-                            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
-                            id="phone"
-                            name="phone"
-                            value={phone}
-                            onChange={inputHandle}
-                          />
-                          <button onClick={clickSaveButton}>저장</button>
-                        </div>
-
-                        <p className="note">
-                          ※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.
-                        </p>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {statusList.bonus === '2' ? (
-                      <div className="gifticon-benefit-input">
-                        <p className="title">
-                          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
-                        </p>
-
-                        <div className="input-box">
-                          <input
-                            type="tel"
-                            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
-                            id="phone"
-                            name="phone"
-                            value={phone}
-                            onChange={inputHandle}
-                          />
-                          <button onClick={clickSaveButton}>저장</button>
-                        </div>
-
-                        <p className="note">
-                          ※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.
-                        </p>
-                      </div>
-                    ) : (
-                      ''
-                    )}
-                  </>
-                )} */}
               </div>
             </div>
 
@@ -445,8 +387,6 @@ export default (props) => {
           </ul>
         </div>
       </div>
-
-      {/* {popup && <LayerPopup setPopup={setPopup} statusList={statusList}></LayerPopup>} */}
     </Layout>
   )
 }
