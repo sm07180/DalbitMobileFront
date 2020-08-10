@@ -189,6 +189,7 @@ const Content = styled.section`
       margin-bottom: 13px;
       border-radius: 12px;
       text-align: center;
+      transform: skew(-0.03deg);
       &.on {
         background: ${COLOR_MAIN};
         .price {

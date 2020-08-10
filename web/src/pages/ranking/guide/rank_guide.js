@@ -26,12 +26,12 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <div id="ranking-page">
         <div className="header">
-          <h1 className="header__title">랭킹 가이드</h1>
+          <h1 className="header__title">랭킹 혜택</h1>
           <button className="header__btnBack" onClick={goBack}>
             <img src={closeBtn} alt="뒤로가기" />
           </button>
         </div>
-        <div className="rankTab guideTab">
+        {/* <div className="rankTab guideTab">
           <button
             className={`rankTab__btn ${guideType === 'benefit' ? 'rankTab__btn--active' : ''} `}
             onClick={() => {
@@ -46,7 +46,7 @@ export default (props) => {
             }}>
             랭킹 산정 방식
           </button>
-        </div>
+        </div> */}
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
           {guideType === 'howUse' && <HowUse></HowUse>}

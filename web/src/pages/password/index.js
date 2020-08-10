@@ -465,8 +465,11 @@ const InputItem = styled.div`
 
     .timer {
       position: absolute;
-      right: 98px;
-      top: 28px;
+      display: inline-block;
+      height: 32px;
+      line-height: 32px;
+      right: 96px;
+      top: 22px;
       font-size: 14px;
       font-weight: bold;
       color: #ec455f;

@@ -28,15 +28,13 @@ export default (props) => {
   let timer
   const history = useHistory()
   const context = useContext(Context)
-  const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
-
+  const {list, formData, handleEv, myInfo, setMyInfo, rankSlct, nextList, setCurrentPage} = props
   const [myProfile, setMyProfile] = useState(false)
 
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
   })
-
   const [popup, setPopup] = useState(false)
   const [test, setTest] = useState(false)
 
@@ -193,6 +191,8 @@ export default (props) => {
     }
     feachrankingReward()
   }
+
+  console.log(rankSlct)
 
   const formatDate = () => {
     const formDt = formData.currentDate
@@ -445,6 +445,30 @@ export default (props) => {
     <>
       <div className="todayList">{createDateButton()}</div>
 
+      <div className="detaillView">
+        <button
+          className={`prevButton ${handlePrevLast() && 'active'}`}
+          onClick={() => {
+            if (handlePrevLast()) {
+              handleEv('currentDate', 'back')
+            }
+          }}>
+          이전
+        </button>
+
+        <div className="title">{formatDate()}</div>
+
+        <button
+          className={`nextButton ${handleTest() && 'active'}`}
+          onClick={() => {
+            if (handleTest()) {
+              handleEv('currentDate', 'front')
+            }
+          }}>
+          다음
+        </button>
+      </div>
+
       {myInfo.isReward ? (
         <>
           <div>
@@ -551,30 +575,6 @@ export default (props) => {
           )}
         </>
       )}
-
-      <div className="detaillView">
-        <button
-          className={`prevButton ${handlePrevLast() && 'active'}`}
-          onClick={() => {
-            if (handlePrevLast()) {
-              handleEv('currentDate', 'back')
-            }
-          }}>
-          이전
-        </button>
-
-        <div className="title">{formatDate()}</div>
-
-        <button
-          className={`nextButton ${handleTest() && 'active'}`}
-          onClick={() => {
-            if (handleTest()) {
-              handleEv('currentDate', 'front')
-            }
-          }}>
-          다음
-        </button>
-      </div>
 
       {creatResult()}
     </>
