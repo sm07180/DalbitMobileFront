@@ -230,9 +230,17 @@ export default (props) => {
   const intervalFormatter = (date) => {
     if (!date) return null
 
-    let time = +new Date(date)
+    //let time = +new Date(date)
+    let time = +new Date(date.replace(/-/g, "/"))
     let now = +new Date()
     let test = (time - now) / 1000
+
+    console.log('--------------------1');
+    alert(date);
+    alert(time);
+    alert(now);
+    alert(test);
+    console.log('--------------------2');
 
     intervalId = setInterval(() => {
       const text = `${Utility.leadingZeros(Math.floor(test / 60), 2)}:${Utility.leadingZeros(Math.floor(test % 60), 2)}`
