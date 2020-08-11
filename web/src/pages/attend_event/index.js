@@ -185,8 +185,8 @@ export default (props) => {
     }
 
     setInputs({
-      ...inputs, // 기존의 input 객체를 복사한 뒤
-      [name]: value // name 키를 가진 값을 value 로 설정
+      ...inputs,
+      [name]: value
     })
   }
 
