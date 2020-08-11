@@ -229,7 +229,7 @@ export default (props) => {
     } else if (res.result === 'success') {
     } else {
       context.action.alert({
-        msg: res.massage
+        msg: res.message
       })
     }
   }
