@@ -21,8 +21,6 @@ let moreState = false
 
 import {useHistory} from 'react-router-dom'
 
-// let toDay = new Date()
-
 export default (props) => {
   let currentPage = 1
 
@@ -41,8 +39,6 @@ export default (props) => {
   const [rakingDate, setRakingDate] = useState({
     date: ''
   })
-
-  // const {type, date} = qs.parse(location.search)
 
   // const [rankType, setRankType] = useState(type === null || type === undefined ? 'dj' : type)
   // const [dateType, setDateType] = useState(date === null || date === undefined ? 0 : Number(date))
@@ -93,7 +89,6 @@ export default (props) => {
   useEffect(() => {
     if (history.location.search !== '') {
       const search = history.location.search.split('&')
-      console.log(search)
       setFormData({
         ...formData,
         rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
@@ -114,8 +109,6 @@ export default (props) => {
       if (result === 'success') {
         const {list} = data
         setLevelList(list)
-      } else {
-        console.log('실패')
       }
     }
     feachLevelList()
@@ -366,45 +359,43 @@ export default (props) => {
   }
 
   return (
-    <>
-      <Layout {...props} status="no_gnb">
-        <div id="ranking-page">
-          <div className="header">
-            <h1 className="header__title">랭킹</h1>
-            <button className="header__btnBack" onClick={goBack}>
-              <img src={closeBtn} alt="뒤로가기" />
-            </button>
-          </div>
+    <Layout {...props} status="no_gnb">
+      <div id="ranking-page">
+        <div className="header">
+          <h1 className="header__title">랭킹</h1>
+          <button className="header__btnBack" onClick={goBack}>
+            <img src={closeBtn} alt="뒤로가기" />
+          </button>
+        </div>
 
-          <div>
-            <div className="rankTopBox respansiveBox">
-              <div className="rankTab">{createRankButton()}</div>
+        <div>
+          <div className="rankTopBox respansiveBox">
+            <div className="rankTab">{createRankButton()}</div>
 
-              <div className="rankTopBox__update">
-                {rankType !== 'level' ? `${test()}` : ''}
-                {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
+            <div className="rankTopBox__update">
+              {rankType !== 'level' ? `${test()}` : ''}
+              {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
                   <img src={hint} alt="힌트보기" />
                 </button> */}
-              </div>
             </div>
-
-            {formData.rankType === 'level' ? (
-              <LevelList levelList={levelList}></LevelList>
-            ) : (
-              <RankListWrap
-                list={list}
-                formData={formData}
-                handleEv={handleEv}
-                typeState={typeState}
-                myInfo={myInfo}
-                setMyInfo={setMyInfo}
-                nextList={nextList}
-                setCurrentPage={setCurrentPage}></RankListWrap>
-            )}
-            {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
           </div>
+
+          {formData.rankType === 'level' ? (
+            <LevelList levelList={levelList}></LevelList>
+          ) : (
+            <RankListWrap
+              list={list}
+              formData={formData}
+              handleEv={handleEv}
+              typeState={typeState}
+              myInfo={myInfo}
+              setMyInfo={setMyInfo}
+              nextList={nextList}
+              setCurrentPage={setCurrentPage}></RankListWrap>
+          )}
+          {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
         </div>
-      </Layout>
-    </>
+      </div>
+    </Layout>
   )
 }
