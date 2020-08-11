@@ -21,7 +21,7 @@ import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
 // const dateArray = ['오늘', '주간', '월간']
-const dateArray = ['오늘', '주간', '월간']
+const dateArray = ['오늘', '주간']
 
 let moreState = false
 
