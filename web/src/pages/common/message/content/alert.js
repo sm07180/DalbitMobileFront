@@ -65,12 +65,21 @@ export default (props) => {
       </button>
       <div className="wrap-message">
         {/* 타이틀 */}
-        {__NODE_ENV === 'dev' && context.message.title && (
-          <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
+        {__NODE_ENV === 'dev' && context.message.title && context.message.className !== 'mobile' && (
+          <h1
+            className={`${context.message.className ? context.message.className : ''}`}
+            dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
+        )}
+        {context.message.className === 'mobile' && (
+          <h1
+            className={`${context.message.className ? context.message.className : ''}`}
+            dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
         )}
         {/* 메시지 */}
         {context.message.msg && (
-          <div className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></div>
+          <div
+            className={`msg ${context.message.className ? context.message.className : ''}`}
+            dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></div>
         )}
       </div>
       <div className="wrap-btn">
@@ -105,6 +114,12 @@ const Alert = styled.section`
     display: block;
     text-align: center;
     font-weight: normal;
+
+    &.mobile {
+      font-size: 14px;
+      font-weight: bold;
+      padding-bottom: 10px;
+    }
   }
   /* 메시지 */
   .msg {
@@ -118,6 +133,12 @@ const Alert = styled.section`
     word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
+
+    &.mobile {
+      font-size: 13px;
+      padding: 10px 0 0 0;
+      text-align: left;
+    }
   }
   .wrap-btn {
     width: 100%;
