@@ -378,7 +378,13 @@ export default (props) => {
         <div className="title">
           <div className="titleWrap">
             {dateTitle.header}
-            <img src="https://image.dalbitlive.com/images/api/20200806/benefit.png" className="benefitSize" />
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              className="benefitSize"
+              onClick={() => {
+                history.push('/rank/guide?guideType=benefit')
+              }}
+            />
           </div>
           <span>{dateTitle.date}</span>
         </div>
