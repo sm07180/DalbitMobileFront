@@ -68,6 +68,7 @@ const makeContents = (props) => {
           })
         }
       }
+
       return (
         <LiveList key={`live-${idx}`} onClick={() => alertCheck(roomNo)}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
@@ -75,7 +76,14 @@ const makeContents = (props) => {
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
               {categoryList && (
-                <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
+                <div className="type-text">
+                  {(() => {
+                    const target = categoryList.find((category) => category['cd'] === roomType)
+                    if (target && target['cdNm']) {
+                      return target['cdNm']
+                    }
+                  })()}
+                </div>
               )}
 
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
