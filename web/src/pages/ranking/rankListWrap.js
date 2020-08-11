@@ -21,7 +21,7 @@ import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
 // const dateArray = ['오늘', '주간', '월간']
-const dateArray = ['오늘', '주간']
+const dateArray = ['오늘', '주간', '월간', '연간']
 
 let moreState = false
 
@@ -137,7 +137,7 @@ export default (props) => {
       } else {
         return true
       }
-    } else {
+    } else if (formData.dateType === 3) {
       const cDt = convertMonth()
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -148,6 +148,8 @@ export default (props) => {
       } else {
         return true
       }
+    } else {
+      return false
     }
   }
 
@@ -262,7 +264,7 @@ export default (props) => {
           date: myInfo.time
         })
       }
-    } else {
+    } else if (formData.dateType === 3) {
       if (year === formYear && month === formMonth) {
         setDateTitle({
           header: '이번달',
@@ -279,6 +281,11 @@ export default (props) => {
           date: `${formYear}.${formMonth}`
         })
       }
+    } else {
+      setDateTitle({
+        header: `${formYear}년`,
+        date: ''
+      })
     }
   }
 
@@ -340,7 +347,7 @@ export default (props) => {
       } else {
         return true
       }
-    } else {
+    } else if (formData.dateType === 3) {
       const cDt = new Date('2020-07-01')
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -351,14 +358,16 @@ export default (props) => {
       } else {
         return true
       }
+    } else {
+      return false
     }
   }
 
-  useEffect(() => {
-    if (!popup) {
-      handleEv('')
-    }
-  }, [popup])
+  // useEffect(() => {
+  //   if (!popup) {
+  //     handleEv('')
+  //   }
+  // }, [popup])
 
   return (
     <>
@@ -405,7 +414,8 @@ export default (props) => {
           <div>
             <div className="rewordBox">
               <p className="rewordBox__top">
-                {formData.dateType === 1 ? '일간' : '주간'} DJ 랭킹 {myInfo.myRank}위 <span>축하합니다</span>
+                {formData.dateType === 1 ? '일간' : '주간'} {formData.rankType === 'dj' ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
+                <span>축하합니다</span>
               </p>
 
               <div className="rewordBox__character1"></div>
@@ -416,7 +426,16 @@ export default (props) => {
             </div>
           </div>
 
-          {popup && <PopupSuccess setPopup={setPopup} formData={formData} rewardPop={rewardPop} setRewardPop={setRewardPop} />}
+          {popup && (
+            <PopupSuccess
+              setPopup={setPopup}
+              setMyInfo={setMyInfo}
+              myInfo={myInfo}
+              formData={formData}
+              rewardPop={rewardPop}
+              setRewardPop={setRewardPop}
+            />
+          )}
         </>
       ) : (
         <>
