@@ -230,7 +230,8 @@ export default (props) => {
   const intervalFormatter = (date) => {
     if (!date) return null
 
-    let time = +new Date(date)
+    //let time = +new Date(date)
+    let time = +new Date(date.replace(/-/g, "/"))
     let now = +new Date()
     let test = (time - now) / 1000
 
