@@ -438,11 +438,11 @@ export default (props) => {
     }
   }
 
-  useEffect(() => {
-    if (!popup) {
-      handleEv('')
-    }
-  }, [popup])
+  // useEffect(() => {
+  //   if (!popup) {
+  //     handleEv('')
+  //   }
+  // }, [popup])
 
   return (
     <>
@@ -477,7 +477,8 @@ export default (props) => {
           <div>
             <div className="rewordBox">
               <p className="rewordBox__top">
-                {formData.dateType === 1 ? '일간' : '주간'} DJ 랭킹 {myInfo.myRank}위 <span>축하합니다</span>
+                {formData.dateType === 1 ? '일간' : '주간'} {formData.rankType === 'dj' ? 'DJ' : '팬'} 랭킹 {myInfo.myRank}위{' '}
+                <span>축하합니다</span>
               </p>
 
               <div className="rewordBox__character1"></div>
