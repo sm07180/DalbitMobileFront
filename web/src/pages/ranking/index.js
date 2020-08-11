@@ -213,6 +213,7 @@ export default (props) => {
       if (res.code === '0') {
         if (!next) setList(0)
         moreState = false
+        setMyInfo({...myInfo})
       } else {
         setList(res.data.list)
         setMyInfo({
@@ -230,7 +231,9 @@ export default (props) => {
         })
       }
     } else if (res.result === 'success') {
+      setMyInfo({...myInfo})
     } else {
+      setMyInfo({...myInfo})
       context.action.alert({
         msg: res.message
       })
