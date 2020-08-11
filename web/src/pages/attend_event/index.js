@@ -31,14 +31,24 @@ export default (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [lunarDate, setLunarDate] = useState('')
-  const [winList, setWinList] = useState({
-    winDt: '',
-    memNo: '',
-    nickNm: '',
-    profImg: ''
-  })
+  const [winList, setWinList] = useState(false)
+
+  console.log('winList', winList)
+
+  const swiperParams = {
+    loop: true,
+    direction: 'vertical',
+    slidesPerColumnFill: 'row',
+    resistanceRatio: 0,
+    autoplay: {
+      delay: 2500
+      // disableOnInteraction: false
+    }
+  }
 
   useEffect(() => {
+    globalCtx.action.updateAttendStamp(false)
+
     async function fetchEventAttendDate() {
       const {result, data} = await API.postEventAttend()
       if (result === 'success') {
@@ -65,8 +75,7 @@ export default (props) => {
       const {result, data, message} = await API.getEventAttendWinList()
       if (result === 'success') {
         const {list} = data
-
-        setWinList(list)
+        if (list.length > 0) setWinList(list)
       } else {
         globalCtx.action.alert({
           msg: message
@@ -274,12 +283,14 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <div id="attend-event">
         <div className="event-main">
-          <img src={`${IMG_SERVER}/event/attend/200804/img_top@2x.png`} className="img-top" />
+          <img src={`${IMG_SERVER}/event/attend/200811/img_top@2x.png`} className="img-top" />
           <Link to="/">
             <button className="btn-back">
               <img src={btnClose} />
             </button>
           </Link>
+
+          <p className="main-text">- 방송(청취) 30분이 됐다면? -</p>
 
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
         </div>
@@ -288,13 +299,27 @@ export default (props) => {
           <div className="gifticon-win-box">
             <label>기프티콘 당첨자 &gt;</label>
 
-            {winList.length === 0 ? (
-              <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
+            {winList ? (
+              <Swiper {...swiperParams}>
+                {winList.length > 0 &&
+                  winList.map((item, index) => {
+                    const {winDt, nickNm} = item
+
+                    return (
+                      <div className="gifticon-win-list" key={index}>
+                        <p className="time">{dateFormatter(winDt)}</p>
+                        <p className="nick-name">{nickNm}</p>
+                      </div>
+                    )
+                  })}
+              </Swiper>
             ) : (
-              <div className="gifticon-win-list">
-                {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
-                {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
-              </div>
+              <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
+
+              // <div className="gifticon-win-list">
+              //   {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
+              //   {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
+              // </div>
             )}
           </div>
         </div>
@@ -327,7 +352,7 @@ export default (props) => {
                   </div>
                   <p className="luna-date">{lunarDate}</p>
                   <p className="description">
-                    매일 보름달이 뜨는 날!<span>BHC 뿌링클 세트</span>
+                    보름달이 뜨는 날!<span>BHC 뿌링클 세트</span>
                   </p>
                 </div>
 
