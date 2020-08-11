@@ -53,7 +53,7 @@ export default (props) => {
               key={`star-list${idx}`}
               onClick={() => {
                 if (roomNo !== undefined && roomNo !== '') {
-                  if (sessionStorage.getItem('operater') === 'true') {
+                  if (ctx.adminChecker === true) {
                     ctx.action.confirm_admin({
                       //콜백처리
                       callback: () => {

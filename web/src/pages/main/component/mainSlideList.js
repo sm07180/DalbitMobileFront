@@ -51,7 +51,7 @@ export default (props) => {
                         }
                       }
                     } else {
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {
@@ -85,7 +85,7 @@ export default (props) => {
                     }
                   } else {
                     if (isHybrid() && roomNo) {
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {

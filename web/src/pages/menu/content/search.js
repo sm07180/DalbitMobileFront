@@ -140,7 +140,7 @@ export default (props) => {
         const {roomNo, memNo, type} = mode.select
         //라이브중아님,사용자검색
         if (roomNo !== '' && roomNo !== '0') {
-          if (sessionStorage.getItem('operater') === 'true') {
+          if (context.adminChecker === true) {
             context.action.confirm_admin({
               //콜백처리
               callback: () => {
