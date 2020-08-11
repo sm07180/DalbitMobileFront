@@ -1,4 +1,4 @@
-import React, {useReducer} from 'react'
+import React, {useReducer, useEffect} from 'react'
 import DoExchange from './content/do_exchange'
 import Result from './content/result'
 import Message from 'pages/common/message'
