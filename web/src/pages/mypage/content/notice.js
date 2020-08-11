@@ -71,18 +71,12 @@ const Notice = (props) => {
         }
       })
       if (res.result === 'success') {
-        setState({click1: false})
-        context.action.confirm({
-          callback: () => {
-            setWriteShow(false)
-            setTimeout(() => {
-              setComment('')
-              setCommentContent('')
-              context.action.updateNoticeState(true)
-            }, 10)
-          },
-          msg: '공시사항을 등록 하시겠습니까?'
-        })
+        setWriteShow(false)
+        setTimeout(() => {
+          setComment('')
+          setCommentContent('')
+          context.action.updateNoticeState(true)
+        }, 10)
       } else if (res.result === 'fail') {
         if (coment.length === 0) {
           context.action.alert({
@@ -99,7 +93,12 @@ const Notice = (props) => {
       }
     }
     if (writeBtnState === true) {
-      fetcNoticeUpload()
+      context.action.confirm({
+        callback: () => {
+          fetcNoticeUpload()
+        },
+        msg: '공시사항을 등록 하시겠습니까?'
+      })
     }
   }
   const WriteToggle = () => {
