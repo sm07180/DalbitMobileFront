@@ -74,7 +74,7 @@ const makeContents = (props) => {
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
-              {categoryList && (
+              {categoryList && categoryList.cdNm && (
                 <div className="type-text">{categoryList.find((category) => category['cd'] === roomType)['cdNm']}</div>
               )}
 
