@@ -222,7 +222,8 @@ export default (props) => {
           myLikePoint: res.data.myLikePoint,
           myPoint: res.data.myPoint,
           myListenPoint: res.data.myListenPoint,
-          time: res.data.time
+          time: res.data.time,
+          rewardRank: res.data.rewardRank
         })
       }
     } else if (res.result === 'success') {
