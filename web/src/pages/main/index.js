@@ -459,9 +459,9 @@ export default (props) => {
   const fetchAdmin = async () => {
     const adminFunc = await Api.getAdmin()
     if (adminFunc.result === 'success') {
-      window.sessionStorage.setItem('operater', 'true')
+      globalCtx.action.updateAdminChecker(true)
     } else if (adminFunc.result === 'fail') {
-      window.sessionStorage.setItem('operater', 'false')
+      globalCtx.action.updateAdminChecker(false)
     }
   }
   useEffect(() => {

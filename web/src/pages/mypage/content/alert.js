@@ -100,7 +100,7 @@ export default (props) => {
                     onClick={() => {
                       if (clicked) return
                       clicked = true
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {

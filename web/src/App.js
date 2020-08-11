@@ -189,6 +189,18 @@ const App = () => {
     // Renew all initial data
     fetchData()
   }, [])
+  //admincheck
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      globalCtx.action.updateAdminChecker(true)
+    } else if (adminFunc.result === 'fail') {
+      globalCtx.action.updateAdminChecker(false)
+    }
+  }
+  useEffect(() => {
+    fetchAdmin()
+  }, [])
 
   return (
     <>

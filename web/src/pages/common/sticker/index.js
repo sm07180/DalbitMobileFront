@@ -40,7 +40,7 @@ export default (props) => {
             case '1': //-----------------방송방 [room_no]
               room_no = context.stickerMsg.room_no
 
-              if (sessionStorage.getItem('operater') === 'true') {
+              if (context.adminChecker === true) {
                 context.action.confirm_admin({
                   //콜백처리
                   callback: () => {

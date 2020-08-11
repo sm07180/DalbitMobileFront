@@ -44,7 +44,7 @@ const makeContents = (props) => {
       } = list
 
       const alertCheck = (roomNo) => {
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {
