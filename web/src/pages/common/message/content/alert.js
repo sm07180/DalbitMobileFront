@@ -65,7 +65,12 @@ export default (props) => {
       </button>
       <div className="wrap-message">
         {/* 타이틀 */}
-        {__NODE_ENV === 'dev' && context.message.title && (
+        {__NODE_ENV === 'dev' && context.message.title && context.message.className !== 'mobile' && (
+          <h1
+            className={`${context.message.className ? context.message.className : ''}`}
+            dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
+        )}
+        {context.message.className === 'mobile' && (
           <h1
             className={`${context.message.className ? context.message.className : ''}`}
             dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>

@@ -426,7 +426,16 @@ export default (props) => {
             </div>
           </div>
 
-          {popup && <PopupSuccess setPopup={setPopup} formData={formData} rewardPop={rewardPop} setRewardPop={setRewardPop} />}
+          {popup && (
+            <PopupSuccess
+              setPopup={setPopup}
+              setMyInfo={setMyInfo}
+              myInfo={myInfo}
+              formData={formData}
+              rewardPop={rewardPop}
+              setRewardPop={setRewardPop}
+            />
+          )}
         </>
       ) : (
         <>
