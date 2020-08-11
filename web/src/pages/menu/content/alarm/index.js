@@ -40,7 +40,7 @@ export default function Alert() {
     const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = something
     switch (notiType) {
       case 1:
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {

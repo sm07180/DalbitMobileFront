@@ -44,7 +44,7 @@ const makeContents = (props) => {
         <LiveList
           key={`live-${idx}`}
           onClick={() => {
-            if (sessionStorage.getItem('operater') === 'true') {
+            if (ctx.adminChecker === true) {
               ctx.action.confirm_admin({
                 //콜백처리
                 callback: () => {
@@ -147,7 +147,7 @@ const makeContents = (props) => {
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
                   onClick={() => {
-                    if (sessionStorage.getItem('operater') === 'true') {
+                    if (ctx.adminChecker === true) {
                       ctx.action.confirm_admin({
                         //콜백처리
                         callback: () => {

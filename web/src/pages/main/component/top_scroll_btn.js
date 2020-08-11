@@ -35,9 +35,30 @@ export default (props) => {
     }
   }
 
+  const attendStampState = () => {
+    if (token.isLogin && !attendCheck) {
+      if (globalCtx.attendStamp === true) {
+        return (
+          <AttendStamp
+            logoChange={logoChange}
+            onClick={() => {
+              try {
+                fbq('track', 'attend_event')
+                firebase.analytics().logEvent('attend_event')
+              } catch (e) {}
+              history.push('/attend_event')
+            }}
+          />
+        )
+      } else {
+        return null
+      }
+    }
+  }
+
   return (
     <>
-      {token.isLogin && !attendCheck && <AttendStamp logoChange={logoChange} onClick={() => history.push('/attend_event')} />}
+      {attendStampState()}
 
       <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} />
     </>
@@ -49,12 +70,12 @@ const AttendStamp = styled.button`
   position: fixed;
   bottom: 74px;
   right: 10px;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  background-image: url('https://image.dalbitlive.com/event/attend/200804/icon_button@2x.png');
+  background-image: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png');
   z-index: 12;
 `
 
@@ -62,7 +83,7 @@ const TopScrollBtn = styled.button`
   display: ${(props) => (props.logoChange ? 'block' : 'none')};
   position: fixed;
   bottom: 30px;
-  right: 10px;
+  right: 15px;
   width: 36px;
   height: 36px;
   background-repeat: no-repeat;

@@ -455,18 +455,7 @@ export default (props) => {
     },
     [reloadInit]
   )
-  //admincheck
-  const fetchAdmin = async () => {
-    const adminFunc = await Api.getAdmin()
-    if (adminFunc.result === 'success') {
-      window.sessionStorage.setItem('operater', 'true')
-    } else if (adminFunc.result === 'fail') {
-      window.sessionStorage.setItem('operater', 'false')
-    }
-  }
-  useEffect(() => {
-    fetchAdmin()
-  }, [])
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div className="refresh-wrap" ref={iconWrapRef}>

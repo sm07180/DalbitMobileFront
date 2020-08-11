@@ -51,7 +51,7 @@ const LiveIndex = () => {
         if (clicked) return
         clicked = true
         const {roomNo} = mode.selectList
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {

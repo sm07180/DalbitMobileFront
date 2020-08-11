@@ -144,7 +144,7 @@ export default () => {
               setTimeout(() => {
                 window.location.href = '/'
               }, 500)
-              window.sessionStorage.removeItem('operater')
+              context.action.updateAdminChecker(false)
             } else {
               context.action.alert({
                 msg: res.message
@@ -422,7 +422,7 @@ export default () => {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
         //RoomJoin(room_no)
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {
@@ -494,6 +494,18 @@ export default () => {
         if (mem_no !== undefined) {
           if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
         }
+        break
+      case '41': //-----------------랭킹 > DJ > 일간
+        if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`
+        break
+      case '42': //-----------------랭킹 > DJ > 주간
+        if (isLogin) window.location.href = `/rank?rankType=1&dateType=2`
+        break
+      case '43': //-----------------랭킹 > FAN > 일간
+        if (isLogin) window.location.href = `/rank?rankType=2&dateType=1`
+        break
+      case '44': //-----------------랭킹 > FAN > 주간
+        if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
