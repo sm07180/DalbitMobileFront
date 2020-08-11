@@ -44,7 +44,7 @@ const makeContents = (props) => {
       } = list
 
       const alertCheck = (roomNo) => {
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {
@@ -70,7 +70,7 @@ const makeContents = (props) => {
       }
       return (
         <LiveList key={`live-${idx}`} onClick={() => alertCheck(roomNo)}>
-          <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+          <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb80x80']})`}} />
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}

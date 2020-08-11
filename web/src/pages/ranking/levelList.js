@@ -13,7 +13,7 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
   const {levelList} = props
-
+  console.log(context.adminChecker)
   return (
     <>
       <ul>
@@ -51,7 +51,7 @@ export default (props) => {
                   <img
                     src={live}
                     onClick={() => {
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {

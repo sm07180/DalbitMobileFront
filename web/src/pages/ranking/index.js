@@ -19,10 +19,15 @@ const rankArray = ['dj', 'fan', 'level']
 
 let moreState = false
 
+import {useHistory} from 'react-router-dom'
+
 // let toDay = new Date()
 
 export default (props) => {
   let currentPage = 1
+
+  const history = useHistory()
+
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(0)
   const [formData, setFormData] = useState({
@@ -86,6 +91,15 @@ export default (props) => {
   }, [popup])
 
   useEffect(() => {
+    if (history.location.search !== '') {
+      const search = history.location.search.split('&')
+      console.log(search)
+      setFormData({
+        ...formData,
+        rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
+        dateType: parseInt(search[1].split('=')[1])
+      })
+    }
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
@@ -215,7 +229,7 @@ export default (props) => {
     } else if (res.result === 'success') {
     } else {
       context.action.alert({
-        msg: res.massage
+        msg: res.message
       })
     }
   }
@@ -306,6 +320,7 @@ export default (props) => {
       levelListView()
     }
   }, [formData])
+
   //가이드에 따른 분기
   const {title} = props.match.params
   if (title === 'guide') return <RankGuide></RankGuide>

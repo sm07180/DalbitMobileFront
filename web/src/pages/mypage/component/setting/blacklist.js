@@ -474,22 +474,27 @@ const SearchArea = styled.div`
   position: relative;
   border-radius: 12px;
 
-  * {
-    height: 44px;
-    line-height: 44px;
-  }
-
   select {
     width: 100px;
     border-right: 1px solid #bdbdbd;
     color: #707070;
     text-indent: 12px;
     background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
+    height: 44px;
+    line-height: 44px;
+  }
+  .select-box {
+    * {
+      height: 44px;
+      line-height: 44px;
+    }
   }
   input {
     width: calc(100% - 102px);
     margin-left: 100px;
-    padding: 0px 46px 0 12px;
+    padding: 10px 46px 10px 12px;
+    height: 44px;
+    line-height: 24px;
     color: #000;
     background-color: #fff;
     border: 1px solid #e0e0e0;

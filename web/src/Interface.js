@@ -144,7 +144,7 @@ export default () => {
               setTimeout(() => {
                 window.location.href = '/'
               }, 500)
-              window.sessionStorage.removeItem('operater')
+              context.action.updateAdminChecker(false)
             } else {
               context.action.alert({
                 msg: res.message
@@ -422,7 +422,7 @@ export default () => {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
         //RoomJoin(room_no)
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {

@@ -53,7 +53,7 @@ export default (props) => {
               key={`star-list${idx}`}
               onClick={() => {
                 if (roomNo !== undefined && roomNo !== '') {
-                  if (sessionStorage.getItem('operater') === 'true') {
+                  if (ctx.adminChecker === true) {
                     ctx.action.confirm_admin({
                       //콜백처리
                       callback: () => {
@@ -80,7 +80,7 @@ export default (props) => {
                   saveUrlAndRedirect(`/mypage/${memNo}`)
                 }
               }}>
-              <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
+              <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb62x62']})`} : {}}>
                 {roomNo !== undefined && roomNo !== '' && (
                   <span className="live">
                     <img src={LiveIcon} alt="라이브중" />

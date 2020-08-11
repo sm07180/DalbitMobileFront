@@ -245,15 +245,12 @@ const myProfile = (props) => {
   return (
     <>
       <ProfileWrap>
-        {token && token.isLogin && showAdmin && (
-          <div className="adminBtn">
-            <a href="/admin/image">
+        <MyProfile webview={webview}>
+          {token && token.isLogin && showAdmin && (
+            <a href="/admin/image" className="adminBtn">
               <img src={AdminIcon} />
             </a>
-          </div>
-        )}
-
-        <MyProfile webview={webview}>
+          )}
           <button className="closeBtn" onClick={goBack}></button>
           <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
             <figure onClick={() => figureZoom()}>
@@ -417,8 +414,9 @@ const PurpleWrap = styled.div`
 const ProfileWrap = styled.div`
   .adminBtn {
     position: absolute;
-    top: 0px;
+    top: -59px;
     left: 12px;
+    z-index: 1;
   }
   padding-top: 87px;
   position: relative;
