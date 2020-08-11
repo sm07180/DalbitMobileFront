@@ -33,8 +33,6 @@ export default (props) => {
   const [lunarDate, setLunarDate] = useState('')
   const [winList, setWinList] = useState(false)
 
-  console.log('winList', winList)
-
   const swiperParams = {
     loop: true,
     direction: 'vertical',
