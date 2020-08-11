@@ -14,7 +14,6 @@ import './ranking.scss'
 //statc
 import backBtn from './static/ic_back.svg'
 
-let moreState = false
 const rankArray = ['dj', 'fan', 'level']
 
 const DATE_TYPE = {
@@ -85,7 +84,7 @@ export default (props) => {
 
   useEffect(() => {
     if (history.location.search !== '') {
-      const search = history.location.search.split('&')
+      // const search = history.location.search.split('&')
       // setFormData({
       //   ...formData,
       //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
@@ -98,17 +97,6 @@ export default (props) => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-
-  const levelListView = () => {
-    async function feachLevelList() {
-      const {result, data} = await Api.get_level_ranking()
-      if (result === 'success') {
-        const {list} = data
-        setLevelList(list)
-      }
-    }
-    feachLevelList()
-  }
 
   const convertMonday = () => {
     let toDay = new Date()
@@ -289,6 +277,17 @@ export default (props) => {
     }
   }
 
+  const levelListView = () => {
+    async function feachLevelList() {
+      const {result, data} = await Api.get_level_ranking()
+      if (result === 'success') {
+        const {list} = data
+        setLevelList(list)
+      }
+    }
+    feachLevelList()
+  }
+
   const records = 8
   const [page, setPage] = useState(1)
   const fetchRank = useCallback(
@@ -347,14 +346,14 @@ export default (props) => {
   )
 
   useEffect(() => {
-    async function appendRankList() {
-      const rankList = await fetchRank()
-      if (rankList !== null) {
-        const newList = rankList.concat(rankList)
+    async function concatRankList() {
+      const list = await fetchRank()
+      if (list !== null) {
+        const newList = rankList.concat(list)
         setRankList(newList)
       }
     }
-    appendRankList()
+    concatRankList()
   }, [])
 
   return (
