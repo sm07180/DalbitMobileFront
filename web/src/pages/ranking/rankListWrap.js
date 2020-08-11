@@ -1,12 +1,10 @@
 import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
-import Lottie from 'react-lottie'
 
 import {Context} from 'context'
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
-import Utility, {dateFormatter} from 'components/lib/utility'
-import moment from 'moment'
+
 //components
 import NoResult from 'components/ui/noResult'
 import RankList from './rankList'
@@ -26,10 +24,9 @@ const dateArray = ['오늘', '주간']
 let moreState = false
 
 export default (props) => {
-  let timer
   const history = useHistory()
   const context = useContext(Context)
-  const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
+  const {list, formData, handleEv, myInfo, setMyInfo} = props
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
@@ -45,25 +42,12 @@ export default (props) => {
 
   const createDateButton = () => {
     return dateArray.map((item, index) => {
-      //index++
       return (
         <button
           key={index}
           className={formData.dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
           onClick={() => {
             handleEv('dateType', index + 1)
-            // setMyInfo({
-            //   isReward: false,
-            //   myGiftPoint: 0,
-            //   myListenerPoint: 0,
-            //   myRank: 0,
-            //   myUpDown: '',
-            //   myBroadPoint: 0,
-            //   myLikePoint: 0,
-            //   myPoint: 0,
-            //   myListenPoint: 0,
-            //   time: ''
-            // })
           }}>
           {item}
         </button>
@@ -307,12 +291,6 @@ export default (props) => {
     return new Date(`${year}-0${month}-01`)
   }
 
-  // useEffect(() => {
-  //   if (myInfo.isReward) {
-  //     if (popup) rankingReward()
-  //   }
-  // }, [formData])
-
   const handlePrevLast = () => {
     let cy = formData.currentDate.getFullYear()
     let cm = formData.currentDate.getMonth() + 1
@@ -422,15 +400,6 @@ export default (props) => {
         <>
           {myProfile && (
             <div className="myRanking myRanking__profile">
-              {/* <Lottie
-                width={420}
-                height={130}
-                options={{
-                  loop: true,
-                  autoPlay: true,
-                  path: `https://image.dalbitlive.com/ani/lottie/ranking_bg.json`
-                }}
-              /> */}
               <div
                 className="myRanking__profile__wrap"
                 onClick={() => {

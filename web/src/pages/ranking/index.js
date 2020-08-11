@@ -12,7 +12,7 @@ import './ranking.scss'
 
 //statc
 import hint from './static/hint.svg'
-import closeBtn from './static/ic_back.svg'
+import backBtn from './static/ic_back.svg'
 import {lte} from 'lodash'
 
 const rankArray = ['dj', 'fan', 'level']
@@ -22,8 +22,6 @@ let moreState = false
 import {useHistory} from 'react-router-dom'
 
 export default (props) => {
-  let currentPage = 1
-
   const history = useHistory()
 
   const [rankType, setRankType] = useState('dj')
@@ -39,9 +37,6 @@ export default (props) => {
   const [rakingDate, setRakingDate] = useState({
     date: ''
   })
-
-  // const [rankType, setRankType] = useState(type === null || type === undefined ? 'dj' : type)
-  // const [dateType, setDateType] = useState(date === null || date === undefined ? 0 : Number(date))
 
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -60,10 +55,12 @@ export default (props) => {
   const [list, setList] = useState(0)
 
   const context = useContext(Context)
+
   let typeState = props.location.state
+  let currentPage = 1
 
   const goBack = () => {
-    window.history.back()
+    history.goBack()
   }
 
   const popStateEvent = (e) => {
@@ -89,11 +86,11 @@ export default (props) => {
   useEffect(() => {
     if (history.location.search !== '') {
       const search = history.location.search.split('&')
-      setFormData({
-        ...formData,
-        rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
-        dateType: parseInt(search[1].split('=')[1])
-      })
+      // setFormData({
+      //   ...formData,
+      //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
+      //   dateType: parseInt(search[1].split('=')[1])
+      // })
     }
     window.addEventListener('popstate', popStateEvent)
 
@@ -171,9 +168,9 @@ export default (props) => {
     })
   }
 
-  async function fetchRank(type, dateType, next) {
-    props.location.state = ''
+  const records = 8
 
+  async function fetchRank(type, dateType, next) {
     currentPage = next ? ++currentPage : currentPage
 
     let month = formData.currentDate.getMonth() + 1
@@ -193,14 +190,12 @@ export default (props) => {
         rankSlct: formData.rankType === 'dj' ? 1 : 2,
         rankType: formData.dateType,
         page: 1,
-        records: 500,
+        records: records,
         rankingDate: formatDate
       }
     })
 
     if (res.result === 'success' && _.hasIn(res, 'data.list')) {
-      //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
-
       if (res.code === '0') {
         if (!next) setList(0)
         moreState = false
@@ -307,27 +302,27 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (formData.rankType !== 'level') {
-      fetchRank()
-    } else {
-      levelListView()
-    }
-  }, [formData])
+    fetchRank()
+  }, [])
 
   //가이드에 따른 분기
   const {title} = props.match.params
-  if (title === 'guide') return <RankGuide></RankGuide>
 
-  const test = () => {
-    const formDt = formData.currentDate
-    let formYear = formDt.getFullYear()
-    let formMonth = formDt.getMonth() + 1
-    let formDate = formDt.getDate()
+  if (title === 'guide') {
+    return <RankGuide />
+  }
+
+  const rankCategory = () => {
+    const current = formData.currentDate
+    let formYear = current.getFullYear()
+    let formMonth = current.getMonth() + 1
+    let formDate = current.getDate()
 
     const cDate = new Date()
     let year = cDate.getFullYear()
     let month = cDate.getMonth() + 1
     let date = cDate.getDate()
+
     if (formData.rankType === 'level') {
       return ''
     } else {
@@ -364,30 +359,24 @@ export default (props) => {
         <div className="header">
           <h1 className="header__title">랭킹</h1>
           <button className="header__btnBack" onClick={goBack}>
-            <img src={closeBtn} alt="뒤로가기" />
+            <img src={backBtn} alt="뒤로가기" />
           </button>
         </div>
 
         <div>
           <div className="rankTopBox respansiveBox">
             <div className="rankTab">{createRankButton()}</div>
-
-            <div className="rankTopBox__update">
-              {rankType !== 'level' ? `${test()}` : ''}
-              {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
-                  <img src={hint} alt="힌트보기" />
-                </button> */}
-            </div>
+            <div className="rankTopBox__update">{rankType !== 'level' && rankCategory()}</div>
           </div>
 
           {formData.rankType === 'level' ? (
-            <LevelList levelList={levelList}></LevelList>
+            <LevelList levelList={levelList} />
           ) : (
             <RankListWrap
               list={list}
               formData={formData}
               handleEv={handleEv}
-              typeState={typeState}
+              tyate={typeState}
               myInfo={myInfo}
               setMyInfo={setMyInfo}
               nextList={nextList}
