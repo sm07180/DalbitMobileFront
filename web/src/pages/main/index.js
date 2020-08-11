@@ -68,7 +68,7 @@ export default (props) => {
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
-  const [rankType, setRankType] = useState(Math.random() >= 0.5 ? 'dj' : 'fan') // type: dj, fan
+  const [rankType, setRankType] = useState('') // type: dj, fan
   const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
@@ -92,12 +92,26 @@ export default (props) => {
 
   useEffect(() => {
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info']
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
       Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
         }
       })
+    }
+
+    if (sessionStorage.getItem('ranking_tab') !== null) {
+      if (sessionStorage.getItem('ranking_tab') === 'dj') {
+        setRankType('fan')
+        sessionStorage.setItem('ranking_tab', 'fan')
+      } else {
+        setRankType('dj')
+        sessionStorage.setItem('ranking_tab', 'dj')
+      }
+    } else {
+      const randomData = Math.random() >= 0.5 ? 'dj' : 'fan'
+      setRankType(randomData)
+      sessionStorage.setItem('ranking_tab', randomData)
     }
 
     fetchMainInitData()
@@ -413,7 +427,13 @@ export default (props) => {
 
           setLiveAlign(1)
           setLiveGender('')
-          setRankType('dj')
+          if (sessionStorage.getItem('ranking_tab') === 'dj') {
+            setRankType('fan')
+            sessionStorage.setItem('ranking_tab', 'fan')
+          } else {
+            setRankType('dj')
+            sessionStorage.setItem('ranking_tab', 'dj')
+          }
           setLiveListType('detail')
           setSelectedLiveRoomType('')
           setReloadInit(false)
@@ -435,18 +455,7 @@ export default (props) => {
     },
     [reloadInit]
   )
-  //admincheck
-  const fetchAdmin = async () => {
-    const adminFunc = await Api.getAdmin()
-    if (adminFunc.result === 'success') {
-      window.sessionStorage.setItem('operater', 'true')
-    } else if (adminFunc.result === 'fail') {
-      window.sessionStorage.setItem('operater', 'false')
-    }
-  }
-  useEffect(() => {
-    fetchAdmin()
-  }, [])
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div className="refresh-wrap" ref={iconWrapRef}>

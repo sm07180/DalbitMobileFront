@@ -288,7 +288,7 @@ const myProfile = (props) => {
               <button
                 className="liveIcon"
                 onClick={() => {
-                  if (sessionStorage.getItem('operater') === 'true') {
+                  if (context.adminChecker === true) {
                     context.action.confirm_admin({
                       //콜백처리
                       callback: () => {

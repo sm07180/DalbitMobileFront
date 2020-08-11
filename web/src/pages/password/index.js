@@ -31,7 +31,7 @@ export default (props) => {
   })
 
   function reducer(state, action) {
-    const {name, value} = action
+    let {name, value} = action
 
     //휴대폰번호
     if (name === 'memId' && value.length === 11) {
@@ -61,6 +61,10 @@ export default (props) => {
           auth: false
         })
       }
+    }
+
+    if (name === 'loginPwd' || name === 'loginPwdCheck') {
+      value = value.toLowerCase()
     }
 
     return {

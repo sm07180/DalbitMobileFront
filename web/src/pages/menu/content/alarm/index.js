@@ -40,7 +40,7 @@ export default function Alert() {
     const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = something
     switch (notiType) {
       case 1:
-        if (sessionStorage.getItem('operater') === 'true') {
+        if (context.adminChecker === true) {
           context.action.confirm_admin({
             //콜백처리
             callback: () => {
@@ -94,6 +94,18 @@ export default function Alert() {
         break
       case 38:
         history.push(`/mypage/${memNo}/notice`)
+        break
+      case 41:
+        history.push(`/rank?rankType=1&dateType=1`)
+        break
+      case 42:
+        history.push(`/rank?rankType=1&dateType=2`)
+        break
+      case 43:
+        history.push(`/rank?rankType=2&dateType=1`)
+        break
+      case 44:
+        history.push(`/rank?rankType=2&dateType=2`)
         break
       case 50:
         let mobileLink = link

@@ -97,7 +97,7 @@ export default (props) => {
               <img
                 src={bgImg.thumb88x88}
                 onClick={() => {
-                  if (sessionStorage.getItem('operater') === 'true') {
+                  if (ctx.adminChecker === true) {
                     ctx.action.confirm_admin({
                       //콜백처리
                       callback: () => {

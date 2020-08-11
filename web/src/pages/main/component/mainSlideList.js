@@ -51,7 +51,7 @@ export default (props) => {
                         }
                       }
                     } else {
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {
@@ -85,7 +85,7 @@ export default (props) => {
                     }
                   } else {
                     if (isHybrid() && roomNo) {
-                      if (sessionStorage.getItem('operater') === 'true') {
+                      if (context.adminChecker === true) {
                         context.action.confirm_admin({
                           //콜백처리
                           callback: () => {
@@ -125,7 +125,7 @@ export default (props) => {
 
                   {nickNm !== 'banner' && (
                     <div className="topSlide__infoWrap">
-                      <img className="thumb" src={profImg.url} />
+                      <img className="thumb" src={profImg.thumb62x62} />
                       <div className="text">
                         <span className="title">{title}</span>
                         <span className="nickname">{nickNm}</span>
