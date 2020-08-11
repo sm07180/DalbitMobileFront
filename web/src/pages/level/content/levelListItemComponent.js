@@ -5,7 +5,7 @@ import {COLOR_WHITE, COLOR_GREYISHBROWN} from 'context/color'
 //ui
 import Swiper from 'react-id-swiper'
 
-export default props => {
+export default (props) => {
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 10,
