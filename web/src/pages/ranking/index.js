@@ -34,8 +34,11 @@ export default (props) => {
 
   if (history.location.search !== '') {
     const search = history.location.search.split('&')
-    initData.rankType = search[0].split('=')[1] === '1' ? 'dj' : 'fan'
-    initData.dateType = parseInt(search[1].split('=')[1])
+    if (search[0].split('rankType').length >= 2) {
+      initData.rankType = search[0].split('=')[1] === '1' ? 'dj' : 'fan'
+      initData.dateType = parseInt(search[1].split('=')[1])
+    }
+
     // setFormData({
     //   ...formData,
     //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',

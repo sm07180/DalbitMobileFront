@@ -741,7 +741,8 @@ const UserId = styled.div`
   }
 `
 const NicknameInput = styled.input.attrs({type: 'text'})`
-  display: block;
+  display: flex;
+  align-items: center;
   border: 1px solid #e0e0e0;
   padding: 20px 16px 0px 16px;
   width: 100%;
