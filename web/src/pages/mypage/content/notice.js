@@ -72,6 +72,7 @@ const Notice = (props) => {
       })
       if (res.result === 'success') {
         setWriteShow(false)
+        setState({click1: false})
         setTimeout(() => {
           setComment('')
           setCommentContent('')
@@ -129,7 +130,8 @@ const Notice = (props) => {
     const params = {
       memNo: urlrStr,
       page: 1,
-      records: 20 * currentPage
+      records: 200
+      // records: 20 * currentPage
     }
     const res = await Api.mypage_notice_inquire(params)
     if (res.result === 'success') {
@@ -147,7 +149,6 @@ const Notice = (props) => {
           setNextListPage(res.data.list)
         } else {
           setListPage(res.data.list)
-          fetchData()
         }
       }
     } else if (res.result === 'fail') {
