@@ -125,7 +125,7 @@ export default (props) => {
 
                   {nickNm !== 'banner' && (
                     <div className="topSlide__infoWrap">
-                      <img className="thumb" src={profImg.url} />
+                      <img className="thumb" src={profImg.thumb62x62} />
                       <div className="text">
                         <span className="title">{title}</span>
                         <span className="nickname">{nickNm}</span>
