@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
@@ -33,7 +33,7 @@ export default (props) => {
   const [lunarDate, setLunarDate] = useState('')
   const [winList, setWinList] = useState(false)
 
-  console.log('winList', winList)
+  const phoneInput = useRef()
 
   const swiperParams = {
     loop: true,
@@ -113,12 +113,18 @@ export default (props) => {
           if (status.gifticon_win === '1') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
-              buttonMsg: `휴대폰 번호 입력하기`
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
             })
           } else if (status.gifticon_win === '2') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken_pop@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
-              buttonMsg: `휴대폰 번호 입력하기`
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
             })
           } else {
             globalCtx.action.alert({
@@ -177,6 +183,11 @@ export default (props) => {
       default:
         break
     }
+
+    setInputs({
+      ...inputs, // 기존의 input 객체를 복사한 뒤
+      [name]: value // name 키를 가진 값을 value 로 설정
+    })
   }
 
   const clickSaveButton = () => {
@@ -261,6 +272,7 @@ export default (props) => {
             name="phone"
             value={phone}
             onChange={inputHandle}
+            ref={phoneInput}
           />
           <button onClick={clickSaveButton}>저장</button>
         </div>
