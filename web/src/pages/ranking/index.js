@@ -288,11 +288,14 @@ export default (props) => {
     feachLevelList()
   }
 
-  const records = 8
+  const records = 10
   const [page, setPage] = useState(1)
+  const [scrollBottom, setScrollBottom] = useState(false)
+  const [scrollBottomFinish, setScrollBottomFinish] = useState(false)
+
   const fetchRank = useCallback(
     async (type, dateType, next) => {
-      let month = (() => {
+      const month = (() => {
         let month = formData.currentDate.getMonth() + 1
         if (month < 10) {
           month = '0' + month
@@ -300,7 +303,7 @@ export default (props) => {
         return month
       })()
 
-      let date = (() => {
+      const date = (() => {
         let date = formData.currentDate.getDate()
         if (date < 10) {
           date = '0' + date
@@ -334,27 +337,58 @@ export default (props) => {
           time: res.data.time
         })
 
+        if (data.list.length < records) {
+          setScrollBottomFinish(true)
+        }
+
         return data.list
       } else if (res.result === 'fail') {
-        return null
         context.action.alert({
           msg: res.message
         })
+        return null
       }
     },
-    [formData]
+    [formData, page]
   )
 
-  useEffect(() => {
-    async function concatRankList() {
-      const list = await fetchRank()
-      if (list !== null) {
-        const newList = rankList.concat(list)
-        setRankList(newList)
-      }
+  const concatRankList = useCallback(async () => {
+    const list = await fetchRank()
+    if (list !== null) {
+      const newList = rankList.concat(list)
+      setRankList(newList)
+      setScrollBottom(false)
+      setPage(page + 1)
     }
+  }, [page])
+
+  useEffect(() => {
     concatRankList()
   }, [])
+
+  useEffect(() => {
+    if (scrollBottom === true && scrollBottomFinish === false) {
+      concatRankList()
+    }
+
+    const windowScrollEvent = () => {
+      if (scrollBottomFinish === true) {
+        return
+      }
+
+      const diff = 50
+      if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
+        if (scrollBottom === false) {
+          setScrollBottom(true)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [scrollBottom, scrollBottomFinish])
 
   return (
     <Layout {...props} status="no_gnb">
