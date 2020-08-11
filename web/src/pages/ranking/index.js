@@ -22,19 +22,27 @@ let moreState = false
 import {useHistory} from 'react-router-dom'
 
 // let toDay = new Date()
-
+let initData = {
+  rankType: 'dj',
+  dateType: 1,
+  currentDate: new Date()
+}
 export default (props) => {
   let currentPage = 1
 
   const history = useHistory()
 
-  const [rankType, setRankType] = useState('dj')
-  const [dateType, setDateType] = useState(0)
-  const [formData, setFormData] = useState({
-    rankType: 'dj',
-    dateType: 1,
-    currentDate: new Date()
-  })
+  if (history.location.search !== '') {
+    const search = history.location.search.split('&')
+    initData.rankType = search[0].split('=')[1] === '1' ? 'dj' : 'fan'
+    initData.dateType = parseInt(search[1].split('=')[1])
+    // setFormData({
+    //   ...formData,
+    //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
+    //   dateType: parseInt(search[1].split('=')[1])
+    // })
+  }
+  const [formData, setFormData] = useState(initData)
 
   const [nextList, setNextList] = useState(false)
   const [levelList, setLevelList] = useState([])
@@ -91,15 +99,6 @@ export default (props) => {
   }, [popup])
 
   useEffect(() => {
-    if (history.location.search !== '') {
-      const search = history.location.search.split('&')
-      console.log(search)
-      setFormData({
-        ...formData,
-        rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
-        dateType: parseInt(search[1].split('=')[1])
-      })
-    }
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
@@ -178,7 +177,7 @@ export default (props) => {
     })
   }
 
-  async function fetchRank(type, dateType, next) {
+  async function fetchRank(next) {
     props.location.state = ''
 
     currentPage = next ? ++currentPage : currentPage
@@ -381,7 +380,7 @@ export default (props) => {
               <div className="rankTab">{createRankButton()}</div>
 
               <div className="rankTopBox__update">
-                {rankType !== 'level' ? `${test()}` : ''}
+                {formData.rankType !== 'level' ? `${test()}` : ''}
                 {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
                   <img src={hint} alt="힌트보기" />
                 </button> */}
