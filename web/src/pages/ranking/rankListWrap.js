@@ -7,7 +7,7 @@ import Util from 'components/lib/utility.js'
 
 //components
 import NoResult from 'components/ui/noResult'
-import RankList from './rankList'
+import RankListComponent from './rankList'
 import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
 
@@ -26,7 +26,7 @@ let moreState = false
 export default (props) => {
   const history = useHistory()
   const context = useContext(Context)
-  const {list, formData, handleEv, myInfo, setMyInfo} = props
+  const {DATE_TYPE, rankList, formData, handleEv, myInfo, setMyInfo} = props
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
@@ -79,19 +79,19 @@ export default (props) => {
     formatDate()
   }, [myInfo])
 
-  const creatResult = () => {
-    if (list === -1) {
+  const createResult = () => {
+    if (Array.isArray(rankList) === false) {
       return null
-    } else if (list === 0) {
-      return <NoResult />
-    } else {
-      return (
-        <>
-          <RankListTop list={list.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} formData={formData} />
-        </>
-      )
     }
+    if (rankList.length === 0) {
+      return <NoResult />
+    }
+    return (
+      <>
+        <RankListTop list={rankList.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
+        <RankListComponent list={rankList.slice(3)} formData={formData} />
+      </>
+    )
   }
 
   const handleTest = () => {
@@ -476,7 +476,7 @@ export default (props) => {
         </>
       )}
 
-      {creatResult()}
+      {createResult()}
     </>
   )
 }

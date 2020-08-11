@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useCallback, useMemo} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -11,15 +12,16 @@ import RankGuide from './guide/rank_guide'
 import './ranking.scss'
 
 //statc
-import hint from './static/hint.svg'
 import backBtn from './static/ic_back.svg'
-import {lte} from 'lodash'
-
-const rankArray = ['dj', 'fan', 'level']
 
 let moreState = false
+const rankArray = ['dj', 'fan', 'level']
 
-import {useHistory} from 'react-router-dom'
+const DATE_TYPE = {
+  day: 1,
+  week: 2,
+  month: 3
+}
 
 export default (props) => {
   const history = useHistory()
@@ -28,11 +30,10 @@ export default (props) => {
   const [dateType, setDateType] = useState(0)
   const [formData, setFormData] = useState({
     rankType: 'dj',
-    dateType: 1,
+    dateType: DATE_TYPE['day'],
     currentDate: new Date()
   })
 
-  const [nextList, setNextList] = useState(false)
   const [levelList, setLevelList] = useState([])
   const [rakingDate, setRakingDate] = useState({
     date: ''
@@ -52,12 +53,11 @@ export default (props) => {
   })
 
   const [popup, setPopup] = useState(false)
-  const [list, setList] = useState(0)
+  const [rankList, setRankList] = useState([])
 
   const context = useContext(Context)
 
   let typeState = props.location.state
-  let currentPage = 1
 
   const goBack = () => {
     history.goBack()
@@ -95,7 +95,6 @@ export default (props) => {
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
-      currentPage = 1
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
@@ -158,7 +157,7 @@ export default (props) => {
           onClick={() => {
             setFormData({
               rankType: item,
-              dateType: 1,
+              dateType: DATE_TYPE['day'],
               currentDate: new Date()
             })
           }}>
@@ -168,67 +167,13 @@ export default (props) => {
     })
   }
 
-  const records = 8
-
-  async function fetchRank(type, dateType, next) {
-    currentPage = next ? ++currentPage : currentPage
-
-    let month = formData.currentDate.getMonth() + 1
-    let date = formData.currentDate.getDate()
-    if (month < 10) {
-      month = '0' + month
-    }
-
-    if (date < 10) {
-      date = '0' + date
-    }
-
-    let formatDate = `${formData.currentDate.getFullYear()}-${month}-${date}`
-
-    const res = await Api.get_ranking({
-      param: {
-        rankSlct: formData.rankType === 'dj' ? 1 : 2,
-        rankType: formData.dateType,
-        page: 1,
-        records: records,
-        rankingDate: formatDate
-      }
-    })
-
-    if (res.result === 'success' && _.hasIn(res, 'data.list')) {
-      if (res.code === '0') {
-        if (!next) setList(0)
-        moreState = false
-      } else {
-        setList(res.data.list)
-        setMyInfo({
-          isReward: res.data.isReward,
-          myGiftPoint: res.data.myGiftPoint,
-          myListenerPoint: res.data.myListenerPoint,
-          myRank: res.data.myRank,
-          myUpDown: res.data.myUpDown,
-          myBroadPoint: res.data.myBroadPoint,
-          myLikePoint: res.data.myLikePoint,
-          myPoint: res.data.myPoint,
-          myListenPoint: res.data.myListenPoint,
-          time: res.data.time
-        })
-      }
-    } else if (res.result === 'success') {
-    } else {
-      context.action.alert({
-        msg: res.message
-      })
-    }
-  }
-
   const handleEv = (something, value) => {
     let someDate
     switch (something) {
       case 'dateType':
-        if (value === 2) {
+        if (value === DATE_TYPE['week']) {
           someDate = convertMonday()
-        } else if (value === 1) {
+        } else if (value === DATE_TYPE['day']) {
           someDate = new Date()
         } else {
           someDate = convertMonth()
@@ -297,20 +242,11 @@ export default (props) => {
     }
   }
 
-  const setCurrentPage = () => {
-    currentPage = 1
-  }
-
-  useEffect(() => {
-    fetchRank()
-  }, [])
-
   //가이드에 따른 분기
-  const {title} = props.match.params
-
-  if (title === 'guide') {
-    return <RankGuide />
-  }
+  // const {title} = props.match.params
+  // if (title === 'guide') {
+  //   return <RankGuide />
+  // }
 
   const rankCategory = () => {
     const current = formData.currentDate
@@ -326,13 +262,13 @@ export default (props) => {
     if (formData.rankType === 'level') {
       return ''
     } else {
-      if (formData.dateType === 1) {
+      if (formData.dateType === DATE_TYPE['day']) {
         if (year === formYear && month === formMonth && formDate === date) {
           return '실시간 집계'
         } else {
           return ''
         }
-      } else if (formData.dateType === 2) {
+      } else if (formData.dateType === DATE_TYPE['week']) {
         const currentWeek = convertMonday()
         year = currentWeek.getFullYear()
         month = currentWeek.getMonth() + 1
@@ -352,6 +288,74 @@ export default (props) => {
       }
     }
   }
+
+  const records = 8
+  const [page, setPage] = useState(1)
+  const fetchRank = useCallback(
+    async (type, dateType, next) => {
+      let month = (() => {
+        let month = formData.currentDate.getMonth() + 1
+        if (month < 10) {
+          month = '0' + month
+        }
+        return month
+      })()
+
+      let date = (() => {
+        let date = formData.currentDate.getDate()
+        if (date < 10) {
+          date = '0' + date
+        }
+        return date
+      })()
+
+      const res = await Api.get_ranking({
+        param: {
+          rankSlct: formData.rankType === 'dj' ? 1 : 2,
+          rankType: formData.dateType,
+          rankingDate: `${formData.currentDate.getFullYear()}-${month}-${date}`,
+          page,
+          records
+        }
+      })
+
+      if (res.result === 'success' && _.hasIn(res, 'data.list')) {
+        const {data} = res
+
+        setMyInfo({
+          isReward: res.data.isReward,
+          myGiftPoint: res.data.myGiftPoint,
+          myListenerPoint: res.data.myListenerPoint,
+          myRank: res.data.myRank,
+          myUpDown: res.data.myUpDown,
+          myBroadPoint: res.data.myBroadPoint,
+          myLikePoint: res.data.myLikePoint,
+          myPoint: res.data.myPoint,
+          myListenPoint: res.data.myListenPoint,
+          time: res.data.time
+        })
+
+        return data.list
+      } else if (res.result === 'fail') {
+        return null
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    },
+    [formData]
+  )
+
+  useEffect(() => {
+    async function appendRankList() {
+      const rankList = await fetchRank()
+      if (rankList !== null) {
+        const newList = rankList.concat(rankList)
+        setRankList(newList)
+      }
+    }
+    appendRankList()
+  }, [])
 
   return (
     <Layout {...props} status="no_gnb">
@@ -373,14 +377,14 @@ export default (props) => {
             <LevelList levelList={levelList} />
           ) : (
             <RankListWrap
-              list={list}
+              DATE_TYPE={DATE_TYPE}
+              rankList={rankList}
               formData={formData}
               handleEv={handleEv}
               tyate={typeState}
               myInfo={myInfo}
               setMyInfo={setMyInfo}
-              nextList={nextList}
-              setCurrentPage={setCurrentPage}></RankListWrap>
+            />
           )}
           {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
         </div>
