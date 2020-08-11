@@ -436,7 +436,7 @@ const Reply = styled.div`
     width: 80px;
     border: 1px solid #e0e0e0;
     background-color: #fff;
-    padding: 4px 0;
+    padding: 8px 0;
     span {
       height: 26px;
       line-height: 26px;
@@ -501,7 +501,7 @@ const Reply = styled.div`
     /* height: 100%; */
     .reply_Wrap {
       min-height: 132px;
-      /* margin-bottom: 4px; */
+      margin-bottom: 12px;
       background-color: #fff;
       border-bottom: 1px solid #eee;
       .reply_content {
@@ -597,7 +597,7 @@ const Reply = styled.div`
   }
   .ReplyCnt {
     padding: 0 17px;
-    margin-bottom: 9px;
+    margin-bottom: 12px;
     span:first-child {
       font-size: 16px;
       font-weight: 800;
