@@ -38,7 +38,7 @@ export default (props) => {
                 className="slide-wrap"
                 key={`dj-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb80x80']})`}}></div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
                 <div className="nickname">{nickNm}</div>
                 {idx > 2 ? (
                   <div className="counting">{rank}</div>
@@ -58,7 +58,7 @@ export default (props) => {
                 className="slide-wrap"
                 key={`fan-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb80x80']})`}}></div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
                 <div className="nickname">{nickNm}</div>
                 {idx > 2 ? (
                   <div className="counting">{rank}</div>
