@@ -87,6 +87,13 @@ export default (props) => {
     }
   }
 
+  useEffect(() => {
+    globalCtx.action.updateAttendStamp(false)
+    fetchEventAttendDate()
+    fetchEventAttendWinList()
+    fetchEventAttendLunarDate()
+  }, [])
+
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
@@ -172,6 +179,11 @@ export default (props) => {
       default:
         break
     }
+
+    setInputs({
+      ...inputs,
+      [name]: value
+    })
   }
 
   const clickSaveButton = () => {
@@ -275,13 +287,6 @@ export default (props) => {
 
   const {title} = props.match.params
   if (title === 'winList') return <WinList winList={winList} />
-
-  useEffect(() => {
-    globalCtx.action.updateAttendStamp(false)
-    fetchEventAttendDate()
-    fetchEventAttendWinList()
-    fetchEventAttendLunarDate()
-  }, [])
 
   return (
     <Layout {...props} status="no_gnb">
