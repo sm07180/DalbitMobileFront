@@ -224,6 +224,8 @@ export default () => {
             })
 
             alert(JSON.stringify(loginInfo))
+            alert(loginInfo.code === '-5')
+            alert(loginInfo.data.opMsg)
 
             if (loginInfo.result === 'success') {
               const {memNo} = loginInfo.data
