@@ -138,17 +138,6 @@ export default (props) => {
     [dateType]
   )
 
-  // const levelListView = () => {
-  //   async function feachLevelList() {
-  //     const {result, data} = await Api.get_level_ranking()
-  //     if (result === 'success') {
-  //       const {list} = data
-  //       setLevelList(list)
-  //     }
-  //   }
-  //   feachLevelList()
-  // }
-
   /** About Scroll bottom  */
   const records = 50
   const [page, setPage] = useState(1)
@@ -218,6 +207,17 @@ export default (props) => {
     [rankType, dateType, selectedDate, page]
   )
 
+  const initLevelList = useCallback(() => {
+    async function fetchLevelList() {
+      const {result, data} = await Api.get_level_ranking()
+      if (result === 'success') {
+        const {list} = data
+        setLevelList(list)
+      }
+    }
+    fetchLevelList()
+  }, [])
+
   const concatRankList = useCallback(async () => {
     const list = await fetchRankList()
     if (list !== null) {
@@ -238,7 +238,9 @@ export default (props) => {
   }, [rankType, dateType, page])
 
   useEffect(() => {
-    if (rankType !== RANK_TYPE.LEVEL) {
+    if (rankType === RANK_TYPE.LEVEL) {
+      initLevelList()
+    } else {
       initRankList()
     }
   }, [rankType, dateType])
