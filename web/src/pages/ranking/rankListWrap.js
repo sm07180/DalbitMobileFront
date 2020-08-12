@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
@@ -23,7 +23,9 @@ const dateArray = ['오늘', '주간', '월간', '연간']
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
-  const {RANK_TYPE, DATE_TYPE, rankType, dateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
+  const {token} = globalCtx
+  const {RANK_TYPE, DATE_TYPE, rankType, dateType, setDateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
+
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
@@ -35,28 +37,26 @@ export default (props) => {
     rewardDal: 0
   })
   const [popup, setPopup] = useState(false)
-  const [test, setTest] = useState(false)
 
-  const createDateButton = () => {
-    return dateArray.map((item, index) => {
+  const createDateButton = useCallback(() => {
+    const DATE_TYPE_LIST = Object.keys(DATE_TYPE).map((type) => DATE_TYPE[type])
+    return dateArray.map((text, idx) => {
       return (
         <button
-          key={index}
-          className={dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
-          onClick={() => {
-            handleDate('dateType', index + 1)
-          }}>
-          {item}
+          key={`date-type-${idx}`}
+          className={dateType === DATE_TYPE_LIST[idx] ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
+          onClick={() => setDateType(DATE_TYPE_LIST[idx])}>
+          {text}
         </button>
       )
     })
-  }
+  }, [dateType])
 
-  const creatMyRank = () => {
-    if (globalCtx.token.isLogin) {
+  const createMyRank = () => {
+    if (token.isLogin) {
       const settingProfileInfo = async (memNo) => {
         const profileInfo = await Api.profile({
-          params: {memNo: globalCtx.token.memNo}
+          params: {memNo: token.memNo}
         })
         if (profileInfo.result === 'success') {
           setMyProfile(profileInfo.data)
@@ -68,9 +68,9 @@ export default (props) => {
     }
   }
 
-  useEffect(() => {
-    creatMyRank()
-  }, [])
+  // useEffect(() => {
+  //   createMyRank()
+  // }, [])
 
   useEffect(() => {
     formatDate()
@@ -89,49 +89,6 @@ export default (props) => {
         <RankListComponent list={rankList.slice(3)} formData={formData} />
       </>
     )
-  }
-
-  const handleTest = () => {
-    let cy = formData.currentDate.getFullYear()
-    let cm = formData.currentDate.getMonth() + 1
-    let cd = formData.currentDate.getDate()
-    if (formData.dateType === 1) {
-      const cDt = new Date()
-
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 2) {
-      const cDt = convertMonday()
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 3) {
-      const cDt = convertMonth()
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return false
-    }
   }
 
   const createMyProfile = () => {
@@ -266,86 +223,12 @@ export default (props) => {
     }
   }
 
-  const convertMonday = () => {
-    let toDay = new Date()
-    const day = toDay.getDay()
-    let c = 0
-
-    if (day === 0) {
-      c = 1
-    } else if (day === 1) {
-      c = 0
-    } else {
-      c = 1 - day
-    }
-    toDay.setDate(toDay.getDate() + c)
-    return toDay
-  }
-
-  const convertMonth = () => {
-    let today = new Date()
-
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1
-
-    return new Date(`${year}-0${month}-01`)
-  }
-
-  const handlePrevLast = () => {
-    let cy = formData.currentDate.getFullYear()
-    let cm = formData.currentDate.getMonth() + 1
-    let cd = formData.currentDate.getDate()
-    if (dateType === DATE_TYPE.DAY) {
-      const cDt = new Date('2020-07-01')
-
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (dateType === DATE_TYPE.WEEK) {
-      const cDt = new Date('2020-07-06')
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (dateType === DATE_TYPE.MONTH) {
-      const cDt = new Date('2020-07-01')
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return false
-    }
-  }
-
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
 
       <div className="detailView">
-        <button
-          className={`prevButton ${handlePrevLast() && 'active'}`}
-          onClick={() => {
-            if (handlePrevLast()) {
-              handleDate('currentDate', 'back')
-            }
-          }}>
+        <button className={`prevButton`} onClick={() => {}}>
           이전
         </button>
 
@@ -354,22 +237,15 @@ export default (props) => {
             {dateTitle.header}
             <img
               src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              alt="benefit"
               className="benefitSize"
-              onClick={() => {
-                // history.push('/rank/guide?guideType=benefit')
-              }}
+              onClick={() => {}}
             />
           </div>
           <span>{dateTitle.date}</span>
         </div>
 
-        <button
-          className={`nextButton ${handleTest() && 'active'}`}
-          onClick={() => {
-            if (handleTest()) {
-              handleDate('currentDate', 'front')
-            }
-          }}>
+        <button className={`nextButton`} onClick={() => {}}>
           다음
         </button>
       </div>
