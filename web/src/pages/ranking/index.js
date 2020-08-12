@@ -233,6 +233,7 @@ export default (props) => {
     if (list !== null) {
       setPage(page + 1)
       setRankList(list)
+      setScrollBottomFinish(false)
     }
   }, [rankType, dateType, page])
 

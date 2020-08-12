@@ -73,7 +73,7 @@ export default (props) => {
   // }, [])
 
   useEffect(() => {
-    formatDate()
+    // formatDate()
   }, [myInfo])
 
   const createResult = () => {
