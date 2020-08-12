@@ -18,10 +18,7 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-// const dateArray = ['오늘', '주간', '월간']
 const dateArray = ['오늘', '주간', '월간', '연간']
-
-let moreState = false
 
 export default (props) => {
   const history = useHistory()
@@ -369,7 +366,7 @@ export default (props) => {
               src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
               className="benefitSize"
               onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
+                // history.push('/rank/guide?guideType=benefit')
               }}
             />
           </div>

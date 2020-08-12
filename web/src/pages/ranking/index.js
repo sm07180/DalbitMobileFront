@@ -8,36 +8,36 @@ import Api from 'context/api'
 import Layout from 'pages/common/layout'
 import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
+import LayerPopup from './layer_popup'
 import RankGuide from './guide/rank_guide'
-import './ranking.scss'
 
 //statc
 import backBtn from './static/ic_back.svg'
-
-const rankArray = ['dj', 'fan', 'level']
+import './ranking.scss'
 
 const DATE_TYPE = {
   day: 1,
   week: 2,
-  month: 3
+  month: 3,
+  year: 4
 }
+const rankTypeList = ['dj', 'fan', 'level']
 
 export default (props) => {
   const history = useHistory()
+  const context = useContext(Context)
 
   const [rankType, setRankType] = useState('dj')
   const [dateType, setDateType] = useState(0)
+  const [popup, setPopup] = useState(false)
+  const [rankList, setRankList] = useState([])
+  const [levelList, setLevelList] = useState([])
+
   const [formData, setFormData] = useState({
     rankType: 'dj',
     dateType: DATE_TYPE['day'],
     currentDate: new Date()
   })
-
-  const [levelList, setLevelList] = useState([])
-  const [rakingDate, setRakingDate] = useState({
-    date: ''
-  })
-
   const [myInfo, setMyInfo] = useState({
     isReward: false,
     myGiftPoint: 0,
@@ -51,17 +51,7 @@ export default (props) => {
     time: ''
   })
 
-  const [popup, setPopup] = useState(false)
-  const [rankList, setRankList] = useState([])
-
-  const context = useContext(Context)
-
-  let typeState = props.location.state
-
-  const goBack = () => {
-    history.goBack()
-  }
-
+  /** popup */
   const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
@@ -83,20 +73,13 @@ export default (props) => {
   }, [popup])
 
   useEffect(() => {
-    if (history.location.search !== '') {
-      // const search = history.location.search.split('&')
-      // setFormData({
-      //   ...formData,
-      //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
-      //   dateType: parseInt(search[1].split('=')[1])
-      // })
-    }
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
+  /** popup */
 
   const convertMonday = () => {
     let toDay = new Date()
@@ -126,34 +109,36 @@ export default (props) => {
     }
   }
 
-  const createRankButton = () => {
-    return rankArray.map((item, index) => {
-      const createDateButtonItem = () => {
-        if (item === 'dj') {
-          return <>DJ</>
-        } else if (item === 'fan') {
-          return <>팬</>
-        } else if (item === 'level') {
-          return <>레벨</>
+  const createRankButton = () =>
+    useCallback(
+      rankTypeList.map((rType, idx) => {
+        const createDateButtonItem = () => {
+          if (rType === 'dj') {
+            return 'DJ'
+          } else if (rType === 'fan') {
+            return '팬'
+          } else if (rType === 'level') {
+            return '레벨'
+          }
         }
-      }
 
-      return (
-        <button
-          key={index}
-          className={formData.rankType === item ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-          onClick={() => {
-            setFormData({
-              rankType: item,
-              dateType: DATE_TYPE['day'],
-              currentDate: new Date()
-            })
-          }}>
-          {createDateButtonItem()}
-        </button>
-      )
-    })
-  }
+        return (
+          <button
+            key={`type-${idx}`}
+            className={formData.rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+            onClick={() => {
+              setFormData({
+                rankType: rType,
+                dateType: DATE_TYPE['day'],
+                currentDate: new Date()
+              })
+            }}>
+            {createDateButtonItem()}
+          </button>
+        )
+      }),
+      [formData]
+    )
 
   const handleEv = (something, value) => {
     let someDate
@@ -230,12 +215,6 @@ export default (props) => {
     }
   }
 
-  //가이드에 따른 분기
-  // const {title} = props.match.params
-  // if (title === 'guide') {
-  //   return <RankGuide />
-  // }
-
   const rankCategory = () => {
     const current = formData.currentDate
     let formYear = current.getFullYear()
@@ -289,7 +268,6 @@ export default (props) => {
   }
 
   /** About Scroll bottom  */
-
   const records = 10
   const [page, setPage] = useState(1)
   const [scrollBottom, setScrollBottom] = useState(false)
@@ -392,12 +370,14 @@ export default (props) => {
     }
   }, [scrollBottom, scrollBottomFinish])
 
+  /** About Scroll bottom  */
+
   return (
     <Layout {...props} status="no_gnb">
       <div id="ranking-page">
         <div className="header">
           <h1 className="header__title">랭킹</h1>
-          <button className="header__btnBack" onClick={goBack}>
+          <button className="header__btnBack" onClick={() => history.goBack()}>
             <img src={backBtn} alt="뒤로가기" />
           </button>
         </div>
@@ -405,7 +385,7 @@ export default (props) => {
         <div>
           <div className="rankTopBox respansiveBox">
             <div className="rankTab">{createRankButton()}</div>
-            <div className="rankTopBox__update">{rankType !== 'level' && rankCategory()}</div>
+            <div className="rankTopBox__update">{rankCategory()}</div>
           </div>
 
           {formData.rankType === 'level' ? (
@@ -416,12 +396,11 @@ export default (props) => {
               rankList={rankList}
               formData={formData}
               handleEv={handleEv}
-              tyate={typeState}
               myInfo={myInfo}
               setMyInfo={setMyInfo}
             />
           )}
-          {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
+          {popup && <LayerPopup setPopup={setPopup} />}
         </div>
       </div>
     </Layout>
