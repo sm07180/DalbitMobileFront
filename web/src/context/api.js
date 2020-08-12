@@ -62,11 +62,12 @@ export default class API {
    */
   static broad_join = async (obj) => {
     const {data} = obj || {}
-    if (__NODE_ENV === 'dev') {
-      return await ajax({url: `/broad/vw/join`, method: 'POST', data: data})
-    } else {
-      return await ajax({url: `/broad/join`, method: 'POST', data: data})
-    }
+    // if (__NODE_ENV === 'dev') {
+    //   return await ajax({url: `/broad/vw/join`, method: 'POST', data: data})
+    // } else {
+    //   return await ajax({url: `/broad/join`, method: 'POST', data: data})
+    // }
+    return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
   /**
    * @brief 방송방 나가기
