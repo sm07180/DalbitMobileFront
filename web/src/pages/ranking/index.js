@@ -31,7 +31,8 @@ const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
 export default (props) => {
   const history = useHistory()
-  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {profile} = globalCtx
 
   const [rankType, setRankType] = useState(RANK_TYPE.DJ)
   const [dateType, setDateType] = useState(DATE_TYPE.DAY)
@@ -156,7 +157,9 @@ export default (props) => {
 
   const fetchRankList = useCallback(
     async (init = false) => {
-      setFetching(true)
+      if (init === true) {
+        setFetching(true)
+      }
 
       const year = selectedDate.getFullYear()
       const month = (() => {
@@ -206,7 +209,7 @@ export default (props) => {
 
         return data.list
       } else if (result === 'fail') {
-        context.action.alert({
+        globalCtx.action.alert({
           msg: message
         })
         return null
@@ -228,9 +231,10 @@ export default (props) => {
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
     if (list !== null) {
+      setPage(page + 1)
       setRankList(list)
     }
-  }, [rankType, dateType])
+  }, [rankType, dateType, page])
 
   useEffect(() => {
     if (rankType !== RANK_TYPE.LEVEL) {
