@@ -223,7 +223,9 @@ export default () => {
               data: google_result.data
             })
 
+            alert('ㅇㅇㅇ')
             alert(JSON.stringify(loginInfo))
+            alert(loginInfo.code)
             alert(loginInfo.code === '-5')
             alert(loginInfo.data.opMsg)
 
