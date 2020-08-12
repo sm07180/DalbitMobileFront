@@ -207,17 +207,6 @@ export default (props) => {
     [rankType, dateType, selectedDate, page]
   )
 
-  const initLevelList = useCallback(() => {
-    async function fetchLevelList() {
-      const {result, data} = await Api.get_level_ranking()
-      if (result === 'success') {
-        const {list} = data
-        setLevelList(list)
-      }
-    }
-    fetchLevelList()
-  }, [])
-
   const concatRankList = useCallback(async () => {
     const list = await fetchRankList()
     if (list !== null) {
@@ -236,6 +225,19 @@ export default (props) => {
       setScrollBottomFinish(false)
     }
   }, [rankType, dateType, page])
+
+  const initLevelList = useCallback(() => {
+    async function fetchLevelList() {
+      const {result, data} = await Api.get_level_ranking()
+      if (result === 'success') {
+        const {list} = data
+        setPage(2)
+        setLevelList(list)
+        setScrollBottomFinish(false)
+      }
+    }
+    fetchLevelList()
+  }, [])
 
   useEffect(() => {
     if (rankType === RANK_TYPE.LEVEL) {
