@@ -46,57 +46,46 @@ export default (props) => {
     }
   }
 
-  useEffect(() => {
-    globalCtx.action.updateAttendStamp(false)
-
-    async function fetchEventAttendDate() {
-      const {result, data} = await API.postEventAttend()
-      if (result === 'success') {
-        const {status, dateList, summary} = data
-        setSummaryList(summary)
-        setStatusList(status)
-        //타이머맞추기
-        if (status.phone_input === '1') {
-          intervalFormatter(status.input_enddate)
-        }
-
-        setDateList(dateList)
-      } else {
-        //실패\
-        setStatusList({bonus: '0'})
-        setDateList([{0: {}}])
+  async function fetchEventAttendDate() {
+    const {result, data} = await API.postEventAttend()
+    if (result === 'success') {
+      const {status, dateList, summary} = data
+      setSummaryList(summary)
+      setStatusList(status)
+      //타이머맞추기
+      if (status.phone_input === '1') {
+        intervalFormatter(status.input_enddate)
       }
-    }
-    fetchEventAttendDate()
-  }, [])
 
-  useEffect(() => {
-    async function fetchEventAttendWinList() {
-      const {result, data, message} = await API.getEventAttendWinList()
-      if (result === 'success') {
-        const {list} = data
-        if (list.length > 0) setWinList(list)
-      } else {
-        globalCtx.action.alert({
-          msg: message
-        })
-      }
+      setDateList(dateList)
+    } else {
+      //실패\
+      setStatusList({bonus: '0'})
+      setDateList([{0: {}}])
     }
-    fetchEventAttendWinList()
-  }, [])
+  }
 
-  useEffect(() => {
-    async function fetchEventAttendLunarDate() {
-      const {result, data} = await API.getEventAttendLunarDate()
-      if (result === 'success') {
-        const {lunarDt} = data
-        setLunarDate(lunarDt)
-      } else {
-        //실패
-      }
+  async function fetchEventAttendWinList() {
+    const {result, data, message} = await API.getEventAttendWinList()
+    if (result === 'success') {
+      const {list} = data
+      if (list.length > 0) setWinList(list)
+    } else {
+      globalCtx.action.alert({
+        msg: message
+      })
     }
-    fetchEventAttendLunarDate()
-  }, [])
+  }
+
+  async function fetchEventAttendLunarDate() {
+    const {result, data} = await API.getEventAttendLunarDate()
+    if (result === 'success') {
+      const {lunarDt} = data
+      setLunarDate(lunarDt)
+    } else {
+      //실패
+    }
+  }
 
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
@@ -183,11 +172,6 @@ export default (props) => {
       default:
         break
     }
-
-    setInputs({
-      ...inputs,
-      [name]: value
-    })
   }
 
   const clickSaveButton = () => {
@@ -291,6 +275,13 @@ export default (props) => {
 
   const {title} = props.match.params
   if (title === 'winList') return <WinList winList={winList} />
+
+  useEffect(() => {
+    globalCtx.action.updateAttendStamp(false)
+    fetchEventAttendDate()
+    fetchEventAttendWinList()
+    fetchEventAttendLunarDate()
+  }, [])
 
   return (
     <Layout {...props} status="no_gnb">
