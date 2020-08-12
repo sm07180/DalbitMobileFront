@@ -247,6 +247,7 @@ export default () => {
               const profileInfo = await Api.profile({params: {memNo}})
 
               if (profileInfo.result === 'success') {
+                alert('로그인 성공')
                 if (webview && webview === 'new') {
                   Hybrid('GetLoginTokenNewWin', loginInfo.data)
                 } else {
@@ -268,6 +269,7 @@ export default () => {
                 return (window.location.href = '/')
               }
             } else if (loginInfo.code + '' == '1') {
+              alert('이거 뜨면 큰일남.')
               if (webview && webview === 'new') {
                 //TODO: 추후 웹브릿지 연결
                 window.location.replace('/signup?' + qs.stringify(google_result.data) + '&webview=new')
@@ -276,9 +278,11 @@ export default () => {
               }
             } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
               let msg = loginInfo.data.opMsg
+              alert(1);
               if (msg === undefined || msg === null || msg === '') {
                 msg = loginInfo.message
               }
+              alert(2);
               globalCtx.action.alert({
                 title: '달빛라이브 사용 제한',
                 msg: `${msg}`,
@@ -288,6 +292,7 @@ export default () => {
                   }
                 }
               })
+              alert(3);
             } else if (loginInfo.code === '-6') {
               context.action.confirm({
                 msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
