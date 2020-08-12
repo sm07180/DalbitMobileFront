@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 
 import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
@@ -33,6 +33,8 @@ export default (props) => {
   const [lunarDate, setLunarDate] = useState('')
   const [winList, setWinList] = useState(false)
 
+  const phoneInput = useRef()
+
   const swiperParams = {
     loop: true,
     direction: 'vertical',
@@ -44,57 +46,46 @@ export default (props) => {
     }
   }
 
-  useEffect(() => {
-    globalCtx.action.updateAttendStamp(false)
-
-    async function fetchEventAttendDate() {
-      const {result, data} = await API.postEventAttend()
-      if (result === 'success') {
-        const {status, dateList, summary} = data
-        setSummaryList(summary)
-        setStatusList(status)
-        //타이머맞추기
-        if (status.phone_input === '1') {
-          intervalFormatter(status.input_enddate)
-        }
-
-        setDateList(dateList)
-      } else {
-        //실패\
-        setStatusList({bonus: '0'})
-        setDateList([{0: {}}])
+  async function fetchEventAttendDate() {
+    const {result, data} = await API.postEventAttend()
+    if (result === 'success') {
+      const {status, dateList, summary} = data
+      setSummaryList(summary)
+      setStatusList(status)
+      //타이머맞추기
+      if (status.phone_input === '1') {
+        intervalFormatter(status.input_enddate)
       }
-    }
-    fetchEventAttendDate()
-  }, [])
 
-  useEffect(() => {
-    async function fetchEventAttendWinList() {
-      const {result, data, message} = await API.getEventAttendWinList()
-      if (result === 'success') {
-        const {list} = data
-        if (list.length > 0) setWinList(list)
-      } else {
-        globalCtx.action.alert({
-          msg: message
-        })
-      }
+      setDateList(dateList)
+    } else {
+      //실패\
+      setStatusList({bonus: '0'})
+      setDateList([{0: {}}])
     }
-    fetchEventAttendWinList()
-  }, [])
+  }
 
-  useEffect(() => {
-    async function fetchEventAttendLunarDate() {
-      const {result, data} = await API.getEventAttendLunarDate()
-      if (result === 'success') {
-        const {lunarDt} = data
-        setLunarDate(lunarDt)
-      } else {
-        //실패
-      }
+  async function fetchEventAttendWinList() {
+    const {result, data, message} = await API.getEventAttendWinList()
+    if (result === 'success') {
+      const {list} = data
+      if (list.length > 0) setWinList(list)
+    } else {
+      globalCtx.action.alert({
+        msg: message
+      })
     }
-    fetchEventAttendLunarDate()
-  }, [])
+  }
+
+  async function fetchEventAttendLunarDate() {
+    const {result, data} = await API.getEventAttendLunarDate()
+    if (result === 'success') {
+      const {lunarDt} = data
+      setLunarDate(lunarDt)
+    } else {
+      //실패
+    }
+  }
 
   const attendDateIn = () => {
     async function fetchEventAttendDateIn() {
@@ -111,12 +102,18 @@ export default (props) => {
           if (status.gifticon_win === '1') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
-              buttonMsg: `휴대폰 번호 입력하기`
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
             })
           } else if (status.gifticon_win === '2') {
             globalCtx.action.alert({
               msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken_pop@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
-              buttonMsg: `휴대폰 번호 입력하기`
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
             })
           } else {
             globalCtx.action.alert({
@@ -229,7 +226,7 @@ export default (props) => {
     if (!date) return null
 
     //let time = +new Date(date)
-    let time = +new Date(date.replace(/-/g, "/"))
+    let time = +new Date(date.replace(/-/g, '/'))
     let now = +new Date()
     let test = (time - now) / 1000
 
@@ -260,6 +257,7 @@ export default (props) => {
             name="phone"
             value={phone}
             onChange={inputHandle}
+            ref={phoneInput}
           />
           <button onClick={clickSaveButton}>저장</button>
         </div>
@@ -277,6 +275,13 @@ export default (props) => {
 
   const {title} = props.match.params
   if (title === 'winList') return <WinList winList={winList} />
+
+  useEffect(() => {
+    globalCtx.action.updateAttendStamp(false)
+    fetchEventAttendDate()
+    fetchEventAttendWinList()
+    fetchEventAttendLunarDate()
+  }, [])
 
   return (
     <Layout {...props} status="no_gnb">
