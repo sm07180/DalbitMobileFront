@@ -283,7 +283,7 @@ export default () => {
                 msg = loginInfo.message
               }
               alert(2);
-              globalCtx.action.alert({
+              context.action.alert({
                 title: '달빛라이브 사용 제한',
                 msg: `${msg}`,
                 callback: () => {
