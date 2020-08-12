@@ -22,8 +22,8 @@ const dateArray = ['오늘', '주간', '월간', '연간']
 
 export default (props) => {
   const history = useHistory()
-  const context = useContext(Context)
-  const {DATE_TYPE, rankList, formData, handleEv, myInfo, setMyInfo} = props
+  const globalCtx = useContext(Context)
+  const {RANK_TYPE, DATE_TYPE, rankType, dateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
@@ -42,9 +42,9 @@ export default (props) => {
       return (
         <button
           key={index}
-          className={formData.dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
+          className={dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
           onClick={() => {
-            handleEv('dateType', index + 1)
+            handleDate('dateType', index + 1)
           }}>
           {item}
         </button>
@@ -53,10 +53,10 @@ export default (props) => {
   }
 
   const creatMyRank = () => {
-    if (context.token.isLogin) {
+    if (globalCtx.token.isLogin) {
       const settingProfileInfo = async (memNo) => {
         const profileInfo = await Api.profile({
-          params: {memNo: context.token.memNo}
+          params: {memNo: globalCtx.token.memNo}
         })
         if (profileInfo.result === 'success') {
           setMyProfile(profileInfo.data)
@@ -154,16 +154,12 @@ export default (props) => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
-  //clickState === 1 :탭 버튼이 변경되었을 경우
-  //clickState === 2 :보상받기를 클릭했을 경우
   const rankingReward = (clickState) => {
-    if (formData.dateType === 0) return null
-
-    async function feachrankingReward() {
+    async function feachRankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: formData.rankType === 'dj' ? 1 : 2,
-          rankType: formData.dateType
+          rankSlct: rankType,
+          rankType: dateType
         }
       })
 
@@ -174,14 +170,14 @@ export default (props) => {
         setRewardPop(data)
       } else {
         if (clickState === 2) {
-          return context.action.alert({
+          return globalCtx.action.alert({
             msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
           })
         }
         setMyInfo({...myInfo, isReward: false})
       }
     }
-    feachrankingReward()
+    feachRankingReward()
   }
 
   const formatDate = () => {
@@ -195,7 +191,7 @@ export default (props) => {
     let month = cDate.getMonth() + 1
     let date = cDate.getDate()
 
-    if (formData.dateType === 1) {
+    if (dateType === DATE_TYPE.DAY) {
       if (year === formYear && month === formMonth && formDate === date) {
         setDateTitle({
           header: '오늘',
@@ -212,7 +208,7 @@ export default (props) => {
           date: `${formYear}.${formMonth}.${formDate}`
         })
       }
-    } else if (formData.dateType === 2) {
+    } else if (dateType === DATE_TYPE.WEEK) {
       const currentWeek = convertMonday()
       year = currentWeek.getFullYear()
       month = currentWeek.getMonth() + 1
@@ -245,7 +241,7 @@ export default (props) => {
           date: myInfo.time
         })
       }
-    } else if (formData.dateType === 3) {
+    } else if (dateType === DATE_TYPE.MONTH) {
       if (year === formYear && month === formMonth) {
         setDateTitle({
           header: '이번달',
@@ -299,7 +295,7 @@ export default (props) => {
     let cy = formData.currentDate.getFullYear()
     let cm = formData.currentDate.getMonth() + 1
     let cd = formData.currentDate.getDate()
-    if (formData.dateType === 1) {
+    if (dateType === DATE_TYPE.DAY) {
       const cDt = new Date('2020-07-01')
 
       let ye = cDt.getFullYear()
@@ -311,7 +307,7 @@ export default (props) => {
       } else {
         return true
       }
-    } else if (formData.dateType === 2) {
+    } else if (dateType === DATE_TYPE.WEEK) {
       const cDt = new Date('2020-07-06')
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -322,7 +318,7 @@ export default (props) => {
       } else {
         return true
       }
-    } else if (formData.dateType === 3) {
+    } else if (dateType === DATE_TYPE.MONTH) {
       const cDt = new Date('2020-07-01')
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -347,7 +343,7 @@ export default (props) => {
           className={`prevButton ${handlePrevLast() && 'active'}`}
           onClick={() => {
             if (handlePrevLast()) {
-              handleEv('currentDate', 'back')
+              handleDate('currentDate', 'back')
             }
           }}>
           이전
@@ -371,7 +367,7 @@ export default (props) => {
           className={`nextButton ${handleTest() && 'active'}`}
           onClick={() => {
             if (handleTest()) {
-              handleEv('currentDate', 'front')
+              handleDate('currentDate', 'front')
             }
           }}>
           다음
@@ -383,8 +379,8 @@ export default (props) => {
           <div>
             <div className="rewordBox">
               <p className="rewordBox__top">
-                {formData.dateType === 1 ? '일간' : '주간'} {formData.rankType === 'dj' ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
-                <span>축하합니다</span>
+                {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}
+                위 <span>축하합니다</span>
               </p>
 
               <div className="rewordBox__character1"></div>
@@ -435,7 +431,7 @@ export default (props) => {
                     <div className="profileItme">
                       <p className="nickNameBox">{myProfile.nickNm}</p>
                       <div className="countBox countBox--profile">
-                        {formData.rankType == 'dj' && (
+                        {rankType == RANK_TYPE.DJ && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -461,7 +457,7 @@ export default (props) => {
                             </div>
                           </>
                         )}
-                        {formData.rankType == 'fan' && (
+                        {rankType === RANK_TYPE.FAN && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">

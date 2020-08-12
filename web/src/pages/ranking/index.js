@@ -16,9 +16,9 @@ import backBtn from './static/ic_back.svg'
 import './ranking.scss'
 
 const RANK_TYPE = {
-  DJ: 'dj',
-  FAN: 'fan',
-  LEVEL: 'level'
+  DJ: 1,
+  FAN: 2,
+  LEVEL: 3
 }
 const DATE_TYPE = {
   DAY: 1,
@@ -34,6 +34,7 @@ export default (props) => {
 
   const [rankType, setRankType] = useState(RANK_TYPE.DJ)
   const [dateType, setDateType] = useState(DATE_TYPE.DAY)
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [popup, setPopup] = useState(false)
   const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
@@ -113,8 +114,8 @@ export default (props) => {
     }
   }
 
-  const handleEv = (something, value) => {
-    const handleDate = (some) => {
+  const handleDate = (something, value) => {
+    const dateFormatter = (some) => {
       let day = formData.currentDate
       let year = day.getFullYear()
       let month = day.getMonth() + 1
@@ -157,35 +158,35 @@ export default (props) => {
       }
     }
 
-    let someDate
-    switch (something) {
-      case 'dateType':
-        if (value === DATE_TYPE.WEEK) {
-          someDate = convertMonday()
-        } else if (value === DATE_TYPE.DAY) {
-          someDate = new Date()
-        } else {
-          someDate = convertMonth()
-        }
+    // let someDate
+    // switch (something) {
+    //   case 'dateType':
+    //     if (value === DATE_TYPE.WEEK) {
+    //       someDate = convertMonday()
+    //     } else if (value === DATE_TYPE.DAY) {
+    //       someDate = new Date()
+    //     } else {
+    //       someDate = convertMonth()
+    //     }
 
-        setFormData({
-          ...formData,
-          dateType: value,
-          currentDate: someDate
-        })
-        break
-      case 'currentDate':
-        someDate = handleDate(value)
-        setFormData({
-          ...formData,
-          currentDate: someDate
-        })
-        break
-      default:
-        setFormData({
-          ...formData
-        })
-    }
+    //     setFormData({
+    //       ...formData,
+    //       dateType: value,
+    //       currentDate: someDate
+    //     })
+    //     break
+    //   case 'currentDate':
+    //     someDate = dateFormatter(value)
+    //     setFormData({
+    //       ...formData,
+    //       currentDate: someDate
+    //     })
+    //     break
+    //   default:
+    //     setFormData({
+    //       ...formData
+    //     })
+    // }
   }
 
   // const levelListView = () => {
@@ -205,67 +206,62 @@ export default (props) => {
   const [scrollBottom, setScrollBottom] = useState(false)
   const [scrollBottomFinish, setScrollBottomFinish] = useState(false)
 
-  const fetchRank = useCallback(
-    async (type, dateType, next) => {
-      const month = (() => {
-        let month = formData.currentDate.getMonth() + 1
-        if (month < 10) {
-          month = '0' + month
-        }
-        return month
-      })()
+  const fetchRankList = useCallback(async () => {
+    const year = selectedDate.getFullYear()
+    const month = (() => {
+      let month = selectedDate.getMonth() + 1
+      if (month < 10) {
+        month = '0' + month
+      }
+      return month
+    })()
+    const date = (() => {
+      let date = selectedDate.getDate()
+      if (date < 10) {
+        date = '0' + date
+      }
+      return date
+    })()
 
-      const date = (() => {
-        let date = formData.currentDate.getDate()
-        if (date < 10) {
-          date = '0' + date
-        }
-        return date
-      })()
+    const {result, data} = await Api.get_ranking({
+      param: {
+        rankSlct: rankType,
+        rankType: dateType,
+        rankingDate: `${year}-${month}-${date}`,
+        page,
+        records
+      }
+    })
 
-      const res = await Api.get_ranking({
-        param: {
-          rankSlct: formData.rankType === RANK_TYPE.DJ ? 1 : 2,
-          rankType: formData.dateType,
-          rankingDate: `${formData.currentDate.getFullYear()}-${month}-${date}`,
-          page,
-          records
-        }
+    if (result === 'success' && _.hasIn(data, 'list')) {
+      setMyInfo({
+        isReward: data.isReward,
+        myGiftPoint: data.myGiftPoint,
+        myListenerPoint: data.myListenerPoint,
+        myRank: data.myRank,
+        myUpDown: data.myUpDown,
+        myBroadPoint: data.myBroadPoint,
+        myLikePoint: data.myLikePoint,
+        myPoint: data.myPoint,
+        myListenPoint: data.myListenPoint,
+        time: data.time
       })
 
-      if (res.result === 'success' && _.hasIn(res, 'data.list')) {
-        const {data} = res
-
-        setMyInfo({
-          isReward: res.data.isReward,
-          myGiftPoint: res.data.myGiftPoint,
-          myListenerPoint: res.data.myListenerPoint,
-          myRank: res.data.myRank,
-          myUpDown: res.data.myUpDown,
-          myBroadPoint: res.data.myBroadPoint,
-          myLikePoint: res.data.myLikePoint,
-          myPoint: res.data.myPoint,
-          myListenPoint: res.data.myListenPoint,
-          time: res.data.time
-        })
-
-        if (data.list.length < records) {
-          setScrollBottomFinish(true)
-        }
-
-        return data.list
-      } else if (res.result === 'fail') {
-        context.action.alert({
-          msg: res.message
-        })
-        return null
+      if (data.list.length < records) {
+        setScrollBottomFinish(true)
       }
-    },
-    [formData, page]
-  )
+
+      return data.list
+    } else if (result === 'fail') {
+      context.action.alert({
+        msg: message
+      })
+      return null
+    }
+  }, [rankType, dateType, selectedDate, page])
 
   const concatRankList = useCallback(async () => {
-    const list = await fetchRank()
+    const list = await fetchRankList()
     if (list !== null) {
       const newList = rankList.concat(list)
       setRankList(newList)
@@ -343,10 +339,12 @@ export default (props) => {
           <RankListWrap
             RANK_TYPE={RANK_TYPE}
             DATE_TYPE={DATE_TYPE}
+            rankType={rankType}
+            dateType={dateType}
             rankList={rankList}
             formData={formData}
-            handleEv={handleEv}
             myInfo={myInfo}
+            handleDate={handleDate}
             setMyInfo={setMyInfo}
           />
         )}
