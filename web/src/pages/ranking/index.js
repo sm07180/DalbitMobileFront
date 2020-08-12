@@ -15,27 +15,32 @@ import RankGuide from './guide/rank_guide'
 import backBtn from './static/ic_back.svg'
 import './ranking.scss'
 
-const DATE_TYPE = {
-  day: 1,
-  week: 2,
-  month: 3,
-  year: 4
+const RANK_TYPE = {
+  DJ: 'dj',
+  FAN: 'fan',
+  LEVEL: 'level'
 }
-const rankTypeList = ['dj', 'fan', 'level']
+const DATE_TYPE = {
+  DAY: 1,
+  WEEK: 2,
+  MONTH: 3,
+  YEAR: 4
+}
+const rankTypeList = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
 export default (props) => {
   const history = useHistory()
   const context = useContext(Context)
 
-  const [rankType, setRankType] = useState('dj')
-  const [dateType, setDateType] = useState(0)
+  const [rankType, setRankType] = useState(RANK_TYPE.DJ)
+  const [dateType, setDateType] = useState(DATE_TYPE.DAY)
   const [popup, setPopup] = useState(false)
   const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
 
   const [formData, setFormData] = useState({
-    rankType: 'dj',
-    dateType: DATE_TYPE['day'],
+    rankType: RANK_TYPE.DJ,
+    dateType: DATE_TYPE.DAY,
     currentDate: new Date()
   })
   const [myInfo, setMyInfo] = useState({
@@ -79,7 +84,6 @@ export default (props) => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-  /** popup */
 
   const convertMonday = () => {
     let toDay = new Date()
@@ -109,44 +113,56 @@ export default (props) => {
     }
   }
 
-  const createRankButton = () =>
-    useCallback(
-      rankTypeList.map((rType, idx) => {
-        const createDateButtonItem = () => {
-          if (rType === 'dj') {
-            return 'DJ'
-          } else if (rType === 'fan') {
-            return '팬'
-          } else if (rType === 'level') {
-            return '레벨'
-          }
-        }
-
-        return (
-          <button
-            key={`type-${idx}`}
-            className={formData.rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-            onClick={() => {
-              setFormData({
-                rankType: rType,
-                dateType: DATE_TYPE['day'],
-                currentDate: new Date()
-              })
-            }}>
-            {createDateButtonItem()}
-          </button>
-        )
-      }),
-      [formData]
-    )
-
   const handleEv = (something, value) => {
+    const handleDate = (some) => {
+      let day = formData.currentDate
+      let year = day.getFullYear()
+      let month = day.getMonth() + 1
+
+      if (some === 'back') {
+        switch (formData.dateType) {
+          case 1:
+            return new Date(day.setDate(day.getDate() - 1))
+
+          case 2:
+            return new Date(day.setDate(day.getDate() - 7))
+          case 3:
+            if (month === 1) {
+              return new Date(`${year - 1}-12-01`)
+            } else {
+              month -= 1
+              if (month < 10) {
+                month = '0' + month
+              }
+              return new Date(`${year}-${month}-01`)
+            }
+        }
+      } else {
+        switch (formData.dateType) {
+          case 1:
+            return new Date(day.setDate(day.getDate() + 1))
+          case 2:
+            return new Date(day.setDate(day.getDate() + 7))
+          case 3:
+            if (month === 12) {
+              return new Date(`${year + 1}-01-01`)
+            } else {
+              month += 1
+              if (month < 10) {
+                month = '0' + month
+              }
+              return new Date(`${year}-${month}-01`)
+            }
+        }
+      }
+    }
+
     let someDate
     switch (something) {
       case 'dateType':
-        if (value === DATE_TYPE['week']) {
+        if (value === DATE_TYPE.WEEK) {
           someDate = convertMonday()
-        } else if (value === DATE_TYPE['day']) {
+        } else if (value === DATE_TYPE.DAY) {
           someDate = new Date()
         } else {
           someDate = convertMonth()
@@ -172,100 +188,16 @@ export default (props) => {
     }
   }
 
-  const handleDate = (some) => {
-    let day1 = formData.currentDate
-    let year = day1.getFullYear()
-    let month = day1.getMonth() + 1
-    let date = day1.getDate()
-    if (some === 'back') {
-      switch (formData.dateType) {
-        case 1:
-          return new Date(day1.setDate(day1.getDate() - 1))
-
-        case 2:
-          return new Date(day1.setDate(day1.getDate() - 7))
-        case 3:
-          if (month === 1) {
-            return new Date(`${year - 1}-12-01`)
-          } else {
-            month -= 1
-            if (month < 10) {
-              month = '0' + month
-            }
-            return new Date(`${year}-${month}-01`)
-          }
-      }
-    } else {
-      switch (formData.dateType) {
-        case 1:
-          return new Date(day1.setDate(day1.getDate() + 1))
-        case 2:
-          return new Date(day1.setDate(day1.getDate() + 7))
-        case 3:
-          if (month === 12) {
-            return new Date(`${year + 1}-01-01`)
-          } else {
-            month += 1
-            if (month < 10) {
-              month = '0' + month
-            }
-            return new Date(`${year}-${month}-01`)
-          }
-      }
-    }
-  }
-
-  const rankCategory = () => {
-    const current = formData.currentDate
-    let formYear = current.getFullYear()
-    let formMonth = current.getMonth() + 1
-    let formDate = current.getDate()
-
-    const cDate = new Date()
-    let year = cDate.getFullYear()
-    let month = cDate.getMonth() + 1
-    let date = cDate.getDate()
-
-    if (formData.rankType === 'level') {
-      return ''
-    } else {
-      if (formData.dateType === DATE_TYPE['day']) {
-        if (year === formYear && month === formMonth && formDate === date) {
-          return '실시간 집계'
-        } else {
-          return ''
-        }
-      } else if (formData.dateType === DATE_TYPE['week']) {
-        const currentWeek = convertMonday()
-        year = currentWeek.getFullYear()
-        month = currentWeek.getMonth() + 1
-        date = currentWeek.getDate()
-
-        if (year === formYear && month === formMonth && formDate === date) {
-          return '실시간 집계'
-        } else {
-          return ''
-        }
-      } else {
-        if (year === formYear && month === formMonth) {
-          return '실시간 집계'
-        } else {
-          return ''
-        }
-      }
-    }
-  }
-
-  const levelListView = () => {
-    async function feachLevelList() {
-      const {result, data} = await Api.get_level_ranking()
-      if (result === 'success') {
-        const {list} = data
-        setLevelList(list)
-      }
-    }
-    feachLevelList()
-  }
+  // const levelListView = () => {
+  //   async function feachLevelList() {
+  //     const {result, data} = await Api.get_level_ranking()
+  //     if (result === 'success') {
+  //       const {list} = data
+  //       setLevelList(list)
+  //     }
+  //   }
+  //   feachLevelList()
+  // }
 
   /** About Scroll bottom  */
   const records = 10
@@ -293,7 +225,7 @@ export default (props) => {
 
       const res = await Api.get_ranking({
         param: {
-          rankSlct: formData.rankType === 'dj' ? 1 : 2,
+          rankSlct: formData.rankType === RANK_TYPE.DJ ? 1 : 2,
           rankType: formData.dateType,
           rankingDate: `${formData.currentDate.getFullYear()}-${month}-${date}`,
           page,
@@ -370,8 +302,6 @@ export default (props) => {
     }
   }, [scrollBottom, scrollBottomFinish])
 
-  /** About Scroll bottom  */
-
   return (
     <Layout {...props} status="no_gnb">
       <div id="ranking-page">
@@ -382,26 +312,45 @@ export default (props) => {
           </button>
         </div>
 
-        <div>
-          <div className="rankTopBox respansiveBox">
-            <div className="rankTab">{createRankButton()}</div>
-            <div className="rankTopBox__update">{rankCategory()}</div>
-          </div>
+        <div className="rankTopBox respansiveBox">
+          <div className="rankTab">
+            {rankTypeList.map((rType, idx) => {
+              const createDateButtonItem = () => {
+                if (rType === RANK_TYPE.DJ) {
+                  return 'DJ'
+                } else if (rType === RANK_TYPE.FAN) {
+                  return '팬'
+                } else if (rType === RANK_TYPE.LEVEL) {
+                  return '레벨'
+                }
+              }
 
-          {formData.rankType === 'level' ? (
-            <LevelList levelList={levelList} />
-          ) : (
-            <RankListWrap
-              DATE_TYPE={DATE_TYPE}
-              rankList={rankList}
-              formData={formData}
-              handleEv={handleEv}
-              myInfo={myInfo}
-              setMyInfo={setMyInfo}
-            />
-          )}
-          {popup && <LayerPopup setPopup={setPopup} />}
+              return (
+                <button
+                  key={`type-${idx}`}
+                  className={rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                  onClick={() => setRankType(rType)}>
+                  {createDateButtonItem()}
+                </button>
+              )
+            })}
+          </div>
         </div>
+
+        {rankType === RANK_TYPE.LEVEL ? (
+          <LevelList levelList={levelList} />
+        ) : (
+          <RankListWrap
+            RANK_TYPE={RANK_TYPE}
+            DATE_TYPE={DATE_TYPE}
+            rankList={rankList}
+            formData={formData}
+            handleEv={handleEv}
+            myInfo={myInfo}
+            setMyInfo={setMyInfo}
+          />
+        )}
+        {popup && <LayerPopup setPopup={setPopup} />}
       </div>
     </Layout>
   )

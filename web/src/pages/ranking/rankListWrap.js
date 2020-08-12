@@ -338,17 +338,11 @@ export default (props) => {
     }
   }
 
-  // useEffect(() => {
-  //   if (!popup) {
-  //     handleEv('')
-  //   }
-  // }, [popup])
-
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
 
-      <div className="detaillView">
+      <div className="detailView">
         <button
           className={`prevButton ${handlePrevLast() && 'active'}`}
           onClick={() => {
