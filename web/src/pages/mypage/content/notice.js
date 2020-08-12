@@ -252,9 +252,9 @@ const Notice = (props) => {
               <ListWrap className="noticeIsTop">
                 {Array.isArray(listPage) &&
                   listPage.map((list, idx) => {
-                    const {isTop, title, contents, writeDt, noticeIdx} = list
+                    const {isTop, title, contents, writeDt, noticeIdx, profImg, nickNm, writeTs} = list
                     return (
-                      <div key={idx}>
+                      <div key={idx} className="listWrap">
                         {isTop === true && (
                           <a className={`idx${noticeIdx}`}>
                             <List
@@ -266,6 +266,9 @@ const Notice = (props) => {
                               writeDt={writeDt}
                               noticeIdx={noticeIdx}
                               numbers={numbers}
+                              nickNm={nickNm}
+                              profImg={profImg}
+                              writeTs={writeTs}
                               toggle={toggler}
                             />
                           </a>
@@ -278,9 +281,9 @@ const Notice = (props) => {
                 {Array.isArray(listPage) ? (
                   listPage.length > 0 ? (
                     listPage.map((list, idx) => {
-                      const {isTop, title, contents, writeDt, noticeIdx} = list
+                      const {isTop, title, contents, writeDt, noticeIdx, nickNm, profImg, writeTs} = list
                       return (
-                        <div key={idx}>
+                        <div key={idx} className="listWrap">
                           {isTop === false && (
                             <a className={`idx${noticeIdx}`}>
                               <List
@@ -288,9 +291,12 @@ const Notice = (props) => {
                                 thisMemNo={thisMemNo}
                                 isTop={isTop}
                                 title={title}
+                                nickNm={nickNm}
+                                profImg={profImg}
                                 contents={contents}
                                 writeDt={writeDt}
                                 noticeIdx={noticeIdx}
+                                writeTs={writeTs}
                                 numbers={numbers}
                                 toggle={toggler}
                               />
@@ -461,6 +467,10 @@ const ListWrap = styled.div`
   }
   .write-btn {
     color: red;
+  }
+
+  .listWrap {
+    position: relative;
   }
 `
 
