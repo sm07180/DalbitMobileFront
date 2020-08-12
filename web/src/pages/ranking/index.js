@@ -150,7 +150,7 @@ export default (props) => {
   // }
 
   /** About Scroll bottom  */
-  const records = 10
+  const records = 50
   const [page, setPage] = useState(1)
   const [scrollBottom, setScrollBottom] = useState(false)
   const [scrollBottomFinish, setScrollBottomFinish] = useState(false)
@@ -231,7 +231,7 @@ export default (props) => {
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
     if (list !== null) {
-      setPage(page + 1)
+      setPage(2)
       setRankList(list)
       setScrollBottomFinish(false)
     }
@@ -253,7 +253,7 @@ export default (props) => {
         return
       }
 
-      const diff = 50
+      const diff = document.body.scrollHeight / 3
       if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
         if (scrollBottom === false) {
           setScrollBottom(true)
