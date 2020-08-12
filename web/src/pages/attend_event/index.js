@@ -266,7 +266,7 @@ export default (props) => {
       </div>
     )
 
-    if (statusList.phone_input === '0') {
+    if (statusList.phone_input === '0' || statusList.phone_input === undefined) {
       return null
     } else {
       return boxHtml
