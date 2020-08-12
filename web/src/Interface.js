@@ -217,11 +217,13 @@ export default () => {
             }
           }
           google_result.data['room_no'] = sessionRoomNo
-          alert(JSON.stringify(google_result))
+          //alert(JSON.stringify(google_result))
           if (google_result.result === 'success') {
             const loginInfo = await Api.member_login({
               data: google_result.data
             })
+
+            alert(JSON.stringify(loginInfo))
 
             if (loginInfo.result === 'success') {
               const {memNo} = loginInfo.data
