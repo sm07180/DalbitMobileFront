@@ -36,6 +36,7 @@ let NewState = {
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+
   //navi Array
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
@@ -153,7 +154,7 @@ export default (props) => {
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} />
+              <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
                   const {type, txt, icon, component} = value

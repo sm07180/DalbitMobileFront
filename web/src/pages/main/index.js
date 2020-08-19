@@ -315,7 +315,7 @@ export default (props) => {
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
-        window.history.back()
+        history.goBack()
         setTimeout(() => window.scrollTo(0, scrollY))
       }
     }

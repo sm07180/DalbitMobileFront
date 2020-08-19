@@ -185,7 +185,10 @@ export default (props) => {
     context.action.updateClose(false)
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
-    history.push(link)
+
+    history.push(link, {
+      hash: window.location.hash
+    })
   }
   return (
     <>

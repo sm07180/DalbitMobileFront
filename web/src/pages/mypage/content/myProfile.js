@@ -42,7 +42,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
   const history = useHistory()
-  const {webview, profile} = props
+  const {webview, profile, locHash} = props
   //context
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, closePresent} = context
@@ -219,8 +219,11 @@ const myProfile = (props) => {
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
-      //window.history.go(-1)
-      history.goBack()
+      if (locHash instanceof Object && locHash.state) {
+        locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
+      } else {
+        history.goBack()
+      }
     }
   }
   //스와이퍼
