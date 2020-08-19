@@ -12,7 +12,7 @@ import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
 
 // constant
-import {RANK_TYPE, DATE_TYPE} from './constant'
+import {RANK_TYPE, DATE_TYPE, DAY_TYPE} from './constant'
 
 //static
 import point from './static/ico-point.png'
@@ -21,20 +21,23 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-const dateArray = ['오늘', '주간', '월간', '연간']
-
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {rankType, dateType, setDateType, rankList, myInfo, handleDate, setMyInfo} = props
+  const {rankType, dateType, setDateType, rankList, myInfo, selectedDate, handleDate, setMyInfo} = props
 
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
   })
-  const [myProfile, setMyProfile] = useState(false)
 
+  const [btnActive, setBtnActive] = useState({
+    prev: false,
+    next: false
+  })
+
+  const [myProfile, setMyProfile] = useState(false)
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
@@ -43,7 +46,7 @@ export default (props) => {
 
   const createDateButton = useCallback(() => {
     const DATE_TYPE_LIST = Object.keys(DATE_TYPE).map((type) => DATE_TYPE[type])
-    return dateArray.map((text, idx) => {
+    return ['오늘', '주간', '월간', '연간'].map((text, idx) => {
       return (
         <button
           key={`date-type-${idx}`}
@@ -55,7 +58,7 @@ export default (props) => {
     })
   }, [dateType])
 
-  const createMyRank = () => {
+  const createMyRank = useCallback(() => {
     if (token.isLogin) {
       const settingProfileInfo = async (memNo) => {
         const profileInfo = await Api.profile({
@@ -69,17 +72,9 @@ export default (props) => {
     } else {
       return null
     }
-  }
+  }, [])
 
-  // useEffect(() => {
-  //   createMyRank()
-  // }, [])
-
-  useEffect(() => {
-    // formatDate()
-  }, [myInfo])
-
-  const createResult = () => {
+  const createResult = useCallback(() => {
     if (Array.isArray(rankList) === false) {
       return null
     }
@@ -92,7 +87,7 @@ export default (props) => {
         <RankListComponent list={rankList.slice(3)} rankType={rankType} dateType={dateType} />
       </>
     )
-  }
+  }, [rankList, rankType, dateType])
 
   const createMyProfile = () => {
     const {myUpDown} = myInfo
@@ -140,94 +135,111 @@ export default (props) => {
     feachRankingReward()
   }
 
-  const formatDate = () => {
-    // const formDt = formData.currentDate
-    // let formYear = formDt.getFullYear()
-    // let formMonth = formDt.getMonth() + 1
-    // let formDate = formDt.getDate()
-    // const cDate = new Date()
-    // let year = cDate.getFullYear()
-    // let month = cDate.getMonth() + 1
-    // let date = cDate.getDate()
-    // if (dateType === DATE_TYPE.DAY) {
-    //   if (year === formYear && month === formMonth && formDate === date) {
-    //     setDateTitle({
-    //       header: '오늘',
-    //       date: ''
-    //     })
-    //   } else if (year === formYear && month === formMonth && formDate === date - 1) {
-    //     setDateTitle({
-    //       header: '어제',
-    //       date: ''
-    //     })
-    //   } else {
-    //     setDateTitle({
-    //       header: '일간 순위',
-    //       date: `${formYear}.${formMonth}.${formDate}`
-    //     })
-    //   }
-    // } else if (dateType === DATE_TYPE.WEEK) {
-    //   const currentWeek = convertMonday()
-    //   year = currentWeek.getFullYear()
-    //   month = currentWeek.getMonth() + 1
-    //   date = currentWeek.getDate()
-    //   const week = convertMonday()
-    //   const weekAgo = new Date(week.setDate(week.getDate() - 7))
-    //   let wYear = weekAgo.getFullYear()
-    //   let wMonth = weekAgo.getMonth() + 1
-    //   let wDate = weekAgo.getDate()
-    //   if (year === formYear && month === formMonth && formDate === date) {
-    //     setDateTitle({
-    //       header: '이번주',
-    //       date: ''
-    //     })
-    //   } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
-    //     setDateTitle({
-    //       header: '지난주',
-    //       date: ''
-    //     })
-    //   } else {
-    //     const a = new Date(formDt.getTime())
-    //     const b = new Date(a.setDate(a.getDate() + 6))
-    //     const rangeMonth = b.getMonth() + 1
-    //     const rangeDate = b.getDate()
-    //     console.log(myInfo.time)
-    //     setDateTitle({
-    //       header: '주간 순위',
-    //       date: myInfo.time
-    //     })
-    //   }
-    // } else if (dateType === DATE_TYPE.MONTH) {
-    //   if (year === formYear && month === formMonth) {
-    //     setDateTitle({
-    //       header: '이번달',
-    //       date: ''
-    //     })
-    //   } else if (year === formYear && month - 1 === formMonth) {
-    //     setDateTitle({
-    //       header: '지난달',
-    //       date: ''
-    //     })
-    //   } else {
-    //     setDateTitle({
-    //       header: '월간 순위',
-    //       date: `${formYear}.${formMonth}`
-    //     })
-    //   }
-    // } else {
-    //   setDateTitle({
-    //     header: `${formYear}년`,
-    //     date: ''
-    //   })
-    // }
-  }
+  const formatDate = useCallback(() => {
+    let selectedYear = selectedDate.getFullYear()
+    let selectedMonth = selectedDate.getMonth() + 1
+    let selectedDay = selectedDate.getDate()
+
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const day = now.getDate()
+
+    if (dateType === DATE_TYPE.DAY) {
+      if (year === selectedYear && month === selectedMonth && day === selectedDay) {
+        setDateTitle({
+          header: '오늘',
+          date: ''
+        })
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month === selectedMonth && day - 1 === selectedDay) {
+        setDateTitle({
+          header: '어제',
+          date: ''
+        })
+        setBtnActive({prev: true, next: true})
+      } else {
+        setDateTitle({
+          header: '일간 순위',
+          date: `${selectedYear}.${selectedMonth}.${selectedDay}`
+        })
+        setBtnActive({prev: true, next: true})
+      }
+    } else if (dateType === DATE_TYPE.WEEK) {
+      //   const currentWeek = convertMonday()
+      //   year = currentWeek.getFullYear()
+      //   month = currentWeek.getMonth() + 1
+      //   date = currentWeek.getDate()
+      //   const week = convertMonday()
+      //   const weekAgo = new Date(week.setDate(week.getDate() - 7))
+      //   let wYear = weekAgo.getFullYear()
+      //   let wMonth = weekAgo.getMonth() + 1
+      //   let wDate = weekAgo.getDate()
+      // if (year === selectedYear && month === selectedMonth && (day === date || day )) {
+      //   setDateTitle({
+      //     header: '이번주',
+      //     date: ''
+      //   })
+      // }
+      //   } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
+      //     setDateTitle({
+      //       header: '지난주',
+      //       date: ''
+      //     })
+      //   } else {
+      //     const a = new Date(formDt.getTime())
+      //     const b = new Date(a.setDate(a.getDate() + 6))
+      //     const rangeMonth = b.getMonth() + 1
+      //     const rangeDate = b.getDate()
+      //     setDateTitle({
+      //       header: '주간 순위',
+      //       date: myInfo.time
+      //     })
+      //   }
+    } else if (dateType === DATE_TYPE.MONTH) {
+      if (year === selectedYear && month === selectedMonth) {
+        setDateTitle({
+          header: '이번달',
+          date: ''
+        })
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month - 1 === selectedMonth) {
+        setDateTitle({
+          header: '지난달',
+          date: ''
+        })
+        setBtnActive({prev: true, next: true})
+      } else {
+        setDateTitle({
+          header: '월간 순위',
+          date: `${selectedYear}.${selectedMonth}`
+        })
+        setBtnActive({prev: true, next: true})
+      }
+    } else if (dateType === DATE_TYPE.YEAR) {
+      setDateTitle({
+        header: `${selectedYear}년`,
+        date: selectedYear
+      })
+      setBtnActive({prev: false, next: false})
+    }
+  }, [dateType, selectedDate])
+
+  useEffect(() => {
+    formatDate()
+  }, [selectedDate])
 
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
-
       <div className="detailView">
-        <button className={`prevButton`} onClick={() => handleDate('prev')}>
+        <button
+          className={`prevButton ${btnActive['prev'] === true ? 'active' : ''}`}
+          onClick={() => {
+            if (btnActive['prev'] === true) {
+              handleDate('prev')
+            }
+          }}>
           이전
         </button>
 
@@ -244,26 +256,30 @@ export default (props) => {
           <span>{dateTitle.date}</span>
         </div>
 
-        <button className={`nextButton`} onClick={() => handleDate('next')}>
+        <button
+          className={`nextButton ${btnActive['next'] === true ? 'active' : ''}`}
+          onClick={() => {
+            if (btnActive['next'] === true) {
+              handleDate('next')
+            }
+          }}>
           다음
         </button>
       </div>
 
       {myInfo.isReward ? (
         <>
-          <div>
-            <div className="rewordBox">
-              <p className="rewordBox__top">
-                {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}
-                위 <span>축하합니다</span>
-              </p>
+          <div className="rewordBox">
+            <p className="rewordBox__top">
+              {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
+              <span>축하합니다</span>
+            </p>
 
-              <div className="rewordBox__character1"></div>
-              <div className="rewordBox__character2"></div>
-              <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
-                보상 받기
-              </button>
-            </div>
+            <div className="rewordBox__character1"></div>
+            <div className="rewordBox__character2"></div>
+            <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
+              보상 받기
+            </button>
           </div>
 
           {popup && (

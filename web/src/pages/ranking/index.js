@@ -81,32 +81,33 @@ export default (props) => {
   const handleDate = useCallback(
     (type) => {
       const dateFormatter = (type) => {
-        const now = selectedDate
-        const day = now.getDate()
-        const month = now.getMonth()
+        const selected = selectedDate
+        const day = selected.getDate()
+        const month = selected.getMonth()
 
         if (type === 'prev') {
           switch (dateType) {
             case DATE_TYPE.DAY:
-              return new Date(now.setDate(day - 1))
+              return new Date(selected.setDate(day - 1))
             case DATE_TYPE.WEEK:
-              return new Date(now.setDate(day - 7))
+              return new Date(selected.setDate(day - 7))
             case DATE_TYPE.MONTH:
-              return new Date(now.setMonth(month - 1))
+              return new Date(selected.setMonth(month - 1))
           }
         } else if (type === 'next') {
           switch (dateType) {
             case DATE_TYPE.DAY:
-              return new Date(now.setDate(day + 1))
+              return new Date(selected.setDate(day + 1))
             case DATE_TYPE.WEEK:
-              return new Date(now.setDate(day + 7))
+              return new Date(selected.setDate(day + 7))
             case DATE_TYPE.MONTH:
-              return new Date(now.setMonth(month + 1))
+              return new Date(selected.setMonth(month + 1))
           }
         }
       }
 
-      setSelectedDate(dateFormatter(type))
+      const changedDate = dateFormatter(type)
+      setSelectedDate(changedDate)
     },
     [dateType, selectedDate]
   )
@@ -220,7 +221,7 @@ export default (props) => {
     }
     setPage(page + 1)
     setScrollBottom(false)
-  }, [rankType, rankList, page])
+  }, [rankType, rankList, page, selectedDate])
 
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
@@ -229,7 +230,7 @@ export default (props) => {
       setRankList(list)
       setScrollBottomFinish(false)
     }
-  }, [rankType, dateType, page])
+  }, [rankType, dateType, page, selectedDate])
 
   const initLevelList = useCallback(async () => {
     const list = await fetchLevelList(true)
@@ -246,7 +247,7 @@ export default (props) => {
     } else {
       initRankList()
     }
-  }, [rankType, dateType])
+  }, [rankType, dateType, selectedDate])
 
   useEffect(() => {
     if (scrollBottom === true && scrollBottomFinish === false) {
@@ -317,6 +318,7 @@ export default (props) => {
               dateType={dateType}
               rankList={rankList}
               myInfo={myInfo}
+              selectedDate={selectedDate}
               setMyInfo={setMyInfo}
               setDateType={setDateType}
               handleDate={handleDate}
