@@ -12,21 +12,13 @@ import LayerPopup from './layer_popup'
 import RankGuide from './guide/rank_guide'
 import MyProfile from './components/MyProfile'
 
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
+
 //statc
 import backBtn from './static/ic_back.svg'
 import './ranking.scss'
 
-const RANK_TYPE = {
-  DJ: 1,
-  FAN: 2,
-  LEVEL: 3
-}
-const DATE_TYPE = {
-  DAY: 1,
-  WEEK: 2,
-  MONTH: 3,
-  YEAR: 4
-}
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
 export default (props) => {
@@ -312,8 +304,6 @@ export default (props) => {
           <>
             <MyProfile />
             <RankListWrap
-              RANK_TYPE={RANK_TYPE}
-              DATE_TYPE={DATE_TYPE}
               rankType={rankType}
               dateType={dateType}
               setDateType={setDateType}

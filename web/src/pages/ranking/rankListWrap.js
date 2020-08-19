@@ -11,6 +11,9 @@ import RankListComponent from './rankList'
 import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
 
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
+
 //static
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -24,7 +27,7 @@ export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {RANK_TYPE, DATE_TYPE, rankType, dateType, setDateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
+  const {rankType, dateType, setDateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
 
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
