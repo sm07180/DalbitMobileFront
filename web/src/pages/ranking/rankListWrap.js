@@ -27,7 +27,7 @@ export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const {rankType, dateType, setDateType, rankList, formData, myInfo, handleDate, setMyInfo} = props
+  const {rankType, dateType, setDateType, rankList, myInfo, handleDate, setMyInfo} = props
 
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
@@ -88,8 +88,8 @@ export default (props) => {
     }
     return (
       <>
-        <RankListTop list={rankList.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
-        <RankListComponent list={rankList.slice(3)} formData={formData} />
+        <RankListTop list={rankList.slice(0, 3)} rankType={rankType} dateType={dateType} myMemNo={myProfile.memNo} />
+        <RankListComponent list={rankList.slice(3)} rankType={rankType} dateType={dateType} />
       </>
     )
   }
@@ -141,89 +141,85 @@ export default (props) => {
   }
 
   const formatDate = () => {
-    const formDt = formData.currentDate
-    let formYear = formDt.getFullYear()
-    let formMonth = formDt.getMonth() + 1
-    let formDate = formDt.getDate()
-
-    const cDate = new Date()
-    let year = cDate.getFullYear()
-    let month = cDate.getMonth() + 1
-    let date = cDate.getDate()
-
-    if (dateType === DATE_TYPE.DAY) {
-      if (year === formYear && month === formMonth && formDate === date) {
-        setDateTitle({
-          header: '오늘',
-          date: ''
-        })
-      } else if (year === formYear && month === formMonth && formDate === date - 1) {
-        setDateTitle({
-          header: '어제',
-          date: ''
-        })
-      } else {
-        setDateTitle({
-          header: '일간 순위',
-          date: `${formYear}.${formMonth}.${formDate}`
-        })
-      }
-    } else if (dateType === DATE_TYPE.WEEK) {
-      const currentWeek = convertMonday()
-      year = currentWeek.getFullYear()
-      month = currentWeek.getMonth() + 1
-      date = currentWeek.getDate()
-
-      const week = convertMonday()
-      const weekAgo = new Date(week.setDate(week.getDate() - 7))
-      let wYear = weekAgo.getFullYear()
-      let wMonth = weekAgo.getMonth() + 1
-      let wDate = weekAgo.getDate()
-
-      if (year === formYear && month === formMonth && formDate === date) {
-        setDateTitle({
-          header: '이번주',
-          date: ''
-        })
-      } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
-        setDateTitle({
-          header: '지난주',
-          date: ''
-        })
-      } else {
-        const a = new Date(formDt.getTime())
-        const b = new Date(a.setDate(a.getDate() + 6))
-        const rangeMonth = b.getMonth() + 1
-        const rangeDate = b.getDate()
-        console.log(myInfo.time)
-        setDateTitle({
-          header: '주간 순위',
-          date: myInfo.time
-        })
-      }
-    } else if (dateType === DATE_TYPE.MONTH) {
-      if (year === formYear && month === formMonth) {
-        setDateTitle({
-          header: '이번달',
-          date: ''
-        })
-      } else if (year === formYear && month - 1 === formMonth) {
-        setDateTitle({
-          header: '지난달',
-          date: ''
-        })
-      } else {
-        setDateTitle({
-          header: '월간 순위',
-          date: `${formYear}.${formMonth}`
-        })
-      }
-    } else {
-      setDateTitle({
-        header: `${formYear}년`,
-        date: ''
-      })
-    }
+    // const formDt = formData.currentDate
+    // let formYear = formDt.getFullYear()
+    // let formMonth = formDt.getMonth() + 1
+    // let formDate = formDt.getDate()
+    // const cDate = new Date()
+    // let year = cDate.getFullYear()
+    // let month = cDate.getMonth() + 1
+    // let date = cDate.getDate()
+    // if (dateType === DATE_TYPE.DAY) {
+    //   if (year === formYear && month === formMonth && formDate === date) {
+    //     setDateTitle({
+    //       header: '오늘',
+    //       date: ''
+    //     })
+    //   } else if (year === formYear && month === formMonth && formDate === date - 1) {
+    //     setDateTitle({
+    //       header: '어제',
+    //       date: ''
+    //     })
+    //   } else {
+    //     setDateTitle({
+    //       header: '일간 순위',
+    //       date: `${formYear}.${formMonth}.${formDate}`
+    //     })
+    //   }
+    // } else if (dateType === DATE_TYPE.WEEK) {
+    //   const currentWeek = convertMonday()
+    //   year = currentWeek.getFullYear()
+    //   month = currentWeek.getMonth() + 1
+    //   date = currentWeek.getDate()
+    //   const week = convertMonday()
+    //   const weekAgo = new Date(week.setDate(week.getDate() - 7))
+    //   let wYear = weekAgo.getFullYear()
+    //   let wMonth = weekAgo.getMonth() + 1
+    //   let wDate = weekAgo.getDate()
+    //   if (year === formYear && month === formMonth && formDate === date) {
+    //     setDateTitle({
+    //       header: '이번주',
+    //       date: ''
+    //     })
+    //   } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
+    //     setDateTitle({
+    //       header: '지난주',
+    //       date: ''
+    //     })
+    //   } else {
+    //     const a = new Date(formDt.getTime())
+    //     const b = new Date(a.setDate(a.getDate() + 6))
+    //     const rangeMonth = b.getMonth() + 1
+    //     const rangeDate = b.getDate()
+    //     console.log(myInfo.time)
+    //     setDateTitle({
+    //       header: '주간 순위',
+    //       date: myInfo.time
+    //     })
+    //   }
+    // } else if (dateType === DATE_TYPE.MONTH) {
+    //   if (year === formYear && month === formMonth) {
+    //     setDateTitle({
+    //       header: '이번달',
+    //       date: ''
+    //     })
+    //   } else if (year === formYear && month - 1 === formMonth) {
+    //     setDateTitle({
+    //       header: '지난달',
+    //       date: ''
+    //     })
+    //   } else {
+    //     setDateTitle({
+    //       header: '월간 순위',
+    //       date: `${formYear}.${formMonth}`
+    //     })
+    //   }
+    // } else {
+    //   setDateTitle({
+    //     header: `${formYear}년`,
+    //     date: ''
+    //   })
+    // }
   }
 
   return (
@@ -231,7 +227,7 @@ export default (props) => {
       <div className="todayList">{createDateButton()}</div>
 
       <div className="detailView">
-        <button className={`prevButton`} onClick={() => {}}>
+        <button className={`prevButton`} onClick={() => handleDate('prev')}>
           이전
         </button>
 
@@ -248,7 +244,7 @@ export default (props) => {
           <span>{dateTitle.date}</span>
         </div>
 
-        <button className={`nextButton`} onClick={() => {}}>
+        <button className={`nextButton`} onClick={() => handleDate('next')}>
           다음
         </button>
       </div>

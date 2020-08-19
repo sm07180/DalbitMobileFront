@@ -18,6 +18,7 @@ import {RANK_TYPE, DATE_TYPE} from './constant'
 //statc
 import backBtn from './static/ic_back.svg'
 import './ranking.scss'
+import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
@@ -35,11 +36,6 @@ export default (props) => {
   const [levelList, setLevelList] = useState([])
   const [fetching, setFetching] = useState(false)
 
-  const [formData, setFormData] = useState({
-    rankType: RANK_TYPE.DJ,
-    dateType: DATE_TYPE.DAY,
-    currentDate: new Date()
-  })
   const [myInfo, setMyInfo] = useState({
     isReward: false,
     myGiftPoint: 0,
@@ -85,49 +81,34 @@ export default (props) => {
   const handleDate = useCallback(
     (type) => {
       const dateFormatter = (type) => {
-        let day = formData.currentDate
-        let year = day.getFullYear()
-        let month = day.getMonth() + 1
+        const now = selectedDate
+        const day = now.getDate()
+        const month = now.getMonth()
 
         if (type === 'prev') {
           switch (dateType) {
-            case 1:
-              return new Date(day.setDate(day.getDate() - 1))
-
-            case 2:
-              return new Date(day.setDate(day.getDate() - 7))
-            case 3:
-              if (month === 1) {
-                return new Date(`${year - 1}-12-01`)
-              } else {
-                month -= 1
-                if (month < 10) {
-                  month = '0' + month
-                }
-                return new Date(`${year}-${month}-01`)
-              }
+            case DATE_TYPE.DAY:
+              return new Date(now.setDate(day - 1))
+            case DATE_TYPE.WEEK:
+              return new Date(now.setDate(day - 7))
+            case DATE_TYPE.MONTH:
+              return new Date(now.setMonth(month - 1))
           }
         } else if (type === 'next') {
           switch (dateType) {
-            case 1:
-              return new Date(day.setDate(day.getDate() + 1))
-            case 2:
-              return new Date(day.setDate(day.getDate() + 7))
-            case 3:
-              if (month === 12) {
-                return new Date(`${year + 1}-01-01`)
-              } else {
-                month += 1
-                if (month < 10) {
-                  month = '0' + month
-                }
-                return new Date(`${year}-${month}-01`)
-              }
+            case DATE_TYPE.DAY:
+              return new Date(now.setDate(day + 1))
+            case DATE_TYPE.WEEK:
+              return new Date(now.setDate(day + 7))
+            case DATE_TYPE.MONTH:
+              return new Date(now.setMonth(month + 1))
           }
         }
       }
+
+      setSelectedDate(dateFormatter(type))
     },
-    [dateType]
+    [dateType, selectedDate]
   )
 
   /** About Scroll bottom  */
@@ -234,11 +215,9 @@ export default (props) => {
       const list = await fetchRankList()
       if (list !== null) {
         const newList = rankList.concat(list)
-
         setRankList(newList)
       }
     }
-
     setPage(page + 1)
     setScrollBottom(false)
   }, [rankType, rankList, page])
@@ -336,12 +315,11 @@ export default (props) => {
             <RankListWrap
               rankType={rankType}
               dateType={dateType}
-              setDateType={setDateType}
               rankList={rankList}
-              formData={formData}
               myInfo={myInfo}
-              handleDate={handleDate}
               setMyInfo={setMyInfo}
+              setDateType={setDateType}
+              handleDate={handleDate}
             />
           </>
         )}

@@ -15,9 +15,9 @@ import time from './static/time_g_s.svg'
 
 export default (props) => {
   const history = useHistory()
-  //context
   const context = useContext(Context)
-  const {list, myMemNo, formData} = props
+
+  const {list, myMemNo, rankType, dateType} = props
 
   const creatList = () => {
     return (
@@ -28,7 +28,6 @@ export default (props) => {
               const {
                 gender,
 
-                grade,
                 nickNm,
                 rank,
                 profImg,
@@ -117,7 +116,7 @@ export default (props) => {
                     onClick={() => {
                       history.push(`/mypage/${memNo}`)
                     }}>
-                    {formData.rankType == 'dj' && (
+                    {rankType == 'dj' && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
@@ -146,7 +145,7 @@ export default (props) => {
                       </>
                     )}
 
-                    {formData.rankType == 'fan' && (
+                    {rankType == 'fan' && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} />

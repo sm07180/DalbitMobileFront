@@ -14,11 +14,10 @@ import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
 
 export default (props) => {
-  //context
   const context = useContext(Context)
   const history = useHistory()
 
-  const {list, formData} = props
+  const {list, rankType} = props
 
   const creatList = () => {
     return (
@@ -69,7 +68,7 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {formData.rankType == 'dj' && (
+                  {rankType == 'dj' && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -78,7 +77,7 @@ export default (props) => {
                     </>
                   )}
 
-                  {formData.rankType == 'fan' && (
+                  {rankType == 'fan' && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -109,7 +108,7 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {formData.rankType == 'dj' && (
+                        {rankType == 'dj' && (
                           <>
                             <span className="countBox__item">
                               <img src={people} />
@@ -128,7 +127,7 @@ export default (props) => {
                           </>
                         )}
 
-                        {formData.rankType == 'fan' && (
+                        {rankType == 'fan' && (
                           <>
                             <span className="countBox__item">
                               <img src={time} />

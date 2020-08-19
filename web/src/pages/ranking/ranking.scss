@@ -1,4 +1,7 @@
 #ranking-page {
+  min-height: 100vh;
+  background-color: #eee;
+
   .respansiveBox {
     padding: 0 16px;
   }
@@ -15,6 +18,7 @@
     padding: 14px 0;
     box-sizing: border-box;
     padding: 12px 16px;
+    background-color: #fff;
 
     &__title {
       font-size: 18px;
@@ -76,6 +80,7 @@
     height: 36px;
     border-bottom: 1px solid #eee;
     text-align: center;
+    background-color: #fff;
 
     &__btn {
       margin: 0 10px;
@@ -391,6 +396,7 @@
     position: relative;
     padding: 12px 0;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
 
     .thumbBox {
       width: 60px;
@@ -698,6 +704,7 @@
     position: relative;
     padding: 12px;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
 
     .thumbBox {
       width: 70px;
