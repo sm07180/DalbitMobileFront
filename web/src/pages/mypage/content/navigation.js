@@ -10,10 +10,10 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 let naviSwiper = ''
-export default props => {
+export default (props) => {
   const {list, memNo, type, webview} = props
   const current = type
-  let currentTab = list.filter(list => {
+  let currentTab = list.filter((list) => {
     return list.type == current
   })[0].id
 
@@ -35,7 +35,7 @@ export default props => {
     <Navigation className={`tab${list.length}`}>
       <Swiper
         {...params}
-        getSwiper={e => {
+        getSwiper={(e) => {
           naviSwiper = e
         }}>
         {list.map((bundle, index) => {

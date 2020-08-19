@@ -118,7 +118,7 @@ const myProfile = (props) => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <a href={link} key={index}>
+          <a onClick={() => history.push(link)} key={index}>
             <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </a>
         )
@@ -228,18 +228,13 @@ const myProfile = (props) => {
       </Slide>
     )
   })
-  const fetchAdmin = async () => {
-    const adminFunc = await Api.getAdmin()
-    if (adminFunc.result === 'success') {
-      if (adminFunc.data.isAdmin === true) {
-        setShowAdmin(true)
-      }
-    } else if (adminFunc.result === 'fail') {
+
+  useEffect(() => {
+    if (context.adminChecker === true) {
+      setShowAdmin(true)
+    } else if (context.adminChecker === 'fail') {
       setShowAdmin(false)
     }
-  }
-  useEffect(() => {
-    fetchAdmin()
   }, [])
 
   return (

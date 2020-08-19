@@ -77,6 +77,8 @@ const GlobalProvider = (props) => {
   const [attendStamp, setAttendStamp] = useState(true)
   //adminCheck
   const [adminChecker, setAdminChecker] = useState(false)
+  //mypageInfo
+  const [mypageInfo, setMypageInfo] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -324,6 +326,9 @@ const GlobalProvider = (props) => {
     },
     updateAdminChecker: (boolean) => {
       setAdminChecker(boolean)
+    },
+    updateMypageInfo: (boolean) => {
+      setMypageInfo(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -373,7 +378,8 @@ const GlobalProvider = (props) => {
     editeToggle,
     ctxDeleteList,
     attendStamp,
-    adminChecker
+    adminChecker,
+    mypageInfo
   }
   return <Provider value={value}>{props.children}</Provider>
 }

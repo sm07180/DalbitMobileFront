@@ -194,28 +194,24 @@ const Notice = (props) => {
     }
   }, [nextListPage])
   ///
-  useEffect(() => {
-    const settingProfileInfo = async (memNo) => {
-      const profileInfo = await Api.profile({
-        params: {memNo: context.token.memNo}
-      })
-      if (profileInfo.result === 'success') {
-        setThisMemNo(profileInfo.data.memNo)
-      }
-    }
-    settingProfileInfo()
-  }, [])
+  // useEffect(() => {
+  //   const settingProfileInfo = async (memNo) => {
+  //     const profileInfo = await Api.profile({
+  //       params: {memNo: context.token.memNo}
+  //     })
+  //     if (profileInfo.result === 'success') {
+  //       setThisMemNo(profileInfo.data.memNo)
+  //     }
+  //   }
+  //   settingProfileInfo()
+  // }, [])
 
   const createWriteBtn = () => {
-    if (urlrStr === thisMemNo) {
-      return (
-        <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : ''}`]}>
-          쓰기
-        </button>
-      )
-    } else {
-      return null
-    }
+    return (
+      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : 'on'}`]}>
+        쓰기
+      </button>
+    )
   }
 
   //-----------------------------------------------------------------------
@@ -241,7 +237,7 @@ const Notice = (props) => {
     <>
       <Header>
         <div className="category-text">방송공지</div>
-        {createWriteBtn()}
+        {urlrStr === context.profile.memNo && createWriteBtn()}
       </Header>
       {listPage === -1 ? (
         <NoResult />
