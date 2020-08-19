@@ -239,7 +239,7 @@ export default (props) => {
       setLevelList(list)
       setScrollBottom(false)
     }
-  }, [])
+  }, [page])
 
   useEffect(() => {
     if (rankType === RANK_TYPE.LEVEL) {
