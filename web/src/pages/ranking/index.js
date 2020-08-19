@@ -247,7 +247,11 @@ export default (props) => {
     } else {
       initRankList()
     }
-  }, [rankType, dateType, selectedDate])
+  }, [selectedDate])
+
+  useEffect(() => {
+    setSelectedDate(new Date())
+  }, [rankType, dateType])
 
   useEffect(() => {
     if (scrollBottom === true && scrollBottomFinish === false) {
