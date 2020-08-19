@@ -273,7 +273,7 @@ export default () => {
               if (msg === undefined || msg === null || msg === '') {
                 msg = loginInfo.message
               }
-              globalCtx.action.alert({
+              context.action.alert({
                 title: '달빛라이브 사용 제한',
                 msg: `${msg}`,
                 callback: () => {
@@ -295,7 +295,7 @@ export default () => {
                         googleLogin()
                       }, 700)
                     } else {
-                      globalCtx.action.alert({
+                      context.action.alert({
                         msg: `${loginInfo.message}`
                       })
                     }
