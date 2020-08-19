@@ -212,7 +212,7 @@ const List = (props) => {
             <div className="detail_contents">
               <pre>{contents}</pre>
             </div>
-            <Buttons className={urlrStr === props.thisMemNo ? 'on' : ''}>
+            <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
               <button onClick={WriteToggle}>
                 {/* <em></em> */}
                 수정
@@ -301,9 +301,8 @@ const TitleWrap = styled.div`
   align-items: center;
   color: #424242;
   font-size: 16px;
-  padding: 0 16px;
+  padding: 0 0 0 16px;
   transform: skew(-0.03deg);
-
   font-weight: 600;
   > em {
     display: block;
@@ -314,7 +313,6 @@ const TitleWrap = styled.div`
   > i {
     display: none;
   }
-
   &.is-top {
     color: #632beb;
     font-size: 16px;
@@ -609,7 +607,6 @@ const Wrap = styled.div`
     display: inline-block;
     width: 24px;
     height: 24px;
-    margin-right: 6px;
     background-position: center center;
     background-size: cover;
     background-image: url(${NewIcon});

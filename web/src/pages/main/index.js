@@ -315,7 +315,7 @@ export default (props) => {
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
-        window.history.back()
+        history.goBack()
         setTimeout(() => window.scrollTo(0, scrollY))
       }
     }
@@ -477,7 +477,7 @@ export default (props) => {
                 to={'/rank'}
                 onClick={(event) => {
                   event.preventDefault()
-                  window.location.href = '/rank'
+                  history.push('/rank')
                 }}>
                 랭킹
               </Link>

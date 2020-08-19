@@ -19,7 +19,9 @@ import calIcon from './static/calender_b.svg'
 
 export default (props) => {
   // ctx
+
   const context = useContext(Context)
+
   const {profile, token} = context
   const {isOAuth} = token
   const history = useHistory()
@@ -297,19 +299,35 @@ export default (props) => {
       }
     }
   }, [profile])
+  useEffect(() => {
+    const getMyPageNew = async () => {
+      if (profile === null || profile || profile.birth === '') {
+        Api.mypage().then((result) => {
+          if (profile instanceof Object) {
+            context.action.updateProfile({
+              ...profile,
+              ...result.data
+            })
+          }
+        })
+        return null
+      }
+    }
+    getMyPageNew()
+  }, [])
   //null check updateProfile
-  if (profile === null) {
-    Api.mypage().then((result) => {
-      context.action.updateProfile(result.data)
-    })
-    return null
-  }
-  if (profile && profile.birth === '') {
-    Api.mypage().then((result) => {
-      context.action.updateProfile(result.data)
-    })
-    return null
-  }
+  // if (profile === null) {
+  //   Api.mypage().then((result) => {
+  //     context.action.updateProfile(result.data)
+  //   })
+  //   return null
+  // }
+  // if (profile && profile.birth === '') {
+  //   Api.mypage().then((result) => {
+  //     context.action.updateProfile(result.data)
+  //   })
+  //   return null
+  // }
   //------------------------------------------------------
   return (
     <Switch>

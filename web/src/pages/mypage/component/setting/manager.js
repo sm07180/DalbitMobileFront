@@ -10,6 +10,7 @@ import qs from 'query-string'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -26,7 +27,7 @@ import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
-
+  let history = useHistory()
   //contenxt
   const context = useContext(Context)
 
@@ -156,7 +157,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -199,7 +200,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -243,7 +244,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`

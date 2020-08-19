@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
@@ -42,6 +42,7 @@ import newCircle from '../static/new_circle.svg'
 import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
+  let history = useHistory()
   // nav Array
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -69,6 +70,7 @@ export default (props) => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
+
   // state
   const [fetching, setFetching] = useState(false)
   const [myPageNew, setMyPageNew] = useState({})
@@ -222,24 +224,26 @@ export default (props) => {
             </div>
           </div>
           <div className="sub-nav">
-            <a href={`/private`}>
+            <div onClick={() => history.push(`/private`)}>
               <div className="list">
                 <img className="icon" src={ProfileIcon} />
                 <span className="text">프로필 설정</span>
                 <span className="arrow"></span>
               </div>
-            </a>
-            <a href={`/mypage/${profile.memNo}/appAlarm2`}>
+            </div>
+            <div onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
               <div className="list mb12">
                 <img className="icon" src={AppSettingIcon} />
                 <span className="text">앱 설정</span>
                 <span className="arrow"></span>
               </div>
-            </a>
+            </div>
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
-                <a href={type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <div
+                  onClick={() => history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)}
+                  key={`list-${idx}`}>
                   <div className="list">
                     <img className="icon" src={icon} />
                     <span className="text">{txt}</span>
@@ -256,7 +260,7 @@ export default (props) => {
                           : 'arrow'
                       }></span>
                   </div>
-                </a>
+                </div>
               )
             })}
             <div className="addCustomer">
@@ -266,17 +270,12 @@ export default (props) => {
                   return <></>
                 } else {
                   return (
-                    <a
-                      href={
-                        type === 'wallet' || type === 'report'
-                          ? `/mypage/${profile.memNo}/${type}`
-                          : type === 'store'
-                          ? '#'
-                          : `/${type}`
-                      }
+                    <div
                       key={`list-${idx}`}
                       onClick={(e) => {
-                        if (type === 'store') {
+                        if (type === 'wallet' || type === 'report') {
+                          history.push(`/mypage/${profile.memNo}/${type}`)
+                        } else if (type === 'store') {
                           e.preventDefault()
                           StoreLink(globalCtx, props.history)
                         } else if (type === 'money_exchange') {
@@ -299,7 +298,7 @@ export default (props) => {
                             type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
                           }></span>
                       </div>
-                    </a>
+                    </div>
                   )
                 }
               })}
@@ -308,7 +307,9 @@ export default (props) => {
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`${type === 'service' ? `/${type}` : `/customer/${type}`}`} key={`list-${idx}`}>
+                  <div
+                    onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
+                    key={`list-${idx}`}>
                     <div className="list">
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
@@ -325,7 +326,7 @@ export default (props) => {
                             : 'arrow'
                         }></span>
                     </div>
-                  </a>
+                  </div>
                 )
               })}
             </div>
@@ -490,7 +491,7 @@ const MenuMypage = styled.div`
     margin-top: 12px;
     padding-bottom: 23px;
     transform: skew(-0.03deg);
-    a {
+    & > div {
       display: block;
       .list {
         position: relative;
