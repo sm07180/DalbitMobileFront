@@ -166,36 +166,29 @@ export default (props) => {
         setBtnActive({prev: true, next: true})
       }
     } else if (dateType === DATE_TYPE.WEEK) {
-      //   const currentWeek = convertMonday()
-      //   year = currentWeek.getFullYear()
-      //   month = currentWeek.getMonth() + 1
-      //   date = currentWeek.getDate()
-      //   const week = convertMonday()
-      //   const weekAgo = new Date(week.setDate(week.getDate() - 7))
-      //   let wYear = weekAgo.getFullYear()
-      //   let wMonth = weekAgo.getMonth() + 1
-      //   let wDate = weekAgo.getDate()
-      // if (year === selectedYear && month === selectedMonth && (day === date || day )) {
-      //   setDateTitle({
-      //     header: '이번주',
-      //     date: ''
-      //   })
-      // }
-      //   } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
-      //     setDateTitle({
-      //       header: '지난주',
-      //       date: ''
-      //     })
-      //   } else {
-      //     const a = new Date(formDt.getTime())
-      //     const b = new Date(a.setDate(a.getDate() + 6))
-      //     const rangeMonth = b.getMonth() + 1
-      //     const rangeDate = b.getDate()
-      //     setDateTitle({
-      //       header: '주간 순위',
-      //       date: myInfo.time
-      //     })
-      //   }
+      const WEEK_LENGTH = 7
+      const currentWeek = Math.ceil(day / WEEK_LENGTH)
+      const selectedWeek = Math.ceil(selectedDay / WEEK_LENGTH)
+
+      if (year === selectedYear && month === selectedMonth && currentWeek === selectedWeek) {
+        setDateTitle({
+          header: '이번주',
+          date: ''
+        })
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month === selectedMonth && currentWeek - 1 === selectedWeek) {
+        setDateTitle({
+          header: '지난주',
+          date: ''
+        })
+        setBtnActive({prev: true, next: true})
+      } else {
+        setDateTitle({
+          header: '주간 순위',
+          date: `${selectedYear}.${selectedMonth}. ${Math.ceil(selectedDay / 7)}주`
+        })
+        setBtnActive({prev: true, next: true})
+      }
     } else if (dateType === DATE_TYPE.MONTH) {
       if (year === selectedYear && month === selectedMonth) {
         setDateTitle({
