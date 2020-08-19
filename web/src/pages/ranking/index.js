@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useCallback, useMemo} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
@@ -7,56 +8,33 @@ import Api from 'context/api'
 import Layout from 'pages/common/layout'
 import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
+import LayerPopup from './layer_popup'
 import RankGuide from './guide/rank_guide'
-import './ranking.scss'
+import MyProfile from './components/MyProfile'
+
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
 
 //statc
-import hint from './static/hint.svg'
-import closeBtn from './static/ic_back.svg'
-import {lte} from 'lodash'
+import backBtn from './static/ic_back.svg'
+import './ranking.scss'
+import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
 
-const rankArray = ['dj', 'fan', 'level']
+const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
-let moreState = false
-
-import {useHistory} from 'react-router-dom'
-
-// let toDay = new Date()
-let initData = {
-  rankType: 'dj',
-  dateType: 1,
-  currentDate: new Date()
-}
 export default (props) => {
-  let currentPage = 1
-
   const history = useHistory()
+  const globalCtx = useContext(Context)
+  const {profile} = globalCtx
 
-  if (history.location.search !== '') {
-    const search = history.location.search.split('&')
-    if (search[0].split('rankType').length >= 2) {
-      initData.rankType = search[0].split('=')[1] === '1' ? 'dj' : 'fan'
-      initData.dateType = parseInt(search[1].split('=')[1])
-    }
+  const [rankType, setRankType] = useState(RANK_TYPE.DJ)
+  const [dateType, setDateType] = useState(DATE_TYPE.DAY)
+  const [selectedDate, setSelectedDate] = useState(new Date())
 
-    // setFormData({
-    //   ...formData,
-    //   rankType: search[0].split('=')[1] === '1' ? 'dj' : 'fan',
-    //   dateType: parseInt(search[1].split('=')[1])
-    // })
-  }
-  const [formData, setFormData] = useState(initData)
-
-  const [nextList, setNextList] = useState(false)
+  const [popup, setPopup] = useState(false)
+  const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
-  const [rakingDate, setRakingDate] = useState({
-    date: ''
-  })
-
-  // const {type, date} = qs.parse(location.search)
-
-  // const [rankType, setRankType] = useState(type === null || type === undefined ? 'dj' : type)
-  // const [dateType, setDateType] = useState(date === null || date === undefined ? 0 : Number(date))
+  const [fetching, setFetching] = useState(false)
 
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -71,16 +49,7 @@ export default (props) => {
     time: ''
   })
 
-  const [popup, setPopup] = useState(false)
-  const [list, setList] = useState(0)
-
-  const context = useContext(Context)
-  let typeState = props.location.state
-
-  const goBack = () => {
-    window.history.back()
-  }
-
+  /** popup */
   const popStateEvent = (e) => {
     if (e.state === null) {
       setPopup(false)
@@ -105,312 +74,260 @@ export default (props) => {
     window.addEventListener('popstate', popStateEvent)
 
     return () => {
-      currentPage = 1
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
 
-  const levelListView = () => {
-    async function feachLevelList() {
-      const {result, data} = await Api.get_level_ranking()
-      if (result === 'success') {
-        const {list} = data
-        setLevelList(list)
-      } else {
-        console.log('실패')
-      }
-    }
-    feachLevelList()
-  }
+  const handleDate = useCallback(
+    (type) => {
+      const dateFormatter = (type) => {
+        const selected = selectedDate
+        const day = selected.getDate()
+        const month = selected.getMonth()
 
-  const convertMonday = () => {
-    let toDay = new Date()
-    const day = toDay.getDay()
-    let c = 0
-
-    if (day === 0) {
-      c = 1
-    } else if (day === 1) {
-      c = 0
-    } else {
-      c = 1 - day
-    }
-    toDay.setDate(toDay.getDate() + c)
-    return toDay
-  }
-
-  const convertMonth = () => {
-    let today = new Date()
-
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1
-    if (month < 10) {
-      return new Date(`${year}-0${month}-01`)
-    } else {
-      return new Date(`${year}-${month}-01`)
-    }
-  }
-
-  const createRankButton = () => {
-    return rankArray.map((item, index) => {
-      const createDateButtonItem = () => {
-        if (item === 'dj') {
-          return <>DJ</>
-        } else if (item === 'fan') {
-          return <>팬</>
-        } else if (item === 'level') {
-          return <>레벨</>
+        if (type === 'prev') {
+          switch (dateType) {
+            case DATE_TYPE.DAY:
+              return new Date(selected.setDate(day - 1))
+            case DATE_TYPE.WEEK:
+              return new Date(selected.setDate(day - 7))
+            case DATE_TYPE.MONTH:
+              return new Date(selected.setMonth(month - 1))
+          }
+        } else if (type === 'next') {
+          switch (dateType) {
+            case DATE_TYPE.DAY:
+              return new Date(selected.setDate(day + 1))
+            case DATE_TYPE.WEEK:
+              return new Date(selected.setDate(day + 7))
+            case DATE_TYPE.MONTH:
+              return new Date(selected.setMonth(month + 1))
+          }
         }
       }
 
-      return (
-        <button
-          key={index}
-          className={formData.rankType === item ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-          onClick={() => {
-            setFormData({
-              rankType: item,
-              dateType: 1,
-              currentDate: new Date()
-            })
-          }}>
-          {createDateButtonItem()}
-        </button>
-      )
-    })
-  }
+      const changedDate = dateFormatter(type)
+      setSelectedDate(changedDate)
+    },
+    [dateType, selectedDate]
+  )
 
-  async function fetchRank(next) {
-    props.location.state = ''
+  /** About Scroll bottom  */
+  const records = 50
+  const [page, setPage] = useState(1)
+  const [scrollBottom, setScrollBottom] = useState(false)
+  const [scrollBottomFinish, setScrollBottomFinish] = useState(false)
 
-    currentPage = next ? ++currentPage : currentPage
-
-    let month = formData.currentDate.getMonth() + 1
-    let date = formData.currentDate.getDate()
-    if (month < 10) {
-      month = '0' + month
-    }
-
-    if (date < 10) {
-      date = '0' + date
-    }
-
-    let formatDate = `${formData.currentDate.getFullYear()}-${month}-${date}`
-
-    const res = await Api.get_ranking({
-      param: {
-        rankSlct: formData.rankType === 'dj' ? 1 : 2,
-        rankType: formData.dateType,
-        page: 1,
-        records: 500,
-        rankingDate: formatDate
+  const fetchRankList = useCallback(
+    async (init = false) => {
+      if (init === true) {
+        setFetching(true)
       }
-    })
 
-    if (res.result === 'success' && _.hasIn(res, 'data.list')) {
-      //조회 결과값 없을경우 res.data.list = [] 으로 넘어옴
+      const year = selectedDate.getFullYear()
+      const month = (() => {
+        let month = selectedDate.getMonth() + 1
+        if (month < 10) {
+          month = '0' + month
+        }
+        return month
+      })()
+      const date = (() => {
+        let date = selectedDate.getDate()
+        if (date < 10) {
+          date = '0' + date
+        }
+        return date
+      })()
 
-      if (res.code === '0') {
-        if (!next) setList(0)
-        moreState = false
-        setMyInfo({...myInfo})
-      } else {
-        setList(res.data.list)
-        setMyInfo({
-          isReward: res.data.isReward,
-          myGiftPoint: res.data.myGiftPoint,
-          myListenerPoint: res.data.myListenerPoint,
-          myRank: res.data.myRank,
-          myUpDown: res.data.myUpDown,
-          myBroadPoint: res.data.myBroadPoint,
-          myLikePoint: res.data.myLikePoint,
-          myPoint: res.data.myPoint,
-          myListenPoint: res.data.myListenPoint,
-          time: res.data.time,
-          rewardRank: res.data.rewardRank
-        })
-      }
-    } else if (res.result === 'success') {
-      setMyInfo({...myInfo})
-    } else {
-      setMyInfo({...myInfo})
-      context.action.alert({
-        msg: res.message
+      const {result, data, message} = await Api.get_ranking({
+        param: {
+          rankSlct: rankType,
+          rankType: dateType,
+          rankingDate: `${year}-${month}-${date}`,
+          page: init === true ? 1 : page,
+          records
+        }
       })
-    }
-  }
 
-  const handleEv = (something, value) => {
-    let someDate
-    switch (something) {
-      case 'dateType':
-        if (value === 2) {
-          someDate = convertMonday()
-        } else if (value === 1) {
-          someDate = new Date()
-        } else {
-          someDate = convertMonth()
+      setFetching(false)
+
+      if (result === 'success' && _.hasIn(data, 'list')) {
+        setMyInfo({
+          isReward: data.isReward,
+          myGiftPoint: data.myGiftPoint,
+          myListenerPoint: data.myListenerPoint,
+          myRank: data.myRank,
+          myUpDown: data.myUpDown,
+          myBroadPoint: data.myBroadPoint,
+          myLikePoint: data.myLikePoint,
+          myPoint: data.myPoint,
+          myListenPoint: data.myListenPoint,
+          time: data.time
+        })
+
+        if (data.list.length < records) {
+          setScrollBottomFinish(true)
         }
 
-        setFormData({
-          ...formData,
-          dateType: value,
-          currentDate: someDate
+        return data.list
+      } else if (result === 'fail') {
+        globalCtx.action.alert({
+          msg: message
         })
-        break
-      case 'currentDate':
-        someDate = handleDate(value)
-        setFormData({
-          ...formData,
-          currentDate: someDate
-        })
-        break
-      default:
-        setFormData({
-          ...formData
-        })
+        return null
+      }
+    },
+    [rankType, dateType, selectedDate, page]
+  )
+
+  const fetchLevelList = useCallback(async (init = false) => {
+    const {result, data, message} = await Api.get_level_ranking({
+      params: {
+        page: init === true ? 1 : page,
+        records
+      }
+    })
+
+    setFetching(false)
+
+    if (result === 'success' && _.hasIn(data, 'list')) {
+      if (data.list.length < records) {
+        setScrollBottomFinish(true)
+      }
+
+      return data.list
+    } else if (result === 'fail') {
+      globalCtx.action.alert({
+        msg: message
+      })
+      return null
     }
-  }
+  }, [])
 
-  const handleDate = (some) => {
-    let day1 = formData.currentDate
-    let year = day1.getFullYear()
-    let month = day1.getMonth() + 1
-    let date = day1.getDate()
-    if (some === 'back') {
-      switch (formData.dateType) {
-        case 1:
-          return new Date(day1.setDate(day1.getDate() - 1))
-
-        case 2:
-          return new Date(day1.setDate(day1.getDate() - 7))
-        case 3:
-          if (month === 1) {
-            return new Date(`${year - 1}-12-01`)
-          } else {
-            month -= 1
-            if (month < 10) {
-              month = '0' + month
-            }
-            return new Date(`${year}-${month}-01`)
-          }
+  const concatRankList = useCallback(async () => {
+    if (rankType === RANK_TYPE.LEVEL) {
+      const list = await fetchLevelList()
+      if (list !== null) {
+        const newList = levelList.concat(list)
+        setLevelList(newList)
       }
     } else {
-      switch (formData.dateType) {
-        case 1:
-          return new Date(day1.setDate(day1.getDate() + 1))
-        case 2:
-          return new Date(day1.setDate(day1.getDate() + 7))
-        case 3:
-          if (month === 12) {
-            return new Date(`${year + 1}-01-01`)
-          } else {
-            month += 1
-            if (month < 10) {
-              month = '0' + month
-            }
-            return new Date(`${year}-${month}-01`)
-          }
+      const list = await fetchRankList()
+      if (list !== null) {
+        const newList = rankList.concat(list)
+        setRankList(newList)
       }
     }
-  }
+    setPage(page + 1)
+    setScrollBottom(false)
+  }, [rankType, rankList, page, selectedDate])
 
-  const setCurrentPage = () => {
-    currentPage = 1
-  }
+  const initRankList = useCallback(async () => {
+    const list = await fetchRankList(true)
+    if (list !== null) {
+      setPage(2)
+      setRankList(list)
+      setScrollBottomFinish(false)
+    }
+  }, [rankType, dateType, page, selectedDate])
+
+  const initLevelList = useCallback(async () => {
+    const list = await fetchLevelList(true)
+    if (list !== null) {
+      setPage(2)
+      setLevelList(list)
+      setScrollBottom(false)
+    }
+  }, [])
 
   useEffect(() => {
-    if (formData.rankType !== 'level') {
-      fetchRank()
+    if (rankType === RANK_TYPE.LEVEL) {
+      initLevelList()
     } else {
-      levelListView()
+      initRankList()
     }
-  }, [formData])
+  }, [rankType, dateType, selectedDate])
 
-  //가이드에 따른 분기
-  const {title} = props.match.params
-  if (title === 'guide') return <RankGuide></RankGuide>
+  useEffect(() => {
+    if (scrollBottom === true && scrollBottomFinish === false) {
+      concatRankList()
+    }
 
-  const test = () => {
-    const formDt = formData.currentDate
-    let formYear = formDt.getFullYear()
-    let formMonth = formDt.getMonth() + 1
-    let formDate = formDt.getDate()
+    const windowScrollEvent = () => {
+      if (scrollBottomFinish === true) {
+        return
+      }
 
-    const cDate = new Date()
-    let year = cDate.getFullYear()
-    let month = cDate.getMonth() + 1
-    let date = cDate.getDate()
-    if (formData.rankType === 'level') {
-      return ''
-    } else {
-      if (formData.dateType === 1) {
-        if (year === formYear && month === formMonth && formDate === date) {
-          return '실시간 집계'
-        } else {
-          return ''
-        }
-      } else if (formData.dateType === 2) {
-        const currentWeek = convertMonday()
-        year = currentWeek.getFullYear()
-        month = currentWeek.getMonth() + 1
-        date = currentWeek.getDate()
-
-        if (year === formYear && month === formMonth && formDate === date) {
-          return '실시간 집계'
-        } else {
-          return ''
-        }
-      } else {
-        if (year === formYear && month === formMonth) {
-          return '실시간 집계'
-        } else {
-          return ''
+      const diff = document.body.scrollHeight / 3
+      if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
+        if (scrollBottom === false) {
+          setScrollBottom(true)
         }
       }
     }
-  }
+
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [scrollBottom, scrollBottomFinish])
 
   return (
-    <>
-      <Layout {...props} status="no_gnb">
-        <div id="ranking-page">
-          <div className="header">
-            <h1 className="header__title">랭킹</h1>
-            <button className="header__btnBack" onClick={goBack}>
-              <img src={closeBtn} alt="뒤로가기" />
-            </button>
-          </div>
+    <Layout {...props} status="no_gnb">
+      <div id="ranking-page">
+        <div className="header">
+          <h1 className="header__title">랭킹</h1>
+          <button className="header__btnBack" onClick={() => history.goBack()}>
+            <img src={backBtn} alt="뒤로가기" />
+          </button>
+        </div>
 
-          <div>
-            <div className="rankTopBox respansiveBox">
-              <div className="rankTab">{createRankButton()}</div>
+        <div className="rankTopBox respansiveBox">
+          <div className="rankTab">
+            {RANK_TYPE_LIST.map((rType, idx) => {
+              const createDateButtonItem = () => {
+                if (rType === RANK_TYPE.DJ) {
+                  return 'DJ'
+                } else if (rType === RANK_TYPE.FAN) {
+                  return '팬'
+                } else if (rType === RANK_TYPE.LEVEL) {
+                  return '레벨'
+                }
+              }
 
-              <div className="rankTopBox__update">
-                {formData.rankType !== 'level' ? `${test()}` : ''}
-                {/* <button onClick={() => props.history.push('/rank/guide?guideType=howUse')} className="rankTopBox__img">
-                  <img src={hint} alt="힌트보기" />
-                </button> */}
-              </div>
-            </div>
-
-            {formData.rankType === 'level' ? (
-              <LevelList levelList={levelList}></LevelList>
-            ) : (
-              <RankListWrap
-                list={list}
-                formData={formData}
-                handleEv={handleEv}
-                typeState={typeState}
-                myInfo={myInfo}
-                setMyInfo={setMyInfo}
-                nextList={nextList}
-                setCurrentPage={setCurrentPage}></RankListWrap>
-            )}
-            {popup && <LayerPopup setPopup={setPopup} dateType={dateType} />}
+              return (
+                <button
+                  key={`type-${idx}`}
+                  className={rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                  onClick={() => setRankType(rType)}>
+                  {createDateButtonItem()}
+                </button>
+              )
+            })}
           </div>
         </div>
-      </Layout>
-    </>
+
+        {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
+
+        {rankType !== RANK_TYPE.LEVEL && fetching === false && (
+          <>
+            <MyProfile />
+            <RankListWrap
+              rankType={rankType}
+              dateType={dateType}
+              rankList={rankList}
+              myInfo={myInfo}
+              selectedDate={selectedDate}
+              setMyInfo={setMyInfo}
+              setDateType={setDateType}
+              handleDate={handleDate}
+            />
+          </>
+        )}
+
+        {popup && <LayerPopup setPopup={setPopup} />}
+      </div>
+    </Layout>
   )
 }

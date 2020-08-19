@@ -1,17 +1,18 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
-import Lottie from 'react-lottie'
 
 import {Context} from 'context'
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
-import Utility, {dateFormatter} from 'components/lib/utility'
-import moment from 'moment'
+
 //components
 import NoResult from 'components/ui/noResult'
-import RankList from './rankList'
+import RankListComponent from './rankList'
 import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
+
+// constant
+import {RANK_TYPE, DATE_TYPE, DAY_TYPE} from './constant'
 
 //static
 import point from './static/ico-point.png'
@@ -20,62 +21,48 @@ import likeWhite from './static/like_w_s.svg'
 import peopleWhite from './static/people_w_s.svg'
 import timeWhite from './static/time_w_s.svg'
 
-// const dateArray = ['오늘', '주간', '월간']
-const dateArray = ['오늘', '주간', '월간', '연간']
-
-let moreState = false
-
 export default (props) => {
-  let timer
   const history = useHistory()
-  const context = useContext(Context)
-  const {list, formData, handleEv, myInfo, setMyInfo, nextList, setCurrentPage} = props
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
+  const {rankType, dateType, setDateType, rankList, myInfo, selectedDate, handleDate, setMyInfo} = props
+
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
     date: ''
   })
-  const [myProfile, setMyProfile] = useState(false)
 
+  const [btnActive, setBtnActive] = useState({
+    prev: false,
+    next: false
+  })
+
+  const [myProfile, setMyProfile] = useState(false)
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
   })
   const [popup, setPopup] = useState(false)
-  const [test, setTest] = useState(false)
 
-  const createDateButton = () => {
-    return dateArray.map((item, index) => {
-      //index++
+  const createDateButton = useCallback(() => {
+    const DATE_TYPE_LIST = Object.keys(DATE_TYPE).map((type) => DATE_TYPE[type])
+    return ['오늘', '주간', '월간', '연간'].map((text, idx) => {
       return (
         <button
-          key={index}
-          className={formData.dateType === index + 1 ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
-          onClick={() => {
-            handleEv('dateType', index + 1)
-            // setMyInfo({
-            //   isReward: false,
-            //   myGiftPoint: 0,
-            //   myListenerPoint: 0,
-            //   myRank: 0,
-            //   myUpDown: '',
-            //   myBroadPoint: 0,
-            //   myLikePoint: 0,
-            //   myPoint: 0,
-            //   myListenPoint: 0,
-            //   time: ''
-            // })
-          }}>
-          {item}
+          key={`date-type-${idx}`}
+          className={dateType === DATE_TYPE_LIST[idx] ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
+          onClick={() => setDateType(DATE_TYPE_LIST[idx])}>
+          {text}
         </button>
       )
     })
-  }
+  }, [dateType])
 
-  const creatMyRank = () => {
-    if (context.token.isLogin) {
+  const createMyRank = useCallback(() => {
+    if (token.isLogin) {
       const settingProfileInfo = async (memNo) => {
         const profileInfo = await Api.profile({
-          params: {memNo: context.token.memNo}
+          params: {memNo: token.memNo}
         })
         if (profileInfo.result === 'success') {
           setMyProfile(profileInfo.data)
@@ -85,77 +72,22 @@ export default (props) => {
     } else {
       return null
     }
-  }
+  }, [])
 
-  useEffect(() => {
-    if (context.profile) {
-      setMyProfile(context.profile)
-    }
-
-    // creatMyRank()
-  }, [context.profile])
-
-  useEffect(() => {
-    formatDate()
-  }, [myInfo])
-
-  const creatResult = () => {
-    if (list === -1) {
+  const createResult = useCallback(() => {
+    if (Array.isArray(rankList) === false) {
       return null
-    } else if (list === 0) {
+    }
+    if (rankList.length === 0) {
       return <NoResult />
-    } else {
-      return (
-        <>
-          <RankListTop list={list.slice(0, 3)} formData={formData} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} formData={formData} />
-        </>
-      )
     }
-  }
-
-  const handleTest = () => {
-    let cy = formData.currentDate.getFullYear()
-    let cm = formData.currentDate.getMonth() + 1
-    let cd = formData.currentDate.getDate()
-    if (formData.dateType === 1) {
-      const cDt = new Date()
-
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 2) {
-      const cDt = convertMonday()
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 3) {
-      const cDt = convertMonth()
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return false
-    }
-  }
+    return (
+      <>
+        <RankListTop list={rankList.slice(0, 3)} rankType={rankType} dateType={dateType} myMemNo={myProfile.memNo} />
+        <RankListComponent list={rankList.slice(3)} rankType={rankType} dateType={dateType} />
+      </>
+    )
+  }, [rankList, rankType, dateType])
 
   const createMyProfile = () => {
     const {myUpDown} = myInfo
@@ -177,16 +109,12 @@ export default (props) => {
     return <span className={myUpDownName}>{myUpDownValue}</span>
   }
 
-  //clickState === 1 :탭 버튼이 변경되었을 경우
-  //clickState === 2 :보상받기를 클릭했을 경우
   const rankingReward = (clickState) => {
-    if (formData.dateType === 0) return null
-
-    async function feachrankingReward() {
+    async function feachRankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: formData.rankType === 'dj' ? 1 : 2,
-          rankType: formData.dateType
+          rankSlct: rankType,
+          rankType: dateType
         }
       })
 
@@ -197,192 +125,112 @@ export default (props) => {
         setRewardPop(data)
       } else {
         if (clickState === 2) {
-          return context.action.alert({
+          return globalCtx.action.alert({
             msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
           })
         }
         setMyInfo({...myInfo, isReward: false})
       }
     }
-    feachrankingReward()
+    feachRankingReward()
   }
 
-  const formatDate = () => {
-    const formDt = formData.currentDate
-    let formYear = formDt.getFullYear()
-    let formMonth = formDt.getMonth() + 1
-    let formDate = formDt.getDate()
+  const formatDate = useCallback(() => {
+    let selectedYear = selectedDate.getFullYear()
+    let selectedMonth = selectedDate.getMonth() + 1
+    let selectedDay = selectedDate.getDate()
 
-    const cDate = new Date()
-    let year = cDate.getFullYear()
-    let month = cDate.getMonth() + 1
-    let date = cDate.getDate()
+    const now = new Date()
+    const year = now.getFullYear()
+    const month = now.getMonth() + 1
+    const day = now.getDate()
 
-    if (formData.dateType === 1) {
-      if (year === formYear && month === formMonth && formDate === date) {
+    if (dateType === DATE_TYPE.DAY) {
+      if (year === selectedYear && month === selectedMonth && day === selectedDay) {
         setDateTitle({
           header: '오늘',
           date: ''
         })
-      } else if (year === formYear && month === formMonth && formDate === date - 1) {
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month === selectedMonth && day - 1 === selectedDay) {
         setDateTitle({
           header: '어제',
           date: ''
         })
+        setBtnActive({prev: true, next: true})
       } else {
         setDateTitle({
           header: '일간 순위',
-          date: `${formYear}.${formMonth}.${formDate}`
+          date: `${selectedYear}.${selectedMonth}.${selectedDay}`
         })
+        setBtnActive({prev: true, next: true})
       }
-    } else if (formData.dateType === 2) {
-      const currentWeek = convertMonday()
-      year = currentWeek.getFullYear()
-      month = currentWeek.getMonth() + 1
-      date = currentWeek.getDate()
+    } else if (dateType === DATE_TYPE.WEEK) {
+      const WEEK_LENGTH = 7
+      const currentWeek = Math.ceil(day / WEEK_LENGTH)
+      const selectedWeek = Math.ceil(selectedDay / WEEK_LENGTH)
 
-      const week = convertMonday()
-      const weekAgo = new Date(week.setDate(week.getDate() - 7))
-      let wYear = weekAgo.getFullYear()
-      let wMonth = weekAgo.getMonth() + 1
-      let wDate = weekAgo.getDate()
-
-      if (year === formYear && month === formMonth && formDate === date) {
+      if (year === selectedYear && month === selectedMonth && currentWeek === selectedWeek) {
         setDateTitle({
           header: '이번주',
           date: ''
         })
-      } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month === selectedMonth && currentWeek - 1 === selectedWeek) {
         setDateTitle({
           header: '지난주',
           date: ''
         })
+        setBtnActive({prev: true, next: true})
       } else {
-        const a = new Date(formDt.getTime())
-        const b = new Date(a.setDate(a.getDate() + 6))
-        const rangeMonth = b.getMonth() + 1
-        const rangeDate = b.getDate()
-        console.log(myInfo.time)
         setDateTitle({
           header: '주간 순위',
-          date: myInfo.time
+          date: `${selectedYear}.${selectedMonth}. ${Math.ceil(selectedDay / 7)}주`
         })
+        setBtnActive({prev: true, next: true})
       }
-    } else if (formData.dateType === 3) {
-      if (year === formYear && month === formMonth) {
+    } else if (dateType === DATE_TYPE.MONTH) {
+      if (year === selectedYear && month === selectedMonth) {
         setDateTitle({
           header: '이번달',
           date: ''
         })
-      } else if (year === formYear && month - 1 === formMonth) {
+        setBtnActive({prev: true, next: false})
+      } else if (year === selectedYear && month - 1 === selectedMonth) {
         setDateTitle({
           header: '지난달',
           date: ''
         })
+        setBtnActive({prev: true, next: true})
       } else {
         setDateTitle({
           header: '월간 순위',
-          date: `${formYear}.${formMonth}`
+          date: `${selectedYear}.${selectedMonth}`
         })
+        setBtnActive({prev: true, next: true})
       }
-    } else {
+    } else if (dateType === DATE_TYPE.YEAR) {
       setDateTitle({
-        header: `${formYear}년`,
-        date: ''
+        header: `${selectedYear}년`,
+        date: selectedYear
       })
+      setBtnActive({prev: false, next: false})
     }
-  }
+  }, [dateType, selectedDate])
 
-  const convertMonday = () => {
-    let toDay = new Date()
-    const day = toDay.getDay()
-    let c = 0
-
-    if (day === 0) {
-      c = 1
-    } else if (day === 1) {
-      c = 0
-    } else {
-      c = 1 - day
-    }
-    toDay.setDate(toDay.getDate() + c)
-    return toDay
-  }
-
-  const convertMonth = () => {
-    let today = new Date()
-
-    const year = today.getFullYear()
-    const month = today.getMonth() + 1
-
-    return new Date(`${year}-0${month}-01`)
-  }
-
-  // useEffect(() => {
-  //   if (myInfo.isReward) {
-  //     if (popup) rankingReward()
-  //   }
-  // }, [formData])
-
-  const handlePrevLast = () => {
-    let cy = formData.currentDate.getFullYear()
-    let cm = formData.currentDate.getMonth() + 1
-    let cd = formData.currentDate.getDate()
-    if (formData.dateType === 1) {
-      const cDt = new Date('2020-07-01')
-
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 2) {
-      const cDt = new Date('2020-07-06')
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM && cd === yd) {
-        return false
-      } else {
-        return true
-      }
-    } else if (formData.dateType === 3) {
-      const cDt = new Date('2020-07-01')
-      let ye = cDt.getFullYear()
-      let yM = cDt.getMonth() + 1
-      let yd = cDt.getDate()
-
-      if (cy === ye && cm === yM) {
-        return false
-      } else {
-        return true
-      }
-    } else {
-      return false
-    }
-  }
-
-  // useEffect(() => {
-  //   if (!popup) {
-  //     handleEv('')
-  //   }
-  // }, [popup])
+  useEffect(() => {
+    formatDate()
+  }, [selectedDate])
 
   return (
     <>
       <div className="todayList">{createDateButton()}</div>
-
-      <div className="detaillView">
+      <div className="detailView">
         <button
-          className={`prevButton ${handlePrevLast() && 'active'}`}
+          className={`prevButton ${btnActive['prev'] === true ? 'active' : ''}`}
           onClick={() => {
-            if (handlePrevLast()) {
-              handleEv('currentDate', 'back')
+            if (btnActive['prev'] === true) {
+              handleDate('prev')
             }
           }}>
           이전
@@ -393,20 +241,19 @@ export default (props) => {
             {dateTitle.header}
             <img
               src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              alt="benefit"
               className="benefitSize"
-              onClick={() => {
-                history.push('/rank/guide?guideType=benefit')
-              }}
+              onClick={() => {}}
             />
           </div>
           <span>{dateTitle.date}</span>
         </div>
 
         <button
-          className={`nextButton ${handleTest() && 'active'}`}
+          className={`nextButton ${btnActive['next'] === true ? 'active' : ''}`}
           onClick={() => {
-            if (handleTest()) {
-              handleEv('currentDate', 'front')
+            if (btnActive['next'] === true) {
+              handleDate('next')
             }
           }}>
           다음
@@ -415,19 +262,17 @@ export default (props) => {
 
       {myInfo.isReward ? (
         <>
-          <div>
-            <div className="rewordBox">
-              <p className="rewordBox__top">
-                {formData.dateType === 1 ? '일간' : '주간'} {formData.rankType === 'dj' ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
-                <span>축하합니다</span>
-              </p>
+          <div className="rewordBox">
+            <p className="rewordBox__top">
+              {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
+              <span>축하합니다</span>
+            </p>
 
-              <div className="rewordBox__character1"></div>
-              <div className="rewordBox__character2"></div>
-              <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
-                보상 받기
-              </button>
-            </div>
+            <div className="rewordBox__character1"></div>
+            <div className="rewordBox__character2"></div>
+            <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
+              보상 받기
+            </button>
           </div>
 
           {popup && (
@@ -445,15 +290,6 @@ export default (props) => {
         <>
           {myProfile && (
             <div className="myRanking myRanking__profile">
-              {/* <Lottie
-                width={420}
-                height={130}
-                options={{
-                  loop: true,
-                  autoPlay: true,
-                  path: `https://image.dalbitlive.com/ani/lottie/ranking_bg.json`
-                }}
-              /> */}
               <div
                 className="myRanking__profile__wrap"
                 onClick={() => {
@@ -479,7 +315,7 @@ export default (props) => {
                     <div className="profileItme">
                       <p className="nickNameBox">{myProfile.nickNm}</p>
                       <div className="countBox countBox--profile">
-                        {formData.rankType == 'dj' && (
+                        {rankType == RANK_TYPE.DJ && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -505,7 +341,7 @@ export default (props) => {
                             </div>
                           </>
                         )}
-                        {formData.rankType == 'fan' && (
+                        {rankType === RANK_TYPE.FAN && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -530,7 +366,7 @@ export default (props) => {
         </>
       )}
 
-      {creatResult()}
+      {createResult()}
     </>
   )
 }

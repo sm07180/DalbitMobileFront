@@ -31,22 +31,6 @@ export default (props) => {
             <img src={closeBtn} alt="뒤로가기" />
           </button>
         </div>
-        {/* <div className="rankTab guideTab">
-          <button
-            className={`rankTab__btn ${guideType === 'benefit' ? 'rankTab__btn--active' : ''} `}
-            onClick={() => {
-              history.push('/rank/guide?guideType=benefit')
-            }}>
-            혜택
-          </button>
-          <button
-            className={`rankTab__btn ${guideType === 'howUse' ? 'rankTab__btn--active' : ''} `}
-            onClick={() => {
-              history.push('/rank/guide?guideType=howUse')
-            }}>
-            랭킹 산정 방식
-          </button>
-        </div> */}
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
           {guideType === 'howUse' && <HowUse></HowUse>}

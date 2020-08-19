@@ -1657,11 +1657,10 @@ export default class API {
   }
 
   static get_level_ranking = async (obj) => {
-    const {url, method, params} = obj || {}
+    const {params} = obj
     return await ajax({
-      ...obj,
-      url: url || `/rank/level`,
-      method: method || 'GET',
+      url: `/rank/level`,
+      method: 'GET',
       params: params
     })
   }
