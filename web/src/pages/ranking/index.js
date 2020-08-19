@@ -158,7 +158,7 @@ export default (props) => {
         return date
       })()
 
-      const {result, data} = await Api.get_ranking({
+      const {result, data, message} = await Api.get_ranking({
         param: {
           rankSlct: rankType,
           rankType: dateType,
@@ -199,15 +199,49 @@ export default (props) => {
     [rankType, dateType, selectedDate, page]
   )
 
-  const concatRankList = useCallback(async () => {
-    const list = await fetchRankList()
-    if (list !== null) {
-      const newList = rankList.concat(list)
-      setPage(page + 1)
-      setRankList(newList)
-      setScrollBottom(false)
+  const fetchLevelList = useCallback(async (init = false) => {
+    const {result, data, message} = await Api.get_level_ranking({
+      params: {
+        page: init === true ? 1 : page,
+        records
+      }
+    })
+
+    setFetching(false)
+
+    if (result === 'success' && _.hasIn(data, 'list')) {
+      if (data.list.length < records) {
+        setScrollBottomFinish(true)
+      }
+
+      return data.list
+    } else if (result === 'fail') {
+      globalCtx.action.alert({
+        msg: message
+      })
+      return null
     }
-  }, [page, rankList])
+  }, [])
+
+  const concatRankList = useCallback(async () => {
+    if (rankType === RANK_TYPE.LEVEL) {
+      const list = await fetchLevelList()
+      if (list !== null) {
+        const newList = levelList.concat(list)
+        setLevelList(newList)
+      }
+    } else {
+      const list = await fetchRankList()
+      if (list !== null) {
+        const newList = rankList.concat(list)
+
+        setRankList(newList)
+      }
+    }
+
+    setPage(page + 1)
+    setScrollBottom(false)
+  }, [rankType, rankList, page])
 
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
@@ -218,17 +252,13 @@ export default (props) => {
     }
   }, [rankType, dateType, page])
 
-  const initLevelList = useCallback(() => {
-    async function fetchLevelList() {
-      const {result, data} = await Api.get_level_ranking()
-      if (result === 'success') {
-        const {list} = data
-        setPage(2)
-        setLevelList(list)
-        setScrollBottomFinish(false)
-      }
+  const initLevelList = useCallback(async () => {
+    const list = await fetchLevelList(true)
+    if (list !== null) {
+      setPage(2)
+      setLevelList(list)
+      setScrollBottom(false)
     }
-    fetchLevelList()
   }, [])
 
   useEffect(() => {
