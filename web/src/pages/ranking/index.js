@@ -11,7 +11,8 @@ import LevelList from './levelList'
 import LayerPopup from './layer_popup'
 import RankGuide from './guide/rank_guide'
 import MyProfile from './components/MyProfile'
-
+import RankDateBtn from './components/ranking_date_btn'
+import RankHandleDateBtn from './components/ranking_handle_date_btn'
 // constant
 import {RANK_TYPE, DATE_TYPE} from './constant'
 
@@ -19,6 +20,7 @@ import {RANK_TYPE, DATE_TYPE} from './constant'
 import backBtn from './static/ic_back.svg'
 import './ranking.scss'
 import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
+import {isCompositeComponent} from 'react-dom/test-utils'
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 
@@ -153,18 +155,19 @@ export default (props) => {
       setFetching(false)
 
       if (result === 'success' && _.hasIn(data, 'list')) {
-        setMyInfo({
-          isReward: data.isReward,
-          myGiftPoint: data.myGiftPoint,
-          myListenerPoint: data.myListenerPoint,
-          myRank: data.myRank,
-          myUpDown: data.myUpDown,
-          myBroadPoint: data.myBroadPoint,
-          myLikePoint: data.myLikePoint,
-          myPoint: data.myPoint,
-          myListenPoint: data.myListenPoint,
-          time: data.time
-        })
+        if (data.list.length > 0)
+          setMyInfo({
+            isReward: data.isReward,
+            myGiftPoint: data.myGiftPoint,
+            myListenerPoint: data.myListenerPoint,
+            myRank: data.myRank,
+            myUpDown: data.myUpDown,
+            myBroadPoint: data.myBroadPoint,
+            myLikePoint: data.myLikePoint,
+            myPoint: data.myPoint,
+            myListenPoint: data.myListenPoint,
+            time: data.time
+          })
 
         if (data.list.length < records) {
           setScrollBottomFinish(true)
@@ -278,7 +281,7 @@ export default (props) => {
   }, [scrollBottom, scrollBottomFinish])
 
   return (
-    <Layout {...props} status="no_gnb">
+    <Layout {...props}>
       <div id="ranking-page">
         <div className="header">
           <h1 className="header__title">랭킹</h1>
@@ -316,7 +319,9 @@ export default (props) => {
 
         {rankType !== RANK_TYPE.LEVEL && fetching === false && (
           <>
-            <MyProfile />
+            <RankDateBtn dateType={dateType} setDateType={setDateType} />
+            <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} />
+            <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} />
             <RankListWrap
               rankType={rankType}
               dateType={dateType}

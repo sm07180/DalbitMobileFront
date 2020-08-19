@@ -1,5 +1,214 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, useCallback, useContext} from 'react'
 
+import Api from 'context/api'
+import Util from 'components/lib/utility.js'
+
+import {Context} from 'context'
+
+import {RANK_TYPE, DATE_TYPE} from '../constant'
+
+import point from '../static/ico-point.png'
+import point2x from '../static/ico-point@2x.png'
+import likeWhite from '../static/like_w_s.svg'
+import peopleWhite from '../static/people_w_s.svg'
+import timeWhite from '../static/time_w_s.svg'
 export default function MyProfile(props) {
-  return <div></div>
+  const {myInfo, rankType, dateType} = props
+
+  const global_ctx = useContext(Context)
+
+  const {token} = global_ctx
+
+  const [isFixed, setIsFixed] = useState(false)
+
+  const [rewordProfile, setRewordProfile] = useState({
+    date: '일간',
+    rank: 'DJ'
+  })
+
+  const [myProfile, setMyProfile] = useState(false)
+
+  const rankingReward = () => {
+    async function feachrankingReward() {
+      const res = await getRankReward({
+        rankSlct: formState.rankType,
+        rankType: formState.dateType
+      })
+
+      if (res.result === 'success') {
+        history.push('/modal/rank_reward', {
+          reward: res.data,
+          formState: formState,
+          myInfo: myInfo
+        })
+      } else {
+        globalAction.setAlertStatus &&
+          globalAction.setAlertStatus({
+            status: true,
+            content: '랭킹 보상을 받을 수 있는\n기간이 지났습니다.'
+          })
+      }
+    }
+    feachrankingReward()
+  }
+
+  const createMyProfile = useCallback(() => {
+    const {myUpDown} = myInfo
+
+    let myUpDownName,
+      myUpDownValue = ''
+    if (myUpDown[0] === '+') {
+      myUpDownName = `rankingChange__up rankingChange__up--profile`
+      myUpDownValue = myUpDown.split('+')[1]
+    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+      myUpDownName = `rankingChange__down rankingChange__down--profile`
+      myUpDownValue = myUpDown.split('-')[1]
+    } else if (myUpDown === 'new') {
+      myUpDownName = `rankingChange__new`
+      myUpDownValue = 'new'
+    } else {
+      myUpDownName = `rankingChange__stop`
+    }
+    return <span className={myUpDownName}>{myUpDownValue}</span>
+  }, [])
+
+  useEffect(() => {
+    const createMyRank = () => {
+      if (token.isLogin) {
+        const settingProfileInfo = async (memNo) => {
+          const profileInfo = await Api.profile({
+            params: {memNo: token.memNo}
+          })
+          if (profileInfo.result === 'success') {
+            setMyProfile(profileInfo.data)
+          }
+        }
+        settingProfileInfo()
+      } else {
+        return null
+      }
+    }
+    createMyRank()
+    const windowScrollEvent = () => {
+      if (window.scrollY >= 140) {
+        setIsFixed(true)
+      } else {
+        setIsFixed(false)
+      }
+    }
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [])
+
+  return (
+    <>
+      {myInfo.isReward ? (
+        <>
+          <div className="rewordBox">
+            <p className="rewordBox__top">
+              {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
+              <span>축하합니다</span>
+            </p>
+
+            <div className="rewordBox__character1"></div>
+            <div className="rewordBox__character2"></div>
+            <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
+              보상 받기
+            </button>
+          </div>
+
+          {popup && (
+            <PopupSuccess
+              setPopup={setPopup}
+              setMyInfo={setMyInfo}
+              myInfo={myInfo}
+              formData={formData}
+              rewardPop={rewardPop}
+              setRewardPop={setRewardPop}
+            />
+          )}
+        </>
+      ) : (
+        <>
+          {myProfile && (
+            <div className={`myRanking myRanking__profile ${isFixed === true && 'myRanking__profile--fixed'}`}>
+              <div
+                className="myRanking__profile__wrap"
+                onClick={() => {
+                  history.push(`/menu/profile`)
+                }}>
+                <div className="myRanking__left myRanking__left--profile">
+                  <p
+                    className="myRanking__left--title colorWhite 
+                  ">
+                    내 랭킹
+                  </p>
+                  <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
+                  <p className="rankingChange">{createMyProfile()}</p>
+                </div>
+
+                <div className="thumbBox thumbBox__profile">
+                  <img src={myProfile.holder} className="thumbBox__frame" />
+                  <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+                </div>
+
+                <div className="myRanking__right">
+                  <div className="myRanking__rightWrap">
+                    <div className="profileItme">
+                      <p className="nickNameBox">{myProfile.nickNm}</p>
+                      <div className="countBox countBox--profile">
+                        {rankType == RANK_TYPE.DJ && (
+                          <>
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                {Util.printNumber(myInfo.myPoint)}
+                              </span>
+                              <span className="countBox__item">
+                                <img src={peopleWhite} />
+                                {Util.printNumber(myInfo.myListenerPoint)}
+                              </span>
+                            </div>
+
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={likeWhite} className="icon__white" />
+                                {Util.printNumber(myInfo.myLikePoint)}
+                              </span>
+
+                              <span className="countBox__item">
+                                <img src={timeWhite} className="icon__white" />
+                                {Util.printNumber(myInfo.myBroadPoint)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                        {rankType === RANK_TYPE.FAN && (
+                          <>
+                            <div className="countBox__block">
+                              <span className="countBox__item">
+                                <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                {Util.printNumber(myInfo.myPoint)}
+                              </span>
+
+                              <span className="countBox__item">
+                                <img src={timeWhite} />
+                                {Util.printNumber(myInfo.myListenPoint)}
+                              </span>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </>
+      )}
+    </>
+  )
 }

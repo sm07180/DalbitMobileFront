@@ -11,7 +11,7 @@ import Navigator from './pages/navigator'
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const Ranking = React.lazy(() => import('pages/ranking'))
-
+const RankingGuide = React.lazy(() => import('pages/ranking/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mypage/setting2.5.js'))
@@ -59,7 +59,7 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
-
+        <Route exact path="/rank/:type" component={RankingGuide} />
         <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/pay" component={Pay} />
