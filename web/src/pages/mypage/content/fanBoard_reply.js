@@ -14,13 +14,13 @@ import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 //components
-import Header from '../component/header.js'
-import Content from './fanBoard_content'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import WriteIcon from '../component/ic_write.svg'
 import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
+import LockIcon from '../static/lock_g.svg'
 export default (props) => {
   //props.replyIdx 대댓글관련 모든 api통신에서 필요
   const history = useHistory()
@@ -42,6 +42,8 @@ export default (props) => {
   const [ModifyState, setModifyState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [checkIdx, setCheckIdx] = useState(0)
+  const [isScreet, setIsScreet] = useState(false)
+  const [donstChange, setDonstChange] = useState(true)
   // modift msg
   const [modifyMsg, setModifyMsg] = useState('')
   // function
@@ -74,6 +76,13 @@ export default (props) => {
   }
   //작성하기 토글
   const WriteToggle = () => {
+    if (TitleInfo.viewOn === 0) {
+      setIsScreet(true)
+      setDonstChange(true)
+    } else {
+      setIsScreet(false)
+      setDonstChange(false)
+    }
     if (writeState === false) {
       setWriteState(true)
     } else {
@@ -126,7 +135,8 @@ export default (props) => {
         memNo: urlrStr,
         depth: 2,
         content: textChange,
-        boardNo: replyIdx
+        boardNo: replyIdx,
+        viewOn: isScreet === true ? 0 : 1
       }
     })
     if (res.result === 'success') {
@@ -206,7 +216,18 @@ export default (props) => {
   // render
   const createWriteBtns = () => {
     return (
-      <a className="reply_write_btn" onClick={() => setWriteState(true)}>
+      <a
+        className="reply_write_btn"
+        onClick={() => {
+          setWriteState(true)
+          if (TitleInfo.viewOn === 0) {
+            setIsScreet(true)
+            setDonstChange(true)
+          } else {
+            setIsScreet(false)
+            setDonstChange(false)
+          }
+        }}>
         답글
       </a>
     )
@@ -240,7 +261,7 @@ export default (props) => {
       <div className="reply_list">
         {list &&
           list.map((item, index) => {
-            const {nickNm, writeDt, profImg, contents, boardIdx, writerNo} = item
+            const {nickNm, writeDt, profImg, contents, boardIdx, writerNo, viewOn} = item
             const Link = () => {
               if (webview) {
                 link =
@@ -272,10 +293,19 @@ export default (props) => {
 
                   <div className="replyInfo">
                     <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
-                    <div>
+                    <div className="big_header_info">
+                      <span onClick={Link}>
+                        <div>
+                          <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
+                          <span className="big_header_info__name">{nickNm}</span>
+                        </div>
+                        <div className="big_header_info__dt">{writeDt}</div>
+                      </span>
+                    </div>
+                    {/* <div>
                       <span onClick={Link}>{nickNm}</span>
                       <span onClick={Link}>{timeFormat(writeDt)}</span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
                 <div className="reply_content">
@@ -295,9 +325,23 @@ export default (props) => {
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
-              <em>{textChange.length}</em> / 100
+              <span className="bigCount__screet">
+                <DalbitCheckbox
+                  status={isScreet}
+                  callback={() => {
+                    if (!setDonstChange) {
+                      setIsScreet(!isScreet)
+                    }
+                  }}
+                />
+                <span className="bold">비밀글</span>
+                <span>(비공개)</span>
+              </span>
+              <span>
+                <em>{textChange.length}</em> / 100
+              </span>
             </span>
-            <button onClick={() => fetchDataUploadReply()}>등록</button>
+            <button onClick={() => fetchDataUploadReply()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
           </div>
         </Writer>
       )}
@@ -385,8 +429,8 @@ const Writer = styled.div`
         font-style: normal;
         font-weight: 800;
       }
-      display: block;
-      margin-left: auto;
+      display: flex;
+
       margin-right: 7px;
       margin-top: 4px;
       margin-bottom: 32px;
@@ -395,7 +439,30 @@ const Writer = styled.div`
       letter-spacing: normal;
       text-align: right;
       color: #616161;
+      &__screet {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        & > input {
+          margin-right: 10px;
+        }
+
+        & > .bold {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        span {
+          font-size: 12px;
+        }
+      }
+
+      & > span:last-child {
+        display: flex;
+        align-items: center;
+      }
     }
+
     > button {
       height: 44px;
       border-radius: 12px;
@@ -521,24 +588,34 @@ const Reply = styled.div`
           height: 48px;
           padding: 0px 16px;
           /* border: 1px solid #eeeeee; */
-          > div {
+          .big_header_info {
             display: flex;
             flex-direction: column;
-            span:first-child {
-              margin-left: 8px;
-              font-size: 14px;
-              line-height: 21px;
-              font-weight: 600;
-              letter-spacing: normal;
+            margin-left: 10px;
+            &__name {
+              height: 20px;
+              line-height: 20px;
+              max-width: 200px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow-x: hidden;
+              font-size: 16px;
+              font-weight: 800;
               text-align: left;
               color: #000000;
             }
-            span:last-child {
-              margin-left: 8px;
+            &__dt {
+              margin-top: 4px;
               font-size: 12px;
               text-align: left;
               color: #9e9e9e;
-              line-height: 16px;
+            }
+
+            &__lock {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              background: url(${LockIcon}) no-repeat center;
             }
           }
         }

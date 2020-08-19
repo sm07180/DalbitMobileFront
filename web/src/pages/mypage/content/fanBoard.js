@@ -15,6 +15,7 @@ import Api from 'context/api'
 //components
 import Header from '../component/header.js'
 import Content from './fanBoard_content'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import BackIcon from '../component/ic_back.svg'
@@ -41,6 +42,8 @@ export default (props) => {
   const [writeState, setWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
+
+  const [isScreet, setIsScreet] = useState(false)
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
     const target = e.currentTarget
@@ -127,7 +130,8 @@ export default (props) => {
       data: {
         memNo: urlrStr,
         depth: 1,
-        content: textChange
+        content: textChange,
+        viewOn: isScreet === true ? 0 : 1
       }
     })
     if (res.result === 'success') {
@@ -197,9 +201,21 @@ export default (props) => {
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
-              <em>{textChange.length}</em> / 100
+              <span className="bigCount__screet">
+                <DalbitCheckbox
+                  status={isScreet}
+                  callback={() => {
+                    setIsScreet(!isScreet)
+                  }}
+                />
+                <span className="bold">비밀글</span>
+                <span>(비공개)</span>
+              </span>
+              <span>
+                <em>{textChange.length}</em> / 100
+              </span>
             </span>
-            <button onClick={() => fetchDataUpload()}>등록</button>
+            <button onClick={() => fetchDataUpload()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
           </div>
         </Writer>
       )}
@@ -271,8 +287,7 @@ const Writer = styled.div`
         font-style: normal;
         font-weight: 800;
       }
-      display: block;
-      margin-left: auto;
+      display: flex;
       margin-right: 7px;
       margin-top: 4px;
       margin-bottom: 23px;
@@ -281,6 +296,28 @@ const Writer = styled.div`
       letter-spacing: normal;
       text-align: right;
       color: #616161;
+      &__screet {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        & > input {
+          margin-right: 10px;
+        }
+
+        & > .bold {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        span {
+          font-size: 12px;
+        }
+      }
+
+      & > span:last-child {
+        display: flex;
+        align-items: center;
+      }
     }
     > button {
       height: 44px;
