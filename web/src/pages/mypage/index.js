@@ -35,6 +35,7 @@ let NewState = {
 }
 export default (props) => {
   const {webview} = qs.parse(location.search)
+  let history = useHistory()
   //navi Array
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
@@ -58,7 +59,9 @@ export default (props) => {
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
+
   var urlrStr = props.location.pathname.split('/')[2]
+
   //state
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -68,8 +71,9 @@ export default (props) => {
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
   } else if (profile && profile.memNo === memNo) {
-    memNo = profile.memNo
+    // memNo = profile.memNo
   }
+
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -98,7 +102,6 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        // context.action.updateProfile(profileInfo.data)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -116,10 +119,11 @@ export default (props) => {
         })
       }
     }
+
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt])
+  }, [memNo])
 
   // check 탈퇴회원
   useEffect(() => {
@@ -133,12 +137,13 @@ export default (props) => {
     }
   }, [codes])
   // my MemNo vs Your check
-  if (urlrStr === token.memNo && webview && webview !== 'new') {
+  if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -153,7 +158,7 @@ export default (props) => {
                 {subNavList2.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
-                    <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
+                    <div className="link-list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>

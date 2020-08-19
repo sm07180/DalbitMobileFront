@@ -88,8 +88,12 @@ export default (props) => {
   }
 
   useEffect(() => {
-    creatMyRank()
-  }, [])
+    if (context.profile) {
+      setMyProfile(context.profile)
+    }
+
+    // creatMyRank()
+  }, [context.profile])
 
   useEffect(() => {
     formatDate()

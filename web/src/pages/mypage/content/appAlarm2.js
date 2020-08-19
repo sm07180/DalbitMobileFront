@@ -32,7 +32,7 @@ export default (props) => {
     if (res.result === 'success') {
       setAllBtnState(res.data)
       setMyAlimType(res.data.alimType)
-      first = false
+      // first = false
     } else if (res.result === 'fail') {
     }
   }

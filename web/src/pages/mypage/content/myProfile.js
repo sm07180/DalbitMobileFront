@@ -49,6 +49,7 @@ const myProfile = (props) => {
   //pathname & MemNo
   const urlrStr = props.location.pathname.split('/')[2]
   const myProfileNo = context.profile.memNo
+
   //state
   const [Zoom, setZoom] = useState(false)
   const [popup, setPopup] = useState(false)
@@ -137,7 +138,7 @@ const myProfile = (props) => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <div key={`fan-${index}`} onClick={() => saveUrlAndRedirect(link)}>
+          <div key={`fan-${index}`} onClick={() => history.push(link)}>
             <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </div>
         )
@@ -229,22 +230,28 @@ const myProfile = (props) => {
     resistanceRatio: 0
   }
   //뱃지
-  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
-    const {text, icon, startColor, endColor} = item
-    //-----------------------------------------------------------------------
-    return (
-      <Slide key={index}>
-        <span
-          className="fan-badge"
-          style={{
-            background: `linear-gradient(to right, ${startColor}, ${endColor}`
-          }}>
-          <img src={icon} />
-          <span>{text}</span>
-        </span>
-      </Slide>
-    )
-  })
+  const createBadgeSlide = () => {
+    if (!profile.hasOwnProperty('fanBadgeList')) return null
+    return profile.fanBadgeList.map((item, index) => {
+      const {text, icon, startColor, endColor} = item
+      //-----------------------------------------------------------------------
+      return (
+        <Slide key={index}>
+          <span
+            className="fan-badge"
+            style={{
+              background: `linear-gradient(to right, ${startColor}, ${endColor}`
+            }}>
+            <img src={icon} />
+            <span>{text}</span>
+          </span>
+        </Slide>
+      )
+    })
+  }
+
+  if (myProfileNo === profile.memNo) return null
+
   return (
     <>
       <ProfileWrap>
@@ -329,7 +336,7 @@ const myProfile = (props) => {
             <ProfileMsg>{profile.profMsg}</ProfileMsg>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
-                <Swiper {...params}>{BadgeSlide}</Swiper>
+                <Swiper {...params}>{createBadgeSlide()}</Swiper>
               </BadgeWrap>
             ) : (
               <></>

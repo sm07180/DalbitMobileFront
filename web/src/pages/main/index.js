@@ -477,7 +477,7 @@ export default (props) => {
                 to={'/rank'}
                 onClick={(event) => {
                   event.preventDefault()
-                  window.location.href = '/rank'
+                  history.push('/rank')
                 }}>
                 랭킹
               </Link>

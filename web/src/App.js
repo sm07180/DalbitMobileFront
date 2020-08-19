@@ -2,7 +2,7 @@
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
  */
-import React, {useMemo, useState, useEffect, useContext} from 'react'
+import React, {useMemo, useState, useEffect, useContext, useCallback} from 'react'
 
 //context
 import {Context} from 'context'
@@ -170,12 +170,19 @@ const App = () => {
       })
     }
 
-    const myInfoRes = await Api.mypage()
-    if (myInfoRes.result === 'success') {
-      globalCtx.action.updateMyInfo(myInfoRes.data)
-    }
-  }
+    // const myInfoRes = useCallback(() => {
 
+    // }, [globalCtx])await Api.mypage()
+    // if (myInfoRes.result === 'success') {
+    //   globalCtx.action.updateMyInfo(myInfoRes.data)
+    // }
+  }
+  const myInfoRes = useCallback(async () => {
+    const res = await Api.mypage()
+    if (res.result === 'success') {
+      globalCtx.action.updateMyInfo(res.data)
+    }
+  }, [globalCtx.myInfo])
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
@@ -200,6 +207,7 @@ const App = () => {
   }
   useEffect(() => {
     fetchAdmin()
+    myInfoRes()
   }, [])
 
   return (
@@ -209,7 +217,7 @@ const App = () => {
     </>
   )
 }
-export default App
+export default React.memo(App)
 
 /**
  * @title 글로벌변수

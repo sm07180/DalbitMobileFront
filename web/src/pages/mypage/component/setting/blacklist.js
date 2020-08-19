@@ -4,6 +4,7 @@
  **/
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 import useChange from 'components/hooks/useChange'
 import qs from 'query-string'
 
@@ -31,7 +32,7 @@ let moreState = false
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
-
+  let history = useHistory()
   //contenxt
   const context = useContext(Context)
 
@@ -212,7 +213,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -255,7 +256,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -299,7 +300,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
