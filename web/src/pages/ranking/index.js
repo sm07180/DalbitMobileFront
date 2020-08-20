@@ -228,7 +228,7 @@ export default (props) => {
     }
     setPage(page + 1)
     setScrollBottom(false)
-  }, [rankType, rankList, page, selectedDate])
+  }, [rankType, rankList, levelList, page, selectedDate])
 
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
