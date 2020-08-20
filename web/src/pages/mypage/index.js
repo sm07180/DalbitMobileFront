@@ -223,7 +223,6 @@ const Sub2 = styled.div`
       border-bottom: 1px solid #eee;
       .text {
         color: #000000;
-        font-size: 14px;
         letter-spacing: -0.35px;
         font-weight: 800;
       }
