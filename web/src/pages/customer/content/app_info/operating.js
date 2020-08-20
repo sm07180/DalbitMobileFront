@@ -274,7 +274,7 @@ export default function Operating() {
               <strong>*유저는 제재 조치에 대해 이의가 있을 경우 이의 신청을 할 수 있습니다.</strong>
             </li>
             <li>
-              <span>나)</span>11세 미만 회원 규제항목: 임시정지
+              <span>나)</span>12세 미만 회원 규제항목: 임시정지
               <ol className="dpeth3">
                 <li>
                   <span>-</span>연령제한으로 인한 한시적 제재조치
@@ -285,43 +285,48 @@ export default function Operating() {
               <span>다)</span>규제 항목(심각) : A급-위반할 경우 영구정지
               <ol className="depth3">
                 <li>
-                  <span>①</span>부계정을 이용한 방송순위, 각 랭킹 및 달, 별을 조작하여 수집하는 등의 위반사항
+                  <span>①</span>대량의 부계정을 이용한 방송순위, 각 랭킹 및 달, 별을 조작/수집하는 등의 위반사항 <br />
+                  (※대량의 기준은 이용 로그나 정도의 심각성에 따라 운영진이 판단)
                 </li>
                 <li>
-                  <span>②</span>반정부/반국가적 발언 또는 정부/국가를 모욕/비방하는 내용
+                  <span>②</span>반정부적/반사회적/반서비스적/비이성적 제목 및 발언 또는
+                  국가/정부/특정집단/당사/당서비스/회원전체/특정 개인을 모욕/비방/왜곡선동/성적비하/심한 욕설 등을 지속하는 경우
                 </li>
                 <li>
-                  <span>③</span>생명과 건강을 위협하는 경우, 성행위, 음란 활동 혹은 권리 침해, 정치와 관련된 생방송, 녹화방송 또는
+                  <span>③</span>운영진의 경고/계도 조치에 따르지 않고 지속적으로 서비스 운영을 방해하는 행위
+                </li>
+                <li>
+                  <span>④</span>생명과 건강을 위협하는 경우, 성행위, 음란 활동 혹은 권리 침해, 정치와 관련된 생방송, 녹화방송 또는
                   매음 광고 등
                 </li>
                 <li>
-                  <span>④</span>각종 경로를 통해서 신체 민감한 부위를 보여주는 경우 (예: 민감한 부위를 만지는 행위, 여성의 가슴,
-                  남녀 둔부, 허벅지 안쪽, 성기를 보여주는 행위, 시스루 복장 등)
+                  <span>⑤</span>각종 경로를 통해서 신체 민감한 부위를 보여주는 경우 <br />
+                  (예: 민감한 부위를 만지는 행위, 여성의 가슴, 남녀 둔부, 허벅지 안쪽, 성기를 보여주는 행위, 시스루 복장 등)
                 </li>
                 <li>
-                  <span>⑤</span>도박(예: 도박 라이브 혹은 도박을 선동하는 행위), 마약(예: 마약 전시, 투약 및 주사 방법, 제약
+                  <span>⑥</span>도박(예: 도박 라이브 혹은 도박을 선동하는 행위), 마약(예: 마약 전시, 투약 및 주사 방법, 제약
                   과정에 대한 설명 등)
                 </li>
                 <li>
-                  <span>⑥</span>타인의 프라이버시/신변안전/공공이익 침해 또는 동물 학대
+                  <span>⑦</span>타인의 프라이버시/신변안전/공공이익 침해 또는 동물 학대
                 </li>
                 <li>
-                  <span>⑦</span>다른 음란(예: 신음소리)/정치/도박/마약과 관련된 불법 행위
+                  <span>⑧</span>다른 음란(예: 신음소리)/정치/도박/마약과 관련된 불법 행위
                 </li>
                 <li>
-                  <span>⑧</span>경쟁품 홍보, 부당 스카우트, 불법 달/별 판매, 사기 등
+                  <span>⑨</span>경쟁품 홍보, 부당 스카우트, 불법 달/별 판매, 사기 등
                 </li>
                 <li>
-                  <span>⑨</span>테러리즘, 극단주의, 전쟁 주장, 종교 선동 등 언론과 내용
+                  <span>⑩</span>테러리즘, 극단주의, 전쟁 주장, 종교 선동 등 언론과 내용
                 </li>
                 <li>
-                  <span>⑩</span>각종 경로를 통해서 성인용품, 성 보건품, 알바 사기 등 홍보하는 내용
+                  <span>⑪</span>각종 경로를 통해서 성인용품, 성 보건품, 알바 사기 등 홍보하는 내용
                 </li>
               </ol>
               *플랫폼의 이익을 침해하는 모든 행위를 엄격히 금지합니다.
             </li>
             <li>
-              <span>다)</span>규제 항목(일반) : 정지- 위반할 경우 단계별 패널티 적용
+              <span>라)</span>규제 항목(일반) : 정지- 위반할 경우 단계별 패널티 적용
               <ol className="depth3">
                 <li>
                   <span>①</span>복장: 노출이 많은 옷차림 금지
@@ -358,8 +363,10 @@ export default function Operating() {
       </ol>
 
       <p className="desc">
-        <strong>*A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.</strong>
-        <strong>*경고와 1, 3, 7일 정지의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.</strong>
+        <strong>*영구 정지의 경우 유저의 계정이 영구적으로 제재 받게 됩니다.</strong>
+        <strong>*임시 정지의 경우 유저의 계정이 11세까지 제재를 받게 되고 12세가 되는 해 자동 해제됩니다.</strong>
+        <strong>*경고와 정지의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.</strong>
+        <strong>*회사의 판단에 따라 예외적으로 조정될 수 있습니다.</strong>
       </p>
 
       <table className="content">
@@ -369,53 +376,52 @@ export default function Operating() {
           <col style={{width: '20%'}} />
           <col style={{width: '20%'}} />
           <col style={{width: '20%'}} />
-          <col style={{width: '20%'}} />
         </colgroup>
         <thead>
           <tr>
             <th scope="col">구분</th>
-            <th scope="col" colSpan="4">
+            <th scope="col" colSpan={3}>
               제재 조치
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>A등급</td>
-            <td colSpan="3">
-              <strong>모든 서비스 이용 불가(영구정지)</strong>
-            </td>
-            <td rowSpan="2">임시정지</td>
+            <td className="bold">영구정지</td>
+            <td colSpan={3}>모든 서비스 이용 불가</td>
           </tr>
           <tr>
-            <td rowSpan="2">정지</td>
+            <td className="bold">임시정지</td>
+            <td colSpan={3}>(11세까지의 회원) 모든 서비스 이용 불가</td>
+          </tr>
+          <tr>
+            <td className="bold" rowSpan={2}>
+              정지
+            </td>
             <td>1차</td>
             <td>2차</td>
             <td>3차</td>
-            <td></td>
           </tr>
           <tr>
             <td>1일 정지</td>
             <td>3일 정지</td>
             <td>7일 정지</td>
-            <td>(11세미만) 정지</td>
           </tr>
           <tr>
-            <td rowSpan="2">경고</td>
+            <td className="bold" rowSpan={2}>
+              경고
+            </td>
             <td>1차</td>
             <td>2차</td>
             <td>3차</td>
-            <td rowSpan="2"></td>
           </tr>
           <tr>
             <td>경고 안내</td>
             <td>경고 안내</td>
             <td>1일 정지</td>
-            <td></td>
           </tr>
         </tbody>
       </table>
-      <span className="table-txt">※ 회사의 판단에 따라 예외적으로 조정될 수 있음</span>
       <br />
       <br />
 
@@ -437,7 +443,7 @@ export default function Operating() {
         <thead>
           <tr>
             <th scope="col">항목</th>
-            <th scope="col" colSpan="3">
+            <th scope="col" colSpan={3}>
               제재 조치
             </th>
           </tr>
@@ -446,12 +452,12 @@ export default function Operating() {
           <tr>
             <td>음란물</td>
             <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colSpan={2}>A급</td>
           </tr>
           <tr>
             <td>위법행위</td>
             <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colSpan={2}>A급</td>
           </tr>
           <tr>
             <td>청소년 유해</td>
@@ -474,12 +480,12 @@ export default function Operating() {
           <tr>
             <td>명예훼손</td>
             <td>정지</td>
-            <td colSpan="2">A급</td>
+            <td colSpan={2}>A급</td>
           </tr>
           <tr>
             <td>광고</td>
             <td>경고</td>
-            <td colSpan="2">정지</td>
+            <td colSpan={2}>정지</td>
           </tr>
           <tr>
             <td>자체 기준 위반</td>
@@ -489,7 +495,7 @@ export default function Operating() {
           </tr>
           <tr>
             <td>임시정지</td>
-            <td colSpan="3">11세 미만 회원 임시정지: 12세가 되는 1월1일 00시 자동해제</td>
+            <td colSpan={3}>12세 미만 회원 임시 정지 (12세가 되는 1월 1일 00시 자동 해제)</td>
           </tr>
         </tbody>
       </table>
