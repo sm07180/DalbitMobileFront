@@ -282,7 +282,7 @@ export default function Operating() {
               </ol>
             </li>
             <li>
-              <span>다)</span>규제 항목(심각) : A급-위반할 경우 영구정지
+              <span>다)</span>규제 항목(심각) : 영구정지
               <ol className="depth3">
                 <li>
                   <span>①</span>대량의 부계정을 이용한 방송순위, 각 랭킹 및 달, 별을 조작/수집하는 등의 위반사항 <br />
@@ -452,35 +452,35 @@ export default function Operating() {
           <tr>
             <td>음란물</td>
             <td>정지</td>
-            <td colSpan={2}>A급</td>
+            <td colSpan={2}>영구정지</td>
           </tr>
           <tr>
             <td>위법행위</td>
             <td>정지</td>
-            <td colSpan={2}>A급</td>
+            <td colSpan={2}>영구정지</td>
           </tr>
           <tr>
             <td>청소년 유해</td>
             <td>경고</td>
             <td>정지</td>
-            <td>A급</td>
+            <td>영구정지</td>
           </tr>
           <tr>
             <td>저작권 침해</td>
             <td>경고</td>
             <td>경고 및 정지</td>
-            <td>A급</td>
+            <td>영구정지</td>
           </tr>
           <tr>
             <td>미풍양속 위배</td>
             <td>경고</td>
             <td>정지</td>
-            <td>A급</td>
+            <td>영구정지</td>
           </tr>
           <tr>
             <td>명예훼손</td>
             <td>정지</td>
-            <td colSpan={2}>A급</td>
+            <td colSpan={2}>영구정지</td>
           </tr>
           <tr>
             <td>광고</td>
@@ -491,7 +491,7 @@ export default function Operating() {
             <td>자체 기준 위반</td>
             <td>경고</td>
             <td>정지</td>
-            <td>A급</td>
+            <td>영구정지</td>
           </tr>
           <tr>
             <td>임시정지</td>
@@ -503,9 +503,15 @@ export default function Operating() {
       <p>
         부칙
         <br />
-        2. 본 운영정책 Ver 1.4은 2020년 08월20일부터 적용됩니다
+        5. 본 운영정책 Ver 1.4는 2020년 08월20일부터 적용됩니다.
         <br />
-        1. 본 운영정책 Ver 1.3은 2020년 06월16일부터 적용됩니다.
+        4. 본 운영정책 Ver 1.3은 2020년 06월16일부터 적용됩니다.
+        <br />
+        3. 본 운영정책 Ver 1.2은 2020년 06월12일부터 적용됩니다.
+        <br />
+        2. 본 운영정책 Ver 1.1은 2020년 06월04일부터 적용됩니다.
+        <br />
+        1. 본 운영정책 Ver 1.0은 2020년 03월20일부터 적용됩니다.
       </p>
     </div>
   )
