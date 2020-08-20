@@ -179,7 +179,7 @@ export default (props) => {
           msg: message
         })
       }
-
+      setScrollBottomFinish(true)
       return null
     },
     [rankType, dateType, selectedDate, page]
@@ -207,6 +207,7 @@ export default (props) => {
           msg: message
         })
       }
+      setScrollBottomFinish(true)
       return null
     },
     [page]
