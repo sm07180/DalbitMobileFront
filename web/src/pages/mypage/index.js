@@ -99,6 +99,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
+    console.log(globalCtx)
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {

@@ -16,6 +16,7 @@ export default function Alert() {
   const [alarmList, setAlarmList] = useState([])
   const [allCheck, setAllCheck] = useState(false)
   const [empty, setEmpty] = useState(false)
+  const [deleteActive, setDeleteActive] = useState(false)
   async function fetchData() {
     const res = await Api.my_notification({
       params: {
@@ -153,12 +154,10 @@ export default function Alert() {
         deleteIdx += v.notiIdx + '|'
       }
     })
-    console.log(deleteIdx)
     const res = await Api.deleteAlarm({
       delete_notiIdx: deleteIdx
     })
     if (res.result === 'success') {
-      console.log(res)
       context.action.alert({
         msg: res.message,
         callback: () => {
@@ -169,7 +168,6 @@ export default function Alert() {
         }
       })
     } else {
-      console.log(res)
     }
   }
 
@@ -179,16 +177,17 @@ export default function Alert() {
 
   useEffect(() => {
     const a = alarmList.filter((v) => {
-      return !v.check
+      return v.check
     })
 
-    if (a.length === 0) {
-      if (alarmList.length === 0) {
-        setAllCheck(false)
-      } else {
+    if (a.length === alarmList.length) {
+      if (alarmList.length > 0) {
+        setDeleteActive(true)
         setAllCheck(true)
       }
     } else {
+      if (a.length > 0) setDeleteActive(true)
+      else setDeleteActive(false)
       setAllCheck(false)
     }
   }, [alarmList])
@@ -204,7 +203,7 @@ export default function Alert() {
           {alarmList.length > 0 && <span className="header__count">{alarmList.length}</span>}
         </h1>
         <div className="header__right">
-          <button className="deleteIcon" onClick={deleteAlarm}></button>
+          <button className={`${deleteActive && 'isActive'} deleteIcon`} onClick={deleteAlarm}></button>
           <div className="allCheck">
             <DalbitCheckbox
               status={allCheck}
