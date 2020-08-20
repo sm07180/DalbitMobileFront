@@ -470,7 +470,7 @@ export default (props) => {
         onTouchStart={mainTouchStart}
         onTouchMove={mainTouchMove}
         onTouchEnd={mainTouchEnd}>
-        <div ref={SubMainRef} className="gnb">
+        <div ref={SubMainRef} className="main-gnb">
           <div className="left-side">
             <div className="tab">
               <Link
@@ -492,28 +492,28 @@ export default (props) => {
                 스토어
               </Link>
             </div>
-            <button
-              className="broadBtn"
-              onClick={() => {
-                if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
-                } else {
-                  if (!broadcastBtnActive) {
-                    RoomMake(globalCtx)
-                    setBroadcastBtnActive(true)
-                    setTimeout(() => setBroadcastBtnActive(false), 3000)
-                  }
-                }
-              }}>
-              방송하기
-            </button>
           </div>
+          <button
+            className="broadBtn"
+            onClick={() => {
+              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                window.location.href = 'https://inforexseoul.page.link/Ws4t'
+              } else {
+                if (!broadcastBtnActive) {
+                  RoomMake(globalCtx)
+                  setBroadcastBtnActive(true)
+                  setTimeout(() => setBroadcastBtnActive(false), 3000)
+                }
+              }
+            }}>
+            방송하기
+          </button>
         </div>
 
-        <div ref={RecommendRef}>
+        <div ref={RecommendRef} className="main-slide">
           {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
-        <div className="content">
+        <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
@@ -521,13 +521,13 @@ export default (props) => {
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
-                <span className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
+                <button className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
-                </span>
+                </button>
                 <i className="bar"></i>
-                <span className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
+                <button className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
                   팬
-                </span>
+                </button>
               </div>
             </div>
 
@@ -554,16 +554,16 @@ export default (props) => {
             <div className="title-wrap">
               <div className="title">
                 <span className="txt">실시간 LIVE</span>
-                <img
+                <button
                   className="refresh-icon"
-                  src={refreshIcon}
                   onClick={async () => {
                     setReloadInit(true)
                     await fetchMainInitData()
                     await fetchLiveList(true)
                     setReloadInit(false)
-                  }}
-                />
+                  }}>
+                  <img src={refreshIcon} alt="실시간 라이브 리스트 새로고침하기" />
+                </button>
               </div>
 
               <div className="sequence-wrap">
@@ -572,17 +572,21 @@ export default (props) => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
                 </span>
-                <img className="sequence-icon" src={sortIcon} onClick={() => setPopup(popup ? false : true)} />
-                <img
-                  className="detail-list-icon"
-                  src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
-                  onClick={() => setLiveListType('detail')}
-                />
-                <img
-                  className="simple-list-icon"
-                  src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
-                  onClick={() => setLiveListType('simple')}
-                />
+                <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
+                  <img src={sortIcon} alt="검색 정렬하기" />
+                </button>
+                <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
+                  <img
+                    src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
+                    alt="리스트 형식으로 리스트 보여주기"
+                  />
+                </button>
+                <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
+                  <img
+                    src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                    alt="리스트 형식으로 리스트 보여주기"
+                  />
+                </button>
               </div>
             </div>
 
@@ -609,7 +613,7 @@ export default (props) => {
 
             {liveCategoryFixed && <div style={{height: '36px'}} />}
 
-            <div className="content-wrap live-list">
+            <div className="content-wrap">
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />

@@ -98,7 +98,7 @@ const Notice = (props) => {
         callback: () => {
           fetcNoticeUpload()
         },
-        msg: '공시사항을 등록 하시겠습니까?'
+        msg: '공지사항을 등록 하시겠습니까?'
       })
     }
   }
