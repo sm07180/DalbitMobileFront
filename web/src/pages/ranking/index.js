@@ -178,35 +178,39 @@ export default (props) => {
         globalCtx.action.alert({
           msg: message
         })
-        return null
       }
+
+      return null
     },
     [rankType, dateType, selectedDate, page]
   )
 
-  const fetchLevelList = useCallback(async (init = false) => {
-    const {result, data, message} = await Api.get_level_ranking({
-      params: {
-        page: init === true ? 1 : page,
-        records
-      }
-    })
-
-    setFetching(false)
-
-    if (result === 'success' && _.hasIn(data, 'list')) {
-      if (data.list.length < records) {
-        setScrollBottomFinish(true)
-      }
-
-      return data.list
-    } else if (result === 'fail') {
-      globalCtx.action.alert({
-        msg: message
+  const fetchLevelList = useCallback(
+    async (init = false) => {
+      const {result, data, message} = await Api.get_level_ranking({
+        params: {
+          page: init === true ? 1 : page,
+          records
+        }
       })
+
+      setFetching(false)
+
+      if (result === 'success' && _.hasIn(data, 'list')) {
+        if (data.list.length < records) {
+          setScrollBottomFinish(true)
+        }
+
+        return data.list
+      } else if (result === 'fail') {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
       return null
-    }
-  }, [])
+    },
+    [page]
+  )
 
   const concatRankList = useCallback(async () => {
     if (rankType === RANK_TYPE.LEVEL) {
