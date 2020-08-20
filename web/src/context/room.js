@@ -90,13 +90,8 @@ export const RoomJoin = async (obj) => {
    * @title Room.roomNo , roomNo 비교
    */
   if (sessionRoomNo === roomNo) {
-    async function commonJoin(mode) {
-      let res = {};
-      if(mode === 'ant'){
-        res = await Api.broad_join({data: {roomNo}})
-      }else{
-        res = await Api.broad_join_vw({data: {roomNo}})
-      }
+    async function commonJoin() {
+      const res = await Api.broad_join({data: {roomNo}})
       const {code, result, data} = res
 
       if (code === '-3') {
@@ -115,23 +110,7 @@ export const RoomJoin = async (obj) => {
         Hybrid('EnterRoom', '')
       }
     }
-    if(__NODE_ENV ==='dev'){
-      context.action.confirm({
-        msg: '접속모드를 선택하세요.',
-        callback: () => {
-          commonJoin('wowza')
-        },
-        cancelCallback: () => {
-          commonJoin('ant')
-        },
-        buttonText: {
-          left: 'Ant',
-          right: 'WOWZA'
-        }
-      });
-    }else{
-      commonJoin('ant')
-    }
+    commonJoin()
     return false
   } else {
     //-------------------------------------------------------------
@@ -172,30 +151,30 @@ export const RoomJoin = async (obj) => {
     }
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
-    //const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
-    let res = {};
-    console.debug(mode)
-    if(__NODE_ENV ==='dev' && mode === undefined) {
-      Room.context.action.confirm({
-        msg: '접속모드를 선택하세요.',
-        callback: () => {
-          RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'wowza'})
-        },
-        cancelCallback: () => {
-          RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'ant'})
-        },
-        buttonText: {
-          left: 'Ant',
-          right: 'WOWZA'
-        }
-      });
-    }else{
-      if(mode === undefined || mode === 'ant'){
-        res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
-      }else{
-        res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
-      }
-    }
+    const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
+    // let res = {};
+    // console.debug(mode)
+    // if(__NODE_ENV ==='dev' && mode === undefined) {
+    //   Room.context.action.confirm({
+    //     msg: '접속모드를 선택하세요.',
+    //     callback: () => {
+    //       RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'wowza'})
+    //     },
+    //     cancelCallback: () => {
+    //       RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'ant'})
+    //     },
+    //     buttonText: {
+    //       left: 'Ant',
+    //       right: 'WOWZA'
+    //     }
+    //   });
+    // }else{
+    //   if(mode === undefined || mode === 'ant'){
+    //     res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
+    //   }else{
+    //     res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
+    //   }
+    // }
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
