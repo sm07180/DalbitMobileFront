@@ -202,7 +202,7 @@ export default (props) => {
 }
 
 const EvenWrap = styled.div`
-  margin-top: 18px;
+  /* margin-top: 18px; */
 `
 
 const HalfWrap = styled.div`
@@ -373,9 +373,11 @@ const LiveList = styled.div`
   position: relative;
   flex-direction: row;
   align-items: center;
-  padding: 0 7px;
-  margin: 20px -8px;
+  margin-top: 20px;
   width: 100%;
+  &:first-child {
+    margin-top: 0;
+  }
 
   .txt_boost {
     color: #ec455f;

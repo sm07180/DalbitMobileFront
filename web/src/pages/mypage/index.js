@@ -124,7 +124,7 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [memNo])
+  }, [memNo, context.mypageFanCnt])
 
   // check 탈퇴회원
   useEffect(() => {
@@ -199,14 +199,10 @@ const SubContent = styled.div`
 `
 const Mypage2 = styled.div`
   margin-top: ${(props) => (props.webview ? 0 : '0px')};
-  width: 1210px;
   position: relative;
   .close-btn {
     position: absolute;
     left: 6px;
-  }
-  @media (max-width: 1260px) {
-    width: 100%;
   }
 `
 const Sub2 = styled.div`
@@ -227,7 +223,6 @@ const Sub2 = styled.div`
       border-bottom: 1px solid #eee;
       .text {
         color: #000000;
-        font-size: 14px;
         letter-spacing: -0.35px;
         font-weight: 800;
       }
