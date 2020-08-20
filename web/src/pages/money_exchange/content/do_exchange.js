@@ -305,7 +305,7 @@ export default function DoExchange({state, dispatch}) {
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
       context.action.alert({
-        msg: '17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
+        msg: '12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
         callback: () => {
           formDispatch({type: 'usageAlert', val: false})
           context.action.alert({visible: false})
