@@ -244,6 +244,30 @@ export default (props) => {
     }
   }, [page])
 
+  // const usePreviousRankType = (props) => {
+  //   useEffect(() => {
+  //     setRankType(props)
+  //   }, [])
+  //   return rankType
+  // }
+
+  // const useCompareRankType = (props) => {
+  //   const prev = usePreviousRankType(props)
+
+  //   useEffect(() => {
+  //     if (prev !== rankType) {
+  //       setDateType(DATE_TYPE.DAY)
+  //     }
+  //   }, [rankType])
+  // }
+
+  const usePreviousRankType = (props) => {
+    if (props !== rankType) {
+      setRankType(props)
+      setDateType(DATE_TYPE.DAY)
+    }
+  }
+
   useEffect(() => {
     if (rankType === RANK_TYPE.LEVEL) {
       initLevelList()
@@ -254,10 +278,10 @@ export default (props) => {
 
   useEffect(() => {
     switch (dateType) {
-      case 1:
+      case DATE_TYPE.DAY:
         setSelectedDate(new Date())
         break
-      case 2:
+      case DATE_TYPE.WEEK:
         let today = new Date()
 
         const day = today.getDay()
@@ -275,7 +299,7 @@ export default (props) => {
 
         setSelectedDate(new Date(today))
         break
-      case 3:
+      case DATE_TYPE.MONTH:
         let toDay = new Date()
         const year = toDay.getFullYear()
         const month = toDay.getMonth() + 1
@@ -285,7 +309,7 @@ export default (props) => {
           setSelectedDate(new Date(`${year}-${month}-01`))
         }
         break
-      case 4:
+      case DATE_TYPE.YEAR:
         setSelectedDate(new Date())
     }
   }, [rankType, dateType])
@@ -341,7 +365,7 @@ export default (props) => {
                 <button
                   key={`type-${idx}`}
                   className={rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-                  onClick={() => setRankType(rType)}>
+                  onClick={() => usePreviousRankType(rType)}>
                   {createDateButtonItem()}
                 </button>
               )
