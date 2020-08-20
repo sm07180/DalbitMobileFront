@@ -259,6 +259,8 @@ const myProfile = (props) => {
             </>
           )}
           <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+            {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
+            {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
             <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
 
             <figure onClick={() => figureZoom()}>
@@ -413,10 +415,10 @@ const myProfile = (props) => {
 export default myProfile
 //styled======================================
 const ButtonWrap = styled.div`
-  flex-basis: 204px;
+  /* flex-basis: 204px;
   padding-top: 35px;
   text-align: right;
-  order: 3;
+  order: 3; */
   @media (max-width: ${WIDTH_TABLET_S}) {
     margin-top: 14px;
     display: flex;
@@ -428,12 +430,12 @@ const ButtonWrap = styled.div`
 `
 //flex item3
 const GiftButtonWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 0;
   }
 `
 const ProfileWrap = styled.div`
@@ -540,14 +542,14 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const MyProfile = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background-color:#fff;
   border-top-left-radius:20px;
   border-top-right-radius:20px;
   margin: 0 auto 0 auto;
-  padding: 40px 16px 57px 16px;
-  position: relative;
+  padding: 40px 16px 20px 16px;
   z-index:3;
   .closeBtn {
     position: absolute;
@@ -591,73 +593,74 @@ const MyProfile = styled.div`
     flex: 0 0 auto;
   }
   .categoryCntWrap {
-      margin: 4px 0 0px 0;
+    margin: 8px 0;
+    display: flex;
+    justify-content: center;
+    /* flex-direction: column;
+    padding: 0; */
+    div {
       display: flex;
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
-        width: 88px;
-        height: 50px;
-        :after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 40px;
-          width: 1px;
-          background-color: #eeeeee;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      width: 88px;
+      height: 50px;
+      :after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 40px;
+        width: 1px;
+        background-color: #eeeeee;
+      }
+      .icoImg {
+        margin:0 auto;
+        display: inline-block;
+        width:24px;
+        height:24px;
+        background:url(${GrayHeart})no-repeat center center /cover;
+        &.type1 {
+          background:url(${BlueHoleIcon})no-repeat center center /cover;
         }
-        .icoImg {
-          margin:0 auto;
-          display: inline-block;
-          width:24px;
-          height:24px;
-          background:url(${GrayHeart})no-repeat center center /cover;
-          &.type1 {
-            background:url(${BlueHoleIcon})no-repeat center center /cover;
-          }
-          &.type2 {
-            background:url(${StarIcon})no-repeat center center /cover;
-          }
-        }
-        .icotitle {
-          float:right;
-          line-height:24px;
-          font-size: 16px;
-          font-weight: normal;
-          font-stretch: normal;
-          font-style: normal;
-          letter-spacing: normal;
-          text-align: center;
-          color: #424242;
-        }
-        .cntTitle {
-            
-  font-size: 20px;
-  font-weight: 800;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.13;
-  letter-spacing: normal;
-  text-align: center;
-  color: #000000;
-  margin-left:2px;
+        &.type2 {
+          background:url(${StarIcon})no-repeat center center /cover;
         }
       }
-      div:last-child {
-        :after {
-          height: 0;
-          width: 0;
-        } 
+      .icotitle {
+        float:right;
+        line-height:24px;
+        font-size: 16px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #424242;
       }
+      .cntTitle {
+        font-size: 20px;
+        font-weight: 800;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: center;
+        color: #000000;
+        margin-left:2px;
+      }
+    }
+    div:last-child {
+      :after {
+        height: 0;
+        width: 0;
+      } 
+    }
   }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-direction: column;
-    padding: 0;
+    
     /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
   }
 
@@ -672,7 +675,7 @@ const ProfileImg = styled.div`
   background-position: center;
   text-align: center;
   order: 1;
-  margin-top: -63px;
+  margin-top: -100px;
   .holder {
     display: block;
     position: absolute;
@@ -685,6 +688,30 @@ const ProfileImg = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     z-index: 2;
+  }
+  .holderBg {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 224px;
+    height: 140px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .profileBg {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 140px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
   figure {
     position: relative;
@@ -701,14 +728,14 @@ const ProfileImg = styled.div`
     display: inline-block;
     position: relative;
     max-width: 70%;
-    height: 28px;
+    height: 32px;
     margin-top: 20px;
     border-radius: 13px;
     background: #f54640;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
-    line-height: 28px;
+    line-height: 32px;
     text-align: center;
     letter-spacing: -0.3px;
     z-index: 2;
@@ -720,17 +747,14 @@ const ProfileImg = styled.div`
   }
 `
 const ContentWrap = styled.div`
-  width: calc(100% - 360px);
-  padding: 0 24px;
-  order: 2;
+  width: 100%;
+  margin: 13px auto 0 auto;
+  order: 3;
+  & > div {
+    display: flex;
+    justify-content: center;
+  }
   @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-    margin: 13px auto 0 auto;
-    order: 3;
-    & > div {
-      display: flex;
-      justify-content: center;
-    }
   }
   .dailyTop {
     width: 108px;
