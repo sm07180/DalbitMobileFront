@@ -200,7 +200,7 @@ export default (props) => {
         if (data.list.length < records) {
           setScrollBottomFinish(true)
         }
-
+        console.log(data.list)
         return data.list
       } else if (result === 'fail') {
         globalCtx.action.alert({
@@ -218,6 +218,7 @@ export default (props) => {
       const list = await fetchLevelList()
       if (list !== null) {
         const newList = levelList.concat(list)
+
         setLevelList(newList)
       }
     } else {
@@ -229,7 +230,7 @@ export default (props) => {
     }
     setPage(page + 1)
     setScrollBottom(false)
-  }, [rankType, rankList, page, selectedDate])
+  }, [rankType, rankList, levelList, page, selectedDate])
 
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
