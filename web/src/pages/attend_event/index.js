@@ -279,10 +279,12 @@ export default (props) => {
       </div>
     )
 
-    if (statusList.phone_input === '0') {
-      return null
-    } else {
-      return boxHtml
+    if (token.isLogin) {
+      if (statusList.phone_input === '0') {
+        return null
+      } else {
+        return boxHtml
+      }
     }
   }
 
