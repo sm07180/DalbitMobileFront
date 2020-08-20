@@ -360,6 +360,7 @@ export default function Operating() {
       <p className="desc">
         <strong>*A등급 제재의 경우 유저 계정이 영구적으로 제재 받게 됩니다.</strong>
         <strong>*경고와 1, 3, 7일 정지의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.</strong>
+        <strong>*회사의 판단에 따라 예외적으로 조정될 수 있습니다.</strong>
       </p>
 
       <table className="content">
