@@ -253,7 +253,41 @@ export default (props) => {
   }, [selectedDate])
 
   useEffect(() => {
-    setSelectedDate(new Date())
+    switch (dateType) {
+      case 1:
+        setSelectedDate(new Date())
+        break
+      case 2:
+        let today = new Date()
+
+        const day = today.getDay()
+        let calcNum = 0
+
+        if (day === 0) {
+          calcNum = 1
+        } else if (day === 1) {
+          calcNum = 0
+        } else {
+          calcNum = 1 - day
+        }
+
+        today.setDate(today.getDate() + calcNum)
+
+        setSelectedDate(new Date(today))
+        break
+      case 3:
+        let toDay = new Date()
+        const year = toDay.getFullYear()
+        const month = toDay.getMonth() + 1
+        if (month < 10) {
+          setSelectedDate(new Date(`${year}-0${month}-01`))
+        } else {
+          setSelectedDate(new Date(`${year}-${month}-01`))
+        }
+        break
+      case 4:
+        setSelectedDate(new Date())
+    }
   }, [rankType, dateType])
 
   useEffect(() => {
@@ -321,7 +355,7 @@ export default (props) => {
           <>
             <RankDateBtn dateType={dateType} setDateType={setDateType} />
             <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} />
-            <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} />
+            <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} setMyInfo={setMyInfo} />
             <RankListWrap
               rankType={rankType}
               dateType={dateType}

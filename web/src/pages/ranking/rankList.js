@@ -68,7 +68,7 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 'dj' && (
+                  {rankType == 1 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -77,7 +77,7 @@ export default (props) => {
                     </>
                   )}
 
-                  {rankType == 'fan' && (
+                  {rankType == 2 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -108,7 +108,7 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {rankType == 'dj' && (
+                        {rankType == 1 && (
                           <>
                             <span className="countBox__item">
                               <img src={people} />
@@ -127,7 +127,7 @@ export default (props) => {
                           </>
                         )}
 
-                        {rankType == 'fan' && (
+                        {rankType == 2 && (
                           <>
                             <span className="countBox__item">
                               <img src={time} />

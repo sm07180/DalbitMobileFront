@@ -116,7 +116,7 @@ export default (props) => {
                     onClick={() => {
                       history.push(`/mypage/${memNo}`)
                     }}>
-                    {rankType == 'dj' && (
+                    {rankType == 1 && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
@@ -145,7 +145,7 @@ export default (props) => {
                       </>
                     )}
 
-                    {rankType == 'fan' && (
+                    {rankType == 2 && (
                       <>
                         <span className="countBox__item countBox__item--point">
                           <img src={point} />

@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useCallback, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Util from 'components/lib/utility.js'
@@ -7,49 +8,53 @@ import {Context} from 'context'
 
 import {RANK_TYPE, DATE_TYPE} from '../constant'
 
+import PopupSuccess from '../reward/reward_success_pop'
+
 import point from '../static/ico-point.png'
 import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
 export default function MyProfile(props) {
-  const {myInfo, rankType, dateType} = props
-
+  const {myInfo, rankType, dateType, setMyInfo} = props
+  const history = useHistory()
   const global_ctx = useContext(Context)
 
   const {token} = global_ctx
 
   const [isFixed, setIsFixed] = useState(false)
-
+  const [popup, setPopup] = useState(false)
   const [rewordProfile, setRewordProfile] = useState({
     date: '일간',
     rank: 'DJ'
   })
-
+  const [rewardPop, setRewardPop] = useState({
+    text: '',
+    rewardDal: 0
+  })
   const [myProfile, setMyProfile] = useState(false)
 
   const rankingReward = () => {
-    async function feachrankingReward() {
-      const res = await getRankReward({
-        rankSlct: formState.rankType,
-        rankType: formState.dateType
+    async function feachRankingReward() {
+      const {result, data} = await Api.get_ranking_reward({
+        params: {
+          rankSlct: rankType,
+          rankType: dateType
+        }
       })
 
-      if (res.result === 'success') {
-        history.push('/modal/rank_reward', {
-          reward: res.data,
-          formState: formState,
-          myInfo: myInfo
-        })
+      if (result === 'success') {
+        setPopup(true)
+
+        setRewardPop(data)
       } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: '랭킹 보상을 받을 수 있는\n기간이 지났습니다.'
-          })
+        setMyInfo({...myInfo, isReward: false})
+        return globalCtx.action.alert({
+          msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
+        })
       }
     }
-    feachrankingReward()
+    feachRankingReward()
   }
 
   const createMyProfile = useCallback(() => {
@@ -121,10 +126,11 @@ export default function MyProfile(props) {
 
           {popup && (
             <PopupSuccess
+              rankType={rankType}
+              dateType={dateType}
               setPopup={setPopup}
               setMyInfo={setMyInfo}
               myInfo={myInfo}
-              formData={formData}
               rewardPop={rewardPop}
               setRewardPop={setRewardPop}
             />

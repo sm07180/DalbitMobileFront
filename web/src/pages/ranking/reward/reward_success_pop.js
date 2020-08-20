@@ -12,7 +12,6 @@ import CloseBtn from '../static/ic_close.svg'
 export default (props) => {
   const {setPopup, rewardPop, formData, setRewardPop, rankType, myInfo, dateType, setMyInfo} = props
   const [randomPopup, setRandomPopup] = useState(false)
-
   const closePopup = () => {
     setPopup(false)
   }
@@ -102,7 +101,6 @@ export default (props) => {
         <RandomBoxPop
           randomPopup={randomPopup}
           setRandomPopup={setRandomPopup}
-          formData={formData}
           setPopup={setPopup}
           rewardPop={rewardPop}
           setRewardPop={setRewardPop}
