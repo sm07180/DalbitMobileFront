@@ -225,6 +225,12 @@
       left: 4px;
       content: '-';
     }
+    &.depth-info {
+      margin-left: 0;
+    }
+  }
+  .desc {
+    margin-top: 10px;
   }
 }
 
