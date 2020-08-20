@@ -27,7 +27,7 @@ const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
-  const {profile} = globalCtx
+  const {profile, logoChange} = globalCtx
 
   const [rankType, setRankType] = useState(RANK_TYPE.DJ)
   const [dateType, setDateType] = useState(DATE_TYPE.DAY)
@@ -325,6 +325,14 @@ export default (props) => {
     }
 
     const windowScrollEvent = () => {
+      const gnbHeight = 48
+
+      if (window.scrollY >= gnbHeight) {
+        globalCtx.action.updateLogoChange(true)
+      } else if (window.scrollY < gnbHeight) {
+        globalCtx.action.updateLogoChange(false)
+      }
+
       if (scrollBottomFinish === true) {
         return
       }
@@ -338,13 +346,14 @@ export default (props) => {
     }
 
     window.addEventListener('scroll', windowScrollEvent)
+
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
   }, [scrollBottom, scrollBottomFinish])
 
   return (
-    <Layout {...props}>
+    <Layout status={'no_gnb'}>
       <div id="ranking-page">
         <div className="header">
           <h1 className="header__title">랭킹</h1>
