@@ -73,7 +73,7 @@ export const Store = () => {
 }
 //---------------------------------------------------------------------
 const Container = styled.div`
-  width: 1210px;
+  /* width: 1210px; */
   margin: 76px auto 0 auto;
   color: #616161;
   > div {

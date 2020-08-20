@@ -134,7 +134,6 @@ export const Store = () => {
 }
 //---------------------------------------------------------------------
 const Container = styled.div`
-  width: 1210px;
   margin: 0px auto 0 auto;
   background-color: #eeeeee;
   padding-top: 12px;

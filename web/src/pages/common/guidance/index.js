@@ -37,7 +37,7 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list--gray">
               1. 환전신청을 위한 본인인증 절차를 완료합니다.
               <br />
-              2. 본인인증 과정 중 미성년자(17세 이상~20세 미만)의 정보가 확인되는 경우 미성년자 법정대리인(보호자)에 의한 추가
+              2. 본인인증 과정 중 미성년자(12세 이상~20세 미만)의 정보가 확인되는 경우 미성년자 법정대리인(보호자)에 의한 추가
               동의 절차를 완료합니다.
               <br />
               3. 본인인증 및 미성년자 법정대리인(보호자)동의가 완료된 회원은 환전 승인을 위한 추가 정보를 입력합니다.
@@ -55,9 +55,6 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list--title">◈ 환전신청 후 입금일정</div>
             <div className="guidance__list--gray">
               <div className="guidance__list--bold">1. 일반회원</div>
-              {/* 볼드처리 
-                    Word 처럼
-                  */}
               <div className="guidance__list--flex">
                 <div className="guidance__list--spacing">-</div> 환전 신청 마감 : 매 주 월요일, 수요일 23시59분 (주2회)
               </div>
@@ -123,9 +120,9 @@ export default function Guidance({state, dispatch}) {
               <br />
               <span className="guidance__list--red">6. 운영정책을 위반하여 정지 상태 회원은 환전 승인이 거부됩니다.</span>
               <br />
-              7. 17세 미만의 미성년자 회원은 환전 신청 및 승인을 받을 수 없습니다.
+              7. 12세 미만의 사용자는 환전 신청 및 승인을 받을 수 없습니다.
               <br />
-              8. 서비스 이용 회원 중 미성년자(17세 이상~19세 미만) 환전 신청 시 법정대리인의 동의 또는 가족관계 증명서를 추가
+              8. 서비스 이용 회원 중 미성년자(12세 이상~20세 미만) 환전 신청 시 법정대리인의 동의 또는 가족관계 증명서를 추가
               요청할 수 있습니다.
               <br />
               9. 20세 이상 회원 중 본인인증 절차가 정상적으로 완료 회원에 한해 승인처리가 완료됩니다.

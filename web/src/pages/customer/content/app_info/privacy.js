@@ -233,7 +233,7 @@ export default function Policy() {
         </li>
       </ol>
 
-      <p>
+      <p className="desc">
         개인정보 보호 책임자
         <br />
         이름 : 양대기
@@ -246,14 +246,14 @@ export default function Policy() {
         <br />
         기타 개인정보침해에 대한 신고나 상담이 필요하신 경우에는 아래 기관에 문의하시기 바랍니다.
       </p>
-      <ol className="depth3">
+      <ol className="depth3 depth-info">
         <li>개인정보 분쟁조정위원회 (www.kopico.go.kr, 전화 1833-6972)</li>
         <li>개인정보침해신고센터 (privacy.kisa.or.kr / 국번없이 118)</li>
         <li>대검찰청 사이버범죄수사단 (www.spo.go.kr / 02-3480-3571)</li>
         <li>경찰청 사이버안전국 (cyberbureau.police.go.kr / 국번없이 182)</li>
         <li>청소년정보이용안전망 그린 i-Net (www.greeninet.or.kr / 02-523-3566)</li>
       </ol>
-      <p>
+      <p className="desc">
         본 개인정보처리방침은 법령 정책 또는 보안기술의 변경에 따라 내용의 추가, 삭제 및 수정이 있을 시에는 변경이 되는 개인정보
         처리방침을 시행하기 최소 7일전에 홈페이지의 '공지사항'을 통해 고지할 것입니다.
         <br />
