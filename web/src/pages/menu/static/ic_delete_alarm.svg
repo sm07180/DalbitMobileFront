@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="choose_trash_b" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-2,.cls-3{fill:#fff;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.2px}.cls-3{fill:none}
+        </style>
+    </defs>
+    <g id="그룹_15618" data-name="그룹 15618" transform="translate(-60.621 -329.302)">
+        <path id="사각형_3217" d="M0 0H6.835V2.937H0z" class="cls-2" data-name="사각형 3217" transform="translate(73.603 335.802)"/>
+        <path id="패스_7244" d="M83.574 355.491H71.558l-.983-15.107h13.982z" class="cls-2" data-name="패스 7244" transform="translate(-.546 -1.645)"/>
+        <path id="선_163" d="M0 0L17.458 0" class="cls-2" data-name="선 163" transform="translate(68.292 338.739)"/>
+        <path id="선_164" d="M0.207 0L0 8.446" class="cls-3" data-name="선 164" transform="translate(79.095 342.07)"/>
+        <path id="선_165" d="M0.207 8.446L0 0" class="cls-3" data-name="선 165" transform="translate(74.74 342.07)"/>
+    </g>
+</svg>
