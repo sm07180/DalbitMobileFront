@@ -234,7 +234,7 @@ export default (props) => {
                           <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
                           <span className="big_header_info__name">{nickNm}</span>
                         </div>
-                        <div className="big_header_info__dt">{writeDt}</div>
+                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
                       </span>
                     </div>
                   </div>
