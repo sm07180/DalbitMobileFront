@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function Policy() {
   return (
@@ -217,8 +217,8 @@ export default function Policy() {
                   저장할 때마다 확인을 거치거나, 모든 쿠키의 저장을 거부할 수 있습니다.
                 </li>
                 <li>
-                  설정방법 예(인터넷 익스플로어의 경우): 웹 브라우저 상단의 도구 > 인터넷 옵션 > 개인정보 - 다만, 쿠키의 저장을
-                  거부할 경우에는 이용에 어려움이 있을 수 있습니다.
+                  설정방법 예(인터넷 익스플로어의 경우): 웹 브라우저 상단의 도구 &gt; 인터넷 옵션 &gt; 개인정보 - 다만, 쿠키의
+                  저장을 거부할 경우에는 이용에 어려움이 있을 수 있습니다.
                 </li>
               </ol>
             </li>

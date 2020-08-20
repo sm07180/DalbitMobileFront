@@ -10,13 +10,13 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 ////---------------------------------------------------------------------
-export default props => {
+export default (props) => {
   //context
   const context = useContext(Context)
 
   //---------------------------------------------------------------------
   return (
-    <Content>
+    <div className="termsWrap">
       <h2>청소년 보호정책</h2>
       <p>
         (주)인포렉스(이하 “회사”라 함)는 청소년이 안전한 인격체로 성장할 수 있도록 하기 위하여 정보통신망이용촉진 및 정보보호에
@@ -53,7 +53,7 @@ export default props => {
         전자우편 : help@dalbitlive.com <br />
         전화번호 : 02-2052-5900
       </p>
-    </Content>
+    </div>
   )
 }
 

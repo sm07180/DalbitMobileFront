@@ -11,13 +11,13 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
 ////---------------------------------------------------------------------
-export default props => {
+export default (props) => {
   //context
   const context = useContext(Context)
 
   //---------------------------------------------------------------------
   return (
-    <Content>
+    <div className="termsWrap service">
       <h2>이용약관</h2>
       <h3>제 1 조 (목적)</h3>
       <p>
@@ -90,6 +90,11 @@ export default props => {
         <li>
           “회사”는 “서비스”의 세부 내용에 따라 “청소년보호법” 등에 따른 등급 및 연령 준수를 위해 일부 “서비스”에 대하여 연령 제한
           등 이용제한을 할 수 있습니다.
+          <ol className="depth2">
+            <li>“달빛라이브”는 12세 이상부터 서비스 이용이 가능합니다.</li>
+            <li>12세 이상부터 20세미만 회원은 법정대리인(보호자)동의가 필요한 경우 요청할 수 있습니다.</li>
+            <li>12세 미만 회원은 서비스 이용을 제한할 수 있습니다.</li>
+          </ol>
         </li>
       </ol>
 
@@ -104,14 +109,14 @@ export default props => {
         <li>“회사”는 계정 정보를 통해 미성년자 여부 확인 등의 “회원” 관리업무를 수행합니다.</li>
         <li>
           “서비스” 이용시간은 “회사”의 업무상 또는 기술상 불가능한 경우를 제외하고는 연중무휴 1일 24시간(00:00-24:00)으로 함을
-          원칙으로 합니다.{' '}
+          원칙으로 합니다. <br />
+          <br />
+          다만, “서비스” 설비의 정기점검 등의 사유로 회사가 “서비스”를 특정 범위로 분할하여 별도로 “서비스” 이용의 날짜와 시간을
+          정할 수 있습니다.
         </li>
       </ol>
 
-      <p>
-        다만, “서비스” 설비의 정기점검 등의 사유로 회사가 “서비스”를 특정 범위로 분할하여 별도로 “서비스” 이용의 날짜와 시간을
-        정할 수 있습니다.
-      </p>
+      <p></p>
 
       <h3>제 6 조 (공개 게시물 등의 관리)</h3>
       <ol className="depth1">
@@ -533,9 +538,9 @@ export default props => {
       <br />
       <p>
         부칙
-        <br />본 약관은 2020. 03. 20일로부터 시행됩니다.
+        <br />본 약관은 2020. 08. 20일로부터 시행됩니다.
       </p>
-    </Content>
+    </div>
   )
 }
 
