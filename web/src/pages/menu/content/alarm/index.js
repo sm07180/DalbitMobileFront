@@ -5,6 +5,7 @@ import Room, {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
 import NoResult from 'components/ui/noResult'
+import closeBtn from './static/ic_back.svg'
 import './index.scss'
 
 const currentDate = new Date()
@@ -195,16 +196,19 @@ export default function Alert() {
   return (
     <div id="alarmWrap">
       <div className="header">
-        <div className="header__left">
-          <div className="header__left--back" onClick={() => history.goBack()} />
-          <div>알림</div>
-          {alarmList.length > 0 && <div className="header__count">{alarmList.length}</div>}
-        </div>
+        <button className="header__btnBack" onClick={() => history.goBack()}>
+          <img src={closeBtn} alt="뒤로가기" />
+        </button>
+        <h1 className="header__title">
+          알림
+          {alarmList.length > 0 && <span className="header__count">{alarmList.length}</span>}
+        </h1>
         <div className="header__right">
-          <div className="deleteIcon" onClick={deleteAlarm}></div>
+          <button className="deleteIcon" onClick={deleteAlarm}></button>
           <div className="allCheck">
             <DalbitCheckbox
               status={allCheck}
+              size={20}
               callback={(e) => {
                 setAlarmList(
                   alarmList.map((v) => {
@@ -230,11 +234,13 @@ export default function Alert() {
                   <div className="contents__list--time">{convertDate(v.regDt)}</div>
                 </div>
                 <div
+                  className="contents__list--check"
                   onClick={(e) => {
                     e.stopPropagation()
                   }}>
                   <DalbitCheckbox
                     status={v.check}
+                    size={20}
                     callback={() => {
                       setAlarmList(
                         alarmList.map((v2, idx2) => {

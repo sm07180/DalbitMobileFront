@@ -16,6 +16,8 @@ import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
+// style
+import 'styles/main.scss'
 
 let alarmCheckIntervalId = null
 
@@ -96,10 +98,12 @@ export default (props) => {
 
   return (
     <>
-      <HiddenBg />
-      <GnbWrap>
+      <div className="hiddenBg"></div>
+      <div className="gnbWrap">
         <div className="icon-wrap">
-          <img className="icon" src={Search} onClick={() => moveToMenu('search')} />
+          <button onClick={() => moveToMenu('search')}>
+            <img className="icon" src={Search} alt="검색버튼" />
+          </button>
 
           {newAlarm === true ? (
             <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
@@ -112,14 +116,16 @@ export default (props) => {
               />
             </div>
           ) : (
-            <img className="icon" src={Alarm} onClick={() => moveToLogin('alarm')} />
+            <button onClick={() => moveToLogin('alarm')}>
+              <img className="icon" src={Alarm} alt="알람버튼" />
+            </button>
           )}
 
           {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
         </div>
         {logoChange ? (
-          <MicWrap>
+          <div className="micWrap">
             <div
               className="mic-btn"
               onClick={() => {
@@ -135,110 +141,17 @@ export default (props) => {
               }}>
               <img src={Mic} />
             </div>
-          </MicWrap>
+          </div>
         ) : (
-          <img className="logo" src={Logo} onClick={reLoad} />
+          <h1 className="gnb-logo" onClick={reLoad}>
+            <img src={Logo} alt="달빛라이브" />
+          </h1>
         )}
         <div className="icon-wrap">
           <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
           {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
         </div>
-      </GnbWrap>
+      </div>
     </>
   )
 }
-
-const HiddenBg = styled.div`
-  position: fixed;
-  top: -10px;
-  left: 0;
-  width: 100%;
-  height: 20px;
-  background-color: #fff;
-`
-
-const GnbWrap = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 48px;
-  background-color: #fff;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
-  z-index: 20;
-  padding: 0 6px;
-
-  .alarmSize {
-    width: 44px;
-    height: 44px;
-  }
-
-  .icon-wrap {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-
-    .icon {
-      position: relative;
-      display: block;
-      width: 40px;
-    }
-
-    .alarm-new {
-      position: absolute;
-      border-radius: 50%;
-      top: 1px;
-      right: 1px;
-      width: 10px;
-      height: 10px;
-      background-color: #ec455f;
-    }
-
-    .news {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 5px;
-      height: 5px;
-      background: #ff0000;
-      z-index: 11;
-      border-radius: 50%;
-      content: '1';
-    }
-  }
-
-  .logo {
-    display: block;
-    width: 103px;
-  }
-
-  .mic-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    height: 50px;
-
-    border-radius: 27px;
-    background: linear-gradient(#632beb, #4c13d5);
-  }
-`
-const MicWrap = styled.div`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 54px;
-  width: 86px;
-  top: 4px;
-  left: 50%;
-  border-radius: 27px;
-  z-index: 50;
-  transform: translateX(-50%);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
-  background-color: #ffffff;
-`
