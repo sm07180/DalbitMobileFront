@@ -1,65 +1,133 @@
 import {Context} from 'context'
 import Api from 'context/api'
-import {IMG_SERVER} from 'context/config'
+import qs from 'query-string'
+
+import Layout from 'pages/common/layout'
+
 import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './speacialdj.scss'
 import CloseBtn from './static/ic_close.svg'
 import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
+import titleImg from './static/title_img.jpg'
+import bottomImg from './static/bottom_img.jpg'
 
 export default (props) => {
   const history = useHistory()
   const [check, setCheck] = useState('')
-  const [toggleCheck, setToggleCheck] = useState({})
+  const [toggleCheck, setToggleCheck] = useState('')
+  const [conditionData, setconditionData] = useState('')
+  const [imageData, setImageData] = useState('')
 
-  const [already, setalready] = useState('')
+  const [infoData, setInfoData] = useState('')
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-
+  const parameter = qs.parse(location.search)
   async function specialdjCheck() {
-    const res = await Api.event_specialdj({})
+    const res = await Api.event_specialdj({
+      data: {
+        select_year: parameter.select_year,
+        select_month: parameter.select_month
+      }
+    })
+
     const {result, data} = res
     if (result === 'success') {
       setToggleCheck(res.data)
-      setalready(data.already)
-    } else {
+
+      if (res.data.specialDjCondition !== null) {
+        setconditionData(res.data.specialDjCondition) // 로그인해야 보이는부분
+      }
+      setInfoData(res.data.eventInfo)
+      setImageData(res.data.eventInfo.contentList)
     }
   }
+
+  console.log(infoData)
 
   const goBack = () => {
     history.goBack()
   }
+
+  function imgItem() {
+    return (
+      imageData &&
+      imageData.map((item, index) => {
+        if (imageData[index].content_type === 'image') {
+          return (
+            <div key={index}>
+              <img src={imageData[index].image_mobile_url} />
+            </div>
+          )
+        } else if (imageData[index].content_type === 'button') {
+          return (
+            <div className="buttonBg" key={index}>
+              <button
+                style={{color: `${imageData[index].button_name_color}`, background: `${imageData[index].button_color}`}}
+                className="buttonLink"
+                onClick={() => {
+                  globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
+                }}>
+                {imageData[index].button_name}
+              </button>
+            </div>
+          )
+        }
+      })
+    )
+  }
+
+  //이벤트 시작 날짜
+  let startDayNum = String(infoData.condition_start_date)
+  const startY = startDayNum.slice(0, 4)
+  const startM = startDayNum.slice(5, 7)
+  const startD = startDayNum.slice(8, 10)
+
+  //이벤트 끝나는 날짜
+  let endDayNum = String(infoData.condition_end_date)
+  const endM = endDayNum.slice(5, 7)
+  const endD = endDayNum.slice(8, 10)
+
+  // 이벤트 남은 기간
+  let startDNumChange = Number(startD)
+  const endDNumChange = Number(endD)
+  const changeNumber = endDNumChange - startDNumChange
 
   useEffect(() => {
     specialdjCheck()
   }, [])
 
   return (
-    <>
+    <Layout {...props} status="no_gnb">
       <div className="speacialdj">
         <div className="djTitle">
-          <div className="djTitleSub">스페셜 DJ</div>
+          <div className="djTitleSub">{infoData.title}</div>
           <img src={CloseBtn} className="djRefresh" onClick={goBack} />
         </div>
-
-        <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img01.png`} className="img100" />
-        <img src={`${IMG_SERVER}/resource/mobile/event/200618/envet_img02.png`} className="img100" />
-        <img src={`${IMG_SERVER}/resource/mobile/event/200623/envet_img03.png`} className="img100" />
+        <div className="img100">{imgItem()}</div>
 
         {token.isLogin === true ? (
           <>
             <div className="checkList">
+              <b className="dayTitle">
+                {`${startY}년 ${startM}월 ${startD}일 ~ ${endM}월 ${endD}일`}
+                <br />(<span className="dayTitle--orange">종료 {changeNumber} 일 전</span>)
+              </b>
+            </div>
+            <h3 className="img100">
+              <img src={titleImg} title="지원 요건" />
+            </h3>
+
+            <div className="checkList">
               <div className="checkList__box">
-                <div className="checkList__title">스페셜 DJ 지원 요건</div>
                 <div className="checkList__table">
                   <div className="checkList__list">
                     <div className="checkList__talbeLeft ">
-                      누적 방송시간
-                      <br />
-                      (최소 50시간 방송)
+                      {conditionData.conditionTitle1}
+                      <br />({conditionData.conditionValue1})
                     </div>
-                    {toggleCheck.airtime !== 1 ? (
+                    {conditionData.condition1 !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
@@ -82,11 +150,10 @@ export default (props) => {
                   </div>
                   <div className="checkList__list">
                     <div className="checkList__talbeLeft">
-                      받은 좋아요
-                      <br />
-                      (최소 500개 이상)
+                      {conditionData.conditionTitle2}
+                      <br />({conditionData.conditionValue2})
                     </div>
-                    {toggleCheck.like !== 1 ? (
+                    {conditionData.condition2 !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
@@ -108,11 +175,10 @@ export default (props) => {
                   </div>
                   <div className="checkList__list">
                     <div className="checkList__talbeLeft">
-                      1시간 이상 방송
-                      <br />
-                      (최소 20회 이상)
+                      {conditionData.conditionTitle3}
+                      <br />({conditionData.conditionValue3})
                     </div>
-                    {toggleCheck.broadcast !== 1 ? (
+                    {conditionData.condition3 !== 1 ? (
                       <div className={`checkList__talbeRight checkList__talbeRight--red`}>
                         <p>
                           최소 신청 조건이
@@ -133,23 +199,28 @@ export default (props) => {
                     )}
                   </div>
                 </div>
-                {toggleCheck.already === 0 ? (
+                {conditionData.already === 0 ? (
                   <>
-                    {toggleCheck.airtime === 1 && toggleCheck.broadcast === 1 && toggleCheck.like === 1 ? (
+                    {conditionData.condition1 === 1 && conditionData.condition2 === 1 && conditionData.condition3 === 1 ? (
                       <button
                         className="button button--on"
                         onClick={() => {
-                          history.push('/event_specialdj/write')
+                          history.push(
+                            '/event_specialdj/write?select_year=' +
+                              parameter.select_year +
+                              '&select_month=' +
+                              parameter.select_month
+                          )
                         }}>
                         스페셜DJ 신청서 작성
                       </button>
                     ) : (
-                      <button className="button"> 다음에 지원해주세요 </button>
+                      <div className="button"> 다음에 지원해주세요 </div>
                     )}
                   </>
                 ) : (
                   <>
-                    <button className="button button--on">이미 지원하셨습니다.</button>
+                    <div className="button button--on">이미 지원하셨습니다.</div>
                   </>
                 )}
               </div>
@@ -164,7 +235,7 @@ export default (props) => {
                   history.push({
                     pathname: '/login',
                     state: {
-                      state: 'event_specialdj'
+                      state: 'event_specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
                     }
                   })
                 }}>
@@ -173,7 +244,11 @@ export default (props) => {
             </div>
           </>
         )}
+
+        <div className="img100">
+          <img src={bottomImg} />
+        </div>
       </div>
-    </>
+    </Layout>
   )
 }

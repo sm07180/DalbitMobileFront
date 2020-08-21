@@ -7,7 +7,10 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
+import qs from 'query-string'
 
+let subSelect1 = ''
+let subSelect2 = ''
 export default (props) => {
   const history = useHistory()
 
@@ -31,6 +34,7 @@ export default (props) => {
   const [selectSub2, setSelectsub2] = useState('')
 
   const [moreList, setMorelist] = useState(false)
+  const parameter = qs.parse(location.search)
 
   //update
   function update(mode) {
@@ -50,7 +54,9 @@ export default (props) => {
         broadcast_time1: Broadcast1,
         broadcast_time2: Broadcast2, //없어도됨
         title: title, // 방송소개
-        contents: contents // 내가 스페셜 DJ가 된다면?
+        contents: contents, // 내가 스페셜 DJ가 된다면?
+        select_year: parameter.select_year,
+        select_month: parameter.select_month
       }
     })
     const {result, data} = res
@@ -91,8 +97,16 @@ export default (props) => {
     }
   }
 
+  console.log(`sub1`, subSelect1)
+
+  console.log(`sub2`, subSelect2)
+
   useEffect(() => {
     specialdjCheck()
+
+    return () => {
+      subSelect1 = ''
+    }
   }, [])
 
   if (toggleCheck.already === 1) {
@@ -103,8 +117,8 @@ export default (props) => {
     toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
   }
 
-  const Broadcast1 = select1 + ' ~ ' + selectSub1
-  const Broadcast2 = select2 + ' ~ ' + selectSub2
+  const Broadcast1 = select1 + ' ~ ' + subSelect1
+  const Broadcast2 = select2 + ' ~ ' + subSelect2
 
   const handleChange = (event) => {
     const element = event.target
@@ -164,7 +178,7 @@ export default (props) => {
       })
       return
     }
-    if (selectSub1 === '') {
+    if (subSelect1 === '') {
       context.action.alert({
         msg: '방송종료시간을 선택해주세요.',
         callback: () => {
@@ -254,6 +268,13 @@ export default (props) => {
     if (select1 === '') return selectlist
     else {
       const idx = selectlist.findIndex((item) => item.value === select1)
+
+      const selectOption = selectlist.slice(idx + 1)
+
+      subSelect1 = selectOption[0].value
+
+      // console.log(`selectSubChange1`, selectSubChange1)
+      // selectSubChange1 = selop[0].value
       return selectlist.slice(idx + 1)
     }
   })()
@@ -262,6 +283,8 @@ export default (props) => {
     if (select2 === '') return selectlist
     else {
       const idx = selectlist.findIndex((item) => item.value === select2)
+      const selectOption2 = selectlist.slice(idx + 1)
+      subSelect2 = selectOption2[0].value
       return selectlist.slice(idx + 1)
     }
   })()
@@ -308,7 +331,8 @@ export default (props) => {
                 boxList={nextSelect1}
                 className="specialdjSelect"
                 onChangeEvent={(id) => {
-                  setSelectsub1(id)
+                  subSelect1 = id
+                  // setSelectsub1(id)
                 }}
                 block={select1 === ''}
                 testName="select222"
