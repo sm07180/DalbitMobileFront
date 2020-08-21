@@ -11,10 +11,10 @@ export default function RankgDateBtn(props) {
         <button
           key={`date-type-${idx}`}
           className={
-            fetching === true
-              ? 'todayList__btn todayList__btn--blur'
-              : dateType === DATE_TYPE_LIST[idx]
+            dateType === DATE_TYPE_LIST[idx]
               ? 'todayList__btn todayList__btn--active'
+              : fetching === true
+              ? 'todayList__btn todayList__btn--blur'
               : 'todayList__btn'
           }
           onClick={() => {
