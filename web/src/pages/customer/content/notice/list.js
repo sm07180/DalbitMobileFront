@@ -12,9 +12,7 @@ let moreState = false
 let noMore = false
 export default function List() {
   const history = useHistory()
-  if (history.action === 'POP') {
-    currentPage = 1
-  }
+
   const [noticeList, setNoticeList] = useState([])
   const [listPage, setListPage] = useState([])
   const [nextListPage, setNextListPage] = useState([])
@@ -51,7 +49,11 @@ export default function List() {
       if (next) {
         setNextListPage(data.list)
         moreState = true
-        if (data.paging.totalPage === data.paging.page) {
+        if (data.paging) {
+          if (data.paging.totalPage === data.paging.page) {
+            noMore = true
+          }
+        } else {
           noMore = true
         }
       } else {
@@ -107,6 +109,12 @@ export default function List() {
 
   useEffect(() => {
     fetchData()
+
+    return () => {
+      currentPage = 1
+      moreState = false
+      noMore = false
+    }
   }, [])
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)

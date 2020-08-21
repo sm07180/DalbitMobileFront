@@ -96,7 +96,7 @@ export default (props) => {
 
   const checkSelfAuth = async () => {
     let myBirth
-    const baseYear = new Date().getFullYear() - 16
+    const baseYear = new Date().getFullYear() - 11
     const myInfoRes = await Api.mypage()
     if (myInfoRes.result === 'success') {
       myBirth = myInfoRes.data.birth.slice(0, 4)
@@ -104,7 +104,7 @@ export default (props) => {
 
     if (myBirth > baseYear) {
       return context.action.alert({
-        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+        msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
       })
     }
 

@@ -15,7 +15,6 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
   const {levelList} = props
-
   return (
     <>
       <ul>
