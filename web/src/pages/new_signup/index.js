@@ -535,7 +535,7 @@ export default (props) => {
   const birthChange = (birth) => {
     dispatch({name: 'birth', value: birth})
   }
-  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 16
+  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
   const validateBirth = () => {
     if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
 
@@ -543,7 +543,7 @@ export default (props) => {
     if (currentBirthYear <= baseDateYear) {
       return setValidate({name: 'birth', check: true})
     } else {
-      return setValidate({name: 'birth', check: false, text: '17세 이상만 가입 가능합니다.'})
+      return setValidate({name: 'birth', check: false, text: '12세 이상만 가입 가능합니다.'})
     }
   }
 

@@ -35,6 +35,9 @@
         margin-right: 10px;
         background: url('../../static/ic_delete_alarm.svg') no-repeat center;
         background-size: contain;
+        &.isActive {
+          background: url('../../static/ic_delete_alarm_active.svg') no-repeat center;
+        }
       }
       .allCheck {
         margin-top: 4px;
