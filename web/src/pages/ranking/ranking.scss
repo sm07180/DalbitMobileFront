@@ -30,7 +30,7 @@
       display: block;
       width: 36px;
       position: absolute;
-      top: 6px;
+      top: 4px;
       left: 2%;
     }
   }
@@ -87,14 +87,13 @@
       height: 36px;
       font-size: 16px;
       color: #000;
-      border-bottom: 1px solid #f5f5f5;
       &--active {
-        border-color: #632beb;
+        border-bottom: 1px solid #632beb;
         color: #632beb;
         font-weight: 900;
       }
       &--blur {
-        color: #bdbdbd;
+        color: #888;
       }
     }
   }
