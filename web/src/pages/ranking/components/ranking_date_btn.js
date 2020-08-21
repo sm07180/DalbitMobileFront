@@ -24,7 +24,7 @@ export default function RankgDateBtn(props) {
         </button>
       )
     })
-  }, [dateType])
+  }, [dateType, fetching])
 
   return <div className="todayList">{createDateButton()}</div>
 }
