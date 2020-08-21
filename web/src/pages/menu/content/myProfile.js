@@ -31,7 +31,7 @@ import KoreaIcon from '../static/ico_korea.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
-import QuestionIcon from '../static/ic_question_new.svg'
+import QuestionIcon from '../static/ic_help.svg'
 import CrownIcon from '../static/ic_crown.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
 import FanSettingIcon from '../static/fan_setting.svg'
@@ -589,16 +589,7 @@ const ButtonWrap = styled.div`
   padding-top: 16px;
   text-align: right;
   order: 3;
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    flex-basis: auto;
-    padding-top: 0;
-    order: 1;
-  } */
 `
-
 const ProfileImg = styled.div`
   display: block;
   position: relative;
@@ -712,9 +703,6 @@ const ProfileImg = styled.div`
     }
   }
 
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    order: 2;
-  } */
   & .liveIcon {
     position: absolute;
     right: 0;
@@ -879,7 +867,6 @@ const NameWrap = styled.div`
         margin-left: 16px;
       }
     }
-    
   }
   .subIconWrap {
     display: flex;
@@ -944,14 +931,6 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-    & > * {
-    }
-    span {
-      transform: skew(-0.03deg);
-    }
-  } */
 `
 //팬, 스타 수
 const CountingWrap = styled.div`
@@ -1000,10 +979,6 @@ const CountingWrap = styled.div`
       content: '';
     }
   }
-
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
-  } */
 `
 //팬랭킹
 const FanListWrap = styled.div`
@@ -1072,9 +1047,6 @@ const FanListWrap = styled.div`
       }
     }
   }
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 0px;
-  } */
   > a {
     &.none {
       display: none;
@@ -1099,10 +1071,6 @@ const FanRank = styled.div`
   & + & {
     margin-left: 4px;
   }
-  /* @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 28px;
-    height: 28px;
-  } */
   :after {
     display: block;
     position: absolute;
