@@ -282,7 +282,7 @@ const myProfile = (props) => {
               </div>
             )}
 
-            <span>
+            <span className="title">
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </span>
             {/*<div className="expBtnWrap">
@@ -425,18 +425,12 @@ const myProfile = (props) => {
 export default myProfile
 //styled======================================
 const ButtonWrap = styled.div`
-  /* flex-basis: 204px;
-  padding-top: 35px;
-  text-align: right;
-  order: 3; */
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 14px;
-    display: flex;
-    justify-content: space-between;
-    flex-basis: auto;
-    padding-top: 0;
-    order: 1;
-  }
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  flex-basis: auto;
+  padding-top: 0;
+  order: 1;
 `
 //flex item3
 const GiftButtonWrap = styled.div`
@@ -555,12 +549,12 @@ const MyProfile = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color:#fff;
-  border-top-left-radius:20px;
-  border-top-right-radius:20px;
+  background-color: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   margin: 0 auto 0 auto;
   padding: 40px 16px 20px 16px;
-  z-index:3;
+  z-index: 3;
   .closeBtn {
     position: absolute;
     width: 32px;
@@ -584,20 +578,19 @@ const MyProfile = styled.div`
     position: fixed;
     top: 0;
     left: 0;
-    width:100%;
+    width: 100%;
     height: 100vh;
-    z-index:22;
-    background-color:rgba(0,0,0,0.5);
-    
+    z-index: 22;
+    background-color: rgba(0, 0, 0, 0.5);
   }
   .zoomImg {
     position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: block;
-    width:95%;
-   height:auto;
+    width: 95%;
+    height: auto;
   }
   & > div {
     flex: 0 0 auto;
@@ -627,21 +620,21 @@ const MyProfile = styled.div`
         background-color: #eeeeee;
       }
       .icoImg {
-        margin:0 auto;
+        margin: 0 auto;
         display: inline-block;
-        width:24px;
-        height:24px;
-        background:url(${GrayHeart})no-repeat center center /cover;
+        width: 24px;
+        height: 24px;
+        background: url(${GrayHeart}) no-repeat center center / cover;
         &.type1 {
-          background:url(${BlueHoleIcon})no-repeat center center /cover;
+          background: url(${BlueHoleIcon}) no-repeat center center / cover;
         }
         &.type2 {
-          background:url(${StarIcon})no-repeat center center /cover;
+          background: url(${StarIcon}) no-repeat center center / cover;
         }
       }
       .icotitle {
-        float:right;
-        line-height:24px;
+        float: right;
+        line-height: 24px;
         font-size: 16px;
         font-weight: normal;
         font-stretch: normal;
@@ -659,21 +652,16 @@ const MyProfile = styled.div`
         letter-spacing: normal;
         text-align: center;
         color: #000000;
-        margin-left:2px;
+        margin-left: 2px;
       }
     }
     div:last-child {
       :after {
         height: 0;
         width: 0;
-      } 
+      }
     }
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    
-    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
-  }
-
 `
 //flex item3
 const ProfileImg = styled.div`
@@ -734,26 +722,23 @@ const ProfileImg = styled.div`
       display: none;
     }
   }
-  span {
-    display: inline-block;
+  .title {
     position: relative;
-    max-width: 70%;
+    display: inline-block;
+    min-width: 100px;
     height: 32px;
     margin-top: 20px;
-    border-radius: 13px;
-    background: #f54640;
-    color: #fff;
+    padding: 0px 20px;
+    line-height: 32px;
     font-size: 16px;
     font-weight: bold;
-    line-height: 32px;
     text-align: center;
-    letter-spacing: -0.3px;
-    z-index: 2;
+    letter-spacing: -0.35px;
+    border-radius: 16px;
+    color: #fff;
+    background-color: #f54640;
     transform: skew(-0.03deg);
-    padding: 0 18px;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    order: 2;
+    z-index: 4;
   }
 `
 const ContentWrap = styled.div`
@@ -763,8 +748,6 @@ const ContentWrap = styled.div`
   & > div {
     display: flex;
     justify-content: center;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
   }
   .dailyTop {
     width: 108px;
@@ -847,69 +830,7 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-    & > * {
-    }
-    span {
-      transform: skew(-0.03deg);
-    }
-  }
 `
-//팬, 스타 수
-const CountingWrap = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 12px;
-
-  span {
-    display: inline-block;
-    font-size: 18px;
-    letter-spacing: -0.35px;
-    color: ${COLOR_MAIN};
-    transform: skew(-0.03deg);
-    font-weight: 600;
-    em {
-      display: inline-block;
-      padding-left: 1px;
-      color: #000;
-      font-style: normal;
-      font-weight: 600;
-    }
-  }
-  & span:first-child:after {
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    margin: 0 11px -1px 12px;
-    background: #e0e0e0;
-    content: '';
-  }
-  & div {
-    width: 36px;
-    height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_report.png);
-    margin-left: 18px;
-    position: relative;
-    cursor: pointer;
-    :after {
-      display: block;
-      width: 1px;
-      height: 12px;
-      position: absolute;
-      left: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #e0e0e0;
-      content: '';
-    }
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
-  }
-`
-
 //상단버튼
 const InfoConfigBtn = styled.div`
   display: flex;
@@ -989,11 +910,9 @@ const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   .rankTitle {
     text-indent: 6px;
   }
-
   > span {
     display: flex;
     align-items: center;
@@ -1176,7 +1095,6 @@ const Slide = styled.a`
   color: #fff;
 `
 //프로필메세지
-
 const ProfileMsg = styled.p`
   width: 70%;
   margin: 0 auto;
