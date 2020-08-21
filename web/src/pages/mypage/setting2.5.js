@@ -265,7 +265,7 @@ export default (props) => {
       gender: gender,
       nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg || profile.profMsg,
+      profMsg: profileMsg,
       profImg: photoPath || profile.profImg.path
     }
     //fetch
