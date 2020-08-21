@@ -125,7 +125,7 @@ export default function Guidance({state, dispatch}) {
               8. 서비스 이용 회원 중 미성년자(12세 이상~20세 미만) 환전 신청 시 법정대리인의 동의 또는 가족관계 증명서를 추가
               요청할 수 있습니다.
               <br />
-              9. 20세 이상 회원 중 본인인증 절차가 정상적으로 완료 회원에 한해 승인처리가 완료됩니다.
+              9. 20세 이상 회원 중 본인인증 절차가 정상적으로 완료된 회원에 한해 승인처리가 완료됩니다.
               <br />
               10 대한민국 신분을 증명할 수 없는 외국인인 경우 해외 환전신청 페이지를 이용하여 신청 및 승인이 가능합니다..
             </div>
@@ -134,7 +134,6 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list--title">◈ 환전 불가 서류</div>
             <div className="guidance__list--gray">
               - (X) 정보 확인이 불분명한 서류
-              <br />- (X) 학생증
               <br />- (X) 건강보험증
               <br />- (X) 기타 민간 자격증
               <br />- (X) 수기 작성한 서류

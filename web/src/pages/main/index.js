@@ -517,7 +517,7 @@ export default (props) => {
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
-                <div className="txt">랭킹</div>
+                <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
