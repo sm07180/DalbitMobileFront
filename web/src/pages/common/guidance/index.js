@@ -134,6 +134,7 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list--title">◈ 환전 불가 서류</div>
             <div className="guidance__list--gray">
               - (X) 정보 확인이 불분명한 서류
+              <br />- (X) 학생증
               <br />- (X) 건강보험증
               <br />- (X) 기타 민간 자격증
               <br />- (X) 수기 작성한 서류
