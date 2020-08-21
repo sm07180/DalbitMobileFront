@@ -1,9 +1,8 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-
 import {Context} from 'context'
-
 import './index.scss'
+
 export default function AppInfo() {
   const history = useHistory()
   const context = useContext(Context)
