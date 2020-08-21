@@ -376,14 +376,17 @@ export default (props) => {
             })}
           </div>
         </div>
-
-        {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
-
-        {rankType !== RANK_TYPE.LEVEL && fetching === false && (
+        {rankType !== RANK_TYPE.LEVEL && (
           <>
             <RankDateBtn dateType={dateType} setDateType={setDateType} />
-            <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} />
+            <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} fetching={fetching} />
             <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} setMyInfo={setMyInfo} />
+          </>
+        )}
+        {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
+
+        {rankType !== RANK_TYPE.LEVEL && (
+          <>
             <RankListWrap
               rankType={rankType}
               dateType={dateType}

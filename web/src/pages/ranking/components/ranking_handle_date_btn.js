@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {DATE_TYPE} from '../constant'
 
 export default function RankHandleDateBtn(props) {
-  const {handleDate, selectedDate, dateType} = props
+  const {handleDate, selectedDate, dateType, fetching} = props
   const history = useHistory()
   const [btnActive, setBtnActive] = useState({
     prev: false,
@@ -89,7 +89,7 @@ export default function RankHandleDateBtn(props) {
         // setBtnActive({prev: true, next: true})
       }
 
-      const cDt = new Date('2020-07-01')
+      const cDt = new Date('2020-07-06')
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
       let yd = cDt.getDate()
@@ -147,9 +147,9 @@ export default function RankHandleDateBtn(props) {
   return (
     <div className="detailView">
       <button
-        className={`prevButton ${btnActive['prev'] === true ? 'active' : ''}`}
+        className={`prevButton ${btnActive['prev'] === true && fetching === false ? 'active' : ''}`}
         onClick={() => {
-          if (btnActive['prev'] === true) {
+          if (btnActive['prev'] === true && fetching === false) {
             handleDate('prev')
           }
         }}>
@@ -172,9 +172,9 @@ export default function RankHandleDateBtn(props) {
       </div>
 
       <button
-        className={`nextButton ${btnActive['next'] === true ? 'active' : ''}`}
+        className={`nextButton ${btnActive['next'] === true && fetching === false ? 'active' : ''}`}
         onClick={() => {
-          if (btnActive['next'] === true) {
+          if (btnActive['next'] === true && fetching === false) {
             handleDate('next')
           }
         }}>
