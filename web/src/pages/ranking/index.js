@@ -389,7 +389,7 @@ export default (props) => {
         </div>
         {rankType !== RANK_TYPE.LEVEL && (
           <>
-            <RankDateBtn dateType={dateType} setDateType={setDateType} />
+            <RankDateBtn dateType={dateType} setDateType={setDateType} fetching={fetching} />
             <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} fetching={fetching} />
             <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} setMyInfo={setMyInfo} />
           </>

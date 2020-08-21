@@ -331,14 +331,13 @@ export default (props) => {
                     }
                   }}
                 />
-                <span className="bold">비밀글</span>
-                <span>(비공개)</span>
+                <span className="bold">비공개</span>
               </span>
               <span>
                 <em>{textChange.length}</em> / 100
               </span>
             </span>
-            <button onClick={() => fetchDataUploadReply()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
+            <button onClick={() => fetchDataUploadReply()}>등록</button>
           </div>
         </Writer>
       )}
