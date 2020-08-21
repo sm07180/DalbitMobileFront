@@ -83,17 +83,28 @@
     background-color: #fff;
 
     &__btn {
+      position: relative;
       margin: 0 10px;
       height: 36px;
       font-size: 16px;
       color: #000;
       &--active {
-        border-bottom: 1px solid #632beb;
         color: #632beb;
         font-weight: 900;
+        &::after {
+          display: inline-block;
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 1px;
+          background-color: #632beb;
+        }
       }
       &--blur {
         color: #888;
+        cursor: none;
       }
     }
   }
