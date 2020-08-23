@@ -88,7 +88,13 @@
       height: 36px;
       font-size: 16px;
       color: #000;
+<<<<<<< HEAD
       &--active {
+=======
+
+      &--active {
+        border-bottom: 1px solid #632beb;
+>>>>>>> 2020_08_21
         color: #632beb;
         font-weight: 900;
         &::after {
@@ -104,28 +110,35 @@
       }
       &--blur {
         color: #888;
+<<<<<<< HEAD
         cursor: none;
+=======
+>>>>>>> 2020_08_21
       }
     }
   }
 
   .detailView {
     height: 56px;
-    background: #eee;
+    background: #fff;
     padding: 0px 10px;
     display: flex;
     justify-content: space-between;
 
     .titleWrap {
       display: flex;
+      position: relative;
+      flex-direction: column;
       align-items: center;
     }
 
     .benefitSize {
-      width: 43px;
-      height: 28px;
+      position: absolute;
+      width: 50px;
+      height: 22px;
       display: inline-block;
       margin-left: 7px;
+      right: -55px;
     }
     .subDay {
       font-size: 12px;
@@ -134,10 +147,9 @@
 
     .title {
       display: flex;
+      position: relative;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      flex: 1;
       font-size: 16px;
       color: #632beb;
       font-weight: 700;
@@ -510,6 +522,26 @@
     }
   }
 
+  .fanGoodBox {
+    display: flex;
+    width: fit-content;
+    padding: 2px 7px;
+    background-color: #ec455f;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+
+    & img {
+      width: 24px;
+      height: 24px;
+    }
+
+    & span {
+      line-height: 24px;
+    }
+  }
+
   .nickNameBox {
     align-items: center;
     flex-direction: column;
@@ -636,7 +668,6 @@
       &__item {
         position: relative;
         padding: 9px;
-        border-top: solid 1px #632beb;
         background-color: #fff;
         text-align: center;
         width: 49%;
@@ -650,7 +681,6 @@
           width: 100%;
           padding-top: 116px;
           margin-bottom: 8px;
-          border-top: solid 1px #632beb;
           .nickName {
             display: flex;
             justify-content: center;

@@ -2,6 +2,8 @@ import React, {useState, useCallback, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {DATE_TYPE} from '../constant'
 
+import BenefitIcon from '../static/benefit.jpg'
+
 export default function RankHandleDateBtn(props) {
   const {handleDate, selectedDate, dateType, fetching} = props
   const history = useHistory()
@@ -159,16 +161,16 @@ export default function RankHandleDateBtn(props) {
       <div className="title">
         <div className="titleWrap">
           {dateTitle.header}
-          <img
-            src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-            alt="benefit"
-            className="benefitSize"
-            onClick={() => {
-              history.push('/rank/benefit')
-            }}
-          />
+          <span>{dateTitle.date}</span>
         </div>
-        <span>{dateTitle.date}</span>
+        <img
+          src={BenefitIcon}
+          alt="benefit"
+          className="benefitSize"
+          onClick={() => {
+            history.push('/rank/benefit')
+          }}
+        />
       </div>
 
       <button
