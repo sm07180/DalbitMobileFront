@@ -88,13 +88,7 @@
       height: 36px;
       font-size: 16px;
       color: #000;
-<<<<<<< HEAD
       &--active {
-=======
-
-      &--active {
-        border-bottom: 1px solid #632beb;
->>>>>>> 2020_08_21
         color: #632beb;
         font-weight: 900;
         &::after {
@@ -110,10 +104,7 @@
       }
       &--blur {
         color: #888;
-<<<<<<< HEAD
         cursor: none;
-=======
->>>>>>> 2020_08_21
       }
     }
   }
