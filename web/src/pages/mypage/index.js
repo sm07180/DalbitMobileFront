@@ -27,6 +27,8 @@ import newCircle from './static/new_circle.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
 
+import './index.scss'
+
 //new State
 let NewState = {
   fanboard: false,
@@ -151,45 +153,47 @@ export default (props) => {
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb">
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
-        <Mypage2 webview={webview}>
-          {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
-          {!category && (
-            <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <Sub2>
-                {subNavList2.map((value, idx) => {
-                  const {type, txt, icon, component} = value
-                  return (
-                    <div className="link-list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
-                      <div className="list">
-                        <img className="icon" src={icon} />
-                        <span className="text">{txt}</span>
-                        <span
-                          className={
-                            type === 'notice'
-                              ? myPageNew.broadNotice
-                                ? 'arrow arrow--active'
+        <div id="profile">
+          <Mypage2 webview={webview}>
+            {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
+            {!category && (
+              <>
+                <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
+                <Sub2>
+                  {subNavList2.map((value, idx) => {
+                    const {type, txt, icon, component} = value
+                    return (
+                      <div className="link-list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
+                        <div className="list">
+                          <img className="icon" src={icon} />
+                          <span className="text">{txt}</span>
+                          <span
+                            className={
+                              type === 'notice'
+                                ? myPageNew.broadNotice
+                                  ? 'arrow arrow--active'
+                                  : 'arrow'
+                                : type === 'fanboard'
+                                ? myPageNew.fanBoard
+                                  ? 'arrow arrow--active'
+                                  : 'arrow'
                                 : 'arrow'
-                              : type === 'fanboard'
-                              ? myPageNew.fanBoard
-                                ? 'arrow arrow--active'
-                                : 'arrow'
-                              : 'arrow'
-                          }></span>
+                            }></span>
+                        </div>
                       </div>
-                    </div>
-                  )
-                })}
-              </Sub2>
-            </>
-          )}
-          <SubContent>
-            {navigationList.map((value) => {
-              const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
-            })}
-          </SubContent>
-        </Mypage2>
+                    )
+                  })}
+                </Sub2>
+              </>
+            )}
+            <SubContent>
+              {navigationList.map((value) => {
+                const {type, component} = value
+                return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+              })}
+            </SubContent>
+          </Mypage2>
+        </div>
       </Layout2>
     </Switch>
   )

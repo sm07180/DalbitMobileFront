@@ -105,6 +105,7 @@ const myProfile = (props) => {
   }
   //func 랭크팬리스트 생성
   const createFanList = () => {
+    console.log(profile)
     if (profile.fanRank == false) return null
     let result = []
     for (let index = 0; index < 3; index++) {
@@ -135,13 +136,13 @@ const myProfile = (props) => {
     )
     return (
       <>
-        <FanListWrap>
+        <div className="fanRankList">
           <span onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
             <span>팬랭킹</span>
             <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em>
           </span>
           {result}
-        </FanListWrap>
+        </div>
       </>
     )
   }
@@ -239,16 +240,18 @@ const myProfile = (props) => {
 
   return (
     <>
-      <ProfileWrap>
-        <MyProfile webview={webview}>
-          {token && token.isLogin && showAdmin && (
-            <a href="/admin/image" className="adminBtn">
-              <img src={AdminIcon} />
-            </a>
-          )}
-          <button className="closeBtn" onClick={goBack}></button>
-          <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
-            <figure onClick={() => figureZoom()}>
+      <div className="profile-info">
+        {token && token.isLogin && showAdmin && (
+          <a href="/admin/image" className="adminBtn">
+            <img src={AdminIcon} />
+          </a>
+        )}
+        <button className="closeBtn" onClick={goBack}>
+          <span className="blind">프로필 닫기</span>
+        </button>
+        <div className="profile-detail" webview={webview}>
+          <div className="profile-image" url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
+            <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
               <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
               {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
               {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
@@ -259,6 +262,9 @@ const myProfile = (props) => {
                 <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
               </div>
             )}
+          </div>
+
+          <div className="profile-content">
             <div
               className={`title 
               ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
@@ -269,7 +275,7 @@ const myProfile = (props) => {
             `}>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
-            <div className="InfoWrap">
+            <div className="levelInfoWrap">
               {urlrStr == 'profile' && (
                 <>
                   <LevelWrap>
@@ -294,27 +300,18 @@ const myProfile = (props) => {
                 </>
               )}
             </div>
-          </ProfileImg>
 
-          <ContentWrap>
-            <NameWrap>
-              {/* <span>ID : {`@${profile.memId}`}</span> */}
-              {/* <div className="expBtnWrap">
-                <a href={`/level`} className="btn-level">
-                  레벨
-                </a>
-              </div> */}
-
+            <div className="nameWrap">
               <strong>{profile.nickNm}</strong>
-              <div className="subIconWrap">
-                {/* {<em className="nationIcon"></em>} */}
-                {profile.gender === 'f' && <em className="femaleIcon"></em>}
-                {profile.gender === 'm' && <em className="maleIcon"></em>}
-                {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
-              </div>
-            </NameWrap>
+            </div>
+            <div className="subIconWrap">
+              {/* {<em className="nationIcon"></em>} */}
+              {profile.gender === 'f' && <em className="femaleIcon"></em>}
+              {profile.gender === 'm' && <em className="maleIcon"></em>}
+              {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
+            </div>
             {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
-            <ProfileMsg>{profile.profMsg}</ProfileMsg>
+            <div className="profileMsgWrap">{profile.profMsg}</div>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
                 <Swiper {...params}>{BadgeSlide}</Swiper>
@@ -322,11 +319,11 @@ const myProfile = (props) => {
             ) : (
               <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             )}
-            {profile.fanRank.length !== 0 && <ButtonWrap>{createFanList()}</ButtonWrap>}
+            {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
             <div className="categoryCntWrap">
               {profile.fanCnt > 0 ? (
-                <div onClick={goFanEdite}>
+                <div className="count-box" onClick={goFanEdite}>
                   <span className="icoWrap">
                     <span className="icoImg type1"></span>
                     <em className="icotitle icotitle--active">팬</em>
@@ -336,7 +333,7 @@ const myProfile = (props) => {
                   </em>
                 </div>
               ) : (
-                <div>
+                <div className="count-box">
                   <span>
                     <span className="icoImg type1"></span>
                     <em className="icotitle">팬</em>
@@ -348,7 +345,7 @@ const myProfile = (props) => {
               )}
 
               {profile.starCnt > 0 ? (
-                <div onClick={goStarEdite}>
+                <div className="count-box" onClick={goStarEdite}>
                   <span className="icoWrap">
                     <span className="icoImg type2"></span>
                     <em className="icotitle icotitle--active">스타</em>
@@ -358,7 +355,7 @@ const myProfile = (props) => {
                   </em>
                 </div>
               ) : (
-                <div>
+                <div className="count-box">
                   <span>
                     <span className="icoImg type2"></span>
                     <em className="icotitle">스타</em>
@@ -369,7 +366,7 @@ const myProfile = (props) => {
                 </div>
               )}
 
-              <div>
+              <div className="count-box">
                 <span>
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
@@ -379,384 +376,21 @@ const myProfile = (props) => {
                 </em>
               </div>
             </div>
-
-            {/* <CountingWrap></CountingWrap> */}
-          </ContentWrap>
+          </div>
           {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
           {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
           {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
           {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
           {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
-        </MyProfile>
+        </div>
         {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
-      </ProfileWrap>
+      </div>
     </>
   )
 }
 export default myProfile
-//2.5v style
-const PurpleWrap = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 387px;
-  padding-bottom: 8px;
-  z-index: 2;
-`
-const ProfileWrap = styled.div`
-  position: relative;
-  padding-top: 87px;
-  min-height: 391px;
-  .adminBtn {
-    position: absolute;
-    top: -59px;
-    left: 12px;
-    z-index: 1;
-  }
-  .title {
-    position: relative;
-    display: inline-block;
-    min-width: 100px;
-    height: 32px;
-    margin: 0 auto;
-    padding: 0px 20px;
-    line-height: 32px;
-    font-size: 16px;
-    font-weight: bold;
-    letter-spacing: -0.35px;
-    border-radius: 16px;
-    color: #fff;
-    background-color: #f54640;
-    z-index: 4;
-  }
-`
-const MyProfile = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 308px;
-  margin: 0 auto;
-  padding: 0;
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  background-color: #fff;
-  z-index: 3;
-  .closeBtn {
-    position: absolute;
-    top: -50px;
-    right: 20px;
-    width: 32px;
-    height: 32px;
-    z-index: 16;
-    background: url(${CloseBtnIcon});
-  }
-  .zoom {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    z-index: 22;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  .zoomImg {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: block;
-    width: 95%;
-    height: auto;
-  }
-  & > div {
-    flex: 0 0 auto;
-  }
-  .categoryCntWrap {
-    margin: 8px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .icoWrap {
-      display: flex;
-      align-items: center;
-    }
-    div {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      position: relative;
-      width: 88px;
-      height: 50px;
-      :after {
-        content: '';
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        height: 40px;
-        width: 1px;
-        background-color: #eeeeee;
-      }
-      .icoImg {
-        margin: 0 auto;
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background: url(${GrayHeart}) no-repeat center center / cover;
 
-        &.type1 {
-          background: url(${BlueHoleIcon}) no-repeat center center / cover;
-        }
-        &.type2 {
-          background: url(${StarIcon}) no-repeat center center / cover;
-        }
-      }
-      .icotitle {
-        display: flex;
-        align-items: center;
-        float: right;
-        margin-left: 0px;
-        line-height: 24px;
-        font-size: 16px;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        letter-spacing: normal;
-        text-align: center;
-        color: #424242;
-        &--active {
-          &:after {
-            margin-left: 8px;
-            display: inline-block;
-            content: '';
-            width: 16px;
-            height: 16px;
-            background: url(${FanSettingIcon});
-          }
-        }
-      }
-      .cntTitle {
-        font-size: 20px;
-        font-weight: 800;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.13;
-        letter-spacing: normal;
-        text-align: center;
-        color: #000000;
-        margin-left: 2px;
-      }
-    }
-    div:last-child {
-      :after {
-        height: 0;
-        width: 0;
-      }
-    }
-  }
-  .topMedal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 190px;
-    height: 28px;
-    margin: 12px auto 0 auto;
-    padding: 0 10px;
-    border-radius: 14px;
-    border: solid 1px #e0e0e0;
-    background-color: #f5f5f5;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 28px;
-    text-align: center;
-    color: #bdbdbd;
-    letter-spacing: -0.6px;
-    :before {
-      display: block;
-      content: '';
-      width: 26px;
-      height: 16px;
-      margin-right: 8px;
-      background: url(${CrownIcon}) no-repeat center center / cover;
-    }
-  }
-`
-//flex item3
-const ButtonWrap = styled.div`
-  flex-basis: 204px;
-  padding-top: 16px;
-  text-align: right;
-  order: 3;
-`
-const ProfileImg = styled.div`
-  display: block;
-  position: relative;
-  flex-basis: 151px;
-  background-size: cover;
-  background-position: center;
-  text-align: center;
-  order: 1;
-  margin-top: -50px;
-  figure {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    margin: 0px auto 19px auto;
-    border-radius: 50%;
-    background: url(${(props) => props.url}) no-repeat center center/ cover;
-    img {
-      display: none;
-    }
-
-    .holder {
-      display: block;
-      position: absolute;
-      top: -20px;
-      left: -20px;
-      width: 140px;
-      height: 140px;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    .holderBg {
-      display: block;
-      position: absolute;
-      top: -20px;
-      left: -62px;
-      width: 224px;
-      height: 140px;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-    .profileBg {
-      display: block;
-      position: absolute;
-      top: -20px;
-      left: -40px;
-      width: 180px;
-      height: 140px;
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
-  }
-
-  .InfoWrap {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    margin: 8px auto 0;
-    font-size: 12px;
-    text-align: center;
-    z-index: 2;
-    .expWrap {
-      width: 280px;
-      display: flex;
-      justify-content: space-between;
-      margin: 8px auto 10px auto;
-    }
-    .expPer {
-      display: block;
-      font-size: 12px;
-      font-weight: 600;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.08;
-      letter-spacing: normal;
-      text-align: center;
-      color: #632beb;
-    }
-    .expBegin {
-      font-size: 12px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.08;
-      letter-spacing: normal;
-      text-align: left;
-      color: #424242;
-    }
-    .expBegin:nth-child(1) {
-      margin-left: 8px;
-    }
-    .expBegin:nth-child(2) {
-      margin-right: 8px;
-    }
-    .btn-info {
-      display: flex;
-      align-items: center;
-      margin-right: 5px;
-      border-radius: 14px;
-      :after {
-        content: '';
-        height: 12px;
-        width: 20px;
-        background: url(${QuestionIcon}) no-repeat center center / cover;
-      }
-      .blind {
-        font-size: 0;
-      }
-    }
-  }
-
-  & .liveIcon {
-    position: absolute;
-    right: 0;
-    top: 0px;
-    width: 52px;
-    height: 26px;
-    background: url(${LiveIcon}) no-repeat center center / cover;
-  }
-`
-
-const ContentWrap = styled.div`
-  width: 100%;
-  padding: 0 24px 20px;
-  margin: 0 auto;
-  order: 2;
-  & > div {
-    display: flex;
-    justify-content: center;
-  }
-
-  .expWrap {
-    width: 280px;
-    display: flex;
-    justify-content: space-between;
-    margin: 8px auto 10px auto;
-  }
-  .expPer {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.08;
-    letter-spacing: normal;
-    text-align: center;
-    color: #632beb;
-  }
-  .expBegin {
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.08;
-    letter-spacing: normal;
-    text-align: left;
-    color: #424242;
-  }
-  .expBegin:nth-child(1) {
-    margin-left: 8px;
-  }
-  .expBegin:nth-child(2) {
-    margin-right: 8px;
-  }
-`
+const ContentWrap = styled.div``
 
 //------------------------------------------------------
 //정보 레벨업관련
@@ -838,221 +472,8 @@ const LevelStatus = styled.div`
   text-indent: 3px;
   line-height: 16px;
 `
-//닉네임
-const NameWrap = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-
-  .expBtnWrap {
-    display: flex;
-    margin-top: 6px;
-    > a {
-      display: flex;
-      align-items: center;
-      width: 72px;
-      height: 20px;
-      border-radius: 14px;
-      border: solid 1px #eeeeee;
-      background-color: #ffffff;
-      font-size: 12px;
-      font-weight: bold;
-      color: #757575;
-      text-indent: 7px;
-      :after {
-        content: '';
-        width: 20px;
-        height: 12px;
-        background: url(${QuestionIcon}) right no-repeat;
-        margin-left: 16px;
-      }
-    }
-  }
-  .subIconWrap {
-    display: flex;
-    flex-direction: row;
-  }
-  .nationIcon {
-    width: 24px;
-    height: 16px;
-    margin-top: 4px;
-    background: url(${KoreaIcon}) no-repeat center center / cover;
-  }
-  .femaleIcon {
-    width: 24px;
-    height: 16px;
-    margin-top: 4px;
-    margin-left: 2px;
-    background: url(${FemaleIcon}) no-repeat center center / cover;
-  }
-  .maleIcon {
-    width: 24px;
-    height: 16px;
-    margin-top: 4px;
-    margin-left: 2px;
-    background: url(${MaleIcon}) no-repeat center center / cover;
-  }
-  .specialIcon {
-    width: 64px;
-    height: 16px;
-    margin-top: 4px;
-    border-radius: 10px;
-    background-color: #ec455f;
-    margin-left: 2px;
-  }
-  strong {
-    color: #000;
-    max-width: 260px;
-    font-size: 22px;
-    line-height: 24px;
-    min-height: 24px;
-    font-weight: 800;
-    margin-top: 10px;
-  }
-  .specialIcon {
-    display: inline-block;
-    width: 62px;
-    height: 16px;
-    line-height: 16px;
-    margin-left: 2px;
-    border-radius: 10px;
-    background-color: #ec455f;
-    color: #fff;
-    font-size: 12px;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    letter-spacing: normal;
-  }
-  span {
-    color: #616161;
-    font-size: 10px;
-    padding: 12px 0 0 0;
-    line-height: 12px;
-    transform: skew(-0.03deg);
-  }
-`
-//팬, 스타 수
-const CountingWrap = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 12px;
-  span {
-    display: inline-block;
-    font-size: 18px;
-    letter-spacing: -0.35px;
-    color: ${COLOR_MAIN};
-    transform: skew(-0.03deg);
-    font-weight: 600;
-    em {
-      display: inline-block;
-      padding-left: 1px;
-      color: #000;
-      font-style: normal;
-      font-weight: 600;
-    }
-  }
-  & span:first-child:after {
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    margin: 0 11px -1px 12px;
-    background: #e0e0e0;
-    content: '';
-  }
-  & div {
-    width: 36px;
-    height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_report.png);
-    margin-left: 18px;
-    position: relative;
-    cursor: pointer;
-    :after {
-      display: block;
-      width: 1px;
-      height: 12px;
-      position: absolute;
-      left: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #e0e0e0;
-      content: '';
-    }
-  }
-`
 //팬랭킹
-const FanListWrap = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  > span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 12px;
-    transform: skew(-0.03deg);
-    width: 72px;
-    height: 28px;
-    padding-left: 9px;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: -0.35px;
-    line-height: 28px;
-    border-radius: 25px;
-    border: solid 1px #e0e0e0;
-    color: #000000;
-    background-color: #ffffff;
-    em {
-      position: relative;
-      right: 0px;
-      width: 20px;
-      height: 20px;
-      background: url(${PlusCircle}) no-repeat center center / contain;
-    }
-  }
-  & .moreFan {
-    width: 28px;
-    height: 28px;
-    border: 1px solid #e0e0e0;
-    border-radius: 50%;
-    vertical-align: top;
-    margin-top: -5px;
-    margin-left: 2px;
-    span {
-      display: inline-block;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 2px;
-      height: 2px;
-      margin: 0 auto;
-      background: #424242;
-      border-radius: 50%;
-      :after,
-      :before {
-        display: inline-block;
-        position: absolute;
-        width: 2px;
-        height: 2px;
-        border-radius: 50%;
-        background: #424242;
-        content: '';
-      }
-      :after {
-        right: -5px;
-      }
-      :before {
-        left: -5px;
-      }
-    }
-  }
-  > a {
-    &.none {
-      display: none;
-    }
-  }
-`
+const FanListWrap = styled.div``
 const FanRank = styled.div`
   display: inline-block;
   position: relative;
@@ -1157,18 +578,4 @@ const BadgeWrap = styled.div`
 //팬 뱃지 스타일링
 const Slide = styled.a`
   color: #fff;
-`
-//프로필메세지
-const ProfileMsg = styled.pre`
-  padding: 0px 5px;
-  box-sizing: border-box;
-  margin: 0 auto;
-  margin-top: 8px;
-  transform: skew(-0.03deg);
-  font-size: 14px;
-  font-family: inherit;
-  line-height: 1.43;
-  letter-spacing: normal;
-  text-align: center;
-  color: #424242;
 `
