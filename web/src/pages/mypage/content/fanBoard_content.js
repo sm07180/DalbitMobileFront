@@ -196,7 +196,7 @@ export default (props) => {
       {/* 딤영역 */}
       {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
       <Content>
-        <div className={`list-wrap ${context.toggleState === false ? 'on' : 'off'}`}>
+        <div className={`list-wrap`}>
           {TotalCount && (
             <div className="big_count">
               <span>게시글</span>
@@ -218,7 +218,7 @@ export default (props) => {
               }
               return (
                 <React.Fragment key={index}>
-                  <BigReply>
+                  <BigReply className={`${boardIdx === context.fanboardReplyNum && 'on'}`}>
                     <div className="reply_header">
                       {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
                         <>
@@ -244,13 +244,13 @@ export default (props) => {
                           <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
                         </span>
                       </div>
-                      <div className="content_area">
-                        <pre>{contents}</pre>
-                      </div>
-                      <div className="big_footer">
-                        <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
-                        {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
-                      </div>
+                    </div>
+                    <div className="content_area">
+                      <pre>{contents}</pre>
+                    </div>
+                    <div className="big_footer">
+                      <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
+                      {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
                     </div>
                   </BigReply>
                   {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
@@ -307,9 +307,6 @@ export default (props) => {
           )}
         </div>
         {/*대댓글 리스트영역*/}
-        {context.fanboardReplyNum && context.toggleState && (
-          <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
-        )}
       </Content>
     </>
   )
@@ -321,6 +318,10 @@ const BigReply = styled.div`
   background-color: #fff;
   /* min-height: 196px; */
   margin-bottom: 12px;
+
+  &.on {
+    margin-bottom: 0;
+  }
   .detailwapper {
     position: relative;
   }

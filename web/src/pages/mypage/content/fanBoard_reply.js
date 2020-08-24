@@ -244,14 +244,14 @@ export default (props) => {
   //------------------------------------------------------------
   return (
     <Reply>
-      {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
+      {/* {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
       <header className="replyheader">
         <button onClick={() => WriteToggles()}></button>
         <span>팬보드 보기</span>
         {createWriteBtns()}
-      </header>
+      </header> */}
       {/* 팬보드 대댓글 리스트 영역 */}
-      <div className="TitleReply">
+      {/* <div className="TitleReply">
         <header>
           <ProfImg bg={TitleInfo.profImg.thumb62x62}></ProfImg>
           <div className="titleInfo">
@@ -266,7 +266,7 @@ export default (props) => {
       <div className="ReplyCnt">
         <span>답글</span>
         <span>{list.length}</span>
-      </div>
+      </div> */}
       <div className="reply_list">
         {list &&
           list.map((item, index) => {
@@ -284,39 +284,42 @@ export default (props) => {
             }
             return (
               <div key={index} className="reply_Wrap">
-                <div className="reply_list_header">
-                  {/* 상세기능영역 */}
-                  {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                    <>
-                      <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
-                      <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                        {writerNo === context.token.memNo && (
-                          <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
-                        )}
-                        <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="replyInfo">
-                    <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
-                    <div className="big_header_info">
-                      <span onClick={Link}>
-                        <div>
-                          <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
-                          <span className="big_header_info__name">{nickNm}</span>
+                <div>ㄴ</div>
+                <div className="reply_Wrap__main">
+                  <div className="reply_list_header">
+                    {/* 상세기능영역 */}
+                    {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                      <>
+                        <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
+                        <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
+                          {writerNo === context.token.memNo && (
+                            <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
+                          )}
+                          <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
                         </div>
-                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
-                      </span>
-                    </div>
-                    {/* <div>
+                      </>
+                    )}
+
+                    <div className="replyInfo">
+                      <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
+                      <div className="big_header_info">
+                        <span onClick={Link}>
+                          <div>
+                            <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
+                            <span className="big_header_info__name">{nickNm}</span>
+                          </div>
+                          <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
+                        </span>
+                      </div>
+                      {/* <div>
                       <span onClick={Link}>{nickNm}</span>
                       <span onClick={Link}>{timeFormat(writeDt)}</span>
                     </div> */}
+                    </div>
                   </div>
-                </div>
-                <div className="reply_content">
-                  <pre>{contents}</pre>
+                  <div className="reply_content">
+                    <pre>{contents}</pre>
+                  </div>
                 </div>
               </div>
             )
@@ -537,12 +540,12 @@ const Textarea = styled.textarea``
 //최상위
 
 const Reply = styled.div`
-  position: absolute !important;
+  /* position: absolute !important;
   top: 0;
   left: 0;
   background-color: #eeeeee;
   width: 100%;
-  height: auto;
+  height: auto; */
   .big_moreBtn {
     position: absolute;
     right: 16px;
@@ -624,10 +627,12 @@ const Reply = styled.div`
   }
   .reply_list {
     /* height: 100%; */
+    background-color: #fbfbfb;
     .reply_Wrap {
+      display: flex;
       min-height: 132px;
       /* margin-bottom: 12px; */
-      padding: 0 16px;
+      padding: 4px 16px;
       background-color: #fbfbfb;
       border-bottom: 1px solid #eee;
 
@@ -656,7 +661,6 @@ const Reply = styled.div`
           display: flex;
           align-items: center;
           height: 48px;
-          padding: 0px 16px;
           /* border: 1px solid #eeeeee; */
           .big_header_info {
             display: flex;
