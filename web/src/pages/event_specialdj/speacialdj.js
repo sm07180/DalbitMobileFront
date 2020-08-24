@@ -44,8 +44,6 @@ export default (props) => {
     }
   }
 
-  console.log(infoData)
-
   const goBack = () => {
     history.goBack()
   }
@@ -110,6 +108,9 @@ export default (props) => {
         {token.isLogin === true ? (
           <>
             <div className="checkList">
+              <div className="img100">
+                <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" />
+              </div>
               <b className="dayTitle">
                 {`${startY}년 ${startM}월 ${startD}일 ~ ${endM}월 ${endD}일`}
                 <br />(<span className="dayTitle--orange">종료 {changeNumber} 일 전</span>)
@@ -199,6 +200,7 @@ export default (props) => {
                     )}
                   </div>
                 </div>
+
                 {conditionData.already === 0 ? (
                   <>
                     {conditionData.condition1 === 1 && conditionData.condition2 === 1 && conditionData.condition3 === 1 ? (
