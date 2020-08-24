@@ -150,6 +150,11 @@
     padding: 20px 40px;
     background: url('./static/content_bg.jpg');
     background-size: 100%;
+
+    &--logout {
+      padding: 16px 12px;
+      background: #f2f2f2;
+    }
   }
 
   .title-wrap {

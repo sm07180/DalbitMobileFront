@@ -230,7 +230,7 @@ export default (props) => {
           </>
         ) : (
           <>
-            <div className="buttonBox">
+            <div className="buttonBox buttonBox--logout">
               <button
                 className="button button--on"
                 onClick={() => {
@@ -246,10 +246,13 @@ export default (props) => {
             </div>
           </>
         )}
-
-        <div className="img100">
-          <img src={bottomImg} />
-        </div>
+        {token.isLogin === true ? (
+          <div className="img100">
+            <img src={bottomImg} />
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     </Layout>
   )
