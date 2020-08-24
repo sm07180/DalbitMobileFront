@@ -127,6 +127,9 @@ const LevelBox = styled.div`
       `
     }
   }};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-width: 44px;
   margin-right: 10px;
   height: 22px;
