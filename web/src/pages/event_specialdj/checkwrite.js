@@ -97,10 +97,6 @@ export default (props) => {
     }
   }
 
-  console.log(`sub1`, subSelect1)
-
-  console.log(`sub2`, subSelect2)
-
   useEffect(() => {
     specialdjCheck()
 
