@@ -86,7 +86,6 @@ const myProfile = (props) => {
   }
   //func 랭크팬리스트 생성
   const createFanList = () => {
-    console.log(profile)
     if (profile.fanRank == false) return null
     let result = []
     for (let index = 0; index < 3; index++) {
@@ -122,7 +121,6 @@ const myProfile = (props) => {
         <div className="fanRankList">
           <button className="btn__fanRank" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
             팬랭킹
-            <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em>
           </button>
           {result}
         </div>
@@ -197,6 +195,7 @@ const myProfile = (props) => {
   }
   //뱃지
   const BadgeSlide = profile.fanBadgeList.map((item, index) => {
+    if (!profile.hasOwnProperty('fanBadgeList')) return null
     const {text, icon, startColor, endColor} = item
     //-----------------------------------------------------------------------
     return (
@@ -234,9 +233,9 @@ const myProfile = (props) => {
         </button>
         <div className="profile-detail" webview={webview}>
           <div className="profile-content">
-            <div className="profile-image" url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
+            <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
               <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
-                <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+                <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
                 {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
                 {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
                 <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
@@ -315,7 +314,7 @@ const myProfile = (props) => {
                 </div>
               ) : (
                 <div className="count-box">
-                  <span>
+                  <span className="icoWrap">
                     <span className="icoImg type1"></span>
                     <em className="icotitle">팬</em>
                   </span>
