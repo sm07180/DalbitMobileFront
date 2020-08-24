@@ -149,6 +149,9 @@
           color: $white;
           background-color: #f54640;
           z-index: 4;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
         }
         .levelInfoWrap {
           position: relative;
