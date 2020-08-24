@@ -30,7 +30,7 @@
       display: block;
       width: 36px;
       position: absolute;
-      top: 6px;
+      top: 4px;
       left: 2%;
     }
   }
@@ -87,32 +87,39 @@
       height: 36px;
       font-size: 16px;
       color: #000;
-      border-bottom: 1px solid #f5f5f5;
+
       &--active {
-        border-color: #632beb;
+        border-bottom: 1px solid #632beb;
         color: #632beb;
         font-weight: 900;
+      }
+      &--blur {
+        color: #888;
       }
     }
   }
 
   .detailView {
     height: 56px;
-    background: #eee;
+    background: #fff;
     padding: 0px 10px;
     display: flex;
     justify-content: space-between;
 
     .titleWrap {
       display: flex;
+      position: relative;
+      flex-direction: column;
       align-items: center;
     }
 
     .benefitSize {
-      width: 43px;
-      height: 28px;
+      position: absolute;
+      width: 50px;
+      height: 22px;
       display: inline-block;
       margin-left: 7px;
+      right: -55px;
     }
     .subDay {
       font-size: 12px;
@@ -121,10 +128,9 @@
 
     .title {
       display: flex;
+      position: relative;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      flex: 1;
       font-size: 16px;
       color: #632beb;
       font-weight: 700;
@@ -208,7 +214,7 @@
 
       &--fixed {
         position: fixed;
-        top: 48px;
+        top: 0px;
         width: 100%;
         z-index: 3;
       }
@@ -497,6 +503,26 @@
     }
   }
 
+  .fanGoodBox {
+    display: flex;
+    width: fit-content;
+    padding: 2px 7px;
+    background-color: #ec455f;
+    border-radius: 14px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+
+    & img {
+      width: 24px;
+      height: 24px;
+    }
+
+    & span {
+      line-height: 24px;
+    }
+  }
+
   .nickNameBox {
     align-items: center;
     flex-direction: column;
@@ -623,7 +649,6 @@
       &__item {
         position: relative;
         padding: 9px;
-        border-top: solid 1px #632beb;
         background-color: #fff;
         text-align: center;
         width: 49%;
@@ -637,7 +662,6 @@
           width: 100%;
           padding-top: 116px;
           margin-bottom: 8px;
-          border-top: solid 1px #632beb;
           .nickName {
             display: flex;
             justify-content: center;
@@ -714,28 +738,41 @@
     background-color: #fff;
 
     .thumbBox {
-      width: 70px;
-      height: 70px;
+      width: 100px;
+      height: 100px;
       margin-right: 8px;
       min-width: 70px;
 
       &__pic {
-        margin-top: 10px;
+        margin-top: 15px;
+        width: 74px;
+      }
+
+      &__frame {
+        position: absolute;
+        left: 50%;
+        width: 100px;
+        transform: translateX(-50%);
       }
     }
 
     .nickNameBox {
+      width: 200px;
       padding-left: 5px;
       font-size: 14px;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
 
     .bestFanBox {
+      display: flex;
       margin: 4px 0;
       font-size: 12px;
       color: #632beb;
 
       &__label {
-        display: inline-block;
+        min-width: fit-content;
         margin-right: 4px;
         padding: 0 8px;
         height: 16px;
@@ -745,11 +782,28 @@
         font-size: 12px;
         line-height: 16px;
       }
+
+      &__nickNm {
+        width: 150px;
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
     }
 
     .countBox {
       padding-left: 5px;
       font-size: 12px;
+
+      & > span {
+        margin-right: 6px;
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-right: 2px;
+          margin-bottom: 2px;
+        }
+      }
     }
 
     .liveBox {

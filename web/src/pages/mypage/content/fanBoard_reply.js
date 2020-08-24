@@ -26,6 +26,8 @@ export default (props) => {
   const history = useHistory()
   const replyIdx = props.replyShowIdx
   const TitleInfo = props.titleReplyInfo
+
+  if (!props.titleReplyInfo) return null
   //location && context
   let location = useLocation()
   const ctx = useContext(Context)
@@ -263,6 +265,7 @@ export default (props) => {
           list.map((item, index) => {
             const {nickNm, writeDt, profImg, contents, boardIdx, writerNo, viewOn} = item
             const Link = () => {
+              let link = ''
               if (webview) {
                 link =
                   context.token.memNo !== writerNo
@@ -296,7 +299,7 @@ export default (props) => {
                           <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
                           <span className="big_header_info__name">{nickNm}</span>
                         </div>
-                        <div className="big_header_info__dt">{writeDt}</div>
+                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
                       </span>
                     </div>
                     {/* <div>
@@ -331,14 +334,13 @@ export default (props) => {
                     }
                   }}
                 />
-                <span className="bold">비밀글</span>
-                <span>(비공개)</span>
+                <span className="bold">비공개</span>
               </span>
               <span>
                 <em>{textChange.length}</em> / 100
               </span>
             </span>
-            <button onClick={() => fetchDataUploadReply()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
+            <button onClick={() => fetchDataUploadReply()}>등록</button>
           </div>
         </Writer>
       )}

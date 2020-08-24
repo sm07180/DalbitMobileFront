@@ -265,7 +265,7 @@ export default (props) => {
       gender: gender,
       nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg || profile.profMsg,
+      profMsg: profileMsg,
       profImg: photoPath || profile.profImg.path
     }
     //fetch
@@ -823,8 +823,7 @@ const ProfileImg = styled.div`
 `
 
 const SettingWrap = styled.div`
-  width: 394px;
-  margin: 0 auto;
+  width: 100%;
   .individual_Wrap {
     padding: 0 16px;
   }
@@ -832,11 +831,6 @@ const SettingWrap = styled.div`
     position: absolute;
     /* top: 6px; */
     left: 6px;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
-    /* height: 100vh; */
   }
   .msg-wrap {
     position: relative;

@@ -3,6 +3,7 @@
  * @brief 마이페이지 팬보드2.5v
  */
 import React, {useEffect, useState, useContext, useRef} from 'react'
+import {useParams} from 'react-router-dom'
 import styled from 'styled-components'
 //modules
 import qs from 'query-string'
@@ -27,6 +28,8 @@ let moreState = false
 //layout
 export default (props) => {
   const {webview} = qs.parse(location.search)
+  const params = useParams()
+
   //ref
   const inputEl = useRef(null)
   //context
@@ -44,6 +47,8 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(0)
 
   const [isScreet, setIsScreet] = useState(false)
+
+  const [isOther, setIsOther] = useState(true)
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
     const target = e.currentTarget
@@ -176,10 +181,21 @@ export default (props) => {
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
   useEffect(() => {
+    if (profile.memNo === urlrStr) {
+      setIsOther(false)
+    } else {
+      setIsOther(true)
+    }
+
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
+
+    return () => {
+      currentPage = 1
+    }
   }, [])
+
   //--------------------------------------------------
   return (
     <FanBoard>
@@ -201,21 +217,23 @@ export default (props) => {
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
-              <span className="bigCount__screet">
-                <DalbitCheckbox
-                  status={isScreet}
-                  callback={() => {
-                    setIsScreet(!isScreet)
-                  }}
-                />
-                <span className="bold">비밀글</span>
-                <span>(비공개)</span>
-              </span>
+              {isOther === true && (
+                <span className="bigCount__screet">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      setIsScreet(!isScreet)
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+              )}
+
               <span>
                 <em>{textChange.length}</em> / 100
               </span>
             </span>
-            <button onClick={() => fetchDataUpload()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
+            <button onClick={() => fetchDataUpload()}>등록</button>
           </div>
         </Writer>
       )}

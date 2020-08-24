@@ -23,7 +23,8 @@ export default (props) => {
     let month = date.substring(4, 6)
     let day = date.substring(6, 8)
     let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일 ${time}`
+    return `${month}월 ${day}일`
+    // return `${month}월 ${day}일 ${time}`
   }
 
   return (

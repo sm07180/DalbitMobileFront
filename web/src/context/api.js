@@ -1669,6 +1669,16 @@ export default class API {
     })
   }
 
+  static get_ranking_other = async (obj) => {
+    const {url, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/rank/level',
+      method: 'GET',
+      params: params
+    })
+  }
+
   static get_ranking_reward = async (obj) => {
     const {url, method, params} = obj || {}
     return await ajax({

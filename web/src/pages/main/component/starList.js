@@ -19,7 +19,7 @@ export default (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 12
+    spaceBetween: 8
   }
 
   return (
@@ -133,8 +133,7 @@ const StarList = styled.div`
   }
 
   .list {
-    width: 48px;
-    margin: 0 4px;
+    width: 60px;
     cursor: pointer;
 
     &:first-child {
@@ -151,9 +150,9 @@ const StarList = styled.div`
       justify-content: center;
       flex-direction: column;
       background-size: cover;
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
       color: #424242;
       font-size: 16px;
       font-weight: 800;

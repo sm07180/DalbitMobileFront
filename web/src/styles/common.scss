@@ -1,22 +1,5 @@
-/*
-  @date: 2019.12.30
-*/
-
-/*
-@font-weight 정책
-디자인 시안 기준 font-family = 실제 font-weight 
-NanumSquareL = 200
-NanumSquareR = 400 (기본 body)
-NanumSquareB = 600 
-NanumSquareEB = 800 
-*/
-
-//SNS button guide font
-//@import url('https://fonts.googleapis.com/css?family=Roboto:500&display=swap');
-
 // mixin & variables
 @import './global.scss';
-
 // animation
 @import './animation.scss';
 
@@ -31,85 +14,10 @@ $COLOR_MAIN: #632beb;
 $COLOR_POINT_Y: #feac2c;
 $COLOR_POINT_P: #e84d70;
 
-// common styles
-* {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  box-sizing: border-box;
-  // color: #424242;
-}
-html,
-body {
-  font-family: sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  -webkit-text-size-adjust: none;
-  -webkit-tap-highlight-color: transparent;
+#root {
   height: 100vh;
-  color: #424242;
 }
-pre,
-textarea {
-  font-family: sans-serif;
-}
-textarea {
-  outline: none;
-  resize: none;
-}
-input,
-select,
-option,
-button {
-  font: inherit;
-  outline: none;
-}
-input[type='text'],
-input[type='number'],
-input[type='password'],
-input[type='tel'],
-input[type='url'],
-input[type='search'],
-textarea {
-  caret-color: #000000;
-}
-select,
-option,
-button {
-  cursor: pointer;
-}
-pre {
-  white-space: pre-line;
-}
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-}
-select::-ms-expand {
-  display: none;
-}
-button:disabled {
-  cursor: auto;
-}
-img,
-svg {
-  vertical-align: top;
-}
-ol,
-ul {
-  list-style: none;
-}
-a {
-  color: inherit;
-  text-decoration: none;
-  &:active,
-  &:hover {
-    text-decoration: none;
-  }
-}
-.none {
-  display: none;
-}
+
 .inline-block {
   display: inline-block;
 }
@@ -117,7 +25,7 @@ a {
   display: block;
   width: 100%;
 }
-.hide {
+.blind {
   overflow: hidden;
   position: absolute;
   top: 0;
@@ -125,61 +33,8 @@ a {
   font-size: 1%;
   line-height: 1%;
 }
-.h100 {
-  min-height: 100%;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.flex1 {
-  flex: 1 1 auto;
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-/*---------------------------------------------------*/
-.colorGY1 {
-  color: $GY1;
-}
-.colorGY3 {
-  color: $GY3;
-}
-.colorGN1 {
-  color: $GN1;
-}
-.colorRD1 {
-  color: $RD1;
-}
-.colorBU2 {
-  color: $BU2;
-}
 .bold {
   font-weight: bold;
-}
-.fs12 {
-  font-size: 1.2rem;
-  line-height: 1.6rem;
-}
-.fs14 {
-  font-size: 1.4rem;
-  line-height: 2rem;
-}
-.fs18 {
-  font-size: 1.8rem;
-  line-height: 2.4rem;
-}
-.fs20 {
-  font-size: 2rem;
-}
-.fs24 {
-  font-size: 2.4rem;
-  line-height: 3.2rem;
-}
-.flex1 {
-  position: relative;
-  flex: 1;
-  flex-shrink: 1;
-}
-.rel {
-  position: relative;
 }
 //버튼눌렀을때 효과
 .ripple {
@@ -202,125 +57,7 @@ a {
   user-select: none; /* Not valid CSS yet, as of July 2012 */
   -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
 }
-.dummy {
-  display: block;
-  width: 100%;
-  height: 200px;
-  background: #fff;
-}
-.bottom-gap {
-  display: block;
-  margin-bottom: 10rem;
-  box-sizing: border-box;
-}
-.sticky {
-  position: sticky;
-  margin-top: auto;
-  z-index: 10;
-  display: block;
-  bottom: 0px;
-  width: 100%;
-  background: $WT;
-  box-sizing: border-box;
-  > div {
-    display: flow-root;
-  }
-  .col-2 {
-    display: flex;
-    > * {
-      flex: 1;
-    }
-  }
-}
-.abs {
-  position: absolute;
-}
-.pos-bottom {
-  display: block;
-  width: 100%;
-  position: absolute;
-  bottom: 0;
-}
-.padding-top {
-  padding-top: 0.8rem;
-}
-.padding-right {
-  padding-right: 0.8rem;
-}
-.padding-bottom {
-  padding-bottom: 0.8rem;
-}
-.margin-bottom {
-  margin-bottom: 0.8rem;
-}
-.margin-top {
-  margin-top: 0.8rem;
-}
-.margin-right {
-  margin-right: 0.8rem;
-}
-.mgl1 {
-  margin-right: 1rem;
-}
-.mgt1 {
-  margin-top: -1px;
-}
-.mgt4 {
-  margin-top: 0.4rem;
-}
-.mgt8 {
-  margin-top: 0.8rem;
-}
-.mgt20 {
-  margin-top: 2rem;
-}
-.mgb4 {
-  margin-bottom: 0.4rem;
-}
-.mgb8 {
-  margin-bottom: 0.8rem;
-}
-.mgb10 {
-  margin-bottom: 1rem;
-}
-.mgb12 {
-  margin-bottom: 1.2rem;
-}
-.mgb14 {
-  margin-bottom: 1.4rem;
-}
-.mgb20 {
-  margin-bottom: 2rem;
-}
-.mgb40 {
-  margin-bottom: 4rem;
-}
-.mgr20 {
-  margin-right: 2rem;
-}
-.pdl10 {
-  padding-left: 1rem;
-}
-.pd20 {
-  padding: 2rem;
-}
-.pdb8 {
-  padding-bottom: 0.8rem;
-}
-//position
-.place-at-center {
-  @include place-at-center();
-}
-.place-at-bottom {
-  @include place-at-bottom();
-}
-.place-at-right {
-  @include place-at-right();
-}
-.place-at-right-fit {
-  @include place-at-right();
-  transform: translate(0, -50%);
-}
+
 //-----로딩바
 .loading {
   position: fixed;
@@ -347,46 +84,6 @@ a {
   to {
     -webkit-transform: rotate(360deg);
   }
-}
-/*---------------------------------------------------*/
-button {
-  display: inline-block;
-  box-sizing: border-box;
-  background: transparent;
-}
-input {
-  display: inline-block;
-  box-sizing: border-box;
-  &.txt {
-    padding: 1.1rem 1.3rem;
-    font-size: 1.4rem;
-    border-radius: 0.4rem;
-  }
-}
-
-//2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
-input[type='password'] {
-  font-family: sans-serif;
-}
-
-/*input number pc에서 화살표 지우기*/
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-/* Firefox */
-input[type='number'] {
-  -moz-appearance: textfield;
-}
-
-/*IOS input reset*/
-input,
-textarea {
-  -webkit-appearance: none;
-  -webkit-border-radius: 0;
-  border-radius: 0;
 }
 
 /*기본 input text, number의 style 가이드 방송화면에선 적용 안됨.*/
@@ -455,9 +152,6 @@ input.auth:disabled {
   overflow: hidden;
 }
 
-@media (max-width: $WIDTH_MOBILE) {
-}
-
 /* 크롬 저장된 값 입력시 색상 변하는 이슈 수정 */
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
@@ -476,48 +170,6 @@ table {
   table-layout: fixed;
 }
 
-/*datepicker*/
-.MuiPickersToolbar-toolbar {
-  background: $COLOR_MAIN;
-}
-.MuiPickersToolbarText-toolbarBtnSelected,
-.MuiPickersToolbarText-toolbarTxt {
-  font-size: 16px;
-}
-.MuiPickersDay-daySelected,
-.MuiPickersDay-daySelected:hover {
-  background: $COLOR_MAIN;
-}
-
-.MuiTypography-colorPrimary,
-.MuiButton-textPrimary {
-  color: $COLOR_MAIN !important;
-}
-
-.MuiTypography-root.MuiPickersToolbarText-toolbarTxt.MuiTypography-subtitle1 {
-  font-size: 24px;
-  margin-top: -5px;
-  color: #fff !important;
-}
-.MuiTypography-root.MuiPickersToolbarText-toolbarTxt.MuiTypography-subtitle1::after {
-  position: absolute;
-  right: -17px;
-  top: 9px;
-  width: 10px;
-  height: 10px;
-  border-right: 1px solid #fff;
-  border-top: 1px solid #fff;
-  content: '';
-  transform: rotate(45deg);
-}
-
-.MuiPickersDay-current {
-  color: $COLOR_MAIN;
-}
-.MuiPickersDay-daySelected {
-  color: #fff;
-}
-
 @media (max-width: 840px) {
   body.on {
     overflow: hidden;
@@ -533,29 +185,4 @@ table {
   input[type='tel']::placeholder {
     letter-spacing: -0.8px;
   }
-}
-
-@media (max-width: 330px) {
-  // .off-cast + main,
-  // .pure {
-  //   input[type='text'],
-  //   input[type='password'],
-  //   input[type='number'],
-  //   input[type='tel'] {
-  //     padding: 0 10px;
-  //   }
-  // }
-}
-
-input::-ms-clear,
-input::-ms-reveal {
-  display: none;
-  width: 0;
-  height: 0;
-}
-input::-webkit-search-decoration,
-input::-webkit-search-cancel-button,
-input::-webkit-search-results-button,
-input::-webkit-search-results-decoration {
-  display: none;
 }

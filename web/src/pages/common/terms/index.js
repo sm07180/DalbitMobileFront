@@ -20,6 +20,7 @@ import EventDetail from './content/event_detail'
 import EventGiftDetail from './content/event_gift_detail'
 import SpecialDjGoodsDetail from './content/specialdj-goods-detail'
 
+import './index.scss'
 ////---------------------------------------------------------------------
 export default (props) => {
   //context

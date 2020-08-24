@@ -230,7 +230,8 @@ export default (props) => {
     let month = date.substring(4, 6)
     let day = date.substring(6, 8)
     let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일 ${time}`
+    return `${month}월 ${day}일`
+    // return `${month}월 ${day}일 ${time}`
   }
 
   const [timeText, setTimeText] = useState('')
@@ -278,10 +279,12 @@ export default (props) => {
       </div>
     )
 
-    if (statusList.phone_input === '0') {
-      return null
-    } else {
-      return boxHtml
+    if (token.isLogin) {
+      if (statusList.phone_input === '0') {
+        return null
+      } else {
+        return boxHtml
+      }
     }
   }
 

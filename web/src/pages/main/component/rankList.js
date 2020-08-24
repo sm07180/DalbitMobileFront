@@ -23,7 +23,9 @@ export default (props) => {
   }
 
   const swiperParams = {
+    spaceBetween: 12,
     slidesPerView: 'auto',
+    // slidesPerView: '3',
     rebuildOnUpdate: true
   }
 
@@ -35,16 +37,18 @@ export default (props) => {
             const {rank, nickNm, memNo, profImg} = dj
             return (
               <div
-                className="slide-wrap"
+                className="rank-slide"
                 key={`dj-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  {idx > 2 ? (
+                    // <div className="counting">{rank}</div>
+                    <></>
+                  ) : (
+                    <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                  )}
+                </div>
                 <div className="nickname">{nickNm}</div>
-                {idx > 2 ? (
-                  <div className="counting">{rank}</div>
-                ) : (
-                  <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
-                )}
               </div>
             )
           })}
@@ -55,16 +59,17 @@ export default (props) => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div
-                className="slide-wrap"
+                className="rank-slide"
                 key={`fan-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}></div>
+                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  {idx > 2 ? (
+                    <></>
+                  ) : (
+                    <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                  )}
+                </div>
                 <div className="nickname">{nickNm}</div>
-                {idx > 2 ? (
-                  <div className="counting">{rank}</div>
-                ) : (
-                  <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
-                )}
               </div>
             )
           })}
@@ -75,28 +80,15 @@ export default (props) => {
 }
 
 const RankList = styled.div`
-  position: absolute;
-  top: 0;
-  left: 16px;
-  width: calc(100% - 16px);
-
   .swiper-container {
-    padding-right: 16px;
+    padding: 16px 0 0 16px;
   }
-  .slide-wrap {
+  .rank-slide {
     position: relative;
-    width: 76px;
-    padding-top: 6px;
-    padding-left: 6px;
-
-    .medal-img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 24px;
-      height: 24px;
-    }
-    .counting {
+    display: block;
+    width: 100px;
+    text-align: center;
+    /* .counting {
       position: absolute;
       top: 0;
       left: 0;
@@ -109,30 +101,36 @@ const RankList = styled.div`
       display: flex;
       justify-content: center;
       align-items: center;
-    }
+    } */
     .main-img {
       position: relative;
-      width: 72px;
-      height: 72px;
-      border-radius: 36px;
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      border-radius: 24px;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
+      .medal-img {
+        position: absolute;
+        top: -4px;
+        left: -4px;
+        width: 24px;
+        height: 24px;
+      }
     }
     .nickname {
-      width: 72px;
       overflow: hidden;
       text-overflow: ellipsis;
       height: 16px;
       white-space: nowrap;
-      font-weight: normal;
-      font-size: 12px;
-      color: #424242;
+      font-weight: bold;
+      font-size: 16px;
+      color: #000;
       line-height: 1.08;
       letter-spacing: -0.35px;
       text-align: center;
       margin-top: 8px;
-
       transform: skew(-0.03deg);
     }
     .info-wrap {
@@ -143,7 +141,6 @@ const RankList = styled.div`
       margin-top: 6px;
       line-height: 2.17;
       height: 13px;
-
       .text {
         color: #424242;
         font-size: 12px;
@@ -151,13 +148,9 @@ const RankList = styled.div`
         line-height: 2.17;
         margin-left: 2px;
       }
-
       .heart-icon {
         margin-left: 6px;
       }
     }
-  }
-  .slide-wrap + .slide-wrap {
-    margin-left: 10px;
   }
 `

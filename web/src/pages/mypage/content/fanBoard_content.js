@@ -74,7 +74,9 @@ export default (props) => {
   //정보 대댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
     setReplyShowIdx(boardIdx)
-    setTitleReplyInfo(item)
+    //setTitleReplyInfo(item)
+    context.action.updateFanboardReplyNum(boardIdx)
+    context.action.updateFanboardReply(item)
     context.action.updateToggleAction(true)
     window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
@@ -234,7 +236,7 @@ export default (props) => {
                           <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
                           <span className="big_header_info__name">{nickNm}</span>
                         </div>
-                        <div className="big_header_info__dt">{writeDt}</div>
+                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
                       </span>
                     </div>
                   </div>
@@ -284,20 +286,21 @@ export default (props) => {
                         }
                       }}
                     />
-                    <span className="bold">비밀글</span>
-                    <span>(비공개)</span>
+                    <span className="bold">비공개</span>
                   </span>
                   <span>
                     <em>{textChange.length}</em> / 100
                   </span>
                 </span>
-                <button onClick={() => fetchDataUploadReply()}>{isScreet === true ? '비밀 등록' : '등록'}</button>
+                <button onClick={() => fetchDataUploadReply()}>등록</button>
               </div>
             </Writer>
           )}
         </div>
         {/*대댓글 리스트영역*/}
-        {replyShowIdx && context.toggleState && <ReplyList replyShowIdx={replyShowIdx} titleReplyInfo={titleReplyInfo} />}
+        {context.fanboardReplyNum && context.toggleState && (
+          <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
+        )}
       </Content>
     </>
   )

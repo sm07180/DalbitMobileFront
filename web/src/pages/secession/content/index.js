@@ -37,17 +37,12 @@ export const Store = () => {
 }
 //---------------------------------------------------------------------
 const Container = styled.div`
-  width: 740px;
-  margin: 0 auto;
-  @media (max-width: 1240px) {
-    position: relative;
-    width: 100%;
-    padding: 0 16px;
-  }
+  position: relative;
+  width: 100%;
+  padding: 0 16px;
 
   .close-btn {
     position: absolute;
-
     left: 6px;
   }
 

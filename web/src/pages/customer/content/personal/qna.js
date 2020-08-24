@@ -36,7 +36,7 @@ export default function Qna() {
   const [delicate, setDelicate] = useState(false)
   const [questionFile, setQuestionFile] = useState([false, false, false])
 
-  const [checks, setChecks] = useState([false, false])
+  const [checks, setChecks] = useState([false, true])
   const [agree, setAgree] = useState(false)
   async function fetchData() {
     const res = await Api.center_qna_add({
@@ -160,12 +160,14 @@ export default function Qna() {
         contents = '제목을 입력해주세요.'
       } else if (content === '') {
         contents = '문의내용을 입력해주세요.'
-      } else if (!context.token.isLogin && !checks[0]) {
+      } else if (checks[0] && phone === '') {
         contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
-      } else if (!context.token.isLogin && checks[0] && phone === '') {
-        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
-      } else if (!context.token.isLogin && checks[0] && phone.length < 9) {
+      } else if (checks[0] && phone.length < 9) {
         contents = '정확한\n휴대폰 번호를 입력해주세요.'
+      } else if (checks[1] && email === '') {
+        contents = '답변 받으실 Email을\n입력해주세요.'
+      } else if (checks[1] && !emailInpection(email)) {
+        contents = '정확한\nEmail을 입력해주세요.'
       } else if (!agree) {
         contents = '개인정보 수집 및 이용에\n동의해주세요.'
       }
@@ -233,11 +235,15 @@ export default function Qna() {
   const phoneCallWrap = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
       return (
-        // <div className="personalAddWrap__callWrap--call" onClick={() => {Hybrid('openCall', `tel:1522-0251`)}}>
-        //   <img src={headsetIcon} />
-        //   <span>전화걸기</span>
-        // </div>
-        <></>
+        <div
+          className="personalAddWrap__callWrap--call"
+          onClick={() => {
+            Hybrid('openCall', `tel:1522-0251`)
+          }}>
+          <img src={headsetIcon} />
+          <span>전화걸기</span>
+        </div>
+        // <></>
       )
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       return (
@@ -287,10 +293,10 @@ export default function Qna() {
       name !== '' &&
       name.length > 1 &&
       agree &&
-      ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
+      // ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
       // mail 되면
-      // (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
-      // (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
+      (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
+      (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
     ) {
       setDelicate(true)
     } else {
@@ -298,25 +304,25 @@ export default function Qna() {
     }
   }, [faqNum, email, title, content, name, phone, agree, checks])
 
-  // mail 되면 추가
-  // useEffect(() => {
-  //   if (checks[0] === false && checks[1] === false) {
-  //     context.action.alert({
-  //       visible: true,
-  //       msg: '답변 유형 선택은 필수입니다.',
-  //       callback: () => {
-  //         setChecks([true, false])
-  //         context.action.alert({visible: false})
-  //       }
-  //     })
-  //   }
-  // }, [checks])
+  useEffect(() => {
+    if (checks[0] === false && checks[1] === false && !context.token.isLogin) {
+      context.action.alert({
+        visible: true,
+        msg: '답변 유형 선택은 필수입니다.',
+        callback: () => {
+          setChecks([false, true])
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }, [checks])
 
   useEffect(() => {
     if (context.profile) {
       setName(context.profile.nickNm)
-    } else {
-      setChecks([true, false])
+    }
+    if (context.token.isLogin) {
+      setChecks([false, false])
     }
   }, [])
 
@@ -395,25 +401,8 @@ export default function Qna() {
         })}
         <div className="personalAddWrap__caption">※ jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</div>
         <div className="personalAddWrap__answerWrap">
-          {!context.token.isLogin && (
-            <div className="personalAddWrap__checkboxWrap">
-              <div className="personalAddWrap__checkboxWrap--check">
-                <DalbitCheckbox
-                  status={checks[0]}
-                  callback={() => {
-                    setChecks(
-                      checks.map((v, i) => {
-                        if (i === 0) {
-                          v = !v
-                        }
-                        return v
-                      })
-                    )
-                  }}
-                />
-                <span>답변 문자로 받기</span>
-              </div>
-              {/* <div className="personalAddWrap__checkboxWrap--check">
+          <div className="personalAddWrap__checkboxWrap">
+            <div className="personalAddWrap__checkboxWrap--check">
               <DalbitCheckbox
                 status={checks[1]}
                 callback={() => {
@@ -428,26 +417,26 @@ export default function Qna() {
                 }}
               />
               <span>답변 E-Mail로 받기</span>
-            </div> */}
             </div>
-          )}
-          <div>
-            {!context.token.isLogin && (
-              <input
-                disabled={!checks[0]}
-                className="personalAddWrap__input"
-                type="tel"
-                value={phone}
-                onChange={(e) => {
-                  if (e.target.value.length < 16 && !isNaN(e.target.value)) {
-                    setPhone(e.target.value)
-                  }
+            <div className="personalAddWrap__checkboxWrap--check">
+              <DalbitCheckbox
+                status={checks[0]}
+                callback={() => {
+                  setChecks(
+                    checks.map((v, i) => {
+                      if (i === 0) {
+                        v = !v
+                      }
+                      return v
+                    })
+                  )
                 }}
-                placeholder="휴대폰 번호를 입력하세요."
               />
-            )}
-
-            {/* <input
+              <span>답변 문자로 받기</span>
+            </div>
+          </div>
+          <div>
+            <input
               disabled={!checks[1]}
               className="personalAddWrap__input"
               type="email"
@@ -455,7 +444,19 @@ export default function Qna() {
                 setEmail(e.target.value)
               }}
               placeholder="E-Mail 입력하세요."
-            /> */}
+            />
+            <input
+              disabled={!checks[0]}
+              className="personalAddWrap__input"
+              type="tel"
+              value={phone}
+              onChange={(e) => {
+                if (e.target.value.length < 16 && !isNaN(e.target.value)) {
+                  setPhone(e.target.value)
+                }
+              }}
+              placeholder="휴대폰 번호를 입력하세요."
+            />
           </div>
         </div>
         <div className="personalAddWrap__agreeWrap">

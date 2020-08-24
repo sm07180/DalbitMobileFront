@@ -27,6 +27,8 @@ import newCircle from './static/new_circle.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
 import FanboardIcon from './static/profile/ic_fanboard_m.svg'
 
+import './index.scss'
+
 //new State
 let NewState = {
   fanboard: false,
@@ -99,6 +101,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
+    console.log(globalCtx)
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
@@ -124,7 +127,7 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [memNo])
+  }, [memNo, context.mypageFanCnt])
 
   // check 탈퇴회원
   useEffect(() => {
@@ -145,117 +148,55 @@ export default (props) => {
     return null
   }
 
+  const locationNav = (type) => {
+    context.action.updateFanboardReplyNum(false)
+    context.action.updateFanboardReply(false)
+    context.action.updateToggleAction(false)
+    history.push(`/mypage/${memNo}/${type}`)
+  }
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb">
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
-        <Mypage2 webview={webview}>
+        <div id="profile">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <Sub2>
+              <div className="profile-menu">
                 {subNavList2.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
-                    <div className="link-list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
-                      <div className="list">
-                        <img className="icon" src={icon} />
-                        <span className="text">{txt}</span>
-                        <span
-                          className={
-                            type === 'notice'
-                              ? myPageNew.broadNotice
-                                ? 'arrow arrow--active'
-                                : 'arrow'
-                              : type === 'fanboard'
-                              ? myPageNew.fanBoard
-                                ? 'arrow arrow--active'
-                                : 'arrow'
+                    <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
+                      <img className="icon" src={icon} />
+                      <span className="text">{txt}</span>
+                      <span
+                        className={
+                          type === 'notice'
+                            ? myPageNew.broadNotice
+                              ? 'arrow arrow--active'
                               : 'arrow'
-                          }></span>
-                      </div>
-                    </div>
+                            : type === 'fanboard'
+                            ? myPageNew.fanBoard
+                              ? 'arrow arrow--active'
+                              : 'arrow'
+                            : 'arrow'
+                        }></span>
+                    </button>
                   )
                 })}
-              </Sub2>
+              </div>
             </>
           )}
-          <SubContent>
+          <div>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </SubContent>
-        </Mypage2>
+          </div>
+        </div>
       </Layout2>
     </Switch>
   )
 }
-// styled-------------------------------------------------------------------------
-const SubContent = styled.div`
-  margin: 0 auto;
-`
-const Mypage2 = styled.div`
-  margin-top: ${(props) => (props.webview ? 0 : '0px')};
-  width: 1210px;
-  position: relative;
-  .close-btn {
-    position: absolute;
-    left: 6px;
-  }
-  @media (max-width: 1260px) {
-    width: 100%;
-  }
-`
-const Sub2 = styled.div`
-  transform: skew(-0.03deg);
-  background-color: #eeeeee;
-  margin-top: 12px;
-  .link-list {
-    display: block;
-    .list {
-      position: relative;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      height: 48px;
-      background-color: #fff;
-      box-sizing: border-box;
-      padding: 0 16px;
-      border-bottom: 1px solid #eee;
-      .text {
-        color: #000000;
-        font-size: 14px;
-        letter-spacing: -0.35px;
-        font-weight: 800;
-      }
-      .icon {
-        display: block;
-        width: 32px;
-        margin-right: 12px;
-      }
-      .arrow {
-        position: absolute;
-        right: 16px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 24px;
-        height: 24px;
-        background: url(${Arrow}) no-repeat center center / cover;
-
-        &--active {
-          &:before {
-            content: '';
-            display: block;
-            width: 24px;
-            height: 24px;
-            margin-left: -28px;
-            background: url(${newCircle});
-          }
-        }
-      }
-    }
-  }
-`
