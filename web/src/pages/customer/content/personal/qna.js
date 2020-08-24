@@ -405,22 +405,6 @@ export default function Qna() {
           <div className="personalAddWrap__checkboxWrap">
             <div className="personalAddWrap__checkboxWrap--check">
               <DalbitCheckbox
-                status={checks[0]}
-                callback={() => {
-                  setChecks(
-                    checks.map((v, i) => {
-                      if (i === 0) {
-                        v = !v
-                      }
-                      return v
-                    })
-                  )
-                }}
-              />
-              <span>답변 문자로 받기</span>
-            </div>
-            <div className="personalAddWrap__checkboxWrap--check">
-              <DalbitCheckbox
                 status={checks[1]}
                 callback={() => {
                   setChecks(
@@ -434,6 +418,22 @@ export default function Qna() {
                 }}
               />
               <span>답변 E-Mail로 받기</span>
+            </div>
+            <div className="personalAddWrap__checkboxWrap--check">
+              <DalbitCheckbox
+                status={checks[0]}
+                callback={() => {
+                  setChecks(
+                    checks.map((v, i) => {
+                      if (i === 0) {
+                        v = !v
+                      }
+                      return v
+                    })
+                  )
+                }}
+              />
+              <span>답변 문자로 받기</span>
             </div>
           </div>
           <div>
