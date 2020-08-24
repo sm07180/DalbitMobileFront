@@ -74,7 +74,9 @@ export default (props) => {
   //정보 대댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
     setReplyShowIdx(boardIdx)
-    setTitleReplyInfo(item)
+    //setTitleReplyInfo(item)
+    context.action.updateFanboardReplyNum(boardIdx)
+    context.action.updateFanboardReply(item)
     context.action.updateToggleAction(true)
     window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
@@ -296,7 +298,9 @@ export default (props) => {
           )}
         </div>
         {/*대댓글 리스트영역*/}
-        {replyShowIdx && context.toggleState && <ReplyList replyShowIdx={replyShowIdx} titleReplyInfo={titleReplyInfo} />}
+        {context.fanboardReplyNum && context.toggleState && (
+          <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
+        )}
       </Content>
     </>
   )

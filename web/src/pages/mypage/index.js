@@ -148,6 +148,12 @@ export default (props) => {
     return null
   }
 
+  const locationNav = (type) => {
+    context.action.updateFanboardReplyNum(false)
+    context.action.updateFanboardReply(false)
+    context.action.updateToggleAction(false)
+    history.push(`/mypage/${memNo}/${type}`)
+  }
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -162,7 +168,7 @@ export default (props) => {
                 {subNavList2.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
-                    <button className="list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
+                    <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
                       <img className="icon" src={icon} />
                       <span className="text">{txt}</span>
                       <span

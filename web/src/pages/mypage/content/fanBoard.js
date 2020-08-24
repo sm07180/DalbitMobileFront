@@ -195,6 +195,7 @@ export default (props) => {
       currentPage = 1
     }
   }, [])
+
   //--------------------------------------------------
   return (
     <FanBoard>
