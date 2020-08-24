@@ -438,6 +438,15 @@ export default function Qna() {
           </div>
           <div>
             <input
+              disabled={!checks[1]}
+              className="personalAddWrap__input"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
+              placeholder="E-Mail 입력하세요."
+            />
+            <input
               disabled={!checks[0]}
               className="personalAddWrap__input"
               type="tel"
@@ -448,16 +457,6 @@ export default function Qna() {
                 }
               }}
               placeholder="휴대폰 번호를 입력하세요."
-            />
-
-            <input
-              disabled={!checks[1]}
-              className="personalAddWrap__input"
-              type="email"
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }}
-              placeholder="E-Mail 입력하세요."
             />
           </div>
         </div>
