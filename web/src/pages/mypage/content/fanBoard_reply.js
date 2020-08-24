@@ -26,6 +26,8 @@ export default (props) => {
   const history = useHistory()
   const replyIdx = props.replyShowIdx
   const TitleInfo = props.titleReplyInfo
+
+  if (!props.titleReplyInfo) return null
   //location && context
   let location = useLocation()
   const ctx = useContext(Context)
@@ -263,6 +265,7 @@ export default (props) => {
           list.map((item, index) => {
             const {nickNm, writeDt, profImg, contents, boardIdx, writerNo, viewOn} = item
             const Link = () => {
+              let link = ''
               if (webview) {
                 link =
                   context.token.memNo !== writerNo

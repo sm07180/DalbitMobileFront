@@ -79,6 +79,8 @@ const GlobalProvider = (props) => {
   const [adminChecker, setAdminChecker] = useState(false)
   //mypageInfo
   const [mypageInfo, setMypageInfo] = useState('')
+  const [fanboardReply, setFanboardReply] = useState(false)
+  const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -329,6 +331,12 @@ const GlobalProvider = (props) => {
     },
     updateMypageInfo: (boolean) => {
       setMypageInfo(boolean)
+    },
+    updateFanboardReply: (boolean) => {
+      setFanboardReply(boolean)
+    },
+    updateFanboardReplyNum: (boolean) => {
+      setFanboardReplyNum(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -379,7 +387,9 @@ const GlobalProvider = (props) => {
     ctxDeleteList,
     attendStamp,
     adminChecker,
-    mypageInfo
+    mypageInfo,
+    fanboardReply,
+    fanboardReplyNum
   }
   return <Provider value={value}>{props.children}</Provider>
 }

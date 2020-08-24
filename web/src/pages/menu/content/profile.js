@@ -162,7 +162,12 @@ export default (props) => {
     }
     getMyPageNew()
   }, [])
-
+  const locationNav = (type) => {
+    context.action.updateFanboardReplyNum(false)
+    context.action.updateFanboardReply(false)
+    context.action.updateToggleAction(false)
+    history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+  }
   return (
     <div id="profile">
       {/* <Header>
@@ -242,10 +247,7 @@ export default (props) => {
               {subNavList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <button
-                    className="list"
-                    onClick={() => history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)}
-                    key={`list-${idx}`}>
+                  <button className="list" onClick={() => locationNav(type)} key={`list-${idx}`}>
                     <img className="icon" src={icon} alt={txt} />
                     <span className="text">{txt}</span>
                     <span
