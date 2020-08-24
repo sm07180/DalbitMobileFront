@@ -7,7 +7,6 @@
     position: relative;
     padding-top: 87px;
     min-height: 391px;
-
     .closeBtn {
       position: absolute;
       top: 30px;
@@ -38,96 +37,92 @@
       border-top-right-radius: 20px;
       background-color: $white;
       z-index: 3;
-    }
-    .profile-image {
-      display: block;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      text-align: center;
-      margin-top: -50px;
-      figure {
-        position: relative;
-        width: 100px;
-        height: 100px;
-        margin: 0px auto 19px auto;
-        border-radius: 50%;
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        img {
-          display: none;
-        }
-
-        .holder {
-          display: block;
-          position: absolute;
-          top: -20px;
-          left: -20px;
-          width: 140px;
-          height: 140px;
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-        .holderBg {
-          display: block;
-          position: absolute;
-          top: -20px;
-          left: -62px;
-          width: 224px;
-          height: 140px;
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-        .profileBg {
-          display: block;
-          position: absolute;
-          top: -20px;
-          left: -40px;
-          width: 180px;
-          height: 140px;
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-        }
-      }
-      .zoom {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
-        z-index: 22;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-      .zoomImg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        display: block;
-        width: 95%;
-        height: auto;
-      }
-
-      & .liveIcon {
-        position: absolute;
-        right: 0;
-        top: 0px;
-        width: 52px;
-        height: 26px;
-        background: url('../menu/static/ic_live.svg') no-repeat center center / cover;
-      }
+      padding: 0 24px 20px;
     }
     .profile-content {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      padding: 0 24px 20px;
-      margin: 0 auto;
+      text-align: center;
+      .profile-image {
+        display: block;
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+        margin-top: -50px;
+        figure {
+          position: relative;
+          width: 100px;
+          height: 100px;
+          margin: 0px auto 19px auto;
+          border-radius: 50%;
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          img {
+            display: none;
+          }
 
+          .holder {
+            display: block;
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 140px;
+            height: 140px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .holderBg {
+            display: block;
+            position: absolute;
+            top: -20px;
+            left: -62px;
+            width: 224px;
+            height: 140px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+          .profileBg {
+            display: block;
+            position: absolute;
+            top: -20px;
+            left: -40px;
+            width: 180px;
+            height: 140px;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+          }
+        }
+        .zoom {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          z-index: 22;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+        .zoomImg {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          display: block;
+          width: 95%;
+          height: auto;
+        }
+
+        & .liveIcon {
+          position: absolute;
+          right: 0;
+          top: 0px;
+          width: 52px;
+          height: 26px;
+          background: url('../menu/static/ic_live.svg') no-repeat center center / cover;
+        }
+      }
       .title {
         position: relative;
         display: inline-block;
@@ -136,6 +131,7 @@
         margin: 0 auto;
         padding: 0px 20px;
         line-height: 32px;
+        text-align: center;
         font-size: 16px;
         font-weight: bold;
         letter-spacing: -0.35px;
@@ -152,38 +148,83 @@
         font-size: 12px;
         text-align: center;
         z-index: 2;
-        .expWrap {
-          width: 280px;
+        .levelBox {
           display: flex;
-          justify-content: space-between;
-          margin: 8px auto 10px auto;
+          flex-direction: column;
+          align-items: center;
+          .expTitle {
+            font-size: 12px;
+            font-weight: bold;
+            color: $black;
+            &--start {
+              position: absolute;
+              left: 0;
+              top: 21px;
+            }
+            &--end {
+              position: absolute;
+              right: 0;
+              top: 21px;
+            }
+            &--rate {
+              &::before {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 0px;
+                content: '';
+                width: 1px;
+                height: 8px;
+                background-color: #bdbdbd;
+              }
+            }
+          }
+          .expRate {
+            margin-left: 6px;
+            font-weight: 600;
+            font-size: 10px;
+            color: $black;
+          }
+          .levelInfo {
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            width: 100%;
+            padding: 4px 0;
+            font-size: 16px;
+            color: #757575;
+            font-weight: bold;
+            .expTitle {
+              position: relative;
+              padding: 0 8px;
+              font-size: 16px;
+            }
+          }
         }
-        .expPer {
-          display: block;
-          font-size: 12px;
-          font-weight: 600;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: 1.08;
-          letter-spacing: normal;
-          text-align: center;
-          color: $primary;
+        .levelBar {
+          position: relative;
+          width: 300px;
+          height: 16px;
+          border-radius: 10px;
+          background-color: #eee;
         }
-        .expBegin {
-          font-size: 12px;
-          font-weight: normal;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: 1.08;
-          letter-spacing: normal;
-          text-align: left;
-          color: $greishbrown;
-        }
-        .expBegin:nth-child(1) {
-          margin-left: 8px;
-        }
-        .expBegin:nth-child(2) {
-          margin-right: 8px;
+        .expBarStatus {
+          position: absolute;
+          top: 0px;
+          left: -1px;
+          height: 16px;
+          max-width: calc(100% + 2px);
+          border-radius: 10px;
+          background-color: $black;
+          text-align: right;
+          color: #fff;
+          font-size: 9px;
+          padding: 1px 0;
+          padding-right: 6px;
+          line-height: 15px;
+          box-sizing: border-box;
+          text-indent: 3px;
+          line-height: 16px;
         }
         .btn-info {
           display: flex;
@@ -205,12 +246,12 @@
         display: flex;
         align-items: center;
         flex-direction: column;
+        margin-top: 5px;
         strong {
-          max-width: 260px;
-          margin-top: 5px;
+          text-align: center;
           font-size: 22px;
           font-weight: 800;
-          color: #000;
+          color: $black;
         }
         span {
           padding: 12px 0 0 0;
@@ -278,6 +319,66 @@
           font-stretch: normal;
           font-style: normal;
           letter-spacing: normal;
+        }
+      }
+      .badgeWrap {
+        display: flex;
+        margin: 5px auto 0;
+        justify-content: center;
+        align-items: center;
+        .swiper-slide {
+          display: block;
+          width: auto;
+          height: auto;
+        }
+        .swiper-wrapper {
+          height: auto;
+          margin: 0 auto;
+        }
+        .swiper-pagination {
+          position: static;
+          margin-top: 20px;
+        }
+        .swiper-pagination-bullet {
+          width: 11px;
+          height: 11px;
+          background: $black;
+          opacity: 0.5;
+        }
+        .swiper-pagination-bullet-active {
+          background: $primary;
+          opacity: 1;
+        }
+
+        .fan-badge {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 28px;
+          border-radius: 20px;
+          font-size: 14px;
+          font-weight: 800;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1;
+          letter-spacing: -0.35px;
+          padding: 0 10px 0 3px;
+          text-align: left;
+          color: #ffffff;
+        }
+        .fan-badge:last-child {
+          margin-right: 0;
+        }
+
+        .fan-badge img {
+          width: 42px;
+          height: 26px;
+        }
+        .fan-badge span {
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 2.2;
+          color: #ffffff;
         }
       }
       .categoryCntWrap {
@@ -395,132 +496,48 @@
         display: flex;
         justify-content: center;
       }
-      .badgeWrap {
-        display: flex;
-        margin: 10px auto;
-        // margin-left: ${(props) => props.margin} !important;
-        justify-content: center;
-        align-items: center;
-        & .swiper-slide {
-          display: block;
-
-          width: auto;
-          height: auto;
-        }
-        & .swiper-wrapper {
-          height: auto;
-          margin: 0 auto;
-        }
-        & .swiper-pagination {
-          position: static;
-          margin-top: 20px;
-        }
-        & .swiper-pagination-bullet {
-          width: 11px;
-          height: 11px;
-          background: #000000;
-          opacity: 0.5;
-        }
-        & .swiper-pagination-bullet-active {
-          background: $primary;
-          opacity: 1;
-        }
-
-        .fan-badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 28px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 800;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: 1;
-          letter-spacing: -0.35px;
-          padding: 0 10px 0 3px;
-          text-align: left;
-          color: #ffffff;
-        }
-        .fan-badge:last-child {
-          margin-right: 0;
-        }
-
-        .fan-badge img {
-          width: 42px;
-          height: 26px;
-        }
-        .fan-badge span {
-          display: inline-block;
-          vertical-align: middle;
-          line-height: 2.2;
-          color: #ffffff;
-        }
-      }
       .fanRankList {
         display: flex;
         align-items: center;
         justify-content: center;
-        > span {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 12px;
-          transform: skew(-0.03deg);
-          width: 72px;
-          height: 28px;
-          padding-left: 9px;
-          font-size: 13px;
-          font-weight: bold;
-          letter-spacing: -0.35px;
-          line-height: 28px;
-          border-radius: 25px;
-          border: solid 1px #e0e0e0;
-          color: #000000;
-          background-color: #ffffff;
-          em {
-            position: relative;
-            right: 0px;
-            width: 20px;
-            height: 20px;
-            background: url('../menu/static/ico_circle.svg') no-repeat center center / contain;
-          }
-        }
-        & .moreFan {
+        .fanItem {
+          display: inline-block;
+          position: relative;
           width: 28px;
           height: 28px;
-          border: 1px solid #e0e0e0;
           border-radius: 50%;
-          vertical-align: top;
-          margin-top: -5px;
-          margin-left: 2px;
-          span {
-            display: inline-block;
+          margin-right: 3px;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          cursor: pointer;
+          & > a {
+            display: block;
+            width: 100%;
+            height: 100%;
+          }
+          & + & {
+            margin-left: 4px;
+          }
+          :after {
+            display: block;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 2px;
-            height: 2px;
-            margin: 0 auto;
-            background: #424242;
+            bottom: 0;
+            right: -4px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            :after,
-            :before {
-              display: inline-block;
-              position: absolute;
-              width: 2px;
-              height: 2px;
-              border-radius: 50%;
-              background: #424242;
-              content: '';
-            }
-            :after {
-              right: -5px;
-            }
-            :before {
-              left: -5px;
-            }
+            background-size: 12px 12px !important;
+            content: '';
+          }
+          &.rank1:after {
+            background: url(https://image.dalbitlive.com/images/api/ic_gold.png) no-repeat;
+          }
+          &.rank2:after {
+            background: url(https://image.dalbitlive.com/images/api/ic_silver.png) no-repeat;
+          }
+          &.rank3:after {
+            background: url(https://image.dalbitlive.com/images/api/ic_bronze.png) no-repeat;
           }
         }
         > a {
@@ -642,6 +659,9 @@
     margin-top: 12px;
     padding-bottom: 23px;
     transform: skew(-0.03deg);
+    .menu-box {
+      margin-top: 12px;
+    }
     .list {
       position: relative;
       display: flex;
@@ -698,9 +718,6 @@
       }
     }
   }
-  .menu-box {
-    margin-top: 12px;
-  }
   .btn {
     &__logout {
       display: block;
@@ -711,6 +728,68 @@
       margin-top: 24px;
       height: 48px;
       line-height: 48px;
+    }
+    &__fanRank {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+      transform: skew(-0.03deg);
+      width: 72px;
+      height: 28px;
+      padding-left: 9px;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: -0.35px;
+      line-height: 28px;
+      border-radius: 25px;
+      border: solid 1px #e0e0e0;
+      color: $black;
+      background-color: #ffffff;
+      em {
+        position: relative;
+        right: 0px;
+        width: 20px;
+        height: 20px;
+        background: url('../menu/static/ico_circle.svg') no-repeat center center / contain;
+      }
+    }
+    &__fanMore {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #e0e0e0;
+      border-radius: 50%;
+      vertical-align: top;
+      margin-top: -5px;
+      margin-left: 2px;
+      span {
+        display: inline-block;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2px;
+        height: 2px;
+        margin: 0 auto;
+        background: #424242;
+        border-radius: 50%;
+        :after,
+        :before {
+          display: inline-block;
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          border-radius: 50%;
+          background: #424242;
+          content: '';
+        }
+        :after {
+          right: -5px;
+        }
+        :before {
+          left: -5px;
+        }
+      }
     }
   }
 }

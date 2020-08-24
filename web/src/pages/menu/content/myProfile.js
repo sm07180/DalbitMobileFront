@@ -119,15 +119,17 @@ const myProfile = (props) => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <a onClick={() => history.push(link)} key={index}>
-            <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
-          </a>
+          <div
+            style={{backgroundImage: `url(${profImg.thumb88x88})`}}
+            className={`fanItem rank${rank}`}
+            onClick={() => history.push(link)}
+            key={index}></div>
         )
       }
     }
     result = result.concat(
       <button
-        className="moreFan"
+        className="btn__fanMore"
         onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}
         key="btn"
         style={{display: 'none'}}>
@@ -137,10 +139,10 @@ const myProfile = (props) => {
     return (
       <>
         <div className="fanRankList">
-          <span onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
-            <span>팬랭킹</span>
+          <button className="btn__fanRank" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
+            팬랭킹
             <em onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)} key="btn"></em>
-          </span>
+          </button>
           {result}
         </div>
       </>
@@ -207,7 +209,7 @@ const myProfile = (props) => {
   }
   //뱃지
   //스와이퍼
-  const params = {
+  const swiperParams = {
     spaceBetween: 2,
     slidesPerView: 'auto',
     resistanceRatio: 0
@@ -217,16 +219,16 @@ const myProfile = (props) => {
     const {text, icon, startColor, endColor} = item
     //-----------------------------------------------------------------------
     return (
-      <Slide key={index}>
+      <div className="badgeSlide" key={index}>
         <span
           className="fan-badge"
           style={{
             background: `linear-gradient(to right, ${startColor}, ${endColor}`
           }}>
-          <img src={icon} />
+          <img src={icon} alt={text} />
           <span>{text}</span>
         </span>
-      </Slide>
+      </div>
     )
   })
 
@@ -243,50 +245,50 @@ const myProfile = (props) => {
       <div className="profile-info">
         {token && token.isLogin && showAdmin && (
           <a href="/admin/image" className="adminBtn">
-            <img src={AdminIcon} />
+            <img src={AdminIcon} alt="관리자아이콘" />
           </a>
         )}
         <button className="closeBtn" onClick={goBack}>
           <span className="blind">프로필 닫기</span>
         </button>
         <div className="profile-detail" webview={webview}>
-          <div className="profile-image" url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
-            <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
-              <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
-              {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
-              {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
-              <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
-            </figure>
-            {Zoom === true && (
-              <div className="zoom" onClick={() => setZoom(false)}>
-                <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
-              </div>
-            )}
-          </div>
-
           <div className="profile-content">
+            <div className="profile-image" url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
+              <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
+                <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+                {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
+                {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
+                <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
+              </figure>
+              {Zoom === true && (
+                <div className="zoom" onClick={() => setZoom(false)}>
+                  <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
+                </div>
+              )}
+            </div>
             <div
               className={`title 
               ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
               ${expCalc < 20 ? `레벨 10 ~ 20` : ''}
               ${expCalc < 30 ? `레벨 20 ~ 30` : ''}
               ${expCalc < 40 ? `레벨 30 ~ 40 ` : ''}
-              ${expCalc < 50 ? `레벨 40 ~ 50` : ''}                                                
+              ${expCalc < 50 ? `레벨 40 ~ 50` : ''}
             `}>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
             <div className="levelInfoWrap">
               {urlrStr == 'profile' && (
                 <>
-                  <LevelWrap>
-                    <LevelStatusBarWrap>
-                      <LevelStatus
+                  <div className="levelBox">
+                    <div className="levelBar">
+                      <span
+                        className="expBarStatus"
                         style={{
                           width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
-                        }}></LevelStatus>
+                        }}></span>
                       <span className="expTitle expTitle--start">0</span>
                       <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
-                    </LevelStatusBarWrap>
+                    </div>
 
                     <div className="levelInfo">
                       <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
@@ -296,7 +298,7 @@ const myProfile = (props) => {
                       <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
                       <span className="expTitle expTitle--rate">{profile.expRate}%</span>
                     </div>
-                  </LevelWrap>
+                  </div>
                 </>
               )}
             </div>
@@ -311,11 +313,11 @@ const myProfile = (props) => {
               {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
             </div>
             {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
-            <div className="profileMsgWrap">{profile.profMsg}</div>
+            {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
-              <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
-                <Swiper {...params}>{BadgeSlide}</Swiper>
-              </BadgeWrap>
+              <div className="badgeWrap">
+                <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
+              </div>
             ) : (
               <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             )}
@@ -389,193 +391,3 @@ const myProfile = (props) => {
   )
 }
 export default myProfile
-
-const ContentWrap = styled.div``
-
-//------------------------------------------------------
-//정보 레벨업관련
-const LevelWrap = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  .expTitle {
-    font-size: 12px;
-    font-weight: bold;
-    color: #000;
-    &--start {
-      position: absolute;
-      left: 0;
-      top: 21px;
-    }
-    &--end {
-      position: absolute;
-      right: 0;
-      top: 21px;
-    }
-    &--rate {
-      &::before {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 0px;
-        content: '';
-        width: 1px;
-        height: 8px;
-        background-color: #bdbdbd;
-      }
-    }
-  }
-  .expRate {
-    margin-left: 6px;
-    font-weight: 600;
-    font-size: 10px;
-    color: #000;
-  }
-  .levelInfo {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
-    padding: 4px 0;
-    font-size: 16px;
-    color: #757575;
-    font-weight: bold;
-    .expTitle {
-      position: relative;
-      padding: 0 8px;
-      font-size: 16px;
-    }
-  }
-`
-const LevelStatusBarWrap = styled.div`
-  position: relative;
-  width: 300px;
-  height: 16px;
-  border-radius: 10px;
-  background-color: #eee;
-`
-const LevelStatus = styled.div`
-  position: absolute;
-  top: 0px;
-  left: -1px;
-  height: 16px;
-  max-width: calc(100% + 2px);
-  border-radius: 10px;
-  background-color: #000;
-  text-align: right;
-  color: #fff;
-  font-size: 9px;
-  padding: 1px 0;
-  padding-right: 6px;
-  line-height: 15px;
-  box-sizing: border-box;
-  text-indent: 3px;
-  line-height: 16px;
-`
-//팬랭킹
-const FanListWrap = styled.div``
-const FanRank = styled.div`
-  display: inline-block;
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  margin-right: 3px;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  & > a {
-    display: block;
-    width: 100%;
-    height: 100%;
-  }
-  & + & {
-    margin-left: 4px;
-  }
-  :after {
-    display: block;
-    position: absolute;
-    bottom: 0;
-    right: -4px;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background-size: 12px 12px !important;
-    content: '';
-  }
-  &.rank1:after {
-    background: url(${IMG_SERVER}/images/api/ic_gold.png) no-repeat;
-  }
-  &.rank2:after {
-    background: url(${IMG_SERVER}/images/api/ic_silver.png) no-repeat;
-  }
-  &.rank3:after {
-    background: url(${IMG_SERVER}/images/api/ic_bronze.png) no-repeat;
-  }
-`
-const BadgeWrap = styled.div`
-  display: flex;
-  margin: 10px auto 10px auto;
-  margin-left: ${(props) => props.margin} !important;
-  justify-content: center;
-  align-items: center;
-  & .swiper-slide {
-    display: block;
-
-    width: auto;
-    height: auto;
-  }
-  & .swiper-wrapper {
-    height: auto;
-    margin: 0 auto;
-  }
-  & .swiper-pagination {
-    position: static;
-    margin-top: 20px;
-  }
-  & .swiper-pagination-bullet {
-    width: 11px;
-    height: 11px;
-    background: #000000;
-    opacity: 0.5;
-  }
-  & .swiper-pagination-bullet-active {
-    background: ${COLOR_MAIN};
-    opacity: 1;
-  }
-
-  .fan-badge {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 28px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 800;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1;
-    letter-spacing: -0.35px;
-    padding: 0 10px 0 3px;
-    text-align: left;
-    color: #ffffff;
-  }
-  .fan-badge:last-child {
-    margin-right: 0;
-  }
-
-  .fan-badge img {
-    width: 42px;
-    height: 26px;
-  }
-  .fan-badge span {
-    display: inline-block;
-    vertical-align: middle;
-    line-height: 2.2;
-    color: #ffffff;
-  }
-`
-//팬 뱃지 스타일링
-const Slide = styled.a`
-  color: #fff;
-`
