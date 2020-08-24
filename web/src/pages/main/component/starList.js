@@ -19,7 +19,7 @@ export default (props) => {
 
   const swiperParams = {
     slidesPerView: 'auto',
-    spaceBetween: 12
+    spaceBetween: 8
   }
 
   return (
@@ -133,8 +133,7 @@ const StarList = styled.div`
   }
 
   .list {
-    width: 48px;
-    margin: 0 8px;
+    width: 60px;
     cursor: pointer;
 
     &:first-child {

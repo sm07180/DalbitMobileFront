@@ -226,7 +226,7 @@ export default function Alert() {
             return (
               <div key={idx} className="contents__list" onClick={() => handleClick(v)}>
                 <div className="contents__list--img">
-                  <img src={v.profImg.url} />
+                  <img src={v.profImg.thumb120x120} />
                 </div>
                 <div className="contents__list--text">
                   <div className="contents__list--title" dangerouslySetInnerHTML={{__html: v.contents}}></div>

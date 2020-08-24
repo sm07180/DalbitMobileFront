@@ -8,6 +8,7 @@ import Api from 'context/api'
 import Layout from 'pages/common/layout'
 import RankListWrap from './rankListWrap'
 import LevelList from './levelList'
+import LikeList from './likeList'
 import LayerPopup from './layer_popup'
 import RankGuide from './guide/rank_guide'
 import MyProfile from './components/MyProfile'
@@ -23,7 +24,6 @@ import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
 import {isCompositeComponent} from 'react-dom/test-utils'
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
-
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
@@ -36,6 +36,7 @@ export default (props) => {
   const [popup, setPopup] = useState(false)
   const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
+  const [likeList, setLikeList] = useState([])
   const [fetching, setFetching] = useState(false)
 
   const [myInfo, setMyInfo] = useState({
@@ -185,22 +186,21 @@ export default (props) => {
     [rankType, dateType, selectedDate, page]
   )
 
-  const fetchLevelList = useCallback(
-    async (init = false) => {
-      const {result, data, message} = await Api.get_level_ranking({
+  const fetchOtherList = useCallback(
+    async (init = false, url) => {
+      const {result, data, message} = await Api.get_ranking_other({
         params: {
           page: init === true ? 1 : page,
           records
-        }
+        },
+        url: url
       })
-
       setFetching(false)
 
       if (result === 'success' && _.hasIn(data, 'list')) {
         if (data.list.length < records) {
           setScrollBottomFinish(true)
         }
-        console.log(data.list)
         return data.list
       } else if (result === 'fail') {
         globalCtx.action.alert({
@@ -215,22 +215,30 @@ export default (props) => {
 
   const concatRankList = useCallback(async () => {
     if (rankType === RANK_TYPE.LEVEL) {
-      const list = await fetchLevelList()
+      const list = await fetchOtherList(false, '/rank/level')
       if (list !== null) {
         const newList = levelList.concat(list)
 
         setLevelList(newList)
       }
+    } else if (rankType === RANK_TYPE.LIKE) {
+      const list = await fetchOtherList(false, '/rank/good')
+      if (list !== null) {
+        const newList = likeList.concat(list)
+
+        setLikeList(newList)
+      }
     } else {
-      const list = await fetchRankList()
+      const list = await fetchRankList('/rank/level')
       if (list !== null) {
         const newList = rankList.concat(list)
         setRankList(newList)
       }
     }
+
     setPage(page + 1)
     setScrollBottom(false)
-  }, [rankType, rankList, levelList, page, selectedDate])
+  }, [rankType, rankList, levelList, likeList, page, selectedDate])
 
   const initRankList = useCallback(async () => {
     const list = await fetchRankList(true)
@@ -241,31 +249,19 @@ export default (props) => {
     }
   }, [rankType, dateType, page, selectedDate])
 
-  const initLevelList = useCallback(async () => {
-    const list = await fetchLevelList(true)
+  const initOtherList = useCallback(async () => {
+    const urls = rankType === RANK_TYPE.LEVEL ? '/rank/level' : '/rank/good'
+    const list = await fetchOtherList(true, urls)
     if (list !== null) {
       setPage(2)
-      setLevelList(list)
       setScrollBottom(false)
+      if (rankType === RANK_TYPE.LEVEL) {
+        setLevelList(list)
+      } else {
+        setLikeList(list)
+      }
     }
-  }, [page])
-
-  // const usePreviousRankType = (props) => {
-  //   useEffect(() => {
-  //     setRankType(props)
-  //   }, [])
-  //   return rankType
-  // }
-
-  // const useCompareRankType = (props) => {
-  //   const prev = usePreviousRankType(props)
-
-  //   useEffect(() => {
-  //     if (prev !== rankType) {
-  //       setDateType(DATE_TYPE.DAY)
-  //     }
-  //   }, [rankType])
-  // }
+  }, [rankType, page])
 
   const usePreviousRankType = (props) => {
     if (props !== rankType) {
@@ -275,8 +271,8 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (rankType === RANK_TYPE.LEVEL) {
-      initLevelList()
+    if (rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) {
+      initOtherList()
     } else {
       initRankList()
     }
@@ -373,6 +369,8 @@ export default (props) => {
                   return '팬'
                 } else if (rType === RANK_TYPE.LEVEL) {
                   return '레벨'
+                } else if (rType === RANK_TYPE.LIKE) {
+                  return '좋아요'
                 }
               }
 
@@ -387,7 +385,7 @@ export default (props) => {
             })}
           </div>
         </div>
-        {rankType !== RANK_TYPE.LEVEL && (
+        {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
           <>
             <RankDateBtn dateType={dateType} setDateType={setDateType} fetching={fetching} />
             <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} fetching={fetching} />
@@ -395,8 +393,8 @@ export default (props) => {
           </>
         )}
         {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
-
-        {rankType !== RANK_TYPE.LEVEL && (
+        {rankType === RANK_TYPE.LIKE && <LikeList likeList={likeList} />}
+        {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
           <>
             <RankListWrap
               rankType={rankType}

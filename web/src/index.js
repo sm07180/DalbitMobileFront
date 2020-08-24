@@ -10,8 +10,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {BrowserRouter} from 'react-router-dom'
 //style
+import 'styles/reset.scss'
 import 'styles/common.scss'
-import 'styles/layout.scss'
 import 'styles/swiper.scss'
 
 ReactDOM.render(

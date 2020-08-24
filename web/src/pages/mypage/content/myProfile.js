@@ -259,9 +259,6 @@ const myProfile = (props) => {
     <>
       <ProfileWrap>
         <MyProfile webview={webview}>
-          {/* <Header>
-        <div className="category-text">프로필</div>
-      </Header> */}
           <button className="closeBtn" onClick={goBack}></button>
           {urlrStr !== context.token.memNo && (
             <>
@@ -772,62 +769,58 @@ const NameWrap = styled.div`
   .subIconWrap {
     display: flex;
     flex-direction: row;
+    margin: 4px 0;
+    > em {
+      display: inline-block;
+      height: 16px;
+      margin-left: 2px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
   }
   .nationIcon {
     width: 24px;
-    height: 16px;
-    margin-top: 4px;
     background: url(${KoreaIcons}) no-repeat center center / cover;
   }
   .femaleIcon {
     width: 24px;
-    height: 16px;
-    margin-top: 4px;
-    margin-left: 2px;
     background: url(${FemaleIcons}) no-repeat center center / cover;
   }
   .maleIcon {
     width: 24px;
-    height: 16px;
-    margin-top: 4px;
-    margin-left: 2px;
     background: url(${MaleIcons}) no-repeat center center / cover;
   }
   .specialIcon {
     width: 64px;
-    height: 16px;
-    margin-top: 4px;
     border-radius: 10px;
     background-color: #ec455f;
-    margin-left: 2px;
-  }
-  strong {
-    color: #000;
-    font-size: 22px;
-    line-height: 24px;
-    min-height: 24px;
-    font-weight: 800;
   }
   .specialIcon {
-    display: inline-block;
     width: 62px;
-    height: 16px;
+    text-align: center;
     line-height: 16px;
-    margin-left: 2px;
-    border-radius: 10px;
-    background-color: #ec455f;
-    color: #fff;
     font-size: 12px;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     letter-spacing: normal;
+    color: #fff;
+    background-color: #ec455f;
+    border-radius: 10px;
+  }
+  strong {
+    color: #000;
+    min-height: 24px;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 24px;
   }
   span {
-    color: #616161;
+    padding: 0;
     font-size: 10px;
-    padding: 0px 0 0 0;
     line-height: 12px;
+    color: #616161;
     transform: skew(-0.03deg);
   }
 `

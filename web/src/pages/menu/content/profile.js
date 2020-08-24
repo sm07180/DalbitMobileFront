@@ -40,6 +40,8 @@ import Arrow from '../static/arrow.svg'
 import newCircle from '../static/new_circle.svg'
 import CastIcon from '../static/menu_cast.svg'
 
+import '../../mypage/index.scss'
+
 import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
@@ -162,7 +164,7 @@ export default (props) => {
   }, [])
 
   return (
-    <MenuMypage>
+    <div id="profile">
       {/* <Header>
         <div className="category-text">마이 페이지</div>
         {token && token.isLogin && (
@@ -173,80 +175,77 @@ export default (props) => {
       </Header> */}
       {profile !== null && token && token.isLogin && (
         <>
-          <div className="log-in">
-            <MyProfile profile={profile} {...props} webview={webview} />
-            <div className="profile-info">
-              <div className="time-info">
-                <div className="total-time">
-                  <div className="type-wrap">
-                    <span className="text">총 방송 시간</span>
-                    <img src={TimeIcon} />
-                  </div>
-                  <div className="time">{timeFormat(profile.broadTotTime)}</div>
+          <MyProfile profile={profile} {...props} webview={webview} />
+          <div className="broadcast-data">
+            <div className="time-info">
+              <div className="total-time">
+                <div className="type-wrap">
+                  <span className="text">총 방송 시간</span>
+                  <img src={TimeIcon} />
                 </div>
-                <div className="total-time">
-                  <div className="type-wrap">
-                    <span className="text">총 청취 시간</span>
-                    <img src={HeadphoneIcon} />
-                  </div>
-                  <div className="time">{timeFormat(profile.listenTotTime)}</div>
-                </div>
+                <div className="time">{timeFormat(profile.broadTotTime)}</div>
               </div>
-              <div className="real-info">
-                {[
-                  {
-                    type: 'heart',
-                    icon: HeartIcon,
-                    txt: '좋아요',
-                    value: profile.likeTotCnt.toLocaleString()
-                  },
-                  {
-                    type: 'byeol',
-                    icon: ByeolIcon,
-                    txt: '보유별',
-                    value: profile.byeolCnt.toLocaleString()
-                  },
-                  {
-                    type: 'dal',
-                    icon: DalIcon,
-                    txt: '보유달',
-                    value: profile.dalCnt.toLocaleString()
-                  }
-                ].map((real) => {
-                  const {type, icon, txt, value} = real
-                  return (
-                    <div key={type} className="each">
-                      <span className="type">{txt}</span>
-                      <img src={icon} />
-                      <span className="value">{value}</span>
-                    </div>
-                  )
-                })}
+              <div className="total-time">
+                <div className="type-wrap">
+                  <span className="text">총 청취 시간</span>
+                  <img src={HeadphoneIcon} />
+                </div>
+                <div className="time">{timeFormat(profile.listenTotTime)}</div>
               </div>
             </div>
+            <div className="real-info">
+              {[
+                {
+                  type: 'heart',
+                  icon: HeartIcon,
+                  txt: '좋아요',
+                  value: profile.likeTotCnt.toLocaleString()
+                },
+                {
+                  type: 'byeol',
+                  icon: ByeolIcon,
+                  txt: '보유별',
+                  value: profile.byeolCnt.toLocaleString()
+                },
+                {
+                  type: 'dal',
+                  icon: DalIcon,
+                  txt: '보유달',
+                  value: profile.dalCnt.toLocaleString()
+                }
+              ].map((real) => {
+                const {type, icon, txt, value} = real
+                return (
+                  <div key={type} className="each">
+                    <span className="type">{txt}</span>
+                    <img src={icon} />
+                    <span className="value">{value}</span>
+                  </div>
+                )
+              })}
+            </div>
           </div>
-          <div className="sub-nav">
-            <div onClick={() => history.push(`/private`)}>
-              <div className="list">
+          <div className="profile-menu">
+            <div className="menu-box">
+              <button className="list" onClick={() => history.push(`/private`)}>
                 <img className="icon" src={ProfileIcon} alt="프로필 설정" />
                 <span className="text">프로필 설정</span>
                 <span className="arrow"></span>
-              </div>
-            </div>
-            <div onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
-              <div className="list mb12">
+              </button>
+              <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
                 <img className="icon" src={AppSettingIcon} alt="앱설정" />
                 <span className="text">앱 설정</span>
                 <span className="arrow"></span>
-              </div>
+              </button>
             </div>
-            {subNavList.map((value, idx) => {
-              const {type, txt, icon} = value
-              return (
-                <div
-                  onClick={() => history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)}
-                  key={`list-${idx}`}>
-                  <div className="list">
+            <div className="menu-box">
+              {subNavList.map((value, idx) => {
+                const {type, txt, icon} = value
+                return (
+                  <button
+                    className="list"
+                    onClick={() => history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)}
+                    key={`list-${idx}`}>
                     <img className="icon" src={icon} alt={txt} />
                     <span className="text">{txt}</span>
                     <span
@@ -261,18 +260,19 @@ export default (props) => {
                             : 'arrow'
                           : 'arrow'
                       }></span>
-                  </div>
-                </div>
-              )
-            })}
-            <div className="addCustomer">
+                  </button>
+                )
+              })}
+            </div>
+            <div className="menu-box">
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
                 if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
                   return <></>
                 } else {
                   return (
-                    <div
+                    <button
+                      className="list"
                       key={`list-${idx}`}
                       onClick={(e) => {
                         if (type === 'wallet' || type === 'report') {
@@ -285,276 +285,57 @@ export default (props) => {
                           checkSelfAuth()
                         }
                       }}>
-                      <div className="list">
-                        <img className="icon" src={icon} alt={txt} />
-                        <span className="text">{txt}</span>
-                        {type === 'store' ? (
-                          <span className="price">{profile.dalCnt.toLocaleString()}</span>
-                        ) : type === 'money_exchange' ? (
-                          <span className="price">{profile.byeolCnt.toLocaleString()}</span>
-                        ) : (
-                          <></>
-                        )}
-                        <span
-                          className={
-                            type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
-                          }></span>
-                      </div>
-                    </div>
+                      <img className="icon" src={icon} alt={txt} />
+                      <span className="text">{txt}</span>
+                      {type === 'store' ? (
+                        <span className="price">{profile.dalCnt.toLocaleString()}</span>
+                      ) : type === 'money_exchange' ? (
+                        <span className="price">{profile.byeolCnt.toLocaleString()}</span>
+                      ) : (
+                        <></>
+                      )}
+                      <span
+                        className={
+                          type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
+                        }></span>
+                    </button>
                   )
                 }
               })}
             </div>
-            <div className="addCustomer">
+            <div className="menu-box">
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <div
+                  <button
+                    className="list"
                     onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
                     key={`list-${idx}`}>
-                    <div className="list">
-                      <img className="icon" src={icon} alt={txt} />
-                      <span className="text">{txt}</span>
-                      <span
-                        className={
-                          type === 'notice'
-                            ? myPageNew.notice
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : type === 'personal'
-                            ? myPageNew.qna
-                              ? 'arrow arrow--active'
-                              : 'arrow'
+                    <img className="icon" src={icon} alt={txt} />
+                    <span className="text">{txt}</span>
+                    <span
+                      className={
+                        type === 'notice'
+                          ? myPageNew.notice
+                            ? 'arrow arrow--active'
                             : 'arrow'
-                        }></span>
-                    </div>
-                  </div>
+                          : type === 'personal'
+                          ? myPageNew.qna
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : 'arrow'
+                      }></span>
+                  </button>
                 )
               })}
             </div>
-            <LogoutBtn onClick={clickLogoutBtn}>로그아웃</LogoutBtn>
+            <button className="btn__logout" onClick={clickLogoutBtn}>
+              로그아웃
+            </button>
             {/* <Controller /> */}
           </div>
         </>
       )}
-    </MenuMypage>
+    </div>
   )
 }
-//style------------------------------------------------------------------
-const LogoutBtn = styled.button`
-  display: block;
-  background-color: #fff;
-  width: 100%;
-  color: #9e9e9e;
-  font-size: 14px;
-  margin-top: 24px;
-  height: 48px;
-  line-height: 48px;
-`
-const MenuMypage = styled.div`
-  min-height: 100vh;
-  .log-in {
-    position: relative;
-    .main-info {
-      text-align: center;
-      .photo {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto;
-        border-radius: 50%;
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-      }
-      .nickname {
-        margin-top: 10px;
-        font-size: 20px;
-        color: #000;
-        letter-spacing: -0.5px;
-        font-weight: 600;
-      }
-      .mem-id {
-        margin-top: 8px;
-        margin-bottom: 24px;
-        color: #757575;
-        font-size: 12px;
-      }
-    }
-    .profile-info {
-      display: none;
-      border: 1px solid #632beb;
-      border-radius: 20px;
-      transform: skew(-0.03deg);
-      .time-info {
-        padding: 12px 22px;
-        .total-time {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          .type-wrap {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            .text {
-              color: #632beb;
-              font-size: 14px;
-              letter-spacing: -0.35px;
-              font-weight: bold;
-            }
-            img {
-              display: block;
-              width: 24px;
-              margin-left: 10px;
-            }
-          }
-          .time {
-            color: #424242;
-            font-size: 14px;
-            letter-spacing: -0.35px;
-            font-weight: 800;
-          }
-        }
-      }
-      .real-info {
-        display: flex;
-        flex-direction: row;
-        border-top: 1px solid #eee;
-        transform: skew(-0.03deg);
-        .each {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 33.3334%;
-          height: 95px;
-          box-sizing: border-box;
-          &:first-child {
-            border-right: 1px solid #eee;
-          }
-          &:last-child {
-            border-left: 1px solid #eee;
-          }
-          .type {
-            color: #632beb;
-            font-size: 14px;
-            letter-spacing: -0.35px;
-            font-weight: 600;
-          }
-          img {
-            display: block;
-            margin: 4px 0;
-          }
-          .value {
-            color: #424242;
-            font-size: 14px;
-            letter-spacing: -0.35px;
-            font-weight: 600;
-          }
-        }
-      }
-    }
-  }
-  .log-out {
-    padding-top: 30px;
-    box-sizing: border-box;
-    img {
-      display: block;
-      margin: 0 auto;
-      width: 100px;
-    }
-    .text {
-      margin-top: 10px;
-      color: #424242;
-      font-size: 20px;
-      text-align: center;
-      letter-spacing: -0.8px;
-      .bold {
-        color: #632beb;
-        font-weight: 800;
-      }
-    }
-    .loginBtn {
-      display: block;
-      width: 288px;
-      height: 50px;
-      margin: 16px auto;
-      background: #632beb;
-      font-size: 18px;
-      font-weight: 600;
-      color: #fff;
-      border-radius: 10px;
-      transform: skew(-0.03deg);
-    }
-  }
-  .addCustomer {
-    margin-top: 12px;
-  }
-  .sub-nav {
-    margin-top: 12px;
-    padding-bottom: 23px;
-    transform: skew(-0.03deg);
-    & > div {
-      display: block;
-      .list {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        height: 48px;
-        background-color: #fff;
-        box-sizing: border-box;
-        padding: 0 16px 0 16px;
-        margin: 1px 0 1px 0;
-        .arrow {
-          position: absolute;
-          right: 16px;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 24px;
-          height: 24px;
-          background: url(${Arrow}) no-repeat center center / cover;
-
-          &--active {
-            &:before {
-              content: '';
-              display: block;
-              width: 24px;
-              height: 24px;
-              margin-left: -28px;
-              background: url(${newCircle});
-            }
-          }
-        }
-        .text {
-          color: #000000;
-          letter-spacing: -0.35px;
-          font-weight: 800;
-        }
-        .icon {
-          display: block;
-          width: 32px;
-          margin-right: 12px;
-        }
-        .price {
-          position: absolute;
-          right: 40px;
-          top: 50%;
-          font-size: 14px;
-          font-weight: normal;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: 0.2;
-          letter-spacing: normal;
-          text-align: right;
-          color: #000000;
-        }
-      }
-      .mb12 {
-        margin-bottom: 12px !important;
-      }
-      :first-child {
-        margin: 0px 0 1px 0;
-      }
-    }
-  }
-`
