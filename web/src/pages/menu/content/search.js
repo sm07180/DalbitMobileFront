@@ -229,6 +229,20 @@ export default (props) => {
       }
     }, 10)
   }
+  const searchCategory = [
+    {
+      id: 0,
+      title: '통합검색'
+    },
+    {
+      id: 1,
+      title: '실시간 라이브'
+    },
+    {
+      id: 2,
+      title: 'DJ'
+    }
+  ]
 
   //---------------------------------------------------------------------
   useEffect(() => {
@@ -253,8 +267,9 @@ export default (props) => {
     query = ''
   }, [])
   if (props.location.pathname.split('/')[2] !== 'search') query = ''
+
   return (
-    <Content>
+    <div className="searchWrap">
       <Room />
       <Header>
         <div className="category-text">검색</div>
@@ -263,204 +278,52 @@ export default (props) => {
       <div className="searchBarWrapper">
         <SearchBar update={update} />
       </div>
-      {(query === '' || (live === null && member === null)) && <InitialSearch />}
-      {query !== '' && (
-        <div className="searchTab">
-          {searchCategory.map((item, idx) => {
-            return (
-              <button
-                key={item.id}
-                className={btnIdx === item.id ? 'tabBtn tabBtn--active' : 'tabBtn'}
-                onClick={() => btnActive(item.id)}>
-                {item.title}
-              </button>
-            )
-          })}
-        </div>
-      )}
+      <div className="contentWrap">
+        {(query === '' || (live === null && member === null)) && <InitialSearch />}
+        {query !== '' && (
+          <div className="searchTab">
+            {searchCategory.map((item, idx) => {
+              return (
+                <button
+                  key={item.id}
+                  className={btnIdx === item.id ? 'tabBtn tabBtn--active' : 'tabBtn'}
+                  onClick={() => btnActive(item.id)}>
+                  <span>{item.title}</span>
+                </button>
+              )
+            })}
+          </div>
+        )}
 
-      {/* {live && <h1>라이브 검색</h1>} */}
-      {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
-        <div className="typeTitle">
-          <span className="title">실시간 LIVE</span>
-          {totalLiveCnt !== 0 && (
-            <div className="more">
-              <span className="more__cnt" onClick={() => btnActive(1)}>
-                {totalLiveCnt && totalLiveCnt}
-              </span>
-              <button className="more__btn" onClick={() => btnActive(1)}></button>
-            </div>
-          )}
-        </div>
-      )}
-      {query !== '' && (btnIdx === 0 || btnIdx === 1) && <List update={update} type="live" fetch={live} />}
-      {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
-        <div className="typeTitle">
-          <span className="title">DJ</span>
-          {totalMemCnt !== 0 && (
-            <div className="more">
-              <span className="more__cnt" onClick={() => btnActive(2)}>
-                {totalMemCnt && totalMemCnt}
-              </span>
-              <button className="more__btn" onClick={() => btnActive(2)}></button>
-            </div>
-          )}
-        </div>
-      )}
-      {query !== '' && (btnIdx === 0 || btnIdx === 2) && <List update={update} type="member" fetch={member} />}
-    </Content>
+        {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
+          <div className="typeTitle">
+            <span className="title">실시간 LIVE</span>
+            {totalLiveCnt !== 0 && (
+              <div className="more">
+                <span className="more__cnt" onClick={() => btnActive(1)}>
+                  {totalLiveCnt && totalLiveCnt}
+                </span>
+                <button className="more__btn" onClick={() => btnActive(1)}></button>
+              </div>
+            )}
+          </div>
+        )}
+        {query !== '' && (btnIdx === 0 || btnIdx === 1) && <List update={update} type="live" fetch={live} />}
+        {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
+          <div className="typeTitle">
+            <span className="title">DJ</span>
+            {totalMemCnt !== 0 && (
+              <div className="more">
+                <span className="more__cnt" onClick={() => btnActive(2)}>
+                  {totalMemCnt && totalMemCnt}
+                </span>
+                <button className="more__btn" onClick={() => btnActive(2)}></button>
+              </div>
+            )}
+          </div>
+        )}
+        {query !== '' && (btnIdx === 0 || btnIdx === 2) && <List update={update} type="member" fetch={member} />}
+      </div>
+    </div>
   )
 }
-//---------------------------------------------------------------------
-const Content = styled.div`
-  background-color: #fff;
-  height: 100vh;
-  .more {
-    display: flex;
-    align-items: center;
-    &__cnt {
-      font-size: 18px;
-      font-weight: 600;
-      font-stretch: normal;
-      font-style: normal;
-      letter-spacing: -0.36px;
-      text-align: left;
-      color: #632beb;
-    }
-    &__btn {
-      display: block;
-      width: 24px;
-      height: 24px;
-      background: url(${ArrowIcon});
-    }
-  }
-  .typeTitle {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    box-sizing: border-box;
-    margin: 20px 0;
-    .title {
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.17;
-      letter-spacing: -0.36px;
-      text-align: left;
-      color: #000000;
-    }
-    .cnt {
-      font-size: 18px;
-      font-weight: 600;
-      font-stretch: normal;
-      font-style: normal;
-      letter-spacing: -0.36px;
-      text-align: left;
-      color: #632beb;
-    }
-  }
-  h1 {
-    display: block;
-    margin-bottom: 16px;
-    font-size: 16px;
-    font-weight: bolder;
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.25;
-    letter-spacing: -0.32px;
-    text-align: left;
-    color: #424242;
-  }
-  .more-btn-wrap {
-    position: relative;
-    &:before {
-      display: block;
-      position: absolute;
-      left: calc(50% - 63px);
-      width: 126px;
-      height: 48px;
-      background: #fff;
-      content: '';
-      z-index: 1;
-    }
-    &:after {
-      position: absolute;
-      right: 0;
-      top: 23px;
-      width: 100%;
-      height: 1px;
-      background: #e0e0e0;
-      content: '';
-    }
-  }
-  .more-btn {
-    display: block;
-    position: relative;
-    width: 113px;
-    margin: 40px auto;
-    padding-right: 28px;
-    border: 1px solid #e0e0e0;
-    border-radius: 46px;
-    background: #fff;
-    color: #616161;
-    font-size: 14px;
-    line-height: 46px;
-    z-index: 1;
-    &:after {
-      display: block;
-      position: absolute;
-      right: 24px;
-      top: 11px;
-      width: 12px;
-      height: 12px;
-      border-left: 2px solid ${COLOR_MAIN};
-      border-top: 2px solid ${COLOR_MAIN};
-      transform: rotate(-135deg);
-      content: '';
-    }
-  }
-  .searchBarWrapper {
-    padding: 10.5px 16px;
-    box-sizing: border-box;
-    background-color: #eee;
-  }
-  .searchTab {
-    display: flex;
-    justify-content: space-between;
-    border-bottom: 1px solid #f5f5f5;
-    margin-top: 16px;
-    padding: 0 44px;
-    box-sizing: border-box;
-    .tabBtn {
-      font-size: 14px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.43;
-      letter-spacing: normal;
-      text-align: center;
-      color: #757575;
-      padding-bottom: 8px;
-      &--active {
-        color: #632beb;
-        font-weight: 600;
-        border-bottom: 1px solid #632beb;
-        padding-bottom: 7px;
-      }
-    }
-  }
-`
-const searchCategory = [
-  {
-    id: 0,
-    title: '통합검색'
-  },
-  {
-    id: 1,
-    title: '실시간 라이브'
-  },
-  {
-    id: 2,
-    title: 'DJ'
-  }
-]
