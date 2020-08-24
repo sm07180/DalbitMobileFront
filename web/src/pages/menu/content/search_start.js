@@ -59,74 +59,17 @@ export default (props) => {
 
   return (
     <>
-      <Content>
-        <div className="content-wrap live-list">
-          {Array.isArray(liveList) ? (
-            liveList.length > 0 ? (
-              <LiveList list={liveList} liveListType="detail" type="search" />
-            ) : (
-              <NoResult />
-            )
+      <div className="liveList">
+        {Array.isArray(liveList) ? (
+          liveList.length > 0 ? (
+            <LiveList list={liveList} liveListType="detail" type="search" />
           ) : (
-            <div style={{height: '315px'}}></div>
-          )}
-        </div>
-      </Content>
+            <NoResult />
+          )
+        ) : (
+          <div style={{height: '315px'}}></div>
+        )}
+      </div>
     </>
   )
 }
-
-const Content = styled.div`
-  .live-list-category {
-    position: relative;
-    display: flex;
-    height: 36px;
-    flex-direction: row;
-    align-items: center;
-    background-color: #fff;
-    border-bottom: 1px solid #eee;
-    .inner-wrapper {
-      width: calc(100% - 16px);
-      margin-left: 16px;
-    }
-  }
-
-  .title-wrap {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 0 16px;
-
-    .title {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-
-      .txt {
-        color: #424242;
-        font-size: 18px;
-        font-weight: bold;
-        letter-spacing: -0.36px;
-
-        &.in-active {
-          color: #bdbdbd;
-        }
-
-        &:nth-child(2) {
-          margin-left: 10px;
-        }
-      }
-    }
-  }
-
-  .content-wrap {
-    position: relative;
-    min-height: 50px;
-    padding: 0 16px;
-
-    &.live-list {
-      width: 100%;
-      padding: 16px 16px;
-    }
-  }
-`
