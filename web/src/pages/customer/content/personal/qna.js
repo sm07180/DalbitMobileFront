@@ -39,37 +39,27 @@ export default function Qna() {
   const [checks, setChecks] = useState([false, true])
   const [agree, setAgree] = useState(false)
   async function fetchData() {
-    const res = await Api.center_qna_add({
-      data: {
-        qnaIdx: 0,
-        qnaType: faqNum,
-        title: title,
-        contents: content,
-        questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
-        questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
-        questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
-        questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
-        questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
-        questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
-        phone: checks[0] ? phone : '',
-        email: checks[1] ? email : '',
-        nickName: name
-      }
-    })
-    if (res.result === 'fail') {
-      context.action.alert({
-        msg: res.message,
-        callback: () => {
-          context.action.alert({
-            visible: false
-          })
-        }
-      })
-    } else if (res.result === 'success') {
-      context.action.confirm({
-        msg: '1:1 문의를 등록하시겠습니까?',
-        callback: () => {
-          //alert
+    context.action.confirm({
+      msg: '1:1 문의를 등록하시겠습니까?',
+      callback: async () => {
+        const res = await Api.center_qna_add({
+          data: {
+            qnaIdx: 0,
+            qnaType: faqNum,
+            title: title,
+            contents: content,
+            questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
+            questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
+            questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
+            questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
+            questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
+            questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
+            phone: checks[0] ? phone : '',
+            email: checks[1] ? email : '',
+            nickName: name
+          }
+        })
+        if (res.result === 'success') {
           setTimeout(() => {
             context.action.alert({
               msg: '1:1 문의 등록을 완료하였습니다.',
@@ -78,9 +68,61 @@ export default function Qna() {
               }
             })
           }, 0)
+        } else {
+          context.action.alert({
+            msg: res.message,
+            callback: () => {
+              context.action.alert({
+                visible: false
+              })
+            }
+          })
         }
-      })
-    }
+      }
+    })
+
+    // const res = await Api.center_qna_add({
+    //   data: {
+    //     qnaIdx: 0,
+    //     qnaType: faqNum,
+    //     title: title,
+    //     contents: content,
+    //     questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
+    //     questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
+    //     questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
+    //     questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
+    //     questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
+    //     questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
+    //     phone: checks[0] ? phone : '',
+    //     email: checks[1] ? email : '',
+    //     nickName: name
+    //   }
+    // })
+    // if (res.result === 'fail') {
+    //   context.action.alert({
+    //     msg: res.message,
+    //     callback: () => {
+    //       context.action.alert({
+    //         visible: false
+    //       })
+    //     }
+    //   })
+    // } else if (res.result === 'success') {
+    //   context.action.confirm({
+    //     msg: '1:1 문의를 등록하시겠습니까?',
+    //     callback: () => {
+    //       //alert
+    //       setTimeout(() => {
+    //         context.action.alert({
+    //           msg: '1:1 문의 등록을 완료하였습니다.',
+    //           callback: () => {
+    //             history.push('/')
+    //           }
+    //         })
+    //       }, 0)
+    //     }
+    //   })
+    // }
   }
 
   function uploadSingleFile(e, idx) {
