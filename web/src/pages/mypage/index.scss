@@ -3,6 +3,10 @@
 #profile {
   position: relative;
   min-height: 100vh;
+  .close-btn {
+    position: absolute;
+    left: 6px;
+  }
   .profile-info {
     position: relative;
     padding-top: 87px;

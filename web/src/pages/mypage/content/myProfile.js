@@ -416,11 +416,3 @@ const myProfile = (props) => {
   )
 }
 export default myProfile
-
-//flex item3
-const GiftButtonWrap = styled.div`
-  @media (max-width: ${WIDTH_TABLET_S}) {
-  }
-`
-//상단버튼
-const InfoConfigBtn = styled.div``
