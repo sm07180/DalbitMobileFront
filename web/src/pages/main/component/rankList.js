@@ -37,7 +37,7 @@ export default (props) => {
             const {rank, nickNm, memNo, profImg} = dj
             return (
               <div
-                className="slide-wrap"
+                className="rank-slide"
                 key={`dj-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
@@ -59,7 +59,7 @@ export default (props) => {
             const {rank, nickNm, memNo, profImg} = fan
             return (
               <div
-                className="slide-wrap"
+                className="rank-slide"
                 key={`fan-${idx}`}
                 onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
@@ -83,10 +83,11 @@ const RankList = styled.div`
   .swiper-container {
     padding: 16px 0 0 16px;
   }
-  .slide-wrap {
+  .rank-slide {
     position: relative;
-    width: 100px;
-    margin: 0 auto;
+    display: block;
+    width: auto;
+    height: auto;
     text-align: center;
     /* .counting {
       position: absolute;
@@ -141,7 +142,6 @@ const RankList = styled.div`
       margin-top: 6px;
       line-height: 2.17;
       height: 13px;
-
       .text {
         color: #424242;
         font-size: 12px;
@@ -149,7 +149,6 @@ const RankList = styled.div`
         line-height: 2.17;
         margin-left: 2px;
       }
-
       .heart-icon {
         margin-left: 6px;
       }

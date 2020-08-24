@@ -3,9 +3,6 @@
  * @brief 2.5v 마이페이지 상단에 보이는 내 프로필 component.
  */
 import React, {useEffect, useContext, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {OS_TYPE} from 'context/config.js'
-import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 import qs from 'query-string'
 //component
@@ -14,34 +11,18 @@ import ProfileFanList from './profile_fanList'
 import {useHistory} from 'react-router-dom'
 import LayerPopupExp from './layer_popup_exp.js'
 // context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {WIDTH_TABLET_S, IMG_SERVER} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 // utility
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 //svg
-import LiveIcon from '../static/ic_live.svg'
-import FemaleIcon from '../static/ico_female.svg'
-import MaleIcon from '../static/ico_male.svg'
-import PlusCircle from '../static/ico_circle.svg'
-import GrayHeart from '../static/ico_like_g.svg'
-import CloseIcon from '../static/ic_close.svg'
-import KoreaIcon from '../static/ico_korea.svg'
-import BlueHoleIcon from '../static/bluehole.svg'
-import StarIcon from '../static/star.svg'
-import CloseBtnIcon from '../static/ic_closeBtn.svg'
-import QuestionIcon from '../static/ic_help.svg'
-import CrownIcon from '../static/ic_crown.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
-import FanSettingIcon from '../static/fan_setting.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 // render----------------------------------------------------------------
 const myProfile = (props) => {
   let history = useHistory()
   //context & webview
   const {webview} = props
-
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   // state
@@ -302,7 +283,6 @@ const myProfile = (props) => {
                 </>
               )}
             </div>
-
             <div className="nameWrap">
               <strong>{profile.nickNm}</strong>
             </div>
@@ -322,7 +302,6 @@ const myProfile = (props) => {
               <div className="topMedal">TOP 랭킹에 도전해보세요</div>
             )}
             {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
-
             <div className="categoryCntWrap">
               {profile.fanCnt > 0 ? (
                 <div className="count-box" onClick={goFanEdite}>
@@ -358,7 +337,7 @@ const myProfile = (props) => {
                 </div>
               ) : (
                 <div className="count-box">
-                  <span>
+                  <span className="icoWrap">
                     <span className="icoImg type2"></span>
                     <em className="icotitle">스타</em>
                   </span>
@@ -369,7 +348,7 @@ const myProfile = (props) => {
               )}
 
               <div className="count-box">
-                <span>
+                <span className="icoWrap">
                   <span className="icoImg"></span>
                   <em className="icotitle">좋아요</em>
                 </span>
