@@ -126,6 +126,7 @@ const Content = styled.div`
 
     &.live-list {
       width: 100%;
+      padding: 16px 16px;
     }
   }
 `
