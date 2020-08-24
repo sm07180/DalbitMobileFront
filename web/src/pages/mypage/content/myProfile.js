@@ -259,13 +259,13 @@ const myProfile = (props) => {
         <button className="closeBtn" onClick={goBack}>
           <span className="blind">프로필 닫기</span>
         </button>
-        {urlrStr !== context.token.memNo && (
-          <>
-            <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
-          </>
-        )}
         <div className="profile-detail" webview={webview}>
           <div className="profile-content">
+            {urlrStr !== context.token.memNo && (
+              <>
+                <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
+              </>
+            )}
             <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
               <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
                 <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
@@ -273,14 +273,6 @@ const myProfile = (props) => {
                 {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
                 <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
               </figure>
-
-              {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
-              {/* {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
-              <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
-
-              <figure onClick={() => figureZoom()}>
-                <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
-              </figure> */}
               {Zoom === true && (
                 <div className="zoom" onClick={() => setZoom(false)}>
                   <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
@@ -290,6 +282,7 @@ const myProfile = (props) => {
             <div className="title">
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
+            {/* user profile 추가 */}
             {profile.roomNo !== '' && (
               <button
                 className="liveIcon"
@@ -318,7 +311,7 @@ const myProfile = (props) => {
                     })
                   }
                 }}>
-                <img src={LiveIcon}></img>
+                <img src={LiveIcon} className="ico-live" />
                 <span>Live</span>
               </button>
             )}
@@ -370,6 +363,7 @@ const myProfile = (props) => {
                 </em>
               </div>
             </div>
+            {/* user profile 추가 */}
             {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
               <div onClick={() => context.action.updateMypageReport(true)}></div>
             )}

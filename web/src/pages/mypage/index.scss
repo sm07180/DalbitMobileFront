@@ -26,9 +26,15 @@
       left: 12px;
       z-index: 16;
     }
-    .close-btn {
+    .reportIcon {
       position: absolute;
-      left: 6px;
+      top: -59px;
+      width: 32px;
+      height: 32px;
+      left: 20px;
+      z-index: 3;
+      background: url('../mypage/component/ic_report.svg');
+      cursor: pointer;
     }
     .profile-detail {
       position: relative;
@@ -116,14 +122,15 @@
             width: 95%;
             height: auto;
           }
-
-          & .liveIcon {
-            position: absolute;
-            right: 0;
-            top: 0px;
-            width: 52px;
-            height: 26px;
-            background: url('../menu/static/ic_live.svg') no-repeat center center / cover;
+        }
+        .liveIcon {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          span {
+            display: block;
+            color: #f54640;
+            font-size: 12px;
           }
         }
         .title {
