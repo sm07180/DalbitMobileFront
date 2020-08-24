@@ -7,7 +7,10 @@ import React, {useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
+import qs from 'query-string'
 
+let subSelect1 = ''
+let subSelect2 = ''
 export default (props) => {
   const history = useHistory()
 
@@ -31,6 +34,7 @@ export default (props) => {
   const [selectSub2, setSelectsub2] = useState('')
 
   const [moreList, setMorelist] = useState(false)
+  const parameter = qs.parse(location.search)
 
   //update
   function update(mode) {
@@ -50,7 +54,9 @@ export default (props) => {
         broadcast_time1: Broadcast1,
         broadcast_time2: Broadcast2, //없어도됨
         title: title, // 방송소개
-        contents: contents // 내가 스페셜 DJ가 된다면?
+        contents: contents, // 내가 스페셜 DJ가 된다면?
+        select_year: parameter.select_year,
+        select_month: parameter.select_month
       }
     })
     const {result, data} = res
@@ -93,6 +99,10 @@ export default (props) => {
 
   useEffect(() => {
     specialdjCheck()
+
+    return () => {
+      subSelect1 = ''
+    }
   }, [])
 
   if (toggleCheck.already === 1) {
@@ -103,8 +113,8 @@ export default (props) => {
     toggleCheck.airtime === 0 || toggleCheck.broadcast === 0 || toggleCheck.like === 0 ? window.history.back() : ''
   }
 
-  const Broadcast1 = select1 + ' ~ ' + selectSub1
-  const Broadcast2 = select2 + ' ~ ' + selectSub2
+  const Broadcast1 = select1 + ' ~ ' + subSelect1
+  const Broadcast2 = select2 + ' ~ ' + subSelect2
 
   const handleChange = (event) => {
     const element = event.target
@@ -164,7 +174,7 @@ export default (props) => {
       })
       return
     }
-    if (selectSub1 === '') {
+    if (subSelect1 === '') {
       context.action.alert({
         msg: '방송종료시간을 선택해주세요.',
         callback: () => {
@@ -186,7 +196,7 @@ export default (props) => {
 
     if (contents === '') {
       context.action.alert({
-        msg: '내가 스페셜 DJ가 된다면? 내용이 없습니다.<br/>자신의 방송에 대한 소개를 작성해주세요..',
+        msg: '내가 스페셜 DJ가 된다면? 내용이 없습니다.<br/>자신의 방송에 대한 소개를 작성해주세요.',
         callback: () => {
           context.action.alert({visible: false})
         }
@@ -254,6 +264,13 @@ export default (props) => {
     if (select1 === '') return selectlist
     else {
       const idx = selectlist.findIndex((item) => item.value === select1)
+
+      const selectOption = selectlist.slice(idx + 1)
+
+      subSelect1 = selectOption[0].value
+
+      // console.log(`selectSubChange1`, selectSubChange1)
+      // selectSubChange1 = selop[0].value
       return selectlist.slice(idx + 1)
     }
   })()
@@ -262,6 +279,8 @@ export default (props) => {
     if (select2 === '') return selectlist
     else {
       const idx = selectlist.findIndex((item) => item.value === select2)
+      const selectOption2 = selectlist.slice(idx + 1)
+      subSelect2 = selectOption2[0].value
       return selectlist.slice(idx + 1)
     }
   })()
@@ -280,13 +299,19 @@ export default (props) => {
         <div className="list list--top">
           <div className="list__title ">이름 (실명)</div>
           <div className="list__inpuText">
-            <input type="text" onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요." />
+            <input type="text" onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요." maxLength="4" />
           </div>
         </div>
         <div className="list list--bottom">
           <div className="list__title">휴대폰번호</div>
           <div className="list__inpuText">
-            <input type="tel" value={phone} onChange={(e) => handlePhone(e)} placeholder="'-'를 뺀 숫자만 입력하세요." />
+            <input
+              type="tel"
+              value={phone}
+              onChange={(e) => handlePhone(e)}
+              placeholder="'-'를 뺀 숫자만 입력하세요."
+              maxLength="11"
+            />
           </div>
         </div>
 
@@ -308,7 +333,8 @@ export default (props) => {
                 boxList={nextSelect1}
                 className="specialdjSelect"
                 onChangeEvent={(id) => {
-                  setSelectsub1(id)
+                  subSelect1 = id
+                  // setSelectsub1(id)
                 }}
                 block={select1 === ''}
                 testName="select222"
@@ -353,28 +379,52 @@ export default (props) => {
 const selectlist = [
   {value: '', text: '선택'},
   {value: '00:00', text: '00:00'},
+  {value: '00:30', text: '00:30'},
   {value: '01:00', text: '01:00'},
+  {value: '01:30', text: '01:30'},
   {value: '02:00', text: '02:00'},
+  {value: '02:30', text: '02:30'},
   {value: '03:00', text: '03:00'},
+  {value: '03:30', text: '03:30'},
   {value: '04:00', text: '04:00'},
+  {value: '04:30', text: '04:30'},
   {value: '05:00', text: '05:00'},
+  {value: '05:30', text: '05:30'},
   {value: '06:00', text: '06:00'},
+  {value: '06:30', text: '06:30'},
   {value: '07:00', text: '07:00'},
+  {value: '07:30', text: '07:30'},
   {value: '08:00', text: '08:00'},
+  {value: '08:30', text: '08:30'},
   {value: '09:00', text: '09:00'},
+  {value: '09:30', text: '09:30'},
   {value: '10:00', text: '10:00'},
+  {value: '10:30', text: '10:30'},
   {value: '11:00', text: '11:00'},
+  {value: '11:30', text: '11:30'},
   {value: '12:00', text: '12:00'},
+  {value: '12:30', text: '12:30'},
   {value: '13:00', text: '13:00'},
+  {value: '13:30', text: '13:30'},
   {value: '14:00', text: '14:00'},
+  {value: '14:30', text: '14:30'},
   {value: '15:00', text: '15:00'},
+  {value: '15:30', text: '15:30'},
   {value: '16:00', text: '16:00'},
+  {value: '16:30', text: '16:30'},
   {value: '17:00', text: '17:00'},
+  {value: '17:30', text: '17:30'},
   {value: '18:00', text: '18:00'},
+  {value: '18:30', text: '18:30'},
   {value: '19:00', text: '19:00'},
+  {value: '19:30', text: '19:30'},
   {value: '20:00', text: '20:00'},
+  {value: '20:30', text: '20:30'},
   {value: '21:00', text: '21:00'},
+  {value: '21:30', text: '21:30'},
   {value: '22:00', text: '22:00'},
+  {value: '22:30', text: '22:30'},
   {value: '23:00', text: '23:00'},
+  {value: '23:30', text: '23:30'},
   {value: '24:00', text: '24:00'}
 ]

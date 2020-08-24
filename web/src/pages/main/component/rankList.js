@@ -86,8 +86,7 @@ const RankList = styled.div`
   .rank-slide {
     position: relative;
     display: block;
-    width: auto;
-    height: auto;
+    width: 100px;
     text-align: center;
     /* .counting {
       position: absolute;

@@ -39,37 +39,27 @@ export default function Qna() {
   const [checks, setChecks] = useState([false, true])
   const [agree, setAgree] = useState(false)
   async function fetchData() {
-    const res = await Api.center_qna_add({
-      data: {
-        qnaIdx: 0,
-        qnaType: faqNum,
-        title: title,
-        contents: content,
-        questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
-        questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
-        questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
-        questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
-        questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
-        questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
-        phone: checks[0] ? phone : '',
-        email: checks[1] ? email : '',
-        nickName: name
-      }
-    })
-    if (res.result === 'fail') {
-      context.action.alert({
-        msg: res.message,
-        callback: () => {
-          context.action.alert({
-            visible: false
-          })
-        }
-      })
-    } else if (res.result === 'success') {
-      context.action.confirm({
-        msg: '1:1 문의를 등록하시겠습니까?',
-        callback: () => {
-          //alert
+    context.action.confirm({
+      msg: '1:1 문의를 등록하시겠습니까?',
+      callback: async () => {
+        const res = await Api.center_qna_add({
+          data: {
+            qnaIdx: 0,
+            qnaType: faqNum,
+            title: title,
+            contents: content,
+            questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
+            questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
+            questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
+            questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
+            questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
+            questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
+            phone: checks[0] ? phone : '',
+            email: checks[1] ? email : '',
+            nickName: name
+          }
+        })
+        if (res.result === 'success') {
           setTimeout(() => {
             context.action.alert({
               msg: '1:1 문의 등록을 완료하였습니다.',
@@ -78,9 +68,61 @@ export default function Qna() {
               }
             })
           }, 0)
+        } else {
+          context.action.alert({
+            msg: res.message,
+            callback: () => {
+              context.action.alert({
+                visible: false
+              })
+            }
+          })
         }
-      })
-    }
+      }
+    })
+
+    // const res = await Api.center_qna_add({
+    //   data: {
+    //     qnaIdx: 0,
+    //     qnaType: faqNum,
+    //     title: title,
+    //     contents: content,
+    //     questionFile1: questionFile[0] !== false ? questionFile[0].path : '',
+    //     questionFile2: questionFile[1] !== false ? questionFile[1].path : '',
+    //     questionFile3: questionFile[2] !== false ? questionFile[2].path : '',
+    //     questionFileName1: questionFile[0] !== false ? questionFile[0].fileName : '',
+    //     questionFileName2: questionFile[1] !== false ? questionFile[1].fileName : '',
+    //     questionFileName3: questionFile[2] !== false ? questionFile[2].fileName : '',
+    //     phone: checks[0] ? phone : '',
+    //     email: checks[1] ? email : '',
+    //     nickName: name
+    //   }
+    // })
+    // if (res.result === 'fail') {
+    //   context.action.alert({
+    //     msg: res.message,
+    //     callback: () => {
+    //       context.action.alert({
+    //         visible: false
+    //       })
+    //     }
+    //   })
+    // } else if (res.result === 'success') {
+    //   context.action.confirm({
+    //     msg: '1:1 문의를 등록하시겠습니까?',
+    //     callback: () => {
+    //       //alert
+    //       setTimeout(() => {
+    //         context.action.alert({
+    //           msg: '1:1 문의 등록을 완료하였습니다.',
+    //           callback: () => {
+    //             history.push('/')
+    //           }
+    //         })
+    //       }, 0)
+    //     }
+    //   })
+    // }
   }
 
   function uploadSingleFile(e, idx) {
@@ -160,12 +202,14 @@ export default function Qna() {
         contents = '제목을 입력해주세요.'
       } else if (content === '') {
         contents = '문의내용을 입력해주세요.'
-      } else if (!context.token.isLogin && !checks[0]) {
+      } else if (checks[0] && phone === '') {
         contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
-      } else if (!context.token.isLogin && checks[0] && phone === '') {
-        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
-      } else if (!context.token.isLogin && checks[0] && phone.length < 9) {
+      } else if (checks[0] && phone.length < 9) {
         contents = '정확한\n휴대폰 번호를 입력해주세요.'
+      } else if (checks[1] && email === '') {
+        contents = '답변 받으실 Email을\n입력해주세요.'
+      } else if (checks[1] && !emailInpection(email)) {
+        contents = '정확한\nEmail을 입력해주세요.'
       } else if (!agree) {
         contents = '개인정보 수집 및 이용에\n동의해주세요.'
       }
@@ -291,10 +335,10 @@ export default function Qna() {
       name !== '' &&
       name.length > 1 &&
       agree &&
-      ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
+      // ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
       // mail 되면
-      // (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
-      // (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
+      (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
+      (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
     ) {
       setDelicate(true)
     } else {
@@ -318,10 +362,7 @@ export default function Qna() {
   useEffect(() => {
     if (context.profile) {
       setName(context.profile.nickNm)
-    } else {
-      setChecks([true, false])
     }
-
     if (context.token.isLogin) {
       setChecks([false, false])
     }
@@ -438,6 +479,15 @@ export default function Qna() {
           </div>
           <div>
             <input
+              disabled={!checks[1]}
+              className="personalAddWrap__input"
+              type="email"
+              onChange={(e) => {
+                setEmail(e.target.value)
+              }}
+              placeholder="E-Mail 입력하세요."
+            />
+            <input
               disabled={!checks[0]}
               className="personalAddWrap__input"
               type="tel"
@@ -448,16 +498,6 @@ export default function Qna() {
                 }
               }}
               placeholder="휴대폰 번호를 입력하세요."
-            />
-
-            <input
-              disabled={!checks[1]}
-              className="personalAddWrap__input"
-              type="email"
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }}
-              placeholder="E-Mail 입력하세요."
             />
           </div>
         </div>
