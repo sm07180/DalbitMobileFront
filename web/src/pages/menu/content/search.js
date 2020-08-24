@@ -19,6 +19,7 @@ let timer
 let recordsVar = 3
 //let moreState = false
 export default (props) => {
+  console.log()
   // ctx
   const context = useContext(Context)
   const history = useHistory()
@@ -239,9 +240,7 @@ export default (props) => {
   const btnActive = (id) => {
     setBtnIdx(id)
   }
-  useEffect(() => {
-    query = ''
-  }, [])
+
   useEffect(() => {
     if (btnIdx === 0 && query !== '') {
       currentPage = 1
@@ -250,7 +249,10 @@ export default (props) => {
       fetchLive(query)
     }
   }, [btnIdx])
-
+  useEffect(() => {
+    query = ''
+  }, [])
+  if (props.location.pathname.split('/')[2] !== 'search') query = ''
   return (
     <Content>
       <Room />
