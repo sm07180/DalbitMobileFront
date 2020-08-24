@@ -192,7 +192,7 @@ export default (props) => {
       {/* 딤영역 */}
       {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
       <Content>
-        <div className={`list-wrap ${context.toggleState === false ? 'on' : 'off'}`}>
+        <div className={`list-wrap`}>
           {TotalCount && (
             <div className="big_count">
               <span>게시글</span>
@@ -213,41 +213,46 @@ export default (props) => {
                 }
               }
               return (
-                <BigReply key={index}>
-                  <div className="reply_header">
-                    {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                      <>
-                        <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
-                        {/* 상세기능영역 */}
+                <React.Fragment key={index}>
+                  <BigReply className={`${boardIdx === context.fanboardReplyNum && 'on'}`}>
+                    <div className="reply_header">
+                      {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                        <>
+                          <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
+                          {/* 상세기능영역 */}
 
-                        <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                          {writerNo === context.token.memNo && (
-                            <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
-                          )}
-                          <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                        </div>
-                      </>
-                    )}
+                          <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
+                            {writerNo === context.token.memNo && (
+                              <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
+                            )}
+                            <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
+                          </div>
+                        </>
+                      )}
 
-                    <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
-                    <div className="big_header_info">
-                      <span onClick={Link}>
-                        <div>
-                          <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
-                          <span className="big_header_info__name">{nickNm}</span>
-                        </div>
-                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
-                      </span>
+                      <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
+                      <div className="big_header_info">
+                        <span onClick={Link}>
+                          <div>
+                            <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
+                            <span className="big_header_info__name">{nickNm}</span>
+                          </div>
+                          <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="content_area">
-                    <pre>{contents}</pre>
-                  </div>
-                  <div className="big_footer">
-                    <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
-                    <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a>
-                  </div>
-                </BigReply>
+                    <div className="content_area">
+                      <pre>{contents}</pre>
+                    </div>
+                    <div className="big_footer">
+                      <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
+                      <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a>
+                    </div>
+                  </BigReply>
+                  {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
+                    <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
+                  )}
+                </React.Fragment>
               )
             })}
           {/* 큰댓글 수정하기영역 */}
@@ -298,9 +303,6 @@ export default (props) => {
           )}
         </div>
         {/*대댓글 리스트영역*/}
-        {context.fanboardReplyNum && context.toggleState && (
-          <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
-        )}
       </Content>
     </>
   )
@@ -312,6 +314,10 @@ const BigReply = styled.div`
   background-color: #fff;
   /* min-height: 196px; */
   margin-bottom: 12px;
+
+  &.on {
+    margin-bottom: 0;
+  }
   .detailwapper {
     position: relative;
   }
