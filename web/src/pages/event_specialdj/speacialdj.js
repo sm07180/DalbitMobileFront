@@ -138,7 +138,7 @@ export default (props) => {
               </div>
               <b className="dayTitle">
                 {`${startY}년 ${startM}월 ${startD}일 ~ ${endM}월 ${endD}일`}
-                <br />(<span className="dayTitle--orange">종료 {infoData.condition_end_date && eventEnd()} 일 전</span>)
+                <br />(<span className="dayTitle--orange">{infoData.condition_end_date && eventEnd()}</span>)
               </b>
             </div>
             <h3 className="img100">
