@@ -894,6 +894,12 @@
 
           &.date {
             color: #757575;
+
+            .iconNew {
+              display: inline-block;
+              width: 20px;
+              line-height: 13px;
+            }
           }
 
           &.nick {
