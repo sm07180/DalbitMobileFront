@@ -1253,9 +1253,13 @@ export default class API {
    */
   static event_specialdj = async (obj) => {
     const {url, method, data} = obj || {}
+    var date = new Date()
+    var dayYear = date.getFullYear()
+    var dayMonth = date.getMonth() + 1
     return await ajax({
       ...obj,
       url: `/mypage/specialDj/status`,
+      // url: `/mypage/specialDj/status`,
       method: 'POST',
       data: data
     })

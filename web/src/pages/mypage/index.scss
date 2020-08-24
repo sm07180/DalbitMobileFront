@@ -3,6 +3,10 @@
 #profile {
   position: relative;
   min-height: 100vh;
+  .close-btn {
+    position: absolute;
+    left: 6px;
+  }
   .profile-info {
     position: relative;
     padding-top: 87px;
@@ -22,9 +26,15 @@
       left: 12px;
       z-index: 16;
     }
-    .close-btn {
+    .reportIcon {
       position: absolute;
-      left: 6px;
+      top: -59px;
+      width: 32px;
+      height: 32px;
+      left: 20px;
+      z-index: 3;
+      background: url('../mypage/component/ic_report.svg');
+      cursor: pointer;
     }
     .profile-detail {
       position: relative;
@@ -38,511 +48,595 @@
       background-color: $white;
       z-index: 3;
       padding: 0 24px 20px;
-    }
-    .profile-content {
-      text-align: center;
-      .profile-image {
-        display: block;
-        position: relative;
-        background-size: cover;
-        background-position: center;
+      .profile-content {
         text-align: center;
-        margin-top: -50px;
-        figure {
-          position: relative;
-          width: 100px;
-          height: 100px;
-          margin: 0px auto 19px auto;
-          border-radius: 50%;
-          background-position: center;
-          background-size: cover;
-          background-repeat: no-repeat;
-          img {
-            display: none;
-          }
-
-          .holder {
-            display: block;
-            position: absolute;
-            top: -20px;
-            left: -20px;
-            width: 140px;
-            height: 140px;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-          }
-          .holderBg {
-            display: block;
-            position: absolute;
-            top: -20px;
-            left: -62px;
-            width: 224px;
-            height: 140px;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-          }
-          .profileBg {
-            display: block;
-            position: absolute;
-            top: -20px;
-            left: -40px;
-            width: 180px;
-            height: 140px;
-            background-position: center;
-            background-size: cover;
-            background-repeat: no-repeat;
-          }
-        }
-        .zoom {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100vh;
-          z-index: 22;
-          background-color: rgba(0, 0, 0, 0.5);
-        }
-        .zoomImg {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
+        .profile-image {
           display: block;
-          width: 95%;
-          height: auto;
-        }
+          position: relative;
+          background-size: cover;
+          background-position: center;
+          text-align: center;
+          margin-top: -50px;
+          figure {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            margin: 0px auto 19px auto;
+            border-radius: 50%;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            img {
+              display: none;
+            }
 
-        & .liveIcon {
-          position: absolute;
-          right: 0;
-          top: 0px;
-          width: 52px;
-          height: 26px;
-          background: url('../menu/static/ic_live.svg') no-repeat center center / cover;
+            .holder {
+              display: block;
+              position: absolute;
+              top: -20px;
+              left: -20px;
+              width: 140px;
+              height: 140px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+            .holderBg {
+              display: block;
+              position: absolute;
+              top: -20px;
+              left: -62px;
+              width: 224px;
+              height: 140px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+            .profileBg {
+              display: block;
+              position: absolute;
+              top: -20px;
+              left: -40px;
+              width: 180px;
+              height: 140px;
+              background-position: center;
+              background-size: cover;
+              background-repeat: no-repeat;
+            }
+          }
+          .zoom {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 22;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .zoomImg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: block;
+            width: 95%;
+            height: auto;
+          }
         }
-      }
-      .title {
-        position: relative;
-        display: inline-block;
-        min-width: 100px;
-        height: 32px;
-        margin: 0 auto;
-        padding: 0px 20px;
-        line-height: 32px;
-        text-align: center;
-        font-size: 16px;
-        font-weight: bold;
-        letter-spacing: -0.35px;
-        border-radius: 16px;
-        color: $white;
-        background-color: #f54640;
-        z-index: 4;
-      }
-      .levelInfoWrap {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        margin: 8px auto 0;
-        font-size: 12px;
-        text-align: center;
-        z-index: 2;
-        .levelBox {
+        .liveIcon {
+          position: absolute;
+          right: 20px;
+          top: 20px;
+          span {
+            display: block;
+            color: #f54640;
+            font-size: 12px;
+          }
+        }
+        .title {
+          position: relative;
+          display: inline-block;
+          min-width: 100px;
+          height: 32px;
+          margin: 0 auto;
+          padding: 0px 20px;
+          line-height: 32px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: bold;
+          letter-spacing: -0.35px;
+          border-radius: 16px;
+          color: $white;
+          background-color: #f54640;
+          z-index: 4;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        .levelInfoWrap {
+          position: relative;
           display: flex;
           flex-direction: column;
-          align-items: center;
-          .expTitle {
-            font-size: 12px;
-            font-weight: bold;
-            color: $black;
-            &--start {
-              position: absolute;
-              left: 0;
-              top: 21px;
-            }
-            &--end {
-              position: absolute;
-              right: 0;
-              top: 21px;
-            }
-            &--rate {
-              &::before {
+          margin: 8px auto 0;
+          font-size: 12px;
+          text-align: center;
+          z-index: 2;
+          .levelBox {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            .expTitle {
+              font-size: 12px;
+              font-weight: bold;
+              color: $black;
+              &--start {
                 position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                left: 0px;
-                content: '';
-                width: 1px;
-                height: 8px;
-                background-color: #bdbdbd;
+                left: 0;
+                top: 21px;
+              }
+              &--end {
+                position: absolute;
+                right: 0;
+                top: 21px;
+              }
+              &--rate {
+                &::before {
+                  position: absolute;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  left: 0px;
+                  content: '';
+                  width: 1px;
+                  height: 8px;
+                  background-color: #bdbdbd;
+                }
+              }
+            }
+            .expRate {
+              margin-left: 6px;
+              font-weight: 600;
+              font-size: 10px;
+              color: $black;
+            }
+            .levelInfo {
+              display: flex;
+              justify-content: center;
+              flex-direction: row;
+              width: 100%;
+              padding: 4px 0;
+              font-size: 16px;
+              color: #757575;
+              font-weight: bold;
+              .expTitle {
+                position: relative;
+                padding: 0 8px;
+                font-size: 16px;
               }
             }
           }
-          .expRate {
-            margin-left: 6px;
-            font-weight: 600;
-            font-size: 10px;
-            color: $black;
+          .levelBar {
+            position: relative;
+            width: 300px;
+            height: 16px;
+            border-radius: 10px;
+            background-color: #eee;
           }
-          .levelInfo {
-            display: flex;
-            justify-content: center;
-            flex-direction: row;
-            width: 100%;
-            padding: 4px 0;
-            font-size: 16px;
-            color: #757575;
-            font-weight: bold;
-            .expTitle {
-              position: relative;
-              padding: 0 8px;
-              font-size: 16px;
-            }
-          }
-        }
-        .levelBar {
-          position: relative;
-          width: 300px;
-          height: 16px;
-          border-radius: 10px;
-          background-color: #eee;
-        }
-        .expBarStatus {
-          position: absolute;
-          top: 0px;
-          left: -1px;
-          height: 16px;
-          max-width: calc(100% + 2px);
-          border-radius: 10px;
-          background-color: $black;
-          text-align: right;
-          color: #fff;
-          font-size: 9px;
-          padding: 1px 0;
-          padding-right: 6px;
-          line-height: 15px;
-          box-sizing: border-box;
-          text-indent: 3px;
-          line-height: 16px;
-        }
-        .btn-info {
-          display: flex;
-          align-items: center;
-          margin-right: 5px;
-          border-radius: 14px;
-          :after {
-            content: '';
-            height: 12px;
-            width: 20px;
-            background: url('../menu/static/ic_help.svg') no-repeat center center / cover;
-          }
-          .blind {
-            font-size: 0;
-          }
-        }
-      }
-      .nameWrap {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        margin-top: 5px;
-        strong {
-          text-align: center;
-          font-size: 22px;
-          font-weight: 800;
-          color: $black;
-        }
-        span {
-          padding: 12px 0 0 0;
-          color: #616161;
-          font-size: 10px;
-          line-height: 12px;
-          transform: skew(-0.03deg);
-        }
-      }
-      .profileMsgWrap {
-        padding: 0px 5px;
-        box-sizing: border-box;
-        margin: 0 auto;
-        margin-top: 8px;
-        transform: skew(-0.03deg);
-        font-size: 14px;
-        font-family: inherit;
-        line-height: 1.43;
-        letter-spacing: normal;
-        text-align: center;
-        color: #424242;
-      }
-      .subIconWrap {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        margin: 4px 0;
-        > em {
-          display: inline-block;
-          height: 16px;
-          margin-left: 2px;
-          &:first-child {
-            margin-left: 0;
-          }
-        }
-        .nationIcon {
-          width: 24px;
-          background: url('../menu/static/ico_korea.svg') no-repeat center center / cover;
-        }
-        .femaleIcon {
-          width: 24px;
-          background: url('../menu/static/ico_female.svg') no-repeat center center / cover;
-        }
-        .maleIcon {
-          width: 24px;
-          background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
-        }
-        .specialIcon {
-          width: 64px;
-          border-radius: 10px;
-          background-color: #ec455f;
-        }
-
-        .specialIcon {
-          display: inline-block;
-          width: 62px;
-          height: 16px;
-          line-height: 16px;
-          margin-left: 2px;
-          border-radius: 10px;
-          background-color: #ec455f;
-          color: #fff;
-          font-size: 12px;
-          font-weight: normal;
-          font-stretch: normal;
-          font-style: normal;
-          letter-spacing: normal;
-        }
-      }
-      .badgeWrap {
-        display: flex;
-        margin: 5px auto 0;
-        justify-content: center;
-        align-items: center;
-        .swiper-slide {
-          display: block;
-          width: auto;
-          height: auto;
-        }
-        .swiper-wrapper {
-          height: auto;
-          margin: 0 auto;
-        }
-        .swiper-pagination {
-          position: static;
-          margin-top: 20px;
-        }
-        .swiper-pagination-bullet {
-          width: 11px;
-          height: 11px;
-          background: $black;
-          opacity: 0.5;
-        }
-        .swiper-pagination-bullet-active {
-          background: $primary;
-          opacity: 1;
-        }
-
-        .fan-badge {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 28px;
-          border-radius: 20px;
-          font-size: 14px;
-          font-weight: 800;
-          font-stretch: normal;
-          font-style: normal;
-          line-height: 1;
-          letter-spacing: -0.35px;
-          padding: 0 10px 0 3px;
-          text-align: left;
-          color: #ffffff;
-        }
-        .fan-badge:last-child {
-          margin-right: 0;
-        }
-
-        .fan-badge img {
-          width: 42px;
-          height: 26px;
-        }
-        .fan-badge span {
-          display: inline-block;
-          vertical-align: middle;
-          line-height: 2.2;
-          color: #ffffff;
-        }
-      }
-      .categoryCntWrap {
-        margin: 8px 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .icoWrap {
-          display: flex;
-          align-items: center;
-        }
-        .count-box {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-direction: column;
-          position: relative;
-          width: 88px;
-          height: 50px;
-          &::before {
-            content: '';
+          .expBarStatus {
             position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 40px;
-            width: 1px;
-            background-color: #eeeeee;
+            top: 0px;
+            left: -1px;
+            height: 16px;
+            max-width: calc(100% + 2px);
+            border-radius: 10px;
+            background-color: $black;
+            text-align: right;
+            color: #fff;
+            font-size: 9px;
+            padding: 1px 0;
+            padding-right: 6px;
+            line-height: 15px;
+            box-sizing: border-box;
+            text-indent: 3px;
+            line-height: 16px;
           }
-          &:first-child {
-            &::before {
-              display: none;
-            }
-          }
-          .icoImg {
-            margin: 0 auto;
-            display: inline-block;
-            width: 24px;
-            height: 24px;
-            background: url('../menu/static/ico_like_g.svg') no-repeat center center / cover;
-
-            &.type1 {
-              background: url('../menu/static/bluehole.svg') no-repeat center center / cover;
-            }
-            &.type2 {
-              background: url('../menu/static/star.svg') no-repeat center center / cover;
-            }
-          }
-          .icotitle {
+          .btn-info {
             display: flex;
             align-items: center;
-            float: right;
-            margin-left: 0px;
-            line-height: 24px;
-            font-size: 16px;
+            margin-right: 5px;
+            border-radius: 14px;
+            :after {
+              content: '';
+              height: 12px;
+              width: 20px;
+              background: url('../menu/static/ic_help.svg') no-repeat center center / cover;
+            }
+            .blind {
+              font-size: 0;
+            }
+          }
+        }
+        .nameWrap {
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          margin-top: 5px;
+          strong {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 800;
+            color: $black;
+          }
+          span {
+            padding: 12px 0 0 0;
+            color: #616161;
+            font-size: 10px;
+            line-height: 12px;
+            transform: skew(-0.03deg);
+          }
+        }
+        .profileMsgWrap {
+          padding: 0px 5px;
+          box-sizing: border-box;
+          margin: 0 auto;
+          margin-top: 8px;
+          transform: skew(-0.03deg);
+          font-size: 14px;
+          font-family: inherit;
+          line-height: 1.43;
+          letter-spacing: normal;
+          text-align: center;
+          color: #424242;
+        }
+        .subIconWrap {
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          margin: 4px 0;
+          > em {
+            display: inline-block;
+            height: 16px;
+            margin-left: 2px;
+            &:first-child {
+              margin-left: 0;
+            }
+          }
+          .nationIcon {
+            width: 24px;
+            background: url('../menu/static/ico_korea.svg') no-repeat center center / cover;
+          }
+          .femaleIcon {
+            width: 24px;
+            background: url('../menu/static/ico_female.svg') no-repeat center center / cover;
+          }
+          .maleIcon {
+            width: 24px;
+            background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
+          }
+          .specialIcon {
+            width: 64px;
+            border-radius: 10px;
+            background-color: #ec455f;
+          }
+
+          .specialIcon {
+            display: inline-block;
+            width: 62px;
+            height: 16px;
+            line-height: 16px;
+            margin-left: 2px;
+            border-radius: 10px;
+            background-color: #ec455f;
+            color: #fff;
+            font-size: 12px;
             font-weight: normal;
             font-stretch: normal;
             font-style: normal;
             letter-spacing: normal;
-            text-align: center;
-            color: $greishbrown;
-            &--active {
-              &:after {
-                margin-left: 8px;
-                display: inline-block;
-                content: '';
-                width: 16px;
-                height: 16px;
-                background: url('../menu/static/fan_setting.svg');
-                cursor: pointer;
-              }
-            }
           }
-          .cntTitle {
-            font-size: 20px;
+        }
+        .badgeWrap {
+          display: flex;
+          margin: 5px auto 0;
+          justify-content: center;
+          align-items: center;
+          .swiper-slide {
+            display: block;
+            width: auto;
+            height: auto;
+          }
+          .swiper-wrapper {
+            height: auto;
+            margin: 0 auto;
+          }
+          .swiper-pagination {
+            position: static;
+            margin-top: 20px;
+          }
+          .swiper-pagination-bullet {
+            width: 11px;
+            height: 11px;
+            background: $black;
+            opacity: 0.5;
+          }
+          .swiper-pagination-bullet-active {
+            background: $primary;
+            opacity: 1;
+          }
+
+          .fan-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 28px;
+            border-radius: 20px;
+            font-size: 14px;
             font-weight: 800;
             font-stretch: normal;
             font-style: normal;
-            line-height: 1.13;
-            letter-spacing: normal;
-            text-align: center;
-            color: $black;
-            margin-left: 2px;
+            line-height: 1;
+            letter-spacing: -0.35px;
+            padding: 0 10px 0 3px;
+            text-align: left;
+            color: #ffffff;
+          }
+          .fan-badge:last-child {
+            margin-right: 0;
+          }
+
+          .fan-badge img {
+            width: 42px;
+            height: 26px;
+          }
+          .fan-badge span {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 2.2;
+            color: #ffffff;
           }
         }
-      }
-      .topMedal {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-width: 190px;
-        height: 28px;
-        margin: 8px auto 0;
-        padding: 0 10px;
-        border-radius: 14px;
-        border: solid 1px $lightergray;
-        background-color: #f5f5f5;
-        font-size: 12px;
-        font-weight: 600;
-        line-height: 28px;
-        text-align: center;
-        color: $lightgray;
-        letter-spacing: -0.6px;
-        :before {
-          display: block;
-          content: '';
-          width: 26px;
-          height: 16px;
-          margin-right: 8px;
-          background: url('../menu/static/ic_crown.svg') no-repeat center center / cover;
+        .categoryCntWrap {
+          margin: 8px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .icoWrap {
+            display: flex;
+            align-items: center;
+          }
+          .count-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            position: relative;
+            width: 88px;
+            height: 50px;
+            &::before {
+              content: '';
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              height: 40px;
+              width: 1px;
+              background-color: #eeeeee;
+            }
+            &:first-child {
+              &::before {
+                display: none;
+              }
+            }
+            .icoImg {
+              margin: 0 auto;
+              display: inline-block;
+              width: 24px;
+              height: 24px;
+              background: url('../menu/static/ico_like_g.svg') no-repeat center center / cover;
+
+              &.type1 {
+                background: url('../menu/static/bluehole.svg') no-repeat center center / cover;
+              }
+              &.type2 {
+                background: url('../menu/static/star.svg') no-repeat center center / cover;
+              }
+            }
+            .icotitle {
+              display: flex;
+              align-items: center;
+              float: right;
+              margin-left: 0px;
+              line-height: 24px;
+              font-size: 16px;
+              font-weight: normal;
+              font-stretch: normal;
+              font-style: normal;
+              letter-spacing: normal;
+              text-align: center;
+              color: $greishbrown;
+              &--active {
+                &:after {
+                  margin-left: 8px;
+                  display: inline-block;
+                  content: '';
+                  width: 16px;
+                  height: 16px;
+                  background: url('../menu/static/fan_setting.svg');
+                  cursor: pointer;
+                }
+              }
+            }
+            .cntTitle {
+              font-size: 20px;
+              font-weight: 800;
+              font-stretch: normal;
+              font-style: normal;
+              line-height: 1.13;
+              letter-spacing: normal;
+              text-align: center;
+              color: $black;
+              margin-left: 2px;
+            }
+          }
         }
-      }
-      .fanListWrap {
-        margin-top: 10px;
-        display: flex;
-        justify-content: center;
-      }
-      .fanRankList {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        .fanItem {
-          display: inline-block;
-          position: relative;
-          width: 28px;
+        .topMedal {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          max-width: 190px;
           height: 28px;
-          border-radius: 50%;
-          margin-right: 3px;
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-          cursor: pointer;
-          & > a {
+          margin: 8px auto 0;
+          padding: 0 10px;
+          border-radius: 14px;
+          border: solid 1px $lightergray;
+          background-color: #f5f5f5;
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 28px;
+          text-align: center;
+          color: $lightgray;
+          letter-spacing: -0.6px;
+          :before {
             display: block;
-            width: 100%;
-            height: 100%;
-          }
-          & + & {
-            margin-left: 4px;
-          }
-          :after {
-            display: block;
-            position: absolute;
-            bottom: 0;
-            right: -4px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-size: 12px 12px !important;
             content: '';
-          }
-          &.rank1:after {
-            background: url(https://image.dalbitlive.com/images/api/ic_gold.png) no-repeat;
-          }
-          &.rank2:after {
-            background: url(https://image.dalbitlive.com/images/api/ic_silver.png) no-repeat;
-          }
-          &.rank3:after {
-            background: url(https://image.dalbitlive.com/images/api/ic_bronze.png) no-repeat;
+            width: 26px;
+            height: 16px;
+            margin-right: 8px;
+            background: url('../menu/static/ic_crown.svg') no-repeat center center / cover;
           }
         }
-        > a {
-          &.none {
-            display: none;
+        .fanListWrap {
+          margin-top: 10px;
+          display: flex;
+          justify-content: center;
+        }
+        .fanRankList {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          .fanItem {
+            display: inline-block;
+            position: relative;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 3px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            & > a {
+              display: block;
+              width: 100%;
+              height: 100%;
+            }
+            & + & {
+              margin-left: 4px;
+            }
+            :after {
+              display: block;
+              position: absolute;
+              bottom: 0;
+              right: -4px;
+              width: 12px;
+              height: 12px;
+              border-radius: 50%;
+              background-size: 12px 12px !important;
+              content: '';
+            }
+            &.rank1:after {
+              background: url(https://image.dalbitlive.com/images/api/ic_gold.png) no-repeat;
+            }
+            &.rank2:after {
+              background: url(https://image.dalbitlive.com/images/api/ic_silver.png) no-repeat;
+            }
+            &.rank3:after {
+              background: url(https://image.dalbitlive.com/images/api/ic_bronze.png) no-repeat;
+            }
+          }
+          > a {
+            &.none {
+              display: none;
+            }
+          }
+        }
+        .buttonWrap {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding-top: 0;
+          .buttonWrapInner {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            & > a {
+              display: inline-block;
+              padding: 0 20px;
+              user-select: none;
+              border: 1px solid #bdbdbd;
+              border-radius: 18px;
+              font-size: 14px;
+              line-height: 36px;
+              color: #9e9e9e;
+              cursor: pointer;
+            }
+
+            a + a {
+              margin-left: 4px;
+            }
+            .notBjWrap {
+              display: flex;
+              text-align: center;
+              margin-top: 14px;
+              margin-bottom: 14px;
+              & button {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 154px;
+                height: 36px;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 600;
+                transform: skew(-0.03deg);
+                letter-spacing: -0.35px;
+                margin-right: 4px;
+                border-radius: 12px;
+                border: solid 1px #632beb;
+                background-color: #632beb;
+
+                &.fanRegist {
+                  border: solid 1px $primary;
+                  background-color: #fff;
+                  color: $primary;
+                }
+                & span {
+                  display: block;
+                  width: 18px;
+                  height: 18px;
+                  background: url('../menu/static/ic_moon_s.svg') no-repeat center center / cover;
+                }
+                & em {
+                  display: block;
+                  font-weight: 600;
+                  color: #fff;
+                  font-style: normal;
+                  line-height: 1.41;
+                  letter-spacing: -0.35px;
+                  height: 18px;
+                }
+              }
+              & button:last-child {
+                margin-right: 0;
+              }
+              .giftbutton {
+                background-color: #fff;
+                color: #632beb;
+                em {
+                  color: #632beb;
+                }
+              }
+            }
           }
         }
       }
@@ -746,7 +840,8 @@
       border: solid 1px #e0e0e0;
       color: $black;
       background-color: #ffffff;
-      em {
+      &::after {
+        content: '';
         position: relative;
         right: 0px;
         width: 20px;

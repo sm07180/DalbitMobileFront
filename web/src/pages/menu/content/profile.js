@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useContext} from 'react'
-import styled from 'styled-components'
 import {Switch, Route, useParams, Redirect, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -7,37 +6,25 @@ import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {StoreLink} from 'context/link'
 // components
-import Header from '../component/header.js'
-import Controller from 'components/ui/remoteController'
 import MyProfile from './myProfile'
 // static svg
-import InfoIcon from '../static/profile/ic_info_m.svg'
-import FanboardIcon from '../static/profile/ic_fanboard_m.svg'
-import AlarmIcon from '../static/profile/ic_alarm_m.svg'
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
 import HeartIcon from '../static/profile/ic_headphones_m_p.svg'
 import ByeolIcon from '../static/profile/ic_star_m_p.svg'
-import FaqIcon2 from '../static/ic_faq_b.svg'
-import QuireIcon from '../static/ic_inquiry_b.svg'
 import ProfileIcon from '../static/menu_profile.svg'
 import AppSettingIcon from '../static/menu_appsetting.svg'
 import BroadNoticeIcon from '../static/menu_broadnotice.svg'
 import BroadFanboardIcon from '../static/menu_fanboard.svg'
-import BroadSettingIcon from '../static/menu_broadsetting.svg'
 import DalIcon from '../static/menu_dal.svg'
 import ExchangeIcon from '../static/menu_exchange.svg'
 import WalletIcon from '../static/menu_wallet.svg'
 import ReportIcon from '../static/menu_report.svg'
 import NoticeIcon from '../static/menu_notice.svg'
-import EventIcon from '../static/menu_event.svg'
 import CustomerIcon from '../static/customer_yellow.svg'
 import FaqIcon from '../static/menu_faq.svg'
 import InquireIcon from '../static/menu_1on1.svg'
-import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
-import Arrow from '../static/arrow.svg'
-import newCircle from '../static/new_circle.svg'
 import CastIcon from '../static/menu_cast.svg'
 
 import '../../mypage/index.scss'
@@ -50,7 +37,7 @@ export default (props) => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-    // {type: 'cast', txt: '캐스트', icon: CastIcon},
+    // {type: 'cast', txt: '클립', icon: CastIcon},
     {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
     // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   ]
@@ -113,12 +100,6 @@ export default (props) => {
       },
       msg: '로그아웃 하시겠습니까?'
     })
-  }
-  // close layer function
-  const clickCloseBtn = () => {
-    if (isHybrid()) {
-      Hybrid('CloseLayerPopup')
-    }
   }
   const checkSelfAuth = async () => {
     let myBirth
