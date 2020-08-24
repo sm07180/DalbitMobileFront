@@ -36,7 +36,7 @@ export default function Qna() {
   const [delicate, setDelicate] = useState(false)
   const [questionFile, setQuestionFile] = useState([false, false, false])
 
-  const [checks, setChecks] = useState([true, false])
+  const [checks, setChecks] = useState([false, true])
   const [agree, setAgree] = useState(false)
   async function fetchData() {
     const res = await Api.center_qna_add({
@@ -204,11 +204,15 @@ export default function Qna() {
   const phoneCallWrap = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
       return (
-        // <div className="personalAddWrap__callWrap--call" onClick={() => {Hybrid('openCall', `tel:1522-0251`)}}>
-        //   <img src={headsetIcon} />
-        //   <span>전화걸기</span>
-        // </div>
-        <></>
+        <div
+          className="personalAddWrap__callWrap--call"
+          onClick={() => {
+            Hybrid('openCall', `tel:1522-0251`)
+          }}>
+          <img src={headsetIcon} />
+          <span>전화걸기</span>
+        </div>
+        // <></>
       )
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       return (
@@ -268,12 +272,12 @@ export default function Qna() {
   }, [faqNum, email, title, content, name, phone, agree, checks])
 
   useEffect(() => {
-    if (checks[0] === false && checks[1] === false) {
+    if (checks[0] === false && checks[1] === false && !context.token.isLogin) {
       context.action.alert({
         visible: true,
         msg: '답변 유형 선택은 필수입니다.',
         callback: () => {
-          setChecks([true, false])
+          setChecks([false, true])
           context.action.alert({visible: false})
         }
       })
@@ -283,6 +287,10 @@ export default function Qna() {
   useEffect(() => {
     if (context.profile) {
       setName(context.profile.nickNm)
+    }
+
+    if (context.token.isLogin) {
+      setChecks([false, false])
     }
   }, [])
 
@@ -378,7 +386,7 @@ export default function Qna() {
               />
               <span>답변 문자로 받기</span>
             </div>
-            {/* <div className="personalAddWrap__checkboxWrap--check">
+            <div className="personalAddWrap__checkboxWrap--check">
               <DalbitCheckbox
                 status={checks[1]}
                 callback={() => {
@@ -393,7 +401,7 @@ export default function Qna() {
                 }}
               />
               <span>답변 E-Mail로 받기</span>
-            </div> */}
+            </div>
           </div>
           <div>
             <input
@@ -435,7 +443,7 @@ export default function Qna() {
             </div>
             <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30)</div>
           </div>
-          {phoneCallWrap}
+          {phoneCallWrap()}
         </div>
         <button onClick={checkDelicate} className={`personalAddWrap__submit ${delicate ? 'on' : ''}`}>
           1:1 문의 완료
