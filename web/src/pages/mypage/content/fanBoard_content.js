@@ -75,10 +75,14 @@ export default (props) => {
   const ReplyInfoTransfer = (boardIdx, item) => {
     setReplyShowIdx(boardIdx)
     //setTitleReplyInfo(item)
-    context.action.updateFanboardReplyNum(boardIdx)
+    if (context.fanboardReplyNum === boardIdx) {
+      context.action.updateFanboardReplyNum(-1)
+    } else {
+      context.action.updateFanboardReplyNum(boardIdx)
+    }
     context.action.updateFanboardReply(item)
     context.action.updateToggleAction(true)
-    window.scrollTo({top: 0, left: 0, behavior: 'auto'})
+    // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
   //댓글 등록 온체인지
   const BigChangeContent = (e) => {
@@ -246,11 +250,11 @@ export default (props) => {
                     </div>
                     <div className="big_footer">
                       <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
-                      <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a>
+                      {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
                     </div>
                   </BigReply>
                   {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
-                    <ReplyList replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
+                    <ReplyList isViewOn={viewOn} replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
                   )}
                 </React.Fragment>
               )
