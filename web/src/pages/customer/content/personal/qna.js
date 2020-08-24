@@ -437,22 +437,20 @@ export default function Qna() {
             </div>
           </div>
           <div>
-            {!context.token.isLogin && (
-              <input
-                disabled={!checks[0]}
-                className="personalAddWrap__input"
-                type="tel"
-                value={phone}
-                onChange={(e) => {
-                  if (e.target.value.length < 16 && !isNaN(e.target.value)) {
-                    setPhone(e.target.value)
-                  }
-                }}
-                placeholder="휴대폰 번호를 입력하세요."
-              />
-            )}
+            <input
+              disabled={!checks[0]}
+              className="personalAddWrap__input"
+              type="tel"
+              value={phone}
+              onChange={(e) => {
+                if (e.target.value.length < 16 && !isNaN(e.target.value)) {
+                  setPhone(e.target.value)
+                }
+              }}
+              placeholder="휴대폰 번호를 입력하세요."
+            />
 
-            {/* <input
+            <input
               disabled={!checks[1]}
               className="personalAddWrap__input"
               type="email"
@@ -460,7 +458,7 @@ export default function Qna() {
                 setEmail(e.target.value)
               }}
               placeholder="E-Mail 입력하세요."
-            /> */}
+            />
           </div>
         </div>
         <div className="personalAddWrap__agreeWrap">
