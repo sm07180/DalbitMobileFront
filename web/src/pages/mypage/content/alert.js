@@ -25,7 +25,7 @@ import alarmIco from '../component/images/ic_alarm.svg'
 
 let currentPage = 1
 
-export default props => {
+export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
@@ -100,9 +100,38 @@ export default props => {
                     onClick={() => {
                       if (clicked) return
                       clicked = true
-                      RoomJoin(roomNo + '', () => {
-                        clicked = false
-                      })
+                      if (context.adminChecker === true) {
+                        context.action.confirm_admin({
+                          //콜백처리
+                          callback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              callbackFunc: () => {
+                                clicked = false
+                              },
+                              shadow: 1
+                            })
+                          },
+                          //캔슬콜백처리
+                          cancelCallback: () => {
+                            RoomJoin({
+                              roomNo: roomNo,
+                              callbackFunc: () => {
+                                clicked = false
+                              },
+                              shadow: 0
+                            })
+                          },
+                          msg: '관리자로 입장하시겠습니까?'
+                        })
+                      } else {
+                        RoomJoin({
+                          roomNo: roomNo,
+                          callbackFunc: () => {
+                            clicked = false
+                          }
+                        })
+                      }
                     }}>
                     <figure style={{background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`}}></figure>
                     {textArea}

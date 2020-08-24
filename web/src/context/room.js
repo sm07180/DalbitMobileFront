@@ -50,7 +50,8 @@ export default Room
  * @param {roomNo} string           //방송방번호
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
-export const RoomJoin = async (roomNo, callbackFunc) => {
+export const RoomJoin = async (obj) => {
+  const {roomNo, callbackFunc, shadow, mode} = obj
   /*const exdate = new Date()
   exdate.setHours(15)
   exdate.setMinutes(0)
@@ -69,7 +70,7 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
   const customHeader = JSON.parse(Api.customHeader)
 
   if (customHeader['os'] === OS_TYPE['Desktop']) {
-    window.location.href = "https://inforexseoul.page.link/Ws4t"
+    window.location.href = 'https://inforexseoul.page.link/Ws4t'
     return false
   }
   const sessionRoomNo = sessionStorage.getItem('room_no')
@@ -89,25 +90,25 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
    * @title Room.roomNo , roomNo 비교
    */
   if (sessionRoomNo === roomNo) {
-      async function commonJoin() {
-        const res = await Api.broad_join({data: {roomNo}})
-        const {code, result, data} = res
+    async function commonJoin() {
+      const res = await Api.broad_join({data: {roomNo}})
+      const {code, result, data} = res
 
-        if (code === '-3') {
-            context.action.alert({
-                msg: '종료된 방송입니다.',
-                callback: () => {
-                    sessionStorage.removeItem('room_no')
-                    Utility.setCookie('listen_room_no', null)
-                    context.action.updatePlayer(false)
-                    setTimeout(() => {
-                        window.location.href = '/'
-                    }, 100)
-                }
-            })
-        } else {
-            Hybrid('EnterRoom', '')
-        }
+      if (code === '-3') {
+        context.action.alert({
+          msg: '종료된 방송입니다.',
+          callback: () => {
+            sessionStorage.removeItem('room_no')
+            Utility.setCookie('listen_room_no', null)
+            context.action.updatePlayer(false)
+            setTimeout(() => {
+              window.location.href = '/'
+            }, 100)
+          }
+        })
+      } else {
+        Hybrid('EnterRoom', '')
+      }
     }
     commonJoin()
     return false
@@ -150,33 +151,58 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
     }
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
-    const res = await Api.broad_join({data: {roomNo: roomNo}})
+    const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
+    // let res = {};
+    // console.debug(mode)
+    // if(__NODE_ENV ==='dev' && mode === undefined) {
+    //   Room.context.action.confirm({
+    //     msg: '접속모드를 선택하세요.',
+    //     callback: () => {
+    //       RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'wowza'})
+    //     },
+    //     cancelCallback: () => {
+    //       RoomJoin({roomNo : roomNo, callbackFunc : callbackFunc, shadow : shadow, mode : 'ant'})
+    //     },
+    //     buttonText: {
+    //       left: 'Ant',
+    //       right: 'WOWZA'
+    //     }
+    //   });
+    // }else{
+    //   if(mode === undefined || mode === 'ant'){
+    //     res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
+    //   }else{
+    //     res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
+    //   }
+    // }
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      if(res.code === '-4' || res.code === '-10'){
-        try{
-            Room.context.action.confirm({
-                msg : "이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?",
-                callback: () => {
-                    const callResetListen = async (mem_no) => {
-                        const fetchResetListen = await Api.postResetListen({})
-                        if (fetchResetListen.result === 'success') {
-                            setTimeout(() => {
-                                RoomJoin(roomNo + '')
-                            }, 700)
-                        }else{
-                            globalCtx.action.alert({
-                                msg: `${loginInfo.message}`
-                            })
-                        }
-                    }
-                    callResetListen('')
+      if (res.code === '-4' || res.code === '-10') {
+        try {
+          Room.context.action.confirm({
+            msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
+            callback: () => {
+              const callResetListen = async (mem_no) => {
+                const fetchResetListen = await Api.postResetListen({})
+                if (fetchResetListen.result === 'success') {
+                  setTimeout(() => {
+                    RoomJoin(roomNo + '')
+                  }, 700)
+                } else {
+                  globalCtx.action.alert({
+                    msg: `${loginInfo.message}`
+                  })
                 }
-            })
-        }catch(er){alert(er)}
-      }else{
+              }
+              callResetListen('')
+            }
+          })
+        } catch (er) {
+          alert(er)
+        }
+      } else {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
@@ -199,12 +225,12 @@ export const RoomJoin = async (roomNo, callbackFunc) => {
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
-      Hybrid('adbrixEvent', { eventName: 'roomJoin', attr : {}});
+      Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
       //Facebook,Firebase 이벤트 호출
-      try{
-          fbq('track', 'RoomJoin')
-          firebase.analytics().logEvent("RoomJoin")
-      } catch(e){}
+      try {
+        fbq('track', 'RoomJoin')
+        firebase.analytics().logEvent('RoomJoin')
+      } catch (e) {}
       return true
     }
   }
@@ -230,7 +256,7 @@ export const RoomExit = async (roomNo) => {
  * @param {context} object            //context
  */
 export const RoomMake = async (context) => {
-    /*const exdate = new Date()
+  /*const exdate = new Date()
     exdate.setHours(15)
     exdate.setMinutes(0)
     exdate.setSeconds(0)
@@ -264,13 +290,13 @@ export const RoomMake = async (context) => {
             const exit = await Api.broad_exit({data: {roomNo: roomNo}})
             //success,fail노출
             context.action.alert({
-                msg: exit.message
+              msg: exit.message
             })
           })()
         },
         buttonText: {
-            left: '취소',
-            right: '방송종료'
+          left: '취소',
+          right: '방송종료'
         }
       })
       return false

@@ -25,14 +25,14 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
 
-  useEffect(() => {
-    const {memNo} = token
-    Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
-      if (profileInfo.result === 'success') {
-        globalCtx.action.updateProfile(profileInfo.data)
-      }
-    })
-  }, [globalCtx.close])
+  // useEffect(() => {
+  //   const {memNo} = token
+  //   Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
+  //     if (profileInfo.result === 'success') {
+  //       globalCtx.action.updateProfile(profileInfo.data)
+  //     }
+  //   })
+  // }, [globalCtx.close])
   return (
     <>
       {/* 로그인 대기창  */}

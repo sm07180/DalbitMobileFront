@@ -69,7 +69,7 @@ export default (props) => {
   ]
 
   function reducer(state, action) {
-    const {name, value} = action
+    let {name, value} = action
 
     //휴대폰번호
     if (name === 'memId' && value.length === 11) {
@@ -112,6 +112,10 @@ export default (props) => {
       } else if (value === 'n' && state.term1 === 'y' && state.term2 === 'y' && state.term3 === 'y' && state.term4 === 'y') {
         termsSetting = {term1: 'n', term2: 'n', term3: 'n', term4: 'n'}
       }
+    }
+
+    if (name === 'loginPwd' || name === 'loginPwdCheck') {
+      value = value.toLowerCase()
     }
 
     return {
@@ -531,7 +535,7 @@ export default (props) => {
   const birthChange = (birth) => {
     dispatch({name: 'birth', value: birth})
   }
-  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 16
+  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
   const validateBirth = () => {
     if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
 
@@ -539,7 +543,7 @@ export default (props) => {
     if (currentBirthYear <= baseDateYear) {
       return setValidate({name: 'birth', check: true})
     } else {
-      return setValidate({name: 'birth', check: false, text: '17세 이상만 가입 가능합니다.'})
+      return setValidate({name: 'birth', check: false, text: '12세 이상만 가입 가능합니다.'})
     }
   }
 

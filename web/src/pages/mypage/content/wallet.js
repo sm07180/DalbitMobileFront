@@ -96,7 +96,7 @@ export default (props) => {
 
   const checkSelfAuth = async () => {
     let myBirth
-    const baseYear = new Date().getFullYear() - 16
+    const baseYear = new Date().getFullYear() - 11
     const myInfoRes = await Api.mypage()
     if (myInfoRes.result === 'success') {
       myBirth = myInfoRes.data.birth.slice(0, 4)
@@ -104,7 +104,7 @@ export default (props) => {
 
     if (myBirth > baseYear) {
       return context.action.alert({
-        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+        msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
       })
     }
 
@@ -150,19 +150,19 @@ export default (props) => {
     }, 10)
   }
 
-  async function getMyPageNewWallet(){
+  async function getMyPageNewWallet() {
     const newFanBoard = await Api.getMyPageNewWallet()
     let mypageNewStg = localStorage.getItem('mypageNew')
-    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
       mypageNewStg = {}
-    }else{
+    } else {
       mypageNewStg = JSON.parse(mypageNewStg)
     }
     const dal = newFanBoard.data.dal
     const byeol = newFanBoard.data.byeol
     mypageNewStg.dal = dal === undefined || dal === null || dal === '' ? 0 : dal
     mypageNewStg.byeol = byeol === undefined || byeol === null || byeol === '' ? 0 : byeol
-    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+    localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
   useEffect(() => {
     getMyPageNewWallet()
@@ -209,14 +209,14 @@ export default (props) => {
                     onClick={() => {
                       webkit.messageHandlers.openInApp.postMessage('')
                     }}>
-                    충전
+                    충전하기
                   </CoinChargeBtn>
                 ) : (
                   <CoinChargeBtn
                     onClick={() => {
                       history.push('/pay/store')
                     }}>
-                    충전
+                    충전하기
                   </CoinChargeBtn>
                 )}
               </>
@@ -224,7 +224,7 @@ export default (props) => {
               <>
                 {
                   <CoinChargeBtn
-                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? 'exchange ios' : 'exchange'}
+                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? 'gray exchange ios' : 'gray exchange'}
                     onClick={() => {
                       if (context.customHeader['os'] === OS_TYPE['IOS']) {
                         async function fetchTokenShort() {
@@ -245,7 +245,7 @@ export default (props) => {
                         history.push('/exchange')
                       }
                     }}>
-                    교환
+                    달교환
                   </CoinChargeBtn>
                 }
                 {context.customHeader['os'] !== OS_TYPE['IOS'] && (
@@ -254,7 +254,7 @@ export default (props) => {
                     onClick={() => {
                       checkSelfAuth()
                     }}>
-                    환전
+                    환전하기
                   </CoinChargeBtn>
                 )}
               </>
@@ -280,10 +280,11 @@ const CoinChargeBtn = styled.button`
   background-color: #632beb;
   box-sizing: border-box;
   font-size: 16px;
-  width: 74px;
+  width: auto;
+  padding: 0 8px;
   height: 36px;
   line-height: 36px;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
   letter-spacing: normal;
   text-align: center;
@@ -297,20 +298,18 @@ const CoinChargeBtn = styled.button`
   &.exchange {
     display: inline-block;
     flex-direction: inherit;
-    width: 76px;
     margin-top: 0 !important;
     margin-left: 4px;
     background: #632beb;
-    &.gray {
-      width: 60px;
-      background-color: #757575;
-    }
+  }
+  &.gray {
+    background-color: #757575;
   }
 `
 const CoinCurrentStatus = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: left;
   flex-direction: row;
   user-select: none;
   width: calc(100% - 160px);
@@ -337,17 +336,20 @@ const CoinCurrentStatus = styled.div`
     }
   }
   .current-value {
-    font-size: 24px;
+    padding-left: 15px;
+    font-size: 22px;
     font-weight: 800;
-    text-align: center;
+    line-height: 22px;
+    text-align: left;
     color: #000000;
     > em {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: normal;
       font-style: normal;
       letter-spacing: normal;
       color: #9e9e9e;
       margin-left: 6px;
+      line-height: 22px;
     }
   }
 `

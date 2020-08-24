@@ -3,6 +3,7 @@
  * @brief 마이페이지 팬보드2.5v
  */
 import React, {useEffect, useState, useContext, useRef} from 'react'
+import {useParams} from 'react-router-dom'
 import styled from 'styled-components'
 //modules
 import qs from 'query-string'
@@ -15,6 +16,7 @@ import Api from 'context/api'
 //components
 import Header from '../component/header.js'
 import Content from './fanBoard_content'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import BackIcon from '../component/ic_back.svg'
@@ -26,6 +28,8 @@ let moreState = false
 //layout
 export default (props) => {
   const {webview} = qs.parse(location.search)
+  const params = useParams()
+
   //ref
   const inputEl = useRef(null)
   //context
@@ -41,6 +45,10 @@ export default (props) => {
   const [writeState, setWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
+
+  const [isScreet, setIsScreet] = useState(false)
+
+  const [isOther, setIsOther] = useState(true)
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
     const target = e.currentTarget
@@ -85,7 +93,7 @@ export default (props) => {
       params: {
         memNo: urlrStr,
         page: currentPage,
-        records: 4
+        records: 10
       }
     })
     if (res.result === 'success') {
@@ -127,7 +135,8 @@ export default (props) => {
       data: {
         memNo: urlrStr,
         depth: 1,
-        content: textChange
+        content: textChange,
+        viewOn: isScreet === true ? 0 : 1
       }
     })
     if (res.result === 'success') {
@@ -172,8 +181,18 @@ export default (props) => {
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
   useEffect(() => {
+    if (profile.memNo === urlrStr) {
+      setIsOther(false)
+    } else {
+      setIsOther(true)
+    }
+
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
+    }
+
+    return () => {
+      currentPage = 1
     }
   }, [])
   //--------------------------------------------------
@@ -197,7 +216,21 @@ export default (props) => {
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
-              <em>{textChange.length}</em> / 100
+              {isOther === true && (
+                <span className="bigCount__screet">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      setIsScreet(!isScreet)
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+              )}
+
+              <span>
+                <em>{textChange.length}</em> / 100
+              </span>
             </span>
             <button onClick={() => fetchDataUpload()}>등록</button>
           </div>
@@ -271,8 +304,7 @@ const Writer = styled.div`
         font-style: normal;
         font-weight: 800;
       }
-      display: block;
-      margin-left: auto;
+      display: flex;
       margin-right: 7px;
       margin-top: 4px;
       margin-bottom: 23px;
@@ -281,6 +313,28 @@ const Writer = styled.div`
       letter-spacing: normal;
       text-align: right;
       color: #616161;
+      &__screet {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        & > input {
+          margin-right: 10px;
+        }
+
+        & > .bold {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        span {
+          font-size: 12px;
+        }
+      }
+
+      & > span:last-child {
+        display: flex;
+        align-items: center;
+      }
     }
     > button {
       height: 44px;

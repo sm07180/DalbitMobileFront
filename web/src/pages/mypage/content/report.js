@@ -822,7 +822,7 @@ const ShortSection = styled.div`
   flex-direction: column;
   align-items: center;
   width: calc(50% - 2px);
-  padding: 4px 16px 12px 16px;
+  padding: 9px 16px 10px 16px;
   height: 60px;
   border-radius: 12px;
   background-color: #ffffff;
@@ -830,8 +830,8 @@ const ShortSection = styled.div`
     :after {
       position: absolute;
       content: '';
-      width: 13px;
-      height: 14px;
+      width: 16px;
+      height: 16px;
       z-index: 5;
       top: 0;
       right: 4px;
@@ -912,14 +912,22 @@ const ShortSection = styled.div`
     color: #632beb;
     transform: skew(-0.03deg);
     letter-spacing: -0.3px;
+
+    > div:first-child {
+      margin-top: 2px;
+      font-weight: 900;
+      line-height: 16px;
+    }
   }
   & .count {
     font-size: 20px;
     font-weight: 800;
-    margin-top: 4px;
+    margin-top: 1px;
     letter-spacing: normal;
     text-align: left;
     color: #000000;
+    line-height: 27px;
+    height: 27px;
   }
 `
 const BroadcastShort = styled.div`

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useContext} from 'react'
 import styled from 'styled-components'
 
 //context
@@ -23,7 +23,7 @@ import specialIcon from '../static/ico_speciladj_s.svg'
 import fanIcon from '../static/ico_fan.svg'
 import twentyIcon from '../static/ico_20.svg'
 import allIcon from '../static/ico_all.svg'
-
+import {Context} from 'context'
 function usePrevious(value) {
   const ref = useRef()
   useEffect(() => {
@@ -35,7 +35,7 @@ function usePrevious(value) {
 const makeContents = (props) => {
   const {list, liveListType} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
-
+  const ctx = useContext(Context)
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
       const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
@@ -44,7 +44,29 @@ const makeContents = (props) => {
         <LiveList
           key={`live-${idx}`}
           onClick={() => {
-            RoomJoin(roomNo + '')
+            if (ctx.adminChecker === true) {
+              ctx.action.confirm_admin({
+                //콜백처리
+                callback: () => {
+                  RoomJoin({
+                    roomNo: roomNo + '',
+                    shadow: 1
+                  })
+                },
+                //캔슬콜백처리
+                cancelCallback: () => {
+                  RoomJoin({
+                    roomNo: roomNo + '',
+                    shadow: 0
+                  })
+                },
+                msg: '관리자로 입장하시겠습니까?'
+              })
+            } else {
+              RoomJoin({
+                roomNo: roomNo + ''
+              })
+            }
           }}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
@@ -125,7 +147,29 @@ const makeContents = (props) => {
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
                   onClick={() => {
-                    RoomJoin(lastList.roomNo + '')
+                    if (ctx.adminChecker === true) {
+                      ctx.action.confirm_admin({
+                        //콜백처리
+                        callback: () => {
+                          RoomJoin({
+                            roomNo: lastList.roomNo + '',
+                            shadow: 1
+                          })
+                        },
+                        //캔슬콜백처리
+                        cancelCallback: () => {
+                          RoomJoin({
+                            roomNo: lastList.roomNo + '',
+                            shadow: 0
+                          })
+                        },
+                        msg: '관리자로 입장하시겠습니까?'
+                      })
+                    } else {
+                      RoomJoin({
+                        roomNo: lastList.roomNo + ''
+                      })
+                    }
                   }}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (

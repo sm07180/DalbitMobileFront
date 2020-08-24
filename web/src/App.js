@@ -2,7 +2,7 @@
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
  */
-import React, {useMemo, useState, useEffect, useContext} from 'react'
+import React, {useMemo, useState, useEffect, useContext, useCallback} from 'react'
 
 //context
 import {Context} from 'context'
@@ -127,11 +127,11 @@ const App = () => {
         }
 
         const appIsFirst = Utility.getCookie('appIsFirst')
-        if(appIsFirst !== 'N'){
-            Utility.setCookie('appIsFirst', 'N')
-            if(tokenInfo.data.isLogin === false){
-              window.location.href = '/login'
-            }
+        if (appIsFirst !== 'N') {
+          Utility.setCookie('appIsFirst', 'N')
+          if (tokenInfo.data.isLogin === false) {
+            window.location.href = '/login'
+          }
         }
       }
       if (tokenInfo.data && tokenInfo.data.memNo) {
@@ -147,19 +147,42 @@ const App = () => {
 
       //모든 처리 완료
       setReady(true)
-    } else {
+    } else if (result === 'fail') {
+      const yesterDay = (() => {
+        const date = new Date()
+        date.setDate(date.getDate() - 1)
+        return date.toUTCString()
+      })()
+
+      const splited = document.cookie.split(';')
+      splited.forEach((bundle) => {
+        let [key, value] = bundle.split('=')
+        key = key.trim()
+        document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
+      })
+
       globalCtx.action.alert({
         title: tokenInfo.messageKey,
-        msg: tokenInfo.message
+        msg: tokenInfo.message,
+        callback: () => {
+          window.location.reload()
+        }
       })
     }
 
-    const myInfoRes = await Api.mypage()
-    if (myInfoRes.result === 'success') {
-      globalCtx.action.updateMyInfo(myInfoRes.data)
-    }
-  }
+    // const myInfoRes = useCallback(() => {
 
+    // }, [globalCtx])await Api.mypage()
+    // if (myInfoRes.result === 'success') {
+    //   globalCtx.action.updateMyInfo(myInfoRes.data)
+    // }
+  }
+  const myInfoRes = useCallback(async () => {
+    const res = await Api.mypage()
+    if (res.result === 'success') {
+      globalCtx.action.updateMyInfo(res.data)
+    }
+  }, [globalCtx.myInfo])
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
@@ -173,6 +196,19 @@ const App = () => {
     // Renew all initial data
     fetchData()
   }, [])
+  //admincheck
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      globalCtx.action.updateAdminChecker(true)
+    } else if (adminFunc.result === 'fail') {
+      globalCtx.action.updateAdminChecker(false)
+    }
+  }
+  useEffect(() => {
+    fetchAdmin()
+    myInfoRes()
+  }, [])
 
   return (
     <>
@@ -181,7 +217,7 @@ const App = () => {
     </>
   )
 }
-export default App
+export default React.memo(App)
 
 /**
  * @title 글로벌변수

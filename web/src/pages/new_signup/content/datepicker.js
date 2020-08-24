@@ -12,12 +12,12 @@ import icoCal from '../static/calender_b.svg'
 export default (props) => {
   //---------------------------------------------------------------------
   let maxDate = new Date()
-  maxDate.setFullYear(maxDate.getFullYear() - 16)
+  maxDate.setFullYear(maxDate.getFullYear() - 11)
   maxDate.setMonth(12)
   maxDate.setDate(0)
 
   let startDate = new Date()
-  startDate.setFullYear(startDate.getFullYear() - 16)
+  startDate.setFullYear(startDate.getFullYear() - 11)
   startDate.setMonth(0)
   startDate.setDate(1)
 

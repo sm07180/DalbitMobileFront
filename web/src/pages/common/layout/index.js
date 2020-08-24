@@ -20,6 +20,7 @@ const Layout = (props) => {
   const playerCls = useMemo(() => {
     return context.player ? 'player_show' : ''
   })
+  const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
 
   return (
@@ -30,7 +31,12 @@ const Layout = (props) => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
+      <Article
+        className={
+          webview ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`
+        }>
+        {children}
+      </Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* 레이어팝업 */}
@@ -59,7 +65,9 @@ const Article = styled.article`
   &.player_show > section {
     padding-bottom: 60px;
   }
-  &.player_show > .refresh-icon-wrap {
+
+  &.main-page > div,
+  section {
     padding-bottom: 0px;
   }
 `

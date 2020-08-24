@@ -12,6 +12,7 @@ import {Hybrid} from 'context/hybrid'
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
+  const [bannerView, setBannerView] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
@@ -32,7 +33,19 @@ export default React.forwardRef((props, ref) => {
         history.push(linkUrl)
       }
     } else {
-      history.push(linkUrl)
+      if (linkUrl.startsWith('http://') || linkUrl.startsWith('https://')) {
+        location.href = linkUrl
+      } else {
+        history.push(linkUrl)
+      }
+    }
+  }
+
+  const buttonToogle = () => {
+    if (bannerView === false) {
+      setBannerView(true)
+    } else {
+      setBannerView(false)
     }
   }
 
@@ -44,6 +57,33 @@ export default React.forwardRef((props, ref) => {
       return (
         <div className="banner" key={`banner-${idx}`}>
           <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
+        </div>
+      )
+    })
+  }
+
+  const basicSliderList = () => {
+    if (!list) return null
+    return list.map((banner, idx) => {
+      const {bannerUrl, linkUrl, title, linkType} = banner
+
+      return (
+        <div className="basicBanner" key={`banner-${idx}`}>
+          {idx === 0 ? (
+            <>
+              <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            </>
+          ) : (
+            ''
+          )}
+
+          <img
+            src={bannerUrl}
+            alt={title}
+            onClick={() => {
+              goEvent(linkUrl, linkType)
+            }}
+          />
         </div>
       )
     })
@@ -71,10 +111,11 @@ export default React.forwardRef((props, ref) => {
     resistanceRatio: 0,
     loop: true,
     autoplay: {
-      delay: 5000
+      delay: 3000
     },
     pagination: {
       el: '.swiper-pagination',
+      type: 'fraction',
       clickable: true
     },
     on: {
@@ -85,29 +126,20 @@ export default React.forwardRef((props, ref) => {
     }
   }
 
-  return <Banner ref={ref}>{list && <Swiper {...params}>{createSliderList()}</Swiper>}</Banner>
+  useEffect(() => {}, [])
+
+  return (
+    <div ref={ref} className="main-banner">
+      <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
+        <div className="bannerNumber"></div>
+        {list && (
+          <>
+            <button className={`moreButton ${bannerView === true ? 'active' : ''}`} onClick={() => buttonToogle()}></button>
+            <Swiper {...params}>{createSliderList()}</Swiper>
+          </>
+        )}
+      </div>
+      <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
+    </div>
+  )
 })
-
-const Banner = styled.div`
-  overflow: hidden;
-
-  .swiper-container {
-    .banner {
-      img {
-        width: 100%;
-      }
-    }
-    .swiper-pagination-bullet-active {
-      background: #ec455f;
-    }
-  }
-
-  .swiper-pagination-fraction,
-  .swiper-pagination-custom,
-  .swiper-container-horizontal > .swiper-pagination-bullets {
-    width: auto;
-    bottom: 3px;
-    left: inherit;
-    right: 5px;
-  }
-`

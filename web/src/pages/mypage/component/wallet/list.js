@@ -25,9 +25,7 @@ export default (props) => {
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(0, 2), date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    date = [date.slice(4, 6), date.slice(6)].join('.')
     return `${date}`
   }
   //--------------------------------------------------------------
@@ -79,7 +77,7 @@ export default (props) => {
         ) : Array.isArray(walletData) ? (
           walletData.map((data, index) => {
             const {contents, walletType, dalCnt, byeolCnt, updateDt} = data
-
+            console.log('updateDt', updateDt)
             return (
               <div className="list" key={index}>
                 <span className={`how-to-get type-${walletType}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
@@ -147,7 +145,7 @@ const ListWrap = styled.div`
       }
     }
     .detail {
-      width: calc(100% - 124px);
+      width: calc(100% - 118px);
       text-align: left;
       padding-left: 8px;
       font-size: 14px;
@@ -157,26 +155,30 @@ const ListWrap = styled.div`
       color: #000000;
     }
     .type {
+      line-height: 18px;
       width: 65px;
       color: #424242;
       font-size: 14px;
       font-weight: 600;
-      text-align: center;
+      text-align: right;
       color: #000000;
       > em {
+        line-height: 18px;
         margin-left: 2px;
         font-size: 12px;
         font-weight: normal;
         font-style: normal;
         letter-spacing: normal;
-        color: #000000;
+        color: #9e9e9e;
       }
     }
     .date {
       margin-left: auto;
-      width: 50px;
+      width: 44px;
+      padding-right: 3px;
       font-size: 12px;
-      color: #000;
+      line-height: 18px;
+      color: #757575;
       text-align: right;
     }
 
@@ -230,6 +232,7 @@ const TopArea = styled.div`
   .title {
     .main {
       font-size: 16px;
+      line-height: 18px;
       font-weight: 800;
       letter-spacing: normal;
       text-align: left;
@@ -238,10 +241,11 @@ const TopArea = styled.div`
     .sub {
       margin-left: 10px;
       font-size: 16px;
-      font-weight: 600;
+      line-height: 18px;
+      font-weight: 400;
       letter-spacing: normal;
       text-align: left;
-      color: #632beb;
+      color: #bdbdbd;
     }
   }
 `

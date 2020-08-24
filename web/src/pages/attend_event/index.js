@@ -1,72 +1,97 @@
-import {Context} from 'context'
+import React, {useContext, useEffect, useState, useRef} from 'react'
+
+import {IMG_SERVER} from 'context/config'
 import API from 'context/api'
-import React, {useContext, useEffect, useState} from 'react'
+import {Context} from 'context'
+import Utility from 'components/lib/utility'
+import Swiper from 'react-id-swiper'
 
 // component
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
 import {Link, useHistory} from 'react-router-dom'
-import LayerPopup from './layer_popup'
+import WinList from './attend_win_list'
 
 // static
 import btnClose from './static/ico_close.svg'
-import iconGift from './static/icn_gift.svg'
-import iconStamp from './static/icn_stamp.svg'
-import iconMoon from './static/icn_moon.svg'
+
+let intervalId = null
 
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-
+  const [phone, setPhone] = useState('')
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
     totalExp: 0,
     dalCnt: 0
   })
   const [statusList, setStatusList] = useState([])
-  const [dateList, setDateList] = useState([])
-  const [popup, setPopup] = useState(false)
+  const [dateList, setDateList] = useState({})
+  const [lunarDate, setLunarDate] = useState('')
+  const [winList, setWinList] = useState(false)
+
+  const phoneInput = useRef()
+
+  const swiperParams = {
+    loop: true,
+    direction: 'vertical',
+    slidesPerColumnFill: 'row',
+    resistanceRatio: 0,
+    autoplay: {
+      delay: 2500
+      // disableOnInteraction: false
+    }
+  }
+
+  async function fetchEventAttendDate() {
+    const {result, data} = await API.postEventAttend()
+    if (result === 'success') {
+      const {status, dateList, summary} = data
+      setSummaryList(summary)
+      setStatusList(status)
+      //타이머맞추기
+      if (status.phone_input === '1') {
+        intervalFormatter(status.input_enddate)
+      }
+
+      setDateList(dateList)
+    } else {
+      //실패\
+      setStatusList({bonus: '0'})
+      setDateList([{0: {}}])
+    }
+  }
+
+  async function fetchEventAttendWinList() {
+    const {result, data, message} = await API.getEventAttendWinList()
+    if (result === 'success') {
+      const {list} = data
+      if (list.length > 0) setWinList(list)
+    } else {
+      globalCtx.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  async function fetchEventAttendLunarDate() {
+    const {result, data} = await API.getEventAttendLunarDate()
+    if (result === 'success') {
+      const {lunarDt} = data
+      setLunarDate(lunarDt)
+    } else {
+      //실패
+    }
+  }
 
   useEffect(() => {
-    if (popup) {
-      if (window.location.hash === '') {
-        window.history.pushState('layer', '', '/rank/#layer')
-      }
-    } else if (!popup) {
-      if (window.location.hash === '#layer') {
-        window.history.back()
-      }
-    }
-  }, [popup])
-
-  useEffect(() => {
-    async function fetchEventAttendDate() {
-      const {result, data} = await API.postEventAttend()
-      if (result === 'success') {
-        const {status, dateList, summary} = data
-        setSummaryList(summary)
-        setStatusList(status)
-        setDateList(dateList)
-      } else {
-        //실패
-      }
-    }
+    globalCtx.action.updateAttendStamp(false)
     fetchEventAttendDate()
-  }, [])
-
-  useEffect(() => {
-    async function fetchEventAttendCheck() {
-      const {result, data} = await API.getEventAttendCheck()
-      if (result === 'success') {
-        const {isCheck} = data
-        console.log('체크성공')
-      } else {
-        //실패
-      }
-    }
-    fetchEventAttendCheck()
+    fetchEventAttendWinList()
+    fetchEventAttendLunarDate()
   }, [])
 
   const attendDateIn = () => {
@@ -78,9 +103,35 @@ export default (props) => {
         setStatusList(status)
         setDateList(dateList)
 
-        globalCtx.action.alert({
-          msg: message
-        })
+        if (status.gifticon_check === '1') {
+          intervalFormatter(status.input_enddate)
+
+          if (status.gifticon_win === '1') {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box"><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>스타벅스 아메리카노</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_coffee@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
+            })
+          } else if (status.gifticon_win === '2') {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box" ><p class="title">축하합니다!</p><p class="sub-title">매일 선물과 <span>BHC 뿌링클 세트</span> 당첨!</p><div class="gift-img"><img src="https://image.dalbitlive.com/event/attend/200804/img_chicken_pop@2x.png"></div><p class="sub-title">이벤트 페이지 중간에서<br />휴대폰 번호를 입력해주세요.</p></div>`,
+              buttonMsg: `휴대폰 번호 입력하기`,
+              callback: () => {
+                phoneInput.current.focus()
+              }
+            })
+          } else {
+            globalCtx.action.alert({
+              msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">기프티콘은 넘나 아쉬운 것..</p></div>`
+            })
+          }
+        } else {
+          globalCtx.action.alert({
+            msg: message
+          })
+        }
       } else {
         if (!token.isLogin) {
           globalCtx.action.alert({
@@ -118,109 +169,224 @@ export default (props) => {
     return checkGiftName
   }
 
-  const createBonusBox = () => {
-    const {bonus} = statusList
-    let bonusName
-
-    if (bonus === '0') {
-      bonusName = `bonus-box`
-    } else if (bonus === '1') {
-      bonusName = `bonus-box more`
-    } else if (bonus === '2') {
-      bonusName = `bonus-box complete`
-    } else {
-      bonusName = `bonus-box`
+  const inputHandle = (e) => {
+    const {name, value} = e.target
+    const nmValue = value.replace(/[^0-9]/g, '')
+    switch (name) {
+      case 'phone':
+        if (value.toString().length < 12) setPhone(nmValue)
+        break
+      default:
+        break
     }
 
-    return bonusName
+    setInputs({
+      ...inputs,
+      [name]: value
+    })
   }
 
-  const clickGiftButton = () => {
-    async function fetchEventAttendGift() {
-      const {result, data} = await API.postEventAttendGift()
+  const clickSaveButton = () => {
+    const rgEx = /(01[0123456789])(\d{3}|\d{4})\d{4}$/g
+    if (!phone) {
+      return globalCtx.action.alert({
+        msg: `핸드폰 번호는 필수입력 값입니다.`
+      })
+    }
+
+    if (!rgEx.test(phone) || phone.length < 11) {
+      return globalCtx.action.alert({
+        msg: `올바른 핸드폰 번호가 아닙니다.`
+      })
+    }
+
+    async function fetchEventAttendInput() {
+      const {result, message} = await API.postEventAttendInput({
+        phone: phone
+      })
       if (result === 'success') {
-        const {status, summary} = data
-        setSummaryList(summary)
-        setStatusList(status)
-        setPopup(popup ? false : true)
+        // const {isCheck} = data
+
+        globalCtx.action.alert({
+          msg: `<div class="attend-alert-box" ><p class="title">다시 한 번 축하드립니다!</p><p class="sub-title">평일 기준 7일 이내 입력하신 번호로
+          기프티콘을 전송해드립니다.</p></div>`,
+          callback: () => {
+            location.reload()
+          }
+        })
       } else {
-        //실패
+        globalCtx.action.alert({
+          msg: message
+        })
       }
     }
-    fetchEventAttendGift()
+    fetchEventAttendInput()
   }
+
+  const dateFormatter = (date) => {
+    if (!date) return null
+    //0월 0일 00:00
+    // 20200218145519
+    let month = date.substring(4, 6)
+    let day = date.substring(6, 8)
+    let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
+    return `${month}월 ${day}일`
+    // return `${month}월 ${day}일 ${time}`
+  }
+
+  const [timeText, setTimeText] = useState('')
+  const intervalFormatter = (date) => {
+    if (!date) return null
+
+    //let time = +new Date(date)
+    let time = +new Date(date.replace(/-/g, '/'))
+    let now = +new Date()
+    let test = (time - now) / 1000
+
+    intervalId = setInterval(() => {
+      const text = `${Utility.leadingZeros(Math.floor(test / 60), 2)}:${Utility.leadingZeros(Math.floor(test % 60), 2)}`
+      test--
+
+      setTimeText(text)
+      if (test < 0) {
+        clearInterval(intervalId)
+        setTimeText('00:00')
+      }
+    }, 1000)
+  }
+
+  const makePhoneInputBox = () => {
+    const boxHtml = (
+      <div className="gifticon-benefit-input">
+        <p className="title">
+          기프티콘 당첨자 연락처 입력 <span className="time">{timeText}</span>
+        </p>
+
+        <div className="input-box">
+          <input
+            type="tel"
+            placeholder="'-'를 빼고 휴대폰 번호를 입력해주세요"
+            id="phone"
+            name="phone"
+            value={phone}
+            onChange={inputHandle}
+            ref={phoneInput}
+          />
+          <button onClick={clickSaveButton}>저장</button>
+        </div>
+
+        <p className="note">※ 기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.</p>
+      </div>
+    )
+
+    if (token.isLogin) {
+      if (statusList.phone_input === '0') {
+        return null
+      } else {
+        return boxHtml
+      }
+    }
+  }
+
+  const {title} = props.match.params
+  if (title === 'winList') return <WinList winList={winList} />
 
   return (
     <Layout {...props} status="no_gnb">
       <div id="attend-event">
         <div className="event-main">
+          <img src={`${IMG_SERVER}/event/attend/200811/img_top@2x.png`} className="img-top" />
           <Link to="/">
             <button className="btn-back">
               <img src={btnClose} />
             </button>
           </Link>
 
-          <div className="img-leaves"></div>
-          <div className="img-bottle-moon"></div>
-          <div className="img-big-rabbit"></div>
-          <div className="img-pick">
-            <p>방송(청취) 시간 30분이 되었다면?</p>
-
-            <div className="img-pick-text"></div>
-
-            <div className="img-pick-hand"></div>
-          </div>
-          <div className="img-title"></div>
+          <p className="main-text">- 방송(청취) 30분이 됐다면? -</p>
 
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
         </div>
 
+        <div className="gifticon-win-wrap" onClick={() => props.history.push('/attend_event/winList')}>
+          <div className="gifticon-win-box">
+            <label>기프티콘 당첨자 &gt;</label>
+
+            {winList ? (
+              <Swiper {...swiperParams}>
+                {winList.length > 0 &&
+                  winList.map((item, index) => {
+                    const {winDt, nickNm} = item
+
+                    return (
+                      <div className="gifticon-win-list" key={index}>
+                        <p className="time">{dateFormatter(winDt)}</p>
+                        <p className="nick-name">{nickNm}</p>
+                      </div>
+                    )
+                  })}
+              </Swiper>
+            ) : (
+              <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
+
+              // <div className="gifticon-win-list">
+              //   {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
+              //   {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
+              // </div>
+            )}
+          </div>
+        </div>
+
         <div className="event-content-wrap">
-          <div className="top-title"></div>
-
           <div className="event-content">
-            <div className="content-left-wrap">
-              <div className="detail-text-title"></div>
-              <div className="detail-text-content"></div>
+            <div className="event-section">
+              <label className="title-label">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event1@2x.png`} />
+              </label>
+              <p className="title-top">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event1_title@2x.png`} />
+              </p>
 
-              <div className="detail-info-box">
-                <label className="label">
-                  <img src={iconStamp} />
-                  출석체크:
-                </label>
-                <p className="value">
-                  <span>{summaryList.attendanceDays}</span> 개
-                </p>
+              <div className="gifticon-benefit">
+                <div className="gifticon-benefit-item">
+                  <div className="gifti-img-coffee">
+                    <img src={`${IMG_SERVER}/event/attend/200804/img_coffee@2x.png`} />
+                  </div>
 
-                <label className="label">
-                  <img src={iconGift} />
-                  경험치:
-                </label>
-                <p className="value">
-                  <span>{summaryList.totalExp}</span> EXP
-                </p>
+                  <p className="description">
+                    매주 자동 추첨!
+                    <br />
+                    7일 연속 출석 성공한 날<span>스타벅스 아메리카노</span>
+                  </p>
+                </div>
+                <div className="gifticon-benefit-item">
+                  <div className="gifti-img-chicken">
+                    <img src={`${IMG_SERVER}/event/attend/200804/img_chicken@2x.png`} />
+                  </div>
+                  <p className="luna-date">{lunarDate}</p>
+                  <p className="description">
+                    보름달이 뜨는 날!<span>BHC 뿌링클 세트</span>
+                  </p>
+                </div>
 
-                <label className="label">
-                  <img src={iconMoon} />
-                  받은 달:
-                </label>
-                <p className="value">
-                  <span>{summaryList.dalCnt}</span> 개
-                </p>
+                {makePhoneInputBox()}
               </div>
-
-              <div className="detail-text-title bonus"></div>
-              <div className="detail-text-content bonus"></div>
             </div>
-            <div className="content-right-wrap">
+
+            <div className="event-section">
+              <label className="title-label">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2@2x.png`} />
+              </label>
+              <p className="title-top">
+                <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2_title@2x.png`} />
+              </p>
+
               <div className="stamp-box">
-                <AttendList dateList={dateList}></AttendList>
-              </div>
-
-              <div className={createBonusBox()}>
-                <p className="title">BONUS RANDOM GIFT</p>
-
-                <button className="btn-more" onClick={clickGiftButton}></button>
+                <AttendList
+                  dateList={dateList}
+                  summaryList={summaryList}
+                  statusList={statusList}
+                  setStatusList={setStatusList}
+                  setSummaryList={setSummaryList}></AttendList>
               </div>
             </div>
           </div>
@@ -231,25 +397,33 @@ export default (props) => {
 
           <ul>
             <li>
-              본 이벤트는 00시 기준 종료된 방송 또는 청취 진행시간의 합이 30분 이상일 때 참여할 수 있습니다.
+              출석 버튼은 00시 기준 종료된 방송 또는 청취 시간의 합이 30분 이 상일 때 선택할 수 있습니다.
               <br />
               예시) 23:40-00:10의 경우 전일 출석 이벤트는 참여할 수 없으며, 오늘 출석 이벤트는 참여할 수 있습니다.
             </li>
-            <li>본 이벤트는 한 대의 기기당 1일 1회 한 개의 계정만 참여할 수 있습니다.</li>
-            <li>본 이벤트는 청취 중에 참여할 수 없습니다. 청취 종료 후 출석체크를 선택해주세요.</li>
-            <li>출석체크 선물 내역은 일주일 단위로 초기화 됩니다</li>
+            <li>출석 버튼은 한 대의 기기당 1일 1회 한 개의 계정만 선택할 수 있습 니다.</li>
+            <li>출석 버튼은 청취 중에 선택할 수 없습니다. 청취 종료 후 출석 버튼 을 선택해주세요.</li>
+            <li>출석체크 매일 선물 내역은 일주일 단위로 초기화 됩니다.</li>
             <li>달 선물은 [마이페이지 &gt; 내지갑]으로 자동 지급됩니다.</li>
             <li>보너스 랜덤 선물은 경험치(50, 70, 100, 200, 300, 500 중 지급)와 달(0~10개 중 지급)로 구성되어 있습니다.</li>
             <li>
-              보너스 랜덤 선물은 일주일을 모두 출석 체크한 대상에게 지급되며 생성된 ‘더 줘!’ 버튼을 선택시 선물 받기가 완료됩니다.{' '}
+              보너스 랜덤 선물은 일주일을 모두 출석 체크한 대상에게 지급되며 생성된 [보너스 선물 받기] 버튼을 선택 시 선물 받기가
+              완료됩니다.
             </li>
-            <li>‘더 줘!’ 버튼은 일요일과 월요일에만 선택이 가능합니다.</li>
+            <li>[보너스 선물 받기] 버튼은 일요일과 월요일에만 선택이 가능합니다.</li>
+            <li>기프티콘은 평일 기준 7일 이내 입력한 휴대폰 번호로 보내드립니다.</li>
+            <li>보름달이 뜨는 날은 음력 15일 기준입니다.</li>
+            <li>기프티콘이 당첨되더라도 휴대폰 번호를 15분 동안 입력하지 않으 면 지급받을 수 없습니다.</li>
+            <li>
+              기프티콘 추첨일에 이미 당첨되어 접수 완료된 휴대폰 번호는 중복 저장할 수 없습니다.
+              <br />
+              예시) A계정 당첨 시 [01012341234] 저장 이후 당일 B계정 당첨 시 [01012341234] 저장 불가
+            </li>
+            <li>음력 15일이 일요일인 경우, 주 7일 출석 시 치킨뿐만 아니라 커피 기프티콘 추첨 대상자에도 포함됩니다.</li>
             <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
           </ul>
         </div>
       </div>
-
-      {popup && <LayerPopup setPopup={setPopup} statusList={statusList}></LayerPopup>}
     </Layout>
   )
 }

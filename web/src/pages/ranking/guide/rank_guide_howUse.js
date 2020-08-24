@@ -79,7 +79,7 @@ export default (props) => {
         </table>
       </div>
 
-      <div className="tableBox">
+      {/* <div className="tableBox">
         <p className="tableBox__title">LEVEL 랭킹 조건</p>
 
         <div className="conditionBox">
@@ -102,19 +102,30 @@ export default (props) => {
             <p className="conditionItem__content">팬랭킹 존재</p>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="noticeBox">
         <p className="noticeBox__title">
-          <img src={hintIcon} /> 집계 및 갱신
+          <img src={hintIcon} /> DJ / FAN 랭킹 집계 및 갱신
         </p>
 
         <ul>
-          <li className="noticeBox__item">· DJ / FAN 랭킹 집계 기준: 종료된 방송 기준 데이터</li>
-          <li className="noticeBox__item">· DJ / FAN 오늘 랭킹: 하루 데이터 집계 및 매일 정시 갱신</li>
-          <li className="noticeBox__item">· DJ / FAN 일간 랭킹: 전일 데이터 집계 및 매일 00시 갱신</li>
-          <li className="noticeBox__item">· DJ / FAN 주간 랭킹: 월~일 데이터 집계 및 월요일 00시 갱신</li>
-          <li className="noticeBox__item">· LEVEL 랭킹: 매일 데이터 집계 및 00시 갱신</li>
+          <li className="noticeBox__item">· 종료된 방송 기준 데이터 (부스터로 인한 좋아요 제외) 집계</li>
+          <li className="noticeBox__item">· DJ / FAN 오늘: 00시~현재 시간 데이터 집계 및 실시간 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 어제(일간): 전일(당일) 데이터 집계 및 00시 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 이번주: 월요일~현재 시간 데이터 집계 및 실시간 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 지난주(주간): 지난주(해당 주) 월~일 데이터 집계 및 월 00시 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 이번달: 1일~현재 시간 데이터 집계 및 실시간 갱신</li>
+          <li className="noticeBox__item">· DJ / FAN 지난달(월간): 지난달(해당 달) 1일~마지막 일 데이터 집계 및 1일 00시 갱신</li>
+        </ul>
+      </div>
+
+      <div className="noticeBox">
+        <p className="tableBox__title tableBox__title--lastTitle">LEVEL 랭킹</p>
+        <ul className="">
+          <li className="noticeBox__item">· 조건) 최근 7일 간 접속 기록 존재</li>
+          <li className="noticeBox__item">· 최고 레벨 순 TOP 200</li>
+          <li className="noticeBox__item">· 매일 데이터 집계 및 00시 갱신</li>
         </ul>
       </div>
     </div>

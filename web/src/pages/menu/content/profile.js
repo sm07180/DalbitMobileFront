@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
-import {Switch, Route, useParams, Redirect, useLocation} from 'react-router-dom'
+import {Switch, Route, useParams, Redirect, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
@@ -38,14 +38,17 @@ import ServiceIcon from '../static/menu_guide.svg'
 import AppIcon from '../static/menu_appinfo.svg'
 import Arrow from '../static/arrow.svg'
 import newCircle from '../static/new_circle.svg'
+import CastIcon from '../static/menu_cast.svg'
 
 import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
+  let history = useHistory()
   // nav Array
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+    // {type: 'cast', txt: '캐스트', icon: CastIcon},
     {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
     // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   ]
@@ -62,13 +65,14 @@ export default (props) => {
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
-    {type: 'appInfo', txt: '앱 정보 / 운영 정책 / 회원 탈퇴', icon: AppIcon}
+    {type: 'appInfo', txt: '운영 정책 / 회원 탈퇴', icon: AppIcon}
   ]
   // webview & ctx
   const {webview} = qs.parse(location.search)
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
+
   // state
   const [fetching, setFetching] = useState(false)
   const [myPageNew, setMyPageNew] = useState({})
@@ -116,7 +120,7 @@ export default (props) => {
   }
   const checkSelfAuth = async () => {
     let myBirth
-    const baseYear = new Date().getFullYear() - 16
+    const baseYear = new Date().getFullYear() - 11
     const myInfoRes = await Api.mypage()
     if (myInfoRes.result === 'success') {
       myBirth = myInfoRes.data.birth.slice(0, 4)
@@ -124,7 +128,7 @@ export default (props) => {
 
     if (myBirth > baseYear) {
       return context.action.alert({
-        msg: `17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+        msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
       })
     }
 
@@ -222,26 +226,28 @@ export default (props) => {
             </div>
           </div>
           <div className="sub-nav">
-            <a href={`/private`}>
+            <div onClick={() => history.push(`/private`)}>
               <div className="list">
-                <img className="icon" src={ProfileIcon} />
+                <img className="icon" src={ProfileIcon} alt="프로필 설정" />
                 <span className="text">프로필 설정</span>
                 <span className="arrow"></span>
               </div>
-            </a>
-            <a href={`/mypage/${profile.memNo}/appAlarm2`}>
+            </div>
+            <div onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
               <div className="list mb12">
-                <img className="icon" src={AppSettingIcon} />
+                <img className="icon" src={AppSettingIcon} alt="앱설정" />
                 <span className="text">앱 설정</span>
                 <span className="arrow"></span>
               </div>
-            </a>
+            </div>
             {subNavList.map((value, idx) => {
               const {type, txt, icon} = value
               return (
-                <a href={type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`} key={`list-${idx}`}>
+                <div
+                  onClick={() => history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)}
+                  key={`list-${idx}`}>
                   <div className="list">
-                    <img className="icon" src={icon} />
+                    <img className="icon" src={icon} alt={txt} />
                     <span className="text">{txt}</span>
                     <span
                       className={
@@ -256,7 +262,7 @@ export default (props) => {
                           : 'arrow'
                       }></span>
                   </div>
-                </a>
+                </div>
               )
             })}
             <div className="addCustomer">
@@ -266,17 +272,12 @@ export default (props) => {
                   return <></>
                 } else {
                   return (
-                    <a
-                      href={
-                        type === 'wallet' || type === 'report'
-                          ? `/mypage/${profile.memNo}/${type}`
-                          : type === 'store'
-                          ? '#'
-                          : `/${type}`
-                      }
+                    <div
                       key={`list-${idx}`}
                       onClick={(e) => {
-                        if (type === 'store') {
+                        if (type === 'wallet' || type === 'report') {
+                          history.push(`/mypage/${profile.memNo}/${type}`)
+                        } else if (type === 'store') {
                           e.preventDefault()
                           StoreLink(globalCtx, props.history)
                         } else if (type === 'money_exchange') {
@@ -285,7 +286,7 @@ export default (props) => {
                         }
                       }}>
                       <div className="list">
-                        <img className="icon" src={icon} />
+                        <img className="icon" src={icon} alt={txt} />
                         <span className="text">{txt}</span>
                         {type === 'store' ? (
                           <span className="price">{profile.dalCnt.toLocaleString()}</span>
@@ -299,7 +300,7 @@ export default (props) => {
                             type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
                           }></span>
                       </div>
-                    </a>
+                    </div>
                   )
                 }
               })}
@@ -308,9 +309,11 @@ export default (props) => {
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value
                 return (
-                  <a href={`${type === 'service' ? `/${type}` : `/customer/${type}`}`} key={`list-${idx}`}>
+                  <div
+                    onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
+                    key={`list-${idx}`}>
                     <div className="list">
-                      <img className="icon" src={icon} />
+                      <img className="icon" src={icon} alt={txt} />
                       <span className="text">{txt}</span>
                       <span
                         className={
@@ -325,7 +328,7 @@ export default (props) => {
                             : 'arrow'
                         }></span>
                     </div>
-                  </a>
+                  </div>
                 )
               })}
             </div>
@@ -490,7 +493,7 @@ const MenuMypage = styled.div`
     margin-top: 12px;
     padding-bottom: 23px;
     transform: skew(-0.03deg);
-    a {
+    & > div {
       display: block;
       .list {
         position: relative;
@@ -517,14 +520,13 @@ const MenuMypage = styled.div`
               display: block;
               width: 24px;
               height: 24px;
-              margin-left: -24px;
+              margin-left: -28px;
               background: url(${newCircle});
             }
           }
         }
         .text {
           color: #000000;
-          font-size: 14px;
           letter-spacing: -0.35px;
           font-weight: 800;
         }

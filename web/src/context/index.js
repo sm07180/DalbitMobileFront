@@ -74,6 +74,11 @@ const GlobalProvider = (props) => {
   const [selectFanTab, setSelectFanTab] = useState(0)
   const [editeToggle, setEditeToggle] = useState(false)
   const [ctxDeleteList, stCtxDeleteList] = useState('')
+  const [attendStamp, setAttendStamp] = useState(true)
+  //adminCheck
+  const [adminChecker, setAdminChecker] = useState(false)
+  //mypageInfo
+  const [mypageInfo, setMypageInfo] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -202,6 +207,10 @@ const GlobalProvider = (props) => {
       const {msg} = obj
       setMessage({type: 'confirm', visible: true, ...obj})
     },
+    confirm_admin: (obj) => {
+      const {msg} = obj
+      setMessage({type: 'confirm_admin', visible: true, ...obj})
+    },
     //login 상태
     updateLogin: (bool) => {
       setlogin(bool)
@@ -311,6 +320,15 @@ const GlobalProvider = (props) => {
     },
     updateCtxDeleteList: (string) => {
       stCtxDeleteList(string)
+    },
+    updateAttendStamp: (boolean) => {
+      setAttendStamp(boolean)
+    },
+    updateAdminChecker: (boolean) => {
+      setAdminChecker(boolean)
+    },
+    updateMypageInfo: (boolean) => {
+      setMypageInfo(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -358,7 +376,10 @@ const GlobalProvider = (props) => {
     fanEditeLength,
     selectFanTab,
     editeToggle,
-    ctxDeleteList
+    ctxDeleteList,
+    attendStamp,
+    adminChecker,
+    mypageInfo
   }
   return <Provider value={value}>{props.children}</Provider>
 }

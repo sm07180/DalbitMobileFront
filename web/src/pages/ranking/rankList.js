@@ -1,9 +1,10 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {RoomJoin} from 'context/room'
 import Util from 'components/lib/utility.js'
-
+// context
+import {Context} from 'context'
 //static
 import point from './static/ico-point.png'
 import point2x from './static/ico-point@2x.png'
@@ -13,10 +14,10 @@ import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
 
 export default (props) => {
-  //context
+  const context = useContext(Context)
   const history = useHistory()
-  const rankType = props.rankType
-  const {list} = props
+
+  const {list, rankType} = props
 
   const creatList = () => {
     return (
@@ -25,17 +26,16 @@ export default (props) => {
           {list.map((item, index) => {
             const {
               gender,
-              gift,
               nickNm,
               rank,
               profImg,
               upDown,
-              listen,
-              listeners,
-              likes,
-              broadcast,
-              fan,
-              dj,
+              listenPoint,
+              listenerPoint,
+              goodPoint,
+              broadcastPoint,
+              fanPoint,
+              djPoint,
               isSpecial,
               roomNo,
               memNo
@@ -68,20 +68,20 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 'dj' && (
+                  {rankType == 1 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {Util.printNumber(dj)}
+                        {Util.printNumber(djPoint)}
                       </p>
                     </>
                   )}
 
-                  {rankType == 'fan' && (
+                  {rankType == 2 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {Util.printNumber(fan)}
+                        {Util.printNumber(fanPoint)}
                       </p>
                     </>
                   )}
@@ -108,30 +108,30 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {rankType == 'dj' && (
+                        {rankType == 1 && (
                           <>
                             <span className="countBox__item">
                               <img src={people} />
-                              {Util.printNumber(listeners)}
+                              {Util.printNumber(listenerPoint)}
                             </span>
 
                             <span className="countBox__item">
                               <img src={like} />
-                              {Util.printNumber(likes)}
+                              {Util.printNumber(goodPoint)}
                             </span>
 
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(broadcast)}
+                              {Util.printNumber(broadcastPoint)}
                             </span>
                           </>
                         )}
 
-                        {rankType == 'fan' && (
+                        {rankType == 2 && (
                           <>
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(listen)}
+                              {Util.printNumber(listenPoint)}
                             </span>
                           </>
                         )}
@@ -145,7 +145,29 @@ export default (props) => {
                     <img
                       src={live}
                       onClick={() => {
-                        RoomJoin(roomNo + '')
+                        if (context.adminChecker === true) {
+                          context.action.confirm_admin({
+                            //콜백처리
+                            callback: () => {
+                              RoomJoin({
+                                roomNo: roomNo + '',
+                                shadow: 1
+                              })
+                            },
+                            //캔슬콜백처리
+                            cancelCallback: () => {
+                              RoomJoin({
+                                roomNo: roomNo + '',
+                                shadow: 0
+                              })
+                            },
+                            msg: '관리자로 입장하시겠습니까?'
+                          })
+                        } else {
+                          RoomJoin({
+                            roomNo: roomNo + ''
+                          })
+                        }
                       }}
                       className="liveBox__img"
                     />

@@ -31,7 +31,7 @@ import KoreaIcon from '../static/ico_korea.svg'
 import BlueHoleIcon from '../static/bluehole.svg'
 import StarIcon from '../static/star.svg'
 import CloseBtnIcon from '../static/ic_closeBtn.svg'
-import QuestionIcon from '../static/ic_question_new.svg'
+import QuestionIcon from '../static/ic_help.svg'
 import CrownIcon from '../static/ic_crown.svg'
 import AdminIcon from '../static/ic_home_admin.svg'
 import FanSettingIcon from '../static/fan_setting.svg'
@@ -118,7 +118,7 @@ const myProfile = (props) => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <a href={link} key={index}>
+          <a onClick={() => history.push(link)} key={index}>
             <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </a>
         )
@@ -228,36 +228,30 @@ const myProfile = (props) => {
       </Slide>
     )
   })
-  const fetchAdmin = async () => {
-    const adminFunc = await Api.getAdmin()
-    if (adminFunc.result === 'success') {
-      if (adminFunc.data.isAdmin === true) {
-        setShowAdmin(true)
-      }
-    } else if (adminFunc.result === 'fail') {
+
+  useEffect(() => {
+    if (context.adminChecker === true) {
+      setShowAdmin(true)
+    } else if (context.adminChecker === 'fail') {
       setShowAdmin(false)
     }
-  }
-  useEffect(() => {
-    fetchAdmin()
   }, [])
 
   return (
     <>
       <ProfileWrap>
-        {token && token.isLogin && showAdmin && (
-          <div className="adminBtn">
-            <a href="/admin/image">
+        <MyProfile webview={webview}>
+          {token && token.isLogin && showAdmin && (
+            <a href="/admin/image" className="adminBtn">
               <img src={AdminIcon} />
             </a>
-          </div>
-        )}
-
-        <MyProfile webview={webview}>
+          )}
           <button className="closeBtn" onClick={goBack}></button>
           <ProfileImg url={profile.profImg ? profile.profImg['thumb120x120'] : ''}>
             <figure onClick={() => figureZoom()}>
               <img src={profile.profImg ? profile.profImg['thumb120x120'] : ''} alt={profile.nickNm} />
+              {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
+              {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
               <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
             </figure>
             {Zoom === true && (
@@ -267,11 +261,11 @@ const myProfile = (props) => {
             )}
             <div
               className={`title 
-            ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
-            ${expCalc < 20 ? `레벨 10 ~ 20` : ''}
-            ${expCalc < 30 ? `레벨 20 ~ 30` : ''}
-            ${expCalc < 40 ? `레벨 30 ~ 40 ` : ''}
-            ${expCalc < 50 ? `레벨 40 ~ 50` : ''}                                                
+              ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
+              ${expCalc < 20 ? `레벨 10 ~ 20` : ''}
+              ${expCalc < 30 ? `레벨 20 ~ 30` : ''}
+              ${expCalc < 40 ? `레벨 30 ~ 40 ` : ''}
+              ${expCalc < 50 ? `레벨 40 ~ 50` : ''}                                                
             `}>
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
@@ -282,20 +276,19 @@ const myProfile = (props) => {
                     <LevelStatusBarWrap>
                       <LevelStatus
                         style={{
-                          width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `calc(${expCalc}%)`}`
+                          width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
                         }}></LevelStatus>
+                      <span className="expTitle expTitle--start">0</span>
+                      <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
                     </LevelStatusBarWrap>
+
                     <div className="levelInfo">
-                      <div className="subInfo line">
-                        <span className="expTitle">0</span>
-                        <span className="expTitle red mr7">
-                          EXP {Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}
-                        </span>
-                      </div>
-                      <div className="subInfo">
-                        <span className="expTitle ml6">{profile.expRate}%</span>
-                        <span className="expTitle">{profile.expNext - profile.expBegin}</span>
-                      </div>
+                      <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                        <span className="blind">경험치</span>
+                      </button>
+                      EXP
+                      <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
+                      <span className="expTitle expTitle--rate">{profile.expRate}%</span>
                     </div>
                   </LevelWrap>
                 </>
@@ -306,14 +299,11 @@ const myProfile = (props) => {
           <ContentWrap>
             <NameWrap>
               {/* <span>ID : {`@${profile.memId}`}</span> */}
-              <div className="expBtnWrap">
-                <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
-                  경험치
-                </button>
+              {/* <div className="expBtnWrap">
                 <a href={`/level`} className="btn-level">
                   레벨
                 </a>
-              </div>
+              </div> */}
 
               <strong>{profile.nickNm}</strong>
               <div className="subIconWrap">
@@ -415,52 +405,49 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const ProfileWrap = styled.div`
+  position: relative;
+  padding-top: 87px;
+  min-height: 391px;
   .adminBtn {
     position: absolute;
-    top: 0px;
+    top: -59px;
     left: 12px;
+    z-index: 1;
   }
-  padding-top: 87px;
-  position: relative;
-  /* background-color: #424242; */
-  min-height: 391px;
   .title {
     position: relative;
     display: inline-block;
-    width: 214px;
-    height: 28px;
-    line-height: 28px;
-    color: #fff;
-    padding: 0px 10px 0px 10px;
+    min-width: 100px;
+    height: 32px;
     margin: 0 auto;
-    font-size: 14px;
+    padding: 0px 20px;
+    line-height: 32px;
+    font-size: 16px;
     font-weight: bold;
     letter-spacing: -0.35px;
-    z-index: 4;
-    border-radius: 14px;
+    border-radius: 16px;
+    color: #fff;
     background-color: #f54640;
+    z-index: 4;
   }
 `
-//styled======================================
 const MyProfile = styled.div`
+  position: relative;
   display: flex;
-  flex-direction: row;
-    background-color:#fff;
-  /* width: calc(100% - 16px); */
-  border-top-left-radius:20px;
-  border-top-right-radius:20px;
+  flex-direction: column;
   min-height: 308px;
-  margin: 0 auto 0 auto;
-  padding: 40px 16px 57px 16px;
-position: relative;
-z-index:3;
-.closeBtn {
-  
+  margin: 0 auto;
+  padding: 0;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: #fff;
+  z-index: 3;
+  .closeBtn {
     position: absolute;
-    right: 12px;
+    top: -50px;
+    right: 20px;
     width: 32px;
     height: 32px;
-    top: -59px;
     z-index: 16;
     background: url(${CloseBtnIcon});
   }
@@ -468,112 +455,106 @@ z-index:3;
     position: fixed;
     top: 0;
     left: 0;
-    width:100%;
+    width: 100%;
     height: 100vh;
-    z-index:22;
-    background-color:rgba(0,0,0,0.5)
-      }
+    z-index: 22;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   .zoomImg {
     position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: block;
-    width:95%;
-   height:auto;
+    width: 95%;
+    height: auto;
   }
   & > div {
     flex: 0 0 auto;
   }
   .categoryCntWrap {
-      margin: 4px 0 20px 0;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .icoWrap {
       display: flex;
-      align-items:center;
-      .icoWrap {
-        display: flex;
-        align-items:center;
+      align-items: center;
+    }
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      width: 88px;
+      height: 50px;
+      :after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 40px;
+        width: 1px;
+        background-color: #eeeeee;
       }
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
-        width: 88px;
-        height: 50px;
-        :after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 40px;
-          width: 1px;
-          background-color: #eeeeee;
-        }
-        .icoImg {
-            margin:0 auto;
-            display: inline-block;
-            width:24px;
-            height:24px;
-            background:url(${GrayHeart})no-repeat center center /cover;
+      .icoImg {
+        margin: 0 auto;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(${GrayHeart}) no-repeat center center / cover;
 
-            &.type1 {
-              background:url(${BlueHoleIcon})no-repeat center center /cover;
-            }
-            &.type2 {
-              background:url(${StarIcon})no-repeat center center /cover;
-            }
+        &.type1 {
+          background: url(${BlueHoleIcon}) no-repeat center center / cover;
         }
-        .icotitle {
-          display: flex;
-          align-items:center;
-            float:right;
-            margin-left:0px;
-            line-height:24px;
-                font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                letter-spacing: normal;
-                text-align: center;
-                color: #424242;
-                &--active {
-                  &:after {
-                    margin-left:8px;
-                  display: inline-block;
-                  content:'';
-                  width: 16px;
-                  height: 16px;
-                  background:url(${FanSettingIcon});
-                }
-                }
-        }
-        .cntTitle {
-            
-  font-size: 20px;
-  font-weight: 800;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.13;
-  letter-spacing: normal;
-  text-align: center;
-  color: #000000;
-  margin-left:2px;
+        &.type2 {
+          background: url(${StarIcon}) no-repeat center center / cover;
         }
       }
-      div:last-child {
-        :after {
-          height: 0;
-          width: 0;
-        } 
+      .icotitle {
+        display: flex;
+        align-items: center;
+        float: right;
+        margin-left: 0px;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #424242;
+        &--active {
+          &:after {
+            margin-left: 8px;
+            display: inline-block;
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: url(${FanSettingIcon});
+          }
+        }
       }
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-direction: column;
-    padding: 0;
-    
-    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
+      .cntTitle {
+        font-size: 20px;
+        font-weight: 800;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: center;
+        color: #000000;
+        margin-left: 2px;
+      }
+    }
+    div:last-child {
+      :after {
+        height: 0;
+        width: 0;
+      }
+    }
   }
   .topMedal {
     display: flex;
@@ -605,19 +586,10 @@ z-index:3;
 //flex item3
 const ButtonWrap = styled.div`
   flex-basis: 204px;
-  padding-top: 35px;
+  padding-top: 16px;
   text-align: right;
   order: 3;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-    flex-basis: auto;
-    padding-top: 0;
-    order: 1;
-  }
 `
-
 const ProfileImg = styled.div`
   display: block;
   position: relative;
@@ -626,7 +598,7 @@ const ProfileImg = styled.div`
   background-position: center;
   text-align: center;
   order: 1;
-  margin-top: -61px;
+  margin-top: -50px;
   figure {
     position: relative;
     width: 100px;
@@ -649,19 +621,38 @@ const ProfileImg = styled.div`
       background-size: cover;
       background-repeat: no-repeat;
     }
+    .holderBg {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: -62px;
+      width: 224px;
+      height: 140px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+    .profileBg {
+      display: block;
+      position: absolute;
+      top: -20px;
+      left: -40px;
+      width: 180px;
+      height: 140px;
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
   }
 
   .InfoWrap {
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin: auto;
-
-    position: relative;
-    width: 280px;
+    margin: 8px auto 0;
     font-size: 12px;
     text-align: center;
     z-index: 2;
-
     .expWrap {
       width: 280px;
       display: flex;
@@ -695,11 +686,23 @@ const ProfileImg = styled.div`
     .expBegin:nth-child(2) {
       margin-right: 8px;
     }
+    .btn-info {
+      display: flex;
+      align-items: center;
+      margin-right: 5px;
+      border-radius: 14px;
+      :after {
+        content: '';
+        height: 12px;
+        width: 20px;
+        background: url(${QuestionIcon}) no-repeat center center / cover;
+      }
+      .blind {
+        font-size: 0;
+      }
+    }
   }
 
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    order: 2;
-  }
   & .liveIcon {
     position: absolute;
     right: 0;
@@ -711,20 +714,15 @@ const ProfileImg = styled.div`
 `
 
 const ContentWrap = styled.div`
-  width: calc(100% - 360px);
-  padding: 0 24px;
+  width: 100%;
+  padding: 0 24px 20px;
+  margin: 0 auto;
   order: 2;
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-    margin: 0 auto;
-    order: 3;
-
-    & > div {
-      display: flex;
-      justify-content: center;
-    }
+  & > div {
+    display: flex;
+    justify-content: center;
   }
+
   .expWrap {
     width: 280px;
     display: flex;
@@ -765,50 +763,27 @@ const ContentWrap = styled.div`
 const LevelWrap = styled.div`
   display: flex;
   flex-direction: column;
-  /* height: 16px; */
+  align-items: center;
   .expTitle {
     font-size: 12px;
-    margin-right: 4px;
-    margin-left: 2px;
-    font-weight: 800;
+    font-weight: bold;
     color: #000;
-    line-height: 1.1;
-    &.mr7 {
-      margin-right: 7px;
+    &--start {
+      position: absolute;
+      left: 0;
+      top: 21px;
     }
-    &.ml6 {
-      margin-left: 6px;
-      font-weight: normal;
+    &--end {
+      position: absolute;
+      right: 0;
+      top: 21px;
     }
-    &.red {
-      color: #000;
-    }
-  }
-  .expRate {
-    margin-left: 6px;
-    font-weight: 600;
-    font-size: 10px;
-    color: #000;
-    line-height: 1.1;
-  }
-  .levelInfo {
-    font-size: 12px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    padding: 4px 0;
-    .subInfo {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      width: 100px;
-
-      &.line:after {
+    &--rate {
+      &::before {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        right: 0px;
+        left: 0px;
         content: '';
         width: 1px;
         height: 8px;
@@ -816,30 +791,42 @@ const LevelWrap = styled.div`
       }
     }
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    align-items: center;
+  .expRate {
+    margin-left: 6px;
+    font-weight: 600;
+    font-size: 10px;
+    color: #000;
+  }
+  .levelInfo {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    padding: 4px 0;
+    font-size: 16px;
+    color: #757575;
+    font-weight: bold;
+    .expTitle {
+      position: relative;
+      padding: 0 8px;
+      font-size: 16px;
+    }
   }
 `
 const LevelStatusBarWrap = styled.div`
   position: relative;
-  width: 188px;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  width: 300px;
+  height: 16px;
+  border-radius: 10px;
   background-color: #eee;
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    height: 14px;
-  }
 `
 const LevelStatus = styled.div`
   position: absolute;
   top: 0px;
   left: -1px;
-  height: 14px;
+  height: 16px;
   max-width: calc(100% + 2px);
-
-  border-bottom-left-radius: 10px;
-  border-bottom-left-radius: 10px;
+  border-radius: 10px;
   background-color: #000;
   text-align: right;
   color: #fff;
@@ -849,9 +836,7 @@ const LevelStatus = styled.div`
   line-height: 15px;
   box-sizing: border-box;
   text-indent: 3px;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    line-height: 14px;
-  }
+  line-height: 16px;
 `
 //닉네임
 const NameWrap = styled.div`
@@ -861,6 +846,7 @@ const NameWrap = styled.div`
 
   .expBtnWrap {
     display: flex;
+    margin-top: 6px;
     > a {
       display: flex;
       align-items: center;
@@ -879,27 +865,6 @@ const NameWrap = styled.div`
         height: 12px;
         background: url(${QuestionIcon}) right no-repeat;
         margin-left: 16px;
-      }
-    }
-    > button {
-      display: flex;
-      align-items: center;
-      margin-right: 2px;
-      width: 72px;
-      height: 20px;
-      border-radius: 14px;
-      border: solid 1px #eeeeee;
-      background-color: #ffffff;
-      font-size: 12px;
-      font-weight: bold;
-      color: #757575;
-      text-indent: 7px;
-      :after {
-        content: '';
-        height: 12px;
-        width: 20px;
-        background: url(${QuestionIcon}) no-repeat center center / cover;
-        margin-left: 4px;
       }
     }
   }
@@ -942,7 +907,7 @@ const NameWrap = styled.div`
     line-height: 24px;
     min-height: 24px;
     font-weight: 800;
-    margin-top: 14px;
+    margin-top: 10px;
   }
   .specialIcon {
     display: inline-block;
@@ -965,14 +930,6 @@ const NameWrap = styled.div`
     padding: 12px 0 0 0;
     line-height: 12px;
     transform: skew(-0.03deg);
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-    & > * {
-    }
-    span {
-      transform: skew(-0.03deg);
-    }
   }
 `
 //팬, 스타 수
@@ -1022,10 +979,6 @@ const CountingWrap = styled.div`
       content: '';
     }
   }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
-  }
 `
 //팬랭킹
 const FanListWrap = styled.div`
@@ -1036,19 +989,22 @@ const FanListWrap = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
-    font-weight: bold;
-    letter-spacing: -0.35px;
     margin-right: 12px;
-    color: #000000;
     transform: skew(-0.03deg);
     width: 72px;
     height: 28px;
+    padding-left: 9px;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: -0.35px;
     line-height: 28px;
     border-radius: 25px;
     border: solid 1px #e0e0e0;
+    color: #000000;
     background-color: #ffffff;
     em {
+      position: relative;
+      right: 0px;
       width: 20px;
       height: 20px;
       background: url(${PlusCircle}) no-repeat center center / contain;
@@ -1091,9 +1047,6 @@ const FanListWrap = styled.div`
       }
     }
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 0px;
-  }
   > a {
     &.none {
       display: none;
@@ -1117,10 +1070,6 @@ const FanRank = styled.div`
   }
   & + & {
     margin-left: 4px;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 28px;
-    height: 28px;
   }
   :after {
     display: block;

@@ -114,7 +114,7 @@ export default function Qna() {
             uploadType: 'qna'
           }
         })
-        if (res.result === 'success') {
+        if (res.result === 'success' && res.code === '0') {
           setQuestionFile(
             questionFile.map((v, i) => {
               if (i === idx) {
@@ -129,7 +129,7 @@ export default function Qna() {
           )
         } else {
           context.action.alert({
-            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+            msg: res.message,
             title: '',
             callback: () => {
               context.action.alert({visible: false})
@@ -147,6 +147,35 @@ export default function Qna() {
   const checkDelicate = () => {
     if (delicate) {
       fetchData()
+    } else {
+      let contents
+
+      if (name === '') {
+        contents = '이름 또는 닉네임을\n입력해주세요.'
+      } else if (name.length <= 1) {
+        contents = '이름 또는 닉네임을\n정확하게 입력해주세요.'
+      } else if (faqNum === 0) {
+        contents = '문의 유형을 선택해주세요.'
+      } else if (title === '') {
+        contents = '제목을 입력해주세요.'
+      } else if (content === '') {
+        contents = '문의내용을 입력해주세요.'
+      } else if (!context.token.isLogin && !checks[0]) {
+        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
+      } else if (!context.token.isLogin && checks[0] && phone === '') {
+        contents = '답변 받으실 휴대폰 번호를\n입력해주세요.'
+      } else if (!context.token.isLogin && checks[0] && phone.length < 9) {
+        contents = '정확한\n휴대폰 번호를 입력해주세요.'
+      } else if (!agree) {
+        contents = '개인정보 수집 및 이용에\n동의해주세요.'
+      }
+
+      context.action.alert({
+        msg: contents,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
     }
   }
 
@@ -262,8 +291,10 @@ export default function Qna() {
       name !== '' &&
       name.length > 1 &&
       agree &&
-      (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
-      (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
+      ((!context.token.isLogin && checks[0] && phone !== '' && phone.length > 8) || context.token.isLogin)
+      // mail 되면
+      // (!checks[0] || (checks[0] && phone !== '' && phone.length > 8)) &&
+      // (!checks[1] || (checks[1] && email !== '' && emailInpection(email)))
     ) {
       setDelicate(true)
     } else {
@@ -287,6 +318,8 @@ export default function Qna() {
   useEffect(() => {
     if (context.profile) {
       setName(context.profile.nickNm)
+    } else {
+      setChecks([true, false])
     }
 
     if (context.token.isLogin) {
@@ -404,17 +437,22 @@ export default function Qna() {
             </div>
           </div>
           <div>
-            <input
-              disabled={!checks[0]}
-              className="personalAddWrap__input"
-              type="tel"
-              value={phone}
-              onChange={(e) => {
-                if (e.target.value.length < 16) setPhone(e.target.value)
-              }}
-              placeholder="휴대폰 번호를 입력하세요."
-            />
-            <input
+            {!context.token.isLogin && (
+              <input
+                disabled={!checks[0]}
+                className="personalAddWrap__input"
+                type="tel"
+                value={phone}
+                onChange={(e) => {
+                  if (e.target.value.length < 16 && !isNaN(e.target.value)) {
+                    setPhone(e.target.value)
+                  }
+                }}
+                placeholder="휴대폰 번호를 입력하세요."
+              />
+            )}
+
+            {/* <input
               disabled={!checks[1]}
               className="personalAddWrap__input"
               type="email"
@@ -422,7 +460,7 @@ export default function Qna() {
                 setEmail(e.target.value)
               }}
               placeholder="E-Mail 입력하세요."
-            />
+            /> */}
           </div>
         </div>
         <div className="personalAddWrap__agreeWrap">
@@ -441,7 +479,7 @@ export default function Qna() {
             <div>
               고객센터 (국내) <span className="bold">1522-0251</span>
             </div>
-            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30)</div>
+            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30 토/일/공휴일 제외)</div>
           </div>
           {phoneCallWrap()}
         </div>

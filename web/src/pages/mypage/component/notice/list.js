@@ -1,29 +1,29 @@
 import React, {useState, useEffect, useReducer, useContext} from 'react'
 import styled from 'styled-components'
-
 import {Context} from 'context'
 import Api from 'context/api'
+//router
+import {useHistory} from 'react-router-dom'
+
 // image
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
-import arrowDownImg from '../images/NoticeArrowDown.svg'
 //component
 import Checkbox from '../../content/checkbox'
-// static
-import DeleteIcon from '../images/ic_delete.svg'
-import ModifyIcon from '../images/ic_edit.svg'
 import BackIcon from '../../component/ic_back.svg'
+import NewIcon from '../../static/newIcon.svg'
 import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
 import BookMark from '../../component/book_mark_red.svg'
 const List = (props) => {
   //context
-
+  let history = useHistory()
   const context = useContext(Context)
   const ctx = useContext(Context)
   var urlrStr = props.location.pathname.split('/')[2]
   //props
-  const {isTop, title, contents, writeDt, noticeIdx, numbers} = props
+  const {isTop, title, contents, writeDt, noticeIdx, numbers, nickNm, profImg, writeTs} = props
+
   const initialState = {
     click1: isTop
   }
@@ -165,7 +165,15 @@ const List = (props) => {
       setOpened(false)
     }
   }, [numbers])
-
+  //time
+  const timestamp = String(new Date().getTime()).substr(0, 10)
+  const IntTime = parseInt(timestamp)
+  //transfer memNo
+  const historyMem = (urlrStr) => {
+    if (urlrStr !== context.profile.memNo) {
+      history.push(`/mypage/${urlrStr}`)
+    } else if (urlrStr !== context.profile.memNo) return false
+  }
   //-------------------------------------------------------------------------
   return (
     <Wrap>
@@ -177,6 +185,7 @@ const List = (props) => {
         <TitleWrap className={isTop ? 'is-top' : ''}>
           {/* {isTop && <em></em>} */}
           <span className="text">{title}</span>
+          {(IntTime - writeTs) / 3600 < 7 && <span className="newIcon"></span>}
         </TitleWrap>
         {isTop === true && <ArrowDownBtnTop className={numbers === noticeIdx && opened ? 'on' : ''} />}
         {isTop === false && <ArrowDownBtn className={numbers === noticeIdx && opened ? 'on' : ''} />}
@@ -194,10 +203,16 @@ const List = (props) => {
                 <div>{timeFormat(writeDt)}</div>
               </div>
             </div>
+            <div className="detail_header_writerinfo">
+              <div className="detail_info">
+                {profImg && <img src={profImg.thumb80x80} onClick={() => historyMem(urlrStr)} />}
+                {nickNm && <span className="nick">{nickNm}</span>}
+              </div>
+            </div>
             <div className="detail_contents">
               <pre>{contents}</pre>
             </div>
-            <Buttons className={urlrStr === props.thisMemNo ? 'on' : ''}>
+            <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
               <button onClick={WriteToggle}>
                 {/* <em></em> */}
                 수정
@@ -286,9 +301,8 @@ const TitleWrap = styled.div`
   align-items: center;
   color: #424242;
   font-size: 16px;
-  padding: 0 16px;
+  padding: 0 0 0 16px;
   transform: skew(-0.03deg);
-
   font-weight: 600;
   > em {
     display: block;
@@ -299,7 +313,6 @@ const TitleWrap = styled.div`
   > i {
     display: none;
   }
-
   &.is-top {
     color: #632beb;
     font-size: 16px;
@@ -379,8 +392,32 @@ const ListContent = styled.div`
       > div {
         height: 20px;
         line-height: 20px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
       }
       padding: 10px 16px 10px 16px;
+    }
+  }
+  .detail_header_writerinfo {
+    background-color: #fff;
+    border-bottom: 1px solid #eeeeee;
+    .detail_info {
+      display: flex;
+      align-items: center;
+      padding: 8px 16px 8px 16px;
+      .nick {
+        margin-left: 10px;
+        font-size: 16px;
+        font-weight: 800;
+        text-align: left;
+        color: #000000;
+      }
+      > img {
+        width: 40px;
+        border-radius: 50%;
+        height: 40px;
+      }
     }
   }
 `
@@ -563,6 +600,16 @@ const Wrap = styled.div`
     padding: 10px 16px 21px 16px;
     background-color: #fff;
     word-break: break-all;
+  }
+
+  .newIcon {
+    margin-left: 8px;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-position: center center;
+    background-size: cover;
+    background-image: url(${NewIcon});
   }
 `
 const TitleBtn = styled.button`

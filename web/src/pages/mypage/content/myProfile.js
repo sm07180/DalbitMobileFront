@@ -42,13 +42,14 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
   const history = useHistory()
-  const {webview, profile} = props
+  const {webview, profile, locHash} = props
   //context
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, closePresent} = context
   //pathname & MemNo
   const urlrStr = props.location.pathname.split('/')[2]
   const myProfileNo = context.profile.memNo
+
   //state
   const [Zoom, setZoom] = useState(false)
   const [popup, setPopup] = useState(false)
@@ -137,7 +138,7 @@ const myProfile = (props) => {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
         result = result.concat(
-          <div key={`fan-${index}`} onClick={() => saveUrlAndRedirect(link)}>
+          <div key={`fan-${index}`} onClick={() => history.push(link)}>
             <FanRank style={{backgroundImage: `url(${profImg.thumb88x88})`}} className={`rank${rank}`}></FanRank>
           </div>
         )
@@ -218,8 +219,11 @@ const myProfile = (props) => {
     if (webview && webview === 'new' && isHybrid()) {
       Hybrid('CloseLayerPopup')
     } else {
-      //window.history.go(-1)
-      history.goBack()
+      if (locHash instanceof Object && locHash.state) {
+        locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
+      } else {
+        history.goBack()
+      }
     }
   }
   //스와이퍼
@@ -229,22 +233,28 @@ const myProfile = (props) => {
     resistanceRatio: 0
   }
   //뱃지
-  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
-    const {text, icon, startColor, endColor} = item
-    //-----------------------------------------------------------------------
-    return (
-      <Slide key={index}>
-        <span
-          className="fan-badge"
-          style={{
-            background: `linear-gradient(to right, ${startColor}, ${endColor}`
-          }}>
-          <img src={icon} />
-          <span>{text}</span>
-        </span>
-      </Slide>
-    )
-  })
+  const createBadgeSlide = () => {
+    if (!profile.hasOwnProperty('fanBadgeList')) return null
+    return profile.fanBadgeList.map((item, index) => {
+      const {text, icon, startColor, endColor} = item
+      //-----------------------------------------------------------------------
+      return (
+        <Slide key={index}>
+          <span
+            className="fan-badge"
+            style={{
+              background: `linear-gradient(to right, ${startColor}, ${endColor}`
+            }}>
+            <img src={icon} />
+            <span>{text}</span>
+          </span>
+        </Slide>
+      )
+    })
+  }
+
+  if (myProfileNo === profile.memNo) return null
+
   return (
     <>
       <ProfileWrap>
@@ -259,6 +269,8 @@ const myProfile = (props) => {
             </>
           )}
           <ProfileImg url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
+            {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
+            {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
             <div className="holder" style={{backgroundImage: `url(${profile.holder})`}} onClick={() => figureZoom()}></div>
 
             <figure onClick={() => figureZoom()}>
@@ -270,7 +282,7 @@ const myProfile = (props) => {
               </div>
             )}
 
-            <span>
+            <span className="title">
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </span>
             {/*<div className="expBtnWrap">
@@ -288,7 +300,29 @@ const myProfile = (props) => {
               <button
                 className="liveIcon"
                 onClick={() => {
-                  RoomJoin(profile.roomNo)
+                  if (context.adminChecker === true) {
+                    context.action.confirm_admin({
+                      //콜백처리
+                      callback: () => {
+                        RoomJoin({
+                          roomNo: profile.roomNo,
+                          shadow: 1
+                        })
+                      },
+                      //캔슬콜백처리
+                      cancelCallback: () => {
+                        RoomJoin({
+                          roomNo: profile.roomNo,
+                          shadow: 0
+                        })
+                      },
+                      msg: '관리자로 입장하시겠습니까?'
+                    })
+                  } else {
+                    RoomJoin({
+                      roomNo: profile.roomNo
+                    })
+                  }
                 }}>
                 <img src={LiveIcon}></img>
                 <span>Live</span>
@@ -307,7 +341,7 @@ const myProfile = (props) => {
             <ProfileMsg>{profile.profMsg}</ProfileMsg>
             {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
               <BadgeWrap margin={profile.fanBadgeList.length === 1 ? '10px' : '0px'}>
-                <Swiper {...params}>{BadgeSlide}</Swiper>
+                <Swiper {...params}>{createBadgeSlide()}</Swiper>
               </BadgeWrap>
             ) : (
               <></>
@@ -391,27 +425,21 @@ const myProfile = (props) => {
 export default myProfile
 //styled======================================
 const ButtonWrap = styled.div`
-  flex-basis: 204px;
-  padding-top: 35px;
-  text-align: right;
-  order: 3;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 14px;
-    display: flex;
-    justify-content: space-between;
-    flex-basis: auto;
-    padding-top: 0;
-    order: 1;
-  }
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+  flex-basis: auto;
+  padding-top: 0;
+  order: 1;
 `
 //flex item3
 const GiftButtonWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 0;
   @media (max-width: ${WIDTH_TABLET_S}) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-top: 0;
   }
 `
 const ProfileWrap = styled.div`
@@ -518,16 +546,16 @@ const PurpleWrap = styled.div`
   z-index: 2;
 `
 const MyProfile = styled.div`
-   display: flex;
-  flex-direction: row;
-    background-color:#fff;
-    border-top-left-radius:20px;
-    border-top-right-radius:20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   margin: 0 auto 0 auto;
-  padding: 40px 16px 57px 16px;
-position: relative;
-z-index:3;
-.closeBtn {
+  padding: 40px 16px 20px 16px;
+  z-index: 3;
+  .closeBtn {
     position: absolute;
     width: 32px;
     height: 32px;
@@ -550,96 +578,90 @@ z-index:3;
     position: fixed;
     top: 0;
     left: 0;
-    width:100%;
+    width: 100%;
     height: 100vh;
-    z-index:22;
-    background-color:rgba(0,0,0,0.5);
-    
+    z-index: 22;
+    background-color: rgba(0, 0, 0, 0.5);
   }
   .zoomImg {
     position: absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: block;
-    width:95%;
-   height:auto;
+    width: 95%;
+    height: auto;
   }
   & > div {
     flex: 0 0 auto;
   }
   .categoryCntWrap {
-      margin: 4px 0 0px 0;
+    margin: 8px 0;
+    display: flex;
+    justify-content: center;
+    /* flex-direction: column;
+    padding: 0; */
+    div {
       display: flex;
-      div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: relative;
-        width: 88px;
-        height: 50px;
-        :after {
-          content: '';
-          position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 40px;
-          width: 1px;
-          background-color: #eeeeee;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      width: 88px;
+      height: 50px;
+      :after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 40px;
+        width: 1px;
+        background-color: #eeeeee;
+      }
+      .icoImg {
+        margin: 0 auto;
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(${GrayHeart}) no-repeat center center / cover;
+        &.type1 {
+          background: url(${BlueHoleIcon}) no-repeat center center / cover;
         }
-        .icoImg {
-            margin:0 auto;
-            display: inline-block;
-            width:24px;
-            height:24px;
-            background:url(${GrayHeart})no-repeat center center /cover;
-            &.type1 {
-              background:url(${BlueHoleIcon})no-repeat center center /cover;
-            }
-            &.type2 {
-              background:url(${StarIcon})no-repeat center center /cover;
-            }
-        }
-        .icotitle {
-            float:right;
-            margin-left:2px;
-            line-height:24px;
-                            font-size: 16px;
-                font-weight: normal;
-                font-stretch: normal;
-                font-style: normal;
-                letter-spacing: normal;
-                text-align: center;
-                color: #424242;
-        }
-        .cntTitle {
-            
-  font-size: 20px;
-  font-weight: 800;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.13;
-  letter-spacing: normal;
-  text-align: center;
-  color: #000000;
-  margin-left:2px;
+        &.type2 {
+          background: url(${StarIcon}) no-repeat center center / cover;
         }
       }
-      div:last-child {
-        :after {
-          height: 0;
-          width: 0;
-        } 
+      .icotitle {
+        float: right;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: normal;
+        font-stretch: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-align: center;
+        color: #424242;
       }
+      .cntTitle {
+        font-size: 20px;
+        font-weight: 800;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: center;
+        color: #000000;
+        margin-left: 2px;
+      }
+    }
+    div:last-child {
+      :after {
+        height: 0;
+        width: 0;
+      }
+    }
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-direction: column;
-    padding: 0;
-    /* padding-top: ${(props) => (props.webview && props.webview === 'new' ? '48px' : '')}; */
-  }
-
 `
 //flex item3
 const ProfileImg = styled.div`
@@ -651,7 +673,7 @@ const ProfileImg = styled.div`
   background-position: center;
   text-align: center;
   order: 1;
-  margin-top: -63px;
+  margin-top: -100px;
   .holder {
     display: block;
     position: absolute;
@@ -665,6 +687,30 @@ const ProfileImg = styled.div`
     background-repeat: no-repeat;
     z-index: 2;
   }
+  .holderBg {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 224px;
+    height: 140px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .profileBg {
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 180px;
+    height: 140px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
   figure {
     position: relative;
     width: 100px;
@@ -676,40 +722,32 @@ const ProfileImg = styled.div`
       display: none;
     }
   }
-  span {
-    display: inline-block;
+  .title {
     position: relative;
-    max-width: 70%;
-    height: 28px;
+    display: inline-block;
+    min-width: 100px;
+    height: 32px;
     margin-top: 20px;
-    border-radius: 13px;
-    background: #f54640;
-    color: #fff;
-    font-size: 14px;
+    padding: 0px 20px;
+    line-height: 32px;
+    font-size: 16px;
     font-weight: bold;
-    line-height: 28px;
     text-align: center;
-    letter-spacing: -0.3px;
-    z-index: 2;
+    letter-spacing: -0.35px;
+    border-radius: 16px;
+    color: #fff;
+    background-color: #f54640;
     transform: skew(-0.03deg);
-    padding: 0 18px;
-  }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    order: 2;
+    z-index: 4;
   }
 `
 const ContentWrap = styled.div`
-  width: calc(100% - 360px);
-  padding: 0 24px;
-  order: 2;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    width: 100%;
-    margin: 16px auto 0 auto;
-    order: 3;
-    & > div {
-      display: flex;
-      justify-content: center;
-    }
+  width: 100%;
+  margin: 13px auto 0 auto;
+  order: 3;
+  & > div {
+    display: flex;
+    justify-content: center;
   }
   .dailyTop {
     width: 108px;
@@ -792,69 +830,7 @@ const NameWrap = styled.div`
     line-height: 12px;
     transform: skew(-0.03deg);
   }
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    text-align: center;
-    & > * {
-    }
-    span {
-      transform: skew(-0.03deg);
-    }
-  }
 `
-//팬, 스타 수
-const CountingWrap = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 12px;
-
-  span {
-    display: inline-block;
-    font-size: 18px;
-    letter-spacing: -0.35px;
-    color: ${COLOR_MAIN};
-    transform: skew(-0.03deg);
-    font-weight: 600;
-    em {
-      display: inline-block;
-      padding-left: 1px;
-      color: #000;
-      font-style: normal;
-      font-weight: 600;
-    }
-  }
-  & span:first-child:after {
-    display: inline-block;
-    width: 1px;
-    height: 12px;
-    margin: 0 11px -1px 12px;
-    background: #e0e0e0;
-    content: '';
-  }
-  & div {
-    width: 36px;
-    height: 36px;
-    background: url(${IMG_SERVER}/images/api/ic_report.png);
-    margin-left: 18px;
-    position: relative;
-    cursor: pointer;
-    :after {
-      display: block;
-      width: 1px;
-      height: 12px;
-      position: absolute;
-      left: -6px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #e0e0e0;
-      content: '';
-    }
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 10px;
-  }
-`
-
 //상단버튼
 const InfoConfigBtn = styled.div`
   display: flex;
@@ -934,11 +910,9 @@ const FanListWrap = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   .rankTitle {
     text-indent: 6px;
   }
-
   > span {
     display: flex;
     align-items: center;
@@ -1121,7 +1095,6 @@ const Slide = styled.a`
   color: #fff;
 `
 //프로필메세지
-
 const ProfileMsg = styled.p`
   width: 70%;
   margin: 0 auto;

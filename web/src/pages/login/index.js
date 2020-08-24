@@ -82,6 +82,7 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
+
         console.log('1')
         //--##
         /**
@@ -96,6 +97,9 @@ export default (props) => {
 
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
+        setTimeout(() => {
+          fetchAdmin()
+        }, 10)
 
         if (profileInfo.result === 'success') {
           if (isHybrid()) {
@@ -262,6 +266,15 @@ export default (props) => {
     commonData()
   }, [])
 
+  //admincheck
+  const fetchAdmin = async () => {
+    const adminFunc = await Api.getAdmin()
+    if (adminFunc.result === 'success') {
+      globalCtx.action.updateAdminChecker(true)
+    } else if (adminFunc.result === 'fail') {
+      globalCtx.action.updateAdminChecker(false)
+    }
+  }
   return (
     <Switch>
       {token && token.isLogin ? (
@@ -344,12 +357,11 @@ export default (props) => {
             {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
               <SocialLoginWrap>
                 <div className="line-wrap">
-                  {
-                    (customHeader['os'] !== OS_TYPE['Android'] || (common.isAosCheck === false)) &&
+                  {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
                     <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
                       <img className="icon" src={appleLogo} />
                     </button>
-                  }
+                  )}
                   <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
                     <img className="icon" src={facebookLogo} />
                   </button>

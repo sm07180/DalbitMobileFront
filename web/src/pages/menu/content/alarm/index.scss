@@ -1,21 +1,22 @@
 #alarmWrap {
   .header {
+    position: relative;
     display: flex;
     align-items: center;
+    justify-content: center;
     padding: 12px 16px;
-    background-color: #eeeeee;
-    &__left {
-      display: flex;
+    background-color: #fff;
+    border-bottom: 1px solid #d2d2d2;
+    box-sizing: border-box;
+
+    &__title {
       flex: 1;
-      font-size: 16px;
-      font-weight: bold;
-      &--back {
-        width: 20px;
-        height: 20px;
-        margin-right: 10px;
-        background: url('./static/ic_back.svg') no-repeat center;
-      }
+      font-size: 18px;
+      letter-spacing: -0.45px;
+      font-weight: 800;
+      text-align: center;
     }
+
     &__count {
       margin-left: 8px;
       color: #632beb;
@@ -23,16 +24,32 @@
     }
     &__right {
       display: flex;
-      flex: 1;
-      justify-content: flex-end;
+      align-items: center;
+      position: absolute;
+      top: 9px;
+      right: 16px;
 
       .deleteIcon {
-        width: 24px;
-        height: 24px;
-        margin-right: 16px;
-        background: url('../../static/delete_g_s.svg') no-repeat center;
+        width: 32px;
+        height: 32px;
+        margin-right: 10px;
+        background: url('../../static/ic_delete_alarm.svg') no-repeat center;
         background-size: contain;
+        &.isActive {
+          background: url('../../static/ic_delete_alarm_active.svg') no-repeat center;
+        }
       }
+      .allCheck {
+        margin-top: 4px;
+      }
+    }
+
+    &__btnBack {
+      display: block;
+      width: 36px;
+      position: absolute;
+      top: 4px;
+      left: 2%;
     }
   }
 
@@ -59,14 +76,15 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
+        margin-right: 5px;
       }
       &--title {
         margin-bottom: 3px;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 600;
         letter-spacing: -0.35px;
         text-align: left;
-        color: #424242;
+        color: #000;
       }
       &--time {
         font-size: 12px;
@@ -74,7 +92,7 @@
 
         letter-spacing: -0.3px;
         text-align: left;
-        color: #bdbdbd;
+        color: #000;
       }
     }
   }

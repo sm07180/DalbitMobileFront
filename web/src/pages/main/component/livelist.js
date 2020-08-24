@@ -1,14 +1,11 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState, useContext} from 'react'
 import styled from 'styled-components'
 
 //context
 import Room, {RoomJoin} from 'context/room'
-
-import {broadcastLive} from 'constant/broadcast.js'
-
-import audioIcon from '../static/ico_audio.svg'
+import Api from 'context/api'
+import {Context} from 'context'
 import noBgAudioIcon from '../static/audio_s.svg'
-import videoIcon from '../static/ico_video.svg'
 import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
 import hitIcon from '../static/ico_hit_g.svg'
@@ -19,23 +16,13 @@ import Util from 'components/lib/utility.js'
 
 // static
 import EntryImg from '../static/person_w_s.svg'
-import specialIcon from '../static/ico_speciladj_s.svg'
-import fanIcon from '../static/ico_fan.svg'
-import twentyIcon from '../static/ico_20.svg'
-import allIcon from '../static/ico_all.svg'
-
-function usePrevious(value) {
-  const ref = useRef()
-  useEffect(() => {
-    ref.current = value
-  })
-  return ref.current
-}
 
 const makeContents = (props) => {
-  const {list, liveListType} = props
-  const typeSearch = props.type
+  const context = useContext(Context)
+  const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
+
+  //------------------------------------------
 
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
@@ -56,18 +43,49 @@ const makeContents = (props) => {
         isNew
       } = list
 
+      const alertCheck = (roomNo) => {
+        if (context.adminChecker === true) {
+          context.action.confirm_admin({
+            //콜백처리
+            callback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 1
+              })
+            },
+            //캔슬콜백처리
+            cancelCallback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                shadow: 0
+              })
+            },
+            msg: '관리자로 입장하시겠습니까?'
+          })
+        } else {
+          RoomJoin({
+            roomNo: roomNo
+          })
+        }
+      }
+
       return (
-        <LiveList
-          key={`live-${idx}`}
-          onClick={() => {
-            RoomJoin(roomNo + '')
-          }}>
+        <LiveList key={`live-${idx}`} onClick={() => alertCheck(roomNo)}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
-              {/*<img className="type-icon" src={audioIcon} />*/}
-              <div className="type-text">{broadcastLive[roomType]}</div>
+              {categoryList && (
+                <div className="type-text">
+                  {(() => {
+                    const target = categoryList.find((category) => category['cd'] === roomType)
+                    if (target && target['cdNm']) {
+                      return target['cdNm']
+                    }
+                  })()}
+                </div>
+              )}
+
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
               {isNew === true && <span className="new-dj-icon">신입</span>}
@@ -115,9 +133,7 @@ const makeContents = (props) => {
               <div
                 className="half-live"
                 style={{backgroundImage: `url(${firstList.bjProfImg['thumb190x190']})`}}
-                onClick={() => {
-                  RoomJoin(firstList.roomNo + '')
-                }}>
+                onClick={() => alertCheck(roomNo)}>
                 <div className="top-status">
                   {firstList.entryType === 2 ? (
                     <span className="twenty-icon">20</span>
@@ -144,9 +160,7 @@ const makeContents = (props) => {
                 <div
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
-                  onClick={() => {
-                    RoomJoin(lastList.roomNo + '')
-                  }}>
+                  onClick={() => alertCheck(roomNo)}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (
                       <span className="twenty-icon">20</span>
@@ -188,7 +202,7 @@ export default (props) => {
 }
 
 const EvenWrap = styled.div`
-  margin-top: 18px;
+  /* margin-top: 18px; */
 `
 
 const HalfWrap = styled.div`
@@ -359,29 +373,10 @@ const LiveList = styled.div`
   position: relative;
   flex-direction: row;
   align-items: center;
-  padding: 0 7px;
-  margin: 20px -8px;
+  margin-top: 20px;
   width: 100%;
-
-  :before {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-
-    box-sizing: border-box;
-    border-radius: 15px;
-    background: #f5f5f5;
-
-    content: '';
-  }
-  @media (hover: hover) {
-    &:hover:before {
-      display: block;
-    }
+  &:first-child {
+    margin-top: 0;
   }
 
   .txt_boost {

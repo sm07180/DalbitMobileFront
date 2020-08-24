@@ -347,7 +347,7 @@ export default (props) => {
             <div className="txtCnt">
               <textarea
                 placeholder="회원을 기억하기 위한 메모를 입력해주세요.
-최대 500자까지 저장 가능합니다."
+                최대 500자까지 저장 가능합니다."
                 defaultValue={memoContent}
                 onChange={memoChange}></textarea>
               <span className="txtcount">{memoContent.length} / 500</span>
@@ -402,7 +402,7 @@ const Wrap = styled.div`
     &__registDt {
       margin-bottom: 4px;
       font-size: 12px;
-      line-height: 1.08;
+      line-height: 16px;
       text-align: left;
       color: #424242;
     }
@@ -412,7 +412,8 @@ const Wrap = styled.div`
       span {
         margin-right: 4px;
         font-size: 12px;
-        line-height: 1.08;
+        line-height: 16px;
+        height: 16px;
         letter-spacing: normal;
         text-align: left;
         color: #424242;
@@ -424,6 +425,7 @@ const Wrap = styled.div`
           display: inline-block;
           vertical-align: middle;
           width: 16px;
+          line-height: 16px;
           height: 16px;
           content: '';
           background: url(${PtimeIcon});
@@ -435,6 +437,7 @@ const Wrap = styled.div`
           margin-right: 1px;
           display: inline-block;
           vertical-align: middle;
+          line-height: 16px;
           width: 16px;
           height: 16px;
           content: '';
@@ -442,6 +445,8 @@ const Wrap = styled.div`
         }
       }
       &__lastTime {
+        display: flex;
+        align-items: center;
         position: relative;
         &:before {
           margin-right: 1px;
@@ -544,8 +549,11 @@ const Wrap = styled.div`
           &::placeholder {
             font-size: 14px;
             line-height: 1.43;
+            letter-spacing: -0.4px;
             text-align: left;
             color: #757575;
+            font-weight: normal;
+            letter-spacing: normal;
           }
         }
         .txtcount {
@@ -599,11 +607,12 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: row;
-    margin-top: 10px;
+    margin-top: 6px;
     align-items: center;
 
     &__garbageBtn {
       display: inline-block;
+      margin-left: 6px;
       width: 24px;
       height: 24px;
       background: url(${GarBageIcon});

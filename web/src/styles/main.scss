@@ -1,0 +1,673 @@
+.gnbWrap {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 48px;
+  background-color: #fff;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  z-index: 20;
+  padding: 0 6px;
+  .alarmSize {
+    width: 44px;
+    height: 44px;
+  }
+  .icon-wrap {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 80px;
+    .icon {
+      position: relative;
+      display: block;
+      width: 40px;
+    }
+    .alarm-new {
+      position: absolute;
+      border-radius: 50%;
+      top: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      background-color: #ec455f;
+    }
+    .news {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 5px;
+      height: 5px;
+      background: #ff0000;
+      z-index: 11;
+      border-radius: 50%;
+      content: '1';
+    }
+  }
+  .gnb-logo {
+    width: 103px;
+    font-size: 0;
+  }
+  .mic-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 50px;
+    border-radius: 27px;
+    background: linear-gradient(#632beb, #4c13d5);
+  }
+}
+
+.hiddenBg {
+  position: fixed;
+  top: -10px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #fff;
+}
+
+.micWrap {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  width: 86px;
+  top: 4px;
+  left: 50%;
+  border-radius: 27px;
+  z-index: 50;
+  transform: translateX(-50%);
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
+  background-color: #fff;
+}
+
+.refresh-wrap {
+  display: block;
+  position: relative;
+  height: 48px;
+  background-color: rgba(127, 127, 127, 0.3);
+  transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  .icon-wrap {
+    position: absolute;
+    left: 50%;
+    bottom: 6px;
+    .arrow-refresh-icon {
+      display: block;
+      position: relative;
+      left: -50%;
+    }
+  }
+}
+
+.main-wrap {
+  .section {
+    color: red;
+    font-weight: 700;
+    box-sizing: border-box;
+
+    &.my-star {
+      display: none;
+      padding: 25px 0 19px;
+      &.visible {
+        display: block;
+      }
+    }
+
+    &.rank {
+      padding: 20px 0 26px;
+      background-color: #fff;
+      color: #fff;
+
+      .title-wrap {
+        .title {
+          .txt {
+            font-size: 16px;
+            font-weight: 800;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: 1.13;
+            letter-spacing: normal;
+            text-align: left;
+            color: #000;
+          }
+        }
+      }
+    }
+
+    &.live-list {
+      padding-bottom: 20px;
+      .title-wrap {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        height: 64px;
+        padding: 22px 17px;
+        box-sizing: border-box;
+        background-color: #eeeeee;
+        border-bottom: 1px solid #eee;
+
+        .title {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+
+          .txt {
+            display: inline-block;
+            font-size: 18px;
+            letter-spacing: -0.36px;
+          }
+
+          .refresh-icon {
+            margin-left: 4px;
+          }
+        }
+      }
+      .content-wrap {
+        width: 100%;
+        padding: 20px 16px;
+      }
+    }
+  }
+  .room_cnt {
+    color: blue;
+    font-weight: 700;
+  }
+
+  .live-list-category {
+    position: relative;
+    display: flex;
+
+    flex-direction: row;
+    align-items: center;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+
+    .swiper-wrapper {
+      height: 40px;
+    }
+
+    &.fixed {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .inner-wrapper {
+      width: calc(100% - 16px);
+      margin-left: 16px;
+
+      .swiper-container {
+        overflow: hidden;
+
+        .list {
+          width: auto;
+          height: 40px;
+          line-height: 40px;
+          font-size: 14px;
+          letter-spacing: -0.35px;
+          margin: 0 8px;
+          color: #424242;
+          box-sizing: border-box;
+          font-weight: normal;
+          &.active {
+            color: #632beb;
+            font-weight: 700;
+            border-bottom: 1px solid #632beb;
+          }
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+
+  .title-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 16px;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .txt {
+        color: #424242;
+        font-size: 18px;
+        font-weight: bold;
+        letter-spacing: -0.36px;
+
+        &.in-active {
+          color: #bdbdbd;
+        }
+
+        &:nth-child(2) {
+          margin-left: 10px;
+        }
+      }
+      .rank-arrow {
+        width: 24px;
+        height: 24px;
+      }
+    }
+
+    .right-side {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .bar {
+        width: 1px;
+        height: 12px;
+        background-color: #9e9e9e;
+      }
+
+      .text {
+        padding: 0 10px;
+        color: #fff;
+        font-size: 16px;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: left;
+        color: #757575;
+
+        &.active {
+          font-size: 16px;
+          font-weight: 800;
+          line-height: 1.13;
+          letter-spacing: normal;
+          color: #000;
+        }
+      }
+    }
+
+    .sequence-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .text {
+        margin-left: 4px;
+        margin-right: 5px;
+        color: #424242;
+        font-size: 14px;
+        letter-spacing: -0.24px;
+      }
+
+      .sequence-icon {
+        margin-right: 15px;
+      }
+
+      .detail-list-icon {
+        margin-right: 2px;
+      }
+
+      .sequence-icon,
+      .detail-list-icon,
+      .simple-list-icon {
+        display: block;
+      }
+    }
+  }
+
+  .content-wrap {
+    position: relative;
+    min-height: 50px;
+    padding: 0 16px;
+    &.rank-slide {
+      padding: 0;
+    }
+    &.my-star-list {
+      height: 80px;
+      background-color: #fff;
+    }
+  }
+
+  .main-gnb {
+    display: flex;
+    position: relative;
+    align-items: center;
+    height: 42px;
+    background-color: #632beb;
+    box-sizing: border-box;
+    z-index: 1;
+    .broadBtn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 23px;
+      width: 108px;
+      height: 42px;
+      background-color: #000000;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.13;
+      letter-spacing: -0.4px;
+      color: #ffffff;
+      &::before {
+        display: inline-block;
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 36px;
+        height: 36px;
+        background: url(https://image.dalbitlive.com/main/200714/white_broad.svg) no-repeat 0 0;
+      }
+    }
+    .left-side {
+      display: flex;
+      flex-direction: row;
+      padding-left: 6px;
+      .tab {
+        height: 42px;
+        color: #fff;
+        font-size: 16px;
+        letter-spacing: -0.4px;
+        line-height: 42px;
+        a {
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 0 10px;
+          text-align: center;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .right-side {
+      .btn {
+        display: flex;
+        align-items: center;
+        position: relative;
+        width: 106px;
+        height: 34px;
+        margin-right: 8px;
+        padding-left: 34px;
+        font-weight: 600;
+        text-align: right;
+        letter-spacing: -0.4px;
+        border-radius: 18px;
+        background-color: #000;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 600;
+        box-sizing: border-box;
+        transform: skew(-0.03deg);
+
+        &::before {
+          position: absolute;
+          content: '';
+          width: 36px;
+          height: 36px;
+          left: 0;
+          top: 0;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-image: url(https://image.dalbitlive.com/main/200714/ic_broadcastng.svg);
+        }
+      }
+    }
+  }
+
+  .topSlide {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    margin-bottom: 10px;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background-color: #eee;
+    }
+
+    &__buttonWrap {
+      position: absolute;
+      top: 24px;
+      padding: 0px 20px;
+      box-sizing: border-box;
+      width: 100%;
+      height: 60px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1;
+    }
+    &__bg {
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+      width: 100%;
+      height: 220px;
+      &.broadcast {
+        &::after {
+          display: block;
+          content: '';
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+    &__itemWrap {
+      position: absolute;
+      top: 24px;
+      width: 100%;
+      padding: 0px 20px;
+      display: flex;
+      z-index: 1;
+      box-sizing: border-box;
+    }
+
+    &__number {
+      display: flex;
+      line-height: 25px;
+      justify-content: center;
+      margin-left: auto;
+      width: 58px;
+      height: 25px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      font-size: 14px;
+      border-radius: 14px;
+    }
+
+    &__iconWrap {
+      em {
+        position: absolute;
+        left: 16px;
+        top: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 52px;
+        height: 18px;
+        margin-right: 4px;
+        color: #fff;
+        font-style: normal;
+        font-size: 11px;
+        line-height: 18px;
+        border-radius: 20px;
+      }
+      .eventIcon {
+        background: #febd56;
+      }
+
+      .specialIcon {
+        background: #ec455f;
+      }
+
+      .adminIcon {
+        background: #3386f2;
+      }
+
+      span {
+        position: absolute;
+        right: 8px;
+        top: 8px;
+        &.liveIcon {
+          width: 42px;
+          height: 42px;
+          margin: 0;
+          font-size: 0;
+          background: url(https://image.dalbitlive.com/main/200714/live_l@3x.png) no-repeat 0 0;
+          background-size: contain;
+        }
+      }
+    }
+    &__infoWrap {
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      display: flex;
+      flex-direction: row;
+      align-content: center;
+      width: 100%;
+      padding: 0 16px;
+
+      .thumb {
+        display: block;
+        width: 48px;
+        height: 48px;
+        margin-right: 8px;
+        border-radius: 50%;
+        border: solid 1px rgba(255, 255, 255, 0.5);
+      }
+      .text {
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+        font-weight: bold;
+        line-height: 1.4;
+        .title {
+          display: block;
+          color: #fff;
+        }
+        .nickname {
+          display: block;
+          color: rgb(255, 179, 0);
+        }
+      }
+    }
+    .swiper-pagination-fraction {
+      bottom: 5px;
+      padding-right: 14px;
+      text-align: right;
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.6);
+      span {
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .swiper-pagination-current {
+        color: #fff;
+      }
+    }
+  }
+
+  .main-banner {
+    .slideWrap {
+      position: relative;
+
+      &.active {
+        display: none;
+      }
+
+      .swiper-container {
+        height: auto;
+        .banner {
+          img {
+            width: 100%;
+          }
+        }
+        .swiper-pagination-fraction {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          bottom: 7px;
+          right: 46px;
+          left: auto;
+          width: 45px;
+          height: 24px;
+          font-size: 12px;
+          letter-spacing: 3px;
+          background-color: rgba(0, 0, 0, 0.6);
+          color: white;
+          border-radius: 24px;
+          .swiper-pagination-total {
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    .bannerNumber {
+      border: solid 1px;
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      width: 45px;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      p {
+        opacity: 0.5;
+      }
+    }
+
+    .moreButton {
+      position: absolute;
+      right: 11px;
+      bottom: 7px;
+      z-index: 2;
+      width: 33px;
+      height: 24px;
+      border-radius: 24px;
+      background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+
+      &.active {
+        background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+      }
+    }
+
+    .basicBanner {
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .bannerView {
+      display: none;
+      img {
+        width: 100%;
+      }
+      &.active {
+        display: block;
+      }
+    }
+  }
+}

@@ -64,6 +64,10 @@ export default class API {
     const {data} = obj || {}
     return await ajax({url: `/broad/join`, method: 'POST', data: data})
   }
+  static broad_join_vw = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({url: `/broad/vw/join`, method: 'POST', data: data})
+  }
   /**
    * @brief 방송방 나가기
    * @method "DELETE"
@@ -1632,6 +1636,16 @@ export default class API {
    * @param int records                       //페이지당 리스트 수
    * @create 이은비 2020.03.11
    */
+
+  static get_ranking = async (obj) => {
+    const {param} = obj
+    return await ajax({
+      url: '/rank/page',
+      method: 'GET',
+      params: param
+    })
+  }
+
   static get_fan_ranking = async (obj) => {
     const {url, method, params} = obj || {}
     return await ajax({
@@ -1643,11 +1657,10 @@ export default class API {
   }
 
   static get_level_ranking = async (obj) => {
-    const {url, method, params} = obj || {}
+    const {params} = obj
     return await ajax({
-      ...obj,
-      url: url || `/rank/level`,
-      method: method || 'GET',
+      url: `/rank/level`,
+      method: 'GET',
       params: params
     })
   }
@@ -2217,11 +2230,14 @@ export default class API {
   static getEventAttendCheck = async (params) => {
     return await ajax({url: '/event/attendance/check', method: 'GET', params})
   }
-  static getEventAttendInput = async (params) => {
-    return await ajax({url: '/event/phone/input', method: 'GET', params})
+  static postEventAttendInput = async (data) => {
+    return await ajax({url: '/event/phone/input', method: 'POST', data})
   }
   static getEventAttendWinList = async (params) => {
     return await ajax({url: '/event/gifticon/win/list', method: 'GET', params})
+  }
+  static getEventAttendLunarDate = async (params) => {
+    return await ajax({url: '/event/lunar/date', method: 'GET', params})
   }
 
   static getNewFanList = async (params) => {

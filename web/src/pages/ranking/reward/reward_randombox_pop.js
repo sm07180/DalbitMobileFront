@@ -5,7 +5,7 @@ import Api from 'context/api'
 import Lottie from 'react-lottie'
 
 export default (props) => {
-  const {randomPopup, setRandomPopup, setPopup, rewardPop, setRewardPop, rankType, dateType} = props
+  const {randomPopup, setRandomPopup, setPopup, rewardPop, setRewardPop, rankType, dateType, myInfo, setMyInfo} = props
   const [randomPoint, setRandomPoint] = useState({
     rewardImg: ''
   })
@@ -13,6 +13,10 @@ export default (props) => {
   const closePopup = () => {
     setRandomPopup(false)
     setPopup(false)
+    setMyInfo({
+      ...myInfo,
+      isReward: false
+    })
   }
 
   setTimeout(closePopup, 5000)
@@ -21,7 +25,7 @@ export default (props) => {
     async function feachRandomReward() {
       const {result, data} = await Api.post_randombox_reward({
         data: {
-          rankSlct: rankType === 'dj' ? 1 : 2,
+          rankSlct: rankType,
           rankType: Number(dateType)
         }
       })

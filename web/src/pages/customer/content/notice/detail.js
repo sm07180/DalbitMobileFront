@@ -44,34 +44,36 @@ export default function Detail() {
   useEffect(() => {
     fetchData()
   }, [])
-  if((((new Date()).getMilliseconds() / 1000) - noticeDetail.writeTs) < (7 * 24 * 3600)){
+  if (new Date().getMilliseconds() / 1000 - noticeDetail.writeTs < 7 * 24 * 3600) {
     let mypageNewStg = localStorage.getItem('mypageNew')
-    if(mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === ''){
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
       mypageNewStg = {}
-    }else{
+    } else {
       mypageNewStg = JSON.parse(mypageNewStg)
     }
-    if(mypageNewStg.notice === undefined || mypageNewStg.notice === null || mypageNewStg.notice === ''){
+    if (mypageNewStg.notice === undefined || mypageNewStg.notice === null || mypageNewStg.notice === '') {
       mypageNewStg.notice = [parseInt(noticeIdx)]
-    }else{
-      if(mypageNewStg.notice.find(e => e === noticeIdx) !== undefined) {
+    } else {
+      if (mypageNewStg.notice.find((e) => e === noticeIdx) === undefined) {
         mypageNewStg.notice.push(parseInt(noticeIdx))
       }
     }
-    localStorage.setItem("mypageNew", JSON.stringify(mypageNewStg))
+    localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
   return (
     <>
       {noticeDetail !== false && (
-        <div className="detail">
-          <header>
-            <span>{noticeDetail.title}</span>
-            <span>{detailDate()}</span>
-          </header>
-          <div onClick={Utility.contentClickEvent}>
-            <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
+        <div id="noticeDetail">
+          <div className="detail">
+            <header>
+              <span>{noticeDetail.title}</span>
+              <span>{detailDate()}</span>
+            </header>
+            <div onClick={Utility.contentClickEvent}>
+              <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
+            </div>
+            {/* <button>목록보기</button> */}
           </div>
-          {/* <button>목록보기</button> */}
         </div>
       )}
     </>

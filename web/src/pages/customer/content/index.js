@@ -51,7 +51,7 @@ const Index = (props) => {
       header = '1:1 문의'
       break
     case 'appInfo':
-      header = '앱 정보 / 운영 정책 / 회원 탈퇴'
+      header = '운영 정책 / 회원 탈퇴'
       if (num === 'service') {
         header = '서비스 이용약관'
       } else if (num === 'privacy') {
@@ -61,7 +61,7 @@ const Index = (props) => {
       } else if (num === 'operating') {
         header = '운영정책'
       } else {
-        header = '앱 정보 / 운영 정책 / 회원 탈퇴'
+        header = '운영 정책 / 회원 탈퇴'
       }
       break
     default:
@@ -134,7 +134,6 @@ export const Store = () => {
 }
 //---------------------------------------------------------------------
 const Container = styled.div`
-  width: 1210px;
   margin: 0px auto 0 auto;
   background-color: #eeeeee;
   padding-top: 12px;

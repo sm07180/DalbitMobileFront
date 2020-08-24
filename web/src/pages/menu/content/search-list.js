@@ -1,12 +1,13 @@
 /**
  * @title 최근 본 달디
  */
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import API from 'context/api'
 import Room, {RoomJoin} from 'context/room'
+import {Context} from 'context'
 // component
 import NoResult from 'components/ui/noResult'
 import PlayIcon from '../static/s_live.svg'
@@ -22,7 +23,7 @@ import AllFanIcon from '../static/s_fan.svg'
 import AllLimitIcon from '../static/s_limit.svg'
 export default (props) => {
   let history = useHistory()
-
+  const ctx = useContext(Context)
   //update
   function update(mode) {
     switch (true) {
@@ -93,7 +94,34 @@ export default (props) => {
               onClick={() => {
                 props.update({select: {...list, type: props.type}})
               }}>
-              <img src={bgImg.thumb88x88} onClick={() => RoomJoin(roomNo)} />
+              <img
+                src={bgImg.thumb88x88}
+                onClick={() => {
+                  if (ctx.adminChecker === true) {
+                    ctx.action.confirm_admin({
+                      //콜백처리
+                      callback: () => {
+                        RoomJoin({
+                          roomNo: roomNo,
+                          shadow: 1
+                        })
+                      },
+                      //캔슬콜백처리
+                      cancelCallback: () => {
+                        RoomJoin({
+                          roomNo: roomNo,
+                          shadow: 0
+                        })
+                      },
+                      msg: '관리자로 입장하시겠습니까?'
+                    })
+                  } else {
+                    RoomJoin({
+                      roomNo: roomNo
+                    })
+                  }
+                }}
+              />
               <div className="infoBox">
                 {/* {roomNo !== '' && <em></em>} */}
                 <div className="detail">

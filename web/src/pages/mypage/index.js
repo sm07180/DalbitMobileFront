@@ -35,6 +35,8 @@ let NewState = {
 }
 export default (props) => {
   const {webview} = qs.parse(location.search)
+  let history = useHistory()
+
   //navi Array
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
@@ -58,7 +60,9 @@ export default (props) => {
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
+
   var urlrStr = props.location.pathname.split('/')[2]
+
   //state
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -68,8 +72,9 @@ export default (props) => {
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
   } else if (profile && profile.memNo === memNo) {
-    memNo = profile.memNo
+    // memNo = profile.memNo
   }
+
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -94,11 +99,11 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
+    console.log(globalCtx)
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        // context.action.updateProfile(profileInfo.data)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -116,10 +121,11 @@ export default (props) => {
         })
       }
     }
+
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [context.mypageFanCnt])
+  }, [memNo, context.mypageFanCnt])
 
   // check 탈퇴회원
   useEffect(() => {
@@ -133,12 +139,13 @@ export default (props) => {
     }
   }, [codes])
   // my MemNo vs Your check
-  if (urlrStr === token.memNo && webview && webview !== 'new') {
+  if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -148,14 +155,12 @@ export default (props) => {
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} />
+              <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
               <Sub2>
                 {subNavList2.map((value, idx) => {
-                  console.log(NewState['fanboard'])
-                  console.log(NewState['notice'])
                   const {type, txt, icon, component} = value
                   return (
-                    <div className="link-list" key={`list-${idx}`} onClick={() => saveUrlAndRedirect(`/mypage/${memNo}/${type}`)}>
+                    <div className="link-list" key={`list-${idx}`} onClick={() => history.push(`/mypage/${memNo}/${type}`)}>
                       <div className="list">
                         <img className="icon" src={icon} />
                         <span className="text">{txt}</span>
@@ -195,14 +200,10 @@ const SubContent = styled.div`
 `
 const Mypage2 = styled.div`
   margin-top: ${(props) => (props.webview ? 0 : '0px')};
-  width: 1210px;
   position: relative;
   .close-btn {
     position: absolute;
     left: 6px;
-  }
-  @media (max-width: 1260px) {
-    width: 100%;
   }
 `
 const Sub2 = styled.div`
@@ -223,7 +224,6 @@ const Sub2 = styled.div`
       border-bottom: 1px solid #eee;
       .text {
         color: #000000;
-        font-size: 14px;
         letter-spacing: -0.35px;
         font-weight: 800;
       }
@@ -247,7 +247,7 @@ const Sub2 = styled.div`
             display: block;
             width: 24px;
             height: 24px;
-            margin-left: -24px;
+            margin-left: -28px;
             background: url(${newCircle});
           }
         }

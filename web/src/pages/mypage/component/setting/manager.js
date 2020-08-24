@@ -10,6 +10,7 @@ import qs from 'query-string'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
@@ -26,7 +27,7 @@ import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
-
+  let history = useHistory()
   //contenxt
   const context = useContext(Context)
 
@@ -156,7 +157,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -199,7 +200,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -243,7 +244,7 @@ export default (props) => {
             const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
             return (
               <li key={index}>
-                <a href={link}>
+                <a onClick={() => history.push(link)}>
                   <figure
                     style={{
                       background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
@@ -413,22 +414,27 @@ const SearchArea = styled.div`
   position: relative;
   border-radius: 12px;
 
-  * {
-    height: 44px;
-    line-height: 44px;
-  }
-
   select {
     width: 100px;
     border-right: 1px solid #bdbdbd;
     color: #707070;
     text-indent: 12px;
     background: url(${IMG_SERVER}/images/api/ico_selectdown_g.png) no-repeat 89% center;
+    height: 44px;
+    line-height: 44px;
+  }
+  .select-box {
+    * {
+      height: 44px;
+      line-height: 44px;
+    }
   }
   input {
     width: calc(100% - 102px);
     margin-left: 100px;
-    padding: 0px 46px 0 12px;
+    padding: 10px 46px 10px 12px;
+    height: 44px;
+    line-height: 24px;
     color: #000;
     background-color: #fff;
     border: 1px solid #e0e0e0;
@@ -451,7 +457,7 @@ const SearchArea = styled.div`
   button {
     position: absolute;
     right: 10px;
-    top: 6px;
+    top: 3px;
     width: 36px;
     height: 36px;
     background: url(${SearchIconGray}) no-repeat center / cover;
@@ -628,6 +634,8 @@ const Content = styled.div`
           transform: skew(-0.03deg);
         }
         span:first-child {
+          line-height: 21px;
+          height: 21px;
           font-size: 16px;
           font-weight: 600;
           letter-spacing: normal;
@@ -636,6 +644,8 @@ const Content = styled.div`
         }
 
         span:last-child {
+          line-height: 16px;
+          height: 16px;
           font-size: 12px;
           text-align: left;
           color: #000000;

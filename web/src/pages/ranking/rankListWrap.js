@@ -1,46 +1,36 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import Api from 'context/api'
-import Util from 'components/lib/utility.js'
 
 //components
 import NoResult from 'components/ui/noResult'
-import RankList from './rankList'
+import RankListComponent from './rankList'
 import RankListTop from './rankListTop'
 import PopupSuccess from './reward/reward_success_pop'
 
+// constant
+import {RANK_TYPE, DATE_TYPE, DAY_TYPE} from './constant'
+
 //static
-import point from './static/ico-point.png'
-import point2x from './static/ico-point@2x.png'
-import likeWhite from './static/like_w_s.svg'
-import peopleWhite from './static/people_w_s.svg'
-import timeWhite from './static/time_w_s.svg'
-
-const dateArray = ['오늘', '일간', '주간']
-
-let moreState = false
 
 export default (props) => {
-  let timer
   const history = useHistory()
+  const globalCtx = useContext(Context)
+  const {token} = globalCtx
+  const {rankType, dateType, setDateType, rankList, myInfo, selectedDate, handleDate, setMyInfo} = props
 
-  const context = useContext(Context)
-  const {
-    typeState,
-    dateType,
-    setDateType,
-    rankType,
-    setRankType,
-    list,
-    fetchRank,
-    myInfo,
-    setMyInfo,
-    nextList,
-    setCurrentPage,
-    resetFn
-  } = props
+  const [dateTitle, setDateTitle] = useState({
+    header: '오늘',
+    date: ''
+  })
+
+  const [btnActive, setBtnActive] = useState({
+    prev: false,
+    next: false
+  })
+
   const [myProfile, setMyProfile] = useState(false)
   const [rewardPop, setRewardPop] = useState({
     text: '',
@@ -48,159 +38,76 @@ export default (props) => {
   })
   const [popup, setPopup] = useState(false)
 
-  const createDateButton = () => {
-    return dateArray.map((item, index) => {
-      //index++
+  const createDateButton = useCallback(() => {
+    const DATE_TYPE_LIST = Object.keys(DATE_TYPE).map((type) => DATE_TYPE[type])
+    return ['오늘', '주간', '월간', '연간'].map((text, idx) => {
       return (
         <button
-          key={index}
-          className={dateType === index ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
-          onClick={() => {
-            setCurrentPage()
-            setDateType(index)
-            fetchRank(rankType, index)
-            setMyInfo({
-              isReward: false,
-              myGiftPoint: 0,
-              myListenerPoint: 0,
-              myRank: 0,
-              myUpDown: '',
-              myBroadPoint: 0,
-              myLikePoint: 0,
-              myPoint: 0,
-              myListenPoint: 0,
-              time: ''
-            })
-          }}>
-          {item}
+          key={`date-type-${idx}`}
+          className={dateType === DATE_TYPE_LIST[idx] ? 'todayList__btn todayList__btn--active' : 'todayList__btn'}
+          onClick={() => setDateType(DATE_TYPE_LIST[idx])}>
+          {text}
         </button>
       )
     })
-  }
+  }, [dateType])
 
-  const creatMyRank = () => {
-    if (context.token.isLogin) {
-      const settingProfileInfo = async (memNo) => {
-        const profileInfo = await Api.profile({
-          params: {memNo: context.token.memNo}
-        })
-        if (profileInfo.result === 'success') {
-          setMyProfile(profileInfo.data)
-        }
-      }
-      settingProfileInfo()
-    } else {
+  // const createMyRank = useCallback(() => {
+  //   if (token.isLogin) {
+  //     const settingProfileInfo = async (memNo) => {
+  //       const profileInfo = await Api.profile({
+  //         params: {memNo: token.memNo}
+  //       })
+  //       if (profileInfo.result === 'success') {
+  //         setMyProfile(profileInfo.data)
+  //       }
+  //     }
+  //     settingProfileInfo()
+  //   } else {
+  //     return null
+  //   }
+  // }, [])
+
+  const createResult = useCallback(() => {
+    if (Array.isArray(rankList) === false) {
       return null
     }
-  }
-
-  useEffect(() => {
-    if (typeState) {
-      setRankType(typeState)
-      fetchRank(typeState, dateType)
-    } else {
-      fetchRank(rankType, dateType)
-    }
-
-    creatMyRank()
-  }, [])
-
-  const creatResult = () => {
-    if (list === -1) {
-      return null
-    } else if (list === 0) {
+    if (rankList.length === 0) {
       return <NoResult />
-    } else {
-      return (
-        <>
-          <RankListTop list={list.slice(0, 3)} rankType={rankType} myMemNo={myProfile.memNo} />
-          <RankList list={list.slice(3)} rankType={rankType} />
-        </>
-      )
     }
-  }
+    return (
+      <>
+        <RankListTop list={rankList.slice(0, 3)} rankType={rankType} dateType={dateType} myMemNo={myProfile.memNo} />
+        <RankListComponent list={rankList.slice(3)} rankType={rankType} dateType={dateType} />
+      </>
+    )
+  }, [rankList, rankType, dateType])
 
-  const createMyProfile = () => {
-    const {myUpDown} = myInfo
+  // const createMyProfile = () => {
+  //   const {myUpDown} = myInfo
 
-    let myUpDownName,
-      myUpDownValue = ''
-    if (myUpDown[0] === '+') {
-      myUpDownName = `rankingChange__up rankingChange__up--profile`
-      myUpDownValue = myUpDown.split('+')[1]
-    } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
-      myUpDownName = `rankingChange__down rankingChange__down--profile`
-      myUpDownValue = myUpDown.split('-')[1]
-    } else if (myUpDown === 'new') {
-      myUpDownName = `rankingChange__new`
-      myUpDownValue = 'new'
-    } else {
-      myUpDownName = `rankingChange__stop`
-    }
-    return <span className={myUpDownName}>{myUpDownValue}</span>
-  }
+  //   let myUpDownName,
+  //     myUpDownValue = ''
+  //   if (myUpDown[0] === '+') {
+  //     myUpDownName = `rankingChange__up rankingChange__up--profile`
+  //     myUpDownValue = myUpDown.split('+')[1]
+  //   } else if (myUpDown[0] === '-' && myUpDown.length > 1) {
+  //     myUpDownName = `rankingChange__down rankingChange__down--profile`
+  //     myUpDownValue = myUpDown.split('-')[1]
+  //   } else if (myUpDown === 'new') {
+  //     myUpDownName = `rankingChange__new`
+  //     myUpDownValue = 'new'
+  //   } else {
+  //     myUpDownName = `rankingChange__stop`
+  //   }
+  //   return <span className={myUpDownName}>{myUpDownValue}</span>
+  // }
 
-  useEffect(() => {
-    //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
-
-  useEffect(() => {
-    window.removeEventListener('scroll', scrollEvent)
-    window.addEventListener('scroll', scrollEvent)
-    return () => {
-      window.removeEventListener('scroll', scrollEvent)
-    }
-  }, [context.logoChange])
-
-  //checkScroll
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      //스크롤이벤트체크
-      /*
-       * @가속처리
-       */
-      if (moreState && windowBottom >= docHeight - 400) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-
-  const showMoreList = () => {
-    setList(list.concat(nextList))
-    fetchRank(rankType, dateType, 'next')
-  }
-
-  const scrollEvent = () => {
-    const headerHeight = 48
-
-    if (window.scrollY >= headerHeight) {
-      context.action.updateLogoChange(true)
-    } else if (window.scrollY < headerHeight) {
-      context.action.updateLogoChange(false)
-    }
-  }
-
-  //clickState === 1 :탭 버튼이 변경되었을 경우
-  //clickState === 2 :보상받기를 클릭했을 경우
   const rankingReward = (clickState) => {
-    if (dateType === 0) return null
-
-    async function feachrankingReward() {
+    async function feachRankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: rankType === 'dj' ? 1 : 2,
+          rankSlct: rankType,
           rankType: dateType
         }
       })
@@ -212,134 +119,54 @@ export default (props) => {
         setRewardPop(data)
       } else {
         if (clickState === 2) {
-          return context.action.alert({
+          return globalCtx.action.alert({
             msg: `랭킹 보상을 받을 수 있는 \n 기간이 지났습니다.`
           })
         }
         setMyInfo({...myInfo, isReward: false})
       }
     }
-    feachrankingReward()
+    feachRankingReward()
   }
-
-  useEffect(() => {
-    rankingReward(1)
-  }, [dateType, rankType])
-
-  useEffect(() => {
-    if (!popup) {
-      resetFn()
-    }
-  }, [popup])
 
   return (
     <>
-      <div className="todayList">{createDateButton()}</div>
-      {myInfo.isReward ? (
-        <>
-          <div>
-            <div className="rewordBox">
-              <p className="rewordBox__top">
-                {rewardPop.text} <span>축하합니다</span>
-              </p>
+      {/* <div className="todayList">{createDateButton()}</div> */}
+      {/* <div className="detailView">
+        <button
+          className={`prevButton ${btnActive['prev'] === true ? 'active' : ''}`}
+          onClick={() => {
+            if (btnActive['prev'] === true) {
+              handleDate('prev')
+            }
+          }}>
+          이전
+        </button>
 
-              <div className="rewordBox__character1"></div>
-              <div className="rewordBox__character2"></div>
-              <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
-                보상 받기
-              </button>
-            </div>
-          </div>
-
-          {popup && (
-            <PopupSuccess
-              setPopup={setPopup}
-              rewardPop={rewardPop}
-              setRewardPop={setRewardPop}
-              rankType={rankType}
-              dateType={dateType}
+        <div className="title">
+          <div className="titleWrap">
+            {dateTitle.header}
+            <img
+              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
+              alt="benefit"
+              className="benefitSize"
+              onClick={() => {}}
             />
-          )}
-        </>
-      ) : (
-        <>
-          {myProfile && (
-            <div
-              className="myRanking myRanking__profile"
-              onClick={() => {
-                history.push(`/menu/profile`)
-              }}>
-              <div className="myRanking__left myRanking__left--profile">
-                <p
-                  className="myRanking__left--title colorWhite 
-      ">
-                  내 랭킹
-                </p>
-                <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-                <p className="rankingChange">{createMyProfile()}</p>
-              </div>
+          </div>
+          <span>{dateTitle.date}</span>
+        </div>
 
-              <div className="thumbBox thumbBox__profile">
-                <img src={myProfile.holder} className="thumbBox__frame" />
-                <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
-              </div>
-
-              <div className="myRanking__right">
-                <div className="myRanking__rightWrap">
-                  <div className="profileItme">
-                    <p className="nickNameBox">{myProfile.nickNm}</p>
-                    <div className="countBox countBox--profile">
-                      {rankType == 'dj' && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
-                            <span className="countBox__item">
-                              <img src={peopleWhite} />
-                              {Util.printNumber(myInfo.myListenerPoint)}
-                            </span>
-                          </div>
-
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={likeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myLikePoint)}
-                            </span>
-
-                            <span className="countBox__item">
-                              <img src={timeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myBroadPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                      {rankType == 'fan' && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
-
-                            <span className="countBox__item">
-                              <img src={timeWhite} />
-                              {Util.printNumber(myInfo.myListenPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </>
-      )}
-
-      {creatResult()}
+        <button
+          className={`nextButton ${btnActive['next'] === true ? 'active' : ''}`}
+          onClick={() => {
+            if (btnActive['next'] === true) {
+              handleDate('next')
+            }
+          }}>
+          다음
+        </button>
+      </div> */}
+      {createResult()}
     </>
   )
 }

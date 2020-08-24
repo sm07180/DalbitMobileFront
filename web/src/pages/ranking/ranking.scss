@@ -1,4 +1,7 @@
 #ranking-page {
+  min-height: 100vh;
+  background-color: #eee;
+
   .respansiveBox {
     padding: 0 16px;
   }
@@ -15,6 +18,7 @@
     padding: 14px 0;
     box-sizing: border-box;
     padding: 12px 16px;
+    background-color: #fff;
 
     &__title {
       font-size: 18px;
@@ -26,7 +30,7 @@
       display: block;
       width: 36px;
       position: absolute;
-      top: 6px;
+      top: 4px;
       left: 2%;
     }
   }
@@ -76,25 +80,105 @@
     height: 36px;
     border-bottom: 1px solid #eee;
     text-align: center;
+    background-color: #fff;
 
     &__btn {
+      position: relative;
       margin: 0 10px;
       height: 36px;
       font-size: 16px;
       color: #000;
-      border-bottom: 1px solid #f5f5f5;
       &--active {
-        border-color: #632beb;
         color: #632beb;
         font-weight: 900;
+        &::after {
+          display: inline-block;
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 100%;
+          height: 1px;
+          background-color: #632beb;
+        }
+      }
+      &--blur {
+        color: #888;
+        cursor: none;
+      }
+    }
+  }
+
+  .detailView {
+    height: 56px;
+    background: #eee;
+    padding: 0px 10px;
+    display: flex;
+    justify-content: space-between;
+
+    .titleWrap {
+      display: flex;
+      align-items: center;
+    }
+
+    .benefitSize {
+      width: 43px;
+      height: 28px;
+      display: inline-block;
+      margin-left: 7px;
+    }
+    .subDay {
+      font-size: 12px;
+      color: #616161;
+    }
+
+    .title {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      flex: 1;
+      font-size: 16px;
+      color: #632beb;
+      font-weight: 700;
+
+      span {
+        color: #616161;
+        font-size: 12px;
+      }
+    }
+
+    .prevButton {
+      font-size: 14px;
+      font-weight: 700;
+      color: #bdbdbd;
+      background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_g.svg') left center no-repeat;
+      padding-left: 24px;
+      &.active {
+        color: #000;
+        font-weight: 700;
+        background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_b_on.svg') left center no-repeat;
+      }
+    }
+    .nextButton {
+      font-size: 14px;
+      font-weight: 700;
+      color: #bdbdbd;
+      padding-right: 24px;
+      background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_g.svg') right center no-repeat;
+
+      &.active {
+        color: #000;
+        font-weight: 700;
+
+        background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_b_on.svg') right center no-repeat;
       }
     }
   }
 
   .myRanking {
-    display: flex;
-    align-items: center;
-    padding: 6px 0 6px 0;
+    overflow: hidden;
+    position: relative;
 
     .profileItme {
       margin-left: auto;
@@ -103,6 +187,21 @@
 
     &__profile {
       background: #632beb;
+
+      // & > div:first-child {
+      //   position: absolute;
+      //   z-index: 0;
+      //   top: 0;
+      //   left: calc(50% - 210px);
+      // }
+      &__wrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 7px 0;
+        position: relative;
+        z-index: 2;
+      }
 
       .colorWhite {
         color: #fff;
@@ -118,6 +217,13 @@
         &__item {
           color: #fff;
         }
+      }
+
+      &--fixed {
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        z-index: 3;
       }
     }
 
@@ -310,6 +416,7 @@
     position: relative;
     padding: 12px 0;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
 
     .thumbBox {
       width: 60px;
@@ -499,7 +606,8 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      padding: 12px 0 16px 0;
+
+      padding: 0px 0 16px 0;
       background: #eee;
 
       .thumbBox {
@@ -616,6 +724,7 @@
     position: relative;
     padding: 12px;
     border-bottom: 1px solid #eee;
+    background-color: #fff;
 
     .thumbBox {
       width: 70px;

@@ -305,7 +305,7 @@ export default function DoExchange({state, dispatch}) {
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
       context.action.alert({
-        msg: '17세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
+        msg: '12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.',
         callback: () => {
           formDispatch({type: 'usageAlert', val: false})
           context.action.alert({visible: false})
@@ -348,6 +348,25 @@ export default function DoExchange({state, dispatch}) {
     }
 
     fetchData()
+
+    // context.action.alert({
+    //   className: 'mobile',
+    //   title: '[시스템 보완작업으로 인한 환전 일정 변경]',
+    //   msg: `시스템 보완작업으로 아래와 같이 환전 업무가 조정되오니 일정을 확인해 주세요.\n
+    //     ——————아  래——————\n
+    //     ■ 스페셜 회원 (변동 없음)
+    //     - 신청일 : 20/08/11(화)
+    //     - 지급일 : 20/08/12(수)\n
+    //     ■ 일반회원
+    //     - 신청일 : 20/08/10(월)~20/08/11(화)
+    //     - 지급일 : 20/08/13(목)이지만 하루 앞당긴
+    //     → 20/08/12(수) 오전 순차 지급\n
+    //     ■ 스페셜, 일반회원 추가 변경 일정
+    //     - 신청일 : 8/12(수)~8/18(화)
+    //     - 지급일 : 20/08/19(수) 오전부터 순차 지급\n
+    //     2020.08.19(수) 이후 신청 건은 일반과 스페셜 조건에 맞춰 정상 일정으로 지급됩니다.\n
+    //     감사합니다.`
+    // })
   }, [])
 
   return (

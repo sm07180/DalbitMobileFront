@@ -24,7 +24,7 @@ const LiveIndex = () => {
   LiveIndex.context = context
   //-----------------------------------------------------------
   // 방송방 리스트 조회
-  const getBroadList = async mode => {
+  const getBroadList = async (mode) => {
     const obj = {
       params: {records: 10, roomType: Store().roomType, page: Store().currentPage, searchType: Store().searchType}
     }
@@ -51,9 +51,38 @@ const LiveIndex = () => {
         if (clicked) return
         clicked = true
         const {roomNo} = mode.selectList
-        RoomJoin(roomNo + '', () => {
-          clicked = false
-        })
+        if (context.adminChecker === true) {
+          context.action.confirm_admin({
+            //콜백처리
+            callback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                callbackFunc: () => {
+                  clicked = false
+                },
+                shadow: 1
+              })
+            },
+            //캔슬콜백처리
+            cancelCallback: () => {
+              RoomJoin({
+                roomNo: roomNo,
+                callbackFunc: () => {
+                  clicked = false
+                },
+                shadow: 0
+              })
+            },
+            msg: '관리자로 입장하시겠습니까?'
+          })
+        } else {
+          RoomJoin({
+            roomNo: roomNo,
+            callbackFunc: () => {
+              clicked = false
+            }
+          })
+        }
         break
       default:
         break

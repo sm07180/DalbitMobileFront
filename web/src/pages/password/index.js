@@ -31,7 +31,7 @@ export default (props) => {
   })
 
   function reducer(state, action) {
-    const {name, value} = action
+    let {name, value} = action
 
     //휴대폰번호
     if (name === 'memId' && value.length === 11) {
@@ -61,6 +61,10 @@ export default (props) => {
           auth: false
         })
       }
+    }
+
+    if (name === 'loginPwd' || name === 'loginPwdCheck') {
+      value = value.toLowerCase()
     }
 
     return {
@@ -465,8 +469,11 @@ const InputItem = styled.div`
 
     .timer {
       position: absolute;
-      right: 98px;
-      top: 28px;
+      display: inline-block;
+      height: 32px;
+      line-height: 32px;
+      right: 96px;
+      top: 22px;
       font-size: 14px;
       font-weight: bold;
       color: #ec455f;

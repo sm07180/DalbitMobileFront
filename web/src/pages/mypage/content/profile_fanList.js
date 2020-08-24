@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
@@ -15,6 +16,7 @@ export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
   const ctx = useContext(Context)
+  let history = useHistory()
   //pathname
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
@@ -179,7 +181,15 @@ export default (props) => {
       }
     }
   }, [])
+  const ClickUrl = (link) => {
+    context.action.updateClose(false)
+    context.action.updateCloseFanCnt(false)
+    context.action.updateCloseStarCnt(false)
 
+    history.push(link, {
+      hash: window.location.hash
+    })
+  }
   return (
     <>
       <HoleWrap>
@@ -210,7 +220,7 @@ export default (props) => {
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a href={link}>
+                          <a onClick={() => ClickUrl(link)}>
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
@@ -237,7 +247,7 @@ export default (props) => {
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a href={link}>
+                          <a onClick={() => ClickUrl(link)}>
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>
@@ -264,7 +274,7 @@ export default (props) => {
                       }
                       return (
                         <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a href={link}>
+                          <a onClick={() => ClickUrl(link)}>
                             <Photo bg={profImg.thumb62x62}></Photo>
                             <span>{nickNm}</span>
                           </a>

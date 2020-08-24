@@ -16,11 +16,13 @@ import Api from 'context/api'
 // component
 import Header from '../component/header.js'
 import ReplyList from './fanBoard_reply'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import ReplyIcon from '../static/ic_reply_purple.svg'
 import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
+import LockIcon from '../static/lock_g.svg'
 //--------------------------------------------------------------------------
 export default (props) => {
   // context && location
@@ -39,9 +41,12 @@ export default (props) => {
   const [checkIdx, setCheckIdx] = useState(0)
   const [replyShowIdx, setReplyShowIdx] = useState(false)
   const [titleReplyInfo, setTitleReplyInfo] = useState('')
+  const [isScreet, setIsScreet] = useState(false)
+  const [donstChange, setDonstChange] = useState(false)
   //modift msg
   const [modifyMsg, setModifyMsg] = useState('')
   const [textChange, setTextChange] = useState('')
+
   //--------------------------function
   //dateformat
   const timeFormat = (strFormatFromServer) => {
@@ -80,7 +85,14 @@ export default (props) => {
     setModifyMsg(target.value)
   }
   //대댓글 작성 및 초기화
-  const ReplyWrite = (boardIdx) => {
+  const ReplyWrite = (boardIdx, viewOn) => {
+    if (viewOn === 0) {
+      setIsScreet(true)
+      setDonstChange(true)
+    } else {
+      setIsScreet(false)
+      setDonstChange(false)
+    }
     if (ReplyWriteState === false) {
       context.action.updateReplyIdx(boardIdx)
       setReplyWriteState(true)
@@ -149,7 +161,8 @@ export default (props) => {
         memNo: urlrStr,
         depth: 2,
         content: textChange,
-        boardNo: context.replyIdx
+        boardNo: context.replyIdx,
+        viewOn: isScreet === true ? 0 : 1
       }
     })
     if (res.result === 'success') {
@@ -187,15 +200,14 @@ export default (props) => {
           {TotalList &&
             TotalList !== false &&
             TotalList.map((item, index) => {
-              const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx} = item
+              const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx, viewOn} = item
               const Link = () => {
                 if (webview) {
-                  link =
-                    context.token.memNo !== writerNo
-                      ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-                      : history.push(`/menu/profile`)
+                  context.token.memNo !== writerNo
+                    ? history.push(`/mypage/${writerNo}?webview=${webview}`)
+                    : history.push(`/menu/profile`)
                 } else {
-                  link = context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
+                  context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
                 }
               }
               return (
@@ -217,8 +229,13 @@ export default (props) => {
 
                     <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
                     <div className="big_header_info">
-                      <p onClick={Link}>{nickNm}</p>
-                      <p onClick={Link}>{timeFormat(writeDt)}</p>
+                      <span onClick={Link}>
+                        <div>
+                          <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
+                          <span className="big_header_info__name">{nickNm}</span>
+                        </div>
+                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
+                      </span>
                     </div>
                   </div>
                   <div className="content_area">
@@ -226,7 +243,7 @@ export default (props) => {
                   </div>
                   <div className="big_footer">
                     <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
-                    <a onClick={() => ReplyWrite(boardIdx)}>답글쓰기</a>
+                    <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a>
                   </div>
                 </BigReply>
               )
@@ -258,7 +275,20 @@ export default (props) => {
               <div className="content_area">
                 <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
                 <span className="bigCount">
-                  <em>{textChange.length}</em> / 100
+                  <span className="bigCount__screet">
+                    <DalbitCheckbox
+                      status={isScreet}
+                      callback={() => {
+                        if (!setDonstChange) {
+                          setIsScreet(!isScreet)
+                        }
+                      }}
+                    />
+                    <span className="bold">비공개</span>
+                  </span>
+                  <span>
+                    <em>{textChange.length}</em> / 100
+                  </span>
                 </span>
                 <button onClick={() => fetchDataUploadReply()}>등록</button>
               </div>
@@ -276,7 +306,7 @@ export default (props) => {
 const BigReply = styled.div`
   width: 100%;
   background-color: #fff;
-  min-height: 196px;
+  /* min-height: 196px; */
   margin-bottom: 12px;
   .detailwapper {
     position: relative;
@@ -327,8 +357,7 @@ const BigReply = styled.div`
     display: flex;
     flex-direction: column;
     margin-left: 10px;
-    p:first-child {
-      display: block;
+    &__name {
       height: 20px;
       line-height: 20px;
       max-width: 200px;
@@ -340,16 +369,23 @@ const BigReply = styled.div`
       text-align: left;
       color: #000000;
     }
-    p:last-child {
+    &__dt {
       margin-top: 4px;
       font-size: 12px;
       text-align: left;
       color: #9e9e9e;
     }
+
+    &__lock {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: url(${LockIcon}) no-repeat center;
+    }
   }
   .content_area {
     padding: 16px 65px 16px 21px;
-    min-height: 100px;
+    /* min-height: 100px; */
     border-top: 1px solid #eeeeee;
     border-bottom: 1px solid #eeeeee;
 
@@ -506,8 +542,7 @@ const Writer = styled.div`
         font-style: normal;
         font-weight: 800;
       }
-      display: block;
-      margin-left: auto;
+      display: flex;
       margin-right: 7px;
       margin-top: 4px;
       margin-bottom: 32px;
@@ -516,6 +551,29 @@ const Writer = styled.div`
       letter-spacing: normal;
       text-align: right;
       color: #616161;
+
+      &__screet {
+        display: flex;
+        flex: 1;
+        align-items: center;
+
+        & > input {
+          margin-right: 10px;
+        }
+
+        & > .bold {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        span {
+          font-size: 12px;
+        }
+      }
+
+      & > span:last-child {
+        display: flex;
+        align-items: center;
+      }
     }
     > button {
       height: 44px;
