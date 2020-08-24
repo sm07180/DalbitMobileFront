@@ -61,8 +61,9 @@ export default (props) => {
                   </span>
                 </div>
                 <div className="bestFanBox">
-                  <span className="bestFanBox__label">최고FAN</span>
+                  <span className="bestFanBox__label">최고팬</span>
                   <span
+                    className="bestFanBox__nickNm"
                     onClick={() => {
                       history.push(`/mypage/${fanMemNo}`)
                     }}>
@@ -127,6 +128,7 @@ const LevelBox = styled.div`
     }
   }};
   min-width: 44px;
+  margin-right: 10px;
   height: 22px;
   border-radius: 14px;
   font-weight: bold;
