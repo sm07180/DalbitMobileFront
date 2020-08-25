@@ -40,7 +40,8 @@ const makeContents = (props) => {
         boostCnt,
         rank,
         os,
-        isNew
+        isNew,
+        isWowza
       } = list
 
       const alertCheck = (roomNo) => {
@@ -50,21 +51,24 @@ const makeContents = (props) => {
             callback: () => {
               RoomJoin({
                 roomNo: roomNo,
-                shadow: 1
+                shadow: 1,
+                isWowza: isWowza
               })
             },
             //캔슬콜백처리
             cancelCallback: () => {
               RoomJoin({
                 roomNo: roomNo,
-                shadow: 0
+                shadow: 0,
+                isWowza: isWowza
               })
             },
             msg: '관리자로 입장하시겠습니까?'
           })
         } else {
           RoomJoin({
-            roomNo: roomNo
+            roomNo: roomNo,
+            isWowza: isWowza
           })
         }
       }

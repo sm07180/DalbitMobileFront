@@ -1588,6 +1588,16 @@ export default class API {
     })
   }
 
+  static broadcast_info = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || '/broad/vw/info',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
   /**
    * @brief 공통 서치
    * @create 황상한 2020.03.02
