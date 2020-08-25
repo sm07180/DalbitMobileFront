@@ -81,58 +81,25 @@ export default (props) => {
   const evetStartM = evetStart.slice(4, 6)
   const evetStartD = evetStart.slice(6, 8)
 
-  let evetEnd = String(infoData.req_end_date)
-  const evetEndY = evetEnd.slice(0, 4)
-  const evetEndM = evetEnd.slice(4, 6)
-  const evetEndD = evetEnd.slice(6, 8)
-
-  //이벤트 시작 날짜
-  let startDayNum = String(infoData.condition_start_date)
-  const startY = startDayNum.slice(0, 4)
-  const startM = startDayNum.slice(5, 7)
-  const startD = startDayNum.slice(8, 10)
-
-  //이벤트 끝나는 날짜
   let endDayNum = String(infoData.condition_end_date)
-  const endY = startDayNum.slice(0, 4)
+  const endY = endDayNum.slice(0, 4)
   const endM = endDayNum.slice(5, 7)
   const endD = endDayNum.slice(8, 10)
-
-  // 이벤트 남은 기간
-  let startDNumChange = Number(startD)
-  const endDNumChange = Number(endD)
-  const changeNumber = endDNumChange - startDNumChange
+  const endYNumber = endY + '-' + endM + '-' + endD
 
   function eventEnd() {
-    const endDayPlus = infoData.req_end_date
-
-    let endDayNum = String(infoData.condition_end_date)
-    const endY = endDayNum.slice(0, 4)
-    const endM = endDayNum.slice(5, 7)
-    const endD = endDayNum.slice(8, 10)
-
-    const endYNumber = endY + '-' + endM + '-' + endD
-
     // let a = new Date("2020-08-29").getTime();
     let startTime = new Date().getTime()
     let endTime = new Date(endYNumber).getTime()
+    let minusTime = endTime - startTime
+    let reckoning = Math.ceil(minusTime / 3600 / 24 / 1000)
 
-    if (changeMinus < 1) {
+    if (reckoning <= 1) {
       return '금일 24:00 종료'
     } else {
-      return `종료 ${changeMinus} 일 전`
+      return `종료 ${reckoning} 일 전`
     }
   }
-
-  let reqStart = String(infoData.req_start_date)
-  let reqEnd = String(infoData.req_end_date)
-
-  const ChangeReqStart = reqStart.slice(0, 8)
-  const ChangeReqEnd = reqEnd.slice(0, 8)
-
-  const StartNum = Number(ChangeReqStart)
-  const EndtNum = Number(ChangeReqEnd)
-  let changeMinus = EndtNum - StartNum
 
   useEffect(() => {
     specialdjCheck()
@@ -154,7 +121,7 @@ export default (props) => {
                 <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" />
               </div>
               <b className="dayTitle">
-                {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${evetEndM}월 ${endD}일`}
+                {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${endM}월 ${endD}일`}
                 <br />(<span className="dayTitle--orange">{infoData.condition_end_date && eventEnd()}</span>)
               </b>
             </div>
