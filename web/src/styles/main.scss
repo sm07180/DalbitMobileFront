@@ -107,6 +107,7 @@
   }
 }
 
+// main
 .main-wrap {
   .section {
     color: red;
@@ -171,8 +172,7 @@
         }
       }
       .content-wrap {
-        width: 100%;
-        padding: 20px 16px;
+        padding: 0;
       }
     }
   }
@@ -674,6 +674,344 @@
   }
 }
 
+.liveList {
+  position: relative;
+  width: 100%;
+  min-height: 50px;
+  padding: 16px 16px;
+  &__item {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .txt_boost {
+      color: #ec455f;
+    }
+
+    .new-dj-icon {
+      color: #fff;
+      font-size: 12px;
+      border-radius: 10px;
+      background-color: #feac2c;
+      height: 16px;
+      padding: 0 6px;
+      line-height: 16px;
+      margin-left: 4px;
+    }
+
+    .pc-icon {
+      color: #fff;
+      font-size: 11px;
+      border-radius: 10px;
+      background-color: #f26d4a;
+      height: 16px;
+      padding: 0 6px;
+      line-height: 16px;
+      margin-right: 4px;
+    }
+
+    .specialIcon {
+      display: inline-block;
+      width: 62px;
+      height: 16px;
+      margin-left: 4px;
+      border-radius: 10px;
+      background-color: #ec455f;
+      color: #fff;
+      font-size: 12px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.33;
+      letter-spacing: normal;
+      text-align: center;
+      padding-left: 6px;
+      padding-right: 6px;
+    }
+
+    .broadcast-img {
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-color: #eee;
+    }
+
+    .broadcast-content {
+      width: calc(100% - 92px);
+      margin-left: 12px;
+
+      .title {
+        margin-top: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 20px;
+        line-height: 20px;
+      }
+
+      .nickname {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        height: 20px;
+        line-height: 20px;
+        margin-top: 3px;
+      }
+
+      .detail {
+        margin-top: 4px;
+      }
+
+      .icon-wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        & > div {
+          margin-right: 2px;
+        }
+
+        .type-icon {
+          display: block;
+          margin-right: 2px;
+        }
+
+        .type-text {
+          min-width: 30px;
+          background-color: #9e9e9e;
+          border-radius: 8px;
+          color: #fff;
+          font-size: 11px;
+          /* padding: 1px 6px 0px 6px; */
+          padding-left: 6px;
+          padding-right: 6px;
+          height: 16px;
+          line-height: 16px;
+        }
+
+        .gender-icon {
+          display: block;
+          width: 16px;
+          height: 16px;
+        }
+      }
+
+      .title {
+        color: #424242;
+        font-size: 14px;
+        font-weight: bold;
+        letter-spacing: -0.35px;
+      }
+      .nickname {
+        color: #757575;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+      }
+      .detail {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .broadcast-type {
+          color: #632beb;
+          font-size: 11px;
+          letter-spacing: -0.28px;
+          margin-right: 10px;
+        }
+        .value {
+          display: flex;
+          align-items: center;
+          flex-direction: row;
+          color: #424242;
+          font-size: 11px;
+          letter-spacing: -0.3px;
+
+          &:nth-child(2),
+          &:nth-child(3) {
+            margin-left: 6px;
+          }
+
+          img {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+  &__row {
+    width: 100%;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    .half-live {
+      position: relative;
+      width: calc(50% - 4px);
+      height: 100%;
+      border-radius: 16px;
+      background-color: #eee;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      border-radius: 16px;
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+      }
+
+      .top-status {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        z-index: 1;
+
+        span {
+          margin-right: 3px;
+        }
+
+        .pc-icon {
+          color: #fff;
+          font-size: 11px;
+          border-radius: 10px;
+          background-color: #f26d4a;
+          height: 16px;
+          width: 26px;
+          line-height: 16px;
+          margin-right: 4px;
+        }
+
+        .twenty-icon {
+          width: 24px;
+          height: 16px;
+          font-size: 8px;
+          line-height: 15px;
+          box-sizing: border-box;
+          border-radius: 8px;
+          background-color: rgba(223, 57, 57, 0.5);
+          text-align: center;
+          color: #fff;
+        }
+        .special-icon {
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          line-height: 16px;
+          font-size: 7px;
+          text-align: center;
+          color: #fff;
+          background-color: #ec455f;
+        }
+        .all-icon {
+          width: 24px;
+          height: 16px;
+          font-size: 8px;
+          line-height: 15px;
+          box-sizing: border-box;
+          border-radius: 8px;
+          background-color: rgba(102, 177, 46, 0.5);
+          text-align: center;
+          color: #fff;
+        }
+        .fan-icon {
+          width: 24px;
+          height: 16px;
+          font-size: 8px;
+          line-height: 15px;
+          box-sizing: border-box;
+          border-radius: 8px;
+          background-color: rgba(78, 115, 217, 0.5);
+          text-align: center;
+          color: #fff;
+        }
+      }
+
+      .entry-count {
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        z-index: 1;
+
+        .entry-img {
+          display: block;
+        }
+        .count-txt {
+          color: #fff;
+          font-size: 13px;
+          text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+        }
+      }
+
+      .bottom-wrap {
+        position: absolute;
+        bottom: 6px;
+        left: 6px;
+        display: flex;
+        align-items: center;
+        z-index: 1;
+
+        .pc-icon {
+          color: #fff;
+          font-size: 11px;
+          border-radius: 10px;
+          background-color: #f26d4a;
+          text-align: center;
+          width: 26px;
+          height: 16px;
+
+          line-height: 16px;
+          margin-right: 4px;
+        }
+
+        .type-icon-wrap {
+          width: 26px;
+          border-radius: 8px;
+          background-color: rgba(254, 189, 86, 0.5);
+          height: 16px;
+          margin-right: 4px;
+
+          .type-icon {
+            width: 26px;
+          }
+        }
+
+        .dj-nickname {
+          color: #fff;
+          font-size: 12px;
+        }
+      }
+
+      &:nth-child(1) {
+        margin-right: 4px;
+      }
+      &:nth-child(2) {
+        margin-left: 4px;
+      }
+    }
+  }
+}
+
+// search
 .searchWrap {
   background-color: $white;
   height: 100vh;
@@ -750,12 +1088,6 @@
     background-color: #eee;
   }
   .contentWrap {
-    .liveList {
-      position: relative;
-      width: 100%;
-      min-height: 50px;
-      padding: 16px 16px;
-    }
     .searchTab {
       display: flex;
       justify-content: space-between;
@@ -1069,6 +1401,7 @@
   }
 }
 
+// login
 .login {
   position: relative;
   display: flex;
@@ -1178,8 +1511,8 @@
 
   .socialLogin {
     position: absolute;
-  width: 100%;
-  bottom: 50px;
+    width: 100%;
+    bottom: 50px;
     text-align: center;
 
     .social-apple-btn {
