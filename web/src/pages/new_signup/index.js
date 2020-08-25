@@ -40,12 +40,6 @@ export default (props) => {
   })
   const [termOpen, setTermOpen] = useState(true)
 
-  //Facebook,Firebase 이벤트 호출
-  try {
-    fbq('track', 'Lead')
-    firebase.analytics().logEvent('Lead')
-  } catch (e) {}
-
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
 
@@ -725,6 +719,14 @@ export default (props) => {
       }
     }
   }, [validate.nickNm])
+
+  useEffect(() => {
+    //Facebook,Firebase 이벤트 호출
+    try {
+      fbq('track', 'Lead')
+      firebase.analytics().logEvent('Lead')
+    } catch (e) {}
+  }, [])
 
   return (
     <Layout status="no_gnb" header="회원가입">
