@@ -26,18 +26,6 @@ import {Context} from 'context'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 //util
 import LiveIcon from '../component/ic_live.svg'
-import FemaleIcons from '../static/ico_female.svg'
-import MaleIcons from '../static/ico_male.svg'
-import KoreaIcons from '../static/ico_korea.svg'
-import PlusCircle from '../static/ico_plus_circle.svg'
-import GrayHeart from '../static/ico_like_g.svg'
-import CloseIcon from '../static/ico_close.svg'
-import BlueHoleIcon from '../static/bluehole.svg'
-import StarIcon from '../static/star.svg'
-import ReportIcon from '../component/ic_report.svg'
-import CloseBtnIcon from '../component/ic_closeBtn.svg'
-import QuestionIcon from '../static/ic_question.svg'
-import MoonIcon from '../static/profile/ic_moon_s.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
@@ -283,7 +271,8 @@ const myProfile = (props) => {
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
             {/* user profile 추가 */}
-            {profile.roomNo !== '' && (
+            {/* 20.08.20 */}
+            {/* {profile.roomNo !== '' && (
               <button
                 className="liveIcon"
                 onClick={() => {
@@ -311,10 +300,10 @@ const myProfile = (props) => {
                     })
                   }
                 }}>
-                <img src={LiveIcon} className="ico-live" />
+                <img src={LiveIcon} className="liveIcon" />
                 <span>Live</span>
               </button>
-            )}
+            )} */}
             <div className="nameWrap">
               {/* <span>ID : {`@${profile.memId}`}</span> */}
               <strong>{profile.nickNm}</strong>
