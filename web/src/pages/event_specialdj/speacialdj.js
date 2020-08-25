@@ -80,27 +80,9 @@ export default (props) => {
   const evetStartY = evetStart.slice(0, 4)
   const evetStartM = evetStart.slice(4, 6)
   const evetStartD = evetStart.slice(6, 8)
-<<<<<<< HEAD
-=======
-
-  let evetEnd = String(infoData.req_end_date)
-  const evetEndY = evetEnd.slice(0, 4)
-  const evetEndM = evetEnd.slice(4, 6)
-  const evetEndD = evetEnd.slice(6, 8)
-
-  //이벤트 시작 날짜
-  let startDayNum = String(infoData.condition_start_date)
-  const startY = startDayNum.slice(0, 4)
-  const startM = startDayNum.slice(5, 7)
-  const startD = startDayNum.slice(8, 10)
->>>>>>> 2020_08_25
 
   let endDayNum = String(infoData.condition_end_date)
-<<<<<<< HEAD
   const endY = endDayNum.slice(0, 4)
-=======
-  const endY = startDayNum.slice(0, 4)
->>>>>>> 2020_08_25
   const endM = endDayNum.slice(5, 7)
   const endD = endDayNum.slice(8, 10)
   const endYNumber = endY + '-' + endM + '-' + endD
@@ -118,37 +100,6 @@ export default (props) => {
       return `종료 ${reckoning} 일 전`
     }
   }
-
-  function eventEnd() {
-    const endDayPlus = infoData.req_end_date
-
-    let endDayNum = String(infoData.condition_end_date)
-    const endY = endDayNum.slice(0, 4)
-    const endM = endDayNum.slice(5, 7)
-    const endD = endDayNum.slice(8, 10)
-
-    const endYNumber = endY + '-' + endM + '-' + endD
-
-    // let a = new Date("2020-08-29").getTime();
-    let startTime = new Date().getTime()
-    let endTime = new Date(endYNumber).getTime()
-
-    if (changeMinus < 1) {
-      return '금일 24:00 종료'
-    } else {
-      return `종료 ${changeMinus} 일 전`
-    }
-  }
-
-  let reqStart = String(infoData.req_start_date)
-  let reqEnd = String(infoData.req_end_date)
-
-  const ChangeReqStart = reqStart.slice(0, 8)
-  const ChangeReqEnd = reqEnd.slice(0, 8)
-
-  const StartNum = Number(ChangeReqStart)
-  const EndtNum = Number(ChangeReqEnd)
-  let changeMinus = EndtNum - StartNum
 
   useEffect(() => {
     specialdjCheck()
@@ -170,11 +121,7 @@ export default (props) => {
                 <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" />
               </div>
               <b className="dayTitle">
-<<<<<<< HEAD
                 {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${endM}월 ${endD}일`}
-=======
-                {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${evetEndM}월 ${endD}일`}
->>>>>>> 2020_08_25
                 <br />(<span className="dayTitle--orange">{infoData.condition_end_date && eventEnd()}</span>)
               </b>
             </div>
