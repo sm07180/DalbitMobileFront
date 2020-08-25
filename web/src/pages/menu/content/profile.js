@@ -162,91 +162,8 @@ export default (props) => {
       {profile !== null && token && token.isLogin && (
         <>
           <MyProfile profile={profile} {...props} webview={webview} />
-          <div className="broadcast-data">
-            <div className="time-info">
-              <div className="total-time">
-                <div className="type-wrap">
-                  <span className="text">총 방송 시간</span>
-                  <img src={TimeIcon} />
-                </div>
-                <div className="time">{timeFormat(profile.broadTotTime)}</div>
-              </div>
-              <div className="total-time">
-                <div className="type-wrap">
-                  <span className="text">총 청취 시간</span>
-                  <img src={HeadphoneIcon} />
-                </div>
-                <div className="time">{timeFormat(profile.listenTotTime)}</div>
-              </div>
-            </div>
-            <div className="real-info">
-              {[
-                {
-                  type: 'heart',
-                  icon: HeartIcon,
-                  txt: '좋아요',
-                  value: profile.likeTotCnt.toLocaleString()
-                },
-                {
-                  type: 'byeol',
-                  icon: ByeolIcon,
-                  txt: '보유별',
-                  value: profile.byeolCnt.toLocaleString()
-                },
-                {
-                  type: 'dal',
-                  icon: DalIcon,
-                  txt: '보유달',
-                  value: profile.dalCnt.toLocaleString()
-                }
-              ].map((real) => {
-                const {type, icon, txt, value} = real
-                return (
-                  <div key={type} className="each">
-                    <span className="type">{txt}</span>
-                    <img src={icon} />
-                    <span className="value">{value}</span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
+
           <div className="profile-menu">
-            <div className="menu-box">
-              <button className="list" onClick={() => history.push(`/private`)}>
-                <img className="icon" src={ProfileIcon} alt="프로필 설정" />
-                <span className="text">프로필 설정</span>
-                <span className="arrow"></span>
-              </button>
-              <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
-                <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
-                <span className="text">Push 알림 설정</span>
-                <span className="arrow"></span>
-              </button>
-            </div>
-            <div className="menu-box">
-              {subNavList.map((value, idx) => {
-                const {type, txt, icon} = value
-                return (
-                  <button className="list" onClick={() => locationNav(type)} key={`list-${idx}`}>
-                    <img className="icon" src={icon} alt={txt} />
-                    <span className="text">{txt}</span>
-                    <span
-                      className={
-                        type === 'notice'
-                          ? myPageNew.broadNotice
-                            ? 'arrow arrow--active'
-                            : 'arrow'
-                          : type === 'fanboard'
-                          ? myPageNew.fanBoard
-                            ? 'arrow arrow--active'
-                            : 'arrow'
-                          : 'arrow'
-                      }></span>
-                  </button>
-                )
-              })}
-            </div>
             <div className="menu-box">
               {walletList.map((value, idx) => {
                 const {type, txt, icon} = value
@@ -286,6 +203,44 @@ export default (props) => {
                 }
               })}
             </div>
+
+            <div className="menu-box">
+              {subNavList.map((value, idx) => {
+                const {type, txt, icon} = value
+                return (
+                  <button className="list" onClick={() => locationNav(type)} key={`list-${idx}`}>
+                    <img className="icon" src={icon} alt={txt} />
+                    <span className="text">{txt}</span>
+                    <span
+                      className={
+                        type === 'notice'
+                          ? myPageNew.broadNotice
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : type === 'fanboard'
+                          ? myPageNew.fanBoard
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : 'arrow'
+                      }></span>
+                  </button>
+                )
+              })}
+            </div>
+
+            <div className="menu-box">
+              <button className="list" onClick={() => history.push(`/private`)}>
+                <img className="icon" src={ProfileIcon} alt="프로필 설정" />
+                <span className="text">프로필 설정</span>
+                <span className="arrow"></span>
+              </button>
+              <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
+                <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
+                <span className="text">Push 알림 설정</span>
+                <span className="arrow"></span>
+              </button>
+            </div>
+
             <div className="menu-box">
               {customerList.map((value, idx) => {
                 const {type, txt, icon} = value

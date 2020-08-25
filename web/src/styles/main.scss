@@ -136,7 +136,7 @@
             line-height: 1.13;
             letter-spacing: normal;
             text-align: left;
-            color: #000;
+            color: $black;
           }
         }
       }
@@ -289,7 +289,7 @@
           font-weight: 800;
           line-height: 1.13;
           letter-spacing: normal;
-          color: #000;
+          color: $black;
         }
       }
     }
@@ -354,7 +354,7 @@
       padding-left: 23px;
       width: 108px;
       height: 42px;
-      background-color: #000000;
+      background-color: $black;
       font-size: 16px;
       font-weight: 600;
       line-height: 1.13;
@@ -405,7 +405,7 @@
         text-align: right;
         letter-spacing: -0.4px;
         border-radius: 18px;
-        background-color: #000;
+        background-color: $black;
         color: $white;
         font-size: 16px;
         font-weight: 600;
@@ -799,7 +799,7 @@
         line-height: 1.17;
         letter-spacing: -0.36px;
         text-align: left;
-        color: #000000;
+        color: $black;
       }
       .cnt {
         font-size: 18px;
@@ -858,7 +858,7 @@
               line-height: 1.43;
               letter-spacing: normal;
               text-align: left;
-              color: #000000;
+              color: $black;
             }
             .detail {
               display: flex;
@@ -948,7 +948,7 @@
               font-weight: 600;
               line-height: 1.14;
               text-align: left;
-              color: #000000;
+              color: $black;
             }
             &__nick {
               margin-bottom: 3px;
@@ -956,7 +956,7 @@
               line-height: 1.08;
               letter-spacing: normal;
               text-align: left;
-              color: #000000;
+              color: $black;
             }
             .detail {
               display: flex;
@@ -998,7 +998,7 @@
               line-height: 16px;
               letter-spacing: -0.3px;
               text-align: center;
-              color: #fff;
+              color: $white;
             }
             .female {
               display: block;
@@ -1066,5 +1066,175 @@
         }
       }
     }
+  }
+}
+
+.login {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  min-height: 520px;
+  margin: 0 auto;
+  background: url('../pages/login/static/login_bg.svg') no-repeat;
+  background-size: cover;
+
+  .header {
+    position: absolute;
+    width: 100%;
+    top: 45px;
+    left: 0;
+    .inner {
+      display: flex;
+      padding: 0 45px;
+    }
+
+    .close-btn {
+      width: 40px;
+      height: 40px;
+    }
+
+    h1 {
+      margin-left: auto;
+      font-size: 20px;
+      font-weight: bold;
+      color: $white;
+      line-height: 40px;
+    }
+  }
+
+  .login-wrap {
+    width: 100%;
+    padding: 0 30px 50px;
+  }
+
+  .logo {
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  .input-wrap {
+    width: 260px;
+    margin: 0 auto;
+    input {
+      display: block;
+      border: 1px solid $white;
+      width: 100%;
+      height: 24px;
+      padding: 23px 24px;
+      line-height: 24px;
+      border-radius: 25px;
+      color: $white;
+      font-size: 14px;
+      letter-spacing: -0.4px;
+      background: none;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+    input::placeholder {
+      color: $white;
+    }
+    input[type='password'] {
+      margin-top: 8px;
+    }
+    .login-btn {
+      display: block;
+      margin-top: 8px;
+      width: 100%;
+      height: 48px;
+      line-height: 48px;
+      background-color: $white;
+      color: $primary;
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+      border-radius: 25px;
+    }
+  }
+
+  .link-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px 0 0 0;
+
+    .link-text {
+      color: $white;
+      font-size: 14px;
+      font-weight: bold;
+
+      &.yello {
+        color: #febd56;
+      }
+    }
+
+    .bar {
+      width: 1px;
+      height: 12px;
+      background-color: $white;
+      margin: 0 9px;
+      opacity: 0.2;
+    }
+  }
+
+  .socialLogin {
+    position: absolute;
+  width: 100%;
+  bottom: 50px;
+    text-align: center;
+
+    .social-apple-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #000000;
+      background-color: #000000;
+      margin-right: 8px;
+    }
+
+    .social-facebook-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #4064ad;
+      background-color: #ffffff;
+      margin-right: 8px;
+    }
+
+    .social-naver-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      background-color: #2db400;
+      margin-right: 8px;
+    }
+
+    .social-kakao-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      background-color: #f9e000;
+      margin-right: 8px;
+    }
+
+    .social-google-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 25px;
+      border: solid 1px #4285f4;
+      background-color: #ffffff;
+    }
+  }
+
+  .apple-alert {
+    width: 240px;
+    height: 34px;
+    border-radius: 17px;
+    margin: 0 auto;
+    margin-top: 10px;
+    background-color: #000;
+    text-align: center;
+    color: #ffd500;
+    line-height: 34px;
+    font-size: 14px;
   }
 }
