@@ -116,17 +116,90 @@
 
     &.my-star {
       display: none;
-      padding: 25px 0 19px;
+      padding: 24px 0 18px;
+      background: #eee;
       &.visible {
         display: block;
       }
     }
 
     &.rank {
-      padding: 20px 0 26px;
+      padding: 26px 0 32px;
       background-color: $white;
       color: $white;
-
+      .swiper-container {
+        padding: 16px 0 0 16px;
+      }
+      .rank-slide {
+        position: relative;
+        display: block;
+        width: 100px;
+        text-align: center;
+        /* .counting {
+          position: absolute;
+          top: 0;
+          left: 0;
+          color: #000;
+          border-radius: 50%;
+          background-color: #e0e0e0;
+          width: 24px;
+          height: 24px;
+          font-size: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        } */
+        .main-img {
+          position: relative;
+          width: 100px;
+          height: 100px;
+          margin: 0 auto;
+          border-radius: 24px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          .medal-img {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 24px;
+            height: 24px;
+          }
+        }
+        .nickname {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          height: 16px;
+          white-space: nowrap;
+          font-weight: bold;
+          font-size: 16px;
+          color: #000;
+          line-height: 1.08;
+          letter-spacing: -0.35px;
+          text-align: center;
+          margin-top: 8px;
+          transform: skew(-0.03deg);
+        }
+        .info-wrap {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          margin-top: 6px;
+          line-height: 2.17;
+          height: 13px;
+          .text {
+            color: #424242;
+            font-size: 12px;
+            letter-spacing: -0.3px;
+            line-height: 2.17;
+            margin-left: 2px;
+          }
+          .heart-icon {
+            margin-left: 6px;
+          }
+        }
+      }
       .title-wrap {
         .title {
           .txt {
@@ -144,15 +217,14 @@
     }
 
     &.live-list {
-      padding-bottom: 20px;
+      padding: 0 16px 20px;
       .title-wrap {
         display: flex;
         align-items: center;
         flex-direction: row;
         height: 64px;
-        padding: 22px 17px;
+        padding: 22px 0;
         box-sizing: border-box;
-        background-color: #eeeeee;
         border-bottom: 1px solid #eee;
 
         .title {
@@ -203,9 +275,7 @@
     }
 
     .inner-wrapper {
-      width: calc(100% - 16px);
-      margin-left: 16px;
-
+      width: 100%;
       .swiper-container {
         overflow: hidden;
 
@@ -308,11 +378,21 @@
       }
 
       .sequence-icon {
-        margin-right: 15px;
+        margin-right: 8px;
       }
 
       .detail-list-icon {
         margin-right: 2px;
+        &::before {
+          display: inline-block;
+          content: '';
+          position: relative;
+          top: 5px;
+          width: 1px;
+          height: 12px;
+          background: $lightergray;
+          margin-right: 8px;
+        }
       }
 
       .sequence-icon,
@@ -327,12 +407,14 @@
     position: relative;
     min-height: 50px;
     padding: 0 16px;
-    &.rank-slide {
+    &.ranking {
       padding: 0;
     }
     &.my-star-list {
-      height: 80px;
-      background-color: $white;
+      padding: 0 0 0 16px;
+    }
+    .liveList {
+      padding: 16px 0;
     }
   }
 
@@ -431,17 +513,6 @@
     position: relative;
     width: 100%;
     height: 220px;
-    margin-bottom: 10px;
-    &::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      width: 100%;
-      height: 10px;
-      background-color: #eee;
-    }
-
     &__buttonWrap {
       position: absolute;
       top: 24px;
@@ -534,7 +605,7 @@
           height: 42px;
           margin: 0;
           font-size: 0;
-          background: url(https://image.dalbitlive.com/main/200714/live_l@3x.png) no-repeat 0 0;
+          background: url(https://image.dalbitlive.com/main/200714/ic-main-live.svg) no-repeat 0 0;
           background-size: contain;
         }
       }
@@ -674,6 +745,7 @@
   }
 }
 
+// 실시간 라이브
 .liveList {
   position: relative;
   width: 100%;
@@ -1012,7 +1084,7 @@
 }
 
 // search
-.searchWrap {
+.mainSearchWrap {
   background-color: $white;
   height: 100vh;
   .more {
@@ -1569,5 +1641,17 @@
     color: #ffd500;
     line-height: 34px;
     font-size: 14px;
+  }
+}
+
+#main-layer-popup {
+  .content-wrap {
+    padding: 0 20px 20px;
+  }
+  .title-wrap {
+    height: 50px;
+    .close-btn {
+      top: 5px;
+    }
   }
 }

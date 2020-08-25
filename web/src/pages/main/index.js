@@ -531,7 +531,7 @@ export default (props) => {
               </div>
             </div>
 
-            <div className="content-wrap rank-slide">
+            <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
           </div>

@@ -269,7 +269,7 @@ export default (props) => {
   if (props.location.pathname.split('/')[2] !== 'search') query = ''
 
   return (
-    <div className="searchWrap">
+    <div className="mainSearchWrap">
       <Room />
       <Header>
         <div className="category-text">검색</div>
