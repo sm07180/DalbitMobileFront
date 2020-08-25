@@ -34,6 +34,7 @@ export default (props) => {
   const [photoUploading, setPhotoUploading] = useState(false)
   const [firstSetting, setFirstSetting] = useState(false)
   const [mypageBirth, setMypageBirth] = useState('')
+  const [active, setActive] = useState(false)
   //ref
   const nicknameReference = useRef()
   // setting img upload func  + mobile rotater
@@ -217,7 +218,8 @@ export default (props) => {
     if (currentTarget.value.length > 20) {
       return
     }
-    setNickname(currentTarget.value.replace(/ /g, ''))
+    setNickname(currentTarget.value)
+    // setNickname(currentTarget.value.replace(/ /g, ''))
   }
   // change Msg func
 
@@ -299,6 +301,20 @@ export default (props) => {
       }
     }
   }, [profile])
+
+  useEffect(() => {
+    if (
+      (nickname !== '' && nickname !== context.profile.nickNm) ||
+      profileMsg !== context.profile.profMsg ||
+      (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
+      (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
+    ) {
+      setActive(true)
+    } else {
+      setActive(false)
+    }
+  }, [nickname, profileMsg, photoPath, gender])
+
   useEffect(() => {
     const getMyPageNew = async () => {
       if (profile === null || profile || profile.birth === '') {
@@ -376,7 +392,8 @@ export default (props) => {
                     ref={nicknameReference}
                     matchTitle
                     autoComplete="off"
-                    defaultValue={profile.nickNm}
+                    // defaultValue={profile.nickNm}
+                    value={nickname}
                     onChange={changeNickname}
                     maxLength="20"
                   />
@@ -469,7 +486,9 @@ export default (props) => {
                   {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
                 </div>
 
-                <SaveBtn onClick={saveUpload}>저장</SaveBtn>
+                <SaveBtn className={`${active === true && 'active'}`} onClick={saveUpload}>
+                  저장
+                </SaveBtn>
               </div>
             </SettingWrap>
           </Content>
@@ -486,12 +505,16 @@ const SaveBtn = styled.button`
   background-color: #632beb;
   cursor: pointer;
   margin-bottom: 20px;
-  background: #632beb;
+  background-color: #e0e0e0;
   color: #fff;
   line-height: 44px;
   font-size: 18px;
   border-radius: 12px;
   font-weight: bold;
+
+  &.active {
+    background-color: #632beb;
+  }
 `
 const MsgText = styled.textarea`
   display: block;
