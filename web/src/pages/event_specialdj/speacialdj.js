@@ -76,21 +76,30 @@ export default (props) => {
     )
   }
 
-  //이벤트 시작 날짜
-  let startDayNum = String(infoData.condition_start_date)
-  const startY = startDayNum.slice(0, 4)
-  const startM = startDayNum.slice(5, 7)
-  const startD = startDayNum.slice(8, 10)
+  let evetStart = String(infoData.req_start_date)
+  const evetStartY = evetStart.slice(0, 4)
+  const evetStartM = evetStart.slice(4, 6)
+  const evetStartD = evetStart.slice(6, 8)
 
-  //이벤트 끝나는 날짜
   let endDayNum = String(infoData.condition_end_date)
+  const endY = endDayNum.slice(0, 4)
   const endM = endDayNum.slice(5, 7)
   const endD = endDayNum.slice(8, 10)
+  const endYNumber = endY + '-' + endM + '-' + endD
 
-  // 이벤트 남은 기간
-  let startDNumChange = Number(startD)
-  const endDNumChange = Number(endD)
-  const changeNumber = endDNumChange - startDNumChange
+  function eventEnd() {
+    // let a = new Date("2020-08-29").getTime();
+    let startTime = new Date().getTime()
+    let endTime = new Date(endYNumber).getTime()
+    let minusTime = endTime - startTime
+    let reckoning = Math.ceil(minusTime / 3600 / 24 / 1000)
+
+    if (reckoning <= 1) {
+      return '금일 24:00 종료'
+    } else {
+      return `종료 ${reckoning} 일 전`
+    }
+  }
 
   useEffect(() => {
     specialdjCheck()
@@ -112,8 +121,8 @@ export default (props) => {
                 <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" />
               </div>
               <b className="dayTitle">
-                {`${startY}년 ${startM}월 ${startD}일 ~ ${endM}월 ${endD}일`}
-                <br />(<span className="dayTitle--orange">종료 {changeNumber} 일 전</span>)
+                {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${endM}월 ${endD}일`}
+                <br />(<span className="dayTitle--orange">{infoData.condition_end_date && eventEnd()}</span>)
               </b>
             </div>
             <h3 className="img100">
