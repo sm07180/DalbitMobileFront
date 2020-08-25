@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 
 import Room, {RoomJoin} from 'context/room'
-
+import NoResult from 'components/ui/noResult'
 // context
 import {Context} from 'context'
 
