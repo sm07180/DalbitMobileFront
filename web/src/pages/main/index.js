@@ -616,7 +616,9 @@ export default (props) => {
             <div className="content-wrap">
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
-                  <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                  <div className="liveList">
+                    <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                  </div>
                 ) : (
                   <NoResult />
                 )
