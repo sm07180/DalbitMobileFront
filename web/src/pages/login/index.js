@@ -402,12 +402,11 @@ const Login = styled.div`
   .header {
     position: absolute;
     width: 100%;
-    top: 30px;
+    top: 45px;
     left: 0;
     .inner {
       display: flex;
-      width: 260px;
-      margin: 0 auto;
+      padding: 0 45px;
     }
 
     .close-btn {
@@ -426,7 +425,7 @@ const Login = styled.div`
 
   .login-wrap {
     width: 100%;
-    padding-bottom: 50px;
+    padding: 0 30px 50px;
   }
 
   .logo {

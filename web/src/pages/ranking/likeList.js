@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 
 import Room, {RoomJoin} from 'context/room'
-
+import NoResult from 'components/ui/noResult'
 // context
 import {Context} from 'context'
 
@@ -21,46 +21,47 @@ export default (props) => {
   return (
     <>
       <ul>
-        {likeList.map((list, index) => {
-          const {nickNm, fanNickNm, fanMemNo, profImg, holder, level, grade, fanGoodCnt, roomNo, memNo, totalGoodCnt} = list
+        {likeList.length > 0 &&
+          likeList.map((list, index) => {
+            const {nickNm, fanNickNm, fanMemNo, profImg, holder, level, grade, fanGoodCnt, roomNo, memNo, totalGoodCnt} = list
 
-          return (
-            <li key={index} className="levelListBox">
-              {/* <div className="levelListBox__levelBox">
+            return (
+              <li key={index} className="levelListBox">
+                {/* <div className="levelListBox__levelBox">
                 <span>{level}</span>
               </div> */}
-              <div
-                className="thumbBox"
-                onClick={() => {
-                  history.push(`/mypage/${memNo}`)
-                }}>
-                <img src={holder} className="thumbBox__frame" />
-                <img src={profImg.thumb120x120} className="thumbBox__pic" />
-              </div>
-              <div>
-                <div className="fanGoodBox">
-                  <img src={goodIcon} />
-                  <span>{totalGoodCnt.toLocaleString()}</span>
+                <div
+                  className="thumbBox"
+                  onClick={() => {
+                    history.push(`/mypage/${memNo}`)
+                  }}>
+                  <img src={holder} className="thumbBox__frame" />
+                  <img src={profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
-                <div className="nickNameBox">{nickNm}</div>
-                <div className="countBox">
-                  <span>
-                    <img src={likeIcon} /> {fanGoodCnt}
-                  </span>
+                <div>
+                  <div className="fanGoodBox">
+                    <img src={goodIcon} />
+                    <span>{totalGoodCnt.toLocaleString()}</span>
+                  </div>
+                  <div className="nickNameBox">{nickNm}</div>
+                  <div className="countBox">
+                    <span>
+                      <img src={likeIcon} /> {fanGoodCnt}
+                    </span>
+                  </div>
+                  <div className="bestFanBox">
+                    <span className="bestFanBox__label">왕큐피트</span>
+                    <span
+                      className="bestFanBox__nickNm"
+                      onClick={() => {
+                        history.push(`/mypage/${fanMemNo}`)
+                      }}>
+                      {fanNickNm}
+                    </span>
+                  </div>
                 </div>
-                <div className="bestFanBox">
-                  <span className="bestFanBox__label">왕큐피트</span>
-                  <span
-                    className="bestFanBox__nickNm"
-                    onClick={() => {
-                      history.push(`/mypage/${fanMemNo}`)
-                    }}>
-                    {fanNickNm}
-                  </span>
-                </div>
-              </div>
 
-              {/* {roomNo !== '' && (
+                {/* {roomNo !== '' && (
                 <div className="liveBox">
                   <img
                     src={live}
@@ -95,9 +96,10 @@ export default (props) => {
                   LIVE
                 </div>
               )} */}
-            </li>
-          )
-        })}
+              </li>
+            )
+          })}
+        {likeList.length === 0 && <NoResult />}
       </ul>
     </>
   )

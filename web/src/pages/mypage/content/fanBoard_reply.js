@@ -21,12 +21,13 @@ import WriteIcon from '../component/ic_write.svg'
 import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
 import LockIcon from '../static/lock_g.svg'
+import ArrowDownIcon from '../static/arrow_down_g.svg'
 export default (props) => {
   //props.replyIdx 대댓글관련 모든 api통신에서 필요
   const history = useHistory()
   const replyIdx = props.replyShowIdx
   const TitleInfo = props.titleReplyInfo
-
+  const isViewOn = props.isViewOn
   if (!props.titleReplyInfo) return null
   //location && context
   let location = useLocation()
@@ -34,6 +35,7 @@ export default (props) => {
   const context = useContext(Context)
   //profileGlobal info
   const {profile} = ctx
+
   const {webview} = qs.parse(location.search)
   //urlNumber
   var urlrStr = location.pathname.split('/')[2]
@@ -48,6 +50,8 @@ export default (props) => {
   const [donstChange, setDonstChange] = useState(true)
   // modift msg
   const [modifyMsg, setModifyMsg] = useState('')
+
+  const [clickWrite, setClickWrite] = useState(false)
   // function
   // 텍스트체인지
   const handleChangeBig = (e) => {
@@ -128,6 +132,9 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataReplyList()
+    if (isViewOn === 0) {
+      setIsScreet(true)
+    }
   }, [])
 
   //대댓글 추가
@@ -237,14 +244,14 @@ export default (props) => {
   //------------------------------------------------------------
   return (
     <Reply>
-      {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
+      {/* {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
       <header className="replyheader">
         <button onClick={() => WriteToggles()}></button>
         <span>팬보드 보기</span>
         {createWriteBtns()}
-      </header>
+      </header> */}
       {/* 팬보드 대댓글 리스트 영역 */}
-      <div className="TitleReply">
+      {/* <div className="TitleReply">
         <header>
           <ProfImg bg={TitleInfo.profImg.thumb62x62}></ProfImg>
           <div className="titleInfo">
@@ -259,7 +266,7 @@ export default (props) => {
       <div className="ReplyCnt">
         <span>답글</span>
         <span>{list.length}</span>
-      </div>
+      </div> */}
       <div className="reply_list">
         {list &&
           list.map((item, index) => {
@@ -277,43 +284,98 @@ export default (props) => {
             }
             return (
               <div key={index} className="reply_Wrap">
-                <div className="reply_list_header">
-                  {/* 상세기능영역 */}
-                  {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                    <>
-                      <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
-                      <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                        {writerNo === context.token.memNo && (
-                          <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
-                        )}
-                        <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                      </div>
-                    </>
-                  )}
-
-                  <div className="replyInfo">
-                    <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
-                    <div className="big_header_info">
-                      <span onClick={Link}>
-                        <div>
-                          <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
-                          <span className="big_header_info__name">{nickNm}</span>
+                <div>ㄴ</div>
+                <div className="reply_Wrap__main">
+                  <div className="reply_list_header">
+                    {/* 상세기능영역 */}
+                    {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                      <>
+                        <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
+                        <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
+                          {writerNo === context.token.memNo && (
+                            <span onClick={() => ReplyModify(contents, boardIdx)}>수정하기</span>
+                          )}
+                          <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
                         </div>
-                        <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
-                      </span>
-                    </div>
-                    {/* <div>
+                      </>
+                    )}
+
+                    <div className="replyInfo">
+                      <ProfImg bg={profImg.thumb62x62} onClick={Link}></ProfImg>
+                      <div className="big_header_info">
+                        <span onClick={Link}>
+                          <div>
+                            <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
+                            <span className="big_header_info__name">{nickNm}</span>
+                          </div>
+                          <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
+                        </span>
+                      </div>
+                      {/* <div>
                       <span onClick={Link}>{nickNm}</span>
                       <span onClick={Link}>{timeFormat(writeDt)}</span>
                     </div> */}
+                    </div>
                   </div>
-                </div>
-                <div className="reply_content">
-                  <pre>{contents}</pre>
+                  <div className="reply_content">
+                    <pre>{contents}</pre>
+                  </div>
                 </div>
               </div>
             )
           })}
+        <div className="reply_writeWrap">
+          <div className="reply_writeWrap__top">
+            <div
+              className="reply_writeWrap__header"
+              onClick={() => {
+                if (clickWrite === false) setClickWrite(true)
+              }}>
+              <img src={profile.profImg.thumb62x62} />
+              {clickWrite !== true && (
+                <span>
+                  답글쓰기 <span className="gray">최대 100자</span>
+                </span>
+              )}
+              {clickWrite === true && <span className="reply_writeWrap__header--nickNm">{profile.nickNm}</span>}
+            </div>
+            {clickWrite === true && (
+              <div className="content_area">
+                <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
+              </div>
+            )}
+          </div>
+          {clickWrite === true && (
+            <div className="reply_writeWrap__btnWrap">
+              <span className="bigCount">
+                <span className="bigCount__screet">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      if (!setDonstChange) {
+                        setIsScreet(!isScreet)
+                      }
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+                <span>
+                  <em>{textChange.length}</em> / 100
+                </span>
+              </span>
+              <button onClick={() => fetchDataUploadReply()}>등록</button>
+            </div>
+          )}
+          <div className="reply_writeWrap__btn">
+            <button
+              onClick={() => {
+                context.action.updateFanboardReplyNum(-1)
+              }}>
+              답글접기
+            </button>
+            <img src={ArrowDownIcon} />
+          </div>
+        </div>
       </div>
       {/* 대댓글 작성영역 */}
       {writeState && (
@@ -478,12 +540,12 @@ const Textarea = styled.textarea``
 //최상위
 
 const Reply = styled.div`
-  position: absolute !important;
+  /* position: absolute !important;
   top: 0;
   left: 0;
   background-color: #eeeeee;
   width: 100%;
-  height: auto;
+  height: auto; */
   .big_moreBtn {
     position: absolute;
     right: 16px;
@@ -565,11 +627,25 @@ const Reply = styled.div`
   }
   .reply_list {
     /* height: 100%; */
+    background-color: #fbfbfb;
     .reply_Wrap {
+      display: flex;
       min-height: 132px;
-      margin-bottom: 12px;
-      background-color: #fff;
+      /* margin-bottom: 12px; */
+      padding: 4px 16px;
+      background-color: #fbfbfb;
       border-bottom: 1px solid #eee;
+
+      & > div:first-child {
+        display: flex;
+        height: 48px;
+        align-items: center;
+        padding-bottom: 10px;
+      }
+
+      &__main {
+        width: 100%;
+      }
       .reply_content {
         padding: 12px 41px 8px 16px;
         min-height: 69px;
@@ -585,7 +661,6 @@ const Reply = styled.div`
           display: flex;
           align-items: center;
           height: 48px;
-          padding: 0px 16px;
           /* border: 1px solid #eeeeee; */
           .big_header_info {
             display: flex;
@@ -617,6 +692,114 @@ const Reply = styled.div`
               background: url(${LockIcon}) no-repeat center;
             }
           }
+        }
+      }
+    }
+
+    .reply_writeWrap {
+      padding: 12px 16px 16px 16px;
+      background-color: #e0e0e0;
+      &__top {
+        display: flex;
+        flex-direction: column;
+        padding: 6px 16px;
+        background-color: #fff;
+        border-radius: 12px;
+
+        .content_area {
+          margin-top: 8px;
+          & > textarea {
+            width: 100%;
+            height: 120px;
+          }
+        }
+      }
+      &__header {
+        display: flex;
+        align-items: center;
+        & > img {
+          width: 40px;
+          height: 40px;
+          margin-right: 8px;
+          border-radius: 50%;
+        }
+
+        & span {
+          font-size: 14px;
+        }
+
+        .gray {
+          color: #bdbdbd;
+        }
+
+        &--nickNm {
+          font-weight: bold;
+        }
+      }
+
+      &__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 44px;
+        margin-top: 16px;
+        background-color: #f5f5f5;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+
+        & > img {
+          transform: rotate(180deg);
+        }
+      }
+      &__btnWrap {
+        .bigCount {
+          > em {
+            color: #000;
+            font-style: normal;
+            font-weight: 800;
+          }
+          display: flex;
+
+          margin-right: 7px;
+          margin-top: 4px;
+          margin-bottom: 12px;
+          font-size: 12px;
+          line-height: 1.08;
+          letter-spacing: normal;
+          text-align: right;
+          color: #616161;
+          &__screet {
+            display: flex;
+            flex: 1;
+            align-items: center;
+
+            & > input {
+              margin-right: 10px;
+            }
+
+            & > .bold {
+              font-size: 14px;
+              font-weight: bold;
+            }
+            span {
+              font-size: 12px;
+            }
+          }
+
+          & > span:last-child {
+            display: flex;
+            align-items: center;
+          }
+        }
+        & > button {
+          width: 100%;
+          height: 44px;
+          border-radius: 12px;
+          background-color: ${COLOR_MAIN};
+          font-size: 18px;
+          font-weight: 600;
+          text-align: center;
+          color: #ffffff;
         }
       }
     }

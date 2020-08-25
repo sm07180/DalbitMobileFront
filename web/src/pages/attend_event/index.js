@@ -256,6 +256,8 @@ export default (props) => {
   }
 
   const makePhoneInputBox = () => {
+    console.log('statusList.phone_input', statusList.phone_input)
+
     const boxHtml = (
       <div className="gifticon-benefit-input">
         <p className="title">
@@ -280,7 +282,7 @@ export default (props) => {
     )
 
     if (token.isLogin) {
-      if (statusList.phone_input === '0') {
+      if (statusList.phone_input === '0' || statusList.phone_input === undefined) {
         return null
       } else {
         return boxHtml

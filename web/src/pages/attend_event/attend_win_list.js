@@ -7,6 +7,7 @@ import {useHistory} from 'react-router-dom'
 
 //static
 import closeBtn from './static/ic_back.svg'
+import newIcon from './static/new_circle_m.svg'
 
 export default (props) => {
   const history = useHistory()
@@ -55,7 +56,7 @@ export default (props) => {
               <thead>
                 <tr>
                   <th>기프티콘</th>
-                  <th>당첨 일시</th>
+                  <th>당첨일</th>
                   <th>당첨자</th>
                 </tr>
               </thead>
@@ -67,13 +68,21 @@ export default (props) => {
                   </tr>
                 ) : (
                   winList.map((item, index) => {
-                    const {gifticonType, winDt, nickNm, profImg} = item
+                    const {gifticonType, winDt, nickNm, profImg, isNew, memNo} = item
 
                     return (
                       <tr key={index}>
                         <td>{gifticonType === 1 ? '스타벅스 커피' : 'BHC 뿌링클'}</td>
-                        <td className="date">{dateFormatter(winDt)}</td>
-                        <td className="nick">
+                        <td className="date">
+                          <span className="iconNew">{isNew === 1 ? <img src={newIcon} width={14} /> : ''}</span>
+
+                          {dateFormatter(winDt)}
+                        </td>
+                        <td
+                          className="nick"
+                          onClick={() => {
+                            history.push(`/mypage/${memNo}`)
+                          }}>
                           <div className="thumb">
                             <img src={profImg.thumb120x120} />
                           </div>

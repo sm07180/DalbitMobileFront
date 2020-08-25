@@ -134,7 +134,7 @@ export default (props) => {
   const makeContent = () => {
     return (
       <Content>
-        {/* <article className="soundSetting">
+        <article className="soundSetting">
           <button onClick={() => setMyAlimType('n')} className={myAlimType === 'n' ? 'active' : ''}>
             무음
           </button>
@@ -144,7 +144,7 @@ export default (props) => {
           <button onClick={() => setMyAlimType('v')} className={myAlimType === 'v' ? 'active' : ''}>
             진동
           </button>
-        </article> */}
+        </article>
         <div className="holeAlarm">
           <h2 className="on">전체 알림 수신</h2>
           <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
@@ -220,7 +220,7 @@ export default (props) => {
   return (
     <>
       <Header>
-        <div className="category-text">앱 설정</div>
+        <div className="category-text">Push 알림 설정</div>
       </Header>
       {allBtnState !== null && makeContent()}
     </>
