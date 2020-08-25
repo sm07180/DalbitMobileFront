@@ -219,8 +219,8 @@ export default (props) => {
                 <span className="arrow"></span>
               </button>
               <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
-                <img className="icon" src={AppSettingIcon} alt="앱설정" />
-                <span className="text">앱 설정</span>
+                <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
+                <span className="text">Push 알림 설정</span>
                 <span className="arrow"></span>
               </button>
             </div>

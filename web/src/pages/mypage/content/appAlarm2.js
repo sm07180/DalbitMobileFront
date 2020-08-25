@@ -220,7 +220,7 @@ export default (props) => {
   return (
     <>
       <Header>
-        <div className="category-text">앱 설정</div>
+        <div className="category-text">Push 알림 설정</div>
       </Header>
       {allBtnState !== null && makeContent()}
     </>
