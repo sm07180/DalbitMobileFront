@@ -249,7 +249,9 @@ export default (props) => {
                       <pre>{contents}</pre>
                     </div>
                     <div className="big_footer">
-                      <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>{replyCnt}</button>
+                      <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                        {replyCnt > 0 ? <>답글 {replyCnt}</> : <>답글쓰기</>}
+                      </button>
                       {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
                     </div>
                   </BigReply>

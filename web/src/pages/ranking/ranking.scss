@@ -1,9 +1,55 @@
+// .refresh-wrap {
+//   display: block;
+//   position: relative;
+//   height: 48px;
+//   background-color: rgba(127, 127, 127, 0.3);
+//   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+//   .icon-wrap {
+//     position: absolute;
+//     left: 50%;
+//     bottom: 6px;
+//     .arrow-refresh-icon {
+//       display: block;
+//       position: relative;
+//       left: -50%;
+//     }
+//   }
+// }
+
 #ranking-page {
   min-height: 100vh;
   background-color: #eee;
+  .refresh-wrap {
+    display: none;
+  }
+  .fixed {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 3;
+  }
+
+  .listFixed.more {
+    margin-top: 254px;
+  }
+
+  .listFixed {
+    margin-top: 140px;
+  }
 
   .respansiveBox {
     padding: 0 16px;
+  }
+
+  .renewalBox {
+    padding: 12px 16px;
+    background-color: #fff;
+    border-top: 1px solid #632beb;
+    border-bottom: 1px solid #eee;
+    text-align: right;
+    color: #616161;
+    font-size: 12px;
+    line-height: 13px;
   }
 
   img {
@@ -14,6 +60,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
     border-bottom: 1px solid #d2d2d2;
     padding: 14px 0;
     box-sizing: border-box;
@@ -505,8 +552,10 @@
 
   .fanGoodBox {
     display: flex;
+    align-items: center;
     width: fit-content;
-    padding: 2px 7px;
+    height: 22px;
+    padding: 0px 7px;
     background-color: #ec455f;
     border-radius: 14px;
     color: #fff;
@@ -514,12 +563,13 @@
     font-weight: bold;
 
     & img {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
     }
 
     & span {
       line-height: 24px;
+      letter-spacing: -0.4px;
     }
   }
 
@@ -733,7 +783,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    padding: 12px;
+    padding: 4px 12px;
     border-bottom: 1px solid #eee;
     background-color: #fff;
 
@@ -741,7 +791,7 @@
       width: 100px;
       height: 100px;
       margin-right: 8px;
-      min-width: 70px;
+      min-width: 100px;
 
       &__pic {
         margin-top: 15px;
@@ -758,6 +808,7 @@
 
     .nickNameBox {
       width: 200px;
+      margin-top: 4px;
       padding-left: 5px;
       font-size: 14px;
       white-space: nowrap;
@@ -767,10 +818,11 @@
 
     .bestFanBox {
       display: flex;
-      margin: 4px 0;
+      height: 18px;
+      margin-top: 4px;
       font-size: 12px;
       color: #632beb;
-
+      align-items: center;
       &__label {
         min-width: fit-content;
         margin-right: 4px;
@@ -793,15 +845,18 @@
     }
 
     .countBox {
+      height: 18px;
+      margin-top: 4px;
       padding-left: 5px;
       font-size: 12px;
-
       & > span {
         margin-right: 6px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        word-spacing: -3px;
         & > img {
           width: 16px;
           height: 16px;
-          margin-right: 2px;
           margin-bottom: 2px;
         }
       }
@@ -810,6 +865,45 @@
     .liveBox {
       top: 12px;
       right: 12px;
+    }
+
+    &__levelBox {
+      position: relative;
+      &--levelText {
+        position: absolute;
+        bottom: 22px;
+        left: 15px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 21px;
+      }
+      &--rankText {
+        width: 40px;
+        height: 20px;
+        margin-right: 4px;
+        border-radius: 12px;
+        background-color: #616161;
+        color: #fff;
+        text-align: center;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 21px;
+      }
+      &--rank {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 44px;
+        height: 22px;
+        margin-right: 10px;
+        background-color: #616161;
+        border-radius: 14px;
+        font-weight: bold;
+        font-size: 16px;
+        color: #fff;
+        text-align: center;
+      }
     }
   }
 

@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState, useCallback, useMemo} from 'react'
+import React, {useContext, useEffect, useState, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
@@ -19,11 +19,17 @@ import {RANK_TYPE, DATE_TYPE} from './constant'
 
 //statc
 import backBtn from './static/ic_back.svg'
+import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './ranking.scss'
 import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
 import {isCompositeComponent} from 'react-dom/test-utils'
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
+
+let touchStartY = null
+let touchEndY = null
+
+// let isFixed = false
 export default (props) => {
   const history = useHistory()
   const globalCtx = useContext(Context)
@@ -51,6 +57,99 @@ export default (props) => {
     myListenPoint: 0,
     time: ''
   })
+
+  const [isFixed, setIsFixed] = useState(false)
+  const [reloadInit, setReloadInit] = useState(false)
+
+  const iconWrapRef = useRef()
+  const arrowRefreshRef = useRef()
+  const refreshDefaultHeight = 49
+
+  const rankTouchStart = useCallback(
+    (e) => {
+      if (reloadInit === true || window.scrollY !== 0 || rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) return
+      touchStartY = e.touches[0].clientY
+    },
+    [reloadInit, rankType]
+  )
+
+  const rankTouchMove = useCallback(
+    (e) => {
+      if (reloadInit === true || window.scrollY !== 0 || rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) return
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      touchEndY = e.touches[0].clientY
+
+      const ratio = 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
+
+      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
+        iconWrapRef.current.style.display = 'block'
+        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+        refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+      }
+    },
+    [reloadInit, rankType]
+  )
+
+  const rankTouchEnd = useCallback(
+    async (e) => {
+      if (reloadInit === true || rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) return
+
+      const ratio = 3
+      const transitionTime = 150
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      const heightDiff = (touchEndY - touchStartY) / ratio
+
+      if (heightDiff >= 100) {
+        let current_angle = (() => {
+          const str_angle = refreshIconNode.style.transform
+          let head_slice = str_angle.slice(7)
+          let tail_slice = head_slice.slice(0, 4)
+          return Number(tail_slice)
+        })()
+
+        if (typeof current_angle === 'number') {
+          setReloadInit(true)
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+
+          const loadIntervalId = setInterval(() => {
+            if (Math.abs(current_angle) === 360) {
+              current_angle = 0
+            }
+            current_angle -= 10
+            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+          }, 17)
+
+          if (rankType === RANK_TYPE.DJ || rankType === RANK_TYPE.FAN) {
+            await fetchRankList(true)
+          }
+
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+          clearInterval(loadIntervalId)
+          setReloadInit(false)
+        }
+      }
+      const promiseSync = () =>
+        new Promise((resolve, _) => {
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          setTimeout(() => resolve(), transitionTime)
+        })
+
+      await promiseSync()
+      iconWrapNode.style.transitionDuration = '0ms'
+      iconWrapNode.style.display = 'none'
+      refreshIconNode.style.transform = 'rotate(0)'
+      touchStartY = null
+      touchEndY = null
+    },
+    [reloadInit, rankType]
+  )
 
   /** popup */
   const popStateEvent = (e) => {
@@ -324,6 +423,18 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
+      if (window.scrollY >= 47) {
+        setIsFixed(true)
+        // isFixed = true
+      } else {
+        setIsFixed(false)
+        // isFixed = false
+      }
+
+      if (isFixed === false) {
+        console.log(window.scrollY)
+      }
+
       if (window.scrollY >= gnbHeight) {
         globalCtx.action.updateLogoChange(true)
       } else if (window.scrollY < gnbHeight) {
@@ -351,51 +462,57 @@ export default (props) => {
 
   return (
     <Layout status={'no_gnb'}>
-      <div id="ranking-page">
+      <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
         <div className="header">
           <h1 className="header__title">랭킹</h1>
           <button className="header__btnBack" onClick={() => history.goBack()}>
             <img src={backBtn} alt="뒤로가기" />
           </button>
         </div>
-
-        <div className="rankTopBox respansiveBox">
-          <div className="rankTab">
-            {RANK_TYPE_LIST.map((rType, idx) => {
-              const createDateButtonItem = () => {
-                if (rType === RANK_TYPE.DJ) {
-                  return 'DJ'
-                } else if (rType === RANK_TYPE.FAN) {
-                  return '팬'
-                } else if (rType === RANK_TYPE.LEVEL) {
-                  return '레벨'
-                } else if (rType === RANK_TYPE.LIKE) {
-                  return '좋아요'
-                }
-              }
-
-              return (
-                <button
-                  key={`type-${idx}`}
-                  className={rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-                  onClick={() => usePreviousRankType(rType)}>
-                  {createDateButtonItem()}
-                </button>
-              )
-            })}
+        <div className="refresh-wrap" ref={iconWrapRef}>
+          <div className="icon-wrap">
+            <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
         </div>
-        {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
-          <>
-            <RankDateBtn dateType={dateType} setDateType={setDateType} fetching={fetching} />
-            <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} fetching={fetching} />
-            <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} setMyInfo={setMyInfo} />
-          </>
-        )}
+        <div className={`${isFixed && 'fixed'}`}>
+          <div className="rankTopBox respansiveBox">
+            <div className="rankTab">
+              {RANK_TYPE_LIST.map((rType, idx) => {
+                const createDateButtonItem = () => {
+                  if (rType === RANK_TYPE.DJ) {
+                    return 'DJ'
+                  } else if (rType === RANK_TYPE.FAN) {
+                    return '팬'
+                  } else if (rType === RANK_TYPE.LEVEL) {
+                    return '레벨'
+                  } else if (rType === RANK_TYPE.LIKE) {
+                    return '좋아요'
+                  }
+                }
+
+                return (
+                  <button
+                    key={`type-${idx}`}
+                    className={rankType === rType ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                    onClick={() => usePreviousRankType(rType)}>
+                    {createDateButtonItem()}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+          {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
+            <>
+              <RankDateBtn dateType={dateType} setDateType={setDateType} fetching={fetching} />
+              <RankHandleDateBtn handleDate={handleDate} selectedDate={selectedDate} dateType={dateType} fetching={fetching} />
+              <MyProfile myInfo={myInfo} rankType={rankType} dateType={dateType} setMyInfo={setMyInfo} />
+            </>
+          )}
+        </div>
         {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
         {rankType === RANK_TYPE.LIKE && <LikeList likeList={likeList} />}
         {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
-          <>
+          <div className={`${isFixed && 'listFixed'} ${globalCtx.token.isLogin && 'more'}`}>
             <RankListWrap
               rankType={rankType}
               dateType={dateType}
@@ -406,7 +523,7 @@ export default (props) => {
               setDateType={setDateType}
               handleDate={handleDate}
             />
-          </>
+          </div>
         )}
 
         {popup && <LayerPopup setPopup={setPopup} />}

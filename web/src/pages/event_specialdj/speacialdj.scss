@@ -1,39 +1,76 @@
 .speacialdj {
-  // overflow-y: scroll;
-
   max-width: 720px;
+  min-width: 320px;
   margin: auto;
 
-  .dayTitle {
-    display: block;
-    font-weight: 700;
+  .imgResize {
+    display: inline-block;
     width: 100%;
-    text-align: center;
-    font-size: 14px;
-    letter-spacing: -0.35px;
-    color: #000;
-    line-height: 20px;
-    padding-bottom: 6%;
+  }
 
-    &--orange {
-      color: #ff5a00;
+  .loginBox {
+    padding: 16px 12px;
+    background: #f2f2f2;
+  }
+
+  .title {
+    flex: 1;
+    display: flex;
+    height: 48px;
+    align-items: center;
+
+    h2 {
+      font-size: 18px;
+      color: #000;
+      margin-right: auto;
+      margin-left: 16px;
+      font-weight: bold;
+    }
+
+    button {
+      width: 40px;
+      height: 40px;
+      margin-left: auto;
+      margin-right: 6px;
+      border: none;
+      background: url('./static/ic_close.svg');
+      text-indent: -999999px;
     }
   }
 
-  .buttonBg {
-    padding: 0px 32px;
+  .contentImg {
     background: url('./static/button_bg.jpg');
     background-size: 100%;
-    box-sizing: border-box;
+
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
+  .dayTitle {
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    letter-spacing: -0.35px;
+    color: #000;
+    line-height: 30px;
+    padding-bottom: 6%;
+    background: url('./static/content_bg.jpg');
+    background-size: 100%;
+    p {
+      color: #ff5a00;
+      display: inline-block;
+    }
   }
 
   .buttonLink {
-    width: 100%;
-    max-width: 640px;
+    width: 80%;
     margin: auto;
     height: 40px;
     line-height: 40px;
-    border-radius: 20px;
+    border-radius: 30px;
     text-align: center;
     display: block;
     font-size: 16px;
@@ -41,42 +78,29 @@
   }
 
   .checkList {
-    margin: auto;
+    width: 100%;
+    box-sizing: border-box;
     background: url('./static/content_bg.jpg');
     background-size: 100%;
+    padding: 0px 64px;
+    padding-top: 50px;
+    margin: auto;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.35px;
 
-    &__box {
-      width: 100%;
-      box-sizing: border-box;
-
-      padding: 0px 8%;
-      padding-top: 50px;
-
-      margin: auto;
-      overflow: hidden;
-      font-size: 14px;
-      line-height: 20px;
-      letter-spacing: -0.35px;
-    }
-    &__list {
-      display: flex;
-    }
-    &__title {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      font-weight: 600;
-      color: #000;
-      margin-top: 10px;
-      margin-bottom: 12px;
-    }
     &__table {
       display: flex;
       flex-direction: column;
       border: 1px solid #e0e0e0;
       border-bottom: none;
       margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    &__list {
+      display: flex;
     }
 
     &__talbeLeft {
@@ -108,41 +132,32 @@
     }
   }
 
-  .button {
+  .buttonOn {
     display: flex;
-    max-width: 600px;
+    width: 90%;
     margin: auto;
     align-items: center;
     justify-content: center;
     height: 40px;
     font-size: 16px;
     color: #fff;
-    background: #bdbdbd;
-    border-radius: 10px;
-    &--on {
-      background: #632beb;
-    }
+    border-radius: 30px;
+    background: #632beb;
   }
 
-  .img100 img {
+  .buttonOff {
     display: flex;
-    width: 100%;
-  }
-  .button {
-    display: flex;
-    width: 100%;
+    width: 90%;
+    margin: auto;
     align-items: center;
     justify-content: center;
     height: 40px;
     font-size: 16px;
     color: #fff;
+    border-radius: 30px;
     background: #bdbdbd;
-    border-radius: 20px;
-
-    &--on {
-      background: #632beb;
-    }
   }
+
   .buttonBox {
     width: 100%;
     margin: auto;
@@ -152,55 +167,8 @@
     background-size: 100%;
 
     &--logout {
-      padding: 16px 12px;
+      padding: 32px 24px;
       background: #f2f2f2;
     }
   }
-
-  .title-wrap {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e0e0e0;
-    height: 40px;
-
-    .text {
-      width: 100%;
-      font-weight: 600;
-      font-size: 16px;
-      text-align: center;
-    }
-
-    .close-btn {
-      position: absolute;
-      top: 0;
-      right: 0;
-    }
-  }
-}
-
-.djTitle {
-  flex: 1;
-  display: flex;
-  height: 48px;
-  align-items: center;
-}
-.djTitleSub {
-  font-size: 18px;
-  color: #000;
-  margin-right: auto;
-  margin-left: 16px;
-  font-weight: bold;
-}
-.djRefresh {
-  width: 40px;
-  margin-left: auto;
-  margin-right: 6px;
-}
-
-.header-wrap {
-  padding: 0px;
-  margin: 0px;
 }
