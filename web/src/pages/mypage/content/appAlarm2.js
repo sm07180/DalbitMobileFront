@@ -135,13 +135,29 @@ export default (props) => {
     return (
       <Content>
         <article className="soundSetting">
-          <button onClick={() => setMyAlimType('n')} className={myAlimType === 'n' ? 'active' : ''}>
+          <button
+            onClick={() => {
+              first = false
+              setMyAlimType('n')
+            }}
+            className={myAlimType === 'n' ? 'active' : ''}>
             무음
           </button>
-          <button className="active" onClick={() => setMyAlimType('s')} className={myAlimType === 's' ? 'active' : ''}>
+          <button
+            className="active"
+            onClick={() => {
+              first = false
+              setMyAlimType('s')
+            }}
+            className={myAlimType === 's' ? 'active' : ''}>
             소리
           </button>
-          <button onClick={() => setMyAlimType('v')} className={myAlimType === 'v' ? 'active' : ''}>
+          <button
+            onClick={() => {
+              first = false
+              setMyAlimType('v')
+            }}
+            className={myAlimType === 'v' ? 'active' : ''}>
             진동
           </button>
         </article>
