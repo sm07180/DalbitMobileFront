@@ -429,6 +429,12 @@ export default (props) => {
         setIsFixed(false)
       }
 
+      if (window.scrollY >= gnbHeight) {
+        globalCtx.action.updateLogoChange(true)
+      } else if (window.scrollY < gnbHeight) {
+        globalCtx.action.updateLogoChange(false)
+      }
+
       if (scrollBottomFinish === true) {
         return
       }
