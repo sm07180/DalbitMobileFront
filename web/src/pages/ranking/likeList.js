@@ -45,7 +45,7 @@ export default (props) => {
                   <div className="levelListBox__levelBox--rankText">{rank}</div>
                   <div className="levelListBox__levelBox--updown">
                     {upDown === '-' ? (
-                      <span className="levelListBox__levelBox--updownnew"></span>
+                      <span className="levelListBox__levelBox--updown__new"></span>
                     ) : upDown === 'new' ? (
                       <span className="levelListBox__levelBox--updown__new">NEW</span>
                     ) : upDown[0] === '+' ? (
