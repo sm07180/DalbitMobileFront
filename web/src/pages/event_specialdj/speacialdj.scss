@@ -79,10 +79,11 @@
 
   .checkList {
     width: 100%;
+    margin: auto;
     box-sizing: border-box;
     background: url('./static/content_bg.jpg');
     background-size: 100%;
-    padding: 0px 64px;
+
     padding-top: 50px;
     margin: auto;
     overflow: hidden;
@@ -91,12 +92,14 @@
     letter-spacing: -0.35px;
 
     &__table {
+      width: 80%;
+      margin: auto;
       display: flex;
       flex-direction: column;
       border: 1px solid #e0e0e0;
       border-bottom: none;
       margin-bottom: 30px;
-      font-size: 14px;
+      font-size: 12px;
     }
 
     &__list {
@@ -107,7 +110,7 @@
       display: flex;
       align-items: center;
 
-      flex-basis: 140px;
+      flex-basis: 124px;
       padding: 8px 12px;
       border-right: 1px solid #e0e0e0;
       border-bottom: 1px solid #e0e0e0;
