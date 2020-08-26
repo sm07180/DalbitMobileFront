@@ -99,11 +99,6 @@ export default (props) => {
 }
 
 const StarList = styled.div`
-  position: absolute;
-  top: 0;
-  left: 16px;
-  width: calc(100% - 16px);
-  height: 100%;
   display: flex;
   align-items: center;
   flex-direction: row;

@@ -286,7 +286,10 @@ export default (props) => {
   )
 
   const fetchOtherList = useCallback(
-    async (init = false, url) => {
+    async (init, url) => {
+      if (init === true) {
+        setFetching(true)
+      }
       const {result, data, message} = await Api.get_ranking_other({
         params: {
           page: init === true ? 1 : page,
@@ -427,7 +430,7 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
-      if (window.scrollY >= gnbHeight) {
+      if (window.scrollY >= 49) {
         setIsFixed(true)
       } else {
         setIsFixed(false)
@@ -472,7 +475,7 @@ export default (props) => {
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
         </div>
-        <div className={`${isFixed && 'fixed'}`}>
+        <div className={`fixed`}>
           <div className="rankTopBox respansiveBox">
             <div className="rankTab">
               {RANK_TYPE_LIST.map((rType, idx) => {

@@ -23,19 +23,19 @@
     display: none;
   }
   .fixed {
-    position: fixed;
+    position: sticky;
     width: 100%;
-    top: 0;
+    top: 0px;
     z-index: 3;
   }
 
-  .listFixed.more {
-    margin-top: 254px;
-  }
+  // .listFixed.more {
+  //   margin-top: 254px;
+  // }
 
-  .listFixed {
-    margin-top: 140px;
-  }
+  // .listFixed {
+  //   margin-top: 140px;
+  // }
 
   .respansiveBox {
     padding: 0 16px;
@@ -61,6 +61,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    height: 49px;
     border-bottom: 1px solid #d2d2d2;
     padding: 14px 0;
     box-sizing: border-box;
