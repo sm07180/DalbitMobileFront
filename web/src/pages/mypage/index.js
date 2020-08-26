@@ -63,7 +63,7 @@ export default (props) => {
   //memNo Info
   let {memNo, category} = useParams()
 
-  var urlrStr = props.location.pathname.split('/')[2]
+  let urlrStr = props.location.pathname
 
   //state
   //프로필정보
@@ -101,7 +101,6 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    console.log(globalCtx)
     const settingProfileInfo = async (memNo) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
