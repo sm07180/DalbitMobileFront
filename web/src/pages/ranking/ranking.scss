@@ -631,19 +631,19 @@
     &--top1 {
       width: 38px;
       height: 42px;
-      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-gold.svg) no-repeat center center;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-gold.png) no-repeat center center;
     }
 
     &--top2 {
       width: 28px;
       height: 36px;
-      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-silver.svg) no-repeat center center;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-silver.png) no-repeat center center;
     }
 
     &--top3 {
       width: 28px;
       height: 36px;
-      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-bronze.svg) no-repeat center center;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-bronze.png) no-repeat center center;
     }
   }
 
@@ -668,7 +668,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-      padding: 12px 0 16px 0;
+      padding: 12px 0 12px 0;
       background: #eee;
 
       .thumbBox {

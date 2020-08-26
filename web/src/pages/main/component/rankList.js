@@ -9,9 +9,9 @@ import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 // static
-const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.svg`
-const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.svg`
-const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.svg`
+const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
+const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
+const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
 export default (props) => {
   let {rankType, djRank, fanRank} = props
