@@ -309,7 +309,7 @@ export default (props) => {
       setScrollBottomFinish(true)
       return null
     },
-    [page]
+    [rankType, dateType, selectedDate, page]
   )
 
   const concatRankList = useCallback(async () => {
@@ -375,7 +375,7 @@ export default (props) => {
     } else {
       initRankList()
     }
-  }, [selectedDate])
+  }, [selectedDate, rankType])
 
   useEffect(() => {
     switch (dateType) {
@@ -423,18 +423,10 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
-      if (window.scrollY >= 46) {
+      if (window.scrollY >= gnbHeight) {
         setIsFixed(true)
-        // isFixed = true
       } else {
         setIsFixed(false)
-        // isFixed = false
-      }
-
-      if (window.scrollY >= gnbHeight) {
-        globalCtx.action.updateLogoChange(true)
-      } else if (window.scrollY < gnbHeight) {
-        globalCtx.action.updateLogoChange(false)
       }
 
       if (scrollBottomFinish === true) {
