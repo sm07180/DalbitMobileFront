@@ -286,7 +286,10 @@ export default (props) => {
   )
 
   const fetchOtherList = useCallback(
-    async (init = false, url) => {
+    async (init, url) => {
+      if (init === true) {
+        setFetching(true)
+      }
       const {result, data, message} = await Api.get_ranking_other({
         params: {
           page: init === true ? 1 : page,
