@@ -58,7 +58,6 @@ export default (props) => {
   }
   //토글 모어버튼
   const toggleMore = (boardIdx, contents) => {
-    console.log('???', thisBigIdx, boardIdx)
     setThisBigIdx(boardIdx)
   }
   //수정하기 토글
