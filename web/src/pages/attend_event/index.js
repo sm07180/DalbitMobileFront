@@ -370,9 +370,9 @@ export default (props) => {
             </div> */}
 
             <div className="event-section">
-              <label className="title-label">
+              {/* <label className="title-label">
                 <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2@2x.png`} />
-              </label>
+              </label> */}
               <p className="title-top">
                 <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event2_title@2x.png`} />
               </p>
