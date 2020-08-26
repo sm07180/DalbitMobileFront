@@ -59,6 +59,7 @@ export default (props) => {
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+  const liveArrowRefreshRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -76,6 +77,7 @@ export default (props) => {
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
+  const [liveRefresh, setLiveRefresh] = useState(false)
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -142,7 +144,7 @@ export default (props) => {
   }
 
   const fetchLiveListAsInit = async () => {
-    setLiveList(null)
+    // setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
         page: 1,
@@ -164,7 +166,7 @@ export default (props) => {
   }
 
   const fetchLiveList = async (reset) => {
-    setLiveList(null)
+    // setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
         page: reset === true ? 1 : livePage,
@@ -400,11 +402,12 @@ export default (props) => {
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
+          console.log(str_angle)
           let head_slice = str_angle.slice(7)
           let tail_slice = head_slice.slice(0, 4)
           return Number(tail_slice)
         })()
-
+        console.log(current_angle)
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -556,10 +559,16 @@ export default (props) => {
                 onClick={async () => {
                   // setReloadInit(true)
                   // await fetchMainInitData()
+                  setLiveRefresh(true)
+                  await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
                   await fetchLiveList(true)
+                  setLiveRefresh(false)
                   // setReloadInit(false)
                 }}>
-                <button className="btn__refresh">실시간 LIVE</button>
+                <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`}>
+                  실시간 LIVE
+                  <img src="https://image.dalbitlive.com/main/200714/ico-refresh.svg" alt="새로고침" />
+                </button>
               </div>
 
               <div className="sequence-wrap">
