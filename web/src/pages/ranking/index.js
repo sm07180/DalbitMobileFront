@@ -423,16 +423,12 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
-      if (window.scrollY >= 47) {
+      if (window.scrollY >= 46) {
         setIsFixed(true)
         // isFixed = true
       } else {
         setIsFixed(false)
         // isFixed = false
-      }
-
-      if (isFixed === false) {
-        console.log(window.scrollY)
       }
 
       if (window.scrollY >= gnbHeight) {

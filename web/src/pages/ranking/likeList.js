@@ -11,7 +11,7 @@ import {Context} from 'context'
 import live from './static/live.svg'
 import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
-import goodIcon from './static/like_w_s.svg'
+import goodIcon from './static/like_w_m.svg'
 import likeIcon from './static/like_g_s.svg'
 
 export default (props) => {
@@ -45,7 +45,7 @@ export default (props) => {
                   <div className="levelListBox__levelBox--rankText">{rank}</div>
                   <div className="levelListBox__levelBox--updown">
                     {upDown === '-' ? (
-                      <span className="levelListBox__levelBox--updown__new"></span>
+                      <span className="levelListBox__levelBox--updownnew"></span>
                     ) : upDown === 'new' ? (
                       <span className="levelListBox__levelBox--updown__new">NEW</span>
                     ) : upDown[0] === '+' ? (
