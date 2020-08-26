@@ -115,7 +115,7 @@ export default (props) => {
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
 
           const loadIntervalId = setInterval(() => {
             if (Math.abs(current_angle) === 360) {
