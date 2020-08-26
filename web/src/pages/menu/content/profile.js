@@ -142,6 +142,12 @@ export default (props) => {
       }
     }
     getMyPageNew()
+    const {memNo} = token
+    Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
+      if (profileInfo.result === 'success') {
+        globalCtx.action.updateProfile(profileInfo.data)
+      }
+    })
   }, [])
   const locationNav = (type) => {
     context.action.updateFanboardReplyNum(false)
