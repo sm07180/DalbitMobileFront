@@ -346,7 +346,7 @@ export default (props) => {
       setRankList(list)
       setScrollBottomFinish(false)
     }
-  }, [rankType, dateType, page, selectedDate])
+  }, [rankType, dateType, selectedDate])
 
   const initOtherList = useCallback(async () => {
     const urls = rankType === RANK_TYPE.LEVEL ? '/rank/level' : '/rank/good'
@@ -360,7 +360,7 @@ export default (props) => {
         setLikeList(list)
       }
     }
-  }, [rankType, page])
+  }, [rankType])
 
   const usePreviousRankType = (props) => {
     if (props !== rankType) {
