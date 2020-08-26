@@ -23,19 +23,19 @@
     display: none;
   }
   .fixed {
-    position: sticky;
+    position: fixed;
     width: 100%;
     top: 0px;
     z-index: 3;
   }
 
-  // .listFixed.more {
-  //   margin-top: 254px;
-  // }
+  .listFixed.more {
+    margin-top: 254px;
+  }
 
-  // .listFixed {
-  //   margin-top: 140px;
-  // }
+  .listFixed {
+    margin-top: 140px;
+  }
 
   .respansiveBox {
     padding: 0 16px;
@@ -95,13 +95,10 @@
 
   .rankTopBox {
     display: flex;
-
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-
     background: #eee;
-
     &__update {
       font-size: 12px;
       color: #424242;
@@ -630,32 +627,33 @@
     position: absolute;
     top: 0;
     left: 8px;
+    margin-top: 2px;
     font-size: 12px;
     letter-spacing: -0.3px;
     text-align: center;
     font-weight: 700;
 
     .medal {
-      background-size: 100%;
+      background-size: contain;
       text-indent: -10000px;
     }
 
     &--top1 {
-      width: 40px;
-      height: 50px;
-      background: url(./static/ico-medal-gold@2x.png);
+      width: 38px;
+      height: 42px;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-gold.png) no-repeat center center;
     }
 
     &--top2 {
-      width: 32px;
-      height: 40px;
-      background: url(./static/ico-medal-silver@2x.png);
+      width: 28px;
+      height: 36px;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-silver.png) no-repeat center center;
     }
 
     &--top3 {
-      width: 32px;
-      height: 40px;
-      background: url(./static/ico-medal-bronze@2x.png);
+      width: 28px;
+      height: 36px;
+      background: url(https://image.dalbitlive.com/main/200714/ico-ranking-bronze.png) no-repeat center center;
     }
   }
 
@@ -680,8 +678,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
-
-      padding: 0px 0 16px 0;
+      padding: 12px 0 12px 0;
       background: #eee;
 
       .thumbBox {
@@ -712,7 +709,7 @@
         padding: 9px;
         background-color: #fff;
         text-align: center;
-        width: 49%;
+        width: 49.5%;
 
         .nickNameBox {
           flex-direction: row;

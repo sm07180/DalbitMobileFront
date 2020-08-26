@@ -160,10 +160,10 @@
           background-position: center;
           .medal-img {
             position: absolute;
-            top: -4px;
-            left: -4px;
-            width: 24px;
-            height: 24px;
+            top: -5px;
+            left: -6px;
+            width: 26px;
+            height: 30px;
           }
         }
         .nickname {
@@ -228,18 +228,20 @@
         border-bottom: 1px solid #eee;
 
         .title {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-
-          .txt {
-            display: inline-block;
-            font-size: 18px;
+          button {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
             letter-spacing: -0.36px;
-          }
-
-          .refresh-icon {
-            margin-left: 4px;
+            &::after {
+              display: inline-block;
+              content: '';
+              width: 32px;
+              height: 32px;
+              margin-left: 6px;
+              vertical-align: middle;
+              background: url(https://image.dalbitlive.com/main/200714/ico-refresh.svg) no-repeat 0 0;
+            }
           }
         }
       }
@@ -383,16 +385,16 @@
 
       .detail-list-icon {
         margin-right: 2px;
-        &::before {
-          display: inline-block;
-          content: '';
-          position: relative;
-          top: 5px;
-          width: 1px;
-          height: 12px;
-          background: $lightergray;
-          margin-right: 8px;
-        }
+        // &::before {
+        //   display: inline-block;
+        //   content: '';
+        //   position: relative;
+        //   top: 5px;
+        //   width: 1px;
+        //   height: 12px;
+        //   background: $lightergray;
+        //   margin-right: 8px;
+        // }
       }
 
       .sequence-icon,

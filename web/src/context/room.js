@@ -176,7 +176,7 @@ export const RoomJoin = async (obj) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
                   setTimeout(() => {
-                    RoomJoin(roomNo + '')
+                    RoomJoin(obj)
                   }, 700)
                 } else {
                   globalCtx.action.alert({

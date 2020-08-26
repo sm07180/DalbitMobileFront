@@ -4,11 +4,11 @@
  */
 import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-
 //context
 import Api from 'context/api'
 import {Context} from 'context'
 import {StoreLink} from 'context/link'
+import {IMG_SERVER} from 'context/config'
 
 // components
 import Layout from 'pages/common/layout'
@@ -26,18 +26,17 @@ import {OS_TYPE} from 'context/config.js'
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
+import {RoomMake} from 'context/room'
 
 // static
 import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
-import refreshIcon from './static/refresh_g.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 
-import {RoomMake} from 'context/room'
 import 'styles/main.scss'
 
 let concatenating = false
@@ -552,29 +551,26 @@ export default (props) => {
 
           <div className="section live-list" ref={LiveSectionRef}>
             <div className="title-wrap">
-              <div className="title">
-                <span className="txt">실시간 LIVE</span>
-                <button
-                  className="refresh-icon"
-                  onClick={async () => {
-                    setReloadInit(true)
-                    await fetchMainInitData()
-                    await fetchLiveList(true)
-                    setReloadInit(false)
-                  }}>
-                  <img src={refreshIcon} alt="실시간 라이브 리스트 새로고침하기" />
-                </button>
+              <div
+                className="title"
+                onClick={async () => {
+                  // setReloadInit(true)
+                  // await fetchMainInitData()
+                  await fetchLiveList(true)
+                  // setReloadInit(false)
+                }}>
+                <button className="btn__refresh">실시간 LIVE</button>
               </div>
 
               <div className="sequence-wrap">
-                <span className="text" onClick={() => setPopup(popup ? false : true)}>
+                {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
                 </span>
                 <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
                   <img src={sortIcon} alt="검색 정렬하기" />
-                </button>
+                </button> */}
                 <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
                   <img
                     src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
