@@ -10,7 +10,7 @@ import {useLocation, useHistory} from 'react-router-dom'
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
 //svg
-import PtimeIcon from '../../static/ic_p_time.svg'
+import PtimeIconP from '../../static/ic_p_time_p.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
 import PxBtnIcon from '../../static/ic_p_xbtn.svg'
@@ -413,7 +413,9 @@ const Wrap = styled.div`
     &__details {
       display: flex;
       flex-direction: row;
-      span {
+      &__time,
+      &__byeol,
+      &__lastTime {
         margin-right: 6px;
         font-size: 12px;
         line-height: 16px;
@@ -423,6 +425,8 @@ const Wrap = styled.div`
         color: #424242;
       }
       &__time {
+        font-weight: 600;
+        color: #632beb;
         position: relative;
         &:before {
           margin-right: 1px;
@@ -431,7 +435,7 @@ const Wrap = styled.div`
           width: 16px;
           height: 16px;
           content: '';
-          background: url(${PtimeIcon});
+          background: url(${PtimeIconP});
         }
       }
       &__byeol {

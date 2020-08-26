@@ -403,8 +403,9 @@ const Wrap = styled.div`
       margin-bottom: 4px;
       font-size: 12px;
       line-height: 16px;
+      font-weight: 600;
       text-align: left;
-      color: #424242;
+      color: #632beb;
     }
     &__details {
       display: flex;

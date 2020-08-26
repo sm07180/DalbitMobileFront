@@ -23,7 +23,7 @@ import BroadMore from './edite_star/broad_edite'
 export default (props) => {
   const ctx = useContext(Context)
   //state
-  const [title, setTitle] = useState(0)
+  const [title, setTitle] = useState(1)
   //swiper
   const swiperParams = {
     slidesPerView: 'auto',
@@ -69,7 +69,6 @@ export default (props) => {
           })}
         </Swiper>
       </div>
-
       {createContents()}
     </EditeWrap>
   )
@@ -127,23 +126,24 @@ const EditeWrap = styled.div`
 //Arr
 const tabArry = [
   {
-    id: 0,
-    title: '최신 순',
-    value: 'new'
-  },
-  {
     id: 1,
     title: '선물 보낸 순',
     value: 'gift'
+  },
+  {
+    id: 3,
+    title: '방송 들은 순',
+    value: 'broad'
   },
   {
     id: 2,
     title: '최근 청취 순',
     value: 'listen'
   },
+
   {
-    id: 3,
-    title: '방송 들은 순',
-    value: 'broad'
+    id: 0,
+    title: '등록 순',
+    value: 'new'
   }
 ]
