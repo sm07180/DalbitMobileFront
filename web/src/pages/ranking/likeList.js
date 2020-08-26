@@ -24,13 +24,36 @@ export default (props) => {
         <li className="renewalBox">매일 00시 집계 및 갱신</li>
         {likeList.length > 0 &&
           likeList.map((list, index) => {
-            const {nickNm, fanNickNm, fanMemNo, profImg, holder, rank, grade, fanGoodCnt, roomNo, memNo, totalGoodCnt} = list
+            const {
+              nickNm,
+              fanNickNm,
+              fanMemNo,
+              profImg,
+              holder,
+              rank,
+              grade,
+              fanGoodCnt,
+              roomNo,
+              memNo,
+              totalGoodCnt,
+              upDown
+            } = list
 
             return (
               <li key={index} className="levelListBox">
                 <div className="levelListBox__levelBox">
                   <div className="levelListBox__levelBox--rankText">{rank}</div>
-                  <div className="levelListBox__levelBox--updown">NEW</div>
+                  <div className="levelListBox__levelBox--updown">
+                    {upDown === '-' ? (
+                      <span className="levelListBox__levelBox--updown__new"></span>
+                    ) : upDown === 'new' ? (
+                      <span className="levelListBox__levelBox--updown__new">NEW</span>
+                    ) : upDown[0] === '+' ? (
+                      <span className="levelListBox__levelBox--updown__up">{Math.abs(parseInt(upDown))}</span>
+                    ) : (
+                      <span className="levelListBox__levelBox--updown__down">{Math.abs(parseInt(upDown))}</span>
+                    )}
+                  </div>
                 </div>
                 <div
                   className="thumbBox"
