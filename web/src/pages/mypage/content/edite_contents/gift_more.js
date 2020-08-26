@@ -11,7 +11,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
 //svg
 import PtimeIcon from '../../static/ic_p_time.svg'
-import PstarIcon from '../../static/ic_p_star.svg'
+import PstarIconP from '../../static/ic_p_star_p.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
 import PxBtnIcon from '../../static/ic_p_xbtn.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
@@ -413,7 +413,9 @@ const Wrap = styled.div`
     &__details {
       display: flex;
       flex-direction: row;
-      span {
+      &__time,
+      &__byeol,
+      &__lastTime {
         margin-right: 4px;
         font-size: 12px;
         line-height: 16px;
@@ -436,6 +438,8 @@ const Wrap = styled.div`
       }
       &__byeol {
         position: relative;
+        font-weight: bold;
+        color: #632beb;
         &:before {
           margin-right: 1px;
           display: inline-block;
@@ -443,7 +447,7 @@ const Wrap = styled.div`
           width: 16px;
           height: 16px;
           content: '';
-          background: url(${PstarIcon});
+          background: url(${PstarIconP});
         }
       }
       &__lastTime {

@@ -408,12 +408,15 @@ const Wrap = styled.div`
       font-size: 12px;
       line-height: 16px;
       text-align: left;
-      color: #424242;
+      color: #632beb;
+      font-weight: 600;
     }
     &__details {
       display: flex;
       flex-direction: row;
-      span {
+      &__time,
+      &__byeol,
+      &__lastTime {
         margin-right: 4px;
         font-size: 12px;
         line-height: 16px;
@@ -424,6 +427,7 @@ const Wrap = styled.div`
       }
       &__time {
         position: relative;
+
         &:before {
           margin-right: 1px;
           display: inline-block;
@@ -452,6 +456,7 @@ const Wrap = styled.div`
         display: flex;
         align-items: center;
         position: relative;
+
         &:before {
           margin-right: 1px;
           display: inline-block;

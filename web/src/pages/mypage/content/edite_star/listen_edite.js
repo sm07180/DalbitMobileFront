@@ -12,7 +12,7 @@ import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} 
 //svg
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
-import PlastTimeIcon from '../../static/ic_p_headphone.svg'
+import PlastTimeIconP from '../../static/ic_p_headphone_p.svg'
 import PxBtnIcon from '../../static/ic_p_xbtn.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
@@ -413,7 +413,9 @@ const Wrap = styled.div`
     &__details {
       display: flex;
       flex-direction: row;
-      span {
+      &__time,
+      &__byeol,
+      &__lastTime {
         margin-right: 4px;
         font-size: 12px;
         line-height: 16px;
@@ -450,6 +452,8 @@ const Wrap = styled.div`
         display: flex;
         align-items: center;
         position: relative;
+        font-weight: 600;
+        color: #632beb;
         &:before {
           margin-right: 1px;
           display: inline-block;
@@ -457,7 +461,7 @@ const Wrap = styled.div`
           width: 16px;
           height: 16px;
           content: '';
-          background: url(${PlastTimeIcon});
+          background: url(${PlastTimeIconP});
         }
       }
     }
