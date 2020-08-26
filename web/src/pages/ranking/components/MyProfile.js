@@ -94,17 +94,17 @@ export default function MyProfile(props) {
       }
     }
     createMyRank()
-    const windowScrollEvent = () => {
-      if (window.scrollY >= 140) {
-        setIsFixed(true)
-      } else {
-        setIsFixed(false)
-      }
-    }
-    window.addEventListener('scroll', windowScrollEvent)
-    return () => {
-      window.removeEventListener('scroll', windowScrollEvent)
-    }
+    // const windowScrollEvent = () => {
+    //   if (window.scrollY >= 140) {
+    //     setIsFixed(true)
+    //   } else {
+    //     setIsFixed(false)
+    //   }
+    // }
+    // window.addEventListener('scroll', windowScrollEvent)
+    // return () => {
+    //   window.removeEventListener('scroll', windowScrollEvent)
+    // }
   }, [])
 
   return (
@@ -139,7 +139,8 @@ export default function MyProfile(props) {
       ) : (
         <>
           {myProfile && (
-            <div className={`myRanking myRanking__profile ${isFixed === true && 'myRanking__profile--fixed'}`}>
+            // <div className={`myRanking myRanking__profile ${isFixed === true && 'myRanking__profile--fixed'}`}>
+            <div className={`myRanking myRanking__profile`}>
               <div
                 className="myRanking__profile__wrap"
                 onClick={() => {

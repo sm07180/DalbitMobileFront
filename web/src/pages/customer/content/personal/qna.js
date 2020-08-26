@@ -442,65 +442,68 @@ export default function Qna() {
           )
         })}
         <div className="personalAddWrap__caption">※ jpg, png 파일을 합계최대 10MB까지 첨부 가능합니다.</div>
-        <div className="personalAddWrap__answerWrap">
-          <div className="personalAddWrap__checkboxWrap">
-            <div className="personalAddWrap__checkboxWrap--check">
-              <DalbitCheckbox
-                status={checks[1]}
-                callback={() => {
-                  setChecks(
-                    checks.map((v, i) => {
-                      if (i === 1) {
-                        v = !v
-                      }
-                      return v
-                    })
-                  )
-                }}
-              />
-              <span>답변 E-Mail로 받기</span>
+        {context.token.isLogin === false && (
+          <div className="personalAddWrap__answerWrap">
+            <div className="personalAddWrap__checkboxWrap">
+              <div className="personalAddWrap__checkboxWrap--check">
+                <DalbitCheckbox
+                  status={checks[1]}
+                  callback={() => {
+                    setChecks(
+                      checks.map((v, i) => {
+                        if (i === 1) {
+                          v = !v
+                        }
+                        return v
+                      })
+                    )
+                  }}
+                />
+                <span>답변 E-Mail로 받기</span>
+              </div>
+              <div className="personalAddWrap__checkboxWrap--check">
+                <DalbitCheckbox
+                  status={checks[0]}
+                  callback={() => {
+                    setChecks(
+                      checks.map((v, i) => {
+                        if (i === 0) {
+                          v = !v
+                        }
+                        return v
+                      })
+                    )
+                  }}
+                />
+                <span>답변 문자로 받기</span>
+              </div>
             </div>
-            <div className="personalAddWrap__checkboxWrap--check">
-              <DalbitCheckbox
-                status={checks[0]}
-                callback={() => {
-                  setChecks(
-                    checks.map((v, i) => {
-                      if (i === 0) {
-                        v = !v
-                      }
-                      return v
-                    })
-                  )
+            <div>
+              <input
+                disabled={!checks[1]}
+                className="personalAddWrap__input"
+                type="email"
+                onChange={(e) => {
+                  setEmail(e.target.value)
                 }}
+                placeholder="E-Mail 입력하세요."
               />
-              <span>답변 문자로 받기</span>
+              <input
+                disabled={!checks[0]}
+                className="personalAddWrap__input"
+                type="tel"
+                value={phone}
+                onChange={(e) => {
+                  if (e.target.value.length < 16 && !isNaN(e.target.value)) {
+                    setPhone(e.target.value)
+                  }
+                }}
+                placeholder="휴대폰 번호를 입력하세요."
+              />
             </div>
           </div>
-          <div>
-            <input
-              disabled={!checks[1]}
-              className="personalAddWrap__input"
-              type="email"
-              onChange={(e) => {
-                setEmail(e.target.value)
-              }}
-              placeholder="E-Mail 입력하세요."
-            />
-            <input
-              disabled={!checks[0]}
-              className="personalAddWrap__input"
-              type="tel"
-              value={phone}
-              onChange={(e) => {
-                if (e.target.value.length < 16 && !isNaN(e.target.value)) {
-                  setPhone(e.target.value)
-                }
-              }}
-              placeholder="휴대폰 번호를 입력하세요."
-            />
-          </div>
-        </div>
+        )}
+
         <div className="personalAddWrap__agreeWrap">
           <DalbitCheckbox status={agree} callback={() => setAgree(!agree)} />
           <span className="personalAddWrap__agreeWrap--text">개인정보 수집 및 이용에 동의합니다.</span>

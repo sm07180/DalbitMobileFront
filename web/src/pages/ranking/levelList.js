@@ -20,6 +20,7 @@ export default (props) => {
   return (
     <>
       <ul>
+        <li className="renewalBox">매일 00시 집계 및 갱신</li>
         {levelList.length > 0 &&
           levelList.map((list, index) => {
             const {
@@ -39,7 +40,11 @@ export default (props) => {
 
             return (
               <li key={index} className="levelListBox">
-                <LevelBox levelColor={levelColor}>{level}</LevelBox>
+                <div className="levelListBox__levelBox">
+                  <div className="levelListBox__levelBox--levelText">Lv</div>
+                  <LevelBox levelColor={levelColor}>{level}</LevelBox>
+                </div>
+
                 {/* <div className="levelListBox__levelBox">
                 <span>{level}</span>
               </div> */}
@@ -133,7 +138,6 @@ const LevelBox = styled.div`
   justify-content: center;
   align-items: center;
   min-width: 44px;
-  margin-right: 10px;
   height: 22px;
   border-radius: 14px;
   font-weight: bold;

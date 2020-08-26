@@ -366,13 +366,12 @@ export default (props) => {
               <button onClick={() => fetchDataUploadReply()}>등록</button>
             </div>
           )}
-          <div className="reply_writeWrap__btn">
-            <button
-              onClick={() => {
-                context.action.updateFanboardReplyNum(-1)
-              }}>
-              답글접기
-            </button>
+          <div
+            className="reply_writeWrap__btn"
+            onClick={() => {
+              context.action.updateFanboardReplyNum(-1)
+            }}>
+            <button>답글접기</button>
             <img src={ArrowDownIcon} />
           </div>
         </div>
@@ -630,7 +629,7 @@ const Reply = styled.div`
     background-color: #fbfbfb;
     .reply_Wrap {
       display: flex;
-      min-height: 132px;
+      /* min-height: 132px; */
       /* margin-bottom: 12px; */
       padding: 4px 16px;
       background-color: #fbfbfb;
@@ -648,7 +647,7 @@ const Reply = styled.div`
       }
       .reply_content {
         padding: 12px 41px 8px 16px;
-        min-height: 69px;
+        /* min-height: 69px; */
         font-size: 12px;
         text-align: left;
         color: #616161;
@@ -710,7 +709,7 @@ const Reply = styled.div`
           margin-top: 8px;
           & > textarea {
             width: 100%;
-            height: 120px;
+            height: 60px;
           }
         }
       }
