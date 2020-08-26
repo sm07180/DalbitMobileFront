@@ -2,7 +2,7 @@ import React, {useState, useCallback, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {DATE_TYPE} from '../constant'
 
-import BenefitIcon from '../static/benefit.jpg'
+import BenefitIcon from '../static/ico-benefit.svg'
 
 export default function RankHandleDateBtn(props) {
   const {handleDate, selectedDate, dateType, fetching} = props
