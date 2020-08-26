@@ -32,6 +32,7 @@ export default (props) => {
   const [dateList, setDateList] = useState({})
   const [lunarDate, setLunarDate] = useState('')
   const [winList, setWinList] = useState(false)
+  const [newWinList, setNewWinList] = useState(false)
 
   const phoneInput = useRef()
 
@@ -70,6 +71,12 @@ export default (props) => {
     if (result === 'success') {
       const {list} = data
       if (list.length > 0) setWinList(list)
+      const newList = list.filter((item, index) => {
+        if (item.isNew) {
+          return item
+        }
+      })
+      setNewWinList(newList)
     } else {
       globalCtx.action.alert({
         msg: message
@@ -256,8 +263,6 @@ export default (props) => {
   }
 
   const makePhoneInputBox = () => {
-    console.log('statusList.phone_input', statusList.phone_input)
-
     const boxHtml = (
       <div className="gifticon-benefit-input">
         <p className="title">
@@ -313,10 +318,10 @@ export default (props) => {
           <div className="gifticon-win-box">
             <label>기프티콘 당첨자 &gt;</label>
 
-            {winList ? (
+            {newWinList ? (
               <Swiper {...swiperParams}>
-                {winList.length > 0 &&
-                  winList.map((item, index) => {
+                {newWinList.length > 0 &&
+                  newWinList.map((item, index) => {
                     const {winDt, nickNm} = item
 
                     return (
@@ -329,11 +334,6 @@ export default (props) => {
               </Swiper>
             ) : (
               <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
-
-              // <div className="gifticon-win-list">
-              //   {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
-              //   {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
-              // </div>
             )}
           </div>
         </div>
