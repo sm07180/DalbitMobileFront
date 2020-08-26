@@ -286,7 +286,10 @@ export default (props) => {
   )
 
   const fetchOtherList = useCallback(
-    async (init = false, url) => {
+    async (init, url) => {
+      if (init === true) {
+        setFetching(true)
+      }
       const {result, data, message} = await Api.get_ranking_other({
         params: {
           page: init === true ? 1 : page,
@@ -309,7 +312,7 @@ export default (props) => {
       setScrollBottomFinish(true)
       return null
     },
-    [page]
+    [rankType, dateType, selectedDate, page]
   )
 
   const concatRankList = useCallback(async () => {
@@ -346,28 +349,32 @@ export default (props) => {
       setRankList(list)
       setScrollBottomFinish(false)
     }
-  }, [rankType, dateType, page, selectedDate])
+  }, [rankType, dateType, selectedDate])
 
   const initOtherList = useCallback(async () => {
     const urls = rankType === RANK_TYPE.LEVEL ? '/rank/level' : '/rank/good'
     const list = await fetchOtherList(true, urls)
     if (list !== null) {
       setPage(2)
-      setScrollBottom(false)
+      setScrollBottomFinish(false)
       if (rankType === RANK_TYPE.LEVEL) {
         setLevelList(list)
       } else {
         setLikeList(list)
       }
     }
-  }, [rankType, page])
+  }, [rankType])
 
-  const usePreviousRankType = (props) => {
-    if (props !== rankType) {
-      setRankType(props)
-      setDateType(DATE_TYPE.DAY)
-    }
-  }
+  const usePreviousRankType = useCallback(
+    (props) => {
+      if (props !== rankType) {
+        scrollTo(0, 0)
+        setRankType(props)
+        setDateType(DATE_TYPE.DAY)
+      }
+    },
+    [rankType, dateType]
+  )
 
   useEffect(() => {
     if (rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) {
@@ -375,7 +382,7 @@ export default (props) => {
     } else {
       initRankList()
     }
-  }, [selectedDate])
+  }, [selectedDate, rankType])
 
   useEffect(() => {
     switch (dateType) {
@@ -423,16 +430,10 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
-      if (window.scrollY >= 47) {
+      if (window.scrollY >= gnbHeight) {
         setIsFixed(true)
-        // isFixed = true
       } else {
         setIsFixed(false)
-        // isFixed = false
-      }
-
-      if (isFixed === false) {
-        console.log(window.scrollY)
       }
 
       if (window.scrollY >= gnbHeight) {

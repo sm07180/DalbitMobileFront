@@ -11,7 +11,7 @@ import {Context} from 'context'
 import live from './static/live.svg'
 import levelIcon from './static/ic_level_s_dkgr.svg'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
-import goodIcon from './static/like_w_s.svg'
+import goodIcon from './static/like_w_m.svg'
 import likeIcon from './static/like_g_s.svg'
 
 export default (props) => {

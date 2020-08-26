@@ -286,7 +286,7 @@ export default (props) => {
   })()
 
   return (
-    <div className="mdieaSize">
+    <div className="specialdj">
       <Popup {...props} />
       <Message {...props} />
 
