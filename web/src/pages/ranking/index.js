@@ -362,12 +362,16 @@ export default (props) => {
     }
   }, [rankType])
 
-  const usePreviousRankType = (props) => {
-    if (props !== rankType) {
-      setRankType(props)
-      setDateType(DATE_TYPE.DAY)
-    }
-  }
+  const usePreviousRankType = useCallback(
+    (props) => {
+      if (props !== rankType) {
+        scrollTo(0, 0)
+        setRankType(props)
+        setDateType(DATE_TYPE.DAY)
+      }
+    },
+    [rankType, dateType]
+  )
 
   useEffect(() => {
     if (rankType === RANK_TYPE.LEVEL || rankType === RANK_TYPE.LIKE) {
