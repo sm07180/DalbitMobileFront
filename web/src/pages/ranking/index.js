@@ -436,11 +436,11 @@ export default (props) => {
         setIsFixed(false)
       }
 
-      if (window.scrollY >= gnbHeight) {
-        globalCtx.action.updateLogoChange(true)
-      } else if (window.scrollY < gnbHeight) {
-        globalCtx.action.updateLogoChange(false)
-      }
+      // if (window.scrollY >= gnbHeight) {
+      //   globalCtx.action.updateLogoChange(true)
+      // } else if (window.scrollY < gnbHeight) {
+      //   globalCtx.action.updateLogoChange(false)
+      // }
 
       if (scrollBottomFinish === true) {
         return
@@ -475,7 +475,7 @@ export default (props) => {
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
         </div>
-        <div className={`fixed`}>
+        <div className={`${isFixed === true && 'fixed'}`}>
           <div className="rankTopBox respansiveBox">
             <div className="rankTab">
               {RANK_TYPE_LIST.map((rType, idx) => {
