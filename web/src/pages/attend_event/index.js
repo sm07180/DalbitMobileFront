@@ -309,7 +309,7 @@ export default (props) => {
           <button className={createCheckGift()} onClick={() => attendDateIn()}></button>
         </div>
 
-        <div className="gifticon-win-wrap" onClick={() => props.history.push('/attend_event/winList')}>
+        {/* <div className="gifticon-win-wrap" onClick={() => props.history.push('/attend_event/winList')}>
           <div className="gifticon-win-box">
             <label>기프티콘 당첨자 &gt;</label>
 
@@ -329,18 +329,13 @@ export default (props) => {
               </Swiper>
             ) : (
               <div className="gifticon-win-list">8월 16일(일) 당첨자 명단 공개!</div>
-
-              // <div className="gifticon-win-list">
-              //   {winList.length > 0 && <p className="time">{dateFormatter(winList[0].winDt)}</p>}
-              //   {winList.length > 0 && <p className="nick-name">{winList[0].nickNm}</p>}
-              // </div>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div className="event-content-wrap">
           <div className="event-content">
-            <div className="event-section">
+            {/* <div className="event-section">
               <label className="title-label">
                 <img src={`${IMG_SERVER}/event/attend/200804/img_tt_event1@2x.png`} />
               </label>
@@ -372,7 +367,7 @@ export default (props) => {
 
                 {makePhoneInputBox()}
               </div>
-            </div>
+            </div> */}
 
             <div className="event-section">
               <label className="title-label">
