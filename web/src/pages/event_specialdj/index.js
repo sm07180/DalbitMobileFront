@@ -9,13 +9,11 @@ const Event_page = [
 
 export default () => {
   return (
-    <div>
-      <Switch>
-        {Event_page.map((item, index) => {
-          const {path, component, exact} = item
-          return <Route key={index} path={`/event_specialdj/${path}`} component={component} exact={exact} />
-        })}
-      </Switch>
-    </div>
+    <Switch>
+      {Event_page.map((item, index) => {
+        const {path, component, exact} = item
+        return <Route key={index} path={`/event_specialdj/${path}`} component={component} exact={exact} />
+      })}
+    </Switch>
   )
 }

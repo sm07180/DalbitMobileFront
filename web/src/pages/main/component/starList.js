@@ -52,40 +52,42 @@ export default (props) => {
               className="list"
               key={`star-list${idx}`}
               onClick={() => {
-                if (roomNo !== undefined && roomNo !== '') {
-                  if (ctx.adminChecker === true) {
-                    ctx.action.confirm_admin({
-                      //콜백처리
-                      callback: () => {
-                        RoomJoin({
-                          roomNo: roomNo + '',
-                          shadow: 1
-                        })
-                      },
-                      //캔슬콜백처리
-                      cancelCallback: () => {
-                        RoomJoin({
-                          roomNo: roomNo + '',
-                          shadow: 0
-                        })
-                      },
-                      msg: '관리자로 입장하시겠습니까?'
-                    })
-                  } else {
-                    RoomJoin({
-                      roomNo: roomNo + ''
-                    })
-                  }
-                } else {
-                  saveUrlAndRedirect(`/mypage/${memNo}`)
-                }
+                // if (roomNo !== undefined && roomNo !== '') {
+                //   if (ctx.adminChecker === true) {
+                //     ctx.action.confirm_admin({
+                //       //콜백처리
+                //       callback: () => {
+                //         RoomJoin({
+                //           roomNo: roomNo + '',
+                //           shadow: 1
+                //         })
+                //       },
+                //       //캔슬콜백처리
+                //       cancelCallback: () => {
+                //         RoomJoin({
+                //           roomNo: roomNo + '',
+                //           shadow: 0
+                //         })
+                //       },
+                //       msg: '관리자로 입장하시겠습니까?'
+                //     })
+                //   } else {
+                //     RoomJoin({
+                //       roomNo: roomNo + ''
+                //     })
+                //   }
+                // } else {
+                //   saveUrlAndRedirect(`/mypage/${memNo}`)
+                // }
+                // 20.08.25
+                saveUrlAndRedirect(`/mypage/${memNo}`)
               }}>
               <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
-                {roomNo !== undefined && roomNo !== '' && (
-                  <span className="live">
+                {/* {roomNo !== undefined && roomNo !== '' && (
+                  <span className="liveIcon">
                     <img src={LiveIcon} alt="라이브중" />
                   </span>
-                )}
+                )} */}
               </div>
               <div className="text">{star['nickNm']}</div>
             </div>
@@ -171,7 +173,7 @@ const StarList = styled.div`
       white-space: nowrap;
       text-align: center;
     }
-    .live {
+    .liveIcon {
       position: absolute;
       right: 0;
       bottom: 0;

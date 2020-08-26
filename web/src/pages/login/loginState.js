@@ -1,3 +1,4 @@
+// 사용안함 20.08.25
 import React, {useContext} from 'react'
 import {Switch, Route, useParams} from 'react-router-dom'
 import styled from 'styled-components'
@@ -32,7 +33,7 @@ import InquireIcon from './static/menu_1on1.svg'
 import ServiceIcon from './static/menu_guide.svg'
 import AppIcon from './static/menu_appinfo.svg'
 
-export default props => {
+export default (props) => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
 

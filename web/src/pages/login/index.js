@@ -12,13 +12,11 @@ import closeBtn from 'pages/menu/static/ic_close.svg'
 import qs from 'query-string'
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Redirect, Switch} from 'react-router-dom'
-import styled from 'styled-components'
 import appleLogo from './static/apple_logo.svg'
 import facebookLogo from './static/facebook_logo.svg'
 import googleLogo from './static/google_logo.svg'
 import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
-import loginBg from './static/login_bg.svg'
 import logoW from './static/logo_w_no_symbol.svg'
 import backW from './static/back_w.svg'
 
@@ -281,24 +279,25 @@ export default (props) => {
         <Redirect to={'/'} />
       ) : (
         <Layout status="no_gnb">
-          <Login>
+          <div className="login">
             <div className="header">
               <div className="inner">
-                <img className="close-btn" src={backW} onClick={clickCloseBtn} />
+                <button className="close-btn" onClick={clickCloseBtn}>
+                  <img src={backW} alt="뒤로가기" />
+                </button>
                 <h1>로그인</h1>
               </div>
             </div>
 
             <div className="login-wrap">
-              <img
-                className="logo"
-                src={logoW}
+              <h2
                 onClick={() => {
                   if (!webview) {
                     window.location.href = '/'
                   }
-                }}
-              />
+                }}>
+                <img className="logo" src={logoW} alt="달빛라이브" />
+              </h2>
               <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
               <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
               <div className="input-wrap">
@@ -355,8 +354,8 @@ export default (props) => {
             </div>
 
             {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
-              <SocialLoginWrap>
-                <div className="line-wrap">
+              <>
+                <div className="socialLogin">
                   {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
                     <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
                       <img className="icon" src={appleLogo} />
@@ -380,189 +379,11 @@ export default (props) => {
                   )}
                 </div>
                 {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
-              </SocialLoginWrap>
+              </>
             )}
-          </Login>
+          </div>
         </Layout>
       )}
     </Switch>
   )
 }
-
-const Login = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  height: 100vh;
-  min-height: 520px;
-  margin: 0 auto;
-  background: url(${loginBg}) no-repeat;
-  background-size: cover;
-
-  .header {
-    position: absolute;
-    width: 100%;
-    top: 30px;
-    left: 0;
-    .inner {
-      display: flex;
-      width: 260px;
-      margin: 0 auto;
-    }
-
-    .close-btn {
-      width: 40px;
-      height: 40px;
-    }
-
-    h1 {
-      margin-left: auto;
-      font-size: 20px;
-      font-weight: bold;
-      color: #fff;
-      line-height: 40px;
-    }
-  }
-
-  .login-wrap {
-    width: 100%;
-    padding-bottom: 50px;
-  }
-
-  .logo {
-    display: block;
-    margin: 0 auto 20px auto;
-  }
-
-  .input-wrap {
-    width: 260px;
-    margin: 0 auto;
-    input {
-      display: block;
-      border: 1px solid #fff;
-      width: 100%;
-      height: 24px;
-      padding: 23px 24px;
-      line-height: 24px;
-      border-radius: 25px;
-      color: #fff;
-      font-size: 14px;
-      letter-spacing: -0.4px;
-      background: none;
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-    input::placeholder {
-      color: #fff;
-    }
-    input[type='password'] {
-      margin-top: 8px;
-    }
-    .login-btn {
-      display: block;
-      margin-top: 8px;
-      width: 100%;
-      height: 48px;
-      line-height: 48px;
-      background-color: #fff;
-      color: ${COLOR_MAIN};
-      font-size: 16px;
-      font-weight: bold;
-      letter-spacing: -0.5px;
-      border-radius: 25px;
-    }
-  }
-
-  .link-wrap {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 24px 0 0 0;
-
-    .link-text {
-      color: #fff;
-      font-size: 14px;
-      font-weight: bold;
-
-      &.yello {
-        color: #febd56;
-      }
-    }
-
-    .bar {
-      width: 1px;
-      height: 12px;
-      background-color: #fff;
-      margin: 0 9px;
-      opacity: 0.2;
-    }
-  }
-`
-
-const SocialLoginWrap = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: 50px;
-
-  .line-wrap {
-    /* display: flex;
-    flex-direction: row;
-    justify-content: space-around; */
-    /* align-items: center; */
-    text-align: center;
-
-    .social-apple-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 25px;
-      border: solid 1px #000000;
-      background-color: #000000;
-      margin-right: 8px;
-    }
-
-    .social-facebook-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 25px;
-      border: solid 1px #4064ad;
-      background-color: #ffffff;
-      margin-right: 8px;
-    }
-
-    .social-naver-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 25px;
-      background-color: #2db400;
-      margin-right: 8px;
-    }
-
-    .social-kakao-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 25px;
-      background-color: #f9e000;
-      margin-right: 8px;
-    }
-
-    .social-google-btn {
-      width: 48px;
-      height: 48px;
-      border-radius: 25px;
-      border: solid 1px #4285f4;
-      background-color: #ffffff;
-    }
-  }
-
-  .apple-alert {
-    width: 240px;
-    height: 34px;
-    border-radius: 17px;
-    margin: 0 auto;
-    margin-top: 10px;
-    background-color: #000;
-    text-align: center;
-    color: #ffd500;
-    line-height: 34px;
-    font-size: 14px;
-  }
-`
