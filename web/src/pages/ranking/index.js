@@ -353,7 +353,6 @@ export default (props) => {
     const list = await fetchOtherList(true, urls)
     if (list !== null) {
       setPage(2)
-      setScrollBottom(false)
       setScrollBottomFinish(false)
       if (rankType === RANK_TYPE.LEVEL) {
         setLevelList(list)
