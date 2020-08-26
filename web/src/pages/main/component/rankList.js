@@ -3,14 +3,15 @@ import styled from 'styled-components'
 import {Context} from 'context'
 
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
+import {IMG_SERVER} from 'context/config'
 
 // component
 import Swiper from 'react-id-swiper'
 
 // static
-import GoldMedal from '../static/medal_gold_m@2x.png'
-import SilverMedal from '../static/medal_silver_m@2x.png'
-import BronzeMedal from '../static/medal_bronze_m@2x.png'
+const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.svg`
+const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.svg`
+const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.svg`
 
 export default (props) => {
   let {rankType, djRank, fanRank} = props

@@ -60,7 +60,7 @@ export default (props) => {
     <>
       {attendStampState()}
 
-      <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} />
+      {/* <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} /> */}
     </>
   )
 }
