@@ -35,6 +35,7 @@ const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
+const PcService = React.lazy(() => import('pages/pc_service'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
@@ -88,6 +89,7 @@ export default () => {
         <Route exact path="/money_exchange" component={MoneyExchange} />
         <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
         <Route exact path="/event_page" component={EventPage} />
+        <Route exact path="/pc_service" component={PcService} />
         <Route exact path="/attend_event" component={AttendEvent} />
         <Route exact path="/attend_event/:title" component={AttendEvent} />
         <Route exact path="/event_rising" component={EventRising} />
