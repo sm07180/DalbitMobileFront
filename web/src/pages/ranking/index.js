@@ -354,6 +354,7 @@ export default (props) => {
     if (list !== null) {
       setPage(2)
       setScrollBottom(false)
+      setScrollBottomFinish(false)
       if (rankType === RANK_TYPE.LEVEL) {
         setLevelList(list)
       } else {
