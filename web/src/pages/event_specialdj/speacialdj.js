@@ -49,10 +49,10 @@ export default (props) => {
     history.goBack()
   }
 
-  let evetStart = String(infoData.req_start_date)
-  const evetStartY = evetStart.slice(0, 4)
-  const evetStartM = evetStart.slice(4, 6)
-  const evetStartD = evetStart.slice(6, 8)
+  let eventStart = String(infoData.req_start_date)
+  const eventStartY = eventStart.slice(0, 4)
+  const eventStartM = eventStart.slice(4, 6)
+  const eventStartD = eventStart.slice(6, 8)
 
   let endDayNum = String(infoData.condition_end_date)
   const endY = endDayNum.slice(0, 4)
@@ -114,7 +114,7 @@ export default (props) => {
           <>
             <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
-              {`${evetStartY}년 ${evetStartM}월 ${evetStartD}일 ~ ${endM}월 ${endD}일`}
+              {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)
             </div>
             <img src={titleImg} alt="지원 요건" className="imgResize" />
