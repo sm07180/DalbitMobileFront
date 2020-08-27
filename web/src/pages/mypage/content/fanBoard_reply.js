@@ -244,8 +244,8 @@ export default (props) => {
   //------------------------------------------------------------
   return (
     <Reply>
-      {/* {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
-      <header className="replyheader">
+      {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
+      {/* <header className="replyheader">
         <button onClick={() => WriteToggles()}></button>
         <span>팬보드 보기</span>
         {createWriteBtns()}
@@ -345,7 +345,7 @@ export default (props) => {
               </div>
             )}
           </div>
-          {clickWrite === true && (
+          {/* {clickWrite === true && (
             <div className="reply_writeWrap__btnWrap">
               <span className="bigCount">
                 <span className="bigCount__screet">
@@ -365,7 +365,7 @@ export default (props) => {
               </span>
               <button onClick={() => fetchDataUploadReply()}>등록</button>
             </div>
-          )}
+          )} */}
           <div
             className="reply_writeWrap__btn"
             onClick={() => {
@@ -648,7 +648,7 @@ const Reply = styled.div`
       .reply_content {
         padding: 12px 41px 8px 16px;
         /* min-height: 69px; */
-        font-size: 12px;
+        font-size: 14px;
         text-align: left;
         color: #616161;
         word-break: break-all;
@@ -656,6 +656,13 @@ const Reply = styled.div`
       .reply_list_header {
         position: relative;
         height: 48px;
+        .big_moreBtn {
+          right: 0;
+        }
+        .big_moreDetail {
+          top: 40px;
+          right: 8px;
+        }
         .replyInfo {
           display: flex;
           align-items: center;
@@ -710,6 +717,7 @@ const Reply = styled.div`
           & > textarea {
             width: 100%;
             height: 60px;
+            font-size: 14px;
           }
         }
       }

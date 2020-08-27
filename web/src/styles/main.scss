@@ -169,7 +169,6 @@
         .nickname {
           overflow: hidden;
           text-overflow: ellipsis;
-          height: 16px;
           white-space: nowrap;
           font-weight: bold;
           font-size: 16px;
@@ -228,19 +227,21 @@
         border-bottom: 1px solid #eee;
 
         .title {
-          button {
-            display: flex;
-            align-items: center;
-            font-size: 20px;
-            letter-spacing: -0.36px;
-            &::after {
-              display: inline-block;
-              content: '';
-              width: 32px;
-              height: 32px;
-              margin-left: 6px;
-              vertical-align: middle;
-              background: url(https://image.dalbitlive.com/main/200714/ico-refresh.svg) no-repeat 0 0;
+          .btn {
+            &__refresh {
+              display: flex;
+              align-items: center;
+              font-size: 20px;
+              letter-spacing: -0.36px;
+              line-height: 1.4;
+              img {
+                margin-left: 6px;
+              }
+              &.btn__refresh--active {
+                img {
+                  animation: anim 0.36s;
+                }
+              }
             }
           }
         }
@@ -248,6 +249,14 @@
       .content-wrap {
         padding: 0;
       }
+    }
+  }
+  @keyframes anim {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
     }
   }
   .room_cnt {
