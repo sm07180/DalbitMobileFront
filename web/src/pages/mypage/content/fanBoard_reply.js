@@ -156,6 +156,7 @@ export default (props) => {
       setTextChange('')
       fetchDataReplyList()
       setThisBigIdx(0)
+      context.action.updateFanBoardBigIdxMsg(textChange)
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
         context.action.alert({
@@ -216,6 +217,7 @@ export default (props) => {
       if (res.result === 'success') {
         fetchDataReplyList()
         setThisBigIdx(0)
+        context.action.updateFanBoardBigIdxMsg(-1)
       } else if (res.result === 'fail') {
         context.action.alert({
           callback: () => {},

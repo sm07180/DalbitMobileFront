@@ -172,6 +172,7 @@ export default (props) => {
     if (res.result === 'success') {
       context.action.updateReplyIdx(false)
       setTextChange('')
+
       context.action.updateFanBoardBigIdxMsg(textChange)
       setReplyWriteState(false)
     } else if (res.result === 'fail') {
