@@ -345,7 +345,7 @@ export default (props) => {
               </div>
             )}
           </div>
-          {clickWrite === true && (
+          {/* {clickWrite === true && (
             <div className="reply_writeWrap__btnWrap">
               <span className="bigCount">
                 <span className="bigCount__screet">
@@ -365,7 +365,7 @@ export default (props) => {
               </span>
               <button onClick={() => fetchDataUploadReply()}>등록</button>
             </div>
-          )}
+          )} */}
           <div
             className="reply_writeWrap__btn"
             onClick={() => {
