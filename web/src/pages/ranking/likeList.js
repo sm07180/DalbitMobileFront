@@ -81,7 +81,7 @@ export default (props) => {
                   <img src={holder} className="thumbBox__frame" />
                   <img src={profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
-                <div>
+                <div className="textBox">
                   <div className="fanGoodBox">
                     <img src={goodIcon} />
                     <span>{totalGoodCnt.toLocaleString()}</span>

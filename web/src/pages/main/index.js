@@ -237,7 +237,7 @@ export default (props) => {
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 64
+    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
