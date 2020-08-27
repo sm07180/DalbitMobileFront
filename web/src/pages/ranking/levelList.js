@@ -8,8 +8,7 @@ import NoResult from 'components/ui/noResult'
 import {Context} from 'context'
 
 //static
-import live from './static/live.svg'
-import levelIcon from './static/ic_level_s_dkgr.svg'
+import guideIcon from './static/guide_s.png'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 import people from './static/people_g_s.svg'
 
@@ -20,7 +19,15 @@ export default (props) => {
   return (
     <>
       <ul>
-        <li className="renewalBox">매일 00시 집계 및 갱신</li>
+        <li className="renewalBox">
+          <span>매일 00시 집계 및 갱신</span>
+          <img
+            src={guideIcon}
+            onClick={() => {
+              context.action.updatePopup('RANK_POP', 'level')
+            }}
+          />
+        </li>
         {levelList.length > 0 &&
           levelList.map((list, index) => {
             const {
@@ -56,7 +63,7 @@ export default (props) => {
                   <img src={holder} className="thumbBox__frame" />
                   <img src={profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
-                <div>
+                <div className="textBox">
                   <div className="nickNameBox">{nickNm}</div>
                   <div className="countBox">
                     <span>

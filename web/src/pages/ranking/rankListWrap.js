@@ -129,44 +129,5 @@ export default (props) => {
     feachRankingReward()
   }
 
-  return (
-    <>
-      {/* <div className="todayList">{createDateButton()}</div> */}
-      {/* <div className="detailView">
-        <button
-          className={`prevButton ${btnActive['prev'] === true ? 'active' : ''}`}
-          onClick={() => {
-            if (btnActive['prev'] === true) {
-              handleDate('prev')
-            }
-          }}>
-          이전
-        </button>
-
-        <div className="title">
-          <div className="titleWrap">
-            {dateTitle.header}
-            <img
-              src="https://image.dalbitlive.com/images/api/20200806/benefit.png"
-              alt="benefit"
-              className="benefitSize"
-              onClick={() => {}}
-            />
-          </div>
-          <span>{dateTitle.date}</span>
-        </div>
-
-        <button
-          className={`nextButton ${btnActive['next'] === true ? 'active' : ''}`}
-          onClick={() => {
-            if (btnActive['next'] === true) {
-              handleDate('next')
-            }
-          }}>
-          다음
-        </button>
-      </div> */}
-      {createResult()}
-    </>
-  )
+  return <>{createResult()}</>
 }

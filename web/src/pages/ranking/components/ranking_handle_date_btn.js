@@ -2,7 +2,7 @@ import React, {useState, useCallback, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import {DATE_TYPE} from '../constant'
 
-import BenefitIcon from '../static/benefit.jpg'
+import BenefitIcon from '../static/ico-benefit.svg'
 
 export default function RankHandleDateBtn(props) {
   const {handleDate, selectedDate, dateType, fetching} = props
@@ -31,7 +31,7 @@ export default function RankHandleDateBtn(props) {
       if (year === selectedYear && month === selectedMonth && day === selectedDay) {
         setDateTitle({
           header: '오늘',
-          date: ''
+          date: '실시간 집계 중입니다.'
         })
         // setBtnActive({prev: true, next: false})
       } else if (year === selectedYear && month === selectedMonth && day - 1 === selectedDay) {
@@ -74,7 +74,7 @@ export default function RankHandleDateBtn(props) {
       if (year === selectedYear && month === selectedMonth && currentWeek === selectedWeek) {
         setDateTitle({
           header: '이번주',
-          date: ''
+          date: '실시간 집계 중입니다.'
         })
         // setBtnActive({prev: true, next: false})
       } else if (year === selectedYear && month === selectedMonth && currentWeek - 1 === selectedWeek) {
@@ -107,7 +107,7 @@ export default function RankHandleDateBtn(props) {
       if (year === selectedYear && month === selectedMonth) {
         setDateTitle({
           header: '이번달',
-          date: ''
+          date: '실시간 집계 중입니다.'
         })
         // setBtnActive({prev: true, next: false})
       } else if (year === selectedYear && month - 1 === selectedMonth) {
@@ -137,7 +137,8 @@ export default function RankHandleDateBtn(props) {
     } else if (dateType === DATE_TYPE.YEAR) {
       setDateTitle({
         header: `${selectedYear}년`,
-        date: selectedYear
+        // date: selectedYear
+        date: '실시간 집계 중입니다.'
       })
       setBtnActive({prev: false, next: false})
     }
@@ -161,16 +162,16 @@ export default function RankHandleDateBtn(props) {
       <div className="title">
         <div className="titleWrap">
           {dateTitle.header}
-          <span>{dateTitle.date}</span>
+          <img
+            src={BenefitIcon}
+            alt="benefit"
+            className="benefitSize"
+            onClick={() => {
+              history.push('/rank/benefit')
+            }}
+          />
         </div>
-        <img
-          src={BenefitIcon}
-          alt="benefit"
-          className="benefitSize"
-          onClick={() => {
-            history.push('/rank/benefit')
-          }}
-        />
+        <span>{dateTitle.date}</span>
       </div>
 
       <button

@@ -4,11 +4,11 @@
  */
 import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
 import {Link} from 'react-router-dom'
-
 //context
 import Api from 'context/api'
 import {Context} from 'context'
 import {StoreLink} from 'context/link'
+import {IMG_SERVER} from 'context/config'
 
 // components
 import Layout from 'pages/common/layout'
@@ -26,18 +26,17 @@ import {OS_TYPE} from 'context/config.js'
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
+import {RoomMake} from 'context/room'
 
 // static
 import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
-import refreshIcon from './static/refresh_g.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 
-import {RoomMake} from 'context/room'
 import 'styles/main.scss'
 
 let concatenating = false
@@ -60,6 +59,7 @@ export default (props) => {
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+  const liveArrowRefreshRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -77,6 +77,7 @@ export default (props) => {
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
+  const [liveRefresh, setLiveRefresh] = useState(false)
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -143,7 +144,7 @@ export default (props) => {
   }
 
   const fetchLiveListAsInit = async () => {
-    setLiveList(null)
+    // setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
         page: 1,
@@ -236,7 +237,7 @@ export default (props) => {
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 64
+    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
@@ -401,11 +402,12 @@ export default (props) => {
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
+          console.log(str_angle)
           let head_slice = str_angle.slice(7)
           let tail_slice = head_slice.slice(0, 4)
           return Number(tail_slice)
         })()
-
+        console.log(current_angle)
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -551,69 +553,69 @@ export default (props) => {
           </div>
 
           <div className="section live-list" ref={LiveSectionRef}>
-            <div className="title-wrap">
+            <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
-                <span className="txt">실시간 LIVE</span>
                 <button
-                  className="refresh-icon"
+                  className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`}
                   onClick={async () => {
-                    setReloadInit(true)
-                    await fetchMainInitData()
+                    // setReloadInit(true)
+                    // await fetchMainInitData()
+                    setLiveRefresh(true)
+                    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
                     await fetchLiveList(true)
-                    setReloadInit(false)
+                    setLiveRefresh(false)
+                    // setReloadInit(false)
                   }}>
-                  <img src={refreshIcon} alt="실시간 라이브 리스트 새로고침하기" />
+                  실시간 LIVE
+                  <img src="https://image.dalbitlive.com/main/200714/ico-refresh.svg" alt="새로고침" />
                 </button>
-              </div>
-
-              <div className="sequence-wrap">
-                <span className="text" onClick={() => setPopup(popup ? false : true)}>
+                <div className="sequence-wrap">
+                  {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
                 </span>
                 <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
                   <img src={sortIcon} alt="검색 정렬하기" />
-                </button>
-                <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
-                  <img
-                    src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
-                    alt="리스트 형식으로 리스트 보여주기"
-                  />
-                </button>
-                <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
-                  <img
-                    src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
-                    alt="리스트 형식으로 리스트 보여주기"
-                  />
-                </button>
+                </button> */}
+                  <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
+                    <img
+                      src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
+                      alt="리스트 형식으로 리스트 보여주기"
+                    />
+                  </button>
+                  <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
+                    <img
+                      src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                      alt="리스트 형식으로 리스트 보여주기"
+                    />
+                  </button>
+                </div>
+              </div>
+
+              <div className="live-list-category">
+                <div className="inner-wrapper">
+                  {Array.isArray(categoryList) && categoryList.length > 1 && (
+                    <Swiper {...swiperParams}>
+                      {categoryList
+                        .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
+                        .map((key, idx) => {
+                          return (
+                            <div
+                              className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                              key={`list-${idx}`}
+                              onClick={() => setSelectedLiveRoomType(key.cd)}>
+                              {key.cdNm}
+                            </div>
+                          )
+                        })}
+                    </Swiper>
+                  )}
+                </div>
               </div>
             </div>
 
-            <div className={`live-list-category ${liveCategoryFixed ? 'fixed' : ''}`}>
-              <div className="inner-wrapper">
-                {Array.isArray(categoryList) && categoryList.length > 1 && (
-                  <Swiper {...swiperParams}>
-                    {categoryList
-                      .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
-                      .map((key, idx) => {
-                        return (
-                          <div
-                            className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
-                            key={`list-${idx}`}
-                            onClick={() => setSelectedLiveRoomType(key.cd)}>
-                            {key.cdNm}
-                          </div>
-                        )
-                      })}
-                  </Swiper>
-                )}
-              </div>
-            </div>
-
-            {liveCategoryFixed && <div style={{height: '36px'}} />}
-
-            <div className="content-wrap">
+            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '105px'}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">

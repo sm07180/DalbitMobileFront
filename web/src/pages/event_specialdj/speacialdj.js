@@ -87,7 +87,8 @@ export default (props) => {
               style={{color: `${imageData[index].button_name_color}`, background: `${imageData[index].button_color}`}}
               className="buttonLink"
               onClick={() => {
-                history.push('/modal/specialdj_goods')
+                //history.push('/modal/specialdj_goods')
+                globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
               }}>
               {imageData[index].button_name}
             </button>

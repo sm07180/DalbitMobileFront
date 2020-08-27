@@ -15,6 +15,9 @@ export default (props) => {
 
   const [attendCheck, setAttendCheck] = useState(false)
 
+  //pathname
+  const urlrStr = history.location.pathname
+
   //출석도장
   useEffect(() => {
     async function fetchEventAttendCheck() {
@@ -57,38 +60,42 @@ export default (props) => {
   }
 
   return (
-    <>
-      {attendStampState()}
+    <FixedButton>
+      {urlrStr !== '/rank' && attendStampState()}
 
-      <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} />
-    </>
+      {/* <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} /> */}
+    </FixedButton>
   )
 }
 
+const FixedButton = styled.div`
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  z-index: 12;
+  > button {
+    margin: 5px auto 0;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+`
 const AttendStamp = styled.button`
   display: ${(props) => (props.logoChange ? 'block' : 'none')};
-  position: fixed;
-  bottom: 74px;
-  right: 10px;
   width: 48px;
   height: 48px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-image: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png');
-  z-index: 12;
 `
 
 const TopScrollBtn = styled.button`
   display: ${(props) => (props.logoChange ? 'block' : 'none')};
-  position: fixed;
-  bottom: 30px;
-  right: 15px;
   width: 36px;
   height: 36px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   background-image: url(${TopScrollIcon});
-  z-index: 12;
 `
