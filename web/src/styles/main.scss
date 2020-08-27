@@ -116,10 +116,86 @@
 
     &.my-star {
       display: none;
-      padding: 24px 0 18px;
+      padding: 20px 0 16px 16px;
       background: #eee;
       &.visible {
         display: block;
+      }
+      .title {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-right: 18px;
+        margin-bottom: 18px;
+
+        .txt {
+          width: 34px;
+          font-size: 16px;
+          color: #000;
+          font-weight: bold;
+        }
+        .icon {
+          width: 20px;
+          margin-left: 4px;
+        }
+      }
+
+      .swiper-container {
+        width: 100%;
+        margin: 0;
+        padding-right: 16px;
+      }
+
+      .list {
+        width: 60px;
+        cursor: pointer;
+
+        &:first-child {
+          margin-left: 0;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .image {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background-size: cover;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          color: #424242;
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: -0.32px;
+          background-color: #bbb;
+        }
+
+        .text {
+          margin: 0 auto;
+          margin-top: 6px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: #616161;
+          font-size: 12px;
+          /* letter-spacing: -0.28px; */
+          white-space: nowrap;
+          text-align: center;
+        }
+        .liveIcon {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 20px;
+          height: 20px;
+          img {
+            width: 100%;
+          }
+        }
       }
     }
 
@@ -139,7 +215,7 @@
           position: absolute;
           top: 0;
           left: 0;
-          color: #000;
+          color: $black;
           border-radius: 50%;
           background-color: #e0e0e0;
           width: 24px;
@@ -172,7 +248,7 @@
           white-space: nowrap;
           font-weight: bold;
           font-size: 16px;
-          color: #000;
+          color: $black;
           line-height: 1.08;
           letter-spacing: -0.35px;
           text-align: center;
@@ -188,7 +264,7 @@
           line-height: 2.17;
           height: 13px;
           .text {
-            color: #424242;
+            color: $greishbrown;
             font-size: 12px;
             letter-spacing: -0.3px;
             line-height: 2.17;
@@ -219,19 +295,29 @@
       padding: 0 16px 20px;
       .title-wrap {
         display: flex;
-        align-items: center;
-        flex-direction: row;
-        height: 64px;
-        padding: 22px 0;
+        flex-direction: column;
+        padding: 0;
+        background: $white;
         box-sizing: border-box;
-        border-bottom: 1px solid #eee;
+
+        &.fixed {
+          position: fixed;
+          top: 48px;
+          left: 0;
+          width: 100%;
+          padding: 0 16px;
+          z-index: 10;
+        }
 
         .title {
+          justify-content: space-between;
+          height: 64px;
+          padding: 22px 0 16px 0;
+          border-bottom: 1px solid #eee;
           .btn {
             &__refresh {
               display: flex;
               align-items: center;
-              font-size: 20px;
               letter-spacing: -0.36px;
               line-height: 1.4;
               img {
@@ -277,14 +363,6 @@
       height: 40px;
     }
 
-    &.fixed {
-      position: fixed;
-      top: 48px;
-      left: 0;
-      width: 100%;
-      z-index: 10;
-    }
-
     .inner-wrapper {
       width: 100%;
       .swiper-container {
@@ -297,7 +375,7 @@
           font-size: 14px;
           letter-spacing: -0.35px;
           margin: 0 8px;
-          color: #424242;
+          color: $greishbrown;
           box-sizing: border-box;
           font-weight: normal;
           &.active {
@@ -326,13 +404,13 @@
       align-items: center;
 
       .txt {
-        color: #424242;
+        color: $greishbrown;
         font-size: 18px;
         font-weight: bold;
         letter-spacing: -0.36px;
 
         &.in-active {
-          color: #bdbdbd;
+          color: $lightgray;
         }
 
         &:nth-child(2) {
@@ -383,7 +461,7 @@
       .text {
         margin-left: 4px;
         margin-right: 5px;
-        color: #424242;
+        color: $greishbrown;
         font-size: 14px;
         letter-spacing: -0.24px;
       }
@@ -422,7 +500,10 @@
       padding: 0;
     }
     &.my-star-list {
-      padding: 0 0 0 16px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      flex-direction: row;
     }
     .liveList {
       padding: 16px 0;
@@ -733,10 +814,10 @@
       width: 33px;
       height: 24px;
       border-radius: 24px;
-      background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+      background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
 
       &.active {
-        background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+        background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
       }
     }
 
@@ -778,7 +859,7 @@
     }
 
     .new-dj-icon {
-      color: #fff;
+      color: $white;
       font-size: 12px;
       border-radius: 10px;
       background-color: #feac2c;
@@ -789,7 +870,7 @@
     }
 
     .pc-icon {
-      color: #fff;
+      color: $white;
       font-size: 11px;
       border-radius: 10px;
       background-color: #f26d4a;
@@ -806,7 +887,7 @@
       margin-left: 4px;
       border-radius: 10px;
       background-color: #ec455f;
-      color: #fff;
+      color: $white;
       font-size: 12px;
       font-weight: normal;
       font-stretch: normal;
@@ -872,7 +953,7 @@
           min-width: 30px;
           background-color: #9e9e9e;
           border-radius: 8px;
-          color: #fff;
+          color: $white;
           font-size: 11px;
           /* padding: 1px 6px 0px 6px; */
           padding-left: 6px;
@@ -889,7 +970,7 @@
       }
 
       .title {
-        color: #424242;
+        color: $greishbrown;
         font-size: 14px;
         font-weight: bold;
         letter-spacing: -0.35px;
@@ -914,7 +995,7 @@
           display: flex;
           align-items: center;
           flex-direction: row;
-          color: #424242;
+          color: $greishbrown;
           font-size: 11px;
           letter-spacing: -0.3px;
 
@@ -973,7 +1054,7 @@
         }
 
         .pc-icon {
-          color: #fff;
+          color: $white;
           font-size: 11px;
           border-radius: 10px;
           background-color: #f26d4a;
@@ -992,7 +1073,7 @@
           border-radius: 8px;
           background-color: rgba(223, 57, 57, 0.5);
           text-align: center;
-          color: #fff;
+          color: $white;
         }
         .special-icon {
           width: 16px;
@@ -1001,7 +1082,7 @@
           line-height: 16px;
           font-size: 7px;
           text-align: center;
-          color: #fff;
+          color: $white;
           background-color: #ec455f;
         }
         .all-icon {
@@ -1013,7 +1094,7 @@
           border-radius: 8px;
           background-color: rgba(102, 177, 46, 0.5);
           text-align: center;
-          color: #fff;
+          color: $white;
         }
         .fan-icon {
           width: 24px;
@@ -1024,7 +1105,7 @@
           border-radius: 8px;
           background-color: rgba(78, 115, 217, 0.5);
           text-align: center;
-          color: #fff;
+          color: $white;
         }
       }
 
@@ -1039,7 +1120,7 @@
           display: block;
         }
         .count-txt {
-          color: #fff;
+          color: $white;
           font-size: 13px;
           text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
         }
@@ -1054,7 +1135,7 @@
         z-index: 1;
 
         .pc-icon {
-          color: #fff;
+          color: $white;
           font-size: 11px;
           border-radius: 10px;
           background-color: #f26d4a;
@@ -1079,7 +1160,7 @@
         }
 
         .dj-nickname {
-          color: #fff;
+          color: $white;
           font-size: 12px;
         }
       }
@@ -1310,7 +1391,7 @@
               font-style: normal;
               letter-spacing: -0.3px;
               text-align: left;
-              color: #424242;
+              color: $greishbrown;
 
               :before {
                 margin-right: 2px;
@@ -1449,7 +1530,7 @@
               font-style: normal;
               letter-spacing: -0.3px;
               text-align: left;
-              color: #424242;
+              color: $greishbrown;
               :before {
                 margin-right: 2px;
                 display: inline-block;
@@ -1602,8 +1683,8 @@
       width: 48px;
       height: 48px;
       border-radius: 25px;
-      border: solid 1px #000000;
-      background-color: #000000;
+      border: solid 1px $black;
+      background-color: $black;
       margin-right: 8px;
     }
 
@@ -1612,7 +1693,7 @@
       height: 48px;
       border-radius: 25px;
       border: solid 1px #4064ad;
-      background-color: #ffffff;
+      background-color: $white;
       margin-right: 8px;
     }
 
@@ -1637,7 +1718,7 @@
       height: 48px;
       border-radius: 25px;
       border: solid 1px #4285f4;
-      background-color: #ffffff;
+      background-color: $white;
     }
   }
 
@@ -1647,7 +1728,7 @@
     border-radius: 17px;
     margin: 0 auto;
     margin-top: 10px;
-    background-color: #000;
+    background-color: $black;
     text-align: center;
     color: #ffd500;
     line-height: 34px;

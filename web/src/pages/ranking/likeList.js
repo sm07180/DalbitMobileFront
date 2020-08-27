@@ -9,7 +9,7 @@ import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 //static
-import guideIcon from './static/guide_s.svg'
+import guideIcon from './static/guide_s.png'
 import goodIcon from './static/like_w_m.svg'
 import likeIcon from './static/like_g_s.svg'
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
@@ -81,7 +81,7 @@ export default (props) => {
                   <img src={holder} className="thumbBox__frame" />
                   <img src={profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
-                <div>
+                <div className="textBox">
                   <div className="fanGoodBox">
                     <img src={goodIcon} />
                     <span>{totalGoodCnt.toLocaleString()}</span>

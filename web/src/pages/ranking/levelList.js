@@ -8,7 +8,7 @@ import NoResult from 'components/ui/noResult'
 import {Context} from 'context'
 
 //static
-import guideIcon from './static/guide_s.svg'
+import guideIcon from './static/guide_s.png'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 import people from './static/people_g_s.svg'
 
@@ -63,7 +63,7 @@ export default (props) => {
                   <img src={holder} className="thumbBox__frame" />
                   <img src={profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
-                <div>
+                <div className="textBox">
                   <div className="nickNameBox">{nickNm}</div>
                   <div className="countBox">
                     <span>
