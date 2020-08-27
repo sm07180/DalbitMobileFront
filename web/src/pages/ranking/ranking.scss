@@ -1,20 +1,5 @@
-// .refresh-wrap {
-//   display: block;
-//   position: relative;
-//   height: 48px;
-//   background-color: rgba(127, 127, 127, 0.3);
-//   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-//   .icon-wrap {
-//     position: absolute;
-//     left: 50%;
-//     bottom: 6px;
-//     .arrow-refresh-icon {
-//       display: block;
-//       position: relative;
-//       left: -50%;
-//     }
-//   }
-// }
+@import '../../styles/variables';
+@import '../../styles/mixins';
 
 #ranking-page {
   min-height: 100vh;
@@ -47,18 +32,20 @@
     justify-content: flex-end;
     padding: 5px 16px;
     background-color: #fff;
-    border-top: 1px solid #632beb;
+    border-top: 1px solid $primary;
     border-bottom: 1px solid #eee;
     text-align: right;
     color: #616161;
     font-size: 12px;
 
     & > span {
-      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: middle;
     }
 
     & > img {
-      margin-left: 8px;
+      margin-left: 5px;
+      vertical-align: middle;
     }
   }
 
@@ -120,8 +107,8 @@
       background-color: #fff;
       font-size: 16px;
       &--active {
-        border-color: #632beb;
-        background-color: #632beb;
+        border-color: $primary;
+        background-color: $primary;
         color: #fff;
       }
     }
@@ -144,8 +131,8 @@
       color: #000;
 
       &--active {
-        border-bottom: 1px solid #632beb;
-        color: #632beb;
+        border-bottom: 1px solid $primary;
+        color: $primary;
         font-weight: 900;
       }
       &--blur {
@@ -155,44 +142,45 @@
   }
 
   .detailView {
-    height: 56px;
-    background: #fff;
-    padding: 0px 10px;
     display: flex;
     justify-content: space-between;
+    height: 56px;
+    padding: 0px 10px;
+    background: #fff;
 
-    .titleWrap {
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .benefitSize {
-      position: absolute;
-      width: 50px;
-      height: 22px;
-      display: inline-block;
-      margin-left: 7px;
-      right: -55px;
-    }
     .subDay {
       font-size: 12px;
       color: #616161;
     }
 
     .title {
-      display: flex;
       position: relative;
-      justify-content: center;
-      align-items: center;
+      @include flexbox();
+      @include flex-center(center);
+      flex-direction: column;
       font-size: 16px;
-      color: #632beb;
       font-weight: 700;
+      color: $primary;
 
+      .titleWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .benefitSize {
+        display: inline-block;
+        width: 50px;
+        height: 22px;
+        margin-left: 7px;
+        vertical-align: top;
+      }
       span {
-        color: #616161;
+        display: block;
         font-size: 12px;
+        text-align: center;
+        color: #616161;
       }
     }
 
@@ -234,7 +222,7 @@
     }
 
     &__profile {
-      background: #632beb;
+      background: $primary;
 
       // & > div:first-child {
       //   position: absolute;
@@ -584,7 +572,7 @@
   .nickNameBox {
     align-items: center;
     flex-direction: column;
-    margin-top: 8px;
+    margin-top: 7px;
     font-size: 16px;
     color: #000;
     font-weight: bold;
@@ -719,7 +707,7 @@
         &:first-child {
           width: 100%;
           padding-top: 116px;
-          margin-bottom: 4px;
+          margin-bottom: 8px;
           .nickName {
             display: flex;
             justify-content: center;
@@ -798,7 +786,7 @@
     .thumbBox {
       width: 100px;
       height: 100px;
-      margin-right: 2px;
+      margin-right: 8px;
       min-width: 100px;
 
       &__pic {
@@ -829,7 +817,7 @@
       height: 18px;
       margin-top: 4px;
       font-size: 12px;
-      color: #632beb;
+      color: $primary;
       align-items: center;
       &__label {
         min-width: fit-content;
@@ -854,14 +842,6 @@
       &__icon {
         color: #424242;
         word-spacing: -5px;
-        &::before {
-          display: inline-block;
-          vertical-align: middle;
-          content: '';
-          width: 16px;
-          height: 16px;
-          background: url('./static/like_g_s.svg') no-repeat 0 0;
-        }
       }
     }
 
@@ -890,8 +870,7 @@
 
     &__levelBox {
       position: relative;
-      width: 40px;
-      text-align: center;
+      margin-right: 4px;
       &--levelText {
         position: absolute;
         bottom: 22px;
@@ -963,18 +942,6 @@
           color: #ff9c00;
           text-transform: uppercase;
         }
-      }
-      &--top1 {
-        width: 38px;
-        height: 46px;
-      }
-      &--top2 {
-        width: 32px;
-        height: 38px;
-      }
-      &--top3 {
-        width: 32px;
-        height: 38px;
       }
     }
   }

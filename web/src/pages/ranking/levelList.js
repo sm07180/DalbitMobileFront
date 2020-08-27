@@ -8,7 +8,7 @@ import NoResult from 'components/ui/noResult'
 import {Context} from 'context'
 
 //static
-import guideIcon from './static/guide_s.svg'
+import guideIcon from './static/guide_s.png'
 import fanIcon from './static/ic_circle_fan_s_dkgr.svg'
 import people from './static/people_g_s.svg'
 

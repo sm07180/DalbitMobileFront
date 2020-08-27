@@ -218,7 +218,7 @@ const Wrap = styled.div`
     border-radius: 10px;
     @media (max-width: ${WIDTH_MOBILE}) {
       height: fit-content;
-      max-height: 310px;
+      max-height: 450px;
     }
   }
 
