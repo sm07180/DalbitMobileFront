@@ -13,11 +13,17 @@ export default (props) => {
   }
 
   return (
-    <Header>
+    <div className="header-wrap">
       <div className="child-bundle">{props.children}</div>
-      <div></div>
-      <img className="close-btn" src={closeBtn} onClick={goBack} />
-    </Header>
+      <button className="close-btn" onClick={goBack}>
+        <img src={closeBtn} alt="뒤로가기" />
+      </button>
+    </div>
+    // <Header>
+    //   <div className="child-bundle">{props.children}</div>
+    //   <div></div>
+    //   <img className="close-btn" src={closeBtn} onClick={goBack} />
+    // </Header>
   )
 }
 

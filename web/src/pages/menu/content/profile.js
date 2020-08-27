@@ -156,7 +156,7 @@ export default (props) => {
     history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
   }
   return (
-    <div id="profile">
+    <div id="mypage">
       {/* <Header>
         <div className="category-text">마이 페이지</div>
         {token && token.isLogin && (

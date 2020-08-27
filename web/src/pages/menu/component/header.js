@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 // static
-import BackBtnIcon from '../static/ic_back_g.svg'
+import closeBtn from '../static/ic_back_g.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import qs from 'qs'
 
@@ -18,10 +18,16 @@ export default (props) => {
   }
   //--------------------------------------------------------------------
   return (
-    <Header className="header-wrap">
-      <img className="close-btn" src={BackBtnIcon} onClick={goBack} />
+    <div className="header-wrap">
       <div className="child-bundle">{props.children}</div>
-    </Header>
+      <button className="close-btn" onClick={goBack}>
+        <img src={closeBtn} alt="뒤로가기" />
+      </button>
+    </div>
+    // <Header className="header-wrap">
+    //   <img className="close-btn" src={BackBtnIcon} onClick={goBack} />
+    //   <div className="child-bundle">{props.children}</div>
+    // </Header>
   )
 }
 // styled

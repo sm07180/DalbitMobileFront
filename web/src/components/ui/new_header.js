@@ -16,10 +16,16 @@ export default (props) => {
   }
 
   return (
-    <Header className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
-      <img className="close-btn" src={closeBtn} onClick={goBack} />
-      <h1>{props.title}</h1>
-    </Header>
+    <div className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
+      <div className="child-bundle">{props.title}</div>
+      <button className="close-btn" onClick={goBack}>
+        <img src={closeBtn} alt="뒤로가기" />
+      </button>
+    </div>
+    // <Header className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
+    //   <img className="close-btn" src={closeBtn} onClick={goBack} />
+    //   <h1>{props.title}</h1>
+    // </Header>
   )
 }
 
