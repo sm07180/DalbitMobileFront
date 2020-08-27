@@ -115,7 +115,7 @@ export default (props) => {
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
 
           const loadIntervalId = setInterval(() => {
             if (Math.abs(current_angle) === 360) {
@@ -461,6 +461,12 @@ export default (props) => {
     }
   }, [scrollBottom, scrollBottomFinish])
 
+  const textArea = useRef()
+  const resize = (e) => {
+    if (e.target.value.length > 1000) return
+    textArea.current.style.height = textArea.current.scrollHeight + 12 + 'px'
+  }
+
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
@@ -526,7 +532,13 @@ export default (props) => {
             />
           </div>
         )}
-
+        {/* <textarea
+          ref={textArea}
+          onChange={(e) => {
+            resize(e)
+          }}
+          style={{overflow: 'visible', minHeight: '50px'}}
+        /> */}
         {popup && <LayerPopup setPopup={setPopup} />}
       </div>
     </Layout>

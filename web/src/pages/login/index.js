@@ -377,8 +377,8 @@ export default (props) => {
                       <img className="icon" src={googleLogo} />
                     </button>
                   )}
+                  {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
                 </div>
-                {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
               </>
             )}
           </div>

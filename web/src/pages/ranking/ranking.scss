@@ -42,14 +42,24 @@
   }
 
   .renewalBox {
-    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px 16px;
     background-color: #fff;
     border-top: 1px solid #632beb;
     border-bottom: 1px solid #eee;
     text-align: right;
     color: #616161;
     font-size: 12px;
-    line-height: 13px;
+
+    & > span {
+      margin-bottom: 2px;
+    }
+
+    & > img {
+      margin-left: 8px;
+    }
   }
 
   img {
@@ -805,7 +815,7 @@
     }
 
     .nickNameBox {
-      width: 200px;
+      width: 188px;
       margin-top: 4px;
       padding-left: 5px;
       font-size: 14px;
@@ -824,7 +834,7 @@
       &__label {
         min-width: fit-content;
         margin-right: 4px;
-        padding: 0 8px;
+        padding: 0 3px;
         height: 16px;
         color: #757575;
         background-color: #eee;
@@ -834,11 +844,16 @@
       }
 
       &__nickNm {
-        width: 150px;
+        max-width: 80px;
         white-space: nowrap;
         overflow-x: hidden;
         text-overflow: ellipsis;
         line-height: 16px;
+      }
+
+      &__icon {
+        color: #424242;
+        word-spacing: -5px;
       }
     }
 
@@ -904,9 +919,9 @@
       }
       &--updown {
         text-align: center;
+        height: 12px;
         &__up {
           color: #eb2828;
-
           &::before {
             content: '';
             display: inline-block;
@@ -921,7 +936,6 @@
 
         &__down {
           color: #375cf1;
-
           &::before {
             content: '';
             display: inline-block;
@@ -936,7 +950,7 @@
 
         &__new {
           display: block;
-          height: 21px;
+          height: 12px;
           color: #ff9c00;
           text-transform: uppercase;
         }
