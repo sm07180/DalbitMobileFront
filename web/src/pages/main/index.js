@@ -615,9 +615,7 @@ export default (props) => {
               </div>
             </div>
 
-            {liveCategoryFixed && <div style={{height: '36px'}} />}
-
-            <div className="content-wrap">
+            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '105px'}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
