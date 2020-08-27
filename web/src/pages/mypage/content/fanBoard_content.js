@@ -19,7 +19,7 @@ import ReplyList from './fanBoard_reply'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
-import ReplyIcon from '../static/ic_reply_purple.svg'
+import ReplyIcon from '../static/reply_g.svg'
 import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
 import LockIcon from '../static/lock_g.svg'
@@ -39,7 +39,6 @@ export default (props) => {
   const [writeState, setWriteState] = useState(false)
   const [ReplyWriteState, setReplyWriteState] = useState(false)
   const [checkIdx, setCheckIdx] = useState(0)
-  const [replyShowIdx, setReplyShowIdx] = useState(false)
   const [titleReplyInfo, setTitleReplyInfo] = useState('')
   const [isScreet, setIsScreet] = useState(false)
   const [donstChange, setDonstChange] = useState(false)
@@ -73,7 +72,6 @@ export default (props) => {
   }
   //정보 대댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
-    setReplyShowIdx(boardIdx)
     //setTitleReplyInfo(item)
     if (context.fanboardReplyNum === boardIdx) {
       context.action.updateFanboardReplyNum(-1)
@@ -248,12 +246,14 @@ export default (props) => {
                     <div className="content_area">
                       <pre>{contents}</pre>
                     </div>
-                    <div className="big_footer">
-                      <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>
-                        {replyCnt > 0 ? <>답글 {replyCnt}</> : <>답글쓰기</>}
-                      </button>
-                      {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
-                    </div>
+                    {boardIdx !== context.fanboardReplyNum && (
+                      <div className="big_footer">
+                        <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                          {replyCnt > 0 ? <>답글 {replyCnt}</> : <>답글쓰기</>}
+                        </button>
+                        {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
+                      </div>
+                    )}
                   </BigReply>
                   {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
                     <ReplyList isViewOn={viewOn} replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />

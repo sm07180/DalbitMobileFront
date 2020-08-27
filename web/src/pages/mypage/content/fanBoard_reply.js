@@ -20,6 +20,7 @@ import BJicon from '../component/bj.svg'
 import WriteIcon from '../component/ic_write.svg'
 import BackIcon from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
+import ReplyIcon from '../static/ic_reply_purple.svg'
 import LockIcon from '../static/lock_g.svg'
 import ArrowDownIcon from '../static/arrow_down_g.svg'
 export default (props) => {
@@ -48,6 +49,7 @@ export default (props) => {
   const [checkIdx, setCheckIdx] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
   const [donstChange, setDonstChange] = useState(true)
+  const [fetching, setFetching] = useState(true)
   // modift msg
   const [modifyMsg, setModifyMsg] = useState('')
 
@@ -127,6 +129,7 @@ export default (props) => {
     })
     if (res.result === 'success') {
       setList(res.data.list)
+      setFetching(false)
     } else if (res.result === 'fail') {
     }
   }
@@ -241,6 +244,11 @@ export default (props) => {
       </a>
     )
   }
+
+  const ReplyInfoTransfer = () => {
+    context.action.updateFanboardReplyNum(-1)
+    context.action.updateToggleAction(true)
+  }
   //------------------------------------------------------------
   return (
     <Reply>
@@ -263,10 +271,13 @@ export default (props) => {
           <pre>{TitleInfo.contents}</pre>
         </div>
       </div>
-      <div className="ReplyCnt">
-        <span>답글</span>
-        <span>{list.length}</span>
-      </div> */}
+       */}
+      {fetching === false && (
+        <div className="ReplyCnt">
+          <button onClick={() => ReplyInfoTransfer()}>{list.length > 0 ? <>답글 {list.length}</> : <>답글쓰기</>}</button>
+        </div>
+      )}
+
       <div className="reply_list">
         {list &&
           list.map((item, index) => {
@@ -345,9 +356,9 @@ export default (props) => {
               </div>
             )}
           </div>
-          {/* {clickWrite === true && (
+          {clickWrite === true && (
             <div className="reply_writeWrap__btnWrap">
-              <span className="bigCount">
+              {/* <span className="bigCount">
                 <span className="bigCount__screet">
                   <DalbitCheckbox
                     status={isScreet}
@@ -362,10 +373,10 @@ export default (props) => {
                 <span>
                   <em>{textChange.length}</em> / 100
                 </span>
-              </span>
+              </span> */}
               <button onClick={() => fetchDataUploadReply()}>등록</button>
             </div>
-          )} */}
+          )}
           <div
             className="reply_writeWrap__btn"
             onClick={() => {
@@ -801,6 +812,7 @@ const Reply = styled.div`
         & > button {
           width: 100%;
           height: 44px;
+          margin-top: 20px;
           border-radius: 12px;
           background-color: ${COLOR_MAIN};
           font-size: 18px;
@@ -862,19 +874,34 @@ const Reply = styled.div`
     word-break: break-all;
   }
   .ReplyCnt {
-    padding: 0 17px;
-    margin-bottom: 12px;
-    span:first-child {
-      font-size: 16px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 36px;
+    padding: 0 16px;
+    background-color: #fff;
+    > button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: normal;
       text-align: left;
       color: #000000;
+      :before {
+        display: block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        background: url(${ReplyIcon}) no-repeat center center / cover;
+      }
     }
-    span:last-child {
-      margin-left: 6px;
-      font-size: 16px;
-      font-weight: 800;
+    > a {
+      font-size: 12px;
+      font-weight: 600;
       letter-spacing: normal;
       text-align: left;
       color: #632beb;
