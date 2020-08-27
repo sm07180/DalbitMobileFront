@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState, useCallback, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
-
 import {Context} from 'context'
 import Api from 'context/api'
 
@@ -14,11 +13,11 @@ import RankGuide from './guide/rank_guide'
 import MyProfile from './components/MyProfile'
 import RankDateBtn from './components/ranking_date_btn'
 import RankHandleDateBtn from './components/ranking_handle_date_btn'
+import Header from 'components/ui/new_header'
 // constant
 import {RANK_TYPE, DATE_TYPE} from './constant'
 
-//statc
-import backBtn from './static/ic_back.svg'
+//static
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './ranking.scss'
 import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
@@ -470,12 +469,7 @@ export default (props) => {
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
-        <div className="header">
-          <h1 className="header__title">랭킹</h1>
-          <button className="header__btnBack" onClick={() => history.goBack()}>
-            <img src={backBtn} alt="뒤로가기" />
-          </button>
-        </div>
+        <Header title="랭킹" />
         <div className="refresh-wrap" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />

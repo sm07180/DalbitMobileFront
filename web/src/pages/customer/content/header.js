@@ -24,10 +24,5 @@ export default (props) => {
         <img src={closeBtn} alt="뒤로가기" />
       </button>
     </div>
-    // <Header>
-    //   <div className="child-bundle">{props.children}</div>
-    //   <div></div>
-    //   <img className="close-btn" src={closeBtn} onClick={goBack} />
-    // </Header>
   )
 }

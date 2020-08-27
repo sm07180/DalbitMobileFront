@@ -235,10 +235,11 @@ const Notice = (props) => {
 
   return (
     <>
-      <Header>
+      {/* <Header>
         <div className="category-text">방송공지</div>
         {urlrStr === context.profile.memNo && createWriteBtn()}
-      </Header>
+      </Header> */}
+      <Header title="방송공지" />
       {listPage === -1 ? (
         <NoResult />
       ) : (

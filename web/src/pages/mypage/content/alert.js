@@ -232,9 +232,7 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      <Header>
-        <div className="category-text">알림</div>
-      </Header>
+      <Header title="프로필 알림" />
       <Content>
         {/* <TitleWrap style={{paddingBottom: '25px'}}>
           <TitleText>알림</TitleText>

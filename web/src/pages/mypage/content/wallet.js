@@ -171,9 +171,7 @@ export default (props) => {
   return (
     <div>
       {/* 공통타이틀 */}
-      <Header>
-        <div className="category-text">내 지갑</div>
-      </Header>
+      <Header title="내 지갑" />
       <Wrap>
         <TitleWrap>
           <CoinTypeBtn

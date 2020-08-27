@@ -147,7 +147,7 @@ export default Exit
 //---------------------------------------------------------------------
 const Wrap = styled.div`
   margin: 0 auto;
-  padding-top: 10px;
+  padding: 10px 16px;
   .exitWarn {
     display: flex;
     flex-direction: column;
@@ -251,7 +251,7 @@ const Wrap = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 58px;
+    margin-bottom: 20px;
     button {
       width: calc(50% - 2px);
       height: 44px;

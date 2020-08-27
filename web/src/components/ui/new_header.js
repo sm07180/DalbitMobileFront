@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 
 // static
@@ -16,43 +15,16 @@ export default (props) => {
   }
 
   return (
-    <div className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
-      <div className="child-bundle">{props.title}</div>
+    <div className="new header-wrap">
+      {props.title ? (
+        <h2 className={`header-title${props.title.length > 18 ? ' isLong' : ''}`}>{props.title}</h2>
+      ) : (
+        props.children
+      )}
+
       <button className="close-btn" onClick={goBack}>
         <img src={closeBtn} alt="뒤로가기" />
       </button>
     </div>
-    // <Header className={`header-wrap ${props.title.length > 18 && 'letter'}`}>
-    //   <img className="close-btn" src={closeBtn} onClick={goBack} />
-    //   <h1>{props.title}</h1>
-    // </Header>
   )
 }
-
-const Header = styled.header`
-  display: flex;
-  width: 100%;
-  height: 40px;
-  background: #fff;
-  border-bottom: 1px solid #e0e0e0;
-  justify-content: center;
-
-  h1 {
-    display: inline-block;
-    font-size: 18px;
-    font-weight: 800;
-    color: #000;
-    line-height: 40px;
-  }
-
-  &.letter h1 {
-    padding-left: 10px;
-    letter-spacing: -1.2px;
-  }
-  .close-btn {
-    display: block;
-    position: absolute;
-    left: 6px;
-    width: 36px;
-  }
-`
