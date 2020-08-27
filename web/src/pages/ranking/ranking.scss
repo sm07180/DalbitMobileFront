@@ -584,7 +584,7 @@
   .nickNameBox {
     align-items: center;
     flex-direction: column;
-    margin-top: 7px;
+    margin-top: 8px;
     font-size: 16px;
     color: #000;
     font-weight: bold;
@@ -719,7 +719,7 @@
         &:first-child {
           width: 100%;
           padding-top: 116px;
-          margin-bottom: 8px;
+          margin-bottom: 4px;
           .nickName {
             display: flex;
             justify-content: center;
@@ -798,7 +798,7 @@
     .thumbBox {
       width: 100px;
       height: 100px;
-      margin-right: 8px;
+      margin-right: 2px;
       min-width: 100px;
 
       &__pic {
@@ -854,6 +854,14 @@
       &__icon {
         color: #424242;
         word-spacing: -5px;
+        &::before {
+          display: inline-block;
+          vertical-align: middle;
+          content: '';
+          width: 16px;
+          height: 16px;
+          background: url('./static/like_g_s.svg') no-repeat 0 0;
+        }
       }
     }
 
@@ -882,7 +890,8 @@
 
     &__levelBox {
       position: relative;
-      margin-right: 4px;
+      width: 40px;
+      text-align: center;
       &--levelText {
         position: absolute;
         bottom: 22px;
@@ -954,6 +963,18 @@
           color: #ff9c00;
           text-transform: uppercase;
         }
+      }
+      &--top1 {
+        width: 38px;
+        height: 46px;
+      }
+      &--top2 {
+        width: 32px;
+        height: 38px;
+      }
+      &--top3 {
+        width: 32px;
+        height: 38px;
       }
     }
   }

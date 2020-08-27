@@ -6,14 +6,15 @@ import Room, {RoomJoin} from 'context/room'
 import NoResult from 'components/ui/noResult'
 // context
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 
 //static
 import guideIcon from './static/guide_s.svg'
 import goodIcon from './static/like_w_m.svg'
 import likeIcon from './static/like_g_s.svg'
-import goldMedalIcon from './static/medal_gold_b.svg'
-import silverMedalIcon from './static/medal_silver_b.svg'
-import bronzeMedalIcon from './static/medal_bronze_m.svg'
+const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
+const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
+const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
 export default (props) => {
   const context = useContext(Context)
@@ -52,11 +53,11 @@ export default (props) => {
               <li key={index} className="levelListBox">
                 <div className="levelListBox__levelBox">
                   {rank === 1 ? (
-                    <img src={goldMedalIcon} className="levelListBox__levelBox--rankImg" />
+                    <img src={goldMedalIcon} className="levelListBox__levelBox--top1" />
                   ) : rank === 2 ? (
-                    <img src={silverMedalIcon} className="levelListBox__levelBox--rankImg" />
+                    <img src={silverMedalIcon} className="levelListBox__levelBox--top2" />
                   ) : rank === 3 ? (
-                    <img src={bronzeMedalIcon} className="levelListBox__levelBox--rankImg" />
+                    <img src={bronzeMedalIcon} className="levelListBox__levelBox--top3" />
                   ) : (
                     <div className="levelListBox__levelBox--rankText">{rank}</div>
                   )}
@@ -97,9 +98,7 @@ export default (props) => {
                       }}>
                       {fanNickNm}
                     </span>
-                    <span className="bestFanBox__icon">
-                      <img src={likeIcon} /> {fanGoodCnt}
-                    </span>
+                    <span className="bestFanBox__icon">{fanGoodCnt}</span>
                   </div>
                 </div>
 
