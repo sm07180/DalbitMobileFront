@@ -1,11 +1,19 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 import './static/pcservice.scss'
 
 export default () => {
+  const history = useHistory()
   return (
     <div id="pcService">
       <h2 className="title">
-        PC 이용시 좋은 점 <button>닫기</button>
+        PC 이용시 좋은 점{' '}
+        <button
+          onClick={() => {
+            history.goBack()
+          }}>
+          닫기
+        </button>
       </h2>
       <img
         src="https://image.dalbitlive.com/event/pc_service/mobile/m_service01.jpg"
