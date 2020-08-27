@@ -24,6 +24,8 @@ const Setting = React.lazy(() => import('pages/setting'))
 const EventPage = React.lazy(() => import('pages/event_page'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
+const Specialdj = React.lazy(() => import('pages/event_specialdj'))
+const Proofshot = React.lazy(() => import('pages/event_proofshot'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 
 const Live = React.lazy(() => import('pages/live'))
@@ -34,9 +36,6 @@ const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
-const Specialdj = React.lazy(() => import('pages/event_specialdj'))
-
-const Proofshot = React.lazy(() => import('pages/event_proofshot'))
 
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
@@ -62,8 +61,8 @@ export default () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingGuide} />
-        <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_proofshot" component={Proofshot} />
+        <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
