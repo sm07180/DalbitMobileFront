@@ -7,11 +7,6 @@ import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
-import Api from 'context/api'
-import Header from '../component/header.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 
@@ -76,9 +71,6 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      {/* <Header>
-        <div className="category-text">방송설정</div>
-      </Header> */}
       <SettingHeader>
         <button onClick={BackFunction}></button>
         <div>
@@ -89,12 +81,6 @@ export default (props) => {
         </div>
       </SettingHeader>
       <Content>
-        {/* <TitleWrap>
-          <TitleText>{currentMenu.text}</TitleText>
-          <SelectWrap>
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={selectMenu} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
-          </SelectWrap>
-        </TitleWrap> */}
         {initialScreen && (
           <div className="initial_contents">
             <button onClick={() => ToggleContents(0)}>

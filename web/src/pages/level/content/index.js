@@ -1,15 +1,13 @@
 import React from 'react'
 import styled from 'styled-components'
 //ui
-import Header from './header'
+import Header from 'components/ui/new_header.js'
 import Contents from './contents'
 
-export default props => {
+export default (props) => {
   return (
     <Container>
-      <Header>
-        <div className="category-text">레벨</div>
-      </Header>
+      <Header title="레벨" />
       <Contents></Contents>
     </Container>
   )

@@ -181,10 +181,10 @@ const myProfile = (props) => {
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
   //--------------------------------------------------------------
   const goFanEdite = () => {
-    history.push(`/mypage/${profile.memNo}/edit_fan`)
+    history.push(`/mypage/${profile.memNo}/edite_fan`)
   }
   const goStarEdite = () => {
-    history.push(`/mypage/${profile.memNo}/edit_star`)
+    history.push(`/mypage/${profile.memNo}/edite_star`)
   }
   //뱃지
   //스와이퍼
