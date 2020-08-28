@@ -38,7 +38,7 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
               <li key={index}>
                 <div className="list__content">
                   <a href={`/mypage/${item.mem_no}`} className="list__img">
-                    <img src={item.profImg['thumb62x62']} />
+                    <img src={item.profImg['thumb336x336']} />
                   </a>
                   <div className="title">
                     <h3>{item.mem_nick}</h3>
