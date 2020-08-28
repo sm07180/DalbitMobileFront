@@ -34,12 +34,12 @@ function proofWirte(props) {
     const fileExtension = fileSplited.pop()
     //
     const extValidator = (ext) => {
-      const list = ['jpg', 'jpeg', 'png', 'gif']
+      const list = ['jpg', 'jpeg', 'png', 'gif', 'PNG']
       return list.includes(ext)
     }
     if (!extValidator(fileExtension)) {
       return context.action.alert({
-        msg: 'gif,jpg, png 이미지만 사용 가능합니다.',
+        msg: 'gif, jpg, png 이미지만 사용 가능합니다.',
         title: '',
         callback: () => {
           context.action.alert({visible: false})
@@ -56,6 +56,8 @@ function proofWirte(props) {
           }
         })
         if (res.result === 'success') {
+          if (res.code === 'C006') {
+          }
           setImageData(res.data.url)
         } else {
           context.action.alert({
@@ -86,6 +88,7 @@ function proofWirte(props) {
             setViewType(VIEW_TYPE.MAIN)
             await fetchEventProofshotList()
             await eventStatusCheck()
+            setScrollToList(true)
           }
         })
       } else {
@@ -113,6 +116,7 @@ function proofWirte(props) {
           callback: () => {
             setViewType(VIEW_TYPE.MAIN)
             fetchEventProofshotList()
+            setScrollToList(true)
           }
         })
       }
@@ -173,7 +177,7 @@ function proofWirte(props) {
         className="textWrite"
         ref={TextareaRef}
         style={{minHeight: '50px', overflowY: 'visible'}}
-        placeholder="제목을 입력해주세요"
+        placeholder="이벤트 참여 소감 또는 PC 서비스에 대한 의견을 작성해주세요!"
         value={content}
         onChange={(e) => {
           if (e.target.value.length < 1000) {
@@ -196,7 +200,7 @@ function proofWirte(props) {
               <span className="uploadButton">사진등록</span>
             ) : (
               <span className="modifyButton">
-                <img src={imageData ? imageData : imageData.profImg ? imageData.profImg['thumb150x150'] : ''} />
+                <img src={imageData} />
               </span>
             )}
           </label>
@@ -213,7 +217,7 @@ function proofWirte(props) {
                     <img src={Gallery_w} className="galleryIcon" />
                   </p>
                 </div>
-                <img src={imageData ? imageData : imageData.profImg ? imageData.profImg['thumb150x150'] : ''} />
+                <img src={imageData} />
               </span>
             )}
           </label>

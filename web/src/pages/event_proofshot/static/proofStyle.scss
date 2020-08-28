@@ -4,6 +4,15 @@
   min-width: 320px;
   height: 100%;
 
+  .hidden {
+    display: none;
+  }
+
+  .visible {
+    display: block;
+    height: 45px;
+  }
+
   .zoom {
     position: fixed;
     top: 0;
@@ -28,6 +37,29 @@
   }
 
   .visualWrap {
+    .dayTextwrap {
+      position: relative;
+      .day {
+        position: absolute;
+        top: 42%;
+        width: 100%;
+        color: #fff;
+        font-size: 14px;
+        width: 100%;
+      }
+      span {
+        display: block;
+        margin: auto;
+        width: 192px;
+        height: 24px;
+        line-height: 23px;
+        text-align: center;
+        color: #fff;
+        background: #575dda;
+        font-size: 14px;
+        border-radius: 13px;
+      }
+    }
     & img {
       display: block;
       width: 100%;
@@ -114,9 +146,15 @@
     }
 
     .title {
+      flex-basis: 150px;
       h3 {
         font-size: 16px;
         margin-bottom: 4px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
       }
       span {
         color: #9e9e9e;
@@ -134,7 +172,6 @@
       padding: 10px 16px;
       overflow: hidden;
       word-wrap: break-word;
-
       &__button {
         font-size: 12px;
         height: 35px;
@@ -146,6 +183,13 @@
           justify-content: center;
           align-items: center;
         }
+      }
+
+      & > span {
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 5;
       }
     }
 
@@ -174,24 +218,30 @@
       margin-right: 10px;
       overflow: hidden;
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 60px;
+      height: 60px;
       img {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         display: block;
       }
     }
 
     &__saveImg {
+      width: 80px;
+      height: 80px;
+      background: #000;
+      display: inline-block;
       overflow: hidden;
       border-radius: 6px;
       margin-left: auto;
+
       img {
-        display: inline-block;
-        border-radius: 6px;
-        width: 110px;
-        height: 60px;
+        display: block;
+        max-width: 100%;
+        height: inherit;
+        margin: auto;
+        object-fit: contain;
       }
     }
   }
@@ -202,7 +252,8 @@
 
   .writeBg {
     background: #eee;
-    height: 100%;
+    min-height: 100%;
+    padding-bottom: 60px;
     .titleSubPage {
       position: relative;
 
@@ -305,6 +356,7 @@
       display: block;
       margin: auto;
       border-radius: 20px;
+      background-color: #000;
       overflow: hidden;
       width: 220px;
       height: 220px;
@@ -328,8 +380,10 @@
       }
       img {
         display: block;
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        height: inherit;
+        margin: auto;
+        object-fit: contain;
       }
     }
 
@@ -358,6 +412,12 @@
     height: 45px;
     font-size: 16px;
 
+    &.fixed {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
     &__button {
       color: #676767;
       margin-right: auto;

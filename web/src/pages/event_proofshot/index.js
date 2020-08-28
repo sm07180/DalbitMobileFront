@@ -30,6 +30,8 @@ export default () => {
   const [scrollToList, setScrollToList] = useState(false)
   const [isAdmin, setIsAdmin] = useState(0)
 
+  const VisualWrapRef = useRef(null)
+  const VisibleRef = useRef(null)
   const TabRef = useRef()
 
   const eventStatusCheck = useCallback(async () => {
@@ -69,11 +71,24 @@ export default () => {
 
   useEffect(() => {
     eventStatusCheck()
-  }, [])
 
-  useEffect(() => {
-    console.log(statusObj)
-  }, [statusObj])
+    const scrollEv = () => {
+      if (window.scrollY >= VisualWrapRef.current.offsetHeight + 40) {
+        if (TabRef.current.classList.length !== 2) {
+          TabRef.current.className = 'tabWrap fixed'
+          VisibleRef.current.className = 'visible'
+        }
+      } else {
+        TabRef.current.className = 'tabWrap'
+        VisibleRef.current.className = 'hidden'
+      }
+    }
+
+    document.addEventListener('scroll', scrollEv)
+    return () => {
+      document.removeEventListener('scroll', scrollEv)
+    }
+  }, [])
 
   async function handleStatus() {
     const {eventCheck, status, pcCheck} = await eventStatusCheck()
@@ -118,8 +133,14 @@ export default () => {
               닫기
             </button>
           </div>
-          <div className="visualWrap">
-            <img src="https://image.dalbitlive.com/event/proofshot/20200226/new_visualimg.jpg" alt="pc 방송 인증샷 이벤트" />
+          <div className="visualWrap" ref={VisualWrapRef}>
+            <div className="dayTextwrap">
+              <div className="day">
+                <span>참여기간: 2020.8.31 ~ 9.13</span>
+              </div>
+
+              <img src="https://image.dalbitlive.com/event/proofshot/20200226/content01.jpg" alt="pc 방송 인증샷 이벤트" />
+            </div>
 
             <div className="visualWrap__ButtonWrap">
               <img
@@ -135,7 +156,7 @@ export default () => {
 
               {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
                 <div className="visualWrap__ButtonWrap--writeButton">
-                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/button_off.png" alt="참여완료" />
+                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_off.png" alt="참여완료" />
                 </div>
               ) : (
                 <button
@@ -143,7 +164,7 @@ export default () => {
                   onClick={() => {
                     handleStatus()
                   }}>
-                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/button_on.png" alt="참여하기" />
+                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_on.png" alt="참여하기" />
                 </button>
               )}
             </div>
@@ -171,6 +192,7 @@ export default () => {
               </div>
             )}
           </div>
+          <div className="hidden" ref={VisibleRef}></div>
           {tab === TAB_TYPE.ALL && (
             <AllList
               list={list}
