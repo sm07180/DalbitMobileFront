@@ -51,7 +51,7 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
-  const {roomNo, callbackFunc, shadow, mode, isWowza} = obj
+  const {roomNo, callbackFunc, shadow, mode} = obj
   /*const exdate = new Date()
   exdate.setHours(15)
   exdate.setMinutes(0)
@@ -91,12 +91,8 @@ export const RoomJoin = async (obj) => {
    */
   if (sessionRoomNo === roomNo) {
     async function commonJoin() {
-      let res = {};
-      if(isWowza+'' === '1'){
-        res = await Api.broad_join_vw({data: {roomNo}})
-      }else{
-        res = await Api.broad_join({data: {roomNo}})
-      }
+      let res = {}
+      res = await Api.broad_join_vw({data: {roomNo}})
       const {code, result, data} = res
 
       if (code === '-3') {
@@ -157,12 +153,8 @@ export const RoomJoin = async (obj) => {
     console.log('sessionRoomNo : ' + sessionRoomNo)
     //방송JOIN
     //const res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
-    let res = {};
-    if(isWowza+'' === '1'){
-      res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
-    }else{
-      res = await Api.broad_join({data: {roomNo: roomNo, shadow: shadow}})
-    }
+    let res = {}
+    res = await Api.broad_join_vw({data: {roomNo: roomNo, shadow: shadow}})
     //REST 'success'/'fail' 완료되면 callback처리 중복클릭제거
     if (callbackFunc !== undefined) callbackFunc()
     //
@@ -294,18 +286,14 @@ export const RoomMake = async (context) => {
       const {code} = res
       //비정상된 방이 있음
       if (code === '2') {
-        const {roomNo, isWowza} = res.data
+        const {roomNo} = res.data
         context.action.confirm({
           msg: res.message,
           //방송하기_클릭
           callback: () => {
-            (async function(){
-              let reToken = {};
-              if(isWowza+'' === '1'){
-                reToken = await Api.broadcast_info({data: {roomNo: roomNo}})
-              }else{
-                reToken = await Api.broadcast_reToken({data: {roomNo: roomNo}})
-              }
+            ;(async function () {
+              let reToken = {}
+              reToken = await Api.broadcast_info({data: {roomNo: roomNo}})
               console.log(reToken)
               if (reToken.result === 'success') {
                 Hybrid('ReconnectRoom', reToken.data)
