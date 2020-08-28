@@ -271,8 +271,7 @@ const myProfile = (props) => {
               Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
             </div>
             {/* user profile 추가 */}
-            {/* 20.08.20 */}
-            {/* {profile.roomNo !== '' && (
+            {profile.roomNo !== '' && (
               <button
                 className="liveIcon"
                 onClick={() => {
@@ -300,10 +299,10 @@ const myProfile = (props) => {
                     })
                   }
                 }}>
-                <img src={LiveIcon} className="liveIcon" />
+                <img src={LiveIcon} />
                 <span>Live</span>
               </button>
-            )} */}
+            )}
             <div className="nameWrap">
               {/* <span>ID : {`@${profile.memId}`}</span> */}
               <strong>{profile.nickNm}</strong>
