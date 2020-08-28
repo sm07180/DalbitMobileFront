@@ -33,6 +33,7 @@ export default function Alert() {
           })
         )
       } else {
+        setAlarmList([])
         setEmpty(true)
       }
     }
