@@ -83,11 +83,11 @@ export default (props) => {
                 saveUrlAndRedirect(`/mypage/${memNo}`)
               }}>
               <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
-                {/* {roomNo !== undefined && roomNo !== '' && (
+                {roomNo !== undefined && roomNo !== '' && (
                   <span className="liveIcon">
                     <img src={LiveIcon} alt="라이브중" />
                   </span>
-                )} */}
+                )}
               </div>
               <div className="text">{star['nickNm']}</div>
             </div>
