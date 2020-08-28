@@ -180,14 +180,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Layout {...props} status="no_gnb">
-      {authState === 0 ? (
-        <></>
-      ) : (
-        <Header
-          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-          goBack={authState === 2 ? goBack : goWallet}
-        />
-      )}
+      {authState === 0 ? <></> : <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} />}
 
       <Content>{createResult()}</Content>
     </Layout>
