@@ -503,6 +503,12 @@ export default (props) => {
 
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메시지</label>
+                  <button
+                    onClick={() => {
+                      setProfileMsg('')
+                    }}>
+                    <img src={delIcon} alt="삭제"></img>
+                  </button>
                   <DalbitTextArea
                     defaultValue={profile.profMsg}
                     state={profileMsg}
@@ -934,6 +940,11 @@ const SettingWrap = styled.div`
   }
   .msg-wrap {
     position: relative;
+    button {
+      position: absolute;
+      top: -3px;
+      right: 0;
+    }
   }
 `
 
