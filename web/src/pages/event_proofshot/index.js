@@ -178,13 +178,15 @@ export default () => {
                 }}>
                 전체
               </button>
-              <button
-                className={`${tab === TAB_TYPE.MINE && 'active'} `}
-                onClick={() => {
-                  setTab(TAB_TYPE.MINE)
-                }}>
-                나의 인증샷
-              </button>
+              {statusObj.status === STATUS_TYPE.IMPOSSIBLE && (
+                <button
+                  className={`${tab === TAB_TYPE.MINE && 'active'} `}
+                  onClick={() => {
+                    setTab(TAB_TYPE.MINE)
+                  }}>
+                  나의 인증샷
+                </button>
+              )}
             </div>
             {tab === TAB_TYPE.ALL && (
               <div className="tabWrap__listNumber">
