@@ -71,7 +71,7 @@ export default (props) => {
 
   const goBack = () => {
     // window.history.back()
-    history.go(-4)
+    history.go(-8)
   }
 
   const goLegalAuth = async () => {
@@ -167,7 +167,7 @@ export default (props) => {
               <button
                 onClick={() => {
                   // history.push('/private')
-                  history.go(-4)
+                  history.go(-8)
                 }}>
                 확인
               </button>
