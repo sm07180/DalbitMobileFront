@@ -21,7 +21,7 @@ export default (props) => {
 
   const [popup, setPopup] = useState(false)
 
-  const {result, code, message} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   /**
    * authState
@@ -60,6 +60,10 @@ export default (props) => {
       })
     } else {
       checkAuth()
+    }
+
+    if (result === 'true' || returntype === 'profile') {
+      props.history.push(`/private`)
     }
   }, [])
 
