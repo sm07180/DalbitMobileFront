@@ -132,24 +132,21 @@ const makeContents = (props) => {
           callback: () => {
             RoomJoin({
               roomNo: roomNo,
-              shadow: 1,
-              isWowza: isWowza
+              shadow: 1
             })
           },
           //캔슬콜백처리
           cancelCallback: () => {
             RoomJoin({
               roomNo: roomNo,
-              shadow: 0,
-              isWowza: isWowza
+              shadow: 0
             })
           },
           msg: '관리자로 입장하시겠습니까?'
         })
       } else {
         RoomJoin({
-          roomNo: roomNo,
-          isWowza: isWowza
+          roomNo: roomNo
         })
       }
     }
