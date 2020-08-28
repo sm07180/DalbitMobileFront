@@ -29,7 +29,7 @@ import NoResult from 'components/ui/noResult'
 let currentPage = 1
 let timer
 let moreState = false
-
+console.log()
 //---------------------------------------------------------------------------------
 export default (props) => {
   const {sortNum} = props
