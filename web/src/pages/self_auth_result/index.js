@@ -70,8 +70,7 @@ export default (props) => {
   }
 
   const goBack = () => {
-    // window.history.back()
-    history.go(-8)
+    window.history.back()
   }
 
   const goLegalAuth = async () => {
@@ -166,8 +165,7 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  // history.push('/private')
-                  history.go(-8)
+                  history.push('/private')
                 }}>
                 확인
               </button>
@@ -185,7 +183,10 @@ export default (props) => {
       {authState === 0 ? (
         <></>
       ) : (
-        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
+        <Header
+          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
+          goBack={authState === 2 || authState === 4 ? goBack : goWallet}
+        />
       )}
 
       <Content>{createResult()}</Content>
