@@ -213,13 +213,10 @@ const Wrap = styled.div`
   &.rankPopup {
     width: 90%;
     height: 80%;
-    max-height: auto;
+    height: fit-content;
+    max-height: 450px;
     padding: 0;
     border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: fit-content;
-      max-height: 450px;
-    }
   }
 
   & > button {
