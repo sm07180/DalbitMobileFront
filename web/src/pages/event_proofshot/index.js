@@ -90,9 +90,14 @@ export default () => {
     }
   }, [])
 
-  async function handleStatus() {
+  async function handleStatus(check) {
+    if (check === 'check' && !global_ctx.token.isLogin) {
+      history.push('/login')
+      return
+    }
+
     const {eventCheck, status, pcCheck} = await eventStatusCheck()
-    console.log(eventCheck, status, pcCheck)
+
     if (pcCheck === STATUS_TYPE.IMPOSSIBLE) {
       global_ctx.action.alert({
         msg: 'PC로 10분 이상 방송을\n진행 후 참여해주세요.',
@@ -162,7 +167,7 @@ export default () => {
                 <button
                   className="visualWrap__ButtonWrap--writeButton"
                   onClick={() => {
-                    handleStatus()
+                    handleStatus('check')
                   }}>
                   <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_on.png" alt="참여하기" />
                 </button>
@@ -178,7 +183,7 @@ export default () => {
                 }}>
                 전체
               </button>
-              {statusObj.status === STATUS_TYPE.IMPOSSIBLE && (
+              {statusObj.status === STATUS_TYPE.IMPOSSIBLE && global_ctx.token.isLogin && (
                 <button
                   className={`${tab === TAB_TYPE.MINE && 'active'} `}
                   onClick={() => {
