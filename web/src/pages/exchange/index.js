@@ -14,7 +14,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 
 //components
 import Contents from './content'
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header'
 //
 export default (props) => {
   //---------------------------------------------------------------------
@@ -25,7 +25,9 @@ export default (props) => {
   return (
     <Layout {...props} status="no_gnb">
       <Content>
-        <Header title="달 교환" />
+        <Header>
+          <div className="category-text">달 교환</div>
+        </Header>
         {/* 교환아이템 */}
         <Contents {...props} />
       </Content>

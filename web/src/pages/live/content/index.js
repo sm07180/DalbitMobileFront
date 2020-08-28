@@ -12,9 +12,9 @@ import Api from 'context/api'
 //pages
 import Live from './live-index'
 import Filter from './live-filter'
-import Header from 'components/ui/new_header.js'
+import Header from 'components/ui/header'
 
-const Index = (props) => {
+const Index = props => {
   //---------------------------------------------------------------------
   //let
   let timer
@@ -23,9 +23,9 @@ const Index = (props) => {
   Index.store = store
 
   //checkScroll
-  const scrollEvtHdr = (event) => {
+  const scrollEvtHdr = event => {
     if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
+    timer = window.setTimeout(function() {
       //스크롤
       const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
       const body = document.body
@@ -55,7 +55,9 @@ const Index = (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <Header title="실시간 LIVE" />
+      <Header>
+        <div className="category-text">실시간 LIVE</div>
+      </Header>
       {/* 필터 */}
       <Filter />
       {/* 실시간라이브 */}

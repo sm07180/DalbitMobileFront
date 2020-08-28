@@ -65,11 +65,11 @@ export default function Detail() {
       {noticeDetail !== false && (
         <div id="noticeDetail">
           <div className="detail">
-            <div className="detail__header">
+            <header>
               <span>{noticeDetail.title}</span>
               <span>{detailDate()}</span>
-            </div>
-            <div onClick={Utility.contentClickEvent} className="detail__content">
+            </header>
+            <div onClick={Utility.contentClickEvent}>
               <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
             </div>
             {/* <button>목록보기</button> */}

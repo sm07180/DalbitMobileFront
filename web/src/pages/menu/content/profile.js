@@ -156,7 +156,15 @@ export default (props) => {
     history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
   }
   return (
-    <div id="mypage">
+    <div id="profile">
+      {/* <Header>
+        <div className="category-text">마이 페이지</div>
+        {token && token.isLogin && (
+          <a href="/setting">
+            <img src={Setting} />
+          </a>
+        )}
+      </Header> */}
       {profile !== null && token && token.isLogin && (
         <>
           <MyProfile profile={profile} {...props} webview={webview} />

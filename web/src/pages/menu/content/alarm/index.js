@@ -5,8 +5,7 @@ import Room, {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
 import NoResult from 'components/ui/noResult'
-import Header from 'components/ui/new_header'
-
+import closeBtn from './static/ic_back.svg'
 import './index.scss'
 
 const currentDate = new Date()
@@ -195,11 +194,14 @@ export default function Alert() {
 
   return (
     <div id="alarmWrap">
-      <Header>
-        <h2 className="header-title">
+      <div className="header">
+        <button className="header__btnBack" onClick={() => history.goBack()}>
+          <img src={closeBtn} alt="뒤로가기" />
+        </button>
+        <h1 className="header__title">
           알림
           {alarmList.length > 0 && <span className="header__count">{alarmList.length}</span>}
-        </h2>
+        </h1>
         <div className="header__right">
           <button className={`${deleteActive && 'isActive'} deleteIcon`} onClick={deleteAlarm}></button>
           <div className="allCheck">
@@ -217,7 +219,7 @@ export default function Alert() {
             />
           </div>
         </div>
-      </Header>
+      </div>
       <div className="contents">
         {alarmList.length > 0 &&
           alarmList.map((v, idx) => {

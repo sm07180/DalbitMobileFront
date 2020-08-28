@@ -225,8 +225,8 @@ const List = (props) => {
           </ListContent>
 
           <Write className={writeShow && 'on'}>
-            <Header click={WriteToggle} title="공지 수정하기">
-              {/* <div className="category-text">공지 수정하기</div> */}
+            <Header click={WriteToggle}>
+              <div className="category-text">공지 수정하기</div>
               {/* <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
               </TitleBtn> */}
@@ -346,17 +346,15 @@ const ListContent = styled.div`
   font-size: 14px;
   letter-spacing: -0.35px;
   .detail_header {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    padding: 0 6px;
+    height: 40px;
+    align-items: center;
     text-align: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: #000;
+    position: relative;
     background-color: #fff;
-    border-bottom: 1px solid #d2d2d2;
-    box-sizing: border-box;
+    border-bottom: 1px solid #eee;
     button {
       position: absolute;
       left: 6px;
@@ -369,12 +367,28 @@ const ListContent = styled.div`
     }
   }
 
+  div:nth-child(1) {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 800;
+    /* line-height: 1.17; */
+    text-align: left;
+    color: #000000;
+  }
+  div:nth-child(2) {
+    /* margin-top: 4px; */
+    font-size: 12px;
+    color: #757575;
+    line-height: 1.08;
+    letter-spacing: -0.3px;
+    transform: skew(-0.03deg);
+  }
+
   .detail_header_info {
     background-color: #fff;
     margin-top: 12px !important;
     border-bottom: 1px solid #eeeeee;
     .detail_date {
-      padding: 10px 16px 10px 16px;
       > div {
         height: 20px;
         line-height: 20px;
@@ -382,17 +396,7 @@ const ListContent = styled.div`
         overflow: hidden;
         white-space: nowrap;
       }
-
-      div:nth-child(1) {
-        font-size: 18px;
-        font-weight: 800;
-        text-align: left;
-        color: #000;
-      }
-      div:nth-child(2) {
-        font-size: 12px;
-        color: #757575;
-      }
+      padding: 10px 16px 10px 16px;
     }
   }
   .detail_header_writerinfo {

@@ -23,6 +23,7 @@ import Personal from './personal/index'
 import QnaDetail from './personal/qna-detail'
 import AppInfo from './app_info'
 import AppInfoRoute from './app_info/route'
+import Header from './header'
 
 import Layout from 'pages/common/layout/new_layout'
 //
@@ -98,6 +99,9 @@ const Index = (props) => {
   return (
     <Layout {...props} status="no_gnb" header={header}>
       <Container>
+        {/* <Header>
+          <div className="category-text">고객센터</div>
+        </Header> */}
         {/* <h1>고객센터</h1> */}
         {/* <Banner /> */}
         {/* 탭설정 */}
