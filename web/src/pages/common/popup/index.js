@@ -15,6 +15,7 @@ import Terms from 'pages/common/terms'
 import Guidance from 'pages/common/guidance'
 import AgreeDetail from 'pages/common/agree_detail'
 import RankPopup from 'pages/common/rank_popup'
+import ProofShot from 'pages/common/proofshot_popup'
 //
 export default (props) => {
   //state
@@ -72,6 +73,19 @@ export default (props) => {
             <RankPopup />
           </>
         )
+      case 'PROOF_SHOT':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <ProofShot />
+          </>
+        )
+
       default:
         return <div>팝업 컨텐츠가 정의되지않음</div>
     }
@@ -92,6 +106,8 @@ export default (props) => {
       setLayout('agreeDetail')
     } else if (context.popup_code[0] == 'RANK_POP') {
       setLayout('rankPopup')
+    } else if (context.popup_code[0] == 'PROOF_SHOT') {
+      setLayout('proofShot')
     } else {
       setLayout('square')
     }
@@ -217,6 +233,10 @@ const Wrap = styled.div`
     max-height: 450px;
     padding: 0;
     border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: fit-content;
+      max-height: 310px;
+    }
   }
 
   & > button {
@@ -230,6 +250,33 @@ const Wrap = styled.div`
     text-indent: -9999px;
     cursor: pointer;
   }
+
+  &.proofShot {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: fit-content;
+    }
+    & > button {
+      display: none;
+    }
+  }
+
+  & > button {
+    display: inline-block;
+    position: absolute;
+    width: 36px;
+    height: 36px;
+    top: -35px;
+    right: 0;
+    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+    text-indent: -9999px;
+    cursor: pointer;
+  }
+
   @media (max-width: ${WIDTH_MOBILE}) {
     &.square {
       & > button {
