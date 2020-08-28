@@ -1,0 +1,44 @@
+#proofShoptPopupWrap {
+  overflow: hidden;
+
+  .content {
+    padding: 16px;
+  }
+
+  h2 {
+    display: block;
+    margin: auto;
+    margin-bottom: 13px;
+    font-size: 16px;
+    height: 44px;
+    letter-spacing: -0.4px;
+    text-align: center;
+    border-bottom: 1px solid #eaeaea;
+  }
+
+  h3 {
+    font-size: 14px;
+    color: #3a3a3a;
+    margin-bottom: 10px;
+    letter-spacing: -0.35px;
+  }
+  ul {
+    margin-bottom: 30px;
+  }
+  ul li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+    &::before {
+      position: absolute;
+      content: '';
+      left: 5px;
+      top: 9px;
+      width: 2px;
+      height: 2px;
+      background: #000;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const convertContents = (item) => {
+export const convertContents = (item, detail) => {
   if (item.contents.length > 100) {
     if (item.idx === detail) {
       return <span>{item.contents}</span>

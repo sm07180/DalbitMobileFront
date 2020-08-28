@@ -3,8 +3,12 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
 import {VIEW_TYPE} from '../constant'
+
+import Gallery_w from '../static/gallery_w.svg'
+import {size} from 'lodash'
+
 function proofWirte(props) {
-  const {setViewType, viewType, item, setScrollToList, fetchEventProofshotList} = props
+  const {setViewType, viewType, item, setScrollToList, fetchEventProofshotList, eventStatusCheck} = props
   const [content, setContent] = useState('')
   const [imageData, setImageData] = useState('')
   const [delicate, setDelicate] = useState(false)
@@ -78,9 +82,10 @@ function proofWirte(props) {
       if (result === 'success') {
         context.action.alert({
           msg: '작성 완료되었습니다.',
-          callback: () => {
+          callback: async () => {
             setViewType(VIEW_TYPE.MAIN)
-            fetchEventProofshotList()
+            await fetchEventProofshotList()
+            await eventStatusCheck()
           }
         })
       } else {
@@ -151,9 +156,8 @@ function proofWirte(props) {
   }, [content, imageData])
 
   return (
-    <>
+    <div className="writeBg">
       <div className="titleSubPage">
-        <h2>PC 방송 인증샷 이벤트</h2>
         <button
           onClick={() => {
             setViewType(VIEW_TYPE.MAIN)
@@ -161,12 +165,15 @@ function proofWirte(props) {
           }}>
           닫기
         </button>
+
+        <h2>인증샷 등록하기</h2>
       </div>
 
       <textarea
+        className="textWrite"
         ref={TextareaRef}
         style={{minHeight: '50px', overflowY: 'visible'}}
-        placeholder="이벤트 참여 소감 또는 PC 서비스에 대한 의견을 작성해주세요!"
+        placeholder="제목을 입력해주세요"
         value={content}
         onChange={(e) => {
           if (e.target.value.length < 1000) {
@@ -175,30 +182,53 @@ function proofWirte(props) {
           }
         }}
       />
-      <p>{content.length}/1000</p>
+      <p className="textNumber">{content.length}/1000</p>
 
       <div className="writeTitle">
         <h3>사진등록</h3>
         <p>가로가 긴 이미지를 권장합니다.</p>
       </div>
-      <label htmlFor="imgUpload">
-        {imageData === '' ? (
-          <span>사진등록</span>
-        ) : (
-          <img src={imageData ? imageData : imageData.profImg ? imageData.profImg['thumb150x150'] : ''} />
-        )}
-      </label>
 
-      <input
-        type="file"
-        name="imgUpload"
-        id="imgUpload"
-        accept="image/jpg, image/jpeg, image/png"
-        onChange={(e) => {
-          uploadSingleFile(e)
-        }}
-      />
-      <br />
+      <div className="imgUploadWrap">
+        {viewType === VIEW_TYPE.WRITE && (
+          <label htmlFor="imgUpload">
+            {imageData === '' ? (
+              <span className="uploadButton">사진등록</span>
+            ) : (
+              <span className="modifyButton">
+                <img src={imageData ? imageData : imageData.profImg ? imageData.profImg['thumb150x150'] : ''} />
+              </span>
+            )}
+          </label>
+        )}
+        {viewType === VIEW_TYPE.MODIFY && (
+          <label htmlFor="imgUpload">
+            {imageData === '' ? (
+              <span className="uploadButton">사진등록</span>
+            ) : (
+              <span className="modifyButton">
+                <div className="modifyText">
+                  <p>
+                    사진수정
+                    <img src={Gallery_w} className="galleryIcon" />
+                  </p>
+                </div>
+                <img src={imageData ? imageData : imageData.profImg ? imageData.profImg['thumb150x150'] : ''} />
+              </span>
+            )}
+          </label>
+        )}
+
+        <input
+          type="file"
+          name="imgUpload"
+          id="imgUpload"
+          accept="image/jpg, image/jpeg, image/png"
+          onChange={(e) => {
+            uploadSingleFile(e)
+          }}
+        />
+      </div>
       {viewType === VIEW_TYPE.WRITE && (
         <button className={`${delicate && 'active'}`} onClick={uploadFn}>
           등록
@@ -209,7 +239,7 @@ function proofWirte(props) {
           수정
         </button>
       )}
-    </>
+    </div>
   )
 }
 

@@ -2084,7 +2084,7 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/event/photo/delete`,
-      method: method || 'DELETE',
+      method: method || 'POST',
       data: data
     })
   }

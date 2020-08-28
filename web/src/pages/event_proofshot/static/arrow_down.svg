@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="arrow_down_g" width="16" height="16" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            .cls-2{fill:#757575}
+        </style>
+    </defs>
+    <path id="사각형_314" fill="rgba(255,255,255,0)" d="M0 0h16v16H0z" data-name="사각형 314" opacity="0.51" transform="rotate(90 8 8)"/>
+    <g id="그룹_15608" data-name="그룹 15608" transform="rotate(90 3.667 9.067)">
+        <path id="사각형_886" d="M0 0h6.667v.667H0z" class="cls-2" data-name="사각형 886" transform="rotate(45 .236 .57)"/>
+        <path id="사각형_887" d="M0 0h6.667v.667H0z" class="cls-2" data-name="사각형 887" transform="rotate(-45 10.852 4.495)"/>
+    </g>
+</svg>

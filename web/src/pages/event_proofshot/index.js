@@ -1,9 +1,10 @@
 import React, {useState, useEffect, useCallback, useContext, useRef} from 'react'
-
+import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import API from 'context/api'
 
 import Message from 'pages/common/message'
+import Popup from 'pages/common/popup'
 
 import {TAB_TYPE, STATUS_TYPE, VIEW_TYPE} from './constant'
 
@@ -13,28 +14,9 @@ import Write from './content/write'
 
 import './static/proofStyle.scss'
 
-// State
-// FormData (text (obj)/ img)
-// tab (number)
-// popup(boolean)
-// detail (number)
-// modify(b)
-// delicate (b)
-// mywrote (o)
-// list (a)
-// write (b)
-
-// clickEv
-
-// 참여하기 write,
-// 수정 modify
-// 삭제 confirm펼치기
-// 접기 detail
-// imguload -> formdata -img
-
 export default () => {
+  const history = useHistory()
   const global_ctx = useContext(Context)
-
   const [tab, setTab] = useState(0)
   const [statusObj, setStatusObj] = useState({
     eventCheck: 0,
@@ -46,6 +28,7 @@ export default () => {
   const [totalCnt, setTotalCnt] = useState(0)
   const [viewType, setViewType] = useState(0)
   const [scrollToList, setScrollToList] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(0)
 
   const TabRef = useRef()
 
@@ -69,6 +52,8 @@ export default () => {
       if (tab === TAB_TYPE.ALL) setList(data.list)
       else setMyList(data.list)
       setTotalCnt(data.totCnt)
+
+      setIsAdmin(data.isAdmin)
     }
   }, [tab, viewType])
   useEffect(() => {
@@ -112,41 +97,56 @@ export default () => {
 
   return (
     <div id="proofShot">
-      {viewType === VIEW_TYPE.WRITE ||
-        (viewType === VIEW_TYPE.MODIFY && (
-          <Write
-            setViewType={setViewType}
-            viewType={viewType}
-            item={myList}
-            setScrollToList={setScrollToList}
-            fetchEventProofshotList={fetchEventProofshotList}
-          />
-        ))}
+      {(viewType === VIEW_TYPE.WRITE || viewType === VIEW_TYPE.MODIFY) && (
+        <Write
+          setViewType={setViewType}
+          viewType={viewType}
+          item={myList}
+          setScrollToList={setScrollToList}
+          fetchEventProofshotList={fetchEventProofshotList}
+          eventStatusCheck={eventStatusCheck}
+        />
+      )}
       {viewType === VIEW_TYPE.MAIN && (
         <>
           <div className="title">
             <h2>PC 방송 인증샷 이벤트</h2>
-            <button>닫기</button>
+            <button
+              onClick={() => {
+                history.push('/')
+              }}>
+              닫기
+            </button>
           </div>
           <div className="visualWrap">
-            <img src="https://image.dalbitlive.com/event/proofshot/20200226/visualimg.jpg" alt="pc 방송 인증샷 이벤트" />
-            <img
-              src="https://image.dalbitlive.com/event/proofshot/20200226/visualcontent.jpg"
-              alt="이벤트 참여 기간에 pc로 10분 이상 방송하고 인증샷만 찍어서 선물 받아가자!"
-            />
+            <img src="https://image.dalbitlive.com/event/proofshot/20200226/new_visualimg.jpg" alt="pc 방송 인증샷 이벤트" />
 
-            <button>이벤트 팝업</button>
+            <div className="visualWrap__ButtonWrap">
+              <img
+                src="https://image.dalbitlive.com/event/proofshot/20200226/new_visualcontent.jpg"
+                alt="이벤트 참여 기간에 pc로 10분 이상 방송하고 인증샷만 찍어서 선물 받아가자!"
+              />
 
-            {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
-              <button>참여완료</button>
-            ) : (
               <button
+                className="visualWrap__ButtonWrap--giftButton"
                 onClick={() => {
-                  handleStatus()
-                }}>
-                참여하기
-              </button>
-            )}
+                  global_ctx.action.updatePopup('PROOF_SHOT')
+                }}></button>
+
+              {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
+                <div className="visualWrap__ButtonWrap--writeButton">
+                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/button_off.png" alt="참여완료" />
+                </div>
+              ) : (
+                <button
+                  className="visualWrap__ButtonWrap--writeButton"
+                  onClick={() => {
+                    handleStatus()
+                  }}>
+                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/button_on.png" alt="참여하기" />
+                </button>
+              )}
+            </div>
           </div>
           <div className="tabWrap" ref={TabRef}>
             <div className="tabWrap__button">
@@ -171,11 +171,27 @@ export default () => {
               </div>
             )}
           </div>
-          {tab === TAB_TYPE.ALL && <AllList list={list} />}
-          {tab === TAB_TYPE.MINE && myList.length > 0 && <Mylist item={myList[0]} setTab={setTab} setViewType={setViewType} />}
+          {tab === TAB_TYPE.ALL && (
+            <AllList
+              list={list}
+              isAdmin={isAdmin}
+              eventStatusCheck={eventStatusCheck}
+              fetchEventProofshotList={fetchEventProofshotList}
+            />
+          )}
+          {tab === TAB_TYPE.MINE && myList.length > 0 && (
+            <Mylist
+              item={myList[0]}
+              setTab={setTab}
+              setViewType={setViewType}
+              eventStatusCheck={eventStatusCheck}
+              isAdmin={isAdmin}
+            />
+          )}
         </>
       )}
       <Message />
+      <Popup />
     </div>
   )
 }
