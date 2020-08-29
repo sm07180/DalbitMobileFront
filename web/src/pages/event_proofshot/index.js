@@ -73,14 +73,16 @@ export default () => {
     eventStatusCheck()
 
     const scrollEv = () => {
-      if (window.scrollY >= VisualWrapRef.current.offsetHeight + 40) {
-        if (TabRef.current.classList.length !== 2) {
-          TabRef.current.className = 'tabWrap fixed'
-          VisibleRef.current.className = 'visible'
+      if (VisualWrapRef.current) {
+        if (window.scrollY >= VisualWrapRef.current.offsetHeight + 40) {
+          if (TabRef.current.classList.length !== 2) {
+            TabRef.current.className = 'tabWrap fixed'
+            VisibleRef.current.className = 'visible'
+          }
+        } else {
+          TabRef.current.className = 'tabWrap'
+          VisibleRef.current.className = 'hidden'
         }
-      } else {
-        TabRef.current.className = 'tabWrap'
-        VisibleRef.current.className = 'hidden'
       }
     }
 
