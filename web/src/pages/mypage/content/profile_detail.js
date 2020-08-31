@@ -22,6 +22,7 @@ export default (props) => {
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   const {profile, location, webview} = props
+  console.log(profile)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -30,7 +31,7 @@ export default (props) => {
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
-  const [showPresent, setShowPresent] = useState(false)
+  const [showPresent, setM] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
@@ -277,10 +278,10 @@ export default (props) => {
   }, [])
   useEffect(() => {
     if (myProfileNo === profile.memNo) {
-      setShowPresent(false)
+      setM(false)
       setShowEdit(true)
     } else {
-      setShowPresent(true)
+      setM(true)
       setShowEdit(false)
     }
   }, [])
@@ -383,12 +384,12 @@ export default (props) => {
                       <em>선물하기</em>
                     </button>
                   )}
-                  {profile.isFan === 0 && (
+                  {profile.isFan === true && (
                     <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
                       팬
                     </button>
                   )}
-                  {profile.isFan === 1 && (
+                  {profile.isFan === false && (
                     <button onClick={() => fanRegist(myProfileNo)}>
                       <em>팬</em> <em className="plus"></em>
                     </button>
