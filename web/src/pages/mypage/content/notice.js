@@ -235,11 +235,10 @@ const Notice = (props) => {
 
   return (
     <>
-      {/* <Header>
-        <div className="category-text">방송공지</div>
+      <Header>
+        <h2 className="header-title">방송공지</h2>
         {urlrStr === context.profile.memNo && createWriteBtn()}
-      </Header> */}
-      <Header title="방송공지" />
+      </Header>
       {listPage === -1 ? (
         <NoResult />
       ) : (
@@ -324,8 +323,11 @@ const Notice = (props) => {
 
       <Write className={writeShow && 'on'}>
         <Header click={WriteToggle}>
-          <div className="category-text">방송공지</div>
+          <h2 className="header-title">방송공지</h2>
         </Header>
+        {/* <Header click={WriteToggle}>
+          <div className="category-text">방송공지</div>
+        </Header> */}
         <section>
           <div className="titleWrite">
             <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />

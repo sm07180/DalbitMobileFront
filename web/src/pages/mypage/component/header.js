@@ -45,7 +45,11 @@ export default (props) => {
 
   return (
     <div className="mypage header-wrap">
-      <h2 className="header-title">{props.title}</h2>
+      {props.title ? (
+        <h2 className={`header-title${props.title.length > 18 ? ' isLong' : ''}`}>{props.title}</h2>
+      ) : (
+        props.children
+      )}
       <button className="close-btn" onClick={goBack}>
         <img src={closeBtn} alt="뒤로가기" />
       </button>

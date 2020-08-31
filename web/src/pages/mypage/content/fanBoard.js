@@ -200,9 +200,13 @@ export default (props) => {
   return (
     <FanBoard>
       {/* 팬보드 헤더 영역 */}
-      <Header title="팬보드">
-        <div className="category-text">팬보드</div>
+      <Header>
+        <h2 className="header-title">팬보드</h2>
+        {createWriteBtn()}
       </Header>
+      {/* <Header title="팬보드">
+        <div className="category-text">팬보드</div>
+      </Header> */}
       {/* {createWriteBtn()} */}
       {/* 팬보드 리스트 영역 */}
       {totalCount === 0 && <NoResult />}
@@ -210,10 +214,13 @@ export default (props) => {
       {/* 팬보드 작성영역 */}
       {writeState && (
         <Writer>
-          <header>
+          <Header>
+            <h2 className="header-title">팬보드 쓰기</h2>
+          </Header>
+          {/* <header>
             <button onClick={WriteToggle}></button>
             <span>팬보드 쓰기</span>
-          </header>
+          </header> */}
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
@@ -230,7 +237,7 @@ export default (props) => {
               )}
 
               <span>
-                <em>{textChange.length}</em> / 100
+                <em>{textChange.length}</em>&nbsp;/ 100
               </span>
             </span>
             <button onClick={() => fetchDataUpload()}>등록</button>
