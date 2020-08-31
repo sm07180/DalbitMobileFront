@@ -5,7 +5,7 @@ export function DalbitTextArea(props) {
 
   const handleChange = (e) => {
     let value = e.target.value
-    if (value.length > 100) return
+    if (value.length > 500) return
     const lines = value.split('\n').length
     const a = value.split('\n')
 

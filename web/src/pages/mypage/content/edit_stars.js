@@ -13,10 +13,8 @@ import Swiper from 'react-id-swiper'
 //components
 
 import Header from '../component/header'
-import Recent from './edite_contents/recent'
-import GiftMore from './edite_contents/gift_more'
-import ListenRecent from './edite_contents/listen_edite'
-import BroadMore from './edite_contents/broad_edite'
+import StarManage from './edite_star/starmanage'
+
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
@@ -24,37 +22,20 @@ export default (props) => {
   const ctx = useContext(Context)
   //state
   const [title, setTitle] = useState(1)
-
   //swiper
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 4
   }
 
-  // case divide
-  const createContents = () => {
-    switch (title) {
-      case 0:
-        return <Recent />
-      case 1:
-        return <GiftMore />
-      case 2:
-        return <ListenRecent />
-      case 3:
-        return <BroadMore />
-      default:
-        break
-    }
-  }
   // tabs
   const tabLocation = (id) => {
     setTitle(id)
     ctx.action.updateFanTab(id)
   }
-
   return (
     <EditeWrap>
-      <Header title="팬 관리" />
+      <Header title="스타 관리" />
       <div className="tabContainer">
         <Swiper {...swiperParams}>
           {tabArry.map((item, idx) => {
@@ -69,7 +50,7 @@ export default (props) => {
           })}
         </Swiper>
       </div>
-      {createContents()}
+      <StarManage sortNum={title} />
     </EditeWrap>
   )
 }
@@ -127,7 +108,7 @@ const EditeWrap = styled.div`
 const tabArry = [
   {
     id: 1,
-    title: '선물 받은 순',
+    title: '선물 보낸 순',
     value: 'gift'
   },
   {
@@ -140,6 +121,7 @@ const tabArry = [
     title: '최근 청취 순',
     value: 'listen'
   },
+
   {
     id: 0,
     title: '등록 순',

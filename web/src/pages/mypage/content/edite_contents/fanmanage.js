@@ -5,12 +5,12 @@ import styled from 'styled-components'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {useLocation, useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} from 'components/lib/utility'
 //svg
-import PtimeIconP from '../../static/ic_p_time_p.svg'
+import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
 import PxBtnIcon from '../../static/ic_p_xbtn.svg'
@@ -18,6 +18,9 @@ import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
 import GarBageIcon from '../../static/garbage.svg'
+import PlastTimeIconP from '../../static/ic_p_headphone_p.svg'
+import PstarIconP from '../../static/ic_p_star_p.svg'
+import PtimeIconP from '../../static/ic_p_time_p.svg'
 //
 import NoResult from 'components/ui/noResult'
 
@@ -26,11 +29,12 @@ import NoResult from 'components/ui/noResult'
 let currentPage = 1
 let timer
 let moreState = false
-
+console.log()
 //---------------------------------------------------------------------------------
 export default (props) => {
-  //context
+  const {sortNum} = props
   const history = useHistory()
+  //context
   const ctx = useContext(Context)
   const {profile} = ctx
   var urlrStr = location.pathname.split('/')[2]
@@ -70,7 +74,7 @@ export default (props) => {
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getNewFanList({
       memNo: urlrStr,
-      sortType: 1,
+      sortType: sortNum,
       page: currentPage,
       records: 20
     })
@@ -172,32 +176,6 @@ export default (props) => {
     setPopState(false)
     setMemoContent('')
   }
-  // 임시 삭제하기 기능
-  // const hideList = (memNo) => {
-  //   const test = list.map((item, index) => {
-  //     if (item.memNo === memNo) {
-  //       item.nickNm = ''
-  //     }
-  //     return item
-  //   })
-  //   const filterList = test.filter((v) => {
-  //     return v.nickNm === ''
-  //   })
-  //   setList(test)
-  //   setFilterLeng(filterList.length)
-  //   if (filterList.length > 0) {
-  //     ctx.action.updateEditeToggle(true)
-  //   }
-  //   let str = ''
-  //   filterList.forEach((v, i, self) => {
-  //     if (i === self.length - 1) {
-  //       str += v.memNo
-  //     } else {
-  //       str += v.memNo + '|'
-  //     }
-  //   })
-  //   setDeleteList(str)
-  // }
 
   //window Scroll
   useEffect(() => {
@@ -210,7 +188,7 @@ export default (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [])
+  }, [sortNum])
   //-----------------------------------------------------------
   async function fetchDataGetMemo(memNo) {
     const res = await Api.getNewFanMemo({
@@ -306,11 +284,21 @@ export default (props) => {
                   </div>
                   <div className="list__infoBox">
                     <span className="list__nick">{nickNm}</span>
-                    <span className="list__registDt">등록일 - {Utility.dateFormatterKor(regDt)}</span>
+                    <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
+                      등록일 - {Utility.dateFormatterKor(regDt)}
+                    </span>
                     <div className="list__details">
-                      <span className="list__details__time">{listenTime}분</span>
-                      <span className="list__details__byeol">{Utility.printNumber(giftedByeol)}</span>
-                      <span className="list__details__lastTime">
+                      <span className={sortNum === 3 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
+                        {listenTime}분
+                      </span>
+                      <span
+                        className={sortNum === 1 ? 'list__details__byeol list__details__byeol--active' : 'list__details__byeol'}>
+                        {Utility.printNumber(giftedByeol)}
+                      </span>
+                      <span
+                        className={
+                          sortNum === 2 ? 'list__details__lastTime list__details__lastTime--active' : 'list__details__lastTime'
+                        }>
                         {lastListenTs === '' || lastListenTs === 0 ? '-' : Utility.settingAlarmTime(lastListenTs)}
                       </span>
                     </div>
@@ -344,10 +332,10 @@ export default (props) => {
       {popState && (
         <div className="memoPop">
           <div className="memoContents">
-            <header>
+            <div className="memoContent__popTitle">
               메모
               <button onClick={ClosePop} />
-            </header>
+            </div>
             <div className="txtCnt">
               <textarea
                 placeholder="회원을 기억하기 위한 메모를 입력해주세요.
@@ -406,9 +394,13 @@ const Wrap = styled.div`
     &__registDt {
       margin-bottom: 4px;
       font-size: 12px;
-      line-height: 1.08;
+      line-height: 16px;
       text-align: left;
-      color: #424242;
+
+      &--active {
+        color: #632beb;
+        font-weight: 600;
+      }
     }
     &__details {
       display: flex;
@@ -416,7 +408,7 @@ const Wrap = styled.div`
       &__time,
       &__byeol,
       &__lastTime {
-        margin-right: 6px;
+        margin-right: 4px;
         font-size: 12px;
         line-height: 16px;
         height: 16px;
@@ -425,17 +417,23 @@ const Wrap = styled.div`
         color: #424242;
       }
       &__time {
-        font-weight: 600;
-        color: #632beb;
         position: relative;
         &:before {
           margin-right: 1px;
           display: inline-block;
           vertical-align: middle;
           width: 16px;
+          line-height: 16px;
           height: 16px;
           content: '';
-          background: url(${PtimeIconP});
+          background: url(${PtimeIcon});
+        }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PtimeIconP});
+          }
         }
       }
       &__byeol {
@@ -444,10 +442,18 @@ const Wrap = styled.div`
           margin-right: 1px;
           display: inline-block;
           vertical-align: middle;
+          line-height: 16px;
           width: 16px;
           height: 16px;
           content: '';
           background: url(${PstarIcon});
+        }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PstarIconP});
+          }
         }
       }
       &__lastTime {
@@ -462,6 +468,13 @@ const Wrap = styled.div`
           height: 16px;
           content: '';
           background: url(${PlastTimeIcon});
+        }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PlastTimeIconP});
+          }
         }
       }
     }
@@ -555,13 +568,9 @@ const Wrap = styled.div`
           &::placeholder {
             font-size: 14px;
             line-height: 1.43;
-            text-align: left;
             letter-spacing: -0.4px;
+            text-align: left;
             color: #757575;
-            letter-spacing: normal;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
           }
         }
         .txtcount {
@@ -590,7 +599,7 @@ const Wrap = styled.div`
         }
       }
 
-      header {
+      .memoContent__popTitle {
         position: relative;
         width: 100%;
         text-align: center;

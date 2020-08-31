@@ -339,6 +339,7 @@ const ListContent = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
   z-index: 5;
   /* padding: 20px 16px; */
   background-color: #eee;
