@@ -392,10 +392,12 @@ export default (props) => {
       {/* 대댓글 작성영역 */}
       {writeState && (
         <Writer>
-          <header>
-            <button onClick={WriteToggle}></button>
-            <span>답글 쓰기</span>
-          </header>
+          <div className="header-wrap">
+            <h2 className="header-title">답글 쓰기</h2>
+            <button className="close-btn" onClick={WriteToggle}>
+              <img src={BackIcon} alt="뒤로가기" />
+            </button>
+          </div>
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
@@ -421,14 +423,16 @@ export default (props) => {
       {/* 대댓글 작성영역 */}
       {ModifyState && (
         <Writer>
-          <header>
-            <button onClick={ModifyToggle}></button>
-            <span>답글 수정</span>
-          </header>
+          <div className="header-wrap">
+            <h2 className="header-title">답글 수정</h2>
+            <button className="close-btn" onClick={ModifyToggle}>
+              <img src={BackIcon} alt="뒤로가기" />
+            </button>
+          </div>
           <div className="content_area">
             <Textarea value={modifyMsg} onChange={BigChangeContent} placeholder="내용을 입력해주세요" />
             <span className="bigCount">
-              <em>{modifyMsg.length}</em> / 100
+              <em>{modifyMsg.length}&nbsp;</em> / 100
             </span>
             <button onClick={() => fetchDataModiy()}>수정</button>
           </div>
