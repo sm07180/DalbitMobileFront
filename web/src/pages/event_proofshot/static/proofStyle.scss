@@ -20,11 +20,11 @@
     width: 100%;
     height: 100vh;
     z-index: 3;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
     & img {
       display: block;
       position: absolute;
-      width: 95%;
+      width: 70%;
       height: auto;
       top: 50%;
       left: 50%;
@@ -137,8 +137,7 @@
           display: block;
           width: 40px;
           height: 40px;
-          background: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIj4NCiAgICA8ZyBpZD0iY2xvc2UiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zMjkgLTg5OSkiPg0KICAgICAgICA8cGF0aCBpZD0iUmVjdGFuZ2xlXzE2X2NvcHkiIGZpbGw9IiM5MDkwOTAiIGQ9Ik03MzQuNSA5MTIuODIybC01LjgzNSA1LjgzNS0xLjMyMi0xLjMyMiA1LjgzNS01LjgzNS01LjgzNS01LjgzNSAxLjMyMi0xLjMyMiA1LjgzNSA1LjgzNSA1LjgzNS01LjgzNSAxLjMyMiAxLjMyMi01LjgzNSA1LjgzNSA1LjgzNSA1LjgzNS0xLjMyMiAxLjMyMnoiIGRhdGEtbmFtZT0iUmVjdGFuZ2xlIDE2IGNvcHkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0zODUuMzQzIDcuNjU3KSIvPg0KICAgIDwvZz4NCjwvc3ZnPg0K)
-            center no-repeat;
+          background: url(./close.svg) center no-repeat;
           margin-right: 6px;
           text-indent: -999999px;
         }
