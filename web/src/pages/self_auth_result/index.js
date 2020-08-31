@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
-import {useHistory} from 'react-router-dom'
-import _, {uniqueId} from 'lodash'
+import {useHistory, useLocation} from 'react-router-dom'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -18,8 +18,12 @@ export default (props) => {
   //context
   const context = useContext(Context)
   const history = useHistory()
+  const location = useLocation()
 
-  const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  console.log('history', history)
+
+  // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  const {result, code, message, returntype} = qs.parse(location.search)
 
   /**
    * authState
@@ -41,7 +45,9 @@ export default (props) => {
       } else {
         context.action.alert({
           msg: res.message,
-          callback: goWallet
+          callback: () => {
+            history.goBack()
+          }
         })
       }
     }
@@ -106,6 +112,7 @@ export default (props) => {
               <button
                 onClick={() => {
                   history.push('/money_exchange')
+                  // history.goBack()
                 }}>
                 확인
               </button>
@@ -185,7 +192,7 @@ export default (props) => {
       ) : (
         <Header
           title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-          goBack={authState === 2 || authState === 4 ? goBack : goWallet}
+          // goBack={authState === 2 || authState === 4 ? goBack : goWallet}
         />
       )}
 
