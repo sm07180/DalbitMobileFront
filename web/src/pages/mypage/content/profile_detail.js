@@ -17,7 +17,6 @@ import ProfilePresent from './profile_present'
 import LayerPopupExp from './layer_popup_exp.js'
 
 export default (props) => {
-  console.log(props)
   //context & webview
   let history = useHistory()
   const context = useContext(Context)
@@ -31,12 +30,14 @@ export default (props) => {
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
+  const [showPresent, setShowPresent] = useState(false)
+  const [showEdit, setShowEdit] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
   const figureZoom = () => {
     setZoom(true)
   }
-  //func 랭크팬리스트 생성
+  // 로그인한 user memNo
   const myProfileNo = context.profile.memNo
   const createFanList = () => {
     if (profile.fanRank == false) return null
@@ -80,11 +81,118 @@ export default (props) => {
       </>
     )
   }
+  const createCountList = (type, count) => {
+    console.log(myProfileNo, profile.memNo, showEdit)
+    let action, text, ico
+    if (type === 'fan') {
+      if (showEdit === true) {
+        action = goFanEdite
+      } else {
+        action = fanContext
+      }
+      text = '팬'
+      ico = 'type1'
+    } else if (type === 'star') {
+      if (showEdit === true) {
+        action = goStarEdite
+      } else {
+        action = starContext
+      }
+      text = '스타'
+      ico = 'type2'
+    } else if (type === 'like') {
+      action = ''
+      text = '좋아요'
+    }
+    return (
+      <>
+        {type !== 'like' && count > 0 ? (
+          <div className="count-box" onClick={action}>
+            <span className="icoWrap">
+              <span className={`icoImg ${ico}`}></span>
+              <em className={`icotitle ${showEdit ? 'icotitle--active' : ''}`}>{text}</em>
+            </span>
+            <em className="cntTitle">{count > 9999 ? Utility.printNumber(count) : Utility.addComma(count)}</em>
+          </div>
+        ) : (
+          <div className="count-box">
+            <span className="icoWrap">
+              <span className={`icoImg ${ico}`}></span>
+              <em className="icotitle">{text}</em>
+            </span>
+            <em className="cntTitle">{count > 9999 ? Utility.printNumber(count) : Utility.addComma(count)}</em>
+          </div>
+        )}
+      </>
+    )
+  }
   const goFanEdite = () => {
     history.push(`/mypage/${profile.memNo}/edit_fan`)
   }
   const goStarEdite = () => {
     history.push(`/mypage/${profile.memNo}/edit_star`)
+  }
+
+  //팬등록
+  async function fetchDataFanRegist(myProfileNo) {
+    const res = await Api.fan_change({
+      data: {
+        memNo: urlrStr
+      }
+    })
+    if (res.result === 'success') {
+      context.action.alert({
+        callback: () => {
+          context.action.updateMypageFanCnt(myProfileNo)
+        },
+        msg: '팬등록에 성공하였습니다.'
+      })
+    } else if (res.result === 'fail') {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+  }
+  //function:팬해제
+  const Cancel = (myProfileNo) => {
+    async function fetchDataFanCancel(myProfileNo) {
+      const res = await Api.mypage_fan_cancel({
+        data: {
+          memNo: urlrStr
+        }
+      })
+      if (res.result === 'success') {
+        context.action.alert({
+          callback: () => {
+            context.action.updateMypageFanCnt(myProfileNo + 1)
+          },
+          msg: '팬등록을 해제하였습니다.'
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
+    }
+    fetchDataFanCancel(myProfileNo)
+  }
+  //function:팬등록
+  const fanRegist = (myProfileNo) => {
+    fetchDataFanRegist(myProfileNo)
+  }
+  //func star count
+  const starContext = () => {
+    if (profile.starCnt > 0) {
+      context.action.updateCloseStarCnt(true)
+    }
+  }
+  //func fuan count
+  const fanContext = () => {
+    if (profile.fanCnt > 0) {
+      context.action.updateCloseFanCnt(true)
+    }
   }
   //스와이퍼
   const swiperParams = {
@@ -111,6 +219,18 @@ export default (props) => {
     )
   })
 
+  //팝업실행
+  const popStateEvent = (e) => {
+    if (e.state === null) {
+      setPopup(false)
+      context.action.updateMypageReport(false)
+      context.action.updateClose(false)
+      context.action.updateCloseFanCnt(false)
+      context.action.updateCloseStarCnt(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
   // expCalculate function
   let expCalc = Math.floor(((profile.exp - profile.expBegin) / (profile.expNext - profile.expBegin)) * 100)
   if (expCalc == 'Infinity') expCalc = 0
@@ -120,6 +240,50 @@ export default (props) => {
   if (profile === null) {
     return <div style={{minHeight: '300px'}}></div>
   }
+
+  //function모바일 레어어 실행
+  useEffect(() => {
+    if (popup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+        setScrollY(window.scrollY)
+      }
+    } else if (!popup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+        setTimeout(() => window.scrollTo(0, scrollY))
+      }
+    }
+  }, [popup])
+  useEffect(() => {
+    window.addEventListener('popstate', popStateEvent)
+    return () => {
+      window.removeEventListener('popstate', popStateEvent)
+    }
+  }, [])
+  useEffect(() => {
+    if (mypageReport || close || closeFanCnt || closeStarCnt) {
+      setPopup(true)
+    } else {
+      setPopup(false)
+    }
+  }, [mypageReport, close, closeFanCnt, closeStarCnt])
+  useEffect(() => {
+    if (context.adminChecker === true) {
+      setShowAdmin(true)
+    } else if (context.adminChecker === 'fail') {
+      setShowAdmin(false)
+    }
+  }, [])
+  useEffect(() => {
+    if (myProfileNo === profile.memNo) {
+      setShowPresent(false)
+      setShowEdit(true)
+    } else {
+      setShowPresent(true)
+      setShowEdit(false)
+    }
+  }, [])
 
   return (
     <div className="profile-detail">
@@ -196,91 +360,46 @@ export default (props) => {
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
         <div className="categoryCntWrap">
-          {profile.fanCnt > 0 ? (
-            <div className="count-box" onClick={goFanEdite}>
-              <span className="icoWrap">
-                <span className="icoImg type1"></span>
-                <em className="icotitle icotitle--active">팬</em>
-              </span>
-              <em className="cntTitle">
-                {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-              </em>
-            </div>
-          ) : (
-            <div className="count-box">
-              <span className="icoWrap">
-                <span className="icoImg type1"></span>
-                <em className="icotitle">팬</em>
-              </span>
-              <em className="cntTitle">
-                {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-              </em>
-            </div>
-          )}
-
-          {profile.starCnt > 0 ? (
-            <div className="count-box" onClick={goStarEdite}>
-              <span className="icoWrap">
-                <span className="icoImg type2"></span>
-                <em className="icotitle icotitle--active">스타</em>
-              </span>
-              <em className="cntTitle">
-                {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-              </em>
-            </div>
-          ) : (
-            <div className="count-box">
-              <span className="icoWrap">
-                <span className="icoImg type2"></span>
-                <em className="icotitle">스타</em>
-              </span>
-              <em className="cntTitle">
-                {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-              </em>
-            </div>
-          )}
-
-          <div className="count-box">
-            <span className="icoWrap">
-              <span className="icoImg"></span>
-              <em className="icotitle">좋아요</em>
-            </span>
-            <em className="cntTitle">
-              {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
-            </em>
-          </div>
+          {createCountList('fan', profile.fanCnt)}
+          {createCountList('star', profile.starCnt)}
+          {createCountList('like', profile.likeTotCnt)}
         </div>
 
-        <div className="buttonWrap">
-          <div className="buttonWrapInner">
-            {urlrStr !== context.token.memNo && (
-              <div className="notBjWrap">
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                  <></>
-                ) : (
-                  <button
-                    onClick={() => {
-                      context.action.updateClosePresent(true)
-                    }}
-                    className="giftbutton">
-                    {/* <span></span> */}
-                    <em>선물하기</em>
-                  </button>
-                )}
-                {profile.isFan === 0 && (
-                  <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                    팬
-                  </button>
-                )}
-                {profile.isFan === 1 && (
-                  <button onClick={() => fanRegist(myProfileNo)}>
-                    <em>팬</em> <em className="plus"></em>
-                  </button>
-                )}
-              </div>
-            )}
+        {/* 선물하기 */}
+        {showPresent ? (
+          <div className="buttonWrap">
+            <div className="buttonWrapInner">
+              {urlrStr !== context.token.memNo && (
+                <div className="notBjWrap">
+                  {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                    <></>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        context.action.updateClosePresent(true)
+                      }}
+                      className="giftbutton">
+                      {/* <span></span> */}
+                      <em>선물하기</em>
+                    </button>
+                  )}
+                  {profile.isFan === 0 && (
+                    <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                      팬
+                    </button>
+                  )}
+                  {profile.isFan === 1 && (
+                    <button onClick={() => fanRegist(myProfileNo)}>
+                      <em>팬</em> <em className="plus"></em>
+                    </button>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <></>
+        )}
       </div>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
