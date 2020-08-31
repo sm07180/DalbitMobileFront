@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {convertContents} from './common_fn'
 import iconDown from '../static/arrow_down.svg'
@@ -7,7 +8,7 @@ import iconUp from '../static/arrow_up.svg'
 
 function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
   const global_ctx = useContext(Context)
-
+  const history = useHistory()
   const [detail, setDetail] = useState(-1)
   const [zoom, setZoom] = useState(false)
 
@@ -28,6 +29,18 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
     })
   }
 
+  const routeMypage = (item) => {
+    if (global_ctx.token.isLogin) {
+      if (global_ctx.profile.memNo === item.mem_no) {
+        history.push('/menu/profile')
+      } else {
+        history.push(`/mypage/${item.mem_no}`)
+      }
+    } else {
+      history.push('/login')
+    }
+  }
+
   return (
     <>
       <ul className="list">
@@ -37,9 +50,13 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
             return (
               <li key={index}>
                 <div className="list__content">
-                  <a href={`/mypage/${item.mem_no}`} className="list__img">
+                  <button
+                    onClick={() => {
+                      routeMypage(item)
+                    }}
+                    className="list__img">
                     <img src={item.profImg['thumb336x336']} />
-                  </a>
+                  </button>
                   <div className="title">
                     <h3>{item.mem_nick}</h3>
                     <span>{item.reg_date}</span>
