@@ -390,8 +390,8 @@ export default (props) => {
                     </button>
                   )}
                   {profile.isFan === false && (
-                    <button onClick={() => fanRegist(myProfileNo)}>
-                      <em>팬</em> <em className="plus"></em>
+                    <button className="isNotFan" onClick={() => fanRegist(myProfileNo)}>
+                      팬
                     </button>
                   )}
                 </div>

@@ -600,6 +600,17 @@
                 border-radius: 12px;
                 border: solid 1px #632beb;
                 background-color: #632beb;
+                &.isNotFan {
+                  &::after {
+                    display: inline-block;
+                    content: '';
+                    vertical-align: middle;
+                    width: 13px;
+                    height: 13px;
+                    margin-left: 3px;
+                    background: url('./static/ic_plus.svg') no-repeat 0 0;
+                  }
+                }
 
                 &.fanRegist {
                   border: solid 1px $primary;
