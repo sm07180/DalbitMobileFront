@@ -10,7 +10,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //component
 import Checkbox from '../../content/checkbox'
-import BackIcon from '../../component/ic_back.svg'
+import closeBtn from '../../component/ic_back.svg'
 import NewIcon from '../../static/newIcon.svg'
 import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
@@ -366,7 +366,7 @@ const ListContent = styled.div`
       display: block;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
   }
 

@@ -17,7 +17,7 @@ import Blacklist from '../component/setting/blacklist'
 
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
   {value: 0, text: '금지어 관리'},
   {value: 1, text: '매니저 관리'},
@@ -71,15 +71,17 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      <SettingHeader>
-        <button onClick={BackFunction}></button>
-        <div>
+      <div className="header-wrap">
+        <h2 className="header-title">
           {initialScreen && '방송설정'}
           {initialScreen === false && changeContents == 0 && '금지어 관리'}
           {initialScreen === false && changeContents == 1 && '매니저 관리'}
           {initialScreen === false && changeContents == 2 && '블랙리스트 관리'}
-        </div>
-      </SettingHeader>
+        </h2>
+        <button className="close-btn" onClick={BackFunction}>
+          <img src={closeBtn} alt="뒤로가기" />
+        </button>
+      </div>
       <Content>
         {initialScreen && (
           <div className="initial_contents">
@@ -178,6 +180,6 @@ const SettingHeader = styled.div`
     left: 6px;
     width: 40px;
     height: 40px;
-    background: url(${BackIcon});
+    background: url(${closeBtn});
   }
 `

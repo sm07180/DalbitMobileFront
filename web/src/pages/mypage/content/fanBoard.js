@@ -19,7 +19,7 @@ import Content from './fanBoard_content'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
@@ -275,7 +275,7 @@ const Writer = styled.div`
       top: 0;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
   }
   /* 팬보드 컨텐츠작성영역 */

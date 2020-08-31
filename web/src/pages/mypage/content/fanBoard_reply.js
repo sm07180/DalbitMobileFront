@@ -18,7 +18,7 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import WriteIcon from '../component/ic_write.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
 import ReplyIcon from '../static/ic_reply_purple.svg'
 import LockIcon from '../static/lock_g.svg'
@@ -395,7 +395,7 @@ export default (props) => {
           <div className="header-wrap">
             <h2 className="header-title">답글 쓰기</h2>
             <button className="close-btn" onClick={WriteToggle}>
-              <img src={BackIcon} alt="뒤로가기" />
+              <img src={closeBtn} alt="뒤로가기" />
             </button>
           </div>
           <div className="content_area">
@@ -426,7 +426,7 @@ export default (props) => {
           <div className="header-wrap">
             <h2 className="header-title">답글 수정</h2>
             <button className="close-btn" onClick={ModifyToggle}>
-              <img src={BackIcon} alt="뒤로가기" />
+              <img src={closeBtn} alt="뒤로가기" />
             </button>
           </div>
           <div className="content_area">
@@ -470,7 +470,7 @@ const Writer = styled.div`
       top: 0;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
   }
   /* 팬보드 컨텐츠작성영역 */
@@ -616,7 +616,7 @@ const Reply = styled.div`
       top: 0;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
     .reply_write_btn {
       display: flex;
