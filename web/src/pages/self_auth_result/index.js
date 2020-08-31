@@ -20,8 +20,6 @@ export default (props) => {
   const history = useHistory()
   const location = useLocation()
 
-  console.log('history', history)
-
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
   const {result, code, message, returntype} = qs.parse(location.search)
 
@@ -64,7 +62,7 @@ export default (props) => {
           window.location.href = '/'
         }
       })
-    } else if (result === 'success' || returntype === 'profile') {
+    } else if (returntype === 'profile') {
       setAuthState(4)
     } else {
       checkAuth()
@@ -77,7 +75,6 @@ export default (props) => {
   }
 
   const goBack = () => {
-    // window.history.back()
     window.location.href = '/'
   }
 
@@ -195,11 +192,7 @@ export default (props) => {
       {authState === 0 ? (
         <></>
       ) : (
-        <Header
-          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-          // goBack={authState === 2 || authState === 4 ? goBack : goWallet}
-          goBack={goBack}
-        />
+        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
       )}
 
       <Content>{createResult()}</Content>
