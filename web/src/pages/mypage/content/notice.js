@@ -334,8 +334,8 @@ const Notice = (props) => {
             <DalbitTextArea
               state={comentContent}
               setState={setCommentContent}
-              rows={10}
-              maxLength={200}
+              rows={25}
+              maxLength={500}
               className="MsgText"
               placeholder="작성하고자 하는 글의 내용을 입력해주세요."
             />

@@ -2038,6 +2038,67 @@ export default class API {
     })
   }
 
+  //인증샷 이벤트
+  static event_proofshot_list = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/event/photo/list`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_detail = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/detail`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_insert = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/insert`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_update = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/update`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_dellete = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/delete`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_status = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/status`,
+      method: method || 'GET',
+      data: data
+    })
+  }
+
   static pay_coocon = async (obj) => {
     const {url, method, data} = obj || {}
     return await ajax({

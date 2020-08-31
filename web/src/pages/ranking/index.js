@@ -63,6 +63,8 @@ export default (props) => {
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+  const fixedWrapRef = useRef()
+  const listWrapRef = useRef()
   const refreshDefaultHeight = 49
 
   const rankTouchStart = useCallback(
@@ -430,10 +432,26 @@ export default (props) => {
     const windowScrollEvent = () => {
       const gnbHeight = 48
 
-      if (window.scrollY >= 49) {
-        setIsFixed(true)
+      if (window.scrollY >= 48) {
+        if (fixedWrapRef.current.classList.length === 0) {
+          fixedWrapRef.current.className = 'fixed'
+        }
+        if (globalCtx.token.isLogin) {
+          if (listWrapRef.current.classList.length === 1) {
+            listWrapRef.current.className = 'listFixed more'
+          }
+        } else {
+          if (listWrapRef.current.classList.length === 0) {
+            listWrapRef.current.className = 'listFixed'
+          }
+        }
       } else {
-        setIsFixed(false)
+        fixedWrapRef.current.className = ''
+        if (globalCtx.token.isLogin) {
+          listWrapRef.current.className = 'more'
+        } else {
+          listWrapRef.current.className = ''
+        }
       }
 
       // if (window.scrollY >= gnbHeight) {
@@ -461,12 +479,6 @@ export default (props) => {
     }
   }, [scrollBottom, scrollBottomFinish])
 
-  const textArea = useRef()
-  const resize = (e) => {
-    if (e.target.value.length > 1000) return
-    textArea.current.style.height = textArea.current.scrollHeight + 12 + 'px'
-  }
-
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
@@ -481,7 +493,7 @@ export default (props) => {
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
         </div>
-        <div className={`${isFixed === true && 'fixed'}`}>
+        <div ref={fixedWrapRef}>
           <div className="rankTopBox respansiveBox">
             <div className="rankTab">
               {RANK_TYPE_LIST.map((rType, idx) => {
@@ -519,7 +531,7 @@ export default (props) => {
         {rankType === RANK_TYPE.LEVEL && <LevelList levelList={levelList} />}
         {rankType === RANK_TYPE.LIKE && <LikeList likeList={likeList} />}
         {rankType !== RANK_TYPE.LEVEL && rankType !== RANK_TYPE.LIKE && (
-          <div className={`${isFixed && 'listFixed'} ${globalCtx.token.isLogin && 'more'}`}>
+          <div ref={listWrapRef} className={`${globalCtx.token.isLogin && 'more'}`}>
             <RankListWrap
               rankType={rankType}
               dateType={dateType}
@@ -532,13 +544,6 @@ export default (props) => {
             />
           </div>
         )}
-        {/* <textarea
-          ref={textArea}
-          onChange={(e) => {
-            resize(e)
-          }}
-          style={{overflow: 'visible', minHeight: '50px'}}
-        /> */}
         {popup && <LayerPopup setPopup={setPopup} />}
       </div>
     </Layout>

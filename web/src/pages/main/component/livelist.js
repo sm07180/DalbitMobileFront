@@ -40,8 +40,7 @@ const makeContents = (props) => {
         boostCnt,
         rank,
         os,
-        isNew,
-        isWowza
+        isNew
       } = list
 
       const alertCheck = (roomNo) => {
@@ -51,24 +50,21 @@ const makeContents = (props) => {
             callback: () => {
               RoomJoin({
                 roomNo: roomNo,
-                shadow: 1,
-                isWowza: isWowza
+                shadow: 1
               })
             },
             //캔슬콜백처리
             cancelCallback: () => {
               RoomJoin({
                 roomNo: roomNo,
-                shadow: 0,
-                isWowza: isWowza
+                shadow: 0
               })
             },
             msg: '관리자로 입장하시겠습니까?'
           })
         } else {
           RoomJoin({
-            roomNo: roomNo,
-            isWowza: isWowza
+            roomNo: roomNo
           })
         }
       }
@@ -125,6 +121,31 @@ const makeContents = (props) => {
       )
     })
   } else {
+    const alertCheck = (roomNo) => {
+      if (context.adminChecker === true) {
+        context.action.confirm_admin({
+          //콜백처리
+          callback: () => {
+            RoomJoin({
+              roomNo: roomNo,
+              shadow: 1
+            })
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {
+            RoomJoin({
+              roomNo: roomNo,
+              shadow: 0
+            })
+          },
+          msg: '관리자로 입장하시겠습니까?'
+        })
+      } else {
+        RoomJoin({
+          roomNo: roomNo
+        })
+      }
+    }
     return (
       <>
         {evenList.map((first, idx) => {
@@ -137,7 +158,7 @@ const makeContents = (props) => {
               <div
                 className="half-live"
                 style={{backgroundImage: `url(${firstList.bjProfImg['thumb190x190']})`}}
-                onClick={() => alertCheck(roomNo)}>
+                onClick={() => alertCheck(firstList.roomNo)}>
                 <div className="top-status">
                   {firstList.entryType === 2 ? (
                     <span className="twenty-icon">20</span>
@@ -164,7 +185,7 @@ const makeContents = (props) => {
                 <div
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
-                  onClick={() => alertCheck(roomNo)}>
+                  onClick={() => alertCheck(lastList.roomNo)}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (
                       <span className="twenty-icon">20</span>

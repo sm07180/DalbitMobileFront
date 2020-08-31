@@ -24,7 +24,7 @@ export default (props) => {
       <>
         <div className="userRanking">
           {list.map((item, index) => {
-            let {
+            const {
               gender,
               nickNm,
               rank,
@@ -40,7 +40,6 @@ export default (props) => {
               roomNo,
               memNo
             } = item
-            roomNo = ''
             let genderName
             let upDownName
 

@@ -19,15 +19,14 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
 
-  const [popup, setPopup] = useState(false)
-
-  const {result, code, message} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
 
   /**
    * authState
    * 1 : 성인 - 자기 자신 본인인증 완료 후 // adultYn === 'y'
    * 2 : 미성년자 - 자기 자신 본인인증 완료 후 (법정대리인 인증 필요 상태) // adultYn === 'n' && parentsAgreeYn == 'n'
    * 3 : 법정대리인 본인인증 완료 후 // adultYn === 'n' && parentsAgreeYn == 'y'
+   * 4 : 프로필에서 본인인증 완료 후
    */
   const [authState, setAuthState] = useState(0)
 
@@ -58,6 +57,8 @@ export default (props) => {
           context.action.updateWalletIdx(1)
         }
       })
+    } else if (result === 'success' || returntype === 'profile') {
+      setAuthState(4)
     } else {
       checkAuth()
     }
@@ -89,20 +90,30 @@ export default (props) => {
     history.push(`/legalauth`)
   }
 
-  //---------------------------------------------------------------------
-  return (
-    <Layout {...props} status="no_gnb">
-      {authState === 0 ? (
-        <></>
-      ) : (
-        <Header
-          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-          goBack={authState === 2 ? goBack : goWallet}
-        />
-      )}
-
-      <Content>
-        {authState === 2 ? (
+  const createResult = () => {
+    switch (authState) {
+      case 0: //초기상태
+        return <></>
+      case 1: //환전 -> 성인이 자기자신 본인인증 완료 하였을 때
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다. <br />
+              <span>환전 신청정보</span>를 작성해 주세요.
+              <br />
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  history.push('/money_exchange')
+                }}>
+                확인
+              </button>
+            </div>
+          </div>
+        )
+      case 2: //환전 -> 미성년자가 자기자신 본인인증 완료 후 법정대리인 인증 필요 상태
+        return (
           <div className="auth-wrap">
             <h4>
               <strong>본인인증이 완료되었습니다.</strong>
@@ -123,7 +134,9 @@ export default (props) => {
               <button onClick={goLegalAuth}>동의 받기</button>
             </div>
           </div>
-        ) : authState === 3 ? (
+        )
+      case 3: //법정대리인 본인인증 완료 후
+        return (
           <div className="auth-wrap">
             <h4>
               20세 미만 미성년자 이용에 대한
@@ -143,26 +156,40 @@ export default (props) => {
               </button>
             </div>
           </div>
-        ) : authState === 1 ? (
+        )
+      case 4: //프로필 -> 자기자신 본인인증 완료 하였을 때
+        return (
           <div className="auth-wrap">
-            <h5>
-              본인 인증이 완료되었습니다. <br />
-              <span>환전 신청정보</span>를 작성해 주세요.
-              <br />
-            </h5>
+            <h4>본인 인증이 완료되었습니다.</h4>
+            <p>※ 확인을 누르시면 프로필 설정으로 돌아갑니다.</p>
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  history.push('/money_exchange')
+                  history.push('/private')
                 }}>
                 확인
               </button>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
-      </Content>
+        )
+      default:
+        return <></>
+    }
+  }
+
+  //---------------------------------------------------------------------
+  return (
+    <Layout {...props} status="no_gnb">
+      {authState === 0 ? (
+        <></>
+      ) : (
+        <Header
+          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
+          goBack={authState === 2 || authState === 4 ? goBack : goWallet}
+        />
+      )}
+
+      <Content>{createResult()}</Content>
     </Layout>
   )
 }
