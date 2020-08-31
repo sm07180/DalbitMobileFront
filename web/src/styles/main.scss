@@ -843,6 +843,9 @@
   width: 100%;
   min-height: 50px;
   padding: 16px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
   &__item {
     display: flex;
     position: relative;
@@ -1008,6 +1011,169 @@
             display: block;
           }
         }
+      }
+    }
+  }
+  &__flex {
+    position: relative;
+    width: calc(50% - 2px);
+    min-height: 170px;
+    margin: 0 0 4px 4px;
+    border-radius: 16px;
+    background-color: #eee;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+    border-radius: 16px;
+    cursor: pointer;
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    &:nth-child(odd) {
+      margin-left: 0;
+    }
+    .broadcast-img {
+      position: relative;
+      width: calc(50% - 4px);
+      height: 100%;
+      margin: 0 0 4px 4px;
+      border-radius: 16px;
+      background-color: #eee;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      overflow: hidden;
+      border-radius: 16px;
+      width: 100%;
+      height: 100%;
+    }
+    .top-status {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      z-index: 1;
+
+      span {
+        margin-right: 3px;
+      }
+
+      .pc-icon {
+        color: $white;
+        font-size: 11px;
+        border-radius: 10px;
+        background-color: #f26d4a;
+        height: 16px;
+        width: 26px;
+        line-height: 16px;
+        margin-right: 4px;
+      }
+
+      .twenty-icon {
+        width: 24px;
+        height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(223, 57, 57, 0.5);
+        text-align: center;
+        color: $white;
+      }
+      .special-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        line-height: 16px;
+        font-size: 7px;
+        text-align: center;
+        color: $white;
+        background-color: #ec455f;
+      }
+      .all-icon {
+        width: 24px;
+        height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(102, 177, 46, 0.5);
+        text-align: center;
+        color: $white;
+      }
+      .fan-icon {
+        width: 24px;
+        height: 16px;
+        font-size: 8px;
+        line-height: 15px;
+        box-sizing: border-box;
+        border-radius: 8px;
+        background-color: rgba(78, 115, 217, 0.5);
+        text-align: center;
+        color: $white;
+      }
+    }
+    .entry-count {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      display: flex;
+      z-index: 1;
+
+      .entry-img {
+        display: block;
+      }
+      .count-txt {
+        color: $white;
+        font-size: 13px;
+        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+      }
+    }
+    .bottom-wrap {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      display: flex;
+      align-items: center;
+      z-index: 1;
+
+      .pc-icon {
+        color: $white;
+        font-size: 11px;
+        border-radius: 10px;
+        background-color: #f26d4a;
+        text-align: center;
+        width: 26px;
+        height: 16px;
+
+        line-height: 16px;
+        margin-right: 4px;
+      }
+
+      .type-icon-wrap {
+        width: 26px;
+        border-radius: 8px;
+        background-color: rgba(254, 189, 86, 0.5);
+        height: 16px;
+        margin-right: 4px;
+
+        .type-icon {
+          width: 26px;
+        }
+      }
+
+      .dj-nickname {
+        color: $white;
+        font-size: 12px;
       }
     }
   }
