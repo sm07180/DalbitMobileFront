@@ -19,7 +19,7 @@ import Content from './fanBoard_content'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
@@ -201,19 +201,26 @@ export default (props) => {
     <FanBoard>
       {/* 팬보드 헤더 영역 */}
       <Header>
-        <div className="category-text">팬보드</div>
+        <h2 className="header-title">팬보드</h2>
         {createWriteBtn()}
       </Header>
+      {/* <Header title="팬보드">
+        <div className="category-text">팬보드</div>
+      </Header> */}
+      {/* {createWriteBtn()} */}
       {/* 팬보드 리스트 영역 */}
       {totalCount === 0 && <NoResult />}
       {totalCount !== 0 && <Content list={list} totalCount={totalCount} />}
       {/* 팬보드 작성영역 */}
       {writeState && (
         <Writer>
-          <header>
+          <Header>
+            <h2 className="header-title">팬보드 쓰기</h2>
+          </Header>
+          {/* <header>
             <button onClick={WriteToggle}></button>
             <span>팬보드 쓰기</span>
-          </header>
+          </header> */}
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
@@ -230,7 +237,7 @@ export default (props) => {
               )}
 
               <span>
-                <em>{textChange.length}</em> / 100
+                <em>{textChange.length}</em>&nbsp;/ 100
               </span>
             </span>
             <button onClick={() => fetchDataUpload()}>등록</button>
@@ -268,7 +275,7 @@ const Writer = styled.div`
       top: 0;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
   }
   /* 팬보드 컨텐츠작성영역 */

@@ -8,7 +8,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 //components
 import Exit from './exit'
-import Header from 'components/ui/header'
+import Header from 'components/ui/new_header.js'
 
 //
 const Index = (props) => {
@@ -19,12 +19,10 @@ const Index = (props) => {
   Index.store = store
   //---------------------------------------------------------------------
   return (
-    <Container>
-      <Header>
-        <div className="category-text">회원탈퇴</div>
-      </Header>
+    <>
+      <Header title="회원탈퇴" />
       <Exit />
-    </Container>
+    </>
   )
 }
 export default Index
@@ -35,27 +33,3 @@ export default Index
 export const Store = () => {
   return Index.store
 }
-//---------------------------------------------------------------------
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-  padding: 0 16px;
-
-  .close-btn {
-    position: absolute;
-    left: 6px;
-  }
-
-  & h1 {
-    margin: 40px 0;
-    text-align: center;
-    color: ${COLOR_MAIN};
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: -0.7px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      margin: 30px 0;
-      font-size: 20px;
-    }
-  }
-`

@@ -235,9 +235,7 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      <Header>
-        <div className="category-text">Push 알림 설정</div>
-      </Header>
+      <Header title="Push 알림 설정" />
       {allBtnState !== null && makeContent()}
     </>
   )

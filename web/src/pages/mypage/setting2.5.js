@@ -359,9 +359,7 @@ export default (props) => {
         <Layout {...props} status="no_gnb">
           <Content>
             <SettingWrap>
-              <Header>
-                <div className="category-text">프로필 설정</div>
-              </Header>
+              <Header title="프로필 설정" />
               {/* 공통타이틀:TopWrap */}
               <div className="individual_Wrap">
                 <ProfileImg>
@@ -391,7 +389,7 @@ export default (props) => {
                   </label>
                 </ProfileImg>
 
-                <AuthWrap>
+                {/* <AuthWrap>
                   <label>본인인증</label>
                   <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
                   <button
@@ -403,7 +401,7 @@ export default (props) => {
                 </AuthWrap>
                 <GenderAlertMsg className={authState ? 'authPass' : 'notAuth'}>
                   {authState ? '본인인증이 완료 되었으며, 재 인증도 가능합니다.' : '본인인증을 완료하지 않으셨습니다.'}
-                </GenderAlertMsg>
+                </GenderAlertMsg> */}
 
                 <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
 
@@ -460,7 +458,8 @@ export default (props) => {
                 <div className="birthBox">
                   <span className="matchTitle">생년월일</span>
                   <BirthDate>{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}</BirthDate>
-                  <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
+                  {/* <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg> */}
+                  <GenderAlertMsg>생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
                 </div>
                 <GenderWrap className={firstSetting ? 'before' : 'after'}>
                   {firstSetting ? (
@@ -499,7 +498,7 @@ export default (props) => {
                     </>
                   )}
                 </GenderWrap>
-                <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
+                {/* <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg> */}
 
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메시지</label>

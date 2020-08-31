@@ -14,13 +14,13 @@ import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 // component
-import Header from '../component/header.js'
+import Header from 'components/ui/new_header'
 import ReplyList from './fanBoard_reply'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import ReplyIcon from '../static/reply_g.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 import MoreBtnIcon from '../static/ic_new_more.svg'
 import LockIcon from '../static/lock_g.svg'
 //--------------------------------------------------------------------------
@@ -265,14 +265,16 @@ export default (props) => {
           {/* 큰댓글 수정하기영역 */}
           {writeState && (
             <Writer>
-              <header>
-                <button onClick={() => setWriteState(false)}></button>
-                <span>팬보드 수정</span>
-              </header>
+              <div className="header-wrap">
+                <h2 className="header-title">팬보드 수정</h2>
+                <button className="close-btn" onClick={() => setWriteState(false)}>
+                  <img src={closeBtn} alt="뒤로가기" />
+                </button>
+              </div>
               <div className="content_area">
                 <Textarea value={modifyMsg} onChange={BigChangeContent} placeholder="내용을 입력해주세요" />
                 <span className="bigCount">
-                  <em>{modifyMsg.length}</em> / 100
+                  <em>{modifyMsg.length}</em>&nbsp;/ 100
                 </span>
                 <button onClick={() => fetchDataModiy()}>수정</button>
               </div>
@@ -281,10 +283,12 @@ export default (props) => {
           {/* 대댓글 작성영역 */}
           {ReplyWriteState && (
             <Writer>
-              <header>
-                <button onClick={() => ReplyWrite(false)}></button>
-                <span>답글 쓰기</span>
-              </header>
+              <div className="header-wrap">
+                <h2 className="header-title">답글 쓰기</h2>
+                <button className="close-btn" onClick={() => ReplyWrite(false)}>
+                  <img src={closeBtn} alt="뒤로가기" />
+                </button>
+              </div>
 
               <div className="content_area">
                 <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
@@ -301,7 +305,7 @@ export default (props) => {
                     <span className="bold">비공개</span>
                   </span>
                   <span>
-                    <em>{textChange.length}</em> / 100
+                    <em>{textChange.length}</em>&nbsp;/ 100
                   </span>
                 </span>
                 <button onClick={() => fetchDataUploadReply()}>등록</button>
@@ -523,7 +527,7 @@ const Writer = styled.div`
       top: 0;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
   }
   /* 팬보드 컨텐츠작성영역 */

@@ -17,6 +17,7 @@ import './static/proofStyle.scss'
 export default () => {
   const history = useHistory()
   const global_ctx = useContext(Context)
+
   const [tab, setTab] = useState(0)
   const [statusObj, setStatusObj] = useState({
     eventCheck: 0,
@@ -145,7 +146,6 @@ export default () => {
               <div className="day">
                 <span>참여기간: 2020.8.31 ~ 9.13</span>
               </div>
-
               <img src="https://image.dalbitlive.com/event/proofshot/20200226/content01.jpg" alt="pc 방송 인증샷 이벤트" />
             </div>
 
