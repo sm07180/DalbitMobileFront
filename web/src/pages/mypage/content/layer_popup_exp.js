@@ -1,7 +1,7 @@
 import React, {useEffect, useRef} from 'react'
 import styled from 'styled-components'
 // static
-import CloseBtn from '../static/ic_close.svg'
+import CloseBtn from '../../menu/static/ic_closeBtn.svg'
 import PlusIcon from '../static/ic_plus.svg'
 // context
 import {COLOR_MAIN, COLOR_WHITE} from 'context/color'

@@ -5,6 +5,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 //route
 import {OS_TYPE} from 'context/config.js'
+import qs from 'query-string'
 import Room, {RoomJoin} from 'context/room'
 // utility
 import Utility, {printNumber, addComma} from 'components/lib/utility'
@@ -21,8 +22,8 @@ export default (props) => {
   let history = useHistory()
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
-  const {profile, location, webview} = props
-  console.log(profile)
+  const {profile, location, webview, locHash} = props
+  console.log(props, profile)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -239,9 +240,23 @@ export default (props) => {
   if (expPercent == 'Infinity') expCalc = 0
   // loading
   if (profile === null) {
-    return <div style={{minHeight: '300px'}}></div>
+    return <div style={{minHeight: '230px'}}></div>
   }
 
+  const goBack = () => {
+    const {webview} = qs.parse(location.search)
+
+    if (webview && webview === 'new' && isHybrid()) {
+      Hybrid('CloseLayerPopup')
+    } else {
+      if (locHash instanceof Object && locHash.state) {
+        locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
+      } else {
+        history.goBack()
+      }
+      // history.goBack()
+    }
+  }
   //function모바일 레어어 실행
   useEffect(() => {
     if (popup) {
@@ -288,6 +303,14 @@ export default (props) => {
 
   return (
     <div className="profile-detail">
+      {token && token.isLogin && showAdmin && (
+        <a href="/admin/image" className="adminBtn">
+          <img src={AdminIcon} alt="관리자아이콘" />
+        </a>
+      )}
+      <button className="closeBtn" onClick={goBack}>
+        <span className="blind">프로필 닫기</span>
+      </button>
       <div className="profile-content">
         <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
@@ -370,7 +393,7 @@ export default (props) => {
         {showPresent ? (
           <div className="buttonWrap">
             <div className="buttonWrapInner">
-              {urlrStr !== context.token.memNo && (
+              {urlrStr !== token.memNo && (
                 <div className="notBjWrap">
                   {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                     <></>

@@ -224,14 +224,14 @@ const myProfile = (props) => {
   return (
     <>
       <div className="profile-info" webview={webview}>
-        {token && token.isLogin && showAdmin && (
+        {/* {token && token.isLogin && showAdmin && (
           <a href="/admin/image" className="adminBtn">
             <img src={AdminIcon} alt="관리자아이콘" />
           </a>
         )}
         <button className="closeBtn" onClick={goBack}>
           <span className="blind">프로필 닫기</span>
-        </button>
+        </button> */}
 
         <ProfileDetail {...props} />
       </div>
