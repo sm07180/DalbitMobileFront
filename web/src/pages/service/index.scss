@@ -1,22 +1,5 @@
 #serviceWrap {
   .serviceWrap {
-    &__header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 10px 0;
-      border-bottom: 1px solid #eeeeee;
-      &--button {
-        position: absolute;
-        left: 6px;
-        top: 1px;
-      }
-      &--title {
-        font-size: 18px;
-        font-weight: bold;
-      }
-    }
-
     &__contents {
       align-items: center;
       justify-self: center;

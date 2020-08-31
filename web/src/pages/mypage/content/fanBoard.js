@@ -200,10 +200,10 @@ export default (props) => {
   return (
     <FanBoard>
       {/* 팬보드 헤더 영역 */}
-      <Header>
+      <Header title="팬보드">
         <div className="category-text">팬보드</div>
-        {createWriteBtn()}
       </Header>
+      {/* {createWriteBtn()} */}
       {/* 팬보드 리스트 영역 */}
       {totalCount === 0 && <NoResult />}
       {totalCount !== 0 && <Content list={list} totalCount={totalCount} />}

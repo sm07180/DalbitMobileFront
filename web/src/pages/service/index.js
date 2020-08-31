@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {Context} from 'context'
-import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
-
 import {useHistory} from 'react-router-dom'
-
-import BackBtn from './static/ic_back.svg'
 import {Hybrid} from 'context/hybrid'
+import Api from 'context/api'
+
+import Header from 'components/ui/new_header'
 import './index.scss'
+
 export default function Service() {
   const context = useContext(Context)
   const hisotry = useHistory()
@@ -87,10 +87,7 @@ export default function Service() {
   }, [])
   return (
     <div id="serviceWrap">
-      <div className="serviceWrap__header">
-        <img src={BackBtn} className="serviceWrap__header--button" onClick={() => hisotry.goBack()}></img>
-        <h3 className="serviceWrap__header--title">고객센터</h3>
-      </div>
+      <Header title="고객센터" />
       <div className="serviceWrap__contents">
         <div className="serviceWrap__contents--tip">
           달빛 라이브에 대한 궁금한 사항이나 장애 등은

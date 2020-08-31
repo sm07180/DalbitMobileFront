@@ -54,9 +54,7 @@ export default (props) => {
 
   return (
     <EditeWrap>
-      <Header>
-        <div className="category-text">팬 관리</div>
-      </Header>
+      <Header title="팬 관리" />
       <div className="tabContainer">
         <Swiper {...swiperParams}>
           {tabArry.map((item, idx) => {

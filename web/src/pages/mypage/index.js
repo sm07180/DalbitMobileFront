@@ -158,7 +158,7 @@ export default (props) => {
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb">
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
-        <div id="profile">
+        <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>

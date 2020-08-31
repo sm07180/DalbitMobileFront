@@ -352,9 +352,7 @@ export default (props) => {
   return (
     <>
       {/* 공통타이틀 */}
-      <Header>
-        <div className="category-text">리포트</div>
-      </Header>
+      <Header title="리포트" />
       <Report>
         <div className="tabWrap">
           <button onClick={Toggletab} className={selectType === 0 ? 'on' : ''}>

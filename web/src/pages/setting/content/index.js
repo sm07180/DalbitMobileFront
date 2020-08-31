@@ -12,7 +12,7 @@ import {useHistory} from 'react-router-dom'
 //ui
 import Accordion from './accordian'
 import Use from './use'
-import Header from './header'
+import Header from 'components/ui/new_header'
 //
 const Index = (props) => {
   //---------------------------------------------------------------------
@@ -34,9 +34,7 @@ const Index = (props) => {
   //---------------------------------------------------------------------
   return (
     <Container>
-      <Header>
-        <div className="category-text">설정</div>
-      </Header>
+      <Header title="설정" />
       <div>
         {/* <Accordion title="알림설정" content={<h1>adasdas</h1>} /> */}
         <div className="accordian-box">

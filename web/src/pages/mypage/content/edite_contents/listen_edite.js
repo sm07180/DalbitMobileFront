@@ -344,11 +344,11 @@ export default (props) => {
       {popState && (
         <div className="memoPop">
           <div className="memoContents">
-            <header>
+            <div className="memoPop__header">
               메모
               <button onClick={ClosePop} />
-            </header>
-            <div className="txtCnt">
+            </div>
+            <div className="memoPop__txtCnt">
               <textarea
                 placeholder="회원을 기억하기 위한 메모를 입력해주세요.
 최대 500자까지 저장 가능합니다."
@@ -531,6 +531,57 @@ const Wrap = styled.div`
     width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
+    &__header {
+      position: relative;
+      width: 100%;
+      text-align: center;
+      border-bottom: 1px solid #eeeeee;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 44px;
+      color: #000000;
+      button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 6px;
+        width: 32px;
+        height: 32px;
+        background: url(${PxBtnIcon});
+      }
+    }
+    &__txtCnt {
+      position: relative;
+      textarea {
+        margin-top: 12px;
+        border: 1px solid #e0e0e0;
+        width: 268px;
+        min-height: 160px;
+        border-radius: 12px;
+        padding: 8px 10px;
+        box-sizing: border-box;
+        font-size: 14px;
+        text-align: left;
+        color: #424242;
+        &::placeholder {
+          font-size: 14px;
+          line-height: 1.43;
+          letter-spacing: -0.4px;
+          text-align: left;
+          color: #757575;
+        }
+      }
+      .txtcount {
+        position: absolute;
+        bottom: 8px;
+        right: 10px;
+        font-size: 12px;
+        line-height: 1.42;
+        letter-spacing: normal;
+        text-align: left;
+        color: #e0e0e0;
+      }
+    }
     .memoContents {
       display: flex;
       align-items: center;
@@ -539,38 +590,7 @@ const Wrap = styled.div`
       min-height: 296px;
       background-color: #fff;
       border-radius: 16px;
-      .txtCnt {
-        position: relative;
-        textarea {
-          margin-top: 12px;
-          border: 1px solid #e0e0e0;
-          width: 268px;
-          min-height: 160px;
-          border-radius: 12px;
-          padding: 8px 10px;
-          box-sizing: border-box;
-          font-size: 14px;
-          text-align: left;
-          color: #424242;
-          &::placeholder {
-            font-size: 14px;
-            line-height: 1.43;
-            letter-spacing: -0.4px;
-            text-align: left;
-            color: #757575;
-          }
-        }
-        .txtcount {
-          position: absolute;
-          bottom: 8px;
-          right: 10px;
-          font-size: 12px;
-          line-height: 1.42;
-          letter-spacing: normal;
-          text-align: left;
-          color: #e0e0e0;
-        }
-      }
+
       .saveBtn {
         width: 268px;
         margin-top: 16px;
@@ -583,26 +603,6 @@ const Wrap = styled.div`
         color: #ffffff;
         &--active {
           background-color: #6b36eb;
-        }
-      }
-
-      header {
-        position: relative;
-        width: 100%;
-        text-align: center;
-        border-bottom: 1px solid #eeeeee;
-        font-size: 16px;
-        font-weight: 800;
-        line-height: 44px;
-        color: #000000;
-        button {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          right: 6px;
-          width: 32px;
-          height: 32px;
-          background: url(${PxBtnIcon});
         }
       }
     }
