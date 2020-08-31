@@ -10,6 +10,7 @@ import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import {useHistory} from 'react-router-dom'
 import LayerPopupExp from './layer_popup_exp.js'
+import ProfileDetail from '../../mypage/content/profile_detail'
 // context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -49,7 +50,7 @@ const myProfile = (props) => {
   if (expPercent == 'Infinity') expCalc = 0
   // loading
   if (profile === null) {
-    return <div style={{minHeight: '391px'}}></div>
+    return <div style={{minHeight: '300px'}}></div>
   }
   //api
   async function fetchDataFanRegist(myProfileNo) {
@@ -222,7 +223,7 @@ const myProfile = (props) => {
 
   return (
     <>
-      <div className="profile-info">
+      <div className="profile-info" webview={webview}>
         {token && token.isLogin && showAdmin && (
           <a href="/admin/image" className="adminBtn">
             <img src={AdminIcon} alt="관리자아이콘" />
@@ -231,139 +232,8 @@ const myProfile = (props) => {
         <button className="closeBtn" onClick={goBack}>
           <span className="blind">프로필 닫기</span>
         </button>
-        <div className="profile-detail" webview={webview}>
-          <div className="profile-content">
-            <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-              <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
-                <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
-                {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
-                {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
-                <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
-              </figure>
-              {Zoom === true && (
-                <div className="zoom" onClick={() => setZoom(false)}>
-                  <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
-                </div>
-              )}
-            </div>
-            <div
-              className={`title 
-              ${expCalc < 10 ? `레벨 0 ~ 10` : ''}
-              ${expCalc < 20 ? `레벨 10 ~ 20` : ''}
-              ${expCalc < 30 ? `레벨 20 ~ 30` : ''}
-              ${expCalc < 40 ? `레벨 30 ~ 40 ` : ''}
-              ${expCalc < 50 ? `레벨 40 ~ 50` : ''}
-            `}>
-              Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
-            </div>
-            <div className="levelInfoWrap">
-              {urlrStr == 'profile' && (
-                <>
-                  <div className="levelBox">
-                    <div className="levelBar">
-                      <span
-                        className="expBarStatus"
-                        style={{
-                          width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
-                        }}></span>
-                      <span className="expTitle expTitle--start">0</span>
-                      <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
-                    </div>
 
-                    <div className="levelInfo">
-                      <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
-                        <span className="blind">경험치</span>
-                      </button>
-                      EXP
-                      <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
-                      <span className="expTitle expTitle--rate">{profile.expRate}%</span>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="nameWrap">
-              <strong>{profile.nickNm}</strong>
-            </div>
-            <div className="subIconWrap">
-              {/* {<em className="nationIcon"></em>} */}
-              {profile.gender === 'f' && <em className="femaleIcon"></em>}
-              {profile.gender === 'm' && <em className="maleIcon"></em>}
-              {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
-            </div>
-            {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
-            {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-            {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
-              <div className="badgeWrap">
-                <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
-              </div>
-            ) : (
-              <div className="topMedal">TOP 랭킹에 도전해보세요</div>
-            )}
-            {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
-            <div className="categoryCntWrap">
-              {profile.fanCnt > 0 ? (
-                <div className="count-box" onClick={goFanEdite}>
-                  <span className="icoWrap">
-                    <span className="icoImg type1"></span>
-                    <em className="icotitle icotitle--active">팬</em>
-                  </span>
-                  <em className="cntTitle">
-                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-                  </em>
-                </div>
-              ) : (
-                <div className="count-box">
-                  <span className="icoWrap">
-                    <span className="icoImg type1"></span>
-                    <em className="icotitle">팬</em>
-                  </span>
-                  <em className="cntTitle">
-                    {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-                  </em>
-                </div>
-              )}
-
-              {profile.starCnt > 0 ? (
-                <div className="count-box" onClick={goStarEdite}>
-                  <span className="icoWrap">
-                    <span className="icoImg type2"></span>
-                    <em className="icotitle icotitle--active">스타</em>
-                  </span>
-                  <em className="cntTitle">
-                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-                  </em>
-                </div>
-              ) : (
-                <div className="count-box">
-                  <span className="icoWrap">
-                    <span className="icoImg type2"></span>
-                    <em className="icotitle">스타</em>
-                  </span>
-                  <em className="cntTitle">
-                    {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-                  </em>
-                </div>
-              )}
-
-              <div className="count-box">
-                <span className="icoWrap">
-                  <span className="icoImg"></span>
-                  <em className="icotitle">좋아요</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
-                </em>
-              </div>
-            </div>
-          </div>
-          {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-          {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
-          {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
-          {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
-          {/* {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />} */}
-        </div>
-        {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
+        <ProfileDetail {...props} />
       </div>
     </>
   )

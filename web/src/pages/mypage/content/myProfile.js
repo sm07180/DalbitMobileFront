@@ -27,6 +27,8 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 //util
 import LiveIcon from '../component/ic_live.svg'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import ProfileDetail from './profile_detail'
+
 //render -----------------------------------------------------------------
 const myProfile = (props) => {
   const history = useHistory()
@@ -247,152 +249,7 @@ const myProfile = (props) => {
         <button className="closeBtn" onClick={goBack}>
           <span className="blind">프로필 닫기</span>
         </button>
-        <div className="profile-detail" webview={webview}>
-          <div className="profile-content">
-            {urlrStr !== context.token.memNo && (
-              <>
-                <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
-              </>
-            )}
-            <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
-              <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
-                <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
-                {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
-                {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
-                <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
-              </figure>
-              {Zoom === true && (
-                <div className="zoom" onClick={() => setZoom(false)}>
-                  <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
-                </div>
-              )}
-            </div>
-            <div className="title">
-              Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
-            </div>
-            {/* user profile 추가 */}
-            {profile.roomNo !== '' && (
-              <button
-                className="liveIcon"
-                onClick={() => {
-                  if (context.adminChecker === true) {
-                    context.action.confirm_admin({
-                      //콜백처리
-                      callback: () => {
-                        RoomJoin({
-                          roomNo: profile.roomNo,
-                          shadow: 1
-                        })
-                      },
-                      //캔슬콜백처리
-                      cancelCallback: () => {
-                        RoomJoin({
-                          roomNo: profile.roomNo,
-                          shadow: 0
-                        })
-                      },
-                      msg: '관리자로 입장하시겠습니까?'
-                    })
-                  } else {
-                    RoomJoin({
-                      roomNo: profile.roomNo
-                    })
-                  }
-                }}>
-                <img src={LiveIcon} />
-                <span>Live</span>
-              </button>
-            )}
-            <div className="nameWrap">
-              {/* <span>ID : {`@${profile.memId}`}</span> */}
-              <strong>{profile.nickNm}</strong>
-            </div>
-            <div className="subIconWrap">
-              {/* {<em className="nationIcon"></em>} */}
-              {profile.gender === 'f' && <em className="femaleIcon"></em>}
-              {profile.gender === 'm' && <em className="maleIcon"></em>}
-              {profile.isSpecial === true && <em className="specialIcon">스페셜 DJ</em>}
-            </div>
-            {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-            {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
-              <div className="badgeWrap">
-                <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
-              </div>
-            ) : (
-              <></>
-            )}
-            {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
-            <div className="categoryCntWrap">
-              <div className="count-box" onClick={() => fanContext()}>
-                <span className="icoWrap">
-                  <span className="icoImg type1"></span>
-                  <em className="icotitle">팬</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.fanCnt > 9999 ? Utility.printNumber(profile.fanCnt) : Utility.addComma(profile.fanCnt)}
-                </em>
-              </div>
-              <div className="count-box" onClick={() => starContext()}>
-                <span className="icoWrap">
-                  <span className="icoImg type2"></span>
-                  <em className="icotitle">스타</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.starCnt > 9999 ? Utility.printNumber(profile.starCnt) : Utility.addComma(profile.starCnt)}
-                </em>
-              </div>
-              <div className="count-box">
-                <span className="icoWrap">
-                  <span className="icoImg"></span>
-                  <em className="icotitle">좋아요</em>
-                </span>
-                <em className="cntTitle">
-                  {profile.likeTotCnt > 9999 ? Utility.printNumber(profile.likeTotCnt) : Utility.addComma(profile.likeTotCnt)}
-                </em>
-              </div>
-            </div>
-            {/* user profile 추가 */}
-            {urlrStr !== myProfileNo && urlrStr !== 'profile' && (
-              <div onClick={() => context.action.updateMypageReport(true)}></div>
-            )}
-            <div className="buttonWrap">
-              <div className="buttonWrapInner">
-                {urlrStr !== context.token.memNo && (
-                  <div className="notBjWrap">
-                    {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                      <></>
-                    ) : (
-                      <button
-                        onClick={() => {
-                          context.action.updateClosePresent(true)
-                        }}
-                        className="giftbutton">
-                        {/* <span></span> */}
-                        <em>선물하기</em>
-                      </button>
-                    )}
-                    {profile.isFan === 0 && (
-                      <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                        팬
-                      </button>
-                    )}
-                    {profile.isFan === 1 && (
-                      <button onClick={() => fanRegist(myProfileNo)}>
-                        <em>팬</em> <em className="plus"></em>
-                      </button>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-            {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
-            {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
-            {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
-            {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
-            {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
-            {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
-          </div>
-        </div>
+        <ProfileDetail {...props} />
       </div>
     </>
   )

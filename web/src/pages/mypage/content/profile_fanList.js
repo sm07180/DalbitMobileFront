@@ -11,6 +11,7 @@ import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
 export default (props) => {
+  console.log(props)
   const {webview} = qs.parse(location.search)
   const {name} = props
   //context------------------------------------------
@@ -22,6 +23,7 @@ export default (props) => {
   const {profile} = props
   const myProfileNo = ctx.profile.memNo
   const MyMemNo = context.profile && context.profile.memNo
+  console.log(myProfileNo, MyMemNo, profile.memNo)
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
@@ -35,14 +37,14 @@ export default (props) => {
   const fetchData = async () => {
     const res = await Api.mypage_fan_ranking({
       params: {
-        memNo: urlrStr,
+        memNo: profile.memNo,
         page: 1,
         records: 100
       }
     })
     if (res.result === 'success') {
       setRankInfo(res.data.list)
-      //console.log(res)
+      console.log(res)
     } else {
       console.log(res)
     }
