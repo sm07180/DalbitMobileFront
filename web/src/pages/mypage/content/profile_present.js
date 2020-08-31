@@ -187,7 +187,7 @@ export default (props) => {
                     onClick={() => _active('input')}
                     active={active ? 'active' : ''}
                   /> */}
-                  <p>* 달 선물하기는 100% 전달합니다.</p>
+                  <p>* 달 선물하기는 100% 전달됩니다.</p>
                 </TextArea>
                 <ButtonArea>
                   <button onClick={() => context.action.updateClosePresent(false)}>취소</button>
