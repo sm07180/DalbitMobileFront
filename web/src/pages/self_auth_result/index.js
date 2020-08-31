@@ -77,7 +77,8 @@ export default (props) => {
   }
 
   const goBack = () => {
-    window.history.back()
+    // window.history.back()
+    window.location.href = '/'
   }
 
   const goLegalAuth = async () => {
