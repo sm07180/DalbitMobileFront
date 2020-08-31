@@ -197,6 +197,7 @@ export default (props) => {
         <Header
           title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
           // goBack={authState === 2 || authState === 4 ? goBack : goWallet}
+          goBack={goBack}
         />
       )}
 
