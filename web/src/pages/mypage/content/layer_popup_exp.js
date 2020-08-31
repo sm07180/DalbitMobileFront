@@ -49,7 +49,7 @@ export default (props) => {
 
   return (
     <PopupWrap id="main-layer-popup" ref={layerWrapRef} onClick={wrapClick} onTouchStart={wrapTouch} onTouchMove={wrapTouch}>
-      <div className="content-wrap">
+      <div className="content-wrap content-exp">
         <div className="title-wrap">
           <h3 className="h3-tit">경험치(exp)획득 방법</h3>
           <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
