@@ -59,8 +59,9 @@ export default (props) => {
       return context.action.alert({
         msg: message,
         callback: () => {
-          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-          context.action.updateWalletIdx(1)
+          // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          // context.action.updateWalletIdx(1)
+          window.location.href = '/'
         }
       })
     } else if (result === 'success' || returntype === 'profile') {
@@ -112,7 +113,6 @@ export default (props) => {
               <button
                 onClick={() => {
                   history.push('/money_exchange')
-                  // history.goBack()
                 }}>
                 확인
               </button>
@@ -135,7 +135,11 @@ export default (props) => {
               저장되지 않습니다.
             </p>
             <div className="btn-wrap">
-              <button className="cancel" onClick={goBack}>
+              <button
+                className="cancel"
+                onClick={() => {
+                  window.location.href = '/'
+                }}>
                 취소
               </button>
               <button onClick={goLegalAuth}>동의 받기</button>
