@@ -25,7 +25,7 @@ import CustomerIcon from '../static/customer_yellow.svg'
 import FaqIcon from '../static/menu_faq.svg'
 import InquireIcon from '../static/menu_1on1.svg'
 import AppIcon from '../static/menu_appinfo.svg'
-import CastIcon from '../static/menu_cast.svg'
+import ClipIcon from '../static/menu_cast.svg'
 
 import '../../mypage/index.scss'
 
@@ -37,7 +37,7 @@ export default (props) => {
   const subNavList = [
     {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
     {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-    // {type: 'cast', txt: '클립', icon: CastIcon},
+    {type: 'my_clip', txt: '클립', icon: ClipIcon},
     {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
     // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   ]

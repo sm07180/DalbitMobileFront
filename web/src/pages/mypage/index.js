@@ -19,6 +19,7 @@ import Report from './content/report.js'
 import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
+import MyClip from './content/myclip'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
@@ -49,7 +50,8 @@ export default (props) => {
     {id: 5, type: 'appAlarm2', component: AppAlarm2, txt: '어플알람'},
     {id: 6, type: 'bcsetting', component: BroadcastSetting, txt: '방송 설정'},
     {id: 7, type: 'edit_fan', component: EditFan, txt: '팬 관리'},
-    {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
+    {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'},
+    {id: 9, type: 'my_clip', component: MyClip, txt: '클립'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   const subNavList2 = [
@@ -188,12 +190,12 @@ export default (props) => {
               </div>
             </>
           )}
-          <div>
+          <React.Fragment>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </div>
+          </React.Fragment>
         </div>
       </Layout2>
     </Switch>
