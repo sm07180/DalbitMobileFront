@@ -49,9 +49,7 @@ export default function Clip(props) {
   }, [])
   return (
     <div id="mypageClip">
-      <Header>
-        <div className="category-text">클립</div>
-      </Header>
+      <Header title="클립" />
       <div className="header">
         <div className="header__tab">
           <button
