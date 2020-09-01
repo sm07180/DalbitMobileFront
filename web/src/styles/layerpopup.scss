@@ -278,5 +278,80 @@
         justify-content: space-between;
       }
     }
+    &-fanlist {
+      .scrollWrap {
+        &-inner {
+          position: relative;
+          padding: 12px;
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          overflow-x: hidden;
+          background-color: #fff;
+          /* align-items: center; */
+          flex-direction: column;
+          border-radius: 10px;
+        }
+        .scroll-box {
+          width: auto !important;
+          overflow-x: hidden;
+        }
+      }
+      .popup__inner {
+        .inner {
+          padding: 0;
+        }
+      }
+      .fan-list {
+        display: flex;
+        align-items: center;
+        margin-bottom: 7px;
+        > a {
+          display: flex;
+          span {
+            display: inline-block;
+            &.thumb {
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              background: $lightgray;
+            }
+            &.nickNm {
+              height: 40px;
+              margin-left: 10px;
+              line-height: 40px;
+              font-size: 14px;
+              color: #424242;
+              letter-spacing: -0.35px;
+              border-radius: 50%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+        > button {
+          flex: none;
+          margin-left: auto;
+          margin-right: 1px;
+          width: 53px;
+          height: 26px;
+          border: 1px solid $primary;
+          font-size: 12px;
+          line-height: 1.2;
+          letter-spacing: -0.3px;
+          border-radius: 13px;
+          transform: skew(-0.03deg);
+          color: $primary;
+        }
+        .plusFan {
+          background-color: $primary;
+          color: #fff;
+        }
+        &.none {
+          display: none;
+        }
+      }
+    }
   }
 }

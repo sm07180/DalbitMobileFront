@@ -10,6 +10,8 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
+import CloseBtn from '../../menu/static/ic_closeBtn.svg'
+
 export default (props) => {
   console.log(props)
   const {webview} = qs.parse(location.search)
@@ -140,10 +142,7 @@ export default (props) => {
     }
     fetchDataFanCancel(memNo)
   }
-  const handleDimClick = () => {
-    history.goBack()
-  }
-  const CancelBtn = () => {
+  const closePopup = () => {
     console.log('cancel')
     history.goBack()
     // if (name === '팬 랭킹') {
@@ -199,99 +198,122 @@ export default (props) => {
     })
   }
   return (
-    <div id="mainLayerPopup" onClick={handleDimClick}>
-      <div className="popup">
+    <div id="mainLayerPopup" onClick={closePopup}>
+      <div className="popup popup-fanlist">
         <div className="popup__wrap">
           <div className="popbox active">
             <div className="popup__box popup__text">
-              <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
-              <div className="popup__inner">
-                <div className="popup__title">{name}</div>
+              <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
+                <div className="popup__title">
+                  <h3 className="h3-tit">{name}</h3>
+                  <button className="close-btn" onClick={() => closePopup()}>
+                    <img src={CloseBtn} alt="닫기" />
+                  </button>
+                </div>
+                <div className="scrollWrap">
+                  <div className="scrollWrap-inner">
+                    <Scrollbars
+                      className="scroll-box inner"
+                      ref={scrollbars}
+                      autoHeight
+                      autoHeightMax={'100%'}
+                      onUpdate={scrollOnUpdate}
+                      autoHide>
+                      {/* <div className="reportTitle"></div> */}
+                      {rankInfo !== '' &&
+                        name === '팬 랭킹' &&
+                        rankInfo.map((item, index) => {
+                          const {title, id, profImg, nickNm, isFan, memNo} = item
+                          let link = ''
+                          if (webview) {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                          } else {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                          }
+                          return (
+                            <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
+                              <a onClick={() => ClickUrl(link)}>
+                                <span
+                                  className="thumb"
+                                  style={{backgroundImage: `url(${profImg.thumb62x62})`}}
+                                  bg={profImg.thumb62x62}></span>
+                                <span className="nickNm">{nickNm}</span>
+                              </a>
+                              {isFan === false && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Regist(memNo)} className="plusFan">
+                                  +팬등록
+                                </button>
+                              )}
+                              {isFan === true && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                              )}
+                            </div>
+                          )
+                        })}
+                      {starInfo !== '' &&
+                        name === '스타' &&
+                        starInfo.map((item, index) => {
+                          const {title, id, profImg, nickNm, isFan, memNo} = item
+                          let link = ''
+                          if (webview) {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                          } else {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                          }
+                          return (
+                            <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
+                              <a onClick={() => ClickUrl(link)}>
+                                <span
+                                  className="thumb"
+                                  style={{backgroundImage: `url(${profImg.thumb62x62})`}}
+                                  bg={profImg.thumb62x62}></span>
+                                <span className="nickNm">{nickNm}</span>
+                              </a>
+                              {isFan === false && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Regist(memNo)} className="plusFan">
+                                  +팬등록
+                                </button>
+                              )}
+                              {isFan === true && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                              )}
+                            </div>
+                          )
+                        })}
+                      {fanInfo !== '' &&
+                        name === '팬' &&
+                        fanInfo.map((item, index) => {
+                          const {title, id, profImg, nickNm, isFan, memNo} = item
+                          let link = ''
+                          if (webview) {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                          } else {
+                            link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                          }
+                          return (
+                            <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
+                              <a onClick={() => ClickUrl(link)}>
+                                <span
+                                  className="thumb"
+                                  style={{backgroundImage: `url(${profImg.thumb62x62})`}}
+                                  bg={profImg.thumb62x62}></span>
+                                <span className="nickNm">{nickNm}</span>
+                              </a>
+                              {isFan === false && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Regist(memNo)} className="plusFan">
+                                  +팬등록
+                                </button>
+                              )}
+                              {isFan === true && memNo !== ctx.token.memNo && (
+                                <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                              )}
+                            </div>
+                          )
+                        })}
+                    </Scrollbars>
+                  </div>
+                </div>
               </div>
-              <Scrollbars
-                className="scroll-box inner"
-                ref={scrollbars}
-                autoHeight
-                autoHeightMax={'100%'}
-                onUpdate={scrollOnUpdate}
-                autoHide>
-                <div className="reportTitle"></div>
-                {rankInfo !== '' &&
-                  name === '팬 랭킹' &&
-                  rankInfo.map((item, index) => {
-                    const {title, id, profImg, nickNm, isFan, memNo} = item
-                    let link = ''
-                    if (webview) {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                    } else {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                    }
-                    return (
-                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                        <a onClick={() => ClickUrl(link)}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
-                        </a>
-                        {isFan === false && memNo !== ctx.token.memNo && (
-                          <button onClick={() => Regist(memNo)} className="plusFan">
-                            +팬등록
-                          </button>
-                        )}
-                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
-                      </List>
-                    )
-                  })}
-                {starInfo !== '' &&
-                  name === '스타' &&
-                  starInfo.map((item, index) => {
-                    const {title, id, profImg, nickNm, isFan, memNo} = item
-                    let link = ''
-                    if (webview) {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                    } else {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                    }
-                    return (
-                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                        <a onClick={() => ClickUrl(link)}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
-                        </a>
-                        {isFan === false && memNo !== ctx.token.memNo && (
-                          <button onClick={() => Regist(memNo)} className="plusFan">
-                            +팬등록
-                          </button>
-                        )}
-                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
-                      </List>
-                    )
-                  })}
-                {fanInfo !== '' &&
-                  name === '팬' &&
-                  fanInfo.map((item, index) => {
-                    const {title, id, profImg, nickNm, isFan, memNo} = item
-                    let link = ''
-                    if (webview) {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                    } else {
-                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                    }
-                    return (
-                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                        <a onClick={() => ClickUrl(link)}>
-                          <Photo bg={profImg.thumb62x62}></Photo>
-                          <span>{nickNm}</span>
-                        </a>
-                        {isFan === false && memNo !== ctx.token.memNo && (
-                          <button onClick={() => Regist(memNo)} className="plusFan">
-                            +팬등록
-                          </button>
-                        )}
-                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
-                      </List>
-                    )
-                  })}
-              </Scrollbars>
             </div>
           </div>
         </div>
