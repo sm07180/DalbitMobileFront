@@ -17,6 +17,8 @@ import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
+// style
+import 'styles/layerpopup.scss'
 
 export default (props) => {
   //context & webview
@@ -31,7 +33,7 @@ export default (props) => {
   const [popup, setPopup] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [Zoom, setZoom] = useState(false)
-  const [reportShow, SetShowReport] = useState(false)
+  const [reportShow, setReportShow] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
   const [showPresent, setShowPresent] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
@@ -88,17 +90,17 @@ export default (props) => {
     let action, text, ico
     if (type === 'fan') {
       if (showEdit === true) {
-        action = goFanEdite
+        action = editFan
       } else {
-        action = fanContext
+        action = viewFanList
       }
       text = '팬'
       ico = 'type1'
     } else if (type === 'star') {
       if (showEdit === true) {
-        action = goStarEdite
+        action = editStar
       } else {
-        action = starContext
+        action = viewStarList
       }
       text = '스타'
       ico = 'type2'
@@ -128,10 +130,10 @@ export default (props) => {
       </>
     )
   }
-  const goFanEdite = () => {
+  const editFan = () => {
     history.push(`/mypage/${profile.memNo}/edit_fan`)
   }
-  const goStarEdite = () => {
+  const editStar = () => {
     history.push(`/mypage/${profile.memNo}/edit_star`)
   }
 
@@ -185,13 +187,13 @@ export default (props) => {
     fetchDataFanRegist(myProfileNo)
   }
   //func star count
-  const starContext = () => {
+  const viewStarList = () => {
     if (profile.starCnt > 0) {
       context.action.updateCloseStarCnt(true)
     }
   }
   //func fuan count
-  const fanContext = () => {
+  const viewFanList = () => {
     if (profile.fanCnt > 0) {
       context.action.updateCloseFanCnt(true)
     }

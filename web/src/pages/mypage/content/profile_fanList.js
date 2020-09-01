@@ -140,6 +140,9 @@ export default (props) => {
     }
     fetchDataFanCancel(memNo)
   }
+  const handleDimClick = () => {
+    history.goBack()
+  }
   const CancelBtn = () => {
     console.log('cancel')
     history.goBack()
@@ -196,136 +199,213 @@ export default (props) => {
     })
   }
   return (
-    <>
-      <HoleWrap>
-        <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
-          <div className="wrapper">
-            <div className="scrollWrap">
-              <Container>
-                <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
-                <h2>{name}</h2>
-                <Scrollbars
-                  className="scroll-box"
-                  ref={scrollbars}
-                  autoHeight
-                  autoHeightMax={'100%'}
-                  onUpdate={scrollOnUpdate}
-                  autoHide>
-                  <div className="reportTitle"></div>
-                  {rankInfo !== '' &&
-                    name === '팬 랭킹' &&
-                    rankInfo.map((item, index) => {
-                      const {title, id, profImg, nickNm, isFan, memNo} = item
-                      let link = ''
-                      if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                      } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                      }
-                      return (
-                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a onClick={() => ClickUrl(link)}>
-                            <Photo bg={profImg.thumb62x62}></Photo>
-                            <span>{nickNm}</span>
-                          </a>
-                          {isFan === false && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Regist(memNo)} className="plusFan">
-                              +팬등록
-                            </button>
-                          )}
-                          {isFan === true && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Cancel(memNo, isFan)}>팬</button>
-                          )}
-                        </List>
-                      )
-                    })}
-                  {starInfo !== '' &&
-                    name === '스타' &&
-                    starInfo.map((item, index) => {
-                      const {title, id, profImg, nickNm, isFan, memNo} = item
-                      let link = ''
-                      if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                      } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                      }
-                      return (
-                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a onClick={() => ClickUrl(link)}>
-                            <Photo bg={profImg.thumb62x62}></Photo>
-                            <span>{nickNm}</span>
-                          </a>
-                          {isFan === false && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Regist(memNo)} className="plusFan">
-                              +팬등록
-                            </button>
-                          )}
-                          {isFan === true && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Cancel(memNo, isFan)}>팬</button>
-                          )}
-                        </List>
-                      )
-                    })}
-                  {fanInfo !== '' &&
-                    name === '팬' &&
-                    fanInfo.map((item, index) => {
-                      const {title, id, profImg, nickNm, isFan, memNo} = item
-                      let link = ''
-                      if (webview) {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
-                      } else {
-                        link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
-                      }
-                      return (
-                        <List key={index} className={urlrStr === memNo ? 'none' : ''}>
-                          <a onClick={() => ClickUrl(link)}>
-                            <Photo bg={profImg.thumb62x62}></Photo>
-                            <span>{nickNm}</span>
-                          </a>
-                          {isFan === false && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Regist(memNo)} className="plusFan">
-                              +팬등록
-                            </button>
-                          )}
-                          {isFan === true && memNo !== ctx.token.memNo && (
-                            <button onClick={() => Cancel(memNo, isFan)}>팬</button>
-                          )}
-                        </List>
-                      )
-                    })}
-                </Scrollbars>
-              </Container>
+    <div id="mainLayerPopup" onClick={handleDimClick}>
+      <div className="popup">
+        <div className="popup__wrap">
+          <div className="popbox active">
+            <div className="popup__box popup__text">
+              <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
+              <div className="popup__inner">
+                <div className="popup__title">{name}</div>
+              </div>
+              <Scrollbars
+                className="scroll-box inner"
+                ref={scrollbars}
+                autoHeight
+                autoHeightMax={'100%'}
+                onUpdate={scrollOnUpdate}
+                autoHide>
+                <div className="reportTitle"></div>
+                {rankInfo !== '' &&
+                  name === '팬 랭킹' &&
+                  rankInfo.map((item, index) => {
+                    const {title, id, profImg, nickNm, isFan, memNo} = item
+                    let link = ''
+                    if (webview) {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                    } else {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                    }
+                    return (
+                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                        <a onClick={() => ClickUrl(link)}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                        </a>
+                        {isFan === false && memNo !== ctx.token.memNo && (
+                          <button onClick={() => Regist(memNo)} className="plusFan">
+                            +팬등록
+                          </button>
+                        )}
+                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                      </List>
+                    )
+                  })}
+                {starInfo !== '' &&
+                  name === '스타' &&
+                  starInfo.map((item, index) => {
+                    const {title, id, profImg, nickNm, isFan, memNo} = item
+                    let link = ''
+                    if (webview) {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                    } else {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                    }
+                    return (
+                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                        <a onClick={() => ClickUrl(link)}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                        </a>
+                        {isFan === false && memNo !== ctx.token.memNo && (
+                          <button onClick={() => Regist(memNo)} className="plusFan">
+                            +팬등록
+                          </button>
+                        )}
+                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                      </List>
+                    )
+                  })}
+                {fanInfo !== '' &&
+                  name === '팬' &&
+                  fanInfo.map((item, index) => {
+                    const {title, id, profImg, nickNm, isFan, memNo} = item
+                    let link = ''
+                    if (webview) {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                    } else {
+                      link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                    }
+                    return (
+                      <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+                        <a onClick={() => ClickUrl(link)}>
+                          <Photo bg={profImg.thumb62x62}></Photo>
+                          <span>{nickNm}</span>
+                        </a>
+                        {isFan === false && memNo !== ctx.token.memNo && (
+                          <button onClick={() => Regist(memNo)} className="plusFan">
+                            +팬등록
+                          </button>
+                        )}
+                        {isFan === true && memNo !== ctx.token.memNo && <button onClick={() => Cancel(memNo, isFan)}>팬</button>}
+                      </List>
+                    )
+                  })}
+              </Scrollbars>
             </div>
           </div>
-        </FixedBg>
-      </HoleWrap>
-      <Dim onClick={() => DimCancel()}></Dim>
-    </>
+        </div>
+      </div>
+    </div>
+    // <>
+    //   <HoleWrap>
+    //     <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
+    //       <div className="wrapper">
+    //         <div className="scrollWrap">
+    //           <Container>
+    //             <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
+    //             <h2>{name}</h2>
+    //             <Scrollbars
+    //               className="scroll-box"
+    //               ref={scrollbars}
+    //               autoHeight
+    //               autoHeightMax={'100%'}
+    //               onUpdate={scrollOnUpdate}
+    //               autoHide>
+    //               <div className="reportTitle"></div>
+    //               {rankInfo !== '' &&
+    //                 name === '팬 랭킹' &&
+    //                 rankInfo.map((item, index) => {
+    //                   const {title, id, profImg, nickNm, isFan, memNo} = item
+    //                   let link = ''
+    //                   if (webview) {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+    //                   } else {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+    //                   }
+    //                   return (
+    //                     <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+    //                       <a onClick={() => ClickUrl(link)}>
+    //                         <Photo bg={profImg.thumb62x62}></Photo>
+    //                         <span>{nickNm}</span>
+    //                       </a>
+    //                       {isFan === false && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Regist(memNo)} className="plusFan">
+    //                           +팬등록
+    //                         </button>
+    //                       )}
+    //                       {isFan === true && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+    //                       )}
+    //                     </List>
+    //                   )
+    //                 })}
+    //               {starInfo !== '' &&
+    //                 name === '스타' &&
+    //                 starInfo.map((item, index) => {
+    //                   const {title, id, profImg, nickNm, isFan, memNo} = item
+    //                   let link = ''
+    //                   if (webview) {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+    //                   } else {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+    //                   }
+    //                   return (
+    //                     <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+    //                       <a onClick={() => ClickUrl(link)}>
+    //                         <Photo bg={profImg.thumb62x62}></Photo>
+    //                         <span>{nickNm}</span>
+    //                       </a>
+    //                       {isFan === false && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Regist(memNo)} className="plusFan">
+    //                           +팬등록
+    //                         </button>
+    //                       )}
+    //                       {isFan === true && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+    //                       )}
+    //                     </List>
+    //                   )
+    //                 })}
+    //               {fanInfo !== '' &&
+    //                 name === '팬' &&
+    //                 fanInfo.map((item, index) => {
+    //                   const {title, id, profImg, nickNm, isFan, memNo} = item
+    //                   let link = ''
+    //                   if (webview) {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+    //                   } else {
+    //                     link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+    //                   }
+    //                   return (
+    //                     <List key={index} className={urlrStr === memNo ? 'none' : ''}>
+    //                       <a onClick={() => ClickUrl(link)}>
+    //                         <Photo bg={profImg.thumb62x62}></Photo>
+    //                         <span>{nickNm}</span>
+    //                       </a>
+    //                       {isFan === false && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Regist(memNo)} className="plusFan">
+    //                           +팬등록
+    //                         </button>
+    //                       )}
+    //                       {isFan === true && memNo !== ctx.token.memNo && (
+    //                         <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+    //                       )}
+    //                     </List>
+    //                   )
+    //                 })}
+    //             </Scrollbars>
+    //           </Container>
+    //         </div>
+    //       </div>
+    //     </FixedBg>
+    //   </HoleWrap>
+    //   <Dim onClick={() => DimCancel()}></Dim>
+    // </>
   )
 }
 //----------------------------------------
 //styled
-const HoleWrap = styled.div`
-  display: flex;
-  position: fixed;
-
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  z-index: 24;
-`
-const Dim = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 23;
-  background-color: rgba(0, 0, 0, 0.5);
-`
-
 const List = styled.div`
   display: flex;
   align-items: center;
@@ -375,65 +455,10 @@ const Photo = styled.div`
   background: url(${(props) => props.bg}) no-repeat center center/cover;
   border-radius: 50%;
 `
-
-const FixedBg = styled.div`
-  z-index: 24;
-  .wrapper {
-    &:after {
-      content: '';
-      clear: both;
-      display: block;
-    }
-    .close {
-      display: block;
-      position: absolute;
-      top: -32px;
-      right: 28px;
-      width: 36px;
-      height: 36px;
-      background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
-    }
-
-    & .scrollCustom {
-      & > div:nth-child(3) {
-        position: relative;
-        width: 10px !important;
-        height: auto;
-      }
-    }
-  }
-  .scrollWrap {
-    width: 100vw;
-    overflow-x: hidden;
-    /* max-height: 420px; */
-    flex: none;
-  }
-  &.on {
-    display: none;
-  }
-  .btnWrap {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-`
-const BorderBG = styled.div`
-  position: fixed;
-  top: calc(50% + 20px);
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  width: 83.33%;
-  min-height: 440px;
-  background-color: #fff;
-  z-index: -1;
-  margin: 0 auto;
-  border-radius: 10px;
-`
 const Container = styled.div`
   position: relative;
   padding: 12px;
-  width: 83.33%;
+  width: 100%;
   margin: 0 auto;
   min-height: 360px;
   display: flex;
