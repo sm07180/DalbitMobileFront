@@ -223,6 +223,8 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
+    console.log('실행?')
+    console.log(context.mypageReport)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -314,7 +316,9 @@ export default (props) => {
       <div className="profile-content">
         {myProfileNo !== profile.memNo && (
           <>
-            <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
+            <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon">
+              <span className="blind">신고하기</span>
+            </div>
           </>
         )}
         <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>

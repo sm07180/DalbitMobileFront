@@ -166,20 +166,20 @@ const myProfile = (props) => {
     }
   }, [popup])
   //--------------------------------------------------------------
-  useEffect(() => {
-    window.addEventListener('popstate', popStateEvent)
-    return () => {
-      window.removeEventListener('popstate', popStateEvent)
-    }
-  }, [])
+  // useEffect(() => {
+  //   window.addEventListener('popstate', popStateEvent)
+  //   return () => {
+  //     window.removeEventListener('popstate', popStateEvent)
+  //   }
+  // }, [])
   //--------------------------------------------------------------
-  useEffect(() => {
-    if (mypageReport || close || closeFanCnt || closeStarCnt) {
-      setPopup(true)
-    } else {
-      setPopup(false)
-    }
-  }, [mypageReport, close, closeFanCnt, closeStarCnt])
+  // useEffect(() => {
+  //   if (mypageReport || close || closeFanCnt || closeStarCnt) {
+  //     setPopup(true)
+  //   } else {
+  //     setPopup(false)
+  //   }
+  // }, [mypageReport, close, closeFanCnt, closeStarCnt])
   //--------------------------------------------------------------
   const goFanEdite = () => {
     history.push(`/mypage/${profile.memNo}/edit_fan`)
