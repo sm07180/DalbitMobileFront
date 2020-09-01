@@ -323,7 +323,7 @@ const TitleWrap = styled.div`
     }
   }
   .text {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 800;
     line-height: 1.14;
     letter-spacing: normal;

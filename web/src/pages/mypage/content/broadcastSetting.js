@@ -116,7 +116,7 @@ const Content = styled.div`
       background-color: #fff;
       text-align: left;
       padding: 0 0 0 16px;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 800;
       color: #000000;
       > a {
