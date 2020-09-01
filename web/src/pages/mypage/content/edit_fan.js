@@ -20,7 +20,7 @@ import FanManage from './edite_contents/fanmanage'
 export default (props) => {
   const ctx = useContext(Context)
   //state
-  const [title, setTitle] = useState(1)
+  const [title, setTitle] = useState(2)
 
   //swiper
   const swiperParams = {
@@ -108,17 +108,17 @@ const EditeWrap = styled.div`
 //Arr
 const tabArry = [
   {
-    id: 1,
+    id: 2,
     title: '선물 받은 순',
     value: 'gift'
   },
   {
-    id: 3,
+    id: 1,
     title: '방송 들은 순',
     value: 'broad'
   },
   {
-    id: 2,
+    id: 3,
     title: '최근 청취 순',
     value: 'listen'
   },
