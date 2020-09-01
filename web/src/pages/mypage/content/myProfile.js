@@ -246,9 +246,6 @@ const myProfile = (props) => {
   return (
     <>
       <div className="profile-info" webview={webview}>
-        {/* <button className="closeBtn" onClick={goBack}>
-          <span className="blind">프로필 닫기</span>
-        </button> */}
         <ProfileDetail {...props} />
       </div>
     </>

@@ -141,23 +141,26 @@ export default (props) => {
     fetchDataFanCancel(memNo)
   }
   const CancelBtn = () => {
-    if (name === '팬 랭킹') {
-      context.action.updateClose(false)
-    } else if (name === '팬') {
-      context.action.updateCloseFanCnt(false)
-    } else if (name === '스타') {
-      context.action.updateCloseStarCnt(false)
-    }
+    console.log('cancel')
+    history.goBack()
+    // if (name === '팬 랭킹') {
+    //   context.action.updateClose(false)
+    // } else if (name === '팬') {
+    //   context.action.updateCloseFanCnt(false)
+    // } else if (name === '스타') {
+    //   context.action.updateCloseStarCnt(false)
+    // }
   }
 
   const DimCancel = () => {
-    if (name === '팬 랭킹') {
-      context.action.updateClose(false)
-    } else if (name === '팬') {
-      context.action.updateCloseFanCnt(false)
-    } else if (name === '스타') {
-      context.action.updateCloseStarCnt(false)
-    }
+    history.goBack()
+    // if (name === '팬 랭킹') {
+    //   context.action.updateClose(false)
+    // } else if (name === '팬') {
+    //   context.action.updateCloseFanCnt(false)
+    // } else if (name === '스타') {
+    //   context.action.updateCloseStarCnt(false)
+    // }
   }
 
   //------------------------------------------------------------
@@ -197,10 +200,10 @@ export default (props) => {
       <HoleWrap>
         <FixedBg className={allFalse === true ? 'on' : ''} ref={area}>
           <div className="wrapper">
-            <button className="close" onClick={() => CancelBtn()}></button>
-
             <div className="scrollWrap">
               <Container>
+                <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
+                <h2>{name}</h2>
                 <Scrollbars
                   className="scroll-box"
                   ref={scrollbars}
@@ -209,7 +212,6 @@ export default (props) => {
                   onUpdate={scrollOnUpdate}
                   autoHide>
                   <div className="reportTitle"></div>
-                  <h2>{name}</h2>
                   {rankInfo !== '' &&
                     name === '팬 랭킹' &&
                     rankInfo.map((item, index) => {
@@ -403,7 +405,7 @@ const FixedBg = styled.div`
   .scrollWrap {
     width: 100vw;
     overflow-x: hidden;
-    max-height: 420px;
+    /* max-height: 420px; */
     flex: none;
   }
   &.on {
@@ -429,6 +431,7 @@ const BorderBG = styled.div`
   border-radius: 10px;
 `
 const Container = styled.div`
+  position: relative;
   padding: 12px;
   width: 83.33%;
   margin: 0 auto;
@@ -438,16 +441,14 @@ const Container = styled.div`
   background-color: #fff;
   /* align-items: center; */
   flex-direction: column;
-
   border-radius: 10px;
   & h2 {
-    margin-top: 8px;
-    margin-bottom: 20px;
-    color: #424242;
+    margin: 2px 0 20px;
     font-size: 20px;
     font-weight: 800;
     text-align: center;
     letter-spacing: -0.4px;
+    color: #424242;
     transform: skew(-0.03deg);
     & > span {
       color: ${COLOR_MAIN};

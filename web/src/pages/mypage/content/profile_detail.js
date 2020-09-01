@@ -16,6 +16,7 @@ import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LayerPopupExp from './layer_popup_exp.js'
+import AdminIcon from '../../menu/static/ic_home_admin.svg'
 
 export default (props) => {
   //context & webview
@@ -23,7 +24,7 @@ export default (props) => {
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   const {profile, location, webview, locHash} = props
-  console.log(props, profile)
+  console.log(props, profile, mypageReport, context.mypageReport)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -32,7 +33,7 @@ export default (props) => {
   const [Zoom, setZoom] = useState(false)
   const [reportShow, SetShowReport] = useState(false)
   const [showAdmin, setShowAdmin] = useState(false)
-  const [showPresent, setM] = useState(false)
+  const [showPresent, setShowPresent] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   //pop
   const [popupExp, setPopupExp] = useState(false)
@@ -84,7 +85,6 @@ export default (props) => {
     )
   }
   const createCountList = (type, count) => {
-    console.log(myProfileNo, profile.memNo, showEdit)
     let action, text, ico
     if (type === 'fan') {
       if (showEdit === true) {
@@ -285,7 +285,7 @@ export default (props) => {
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
   useEffect(() => {
-    if (context.adminChecker === true) {
+    if (context.adminChecker === true && myProfileNo === profile.memNo) {
       setShowAdmin(true)
     } else if (context.adminChecker === 'fail') {
       setShowAdmin(false)
@@ -293,10 +293,10 @@ export default (props) => {
   }, [])
   useEffect(() => {
     if (myProfileNo === profile.memNo) {
-      setM(false)
+      setShowPresent(false)
       setShowEdit(true)
     } else {
-      setM(true)
+      setShowPresent(true)
       setShowEdit(false)
     }
   }, [])
@@ -312,6 +312,11 @@ export default (props) => {
         <span className="blind">프로필 닫기</span>
       </button>
       <div className="profile-content">
+        {myProfileNo !== profile.memNo && (
+          <>
+            <div onClick={() => context.action.updateMypageReport(true)} className="reportIcon"></div>
+          </>
+        )}
         <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
             <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />

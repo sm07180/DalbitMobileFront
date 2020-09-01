@@ -6,6 +6,7 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
@@ -14,6 +15,7 @@ export default (props) => {
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
   const myProfileNo = ctx.profile.memNo
+  let history = useHistory()
   //state
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
@@ -101,8 +103,10 @@ export default (props) => {
     SubmitBTNChange()
   })
   //리포트클로즈
-  const ClearReport = () => {
-    context.action.updateMypageReport(false)
+  const CancelBtn = () => {
+    console.log('back')
+    history.goBack()
+    // context.action.updateMypageReport(false)
   }
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {
@@ -138,11 +142,11 @@ export default (props) => {
   return (
     <FixedBg className={allFalse === true ? 'on' : ''}>
       <div className="wrapper">
-        {context.mypageReport === true && (
-          <button className="fake" onClick={() => context.action.updateMypageReport(false)}></button>
-        )}
+        <button className="fake" onClick={() => CancelBtn()}>
+          닫기
+        </button>
         <Container>
-          <button className="close" onClick={() => ClearReport()}></button>
+          <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
           <div className="reportTitle"></div>
           <h2>신고</h2>
           <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
@@ -158,7 +162,7 @@ export default (props) => {
             <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
           </div>
           <div className="btnWrap">
-            <SubmitBTN onClick={ClearReport}>취소</SubmitBTN>
+            <SubmitBTN onClick={CancelBtn}>취소</SubmitBTN>
 
             {active === true && reportReason.length > 9 ? (
               <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
