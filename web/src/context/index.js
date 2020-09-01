@@ -81,6 +81,12 @@ const GlobalProvider = (props) => {
   const [mypageInfo, setMypageInfo] = useState('')
   const [fanboardReply, setFanboardReply] = useState(false)
   const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
+  //clip
+  const [clipMainSort, setClipMainSort] = useState(0)
+  const [clipMainGender, setClipMainGender] = useState('')
+  const [clipRefresh, setClipRefresh] = useState(false)
+  const [clipTab, setClipTab] = useState(0)
+  const [clipType, setClipType] = useState([])
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -337,6 +343,21 @@ const GlobalProvider = (props) => {
     },
     updateFanboardReplyNum: (boolean) => {
       setFanboardReplyNum(boolean)
+    },
+    updateClipSort: (boolean) => {
+      setClipMainSort(boolean)
+    },
+    updateClipGender: (string) => {
+      setClipMainGender(string)
+    },
+    updatClipRefresh: (boolean) => {
+      setClipRefresh(boolean)
+    },
+    updateClipTab: (number) => {
+      setClipTab(number)
+    },
+    updateClipType: (array) => {
+      setClipType(array)
     }
   }
   //---------------------------------------------------------------------
@@ -389,7 +410,12 @@ const GlobalProvider = (props) => {
     adminChecker,
     mypageInfo,
     fanboardReply,
-    fanboardReplyNum
+    fanboardReplyNum,
+    clipMainSort,
+    clipMainGender,
+    clipRefresh,
+    clipTab,
+    clipType
   }
   return <Provider value={value}>{props.children}</Provider>
 }
