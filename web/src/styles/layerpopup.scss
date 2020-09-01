@@ -1,3 +1,5 @@
+@import '../styles/variables';
+
 #mainLayerPopup {
   position: fixed;
   top: 0;
@@ -19,6 +21,22 @@
       height: 46px;
       font-size: 0;
       background: url('https://image.dalbitlive.com/images/api/ico_layer_close.svg') no-repeat 0 0;
+    }
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+    }
+    .close-btn--sub {
+      width: 54px;
+      height: 54px;
+      top: -50px;
+      right: 0px;
+      > img {
+        width: 100%;
+      }
     }
     &__wrap {
       position: relative;
@@ -47,8 +65,21 @@
       font-weight: 600;
       text-align: center;
       border-bottom: 1px solid #e0e0e0;
+      &--sub {
+        height: auto;
+        border-bottom: 0;
+      }
+      .desc {
+        margin: 12px 0px 0;
+        line-height: 1.2;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: $gray;
+      }
     }
     &__box {
+      position: relative;
       .checkbox-wrap {
         display: block;
         margin: 0 auto;
@@ -137,6 +168,114 @@
           vertical-align: -1px;
           background: url('https://image.dalbitlive.com/images/api/ico_layer_checkbox.svg') no-repeat 0 0;
         }
+      }
+    }
+    // exp 팝업
+    &-exp {
+      ul {
+        li {
+          padding-top: 16px;
+          text-align: center;
+          &:first-child {
+            padding-top: 0;
+          }
+          .ico-box {
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: flex-start;
+            span {
+              display: block;
+              width: 50%;
+              padding: 0 5px;
+              em {
+                display: inline-block;
+                min-width: 94px;
+                min-height: 28px;
+                padding: 6px 8px 4px;
+                text-align: center;
+                border-radius: 10px;
+                font-size: 14px;
+                line-height: 1.2;
+                font-weight: 600;
+                font-style: normal;
+              }
+              &.txt {
+                text-align: right;
+                em {
+                  color: $primary;
+                  background: #f5f5f5;
+                }
+              }
+              &.num {
+                text-align: left;
+                em {
+                  padding-top: 4px;
+                  color: $white;
+                  background: #ffa72e;
+                  border: 1px solid #ffa72e;
+                  &::before {
+                    display: inline-block;
+                    content: '';
+                    position: relative;
+                    top: 2px;
+                    margin-right: 2px;
+                    width: 14px;
+                    height: 14px;
+                    background: url('../pages/mypage/static/ic_plus.svg') no-repeat 0 0;
+                  }
+                }
+              }
+            }
+          }
+          .msg {
+            display: block;
+            padding-top: 8px;
+            font-size: 12px;
+            color: #424242;
+            font-style: normal;
+            font-weight: 600;
+          }
+        }
+      }
+    }
+    &-report {
+      .reportWrap {
+        &__textareaWrap {
+          width: 100%;
+          position: relative;
+          margin-top: 12px;
+        }
+        &__textarea {
+          width: 100%;
+          font-size: 14px;
+          color: #424242;
+          min-height: 120px;
+          padding: 12px;
+          box-sizing: border-box;
+          border-radius: 12px;
+          background-color: #f5f5f5;
+          outline: none;
+          border: none;
+          resize: none;
+          &::placeholder {
+            font-family: inherit;
+            color: #626262;
+            text-align: justify;
+          }
+        }
+        &__textareaCount {
+          position: absolute;
+          bottom: 10px;
+          right: 10px;
+          font-size: 12px;
+          color: #bdbdbd;
+        }
+      }
+      .btnWrap {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
       }
     }
   }

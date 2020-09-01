@@ -17,8 +17,6 @@ import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
-// style
-import 'styles/layerpopup.scss'
 
 export default (props) => {
   //context & webview

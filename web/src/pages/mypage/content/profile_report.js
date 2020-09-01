@@ -7,6 +7,11 @@ import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
+
+// import CloseBtn from '../../menu/static/ic_closeBtn.svg'
+const CloseBtn = 'https://image.dalbitlive.com/images/common/ic_close_m@2x.png'
+import 'styles/layerpopup.scss'
+
 export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
@@ -103,7 +108,7 @@ export default (props) => {
     SubmitBTNChange()
   })
   //리포트클로즈
-  const CancelBtn = () => {
+  const closePopup = () => {
     console.log('back')
     history.goBack()
     // context.action.updateMypageReport(false)
@@ -140,41 +145,83 @@ export default (props) => {
   //
   //------------------------------------------------------------
   return (
-    <FixedBg className={allFalse === true ? 'on' : ''}>
-      <div className="wrapper">
-        <button className="fake" onClick={() => CancelBtn()}>
-          닫기
-        </button>
-        <Container>
-          <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
-          <div className="reportTitle"></div>
-          <h2>신고</h2>
-          <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
+    <div id="mainLayerPopup" onClick={closePopup}>
+      <div className="popup popup-report">
+        <div className="popup__wrap">
+          <div className="popbox active">
+            <div className="popup__box popup__text">
+              <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
+                <div className="popup__title popup__title--sub">
+                  <h3 className="h3-tit">신고</h3>
+                  <p className="desc">*허위 신고는 제제 대상이 될 수 있습니다.</p>
+                  <button className="close-btn close-btn--sub" onClick={() => closePopup()}>
+                    <img src={CloseBtn} alt="닫기" />
+                  </button>
+                </div>
+                <div className="inner">
+                  {Reportmap}
+                  <div className="reportWrap__textareaWrap">
+                    <textarea
+                      value={reportReason}
+                      onChange={reportChange}
+                      className="reportWrap__textarea"
+                      placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
+                    />
+                    <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+                  </div>
+                  <div className="btnWrap">
+                    <SubmitBTN onClick={closePopup}>취소</SubmitBTN>
 
-          {Reportmap}
-          <div className="reportWrap__textareaWrap">
-            <textarea
-              value={reportReason}
-              onChange={reportChange}
-              className="reportWrap__textarea"
-              placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
-            />
-            <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+                    {active === true && reportReason.length > 9 ? (
+                      <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
+                        확인
+                      </SubmitBTN>
+                    ) : (
+                      <SubmitBTN onClick={validateReport}>확인</SubmitBTN>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="btnWrap">
-            <SubmitBTN onClick={CancelBtn}>취소</SubmitBTN>
-
-            {active === true && reportReason.length > 9 ? (
-              <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
-                확인
-              </SubmitBTN>
-            ) : (
-              <SubmitBTN onClick={validateReport}>확인</SubmitBTN>
-            )}
-          </div>
-        </Container>
+        </div>
       </div>
-    </FixedBg>
+    </div>
+    // <FixedBg className={allFalse === true ? 'on' : ''}>
+    //   <div className="wrapper">
+    //     <button className="fake" onClick={() => CancelBtn()}>
+    //       닫기
+    //     </button>
+    //     <Container>
+    //       <button className="closeBtn-layer" onClick={() => CancelBtn()}></button>
+    //       <div className="reportTitle"></div>
+    //       <h2>신고</h2>
+    //       <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
+
+    //       {Reportmap}
+    //       <div className="reportWrap__textareaWrap">
+    //         <textarea
+    //           value={reportReason}
+    //           onChange={reportChange}
+    //           className="reportWrap__textarea"
+    //           placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
+    //         />
+    //         <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+    //       </div>
+    //       <div className="btnWrap">
+    //         <SubmitBTN onClick={CancelBtn}>취소</SubmitBTN>
+
+    //         {active === true && reportReason.length > 9 ? (
+    //           <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
+    //             확인
+    //           </SubmitBTN>
+    //         ) : (
+    //           <SubmitBTN onClick={validateReport}>확인</SubmitBTN>
+    //         )}
+    //       </div>
+    //     </Container>
+    //   </div>
+    // </FixedBg>
   )
 }
 //----------------------------------------
