@@ -247,7 +247,7 @@ export default (props) => {
   }
   // upload validate
   const saveUpload = async () => {
-    if (!profile.nickNm) {
+    if (!profile.nickNm || !nickname) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
         callback: () => {
@@ -309,7 +309,7 @@ export default (props) => {
   useEffect(() => {
     if (
       (nickname !== '' && nickname !== context.profile.nickNm) ||
-      profileMsg !== context.profile.profMsg ||
+      (nickname !== '' && profileMsg !== context.profile.profMsg) ||
       (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
       (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
     ) {
