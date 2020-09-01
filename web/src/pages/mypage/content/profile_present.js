@@ -7,8 +7,9 @@ import {useHistory} from 'react-router-dom'
 
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import Swiper from 'react-id-swiper'
 
-const testData = [20, 50, 100, 500, 1000]
+const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   const history = useHistory()
@@ -34,6 +35,11 @@ export default (props) => {
       return false
     }
     setText(value)
+  }
+
+  const swiperParams = {
+    slidesPerView: 'auto',
+    spaceBetween: 5
   }
 
   const _active = (param) => {
@@ -169,13 +175,15 @@ export default (props) => {
                   </span>
                 </MyPoint>
                 <Select>
-                  {testData.map((data, idx) => {
-                    return (
-                      <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                        {data}
-                      </PointButton>
-                    )
-                  })}
+                  <Swiper {...swiperParams}>
+                    {testData.map((data, idx) => {
+                      return (
+                        <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                          {data}
+                        </PointButton>
+                      )
+                    })}
+                  </Swiper>
                 </Select>
                 <TextArea>
                   {/* <PointInput
@@ -367,6 +375,11 @@ const Select = styled.div`
   align-content: center;
   width: 100%;
   height: 32px;
+  .swiper-slide {
+    min-width: 50px;
+    max-width: 60px;
+    width: auto;
+  }
 `
 
 const PointButton = styled.button`
