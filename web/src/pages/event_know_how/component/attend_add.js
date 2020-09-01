@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 import {DEVICE_TYPE} from '../constant'
 
+import uploadIcon from '../static/gallery_g.svg'
 const DeviceArr = [
   {value: DEVICE_TYPE.DESKTOP, text: '데스크탑'},
   {value: DEVICE_TYPE.NOTEBOOK, text: '노트북/맥북'},
@@ -116,18 +117,28 @@ function AttendAdd() {
             </div>
           </div>
         )}
-        <div className="attendAddWrap__imgWrap">
+        <div className="">
           <div className="attendAddWrap__commonTitle">
             <span>이미지 등록</span>
             <span>가로가 긴 이미지를 권장합니다. (최대 3장)</span>
           </div>
-          <div>
-            <label></label>
-            <input type="file" />
-            <label></label>
-            <input type="file" />
-            <label></label>
-            <input type="file" />
+          <div className="attendAddWrap__imgWrap">
+            <label htmlFor="img1" className="attendAddWrap__imgWrap--label">
+              <span className="attendAddWrap__imgWrap--necessary">필수</span>
+              <img src={uploadIcon} />
+              <span className="attendAddWrap__imgWrap--uploadButton">사진등록</span>
+            </label>
+            <input type="file" id="img1" />
+            <label htmlFor="img2" className="attendAddWrap__imgWrap--label">
+              <img src={uploadIcon} />
+              <span className="attendAddWrap__imgWrap--uploadButton">사진등록</span>
+            </label>
+            <input type="file" id="img2" />
+            <label htmlFor="img3" className="attendAddWrap__imgWrap--label">
+              <img src={uploadIcon} />
+              <span className="attendAddWrap__imgWrap--uploadButton">사진등록</span>
+            </label>
+            <input type="file" id="img3" />
           </div>
         </div>
         <button className={`${inspection === true && 'active'}`}>등록하기</button>
