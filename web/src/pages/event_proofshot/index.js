@@ -46,7 +46,7 @@ export default () => {
     const {result, data} = await API.event_proofshot_list({
       data: {
         page: 1,
-        records: 10,
+        records: 999999,
         slct_type: tab
       }
     })

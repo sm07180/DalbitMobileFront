@@ -5,6 +5,7 @@ import Api from 'context/api'
 import {convertContents} from './common_fn'
 import iconDown from '../static/arrow_down.svg'
 import iconUp from '../static/arrow_up.svg'
+import iconClose from '../static/close.svg'
 
 function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
   const global_ctx = useContext(Context)
@@ -81,7 +82,10 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
                       onClick={() => {
                         setZoom(false)
                       }}>
-                      <img src={zoom} />
+                      <div className="zoomWrap">
+                        <img src={iconClose} className="closeButton" />
+                        <img src={zoom} className="zoomImg" />
+                      </div>
                     </div>
                   )}
                 </div>

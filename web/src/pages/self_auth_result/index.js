@@ -1,8 +1,8 @@
 import React, {useContext, useState, useEffect} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
-import {useHistory} from 'react-router-dom'
-import _, {uniqueId} from 'lodash'
+import {useHistory, useLocation} from 'react-router-dom'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -18,8 +18,10 @@ export default (props) => {
   //context
   const context = useContext(Context)
   const history = useHistory()
+  const location = useLocation()
 
-  const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
+  const {result, code, message, returntype} = qs.parse(location.search)
 
   /**
    * authState
@@ -41,7 +43,9 @@ export default (props) => {
       } else {
         context.action.alert({
           msg: res.message,
-          callback: goWallet
+          callback: () => {
+            history.goBack()
+          }
         })
       }
     }
@@ -53,11 +57,12 @@ export default (props) => {
       return context.action.alert({
         msg: message,
         callback: () => {
-          props.history.push(`/mypage/${context.profile.memNo}/wallet`)
-          context.action.updateWalletIdx(1)
+          // props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+          // context.action.updateWalletIdx(1)
+          window.location.href = '/'
         }
       })
-    } else if (result === 'success' || returntype === 'profile') {
+    } else if (returntype === 'profile') {
       setAuthState(4)
     } else {
       checkAuth()
@@ -70,7 +75,7 @@ export default (props) => {
   }
 
   const goBack = () => {
-    window.history.back()
+    window.location.href = '/'
   }
 
   const goLegalAuth = async () => {
@@ -128,7 +133,11 @@ export default (props) => {
               저장되지 않습니다.
             </p>
             <div className="btn-wrap">
-              <button className="cancel" onClick={goBack}>
+              <button
+                className="cancel"
+                onClick={() => {
+                  window.location.href = '/'
+                }}>
                 취소
               </button>
               <button onClick={goLegalAuth}>동의 받기</button>
@@ -183,10 +192,7 @@ export default (props) => {
       {authState === 0 ? (
         <></>
       ) : (
-        <Header
-          title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'}
-          goBack={authState === 2 || authState === 4 ? goBack : goWallet}
-        />
+        <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
       )}
 
       <Content>{createResult()}</Content>

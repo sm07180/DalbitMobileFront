@@ -32,7 +32,7 @@ export default (props) => {
 
         let roomNo = sessionStorage.getItem('room_no')
         async function commonJoin() {
-          const res = await Api.broad_join({data: {roomNo}})
+          const res = await Api.broad_join_vw({data: {roomNo}})
           const {code, result, data} = res
 
           if (code === '-3') {

@@ -187,7 +187,7 @@ export default (props) => {
                     onClick={() => _active('input')}
                     active={active ? 'active' : ''}
                   /> */}
-                  <p>*선물하신 달은 별로 전환되지 않습니다.</p>
+                  <p>* 달 선물하기는 100% 전달됩니다.</p>
                 </TextArea>
                 <ButtonArea>
                   <button onClick={() => context.action.updateClosePresent(false)}>취소</button>
@@ -327,7 +327,7 @@ const MyPoint = styled.div`
   em {
     font-style: normal;
     font-size: 14px;
-    color: #919191;
+    color: #000;
   }
 
   span {
@@ -373,12 +373,12 @@ const PointButton = styled.button`
   width: calc(20% - 4px);
   height: 32px;
   border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#bdbdbd')};
   border-width: 1px;
   border-radius: 10px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#616161')};
+  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
   font-weight: 400;
-  color: #616161;
+  color: #000;
   font-size: 12px;
 `
 const TextArea = styled.div`
@@ -393,7 +393,7 @@ const TextArea = styled.div`
     font-weight: 400;
     line-height: 1.14;
     letter-spacing: -0.35px;
-    color: #bdbdbd;
+    color: #616161;
     text-align: left;
   }
 `

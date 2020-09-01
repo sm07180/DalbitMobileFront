@@ -128,7 +128,7 @@ export default (props) => {
           onClick={() => _active('input')}
           active={active ? 'active' : ''}
         /> */}
-        <p>*선물하신 달은 별로 전환되지 않습니다.</p>
+        <p>* 달 선물하기는 100% 전달됩니다.</p>
       </TextArea>
       <ButtonArea>
         <BotButton title={'충전하기'} borderColor={'#632beb'} color={'#632beb'} clickEvent={() => broadCastCharge()} />
