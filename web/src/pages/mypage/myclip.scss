@@ -103,6 +103,8 @@
         margin-right: 16px;
       }
       &__category {
+        display: flex;
+        align-items: center;
         width: 48px;
         height: 16px;
         margin-bottom: 6px;
