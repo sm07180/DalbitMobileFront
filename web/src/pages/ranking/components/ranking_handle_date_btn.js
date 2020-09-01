@@ -27,6 +27,11 @@ export default function RankHandleDateBtn(props) {
     const month = now.getMonth() + 1
     const day = now.getDate()
 
+    const dayAgo = new Date(new Date().setDate(new Date().getDate() - 1))
+    const agoyear = dayAgo.getFullYear()
+    const agomonth = dayAgo.getMonth() + 1
+    const agoday = dayAgo.getDate()
+
     if (dateType === DATE_TYPE.DAY) {
       if (year === selectedYear && month === selectedMonth && day === selectedDay) {
         setDateTitle({
@@ -34,7 +39,7 @@ export default function RankHandleDateBtn(props) {
           date: '실시간 집계 중입니다.'
         })
         // setBtnActive({prev: true, next: false})
-      } else if (year === selectedYear && month === selectedMonth && day - 1 === selectedDay) {
+      } else if (selectedYear === agoyear && selectedMonth === agomonth && selectedDay === agoday) {
         setDateTitle({
           header: '어제',
           date: ''
@@ -67,17 +72,45 @@ export default function RankHandleDateBtn(props) {
         setBtnActive({next: true, prev: true})
       }
     } else if (dateType === DATE_TYPE.WEEK) {
-      const WEEK_LENGTH = 7
-      const currentWeek = Math.ceil(day / WEEK_LENGTH)
-      const selectedWeek = Math.ceil(selectedDay / WEEK_LENGTH)
+      function convertMonday() {
+        let today = new Date()
+        const day = today.getDay()
 
-      if (year === selectedYear && month === selectedMonth && currentWeek === selectedWeek) {
+        let calcNum = 0
+        if (day === 0) {
+          calcNum = 1
+        } else if (day === 1) {
+          calcNum = 0
+        } else {
+          calcNum = 1 - day
+        }
+
+        today.setDate(today.getDate() + calcNum)
+        return today
+      }
+
+      const currentWeek = convertMonday()
+      const currentYear = currentWeek.getFullYear()
+      const currentMonth = currentWeek.getMonth() + 1
+      const currentDate = currentWeek.getDate()
+
+      const week = convertMonday()
+      const weekAgo = new Date(week.setDate(week.getDate() - 7))
+      let wYear = weekAgo.getFullYear()
+      let wMonth = weekAgo.getMonth() + 1
+      let wDate = weekAgo.getDate()
+      // const WEEK_LENGTH = 7
+      // const currentWeek = Math.ceil(day / WEEK_LENGTH)
+      // const selectedWeek = Math.ceil(selectedDay / WEEK_LENGTH)
+
+      console.log(weekAgo)
+      if (selectedYear === currentYear && selectedMonth === currentMonth && selectedDay === currentDate) {
         setDateTitle({
           header: '이번주',
           date: '실시간 집계 중입니다.'
         })
         // setBtnActive({prev: true, next: false})
-      } else if (year === selectedYear && month === selectedMonth && currentWeek - 1 === selectedWeek) {
+      } else if (selectedYear === wYear && selectedMonth === wMonth && selectedDay === wDate) {
         setDateTitle({
           header: '지난주',
           date: ''

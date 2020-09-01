@@ -2099,6 +2099,14 @@ export default class API {
     })
   }
 
+  static knowhow_list = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/list',
+      method: 'POST',
+      data: data
+    })
+  }
+
   static pay_coocon = async (obj) => {
     const {url, method, data} = obj || {}
     return await ajax({
