@@ -87,16 +87,22 @@ export default (props) => {
     } else {
     }
   }
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      Hybrid('ClipPlayerJoin', data)
+    } else {
+    }
+  }
   // make contents
   const makePoupularList = () => {
     return popularList.map((item, idx) => {
       const {bgImg, clipNo, type, nickName} = item
       return (
-        <li
-          className="recomClipItem"
-          key={`popular-` + idx}
-          onClick={() => Hybrid('ClipPlayerJoin', item)}
-          style={{cursor: 'pointer'}}>
+        <li className="recomClipItem" key={`popular-` + idx} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
           <div className="recomClipItem__thumb">
             <img src={bgImg['thumb336x336']} alt="thumb" />
           </div>
@@ -109,11 +115,7 @@ export default (props) => {
     return latestList.map((item, idx) => {
       const {bgImg, clipNo, nickName, title} = item
       return (
-        <div
-          className="slideWrap"
-          onClick={() => Hybrid('ClipPlayerJoin', item)}
-          key={`latest-` + idx}
-          style={{cursor: 'pointer'}}>
+        <div className="slideWrap" onClick={() => fetchDataPlay(clipNo)} key={`latest-` + idx} style={{cursor: 'pointer'}}>
           <div className="slideWrap__thumb">
             <img src={bgImg['thumb336x336']} alt={title} />
           </div>
@@ -146,7 +148,7 @@ export default (props) => {
               return (
                 <li
                   className="categoryBestItem"
-                  onClick={() => Hybrid('ClipPlayerJoin', item)}
+                  onClick={() => fetchDataPlay(clipNo)}
                   key={idx + `toplist`}
                   style={{zIndex: 7, cursor: 'pointer'}}>
                   <span className="categoryBestItem__num">{rank}</span>
@@ -197,6 +199,7 @@ export default (props) => {
       setDetailPopup(true)
     }
   }
+
   // #layer pop
   useEffect(() => {
     if (detailPopup) {

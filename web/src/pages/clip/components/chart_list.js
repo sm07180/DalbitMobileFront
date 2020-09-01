@@ -50,6 +50,17 @@ export default (props) => {
     } else {
     }
   }
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      console.log(data)
+      Hybrid('ClipPlayerJoin', data)
+    } else {
+    }
+  }
   const makeList = () => {
     return list.map((item, idx) => {
       const {
@@ -68,11 +79,7 @@ export default (props) => {
       } = item
 
       return (
-        <li
-          className="chartListDetailItem"
-          key={idx + 'list'}
-          onClick={() => Hybrid('ClipPlayerJoin', item)}
-          style={{cursor: 'pointer'}}>
+        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
           <div className="chartListDetailItem__thumb">
             <img src={bgImg[`thumb190x190`]} alt={title} />
           </div>
@@ -172,7 +179,7 @@ export default (props) => {
                 className="chartListSimpleItem"
                 style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
                 key={`simpleList` + idx}
-                onClick={() => Hybrid('ClipPlayerJoin', item)}>
+                onClick={() => fetchDataPlay(clipNo)}>
                 <div className="topWrap">
                   <div className="topWrap__status">
                     <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
