@@ -12,7 +12,7 @@ import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
-import Room, {RoomJoin} from 'context/room'
+import Room, {RoomJoin, RoomMake} from 'context/room'
 //util
 import Utility from 'components/lib/utility'
 
@@ -317,6 +317,9 @@ export default () => {
         }
         googleLogin()
         break
+      case 'native-room-make':
+        RoomMake(context)
+        break;
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
@@ -571,6 +574,7 @@ export default () => {
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
     document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
+    document.addEventListener('native-room-make', update) // 방만들기 체크
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -587,6 +591,7 @@ export default () => {
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
+      document.addEventListener('native-make-room', update) // 방만들기 체크
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
