@@ -22,56 +22,58 @@ const makeContents = (props) => {
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
 
-  //------------------------------------------
+  return list.map((list, idx) => {
+    const {
+      roomNo,
+      roomType,
+      bjProfImg,
+      bjNickNm,
+      bjGender,
+      title,
+      likeCnt,
+      entryCnt,
+      entryType,
+      giftCnt,
+      isSpecial,
+      boostCnt,
+      rank,
+      os,
+      isNew
+    } = list
 
-  if (liveListType === 'detail') {
-    return list.map((list, idx) => {
-      const {
-        roomNo,
-        roomType,
-        bjProfImg,
-        bjNickNm,
-        bjGender,
-        title,
-        likeCnt,
-        entryCnt,
-        giftCnt,
-        isSpecial,
-        boostCnt,
-        rank,
-        os,
-        isNew
-      } = list
-
-      const alertCheck = (roomNo) => {
-        if (context.adminChecker === true) {
-          context.action.confirm_admin({
-            //콜백처리
-            callback: () => {
-              RoomJoin({
-                roomNo: roomNo,
-                shadow: 1
-              })
-            },
-            //캔슬콜백처리
-            cancelCallback: () => {
-              RoomJoin({
-                roomNo: roomNo,
-                shadow: 0
-              })
-            },
-            msg: '관리자로 입장하시겠습니까?'
-          })
-        } else {
-          RoomJoin({
-            roomNo: roomNo
-          })
-        }
+    const alertCheck = (roomNo) => {
+      if (context.adminChecker === true) {
+        context.action.confirm_admin({
+          //콜백처리
+          callback: () => {
+            RoomJoin({
+              roomNo: roomNo,
+              shadow: 1
+            })
+          },
+          //캔슬콜백처리
+          cancelCallback: () => {
+            RoomJoin({
+              roomNo: roomNo,
+              shadow: 0
+            })
+          },
+          msg: '관리자로 입장하시겠습니까?'
+        })
+      } else {
+        RoomJoin({
+          roomNo: roomNo
+        })
       }
+    }
 
-      return (
-        <div className="liveList__item" key={`live-${idx}`} onClick={() => alertCheck(roomNo)}>
-          <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+    return (
+      <div
+        className={`${liveListType === 'detail' ? 'liveList__item' : 'liveList__flex'}`}
+        key={`live-${idx}`}
+        onClick={() => alertCheck(roomNo)}>
+        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+        {liveListType === 'detail' ? (
           <div className="broadcast-content">
             <div className="icon-wrap">
               {os === 3 && <span className="pc-icon">PC</span>}
@@ -117,104 +119,34 @@ const makeContents = (props) => {
               )}
             </div>
           </div>
-        </div>
-      )
-    })
-  } else {
-    const alertCheck = (roomNo) => {
-      if (context.adminChecker === true) {
-        context.action.confirm_admin({
-          //콜백처리
-          callback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 1
-            })
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 0
-            })
-          },
-          msg: '관리자로 입장하시겠습니까?'
-        })
-      } else {
-        RoomJoin({
-          roomNo: roomNo
-        })
-      }
-    }
-    return (
-      <>
-        {evenList.map((first, idx) => {
-          const windowHalfWidth = (window.innerWidth - 32) / 2
-          const firstList = first
-          const lastList = list[idx * 2 + 1]
-
-          return (
-            <div className="liveList__row" style={{height: `${windowHalfWidth}px`}} key={`half-${idx}`}>
-              <div
-                className="half-live"
-                style={{backgroundImage: `url(${firstList.bjProfImg['thumb190x190']})`}}
-                onClick={() => alertCheck(firstList.roomNo)}>
-                <div className="top-status">
-                  {firstList.entryType === 2 ? (
-                    <span className="twenty-icon">20</span>
-                  ) : firstList.entryType === 1 ? (
-                    <span className="fan-icon">FAN</span>
-                  ) : (
-                    <span className="all-icon">ALL</span>
-                  )}
-                  {firstList.isSpecial && <span className="special-icon">S</span>}
-                </div>
-                <div className="entry-count">
-                  <img className="entry-img" src={EntryImg} />
-                  <span className="count-txt">{Util.printNumber(firstList.entryCnt)}</span>
-                </div>
-                <div className="bottom-wrap">
-                  {first.os === 3 ? <span className="pc-icon">PC</span> : ''}
-                  <div className="type-icon-wrap">
-                    <img className="type-icon" src={noBgAudioIcon} />
-                  </div>
-                  <div className="dj-nickname">{firstList.bjNickNm}</div>
-                </div>
-              </div>
-              {lastList && (
-                <div
-                  className="half-live"
-                  style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
-                  onClick={() => alertCheck(lastList.roomNo)}>
-                  <div className="top-status">
-                    {lastList.entryType === 2 ? (
-                      <span className="twenty-icon">20</span>
-                    ) : lastList.entryType === 1 ? (
-                      <span className="fan-icon">FAN</span>
-                    ) : (
-                      <span className="all-icon">ALL</span>
-                    )}
-                    {lastList.isSpecial && <span className="special-icon">S</span>}
-                  </div>
-                  <div className="entry-count">
-                    <img className="entry-img" src={EntryImg} />
-                    <span className="count-txt">{Util.printNumber(lastList.entryCnt)}</span>
-                  </div>
-                  <div className="bottom-wrap">
-                    {lastList.os === 3 ? <span className="pc-icon">PC</span> : ''}
-                    <div className="type-icon-wrap">
-                      <img className="type-icon" src={noBgAudioIcon} />
-                    </div>
-                    <div className="dj-nickname">{lastList.bjNickNm}</div>
-                  </div>
-                </div>
+        ) : (
+          <div className="broadcast-content">
+            <div className="top-status">
+              {entryType === 2 ? (
+                <span className="twenty-icon">20</span>
+              ) : entryType === 1 ? (
+                <span className="fan-icon">FAN</span>
+              ) : (
+                <span className="all-icon">ALL</span>
               )}
+              {isSpecial && <span className="special-icon">S</span>}
             </div>
-          )
-        })}
-      </>
+            <div className="entry-count">
+              <img className="entry-img" src={EntryImg} />
+              <span className="count-txt">{Util.printNumber(entryCnt)}</span>
+            </div>
+            <div className="bottom-wrap">
+              {os === 3 ? <span className="pc-icon">PC</span> : ''}
+              <div className="type-icon-wrap">
+                <img className="type-icon" src={noBgAudioIcon} />
+              </div>
+              <div className="dj-nickname">{bjNickNm}</div>
+            </div>
+          </div>
+        )}
+      </div>
     )
-  }
+  })
 }
 
 export default (props) => {
@@ -225,5 +157,3 @@ export default (props) => {
     </React.Fragment>
   )
 }
-
-const HalfWrap = styled.div``
