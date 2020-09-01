@@ -625,7 +625,7 @@ export default (props) => {
                   <NoResult />
                 )
               ) : (
-                <div style={{height: '800px'}}></div>
+                <div style={{height: '315px'}}></div>
               )}
             </div>
           </div>
