@@ -357,16 +357,16 @@
               height: 40px;
               border-radius: 50%;
               background: $lightgray;
+              background-size: cover;
             }
             &.nickNm {
               width: calc(100% - 54px);
-              height: 40px;
               margin-left: 10px;
+              height: 40px;
               line-height: 40px;
               font-size: 14px;
               color: #424242;
               letter-spacing: -0.35px;
-              border-radius: 50%;
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
