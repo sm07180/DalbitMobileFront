@@ -25,7 +25,6 @@ export default (props) => {
   const {profile} = props
   const myProfileNo = ctx.profile.memNo
   const MyMemNo = context.profile && context.profile.memNo
-  console.log(myProfileNo, MyMemNo, profile.memNo)
   //state
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
@@ -46,7 +45,6 @@ export default (props) => {
     })
     if (res.result === 'success') {
       setRankInfo(res.data.list)
-      console.log(res)
     } else {
       console.log(res)
     }
@@ -143,26 +141,13 @@ export default (props) => {
     fetchDataFanCancel(memNo)
   }
   const closePopup = () => {
-    console.log('cancel')
-    history.goBack()
-    // if (name === '팬 랭킹') {
-    //   context.action.updateClose(false)
-    // } else if (name === '팬') {
-    //   context.action.updateCloseFanCnt(false)
-    // } else if (name === '스타') {
-    //   context.action.updateCloseStarCnt(false)
-    // }
-  }
-
-  const DimCancel = () => {
-    history.goBack()
-    // if (name === '팬 랭킹') {
-    //   context.action.updateClose(false)
-    // } else if (name === '팬') {
-    //   context.action.updateCloseFanCnt(false)
-    // } else if (name === '스타') {
-    //   context.action.updateCloseStarCnt(false)
-    // }
+    if (name === '팬 랭킹') {
+      context.action.updateClose(false)
+    } else if (name === '팬') {
+      context.action.updateCloseFanCnt(false)
+    } else if (name === '스타') {
+      context.action.updateCloseStarCnt(false)
+    }
   }
 
   //------------------------------------------------------------
@@ -175,8 +160,7 @@ export default (props) => {
       fetchDataHoleFan()
     }
   }, [select])
-  // console.log(starInfo)
-  //------------------------------------------------------------
+
   useEffect(() => {
     window.onpopstate = (e) => {
       if (name === '팬 랭킹') {
@@ -188,6 +172,13 @@ export default (props) => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (rankInfo === null) {
+      return <div style={{minHeight: '300px'}}></div>
+    }
+  }, [])
+
   const ClickUrl = (link) => {
     context.action.updateClose(false)
     context.action.updateCloseFanCnt(false)

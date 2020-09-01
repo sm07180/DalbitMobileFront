@@ -24,7 +24,6 @@ export default (props) => {
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   const {profile, location, webview, locHash} = props
-  console.log(props, profile, mypageReport, context.mypageReport)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -223,8 +222,6 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
-    console.log('실행?')
-    console.log(context.mypageReport)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -256,7 +253,6 @@ export default (props) => {
       } else {
         history.goBack()
       }
-      // history.goBack()
     }
   }
   //function모바일 레어어 실행
@@ -268,7 +264,7 @@ export default (props) => {
       }
     } else if (!popup) {
       if (window.location.hash === '#layer') {
-        window.history.back()
+        // window.history.back()
         setTimeout(() => window.scrollTo(0, scrollY))
       }
     }

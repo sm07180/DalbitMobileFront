@@ -109,11 +109,7 @@ export default (props) => {
   })
   //리포트클로즈
   const closePopup = () => {
-    console.log('back')
     context.action.updateMypageReport(false)
-    setTimeout(() => {
-      // history.goBack()
-    }, 10)
   }
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {
