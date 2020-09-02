@@ -25,7 +25,13 @@ export default (props) => {
         break
     }
   }
-
+  const linkMypage = (memNo) => {
+    if (memNo !== ctx.profile.memNo) {
+      history.push(`/mypage/${memNo}`)
+    } else if (memNo === ctx.profile.memNo) {
+      history.push(`/menu/profile`)
+    }
+  }
   //makeContents
   const makeContents = () => {
     if (props.fetch === null || props.fetch === undefined) return
@@ -44,7 +50,7 @@ export default (props) => {
               onClick={() => {
                 props.update({select: {...list, type: props.type}})
               }}>
-              <img src={profImg.thumb150x150} onClick={() => history.push(`/mypage/${memNo}`)} />
+              <img src={profImg.thumb150x150} onClick={() => linkMypage(memNo)} />
               <div className="infoBox">
                 {roomNo !== '' && <em></em>}
                 <span className="infoBox__nick">{nickNm}</span>
