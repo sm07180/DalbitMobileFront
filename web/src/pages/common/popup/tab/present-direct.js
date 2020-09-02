@@ -4,8 +4,9 @@ import {BotButton} from './bot-button'
 import {Context} from 'context'
 import Api from 'context/api'
 import {BroadCastStore} from '../../store'
+import Swiper from 'react-id-swiper'
 
-const testData = [20, 50, 100, 500, 1000]
+const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   //-------------------------------------------------------- declare start
@@ -26,6 +27,11 @@ export default (props) => {
       return false
     }
     setText(value)
+  }
+
+  const swiperParams = {
+    slidesPerView: 'auto',
+    spaceBetween: 5
   }
 
   const _active = (param) => {
@@ -110,13 +116,15 @@ export default (props) => {
         <div>{`보유 달 ${broadcastProfileInfo.dalCnt}`} </div>
       </MyPoint>
       <Select>
-        {testData.map((data, idx) => {
-          return (
-            <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-              {data}
-            </PointButton>
-          )
-        })}
+        <Swiper {...swiperParams}>
+          {testData.map((data, idx) => {
+            return (
+              <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                {data}
+              </PointButton>
+            )
+          })}
+        </Swiper>
       </Select>
       <TextArea>
         {/* <PointInput
@@ -193,6 +201,11 @@ const Select = styled.div`
   align-content: center;
   width: 100%;
   height: 32px;
+  .swiper-slide {
+    min-width: 50px;
+    max-width: 60px;
+    width: auto;
+  }
 `
 
 const PointButton = styled.button`

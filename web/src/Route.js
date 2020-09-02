@@ -26,7 +26,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 const Proofshot = React.lazy(() => import('pages/event_proofshot'))
-const Package = React.lazy(() => import('pages/event_package'))
+const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 
 const Live = React.lazy(() => import('pages/live'))
@@ -65,6 +65,8 @@ export default () => {
         <Route exact path="/event_package" component={Package} />
         <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
+        <Route exact path="/event_knowHow" component={EventKnowHow} />
+        <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />

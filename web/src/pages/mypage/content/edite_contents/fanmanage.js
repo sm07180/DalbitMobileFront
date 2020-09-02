@@ -288,16 +288,16 @@ export default (props) => {
                       등록일 - {Utility.dateFormatterKor(regDt)}
                     </span>
                     <div className="list__details">
-                      <span className={sortNum === 3 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
+                      <span className={sortNum === 1 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
                         {listenTime}분
                       </span>
                       <span
-                        className={sortNum === 1 ? 'list__details__byeol list__details__byeol--active' : 'list__details__byeol'}>
+                        className={sortNum === 2 ? 'list__details__byeol list__details__byeol--active' : 'list__details__byeol'}>
                         {Utility.printNumber(giftedByeol)}
                       </span>
                       <span
                         className={
-                          sortNum === 2 ? 'list__details__lastTime list__details__lastTime--active' : 'list__details__lastTime'
+                          sortNum === 3 ? 'list__details__lastTime list__details__lastTime--active' : 'list__details__lastTime'
                         }>
                         {lastListenTs === '' || lastListenTs === 0 ? '-' : Utility.settingAlarmTime(lastListenTs)}
                       </span>

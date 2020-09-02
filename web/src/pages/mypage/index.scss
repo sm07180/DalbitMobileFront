@@ -10,10 +10,19 @@
   .profile-info {
     position: relative;
     padding-top: 87px;
-    min-height: 391px;
+    min-height: 300px;
     .closeBtn {
       position: absolute;
-      top: 30px;
+      top: -40px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      z-index: 16;
+      background: url('../menu/static/ic_closeBtn.svg');
+    }
+    .closeBtn-layer {
+      position: absolute;
+      top: 10px;
       right: 20px;
       width: 32px;
       height: 32px;
@@ -22,13 +31,13 @@
     }
     .adminBtn {
       position: absolute;
-      top: 30px;
+      top: -44px;
       left: 12px;
       z-index: 16;
     }
     .reportIcon {
       position: absolute;
-      top: -59px;
+      top: -40px;
       width: 32px;
       height: 32px;
       left: 20px;
@@ -40,7 +49,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      min-height: 308px;
+      min-height: 230px;
       margin: 0 auto;
       padding: 0;
       border-top-left-radius: 20px;
@@ -149,7 +158,6 @@
           color: $white;
           background-color: #f54640;
           z-index: 4;
-          overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
         }
@@ -166,18 +174,18 @@
             flex-direction: column;
             align-items: center;
             .expTitle {
-              font-size: 12px;
-              font-weight: bold;
-              color: $black;
+              font-size: 10px;
+              line-height: 16px;
+              color: $white;
               &--start {
                 position: absolute;
-                left: 0;
-                top: 21px;
+                left: 4px;
+                top: 0;
               }
               &--end {
                 position: absolute;
-                right: 0;
-                top: 21px;
+                right: 4px;
+                top: 0;
               }
               &--rate {
                 &::before {
@@ -199,18 +207,23 @@
               color: $black;
             }
             .levelInfo {
+              position: absolute;
+              left: 0;
+              top: 0;
               display: flex;
               justify-content: center;
+              align-content: center;
               flex-direction: row;
               width: 100%;
-              padding: 4px 0;
-              font-size: 16px;
-              color: #757575;
+              height: 100%;
+              line-height: 16px;
+              font-size: 12px;
               font-weight: bold;
+              color: #febd56;
               .expTitle {
                 position: relative;
                 padding: 0 8px;
-                font-size: 16px;
+                font-size: 12px;
               }
             }
           }
@@ -219,7 +232,7 @@
             width: 300px;
             height: 16px;
             border-radius: 10px;
-            background-color: #eee;
+            background-color: #999;
           }
           .expBarStatus {
             position: absolute;
@@ -246,48 +259,46 @@
             border-radius: 14px;
             &:after {
               content: '';
-              height: 12px;
               width: 20px;
-              background: url('../menu/static/ic_help.svg') no-repeat center center / cover;
+              height: 12px;
+              background: url('../menu/static/ic_help.png') no-repeat center center / cover;
             }
           }
         }
         .nameWrap {
+          position: relative;
           display: flex;
           align-items: center;
-          flex-direction: column;
-          margin-top: 4px;
+          justify-content: center;
+          flex-direction: row;
+          margin-top: 8px;
           strong {
+            display: inline-block;
             font-size: 22px;
             color: $black;
-          }
-          span {
-            padding: 12px 0 0 0;
-            color: #616161;
-            font-size: 10px;
-            line-height: 12px;
-            transform: skew(-0.03deg);
+            text-overflow: ellipsis;
+            word-break: break-all;
           }
         }
         .profileMsgWrap {
           padding: 0px 5px;
           box-sizing: border-box;
-          margin: 0 auto;
-          margin-top: 8px;
-          transform: skew(-0.03deg);
+          margin: 8px auto 0;
           font-size: 14px;
-          font-family: inherit;
           line-height: 1.43;
           letter-spacing: normal;
           text-align: center;
           color: #424242;
         }
         .subIconWrap {
-          display: flex;
+          display: inline-block;
           flex-direction: row;
           justify-content: center;
-          margin: 4px 0;
-          > em {
+          position: absolute;
+          bottom: 0;
+          left: initial;
+          margin: 0 8px;
+          > span {
             display: inline-block;
             height: 16px;
             margin-left: 2px;
@@ -307,26 +318,28 @@
             width: 24px;
             background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
           }
-          .specialIcon {
-            width: 64px;
-            border-radius: 10px;
-            background-color: #ec455f;
-          }
+        }
 
-          .specialIcon {
+        .specialIcon {
+          position: absolute;
+          top: 0;
+          left: 16px;
+          width: 44px;
+          padding-top: 30px;
+          font-size: 14px;
+          letter-spacing: -0.5px;
+          line-height: 1.2;
+          font-weight: bold;
+          &::before {
             display: inline-block;
-            width: 62px;
-            height: 16px;
-            line-height: 16px;
-            margin-left: 2px;
-            border-radius: 10px;
-            background-color: #ec455f;
-            color: #fff;
-            font-size: 12px;
-            font-weight: normal;
-            font-stretch: normal;
-            font-style: normal;
-            letter-spacing: normal;
+            width: 24px;
+            height: 28px;
+            position: absolute;
+            top: 0;
+            left: 10px;
+            content: '';
+            background: url('../menu/static/ico-specialdj.png') no-repeat center;
+            background-size: cover;
           }
         }
         .badgeWrap {
@@ -390,7 +403,7 @@
           }
         }
         .categoryCntWrap {
-          margin: 8px 0;
+          margin: 14px 0 0;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -500,7 +513,7 @@
           }
         }
         .fanListWrap {
-          margin-top: 10px;
+          margin-top: 14px;
           display: flex;
           justify-content: center;
         }
@@ -584,7 +597,7 @@
               text-align: center;
               margin-top: 14px;
               margin-bottom: 14px;
-              & button {
+              > button {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -599,6 +612,17 @@
                 border-radius: 12px;
                 border: solid 1px #632beb;
                 background-color: #632beb;
+                &.isNotFan {
+                  &::after {
+                    display: inline-block;
+                    content: '';
+                    vertical-align: middle;
+                    width: 13px;
+                    height: 13px;
+                    margin-left: 3px;
+                    background: url('./static/ic_plus.svg') no-repeat 0 0;
+                  }
+                }
 
                 &.fanRegist {
                   border: solid 1px $primary;

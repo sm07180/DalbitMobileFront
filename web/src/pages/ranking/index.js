@@ -127,7 +127,7 @@ export default (props) => {
           }, 17)
 
           if (rankType === RANK_TYPE.DJ || rankType === RANK_TYPE.FAN) {
-            await fetchRankList(true)
+            await initRankList(true)
           }
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
@@ -149,7 +149,7 @@ export default (props) => {
       touchStartY = null
       touchEndY = null
     },
-    [reloadInit, rankType]
+    [reloadInit, rankType, dateType]
   )
 
   /** popup */
@@ -332,7 +332,7 @@ export default (props) => {
         setLikeList(newList)
       }
     } else {
-      const list = await fetchRankList('/rank/level')
+      const list = await fetchRankList(false)
       if (list !== null) {
         const newList = rankList.concat(list)
         setRankList(newList)
