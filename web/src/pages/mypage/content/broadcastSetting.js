@@ -1,6 +1,6 @@
 /**
  * @file /mypage/context/broadcastSetting.js
- * @brief 마이페이지 방송설정(금지어 관리, 매니저 관리, 블랙리스트 관리)
+ * @brief 마이페이지 방송설정(금지어 관리, 매니저 관리, 차단회원 관리)
  **/
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
@@ -21,7 +21,7 @@ import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
   {value: 0, text: '금지어 관리'},
   {value: 1, text: '매니저 관리'},
-  {value: 2, text: '블랙리스트 관리'}
+  {value: 2, text: '차단회원 관리'}
 ]
 
 export default (props) => {
@@ -76,7 +76,7 @@ export default (props) => {
           {initialScreen && '방송설정'}
           {initialScreen === false && changeContents == 0 && '금지어 관리'}
           {initialScreen === false && changeContents == 1 && '매니저 관리'}
-          {initialScreen === false && changeContents == 2 && '블랙리스트 관리'}
+          {initialScreen === false && changeContents == 2 && '차단회원 관리'}
         </h2>
         <button className="close-btn" onClick={BackFunction}>
           <img src={closeBtn} alt="뒤로가기" />
@@ -92,7 +92,7 @@ export default (props) => {
               매니저 관리<a></a>
             </button>
             <button onClick={() => ToggleContents(2)}>
-              블랙리스트 관리<a></a>
+              차단회원 관리<a></a>
             </button>
           </div>
         )}
@@ -116,7 +116,7 @@ const Content = styled.div`
       background-color: #fff;
       text-align: left;
       padding: 0 0 0 16px;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 800;
       color: #000000;
       > a {

@@ -2382,6 +2382,14 @@ export default class API {
   static postClipPlay = async (data) => {
     return await ajax({url: '/clip/play', method: 'post', data})
   }
+
+  static eventPackageJoinCheck = async (params) => {
+    return await ajax({url: '/event/004/apply', method: 'GET', params})
+  }
+  static eventPackageWrite = async (data) => {
+    return await ajax({url: '/event/004/apply', method: 'POST', data})
+  }
+
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"

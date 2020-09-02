@@ -1904,6 +1904,9 @@
 #main-layer-popup {
   .content-wrap {
     padding: 0 20px 20px;
+    &.content-exp {
+      padding: 0;
+    }
   }
   .title-wrap {
     height: 50px;

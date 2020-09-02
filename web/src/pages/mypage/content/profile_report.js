@@ -6,6 +6,12 @@ import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MO
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
+
+// import CloseBtn from '../../menu/static/ic_closeBtn.svg'
+const CloseBtn = 'https://image.dalbitlive.com/images/common/ic_close_m@2x.png'
+import 'styles/layerpopup.scss'
+
 export default (props) => {
   //context------------------------------------------
   const context = useContext(Context)
@@ -14,6 +20,7 @@ export default (props) => {
   const urlrStr = props.location.pathname.split('/')[2]
   const {profile} = props
   const myProfileNo = ctx.profile.memNo
+  let history = useHistory()
   //state
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
@@ -101,16 +108,21 @@ export default (props) => {
     SubmitBTNChange()
   })
   //리포트클로즈
-  const ClearReport = () => {
+  const closePopup = () => {
     context.action.updateMypageReport(false)
   }
   //버튼map
   const Reportmap = BTNInfo.map((live, index) => {
     const {title, id} = live
     return (
-      <BTN value={title} onClick={(event) => handleSelectChange(event)} className={select === id ? 'on' : ''} key={index} id={id}>
+      <button
+        value={title}
+        onClick={(event) => handleSelectChange(event)}
+        className={`btn__list ${select === id ? 'on' : ''}`}
+        key={index}
+        id={id}>
         {title}
-      </BTN>
+      </button>
     )
   })
   //close
@@ -133,157 +145,62 @@ export default (props) => {
       })
     }
   }
-  //
+  useEffect(() => {
+    window.onpopstate = (e) => {
+      context.action.updateMypageReport(false)
+    }
+  }, [])
   //------------------------------------------------------------
   return (
-    <FixedBg className={allFalse === true ? 'on' : ''}>
-      <div className="wrapper">
-        {context.mypageReport === true && (
-          <button className="fake" onClick={() => context.action.updateMypageReport(false)}></button>
-        )}
-        <Container>
-          <button className="close" onClick={() => ClearReport()}></button>
-          <div className="reportTitle"></div>
-          <h2>신고</h2>
-          <p>*허위 신고는 제제 대상이 될 수 있습니다.</p>
+    <div id="mainLayerPopup" onClick={closePopup}>
+      <div className="popup popup-report">
+        <div className="popup__wrap">
+          <div className="popbox active">
+            <div className="popup__box popup__text">
+              <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
+                <div className="popup__title popup__title--sub">
+                  <h3 className="h3-tit">신고</h3>
+                  <p className="desc">*허위 신고는 제제 대상이 될 수 있습니다.</p>
+                  <button className="close-btn close-btn--sub" onClick={() => closePopup()}>
+                    <img src={CloseBtn} alt="닫기" />
+                  </button>
+                </div>
+                <div className="inner">
+                  {Reportmap}
+                  <div className="reportWrap__textareaWrap">
+                    <textarea
+                      value={reportReason}
+                      onChange={reportChange}
+                      className="reportWrap__textarea"
+                      placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
+                    />
+                    <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+                  </div>
+                  <div className="btnWrap">
+                    <button className="btn__cancel" onClick={closePopup}>
+                      취소
+                    </button>
 
-          {Reportmap}
-          <div className="reportWrap__textareaWrap">
-            <textarea
-              value={reportReason}
-              onChange={reportChange}
-              className="reportWrap__textarea"
-              placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
-            />
-            <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
+                    {active === true && reportReason.length > 9 ? (
+                      <button className={`btn__ok ${active === true ? 'on' : ''}`} onClick={() => SubmitClick()}>
+                        확인
+                      </button>
+                    ) : (
+                      <button className="btn__ok" onClick={validateReport}>
+                        확인
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="btnWrap">
-            <SubmitBTN onClick={ClearReport}>취소</SubmitBTN>
-
-            {active === true && reportReason.length > 9 ? (
-              <SubmitBTN className={active === true ? 'on' : ''} onClick={() => SubmitClick()}>
-                확인
-              </SubmitBTN>
-            ) : (
-              <SubmitBTN onClick={validateReport}>확인</SubmitBTN>
-            )}
-          </div>
-        </Container>
+        </div>
       </div>
-    </FixedBg>
+    </div>
   )
 }
 //----------------------------------------
-//styled
-const FixedBg = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 24;
-  .wrapper {
-    z-index: -1;
-    width: 100vw;
-    height: 100vh;
-    position: relative;
-  }
-  &.on {
-    display: none;
-  }
-  .btnWrap {
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-  }
-  .close {
-    display: block;
-    position: absolute;
-    top: -36px;
-    right: -6px;
-    width: 36px;
-    height: 36px;
-    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
-  }
-  .fake {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 100vw;
-  }
-`
-const Container = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 12px;
-  width: 83.33%;
-  height: auto;
-  display: flex;
-  margin: 0 auto;
-
-  background-color: #fff;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 10px;
-  & h2 {
-    margin-top: 14px;
-    color: #424242;
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: -0.4px;
-    transform: skew(-0.03deg);
-    & > span {
-      color: ${COLOR_MAIN};
-    }
-  }
-  & p {
-    margin: 12px 0 16px 0;
-    color: #616161;
-    font-size: 14px;
-    letter-spacing: -0.35px;
-    text-align: left;
-    transform: skew(-0.03deg);
-  }
-
-  .reportWrap {
-    width: 100%;
-    &__textareaWrap {
-      width: 100%;
-      position: relative;
-      margin-top: 12px;
-    }
-    &__textarea {
-      width: 100%;
-      font-size: 14px;
-      color: #424242;
-      min-height: 120px;
-      padding: 12px;
-      box-sizing: border-box;
-      border-radius: 12px;
-      background-color: #f5f5f5;
-      outline: none;
-      border: none;
-      resize: none;
-      &::placeholder {
-        font-family: inherit;
-        color: #626262;
-        text-align: justify;
-      }
-    }
-    &__textareaCount {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      font-size: 12px;
-      color: #bdbdbd;
-    }
-  }
-`
 const BTN = styled.button`
   display: block;
   width: 100%;

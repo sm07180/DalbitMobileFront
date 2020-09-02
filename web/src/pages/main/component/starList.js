@@ -25,7 +25,7 @@ export default (props) => {
   return (
     <>
       {ctx.token.isLogin === true ? (
-        <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edite_star`)}>
+        <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edit_star`)}>
           <div className="txt">
             나의
             <br />

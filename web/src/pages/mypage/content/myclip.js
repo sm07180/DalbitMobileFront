@@ -50,11 +50,7 @@ export default function Clip(props) {
     fetchDataClipType()
   }, [])
   return (
-    <div
-      id="mypageClip"
-      style={{
-        backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
-      }}>
+    <div id="mypageClip">
       <Header title="클립" />
       {context.urlStr === context.profile.memNo && (
         <div className="header">

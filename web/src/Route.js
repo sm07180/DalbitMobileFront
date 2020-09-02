@@ -26,6 +26,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 const Proofshot = React.lazy(() => import('pages/event_proofshot'))
+const Package = React.lazy(() => import('pages/event_package'))
 const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 
@@ -64,6 +65,7 @@ export default () => {
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingGuide} />
         <Route exact path="/event_proofshot" component={Proofshot} />
+        <Route exact path="/event_package" component={Package} />
         <Route exact path="/event_specialdj" component={Specialdj} />
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/event_knowHow" component={EventKnowHow} />
