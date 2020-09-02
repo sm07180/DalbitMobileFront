@@ -336,12 +336,11 @@ export default () => {
 
       case 'clip-player-show': //------------------------클립플레이어 show
         const dataString = JSON.stringify(event.detail)
-        // const data = JSON.parse(event.detail)
+        context.action.updateClipPlayerState(event.detail.playerState)
+        context.action.updateClipPlayerInfo(event.detail)
         if (__NODE_ENV === 'dev') {
           alert('clip-player-show' + dataString)
         }
-        context.action.updateClipPlayerState(event.detail.playerState)
-        context.action.updateClipPlayerInfo(event.detail)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
         if (__NODE_ENV === 'dev') {

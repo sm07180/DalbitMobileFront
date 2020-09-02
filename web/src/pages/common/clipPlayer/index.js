@@ -55,7 +55,7 @@ export default (props) => {
                 alert('시작')
               }
               Hybrid('ClipPlayerStart')
-              lobalCtx.action.updateClipPlayerState('playing')
+              globalCtx.action.updateClipPlayerState('playing')
             }}>
             <img src={IconStart} alt="시작" />
           </button>
