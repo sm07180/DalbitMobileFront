@@ -3,7 +3,7 @@ import {useParams, useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
-
+import Utility, {printNumber, addComma} from 'components/lib/utility'
 //flag
 let currentPage = 1
 let timer
@@ -153,7 +153,9 @@ function ClipUpload() {
                     <div className="uploadList__cnt">
                       <em className="uploadList__cnt play">{playCnt}</em>
                       <em className="uploadList__cnt like">{goodCnt}</em>
-                      <em className="uploadList__cnt star">{byeolCnt}</em>
+                      <em className="uploadList__cnt star">
+                        {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
+                      </em>
                     </div>
                   </div>
                 </div>

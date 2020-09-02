@@ -3,6 +3,7 @@ import React, {useCallback, useContext, useEffect, useState} from 'react'
 // context
 import Api from 'context/api'
 import {Context} from 'context'
+import Utility, {printNumber, addComma} from 'components/lib/utility'
 // router
 import {useParams, useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -101,7 +102,9 @@ export default function ClipHistory() {
                     <div className="uploadList__cnt">
                       <em className="uploadList__cnt play">{playCnt}</em>
                       <em className="uploadList__cnt like">{goodCnt}</em>
-                      <em className="uploadList__cnt star">{byeolCnt}</em>
+                      <em className="uploadList__cnt star">
+                        {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
+                      </em>
                     </div>
                   </div>
                 </div>
