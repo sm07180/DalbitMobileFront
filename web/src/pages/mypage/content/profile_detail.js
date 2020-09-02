@@ -10,6 +10,7 @@ import Room, {RoomJoin} from 'context/room'
 // utility
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import LiveIcon from '../component/ic_live.svg'
 import Swiper from 'react-id-swiper'
 //component
 import ProfileReport from './profile_report'
@@ -317,6 +318,38 @@ export default (props) => {
             </div>
           </>
         )}
+        {profile.roomNo !== '' && (
+          <button
+            className="liveIcon"
+            onClick={() => {
+              if (context.adminChecker === true) {
+                context.action.confirm_admin({
+                  //콜백처리
+                  callback: () => {
+                    RoomJoin({
+                      roomNo: profile.roomNo,
+                      shadow: 1
+                    })
+                  },
+                  //캔슬콜백처리
+                  cancelCallback: () => {
+                    RoomJoin({
+                      roomNo: profile.roomNo,
+                      shadow: 0
+                    })
+                  },
+                  msg: '관리자로 입장하시겠습니까?'
+                })
+              } else {
+                RoomJoin({
+                  roomNo: profile.roomNo
+                })
+              }
+            }}>
+            <img src={LiveIcon} className="ico-live" />
+            <span>Live</span>
+          </button>
+        )}
         <div className="profile-image" url={profile.profImg ? profile.profImg['thumb190x190'] : ''}>
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
             <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
@@ -391,32 +424,30 @@ export default (props) => {
         {showPresent ? (
           <div className="buttonWrap">
             <div className="buttonWrapInner">
-              {urlrStr !== token.memNo && (
-                <div className="notBjWrap">
-                  {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                    <></>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        context.action.updateClosePresent(true)
-                      }}
-                      className="giftbutton">
-                      {/* <span></span> */}
-                      <em>선물하기</em>
-                    </button>
-                  )}
-                  {profile.isFan === true && (
-                    <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
-                      팬
-                    </button>
-                  )}
-                  {profile.isFan === false && (
-                    <button className="isNotFan" onClick={() => fanRegist(myProfileNo)}>
-                      팬
-                    </button>
-                  )}
-                </div>
-              )}
+              <div className="notBjWrap">
+                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                  <></>
+                ) : (
+                  <button
+                    onClick={() => {
+                      context.action.updateClosePresent(true)
+                    }}
+                    className="giftbutton">
+                    {/* <span></span> */}
+                    <em>선물하기</em>
+                  </button>
+                )}
+                {profile.isFan === true && (
+                  <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                    팬
+                  </button>
+                )}
+                {profile.isFan === false && (
+                  <button className="isNotFan" onClick={() => fanRegist(myProfileNo)}>
+                    팬
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ) : (
