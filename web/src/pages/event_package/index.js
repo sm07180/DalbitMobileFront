@@ -68,7 +68,8 @@ export default (props) => {
 
   useEffect(() => {
     packageEventCheck()
-  }, [])
+  }, [global_ctx])
+
   return (
     <Layout status="no_gnb">
       <div id="evnetPackage">

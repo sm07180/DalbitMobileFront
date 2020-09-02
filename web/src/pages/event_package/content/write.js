@@ -69,17 +69,19 @@ export default (props) => {
         <h3>방송소개</h3>
         <textarea
           value={content}
-          maxLength="100"
-          placeholder="DJ님의 방송 및 방송장비를 받고서 진행하고 싶은 콘텐츠에 대해 자세히 설명해 주세요. "
+          maxLength="200"
+          placeholder="DJ님의 방송 장비와 진행하고자 하는 방송 콘텐츠에 대해 자세히 설명해 주세요.
+          (최대 200자)
+           "
           onChange={(e) => {
-            if (e.target.value.length < 100) {
+            if (e.target.value.length < 200) {
               setContent(e.target.value)
             }
           }}
         />
 
         <p className="textNumber">
-          <b>{content.length}</b> / 100
+          <b>{content.length}</b> / 200
         </p>
 
         <button className={`${delicate && 'active'}`} onClick={() => uploadFn()}>

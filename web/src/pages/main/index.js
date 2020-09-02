@@ -625,7 +625,11 @@ export default (props) => {
                   <NoResult />
                 )
               ) : (
+<<<<<<< HEAD
                 <div style={{height: '600px'}}></div>
+=======
+                <div style={{height: '3600px'}}></div>
+>>>>>>> 2020_09_02
               )}
             </div>
           </div>
