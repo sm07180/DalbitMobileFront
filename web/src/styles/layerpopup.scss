@@ -16,11 +16,10 @@
     width: 640px;
     .btn-close {
       position: relative;
-      right: -8px;
-      width: 46px;
-      height: 46px;
+      width: 32px;
+      height: 32px;
       font-size: 0;
-      background: url('https://image.dalbitlive.com/images/api/ico_layer_close.svg') no-repeat 0 0;
+      background: url('https://image.dalbitlive.com/images/api/close_w_l.svg') no-repeat 0 0;
     }
     .close-btn {
       position: absolute;
@@ -99,8 +98,10 @@
         text-align: left;
         border-radius: 12px;
         background-color: #fff;
+        padding: 0px 16px;
+        box-sizing: border-box;
+
         .inner {
-          padding: 20px 20px;
           .checkbox-wrap {
             margin-top: 16px;
             cursor: pointer;
