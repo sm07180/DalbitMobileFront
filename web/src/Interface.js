@@ -338,10 +338,10 @@ export default () => {
         const data = JSON.stringify(event.detail)
         if (__NODE_ENV === 'dev') {
           alert('clip-player-show' + data)
+          alert('clip-player-show' + event.detail)
         }
-        context.action.updateClipState('floating')
         context.action.updateClipPlayerState(data.playerState)
-        context.action.updateClipState(data)
+        context.action.updateClipPlayerInfo(event.detail)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
         if (__NODE_ENV === 'dev') {
