@@ -319,7 +319,7 @@ export default () => {
         break
       case 'native-room-make':
         RoomMake(context)
-        break;
+        break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
@@ -332,6 +332,32 @@ export default () => {
         break
       case 'react-gnb-close': //------------------------GNB 닫기
         context.action.updateGnbVisible(false)
+        break
+
+      case 'clip-player-show': //------------------------클립플레이어 show
+        const data = JSON.stringify(event.detail)
+        Utility.setCookie('clip-player-info', data, 100)
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-show' + data)
+        }
+        context.action.updateClipState('floating')
+        //context.action.updateClipPlayerState()
+        context.action.updateClipState(data)
+        break
+      case 'clip-player-end': //------------------------클립플레이어 end
+        Utility.setCookie('clip-player-info', '', -1)
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-end')
+        }
+        context.action.updateClipState(null)
+        context.action.updateClipPlayerState(null)
+        context.action.updateClipState(null)
+        break
+      case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-audio-end')
+        }
+        context.action.updateClipPlayerState('ended')
         break
       default:
         break
@@ -580,6 +606,12 @@ export default () => {
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
+
+    /*----clip----*/
+    document.addEventListener('clip-player-show', update)
+    document.addEventListener('clip-player-end', update)
+    document.addEventListener('clip-player-audio-end', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -596,6 +628,10 @@ export default () => {
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
+      /*----clip----*/
+      document.removeEventListener('clip-player-show', update)
+      document.removeEventListener('clip-player-end', update)
+      document.removeEventListener('clip-player-audio-end', update)
     }
   }, [])
   return (

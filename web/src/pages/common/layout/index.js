@@ -7,6 +7,7 @@ import Gnb from 'pages/common/gnb'
 import Ip from 'pages/common/ip'
 import Message from 'pages/common/message'
 import NewPlayer from 'pages/common/newPlayer'
+import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
@@ -39,6 +40,8 @@ const Layout = (props) => {
       </Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
+      {/* (클립)Player */}
+      <ClipPlayer {...props} />
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}

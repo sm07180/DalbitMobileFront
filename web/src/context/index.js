@@ -87,6 +87,11 @@ const GlobalProvider = (props) => {
   const [clipRefresh, setClipRefresh] = useState(false)
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])
+  //clipPlayer
+  const [clipState, setClipState] = useState('floating')
+  const [clipPlayerState, setClipPlayerState] = useState(null)
+  const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
+
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -358,6 +363,27 @@ const GlobalProvider = (props) => {
     },
     updateClipType: (array) => {
       setClipType(array)
+    },
+    /**
+     * 클립 상태
+     * @string  entered, floating
+     */
+    updateClipState: (string) => {
+      setClipState(string)
+    },
+    /**
+     * 클립플레이어 상태 (클립 상태가 floating 일 경우)
+     * @string playing, paused, ended
+     */
+    updateClipPlayerState: (string) => {
+      setClipPlayerState(string)
+    },
+    /**
+     * 클립플레이어 정보 (플레이어에 들어갈 data)
+     * @obj bgImg, nickName, title
+     */
+    updateClipPlayerInfo: (obj) => {
+      setClipPlayerInfo(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -415,7 +441,10 @@ const GlobalProvider = (props) => {
     clipMainGender,
     clipRefresh,
     clipTab,
-    clipType
+    clipType,
+    clipState,
+    clipPlayerState,
+    clipPlayerInfo
   }
   return <Provider value={value}>{props.children}</Provider>
 }
