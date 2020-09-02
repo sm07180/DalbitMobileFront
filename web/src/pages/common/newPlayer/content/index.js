@@ -22,10 +22,10 @@ export default (props) => {
     /**
      * {roomNo,bjNickNm,title,bjProfImg,auth}
      */
-    bjNickNm: 'BJ아이유😍',
+    bjNickNm: '',
     roomNo: null,
     bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
-    title: '✨상쾌한 아침을 함께해요✨✨상쾌한 아침을 함께해요✨',
+    title: '',
     auth: 0
   })
 
