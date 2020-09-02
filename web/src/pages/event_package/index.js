@@ -8,6 +8,7 @@ import API from 'context/api'
 
 import Write from './content/write'
 import './package.scss'
+import message from 'pages/common/message'
 
 export default (props) => {
   const history = useHistory()
@@ -16,6 +17,7 @@ export default (props) => {
   // 페이징 체크
   const [viewType, setViewType] = useState(0)
   const [timeCheck, setTimeCheck] = useState(true)
+  const [alertMessage, setAlertMessage] = useState('')
 
   // 이벤트 10시간체크
   const [eventCheck, setEventCheck] = useState(0)
@@ -35,7 +37,7 @@ export default (props) => {
       setViewType(PAGE_TYPE.WRITE)
     } else if (timeCheck === false) {
       global_ctx.action.alert({
-        msg: '방송시간 10시간을 채워주셔야합니다.',
+        msg: alertMessage,
         callback: () => {
           return
         }
@@ -43,26 +45,14 @@ export default (props) => {
     }
   }
 
-  const complete = () => {
-    global_ctx.action.alert({
-      msg: '이미 참여 하셨습니다.',
-      callback: () => {
-        return
-      }
-    })
-  }
-
   const packageEventCheck = useCallback(async () => {
-    const {result, data} = await API.eventPackageJoinCheck({})
+    const {result, data, message} = await API.eventPackageJoinCheck({})
 
     if (result === 'success') {
       setEventCheck(0)
-    } else if (result === 'fail' || code === '1') {
-      setEventCheck(1)
     } else {
-      if (result === 'fail' || code === '2') {
-        setTimeCheck(false)
-      }
+      setTimeCheck(false)
+      setAlertMessage(message)
     }
   }, [])
 
@@ -80,27 +70,17 @@ export default (props) => {
             <Header title="방송 장비지원 이벤트" />
 
             <div className="content">
-              <img src="https://image.dalbitlive.com/event/package/20200831/content01.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content02.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content03.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content04.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content05.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content01.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content02.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content03.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content04.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content05.jpg" />
 
               {viewType === PAGE_TYPE.MAIN && global_ctx.token.isLogin === true ? (
                 <>
-                  {eventCheck === 0 ? (
-                    <>
-                      <button onClick={() => writeCheck()}>
-                        <img src="https://image.dalbitlive.com/event/package/20200831/button.jpg" />
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button onClick={() => complete()}>
-                        <img src="https://image.dalbitlive.com/event/package/20200831/button.jpg" />
-                      </button>
-                    </>
-                  )}
+                  <button onClick={() => writeCheck()}>
+                    <img src="https://image.dalbitlive.com/event/package/20200831/button.jpg" />
+                  </button>
                 </>
               ) : (
                 <button onClick={() => handleStatus()}>
