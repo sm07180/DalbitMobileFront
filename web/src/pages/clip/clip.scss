@@ -12,7 +12,7 @@
   }
 
   .recomClip {
-    padding: 20px 3%;
+    padding: 16px 3%;
     border-bottom: 4px solid #ebebeb;
     background-color: #fff;
 
@@ -20,6 +20,7 @@
       padding-bottom: 12px;
       font-size: 18px;
       font-weight: 800;
+      line-height: 1.17;
       color: #000;
     }
 
@@ -31,7 +32,7 @@
       .recomClipItem {
         overflow: hidden;
         position: relative;
-        width: 30%;
+        width: 31%;
         margin-bottom: 10px;
         border-radius: 16px;
 
@@ -45,13 +46,12 @@
           position: absolute;
           width: 100%;
           bottom: 0;
-          padding: 7px 12px;
+          padding: 5px 12px;
           text-align: center;
           color: #fff;
-          opacity: 0.5;
-          background-color: #000;
-          font-size: 12px;
           font-weight: 600;
+          background-color: rgba(0, 0, 0, 0.5);
+          font-size: 12px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
@@ -63,14 +63,17 @@
   }
 
   .recentClip {
-    padding: 20px 0;
+    padding: 20px 0 19px 0;
     border-bottom: 4px solid #ebebeb;
-
     &__title {
-      padding: 0 2% 12px 2%;
+      padding: 0 3% 12px 3%;
       font-size: 18px;
+      font-weight: 800;
+      line-height: 1.17;
+      letter-spacing: normal;
+      text-align: left;
+      color: #000000;
     }
-
     .slideWrap {
       position: relative;
       width: 24%;
@@ -154,6 +157,7 @@
       background-color: #fff;
       box-sizing: border-box;
       transform: scaleY(0.9);
+      transition: transform ease 0.5s;
       &.swiper-slide-active {
         margin: 16px 0;
         transform: scaleY(1);
@@ -224,6 +228,7 @@
 
       h2 {
         font-size: 18px;
+        font-weight: 800;
       }
 
       .sequenceBox {
@@ -341,7 +346,7 @@
           max-height: 330px;
           padding: 10px;
           margin-bottom: 10px;
-          background-color: rgb(238, 238, 238);
+          background-color: rgba(0, 0, 0, 0.3);
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
@@ -352,22 +357,29 @@
           .topWrap {
             display: flex;
             justify-content: space-between;
-
+            &__count {
+              display: flex;
+              align-items: center;
+              &--num,
+              &--icon {
+                margin-left: 2px;
+                font-weight: 600;
+                text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+                font-size: 11px;
+                letter-spacing: -0.28px;
+                color: #fff;
+              }
+            }
             &__status {
               display: flex;
               align-items: center;
-            }
-            &__count {
-              color: #fff;
-              font-size: 13px;
-              font-weight: 700;
-              text-shadow: rgba(0, 0, 0, 0.6) 0.5px 0.5px 1px;
             }
           }
 
           .bottomWrap {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+
             position: absolute;
             bottom: 10px;
 
@@ -378,11 +390,25 @@
               margin-right: 4px;
               border-radius: 8px;
             }
-
+            &__title {
+              max-width: 140px;
+              color: #fff;
+              font-size: 14px;
+              font-weight: 600;
+              font-style: normal;
+              line-height: 1.14;
+              letter-spacing: normal;
+              text-align: left;
+              color: #ffffff;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
             &__nick {
               color: #fff;
               font-size: 12px;
-              font-weight: 700;
+              margin-bottom: 2px;
             }
           }
         }
@@ -415,10 +441,14 @@
     width: 24px;
     height: 16px;
     background: url('./static/male.svg');
+    background-color: #fff;
+    border-radius: 10px;
     margin-left: 2px;
   }
   .femaleIcon {
     background: url('./static/female.svg');
+    background-color: #fff;
+    border-radius: 10px;
   }
   .specialIcon {
     display: inline-block;

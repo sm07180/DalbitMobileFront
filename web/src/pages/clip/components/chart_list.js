@@ -4,6 +4,8 @@ import playIcon from '../static/play_g_s.svg'
 import heartIcon from '../static/like_g_s.svg'
 import starIcon from '../static/cashstar_g_s.svg'
 import EntryImg from '../static/person_w_s.svg'
+import SimplePlayIcon from '../static/simple_play.svg'
+import SimpleLikeIcon from '../static/simple_like.svg'
 import noBgAudioIcon from '../static/audio_s.svg'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -184,27 +186,30 @@ export default (props) => {
                   <div className="topWrap__status">
                     <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
                     {isSpecial && <span className="specialIcon">S</span>}
-                    <span className="categoryIcon">
+                    {/* <span className="categoryIcon">
                       {clipType.map((v, index) => {
                         if (v.value === subjectType) {
                           return <React.Fragment key={index + 'typeList'}>{v.cdNm}</React.Fragment>
                         }
                       })}
-                    </span>
+                    </span> */}
                     {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />}
                   </div>
 
                   <div className="topWrap__count">
-                    <img className="topWrap__count--icon" src={EntryImg} />
+                    <img className="topWrap__count--icon" src={SimplePlayIcon} />
                     <span className="topWrap__count--num">{playCnt}</span>
+                    <img className="topWrap__count--icon" src={SimpleLikeIcon} />
+                    <span className="topWrap__count--num">{goodCnt}</span>
                   </div>
                 </div>
 
                 <div className="bottomWrap">
-                  <i className="bottomWrap__typeIcon">
+                  {/* <i className="bottomWrap__typeIcon">
                     <img src={noBgAudioIcon} alt="icon" />
-                  </i>
+                  </i> */}
                   <p className="bottomWrap__nick">{nickName}</p>
+                  <p className="bottomWrap__title">{title}</p>
                 </div>
               </li>
             )
