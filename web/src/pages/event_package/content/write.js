@@ -74,7 +74,7 @@ export default (props) => {
           (최대 200자)
            "
           onChange={(e) => {
-            if (e.target.value.length < 200) {
+            if (e.target.value.length <= 200) {
               setContent(e.target.value)
             }
           }}

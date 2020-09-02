@@ -54,11 +54,11 @@ export default (props) => {
       setTimeCheck(false)
       setAlertMessage(message)
     }
-  }, [])
+  }, [global_ctx])
 
   useEffect(() => {
     packageEventCheck()
-  }, [global_ctx])
+  }, [viewType, global_ctx.token.isLogin])
 
   return (
     <Layout status="no_gnb">
