@@ -342,11 +342,19 @@ export default () => {
           alert('clip-player-show' + dataString)
         }
         break
+      case 'clip-player-end': //------------------------클립플레이어 end
+        context.action.updateClipState(null)
+        context.action.updateClipPlayerState(null)
+        context.action.updateClipState(null)
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-end')
+        }
+        break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        context.action.updateClipPlayerState('ended')
         if (__NODE_ENV === 'dev') {
           alert('clip-player-audio-end')
         }
-        context.action.updateClipPlayerState('ended')
         break
       default:
         break
@@ -598,6 +606,7 @@ export default () => {
 
     /*----clip----*/
     document.addEventListener('clip-player-show', update)
+    document.addEventListener('clip-player-end', update)
     document.addEventListener('clip-player-audio-end', update)
 
     return () => {
@@ -618,6 +627,7 @@ export default () => {
       document.removeEventListener('react-gnb-close', update)
       /*----clip----*/
       document.removeEventListener('clip-player-show', update)
+      document.removeEventListener('clip-player-end', update)
       document.removeEventListener('clip-player-audio-end', update)
     }
   }, [])
