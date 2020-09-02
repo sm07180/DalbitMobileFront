@@ -63,6 +63,13 @@ function ClipUpload() {
     if (result === 'success') {
       console.log(data)
       Hybrid('ClipPlayerJoin', data)
+      context.action.updateClipState(true)
+      context.action.updateClipPlayerState('playing')
+      context.action.updateClipPlayerInfo({
+        bgImg: data.bgImg.url,
+        title: data.title,
+        nickname: data.nickName
+      })
     } else {
     }
   }

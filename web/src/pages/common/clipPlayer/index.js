@@ -65,7 +65,7 @@ export default (props) => {
     }
   }
 
-  if (clipState !== 'floating' || clipPlayerInfo === null) return null
+  if (!clipState || clipPlayerInfo === null) return null
 
   //---------------------------------------------------------------------
   return (
@@ -102,7 +102,7 @@ export default (props) => {
               }
               Hybrid('ClipPlayerEnter')
             }}>
-            <b>{clipPlayerInfo.nickName}</b>
+            <b>{clipPlayerInfo.nickname}</b>
             <span>{clipPlayerInfo.title}</span>
           </p>
         </div>
