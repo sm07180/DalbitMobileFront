@@ -201,4 +201,93 @@
       }
     }
   }
+  .listSimple {
+    padding: 12px 2%;
+
+    .listSimpleBox {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .listSimpleItem {
+        position: relative;
+        width: 49%;
+        max-height: 330px;
+        padding: 10px;
+        margin-bottom: 10px;
+        background-size: cover;
+        background-position: center center;
+        background-repeat: no-repeat;
+        overflow: hidden;
+        border-radius: 16px;
+        box-sizing: border-box;
+        box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+        &:after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.3);
+        }
+        .topWrap {
+          display: flex;
+          justify-content: space-between;
+          &__status {
+            display: flex;
+            align-items: center;
+          }
+          &__count {
+            margin-left: auto;
+            color: #fff;
+            font-size: 11px;
+            font-weight: normal;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+            font-weight: normal;
+            font-stretch: normal;
+            font-style: normal;
+            letter-spacing: -0.28px;
+            text-align: left;
+            color: #ffffff;
+            z-index: 3;
+            &--icon,
+            &--num {
+              margin-right: 4px;
+            }
+          }
+        }
+
+        .bottomWrap {
+          display: flex;
+          flex-direction: column;
+          position: absolute;
+          bottom: 10px;
+          z-index: 3;
+
+          &__nick {
+            color: #fff;
+            font-weight: normal;
+            font-size: 12px;
+          }
+          &__title {
+            margin-top: 2px;
+            max-width: 140px;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 600;
+            font-style: normal;
+            line-height: 1.14;
+            letter-spacing: normal;
+            text-align: left;
+            color: #ffffff;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+          }
+        }
+      }
+    }
+  }
 }

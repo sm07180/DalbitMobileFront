@@ -87,6 +87,7 @@ const GlobalProvider = (props) => {
   const [clipRefresh, setClipRefresh] = useState(false)
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])
+  const [urlStr, setUrlStr] = useState('')
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -358,6 +359,9 @@ const GlobalProvider = (props) => {
     },
     updateClipType: (array) => {
       setClipType(array)
+    },
+    updateUrlStr: (str) => {
+      setUrlStr(str)
     }
   }
   //---------------------------------------------------------------------
@@ -415,7 +419,8 @@ const GlobalProvider = (props) => {
     clipMainGender,
     clipRefresh,
     clipTab,
-    clipType
+    clipType,
+    urlStr
   }
   return <Provider value={value}>{props.children}</Provider>
 }

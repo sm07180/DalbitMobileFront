@@ -5,7 +5,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 // router
 import {useParams, useHistory} from 'react-router-dom'
-
+import {Hybrid} from 'context/hybrid'
 // scss
 
 // ----------------------------------------------------------------------
@@ -35,6 +35,17 @@ export default function ClipHistory() {
       setHistoryLoading(false)
     }
   }
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      console.log(data)
+      Hybrid('ClipPlayerJoin', data)
+    } else {
+    }
+  }
   // make contents
   const createContents = () => {
     if (historyList.length === 0) {
@@ -57,7 +68,7 @@ export default function ClipHistory() {
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
-                <div className="uploadList__container" onClick={() => history.push(`/clip/${clipNo}`)}>
+                <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     {context.clipType.map((v, index) => {
