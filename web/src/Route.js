@@ -26,6 +26,7 @@ const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 const Proofshot = React.lazy(() => import('pages/event_proofshot'))
+const Package = React.lazy(() => import('pages/event_package'))
 const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 

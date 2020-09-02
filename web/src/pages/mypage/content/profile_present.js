@@ -9,7 +9,9 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Swiper from 'react-id-swiper'
 
-const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+// const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+const testData = [20, 50, 100, 500, 1000]
+
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   const history = useHistory()
@@ -25,6 +27,8 @@ export default (props) => {
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
+  if (context.myInfo.dalCnt === null) {
+  }
   let myDalCnt = context.myInfo.dalCnt
   myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start
@@ -37,10 +41,10 @@ export default (props) => {
     setText(value)
   }
 
-  const swiperParams = {
-    slidesPerView: 'auto',
-    spaceBetween: 5
-  }
+  // const swiperParams = {
+  //   slidesPerView: 'auto',
+  //   spaceBetween: 5
+  // }
 
   const _active = (param) => {
     // 달 수를 직접 입력 ( param : input ) , 20,50,100,500,1000 (param : 0,1,2,3,4)
@@ -175,15 +179,15 @@ export default (props) => {
                   </span>
                 </MyPoint>
                 <Select>
-                  <Swiper {...swiperParams}>
-                    {testData.map((data, idx) => {
-                      return (
-                        <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                          {data}
-                        </PointButton>
-                      )
-                    })}
-                  </Swiper>
+                  {/* <Swiper {...swiperParams}> */}
+                  {testData.map((data, idx) => {
+                    return (
+                      <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                        {data}
+                      </PointButton>
+                    )
+                  })}
+                  {/* </Swiper> */}
                 </Select>
                 <TextArea>
                   {/* <PointInput

@@ -6,7 +6,9 @@ import Api from 'context/api'
 import {BroadCastStore} from '../../store'
 import Swiper from 'react-id-swiper'
 
-const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+// const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+const testData = [20, 50, 100, 500, 1000]
+
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   //-------------------------------------------------------- declare start
@@ -116,15 +118,15 @@ export default (props) => {
         <div>{`보유 달 ${broadcastProfileInfo.dalCnt}`} </div>
       </MyPoint>
       <Select>
-        <Swiper {...swiperParams}>
-          {testData.map((data, idx) => {
-            return (
-              <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                {data}
-              </PointButton>
-            )
-          })}
-        </Swiper>
+        {/* <Swiper {...swiperParams}> */}
+        {testData.map((data, idx) => {
+          return (
+            <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+              {data}
+            </PointButton>
+          )
+        })}
+        {/* </Swiper> */}
       </Select>
       <TextArea>
         {/* <PointInput
