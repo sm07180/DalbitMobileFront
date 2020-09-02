@@ -18,16 +18,17 @@ export default (props) => {
   const context = useContext(Context)
   const {broadcastTotalInfo} = context
   //useState
-  const [info, setInfo] = useState({
-    /**
-     * {roomNo,bjNickNm,title,bjProfImg,auth}
-     */
-    bjNickNm: '',
-    roomNo: null,
-    bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
-    title: '',
-    auth: 0
-  })
+  // const [info, setInfo] = useState({
+  //   /**
+  //    * {roomNo,bjNickNm,title,bjProfImg,auth}
+  //    */
+  //   bjNickNm: '',
+  //   roomNo: null,
+  //   bjProfImg: 'https://6.viki.io/image/a11230e2d98d4a73825a4c10c8c6feb0.jpg?x=b&a=0x0&s=460x268&e=t&f=t&cb=1',
+  //   title: '',
+  //   auth: 0
+  // })
+  const [info, setInfo] = useState(context.nativePlayer)
 
   //---------------------------------------------------------------------
   const makeCloseBtn = () => {
