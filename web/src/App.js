@@ -135,9 +135,9 @@ const App = () => {
           if (nativeClipInfo) {
             if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
               const parsed = JSON.parse(nativeClipInfo)
-              context.action.updateClipState(true)
-              context.action.updateClipPlayerState(parsed.palyerState)
-              context.action.updateClipPlayerInfo({
+              globalCtx.action.updateClipState(true)
+              globalCtx.action.updateClipPlayerState(parsed.palyerState)
+              globalCtx.action.updateClipPlayerInfo({
                 bgImg: parsed.bgImg,
                 title: parsed.title,
                 nickname: parsed.nickName
