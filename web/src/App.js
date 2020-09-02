@@ -92,7 +92,11 @@ const App = () => {
           /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/
-          if(sessionStorage.getItem("room_no") === undefined || sessionStorage.getItem("room_no") === null || sessionStorage.getItem("room_no") === ""){
+          if (
+            sessionStorage.getItem('room_no') === undefined ||
+            sessionStorage.getItem('room_no') === null ||
+            sessionStorage.getItem('room_no') === ''
+          ) {
             Utility.setCookie('native-player-info', '', -1)
           }
 
