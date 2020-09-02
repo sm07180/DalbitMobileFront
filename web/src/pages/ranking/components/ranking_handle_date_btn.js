@@ -103,7 +103,6 @@ export default function RankHandleDateBtn(props) {
       // const currentWeek = Math.ceil(day / WEEK_LENGTH)
       // const selectedWeek = Math.ceil(selectedDay / WEEK_LENGTH)
 
-      console.log(weekAgo)
       if (selectedYear === currentYear && selectedMonth === currentMonth && selectedDay === currentDate) {
         setDateTitle({
           header: '이번주',
@@ -131,7 +130,7 @@ export default function RankHandleDateBtn(props) {
 
       if (selectedYear === ye && selectedMonth === yM && selectedDay === yd) {
         setBtnActive({next: true, prev: false})
-      } else if (year === selectedYear && month === selectedMonth && currentWeek === selectedWeek) {
+      } else if (wYear === selectedYear && wMonth === selectedMonth && wDate === selectedWeek) {
         setBtnActive({next: false, prev: true})
       } else {
         setBtnActive({next: true, prev: true})
