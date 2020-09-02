@@ -14,12 +14,14 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 //api
 import Api from 'context/api'
 //components
-import Header from '../component/header.js'
+// import Header from '../component/header.js'
+import Header from 'components/ui/new_header.js'
 import Content from './fanBoard_content'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
 import closeBtn from '../component/ic_back.svg'
+import ArrowDownIcon from '../static/arrow_down_g.svg'
 import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
@@ -45,10 +47,10 @@ export default (props) => {
   const [writeState, setWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
-
   const [isScreet, setIsScreet] = useState(false)
-
   const [isOther, setIsOther] = useState(true)
+  const [clickWrite, setClickWrite] = useState(false)
+
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
     const target = e.currentTarget
@@ -198,19 +200,70 @@ export default (props) => {
 
   //--------------------------------------------------
   return (
-    <FanBoard>
+    <div className="fanboard">
       {/* 팬보드 헤더 영역 */}
-      <Header>
+      {/* <Header>
         <h2 className="header-title">팬보드</h2>
         {createWriteBtn()}
-      </Header>
-      {/* <Header title="팬보드">
-        <div className="category-text">팬보드</div>
       </Header> */}
-      {/* {createWriteBtn()} */}
+      <Header title="팬보드" />
+
+      <div className="reply_writeWrap">
+        <div className="reply_writeWrap__top">
+          <div
+            className="reply_writeWrap__header"
+            onClick={() => {
+              if (clickWrite === false) setClickWrite(true)
+            }}>
+            <img src={profile.profImg.thumb62x62} />
+            {clickWrite !== true && (
+              <span>
+                답글쓰기 <span className="gray">최대 100자</span>
+              </span>
+            )}
+            {clickWrite === true && <span className="reply_writeWrap__header--nickNm">{profile.nickNm}</span>}
+          </div>
+          {clickWrite === true && (
+            <div className="content_area">
+              <textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
+            </div>
+          )}
+        </div>
+        {clickWrite === true && (
+          <div className="reply_writeWrap__btnWrap">
+            {/* <span className="bigCount">
+                <span className="bigCount__screet">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      if (!setDonstChange) {
+                        setIsScreet(!isScreet)
+                      }
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+                <span>
+                  <em>{textChange.length}</em> / 100
+                </span>
+              </span> */}
+            <button onClick={() => fetchDataUploadReply()}>등록</button>
+          </div>
+        )}
+        <div
+          className="reply_writeWrap__btn"
+          onClick={() => {
+            context.action.updateFanboardReplyNum(-1)
+          }}>
+          <button>답글접기</button>
+          <img src={ArrowDownIcon} />
+        </div>
+      </div>
+
       {/* 팬보드 리스트 영역 */}
       {totalCount === 0 && <NoResult />}
       {totalCount !== 0 && <Content list={list} totalCount={totalCount} />}
+
       {/* 팬보드 작성영역 */}
       {writeState && (
         <Writer>
@@ -244,7 +297,7 @@ export default (props) => {
           </div>
         </Writer>
       )}
-    </FanBoard>
+    </div>
   )
 }
 //STYLE
@@ -357,7 +410,4 @@ const Writer = styled.div`
 `
 const Textarea = styled.textarea``
 //최상위
-const FanBoard = styled.div`
-  width: 100%;
-  position: relative;
-`
+const FanBoard = styled.div``
