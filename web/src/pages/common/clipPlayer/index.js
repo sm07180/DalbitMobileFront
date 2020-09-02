@@ -113,6 +113,7 @@ export default (props) => {
               alert('플레이어 나가기 ')
             }
             Hybrid('ClipPlayerEnd')
+            Utility.setCookie('clip-player-info', '', -1)
             globalCtx.action.updateClipState(null)
             globalCtx.action.updateClipPlayerState(null)
             globalCtx.action.updateClipState(null)
