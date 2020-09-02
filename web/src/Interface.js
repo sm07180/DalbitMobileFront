@@ -336,12 +336,11 @@ export default () => {
 
       case 'clip-player-show': //------------------------클립플레이어 show
         const data = JSON.stringify(event.detail)
-        Utility.setCookie('clip-player-info', data, 100)
         if (__NODE_ENV === 'dev') {
           alert('clip-player-show' + data)
         }
         context.action.updateClipState('floating')
-        //context.action.updateClipPlayerState()
+        context.action.updateClipPlayerState(data.playerState)
         context.action.updateClipState(data)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
