@@ -209,8 +209,7 @@ function ClipUpload() {
     <div
       className="uploadWrap"
       style={{
-        padding: context.profile.memNo !== context.urlStr && '0',
-        backgroundColor: context.profile.memNo !== context.urlStr && uploadList.length !== 0 && '#eeeeee'
+        padding: context.profile.memNo !== context.urlStr && '0'
       }}>
       {uploadListLoding && createContents()}
     </div>
