@@ -133,7 +133,13 @@ const App = () => {
 
           const nativeClipInfo = Utilly.getCookie('clip-player-info')
           if (nativeClipInfo) {
+            if (__NODE_ENV === 'dev') {
+              alert(nativeClipInfo)
+            }
             if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+              if (__NODE_ENV === 'dev') {
+                alert('1')
+              }
               const parsed = JSON.parse(nativeClipInfo)
               globalCtx.action.updateClipState(true)
               globalCtx.action.updateClipPlayerState(parsed.palyerState)
