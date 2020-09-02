@@ -92,7 +92,13 @@ const App = () => {
           /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/
-          Utility.setCookie('native-player-info', '', -1)
+          if (
+            sessionStorage.getItem('room_no') === undefined ||
+            sessionStorage.getItem('room_no') === null ||
+            sessionStorage.getItem('room_no') === ''
+          ) {
+            Utility.setCookie('native-player-info', '', -1)
+          }
 
           // replace custom header isFirst value 'Y' => 'N'
           const customHeaderCookie = Utility.getCookie('custom-header')
@@ -122,6 +128,20 @@ const App = () => {
               globalCtx.action.updatePlayer(true)
               globalCtx.action.updateMediaPlayerStatus(true)
               globalCtx.action.updateNativePlayer(parsed)
+            }
+          }
+
+          const nativeClipInfo = Utilly.getCookie('clip-player-info')
+          if (nativeClipInfo) {
+            if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+              const parsed = JSON.parse(nativeClipInfo)
+              globalCtx.action.updateClipState(true)
+              globalCtx.action.updateClipPlayerState(parsed.palyerState)
+              globalCtx.action.updateClipPlayerInfo({
+                bgImg: parsed.bgImg,
+                title: parsed.title,
+                nickname: parsed.nickName
+              })
             }
           }
         }
