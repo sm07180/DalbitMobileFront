@@ -55,7 +55,7 @@ export default (props) => {
                 alert('시작')
               }
               Hybrid('ClipPlayerStart')
-              lobalCtx.action.updateClipPlayerState('playing')
+              globalCtx.action.updateClipPlayerState('playing')
             }}>
             <img src={IconStart} alt="시작" />
           </button>
@@ -65,7 +65,7 @@ export default (props) => {
     }
   }
 
-  if (clipState !== 'floating' || clipPlayerInfo === null) return null
+  if (!clipState || clipPlayerInfo === null) return null
 
   //---------------------------------------------------------------------
   return (
@@ -102,7 +102,7 @@ export default (props) => {
               }
               Hybrid('ClipPlayerEnter')
             }}>
-            <b>{clipPlayerInfo.nickName}</b>
+            <b>{clipPlayerInfo.nickname}</b>
             <span>{clipPlayerInfo.title}</span>
           </p>
         </div>
@@ -113,9 +113,9 @@ export default (props) => {
               alert('플레이어 나가기 ')
             }
             Hybrid('ClipPlayerEnd')
-            context.action.updateClipState(null)
-            context.action.updateClipPlayerState(null)
-            context.action.updateClipState(null)
+            globalCtx.action.updateClipState(null)
+            globalCtx.action.updateClipPlayerState(null)
+            globalCtx.action.updateClipState(null)
           }}>
           닫기
         </button>
@@ -358,6 +358,7 @@ const Figure = styled.figure`
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  overflow: hidden;
   background: url(${(props) => props.url}) no-repeat center center / cover;
   button {
     width: 100%;

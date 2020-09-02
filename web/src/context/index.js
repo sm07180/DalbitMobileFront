@@ -372,8 +372,8 @@ const GlobalProvider = (props) => {
      * 클립 상태
      * @string  entered, floating
      */
-    updateClipState: (string) => {
-      setClipState(string)
+    updateClipState: (boolean) => {
+      setClipState(boolean)
     },
     /**
      * 클립플레이어 상태 (클립 상태가 floating 일 경우)
