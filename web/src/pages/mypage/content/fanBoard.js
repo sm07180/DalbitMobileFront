@@ -208,10 +208,10 @@ export default (props) => {
       </Header> */}
       <Header title="팬보드" />
 
-      <div className="reply_writeWrap">
-        <div className="reply_writeWrap__top">
+      <div className="writeWrap">
+        <div className="writeWrap__top">
           <div
-            className="reply_writeWrap__header"
+            className="writeWrap__header"
             onClick={() => {
               if (clickWrite === false) setClickWrite(true)
             }}>
@@ -221,7 +221,7 @@ export default (props) => {
                 답글쓰기 <span className="gray">최대 100자</span>
               </span>
             )}
-            {clickWrite === true && <span className="reply_writeWrap__header--nickNm">{profile.nickNm}</span>}
+            {clickWrite === true && <strong>{profile.nickNm}</strong>}
           </div>
           {clickWrite === true && (
             <div className="content_area">
@@ -230,33 +230,34 @@ export default (props) => {
           )}
         </div>
         {clickWrite === true && (
-          <div className="reply_writeWrap__btnWrap">
-            {/* <span className="bigCount">
-                <span className="bigCount__screet">
-                  <DalbitCheckbox
-                    status={isScreet}
-                    callback={() => {
-                      if (!setDonstChange) {
-                        setIsScreet(!isScreet)
-                      }
-                    }}
-                  />
-                  <span className="bold">비공개</span>
-                </span>
-                <span>
-                  <em>{textChange.length}</em> / 100
-                </span>
-              </span> */}
-            <button onClick={() => fetchDataUploadReply()}>등록</button>
+          <div className="writeWrap__btnWrap">
+            <span className="bigCount">
+              <span className="bigCount__secret">
+                <DalbitCheckbox
+                  status={isScreet}
+                  callback={() => {
+                    if (!setDonstChange) {
+                      setIsScreet(!isScreet)
+                    }
+                  }}
+                />
+                <span className="bold">비공개</span>
+              </span>
+              <span className="count">
+                <em>{textChange.length}</em> / 100
+              </span>
+            </span>
+            <button className="btn__ok" onClick={() => fetchDataUploadReply()}>
+              등록
+            </button>
           </div>
         )}
         <div
-          className="reply_writeWrap__btn"
+          className="writeWrap__btn"
           onClick={() => {
             context.action.updateFanboardReplyNum(-1)
           }}>
-          <button>답글접기</button>
-          <img src={ArrowDownIcon} />
+          <button className="btn__toggle">접기</button>
         </div>
       </div>
 

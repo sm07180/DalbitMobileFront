@@ -341,7 +341,60 @@ export default (props) => {
               </div>
             )
           })}
-        <div className="reply_writeWrap">
+
+        <div className="writeWrap">
+          <div className="writeWrap__top">
+            <div
+              className="writeWrap__header"
+              onClick={() => {
+                if (clickWrite === false) setClickWrite(true)
+              }}>
+              <img src={profile.profImg.thumb62x62} />
+              {clickWrite !== true && (
+                <span>
+                  답글쓰기 <span className="gray">최대 100자</span>
+                </span>
+              )}
+              {clickWrite === true && <span className="writeWrap__header--nickNm">{profile.nickNm}</span>}
+            </div>
+            {clickWrite === true && (
+              <div className="content_area">
+                <textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
+              </div>
+            )}
+          </div>
+          {clickWrite === true && (
+            <div className="writeWrap__btnWrap">
+              <span className="bigCount">
+                <span className="bigCount__secret">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      if (!setDonstChange) {
+                        setIsScreet(!isScreet)
+                      }
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+                <span className="count">
+                  <em>{textChange.length}</em> / 100
+                </span>
+              </span>
+              <button className="btn__ok" onClick={() => fetchDataUploadReply()}>
+                등록
+              </button>
+            </div>
+          )}
+          <div
+            className="writeWrap__btn"
+            onClick={() => {
+              context.action.updateFanboardReplyNum(-1)
+            }}>
+            <button className="btn__toggle">접기</button>
+          </div>
+        </div>
+        {/* <div className="reply_writeWrap">
           <div className="reply_writeWrap__top">
             <div
               className="reply_writeWrap__header"
@@ -364,7 +417,7 @@ export default (props) => {
           </div>
           {clickWrite === true && (
             <div className="reply_writeWrap__btnWrap">
-              {/* <span className="bigCount">
+              <span className="bigCount">
                 <span className="bigCount__screet">
                   <DalbitCheckbox
                     status={isScreet}
@@ -379,7 +432,7 @@ export default (props) => {
                 <span>
                   <em>{textChange.length}</em> / 100
                 </span>
-              </span> */}
+              </span>
               <button onClick={() => fetchDataUploadReply()}>등록</button>
             </div>
           )}
@@ -391,11 +444,11 @@ export default (props) => {
             <button>답글접기</button>
             <img src={ArrowDownIcon} />
           </div>
-        </div>
+        </div> */}
       </div>
       {/* 대댓글 작성영역 */}
       {writeState && (
-        <div class="writerWrap">
+        <div class="writeWrap">
           <div className="header-wrap">
             <h2 className="header-title">답글 쓰기</h2>
             <button className="close-btn" onClick={WriteToggle}>
@@ -426,7 +479,7 @@ export default (props) => {
       )}
       {/* 대댓글 작성영역 */}
       {ModifyState && (
-        <div class="writerWrap">
+        <div class="writeWrap">
           <div className="header-wrap">
             <h2 className="header-title">답글 수정</h2>
             <button className="close-btn" onClick={ModifyToggle}>
