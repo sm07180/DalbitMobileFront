@@ -71,7 +71,7 @@ export default function ClipHistory() {
       return (
         <div className="uploadList">
           {historyList.map((item, idx) => {
-            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title} = item
+            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, gender} = item
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
@@ -81,12 +81,14 @@ export default function ClipHistory() {
                     {context.clipType.map((v, index) => {
                       if (v.value === subjectType) {
                         return (
-                          <span key={index} className="uploadList__category">
-                            {v.cdNm}
-                          </span>
+                          <div key={index} className="uploadList__categoryWrap">
+                            <span className="uploadList__category">{v.cdNm}</span>
+                            {/* {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />} */}
+                          </div>
                         )
                       }
                     })}
+
                     {/* {globalState.clipType
                       .filter((v) => {
                         if (v.value === subjectType) return v;
