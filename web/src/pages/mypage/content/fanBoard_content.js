@@ -233,15 +233,13 @@ export default (props) => {
                         </>
                       )}
                       <span className="thumb" style={{backgroundImage: `url(${profImg.thumb62x62})`}} onClick={Link}></span>
-                      <div className="info">
-                        <span onClick={Link}>
-                          <div>
-                            <span className={`${viewOn === 0 && 'info__lock'}`}></span>
-                            <span className="info__name">{nickNm}</span>
-                          </div>
-                          <div className="info__dt">{timeFormat(writeDt)}</div>
+                      <span className="info" onClick={Link}>
+                        <span className="info__name">
+                          <em className={`${viewOn === 0 && 'info__lock'}`}></em>
+                          {nickNm}
                         </span>
-                      </div>
+                        <span className="info__dt">{timeFormat(writeDt)}</span>
+                      </span>
                     </div>
                     <div className="list-item__content">
                       <pre>{contents}</pre>
