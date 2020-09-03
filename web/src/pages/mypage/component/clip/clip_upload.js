@@ -212,6 +212,7 @@ function ClipUpload() {
       className="uploadWrap"
       style={{
         padding: context.profile.memNo !== context.urlStr && '0',
+        height: context.profile.memNo !== context.urlStr && 'calc(100vh - 50px)',
         backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
       }}>
       {uploadListLoding && createContents()}
