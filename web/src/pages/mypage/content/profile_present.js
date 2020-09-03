@@ -78,6 +78,15 @@ export default (props) => {
         msg: '보낼 달 수량을 입력해 주세요'
       })
     }
+    if (dalcount < 10) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        msg: '직접입력 선물은 최소 10달 부터 선물이 가능합니다.'
+      })
+      return
+    }
     const res = await Api.member_gift_dal({
       data: {
         memNo: props.profile.memNo,
