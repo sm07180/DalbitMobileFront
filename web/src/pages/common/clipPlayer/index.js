@@ -32,11 +32,12 @@ export default (props) => {
   }, [])
 
   const settingSessionInfo = (type) => {
-    let data = sessionStorage.getItem('clip_info')
+    let data = Utility.getCookie('clip-player-info')
     data = JSON.parse(data)
     data = {...data, playerState: type}
     // alert(JSON.stringify(data))
-    sessionStorage.setItem('clip_info', data)
+    // sessionStorage.setItem('clip_info', data)
+    Utility.setCookie('clip-player-info', JSON.stringify(data))
   }
 
   const makePlayBtn = () => {
