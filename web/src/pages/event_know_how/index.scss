@@ -364,6 +364,7 @@
           right: 20px;
           bottom: 0px;
           padding: 12px;
+          background-color: #fff;
           border: 1px solid #e0e0e0;
           & > p:not(:last-child) {
             margin-bottom: 8px;
@@ -746,6 +747,7 @@
     &__content {
       margin-top: 12px;
       white-space: pre-line;
+      word-break: break-word;
     }
   }
 }
