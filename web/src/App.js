@@ -100,6 +100,14 @@ const App = () => {
             Utility.setCookie('native-player-info', '', -1)
           }
 
+          if (
+            sessionStorage.getItem('clip_info') === undefined ||
+            sessionStorage.getItem('clip_info') === null ||
+            sessionStorage.getItem('clip_info') === ''
+          ) {
+            Utility.setCookie('clip-player-info', '', -1)
+          }
+
           // replace custom header isFirst value 'Y' => 'N'
           const customHeaderCookie = Utility.getCookie('custom-header')
           if (customHeaderCookie) {
@@ -131,25 +139,22 @@ const App = () => {
             }
           }
 
-          // const nativeClipInfo = Utilly.getCookie('clip-player-info')
-          // if (nativeClipInfo) {
-          //   if (__NODE_ENV === 'dev') {
-          //     alert(nativeClipInfo)
-          //   }
-          //   if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
-          //     if (__NODE_ENV === 'dev') {
-          //       alert('1')
-          //     }
-          //     const parsed = JSON.parse(nativeClipInfo)
-          //     globalCtx.action.updateClipState(true)
-          //     globalCtx.action.updateClipPlayerState(parsed.palyerState)
-          //     globalCtx.action.updateClipPlayerInfo({
-          //       bgImg: parsed.bgImg,
-          //       title: parsed.title,
-          //       nickname: parsed.nickName
-          //     })
-          //   }
-          // }
+          const nativeClipInfo = Utility.getCookie('clip-player-info')
+          if (nativeClipInfo) {
+            // if (__NODE_ENV === 'dev') {
+            //   alert(nativeClipInfo)
+            // }
+            if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+              const parsed = JSON.parse(nativeClipInfo)
+              globalCtx.action.updateClipState(true)
+              globalCtx.action.updateClipPlayerState(parsed.palyerState)
+              globalCtx.action.updateClipPlayerInfo({
+                bgImg: parsed.bgImg,
+                title: parsed.title,
+                nickname: parsed.nickname
+              })
+            }
+          }
         }
 
         const appIsFirst = Utility.getCookie('appIsFirst')

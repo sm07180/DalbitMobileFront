@@ -337,6 +337,7 @@ export default () => {
       case 'clip-player-show': //------------------------클립플레이어 show
         const dataString = JSON.stringify(event.detail)
         Utility.setCookie('clip-player-info', dataString, 100)
+        sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipPlayerState(event.detail.playerState)
         context.action.updateClipPlayerInfo(event.detail)
 
