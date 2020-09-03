@@ -1,18 +1,9 @@
 
 <svg xmlns="http://www.w3.org/2000/svg" width="16.8" height="16.8" viewBox="0 0 16.8 16.8">
-    <defs>
-        <filter id="패스_18371" width="11.633" height="13.766" x="2.9" y="1.636" filterUnits="userSpaceOnUse">
-            <feOffset dx=".5" dy=".5"/>
-            <feGaussianBlur result="blur" stdDeviation=".5"/>
-            <feFlood flood-opacity=".6"/>
-            <feComposite in2="blur" operator="in"/>
-            <feComposite in="SourceGraphic"/>
-        </filter>
-    </defs>
-    <g id="play_w_s" transform="translate(.4 .4)">
-        <g id="그룹_19049" data-name="그룹 19049" transform="rotate(90 4.441 7.192)">
-            <g id="그룹_19049-2" data-name="그룹 19049" filter="url(#패스_18371)" transform="rotate(-90 4.44 7.59)">
-                <path id="패스_18371-2" fill="none" stroke="#fff" stroke-linejoin="bevel" d="M112.119 278.211a.722.722 0 0 0-1.158 0l-4.174 6.261a.7.7 0 0 0 .579 1.082h8.348a.7.7 0 0 0 .579-1.082z" data-name="패스 18371" transform="rotate(90 196.735 93.215)"/>
+    <g>
+        <g>
+            <g>
+                <path fill="none" stroke="#fff" stroke-linejoin="bevel" d="M112.119 278.211a.722.722 0 0 0-1.158 0l-4.174 6.261a.7.7 0 0 0 .579 1.082h8.348a.7.7 0 0 0 .579-1.082z" transform="translate(.4 .4) rotate(90 4.441 7.192) translate(-106.671 -277.921)"/>
             </g>
         </g>
     </g>
