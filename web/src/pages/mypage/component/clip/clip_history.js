@@ -7,6 +7,7 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 // router
 import {useParams, useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 // scss
 
 // ----------------------------------------------------------------------
@@ -42,15 +43,7 @@ export default function ClipHistory() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      console.log(data)
-      Hybrid('ClipPlayerJoin', data)
-      context.action.updateClipState(true)
-      context.action.updateClipPlayerState('playing')
-      context.action.updateClipPlayerInfo({
-        bgImg: data.bgImg.url,
-        title: data.title,
-        nickname: data.nickName
-      })
+      clipJoin(data, context)
     } else {
     }
   }

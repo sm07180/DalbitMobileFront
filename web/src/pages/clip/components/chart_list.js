@@ -12,6 +12,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //flag
 let currentPage = 1
 let timer
@@ -58,15 +59,7 @@ export default (props) => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      console.log(data)
-      Hybrid('ClipPlayerJoin', data)
-      context.action.updateClipState(true)
-      context.action.updateClipPlayerState('playing')
-      context.action.updateClipPlayerInfo({
-        bgImg: data.bgImg.url,
-        title: data.title,
-        nickname: data.nickName
-      })
+      clipJoin(data, context)
     } else {
     }
   }

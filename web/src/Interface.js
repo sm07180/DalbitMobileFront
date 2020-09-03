@@ -346,9 +346,10 @@ export default () => {
         // }
         break
       case 'clip-player-end': //------------------------클립플레이어 end
-        context.action.updateClipState(null)
-        context.action.updateClipPlayerState(null)
-        context.action.updateClipState(null)
+        Utility.setCookie('clip-player-info', '', -1)
+        globalCtx.action.updateClipState(null)
+        globalCtx.action.updateClipPlayerState(null)
+        globalCtx.action.updateClipState(null)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
         context.action.updateClipPlayerState('ended')

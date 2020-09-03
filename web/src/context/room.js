@@ -21,6 +21,7 @@ import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
 
 //
 const Room = () => {
@@ -51,6 +52,11 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
+  //클립나가기
+  if (Utility.getCookie('clip-player-info')) {
+    clipExit(Room.context)
+  }
+
   const {roomNo, callbackFunc, shadow, mode} = obj
   /*const exdate = new Date()
   exdate.setHours(15)
