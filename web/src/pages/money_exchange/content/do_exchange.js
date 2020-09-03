@@ -380,7 +380,7 @@ export default function DoExchange({state, dispatch}) {
                 context.action.updatePopup('GUIDANCE')
               }}>
               <span className="doExchangeWrap__contentsHeader--icon" />
-              <span>유의사항</span>
+              <span>환전안내</span>
             </div>
           </div>
           {isSpecial && (

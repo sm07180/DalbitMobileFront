@@ -36,6 +36,7 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
+import CrownIcon from './static/crown.jpg'
 
 import 'styles/main.scss'
 
@@ -519,6 +520,7 @@ export default (props) => {
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
+                <img src={CrownIcon} width={40} />
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -526,8 +528,11 @@ export default (props) => {
                 <button className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </button>
-                <i className="bar"></i>
-                <button className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
+
+                <button
+                  style={{marginLeft: '2px'}}
+                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
+                  onClick={() => setRankType('fan')}>
                   팬
                 </button>
               </div>

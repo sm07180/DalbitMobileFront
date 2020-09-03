@@ -68,6 +68,7 @@ export default () => {
         <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/event_knowHow" component={EventKnowHow} />
         <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
+        <Route exact path="/event_knowHow/:title/:num" component={EventKnowHow} />
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />

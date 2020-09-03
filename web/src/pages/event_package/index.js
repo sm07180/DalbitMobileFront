@@ -8,6 +8,7 @@ import API from 'context/api'
 
 import Write from './content/write'
 import './package.scss'
+import message from 'pages/common/message'
 
 export default (props) => {
   const history = useHistory()
@@ -16,6 +17,9 @@ export default (props) => {
   // 페이징 체크
   const [viewType, setViewType] = useState(0)
   const [timeCheck, setTimeCheck] = useState(true)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [time, setTime] = useState('')
+  const [code, setCode] = useState('')
 
   // 이벤트 10시간체크
   const [eventCheck, setEventCheck] = useState(0)
@@ -25,7 +29,14 @@ export default (props) => {
       global_ctx.action.alert({
         msg: '로그인을 해주세요',
         callback: () => {
-          global_ctx.action.alert(history.push('/login'))
+          global_ctx.action.alert(
+            history.push({
+              pathname: '/login',
+              state: {
+                state: 'event_package'
+              }
+            })
+          )
         }
       })
   }
@@ -33,9 +44,16 @@ export default (props) => {
   const writeCheck = () => {
     if (timeCheck === true) {
       setViewType(PAGE_TYPE.WRITE)
-    } else if (timeCheck === false) {
+    } else if (code === '1') {
       global_ctx.action.alert({
-        msg: '방송시간 10시간을 채워주셔야합니다.',
+        msg: alertMessage,
+        callback: () => {
+          return
+        }
+      })
+    } else if (code === '2') {
+      global_ctx.action.alert({
+        msg: `${alertMessage}\n (누적 방송 시간 : ${time.airHour}시간)`,
         callback: () => {
           return
         }
@@ -43,32 +61,22 @@ export default (props) => {
     }
   }
 
-  const complete = () => {
-    global_ctx.action.alert({
-      msg: '이미 참여 하셨습니다.',
-      callback: () => {
-        return
-      }
-    })
-  }
-
   const packageEventCheck = useCallback(async () => {
-    const {result, data} = await API.eventPackageJoinCheck({})
+    const {result, data, message, code} = await API.eventPackageJoinCheck({})
 
     if (result === 'success') {
       setEventCheck(0)
-    } else if (result === 'fail' || code === '1') {
-      setEventCheck(1)
     } else {
-      if (result === 'fail' || code === '2') {
-        setTimeCheck(false)
-      }
+      setTimeCheck(false)
+      setAlertMessage(message)
+      setTime(data)
+      setCode(code)
     }
-  }, [])
+  }, [global_ctx])
 
   useEffect(() => {
     packageEventCheck()
-  }, [global_ctx])
+  }, [viewType, global_ctx.token.isLogin])
 
   return (
     <Layout status="no_gnb">
@@ -80,23 +88,23 @@ export default (props) => {
             <Header title="방송 장비지원 이벤트" />
 
             <div className="content">
-              <img src="https://image.dalbitlive.com/event/package/20200831/content01.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content02.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content03.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content04.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200831/content05.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content01.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content02.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content03.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content04.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200902/content05.jpg" />
 
               {viewType === PAGE_TYPE.MAIN && global_ctx.token.isLogin === true ? (
                 <>
-                  {eventCheck === 0 ? (
+                  {(viewType === PAGE_TYPE.MAIN && code === '1') || code === '2' ? (
                     <>
                       <button onClick={() => writeCheck()}>
-                        <img src="https://image.dalbitlive.com/event/package/20200831/button.jpg" />
+                        <img src="https://image.dalbitlive.com/event/package/20200831/button_off.jpg" />
                       </button>
                     </>
                   ) : (
                     <>
-                      <button onClick={() => complete()}>
+                      <button onClick={() => writeCheck()}>
                         <img src="https://image.dalbitlive.com/event/package/20200831/button.jpg" />
                       </button>
                     </>

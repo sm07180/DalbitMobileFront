@@ -9,8 +9,8 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Swiper from 'react-id-swiper'
 
-// const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
-const testData = [20, 50, 100, 500, 1000]
+const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+// const testData = [20, 50, 100, 500, 1000]
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
@@ -41,10 +41,10 @@ export default (props) => {
     setText(value)
   }
 
-  // const swiperParams = {
-  //   slidesPerView: 'auto',
-  //   spaceBetween: 5
-  // }
+  const swiperParams = {
+    slidesPerView: 'auto',
+    spaceBetween: 5
+  }
 
   const _active = (param) => {
     // 달 수를 직접 입력 ( param : input ) , 20,50,100,500,1000 (param : 0,1,2,3,4)
@@ -77,6 +77,15 @@ export default (props) => {
         },
         msg: '보낼 달 수량을 입력해 주세요'
       })
+    }
+    if (dalcount < 10) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        msg: '직접입력 선물은 최소 10달 부터 선물이 가능합니다.'
+      })
+      return
     }
     const res = await Api.member_gift_dal({
       data: {
@@ -179,26 +188,26 @@ export default (props) => {
                   </span>
                 </MyPoint>
                 <Select>
-                  {/* <Swiper {...swiperParams}> */}
-                  {testData.map((data, idx) => {
-                    return (
-                      <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                        {data}
-                      </PointButton>
-                    )
-                  })}
-                  {/* </Swiper> */}
+                  <Swiper {...swiperParams}>
+                    {testData.map((data, idx) => {
+                      return (
+                        <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                          {data}
+                        </PointButton>
+                      )
+                    })}
+                  </Swiper>
                 </Select>
                 <TextArea>
-                  {/* <PointInput
+                  <PointInput
                     placeholder="직접 입력"
                     type="number"
-                    maxLength="5"
+                    maxLength="10"
                     value={text}
                     onChange={handleChangeInput}
                     onClick={() => _active('input')}
                     active={active ? 'active' : ''}
-                  /> */}
+                  />
                   <p>* 달 선물하기는 100% 전달됩니다.</p>
                 </TextArea>
                 <ButtonArea>
@@ -399,10 +408,7 @@ const PointButton = styled.button`
   font-size: 12px;
 `
 const TextArea = styled.div`
-  display: flex;
   width: 100%;
-  height: 36px;
-  flex-direction: column;
   margin-top: 8px;
 
   & > p {
@@ -432,7 +438,7 @@ const PointInput = styled.input`
   border-color: ${(props) => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
 
   &::placeholder {
-    color: #bdbdbd;
+    color: #777;
   }
   p {
     font-size: 12px;
