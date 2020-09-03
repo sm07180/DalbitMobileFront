@@ -12,6 +12,7 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import StarCountIcon from './static/circle_star_s_g.svg'
 
 // constant
 import {RANK_TYPE, DATE_TYPE} from './constant'
@@ -45,7 +46,8 @@ export default (props) => {
                 isSpecial,
                 roomNo,
                 memNo,
-                holder
+                holder,
+                starCnt
               } = item
 
               let rankName
@@ -158,6 +160,11 @@ export default (props) => {
                           <img src={moon} />
                           {Util.printNumber(gift)}
                         </span> */}
+                        <span className="countBox__item">
+                          <img src={StarCountIcon} />
+                          {Util.printNumber(starCnt)}
+                        </span>
+
                         <span className="countBox__item">
                           <img src={time} />
                           {Util.printNumber(listenPoint)}
