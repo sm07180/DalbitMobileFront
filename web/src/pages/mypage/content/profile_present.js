@@ -190,15 +190,15 @@ export default (props) => {
                   </Swiper>
                 </Select>
                 <TextArea>
-                  {/* <PointInput
+                  <PointInput
                     placeholder="직접 입력"
                     type="number"
-                    maxLength="5"
+                    maxLength="10"
                     value={text}
                     onChange={handleChangeInput}
                     onClick={() => _active('input')}
                     active={active ? 'active' : ''}
-                  /> */}
+                  />
                   <p>* 달 선물하기는 100% 전달됩니다.</p>
                 </TextArea>
                 <ButtonArea>
@@ -399,10 +399,7 @@ const PointButton = styled.button`
   font-size: 12px;
 `
 const TextArea = styled.div`
-  display: flex;
   width: 100%;
-  height: 36px;
-  flex-direction: column;
   margin-top: 8px;
 
   & > p {
@@ -432,7 +429,7 @@ const PointInput = styled.input`
   border-color: ${(props) => (props.active === 'active' ? '#632beb' : '#e0e0e0')};
 
   &::placeholder {
-    color: #bdbdbd;
+    color: #777;
   }
   p {
     font-size: 12px;

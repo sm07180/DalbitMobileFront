@@ -129,15 +129,15 @@ export default (props) => {
         </Swiper>
       </Select>
       <TextArea>
-        {/* <PointInput
+        <PointInput
           placeholder="직접 입력"
           type="number"
-          maxLength="5"
+          maxLength="10"
           value={text}
           onChange={handleChangeInput}
           onClick={() => _active('input')}
           active={active ? 'active' : ''}
-        /> */}
+        />
         <p>* 달 선물하기는 100% 전달됩니다.</p>
       </TextArea>
       <ButtonArea>
