@@ -131,6 +131,12 @@ export default function Guidance({state, dispatch}) {
             </div>
           </div>
           <div className="guidance__list">
+            <div className="guidance__list--title guidance__list--red">◈ 종합소득세 안내</div>
+            <div className="guidance__list--gray">
+              연간 환전 받은 총 금액이, 1,500만원 이상이신 분은 매년 5월 종합 소득세 신고해야 합니다.
+            </div>
+          </div>
+          <div className="guidance__list">
             <div className="guidance__list--title">◈ 환전 불가 서류</div>
             <div className="guidance__list--gray">
               - (X) 정보 확인이 불분명한 서류

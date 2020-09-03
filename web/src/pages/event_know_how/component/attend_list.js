@@ -106,7 +106,8 @@ function AttendList() {
                     src={MoreIcon}
                     onClick={(e) => {
                       e.stopPropagation()
-                      setMoreIdx(v.idx)
+                      if (moreIdx === v.idx) setMoreIdx(-1)
+                      else setMoreIdx(v.idx)
                     }}
                   />
                 )}
