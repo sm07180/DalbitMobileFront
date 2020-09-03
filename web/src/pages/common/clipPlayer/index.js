@@ -8,6 +8,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import {COLOR_POINT_Y} from 'context/color'
 import {IMG_SERVER, WIDTH_PC_S, WIDTH_TABLET_S} from 'context/config'
+import {clipExit} from './clip_func'
 
 import IconStart from './static/play_w_m.svg'
 import IconPause from './static/pause_w_m.svg'
@@ -18,25 +19,10 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
 
-  useEffect(() => {
-    //테스트용 데이터
-    // if (!clipPlayerInfo) {
-    //   globalCtx.action.updateClipPlayerInfo({
-    //     bgImg:
-    //       'https://lh3.googleusercontent.com/proxy/toqWORQl4-ONgD3FgA3INIydOEmpifMcjx4YaBQT2Pu9TOu8P7dJUx7806OjTZ7fRDCjMY0nH0l2-gCRPbuA1XVouQbvoerZbNGvEf15ZCSeeT5aHRr9Pfnbsh4THop-GmoL40egvf_Fj3LhXMh-V_aY9RVV1W_7cSguEye4ReIt_PUDGHEGqjUrHom3nGFjher_Wd1OgEH7Yawgn6CVLSaXqKYvWNdX06edeZrNmJ5Cen6bJY52r4jP_25GtOiNXhGGuo7f4Ki0p4Oi0rIm_mP_sgA2U3_rWwjxCil4CQMpfNsDAf4',
-    //     nickName: '풀문',
-    //     title: 'Eternal Snow'
-    //   })
-    //   globalCtx.action.updateClipPlayerState('playing')
-    // }
-  }, [])
-
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
     data = JSON.parse(data)
     data = {...data, playerState: type}
-    // alert(JSON.stringify(data))
-    // sessionStorage.setItem('clip_info', data)
     Utility.setCookie('clip-player-info', JSON.stringify(data))
   }
 
@@ -46,9 +32,6 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              // if (__NODE_ENV === 'dev') {
-              //   alert('멈춤')
-              // }
               Hybrid('ClipPlayerPause')
               globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
@@ -61,9 +44,6 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              // if (__NODE_ENV === 'dev') {
-              //   alert('시작')
-              // }
               Hybrid('ClipPlayerStart')
               globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
@@ -108,9 +88,6 @@ export default (props) => {
           </div>
           <p
             onClick={() => {
-              // if (__NODE_ENV === 'dev') {
-              //   alert('플레이어 다시 이동')
-              // }
               Hybrid('ClipPlayerEnter')
             }}>
             <b>{clipPlayerInfo.nickname}</b>
@@ -120,14 +97,7 @@ export default (props) => {
         <button
           className="close"
           onClick={() => {
-            // if (__NODE_ENV === 'dev') {
-            //   alert('플레이어 나가기 ')
-            // }
-            Hybrid('ClipPlayerEnd')
-            Utility.setCookie('clip-player-info', '', -1)
-            globalCtx.action.updateClipState(null)
-            globalCtx.action.updateClipPlayerState(null)
-            globalCtx.action.updateClipState(null)
+            clipExit(globalCtx)
           }}>
           닫기
         </button>
