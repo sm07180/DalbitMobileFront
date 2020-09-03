@@ -346,12 +346,22 @@ export default () => {
         // }
         break
       case 'clip-player-end': //------------------------클립플레이어 end
+        // if (__NODE_ENV === 'dev') {
+        //   alert('clip-player-end')
+        // }
         Utility.setCookie('clip-player-info', '', -1)
-        globalCtx.action.updateClipState(null)
-        globalCtx.action.updateClipPlayerState(null)
-        globalCtx.action.updateClipState(null)
+        context.action.updateClipState(null)
+        context.action.updateClipPlayerState(null)
+        context.action.updateClipState(null)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        // if (__NODE_ENV === 'dev') {
+        //   alert('clip-player-audio-end')
+        // }
+        let data = Utility.getCookie('clip-player-info')
+        data = JSON.parse(data)
+        data = {...data, playerState: 'ended'}
+        Utility.setCookie('clip-player-info', JSON.stringify(data))
         context.action.updateClipPlayerState('ended')
         break
       default:
