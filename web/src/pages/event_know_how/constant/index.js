@@ -15,9 +15,9 @@ export const ORDER_TYPE = {
 }
 
 export const DEVICE_TYPE = {
-  DESKTOP: 0,
-  NOTEBOOK: 1,
-  AOS: 2,
-  IOS: 3,
-  TABLET: 4
+  DESKTOP: 1,
+  NOTEBOOK: 2,
+  AOS: 3,
+  IOS: 4,
+  TABLET: 5
 }
