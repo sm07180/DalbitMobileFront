@@ -41,10 +41,10 @@ export default (props) => {
     setText(value)
   }
 
-  // const swiperParams = {
-  //   slidesPerView: 'auto',
-  //   spaceBetween: 5
-  // }
+  const swiperParams = {
+    slidesPerView: 'auto',
+    spaceBetween: 5
+  }
 
   const _active = (param) => {
     // 달 수를 직접 입력 ( param : input ) , 20,50,100,500,1000 (param : 0,1,2,3,4)

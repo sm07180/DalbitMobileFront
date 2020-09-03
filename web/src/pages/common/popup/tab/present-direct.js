@@ -118,15 +118,15 @@ export default (props) => {
         <div>{`보유 달 ${broadcastProfileInfo.dalCnt}`} </div>
       </MyPoint>
       <Select>
-        {/* <Swiper {...swiperParams}> */}
-        {testData.map((data, idx) => {
-          return (
-            <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-              {data}
-            </PointButton>
-          )
-        })}
-        {/* </Swiper> */}
+        <Swiper {...swiperParams}>
+          {testData.map((data, idx) => {
+            return (
+              <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                {data}
+              </PointButton>
+            )
+          })}
+        </Swiper>
       </Select>
       <TextArea>
         {/* <PointInput
