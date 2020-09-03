@@ -111,12 +111,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
-              {rank < 11 && (
+              {/* {rank < 11 && (
                 <div className="value">
                   <img src={starIcon} />
                   <span>{Util.printNumber(giftCnt)}</span>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         ) : (
