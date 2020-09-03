@@ -19,7 +19,7 @@ import MoreIcon from '../static/morelist_g.svg'
 import LikeOffIcon from '../static/like_g_m.svg'
 import LikeOnIcon from '../static/like_red_m.svg'
 import GridIcon from '../static/grid_w_s.svg'
-
+import CloseIcon from '../static/close.svg'
 function AttendDetail() {
   const history = useHistory()
   const params = useParams()
@@ -40,6 +40,7 @@ function AttendDetail() {
   const [isLike, setIsLike] = useState(false)
   const [goodCnt, setGoodCnt] = useState(0)
   const [more, setMore] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(0)
 
   const swiperParamas = {
     navigation: {
@@ -74,6 +75,7 @@ function AttendDetail() {
       setDetail(res.data.detail)
       setGoodCnt(res.data.detail.good_cnt)
       setIsLike(res.data.detail.is_good === 0 ? false : true)
+      setIsAdmin(res.data.isAdmin)
       let arr = [res.data.detail.image_url, res.data.detail.image_url2, res.data.detail.image_url3]
 
       const detailIdx = list.findIndex((v) => {
@@ -256,6 +258,15 @@ function AttendDetail() {
                 src={MoreIcon}
                 onClick={() => {
                   setMore(!more)
+                }}
+              />
+            )}
+            {context.token.isLogin && isAdmin === 1 && (
+              <img
+                src={CloseIcon}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  deleteKnowhow()
                 }}
               />
             )}

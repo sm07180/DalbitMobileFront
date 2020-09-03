@@ -220,7 +220,7 @@
           }
           &.active {
             & > img {
-              animation: anim 0.5s;
+              animation: anim 1s;
             }
           }
         }
@@ -229,6 +229,7 @@
         0% {
           transform: rotate(0deg);
         }
+
         100% {
           transform: rotate(-360deg);
         }
@@ -296,7 +297,7 @@
             border-radius: 8px;
             font-size: 11px;
             color: #757575;
-            line-height: 12px;
+            line-height: 16px;
             letter-spacing: -0.28px;
           }
           & > span:last-child {
@@ -418,7 +419,7 @@
         }
 
         & > input {
-          flex: 1;
+          width: calc(100% - 70px);
           color: #000;
           font-weight: bold;
           &::placeholder {

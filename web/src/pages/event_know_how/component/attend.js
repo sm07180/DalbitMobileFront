@@ -180,7 +180,9 @@ function Attend() {
                   onClick={async () => {
                     setRefresh(true)
                     await fetchData()
-                    setRefresh(false)
+                    setTimeout(() => {
+                      setRefresh(false)
+                    }, 1000)
                   }}>
                   <img src="https://image.dalbitlive.com/main/200714/ico-refresh.svg" alt="새로고침" />
                 </button>
