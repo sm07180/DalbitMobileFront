@@ -27,15 +27,17 @@
     .recomClipBox {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
 
       .recomClipItem {
         overflow: hidden;
         position: relative;
-        width: 31%;
+        width: 32%;
         margin-bottom: 10px;
+        margin-right: 2%;
         border-radius: 16px;
-
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
         &__thumb {
           img {
             width: 100%;
@@ -363,9 +365,11 @@
               align-items: center;
               &--num,
               &--icon {
+                width: 16px;
+                height: 16px;
                 margin-left: 2px;
                 font-weight: 600;
-                text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+                // text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
                 font-size: 11px;
                 letter-spacing: -0.28px;
                 color: #fff;
