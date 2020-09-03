@@ -3,7 +3,6 @@ import {Switch, Route} from 'react-router-dom'
 import {Context} from 'context'
 import {KnowHowContext} from '../store'
 import Api from 'context/api'
-import Message from 'pages/common/message'
 
 import Attend from './attend'
 import AttendAdd from './attend_add'
@@ -43,8 +42,6 @@ const KnowHowMain = () => {
         <Route exact path="/event_knowHow/add/:num" component={AttendAdd} />
         <Route exact path="/event_knowHow/detail/:num" component={AttendDetail} />
       </Switch>
-
-      <Message />
     </>
   )
 }
