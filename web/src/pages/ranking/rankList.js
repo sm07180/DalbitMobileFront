@@ -68,7 +68,7 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 1 && (
+                  {/* {rankType == 1 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -84,7 +84,7 @@ export default (props) => {
                         {Util.printNumber(fanPoint)}
                       </p>
                     </>
-                  )}
+                  )} */}
                 </div>
 
                 <div
