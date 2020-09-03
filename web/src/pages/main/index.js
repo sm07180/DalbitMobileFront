@@ -528,8 +528,11 @@ export default (props) => {
                 <button className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
                   DJ
                 </button>
-                <i className="bar"></i>
-                <button className={`text ${rankType === 'fan' ? 'active' : ''}`} onClick={() => setRankType('fan')}>
+
+                <button
+                  style={{marginLeft: '2px'}}
+                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
+                  onClick={() => setRankType('fan')}>
                   팬
                 </button>
               </div>
