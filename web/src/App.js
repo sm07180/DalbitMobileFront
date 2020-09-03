@@ -142,7 +142,6 @@ const App = () => {
           const nativeClipInfo = Utility.getCookie('clip-player-info')
           if (nativeClipInfo) {
             if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
-              alert(nativeClipInfo)
               const parsed = JSON.parse(nativeClipInfo)
               globalCtx.action.updateClipState(true)
               globalCtx.action.updateClipPlayerState(parsed.playerState)

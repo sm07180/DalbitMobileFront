@@ -31,17 +31,26 @@ export default (props) => {
     // }
   }, [])
 
+  const settingSessionInfo = (type) => {
+    let data = sessionStorage.getItem('clip_info')
+    data = JSON.parse(data)
+    data = {...data, playerState: type}
+    // alert(JSON.stringify(data))
+    sessionStorage.setItem('clip_info', data)
+  }
+
   const makePlayBtn = () => {
     switch (clipPlayerState) {
       case 'playing':
         return (
           <button
             onClick={() => {
-              if (__NODE_ENV === 'dev') {
-                alert('멈춤')
-              }
+              // if (__NODE_ENV === 'dev') {
+              //   alert('멈춤')
+              // }
               Hybrid('ClipPlayerPause')
               globalCtx.action.updateClipPlayerState('paused')
+              settingSessionInfo('paused')
             }}>
             <img src={IconPause} alt="멈춤" />
           </button>
@@ -51,11 +60,12 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              if (__NODE_ENV === 'dev') {
-                alert('시작')
-              }
+              // if (__NODE_ENV === 'dev') {
+              //   alert('시작')
+              // }
               Hybrid('ClipPlayerStart')
               globalCtx.action.updateClipPlayerState('playing')
+              settingSessionInfo('playing')
             }}>
             <img src={IconStart} alt="시작" />
           </button>
@@ -97,9 +107,9 @@ export default (props) => {
           </div>
           <p
             onClick={() => {
-              if (__NODE_ENV === 'dev') {
-                alert('플레이어 다시 이동')
-              }
+              // if (__NODE_ENV === 'dev') {
+              //   alert('플레이어 다시 이동')
+              // }
               Hybrid('ClipPlayerEnter')
             }}>
             <b>{clipPlayerInfo.nickname}</b>
@@ -109,9 +119,9 @@ export default (props) => {
         <button
           className="close"
           onClick={() => {
-            if (__NODE_ENV === 'dev') {
-              alert('플레이어 나가기 ')
-            }
+            // if (__NODE_ENV === 'dev') {
+            //   alert('플레이어 나가기 ')
+            // }
             Hybrid('ClipPlayerEnd')
             Utility.setCookie('clip-player-info', '', -1)
             globalCtx.action.updateClipState(null)

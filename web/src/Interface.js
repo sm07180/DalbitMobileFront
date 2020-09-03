@@ -341,23 +341,17 @@ export default () => {
         context.action.updateClipPlayerState(event.detail.playerState)
         context.action.updateClipPlayerInfo(event.detail)
 
-        if (__NODE_ENV === 'dev') {
-          alert('clip-player-show' + dataString)
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('clip-player-show' + dataString)
+        // }
         break
       case 'clip-player-end': //------------------------클립플레이어 end
         context.action.updateClipState(null)
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
-        if (__NODE_ENV === 'dev') {
-          alert('clip-player-end')
-        }
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
         context.action.updateClipPlayerState('ended')
-        if (__NODE_ENV === 'dev') {
-          alert('clip-player-audio-end')
-        }
         break
       default:
         break
