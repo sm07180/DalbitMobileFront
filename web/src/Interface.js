@@ -338,6 +338,7 @@ export default () => {
         const dataString = JSON.stringify(event.detail)
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
+        context.action.updateClipState(true)
         context.action.updateClipPlayerState(event.detail.playerState)
         context.action.updateClipPlayerInfo(event.detail)
 
