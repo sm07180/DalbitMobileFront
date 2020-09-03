@@ -49,7 +49,6 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
   const [isOther, setIsOther] = useState(true)
-  const [clickWrite, setClickWrite] = useState(false)
 
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
@@ -151,24 +150,15 @@ export default (props) => {
           msg: '답글 내용을 입력해주세요.'
         })
       }
-      // context.action.alert({
-      //   cancelCallback: () => {},
-      //   msg: res.message
-      // })
     }
   }
-  //render
-  const createWriteBtn = () => {
-    // if (urlrStr === profile.memNo) {
-    return (
-      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`]}>
-        쓰기
-      </button>
-    )
-    // } else {
-    // return null
-    // }
-  }
+  // const createWriteBtn = () => {
+  //   return (
+  //     <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.token.memNo ? 'on' : 'on'}`]}>
+  //       쓰기
+  //     </button>
+  //   )
+  // }
 
   async function getMyPageNewFanBoard() {
     const newFanBoard = await Api.getMyPageNewFanBoard()
@@ -201,44 +191,37 @@ export default (props) => {
   //--------------------------------------------------
   return (
     <div className="fanboard">
-      {/* 팬보드 헤더 영역 */}
-      {/* <Header>
-        <h2 className="header-title">팬보드</h2>
-        {createWriteBtn()}
-      </Header> */}
       <Header title="팬보드" />
 
       <div className="writeWrap">
         <div className="writeWrap__top">
           <div
-            className="writeWrap__header"
+            className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
             onClick={() => {
-              if (clickWrite === false) setClickWrite(true)
+              if (writeState === false) setWriteState(true)
             }}>
-            <img src={profile.profImg.thumb62x62} />
-            {clickWrite !== true && (
+            <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
+            {writeState === false && (
               <span>
-                답글쓰기 <span className="gray">최대 100자</span>
+                글쓰기 <span className="gray">최대 100자</span>
               </span>
             )}
-            {clickWrite === true && <strong>{profile.nickNm}</strong>}
+            {writeState === true && <strong>{profile.nickNm}</strong>}
           </div>
-          {clickWrite === true && (
+          {writeState === true && (
             <div className="content_area">
               <textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             </div>
           )}
         </div>
-        {clickWrite === true && (
+        {writeState === true && (
           <div className="writeWrap__btnWrap">
             <span className="bigCount">
               <span className="bigCount__secret">
                 <DalbitCheckbox
                   status={isScreet}
                   callback={() => {
-                    if (!setDonstChange) {
-                      setIsScreet(!isScreet)
-                    }
+                    setIsScreet(!isScreet)
                   }}
                 />
                 <span className="bold">비공개</span>
@@ -247,18 +230,21 @@ export default (props) => {
                 <em>{textChange.length}</em> / 100
               </span>
             </span>
-            <button className="btn__ok" onClick={() => fetchDataUploadReply()}>
+            <button className="btn__ok" onClick={() => fetchDataUpload()}>
               등록
             </button>
           </div>
         )}
-        <div
-          className="writeWrap__btn"
-          onClick={() => {
-            context.action.updateFanboardReplyNum(-1)
-          }}>
-          <button className="btn__toggle">접기</button>
-        </div>
+        {writeState === true && (
+          <div
+            className="writeWrap__btn"
+            onClick={() => {
+              context.action.updateFanboardReplyNum(-1)
+              setWriteState(false)
+            }}>
+            <button className="btn__toggle">접기</button>
+          </div>
+        )}
       </div>
 
       {/* 팬보드 리스트 영역 */}
@@ -266,15 +252,11 @@ export default (props) => {
       {totalCount !== 0 && <Content list={list} totalCount={totalCount} />}
 
       {/* 팬보드 작성영역 */}
-      {writeState && (
+      {/* {writeState && (
         <Writer>
           <Header>
             <h2 className="header-title">팬보드 쓰기</h2>
           </Header>
-          {/* <header>
-            <button onClick={WriteToggle}></button>
-            <span>팬보드 쓰기</span>
-          </header> */}
           <div className="content_area">
             <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
             <span className="bigCount">
@@ -297,7 +279,7 @@ export default (props) => {
             <button onClick={() => fetchDataUpload()}>등록</button>
           </div>
         </Writer>
-      )}
+      )} */}
     </div>
   )
 }

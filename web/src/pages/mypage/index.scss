@@ -611,8 +611,8 @@
                 letter-spacing: -0.35px;
                 margin-right: 4px;
                 border-radius: 12px;
-                border: solid 1px #632beb;
-                background-color: #632beb;
+                border: solid 1px $primary;
+                background-color: $primary;
                 &.isNotFan {
                   &::after {
                     display: inline-block;
@@ -651,9 +651,9 @@
               }
               .giftbutton {
                 background-color: #fff;
-                color: #632beb;
+                color: $primary;
                 em {
-                  color: #632beb;
+                  color: $primary;
                 }
               }
             }
@@ -813,6 +813,7 @@
         padding: 6px 16px;
         background-color: #fff;
         border-radius: 12px;
+        border: 1px solid $lightergray;
         .content_area {
           margin-top: 8px;
           & > textarea {
@@ -823,8 +824,25 @@
         }
       }
       &__header {
+        position: relative;
         display: flex;
         align-items: center;
+        &::after {
+          display: inline-block;
+          content: '';
+          position: absolute;
+          right: -5px;
+          top: 50%;
+          margin-top: -12px;
+          width: 24px;
+          height: 24px;
+          background: url('./static/ico-write.png') no-repeat 0 0;
+        }
+        &--active {
+          &::after {
+            display: none;
+          }
+        }
         > img {
           width: 32px;
           height: 32px;
@@ -889,6 +907,7 @@
             font-size: 12px;
             color: $gray;
             > em {
+              font-style: normal;
               color: $black;
             }
           }
@@ -903,6 +922,172 @@
           font-weight: 600;
           text-align: center;
           color: $white;
+        }
+      }
+    }
+    .listWrap {
+      height: 100%;
+      background-color: #eeeeee;
+
+      .list-count {
+        padding-left: 16px;
+        margin-bottom: 8px;
+        span:first-child {
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: normal;
+          text-align: left;
+          color: $black;
+          margin-right: 6px;
+        }
+        span:last-child {
+          font-size: 16px;
+          font-weight: 600;
+          letter-spacing: normal;
+          text-align: left;
+          color: $primary;
+        }
+      }
+      .list-item {
+        width: 100%;
+        background-color: #fff;
+        margin-top: 8px;
+        &:first-child {
+          margin-top: 0;
+        }
+        &.on {
+          margin-bottom: 0;
+        }
+        .detailwapper {
+          position: relative;
+        }
+        &__header {
+          position: relative;
+          display: flex;
+          padding: 10px 16px;
+          height: 60px;
+          .btn__more {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background: url('./static/ic_new_more.svg') no-repeat center center / cover;
+          }
+          .moreList {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            right: 24px;
+            top: 46px;
+
+            width: 80px;
+            border: 1px solid #e0e0e0;
+            background-color: #fff;
+            padding: 8px 0;
+            span {
+              height: 26px;
+              font-size: 14px;
+              line-height: 2.14;
+              letter-spacing: -0.35px;
+              text-align: center;
+              color: #757575;
+              :hover {
+                background-color: #f8f8f8;
+              }
+            }
+            &.on {
+              display: flex;
+              z-index: 56;
+            }
+          }
+          .thumb {
+            width: 40px;
+            height: 40px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+            border-radius: 50%;
+          }
+          .info {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            &__name {
+              height: 20px;
+              line-height: 20px;
+              max-width: 200px;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow-x: hidden;
+              font-size: 16px;
+              font-weight: 800;
+              text-align: left;
+              color: $black;
+            }
+            &__dt {
+              margin-top: 4px;
+              font-size: 12px;
+              text-align: left;
+              color: #9e9e9e;
+            }
+
+            &__lock {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              background: url('./static/lock_g.svg') no-repeat center;
+            }
+          }
+        }
+        &__content {
+          padding: 4px 65px 4px 16px;
+          font-size: 14px;
+          text-align: justify;
+          color: $black;
+          word-break: break-word;
+        }
+        &__bottom {
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          align-items: center;
+          height: 36px;
+          padding: 0 16px;
+          > button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            letter-spacing: normal;
+            text-align: left;
+            font-weight: bold;
+            color: #757575;
+            &::before {
+              display: block;
+              content: '';
+              width: 16px;
+              height: 16px;
+              margin-right: 6px;
+              background: url('./static/reply_g.svg') no-repeat center center / cover;
+            }
+            > em {
+              display: inline-block;
+              margin-left: 3px;
+              font-size: 14px;
+              font-weight: bold;
+              font-style: normal;
+              color: $black;
+            }
+          }
+          > a {
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: normal;
+            text-align: left;
+            color: $primary;
+          }
         }
       }
     }
@@ -953,7 +1138,7 @@
       font-weight: 800;
       letter-spacing: normal;
       text-align: center;
-      color: #000000;
+      color: $black;
       // > button {
       //   position: absolute;
       //   left: 6px;
@@ -975,7 +1160,7 @@
         height: 32px;
         border-radius: 16px;
         background-color: $primary;
-        :before {
+        &::before {
           display: block;
           background: url('./component/ic_write.svg') no-repeat center center / cover;
           content: '';
@@ -1042,7 +1227,7 @@
                 font-size: 16px;
                 font-weight: 800;
                 text-align: left;
-                color: #000000;
+                color: $black;
               }
               &__dt {
                 margin-top: 4px;
@@ -1055,6 +1240,7 @@
                 display: inline-block;
                 width: 16px;
                 height: 16px;
+                vertical-align: -2px;
                 background: url('./static/lock_g.svg') no-repeat center;
               }
             }
@@ -1097,7 +1283,7 @@
           font-size: 16px;
           font-weight: 800;
           text-align: left;
-          color: #000000;
+          color: $black;
         }
         span:last-child {
           margin-left: 10px;
@@ -1118,7 +1304,7 @@
       font-size: 14px;
       letter-spacing: normal;
       text-align: left;
-      color: #000000;
+      color: $black;
       word-break: break-all;
     }
     .ReplyCnt {
@@ -1137,8 +1323,8 @@
         font-weight: 800;
         letter-spacing: normal;
         text-align: left;
-        color: #000000;
-        :before {
+        color: $black;
+        &::before {
           display: block;
           content: '';
           width: 16px;
@@ -1152,7 +1338,7 @@
         font-weight: 600;
         letter-spacing: normal;
         text-align: left;
-        color: #632beb;
+        color: $primary;
       }
     }
   }
