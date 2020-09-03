@@ -29,7 +29,14 @@ export default (props) => {
       global_ctx.action.alert({
         msg: '로그인을 해주세요',
         callback: () => {
-          global_ctx.action.alert(history.push('/login'))
+          global_ctx.action.alert(
+            history.push({
+              pathname: '/login',
+              state: {
+                state: 'event_package'
+              }
+            })
+          )
         }
       })
   }
