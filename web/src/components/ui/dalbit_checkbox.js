@@ -70,6 +70,7 @@ const DalbitCheckboxWrap = styled.input`
     border-color: #fff;
     background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
     transition: 0.2s all ease 0s;
+    border: 1px solid #632beb;
 
     &::before,
     &::after {
