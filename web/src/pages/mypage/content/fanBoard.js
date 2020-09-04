@@ -9,7 +9,6 @@ import styled from 'styled-components'
 import qs from 'query-string'
 // context
 import {Context} from 'context'
-import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 //api
 import Api from 'context/api'
@@ -17,6 +16,7 @@ import Api from 'context/api'
 // import Header from '../component/header.js'
 import Header from 'components/ui/new_header.js'
 import Content from './fanBoard_content'
+import WriteBoard from './board_write'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
@@ -118,6 +118,13 @@ export default (props) => {
     } else {
     }
   }
+  const setAction = (value) => {
+    console.log('set', value)
+    if (value === true) {
+      currentPage = 1
+      fetchData()
+    }
+  }
   //재조회 및 초기조회
   useEffect(() => {
     currentPage = 1
@@ -192,8 +199,9 @@ export default (props) => {
   return (
     <div className="fanboard">
       <Header title="팬보드" />
+      <WriteBoard {...props} set={setAction} />
 
-      <div className="writeWrap">
+      {/* <div className="writeWrap">
         <div className="writeWrap__top">
           <div
             className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
@@ -245,7 +253,7 @@ export default (props) => {
             <button className="btn__toggle">접기</button>
           </div>
         )}
-      </div>
+      </div> */}
 
       {/* 팬보드 리스트 영역 */}
       {totalCount === 0 && <NoResult />}
@@ -284,113 +292,113 @@ export default (props) => {
   )
 }
 //STYLE
-const Writer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 22;
-  width: 100%;
-  height: 100vh;
-  background-color: #eeeeee;
-  header {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 100%;
-    background-color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: normal;
-    text-align: center;
-    color: #000000;
-    > button {
-      position: absolute;
-      left: 6px;
-      top: 0;
-      width: 40px;
-      height: 40px;
-      background: url(${closeBtn}) no-repeat center center / cover;
-    }
-  }
-  /* 팬보드 컨텐츠작성영역 */
-  .content_area {
-    display: flex;
-    flex-direction: column;
-    padding: 12px 16px;
+// const Writer = styled.div`
+//   position: fixed;
+//   top: 0;
+//   left: 0;
+//   z-index: 22;
+//   width: 100%;
+//   height: 100vh;
+//   background-color: #eeeeee;
+//   header {
+//     position: relative;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     height: 40px;
+//     width: 100%;
+//     background-color: #fff;
+//     font-size: 18px;
+//     font-weight: 800;
+//     letter-spacing: normal;
+//     text-align: center;
+//     color: #000000;
+//     > button {
+//       position: absolute;
+//       left: 6px;
+//       top: 0;
+//       width: 40px;
+//       height: 40px;
+//       background: url(${closeBtn}) no-repeat center center / cover;
+//     }
+//   }
+//   /* 팬보드 컨텐츠작성영역 */
+//   .content_area {
+//     display: flex;
+//     flex-direction: column;
+//     padding: 12px 16px;
 
-    :after {
-      content: '';
-      clear: both;
-      display: block;
-    }
-    > textarea {
-      width: 100%;
-      padding: 16px;
-      box-sizing: border-box;
-      min-height: 220px;
-      border-radius: 12px;
-      border: solid 1px #e0e0e0;
-      :focus {
-        border: solid 1px #000;
-      }
-      ::placeholder {
-        font-size: 14px;
-        letter-spacing: normal;
-        text-align: left;
-        color: #bdbdbd;
-      }
-    }
-    .bigCount {
-      > em {
-        color: #000;
-        font-style: normal;
-        font-weight: 800;
-      }
-      display: flex;
-      margin-right: 7px;
-      margin-top: 4px;
-      margin-bottom: 23px;
-      font-size: 12px;
-      line-height: 1.08;
-      letter-spacing: normal;
-      text-align: right;
-      color: #616161;
-      &__screet {
-        display: flex;
-        flex: 1;
-        align-items: center;
+//     :after {
+//       content: '';
+//       clear: both;
+//       display: block;
+//     }
+//     > textarea {
+//       width: 100%;
+//       padding: 16px;
+//       box-sizing: border-box;
+//       min-height: 220px;
+//       border-radius: 12px;
+//       border: solid 1px #e0e0e0;
+//       :focus {
+//         border: solid 1px #000;
+//       }
+//       ::placeholder {
+//         font-size: 14px;
+//         letter-spacing: normal;
+//         text-align: left;
+//         color: #bdbdbd;
+//       }
+//     }
+//     .bigCount {
+//       > em {
+//         color: #000;
+//         font-style: normal;
+//         font-weight: 800;
+//       }
+//       display: flex;
+//       margin-right: 7px;
+//       margin-top: 4px;
+//       margin-bottom: 23px;
+//       font-size: 12px;
+//       line-height: 1.08;
+//       letter-spacing: normal;
+//       text-align: right;
+//       color: #616161;
+//       &__screet {
+//         display: flex;
+//         flex: 1;
+//         align-items: center;
 
-        & > input {
-          margin-right: 10px;
-        }
+//         & > input {
+//           margin-right: 10px;
+//         }
 
-        & > .bold {
-          font-size: 14px;
-          font-weight: bold;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
+//         & > .bold {
+//           font-size: 14px;
+//           font-weight: bold;
+//         }
+//         span {
+//           font-size: 12px;
+//         }
+//       }
 
-      & > span:last-child {
-        display: flex;
-        align-items: center;
-      }
-    }
-    > button {
-      height: 44px;
-      border-radius: 12px;
-      background-color: ${COLOR_MAIN};
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      color: #ffffff;
-    }
-  }
-`
-const Textarea = styled.textarea``
-//최상위
-const FanBoard = styled.div``
+//       & > span:last-child {
+//         display: flex;
+//         align-items: center;
+//       }
+//     }
+//     > button {
+//       height: 44px;
+//       border-radius: 12px;
+//       background-color: ${COLOR_MAIN};
+//       font-size: 18px;
+//       font-weight: 600;
+//       text-align: center;
+//       color: #ffffff;
+//     }
+//   }
+// `
+// const Textarea = styled.textarea``
+// //최상위
+// const FanBoard = styled.div``
