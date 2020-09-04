@@ -1,0 +1,17 @@
+#AlarmPop {
+  padding: 32px 14px 16px 14px;
+  & > p {
+    margin-bottom: 24px;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+  }
+
+  & > button {
+    width: 100%;
+    padding: 13px 0;
+    border-radius: 12px;
+    color: #fff;
+    background-color: #632beb;
+  }
+}

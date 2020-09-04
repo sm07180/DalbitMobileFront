@@ -122,6 +122,11 @@ export default (props) => {
       )
     }
   }
+
+  const openPopup = (key) => {
+    context.action.updatePopup('ALARM', key)
+  }
+
   //---------------------------------------
   useEffect(() => {
     if (
@@ -186,7 +191,12 @@ export default (props) => {
         {alarmArray.map((v) => {
           return (
             <div key={v.key}>
-              <span className="guide" />
+              <span
+                className="guide"
+                onClick={() => {
+                  openPopup(v.key)
+                }}
+              />
               <h2>{v.text}</h2>
               <button
                 className={v.value === 1 ? 'on' : ''}

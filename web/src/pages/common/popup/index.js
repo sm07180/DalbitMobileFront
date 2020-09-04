@@ -16,6 +16,7 @@ import Guidance from 'pages/common/guidance'
 import AgreeDetail from 'pages/common/agree_detail'
 import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
+import AlarmPop from 'pages/common/alarm_pop'
 //
 export default (props) => {
   //state
@@ -85,7 +86,18 @@ export default (props) => {
             <ProofShot />
           </>
         )
-
+      case 'ALARM':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <AlarmPop />
+          </>
+        )
       default:
         return <div>팝업 컨텐츠가 정의되지않음</div>
     }
@@ -104,7 +116,7 @@ export default (props) => {
       setLayout('guidance')
     } else if (context.popup_code[0] === 'AGREEDETAIL') {
       setLayout('agreeDetail')
-    } else if (context.popup_code[0] == 'RANK_POP') {
+    } else if (context.popup_code[0] == 'RANK_POP' || context.popup_code[0] == 'ALARM') {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
       setLayout('proofShot')
