@@ -101,6 +101,7 @@ export default (props) => {
   // make contents
   const makePoupularList = () => {
     return popularList.map((item, idx) => {
+      if (!item) return null
       const {bgImg, clipNo, type, nickName} = item
       return (
         <li className="recomClipItem" key={`popular-` + idx} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
@@ -115,6 +116,7 @@ export default (props) => {
   const makeLatestList = () => {
     return latestList.map((item, idx) => {
       const {bgImg, clipNo, nickName, title} = item
+      if (!item) return null
       return (
         <div className="slideWrap" onClick={() => fetchDataPlay(clipNo)} key={`latest-` + idx} style={{cursor: 'pointer'}}>
           <div className="slideWrap__thumb">
@@ -131,6 +133,7 @@ export default (props) => {
   }
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
+      if (item.length === 0) return null
       let subjectMap = item[0].subjectType
       return (
         <div className="slideWrap" key={idx} style={{display: item.length !== 3 ? 'none' : 'block'}}>
@@ -245,7 +248,7 @@ export default (props) => {
         </div>
         {top3On && Object.keys(listTop3).length !== 0 && (
           <div className="categoryBest">
-            <Swiper {...swiperParamsBest}>{makeTop3List()}</Swiper>
+            <Swiper {...swiperParamsBest}>{listTop3 && makeTop3List()}</Swiper>
           </div>
         )}
         <div className="liveChart">
