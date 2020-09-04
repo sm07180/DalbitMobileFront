@@ -646,6 +646,8 @@ export default () => {
     document.addEventListener('clip-player-show', update)
     document.addEventListener('clip-player-end', update)
     document.addEventListener('clip-player-audio-end', update)
+    document.addEventListener('clip-player-start', update)
+    document.addEventListener('clip-player-pause', update)
 
     return () => {
       /*----native----*/
@@ -667,6 +669,8 @@ export default () => {
       document.removeEventListener('clip-player-show', update)
       document.removeEventListener('clip-player-end', update)
       document.removeEventListener('clip-player-audio-end', update)
+      document.removeEventListener('clip-player-start', update)
+      document.removeEventListener('clip-player-pause', update)
     }
   }, [])
   return (
