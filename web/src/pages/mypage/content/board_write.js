@@ -3,6 +3,7 @@
  */
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useParams} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 //modules
 import qs from 'query-string'
 // context
@@ -17,6 +18,8 @@ let timer
 let moreState = false
 //layout
 export default (props) => {
+  console.log(props.type)
+  let location = useLocation()
   const {webview} = qs.parse(location.search)
   const params = useParams()
 
@@ -28,7 +31,9 @@ export default (props) => {
   //profileGlobal info
   const {profile} = ctx
   //urlNumber
-  var urlrStr = props.location.pathname.split('/')[2]
+
+  var urlrStr = location.pathname.split('/')[2]
+  // var urlrStr = props.location.pathname.split('/')[2]
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
@@ -37,6 +42,7 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
   const [isOther, setIsOther] = useState(true)
+  const [writeType, setWriteType] = useState(true)
 
   //팬보드 댓글 온체인지
   const handleChangeBig = (e) => {
@@ -111,6 +117,7 @@ export default (props) => {
     currentPage = 1
     fetchData()
     props.set(true)
+    setWriteType('reply')
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
   useEffect(() => {
@@ -119,12 +126,21 @@ export default (props) => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
   }, [nextList])
+
   //팬보드 댓글추가
   async function fetchDataUpload() {
+    console.log(writeType)
+    let depth
+    if (writeType === 'reply') {
+      depth = 2
+    } else {
+      depth = 1
+    }
+    console.log('depth', depth)
     const res = await Api.mypage_fanboard_upload({
       data: {
         memNo: urlrStr,
-        depth: 1,
+        depth: depth,
         content: textChange,
         viewOn: isScreet === true ? 0 : 1
       }

@@ -17,6 +17,7 @@ import Api from 'context/api'
 import Header from 'components/ui/new_header'
 import ReplyList from './fanBoard_reply'
 import BoardItem from './board_item'
+import WriteBoard from './board_write'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
@@ -42,6 +43,7 @@ export default (props) => {
   const [ReplyWriteState, setReplyWriteState] = useState(false)
   const [checkIdx, setCheckIdx] = useState(0)
   const [titleReplyInfo, setTitleReplyInfo] = useState('')
+  const [boardReplyList, setBoardReplyList] = useState([])
   const [isScreet, setIsScreet] = useState(false)
   const [donstChange, setDonstChange] = useState(false)
   //modift msg
@@ -74,6 +76,10 @@ export default (props) => {
   }
   //정보 대댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
+    console.log(boardIdx, item, context.fanboardReplyNum)
+    context.action.updateReplyIdx(boardIdx)
+    setReplyWriteState(true)
+    fetchDataReplyList(boardIdx)
     //setTitleReplyInfo(item)
     if (context.fanboardReplyNum === boardIdx) {
       context.action.updateFanboardReplyNum(-1)
@@ -190,6 +196,27 @@ export default (props) => {
       // })
     }
   }
+  // 팬보드 댓글 조회
+  async function fetchDataReplyList(replyIdx) {
+    const res = await Api.member_fanboard_reply({
+      params: {
+        memNo: urlrStr,
+        boardNo: replyIdx
+      }
+    })
+    if (res.result === 'success') {
+      console.log(res.data.list)
+      setBoardReplyList(res.data.list)
+      // setFetching(false)
+    } else if (res.result === 'fail') {
+    }
+  }
+  useEffect(() => {
+    // fetchDataReplyList()
+    // if (isViewOn === 0) {
+    //   setIsScreet(true)
+    // }
+  }, [])
 
   //--------------------------------------------------------------------------
   return (
@@ -208,36 +235,54 @@ export default (props) => {
             TotalList !== false &&
             TotalList.map((item, index) => {
               const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx, viewOn} = item
-              const Link = () => {
-                if (webview) {
-                  context.token.memNo !== writerNo
-                    ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-                    : history.push(`/menu/profile`)
-                } else {
-                  context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
-                }
-              }
+              // const Link = () => {
+              //   if (webview) {
+              //     context.token.memNo !== writerNo
+              //       ? history.push(`/mypage/${writerNo}?webview=${webview}`)
+              //       : history.push(`/menu/profile`)
+              //   } else {
+              //     context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
+              //   }
+              // }
               return (
                 <>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                    <BoardItem key={index} data={item} set={props.set} />
-                    {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
-                      // <ReplyList
-                      //   isViewOn={viewOn}
-                      //   replyShowIdx={context.fanboardReplyNum}
-                      //   titleReplyInfo={context.fanboardReply}
-                      //   set={props.set}
-                      // />
-                      <BoardItem
-                        key={index}
-                        data={item}
-                        set={props.set}
-                        isViewOn={viewOn}
-                        replyShowIdx={context.fanboardReplyNum}
-                        titleReplyInfo={context.fanboardReply}
-                        set={props.set}
-                      />
-                    )}
+                    {item && <BoardItem key={index} data={item} set={props.set} />}
+
+                    <div className="list-item__bottom">
+                      <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                        {replyCnt > 0 ? (
+                          <>
+                            답글 <em>{replyCnt}</em>
+                          </>
+                        ) : (
+                          <>답글쓰기</>
+                        )}
+                      </button>
+                    </div>
+                    {context.fanboardReplyNum &&
+                      context.toggleState &&
+                      boardIdx === context.fanboardReplyNum &&
+                      boardReplyList &&
+                      boardReplyList !== false &&
+                      boardReplyList.map((item, index) => {
+                        return (
+                          <div className="reply-list">
+                            <BoardItem
+                              key={index}
+                              data={item}
+                              set={props.set}
+                              isViewOn={context.fanboardReply.viewOn}
+                              replyShowIdx={context.fanboardReplyNum}
+                              titleReplyInfo={context.fanboardReply}
+                            />
+                          </div>
+                        )
+                      })}
+                    {context.fanboardReplyNum &&
+                      context.toggleState &&
+                      boardIdx === context.fanboardReplyNum &&
+                      ReplyWriteState && <WriteBoard {...props} set={props.set} type={'reply'} />}
                   </div>
                 </>
 
@@ -314,37 +359,38 @@ export default (props) => {
             </Writer>
           )}
           {/* 대댓글 작성영역 */}
-          {ReplyWriteState && (
-            <Writer>
-              <div className="header-wrap">
-                <h2 className="header-title">답글 쓰기</h2>
-                <button className="close-btn" onClick={() => ReplyWrite(false)}>
-                  <img src={closeBtn} alt="뒤로가기" />
-                </button>
-              </div>
+          {/* {ReplyWriteState && (
+            <WriteBoard {...props} set={props.set} />
+            // <Writer>
+            //   <div className="header-wrap">
+            //     <h2 className="header-title">답글 쓰기</h2>
+            //     <button className="close-btn" onClick={() => ReplyWrite(false)}>
+            //       <img src={closeBtn} alt="뒤로가기" />
+            //     </button>
+            //   </div>
 
-              <div className="content_area">
-                <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
-                <span className="bigCount">
-                  <span className="bigCount__screet">
-                    <DalbitCheckbox
-                      status={isScreet}
-                      callback={() => {
-                        if (!setDonstChange) {
-                          setIsScreet(!isScreet)
-                        }
-                      }}
-                    />
-                    <span className="bold">비공개</span>
-                  </span>
-                  <span>
-                    <em>{textChange.length}</em>&nbsp;/ 100
-                  </span>
-                </span>
-                <button onClick={() => fetchDataUploadReply()}>등록</button>
-              </div>
-            </Writer>
-          )}
+            //   <div className="content_area">
+            //     <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
+            //     <span className="bigCount">
+            //       <span className="bigCount__screet">
+            //         <DalbitCheckbox
+            //           status={isScreet}
+            //           callback={() => {
+            //             if (!setDonstChange) {
+            //               setIsScreet(!isScreet)
+            //             }
+            //           }}
+            //         />
+            //         <span className="bold">비공개</span>
+            //       </span>
+            //       <span>
+            //         <em>{textChange.length}</em>&nbsp;/ 100
+            //       </span>
+            //     </span>
+            //     <button onClick={() => fetchDataUploadReply()}>등록</button>
+            //   </div>
+            // </Writer>
+          )} */}
         </>
         {/*대댓글 리스트영역*/}
       </div>

@@ -15,6 +15,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import Api from 'context/api'
 //components
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import WriteBoard from './board_write'
 //svg
 import BJicon from '../component/bj.svg'
 import WriteIcon from '../component/ic_write.svg'
@@ -274,11 +275,11 @@ export default (props) => {
         </div>
       </div>
        */}
-      {fetching === false && (
+      {/* {fetching === false && (
         <div className="ReplyCnt">
           <button onClick={() => ReplyInfoTransfer()}>{list.length > 0 ? <>답글 {list.length}</> : <>답글쓰기</>}</button>
         </div>
-      )}
+      )} */}
 
       <div className="reply_list">
         {list &&
@@ -341,8 +342,8 @@ export default (props) => {
               </div>
             )
           })}
-
-        <div className="writeWrap">
+        <WriteBoard set={props.set} />
+        {/* <div className="writeWrap">
           <div className="writeWrap__top">
             <div
               className="writeWrap__header"
@@ -393,7 +394,7 @@ export default (props) => {
             }}>
             <button className="btn__toggle">접기</button>
           </div>
-        </div>
+        </div> */}
         {/* <div className="reply_writeWrap">
           <div className="reply_writeWrap__top">
             <div
