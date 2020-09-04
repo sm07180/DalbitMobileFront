@@ -3,10 +3,9 @@ import styled from 'styled-components'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Layout from 'pages/common/layout/new_layout'
-import Header from 'components/ui/new_header'
 import qs from 'query-string'
 
-import iconBack from 'pages/menu/static/ic_close.svg'
+import iconBack from './static/ic_back.svg'
 
 import './clip.scss'
 
@@ -15,8 +14,8 @@ export default function fileloadTip(props) {
   const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
-    alert(isHybrid())
-    alert(webview)
+    // alert(isHybrid())
+    // alert(webview)
     if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
@@ -30,9 +29,9 @@ export default function fileloadTip(props) {
         <TipHeader>
           <div className="inner">
             <button className="close-btn" onClick={clickCloseBtn}>
-              <img src="iconBack" alt="뒤로가기" />
+              <img src={iconBack} alt="뒤로가기" />
             </button>
-            <h2>파일 업로드하는</h2>
+            <h2>파일 가져오는 방법</h2>
           </div>
         </TipHeader>
         <div id="clipPage">
@@ -80,5 +79,15 @@ const TipHeader = styled.div`
     text-align: center;
     line-height: 24px;
     letter-spacing: -0.45px;
+  }
+
+  .close-btn {
+    display: block;
+    position: absolute;
+    top: 50%;
+    margin-top: -20px;
+    left: 6px;
+    width: 36px;
+    cursor: pointer;
   }
 `
