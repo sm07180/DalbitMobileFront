@@ -12,6 +12,8 @@ export default function fileloadTip(props) {
   const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
+    alert(isHybrid());
+    alert(webview);
     if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
