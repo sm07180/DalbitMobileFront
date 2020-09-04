@@ -17,8 +17,21 @@ import NoResult from 'components/ui/noResult'
 //icon
 import alarmOn from '../component/ic_alarmtoggleon.svg'
 import alarmOff from '../component/ic_alarmtoggleoff.svg'
+import GuideIcon from '../static/guide.svg'
 let currentPage = 1
 let first = true
+
+const AlarmArray = [
+  {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림'},
+  {key: 'isGift', value: 0, text: '마이스타 방송공지 등록 알림'},
+  {key: 'isFan', value: 0, text: '신규 팬 추가 알림'},
+  {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림'},
+  {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림'},
+  {key: 'isRadio', value: 0, text: '선물 도착 알림'},
+  {key: 'isLike', value: 0, text: '공지 및 이벤트 알림'},
+  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림'}
+]
+
 export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
@@ -30,25 +43,39 @@ export default (props) => {
       params: {}
     })
     if (res.result === 'success') {
-      setAllBtnState(res.data)
+      setAlarmArray(
+        alarmArray.map((v) => {
+          v.value = res.data[v.key]
+          return v
+        })
+      )
+
       setMyAlimType(res.data.alimType)
       // first = false
     } else if (res.result === 'fail') {
     }
   }
+
   //수정
   async function fetchData() {
+    const AlarmObj = Object.fromEntries(
+      Array.from(alarmArray, (x) => {
+        return [x.key, x.value]
+      })
+    )
+    let all = 0
+    if (
+      alarmArray.every((v) => {
+        return v.value === 1
+      })
+    ) {
+      all = 1
+    }
     const res = await Api.appNotify_modify({
       data: {
-        isAll: btn1,
-        isMyStar: btn2,
-        isGift: btn3,
-        isFan: btn4,
-        isComment: btn5,
-        isRadio: btn6,
-        isPush: btn7,
-        isLike: btn8,
-        alimType: myAlimType
+        isAll: all,
+        alimType: myAlimType,
+        ...AlarmObj
       }
     })
     if (res.result === 'success') {
@@ -59,15 +86,11 @@ export default (props) => {
 
   //state
   const [allBtnState, setAllBtnState] = useState([])
-  const [btn1, setBtn1] = useState(0)
-  const [btn2, setBtn2] = useState(0)
-  const [btn3, setBtn3] = useState(0)
-  const [btn4, setBtn4] = useState(0)
-  const [btn5, setBtn5] = useState(0)
-  const [btn6, setBtn6] = useState(0)
-  const [btn7, setBtn7] = useState(0)
-  const [btn8, setBtn8] = useState(0)
+  const [allCheck, setAllCheck] = useState(0)
+
   const [myAlimType, setMyAlimType] = useState(-1)
+
+  const [alarmArray, setAlarmArray] = useState(AlarmArray)
 
   //func toggle btn
   const ToggleBtn = (value, name) => {
@@ -81,54 +104,49 @@ export default (props) => {
   // all toggle
   const Allcontroll = () => {
     first = false
-    if (btn1 === 0) {
-      setBtn1(1)
-      setBtn2(1)
-      setBtn3(1)
-      setBtn4(1)
-      setBtn5(1)
-      setBtn6(1)
-      setBtn7(1)
-      setBtn8(1)
-    } else if (btn1 === 1) {
-      setBtn1(0)
-      setBtn2(0)
-      setBtn3(0)
-      setBtn4(0)
-      setBtn5(0)
-      setBtn6(0)
-      setBtn7(0)
-      setBtn8(0)
+    if (allCheck === 0) {
+      setAllCheck(1)
+      setAlarmArray(
+        alarmArray.map((v) => {
+          v.value = 1
+          return v
+        })
+      )
+    } else if (allCheck === 1) {
+      setAllCheck(0)
+      setAlarmArray(
+        alarmArray.map((v) => {
+          v.value = 0
+          return v
+        })
+      )
     }
   }
   //---------------------------------------
   useEffect(() => {
-    if (btn2 === 1 && btn3 === 1 && btn4 === 1 && btn5 === 1 && btn6 === 1 && btn7 === 1 && btn8 === 1) {
-      setBtn1(1)
-    } else {
-      setBtn1(0)
+    if (
+      alarmArray.every((v) => {
+        return v.value === 1
+      })
+    )
+      setAllCheck(1)
+    else setAllCheck(0)
+
+    if (!first) {
+      fetchData()
     }
-  }, [btn2, btn3, btn4, btn5, btn6, btn7, btn8, myAlimType])
+  }, [alarmArray, myAlimType])
   //--------------------------------------
   useEffect(() => {
     fetchDataList()
+    return () => {
+      first = true
+    }
   }, [])
   //------------------------------------------
-  useEffect(() => {
-    if (!first) fetchData()
-  }, [btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, myAlimType])
+
   //------------------------------------------
-  useEffect(() => {
-    setBtn1(allBtnState.all_ok)
-    setBtn2(allBtnState.isMyStar)
-    setBtn3(allBtnState.isGift)
-    setBtn4(allBtnState.isFan)
-    setBtn5(allBtnState.isComment)
-    setBtn6(allBtnState.isRadio)
-    setBtn7(allBtnState.isPush)
-    setBtn8(allBtnState.isLike)
-    first = true
-  }, [allBtnState])
+
   // render func
 
   const makeContent = () => {
@@ -163,11 +181,36 @@ export default (props) => {
         </article>
         <div className="holeAlarm">
           <h2 className="on">전체 알림 수신</h2>
-          <button className={btn1 === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
+          <button className={allCheck === 1 ? 'on' : ''} onClick={() => Allcontroll()}></button>
         </div>
+        {alarmArray.map((v) => {
+          return (
+            <div key={v.key}>
+              <span className="guide" />
+              <h2>{v.text}</h2>
+              <button
+                className={v.value === 1 ? 'on' : ''}
+                onClick={() => {
+                  first = false
+                  setAlarmArray(
+                    alarmArray.map((v1) => {
+                      if (v.key === v1.key) {
+                        v.value = v.value === 0 ? 1 : 0
+                      }
+                      return v1
+                    })
+                  )
+                }}></button>
+            </div>
+          )
+        })}
+        {/* 
         <div>
-          <h2>DJ 방송 알림</h2>
-          <p>내가 스타로 등록한 DJ의 방송 알림</p>
+          <span className="guide" />
+          <div>
+            <h2>DJ 방송 알림</h2>
+            <p>내가 스타로 등록한 DJ의 방송 알림</p>
+          </div>
           <button
             className={btn2 === 1 ? 'on' : ''}
             value="btn2"
@@ -228,7 +271,7 @@ export default (props) => {
             value="btn8"
             name="setBtn8"
             onClick={() => ToggleBtn(btn8, setBtn8)}></button>
-        </div>
+        </div> */}
       </Content>
     )
   }
@@ -279,11 +322,10 @@ const Content = styled.div`
       }
     }
   }
-  & div {
+  & > div {
     position: relative;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
     min-height: 44px;
     padding: 9px 16px 9px 16px;
     margin-bottom: 4px;
@@ -297,12 +339,22 @@ const Content = styled.div`
         font-size: 18px;
       }
     }
+
+    span.guide {
+      display: block;
+      width: 32px;
+      height: 32px;
+      margin-right: 4px;
+      background: url(${GuideIcon}) no-repeat center center;
+    }
+
     h2 {
-      font-size: 14px;
+      font-size: 16px;
       color: #000;
       font-weight: 800;
       transform: skew(-0.03deg);
       letter-spacing: -0.35px;
+      line-height: 18px;
       &.on {
         font-weight: 800;
         color: #000;
