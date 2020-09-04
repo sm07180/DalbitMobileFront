@@ -88,11 +88,11 @@ export default (props) => {
             <Header title="방송 장비지원 이벤트" />
 
             <div className="content">
-              <img src="https://image.dalbitlive.com/event/package/20200904/img01.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200904/img02.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200904/img03.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200904/img04.jpg" />
-              <img src="https://image.dalbitlive.com/event/package/20200904/img05.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200904/content01.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200904/content02.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200904/content03.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200904/content04.jpg" />
+              <img src="https://image.dalbitlive.com/event/package/20200904/content05.jpg" />
 
               {viewType === PAGE_TYPE.MAIN && global_ctx.token.isLogin === true ? (
                 <>
