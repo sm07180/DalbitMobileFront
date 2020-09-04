@@ -136,11 +136,11 @@ export default (props) => {
                           <>
                             <span className="countBox__item">
                               <img src={StarCountIcon} />
-                              {Util.printNumber(starCnt)}
+                              <span style={{verticalAlign: 'middle'}}>{Util.printNumber(starCnt)}</span>
                             </span>
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(listenPoint)}
+                              <span style={{verticalAlign: 'middle'}}>{Util.printNumber(listenPoint)}</span>
                             </span>
                           </>
                         )}

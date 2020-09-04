@@ -12,7 +12,7 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
-import StarCountIcon from './static/circle_star_s_g.svg'
+import StarCountIcon from './static/circle_star_s.png'
 
 // constant
 import {RANK_TYPE, DATE_TYPE} from './constant'
@@ -161,13 +161,13 @@ export default (props) => {
                           {Util.printNumber(gift)}
                         </span> */}
                         <span className="countBox__item">
-                          <img src={StarCountIcon} />
-                          {Util.printNumber(starCnt)}
+                          <img src={StarCountIcon} width={16} />
+                          <span style={{verticalAlign: 'middle'}}>{Util.printNumber(starCnt)}</span>
                         </span>
 
                         <span className="countBox__item">
                           <img src={time} />
-                          {Util.printNumber(listenPoint)}
+                          <span style={{verticalAlign: 'middle'}}>{Util.printNumber(listenPoint)}</span>
                         </span>
                       </>
                     )}
