@@ -335,6 +335,9 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
+        if (__NODE_ENV === 'clip-player-show') {
+          alert('clip-player-audio-end')
+        }
         const dataString = JSON.stringify(event.detail)
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
@@ -349,6 +352,9 @@ export default () => {
         context.action.updateClipState(null)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-audio-end')
+        }
         let data = Utility.getCookie('clip-player-info')
         data = JSON.parse(data)
         data = {...data, playerState: 'ended'}
@@ -356,10 +362,17 @@ export default () => {
         context.action.updateClipPlayerState('ended')
         break
       case 'clip-player-start':
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-start')
+        }
         settingSessionInfo('playing')
         context.action.updateClipPlayerState('playing')
+
         break
       case 'clip-player-pause':
+        if (__NODE_ENV === 'dev') {
+          alert('clip-player-pause')
+        }
         settingSessionInfo('paused')
         context.action.updateClipPlayerState('paused')
         break
@@ -370,6 +383,9 @@ export default () => {
 
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
+    if (__NODE_ENV === 'dev') {
+      Hybrid('ClipTest', data)
+    }
     data = JSON.parse(data)
     data = {...data, playerState: type}
     Utility.setCookie('clip-player-info', JSON.stringify(data))
