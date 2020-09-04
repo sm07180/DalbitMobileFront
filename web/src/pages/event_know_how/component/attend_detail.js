@@ -27,9 +27,11 @@ function AttendDetail() {
   const context = useContext(Context)
   const {KnowHowState, KnowHowAction} = useContext(KnowHowContext)
 
-  const {list} = KnowHowState
+  const {list, order, condition} = KnowHowState
 
   const setList = KnowHowAction.setList
+  const setMyCnt = KnowHowAction.setMyCnt
+  const setMine = KnowHowAction.setMine
 
   const [detail, setDetail] = useState({})
   const [imgList, setImgList] = useState([])
@@ -135,14 +137,36 @@ function AttendDetail() {
           setTimeout(() => {
             context.action.alert({
               msg: '삭제가 완료 되었습니다.',
-              callback: () => {
-                setList(
+              callback: async () => {
+                if (
                   list.filter((v) => {
                     if (v.idx !== detail.idx) {
                       return v
                     }
+                  }).length === 0
+                ) {
+                  const res = await Api.knowhow_list({
+                    page: 1,
+                    records: 10000,
+                    slct_type: 0,
+                    slct_platform: condition,
+                    slct_order: order
                   })
-                )
+
+                  if (res.result === 'success') {
+                    setMine(0)
+                    setList(res.data.list)
+                    setMyCnt(res.data.myCnt)
+                  }
+                } else {
+                  setList(
+                    list.filter((v) => {
+                      if (v.idx !== detail.idx) {
+                        return v
+                      }
+                    })
+                  )
+                }
                 history.goBack()
               }
             })
@@ -151,7 +175,7 @@ function AttendDetail() {
         }
       }
     })
-  }, [detail])
+  }, [detail, condition, order])
 
   const MakeImgSlider = () => {
     return (

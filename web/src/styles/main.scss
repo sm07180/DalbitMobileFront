@@ -117,7 +117,7 @@
     &.my-star {
       display: none;
       padding: 20px 0 16px 16px;
-      background: #eee;
+      background: $lighterGray;
       &.visible {
         display: block;
       }
@@ -168,11 +168,11 @@
           width: 60px;
           height: 60px;
           border-radius: 50%;
-          color: $greishbrown;
+          color: $greishBrown;
           font-size: 16px;
           font-weight: 800;
           letter-spacing: -0.32px;
-          background-color: $gray;
+          background-color: $darkGray;
         }
 
         .text {
@@ -264,7 +264,7 @@
           line-height: 2.17;
           height: 13px;
           .text {
-            color: $greishbrown;
+            color: $greishBrown;
             font-size: 12px;
             letter-spacing: -0.3px;
             line-height: 2.17;
@@ -313,7 +313,7 @@
           justify-content: space-between;
           height: 64px;
           padding: 22px 0 16px 0;
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid $lighterGray;
           .btn {
             &__refresh {
               display: flex;
@@ -357,7 +357,7 @@
     flex-direction: row;
     align-items: center;
     background-color: $white;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $lighterGray;
 
     .swiper-wrapper {
       height: 40px;
@@ -375,7 +375,7 @@
           font-size: 14px;
           letter-spacing: -0.35px;
           margin: 0 8px;
-          color: $greishbrown;
+          color: $greishBrown;
           box-sizing: border-box;
           font-weight: normal;
           &.active {
@@ -404,13 +404,13 @@
       align-items: center;
 
       .txt {
-        color: $greishbrown;
+        color: $greishBrown;
         font-size: 18px;
         font-weight: bold;
         letter-spacing: -0.36px;
 
         &.in-active {
-          color: $lightgray;
+          color: $mediumGray;
         }
       }
       .rank-arrow {
@@ -465,7 +465,7 @@
       .text {
         margin-left: 4px;
         margin-right: 5px;
-        color: $greishbrown;
+        color: $greishBrown;
         font-size: 14px;
         letter-spacing: -0.24px;
       }
@@ -483,7 +483,7 @@
         //   top: 5px;
         //   width: 1px;
         //   height: 12px;
-        //   background: $lightergray;
+        //   background: $lightGray;
         //   margin-right: 8px;
         // }
       }
@@ -913,7 +913,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
-      background-color: #eee;
+      background-color: $lighterGray;
     }
 
     .broadcast-content {
@@ -977,7 +977,7 @@
       }
 
       .title {
-        color: $greishbrown;
+        color: $greishBrown;
         font-size: 14px;
         font-weight: bold;
         letter-spacing: -0.35px;
@@ -1002,7 +1002,7 @@
           display: flex;
           align-items: center;
           flex-direction: row;
-          color: $greishbrown;
+          color: $greishBrown;
           font-size: 11px;
           letter-spacing: -0.3px;
 
@@ -1024,7 +1024,7 @@
     min-height: 170px;
     margin: 0 0 4px 4px;
     border-radius: 16px;
-    background-color: #eee;
+    background-color: $lighterGray;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1048,7 +1048,7 @@
       width: calc(50% - 4px);
       height: 100%;
       border-radius: 16px;
-      background-color: #eee;
+      background-color: $lighterGray;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -1193,7 +1193,7 @@
       width: calc(50% - 4px);
       height: 100%;
       border-radius: 16px;
-      background-color: #eee;
+      background-color: $lighterGray;
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -1418,7 +1418,7 @@
   .searchBarWrapper {
     padding: 10px 16px;
     box-sizing: border-box;
-    background-color: #eee;
+    background-color: $lighterGray;
   }
   .contentWrap {
     .searchTab {
@@ -1560,7 +1560,7 @@
               font-style: normal;
               letter-spacing: -0.3px;
               text-align: left;
-              color: $greishbrown;
+              color: $greishBrown;
 
               :before {
                 margin-right: 2px;
@@ -1699,7 +1699,7 @@
               font-style: normal;
               letter-spacing: -0.3px;
               text-align: left;
-              color: $greishbrown;
+              color: $greishBrown;
               :before {
                 margin-right: 2px;
                 display: inline-block;
