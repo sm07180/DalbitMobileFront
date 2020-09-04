@@ -28,7 +28,7 @@ const AlarmArray = [
   {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림'},
   {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림'},
   {key: 'isRadio', value: 0, text: '선물 도착 알림'},
-  {key: 'isLike', value: 0, text: '공지 및 이벤트 알림'},
+  // {key: 'isLike', value: 0, text: '공지 및 이벤트 알림'},
   {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림'}
 ]
 
