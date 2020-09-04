@@ -59,7 +59,6 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
-    console.log(myUpDown)
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
