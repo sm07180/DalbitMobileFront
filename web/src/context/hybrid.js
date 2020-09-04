@@ -41,7 +41,9 @@ export const Hybrid = (func, info) => {
   if (!isHybrid()) return
 
   const customHeader = JSON.parse(Api.customHeader)
-
+  if (__NODE_ENV === 'dev') {
+    alert('js call' + func);
+  }
   switch (customHeader['os']) {
     // Android
     case OS_TYPE['Android']: {
@@ -62,6 +64,9 @@ export const Hybrid = (func, info) => {
     }
     // IOS
     case OS_TYPE['IOS']: {
+      if (__NODE_ENV === 'dev') {
+        alert('js call' + webkit.messageHandlers[func]);
+      }
       if (webkit === null || webkit === undefined) return
       if (info === '' || info === null || info === undefined) {
         //IOS는 string으로라도 넣어주어야함
