@@ -527,10 +527,21 @@
     padding-left: 15px;
 
     &__item {
+      display: inline-block;
       margin-right: 10px;
       font-size: 12px;
       letter-spacing: -0.3px;
       color: #424242;
+      .ico-people {
+        width: 16px;
+        height: 16px;
+      }
+      .count {
+        display: inline-block;
+        margin-left: 1px;
+        font-style: normal;
+        vertical-align: -1px;
+      }
     }
 
     &--profile {
@@ -750,9 +761,9 @@
               }
             }
 
-            .countBoxInner {
-              display: inline-block;
-            }
+            // .countBoxInner {
+            //   display: inline-block;
+            // }
           }
         }
       }

@@ -128,25 +128,23 @@ export default (props) => {
                           {Util.printNumber(djPoint)}
                         </span> */}
 
-                        <div className="countBoxInner">
-                          {/* <span className="countBox__item">
+                        {/* <span className="countBox__item">
                             <img src={star} />
                             {Util.printNumber(gift)}
                           </span> */}
-                          <span className="countBox__item">
-                            <img src={people} />
-                            {Util.printNumber(listenerPoint)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={like} />
-                            {Util.printNumber(goodPoint)}
-                          </span>
+                        <span className="countBox__item">
+                          <img src={people} className="ico-people" />
+                          <em className="count">{Util.printNumber(listenerPoint)}</em>
+                        </span>
+                        <span className="countBox__item">
+                          <img src={like} />
+                          <em className="count">{Util.printNumber(goodPoint)}</em>
+                        </span>
 
-                          <span className="countBox__item">
-                            <img src={time} />
-                            {Util.printNumber(broadcastPoint)}
-                          </span>
-                        </div>
+                        <span className="countBox__item">
+                          <img src={time} />
+                          <em className="count">{Util.printNumber(broadcastPoint)}</em>
+                        </span>
                       </>
                     )}
 
@@ -162,12 +160,12 @@ export default (props) => {
                         </span> */}
                         <span className="countBox__item">
                           <img src={StarCountIcon} width={16} />
-                          <span style={{verticalAlign: 'middle'}}>{Util.printNumber(starCnt)}</span>
+                          <em className="count">{Util.printNumber(starCnt)}</em>
                         </span>
 
                         <span className="countBox__item">
                           <img src={time} />
-                          <span style={{verticalAlign: 'middle'}}>{Util.printNumber(listenPoint)}</span>
+                          <em className="count">{Util.printNumber(listenPoint)}</em>
                         </span>
                       </>
                     )}
