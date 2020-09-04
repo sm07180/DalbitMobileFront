@@ -364,9 +364,7 @@ export default () => {
 
       case 'clip-player-start':
         let playerInfo = Utility.getCookie('clip-player-info')
-
-        Hybrid('ClipTest', '테스트')
-
+        Hybrid('ClipTest', 'clip-player-start')
         playerInfo = JSON.parse(playerInfo)
         playerInfo = {...playerInfo, playerState: 'playing'}
         Utility.setCookie('clip-player-info', JSON.stringify(playerInfo))
@@ -375,10 +373,8 @@ export default () => {
         break
       case 'clip-player-pause':
         let playerState = Utility.getCookie('clip-player-info')
-
-        Hybrid('ClipTest', '테스트')
-
-        playerState = JSON.parse(data)
+        Hybrid('ClipTest', 'clip-player-pause')
+        playerState = JSON.parse(playerState)
         playerState = {...playerState, playerState: 'paused'}
         Utility.setCookie('clip-player-info', JSON.stringify(playerState))
         context.action.updateClipPlayerState('paused')
