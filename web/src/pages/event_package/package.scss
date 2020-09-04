@@ -33,7 +33,7 @@
     }
   }
 
-  .wirteWrap {
+  .writeWrap {
     padding: 0px 16px;
     box-sizing: border-box;
     background: #eee;
@@ -58,11 +58,9 @@
       display: block;
       width: 100%;
       li {
-        display: flex;
-        align-content: center;
         height: 44px;
         border-radius: 12px;
-        padding: 0px 16px;
+        padding-left: 16px;
         box-sizing: border-box;
         margin-bottom: 4px;
         background: #fff;
@@ -71,22 +69,27 @@
       }
 
       &__title {
+        display: inline-block;
         font-size: 12px;
         color: #000;
         line-height: 44px;
+        width: 62px;
+        letter-spacing: -0.5px;
       }
     }
 
     input {
-      flex: 1;
-      margin-left: 20px;
+      display: inline-block;
+      width: calc(100% - 88px);
+      margin-left: 12px;
       background: #fff;
-      font-size: 14;
+      font-size: 12px;
       color: #333;
-      height: 42px;
-      line-height: 42px;
+      height: 40px;
+      line-height: 40px;
       box-sizing: border-box;
       font-weight: bold;
+      letter-spacing: -0.5px;
     }
 
     h3 {

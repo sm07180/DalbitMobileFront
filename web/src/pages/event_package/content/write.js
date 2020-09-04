@@ -42,7 +42,7 @@ export default (props) => {
     <div>
       <Header title="신청서 작성" />
 
-      <div className="wirteWrap">
+      <div className="writeWrap">
         <ul className="list">
           <li>
             <p className="list__title">이름(실명)</p>
@@ -74,7 +74,7 @@ export default (props) => {
           (최대 200자)
            "
           onChange={(e) => {
-            if (e.target.value.length < 200) {
+            if (e.target.value.length <= 200) {
               setContent(e.target.value)
             }
           }}

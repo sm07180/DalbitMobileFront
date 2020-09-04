@@ -2,7 +2,7 @@ import React, {useState, useEffect, useCallback, useContext, useRef} from 'react
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import API from 'context/api'
-
+import Layout from 'pages/common/layout'
 import Message from 'pages/common/message'
 import Popup from 'pages/common/popup'
 
@@ -119,110 +119,110 @@ export default () => {
   }
 
   return (
-    <div id="proofShot">
-      {(viewType === VIEW_TYPE.WRITE || viewType === VIEW_TYPE.MODIFY) && (
-        <Write
-          setViewType={setViewType}
-          viewType={viewType}
-          item={myList}
-          setScrollToList={setScrollToList}
-          fetchEventProofshotList={fetchEventProofshotList}
-          eventStatusCheck={eventStatusCheck}
-        />
-      )}
-      {viewType === VIEW_TYPE.MAIN && (
-        <>
-          <div className="title">
-            <h2>PC 방송 인증샷 이벤트</h2>
-            <button
-              onClick={() => {
-                history.push('/')
-              }}>
-              닫기
-            </button>
-          </div>
-          <div className="visualWrap" ref={VisualWrapRef}>
-            <div className="dayTextwrap">
-              <div className="day">
-                <span>참여기간: 2020.8.31 ~ 9.13</span>
-              </div>
-              <img src="https://image.dalbitlive.com/event/proofshot/20200226/content01.jpg" alt="pc 방송 인증샷 이벤트" />
-            </div>
-
-            <div className="visualWrap__ButtonWrap">
-              <img
-                src="https://image.dalbitlive.com/event/proofshot/20200226/new_visualcontent.jpg"
-                alt="이벤트 참여 기간에 pc로 10분 이상 방송하고 인증샷만 찍어서 선물 받아가자!"
-              />
-
+    <Layout status="no_gnb">
+      <div id="proofShot">
+        {(viewType === VIEW_TYPE.WRITE || viewType === VIEW_TYPE.MODIFY) && (
+          <Write
+            setViewType={setViewType}
+            viewType={viewType}
+            item={myList}
+            setScrollToList={setScrollToList}
+            fetchEventProofshotList={fetchEventProofshotList}
+            eventStatusCheck={eventStatusCheck}
+          />
+        )}
+        {viewType === VIEW_TYPE.MAIN && (
+          <>
+            <div className="title">
+              <h2>PC 방송 인증샷 이벤트</h2>
               <button
-                className="visualWrap__ButtonWrap--giftButton"
                 onClick={() => {
-                  global_ctx.action.updatePopup('PROOF_SHOT')
-                }}></button>
-
-              {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
-                <div className="visualWrap__ButtonWrap--writeButton">
-                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_off.png" alt="참여완료" />
-                </div>
-              ) : (
-                <button
-                  className="visualWrap__ButtonWrap--writeButton"
-                  onClick={() => {
-                    handleStatus('check')
-                  }}>
-                  <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_on.png" alt="참여하기" />
-                </button>
-              )}
-            </div>
-          </div>
-          <div className="tabWrap" ref={TabRef}>
-            <div className="tabWrap__button">
-              <button
-                className={`${tab === TAB_TYPE.ALL && 'active'} `}
-                onClick={() => {
-                  setTab(TAB_TYPE.ALL)
+                  history.push('/')
                 }}>
-                전체
+                닫기
               </button>
-              {statusObj.status === STATUS_TYPE.IMPOSSIBLE && global_ctx.token.isLogin && (
+            </div>
+            <div className="visualWrap" ref={VisualWrapRef}>
+              <div className="dayTextwrap">
+                <div className="day">
+                  <span>참여기간: 2020.8.31 ~ 9.13</span>
+                </div>
+                <img src="https://image.dalbitlive.com/event/proofshot/20200226/content01.jpg" alt="pc 방송 인증샷 이벤트" />
+              </div>
+
+              <div className="visualWrap__ButtonWrap">
+                <img
+                  src="https://image.dalbitlive.com/event/proofshot/20200226/new_visualcontent.jpg"
+                  alt="이벤트 참여 기간에 pc로 10분 이상 방송하고 인증샷만 찍어서 선물 받아가자!"
+                />
+
                 <button
-                  className={`${tab === TAB_TYPE.MINE && 'active'} `}
+                  className="visualWrap__ButtonWrap--giftButton"
                   onClick={() => {
-                    setTab(TAB_TYPE.MINE)
+                    global_ctx.action.updatePopup('PROOF_SHOT')
+                  }}></button>
+
+                {statusObj.status === STATUS_TYPE.IMPOSSIBLE ? (
+                  <div className="visualWrap__ButtonWrap--writeButton">
+                    <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_off.png" alt="참여완료" />
+                  </div>
+                ) : (
+                  <button
+                    className="visualWrap__ButtonWrap--writeButton"
+                    onClick={() => {
+                      handleStatus('check')
+                    }}>
+                    <img src="https://image.dalbitlive.com//event/proofshot/20200226/0228_button_on.png" alt="참여하기" />
+                  </button>
+                )}
+              </div>
+            </div>
+            <div className="tabWrap" ref={TabRef}>
+              <div className="tabWrap__button">
+                <button
+                  className={`${tab === TAB_TYPE.ALL && 'active'} `}
+                  onClick={() => {
+                    setTab(TAB_TYPE.ALL)
                   }}>
-                  나의 인증샷
+                  전체
                 </button>
+                {statusObj.status === STATUS_TYPE.IMPOSSIBLE && global_ctx.token.isLogin && (
+                  <button
+                    className={`${tab === TAB_TYPE.MINE && 'active'} `}
+                    onClick={() => {
+                      setTab(TAB_TYPE.MINE)
+                    }}>
+                    나의 인증샷
+                  </button>
+                )}
+              </div>
+              {tab === TAB_TYPE.ALL && (
+                <div className="tabWrap__listNumber">
+                  게시글 <p>{totalCnt}</p>
+                </div>
               )}
             </div>
+            <div className="hidden" ref={VisibleRef}></div>
             {tab === TAB_TYPE.ALL && (
-              <div className="tabWrap__listNumber">
-                게시글 <p>{totalCnt}</p>
-              </div>
+              <AllList
+                list={list}
+                isAdmin={isAdmin}
+                eventStatusCheck={eventStatusCheck}
+                fetchEventProofshotList={fetchEventProofshotList}
+              />
             )}
-          </div>
-          <div className="hidden" ref={VisibleRef}></div>
-          {tab === TAB_TYPE.ALL && (
-            <AllList
-              list={list}
-              isAdmin={isAdmin}
-              eventStatusCheck={eventStatusCheck}
-              fetchEventProofshotList={fetchEventProofshotList}
-            />
-          )}
-          {tab === TAB_TYPE.MINE && myList.length > 0 && (
-            <Mylist
-              item={myList[0]}
-              setTab={setTab}
-              setViewType={setViewType}
-              eventStatusCheck={eventStatusCheck}
-              isAdmin={isAdmin}
-            />
-          )}
-        </>
-      )}
-      <Message />
-      <Popup />
-    </div>
+            {tab === TAB_TYPE.MINE && myList.length > 0 && (
+              <Mylist
+                item={myList[0]}
+                setTab={setTab}
+                setViewType={setViewType}
+                eventStatusCheck={eventStatusCheck}
+                isAdmin={isAdmin}
+              />
+            )}
+          </>
+        )}
+      </div>
+    </Layout>
   )
 }

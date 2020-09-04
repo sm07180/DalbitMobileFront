@@ -2107,6 +2107,46 @@ export default class API {
     })
   }
 
+  static knowhow_insert = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/insert',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_detail = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/detail',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_like = async (data) => {
+    return await ajax({
+      url: '/event/good',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_delete = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_modify = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/update',
+      method: 'POST',
+      data: data
+    })
+  }
+
   static pay_coocon = async (obj) => {
     const {url, method, data} = obj || {}
     return await ajax({

@@ -15,6 +15,7 @@ import starIcon from '../static/ico_hit_g_s.svg'
 import Util from 'components/lib/utility.js'
 
 // static
+import PeopleIcon from '../static/people_g_s.svg'
 import EntryImg from '../static/person_w_s.svg'
 
 const makeContents = (props) => {
@@ -38,7 +39,8 @@ const makeContents = (props) => {
       boostCnt,
       rank,
       os,
-      isNew
+      isNew,
+      totalCnt
     } = list
 
     const alertCheck = (roomNo) => {
@@ -96,6 +98,11 @@ const makeContents = (props) => {
             <div className="nickname">{bjNickNm}</div>
             <div className="detail">
               <div className="value">
+                <img src={PeopleIcon} />
+                <span>{Util.printNumber(totalCnt)}</span>
+              </div>
+
+              <div className="value">
                 <img src={hitIcon} />
                 <span>{Util.printNumber(entryCnt)}</span>
               </div>
@@ -111,12 +118,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
-              {rank < 11 && (
+              {/* {rank < 11 && (
                 <div className="value">
                   <img src={starIcon} />
                   <span>{Util.printNumber(giftCnt)}</span>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         ) : (
