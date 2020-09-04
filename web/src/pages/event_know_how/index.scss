@@ -70,7 +70,7 @@
 
       &--contents {
         margin-top: 34px;
-        padding: 20px 18px;
+        padding: 4px 18px 20px 18px;
         background-color: #ffe69e;
         color: #242424;
         font-size: 12px;
@@ -78,6 +78,7 @@
         letter-spacing: -0.3px;
 
         .title {
+          margin-top: 16px;
           color: #242424;
           font-size: 14px;
           font-weight: bold;
@@ -97,10 +98,17 @@
 
   .mainTabWrap {
     display: flex;
+    background-color: #fff;
     border-top: 1px solid #eee;
+    &.fixed {
+      position: fixed;
+      top: 0px;
+      width: 100%;
+      z-index: 2;
+    }
     & > button {
       flex: 1;
-      height: 36px;
+      height: 39px;
       font-size: 16px;
       line-height: 18px;
 
@@ -111,12 +119,11 @@
       }
     }
   }
-
   .attendWrap {
     .tabWrap {
       &.fixed {
         position: fixed;
-        top: 0;
+        top: 40px;
         width: 100%;
         z-index: 2;
       }
@@ -334,7 +341,7 @@
         &--icons {
           display: flex;
           align-items: flex-end;
-          height: 24px;
+          height: 100%;
           font-size: 12px;
           & > span:not(:last-child) {
             margin-right: 8px;
@@ -746,6 +753,9 @@
 
     &__content {
       margin-top: 12px;
+      margin-bottom: 20px;
+      padding: 0 12px;
+      font-size: 14px;
       white-space: pre-line;
       word-break: break-word;
     }

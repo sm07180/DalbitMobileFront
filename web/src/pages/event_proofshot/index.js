@@ -222,8 +222,6 @@ export default () => {
             )}
           </>
         )}
-        <Message />
-        <Popup />
       </div>
     </Layout>
   )

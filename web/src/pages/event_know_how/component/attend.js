@@ -36,9 +36,10 @@ function Attend() {
   const setList = KnowHowAction.setList
   const {token} = context
 
+  const MainTabRef = useRef(null)
   const TabRef = useRef(null)
   const ListRef = useRef(null)
-
+  const HomeRef = useRef(null)
   const history = useHistory()
 
   const [refresh, setRefresh] = useState(false)
@@ -86,15 +87,33 @@ function Attend() {
 
   useEffect(() => {
     const scrollEv = () => {
-      if (TabRef.current) {
-        if (window.scrollY >= 77) {
-          if (TabRef.current.classList.length !== 2) {
-            TabRef.current.className = 'tabWrap fixed'
-            ListRef.current.style.marginTop = '101px'
+      if (tab === TAB_TYPE.ATTEND) {
+        if (TabRef.current) {
+          if (window.scrollY >= 40) {
+            if (TabRef.current.classList.length !== 2) {
+              TabRef.current.className = 'tabWrap fixed'
+              MainTabRef.current.className = 'mainTabWrap fixed'
+              ListRef.current.style.marginTop = '141px'
+            }
+          } else {
+            TabRef.current.className = 'tabWrap'
+            MainTabRef.current.className = 'mainTabWrap'
+            ListRef.current.style.marginTop = ''
           }
-        } else {
-          TabRef.current.className = 'tabWrap'
-          ListRef.current.style.marginTop = ''
+        }
+      }
+
+      if (tab === TAB_TYPE.HOME) {
+        if (HomeRef.current) {
+          if (window.scrollY >= 40) {
+            if (MainTabRef.current.classList.length !== 2) {
+              MainTabRef.current.className = 'mainTabWrap fixed'
+              HomeRef.current.style.marginTop = '40px'
+            }
+          } else {
+            MainTabRef.current.className = 'mainTabWrap'
+            HomeRef.current.style.marginTop = ''
+          }
         }
       }
     }
@@ -102,7 +121,7 @@ function Attend() {
     return () => {
       document.removeEventListener('scroll', scrollEv)
     }
-  }, [])
+  }, [tab])
 
   return (
     <>
@@ -115,9 +134,11 @@ function Attend() {
           닫기
         </button>
       </div>
-      <div className="mainTabWrap">{MakeMainTabWrap()}</div>
+      <div ref={MainTabRef} className="mainTabWrap">
+        {MakeMainTabWrap()}
+      </div>
       {tab === TAB_TYPE.HOME && (
-        <div className="home">
+        <div ref={HomeRef} className="home">
           <div className="home__top">
             <img src="https://image.dalbitlive.com/event/knowhow/20200902/img_event_top.png" />
             <div>
@@ -129,10 +150,10 @@ function Attend() {
             <div className="home__bottom--contents">
               <p className="title">선물 지급 안내</p>
               <p>
-                <span>· </span> 이벤트 종료 후 공지사항을 통해 당첨자 발표를 확인할 수 있습니다.
+                <span>· </span> 이벤트 종료 후 9월 22일 공지사항에서 당첨자를 발표합니다.
               </p>
               <p>
-                <span>· </span> 추천 순으로 1~3위를 선정하지 않고, 내부 회의를 통해 선정된 1~3위 당첨자에게 선물이 지급됩니다.
+                <span>· </span> 운영진 회의를 통해 1~3위를 선정합니다.
               </p>
               <p className="title">유의사항 안내</p>
               <p>

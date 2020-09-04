@@ -59,7 +59,7 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
-
+    console.log(myUpDown)
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
@@ -75,7 +75,7 @@ export default function MyProfile(props) {
       myUpDownName = `rankingChange__stop`
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
-  }, [])
+  }, [myInfo])
 
   useEffect(() => {
     const createMyRank = () => {
@@ -94,17 +94,6 @@ export default function MyProfile(props) {
       }
     }
     createMyRank()
-    // const windowScrollEvent = () => {
-    //   if (window.scrollY >= 140) {
-    //     setIsFixed(true)
-    //   } else {
-    //     setIsFixed(false)
-    //   }
-    // }
-    // window.addEventListener('scroll', windowScrollEvent)
-    // return () => {
-    //   window.removeEventListener('scroll', windowScrollEvent)
-    // }
   }, [])
 
   return (
@@ -168,7 +157,7 @@ export default function MyProfile(props) {
                       <div className="countBox countBox--profile">
                         {rankType == RANK_TYPE.DJ && (
                           <>
-                            <div className="countBox__block">
+                            {/* <div className="countBox__block">
                               <span className="countBox__item">
                                 <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                                 {Util.printNumber(myInfo.myPoint)}
@@ -177,7 +166,7 @@ export default function MyProfile(props) {
                                 <img src={peopleWhite} />
                                 {Util.printNumber(myInfo.myListenerPoint)}
                               </span>
-                            </div>
+                            </div> */}
 
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -195,10 +184,10 @@ export default function MyProfile(props) {
                         {rankType === RANK_TYPE.FAN && (
                           <>
                             <div className="countBox__block">
-                              <span className="countBox__item">
+                              {/* <span className="countBox__item">
                                 <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                                 {Util.printNumber(myInfo.myPoint)}
-                              </span>
+                              </span> */}
 
                               <span className="countBox__item">
                                 <img src={timeWhite} />
