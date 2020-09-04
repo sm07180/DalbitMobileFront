@@ -15,6 +15,7 @@ import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
+
 export default function MyProfile(props) {
   const {myInfo, rankType, dateType, setMyInfo} = props
   const history = useHistory()
@@ -59,7 +60,6 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
-    console.log(myUpDown)
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
