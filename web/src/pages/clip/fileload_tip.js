@@ -1,9 +1,12 @@
 import React, {useState, useContext, useEffect} from 'react'
+import styled from 'styled-components'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
-import Layout from 'pages/common/layout'
+import Layout from 'pages/common/layout/new_layout'
 import Header from 'components/ui/new_header'
 import qs from 'query-string'
+
+import iconBack from 'pages/menu/static/ic_close.svg'
 
 import './clip.scss'
 
@@ -12,8 +15,8 @@ export default function fileloadTip(props) {
   const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
-    alert(isHybrid());
-    alert(webview);
+    alert(isHybrid())
+    alert(webview)
     if (isHybrid() && webview && webview === 'new') {
       Hybrid('CloseLayerPopup')
     } else {
@@ -23,8 +26,15 @@ export default function fileloadTip(props) {
 
   return (
     <>
-      <Layout {...props} status="no_gnb" goback={clickCloseBtn}>
-        <Header title="파일 가져오는 방법" />
+      <Layout status="no_gnb">
+        <TipHeader>
+          <div className="inner">
+            <button className="close-btn" onClick={clickCloseBtn}>
+              <img src="iconBack" alt="뒤로가기" />
+            </button>
+            <h2>파일 업로드하는</h2>
+          </div>
+        </TipHeader>
         <div id="clipPage">
           <div className="fileTopBox">
             <div className="tipTabBox">
@@ -53,3 +63,22 @@ export default function fileloadTip(props) {
     </>
   )
 }
+
+const TipHeader = styled.div`
+  position: relative;
+  width: 100%;
+  height: 50px;
+  padding: 12px 16px;
+  color: #000;
+  background-color: #fff;
+  border-bottom: 1px solid #d2d2d2;
+  box-sizing: border-box;
+
+  h2 {
+    font-size: 18px;
+    color: #000;
+    text-align: center;
+    line-height: 24px;
+    letter-spacing: -0.45px;
+  }
+`
