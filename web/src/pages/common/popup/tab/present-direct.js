@@ -6,8 +6,8 @@ import Api from 'context/api'
 import {BroadCastStore} from '../../store'
 import Swiper from 'react-id-swiper'
 
-// const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
-const testData = [20, 50, 100, 500, 1000]
+const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
+// const testData = [20, 50, 100, 500, 1000]
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
@@ -68,8 +68,15 @@ export default (props) => {
         msg: '보낼 달 수량을 입력해 주세요'
       })
     }
-    // console.log(props)
-    // console.log('달 수  = ' + dalcount)
+    if (dalcount < 10) {
+      context.action.alert({
+        callback: () => {
+          return
+        },
+        msg: '직접입력 선물은 최소 10달 부터 선물이 가능합니다.'
+      })
+      return
+    }
     const res = await Api.member_gift_dal({
       data: {
         memNo: props.profile.memNo,
@@ -118,26 +125,26 @@ export default (props) => {
         <div>{`보유 달 ${broadcastProfileInfo.dalCnt}`} </div>
       </MyPoint>
       <Select>
-        {/* <Swiper {...swiperParams}> */}
-        {testData.map((data, idx) => {
-          return (
-            <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-              {data}
-            </PointButton>
-          )
-        })}
-        {/* </Swiper> */}
+        <Swiper {...swiperParams}>
+          {testData.map((data, idx) => {
+            return (
+              <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                {data}
+              </PointButton>
+            )
+          })}
+        </Swiper>
       </Select>
       <TextArea>
-        {/* <PointInput
+        <PointInput
           placeholder="직접 입력"
           type="number"
-          maxLength="5"
+          maxLength="10"
           value={text}
           onChange={handleChangeInput}
           onClick={() => _active('input')}
           active={active ? 'active' : ''}
-        /> */}
+        />
         <p>* 달 선물하기는 100% 전달됩니다.</p>
       </TextArea>
       <ButtonArea>

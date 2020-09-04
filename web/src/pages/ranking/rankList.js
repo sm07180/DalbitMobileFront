@@ -12,6 +12,10 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import StarCountIcon from './static/circle_star_s_g.svg'
+
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
 
 export default (props) => {
   const context = useContext(Context)
@@ -38,7 +42,8 @@ export default (props) => {
               djPoint,
               isSpecial,
               roomNo,
-              memNo
+              memNo,
+              starCnt
             } = item
             let genderName
             let upDownName
@@ -68,7 +73,7 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 1 && (
+                  {/* {rankType == 1 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -84,7 +89,7 @@ export default (props) => {
                         {Util.printNumber(fanPoint)}
                       </p>
                     </>
-                  )}
+                  )} */}
                 </div>
 
                 <div
@@ -108,7 +113,7 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {rankType == 1 && (
+                        {rankType === RANK_TYPE.DJ && (
                           <>
                             <span className="countBox__item">
                               <img src={people} />
@@ -127,8 +132,12 @@ export default (props) => {
                           </>
                         )}
 
-                        {rankType == 2 && (
+                        {rankType === RANK_TYPE.FAN && (
                           <>
+                            <span className="countBox__item">
+                              <img src={StarCountIcon} />
+                              {Util.printNumber(starCnt)}
+                            </span>
                             <span className="countBox__item">
                               <img src={time} />
                               {Util.printNumber(listenPoint)}

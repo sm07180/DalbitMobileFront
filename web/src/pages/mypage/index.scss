@@ -461,7 +461,7 @@
               font-style: normal;
               letter-spacing: normal;
               text-align: center;
-              color: $greishbrown;
+              color: $greishBrown;
               &--active {
                 &:after {
                   margin-left: 8px;
@@ -496,13 +496,13 @@
           margin: 8px auto 0;
           padding: 0 10px;
           border-radius: 14px;
-          border: solid 1px $lightergray;
+          border: solid 1px $lightGray;
           background-color: #f5f5f5;
           font-size: 12px;
           font-weight: 600;
           line-height: 28px;
           text-align: center;
-          color: $lightgray;
+          color: $mediumGray;
           letter-spacing: -0.6px;
           :before {
             display: block;
@@ -730,7 +730,7 @@
       display: block;
       background-color: $white;
       width: 100%;
-      color: $gray;
+      color: $darkGray;
       font-size: 14px;
       margin-top: 24px;
       height: 48px;

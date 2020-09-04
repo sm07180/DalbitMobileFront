@@ -12,6 +12,10 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import StarCountIcon from './static/circle_star_s_g.svg'
+
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
 
 export default (props) => {
   const history = useHistory()
@@ -42,7 +46,8 @@ export default (props) => {
                 isSpecial,
                 roomNo,
                 memNo,
-                holder
+                holder,
+                starCnt
               } = item
 
               let rankName
@@ -116,12 +121,12 @@ export default (props) => {
                     onClick={() => {
                       history.push(`/mypage/${memNo}`)
                     }}>
-                    {rankType == 1 && (
+                    {rankType == RANK_TYPE.DJ && (
                       <>
-                        <span className="countBox__item countBox__item--point">
+                        {/* <span className="countBox__item countBox__item--point">
                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
                           {Util.printNumber(djPoint)}
-                        </span>
+                        </span> */}
 
                         <div className="countBoxInner">
                           {/* <span className="countBox__item">
@@ -145,16 +150,21 @@ export default (props) => {
                       </>
                     )}
 
-                    {rankType == 2 && (
+                    {rankType == RANK_TYPE.FAN && (
                       <>
-                        <span className="countBox__item countBox__item--point">
+                        {/* <span className="countBox__item countBox__item--point">
                           <img src={point} />
                           {Util.printNumber(fanPoint)}
-                        </span>
+                        </span> */}
                         {/* <span className="countBox__item">
                           <img src={moon} />
                           {Util.printNumber(gift)}
                         </span> */}
+                        <span className="countBox__item">
+                          <img src={StarCountIcon} />
+                          {Util.printNumber(starCnt)}
+                        </span>
+
                         <span className="countBox__item">
                           <img src={time} />
                           {Util.printNumber(listenPoint)}

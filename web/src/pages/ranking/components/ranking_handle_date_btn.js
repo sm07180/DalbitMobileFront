@@ -130,7 +130,7 @@ export default function RankHandleDateBtn(props) {
 
       if (selectedYear === ye && selectedMonth === yM && selectedDay === yd) {
         setBtnActive({next: true, prev: false})
-      } else if (wYear === selectedYear && wMonth === selectedMonth && wDate === selectedWeek) {
+      } else if (selectedYear === currentYear && selectedMonth === currentMonth && selectedDay === currentDate) {
         setBtnActive({next: false, prev: true})
       } else {
         setBtnActive({next: true, prev: true})

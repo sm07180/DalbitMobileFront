@@ -42,7 +42,7 @@ export default (props) => {
     <div>
       <Header title="신청서 작성" />
 
-      <div className="wirteWrap">
+      <div className="writeWrap">
         <ul className="list">
           <li>
             <p className="list__title">이름(실명)</p>

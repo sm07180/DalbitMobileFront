@@ -33,7 +33,7 @@
     }
   }
 
-  .wirteWrap {
+  .writeWrap {
     padding: 0px 16px;
     box-sizing: border-box;
     background: #eee;
@@ -80,6 +80,7 @@
 
     input {
       display: inline-block;
+      width: calc(100% - 88px);
       margin-left: 12px;
       background: #fff;
       font-size: 12px;

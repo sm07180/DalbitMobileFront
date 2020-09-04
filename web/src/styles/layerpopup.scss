@@ -73,7 +73,7 @@
         font-size: 14px;
         letter-spacing: -0.35px;
         text-align: center;
-        color: $gray;
+        color: $darkGray;
       }
     }
     &__box {
@@ -308,7 +308,7 @@
           }
           &__ok {
             color: $white;
-            background-color: $lightgray;
+            background-color: $mediumGray;
             cursor: initial;
             &.on {
               background-color: $primary;
@@ -357,7 +357,7 @@
               width: 40px;
               height: 40px;
               border-radius: 50%;
-              background: $lightgray;
+              background: $mediumGray;
               background-size: cover;
             }
             &.nickNm {
