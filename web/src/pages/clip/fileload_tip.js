@@ -2,7 +2,7 @@ import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
 import {Hybrid, isHybrid} from 'context/hybrid'
-import Layout from 'pages/common/layout/new_layout'
+import Layout from 'pages/common/layout'
 import qs from 'query-string'
 
 import iconBack from './static/ic_back.svg'
