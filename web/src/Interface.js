@@ -339,36 +339,42 @@ export default () => {
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
-        context.action.updateClipPlayerState(event.detail.playerState)
+        // context.action.updateClipPlayerState(event.detail.playerState)
         context.action.updateClipPlayerInfo(event.detail)
-
-        // if (__NODE_ENV === 'dev') {
-        //   alert('clip-player-show' + dataString)
-        // }
         break
       case 'clip-player-end': //------------------------클립플레이어 end
-        // if (__NODE_ENV === 'dev') {
-        //   alert('clip-player-end')
-        // }
         Utility.setCookie('clip-player-info', '', -1)
         context.action.updateClipState(null)
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
-        // if (__NODE_ENV === 'dev') {
-        //   alert('clip-player-audio-end')
-        // }
         let data = Utility.getCookie('clip-player-info')
         data = JSON.parse(data)
         data = {...data, playerState: 'ended'}
         Utility.setCookie('clip-player-info', JSON.stringify(data))
         context.action.updateClipPlayerState('ended')
         break
+      case 'clip-player-start':
+        settingSessionInfo('playing')
+        context.action.updateClipPlayerState('playing')
+        break
+      case 'clip-player-pause':
+        settingSessionInfo('paused')
+        context.action.updateClipPlayerState('paused')
+        break
       default:
         break
     }
   }
+
+  const settingSessionInfo = (type) => {
+    let data = Utility.getCookie('clip-player-info')
+    data = JSON.parse(data)
+    data = {...data, playerState: type}
+    Utility.setCookie('clip-player-info', JSON.stringify(data))
+  }
+
   function getMemNo(redirect) {
     if (_.hasIn(context, 'profile.memNo')) {
       return context.profile.memNo
