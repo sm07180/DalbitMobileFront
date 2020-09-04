@@ -9,13 +9,17 @@ import './clip.scss'
 export default function fileloadTip(props) {
   const [tabState, setTabState] = useState(1)
 
-  const tipBack = () => {
-    Hybrid('clipTipBack')
+  const clickCloseBtn = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      window.history.back()
+    }
   }
 
   return (
     <>
-      <Layout {...props} status="no_gnb" goback={tipBack}>
+      <Layout {...props} status="no_gnb" goback={clickCloseBtn}>
         <Header title="파일 가져오는 방법" />
         <div id="clipPage">
           <div className="fileTopBox">
