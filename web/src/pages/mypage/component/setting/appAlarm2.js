@@ -7,18 +7,12 @@ import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-import Header from '../component/header.js'
-//room
-import Room, {RoomJoin} from 'context/room'
-//component
-import NoResult from 'components/ui/noResult'
+
+import Header from '../header.js'
 //icon
-import alarmOn from '../component/ic_alarmtoggleon.svg'
-import alarmOff from '../component/ic_alarmtoggleoff.svg'
-import GuideIcon from '../static/guide.svg'
-let currentPage = 1
+import alarmOn from '../ic_alarmtoggleon.svg'
+import alarmOff from '../ic_alarmtoggleoff.svg'
+import GuideIcon from '../../static/guide.svg'
 let first = true
 
 const AlarmArray = [
@@ -36,7 +30,6 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
   const context = useContext(Context)
-  const myMemNo = context.profile.memNo
   //api.
   async function fetchDataList() {
     const res = await Api.appNotify_list({
@@ -91,16 +84,6 @@ export default (props) => {
   const [myAlimType, setMyAlimType] = useState(-1)
 
   const [alarmArray, setAlarmArray] = useState(AlarmArray)
-
-  //func toggle btn
-  const ToggleBtn = (value, name) => {
-    first = false
-    if (value === 0) {
-      name(1)
-    } else {
-      name(0)
-    }
-  }
   // all toggle
   const Allcontroll = () => {
     first = false
@@ -141,16 +124,13 @@ export default (props) => {
       fetchData()
     }
   }, [alarmArray, myAlimType])
-  //--------------------------------------
+
   useEffect(() => {
     fetchDataList()
     return () => {
       first = true
     }
   }, [])
-  //------------------------------------------
-
-  //------------------------------------------
 
   // render func
 
@@ -214,84 +194,11 @@ export default (props) => {
             </div>
           )
         })}
-        {/* 
-        <div>
-          <span className="guide" />
-          <div>
-            <h2>DJ 방송 알림</h2>
-            <p>내가 스타로 등록한 DJ의 방송 알림</p>
-          </div>
-          <button
-            className={btn2 === 1 ? 'on' : ''}
-            value="btn2"
-            name="setBtn2"
-            onClick={() => ToggleBtn(btn2, setBtn2)}></button>
-        </div>
-
-        <div>
-          <h2>DJ 방송공지 알림</h2>
-          <p>스타로 등록한 DJ의 신규 방송공지 등록 알림</p>
-          <button
-            className={btn3 === 1 ? 'on' : ''}
-            value="btn3"
-            name="setBtn3"
-            onClick={() => ToggleBtn(btn3, setBtn3)}></button>
-        </div>
-        <div>
-          <h2>팬 알림</h2>
-          <p>새로운 팬이 추가된 경우 알림</p>
-          <button
-            className={btn4 === 1 ? 'on' : ''}
-            value="btn4"
-            name="setBtn4"
-            onClick={() => ToggleBtn(btn4, setBtn4)}></button>
-        </div>
-        <div>
-          <h2>팬보드 알림</h2>
-          <p>나의 팬보드에 새로운 글 등록 시 알림</p>
-          <button
-            className={btn5 === 1 ? 'on' : ''}
-            value="btn5"
-            name="setBtn5"
-            onClick={() => ToggleBtn(btn5, setBtn5)}></button>
-        </div>
-        <div>
-          <h2>선물 알림</h2>
-          <p>선물을 받았을 때 알림</p>
-          <button
-            className={btn6 === 1 ? 'on' : ''}
-            value="btn6"
-            name="setBtn6"
-            onClick={() => ToggleBtn(btn6, setBtn6)}></button>
-        </div>
-        <div>
-          <h2>1:1문의 답변 알림</h2>
-          <p>1:1문의에 답변이 등록된 경우 알림</p>
-          <button
-            className={btn7 === 1 ? 'on' : ''}
-            value="btn7"
-            name="setBtn7"
-            onClick={() => ToggleBtn(btn7, setBtn7)}></button>
-        </div>
-        <div>
-          <h2>서비스 알림</h2>
-          <p>기타 서비스 이용 관련 알림</p>
-          <button
-            className={btn8 === 1 ? 'on' : ''}
-            value="btn8"
-            name="setBtn8"
-            onClick={() => ToggleBtn(btn8, setBtn8)}></button>
-        </div> */}
       </Content>
     )
   }
   //-----------------------------------------------------------------------------
-  return (
-    <>
-      <Header title="Push 알림 설정" />
-      {allBtnState !== null && makeContent()}
-    </>
-  )
+  return <>{allBtnState !== null && makeContent()}</>
 }
 // styled
 const Content = styled.div`
@@ -299,7 +206,7 @@ const Content = styled.div`
   width: 100%;
   flex-direction: column;
   background-color: #eeeeee;
-  padding: 10px 16px 0 16px;
+
   box-sizing: border-box;
   .soundSetting {
     display: flex;

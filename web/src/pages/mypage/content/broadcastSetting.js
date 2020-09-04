@@ -11,10 +11,11 @@ import {Context} from 'context'
 import SelectBoxs from 'components/ui/selectBox.js'
 
 //component
+import AppAlarm from '../component/setting/appAlarm2'
+import BroadCastSetting from '../component/setting/broadcast'
 import BanWord from '../component/setting/banWord'
 import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
-
 //constant
 import {BC_SETTING_TYPE} from '../constant'
 
@@ -35,21 +36,17 @@ export default (props) => {
   const context = useContext(Context)
 
   //state
-  const [currentMenu, setCurrentMenu] = useState(selectBoxData[0])
   const [initialScreen, setInitialScreen] = useState(true)
   const [changeContents, setChangeContents] = useState(0)
   //-----------------------------------------------------------------------------
   //function
-  const selectMenu = (e) => {
-    setCurrentMenu(selectBoxData[e])
-  }
 
   const createContent = () => {
     switch (changeContents) {
       case BC_SETTING_TYPE.PUSH:
-        return <h1>푸쉬</h1>
+        return <AppAlarm />
       case BC_SETTING_TYPE.BROADCAST:
-        return <h1>방송/청취</h1>
+        return <BroadCastSetting />
       case BC_SETTING_TYPE.BANWORD:
         return <BanWord />
       case BC_SETTING_TYPE.MANAGER:
@@ -101,16 +98,6 @@ export default (props) => {
                 </button>
               )
             })}
-
-            {/* <button onClick={() => ToggleContents(0)}>
-              금지어 관리<a></a>
-            </button>
-            <button onClick={() => ToggleContents(1)}>
-              매니저 관리<a></a>
-            </button>
-            <button onClick={() => ToggleContents(2)}>
-              차단회원 관리<a></a>
-            </button> */}
           </div>
         )}
         {initialScreen === false && createContent()}
@@ -120,7 +107,7 @@ export default (props) => {
 }
 // styled
 const Content = styled.div`
-  padding: 12px 16px 0 16px;
+  padding-top: 16px;
   .initial_contents {
     display: flex;
     flex-direction: column;
@@ -128,8 +115,7 @@ const Content = styled.div`
       position: relative;
       width: 100%;
       height: 44px;
-      margin-bottom: 4px;
-      border-radius: 12px;
+      margin-bottom: 1px;
       background-color: #fff;
       text-align: left;
       padding: 0 0 0 16px;
