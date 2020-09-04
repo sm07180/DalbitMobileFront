@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 import qs from 'query-string'
