@@ -15,13 +15,18 @@ import BanWord from '../component/setting/banWord'
 import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
 
+//constant
+import {BC_SETTING_TYPE} from '../constant'
+
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
 import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
-  {value: 0, text: '금지어 관리'},
-  {value: 1, text: '매니저 관리'},
-  {value: 2, text: '차단회원 관리'}
+  {value: BC_SETTING_TYPE.PUSH, text: 'Push 알림 설정'},
+  {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
+  {value: BC_SETTING_TYPE.BANWORD, text: '금지어 관리'},
+  {value: BC_SETTING_TYPE.MANAGER, text: '매니저 관리'},
+  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'}
 ]
 
 export default (props) => {
@@ -41,16 +46,16 @@ export default (props) => {
 
   const createContent = () => {
     switch (changeContents) {
-      case 0:
+      case BC_SETTING_TYPE.PUSH:
+        return <h1>푸쉬</h1>
+      case BC_SETTING_TYPE.BROADCAST:
+        return <h1>방송/청취</h1>
+      case BC_SETTING_TYPE.BANWORD:
         return <BanWord />
-        break
-      case 1:
+      case BC_SETTING_TYPE.MANAGER:
         return <Manager />
-        break
-      case 2:
+      case BC_SETTING_TYPE.BLACKLIST:
         return <Blacklist />
-        break
-
       default:
         break
     }
@@ -74,9 +79,12 @@ export default (props) => {
       <div className="header-wrap">
         <h2 className="header-title">
           {initialScreen && '방송설정'}
-          {initialScreen === false && changeContents == 0 && '금지어 관리'}
-          {initialScreen === false && changeContents == 1 && '매니저 관리'}
-          {initialScreen === false && changeContents == 2 && '차단회원 관리'}
+
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH && 'PUSH 알림 설정'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && '방송 / 청취 설정'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BANWORD && '금지어 관리'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.MANAGER && '매니저 관리'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BLACKLIST && '차단회원 관리'}
         </h2>
         <button className="close-btn" onClick={BackFunction}>
           <img src={closeBtn} alt="뒤로가기" />
@@ -85,7 +93,16 @@ export default (props) => {
       <Content>
         {initialScreen && (
           <div className="initial_contents">
-            <button onClick={() => ToggleContents(0)}>
+            {selectBoxData.map((v, idx) => {
+              return (
+                <button key={idx} onClick={() => ToggleContents(v.value)}>
+                  {v.text}
+                  <a></a>
+                </button>
+              )
+            })}
+
+            {/* <button onClick={() => ToggleContents(0)}>
               금지어 관리<a></a>
             </button>
             <button onClick={() => ToggleContents(1)}>
@@ -93,7 +110,7 @@ export default (props) => {
             </button>
             <button onClick={() => ToggleContents(2)}>
               차단회원 관리<a></a>
-            </button>
+            </button> */}
           </div>
         )}
         {initialScreen === false && createContent()}
