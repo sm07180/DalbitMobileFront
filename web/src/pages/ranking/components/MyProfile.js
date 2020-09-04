@@ -59,7 +59,7 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
-
+    console.log(myUpDown)
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
@@ -75,7 +75,7 @@ export default function MyProfile(props) {
       myUpDownName = `rankingChange__stop`
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
-  }, [])
+  }, [myInfo])
 
   useEffect(() => {
     const createMyRank = () => {
