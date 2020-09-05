@@ -2459,6 +2459,13 @@ export default class API {
   static getMyPageNewWallet = async () => {
     return await ajax({url: '/mypage/new/wallet', method: 'get'})
   }
+
+  static getBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option?optionType=${data.optionType}`,
+      method: 'GET'
+    })
+  }
 }
 
 API.customHeader = null

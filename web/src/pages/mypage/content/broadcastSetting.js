@@ -18,7 +18,7 @@ import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
 //constant
 import {BC_SETTING_TYPE} from '../constant'
-
+import {SETTING_TYPE} from '../constant'
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
 import closeBtn from '../component/ic_back.svg'
@@ -38,6 +38,7 @@ export default (props) => {
   //state
   const [initialScreen, setInitialScreen] = useState(true)
   const [changeContents, setChangeContents] = useState(0)
+  const [subContents, setSubContents] = useState(-1)
   //-----------------------------------------------------------------------------
   //function
 
@@ -46,7 +47,7 @@ export default (props) => {
       case BC_SETTING_TYPE.PUSH:
         return <AppAlarm />
       case BC_SETTING_TYPE.BROADCAST:
-        return <BroadCastSetting />
+        return <BroadCastSetting subContents={subContents} setSubContents={setSubContents} />
       case BC_SETTING_TYPE.BANWORD:
         return <BanWord />
       case BC_SETTING_TYPE.MANAGER:
@@ -65,7 +66,11 @@ export default (props) => {
   // 백버튼
   const BackFunction = () => {
     if (initialScreen === false) {
-      setInitialScreen(true)
+      if (changeContents === BC_SETTING_TYPE.BROADCAST && subContents !== -1) {
+        setSubContents(-1)
+      } else {
+        setInitialScreen(true)
+      }
     } else {
       window.history.back()
     }
@@ -78,7 +83,19 @@ export default (props) => {
           {initialScreen && '방송설정'}
 
           {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH && 'PUSH 알림 설정'}
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && '방송 / 청취 설정'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && (
+            <>
+              {subContents === SETTING_TYPE.TITLE
+                ? '방송 제목 설정'
+                : subContents === SETTING_TYPE.WELCOME
+                ? 'DJ 인사말 설정'
+                : subContents === SETTING_TYPE.SHORT_MSG
+                ? '퀵 메시지 설정'
+                : subContents === SETTING_TYPE.JOIN_CLOSE
+                ? '입장 / 퇴장 메시지 설정'
+                : '방송 / 청취 설정'}
+            </>
+          )}
           {initialScreen === false && changeContents === BC_SETTING_TYPE.BANWORD && '금지어 관리'}
           {initialScreen === false && changeContents === BC_SETTING_TYPE.MANAGER && '매니저 관리'}
           {initialScreen === false && changeContents === BC_SETTING_TYPE.BLACKLIST && '차단회원 관리'}
