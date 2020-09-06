@@ -51,6 +51,9 @@ export default (props) => {
         }
       }
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   // 플레이가공

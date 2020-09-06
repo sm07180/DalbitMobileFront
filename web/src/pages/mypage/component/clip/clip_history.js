@@ -22,7 +22,7 @@ export default function ClipHistory() {
   const [historyTab, setHistoryTab] = useState(0)
   // fetch data
   const fetchDataList = async () => {
-    const {result, data} = await Api.getHistoryList({
+    const {result, data, message} = await Api.getHistoryList({
       memNo: context.profile.memNo,
       records: 100,
       slctType: historyTab
@@ -35,16 +35,22 @@ export default function ClipHistory() {
       }
     } else {
       setHistoryLoading(false)
+      context.action.alert({
+        msg: message
+      })
     }
   }
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
-    const {result, data} = await Api.postClipPlay({
+    const {result, data, message} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
       clipJoin(data, context)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   // make contents

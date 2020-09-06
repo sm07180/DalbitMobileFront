@@ -59,43 +59,59 @@ export default (props) => {
   const [clipTypeActive, setClipTypeActive] = useState('')
   //api func
   const fetchDataListPopular = async () => {
-    const {result, data} = await Api.getPopularList({})
+    const {result, data, message} = await Api.getPopularList({})
     if (result === 'success') {
       setPopularList(data.list)
       setPopularType(data.type)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   const fetchDataListLatest = async () => {
-    const {result, data} = await Api.getLatestList({})
+    const {result, data, message} = await Api.getLatestList({})
     if (result === 'success') {
       setLatestList(data.list)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   const fetchDataListTop3 = async () => {
-    const {result, data} = await Api.getMainTop3List({})
+    const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
       setTop3On(true)
       setListTop3(data)
+    } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   const fetchDataClipType = async () => {
-    const {result, data} = await Api.getClipType({})
+    const {result, data, message} = await Api.getClipType({})
     if (result === 'success') {
       setClipType(data)
       setTop3On(true)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
-    const {result, data} = await Api.postClipPlay({
+    const {result, data, message} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
       clipJoin(data, context)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   // make contents
