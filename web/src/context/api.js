@@ -2467,6 +2467,52 @@ export default class API {
   static getMyPageNewWallet = async () => {
     return await ajax({url: '/mypage/new/wallet', method: 'get'})
   }
+
+  static getBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option?optionType=${data.optionType}`,
+      method: 'GET'
+    })
+  }
+
+  static insertBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option/add`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static deleteBroadcastOption = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/option/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static modifyBroadcastOption = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/option/edit',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static getBroadcastSetting = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/setting',
+      method: 'GET'
+    })
+  }
+
+  static modifyBroadcastSetting = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/setting/edit',
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null

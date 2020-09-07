@@ -11,17 +11,23 @@ import {Context} from 'context'
 import SelectBoxs from 'components/ui/selectBox.js'
 
 //component
+import AppAlarm from '../component/setting/appAlarm2'
+import BroadCastSetting from '../component/setting/broadcast'
 import BanWord from '../component/setting/banWord'
 import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
-
+//constant
+import {BC_SETTING_TYPE} from '../constant'
+import {SETTING_TYPE} from '../constant'
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
 import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
-  {value: 0, text: '금지어 관리'},
-  {value: 1, text: '매니저 관리'},
-  {value: 2, text: '차단회원 관리'}
+  {value: BC_SETTING_TYPE.PUSH, text: 'Push 알림 설정'},
+  {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
+  {value: BC_SETTING_TYPE.BANWORD, text: '금지어 관리'},
+  {value: BC_SETTING_TYPE.MANAGER, text: '매니저 관리'},
+  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'}
 ]
 
 export default (props) => {
@@ -30,27 +36,24 @@ export default (props) => {
   const context = useContext(Context)
 
   //state
-  const [currentMenu, setCurrentMenu] = useState(selectBoxData[0])
   const [initialScreen, setInitialScreen] = useState(true)
   const [changeContents, setChangeContents] = useState(0)
+  const [subContents, setSubContents] = useState(-1)
   //-----------------------------------------------------------------------------
   //function
-  const selectMenu = (e) => {
-    setCurrentMenu(selectBoxData[e])
-  }
 
   const createContent = () => {
     switch (changeContents) {
-      case 0:
+      case BC_SETTING_TYPE.PUSH:
+        return <AppAlarm />
+      case BC_SETTING_TYPE.BROADCAST:
+        return <BroadCastSetting subContents={subContents} setSubContents={setSubContents} />
+      case BC_SETTING_TYPE.BANWORD:
         return <BanWord />
-        break
-      case 1:
+      case BC_SETTING_TYPE.MANAGER:
         return <Manager />
-        break
-      case 2:
+      case BC_SETTING_TYPE.BLACKLIST:
         return <Blacklist />
-        break
-
       default:
         break
     }
@@ -63,7 +66,11 @@ export default (props) => {
   // 백버튼
   const BackFunction = () => {
     if (initialScreen === false) {
-      setInitialScreen(true)
+      if (changeContents === BC_SETTING_TYPE.BROADCAST && subContents !== -1) {
+        setSubContents(-1)
+      } else {
+        setInitialScreen(true)
+      }
     } else {
       window.history.back()
     }
@@ -74,9 +81,24 @@ export default (props) => {
       <div className="header-wrap">
         <h2 className="header-title">
           {initialScreen && '방송설정'}
-          {initialScreen === false && changeContents == 0 && '금지어 관리'}
-          {initialScreen === false && changeContents == 1 && '매니저 관리'}
-          {initialScreen === false && changeContents == 2 && '차단회원 관리'}
+
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH && 'PUSH 알림 설정'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && (
+            <>
+              {subContents === SETTING_TYPE.TITLE
+                ? '방송 제목 설정'
+                : subContents === SETTING_TYPE.WELCOME
+                ? 'DJ 인사말 설정'
+                : subContents === SETTING_TYPE.SHORT_MSG
+                ? '퀵 메시지 설정'
+                : subContents === SETTING_TYPE.JOIN_CLOSE
+                ? '입장 / 퇴장 메시지 설정'
+                : '방송 / 청취 설정'}
+            </>
+          )}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BANWORD && '금지어 관리'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.MANAGER && '매니저 관리'}
+          {initialScreen === false && changeContents === BC_SETTING_TYPE.BLACKLIST && '차단회원 관리'}
         </h2>
         <button className="close-btn" onClick={BackFunction}>
           <img src={closeBtn} alt="뒤로가기" />
@@ -85,15 +107,14 @@ export default (props) => {
       <Content>
         {initialScreen && (
           <div className="initial_contents">
-            <button onClick={() => ToggleContents(0)}>
-              금지어 관리<a></a>
-            </button>
-            <button onClick={() => ToggleContents(1)}>
-              매니저 관리<a></a>
-            </button>
-            <button onClick={() => ToggleContents(2)}>
-              차단회원 관리<a></a>
-            </button>
+            {selectBoxData.map((v, idx) => {
+              return (
+                <button key={idx} onClick={() => ToggleContents(v.value)}>
+                  {v.text}
+                  <a></a>
+                </button>
+              )
+            })}
           </div>
         )}
         {initialScreen === false && createContent()}
@@ -103,7 +124,7 @@ export default (props) => {
 }
 // styled
 const Content = styled.div`
-  padding: 12px 16px 0 16px;
+  padding-top: 16px;
   .initial_contents {
     display: flex;
     flex-direction: column;
@@ -111,8 +132,7 @@ const Content = styled.div`
       position: relative;
       width: 100%;
       height: 44px;
-      margin-bottom: 4px;
-      border-radius: 12px;
+      margin-bottom: 1px;
       background-color: #fff;
       text-align: left;
       padding: 0 0 0 16px;
