@@ -1075,6 +1075,11 @@
               margin-right: 6px;
               background: url('./static/reply_g.svg') no-repeat center center / cover;
             }
+            &--isActive {
+              &::before {
+                background: url('./static/ic_reply_purple.svg') no-repeat center center / cover;
+              }
+            }
             > em {
               display: inline-block;
               margin-left: 3px;
@@ -1087,7 +1092,7 @@
         }
       }
       .reply-list {
-        padding: 12px 16px;
+        padding: 12px 0 12px 16px;
         background-color: #fbfbfb;
         border-top: 1px solid $lighterGray;
         .thumb {

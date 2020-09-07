@@ -27,7 +27,6 @@ import MoreBtnIcon from '../static/ic_new_more.svg'
 import LockIcon from '../static/lock_g.svg'
 //--------------------------------------------------------------------------
 export default (props) => {
-  console.log(props)
   // context && location
   const history = useHistory()
   let location = useLocation()
@@ -40,7 +39,7 @@ export default (props) => {
   //state
   const [thisBigIdx, setThisBigIdx] = useState(0)
   const [writeState, setWriteState] = useState(false)
-  const [ReplyWriteState, setReplyWriteState] = useState(false)
+  const [replyWriteState, setReplyWriteState] = useState(false)
   const [checkIdx, setCheckIdx] = useState(0)
   const [titleReplyInfo, setTitleReplyInfo] = useState('')
   const [boardReplyList, setBoardReplyList] = useState([])
@@ -105,7 +104,7 @@ export default (props) => {
       setIsScreet(false)
       setDonstChange(false)
     }
-    if (ReplyWriteState === false) {
+    if (replyWriteState === false) {
       context.action.updateReplyIdx(boardIdx)
       setReplyWriteState(true)
     } else {
@@ -197,27 +196,24 @@ export default (props) => {
     }
   }
   // 팬보드 댓글 조회
-  async function fetchDataReplyList(replyIdx) {
+  async function fetchDataReplyList(boardIdx) {
     const res = await Api.member_fanboard_reply({
       params: {
         memNo: urlrStr,
-        boardNo: replyIdx
+        boardNo: boardIdx
       }
     })
     if (res.result === 'success') {
-      console.log(res.data.list)
       setBoardReplyList(res.data.list)
       // setFetching(false)
     } else if (res.result === 'fail') {
     }
   }
-  useEffect(() => {
-    // fetchDataReplyList()
-    // if (isViewOn === 0) {
-    //   setIsScreet(true)
-    // }
-  }, [])
-
+  const setAction = (value) => {
+    if (value === true) {
+      fetchDataReplyList(context.fanboardReplyNum)
+    }
+  }
   //--------------------------------------------------------------------------
   return (
     <>
@@ -250,7 +246,9 @@ export default (props) => {
                     {item && <BoardItem key={index} data={item} set={props.set} />}
 
                     <div className="list-item__bottom">
-                      <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                      <button
+                        className={`btn__reply ${context.toggleState ? 'btn__reply--isActive' : ''}`}
+                        onClick={() => ReplyInfoTransfer(boardIdx, item)}>
                         {replyCnt > 0 ? (
                           <>
                             답글 <em>{replyCnt}</em>
@@ -282,7 +280,7 @@ export default (props) => {
                     {context.fanboardReplyNum &&
                       context.toggleState &&
                       boardIdx === context.fanboardReplyNum &&
-                      ReplyWriteState && <WriteBoard {...props} set={props.set} type={'reply'} />}
+                      replyWriteState && <WriteBoard {...props} set={setAction} type={'reply'} />}
                   </div>
                 </>
 

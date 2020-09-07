@@ -163,10 +163,6 @@ export default (props) => {
           msg: '답글 내용을 입력해주세요.'
         })
       }
-      // context.action.alert({
-      //   callback: () => {},
-      //   msg: res.message
-      // })
     }
   }
 

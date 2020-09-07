@@ -18,7 +18,6 @@ let timer
 let moreState = false
 //layout
 export default (props) => {
-  console.log(props.type)
   let location = useLocation()
   const {webview} = qs.parse(location.search)
   const params = useParams()
@@ -38,6 +37,7 @@ export default (props) => {
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
+  const [boardWriteState, setBoardWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
@@ -75,6 +75,7 @@ export default (props) => {
   }
   //쓰기버튼 토글이벤트
   const WriteToggle = () => {
+    console.log(writeType)
     if (writeState === false) {
       setWriteState(true)
     } else {
@@ -117,7 +118,13 @@ export default (props) => {
     currentPage = 1
     fetchData()
     props.set(true)
-    setWriteType('reply')
+
+    console.log(props.type)
+    if (props.type !== undefined) {
+      setWriteType('reply')
+    } else {
+      setWriteType('board')
+    }
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
   useEffect(() => {
@@ -129,21 +136,27 @@ export default (props) => {
 
   //팬보드 댓글추가
   async function fetchDataUpload() {
-    console.log(writeType)
-    let depth
+    let params
+    console.log(context.fanboardReplyNum)
+    // return
     if (writeType === 'reply') {
-      depth = 2
-    } else {
-      depth = 1
-    }
-    console.log('depth', depth)
-    const res = await Api.mypage_fanboard_upload({
-      data: {
+      params = {
         memNo: urlrStr,
-        depth: depth,
+        depth: 2,
+        content: textChange,
+        viewOn: isScreet === true ? 0 : 1,
+        boardNo: context.fanboardReplyNum
+      }
+    } else {
+      params = {
+        memNo: urlrStr,
+        depth: 1,
         content: textChange,
         viewOn: isScreet === true ? 0 : 1
       }
+    }
+    const res = await Api.mypage_fanboard_upload({
+      data: params
     })
     if (res.result === 'success') {
       WriteToggle()
@@ -193,7 +206,7 @@ export default (props) => {
         <div
           className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
           onClick={() => {
-            if (writeState === false) setWriteState(true)
+            WriteToggle()
           }}>
           <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
           {writeState === false && (
@@ -234,8 +247,10 @@ export default (props) => {
         <div
           className="writeWrap__btn"
           onClick={() => {
-            context.action.updateFanboardReplyNum(-1)
-            setWriteState(false)
+            if (writeType === 'reply') {
+              context.action.updateFanboardReplyNum(-1)
+            }
+            WriteToggle()
           }}>
           <button className="btn__toggle">접기</button>
         </div>
