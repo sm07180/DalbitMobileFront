@@ -299,7 +299,7 @@ const TimeWrap = styled.div`
 const TitleWrap = styled.div`
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
+  width: 90%;
   color: #424242;
   font-size: 16px;
   padding: 0 0 0 16px;
@@ -607,10 +607,14 @@ const Wrap = styled.div`
   }
 
   .newIcon {
-    margin-left: 8px;
     display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -12px;
     width: 24px;
     height: 24px;
+    margin-left: 8px;
     background-position: center center;
     background-size: cover;
     background-image: url(${NewIcon});
