@@ -13,7 +13,7 @@
     min-height: 300px;
     .closeBtn {
       position: absolute;
-      top: -40px;
+      top: -60px;
       right: 20px;
       width: 32px;
       height: 32px;
@@ -31,13 +31,13 @@
     }
     .adminBtn {
       position: absolute;
-      top: -44px;
+      top: -60px;
       left: 12px;
       z-index: 16;
     }
     .reportIcon {
       position: absolute;
-      top: -40px;
+      top: -60px;
       width: 32px;
       height: 32px;
       left: 20px;
@@ -662,6 +662,8 @@
       }
     }
   }
+  .profile-tab {
+  }
   .profile-menu {
     margin-top: 12px;
     padding-bottom: 23px;
@@ -684,7 +686,7 @@
         position: absolute;
         right: 16px;
         top: 50%;
-        transform: translateY(-50%);
+        margin-top: -12px;
         width: 24px;
         height: 24px;
         background: url('./static/arrow.svg') no-repeat center center / cover;
@@ -713,14 +715,7 @@
       .price {
         position: absolute;
         right: 40px;
-        top: 50%;
         font-size: 14px;
-        font-weight: normal;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 0.2;
-        letter-spacing: normal;
-        text-align: right;
         color: $black;
       }
     }

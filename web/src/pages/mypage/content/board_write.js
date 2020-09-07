@@ -106,9 +106,7 @@ export default (props) => {
   }
   //팬보드 댓글추가
   async function PostBoardData() {
-    let params
-    console.log(context.fanboardReplyNum)
-    // return
+    let params, msg
     if (writeType === 'reply') {
       params = {
         memNo: urlrStr,
@@ -117,6 +115,7 @@ export default (props) => {
         viewOn: isScreet === true ? 0 : 1,
         boardNo: context.fanboardReplyNum
       }
+      msg = '내용을 입력해 주세요.'
     } else {
       params = {
         memNo: urlrStr,
@@ -124,6 +123,7 @@ export default (props) => {
         content: textChange,
         viewOn: isScreet === true ? 0 : 1
       }
+      msg = '내용을 입력해 주세요.'
     }
     const res = await Api.mypage_fanboard_upload({
       data: params
@@ -135,7 +135,7 @@ export default (props) => {
       if (textChange.length === 0) {
         context.action.alert({
           callback: () => {},
-          msg: '답글 내용을 입력해주세요.'
+          msg: msg
         })
       }
     }
