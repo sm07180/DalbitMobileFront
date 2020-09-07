@@ -38,7 +38,13 @@ export default (props) => {
   }
   //토글 모어버튼
   const toggleMore = (boardIdx, contents) => {
-    setThisBigIdx(boardIdx)
+    // thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)}
+    console.log(boardIdx, thisBigIdx)
+    if (thisBigIdx !== 0) {
+      setThisBigIdx(0)
+    } else {
+      setThisBigIdx(boardIdx)
+    }
   }
   //수정하기 토글
   const BigModify = (contents, boardIdx) => {
@@ -118,9 +124,9 @@ export default (props) => {
             {/* 상세기능영역 */}
 
             <div className={props.data.boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
-              {props.data.writerNo === context.token.memNo && (
+              {/* {props.data.writerNo === context.token.memNo && (
                 <span onClick={() => BigModify(props.data.contents, props.data.boardIdx)}>수정하기</span>
-              )}
+              )} */}
               <span onClick={() => DeleteBigReply(props.data.boardIdx)}>삭제하기</span>
             </div>
           </>

@@ -217,7 +217,7 @@ export default (props) => {
   return (
     <>
       {/* 딤영역 */}
-      {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
+      {/* {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />} */}
       <div className="listWrap">
         <>
           {TotalCount && (
