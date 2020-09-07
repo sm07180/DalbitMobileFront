@@ -116,18 +116,18 @@ export default (props) => {
                         {rankType === RANK_TYPE.DJ && (
                           <>
                             <span className="countBox__item">
-                              <img src={people} />
-                              {Util.printNumber(listenerPoint)}
+                              <img src={people} className="ico-people" />
+                              <em className="count">{Util.printNumber(listenerPoint)}</em>
                             </span>
 
                             <span className="countBox__item">
                               <img src={like} />
-                              {Util.printNumber(goodPoint)}
+                              <em className="count">{Util.printNumber(goodPoint)}</em>
                             </span>
 
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(broadcastPoint)}
+                              <em className="count">{Util.printNumber(broadcastPoint)}</em>
                             </span>
                           </>
                         )}
@@ -136,11 +136,11 @@ export default (props) => {
                           <>
                             <span className="countBox__item">
                               <img src={StarCountIcon} />
-                              {Util.printNumber(starCnt)}
+                              <em className="count">{Util.printNumber(starCnt)}</em>
                             </span>
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(listenPoint)}
+                              <em className="count">{Util.printNumber(listenPoint)}</em>
                             </span>
                           </>
                         )}

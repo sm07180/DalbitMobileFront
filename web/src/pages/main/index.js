@@ -8,7 +8,7 @@ import {Link} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
 import {StoreLink} from 'context/link'
-import {IMG_SERVER} from 'context/config'
+import Lottie from 'react-lottie'
 
 // components
 import Layout from 'pages/common/layout'
@@ -37,6 +37,7 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import CrownIcon from './static/crown.jpg'
+import CrownLottie from './static/crown_lottie.json'
 
 import 'styles/main.scss'
 
@@ -530,7 +531,14 @@ export default (props) => {
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
-                <img src={CrownIcon} width={40} />
+                <Lottie
+                  options={{
+                    loop: true,
+                    autoPlay: true,
+                    animationData: CrownLottie
+                  }}
+                  width={40}
+                />
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>

@@ -250,3 +250,16 @@ table {
     display: flex;
   }
 }
+
+.content-article {
+  &.player_show {
+    > div,
+    section {
+      padding-bottom: 60px;
+    }
+    .refresh-wrap,
+    .header-wrap {
+      padding-bottom: 0;
+    }
+  }
+}

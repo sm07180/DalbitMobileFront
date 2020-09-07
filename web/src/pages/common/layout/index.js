@@ -33,9 +33,9 @@ const Layout = (props) => {
       {/* 탑버튼 */}
       <TopScrollBtn />
       <Article
-        className={
+        className={`content-article ${
           webview ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`
-        }>
+        }`}>
         {children}
       </Article>
       {/* (방송방)Player */}
@@ -52,25 +52,13 @@ const Layout = (props) => {
   )
 }
 export default Layout
-//---------------------------------------------------------------------
 
+// 메인,랭킹,알림
 const Article = styled.article`
   height: 100%;
   &.webview {
     .header-wrap .close-btn {
       display: none;
     }
-  }
-  /* player가 노출시 padding-bottom추가 */
-  &.player_show > div {
-    padding-bottom: 60px;
-  }
-  &.player_show > section {
-    padding-bottom: 60px;
-  }
-
-  &.main-page > div,
-  section {
-    padding-bottom: 0px;
   }
 `
