@@ -157,16 +157,17 @@ export default () => {
 
         <h2 className="more-tab">
           결제 수단
-          <button
+          {/* <button
             onClick={() => {
               setMoreState(!moreState)
             }}>
             {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
-          </button>
+          </button> */}
         </h2>
         <div className="select-item">{createMethodBtn('top')}</div>
         <div className="more-wrap">
-          <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div>
+          {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
+          <div className={`select-item more true`}>{createMethodBtn('more')}</div>
         </div>
 
         <div className="info-wrap">
