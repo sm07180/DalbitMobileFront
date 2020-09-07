@@ -6,15 +6,13 @@ import Api from 'context/api'
 // import {selfAuthCheck, getExchangeHistory, getExchangeCalc, exchangeApply, exchangeReApply} from 'common/api'
 
 import calcAge from 'components/lib/calc_age'
-
 import {Inspection} from './common_fn'
-
 import MakeCalcContents from './subcontent/do_exchange_calc'
 import MakeRadioWrap from './subcontent/do_exchange_radio_wrap'
 import MakeFormWrap from './subcontent/do_exchange_form'
 import MakeRepplyWrap from './subcontent/do_exchange_repply'
 
-import BackBtn from '../static/ic_back.svg'
+import Header from 'components/ui/new_header'
 import Popup from 'pages/common/popup'
 
 const FormDataReducer = (state, action) => {
@@ -371,10 +369,7 @@ export default function DoExchange({state, dispatch}) {
 
   return (
     <div className="doExchangeWrap">
-      <div className="doExchangeWrap__header">
-        <img src={BackBtn} className="doExchangeWrap__header--button" onClick={() => history.goBack()} />
-        <h3 className="doExchangeWrap__header--title">환전하기</h3>
-      </div>
+      <Header title="환전하기" />
       <div className="doExchangeWrap__contents">
         <div>
           <div className="doExchangeWrap__contentsHeader">
@@ -385,7 +380,7 @@ export default function DoExchange({state, dispatch}) {
                 context.action.updatePopup('GUIDANCE')
               }}>
               <span className="doExchangeWrap__contentsHeader--icon" />
-              <span>유의사항</span>
+              <span>환전안내</span>
             </div>
           </div>
           {isSpecial && (

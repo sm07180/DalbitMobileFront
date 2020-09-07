@@ -32,7 +32,7 @@ export default (props) => {
 
         let roomNo = sessionStorage.getItem('room_no')
         async function commonJoin() {
-          const res = await Api.broad_join({data: {roomNo}})
+          const res = await Api.broad_join_vw({data: {roomNo}})
           const {code, result, data} = res
 
           if (code === '-3') {
@@ -70,7 +70,8 @@ export default (props) => {
   return (
     <React.Fragment>
       {/* 미디어 플레이어 */}
-      {context.player && visible && <Content {...props} update={update} />}
+      {context.nativePlayer && context.player && visible && <Content {...props} update={update} />}
+      {/* <Content {...props} update={update} /> */}
     </React.Fragment>
   )
 }

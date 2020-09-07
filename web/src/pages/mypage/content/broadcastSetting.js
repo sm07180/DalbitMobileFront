@@ -1,17 +1,12 @@
 /**
  * @file /mypage/context/broadcastSetting.js
- * @brief 마이페이지 방송설정(금지어 관리, 매니저 관리, 블랙리스트 관리)
+ * @brief 마이페이지 방송설정(금지어 관리, 매니저 관리, 차단회원 관리)
  **/
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import styled from 'styled-components'
 
 //context
 import {Context} from 'context'
-import Api from 'context/api'
-import Header from '../component/header.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
-
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 
@@ -22,11 +17,11 @@ import Blacklist from '../component/setting/blacklist'
 
 //svg
 import ArrowIcon from '../component/arrow_right.svg'
-import BackIcon from '../component/ic_back.svg'
+import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
   {value: 0, text: '금지어 관리'},
   {value: 1, text: '매니저 관리'},
-  {value: 2, text: '블랙리스트 관리'}
+  {value: 2, text: '차단회원 관리'}
 ]
 
 export default (props) => {
@@ -76,25 +71,18 @@ export default (props) => {
   //-----------------------------------------------------------------------------
   return (
     <>
-      {/* <Header>
-        <div className="category-text">방송설정</div>
-      </Header> */}
-      <SettingHeader>
-        <button onClick={BackFunction}></button>
-        <div>
+      <div className="header-wrap">
+        <h2 className="header-title">
           {initialScreen && '방송설정'}
           {initialScreen === false && changeContents == 0 && '금지어 관리'}
           {initialScreen === false && changeContents == 1 && '매니저 관리'}
-          {initialScreen === false && changeContents == 2 && '블랙리스트 관리'}
-        </div>
-      </SettingHeader>
+          {initialScreen === false && changeContents == 2 && '차단회원 관리'}
+        </h2>
+        <button className="close-btn" onClick={BackFunction}>
+          <img src={closeBtn} alt="뒤로가기" />
+        </button>
+      </div>
       <Content>
-        {/* <TitleWrap>
-          <TitleText>{currentMenu.text}</TitleText>
-          <SelectWrap>
-            <SelectBoxs boxList={selectBoxData} onChangeEvent={selectMenu} inlineStyling={{right: 0, top: '-20px', zIndex: 8}} />
-          </SelectWrap>
-        </TitleWrap> */}
         {initialScreen && (
           <div className="initial_contents">
             <button onClick={() => ToggleContents(0)}>
@@ -104,7 +92,7 @@ export default (props) => {
               매니저 관리<a></a>
             </button>
             <button onClick={() => ToggleContents(2)}>
-              블랙리스트 관리<a></a>
+              차단회원 관리<a></a>
             </button>
           </div>
         )}
@@ -128,7 +116,7 @@ const Content = styled.div`
       background-color: #fff;
       text-align: left;
       padding: 0 0 0 16px;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 800;
       color: #000000;
       > a {
@@ -192,6 +180,6 @@ const SettingHeader = styled.div`
     left: 6px;
     width: 40px;
     height: 40px;
-    background: url(${BackIcon});
+    background: url(${closeBtn});
   }
 `

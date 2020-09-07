@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
+import {authReq, openAuthPage} from 'pages/self_auth'
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
@@ -16,12 +17,12 @@ import camera from 'images/camera.svg'
 import MaleIcon from './static/ico_male.svg'
 import FeMaleIcon from './static/ico_female.svg'
 import calIcon from './static/calender_b.svg'
+import delIcon from './static/del_g.svg'
+import {templateSettings} from 'lodash'
 
 export default (props) => {
   // ctx
-
   const context = useContext(Context)
-
   const {profile, token} = context
   const {isOAuth} = token
   const history = useHistory()
@@ -31,12 +32,15 @@ export default (props) => {
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
   const [tempPhoto, setTempPhoto] = useState(null)
+  const [phone, setPhone] = useState('')
+  const [authState, setAuthState] = useState(true)
   const [photoUploading, setPhotoUploading] = useState(false)
   const [firstSetting, setFirstSetting] = useState(false)
   const [mypageBirth, setMypageBirth] = useState('')
   const [active, setActive] = useState(false)
   //ref
   const nicknameReference = useRef()
+  const formTag = useRef(null)
   // setting img upload func  + mobile rotater
   const profileImageUpload = (e) => {
     const target = e.currentTarget
@@ -243,7 +247,7 @@ export default (props) => {
   }
   // upload validate
   const saveUpload = async () => {
-    if (!profile.nickNm) {
+    if (!profile.nickNm || !nickname) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
         callback: () => {
@@ -305,7 +309,7 @@ export default (props) => {
   useEffect(() => {
     if (
       (nickname !== '' && nickname !== context.profile.nickNm) ||
-      profileMsg !== context.profile.profMsg ||
+      (nickname !== '' && profileMsg !== context.profile.profMsg) ||
       (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
       (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
     ) {
@@ -314,6 +318,19 @@ export default (props) => {
       setActive(false)
     }
   }, [nickname, profileMsg, photoPath, gender])
+
+  const checkAuth = () => {
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        setAuthState(true)
+        setPhone(res.data.phoneNo)
+      } else {
+        setAuthState(false)
+      }
+    }
+    fetchSelfAuth()
+  }
 
   useEffect(() => {
     const getMyPageNew = async () => {
@@ -330,20 +347,9 @@ export default (props) => {
       }
     }
     getMyPageNew()
+    checkAuth()
   }, [])
-  //null check updateProfile
-  // if (profile === null) {
-  //   Api.mypage().then((result) => {
-  //     context.action.updateProfile(result.data)
-  //   })
-  //   return null
-  // }
-  // if (profile && profile.birth === '') {
-  //   Api.mypage().then((result) => {
-  //     context.action.updateProfile(result.data)
-  //   })
-  //   return null
-  // }
+
   //------------------------------------------------------
   return (
     <Switch>
@@ -353,9 +359,7 @@ export default (props) => {
         <Layout {...props} status="no_gnb">
           <Content>
             <SettingWrap>
-              <Header>
-                <div className="category-text">프로필 설정</div>
-              </Header>
+              <Header title="프로필 설정" />
               {/* 공통타이틀:TopWrap */}
               <div className="individual_Wrap">
                 <ProfileImg>
@@ -385,6 +389,22 @@ export default (props) => {
                   </label>
                 </ProfileImg>
 
+                <AuthWrap>
+                  <label>본인인증</label>
+                  <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
+                  <button
+                    onClick={() => {
+                      authReq('5', formTag)
+                    }}>
+                    본인인증
+                  </button>
+                </AuthWrap>
+                <GenderAlertMsg className={authState ? 'authPass' : 'notAuth'}>
+                  {authState ? '본인인증이 완료 되었으며, 재 인증도 가능합니다.' : '본인인증을 완료하지 않으셨습니다.'}
+                </GenderAlertMsg>
+
+                <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
+
                 <div className="nickname">
                   <span className="matchTitle">닉네임</span>
                   <NicknameInput
@@ -397,6 +417,12 @@ export default (props) => {
                     onChange={changeNickname}
                     maxLength="20"
                   />
+                  <button
+                    onClick={() => {
+                      setNickname('')
+                    }}>
+                    <img src={delIcon} alt="삭제"></img>
+                  </button>
                 </div>
 
                 <UserId>
@@ -432,7 +458,7 @@ export default (props) => {
                 <div className="birthBox">
                   <span className="matchTitle">생년월일</span>
                   <BirthDate>{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}</BirthDate>
-                  <GenderAlertMsg>생년월일 수정을 원하시는 경우 고객센터로 문의해주세요.</GenderAlertMsg>
+                  <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
                 </div>
                 <GenderWrap className={firstSetting ? 'before' : 'after'}>
                   {firstSetting ? (
@@ -471,9 +497,16 @@ export default (props) => {
                     </>
                   )}
                 </GenderWrap>
+                <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
 
                 <div className="msg-wrap">
                   <label className="input-label">프로필 메시지</label>
+                  <button
+                    onClick={() => {
+                      setProfileMsg('')
+                    }}>
+                    <img src={delIcon} alt="삭제"></img>
+                  </button>
                   <DalbitTextArea
                     defaultValue={profile.profMsg}
                     state={profileMsg}
@@ -498,6 +531,50 @@ export default (props) => {
   )
 }
 // style
+const AuthWrap = styled.div`
+  position: relative;
+  padding: 20px 16px 0px 16px;
+  height: 58px;
+  background-color: #f5f5f5;
+  color: #9e9e9e;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  font-size: 16px;
+  z-index: 3;
+  label {
+    position: absolute;
+    top: 9px;
+    left: 16px;
+    z-index: 2;
+    font-size: 12px;
+    line-height: 1.08;
+    color: #000000;
+  }
+  p {
+    font-size: 16px;
+    line-height: 18px;
+    padding-top: 9px;
+    &.authPass {
+      color: #000000;
+      font-weight: bold;
+    }
+    &.notAuth {
+      font-size: 14px;
+      color: #bdbdbd;
+    }
+  }
+  button {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    font-size: 14px;
+    color: #ffffff;
+    width: 70px;
+    height: 32px;
+    border-radius: 9px;
+    background: #bdbdbd;
+  }
+`
 const SaveBtn = styled.button`
   margin-top: 32px;
   width: 100%;
@@ -545,10 +622,10 @@ const MsgTitle = styled.div`
 `
 
 const GenderAlertMsg = styled.div`
-  position: absolute;
+  position: relative;
   width: 100%;
-  top: 46px;
   padding: 22px 0 0 0;
+  margin-top: -15px;
   left: 0;
   bottom: 0;
   z-index: 2;
@@ -564,6 +641,9 @@ const GenderAlertMsg = styled.div`
   border-radius: 12px;
   letter-spacing: -0.5px;
   transform: skew(-0.03deg);
+  &.notAuth {
+    background: #ec455f;
+  }
 `
 
 const GenderTab = styled.div`
@@ -630,6 +710,7 @@ const GenderWrap = styled.div`
   display: flex;
   flex-direction: row;
   border: 1px solid #e0e0e0;
+  z-index: 3;
   &.after {
     border: 0;
   }
@@ -857,6 +938,11 @@ const SettingWrap = styled.div`
   }
   .msg-wrap {
     position: relative;
+    button {
+      position: absolute;
+      top: -3px;
+      right: 0;
+    }
   }
 `
 
@@ -947,6 +1033,11 @@ const Content = styled.section`
       font-size: 12px;
       line-height: 1.08;
       color: #000000;
+    }
+    button {
+      position: absolute;
+      right: 4px;
+      top: 4px;
     }
   }
 `

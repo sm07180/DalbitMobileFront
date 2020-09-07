@@ -2038,6 +2038,115 @@ export default class API {
     })
   }
 
+  //인증샷 이벤트
+  static event_proofshot_list = async (obj) => {
+    const {data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: `/event/photo/list`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_detail = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/detail`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_insert = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/insert`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_update = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/update`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_dellete = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/delete`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static event_proofshot_status = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/event/photo/status`,
+      method: method || 'GET',
+      data: data
+    })
+  }
+
+  static knowhow_list = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/list',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_insert = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/insert',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_detail = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/detail',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_like = async (data) => {
+    return await ajax({
+      url: '/event/good',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_delete = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static knowhow_modify = async (data) => {
+    return await ajax({
+      url: '/event/knowhow/update',
+      method: 'POST',
+      data: data
+    })
+  }
+
   static pay_coocon = async (obj) => {
     const {url, method, data} = obj || {}
     return await ajax({
@@ -2288,6 +2397,14 @@ export default class API {
   static postNewStarMemo = async (data) => {
     return await ajax({url: '/profile/star/memo', method: 'post', data})
   }
+
+  static eventPackageJoinCheck = async (params) => {
+    return await ajax({url: '/event/004/apply', method: 'GET', params})
+  }
+  static eventPackageWrite = async (data) => {
+    return await ajax({url: '/event/004/apply', method: 'POST', data})
+  }
+
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"

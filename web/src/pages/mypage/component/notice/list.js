@@ -10,7 +10,7 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/co
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 //component
 import Checkbox from '../../content/checkbox'
-import BackIcon from '../../component/ic_back.svg'
+import closeBtn from '../../component/ic_back.svg'
 import NewIcon from '../../static/newIcon.svg'
 import Header from '../header.js'
 import ArrowRight from '../../component/arrow_right.svg'
@@ -225,8 +225,8 @@ const List = (props) => {
           </ListContent>
 
           <Write className={writeShow && 'on'}>
-            <Header click={WriteToggle}>
-              <div className="category-text">공지 수정하기</div>
+            <Header click={WriteToggle} title="공지 수정하기">
+              {/* <div className="category-text">공지 수정하기</div> */}
               {/* <TitleBtn className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
                 수정
               </TitleBtn> */}
@@ -323,7 +323,7 @@ const TitleWrap = styled.div`
     }
   }
   .text {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 800;
     line-height: 1.14;
     letter-spacing: normal;
@@ -339,6 +339,7 @@ const ListContent = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-y: scroll;
   z-index: 5;
   /* padding: 20px 16px; */
   background-color: #eee;
@@ -346,15 +347,17 @@ const ListContent = styled.div`
   font-size: 14px;
   letter-spacing: -0.35px;
   .detail_header {
-    display: flex;
-    justify-content: center;
-    padding: 0 6px;
-    height: 40px;
-    align-items: center;
-    text-align: center;
     position: relative;
+    width: 100%;
+    height: 50px;
+    padding: 12px 16px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+    color: #000;
     background-color: #fff;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #d2d2d2;
+    box-sizing: border-box;
     button {
       position: absolute;
       left: 6px;
@@ -363,25 +366,8 @@ const ListContent = styled.div`
       display: block;
       width: 40px;
       height: 40px;
-      background: url(${BackIcon}) no-repeat center center / cover;
+      background: url(${closeBtn}) no-repeat center center / cover;
     }
-  }
-
-  div:nth-child(1) {
-    color: #000000;
-    font-size: 18px;
-    font-weight: 800;
-    /* line-height: 1.17; */
-    text-align: left;
-    color: #000000;
-  }
-  div:nth-child(2) {
-    /* margin-top: 4px; */
-    font-size: 12px;
-    color: #757575;
-    line-height: 1.08;
-    letter-spacing: -0.3px;
-    transform: skew(-0.03deg);
   }
 
   .detail_header_info {
@@ -389,6 +375,7 @@ const ListContent = styled.div`
     margin-top: 12px !important;
     border-bottom: 1px solid #eeeeee;
     .detail_date {
+      padding: 10px 16px 10px 16px;
       > div {
         height: 20px;
         line-height: 20px;
@@ -396,7 +383,17 @@ const ListContent = styled.div`
         overflow: hidden;
         white-space: nowrap;
       }
-      padding: 10px 16px 10px 16px;
+
+      div:nth-child(1) {
+        font-size: 18px;
+        font-weight: 800;
+        text-align: left;
+        color: #000;
+      }
+      div:nth-child(2) {
+        font-size: 12px;
+        color: #757575;
+      }
     }
   }
   .detail_header_writerinfo {

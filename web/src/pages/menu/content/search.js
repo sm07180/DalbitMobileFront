@@ -7,7 +7,7 @@ import {Context} from 'context/index.js'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Room, {RoomJoin} from 'context/room'
 // component
-import Header from '../component/header.js'
+import Header from 'components/ui/new_header.js'
 import SearchBar from './search_bar'
 import List from './search-list'
 import InitialSearch from './search_start'
@@ -270,10 +270,8 @@ export default (props) => {
 
   return (
     <div className="mainSearchWrap">
+      <Header title="검색" />
       <Room />
-      <Header>
-        <div className="category-text">검색</div>
-      </Header>
       {/* 검색바 */}
       <div className="searchBarWrapper">
         <SearchBar update={update} />

@@ -236,7 +236,7 @@ const Notice = (props) => {
   return (
     <>
       <Header>
-        <div className="category-text">방송공지</div>
+        <h2 className="header-title">방송공지</h2>
         {urlrStr === context.profile.memNo && createWriteBtn()}
       </Header>
       {listPage === -1 ? (
@@ -323,8 +323,11 @@ const Notice = (props) => {
 
       <Write className={writeShow && 'on'}>
         <Header click={WriteToggle}>
-          <div className="category-text">방송공지</div>
+          <h2 className="header-title">방송공지</h2>
         </Header>
+        {/* <Header click={WriteToggle}>
+          <div className="category-text">방송공지</div>
+        </Header> */}
         <section>
           <div className="titleWrite">
             <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />
@@ -334,8 +337,8 @@ const Notice = (props) => {
             <DalbitTextArea
               state={comentContent}
               setState={setCommentContent}
-              rows={10}
-              maxLength={200}
+              rows={25}
+              maxLength={500}
               className="MsgText"
               placeholder="작성하고자 하는 글의 내용을 입력해주세요."
             />

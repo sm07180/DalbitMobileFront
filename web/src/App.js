@@ -92,7 +92,13 @@ const App = () => {
           /*if (__NODE_ENV === 'dev'){
               alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
             }*/
-          Utility.setCookie('native-player-info', '', -1)
+          if (
+            sessionStorage.getItem('room_no') === undefined ||
+            sessionStorage.getItem('room_no') === null ||
+            sessionStorage.getItem('room_no') === ''
+          ) {
+            Utility.setCookie('native-player-info', '', -1)
+          }
 
           // replace custom header isFirst value 'Y' => 'N'
           const customHeaderCookie = Utility.getCookie('custom-header')
@@ -115,14 +121,14 @@ const App = () => {
           }
 
           // ?webview=new 형태로 이루어진 player종료
-          const nativeInfo = Utility.getCookie('native-player-info')
-          if (nativeInfo) {
-            if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
-              const parsed = JSON.parse(nativeInfo)
-              globalCtx.action.updatePlayer(true)
-              globalCtx.action.updateMediaPlayerStatus(true)
-              globalCtx.action.updateNativePlayer(parsed)
-            }
+        }
+        const nativeInfo = Utility.getCookie('native-player-info')
+        if (nativeInfo) {
+          if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+            const parsed = JSON.parse(nativeInfo)
+            globalCtx.action.updatePlayer(true)
+            globalCtx.action.updateMediaPlayerStatus(true)
+            globalCtx.action.updateNativePlayer(parsed)
           }
         }
 

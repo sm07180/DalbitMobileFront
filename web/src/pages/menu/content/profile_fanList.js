@@ -137,6 +137,7 @@ export default (props) => {
     fetchDataFanCancel(memNo)
   }
   const CancelBtn = () => {
+    console.log('cancel..')
     if (name === '팬 랭킹') {
       context.action.updateClose(false)
     } else if (name === '팬') {

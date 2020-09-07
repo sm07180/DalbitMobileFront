@@ -18,6 +18,9 @@ import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
 import GarBageIcon from '../../static/garbage.svg'
+import PlastTimeIconP from '../../static/ic_p_headphone_p.svg'
+import PstarIconP from '../../static/ic_p_star_p.svg'
+import PtimeIconP from '../../static/ic_p_time_p.svg'
 //
 import NoResult from 'components/ui/noResult'
 
@@ -29,7 +32,9 @@ let moreState = false
 
 //---------------------------------------------------------------------------------
 export default (props) => {
-  const history = useHistory()
+  const {sortNum} = props
+  console.log(sortNum)
+  let history = useHistory()
   //context
   const ctx = useContext(Context)
   const {profile} = ctx
@@ -42,7 +47,6 @@ export default (props) => {
   const [memoMemNo, setMemoMemNo] = useState(-1)
   const [popState, setPopState] = useState(false)
   // const [deleteList, setDeleteList] = useState('')
-  // const [filterLeng, setFilterLeng] = useState(0)
   //스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -68,9 +72,9 @@ export default (props) => {
   // 콘켓 데이터 패치
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-    const res = await Api.getNewFanList({
+    const res = await Api.getNewStarList({
       memNo: urlrStr,
-      sortType: 0,
+      sortType: sortNum,
       page: currentPage,
       records: 20
     })
@@ -115,40 +119,30 @@ export default (props) => {
     }
     fetchDataFanRegist(memNo)
   }
-  const Cancel = (memNo, isFan) => {
-    async function fetchDataFanCancel(memNo, isFan) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: memNo
-        }
-      })
-      if (res.result === 'success') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
-      } else if (res.result === 'fail') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
+  async function fetchDataFanCancel(memNo, isFan) {
+    const res = await Api.mypage_fan_cancel({
+      data: {
+        memNo: memNo
       }
+    })
+    if (res.result === 'success') {
+      ctx.action.alert({
+        callback: () => {},
+        msg: '스타 해제에 성공하였습니다.'
+      })
+    } else if (res.result === 'fail') {
+      ctx.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
     }
-    fetchDataFanCancel(memNo)
   }
   // 팬등록 버튼 토글
   const registToggle = (isFan, memNo) => {
-    const test = list.map((item, index) => {
-      if (item.memNo === memNo) {
-        item.isFan = !item.isFan
-      }
-      return item
-    })
-    setList(test)
     if (isFan === false) {
       Regist(memNo)
     } else if (isFan === true) {
-      Cancel(memNo)
+      DeleteItem(memNo)
     }
   }
   // 메모 활성화/비활성화 조회
@@ -184,10 +178,6 @@ export default (props) => {
   //     return v.nickNm === ''
   //   })
   //   setList(test)
-  //   setFilterLeng(filterList.length)
-  //   if (filterList.length > 0) {
-  //     ctx.action.updateEditeToggle(true)
-  //   }
   //   let str = ''
   //   filterList.forEach((v, i, self) => {
   //     if (i === self.length - 1) {
@@ -210,15 +200,15 @@ export default (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [])
+  }, [sortNum])
   //-----------------------------------------------------------
   async function fetchDataGetMemo(memNo) {
-    const res = await Api.getNewFanMemo({
+    const res = await Api.getNewStarMemo({
       memNo: memNo
     })
     if (res.result === 'success') {
-      setDefaultMemo(res.data.fanMemo)
-      setMemoContent(res.data.fanMemo)
+      setDefaultMemo(res.data.starMemo)
+      setMemoContent(res.data.starMemo)
     } else if (res.result === 'fail') {
       ctx.action.alert({
         callback: () => {},
@@ -226,19 +216,20 @@ export default (props) => {
       })
     }
   }
+
   async function fetchDataPostMemo() {
-    const res = await Api.postNewFanMemo({
+    const res = await Api.postNewStarMemo({
       memNo: memoMemNo,
       memo: memoContent
     })
     if (res.result === 'success') {
       const test = list.map((item, index) => {
         if (item.memNo === memoMemNo) {
-          if (item.fanMemo === '' || memoContent === '') {
-            if (item.fanMemo === '') {
-              item.fanMemo = memoContent
+          if (item.starMemo === '' || memoContent === '') {
+            if (item.starMemo === '') {
+              item.starMemo = memoContent
             } else if (memoContent === '') {
-              item.fanMemo = memoContent
+              item.starMemo = memoContent
             }
           }
         }
@@ -262,41 +253,52 @@ export default (props) => {
       })
     }
   }
+  //-----------------------------------------------------------
   //삭제하기
-  async function fetchDeleteList(memNo) {
-    const res = await Api.deleteNewFanList({
-      fanNoList: memNo
-    })
-    if (res.result === 'success') {
-      const test = list.map((item, index) => {
-        if (item.memNo === memNo) {
-          item.nickNm = ''
+  const CancelStar = (memNo, isFan) => {
+    async function fetchDataFanCancel(memNo, isFan) {
+      const res = await Api.mypage_fan_cancel({
+        data: {
+          memNo: memNo
         }
-        return item
       })
-      setList(test)
-    } else if (res.result === 'fail') {
-      ctx.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
+      if (res.result === 'success') {
+        const test = list.map((item, index) => {
+          if (item.memNo === memNo) {
+            item.nickNm = ''
+          }
+          return item
+        })
+        setList(test)
+        ctx.action.alert({
+          callback: () => {},
+          msg: '스타 해제에 성공하였습니다.'
+        })
+      } else if (res.result === 'fail') {
+        ctx.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
     }
+    fetchDataFanCancel(memNo)
   }
   // 삭제하기 클릭
   const DeleteItem = (memNo) => {
     ctx.action.confirm({
       callback: () => {
-        fetchDeleteList(memNo)
+        CancelStar(memNo)
       },
-      msg: '팬 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
+      msg: '스타 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
     })
   }
+
   return (
     <Wrap>
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
       {list &&
         list.map((item, idx) => {
-          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, fanMemo, memNo} = item
+          const {nickNm, profImg, regDt, listenTime, giftedByeol, lastListenTs, isFan, starMemo, memNo} = item
           return (
             <React.Fragment key={idx}>
               {nickNm !== '' && (
@@ -306,23 +308,32 @@ export default (props) => {
                   </div>
                   <div className="list__infoBox">
                     <span className="list__nick">{nickNm}</span>
-                    <span className="list__registDt">등록일 - {Utility.dateFormatterKor(regDt)}</span>
+                    <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
+                      등록일 - {Utility.dateFormatterKor(regDt)}
+                    </span>
                     <div className="list__details">
-                      <span className="list__details__time">{listenTime}분</span>
-                      <span className="list__details__byeol">{Utility.printNumber(giftedByeol)}</span>
-                      <span className="list__details__lastTime">
+                      <span className={sortNum === 1 ? 'list__details__time list__details__time--active' : 'list__details__time'}>
+                        {listenTime}분
+                      </span>
+                      <span
+                        className={sortNum === 2 ? 'list__details__byeol list__details__byeol--active' : 'list__details__byeol'}>
+                        {Utility.printNumber(giftedByeol)}
+                      </span>
+                      <span
+                        className={
+                          sortNum === 3 ? 'list__details__lastTime list__details__lastTime--active' : 'list__details__lastTime'
+                        }>
                         {lastListenTs === '' || lastListenTs === 0 ? '-' : Utility.settingAlarmTime(lastListenTs)}
                       </span>
                     </div>
                   </div>
-
                   <div className="list__btnBox">
                     <button
                       className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
                       onClick={() => registToggle(isFan, memNo)}>
                       {isFan ? '팬' : '+팬등록'}
                     </button>
-                    {fanMemo === '' ? (
+                    {starMemo === '' ? (
                       <div className="editeWrap">
                         <button className="list__btnBox__memoBtn" onClick={() => GetMemoList(memNo)}></button>
                         <button className="editeWrap__garbageBtn" onClick={() => DeleteItem(memNo)}></button>
@@ -344,14 +355,14 @@ export default (props) => {
       {popState && (
         <div className="memoPop">
           <div className="memoContents">
-            <header>
+            <div className="memoContent__popTitle">
               메모
               <button onClick={ClosePop} />
-            </header>
+            </div>
             <div className="txtCnt">
               <textarea
                 placeholder="회원을 기억하기 위한 메모를 입력해주세요.
-최대 500자까지 저장 가능합니다."
+                최대 500자까지 저장 가능합니다."
                 defaultValue={memoContent}
                 onChange={memoChange}></textarea>
               <span className="txtcount">{memoContent.length} / 500</span>
@@ -408,8 +419,11 @@ const Wrap = styled.div`
       font-size: 12px;
       line-height: 16px;
       text-align: left;
-      color: #632beb;
-      font-weight: 600;
+
+      &--active {
+        color: #632beb;
+        font-weight: 600;
+      }
     }
     &__details {
       display: flex;
@@ -427,7 +441,6 @@ const Wrap = styled.div`
       }
       &__time {
         position: relative;
-
         &:before {
           margin-right: 1px;
           display: inline-block;
@@ -437,6 +450,13 @@ const Wrap = styled.div`
           height: 16px;
           content: '';
           background: url(${PtimeIcon});
+        }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PtimeIconP});
+          }
         }
       }
       &__byeol {
@@ -451,12 +471,18 @@ const Wrap = styled.div`
           content: '';
           background: url(${PstarIcon});
         }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PstarIconP});
+          }
+        }
       }
       &__lastTime {
         display: flex;
         align-items: center;
         position: relative;
-
         &:before {
           margin-right: 1px;
           display: inline-block;
@@ -465,6 +491,13 @@ const Wrap = styled.div`
           height: 16px;
           content: '';
           background: url(${PlastTimeIcon});
+        }
+        &--active {
+          font-weight: 600;
+          color: #632beb;
+          &:before {
+            background: url(${PlastTimeIconP});
+          }
         }
       }
     }
@@ -561,6 +594,8 @@ const Wrap = styled.div`
             letter-spacing: -0.4px;
             text-align: left;
             color: #757575;
+            font-weight: normal;
+            letter-spacing: normal;
           }
         }
         .txtcount {
@@ -589,7 +624,7 @@ const Wrap = styled.div`
         }
       }
 
-      header {
+      .memoContent__popTitle {
         position: relative;
         width: 100%;
         text-align: center;

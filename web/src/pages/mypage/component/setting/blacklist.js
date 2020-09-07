@@ -226,7 +226,7 @@ export default (props) => {
                 <button
                   onClick={() => {
                     context.action.confirm({
-                      msg: `${nickNm} 님을 블랙리스트로 등록 하시겠습니까?`,
+                      msg: `${nickNm} 님을 차단하시겠습니까?`,
                       callback: () => {
                         addManager(memNo)
                       }
@@ -247,7 +247,7 @@ export default (props) => {
     return (
       <>
         <p className="titleCount">
-          등록 된 블랙리스트 <em>{totalBlackList}</em>
+          차단회원 <em>{totalBlackList}</em>
         </p>
         <ul className="list-item search">
           {blackList.map((item, index) => {
@@ -269,7 +269,7 @@ export default (props) => {
                 <button
                   onClick={() => {
                     context.action.confirm({
-                      msg: `${nickNm} 님을 블랙리스트에서 해제 하시겠습니까?`,
+                      msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
                       callback: () => {
                         deleteManager(memNo)
                       }
@@ -313,7 +313,7 @@ export default (props) => {
                 <button
                   onClick={() => {
                     context.action.confirm({
-                      msg: `${nickNm} 님을 블랙리스트에서 해제 하시겠습니까?`,
+                      msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
                       callback: () => {
                         deleteManager(memNo)
                       }

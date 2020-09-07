@@ -13,17 +13,14 @@ import Swiper from 'react-id-swiper'
 //components
 
 import Header from '../component/header'
-import Recent from './edite_contents/recent'
-import GiftMore from './edite_contents/gift_more'
-import ListenRecent from './edite_contents/listen_edite'
-import BroadMore from './edite_contents/broad_edite'
+import FanManage from './edite_contents/fanmanage'
 //---------------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------------
 export default (props) => {
   const ctx = useContext(Context)
   //state
-  const [title, setTitle] = useState(1)
+  const [title, setTitle] = useState(2)
 
   //swiper
   const swiperParams = {
@@ -31,32 +28,15 @@ export default (props) => {
     spaceBetween: 4
   }
 
-  // case divide
-  const createContents = () => {
-    switch (title) {
-      case 0:
-        return <Recent />
-      case 1:
-        return <GiftMore />
-      case 2:
-        return <ListenRecent />
-      case 3:
-        return <BroadMore />
-      default:
-        break
-    }
-  }
   // tabs
   const tabLocation = (id) => {
     setTitle(id)
     ctx.action.updateFanTab(id)
   }
-
+  console.log(title)
   return (
     <EditeWrap>
-      <Header>
-        <div className="category-text">팬 관리</div>
-      </Header>
+      <Header title="팬 관리" />
       <div className="tabContainer">
         <Swiper {...swiperParams}>
           {tabArry.map((item, idx) => {
@@ -71,7 +51,7 @@ export default (props) => {
           })}
         </Swiper>
       </div>
-      {createContents()}
+      <FanManage sortNum={title} />
     </EditeWrap>
   )
 }
@@ -128,17 +108,17 @@ const EditeWrap = styled.div`
 //Arr
 const tabArry = [
   {
-    id: 1,
+    id: 2,
     title: '선물 받은 순',
     value: 'gift'
   },
   {
-    id: 3,
+    id: 1,
     title: '방송 들은 순',
     value: 'broad'
   },
   {
-    id: 2,
+    id: 3,
     title: '최근 청취 순',
     value: 'listen'
   },

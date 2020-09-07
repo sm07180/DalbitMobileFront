@@ -1,15 +1,12 @@
+@import '../../../../styles/variables';
 $WIDTH_MOBILE: 600px;
-$COLOR_MAIN: #632beb;
+
 #noticeDetail {
   .detail {
     display: block;
     width: 100%;
-    background-color: white;
-    /* border-top: 1px solid ${COLOR_MAIN}; */
-    @media (min-width: 768px) {
-      padding: 0 20px;
-    }
-    & > header {
+    background-color: $white;
+    .detail__header {
       display: flex;
       justify-content: space-between;
       padding: 16px 20px;
@@ -17,7 +14,6 @@ $COLOR_MAIN: #632beb;
         flex-wrap: wrap;
         flex-direction: column;
       }
-
       & span:nth-child(1) {
         font-size: 16px;
         font-weight: 600;
@@ -29,24 +25,23 @@ $COLOR_MAIN: #632beb;
         color: #757575;
       }
     }
-    & > div {
+    .detail__content {
       border-top: 1px solid #f5f5f5;
       border-bottom: 1px solid #f5f5f5;
       padding: 20px;
       font-size: 14px;
-      color: #424242;
-      // transform: skew(-0.03deg);
+      color: $greishBrown;
       & img {
         width: 100% !important;
       }
     }
-    & > button {
+    > button {
       display: block;
       margin: 20px auto 100px auto;
       padding: 12px 24px;
-      background-color: $COLOR_MAIN;
+      background-color: $primary;
       border-radius: 8px;
-      color: #fff;
+      color: $white;
     }
     &.on {
       display: none;

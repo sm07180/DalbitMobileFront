@@ -1,24 +1,9 @@
-// .refresh-wrap {
-//   display: block;
-//   position: relative;
-//   height: 48px;
-//   background-color: rgba(127, 127, 127, 0.3);
-//   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-//   .icon-wrap {
-//     position: absolute;
-//     left: 50%;
-//     bottom: 6px;
-//     .arrow-refresh-icon {
-//       display: block;
-//       position: relative;
-//       left: -50%;
-//     }
-//   }
-// }
+@import '../../styles/variables';
+@import '../../styles/mixins';
 
 #ranking-page {
   min-height: 100vh;
-  background-color: #eee;
+  background-color: $lighterGray;
   .refresh-wrap {
     display: none;
   }
@@ -47,18 +32,20 @@
     justify-content: flex-end;
     padding: 5px 16px;
     background-color: #fff;
-    border-top: 1px solid #632beb;
-    border-bottom: 1px solid #eee;
+    border-top: 1px solid $primary;
+    border-bottom: 1px solid $lighterGray;
     text-align: right;
     color: #616161;
     font-size: 12px;
 
     & > span {
-      margin-bottom: 2px;
+      display: inline-block;
+      vertical-align: middle;
     }
 
     & > img {
-      margin-left: 8px;
+      margin-left: 5px;
+      vertical-align: middle;
     }
   }
 
@@ -98,7 +85,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-    background: #eee;
+    background: $lighterGray;
     &__update {
       font-size: 12px;
       color: #424242;
@@ -120,8 +107,8 @@
       background-color: #fff;
       font-size: 16px;
       &--active {
-        border-color: #632beb;
-        background-color: #632beb;
+        border-color: $primary;
+        background-color: $primary;
         color: #fff;
       }
     }
@@ -133,7 +120,7 @@
 
   .todayList {
     height: 36px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $lighterGray;
     text-align: center;
     background-color: #fff;
 
@@ -144,8 +131,8 @@
       color: #000;
 
       &--active {
-        border-bottom: 1px solid #632beb;
-        color: #632beb;
+        border-bottom: 1px solid $primary;
+        color: $primary;
         font-weight: 900;
       }
       &--blur {
@@ -155,44 +142,45 @@
   }
 
   .detailView {
-    height: 56px;
-    background: #fff;
-    padding: 0px 10px;
     display: flex;
     justify-content: space-between;
+    height: 56px;
+    padding: 0px 10px;
+    background: #fff;
 
-    .titleWrap {
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .benefitSize {
-      position: absolute;
-      width: 50px;
-      height: 22px;
-      display: inline-block;
-      margin-left: 7px;
-      right: -55px;
-    }
     .subDay {
       font-size: 12px;
       color: #616161;
     }
 
     .title {
-      display: flex;
       position: relative;
-      justify-content: center;
-      align-items: center;
+      @include flexbox();
+      @include flex-center(center);
+      flex-direction: column;
       font-size: 16px;
-      color: #632beb;
       font-weight: 700;
+      color: $primary;
 
+      .titleWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .benefitSize {
+        display: inline-block;
+        width: 50px;
+        height: 22px;
+        margin-left: 7px;
+        vertical-align: top;
+      }
       span {
-        color: #616161;
+        display: block;
         font-size: 12px;
+        text-align: center;
+        color: #616161;
       }
     }
 
@@ -234,7 +222,7 @@
     }
 
     &__profile {
-      background: #632beb;
+      background: $primary;
 
       // & > div:first-child {
       //   position: absolute;
@@ -463,7 +451,7 @@
     align-items: flex-start;
     position: relative;
     padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $lighterGray;
     background-color: #fff;
 
     .thumbBox {
@@ -539,10 +527,21 @@
     padding-left: 15px;
 
     &__item {
+      display: inline-block;
       margin-right: 10px;
       font-size: 12px;
       letter-spacing: -0.3px;
       color: #424242;
+      .ico-people {
+        width: 16px;
+        height: 16px;
+      }
+      .count {
+        display: inline-block;
+        margin-left: 1px;
+        font-style: normal;
+        vertical-align: -1px;
+      }
     }
 
     &--profile {
@@ -584,7 +583,7 @@
   .nickNameBox {
     align-items: center;
     flex-direction: column;
-    margin-top: 7px;
+    margin-top: 8px;
     font-size: 16px;
     color: #000;
     font-weight: bold;
@@ -679,7 +678,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
       padding: 12px 0;
-      background: #eee;
+      background: $lighterGray;
 
       .thumbBox {
         width: 100px;
@@ -719,7 +718,7 @@
         &:first-child {
           width: 100%;
           padding-top: 116px;
-          margin-bottom: 8px;
+          margin-bottom: 4px;
           .nickName {
             display: flex;
             justify-content: center;
@@ -762,9 +761,9 @@
               }
             }
 
-            .countBoxInner {
-              display: inline-block;
-            }
+            // .countBoxInner {
+            //   display: inline-block;
+            // }
           }
         }
       }
@@ -792,13 +791,13 @@
     align-items: center;
     position: relative;
     padding: 4px 12px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $lighterGray;
     background-color: #fff;
 
     .thumbBox {
       width: 100px;
       height: 100px;
-      margin-right: 8px;
+      margin-right: 2px;
       min-width: 100px;
 
       &__pic {
@@ -814,8 +813,12 @@
       }
     }
 
+    .textBox {
+      width: calc(100% - 150px);
+    }
+
     .nickNameBox {
-      width: 188px;
+      width: 100%;
       margin-top: 4px;
       padding-left: 5px;
       font-size: 14px;
@@ -829,7 +832,7 @@
       height: 18px;
       margin-top: 4px;
       font-size: 12px;
-      color: #632beb;
+      color: $primary;
       align-items: center;
       &__label {
         min-width: fit-content;
@@ -837,14 +840,14 @@
         padding: 0 3px;
         height: 16px;
         color: #757575;
-        background-color: #eee;
+        background-color: $lighterGray;
         border-radius: 20px;
         font-size: 12px;
         line-height: 16px;
       }
 
       &__nickNm {
-        max-width: 80px;
+        // max-width: 80px;
         white-space: nowrap;
         overflow-x: hidden;
         text-overflow: ellipsis;
@@ -853,7 +856,15 @@
 
       &__icon {
         color: #424242;
-        word-spacing: -5px;
+        white-space: nowrap;
+        &::before {
+          display: inline-block;
+          vertical-align: middle;
+          content: '';
+          width: 16px;
+          height: 16px;
+          background: url('./static/like_g_s.svg') no-repeat 0 0;
+        }
       }
     }
 
@@ -882,7 +893,8 @@
 
     &__levelBox {
       position: relative;
-      margin-right: 4px;
+      width: 40px;
+      text-align: center;
       &--levelText {
         position: absolute;
         bottom: 22px;
@@ -954,6 +966,18 @@
           color: #ff9c00;
           text-transform: uppercase;
         }
+      }
+      &--top1 {
+        width: 38px;
+        height: 46px;
+      }
+      &--top2 {
+        width: 32px;
+        height: 38px;
+      }
+      &--top3 {
+        width: 32px;
+        height: 38px;
       }
     }
   }

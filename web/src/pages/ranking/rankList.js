@@ -12,6 +12,10 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
+import StarCountIcon from './static/circle_star_s_g.svg'
+
+// constant
+import {RANK_TYPE, DATE_TYPE} from './constant'
 
 export default (props) => {
   const context = useContext(Context)
@@ -24,7 +28,7 @@ export default (props) => {
       <>
         <div className="userRanking">
           {list.map((item, index) => {
-            let {
+            const {
               gender,
               nickNm,
               rank,
@@ -38,9 +42,9 @@ export default (props) => {
               djPoint,
               isSpecial,
               roomNo,
-              memNo
+              memNo,
+              starCnt
             } = item
-            roomNo = ''
             let genderName
             let upDownName
 
@@ -69,7 +73,7 @@ export default (props) => {
                       <></>
                     )}
                   </p>
-                  {rankType == 1 && (
+                  {/* {rankType == 1 && (
                     <>
                       <p className="myRanking__left--point">
                         <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
@@ -85,7 +89,7 @@ export default (props) => {
                         {Util.printNumber(fanPoint)}
                       </p>
                     </>
-                  )}
+                  )} */}
                 </div>
 
                 <div
@@ -109,30 +113,34 @@ export default (props) => {
                       </div>
 
                       <div className="countBox">
-                        {rankType == 1 && (
+                        {rankType === RANK_TYPE.DJ && (
                           <>
                             <span className="countBox__item">
-                              <img src={people} />
-                              {Util.printNumber(listenerPoint)}
+                              <img src={people} className="ico-people" />
+                              <em className="count">{Util.printNumber(listenerPoint)}</em>
                             </span>
 
                             <span className="countBox__item">
                               <img src={like} />
-                              {Util.printNumber(goodPoint)}
+                              <em className="count">{Util.printNumber(goodPoint)}</em>
                             </span>
 
                             <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(broadcastPoint)}
+                              <em className="count">{Util.printNumber(broadcastPoint)}</em>
                             </span>
                           </>
                         )}
 
-                        {rankType == 2 && (
+                        {rankType === RANK_TYPE.FAN && (
                           <>
                             <span className="countBox__item">
+                              <img src={StarCountIcon} />
+                              <em className="count">{Util.printNumber(starCnt)}</em>
+                            </span>
+                            <span className="countBox__item">
                               <img src={time} />
-                              {Util.printNumber(listenPoint)}
+                              <em className="count">{Util.printNumber(listenPoint)}</em>
                             </span>
                           </>
                         )}

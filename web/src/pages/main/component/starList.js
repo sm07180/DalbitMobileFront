@@ -23,9 +23,9 @@ export default (props) => {
   }
 
   return (
-    <StarList>
+    <>
       {ctx.token.isLogin === true ? (
-        <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edite_star`)}>
+        <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edit_star`)}>
           <div className="txt">
             나의
             <br />
@@ -83,18 +83,18 @@ export default (props) => {
                 saveUrlAndRedirect(`/mypage/${memNo}`)
               }}>
               <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
-                {/* {roomNo !== undefined && roomNo !== '' && (
+                {roomNo !== undefined && roomNo !== '' && (
                   <span className="liveIcon">
                     <img src={LiveIcon} alt="라이브중" />
                   </span>
-                )} */}
+                )}
               </div>
               <div className="text">{star['nickNm']}</div>
             </div>
           )
         })}
       </Swiper>
-    </StarList>
+    </>
   )
 }
 
@@ -102,81 +102,4 @@ const StarList = styled.div`
   display: flex;
   align-items: center;
   flex-direction: row;
-
-  .title {
-    color: #fff;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    margin-right: 18px;
-    margin-bottom: 18px;
-
-    .txt {
-      width: 34px;
-      font-size: 16px;
-      color: #000;
-      font-weight: bold;
-    }
-    .icon {
-      width: 20px;
-      margin-left: 4px;
-    }
-  }
-
-  .swiper-container {
-    width: 100%;
-    margin: 0;
-    padding-right: 16px;
-  }
-
-  .list {
-    width: 60px;
-    cursor: pointer;
-
-    &:first-child {
-      margin-left: 0;
-    }
-    &:last-child {
-      margin-right: 0;
-    }
-
-    .image {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      background-size: cover;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      color: #424242;
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: -0.32px;
-      background-color: #bbb;
-    }
-
-    .text {
-      margin: 0 auto;
-      margin-top: 6px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      color: #616161;
-      font-size: 12px;
-      /* letter-spacing: -0.28px; */
-      white-space: nowrap;
-      text-align: center;
-    }
-    .liveIcon {
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      width: 20px;
-      height: 20px;
-      img {
-        width: 100%;
-      }
-    }
-  }
 `
