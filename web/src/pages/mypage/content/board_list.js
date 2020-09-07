@@ -236,9 +236,7 @@ export default (props) => {
                     {item && <BoardItem key={index} data={item} set={props.set} />}
 
                     <div className="list-item__bottom">
-                      <button
-                        className={`btn__reply ${context.toggleState ? 'btn__reply--isActive' : ''}`}
-                        onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                      <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
                         {replyCnt > 0 ? (
                           <>
                             답글 <em>{replyCnt}</em>

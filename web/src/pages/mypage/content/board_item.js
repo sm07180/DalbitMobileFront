@@ -125,9 +125,9 @@ export default (props) => {
 
             <div className={props.data.boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
               {/* {props.data.writerNo === context.token.memNo && (
-                <span onClick={() => BigModify(props.data.contents, props.data.boardIdx)}>수정하기</span>
+                <button onClick={() => BigModify(props.data.contents, props.data.boardIdx)}>수정하기</button>
               )} */}
-              <span onClick={() => DeleteBigReply(props.data.boardIdx)}>삭제하기</span>
+              <button onClick={() => DeleteBigReply(props.data.boardIdx)}>삭제하기</button>
             </div>
           </>
         )}
