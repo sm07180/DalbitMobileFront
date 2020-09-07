@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
+import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import Lottie from 'react-lottie'
 
@@ -65,6 +66,7 @@ export default (props) => {
 
   //context
   const globalCtx = useContext(Context)
+  const {rankAction} = useContext(RankContext)
   const history = useHistory()
 
   // state
@@ -357,6 +359,31 @@ export default (props) => {
 
   useEffect(() => {
     fetchMainPopupData('6')
+
+    rankAction.formDispatch &&
+      rankAction.formDispatch({
+        type: 'RESET'
+      })
+
+    rankAction.setLevelList && rankAction.setLevelList([])
+
+    rankAction.setLikeList && rankAction.setLikeList([])
+
+    rankAction.setRankList && rankAction.setRankList([])
+
+    rankAction.setMyInfo &&
+      rankAction.setMyInfo({
+        isReward: false,
+        myGiftPoint: 0,
+        myListenerPoint: 0,
+        myRank: 0,
+        myUpDown: '',
+        myBroadPoint: 0,
+        myLikePoint: 0,
+        myPoint: 0,
+        myListenPoint: 0,
+        time: ''
+      })
   }, [])
 
   const [reloadInit, setReloadInit] = useState(false)
