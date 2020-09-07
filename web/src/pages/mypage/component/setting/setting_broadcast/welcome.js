@@ -4,7 +4,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 
 import './index.scss'
-function BC_SettingTitle() {
+function BC_SettingWelcome() {
   const context = useContext(Context)
 
   const [title, setTitle] = useState('')
@@ -15,16 +15,16 @@ function BC_SettingTitle() {
   const insertTitle = useCallback(async () => {
     if (title === '') {
       context.action.toast({
-        msg: '입력 된 방송제목이 없습니다.\n방송제목을 입력하세요.'
+        msg: '입력 된 인사말이 없습니다.\n인사말을 입력하세요.'
       })
     } else {
       const res = await Api.insertBroadcastOption({
-        optionType: 1,
+        optionType: 2,
         contents: title
       })
       if (res.result === 'success') {
         context.action.toast({
-          msg: '방송제목이 등록 되었습니다.'
+          msg: 'DJ 인사말이 등록 되었습니다.'
         })
 
         setList(res.data.list)
@@ -34,13 +34,13 @@ function BC_SettingTitle() {
 
   const deleteTitle = useCallback(async () => {
     const res = await Api.deleteBroadcastOption({
-      optionType: 1,
+      optionType: 2,
       idx: deleteIdx
     })
 
     if (res.result === 'success') {
       context.action.toast({
-        msg: '방송제목이 삭제 되었습니다.'
+        msg: 'DJ 인사말이 삭제 되었습니다.'
       })
       setTitle('')
       setList(res.data.list)
@@ -49,14 +49,14 @@ function BC_SettingTitle() {
 
   const modifyTitle = useCallback(async () => {
     const res = await Api.modifyBroadcastOption({
-      optionType: 1,
+      optionType: 2,
       idx: deleteIdx,
       contents: title
     })
 
     if (res.result === 'success') {
       context.action.toast({
-        msg: '방송제목이 수정 되었습니다.'
+        msg: 'DJ 인사말이 수정 되었습니다.'
       })
 
       setList(res.data.list)
@@ -66,7 +66,7 @@ function BC_SettingTitle() {
   useEffect(() => {
     const fetchData = async () => {
       const res = await Api.getBroadcastOption({
-        optionType: 1
+        optionType: 2
       })
 
       if (res.result === 'success') {
@@ -86,7 +86,7 @@ function BC_SettingTitle() {
           <div className="title">
             <span>최대 3개까지 저장 가능</span>
             <span>
-              <span className="bold">{title.length}</span> / 20
+              <span className="bold">{title.length}</span> / 100
             </span>
           </div>
           <textarea
@@ -94,7 +94,7 @@ function BC_SettingTitle() {
             value={title}
             disabled={list.length === 3 && deleteIdx === -1 && true}
             onChange={(e) => {
-              if (e.target.value.length <= 20) {
+              if (e.target.value.length <= 100) {
                 setTitle(e.target.value)
               }
             }}
@@ -139,7 +139,7 @@ function BC_SettingTitle() {
           {list.length > 0 && (
             <div className="contentsWrap">
               <p>
-                등록 된 제목<span>{list.length}</span>
+                등록 된 인사말<span>{list.length}</span>
               </p>
               {list.map((v, idx) => {
                 return (
@@ -164,4 +164,4 @@ function BC_SettingTitle() {
   )
 }
 
-export default React.memo(BC_SettingTitle)
+export default React.memo(BC_SettingWelcome)

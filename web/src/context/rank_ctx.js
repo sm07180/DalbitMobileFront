@@ -44,6 +44,13 @@ const reducer = (state, action) => {
         ...state,
         page: 1
       }
+    case 'RESET':
+      return {
+        rankType: 1,
+        dateType: 1,
+        currentDate: new Date(),
+        page: 1
+      }
     default:
       return {
         ...state

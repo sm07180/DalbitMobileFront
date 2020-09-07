@@ -34,6 +34,7 @@
     }
   }
   .buttonWrap {
+    height: 32px;
     font-size: 14px;
     line-height: 16px;
     &__delete {
@@ -86,26 +87,170 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      min-height: 44px;
-      padding: 0 8px 0 16px;
+      padding: 14px 8px 14px 16px;
       margin-bottom: 4px;
       background-color: #fff;
       border: 1px solid $lightGray;
       border-radius: 12px;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: -0.35px;
       text-align: left;
+      white-space: break-spaces;
+      word-break: break-all;
       &.on::after {
         display: inline-block;
         width: 24px;
+        min-width: 24px;
         height: 24px;
+        min-height: 24px;
         background: url(../static/radio_on.svg);
         content: '';
       }
       &::after {
         display: inline-block;
         width: 24px;
+        min-width: 24px;
         height: 24px;
+        min-height: 24px;
         background: url(../static/radio_off.svg);
         content: '';
+      }
+    }
+  }
+}
+
+#bc_setting_quick {
+  padding: 0 16px;
+
+  .title {
+    margin-bottom: 23px;
+    font-size: 14px;
+    line-height: 16px;
+  }
+
+  .contents {
+    margin-bottom: 27px;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 32px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      span {
+        color: $primary;
+      }
+      button {
+        padding: 8px 17px;
+        background-color: $primary;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 100;
+        line-height: 16px;
+        float: right;
+      }
+    }
+
+    &__inputWrap {
+      display: flex;
+      margin-bottom: 4px;
+      padding: 13px 16px;
+      background-color: #fff;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+
+      & > span {
+        display: inline-block;
+        min-width: 56px;
+        font-size: 12px;
+        font-weight: 100;
+      }
+
+      &--inputTitle {
+        line-height: 18px;
+      }
+
+      &--title {
+        line-height: 24px;
+      }
+
+      & > input {
+        width: calc(100% - 56px);
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 18px;
+      }
+
+      & > textarea {
+        width: calc(100% - 56px);
+        height: 24px;
+        border: 0px;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 24px;
+        resize: none;
+        overflow-y: hidden;
+        word-break: break-all;
+      }
+    }
+  }
+}
+
+#bc_setting_join_close {
+  padding: 0 16px;
+  .contentsWrap {
+    margin-bottom: 30px;
+    &__title {
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 18px;
+    }
+
+    &__sub {
+      margin-top: 8px;
+      font-size: 14px;
+      font-weight: 100;
+      line-height: 20px;
+    }
+
+    & > span {
+      display: flex;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      height: 44px;
+      margin-bottom: 4px;
+      background-color: #fff;
+      border-radius: 12px;
+      text-align: left;
+      padding: 0 0 0 16px;
+      font-size: 16px;
+      font-weight: 800;
+      color: #000000;
+
+      & > span {
+        height: 16px;
+        margin-left: 12px;
+        font-size: 14px;
+        color: #757575;
+      }
+
+      & > button {
+        position: absolute;
+        top: 50%;
+        right: 16px;
+        width: 51px;
+        height: 31px;
+        background: url(../../ic_alarmtoggleoff.svg) no-repeat center center / 100%;
+        transform: translateY(-50%);
+        &.on {
+          background: url(../../ic_alarmtoggleon.svg) no-repeat center center / 100%;
+        }
       }
     }
   }
