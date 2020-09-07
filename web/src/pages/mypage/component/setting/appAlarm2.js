@@ -205,6 +205,7 @@ const Content = styled.div`
   display: flex;
   width: 100%;
   flex-direction: column;
+  padding: 0 16px;
   background-color: #eeeeee;
 
   box-sizing: border-box;
