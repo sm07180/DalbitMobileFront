@@ -466,7 +466,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no, board_idx, redirect_url, clip_no
+    let room_no, mem_no, board_idx, redirect_url
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -569,14 +569,12 @@ export default () => {
         if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
         break
       case '45': //-----------------Clip PLay
-        clip_no = pushMsg.room_no
-        if(!clip_no) clip_no = pushMsg.cast_no
-        if(clip_no) clipPlay(clip_no)
+        room_no = pushMsg.room_no
+        if(room_no) clipPlay(room_no)
         break
       case '46': //-----------------Clip PLay
-        clip_no = pushMsg.room_no
-        if(!clip_no) clip_no = pushMsg.cast_no
-        if(clip_no) clipPlay(clip_no)
+        room_no = pushMsg.room_no
+        if(room_no) clipPlay(room_no)
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
