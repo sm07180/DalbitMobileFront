@@ -13,6 +13,8 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+
 //util
 import Utility from 'components/lib/utility'
 
@@ -23,6 +25,20 @@ export default () => {
   const context = useContext(Context)
   //history
   let history = useHistory()
+  // 플레이가공
+  const clipPlay = async (clipNum) => {
+    const {result, data, message} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, context)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
   //
   //---------------------------------------------------------------------
   function update(event) {
@@ -450,7 +466,7 @@ export default () => {
       */
     const {isLogin} = context.token
     const {push_type} = pushMsg
-    let room_no, mem_no, board_idx, redirect_url
+    let room_no, mem_no, board_idx, redirect_url, clip_no
 
     //개발쪽만 적용
     if (__NODE_ENV === 'dev') {
@@ -551,6 +567,16 @@ export default () => {
         break
       case '44': //-----------------랭킹 > FAN > 주간
         if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
+        break
+      case '45': //-----------------Clip PLay
+        clip_no = pushMsg.clip_no
+        if(!clip_no) clip_no = pushMsg.cast_no
+        if(!clip_no) clipPlay(clip_no)
+        break
+      case '46': //-----------------Clip PLay
+        clip_no = pushMsg.clip_no
+        if(!clip_no) clip_no = pushMsg.cast_no
+        if(!clip_no) clipPlay(clip_no)
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
