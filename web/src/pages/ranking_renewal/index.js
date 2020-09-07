@@ -225,6 +225,7 @@ function Ranking() {
           setLikeList([])
           setTotalPage(res.data.paging.totalPage)
           setMyInfo({
+            myInfo,
             ...res.data
           })
         }
