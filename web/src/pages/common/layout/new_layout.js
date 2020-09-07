@@ -17,7 +17,7 @@ import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 import Header from 'components/ui/new_header.js'
 //
-const Layout = props => {
+const Layout = (props) => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
@@ -48,10 +48,11 @@ const Layout = props => {
 }
 export default Layout
 //---------------------------------------------------------------------
-
+// 로그인,
 const Article = styled.article`
   height: 100%;
   background-color: #eeeeee;
+  color: #000;
   &.webview {
     .header-wrap .close-btn {
       display: none;
@@ -60,5 +61,8 @@ const Article = styled.article`
   /* player가 노출시 padding-bottom추가 */
   &.player_show {
     padding-bottom: 60px;
+    > div {
+      padding-bottom: 60px;
+    }
   }
 `
