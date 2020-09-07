@@ -24,6 +24,7 @@ const Layout = (props) => {
   const playerCls = useMemo(() => {
     return context.player ? 'player_show' : ''
   })
+  const isLoginPage = location.pathname === '/login' ? true : false
   //---------------------------------------------------------------------
 
   return (
@@ -37,9 +38,11 @@ const Layout = (props) => {
       <TopScrollBtn />
       <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
       {/* (방송방)Player */}
-      <NewPlayer {...props} />
+      {/* <NewPlayer {...props} /> */}
+      {isLoginPage ? <></> : <NewPlayer {...props} />}
       {/* (클립)Player */}
-      <ClipPlayer {...props} />
+      {/* <ClipPlayer {...props} /> */}
+      {isLoginPage ? <></> : <ClipPlayer {...props} />}
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}
