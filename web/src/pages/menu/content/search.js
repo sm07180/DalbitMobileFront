@@ -270,8 +270,8 @@ export default (props) => {
 
   return (
     <div className="mainSearchWrap">
-      <Room />
       <Header title="검색" />
+      <Room />
       {/* 검색바 */}
       <div className="searchBarWrapper">
         <SearchBar update={update} />
