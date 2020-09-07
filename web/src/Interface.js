@@ -569,14 +569,14 @@ export default () => {
         if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
         break
       case '45': //-----------------Clip PLay
-        clip_no = pushMsg.clip_no
+        clip_no = pushMsg.room_no
         if(!clip_no) clip_no = pushMsg.cast_no
-        if(!clip_no) clipPlay(clip_no)
+        if(clip_no) clipPlay(clip_no)
         break
       case '46': //-----------------Clip PLay
-        clip_no = pushMsg.clip_no
+        clip_no = pushMsg.room_no
         if(!clip_no) clip_no = pushMsg.cast_no
-        if(!clip_no) clipPlay(clip_no)
+        if(clip_no) clipPlay(clip_no)
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
