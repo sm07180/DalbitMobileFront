@@ -21,12 +21,9 @@ export default (props) => {
   //state
   const [thisBigIdx, setThisBigIdx] = useState(0)
   const [writeState, setWriteState] = useState(false)
-  const [ReplyWriteState, setReplyWriteState] = useState(false)
   const [checkIdx, setCheckIdx] = useState(0)
-  const [isScreet, setIsScreet] = useState(false)
   //modift msg
   const [modifyMsg, setModifyMsg] = useState('')
-  const [textChange, setTextChange] = useState('')
 
   //dateformat
   const timeFormat = (strFormatFromServer) => {
@@ -37,9 +34,7 @@ export default (props) => {
     return `${date} ${time}`
   }
   //토글 모어버튼
-  const toggleMore = (boardIdx, contents) => {
-    // thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)}
-    console.log(boardIdx, thisBigIdx)
+  const moreToggle = (boardIdx, contents) => {
     if (thisBigIdx !== 0) {
       setThisBigIdx(0)
     } else {
@@ -47,7 +42,7 @@ export default (props) => {
     }
   }
   //수정하기 토글
-  const BigModify = (contents, boardIdx) => {
+  const editToggle = (contents, boardIdx) => {
     if (writeState === false) {
       setWriteState(true)
       setThisBigIdx(0)
@@ -58,7 +53,7 @@ export default (props) => {
     }
   }
   //수정하기 fetch
-  async function EditBoard() {
+  async function editBoard() {
     const res = await Api.mypage_board_edit({
       data: {
         memNo: urlrStr,
@@ -77,14 +72,10 @@ export default (props) => {
           msg: '수정 내용을 입력해주세요.'
         })
       }
-      // context.action.alert({
-      //   cancelCallback: () => {},
-      //   msg: res.message
-      // })
     }
   }
   //삭제하기 fetch
-  const DeleteBigReply = (boardIdx) => {
+  const deleteBoard = (boardIdx) => {
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -120,14 +111,13 @@ export default (props) => {
       <div className="list-item__header">
         {(urlrStr === context.token.memNo || props.data.writerNo === context.token.memNo) && (
           <>
-            <button className="btn__more" onClick={() => toggleMore(props.data.boardIdx, props.data.contents)}></button>
-            {/* 상세기능영역 */}
+            <button className="btn__more" onClick={() => moreToggle(props.data.boardIdx, props.data.contents)}></button>
 
             <div className={props.data.boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
               {/* {props.data.writerNo === context.token.memNo && (
-                <button onClick={() => BigModify(props.data.contents, props.data.boardIdx)}>수정하기</button>
+                <button onClick={() => editToggle(props.data.contents, props.data.boardIdx)}>수정하기</button>
               )} */}
-              <button onClick={() => DeleteBigReply(props.data.boardIdx)}>삭제하기</button>
+              <button onClick={() => deleteBoard(props.data.boardIdx)}>삭제하기</button>
             </div>
           </>
         )}

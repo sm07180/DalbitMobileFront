@@ -19,25 +19,16 @@ let moreState = false
 //layout
 export default (props) => {
   let location = useLocation()
-  const {webview} = qs.parse(location.search)
-  const params = useParams()
-
-  //ref
-  const inputEl = useRef(null)
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
-  //profileGlobal info
   const {profile} = ctx
   //urlNumber
-
-  var urlrStr = location.pathname.split('/')[2]
-  // var urlrStr = props.location.pathname.split('/')[2]
+  let urlrStr = location.pathname.split('/')[2]
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
-  const [boardWriteState, setBoardWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
@@ -45,7 +36,7 @@ export default (props) => {
   const [writeType, setWriteType] = useState(true)
 
   //팬보드 댓글 온체인지
-  const handleChangeBig = (e) => {
+  const handleChangeInput = (e) => {
     const target = e.currentTarget
     if (target.value.length > 100) return
     setTextChange(e.target.value)
@@ -74,7 +65,7 @@ export default (props) => {
     }
   }
   //쓰기버튼 토글이벤트
-  const WriteToggle = () => {
+  const writeToggle = () => {
     console.log(writeType)
     if (writeState === false) {
       setWriteState(true)
@@ -138,7 +129,7 @@ export default (props) => {
       data: params
     })
     if (res.result === 'success') {
-      WriteToggle()
+      writeToggle()
       setTextChange('')
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
@@ -204,7 +195,7 @@ export default (props) => {
         <div
           className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
           onClick={() => {
-            WriteToggle()
+            writeToggle()
           }}>
           <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
           {writeState === false && (
@@ -216,7 +207,7 @@ export default (props) => {
         </div>
         {writeState === true && (
           <div className="content_area">
-            <textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
+            <textarea placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
           </div>
         )}
       </div>
@@ -248,7 +239,7 @@ export default (props) => {
             if (writeType === 'reply') {
               context.action.updateFanboardReplyNum(-1)
             }
-            WriteToggle()
+            writeToggle()
           }}>
           <button className="btn__toggle">접기</button>
         </div>
