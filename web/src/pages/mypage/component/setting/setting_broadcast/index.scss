@@ -27,6 +27,11 @@
       color: #bdbdbd;
       line-height: 22px;
     }
+
+    &:disabled {
+      border: 1px solid $lightGray;
+      background-color: #f5f5f5;
+    }
   }
   .buttonWrap {
     font-size: 14px;
@@ -55,6 +60,53 @@
       border-radius: 8px;
       color: #fff;
       float: right;
+
+      &.disabled {
+        background-color: $mediumGray;
+      }
+    }
+  }
+
+  .contentsWrap {
+    margin-top: 32px;
+    & > p {
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 18px;
+      & > span {
+        margin-left: 8px;
+        font-weight: normal;
+        color: $primary;
+      }
+    }
+
+    & > button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      min-height: 44px;
+      padding: 0 8px 0 16px;
+      margin-bottom: 4px;
+      background-color: #fff;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      text-align: left;
+      &.on::after {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(../static/radio_on.svg);
+        content: '';
+      }
+      &::after {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url(../static/radio_off.svg);
+        content: '';
+      }
     }
   }
 }

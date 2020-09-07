@@ -2474,6 +2474,14 @@ export default class API {
       method: 'GET'
     })
   }
+
+  static insertBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option/add`,
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null
