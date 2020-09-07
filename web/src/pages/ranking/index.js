@@ -20,8 +20,6 @@ import {RANK_TYPE, DATE_TYPE} from './constant'
 //static
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './ranking.scss'
-import {MonthSelection} from '@material-ui/pickers/views/Month/MonthView'
-import {isCompositeComponent} from 'react-dom/test-utils'
 
 const RANK_TYPE_LIST = Object.keys(RANK_TYPE).map((type) => RANK_TYPE[type])
 

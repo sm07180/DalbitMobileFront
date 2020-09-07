@@ -12,7 +12,7 @@ import like from './static/like_g_s.svg'
 import live from './static/live.svg'
 import people from './static/people_g_s.svg'
 import time from './static/time_g_s.svg'
-import StarCountIcon from './static/circle_star_s_g.svg'
+import StarCountIcon from './static/circle_star_s.png'
 
 // constant
 import {RANK_TYPE, DATE_TYPE} from './constant'
@@ -128,25 +128,23 @@ export default (props) => {
                           {Util.printNumber(djPoint)}
                         </span> */}
 
-                        <div className="countBoxInner">
-                          {/* <span className="countBox__item">
+                        {/* <span className="countBox__item">
                             <img src={star} />
                             {Util.printNumber(gift)}
                           </span> */}
-                          <span className="countBox__item">
-                            <img src={people} />
-                            {Util.printNumber(listenerPoint)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={like} />
-                            {Util.printNumber(goodPoint)}
-                          </span>
+                        <span className="countBox__item">
+                          <img src={people} className="ico-people" />
+                          <em className="count">{Util.printNumber(listenerPoint)}</em>
+                        </span>
+                        <span className="countBox__item">
+                          <img src={like} />
+                          <em className="count">{Util.printNumber(goodPoint)}</em>
+                        </span>
 
-                          <span className="countBox__item">
-                            <img src={time} />
-                            {Util.printNumber(broadcastPoint)}
-                          </span>
-                        </div>
+                        <span className="countBox__item">
+                          <img src={time} />
+                          <em className="count">{Util.printNumber(broadcastPoint)}</em>
+                        </span>
                       </>
                     )}
 
@@ -161,13 +159,13 @@ export default (props) => {
                           {Util.printNumber(gift)}
                         </span> */}
                         <span className="countBox__item">
-                          <img src={StarCountIcon} />
-                          {Util.printNumber(starCnt)}
+                          <img src={StarCountIcon} width={16} />
+                          <em className="count">{Util.printNumber(starCnt)}</em>
                         </span>
 
                         <span className="countBox__item">
                           <img src={time} />
-                          {Util.printNumber(listenPoint)}
+                          <em className="count">{Util.printNumber(listenPoint)}</em>
                         </span>
                       </>
                     )}

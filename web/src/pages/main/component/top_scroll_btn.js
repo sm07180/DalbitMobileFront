@@ -9,6 +9,7 @@ import TopScrollIcon from '../static/ic_circle_top.svg'
 
 export default (props) => {
   const history = useHistory()
+  const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {logoChange} = globalCtx
@@ -60,7 +61,7 @@ export default (props) => {
   }
 
   return (
-    <FixedButton>
+    <FixedButton className={context.player ? 'usePlayer' : ''}>
       {urlrStr !== '/rank' && attendStampState()}
 
       {/* <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} /> */}
@@ -78,6 +79,10 @@ const FixedButton = styled.div`
     &:first-child {
       margin-top: 0;
     }
+  }
+
+  &.usePlayer {
+    bottom: 70px;
   }
 `
 const AttendStamp = styled.button`
