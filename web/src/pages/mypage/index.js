@@ -11,7 +11,7 @@ import MyProfile from './content/myProfile.js'
 //import Navigation from './content/navigation.js'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import BroadcastSetting from './content/broadcastSetting.js'
-import AppAlarm2 from './component/setting/appAlarm2'
+import AppAlarm2 from './content/appAlarm2'
 import Notice from './content/notice.js'
 import FanBoard from './content/fanBoard.js'
 import Wallet from './content/wallet.js'
@@ -158,7 +158,7 @@ export default (props) => {
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb">
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
-        <div id="mypage">
+        <div id="profile">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
