@@ -10,7 +10,6 @@ import styled from 'styled-components'
 import {useLocation, useHistory} from 'react-router-dom'
 // context
 import {Context} from 'context'
-import {WIDTH_PC, WIDTH_TABLET, IMG_SERVER} from 'context/config'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import Api from 'context/api'
 // component
@@ -230,16 +229,7 @@ export default (props) => {
           {TotalList &&
             TotalList !== false &&
             TotalList.map((item, index) => {
-              const {nickNm, writerNo, contents, writeDt, profImg, replyCnt, boardIdx, viewOn} = item
-              // const Link = () => {
-              //   if (webview) {
-              //     context.token.memNo !== writerNo
-              //       ? history.push(`/mypage/${writerNo}?webview=${webview}`)
-              //       : history.push(`/menu/profile`)
-              //   } else {
-              //     context.token.memNo !== writerNo ? history.push(`/mypage/${writerNo}`) : history.push(`/menu/profile`)
-              //   }
-              // }
+              const {replyCnt, boardIdx, viewOn} = item
               return (
                 <>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
@@ -283,114 +273,9 @@ export default (props) => {
                       replyWriteState && <WriteBoard {...props} set={setAction} type={'reply'} />}
                   </div>
                 </>
-
-                // <React.Fragment key={index}>
-                //   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                //     <div className="list-item__header">
-                //       {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                //         <>
-                //           <button className="btn__more" onClick={() => toggleMore(boardIdx, contents)}></button>
-                //           {/* 상세기능영역 */}
-
-                //           <div className={boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
-                //             {writerNo === context.token.memNo && (
-                //               <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
-                //             )}
-                //             <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                //           </div>
-                //         </>
-                //       )}
-                //       <span className="thumb" style={{backgroundImage: `url(${profImg.thumb62x62})`}} onClick={Link}></span>
-                //       <span className="info" onClick={Link}>
-                //         <span className="info__name">
-                //           <em className={`${viewOn === 0 && 'info__lock'}`}></em>
-                //           {nickNm}
-                //         </span>
-                //         <span className="info__dt">{timeFormat(writeDt)}</span>
-                //       </span>
-                //     </div>
-                //     <div className="list-item__content">
-                //       <pre>{contents}</pre>
-                //     </div>
-                //     {boardIdx !== context.fanboardReplyNum && (
-                //       <div className="list-item__bottom">
-                //         <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
-                //           {replyCnt > 0 ? (
-                //             <>
-                //               답글 <em>{replyCnt}</em>
-                //             </>
-                //           ) : (
-                //             <>답글쓰기</>
-                //           )}
-                //         </button>
-                //       </div>
-                //     )}
-                //     {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
-                //       <ReplyList
-                //         isViewOn={viewOn}
-                //         replyShowIdx={context.fanboardReplyNum}
-                //         titleReplyInfo={context.fanboardReply}
-                //         set={props.set}
-                //       />
-                //     )}
-                //   </div>
-                // </React.Fragment>
               )
             })}
-
-          {/* 큰댓글 수정하기영역 */}
-          {writeState && (
-            <Writer>
-              <div className="header-wrap">
-                <h2 className="header-title">팬보드 수정</h2>
-                <button className="close-btn" onClick={() => setWriteState(false)}>
-                  <img src={closeBtn} alt="뒤로가기" />
-                </button>
-              </div>
-              <div className="content_area">
-                <Textarea value={modifyMsg} onChange={BigChangeContent} placeholder="내용을 입력해주세요" />
-                <span className="bigCount">
-                  <em>{modifyMsg.length}</em>&nbsp;/ 100
-                </span>
-                <button onClick={() => fetchDataModiy()}>수정</button>
-              </div>
-            </Writer>
-          )}
-          {/* 대댓글 작성영역 */}
-          {/* {ReplyWriteState && (
-            <WriteBoard {...props} set={props.set} />
-            // <Writer>
-            //   <div className="header-wrap">
-            //     <h2 className="header-title">답글 쓰기</h2>
-            //     <button className="close-btn" onClick={() => ReplyWrite(false)}>
-            //       <img src={closeBtn} alt="뒤로가기" />
-            //     </button>
-            //   </div>
-
-            //   <div className="content_area">
-            //     <Textarea placeholder="내용을 입력해주세요" onChange={handleChangeBig} value={textChange} />
-            //     <span className="bigCount">
-            //       <span className="bigCount__screet">
-            //         <DalbitCheckbox
-            //           status={isScreet}
-            //           callback={() => {
-            //             if (!setDonstChange) {
-            //               setIsScreet(!isScreet)
-            //             }
-            //           }}
-            //         />
-            //         <span className="bold">비공개</span>
-            //       </span>
-            //       <span>
-            //         <em>{textChange.length}</em>&nbsp;/ 100
-            //       </span>
-            //     </span>
-            //     <button onClick={() => fetchDataUploadReply()}>등록</button>
-            //   </div>
-            // </Writer>
-          )} */}
         </>
-        {/*대댓글 리스트영역*/}
       </div>
     </>
   )
@@ -404,113 +289,3 @@ const Dim = styled.div`
   height: 100vh;
   z-index: 55;
 `
-//수정하기
-
-const Writer = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 22;
-  width: 100%;
-  height: 100vh;
-  background-color: #eeeeee;
-  header {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 40px;
-    width: 100%;
-    background-color: #fff;
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: normal;
-    text-align: center;
-    color: #000000;
-    > button {
-      position: absolute;
-      left: 6px;
-      top: 0;
-      width: 40px;
-      height: 40px;
-      background: url(${closeBtn}) no-repeat center center / cover;
-    }
-  }
-  /* 팬보드 컨텐츠작성영역 */
-  .content_area {
-    display: flex;
-    flex-direction: column;
-    padding: 12px 16px;
-    :after {
-      content: '';
-      clear: both;
-      display: block;
-    }
-    > textarea {
-      width: 100%;
-      padding: 16px;
-      box-sizing: border-box;
-      min-height: 220px;
-      border-radius: 12px;
-      border: solid 1px #e0e0e0;
-      :focus {
-        border: solid 1px #000;
-      }
-      ::placeholder {
-        font-size: 14px;
-        letter-spacing: normal;
-        text-align: left;
-        color: #bdbdbd;
-      }
-    }
-    .bigCount {
-      > em {
-        color: #000;
-        font-style: normal;
-        font-weight: 800;
-      }
-      display: flex;
-      margin-right: 7px;
-      margin-top: 4px;
-      margin-bottom: 32px;
-      font-size: 12px;
-      line-height: 1.08;
-      letter-spacing: normal;
-      text-align: right;
-      color: #616161;
-
-      &__screet {
-        display: flex;
-        flex: 1;
-        align-items: center;
-
-        & > input {
-          margin-right: 10px;
-        }
-
-        & > .bold {
-          font-size: 14px;
-          font-weight: bold;
-        }
-        span {
-          font-size: 12px;
-        }
-      }
-
-      & > span:last-child {
-        display: flex;
-        align-items: center;
-      }
-    }
-    > button {
-      height: 44px;
-      border-radius: 12px;
-      background-color: ${COLOR_MAIN};
-      font-size: 18px;
-      font-weight: 600;
-      text-align: center;
-      color: #ffffff;
-    }
-  }
-`
-const Textarea = styled.textarea``

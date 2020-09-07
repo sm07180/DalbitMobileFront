@@ -82,7 +82,7 @@ export default (props) => {
       setWriteState(false)
     }
   }
-  //------------전체 팬보드 큰댓글 조회
+  //팬보드 리스트 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.mypage_fanboard_list({
@@ -113,29 +113,8 @@ export default (props) => {
     } else {
     }
   }
-  //재조회 및 초기조회
-  useEffect(() => {
-    currentPage = 1
-    fetchData()
-    props.set(true)
-
-    console.log(props.type)
-    if (props.type !== undefined) {
-      setWriteType('reply')
-    } else {
-      setWriteType('board')
-    }
-  }, [writeState, ctx.fanBoardBigIdx])
-  //스크롤 콘켓
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
-
   //팬보드 댓글추가
-  async function fetchDataUpload() {
+  async function PostBoardData() {
     let params
     console.log(context.fanboardReplyNum)
     // return
@@ -170,7 +149,7 @@ export default (props) => {
       }
     }
   }
-
+  // 팬보드 뉴표시
   async function getMyPageNewFanBoard() {
     const newFanBoard = await Api.getMyPageNewFanBoard()
     let mypageNewStg = localStorage.getItem('mypageNew')
@@ -183,6 +162,25 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
+
+  //재조회 및 초기조회
+  useEffect(() => {
+    currentPage = 1
+    fetchData()
+    props.set(true)
+    if (props.type !== undefined) {
+      setWriteType('reply')
+    } else {
+      setWriteType('board')
+    }
+  }, [writeState, ctx.fanBoardBigIdx])
+  //스크롤 콘켓
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
   useEffect(() => {
     if (profile.memNo === urlrStr) {
       setIsOther(false)
@@ -238,7 +236,7 @@ export default (props) => {
               <em>{textChange.length}</em> / 100
             </span>
           </span>
-          <button className="btn__ok" onClick={() => fetchDataUpload()}>
+          <button className="btn__ok" onClick={() => PostBoardData()}>
             등록
           </button>
         </div>

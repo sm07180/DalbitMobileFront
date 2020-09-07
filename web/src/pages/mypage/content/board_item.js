@@ -51,49 +51,8 @@ export default (props) => {
       setWriteState(false)
     }
   }
-  //정보 대댓글로 전달
-  const ReplyInfoTransfer = (boardIdx, item) => {
-    //setTitleReplyInfo(item)
-    if (context.fanboardReplyNum === boardIdx) {
-      context.action.updateFanboardReplyNum(-1)
-    } else {
-      context.action.updateFanboardReplyNum(boardIdx)
-    }
-    context.action.updateFanboardReply(item)
-    context.action.updateToggleAction(true)
-    // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
-  }
-  //댓글 등록 온체인지
-  const BigChangeContent = (e) => {
-    const target = e.currentTarget
-    if (target.value.length > 100) return
-    setModifyMsg(target.value)
-  }
-  //대댓글 작성 및 초기화
-  const ReplyWrite = (boardIdx, viewOn) => {
-    if (viewOn === 0) {
-      setIsScreet(true)
-      setDonstChange(true)
-    } else {
-      setIsScreet(false)
-      setDonstChange(false)
-    }
-    if (ReplyWriteState === false) {
-      context.action.updateReplyIdx(boardIdx)
-      setReplyWriteState(true)
-    } else {
-      setTextChange('')
-      setReplyWriteState(false)
-    }
-  }
-  //댓글 온체인지
-  const handleChangeBig = (e) => {
-    const target = e.currentTarget
-    if (target.value.length > 100) return
-    setTextChange(target.value)
-  }
   //수정하기 fetch
-  async function fetchDataModiy() {
+  async function EditBoard() {
     const res = await Api.mypage_board_edit({
       data: {
         memNo: urlrStr,
@@ -138,32 +97,6 @@ export default (props) => {
       }
     }
     fetchDataDelete()
-  }
-  //대댓글 추가
-  async function fetchDataUploadReply() {
-    const res = await Api.mypage_fanboard_upload({
-      data: {
-        memNo: urlrStr,
-        depth: 2,
-        content: textChange,
-        boardNo: context.replyIdx,
-        viewOn: isScreet === true ? 0 : 1
-      }
-    })
-    if (res.result === 'success') {
-      context.action.updateReplyIdx(false)
-      setTextChange('')
-
-      context.action.updateFanBoardBigIdxMsg(textChange)
-      setReplyWriteState(false)
-    } else if (res.result === 'fail') {
-      if (textChange.length === 0) {
-        context.action.alert({
-          callback: () => {},
-          msg: '답글 내용을 입력해주세요.'
-        })
-      }
-    }
   }
 
   const Link = () => {
