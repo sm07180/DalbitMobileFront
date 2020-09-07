@@ -1651,6 +1651,14 @@ export default class API {
    * @create 이은비 2020.03.11
    */
 
+  static getRankList = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: `/rank/${data.type}`,
+      params: data
+    })
+  }
+
   static get_ranking = async (obj) => {
     const {param} = obj
     return await ajax({
