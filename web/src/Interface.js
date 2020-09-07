@@ -342,14 +342,15 @@ export default () => {
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
-        // context.action.updateClipPlayerState(event.detail.playerState)
         context.action.updateClipPlayerInfo(event.detail)
+        context.action.updatePlayer(true)
         break
-      case 'clip-player-end': //------------------------클립플레이어 end(플)
+      case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)
         context.action.updateClipState(null)
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
+        context.action.updatePlayer(false)
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
         settingSessionInfo('ended')

@@ -132,6 +132,7 @@ const App = () => {
             globalCtx.action.updateClipState(true)
             globalCtx.action.updateClipPlayerState(parsed.playerState)
             globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
+            globalCtx.action.updatePlayer(true)
           }
         }
 

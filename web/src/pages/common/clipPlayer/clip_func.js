@@ -28,4 +28,5 @@ export const clipExit = (context) => {
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updateClipState(null)
+  context.action.updatePlayer(false)
 }
