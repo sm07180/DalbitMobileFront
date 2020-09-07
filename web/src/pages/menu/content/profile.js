@@ -33,14 +33,37 @@ import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
 export default (props) => {
   let history = useHistory()
+  // webview & ctx
+  const {webview} = qs.parse(location.search)
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {token, profile} = globalCtx
+
   // nav Array
-  const subNavList = [
-    {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-    {type: 'my_clip', txt: '클립', icon: ClipIcon},
-    {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-    // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
-  ]
+  // const subNavList = [
+  //   {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+  //   {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+  //   {type: 'my_clip', txt: '클립', icon: ClipIcon},
+  //   {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+  //   // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
+  // ]
+  let subNavList
+  if (globalCtx.isDevIp) {
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+      {type: 'my_clip', txt: '클립', icon: ClipIcon},
+      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+      // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
+    ]
+  } else {
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+      // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
+    ]
+  }
   const walletList = [
     {type: 'store', txt: '달 충전', icon: DalIcon},
     {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
@@ -56,11 +79,6 @@ export default (props) => {
     // {type: 'personal', txt: '서비스 가이드', icon: ServiceIcon},
     {type: 'appInfo', txt: '운영 정책 / 회원 탈퇴', icon: AppIcon}
   ]
-  // webview & ctx
-  const {webview} = qs.parse(location.search)
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
-  const {token, profile} = globalCtx
 
   // state
   const [fetching, setFetching] = useState(false)

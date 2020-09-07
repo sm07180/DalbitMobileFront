@@ -92,6 +92,8 @@ const GlobalProvider = (props) => {
   const [clipState, setClipState] = useState('floating')
   const [clipPlayerState, setClipPlayerState] = useState(null)
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
+  //
+  const [isDevIp, setIsDevIp] = useState(false)
 
   //---------------------------------------------------------------------
   const action = {
@@ -388,6 +390,9 @@ const GlobalProvider = (props) => {
      */
     updateClipPlayerInfo: (obj) => {
       setClipPlayerInfo(obj)
+    },
+    updateIsDevIp: (boolean) => {
+      setIsDevIp(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -449,7 +454,8 @@ const GlobalProvider = (props) => {
     urlStr,
     clipState,
     clipPlayerState,
-    clipPlayerInfo
+    clipPlayerInfo,
+    isDevIp
   }
   return <Provider value={value}>{props.children}</Provider>
 }
