@@ -17,19 +17,23 @@ import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
 
-export default function MyProfile(props) {
-  const {myInfo, rankType, dateType, setMyInfo} = props
+export default function MyProfile() {
   const history = useHistory()
   const global_ctx = useContext(Context)
+
+  const {token} = global_ctx
 
   const {rankState, rankAction} = useContext(RankContext)
 
   const {formState, myInfo} = rankState
+  const setMyInfo = rankAction.setMyInfo
 
-  const {token} = global_ctx
-
+  const [isFixed, setIsFixed] = useState(false)
   const [popup, setPopup] = useState(false)
-
+  const [rewordProfile, setRewordProfile] = useState({
+    date: '일간',
+    rank: 'DJ'
+  })
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
@@ -40,8 +44,8 @@ export default function MyProfile(props) {
     async function feachRankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: rankType,
-          rankType: dateType
+          rankSlct: formState.rankType,
+          rankType: formState.dateType
         }
       })
 
@@ -61,6 +65,7 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
+
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
@@ -81,15 +86,18 @@ export default function MyProfile(props) {
   useEffect(() => {
     const createMyRank = () => {
       if (token.isLogin) {
-        const settingProfileInfo = async (memNo) => {
-          const profileInfo = await Api.profile({
-            params: {memNo: token.memNo}
-          })
-          if (profileInfo.result === 'success') {
-            setMyProfile(profileInfo.data)
-          }
-        }
-        settingProfileInfo()
+        // console.log(global_ctx)
+        setMyProfile(global_ctx.profile)
+        // const settingProfileInfo = async (memNo) => {
+        //   const profileInfo = await Api.profile({
+        //     params: {memNo: token.memNo}
+        //   })
+        //   if (profileInfo.result === 'success') {
+        //     setMyProfile(profileInfo.data)
+        //     console.log('api', profileInfo.data)
+        //   }
+        // }
+        // settingProfileInfo()
       } else {
         return null
       }
@@ -114,17 +122,7 @@ export default function MyProfile(props) {
             </button>
           </div>
 
-          {/* {popup && (
-            <PopupSuccess
-              rankType={rankType}
-              dateType={dateType}
-              setPopup={setPopup}
-              setMyInfo={setMyInfo}
-              myInfo={myInfo}
-              rewardPop={rewardPop}
-              setRewardPop={setRewardPop}
-            />
-          )} */}
+          {popup && <PopupSuccess setPopup={setPopup} rewardPop={rewardPop} setRewardPop={setRewardPop} />}
         </>
       ) : (
         <>
@@ -156,7 +154,7 @@ export default function MyProfile(props) {
                     <div className="profileItme">
                       <p className="nickNameBox">{myProfile.nickNm}</p>
                       <div className="countBox countBox--profile">
-                        {rankType == RANK_TYPE.DJ && (
+                        {formState.rankType == RANK_TYPE.DJ && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -182,7 +180,7 @@ export default function MyProfile(props) {
                             </div>
                           </>
                         )}
-                        {rankType === RANK_TYPE.FAN && (
+                        {formState.rankType === RANK_TYPE.FAN && (
                           <>
                             <div className="countBox__block">
                               <span className="countBox__item">
@@ -209,3 +207,99 @@ export default function MyProfile(props) {
     </>
   )
 }
+
+// {myInfo.isReward === true ? (
+//   <div>
+//     <div className="rewordBox">
+//       <p className="rewordBox__top">
+//         {rewardProfile.date} {rewardProfile.rank} 랭킹 {myInfo.rewardRank}위 <span>축하합니다</span>
+//       </p>
+
+//       <div className="rewordBox__character1"></div>
+//       <div className="rewordBox__character2"></div>
+//       <button onClick={() => rankingReward()} className="rewordBox__btnGet">
+//         보상 받기
+//       </button>
+//     </div>
+//   </div>
+// ) : (
+//   <>
+//     {myProfile && (
+//       <div className="myRanking myRanking__profile">
+//         <div
+//           className="myRanking__profile__wrap"
+//           onClick={() => {
+//             history.push(`/mypage/${globalState.baseData.memNo}/notice`)
+//           }}>
+//           <div className="myRanking__left myRanking__left--profile">
+//             <p
+//               className="myRanking__left--title colorWhite
+//             ">
+//               내 랭킹
+//             </p>
+//             <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
+//             {}
+//             <p className="rankingChange">{createMyProfile()}</p>
+//           </div>
+
+//           <div className="thumbBox thumbBox__profile">
+//             <img src={myProfile.holder} className="thumbBox__frame" />
+//             <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
+//           </div>
+
+//           <div className="myRanking__right">
+//             <div className="myRanking__rightWrap">
+//               <div className="profileItme">
+//                 <p className="nickNameBox">{myProfile.nickNm}</p>
+//                 <div className="countBox countBox--profile">
+//                   {formState.rankType === 1 && (
+//                     <>
+//                       <div className="countBox__block">
+//                         <span className="countBox__item">
+//                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+//                           {printNumber(myInfo.myPoint)}
+//                         </span>
+
+//                         <span className="countBox__item">
+//                           <img src={peopleWhite} className="icon__white" />
+//                           {printNumber(myInfo.myListenerPoint)}
+//                         </span>
+//                       </div>
+
+//                       <div className="countBox__block">
+//                         <span className="countBox__item">
+//                           <img src={likeWhite} className="icon__white" />
+//                           {printNumber(myInfo.myLikePoint)}
+//                         </span>
+
+//                         <span className="countBox__item">
+//                           <img src={timeWhite} className="icon__white" />
+//                           {printNumber(myInfo.myBroadPoint)}
+//                         </span>
+//                       </div>
+//                     </>
+//                   )}
+//                   {formState.rankType === 2 && (
+//                     <>
+//                       <div className="countBox__block">
+//                         <span className="countBox__item">
+//                           <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+//                           {printNumber(myInfo.myPoint)}
+//                         </span>
+
+//                         <span className="countBox__item">
+//                           <img src={timeWhite} />
+//                           {printNumber(myInfo.myListenPoint)}
+//                         </span>
+//                       </div>
+//                     </>
+//                   )}
+//                 </div>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     )}
+//   </>
+// )}

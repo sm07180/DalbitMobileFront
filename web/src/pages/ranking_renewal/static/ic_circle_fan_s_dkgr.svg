@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_circle_fan_s_dkgr" width="16" height="16" viewBox="0 0 16 16">
+    <path id="사각형_5708" fill="none" d="M0 0H16V16H0z" data-name="사각형 5708"/>
+    <circle id="타원_514" cx="7" cy="7" r="7" fill="#757575" data-name="타원 514" transform="translate(1 1)"/>
+    <text id="F" fill="#fff" font-family="OpenSans-Regular, Open Sans" font-size="10px" transform="translate(5.5 11.5)">
+        <tspan x="0" y="0">F</tspan>
+    </text>
+</svg>
