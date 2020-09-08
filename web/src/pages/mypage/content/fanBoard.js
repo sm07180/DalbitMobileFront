@@ -28,7 +28,12 @@ export default (props) => {
   const context = useContext(Context)
   const {profile} = ctx
   //urlNumber
-  var urlrStr = props.location.pathname.split('/')[2]
+  let urlrStr
+  if (props.location) {
+    urlrStr = props.location.pathname.split('/')[2]
+  } else {
+    urlrStr = location.pathname.split('/')[2]
+  }
   //state
   const [boardList, setBoardList] = useState([])
   const [nextList, setNextList] = useState(false)
@@ -161,7 +166,7 @@ export default (props) => {
   //--------------------------------------------------
   return (
     <div className="fanboard">
-      <Header title="팬보드" />
+      {!props.type ? <Header title="팬보드" /> : <></>}
       <WriteBoard {...props} set={setAction} />
 
       {/* 팬보드 리스트 영역 */}

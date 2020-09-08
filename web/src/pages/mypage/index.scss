@@ -688,6 +688,15 @@
           left: 0;
           background-color: $primary;
         }
+        button {
+          font-weight: bold;
+          color: $primary;
+        }
+      }
+    }
+    &__content {
+      .noticeIsTop {
+        margin: 0 0 10px;
       }
     }
   }

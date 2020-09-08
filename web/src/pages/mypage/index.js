@@ -36,6 +36,7 @@ export default (props) => {
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
   const [isSelected, setIsSelected] = useState(false)
+  const [tabSelected, setTabSelected] = useState(0)
 
   //navi Array
   let navigationList = [
@@ -84,6 +85,9 @@ export default (props) => {
       setMyPageNew(res.data)
     }
     getMyPageNew()
+  }, [])
+  useEffect(() => {
+    setTabSelected(0)
   }, [])
 
   useEffect(() => {
@@ -140,9 +144,12 @@ export default (props) => {
     history.push(`/mypage/${memNo}/${type}`)
   }
   const changeTab = (type) => {
-    if (type === 'notice') {
-    } else if (type === 'fanboard') {
-    } else if (type === 'clip') {
+    if (type === 0) {
+      setTabSelected(0)
+    } else if (type === 1) {
+      setTabSelected(1)
+    } else if (type === 2) {
+      setTabSelected(2)
     }
   }
 
@@ -160,16 +167,18 @@ export default (props) => {
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
-                    <li className={isSelected ? `isSelected` : ``}>
-                      <button className="list" key={`list-${idx}`} onClick={() => changeTab(type)}>
-                        {txt}
+                    <li className={tabSelected === idx ? `isSelected` : ``}>
+                      <button className="list" key={`list-${idx}`} onClick={() => changeTab(idx)}>
+                        {txt} <span className="cnt"></span>
                       </button>
                     </li>
                   )
                 })}
               </ul>
               <div className="profile-tab__content">
-                <Notice />
+                {tabSelected === 0 && <Notice type="mypage" />}
+                {tabSelected === 1 && <FanBoard type="mypage" />}
+                {tabSelected === 2 && <></>}
               </div>
 
               {/* <div className="profile-menu">

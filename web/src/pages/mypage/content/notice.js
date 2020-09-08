@@ -144,6 +144,7 @@ const Notice = (props) => {
     const res = await Api.mypage_notice_inquire(params)
     if (res.result === 'success') {
       context.action.updateNoticeState(false)
+      console.log(res.data)
       if (res.data.paging && res.data.paging.totalPage === 1) {
         if (next) {
           moreState = false
@@ -243,10 +244,14 @@ const Notice = (props) => {
 
   return (
     <>
-      <Header>
-        <h2 className="header-title">방송공지</h2>
-        {urlrStr === context.profile.memNo && createWriteBtn()}
-      </Header>
+      {!props.type ? (
+        <Header>
+          <h2 className="header-title">방송공지</h2>
+          {urlrStr === context.profile.memNo && createWriteBtn()}
+        </Header>
+      ) : (
+        <></>
+      )}
       {listPage === -1 ? (
         <NoResult />
       ) : (
