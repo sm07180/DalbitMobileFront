@@ -36,8 +36,10 @@ export default (props) => {
   //     }
   //   })
   // }, [globalCtx.close])
-
-  if (!token.isLogin && params.category === 'profile') {
+  console.log(token.isLogin)
+  console.log(params.category)
+  if (token.isLogin === false && params.category === 'profile') {
+    alert('메인팅김')
     history.push('/login')
   }
 
