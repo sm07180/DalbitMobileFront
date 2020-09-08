@@ -6,7 +6,7 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import Utility from 'components/lib/utility'
 import {BroadCastStore} from 'pages/broadcast/store'
 
-export default props => {
+export default (props) => {
   //-------------------------------------------------- declare start
   const context = useContext(Context)
 
@@ -121,7 +121,7 @@ export default props => {
 }
 
 // DJ, Guest 선택
-const TargetInfo = props => {
+const TargetInfo = (props) => {
   const [state, setState] = useState(0)
   return (
     <>
@@ -187,7 +187,7 @@ const Dj = styled.button`
   border-width: 1px;
   border-color: #bdbdbd;
   border-style: solid;
-  border-color: ${props => (props.active == 'active' ? '#632beb' : '')};
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '')};
   justify-content: center;
   align-items: center;
 `
@@ -237,7 +237,7 @@ const Bar = styled.div`
 const Exp = styled.div`
   display: flex;
   min-width: 15%;
-  width: ${props => (props.exp ? props.exp + '%' : '0%')};
+  width: ${(props) => (props.exp ? props.exp + '%' : '0%')};
   /* width: 100%; */
   border-radius: 10px;
   background-color: #632beb;
@@ -290,7 +290,7 @@ const Icon = styled.div`
   line-height: 1;
   letter-spacing: -0.35px;
 
-  color: ${props => (props.active == 'active' ? '#fff' : '#757575')};
+  color: ${(props) => (props.active == 'active' ? '#fff' : '#757575')};
 `
 const ButtonArea = styled.div`
   display: flex;
@@ -382,7 +382,8 @@ const DjImg = styled.div`
 const Tag = styled.div`
   display: flex;
   height: 14px;
-  background-color: ${props => (props.auth === 3 ? '#8555f6' : props.auth === 2 ? '#ec455f' : props.auth === 1 ? '#fdad2b' : '')};
+  background-color: ${(props) =>
+    props.auth === 3 ? '#8555f6' : props.auth === 2 ? '#ec455f' : props.auth === 1 ? '#fdad2b' : ''};
   /* background:#8555f6; */
   width: 36px;
   border-radius: 10px;
@@ -429,7 +430,7 @@ const Picked = styled.div`
   height: 100%;
   border-radius: 10px;
   background: rgba(0, 0, 0, 0.6);
-  /* background: ${props => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')}; */
+  /* background: ${(props) => (props.active === 'active' ? 'rgba(0, 0, 0, 0.6)' : '')}; */
   z-index: 100;
   justify-content: center;
   align-items: flex-start;
@@ -441,7 +442,6 @@ const Picked = styled.div`
   letter-spacing: -0.6px;
   text-align: left;
   color: #fff;
-
 `
 const ItemBox = styled.div`
   display: flex;
@@ -465,7 +465,7 @@ const Cover = styled.div`
   width: 100%;
   height: 56px;
   border-radius: 10px;
-  background: ${props => !props.active && 'rgba(255, 255, 255, 0.7)'};
+  background: ${(props) => !props.active && 'rgba(255, 255, 255, 0.7)'};
   /* background: yellow; */
   z-index: 999;
 `

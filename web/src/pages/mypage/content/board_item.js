@@ -76,6 +76,7 @@ export default (props) => {
   }
   //삭제하기 fetch
   const deleteBoard = (boardIdx) => {
+    console.log(boardIdx)
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {
@@ -86,6 +87,7 @@ export default (props) => {
       if (res.result === 'success') {
         context.action.updateFanBoardBigIdxMsg(boardIdx)
         setThisBigIdx(0)
+        props.set(true)
       } else if (res.result === 'fail') {
         context.action.alert({
           callback: () => {},
