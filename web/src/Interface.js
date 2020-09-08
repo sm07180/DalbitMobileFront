@@ -409,11 +409,11 @@ export default () => {
               msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
               callback: () => {
                 clipExit(context)
-                Hybrid('EnterClipUpload')
+                Hybrid('ClipUploadJoin’')
               }
             })
           } else {
-            Hybrid('EnterClipUpload')
+            Hybrid('ClipUploadJoin’')
           }
         } else {
           context.action.confirm({
@@ -423,7 +423,7 @@ export default () => {
               Utility.setCookie('listen_room_no', null)
               Hybrid('ExitRoom', '')
               context.action.updatePlayer(false)
-              Hybrid('EnterClipUpload')
+              Hybrid('ClipUploadJoin’')
             }
           })
         }
