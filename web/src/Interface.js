@@ -334,7 +334,34 @@ export default () => {
         googleLogin()
         break
       case 'native-room-make':
-        RoomMake(context)
+        if (
+          Utility.getCookie('listen_room_no') === undefined ||
+          Utility.getCookie('listen_room_no') === null ||
+          Utility.getCookie('listen_room_no') === 'null'
+        ) {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                RoomMake(context)
+              }
+            })
+          } else {
+            RoomMake(context)
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              RoomMake(context)
+            }
+          })
+        }
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
@@ -570,11 +597,11 @@ export default () => {
         break
       case '45': //-----------------Clip PLay
         room_no = pushMsg.room_no
-        if(room_no) clipPlay(room_no)
+        if (room_no) clipPlay(room_no)
         break
       case '46': //-----------------Clip PLay
         room_no = pushMsg.room_no
-        if(room_no) clipPlay(room_no)
+        if (room_no) clipPlay(room_no)
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
