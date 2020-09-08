@@ -20,7 +20,7 @@ import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
 let timer
-let moreState = false
+let total = 1
 //layout
 export default (props) => {
   //context
@@ -35,7 +35,7 @@ export default (props) => {
   const [writeState, setWriteState] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
   const [isOther, setIsOther] = useState(true)
-
+  const [moreState, setMoreState] = useState(false)
   // 스크롤 이벤트
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -46,7 +46,10 @@ export default (props) => {
       const html = document.documentElement
       const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
       const windowBottom = windowHeight + window.pageYOffset
+
       if (moreState && windowBottom >= docHeight - 200) {
+        // console.log(boardList.length)
+        // console.log(currentPage * 10)
         showMoreList()
       } else {
       }
@@ -56,7 +59,10 @@ export default (props) => {
   const showMoreList = () => {
     if (moreState) {
       setBoardList(boardList.concat(nextList))
-      fetchData('next')
+
+      if (total >= currentPage) {
+        fetchData('next')
+      }
     }
   }
   const setAction = (value) => {
@@ -68,6 +74,8 @@ export default (props) => {
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
+
+    console.log(currentPage)
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,
@@ -75,16 +83,17 @@ export default (props) => {
         records: 10
       }
     })
+
     if (res.result === 'success') {
       if (res.code === '0') {
         if (next !== 'next') {
           setBoardList(false)
           setTotalCount(0)
         }
-        moreState = false
+        setMoreState(false)
       } else {
         if (next) {
-          moreState = true
+          setMoreState(true)
           setNextList(res.data.list)
           setTotalCount(res.data.paging.total)
         } else {
@@ -92,6 +101,10 @@ export default (props) => {
           setTotalCount(res.data.paging.total)
           fetchData('next')
         }
+      }
+
+      if (total === 1) {
+        total = res.data.paging.totalPage
       }
     } else {
     }

@@ -79,7 +79,7 @@ export default (props) => {
             TotalList.map((item, index) => {
               const {replyCnt, boardIdx} = item
               return (
-                <>
+                <React.Fragment key={index}>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
                     {item && <BoardItem key={`board-${index}`} data={item} set={props.set} />}
 
@@ -101,7 +101,7 @@ export default (props) => {
                       boardReplyList !== false &&
                       boardReplyList.map((item1, index1) => {
                         return (
-                          <div className="reply-list">
+                          <div className="reply-list" key={index1}>
                             <BoardItem
                               key={`reply-${index1}`}
                               data={item1}
@@ -118,7 +118,7 @@ export default (props) => {
                       boardIdx === context.fanboardReplyNum &&
                       replyWriteState && <WriteBoard isViewOn={context.fanboardReply.viewOn} set={setAction} type={'reply'} />}
                   </div>
-                </>
+                </React.Fragment>
               )
             })}
         </>
