@@ -856,6 +856,31 @@
       text-overflow: ellipsis;
     }
 
+    .genderBox {
+      display: inline-flex;
+      background-size: 100%;
+      vertical-align: middle;
+
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background-image: url(./static/ico-male@2x.png);
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background-image: url(./static/ico-female@2x.png);
+        margin-left: 2px;
+      }
+    }
+
     .bestFanBox {
       display: flex;
       height: 18px;

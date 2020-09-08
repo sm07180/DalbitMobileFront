@@ -30,15 +30,6 @@ const reducer = (state, action) => {
         ...state,
         page: state.page + 1
       }
-
-    // if (totalPage > state.page && state.page < 25) {
-    //     return {
-    //       ...state,
-    //       page: state.page + 1
-    //     }
-    //   } else {
-    //     return state
-    //   }
     case 'INIT':
       return {
         ...state,

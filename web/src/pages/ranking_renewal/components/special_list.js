@@ -51,7 +51,7 @@ function SpecialList({empty}) {
                   <div className="nickNameBox">{v.nickNm}</div>
                   <div className="genderBox">
                     <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
-                    <span className={genderName}>{v.gender}</span>
+                    <span className={genderName} />
                   </div>
                   <div className="countBox">
                     <span>
