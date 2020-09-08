@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useContext, useReducer} from 'react'
+import {useLocation, useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Api from 'context/api'
@@ -25,11 +26,18 @@ let currentPage = 1
 let timer
 let moreState = false
 const Notice = (props) => {
+  console.log(props)
   //context
-  const ctx = useContext(Context)
   const context = useContext(Context)
   //memNo
-  const urlrStr = props.location.pathname.split('/')[2]
+  let location = useLocation()
+
+  let urlrStr
+  if (props.location) {
+    urlrStr = props.location.pathname.split('/')[2]
+  } else {
+    urlrStr = location.pathname.split('/')[2]
+  }
   //concat
   const [listPage, setListPage] = useState(-1)
   const [nextListPage, setNextListPage] = useState([])
@@ -208,7 +216,7 @@ const Notice = (props) => {
 
   const createWriteBtn = () => {
     return (
-      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === ctx.profile.memNo ? 'on' : 'on'}`]}>
+      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
         쓰기
       </button>
     )

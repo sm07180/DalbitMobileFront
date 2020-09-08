@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useContext} from 'react'
-import styled from 'styled-components'
 import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -8,8 +7,6 @@ import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
 import MyProfile from './content/myProfile.js'
-//import Navigation from './content/navigation.js'
-import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm2 from './content/appAlarm2'
 import Notice from './content/notice.js'
@@ -22,22 +19,23 @@ import EditStar from './content/edit_stars'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
-import Arrow from './static/arrow.svg'
-import newCircle from './static/new_circle.svg'
-import NoticeIcon from './static/profile/ic_notice_m.svg'
-import FanboardIcon from './static/profile/ic_fanboard_m.svg'
-
+// scss
 import './index.scss'
 
-//new State
-let NewState = {
-  fanboard: false,
-  notice: false,
-  wallet: false
-}
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+  //context
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {token, profile} = context
+  let {memNo, category} = useParams()
+
+  //프로필정보
+  const [profileInfo, setProfileInfo] = useState(null)
+  const [codes, setCodes] = useState('')
+  const [myPageNew, setMyPageNew] = useState({})
+  const [isSelected, setIsSelected] = useState(false)
 
   //navi Array
   let navigationList = [
@@ -52,24 +50,12 @@ export default (props) => {
     {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
-  const subNavList2 = [
-    {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
+  const mypageNavList = [
+    {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+    {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+    {type: 'clip', txt: '클립', component: FanBoard, icon: MenuFanBoardeIcon}
   ]
-  //context
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
-  const {token, profile} = context
-  //memNo Info
-  let {memNo, category} = useParams()
 
-  let urlrStr = props.location.pathname
-
-  //state
-  //프로필정보
-  const [profileInfo, setProfileInfo] = useState(null)
-  const [codes, setCodes] = useState('')
-  const [myPageNew, setMyPageNew] = useState({})
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 2)
@@ -153,6 +139,13 @@ export default (props) => {
     context.action.updateToggleAction(false)
     history.push(`/mypage/${memNo}/${type}`)
   }
+  const changeTab = (type) => {
+    if (type === 'notice') {
+    } else if (type === 'fanboard') {
+    } else if (type === 'clip') {
+    }
+  }
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -163,8 +156,24 @@ export default (props) => {
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <div className="profile-menu">
-                {subNavList2.map((value, idx) => {
+              <ul className="profile-tab">
+                {mypageNavList.map((value, idx) => {
+                  const {type, txt} = value
+                  return (
+                    <li className={isSelected ? `isSelected` : ``}>
+                      <button className="list" key={`list-${idx}`} onClick={() => changeTab(type)}>
+                        {txt}
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+              <div className="profile-tab__content">
+                <Notice />
+              </div>
+
+              {/* <div className="profile-menu">
+                {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
                     <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
@@ -185,7 +194,7 @@ export default (props) => {
                     </button>
                   )
                 })}
-              </div>
+              </div> */}
             </>
           )}
           <div>
