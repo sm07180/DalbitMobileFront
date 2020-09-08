@@ -92,8 +92,7 @@ export default (props) => {
   }
   //check login push login
   if (!token.isLogin) {
-    alert('메인팅김')
-    props.history.push('/login')
+    window.location.href = '/login'
     return null
   }
   //--------------------------------------------
