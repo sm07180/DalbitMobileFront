@@ -20,7 +20,7 @@ const testData = [
 const testBox = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 
 //-------------------------------------------------------- declare start
-export default props => {
+export default (props) => {
   const [sendType, setSendType] = useState(0)
   const context = useContext(Context)
   const store = useContext(BroadCastStore)
@@ -77,7 +77,9 @@ export default props => {
   // 공통
   async function commonData() {
     const res = await Api.splash({})
-    if (res.result === 'success') setCommon(res.data)
+    if (res.result === 'success') {
+      setCommon(res.data)
+    }
   }
 
   //선물하기 진입 시 필요데이터 조회

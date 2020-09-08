@@ -6,12 +6,10 @@ import Api from 'context/api'
 import {BroadCastStore} from '../../store'
 import Swiper from 'react-id-swiper'
 
-const testData = [20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000]
-// const testData = [20, 50, 100, 500, 1000]
-
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   //-------------------------------------------------------- declare start
+  const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
   const [text, setText] = useState('')
   const [active, setActive] = useState(false)
@@ -45,10 +43,18 @@ export default (props) => {
     } else {
       setPoint(param)
       setActive(false)
-      setDirectDalCnt(testData[param])
+      setDirectDalCnt(splashData.giftDal[param])
       setText('')
     }
     setSend(true)
+  }
+
+  // 공통
+  async function commonData() {
+    const res = await Api.splash({})
+    if (res.result === 'success') {
+      setSplashData(res.data)
+    }
   }
 
   // 선물하기
@@ -60,36 +66,29 @@ export default (props) => {
       dalcount = parseInt(text)
     }
 
-    if (dalcount <= 0) {
-      context.action.alert({
-        callback: () => {
-          return
-        },
-        msg: '보낼 달 수량을 입력해 주세요'
+    if (dalcount >= splashData.giftDalMin) {
+      const res = await Api.member_gift_dal({
+        data: {
+          memNo: props.profile.memNo,
+          dal: dalcount
+        }
       })
-    }
-    if (dalcount < 10) {
+      if (res.result === 'success') {
+        context.action.alert({
+          callback: () => {
+            setText(dalcount)
+          },
+          msg: res.message
+        })
+      }
+    } else {
       context.action.alert({
         callback: () => {
           return
         },
-        msg: '직접입력 선물은 최소 10달 부터 선물이 가능합니다.'
+        msg: `직접입력 선물은 최소 ${splashData.giftDalMin}달 부터 선물이 가능합니다.`
       })
       return
-    }
-    const res = await Api.member_gift_dal({
-      data: {
-        memNo: props.profile.memNo,
-        dal: dalcount
-      }
-    })
-    if (res.result === 'success') {
-      context.action.alert({
-        callback: () => {
-          setText(dalcount)
-        },
-        msg: res.message
-      })
     }
   }
 
@@ -106,6 +105,10 @@ export default (props) => {
       price: osType === 2 ? iosPrice : totalPrice
     })
   }
+
+  useEffect(() => {
+    commonData()
+  }, [])
   useEffect(() => {
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
@@ -126,13 +129,14 @@ export default (props) => {
       </MyPoint>
       <Select>
         <Swiper {...swiperParams}>
-          {testData.map((data, idx) => {
-            return (
-              <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                {data}
-              </PointButton>
-            )
-          })}
+          {splashData &&
+            splashData.giftDal.map((data, idx) => {
+              return (
+                <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                  {data}
+                </PointButton>
+              )
+            })}
         </Swiper>
       </Select>
       <TextArea>
