@@ -5,21 +5,20 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 export const clipJoin = (data, context) => {
-  //방송방 쿠키 있으면 삭제 후 조인
-  if (Utility.setCookie('listen_room_no')) {
-    sessionStorage.removeItem('room_no')
-    Utility.setCookie('listen_room_no', null)
-    Hybrid('ExitRoom', '')
-    context.action.updatePlayer(false)
+  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    Hybrid('ClipPlayerJoin', data)
+  } else {
+    context.action.confirm({
+      msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
+      callback: () => {
+        sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
+        Hybrid('ExitRoom', '')
+        context.action.updatePlayer(false)
+        clipJoin(data, context)
+      }
+    })
   }
-  Hybrid('ClipPlayerJoin', data)
-  // context.action.updateClipState(true)
-  // context.action.updateClipPlayerState('playing')
-  // context.action.updateClipPlayerInfo({
-  //   bgImg: data.bgImg.url,
-  //   title: data.title,
-  //   nickname: data.nickName
-  // })
 }
 
 export const clipExit = (context) => {

@@ -334,11 +334,7 @@ export default () => {
         googleLogin()
         break
       case 'native-room-make':
-        if (
-          Utility.getCookie('listen_room_no') === undefined ||
-          Utility.getCookie('listen_room_no') === null ||
-          Utility.getCookie('listen_room_no') === 'null'
-        ) {
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
           if (Utility.getCookie('clip-player-info')) {
             context.action.confirm({
               msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
