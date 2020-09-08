@@ -66,7 +66,6 @@ export default (props) => {
   }
   //쓰기버튼 토글이벤트
   const writeToggle = () => {
-    console.log(writeType)
     if (writeState === false) {
       setWriteState(true)
     } else {
@@ -213,16 +212,18 @@ export default (props) => {
       </div>
       {writeState === true && (
         <div className="writeWrap__btnWrap">
-          <span className="bigCount">
-            <span className="bigCount__secret">
-              <DalbitCheckbox
-                status={isScreet}
-                callback={() => {
-                  setIsScreet(!isScreet)
-                }}
-              />
-              <span className="bold">비공개</span>
-            </span>
+          <span className="countBox">
+            {isOther && context.fanboardReplyNum === false && (
+              <span className="secret">
+                <DalbitCheckbox
+                  status={isScreet}
+                  callback={() => {
+                    setIsScreet(!isScreet)
+                  }}
+                />
+                <span className="bold">비공개</span>
+              </span>
+            )}
             <span className="count">
               <em>{textChange.length}</em> / 100
             </span>
