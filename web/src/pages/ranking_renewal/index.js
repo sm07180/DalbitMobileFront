@@ -29,7 +29,7 @@ let timer
 let touchStartY = null
 let touchEndY = null
 
-const records = 10
+const records = 50
 function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
