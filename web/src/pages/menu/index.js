@@ -39,7 +39,6 @@ export default (props) => {
     //check login push login
     if (!token.isLogin && params.category === 'profile') {
       history.push('/login')
-      return null
     }
   }, [])
   return (
