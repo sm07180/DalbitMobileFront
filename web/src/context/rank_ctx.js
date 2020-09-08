@@ -69,6 +69,7 @@ function RankProvider(props) {
   const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
   const [likeList, setLikeList] = useState([])
+  const [specialList, setSpecialList] = useState([])
   const [formState, formDispatch] = useReducer(reducer, formInitData)
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -89,6 +90,7 @@ function RankProvider(props) {
     formState,
     levelList,
     likeList,
+    specialList,
     myInfo,
     totalPage
   }
@@ -99,7 +101,8 @@ function RankProvider(props) {
     setLevelList,
     setLikeList,
     setMyInfo,
-    setTotalPage
+    setTotalPage,
+    setSpecialList
   }
 
   const bundle = {

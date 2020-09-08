@@ -5,7 +5,8 @@ const btnArray = [
   {val: 1, text: 'DJ'},
   {val: 2, text: '팬'},
   {val: 3, text: '레벨'},
-  {val: 4, text: '좋아요'}
+  {val: 4, text: '좋아요'},
+  {val: 5, text: '스페셜DJ', isSpecial: true}
 ]
 function RankBtnWrap() {
   const {rankState, rankAction} = useContext(RankContext)
@@ -18,18 +19,35 @@ function RankBtnWrap() {
     <div className="rankTab">
       {btnArray.map((v, idx) => {
         return (
-          <button
-            key={idx}
-            className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-            onClick={() => {
-              if (formState.rankType !== v.val)
-                formDispatch({
-                  type: 'RANK_TYPE',
-                  val: v.val
-                })
-            }}>
-            {v.text}
-          </button>
+          <React.Fragment key={idx}>
+            {v.isSpecial === true ? (
+              <button
+                className={
+                  formState.rankType === v.val ? 'rankTab__specialBtn rankTab__specialBtn--active' : 'rankTab__specialBtn'
+                }
+                onClick={() => {
+                  if (formState.rankType !== v.val)
+                    formDispatch({
+                      type: 'RANK_TYPE',
+                      val: v.val
+                    })
+                }}>
+                {v.text}
+              </button>
+            ) : (
+              <button
+                className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                onClick={() => {
+                  if (formState.rankType !== v.val)
+                    formDispatch({
+                      type: 'RANK_TYPE',
+                      val: v.val
+                    })
+                }}>
+                {v.text}
+              </button>
+            )}
+          </React.Fragment>
         )
       })}
     </div>

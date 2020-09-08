@@ -98,6 +98,7 @@
   }
 
   .rankTab {
+    width: 100%;
     &__btn {
       height: 32px;
       margin-right: 2px;
@@ -111,6 +112,22 @@
         background-color: $primary;
         color: #fff;
       }
+    }
+
+    &__specialBtn {
+      height: 32px;
+      margin-right: 2px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: solid 1px $red;
+      background-color: #fff;
+      color: $red;
+      font-size: 16px;
+      &--active {
+        background-color: $red;
+        color: #fff;
+      }
+      float: right;
     }
     // :last-child {
     //   height: 32px;
@@ -784,6 +801,18 @@
     color: #fff;
     font-weight: 300;
     font-style: normal;
+  }
+
+  .specialBox {
+    width: 44px;
+    height: 22px;
+    background-color: #000;
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: -0.3px;
   }
 
   .levelListBox {

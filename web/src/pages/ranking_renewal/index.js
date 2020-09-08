@@ -18,7 +18,7 @@ import MyProfile from './components/MyProfile'
 import RankListWrap from './components/rank_list'
 import LevelListWrap from './components/level_list'
 import LikeListWrap from './components/like_list'
-
+import SpecialListWrap from './components/special_list'
 //constant
 import {RANK_TYPE} from './constant'
 
@@ -42,6 +42,7 @@ function Ranking() {
   const setLevelList = rankAction.setLevelList
   const setLikeList = rankAction.setLikeList
   const setTotalPage = rankAction.setTotalPage
+  const setSpecialList = rankAction.setSpecialList
 
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
@@ -247,7 +248,19 @@ function Ranking() {
   }, [formState, myInfo, rankList, levelList, likeList])
 
   useEffect(() => {
-    fetchData()
+    if (formState.rankType !== RANK_TYPE.SPECIAL) fetchData()
+    else {
+      test()
+    }
+    async function test() {
+      const res = await Api.getSpecialDjHistory({
+        yy: '2020',
+        mm: '08'
+      })
+      if (res.result === 'success') {
+        setSpecialList(res.data.list)
+      }
+    }
   }, [formState, context.token.isLogin])
 
   useEffect(() => {
@@ -323,13 +336,14 @@ function Ranking() {
             </>
           )}
         </div>
-        {formState.rankType === 3 && <LevelListWrap empty={empty} />}
-        {formState.rankType === 4 && <LikeListWrap empty={empty} />}
-        {formState.rankType !== 3 && formState.rankType !== 4 && (
+        {formState.rankType === RANK_TYPE.LEVEL && <LevelListWrap empty={empty} />}
+        {formState.rankType === RANK_TYPE.LIKE && <LikeListWrap empty={empty} />}
+        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef} className={`${context.token.isLogin && 'more'}`}>
             <RankListWrap empty={empty} />
           </div>
         )}
+        {formState.rankType === RANK_TYPE.SPECIAL && <SpecialListWrap empty={empty} />}
       </div>
     </Layout>
   )
