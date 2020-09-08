@@ -13,7 +13,7 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
 
 //util
 import Utility from 'components/lib/utility'
