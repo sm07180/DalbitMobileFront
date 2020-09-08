@@ -59,6 +59,7 @@ export default (props) => {
   }
   const setAction = (value) => {
     if (value === true) {
+      props.set(true)
       fetchDataReplyList(context.fanboardReplyNum)
     }
   }

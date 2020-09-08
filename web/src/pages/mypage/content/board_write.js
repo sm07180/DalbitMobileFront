@@ -29,6 +29,7 @@ export default (props) => {
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
+  const [replyWriteState, setReplyWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
@@ -106,21 +107,21 @@ export default (props) => {
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
-    if (writeType === 'reply') {
+    if (writeType === 'board') {
+      params = {
+        memNo: urlrStr,
+        depth: 1,
+        content: textChange,
+        viewOn: isScreet === true ? 0 : 1
+      }
+      msg = '내용을 입력해 주세요.'
+    } else if (writeType === 'reply') {
       params = {
         memNo: urlrStr,
         depth: 2,
         content: textChange,
         viewOn: isScreet === true ? 0 : 1,
         boardNo: context.fanboardReplyNum
-      }
-      msg = '내용을 입력해 주세요.'
-    } else {
-      params = {
-        memNo: urlrStr,
-        depth: 1,
-        content: textChange,
-        viewOn: isScreet === true ? 0 : 1
       }
       msg = '내용을 입력해 주세요.'
     }
@@ -130,6 +131,9 @@ export default (props) => {
     if (res.result === 'success') {
       writeToggle()
       setTextChange('')
+      setIsScreet(false)
+
+      // props.set(true)
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
         context.action.alert({
@@ -213,16 +217,20 @@ export default (props) => {
       {writeState === true && (
         <div className="writeWrap__btnWrap">
           <span className="countBox">
-            {isOther && context.fanboardReplyNum === false && (
-              <span className="secret">
-                <DalbitCheckbox
-                  status={isScreet}
-                  callback={() => {
-                    setIsScreet(!isScreet)
-                  }}
-                />
-                <span className="bold">비공개</span>
-              </span>
+            {isOther === true && !props.isViewOn ? (
+              writeType === 'board' && (
+                <span className="secret">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      setIsScreet(!isScreet)
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+              )
+            ) : (
+              <></>
             )}
             <span className="count">
               <em>{textChange.length}</em> / 100
@@ -233,7 +241,7 @@ export default (props) => {
           </button>
         </div>
       )}
-      {writeState === true && (
+      {writeType === 'reply' || writeState === true ? (
         <div
           className="writeWrap__btn"
           onClick={() => {
@@ -244,6 +252,8 @@ export default (props) => {
           }}>
           <button className="btn__toggle">접기</button>
         </div>
+      ) : (
+        <></>
       )}
     </div>
   )
