@@ -278,12 +278,11 @@ export default (props) => {
         )}
         <div className="liveChart">
           <div className="liveChart__titleBox">
-            <h2>
+            <h2 onClick={() => refreshCategory()}>
               실시간 차트{' '}
               <img
                 src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
                 className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                onClick={() => refreshCategory()}
                 style={{cursor: 'pointer'}}
               />
             </h2>
