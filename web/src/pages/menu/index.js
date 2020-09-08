@@ -39,8 +39,8 @@ export default (props) => {
   console.log(token.isLogin)
   console.log(params.category)
   if (token.isLogin === false && params.category === 'profile') {
-    alert('메인팅김')
-    history.push('/login')
+    alert('메인팅김 메뉴')
+    window.location.href = '/login'
   }
 
   return (
