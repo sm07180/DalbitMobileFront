@@ -54,7 +54,13 @@ export default Room
 export const RoomJoin = async (obj) => {
   //클립나가기
   if (Utility.getCookie('clip-player-info')) {
-    clipExit(Room.context)
+    return Room.context.action.confirm({
+      msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
+      callback: () => {
+        clipExit(Room.context)
+        RoomJoin(obj)
+      }
+    })
   }
 
   const {roomNo, callbackFunc, shadow, mode} = obj
