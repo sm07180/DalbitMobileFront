@@ -24,9 +24,11 @@ function RankBtnWrap() {
             onClick={() => {
               if (formState.rankType !== v.val) {
                 scrollTo(0, 0)
-                formDispatch({
-                  type: 'RANK_TYPE',
-                  val: v.val
+                setTimeout(() => {
+                  formDispatch({
+                    type: 'RANK_TYPE',
+                    val: v.val
+                  })
                 })
               }
             }}>
