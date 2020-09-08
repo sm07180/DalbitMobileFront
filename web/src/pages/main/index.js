@@ -7,8 +7,9 @@ import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
+import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
-import {IMG_SERVER} from 'context/config'
+import Lottie from 'react-lottie'
 
 // components
 import Layout from 'pages/common/layout'
@@ -37,6 +38,7 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import CrownIcon from './static/crown.jpg'
+import CrownLottie from './static/crown_lottie.json'
 
 import 'styles/main.scss'
 
@@ -64,6 +66,7 @@ export default (props) => {
 
   //context
   const globalCtx = useContext(Context)
+  const {rankAction} = useContext(RankContext)
   const history = useHistory()
 
   // state
@@ -93,6 +96,31 @@ export default (props) => {
   const [payState, setPayState] = useState(false)
 
   useEffect(() => {
+    rankAction.formDispatch &&
+      rankAction.formDispatch({
+        type: 'RESET'
+      })
+
+    rankAction.setLevelList && rankAction.setLevelList([])
+
+    rankAction.setLikeList && rankAction.setLikeList([])
+
+    rankAction.setRankList && rankAction.setRankList([])
+
+    rankAction.setMyInfo &&
+      rankAction.setMyInfo({
+        isReward: false,
+        myGiftPoint: 0,
+        myListenerPoint: 0,
+        myRank: 0,
+        myUpDown: '',
+        myBroadPoint: 0,
+        myLikePoint: 0,
+        myPoint: 0,
+        myListenPoint: 0,
+        time: ''
+      })
+
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
       Object.keys(window.sessionStorage).forEach((key) => {
@@ -105,14 +133,37 @@ export default (props) => {
     if (sessionStorage.getItem('ranking_tab') !== null) {
       if (sessionStorage.getItem('ranking_tab') === 'dj') {
         setRankType('fan')
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 2
+          })
         sessionStorage.setItem('ranking_tab', 'fan')
       } else {
         setRankType('dj')
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 1
+          })
         sessionStorage.setItem('ranking_tab', 'dj')
       }
     } else {
       const randomData = Math.random() >= 0.5 ? 'dj' : 'fan'
       setRankType(randomData)
+      if (randomData === 'dj') {
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 1
+          })
+      } else {
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 2
+          })
+      }
       sessionStorage.setItem('ranking_tab', randomData)
     }
 
@@ -432,9 +483,19 @@ export default (props) => {
           setLiveGender('')
           if (sessionStorage.getItem('ranking_tab') === 'dj') {
             setRankType('fan')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 2
+              })
             sessionStorage.setItem('ranking_tab', 'fan')
           } else {
             setRankType('dj')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 1
+              })
             sessionStorage.setItem('ranking_tab', 'dj')
           }
           setLiveListType('detail')
@@ -520,19 +581,42 @@ export default (props) => {
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
-                <img src={CrownIcon} width={40} />
+                <Lottie
+                  options={{
+                    loop: true,
+                    autoPlay: true,
+                    animationData: CrownLottie
+                  }}
+                  width={40}
+                />
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
-                <button className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
+                <button
+                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
+                  onClick={() => {
+                    setRankType('dj')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 1
+                      })
+                  }}>
                   DJ
                 </button>
 
                 <button
                   style={{marginLeft: '2px'}}
                   className={`text ${rankType === 'fan' ? 'active' : ''}`}
-                  onClick={() => setRankType('fan')}>
+                  onClick={() => {
+                    setRankType('fan')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 2
+                      })
+                  }}>
                   팬
                 </button>
               </div>

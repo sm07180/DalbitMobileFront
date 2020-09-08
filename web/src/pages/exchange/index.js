@@ -15,7 +15,7 @@ import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDT
 //components
 import Contents from './content'
 import Header from 'components/ui/new_header.js'
-//
+
 export default (props) => {
   //---------------------------------------------------------------------
   //context
@@ -34,42 +34,7 @@ export default (props) => {
 }
 //---------------------------------------------------------------------
 const Content = styled.section`
-  width: 1040px;
   min-height: 300px;
   margin: 0 auto;
   padding: 0 0 120px 0;
-  .close-btn {
-    position: absolute;
-    top: 1px;
-    left: 2%;
-  }
-  h2 {
-    padding-bottom: 60px;
-    font-size: 28px;
-    font-weight: 600;
-    color: ${COLOR_MAIN};
-    text-align: center;
-  }
-
-  @media (max-width: 1060px) {
-    width: 91.11%;
-    padding: 0 0 80px 0;
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    h2 {
-      padding-bottom: 16px;
-      font-size: 24px;
-    }
-  }
-  .swiper-pagination {
-    margin-top: 0 !important;
-  }
-`
-
-const Slider = styled.div`
-  margin-top: 40px;
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    margin-top: 15px;
-  }
 `

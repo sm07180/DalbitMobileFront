@@ -185,6 +185,7 @@ const List = (props) => {
         <TitleWrap className={isTop ? 'is-top' : ''}>
           {/* {isTop && <em></em>} */}
           <span className="text">{title}</span>
+          <span className="date">{timeFormat(writeDt)}</span>
           {(IntTime - writeTs) / 3600 < 7 && <span className="newIcon"></span>}
         </TitleWrap>
         {isTop === true && <ArrowDownBtnTop className={numbers === noticeIdx && opened ? 'on' : ''} />}
@@ -297,8 +298,8 @@ const TimeWrap = styled.div`
 
 const TitleWrap = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  width: 90%;
   color: #424242;
   font-size: 16px;
   padding: 0 0 0 16px;
@@ -328,8 +329,14 @@ const TitleWrap = styled.div`
     line-height: 1.14;
     letter-spacing: normal;
     text-align: left;
-    color: #000000;
     letter-spacing: -0.35px;
+    color: #000000;
+  }
+  .date {
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #757575;
   }
 `
 
@@ -424,7 +431,7 @@ const ListStyled = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 44px;
+  height: 60px;
   border-bottom: 1px solid #eee;
   cursor: pointer;
   user-select: none;
@@ -600,10 +607,14 @@ const Wrap = styled.div`
   }
 
   .newIcon {
-    margin-left: 8px;
     display: inline-block;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    margin-top: -12px;
     width: 24px;
     height: 24px;
+    margin-left: 8px;
     background-position: center center;
     background-size: cover;
     background-image: url(${NewIcon});

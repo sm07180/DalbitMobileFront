@@ -16,6 +16,7 @@ import Api from 'context/api'
 // component
 import Header from 'components/ui/new_header'
 import ReplyList from './fanBoard_reply'
+import BoardItem from './board_item'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //svg
 import BJicon from '../component/bj.svg'
@@ -25,6 +26,7 @@ import MoreBtnIcon from '../static/ic_new_more.svg'
 import LockIcon from '../static/lock_g.svg'
 //--------------------------------------------------------------------------
 export default (props) => {
+  console.log(props)
   // context && location
   const history = useHistory()
   let location = useLocation()
@@ -194,10 +196,10 @@ export default (props) => {
     <>
       {/* 딤영역 */}
       {thisBigIdx !== 0 && <Dim onClick={() => setThisBigIdx(0)} />}
-      <Content>
-        <div className={`list-wrap`}>
+      <div className="listWrap">
+        <>
           {TotalCount && (
-            <div className="big_count">
+            <div className="list-count">
               <span>게시글</span>
               <span>{TotalCount}</span>
             </div>
@@ -216,52 +218,83 @@ export default (props) => {
                 }
               }
               return (
-                <React.Fragment key={index}>
-                  <BigReply className={`${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                    <div className="reply_header">
-                      {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
-                        <>
-                          <button className="big_moreBtn" onClick={() => toggleMore(boardIdx, contents)}></button>
-                          {/* 상세기능영역 */}
-
-                          <div className={boardIdx === thisBigIdx ? 'big_moreDetail on' : 'big_moreDetail'}>
-                            {writerNo === context.token.memNo && (
-                              <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
-                            )}
-                            <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
-                          </div>
-                        </>
-                      )}
-
-                      <BigProfileImg bg={profImg.thumb62x62} onClick={Link} />
-                      <div className="big_header_info">
-                        <span onClick={Link}>
-                          <div>
-                            <span className={`${viewOn === 0 && 'big_header_info__lock'}`}></span>
-                            <span className="big_header_info__name">{nickNm}</span>
-                          </div>
-                          <div className="big_header_info__dt">{timeFormat(writeDt)}</div>
-                        </span>
-                      </div>
-                    </div>
-                    <div className="content_area">
-                      <pre>{contents}</pre>
-                    </div>
-                    {boardIdx !== context.fanboardReplyNum && (
-                      <div className="big_footer">
-                        <button onClick={() => ReplyInfoTransfer(boardIdx, item)}>
-                          {replyCnt > 0 ? <>답글 {replyCnt}</> : <>답글쓰기</>}
-                        </button>
-                        {/* <a onClick={() => ReplyWrite(boardIdx, viewOn)}>답글쓰기</a> */}
-                      </div>
+                <>
+                  <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
+                    <BoardItem key={index} data={item} set={props.set} />
+                    {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
+                      // <ReplyList
+                      //   isViewOn={viewOn}
+                      //   replyShowIdx={context.fanboardReplyNum}
+                      //   titleReplyInfo={context.fanboardReply}
+                      //   set={props.set}
+                      // />
+                      <BoardItem
+                        key={index}
+                        data={item}
+                        set={props.set}
+                        isViewOn={viewOn}
+                        replyShowIdx={context.fanboardReplyNum}
+                        titleReplyInfo={context.fanboardReply}
+                        set={props.set}
+                      />
                     )}
-                  </BigReply>
-                  {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
-                    <ReplyList isViewOn={viewOn} replyShowIdx={context.fanboardReplyNum} titleReplyInfo={context.fanboardReply} />
-                  )}
-                </React.Fragment>
+                  </div>
+                </>
+
+                // <React.Fragment key={index}>
+                //   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
+                //     <div className="list-item__header">
+                //       {(urlrStr === context.token.memNo || writerNo === context.token.memNo) && (
+                //         <>
+                //           <button className="btn__more" onClick={() => toggleMore(boardIdx, contents)}></button>
+                //           {/* 상세기능영역 */}
+
+                //           <div className={boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
+                //             {writerNo === context.token.memNo && (
+                //               <span onClick={() => BigModify(contents, boardIdx)}>수정하기</span>
+                //             )}
+                //             <span onClick={() => DeleteBigReply(boardIdx)}>삭제하기</span>
+                //           </div>
+                //         </>
+                //       )}
+                //       <span className="thumb" style={{backgroundImage: `url(${profImg.thumb62x62})`}} onClick={Link}></span>
+                //       <span className="info" onClick={Link}>
+                //         <span className="info__name">
+                //           <em className={`${viewOn === 0 && 'info__lock'}`}></em>
+                //           {nickNm}
+                //         </span>
+                //         <span className="info__dt">{timeFormat(writeDt)}</span>
+                //       </span>
+                //     </div>
+                //     <div className="list-item__content">
+                //       <pre>{contents}</pre>
+                //     </div>
+                //     {boardIdx !== context.fanboardReplyNum && (
+                //       <div className="list-item__bottom">
+                //         <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                //           {replyCnt > 0 ? (
+                //             <>
+                //               답글 <em>{replyCnt}</em>
+                //             </>
+                //           ) : (
+                //             <>답글쓰기</>
+                //           )}
+                //         </button>
+                //       </div>
+                //     )}
+                //     {context.fanboardReplyNum && context.toggleState && boardIdx === context.fanboardReplyNum && (
+                //       <ReplyList
+                //         isViewOn={viewOn}
+                //         replyShowIdx={context.fanboardReplyNum}
+                //         titleReplyInfo={context.fanboardReply}
+                //         set={props.set}
+                //       />
+                //     )}
+                //   </div>
+                // </React.Fragment>
               )
             })}
+
           {/* 큰댓글 수정하기영역 */}
           {writeState && (
             <Writer>
@@ -312,184 +345,13 @@ export default (props) => {
               </div>
             </Writer>
           )}
-        </div>
+        </>
         {/*대댓글 리스트영역*/}
-      </Content>
+      </div>
     </>
   )
 }
-// style
 
-const BigReply = styled.div`
-  width: 100%;
-  background-color: #fff;
-  /* min-height: 196px; */
-  margin-bottom: 12px;
-
-  &.on {
-    margin-bottom: 0;
-  }
-  .detailwapper {
-    position: relative;
-  }
-  .reply_header {
-    position: relative;
-    display: flex;
-    padding: 10px 16px;
-    height: 60px;
-    .big_moreBtn {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 24px;
-      height: 24px;
-      background: url(${MoreBtnIcon}) no-repeat center center / cover;
-    }
-    .big_moreDetail {
-      display: none;
-      flex-direction: column;
-      position: absolute;
-      right: 24px;
-      top: 46px;
-
-      width: 80px;
-      border: 1px solid #e0e0e0;
-      background-color: #fff;
-      padding: 8px 0;
-      span {
-        height: 26px;
-        font-size: 14px;
-        line-height: 2.14;
-        letter-spacing: -0.35px;
-        text-align: center;
-        color: #757575;
-        :hover {
-          background-color: #f8f8f8;
-        }
-      }
-      &.on {
-        display: flex;
-        z-index: 56;
-      }
-    }
-  }
-  .big_header_info {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10px;
-    &__name {
-      height: 20px;
-      line-height: 20px;
-      max-width: 200px;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow-x: hidden;
-      font-size: 16px;
-      font-weight: 800;
-      text-align: left;
-      color: #000000;
-    }
-    &__dt {
-      margin-top: 4px;
-      font-size: 12px;
-      text-align: left;
-      color: #9e9e9e;
-    }
-
-    &__lock {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      background: url(${LockIcon}) no-repeat center;
-    }
-  }
-  .content_area {
-    padding: 16px 65px 16px 21px;
-    /* min-height: 100px; */
-    border-top: 1px solid #eeeeee;
-    border-bottom: 1px solid #eeeeee;
-
-    font-size: 14px;
-    text-align: justify;
-    color: #000000;
-
-    word-break: break-word;
-  }
-  .big_footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    height: 36px;
-    padding: 0 16px;
-    > button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: normal;
-      text-align: left;
-      color: #000000;
-      :before {
-        display: block;
-        content: '';
-        width: 16px;
-        height: 16px;
-        margin-right: 6px;
-        background: url(${ReplyIcon}) no-repeat center center / cover;
-      }
-    }
-    > a {
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: normal;
-      text-align: left;
-      color: #632beb;
-    }
-  }
-`
-const BigProfileImg = styled.div`
-  width: 40px;
-  height: 40px;
-  background: url(${(props) => props.bg}) no-repeat center center / cover;
-  border-radius: 50%;
-`
-//최상단
-
-const Content = styled.div`
-  height: 100%;
-  background-color: #eeeeee;
-
-  .list-wrap {
-    &.on {
-      display: block;
-    }
-    &.off {
-      display: none;
-    }
-  }
-  .big_count {
-    padding-left: 16px;
-    margin: 16px 0 8px 0;
-    span:first-child {
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing: normal;
-      text-align: left;
-      color: #000000;
-      margin-right: 6px;
-    }
-    span:last-child {
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: normal;
-      text-align: left;
-      color: #632beb;
-    }
-  }
-`
 const Dim = styled.div`
   position: fixed;
   top: 0;

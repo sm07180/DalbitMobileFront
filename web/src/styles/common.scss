@@ -251,7 +251,20 @@ table {
   }
 }
 
-//DatePicker colorChange
+.content-article {
+  &.player_show {
+    > div,
+    section {
+      padding-bottom: 60px;
+    }
+    .refresh-wrap,
+    .header-wrap {
+      padding-bottom: 0;
+    }
+  }
+}
+
+//
 div.MuiToolbar-root,
 .MuiToolbar-regular,
 .MuiPickersToolbar-toolbar,

@@ -136,16 +136,18 @@ export default (props) => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
-  width: 1040px;
+  /* width: 1040px; */
   min-height: 300px;
   margin: 0 auto;
-  padding: 40px 0 120px 0;
+  /* padding: 40px 0 120px 0; */
+  width: 100%;
+  padding: 10px 16px;
 
   .charge-btn {
     display: block;
     width: 328px;
-    margin: 70px auto 0 auto;
-    border-radius: 5px;
+    margin: 50px auto 0;
+    border-radius: 10px;
     background: ${COLOR_MAIN};
     color: #fff;
     line-height: 50px;
@@ -180,17 +182,17 @@ const Content = styled.section`
       display: inline-block;
       width: 20px;
       height: 20px;
-      margin-top: 5px;
+      margin-top: -2px;
       padding-right: 1px;
-      vertical-align: top;
+      vertical-align: middle;
       background: url(${starIcon}) no-repeat;
       content: '';
     }
   }
 
   @media (max-width: 1060px) {
-    width: 100%;
-    padding: 10px 0 0 0;
+    /* width: 100%;
+    padding: 10px 0 0 0; */
   }
 
   @media (max-width: ${WIDTH_TABLET_S}) {
@@ -213,7 +215,6 @@ const Content = styled.section`
     .charge-btn {
       width: 100%;
       margin-top: 10px;
-      border-radius: 10px;
       font-size: 14px;
       line-height: 48px;
     }

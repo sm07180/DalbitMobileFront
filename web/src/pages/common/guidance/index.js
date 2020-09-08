@@ -134,9 +134,10 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list--title guidance__list--red">◈ 종합소득세 안내</div>
             <div className="guidance__list--gray">
               1. 연간 환전 받은 총 금액에 대해서 <span className="guidance__list--bold guidance__list--red">매년 5월</span> 종합
-              소득세 신고를 해야 합니다. 2. 연간 환전 받은 총 금액이{' '}
-              <span className="guidance__list--bold guidance__list--red">1,500만 원 이상</span>의 경우, 건강보험 피부양자 자격이
-              박탈될 수 있습니다.
+              소득세 신고를 해야 합니다.
+              <br />
+              2. 연간 환전 받은 총 금액이 <span className="guidance__list--bold guidance__list--red">1,500만 원 이상</span>의
+              경우, 건강보험 피부양자 자격이 박탈될 수 있습니다.
             </div>
           </div>
           <div className="guidance__list">

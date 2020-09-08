@@ -5,6 +5,7 @@ import Api from 'context/api'
 import Util from 'components/lib/utility.js'
 
 import {Context} from 'context'
+import {RankContext} from 'context/rank_ctx'
 
 import {RANK_TYPE, DATE_TYPE} from '../constant'
 
@@ -15,19 +16,20 @@ import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_w_s.svg'
 import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
+
 export default function MyProfile(props) {
   const {myInfo, rankType, dateType, setMyInfo} = props
   const history = useHistory()
   const global_ctx = useContext(Context)
 
+  const {rankState, rankAction} = useContext(RankContext)
+
+  const {formState, myInfo} = rankState
+
   const {token} = global_ctx
 
-  const [isFixed, setIsFixed] = useState(false)
   const [popup, setPopup] = useState(false)
-  const [rewordProfile, setRewordProfile] = useState({
-    date: '일간',
-    rank: 'DJ'
-  })
+
   const [rewardPop, setRewardPop] = useState({
     text: '',
     rewardDal: 0
@@ -59,7 +61,6 @@ export default function MyProfile(props) {
 
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
-
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
@@ -75,7 +76,7 @@ export default function MyProfile(props) {
       myUpDownName = `rankingChange__stop`
     }
     return <span className={myUpDownName}>{myUpDownValue}</span>
-  }, [])
+  }, [myInfo])
 
   useEffect(() => {
     const createMyRank = () => {
@@ -94,17 +95,6 @@ export default function MyProfile(props) {
       }
     }
     createMyRank()
-    // const windowScrollEvent = () => {
-    //   if (window.scrollY >= 140) {
-    //     setIsFixed(true)
-    //   } else {
-    //     setIsFixed(false)
-    //   }
-    // }
-    // window.addEventListener('scroll', windowScrollEvent)
-    // return () => {
-    //   window.removeEventListener('scroll', windowScrollEvent)
-    // }
   }, [])
 
   return (
@@ -113,8 +103,8 @@ export default function MyProfile(props) {
         <>
           <div className="rewordBox">
             <p className="rewordBox__top">
-              {dateType === DATE_TYPE.DAY ? '일간' : '주간'} {rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹 {myInfo.rewardRank}위{' '}
-              <span>축하합니다</span>
+              {formState.dateType === DATE_TYPE.DAY ? '일간' : '주간'} {formState.rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹{' '}
+              {myInfo.rewardRank}위 <span>축하합니다</span>
             </p>
 
             <div className="rewordBox__character1"></div>
@@ -124,7 +114,7 @@ export default function MyProfile(props) {
             </button>
           </div>
 
-          {popup && (
+          {/* {popup && (
             <PopupSuccess
               rankType={rankType}
               dateType={dateType}
@@ -134,7 +124,7 @@ export default function MyProfile(props) {
               rewardPop={rewardPop}
               setRewardPop={setRewardPop}
             />
-          )}
+          )} */}
         </>
       ) : (
         <>
