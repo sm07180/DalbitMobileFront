@@ -206,7 +206,7 @@ export default function Alert() {
           <div className="allCheck">
             <DalbitCheckbox
               status={allCheck}
-              size={18}
+              size={20}
               callback={(e) => {
                 setAlarmList(
                   alarmList.map((v) => {
@@ -238,7 +238,7 @@ export default function Alert() {
                   }}>
                   <DalbitCheckbox
                     status={v.check}
-                    size={18}
+                    size={20}
                     callback={() => {
                       setAlarmList(
                         alarmList.map((v2, idx2) => {

@@ -35,8 +35,8 @@ const Wrap = styled.div`
   }
   & input {
     display: block;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     position: relative;
     overflow: hidden;
     border-radius: 4px;
