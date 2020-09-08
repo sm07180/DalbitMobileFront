@@ -26,7 +26,7 @@ export default (props) => {
   //urlNumber
   let urlrStr = location.pathname.split('/')[2]
   //state
-  const [list, setList] = useState([])
+  const list = props.list
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
   const [replyWriteState, setReplyWriteState] = useState(false)
@@ -42,29 +42,6 @@ export default (props) => {
     if (target.value.length > 100) return
     setTextChange(e.target.value)
   }
-  //스크롤 이벤트
-  // const scrollEvtHdr = (event) => {
-  //   if (timer) window.clearTimeout(timer)
-  //   timer = window.setTimeout(function () {
-  //     //스크롤
-  //     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-  //     const body = document.body
-  //     const html = document.documentElement
-  //     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-  //     const windowBottom = windowHeight + window.pageYOffset
-  //     if (moreState && windowBottom >= docHeight - 200) {
-  //       showMoreList()
-  //     } else {
-  //     }
-  //   }, 10)
-  // }
-  //콘켓 쇼모어 이벤트
-  // const showMoreList = () => {
-  //   if (moreState) {
-  //     setList(list.concat(nextList))
-  //     fetchData('next')
-  //   }
-  // }
   //쓰기버튼 토글이벤트
   const writeToggle = () => {
     if (writeState === false) {
@@ -74,36 +51,36 @@ export default (props) => {
     }
   }
   //팬보드 리스트 조회
-  // async function fetchData(next) {
-  //   currentPage = next ? ++currentPage : currentPage
-  //   const res = await Api.mypage_fanboard_list({
-  //     params: {
-  //       memNo: urlrStr,
-  //       page: currentPage,
-  //       records: 10
-  //     }
-  //   })
-  //   if (res.result === 'success') {
-  //     if (res.code === '0') {
-  //       if (next !== 'next') {
-  //         setList(false)
-  //         setTotalCount(0)
-  //       }
-  //       moreState = false
-  //     } else {
-  //       if (next) {
-  //         moreState = true
-  //         setNextList(res.data.list)
-  //         setTotalCount(res.data.paging.total)
-  //       } else {
-  //         setList(res.data.list)
-  //         setTotalCount(res.data.paging.total)
-  //         fetchData('next')
-  //       }
-  //     }
-  //   } else {
-  //   }
-  // }
+  async function fetchData(next) {
+    currentPage = next ? ++currentPage : currentPage
+    const res = await Api.mypage_fanboard_list({
+      params: {
+        memNo: urlrStr,
+        page: currentPage,
+        records: 10
+      }
+    })
+    if (res.result === 'success') {
+      if (res.code === '0') {
+        if (next !== 'next') {
+          setList(false)
+          setTotalCount(0)
+        }
+        moreState = false
+      } else {
+        if (next) {
+          moreState = true
+          setNextList(res.data.list)
+          setTotalCount(res.data.paging.total)
+        } else {
+          setList(res.data.list)
+          setTotalCount(res.data.paging.total)
+          fetchData('next')
+        }
+      }
+    } else {
+    }
+  }
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
@@ -125,15 +102,26 @@ export default (props) => {
       }
       msg = '내용을 입력해 주세요.'
     }
+
     const res = await Api.mypage_fanboard_upload({
       data: params
     })
+
     if (res.result === 'success') {
       writeToggle()
       setTextChange('')
       setIsScreet(false)
 
-      // props.set(true)
+      props.set(true)
+      if (list instanceof Array) {
+        let findIdx = list.findIndex((v) => {
+          return v.boardIdx === context.fanboardReplyNum
+        })
+
+        if (findIdx !== -1) {
+          list[findIdx].replyCnt++
+        }
+      }
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
         context.action.alert({
@@ -144,30 +132,30 @@ export default (props) => {
     }
   }
   // 팬보드 뉴표시
-  // async function getMyPageNewFanBoard() {
-  //   const newFanBoard = await Api.getMyPageNewFanBoard()
-  //   let mypageNewStg = localStorage.getItem('mypageNew')
-  //   if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
-  //     mypageNewStg = {}
-  //   } else {
-  //     mypageNewStg = JSON.parse(mypageNewStg)
-  //   }
-  //   const fanBoard = newFanBoard.data
-  //   mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
-  //   localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
-  // }
+  async function getMyPageNewFanBoard() {
+    const newFanBoard = await Api.getMyPageNewFanBoard()
+    let mypageNewStg = localStorage.getItem('mypageNew')
+    if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
+      mypageNewStg = {}
+    } else {
+      mypageNewStg = JSON.parse(mypageNewStg)
+    }
+    const fanBoard = newFanBoard.data
+    mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
+    localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
+  }
 
   //재조회 및 초기조회
-  // useEffect(() => {
-  //   currentPage = 1
-  //   fetchData()
-  //   props.set(true)
-  //   if (props.type !== undefined) {
-  //     setWriteType('reply')
-  //   } else {
-  //     setWriteType('board')
-  //   }
-  // }, [writeState, ctx.fanBoardBigIdx])
+  useEffect(() => {
+    currentPage = 1
+    // fetchData()
+    // props.set(true)
+    if (props.type !== undefined) {
+      setWriteType('reply')
+    } else {
+      setWriteType('board')
+    }
+  }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
   // useEffect(() => {
   //   window.addEventListener('scroll', scrollEvtHdr)
@@ -175,21 +163,21 @@ export default (props) => {
   //     window.removeEventListener('scroll', scrollEvtHdr)
   //   }
   // }, [nextList])
-  // useEffect(() => {
-  //   if (profile.memNo === urlrStr) {
-  //     setIsOther(false)
-  //   } else {
-  //     setIsOther(true)
-  //   }
+  useEffect(() => {
+    if (profile.memNo === urlrStr) {
+      setIsOther(false)
+    } else {
+      setIsOther(true)
+    }
 
-  //   if (context.token.memNo === profile.memNo) {
-  //     getMyPageNewFanBoard()
-  //   }
+    if (context.token.memNo === profile.memNo) {
+      getMyPageNewFanBoard()
+    }
 
-  //   return () => {
-  //     currentPage = 1
-  //   }
-  // }, [])
+    return () => {
+      currentPage = 1
+    }
+  }, [])
 
   //--------------------------------------------------
   return (

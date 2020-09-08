@@ -20,7 +20,7 @@ import NoResult from 'components/ui/noResult'
 // concat
 let currentPage = 1
 let timer
-let total = 1
+let total = 2
 //layout
 export default (props) => {
   //context
@@ -50,6 +50,7 @@ export default (props) => {
       if (moreState && windowBottom >= docHeight - 200) {
         // console.log(boardList.length)
         // console.log(currentPage * 10)
+
         showMoreList()
       } else {
       }
@@ -61,21 +62,24 @@ export default (props) => {
       setBoardList(boardList.concat(nextList))
 
       if (total >= currentPage) {
+        console.log(total)
+        console.log(currentPage)
         fetchData('next')
       }
     }
   }
   const setAction = (value) => {
-    if (value === true) {
-      currentPage = 1
-      fetchData()
+    if (total >= currentPage) {
+      if (value === true) {
+        currentPage = 1
+        fetchData()
+      }
     }
   }
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
 
-    console.log(currentPage)
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,
@@ -103,8 +107,8 @@ export default (props) => {
         }
       }
 
-      if (total === 1) {
-        total = res.data.paging.totalPage
+      if (total === 2) {
+        if (res.data.paging) total = res.data.paging.totalPage
       }
     } else {
     }
@@ -125,7 +129,7 @@ export default (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [writeState, ctx.fanBoardBigIdx])
+  }, [writeState])
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
