@@ -211,10 +211,14 @@ export default (props) => {
     } else {
       context.action.updatClipRefresh(true)
     }
-    setInterval(() => {
+    if (refreshAni) {
+      setRefreshAni(false)
+      setTimeout(() => {
+        setRefreshAni(true)
+      }, 10)
+    } else {
       setRefreshAni(true)
-    }, 1)
-    setRefreshAni(false)
+    }
   }
   // #layer pop func
   const popStateEvent = (e) => {
