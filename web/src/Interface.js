@@ -402,6 +402,58 @@ export default () => {
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
         break
+      case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                Hybrid('EnterClipUpload')
+              }
+            })
+          } else {
+            Hybrid('EnterClipUpload')
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 업로드하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              Hybrid('EnterClipUpload')
+            }
+          })
+        }
+        break
+      case 'native-clip-record': //-----------------------네이티브 딤 메뉴에서 클립 녹음 클릭 시
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n클립을 녹음하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                Hybrid('EnterClipRecord')
+              }
+            })
+          } else {
+            Hybrid('EnterClipRecord')
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 녹음하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              Hybrid('EnterClipRecord')
+            }
+          })
+        }
+        break
       default:
         break
     }
@@ -676,6 +728,8 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
+    document.addEventListener('native-clip-upload', update)
+    document.addEventListener('native-clip-record', update)
 
     return () => {
       /*----native----*/
@@ -699,6 +753,8 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+      document.removeEventListener('native-clip-upload', update)
+      document.removeEventListener('native-clip-record', update)
     }
   }, [])
   return (
