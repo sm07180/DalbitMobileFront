@@ -173,11 +173,7 @@ export default (props) => {
     context.action.updateToggleAction(false)
     history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
   }
-  //check login push login
-  if (!token.isLogin) {
-    history.push('/login')
-    return null
-  }
+
   return (
     <div id="mypage">
       {profile !== null && token && token.isLogin && (

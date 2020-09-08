@@ -15,6 +15,8 @@ import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import LoginStay from '../login/loginState'
 export default (props) => {
+  let params = useParams()
+  console.log(params.category)
   const categoryList = [
     {type: 'nav', component: Nav},
     {type: 'profile', component: Profile},
@@ -33,6 +35,13 @@ export default (props) => {
   //     }
   //   })
   // }, [globalCtx.close])
+  useEffect(() => {
+    //check login push login
+    if (!token.isLogin && params.category === 'profile') {
+      history.push('/login')
+      return null
+    }
+  }, [])
   return (
     <>
       {/* 로그인 대기창  */}
