@@ -207,7 +207,7 @@ export default (props) => {
         </div>
         {writeState === true && (
           <div className="content_area">
-            <textarea placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
+            <textarea autoFocus="autofocus" placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
           </div>
         )}
       </div>
