@@ -30,7 +30,6 @@ export default (props) => {
 
   //정보 댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
-    console.log(boardIdx, item, context.fanboardReplyNum)
     context.action.updateReplyIdx(boardIdx)
     setReplyWriteState(true)
     fetchDataReplyList(boardIdx)
@@ -77,11 +76,11 @@ export default (props) => {
           {TotalList &&
             TotalList !== false &&
             TotalList.map((item, index) => {
-              const {replyCnt, boardIdx, viewOn} = item
+              const {replyCnt, boardIdx} = item
               return (
                 <>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                    {item && <BoardItem key={index} data={item} set={props.set} />}
+                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} />}
 
                     <div className="list-item__bottom">
                       <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
@@ -99,12 +98,12 @@ export default (props) => {
                       boardIdx === context.fanboardReplyNum &&
                       boardReplyList &&
                       boardReplyList !== false &&
-                      boardReplyList.map((item, index) => {
+                      boardReplyList.map((item1, index1) => {
                         return (
                           <div className="reply-list">
                             <BoardItem
-                              key={index}
-                              data={item}
+                              key={`reply-${index1}`}
+                              data={item1}
                               set={props.set}
                               isViewOn={context.fanboardReply.viewOn}
                               replyShowIdx={context.fanboardReplyNum}
@@ -116,7 +115,7 @@ export default (props) => {
                     {context.fanboardReplyNum &&
                       context.toggleState &&
                       boardIdx === context.fanboardReplyNum &&
-                      replyWriteState && <WriteBoard {...props} set={setAction} type={'reply'} />}
+                      replyWriteState && <WriteBoard isViewOn={context.fanboardReply.viewOn} set={setAction} type={'reply'} />}
                   </div>
                 </>
               )
