@@ -76,6 +76,7 @@ export default (props) => {
   }
   //삭제하기 fetch
   const deleteBoard = (boardIdx) => {
+    console.log(boardIdx)
     async function fetchDataDelete() {
       const res = await Api.mypage_fanboard_delete({
         data: {

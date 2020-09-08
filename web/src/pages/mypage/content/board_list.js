@@ -57,7 +57,9 @@ export default (props) => {
     } else if (res.result === 'fail') {
     }
   }
-  const setAction = (value) => {
+  const setAction = (value, writeType) => {
+    console.log(value, writeType)
+
     if (value === true) {
       props.set(true)
       fetchDataReplyList(context.fanboardReplyNum)
