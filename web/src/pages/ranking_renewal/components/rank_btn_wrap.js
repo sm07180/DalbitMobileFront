@@ -22,11 +22,13 @@ function RankBtnWrap() {
             key={idx}
             className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
             onClick={() => {
-              if (formState.rankType !== v.val)
+              if (formState.rankType !== v.val) {
+                scrollTo(0, 0)
                 formDispatch({
                   type: 'RANK_TYPE',
                   val: v.val
                 })
+              }
             }}>
             {v.text}
           </button>
