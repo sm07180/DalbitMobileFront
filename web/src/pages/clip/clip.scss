@@ -229,6 +229,8 @@
       background-color: #eee;
 
       h2 {
+        display: flex;
+        align-items: center;
         font-size: 18px;
         font-weight: 800;
       }
@@ -420,6 +422,12 @@
       }
     }
   }
+  .refresh-icon {
+    margin-left: 6px;
+    &--active {
+      animation: anim 0.36s;
+    }
+  }
   .allIcon,
   .twentyIcon,
   .fanIcon {
@@ -512,6 +520,14 @@
       img {
         width: 100%;
       }
+    }
+  }
+  @keyframes anim {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(-360deg);
     }
   }
 }

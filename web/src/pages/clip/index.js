@@ -57,6 +57,7 @@ export default (props) => {
   // common state
   const [clipType, setClipType] = useState([])
   const [clipTypeActive, setClipTypeActive] = useState('')
+  const [refreshAni, setRefreshAni] = useState(false)
   //api func
   const fetchDataListPopular = async () => {
     const {result, data, message} = await Api.getPopularList({})
@@ -210,6 +211,10 @@ export default (props) => {
     } else {
       context.action.updatClipRefresh(true)
     }
+    setInterval(() => {
+      setRefreshAni(true)
+    }, 1)
+    setRefreshAni(false)
   }
   // #layer pop func
   const popStateEvent = (e) => {
@@ -271,7 +276,12 @@ export default (props) => {
           <div className="liveChart__titleBox">
             <h2>
               실시간 차트{' '}
-              <img src={refreshIcon} className="refresh-icon" onClick={() => refreshCategory()} style={{cursor: 'pointer'}} />
+              <img
+                src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
+                className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
+                onClick={() => refreshCategory()}
+                style={{cursor: 'pointer'}}
+              />
             </h2>
 
             <div className="sequenceBox">
