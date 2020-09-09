@@ -201,7 +201,7 @@ export default (props) => {
                         }
                       })}
                     </span> */}
-                    {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />}
+                    {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                   </div>
 
                   <div className="topWrap__count">

@@ -8,6 +8,7 @@
 
     .swiper-wrapper {
       display: flex;
+      align-items: center;
     }
   }
 
@@ -468,6 +469,7 @@
     display: inline-block;
     width: 16px;
     height: 16px;
+    margin-right: 2px;
     line-height: 16px;
     font-size: 7px;
     text-align: center;
