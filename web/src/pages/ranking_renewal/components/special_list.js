@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState, useCallback} from 'react'
 import styled, {css} from 'styled-components'
+import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
@@ -13,6 +14,7 @@ import people from '../static/people_g_s.svg'
 import time from '../static/time_g_s.svg'
 
 function SpecialList({empty, fetching}) {
+  const history = useHistory()
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
@@ -131,7 +133,7 @@ function SpecialList({empty, fetching}) {
                     className="thumbBox"
                     onClick={() => {
                       if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
+                        if (context.token.memNo === v.memNo) {
                           history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${v.memNo}`)
@@ -144,7 +146,21 @@ function SpecialList({empty, fetching}) {
                     <img src={v.profImg.thumb120x120} className="thumbBox__pic" />
                   </div>
                   <div className="test">
-                    <div className="nickNameBox">{v.nickNm}</div>
+                    <div
+                      className="nickNameBox"
+                      onClick={() => {
+                        if (context.token.isLogin) {
+                          if (context.token.memNo === v.memNo) {
+                            history.push(`/menu/profile`)
+                          } else {
+                            history.push(`/mypage/${v.memNo}`)
+                          }
+                        } else {
+                          history.push('/login')
+                        }
+                      }}>
+                      {v.nickNm}
+                    </div>
                     <div className="genderBox">
                       <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
                       <span className={genderName} />

@@ -352,7 +352,6 @@ function Ranking() {
           }
         }
       }
-      console.log(window.scrollY)
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(function () {
         //스크롤
