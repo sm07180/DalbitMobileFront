@@ -558,6 +558,7 @@ export default (props) => {
             </div>
             {globalCtx.isDevIp ? (
               <>
+<<<<<<< Updated upstream
                 <div className="tab">
                   <Link
                     to={'/clip'}
@@ -566,6 +567,17 @@ export default (props) => {
                       history.push('/clip')
                     }}>
                     클립
+=======
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip_open')
+                    }}>
+                    클립<i>NEW</i>
+>>>>>>> Stashed changes
                   </Link>
                 </div>
               </>
@@ -574,7 +586,11 @@ export default (props) => {
                 <div className="tab tab--yellow">
                   <Link
                     className="newicon"
+<<<<<<< Updated upstream
                     to={'/clip_open'}
+=======
+                    to={'/clip'}
+>>>>>>> Stashed changes
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip_open')
