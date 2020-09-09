@@ -34,6 +34,7 @@ export default (props) => {
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
+  const [updateCount, setUpdateCount] = useState(null)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
   const [isSelected, setIsSelected] = useState(false)
@@ -106,6 +107,7 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
+        setUpdateCount(false)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -127,7 +129,7 @@ export default (props) => {
     if (memNo) {
       settingProfileInfo(memNo)
     }
-  }, [memNo, context.mypageFanCnt])
+  }, [memNo, context.mypageFanCnt, updateCount])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [])
@@ -148,6 +150,9 @@ export default (props) => {
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
+  }
+  const setAction = (value) => {
+    setUpdateCount(value)
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -202,7 +207,7 @@ export default (props) => {
               </ul>
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" />}
+                {tabSelected === 1 && <FanBoard type="subpage" set={setAction} />}
                 {tabSelected === 2 && <MyClip type="subpage" />}
               </div>
 

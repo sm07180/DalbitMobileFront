@@ -88,6 +88,7 @@ export default (props) => {
       currentPage = 1
       fetchData()
     }
+    props.set(true)
   }
   // 팬보드 글 조회
   async function fetchData(next) {
