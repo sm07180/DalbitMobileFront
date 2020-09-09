@@ -8,7 +8,7 @@ const btnArray = [
   {val: 4, text: '좋아요'},
   {val: 5, text: '스페셜DJ', isSpecial: true}
 ]
-function RankBtnWrap() {
+function RankBtnWrap({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)
 
   const {formState} = rankState
@@ -26,11 +26,15 @@ function RankBtnWrap() {
                   formState.rankType === v.val ? 'rankTab__specialBtn rankTab__specialBtn--active' : 'rankTab__specialBtn'
                 }
                 onClick={() => {
-                  if (formState.rankType !== v.val)
-                    formDispatch({
-                      type: 'RANK_TYPE',
-                      val: v.val
-                    })
+                  if (!fetching) {
+                    if (formState.rankType !== v.val) {
+                      window.scrollTo(0, 0)
+                      formDispatch({
+                        type: 'RANK_TYPE',
+                        val: v.val
+                      })
+                    }
+                  }
                 }}>
                 {v.text}
               </button>
@@ -38,11 +42,15 @@ function RankBtnWrap() {
               <button
                 className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
                 onClick={() => {
-                  if (formState.rankType !== v.val)
-                    formDispatch({
-                      type: 'RANK_TYPE',
-                      val: v.val
-                    })
+                  if (!fetching) {
+                    if (formState.rankType !== v.val) {
+                      window.scrollTo(0, 0)
+                      formDispatch({
+                        type: 'RANK_TYPE',
+                        val: v.val
+                      })
+                    }
+                  }
                 }}>
                 {v.text}
               </button>

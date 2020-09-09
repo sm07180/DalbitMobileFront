@@ -451,10 +451,18 @@ const Select = styled.div`
 const PointButton = styled.button`
   height: 32px;
   background: #fff;
-  font-size: 14px;
   margin-right: 4px;
   margin-bottom: 4px;
   width: calc((100% - 12px) / 4);
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+  border-style: solid;
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-width: 1px;
+  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
+  box-sizing: border-box;
+  border-radius: 12px;
 
   &:nth-child(4n) {
     margin-right: 0px;
@@ -463,17 +471,6 @@ const PointButton = styled.button`
   &:nth-child(n + 4) {
     margin-bottom: 0px;
   }
-
-  color: #000;
-  font-weight: bold;
-
-  border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#bdbdbd')};
-  border-width: 1px;
-  border-radius: 10px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
-  font-size: 12px;
-  box-sizing: border-box;
 `
 const TextArea = styled.div`
   width: 100%;
@@ -498,14 +495,16 @@ const PointInput = styled.input`
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.35px;
   border-color: ${(props) => (props.active === 'active' ? '#000' : '#e0e0e0')};
 
   &::placeholder {
-    color: #777;
+    color: #757575;
+    font-size: 14px;
+    font-weight: 400;
   }
   p {
     font-size: 12px;

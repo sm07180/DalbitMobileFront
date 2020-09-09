@@ -1102,12 +1102,15 @@
         }
         .list-item__header {
           &::before {
-            content: 'ㄴ';
+            content: '';
             position: absolute;
             left: -3px;
             top: 50%;
-            margin-top: -13px;
+            margin-top: -8px;
+            width: 16px;
+            height: 16px;
             color: $greishGray;
+            background: url('./static/ico-reply.svg') no-repeat 0 0;
           }
         }
       }

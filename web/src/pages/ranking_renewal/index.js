@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertDateToText} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate} from './lib/common_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -28,7 +28,6 @@ import './index.scss'
 let timer
 let touchStartY = null
 let touchEndY = null
-
 const records = 50
 function Ranking() {
   const context = useContext(Context)
@@ -235,12 +234,14 @@ function Ranking() {
         setEmpty(true)
         setRankList([])
         setLevelList([])
+        setLikeList([])
         setMyInfo({...myInfo})
       }
     } else {
       setEmpty(true)
       setRankList([])
       setLevelList([])
+      setLikeList([])
       setMyInfo({...myInfo})
     }
 
@@ -250,69 +251,79 @@ function Ranking() {
   useEffect(() => {
     if (formState.rankType !== RANK_TYPE.SPECIAL) fetchData()
     else {
-      test()
+      fetchSpecial()
     }
-    async function test() {
+    async function fetchSpecial() {
+      setFetching(true)
+      const dateObj = convertSetSpecialDate(formState.currentDate)
       const res = await Api.getSpecialDjHistory({
-        yy: '2020',
-        mm: '08'
+        yy: dateObj.year,
+        mm: dateObj.month
       })
       if (res.result === 'success') {
-        setSpecialList(res.data.list)
+        if (res.data.list.length > 0) {
+          setSpecialList(res.data.list)
+          setEmpty(false)
+        } else {
+          setEmpty(true)
+          setSpecialList([])
+        }
       }
+
+      setFetching(false)
     }
   }, [formState, context.token.isLogin])
 
-  useEffect(() => {
-    const windowScrollEvent = () => {
-      if (window.scrollY >= 48) {
-        if (fixedWrapRef.current.classList.length === 0) {
-          fixedWrapRef.current.className = 'fixed'
-        }
-        if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            if (listWrapRef.current.classList.length === 1) {
-              listWrapRef.current.className = 'listFixed more'
-            }
-          } else {
-            if (listWrapRef.current.classList.length === 0) {
-              listWrapRef.current.className = 'listFixed'
-            }
+  const windowScrollEvent = useCallback(() => {
+    if (window.scrollY >= 48) {
+      if (fixedWrapRef.current.classList.length === 0) {
+        fixedWrapRef.current.className = 'fixed'
+      }
+      if (listWrapRef.current) {
+        if (context.token.isLogin) {
+          if (listWrapRef.current.classList.length === 1) {
+            listWrapRef.current.className = 'listFixed more'
           }
-        }
-      } else {
-        fixedWrapRef.current.className = ''
-        if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            listWrapRef.current.className = 'more'
-          } else {
-            listWrapRef.current.className = ''
+        } else {
+          if (listWrapRef.current.classList.length === 0) {
+            listWrapRef.current.className = 'listFixed'
           }
         }
       }
+    } else {
+      fixedWrapRef.current.className = ''
+      if (listWrapRef.current) {
+        if (context.token.isLogin) {
+          listWrapRef.current.className = 'more'
+        } else {
+          listWrapRef.current.className = ''
+        }
+      }
+    }
 
-      if (timer) window.clearTimeout(timer)
-      timer = window.setTimeout(function () {
-        //스크롤
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
 
-        const diff = document.body.scrollHeight / 2
-        console
-        if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
-          if (totalPage > formState.page && formState.page < 25) {
+      const diff = document.body.scrollHeight / (formState.page + 3)
+      if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
+        if (totalPage > formState.page && formState.page < 25) {
+          if (!fetching) {
             formDispatch({
               type: 'PAGE'
             })
           }
         }
-      }, 100)
-    }
+      }
+    }, 50)
+  }, [formState, totalPage, fetching])
 
+  useEffect(() => {
     window.addEventListener('scroll', windowScrollEvent)
-
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [formState, totalPage])
+  }, [formState, totalPage, fetching])
 
   return (
     <Layout status={'no_gnb'}>
@@ -325,10 +336,10 @@ function Ranking() {
         </div>
         <div ref={fixedWrapRef}>
           <div className="rankTopBox">
-            <RankBtnWrap />
+            <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState.rankType !== 3 && formState.rankType !== 4 && `${realTime()}`}</div> */}
           </div>
-          {formState.rankType !== RANK_TYPE.LEVEL && formState.rankType !== RANK_TYPE.LIKE && (
+          {(formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) && (
             <>
               <RankDateBtn fetching={fetching} />
               <RankHandleDateBtn fetching={fetching} />
@@ -343,7 +354,7 @@ function Ranking() {
             <RankListWrap empty={empty} />
           </div>
         )}
-        {formState.rankType === RANK_TYPE.SPECIAL && <SpecialListWrap empty={empty} />}
+        {formState.rankType === RANK_TYPE.SPECIAL && <SpecialListWrap empty={empty} fetching={fetching} />}
       </div>
     </Layout>
   )
