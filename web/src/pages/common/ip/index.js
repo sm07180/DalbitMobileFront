@@ -22,9 +22,11 @@ export default () => {
           setRedirectList(list)
           context.action.updateIsDevIp(true)
         } else {
+          let appBuild = customHeader['appBuild']
+          if (appBuild === undefined) appBuild = 0
           if (
-            (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 28) ||
-            (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
+            (customHeader['os'] === OS_TYPE['Android'] && appBuild > 28) ||
+            (customHeader['os'] === OS_TYPE['IOS'] && appBuild > 136)
           ) {
             context.action.updateIsDevIp(true)
           } else {
