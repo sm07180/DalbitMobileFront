@@ -34,8 +34,6 @@ export default (props) => {
     fetchEventAttendCheck()
   }, [])
 
-  console.log(attendCheck)
-
   const scrollToTop = () => {
     if (logoChange && window.scrollY) {
       window.scrollTo(0, 0)
