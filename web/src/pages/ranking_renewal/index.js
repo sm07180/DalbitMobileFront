@@ -15,6 +15,7 @@ import RankBtnWrap from './components/rank_btn_wrap'
 import RankHandleDateBtn from './components/rank_handle_date_btn'
 import RankDateBtn from './components/date_btn_wrap'
 import MyProfile from './components/MyProfile'
+import SpecialHistoryHandle from './components/special_history_handle'
 import RankListWrap from './components/rank_list'
 import LevelListWrap from './components/level_list'
 import LikeListWrap from './components/like_list'
@@ -332,23 +333,31 @@ function Ranking() {
           fixedWrapRef.current.className = 'fixed'
         }
         if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            if (listWrapRef.current.classList.length === 1) {
-              listWrapRef.current.className = 'listFixed more'
+          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+            if (context.token.isLogin) {
+              if (listWrapRef.current.classList.length === 1) {
+                listWrapRef.current.className = 'listFixed more'
+              }
+            } else {
+              if (listWrapRef.current.classList.length === 0) {
+                listWrapRef.current.className = 'listFixed'
+              }
             }
           } else {
-            if (listWrapRef.current.classList.length === 0) {
-              listWrapRef.current.className = 'listFixed'
-            }
+            listWrapRef.current.className = 'listFixed special'
           }
         }
       } else {
         fixedWrapRef.current.className = ''
         if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            listWrapRef.current.className = 'more'
+          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+            if (context.token.isLogin) {
+              listWrapRef.current.className = 'more'
+            } else {
+              listWrapRef.current.className = ''
+            }
           } else {
-            listWrapRef.current.className = ''
+            listWrapRef.current.className = 'special'
           }
         }
       }
@@ -395,6 +404,7 @@ function Ranking() {
               <MyProfile fetching={fetching} />
             </>
           )}
+          {formState.rankType === RANK_TYPE.SPECIAL && <SpecialHistoryHandle fetching={fetching} />}
         </div>
         {formState.rankType === RANK_TYPE.LEVEL && <LevelListWrap empty={empty} />}
         {formState.rankType === RANK_TYPE.LIKE && <LikeListWrap empty={empty} />}
@@ -403,7 +413,11 @@ function Ranking() {
             <RankListWrap empty={empty} />
           </div>
         )}
-        {formState.rankType === RANK_TYPE.SPECIAL && <SpecialListWrap empty={empty} fetching={fetching} />}
+        {formState.rankType === RANK_TYPE.SPECIAL && (
+          <div ref={listWrapRef} className="special">
+            <SpecialListWrap empty={empty} fetching={fetching} />
+          </div>
+        )}
       </div>
     </Layout>
   )

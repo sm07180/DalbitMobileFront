@@ -1,11 +1,9 @@
-import React, {useContext, useEffect, useState, useCallback} from 'react'
+import React, {useContext} from 'react'
 import styled, {css} from 'styled-components'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
-
-import {changeDate} from '../lib/common_fn'
 
 import NoResult from 'components/ui/noResult'
 
@@ -13,105 +11,15 @@ import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
 import time from '../static/time_g_s.svg'
 
-function SpecialList({empty, fetching}) {
+function SpecialList({empty}) {
   const history = useHistory()
   const context = useContext(Context)
-  const {rankState, rankAction} = useContext(RankContext)
+  const {rankState} = useContext(RankContext)
 
-  const {specialList, formState} = rankState
-
-  const formDispatch = rankAction.formDispatch
-
-  const [dateTitle, setDateTitle] = useState('이번달')
-
-  const handleDate = (type) => {
-    const handle = changeDate(type, 3, formState.currentDate)
-
-    formDispatch({
-      type: 'DATE',
-      val: handle
-    })
-  }
-
-  const formatDate = useCallback(() => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
-
-    const cdt = new Date()
-    const cyy = cdt.getFullYear()
-    const cmm = cdt.getMonth() + 1
-
-    if (yy === cyy && mm === cmm) {
-      setDateTitle('이번달')
-    } else {
-      setDateTitle(`${yy}년 ${mm}월`)
-    }
-  }, [formState])
-
-  const prevLast = () => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
-
-    const cdt = new Date('2020-07-01')
-    const cyy = cdt.getFullYear()
-    const cmm = cdt.getMonth() + 1
-
-    if (yy === cyy && cmm === mm) {
-      return false
-    } else {
-      return true
-    }
-  }
-
-  const nextLast = () => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
-
-    const cdt = new Date()
-    const cyy = cdt.getFullYear()
-    const cmm = cdt.getMonth() + 1
-
-    if (yy === cyy && cmm === mm) {
-      return false
-    } else {
-      return true
-    }
-  }
-
-  useEffect(() => {
-    formatDate()
-  }, [formState])
+  const {specialList} = rankState
 
   return (
     <>
-      <div className="detailView">
-        <button
-          className={`prevButton ${prevLast() && fetching === false && 'active'}`}
-          onClick={() => {
-            if (prevLast() && fetching === false) {
-              handleDate('back')
-            }
-          }}>
-          이전
-        </button>
-
-        <div className="title">
-          <div className="titleWrap">{dateTitle}</div>
-        </div>
-
-        <button
-          className={`nextButton ${nextLast() && fetching === false && 'active'}`}
-          onClick={() => {
-            if (nextLast() && fetching === false) {
-              handleDate('front')
-            }
-          }}>
-          다음
-        </button>
-      </div>
       <p className="special__text">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
       <ul>
         {empty === true ? (
