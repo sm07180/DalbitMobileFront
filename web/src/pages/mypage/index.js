@@ -22,11 +22,6 @@ import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 // scss
 import ClipIcon from './static/menu_cast.svg'
-import Arrow from './static/arrow.svg'
-import newCircle from './static/new_circle.svg'
-import NoticeIcon from './static/profile/ic_notice_m.svg'
-import FanboardIcon from './static/profile/ic_fanboard_m.svg'
-
 import './index.scss'
 
 export default (props) => {
@@ -72,12 +67,8 @@ export default (props) => {
     ]
   }
 
-  useEffect(() => {
-    context.action.updateUrlStr(memNo)
-  }, [])
-
   // memNo navi check
-  console.log(profile)
+  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -137,7 +128,9 @@ export default (props) => {
       settingProfileInfo(memNo)
     }
   }, [memNo, context.mypageFanCnt])
-
+  useEffect(() => {
+    context.action.updateUrlStr(memNo)
+  }, [])
   // check 탈퇴회원
   useEffect(() => {
     if (codes === '-2') {
@@ -159,11 +152,11 @@ export default (props) => {
   const profileCount = (idx) => {
     switch (idx) {
       case 0:
-        return profile.count.notice
+        return profileInfo.count.notice
       case 1:
-        return profile.count.fanboard
+        return profileInfo.count.fanboard
       case 2:
-        return profile.count.clip
+        return profileInfo.count.clip
 
       default:
         break
@@ -210,7 +203,7 @@ export default (props) => {
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
                 {tabSelected === 1 && <FanBoard type="subpage" />}
-                {tabSelected === 2 && <></>}
+                {tabSelected === 2 && <MyClip type="subpage" />}
               </div>
 
               {/* <div className="profile-menu">
