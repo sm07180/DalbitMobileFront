@@ -717,7 +717,6 @@ export default () => {
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
     document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
-    document.addEventListener('native-room-make', update) // 방만들기 체크
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -730,8 +729,6 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
-    document.addEventListener('native-clip-upload', update)
-    document.addEventListener('native-clip-record', update)
 
     return () => {
       /*----native----*/
@@ -744,7 +741,6 @@ export default () => {
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
-      document.addEventListener('native-make-room', update) // 방만들기 체크
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
@@ -755,10 +751,20 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+    }
+  }, [])
+
+  useEffect(() => {
+    document.addEventListener('native-room-make', update)
+    document.addEventListener('native-clip-upload', update)
+    document.addEventListener('native-clip-record', update)
+
+    return () => {
+      document.removeEventListener('native-room-make', update)
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
-  }, [])
+  }, [context.token])
   return (
     <React.Fragment>
       <Room />
