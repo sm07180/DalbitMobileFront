@@ -24,6 +24,7 @@ import {RANK_TYPE} from './constant'
 
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './index.scss'
+import level from 'pages/level'
 
 let timer
 let touchStartY = null
@@ -153,6 +154,10 @@ function Ranking() {
     [reloadInit, formState]
   )
 
+  const promise = new Promise(function (resolve, reject) {
+    return resolve()
+  })
+
   const fetchData = useCallback(async () => {
     if (formState.rankType === RANK_TYPE.LEVEL) {
       if (levelList.length > 0) {
@@ -184,6 +189,7 @@ function Ranking() {
     }
     setFetching(true)
     const formatDate = convertDateFormat(formState.currentDate, '-')
+
     const res = await Api.getRankList({
       rankSlct: formState.rankType,
       rankType: formState.dateType,
@@ -197,7 +203,22 @@ function Ranking() {
         if (formState.rankType === 3) {
           // level
           if (formState.page > 1) {
-            setLevelList(levelList.concat(res.data.list))
+            if (levelList.length === 0) {
+              const res2 = await Api.getRankList({
+                rankSlct: formState.rankType,
+                rankType: formState.dateType,
+                page: 1,
+                records: records,
+                rankingDate: formatDate,
+                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
+              })
+
+              if (res2.result === 'success') {
+                setLevelList(res2.data.list.concat(res.data.list))
+              }
+            } else {
+              setLevelList(levelList.concat(res.data.list))
+            }
           } else {
             setLevelList(res.data.list)
           }
@@ -207,7 +228,22 @@ function Ranking() {
         } else if (formState.rankType === 4) {
           //good
           if (formState.page > 1) {
-            setLikeList(likeList.concat(res.data.list))
+            if (likeList.length === 0) {
+              const res2 = await Api.getRankList({
+                rankSlct: formState.rankType,
+                rankType: formState.dateType,
+                page: 1,
+                records: records,
+                rankingDate: formatDate,
+                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
+              })
+
+              if (res2.result === 'success') {
+                setLikeList(res2.data.list.concat(res.data.list))
+              }
+            } else {
+              setLikeList(likeList.concat(res.data.list))
+            }
           } else {
             setLikeList(res.data.list)
           }
@@ -217,7 +253,22 @@ function Ranking() {
         } else {
           // dj, fan
           if (formState.page > 1) {
-            setRankList(rankList.concat(res.data.list))
+            if (rankList.length === 0) {
+              const res2 = await Api.getRankList({
+                rankSlct: formState.rankType,
+                rankType: formState.dateType,
+                page: 1,
+                records: records,
+                rankingDate: formatDate,
+                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
+              })
+
+              if (res2.result === 'success') {
+                setRankList(res2.data.list.concat(res.data.list))
+              }
+            } else {
+              setRankList(rankList.concat(res.data.list))
+            }
           } else {
             setRankList(res.data.list)
           }
@@ -234,12 +285,14 @@ function Ranking() {
         setEmpty(true)
         setRankList([])
         setLevelList([])
+        setLikeList([])
         setMyInfo({...myInfo})
       }
     } else {
       setEmpty(true)
       setRankList([])
       setLevelList([])
+      setLikeList([])
       setMyInfo({...myInfo})
     }
 
@@ -281,17 +334,17 @@ function Ranking() {
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(function () {
         //스크롤
-
-        const diff = document.body.scrollHeight / 2
-        console
+        const diff = document.body.scrollHeight / (formState.page + 1)
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (totalPage > formState.page && formState.page < 25) {
-            formDispatch({
-              type: 'PAGE'
-            })
+            if (!fetching) {
+              formDispatch({
+                type: 'PAGE'
+              })
+            }
           }
         }
-      }, 100)
+      }, 50)
     }
 
     window.addEventListener('scroll', windowScrollEvent)
@@ -299,7 +352,7 @@ function Ranking() {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [formState, totalPage])
+  }, [formState, totalPage, fetching])
 
   return (
     <Layout status={'no_gnb'}>
@@ -312,7 +365,7 @@ function Ranking() {
         </div>
         <div ref={fixedWrapRef}>
           <div className="rankTopBox">
-            <RankBtnWrap />
+            <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState.rankType !== 3 && formState.rankType !== 4 && `${realTime()}`}</div> */}
           </div>
           {formState.rankType !== RANK_TYPE.LEVEL && formState.rankType !== RANK_TYPE.LIKE && (
