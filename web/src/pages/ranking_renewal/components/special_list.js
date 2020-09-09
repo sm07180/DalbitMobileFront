@@ -110,7 +110,7 @@ function SpecialList({empty, fetching}) {
           다음
         </button>
       </div>
-      <p>달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
+      <p className="special__text">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
       <ul>
         {empty === true ? (
           <NoResult />

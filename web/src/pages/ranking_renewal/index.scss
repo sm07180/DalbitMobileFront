@@ -868,9 +868,9 @@
 
     .genderBox {
       display: inline-flex;
+      padding-left: 5px;
       background-size: 100%;
       vertical-align: middle;
-
       &.korea-m {
         margin-left: 2px;
         border: 1px solid;
@@ -1096,5 +1096,13 @@
       background: url('https://image.dalbitlive.com/ranking/reward_pop_character2@2x.png') no-repeat;
       background-size: 100%;
     }
+  }
+
+  .special__text {
+    padding: 11px 0;
+    background-color: $primary;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
   }
 }
