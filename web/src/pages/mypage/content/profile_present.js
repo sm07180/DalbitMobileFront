@@ -233,9 +233,17 @@ export default (props) => {
 }
 //-------------------------------------------------------- styled start
 const FixedBg = styled.div`
-  z-index: 24;
+  width: 100%;
+  max-width: 640px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .wrapper {
+    width: 100%;
+    margin: auto;
     position: relative;
+
     &:after {
       content: '';
       clear: both;
@@ -245,7 +253,7 @@ const FixedBg = styled.div`
       display: block;
       position: absolute;
       top: -36px;
-      right: 8.335%;
+      right: 16px;
       width: 36px;
       height: 36px;
       background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
@@ -260,7 +268,7 @@ const FixedBg = styled.div`
     }
   }
   .scrollWrap {
-    width: 100vw;
+    width: 100%;
     max-height: 420px;
     flex: none;
   }
@@ -321,15 +329,15 @@ const Container = styled.div`
 `
 
 const HoleWrap = styled.div`
-  display: flex;
   position: fixed;
-
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  align-items: center;
-  justify-content: center;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
   z-index: 24;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const Dim = styled.div`
   position: fixed;
@@ -443,10 +451,18 @@ const Select = styled.div`
 const PointButton = styled.button`
   height: 32px;
   background: #fff;
-  font-size: 14px;
   margin-right: 4px;
   margin-bottom: 4px;
   width: calc((100% - 12px) / 4);
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+  border-style: solid;
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-width: 1px;
+  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
+  box-sizing: border-box;
+  border-radius: 12px;
 
   &:nth-child(4n) {
     margin-right: 0px;
@@ -455,17 +471,6 @@ const PointButton = styled.button`
   &:nth-child(n + 4) {
     margin-bottom: 0px;
   }
-
-  color: #000;
-  font-weight: bold;
-
-  border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#bdbdbd')};
-  border-width: 1px;
-  border-radius: 10px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
-  font-size: 12px;
-  box-sizing: border-box;
 `
 const TextArea = styled.div`
   width: 100%;
@@ -490,14 +495,16 @@ const PointInput = styled.input`
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.35px;
   border-color: ${(props) => (props.active === 'active' ? '#000' : '#e0e0e0')};
 
   &::placeholder {
-    color: #777;
+    color: #757575;
+    font-size: 14px;
+    font-weight: 400;
   }
   p {
     font-size: 12px;

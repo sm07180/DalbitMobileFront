@@ -121,7 +121,7 @@ function RankList() {
                         <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
                       </div>
 
-                      <div>
+                      <div className="w100">
                         <div className="nickNameBox">
                           {nickNm}
                           <div className="nickNameImg">

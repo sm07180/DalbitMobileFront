@@ -2,7 +2,7 @@
 @import '../../styles/mixins';
 
 #ranking-page {
-  min-height: 100vh;
+  // min-height: 100vh;
   background-color: $lighterGray;
   .refresh-wrap {
     display: none;
@@ -264,6 +264,7 @@
     }
 
     &__left {
+      min-width: 80px;
       flex-basis: 80px;
       text-align: center;
 
@@ -315,6 +316,16 @@
     &__rightWrap {
       display: flex;
       align-items: center;
+
+      .w100 {
+        width: 100%;
+        .nickNameBox {
+          width: calc(100% - 70px);
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
     }
   }
 
@@ -448,7 +459,7 @@
 
   .rankingList {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     position: relative;
     padding: 12px 0;
     border-bottom: 1px solid $lighterGray;

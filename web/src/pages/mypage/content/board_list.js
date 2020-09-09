@@ -30,7 +30,6 @@ export default (props) => {
 
   //정보 댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
-    console.log(boardIdx, item, context.fanboardReplyNum)
     context.action.updateReplyIdx(boardIdx)
     setReplyWriteState(true)
     fetchDataReplyList(boardIdx)
@@ -58,8 +57,11 @@ export default (props) => {
     } else if (res.result === 'fail') {
     }
   }
-  const setAction = (value) => {
+  const setAction = (value, writeType) => {
+    console.log(value, writeType)
+
     if (value === true) {
+      props.set(true)
       fetchDataReplyList(context.fanboardReplyNum)
     }
   }
@@ -76,12 +78,12 @@ export default (props) => {
           )}
           {TotalList &&
             TotalList !== false &&
-            TotalList.map((item, index) => {
-              const {replyCnt, boardIdx, viewOn} = item
+            TotalList.map((item, index, self) => {
+              const {replyCnt, boardIdx} = item
               return (
-                <>
+                <React.Fragment key={index}>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                    {item && <BoardItem key={index} data={item} set={props.set} />}
+                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} />}
 
                     <div className="list-item__bottom">
                       <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
@@ -99,13 +101,13 @@ export default (props) => {
                       boardIdx === context.fanboardReplyNum &&
                       boardReplyList &&
                       boardReplyList !== false &&
-                      boardReplyList.map((item, index) => {
+                      boardReplyList.map((item1, index1) => {
                         return (
-                          <div className="reply-list">
+                          <div className="reply-list" key={index1}>
                             <BoardItem
-                              key={index}
-                              data={item}
-                              set={props.set}
+                              key={`reply-${index1}`}
+                              data={item1}
+                              set={setAction}
                               isViewOn={context.fanboardReply.viewOn}
                               replyShowIdx={context.fanboardReplyNum}
                               titleReplyInfo={context.fanboardReply}
@@ -116,9 +118,11 @@ export default (props) => {
                     {context.fanboardReplyNum &&
                       context.toggleState &&
                       boardIdx === context.fanboardReplyNum &&
-                      replyWriteState && <WriteBoard {...props} set={setAction} type={'reply'} />}
+                      replyWriteState && (
+                        <WriteBoard isViewOn={context.fanboardReply.viewOn} set={setAction} type={'reply'} list={self} />
+                      )}
                   </div>
-                </>
+                </React.Fragment>
               )
             })}
         </>

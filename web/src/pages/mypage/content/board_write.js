@@ -26,9 +26,10 @@ export default (props) => {
   //urlNumber
   let urlrStr = location.pathname.split('/')[2]
   //state
-  const [list, setList] = useState([])
+  const list = props.list
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
+  const [replyWriteState, setReplyWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
@@ -41,32 +42,8 @@ export default (props) => {
     if (target.value.length > 100) return
     setTextChange(e.target.value)
   }
-  //스크롤 이벤트
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      if (moreState && windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-  //콘켓 쇼모어 이벤트
-  const showMoreList = () => {
-    if (moreState) {
-      setList(list.concat(nextList))
-      fetchData('next')
-    }
-  }
   //쓰기버튼 토글이벤트
   const writeToggle = () => {
-    console.log(writeType)
     if (writeState === false) {
       setWriteState(true)
     } else {
@@ -107,7 +84,15 @@ export default (props) => {
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
-    if (writeType === 'reply') {
+    if (writeType === 'board') {
+      params = {
+        memNo: urlrStr,
+        depth: 1,
+        content: textChange,
+        viewOn: isScreet === true ? 0 : 1
+      }
+      msg = '내용을 입력해 주세요.'
+    } else if (writeType === 'reply') {
       params = {
         memNo: urlrStr,
         depth: 2,
@@ -116,21 +101,27 @@ export default (props) => {
         boardNo: context.fanboardReplyNum
       }
       msg = '내용을 입력해 주세요.'
-    } else {
-      params = {
-        memNo: urlrStr,
-        depth: 1,
-        content: textChange,
-        viewOn: isScreet === true ? 0 : 1
-      }
-      msg = '내용을 입력해 주세요.'
     }
+
     const res = await Api.mypage_fanboard_upload({
       data: params
     })
+
     if (res.result === 'success') {
+      props.set(true, writeType)
       writeToggle()
       setTextChange('')
+      setIsScreet(false)
+
+      if (list instanceof Array) {
+        let findIdx = list.findIndex((v) => {
+          return v.boardIdx === context.fanboardReplyNum
+        })
+
+        if (findIdx !== -1) {
+          list[findIdx].replyCnt++
+        }
+      }
     } else if (res.result === 'fail') {
       if (textChange.length === 0) {
         context.action.alert({
@@ -157,8 +148,8 @@ export default (props) => {
   //재조회 및 초기조회
   useEffect(() => {
     currentPage = 1
-    fetchData()
-    props.set(true)
+    // fetchData()
+    // props.set(true)
     if (props.type !== undefined) {
       setWriteType('reply')
     } else {
@@ -166,12 +157,12 @@ export default (props) => {
     }
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', scrollEvtHdr)
+  //   return () => {
+  //     window.removeEventListener('scroll', scrollEvtHdr)
+  //   }
+  // }, [nextList])
   useEffect(() => {
     if (profile.memNo === urlrStr) {
       setIsOther(false)
@@ -207,22 +198,28 @@ export default (props) => {
         </div>
         {writeState === true && (
           <div className="content_area">
-            <textarea placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
+            <textarea autoFocus="autofocus" placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
           </div>
         )}
       </div>
       {writeState === true && (
         <div className="writeWrap__btnWrap">
-          <span className="bigCount">
-            <span className="bigCount__secret">
-              <DalbitCheckbox
-                status={isScreet}
-                callback={() => {
-                  setIsScreet(!isScreet)
-                }}
-              />
-              <span className="bold">비공개</span>
-            </span>
+          <span className="countBox">
+            {isOther === true && !props.isViewOn ? (
+              writeType === 'board' && (
+                <span className="secret">
+                  <DalbitCheckbox
+                    status={isScreet}
+                    callback={() => {
+                      setIsScreet(!isScreet)
+                    }}
+                  />
+                  <span className="bold">비공개</span>
+                </span>
+              )
+            ) : (
+              <></>
+            )}
             <span className="count">
               <em>{textChange.length}</em> / 100
             </span>
@@ -232,7 +229,7 @@ export default (props) => {
           </button>
         </div>
       )}
-      {writeState === true && (
+      {writeType === 'reply' || writeState === true ? (
         <div
           className="writeWrap__btn"
           onClick={() => {
@@ -243,6 +240,8 @@ export default (props) => {
           }}>
           <button className="btn__toggle">접기</button>
         </div>
+      ) : (
+        <></>
       )}
     </div>
   )

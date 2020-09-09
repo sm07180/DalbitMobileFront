@@ -15,7 +15,7 @@ function AllList({list, isAdmin, eventStatusCheck, fetchEventProofshotList}) {
 
   const deleteFn = (idx) => {
     global_ctx.action.confirm({
-      msg: '삭제하시겠습니끼?',
+      msg: '삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.event_proofshot_dellete({
           data: {

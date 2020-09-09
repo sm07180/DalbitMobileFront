@@ -83,6 +83,20 @@ const GlobalProvider = (props) => {
   const [mypageInfo, setMypageInfo] = useState('')
   const [fanboardReply, setFanboardReply] = useState(false)
   const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
+  //clip
+  const [clipMainSort, setClipMainSort] = useState(0)
+  const [clipMainGender, setClipMainGender] = useState('')
+  const [clipRefresh, setClipRefresh] = useState(false)
+  const [clipTab, setClipTab] = useState(0)
+  const [clipType, setClipType] = useState([])
+  const [urlStr, setUrlStr] = useState('')
+  //clipPlayer
+  const [clipState, setClipState] = useState('floating')
+  const [clipPlayerState, setClipPlayerState] = useState(null)
+  const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
+  //
+  const [isDevIp, setIsDevIp] = useState(false)
+
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -345,6 +359,48 @@ const GlobalProvider = (props) => {
     },
     updateFanboardReplyNum: (boolean) => {
       setFanboardReplyNum(boolean)
+    },
+    updateClipSort: (boolean) => {
+      setClipMainSort(boolean)
+    },
+    updateClipGender: (string) => {
+      setClipMainGender(string)
+    },
+    updatClipRefresh: (boolean) => {
+      setClipRefresh(boolean)
+    },
+    updateClipTab: (number) => {
+      setClipTab(number)
+    },
+    updateClipType: (array) => {
+      setClipType(array)
+    },
+    updateUrlStr: (str) => {
+      setUrlStr(str)
+    },
+    /**
+     * 클립 상태
+     * @string  entered, floating
+     */
+    updateClipState: (boolean) => {
+      setClipState(boolean)
+    },
+    /**
+     * 클립플레이어 상태 (클립 상태가 floating 일 경우)
+     * @string playing, paused, ended
+     */
+    updateClipPlayerState: (string) => {
+      setClipPlayerState(string)
+    },
+    /**
+     * 클립플레이어 정보 (플레이어에 들어갈 data)
+     * @obj bgImg, nickName, title
+     */
+    updateClipPlayerInfo: (obj) => {
+      setClipPlayerInfo(obj)
+    },
+    updateIsDevIp: (boolean) => {
+      setIsDevIp(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -399,7 +455,17 @@ const GlobalProvider = (props) => {
     adminChecker,
     mypageInfo,
     fanboardReply,
-    fanboardReplyNum
+    fanboardReplyNum,
+    clipMainSort,
+    clipMainGender,
+    clipRefresh,
+    clipTab,
+    clipType,
+    urlStr,
+    clipState,
+    clipPlayerState,
+    clipPlayerInfo,
+    isDevIp
   }
   return <Provider value={value}>{props.children}</Provider>
 }

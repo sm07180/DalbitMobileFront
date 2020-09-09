@@ -315,7 +315,7 @@ const Notice = (props) => {
                 ) : (
                   <div className="search" />
                 )}
-              </ListWrap>{' '}
+              </ListWrap>
             </>
           )}
         </>
