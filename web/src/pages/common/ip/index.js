@@ -19,7 +19,7 @@ export default () => {
       (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
     ) {
       context.action.updateIsDevIp(true)
-    } else if (customHeader['os'] === OS_TYPE['Desktop']) {
+    } else {
       fetch('https://www.dalbitlive.com/ctrl/check/ip')
         .then((res) => res.json())
         .then((json) => {
@@ -27,6 +27,8 @@ export default () => {
           if (Array.isArray(list) && list.length) {
             setRedirectList(list)
             context.action.updateIsDevIp(true)
+          } else {
+            context.action.updateIsDevIp(false)
           }
         })
     }
