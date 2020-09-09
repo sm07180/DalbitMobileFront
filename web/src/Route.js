@@ -10,7 +10,7 @@ import Navigator from './pages/navigator'
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
-const Ranking = React.lazy(() => import('pages/ranking'))
+const Ranking = React.lazy(() => import('pages/ranking_renewal'))
 const RankingGuide = React.lazy(() => import('pages/ranking/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const Menu = React.lazy(() => import('pages/menu'))

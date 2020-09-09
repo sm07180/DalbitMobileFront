@@ -1651,6 +1651,14 @@ export default class API {
    * @create 이은비 2020.03.11
    */
 
+  static getRankList = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: `/rank/${data.type}`,
+      params: data
+    })
+  }
+
   static get_ranking = async (obj) => {
     const {param} = obj
     return await ajax({
@@ -2483,6 +2491,52 @@ export default class API {
   }
   static getMyPageNewWallet = async () => {
     return await ajax({url: '/mypage/new/wallet', method: 'get'})
+  }
+
+  static getBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option?optionType=${data.optionType}`,
+      method: 'GET'
+    })
+  }
+
+  static insertBroadcastOption = async (data) => {
+    return await ajax({
+      url: `/mypage/broadcast/option/add`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static deleteBroadcastOption = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/option/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static modifyBroadcastOption = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/option/edit',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static getBroadcastSetting = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/setting',
+      method: 'GET'
+    })
+  }
+
+  static modifyBroadcastSetting = async (data) => {
+    return await ajax({
+      url: '/mypage/broadcast/setting/edit',
+      method: 'POST',
+      data: data
+    })
   }
 }
 

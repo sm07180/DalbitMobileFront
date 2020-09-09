@@ -1,0 +1,48 @@
+#broadcast_setting {
+  display: flex;
+  flex-direction: column;
+  & > span {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 44px;
+    margin-bottom: 1px;
+    background-color: #fff;
+    text-align: left;
+    padding: 0 0 0 16px;
+    font-size: 16px;
+    font-weight: 800;
+    color: #000000;
+
+    & > span {
+      height: 16px;
+      margin-left: 12px;
+      font-size: 14px;
+      color: #757575;
+    }
+
+    > a {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      transform: translateY(-50%);
+      display: block;
+      width: 24px;
+      height: 24px;
+      background: url(../arrow_right.svg);
+    }
+    & > button {
+      position: absolute;
+      top: 50%;
+      right: 16px;
+      width: 51px;
+      height: 31px;
+      background: url(../ic_alarmtoggleoff.svg) no-repeat center center / 100%;
+      transform: translateY(-50%);
+      &.on {
+        background: url(../ic_alarmtoggleon.svg) no-repeat center center / 100%;
+      }
+    }
+  }
+}
