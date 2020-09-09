@@ -213,12 +213,12 @@ export default (props) => {
     }
     if (refreshAni) {
       setRefreshAni(false)
-      setTimeout(() => {
-        setRefreshAni(true)
-      }, 10)
     } else {
       setRefreshAni(true)
     }
+    setTimeout(() => {
+      setRefreshAni(false)
+    }, 360)
   }
   // #layer pop func
   const popStateEvent = (e) => {
@@ -278,12 +278,13 @@ export default (props) => {
         )}
         <div className="liveChart">
           <div className="liveChart__titleBox">
-            <h2 onClick={() => refreshCategory()}>
+            <h2>
               실시간 차트{' '}
               <img
                 src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
                 className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
                 style={{cursor: 'pointer'}}
+                onClick={() => refreshCategory()}
               />
             </h2>
 
