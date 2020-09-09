@@ -327,8 +327,6 @@ export default (props) => {
     }
   }, [])
 
-  console.log(rankTabType)
-
   return (
     <div className="profile-detail">
       {token && token.isLogin && showAdmin && (
