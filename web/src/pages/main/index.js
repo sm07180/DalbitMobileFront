@@ -556,7 +556,7 @@ export default (props) => {
                 스토어
               </Link>
             </div>
-            {globalCtx.isDevIp ? (
+            {globalCtx.isDevIp && (
               <>
                 <div className="tab">
                   <Link
@@ -569,7 +569,8 @@ export default (props) => {
                   </Link>
                 </div>
               </>
-            ) : (
+            )}
+            {/* : (
               <>
                 <div className="tab tab--yellow">
                   <Link
@@ -583,7 +584,7 @@ export default (props) => {
                   </Link>
                 </div>
               </>
-            )}
+            ) */}
           </div>
           <button
             className="broadBtn"
