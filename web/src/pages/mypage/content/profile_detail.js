@@ -36,6 +36,7 @@ export default (props) => {
   const [showAdmin, setShowAdmin] = useState(false)
   const [showPresent, setShowPresent] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [rankTabType, setRankTabType] = useState('tabRank') //tabRank, tabgood
   //pop
   const [popupExp, setPopupExp] = useState(false)
   const figureZoom = () => {
@@ -78,7 +79,12 @@ export default (props) => {
       <>
         <div className="fanRankList">
           {myProfileNo === profile.memNo ? (
-            <button className="btn__fanRank" onClick={() => context.action.updateCloseRank(true)}>
+            <button
+              className="btn__fanRank"
+              onClick={() => {
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
+              }}>
               팬랭킹
             </button>
           ) : (
@@ -206,8 +212,13 @@ export default (props) => {
   }
   //func Good count
   const viewGoodList = () => {
-    if (profile.likeTotCnt > 0) {
+    if (myProfileNo !== profile.memNo) {
       context.action.updateCloseGoodCnt(true)
+    } else {
+      if (profile.likeTotCnt > 0) {
+        context.action.updateCloseRank(true)
+        setRankTabType('tabGood')
+      }
     }
   }
 
@@ -315,6 +326,8 @@ export default (props) => {
       setShowEdit(false)
     }
   }, [])
+
+  console.log(rankTabType)
 
   return (
     <div className="profile-detail">
@@ -437,7 +450,10 @@ export default (props) => {
               {myProfileNo === profile.memNo ? (
                 <button
                   className="btn__fanRank cupid"
-                  onClick={() => profile.likeTotCnt > 0 && context.action.updateCloseRank(true)}>
+                  onClick={() => {
+                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                    setRankTabType('tabGood')
+                  }}>
                   왕큐피트
                 </button>
               ) : (
@@ -505,7 +521,7 @@ export default (props) => {
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
-      {context.closeRank === true && <ProfileRank {...props} reportShow={reportShow} name="그냥랭킹" />}
+      {context.closeRank === true && <ProfileRank {...props} name="랭킹" type={rankTabType} />}
       {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
     </div>
   )
