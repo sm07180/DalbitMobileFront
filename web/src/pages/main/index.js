@@ -558,15 +558,14 @@ export default (props) => {
             </div>
             {globalCtx.isDevIp ? (
               <>
-                <div className="tab tab--yellow">
+                <div className="tab">
                   <Link
-                    className="newicon"
                     to={'/clip'}
                     onClick={(event) => {
                       event.preventDefault()
-                      history.push('/clip_open')
+                      history.push('/clip')
                     }}>
-                    클립<i>NEW</i>
+                    클립
                   </Link>
                 </div>
               </>
