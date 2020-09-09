@@ -849,6 +849,22 @@ export default class API {
       params: params
     })
   }
+
+  /**
+   * @brief 마이패이지 회원 좋아요 랭킹
+   * @method "GET"
+   * @create 이은지 2020.09.08
+   */
+  static mypage_good_ranking = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/good/list`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
   /**
    * @brief 방송방 팬 헤제(BJ팬 등록 경우 채팅방 알림)
    * @method "DELETE"

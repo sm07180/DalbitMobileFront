@@ -517,6 +517,12 @@
           margin-top: 14px;
           display: flex;
           justify-content: center;
+
+          &__cupidNick {
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 26px;
+          }
         }
         .fanRankList {
           display: flex;
@@ -541,7 +547,7 @@
             & + & {
               margin-left: 4px;
             }
-            :after {
+            &::after {
               display: block;
               position: absolute;
               bottom: 0;
@@ -755,6 +761,11 @@
         width: 20px;
         height: 20px;
         background: url('../menu/static/ico_circle.svg') no-repeat center center / contain;
+      }
+
+      &.cupid {
+        width: auto;
+        background-color: #eee;
       }
     }
     &__fanMore {
