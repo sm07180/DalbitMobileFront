@@ -554,9 +554,13 @@ export default (props) => {
       const termsName = index === 0 ? 'allTerm' : `term${index}`
       return (
         <div key={`term${index}`}>
-          <button className={`checkbox state-${changes[termsName]}`} name={termsName} onClick={termsBtnHandle}>
+          {/* <button className={`checkbox state-${changes[termsName]}`} name={termsName} onClick={termsBtnHandle}>
             {item}
-          </button>
+          </button> */}
+          <label for={`term${index}`} onClick={termsBtnHandle}>
+            <input id={`term${index}`} name={termsName} className={`checkbox ${changes[termsName]}`} type="checkbox" />
+            {item}
+          </label>
           <button className={`more ${index === 0 ? termOpen : ''}`} name={termsName} onClick={termsMoreBtnHandle}></button>
         </div>
       )
@@ -1149,7 +1153,72 @@ const TermsInput = styled.div`
     padding: 6px 10px;
     border-top: 1px solid #e0e0e0;
     background: #fff;
-    button.checkbox {
+    label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 4px;
+      appearance: none;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      border-radius: 4px;
+      border: 1px solid #9e9e9e;
+      background-color: #ffffff;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+
+      &::before {
+        content: '';
+        position: absolute;
+        width: 13%;
+        height: 50%;
+        top: 25%;
+        left: 57%;
+        background-color: #9e9e9e;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+        border-radius: 10px;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 40%;
+        height: 13%;
+        background-color: #9e9e9e;
+        top: 50%;
+        left: 17%;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+        transform: rotate(45deg);
+        border-radius: 10px;
+      }
+
+      &.y {
+        border-color: #fff;
+        background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
+        transition: 0.2s all ease 0s;
+        border: 1px solid #632beb;
+
+        &::before,
+        &::after {
+          background-color: #fff;
+        }
+      }
+    }
+
+    /* button.checkbox {
       height: 32px;
       line-height: 32px;
       padding-left: 34px;
@@ -1162,7 +1231,7 @@ const TermsInput = styled.div`
       &.state-n {
         background: url(${IcoCheckOff}) no-repeat 0 center;
       }
-    }
+    } */
     button.more {
       width: 32px;
       height: 32px;

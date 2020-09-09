@@ -195,6 +195,13 @@ input[type='file'] {
     position: absolute;
     width: calc(100% - 32px);
     z-index: 3;
+
+    div.wrapper {
+      div:last-child {
+        border-bottom: none;
+      }
+    }
+
     & > div {
       & > div {
         width: 100%;
