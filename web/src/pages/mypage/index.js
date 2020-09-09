@@ -48,6 +48,7 @@ export default (props) => {
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
+    {id: 9, type: 'my_clip', component: MyClip, txt: '클립'},
     {id: 2, type: 'wallet', component: Wallet, txt: '내 지갑'},
     {id: 3, type: 'report', component: Report, txt: '리포트'},
     {id: 4, type: 'alert', component: Alert, txt: '알림'},

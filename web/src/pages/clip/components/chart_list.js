@@ -103,7 +103,7 @@ export default (props) => {
                   }
                 })}
               </span>
-              {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />}
+              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
             </div>
             <p className="textBox__subject">{title} </p>
             <p className="textBox__nickName">{nickName}</p>
@@ -201,7 +201,7 @@ export default (props) => {
                         }
                       })}
                     </span> */}
-                    {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />}
+                    {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                   </div>
 
                   <div className="topWrap__count">

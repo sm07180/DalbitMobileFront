@@ -16,6 +16,7 @@ import Swiper from 'react-id-swiper'
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
+import ProfileRank from './profile_rank'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
 
@@ -35,6 +36,7 @@ export default (props) => {
   const [showAdmin, setShowAdmin] = useState(false)
   const [showPresent, setShowPresent] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
+  const [rankTabType, setRankTabType] = useState('tabRank') //tabRank, tabgood
   //pop
   const [popupExp, setPopupExp] = useState(false)
   const figureZoom = () => {
@@ -76,9 +78,21 @@ export default (props) => {
     return (
       <>
         <div className="fanRankList">
-          <button className="btn__fanRank" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
-            팬랭킹
-          </button>
+          {myProfileNo === profile.memNo ? (
+            <button
+              className="btn__fanRank"
+              onClick={() => {
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
+              }}>
+              팬랭킹
+            </button>
+          ) : (
+            <button className="btn__fanRank" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
+              팬랭킹
+            </button>
+          )}
+
           {result}
         </div>
       </>
@@ -103,7 +117,7 @@ export default (props) => {
       text = '스타'
       ico = 'type2'
     } else if (type === 'like') {
-      action = ''
+      action = viewGoodList
       text = '좋아요'
     }
     return (
@@ -117,7 +131,7 @@ export default (props) => {
             <em className="cntTitle">{count > 9999 ? Utility.printNumber(count) : Utility.addComma(count)}</em>
           </div>
         ) : (
-          <div className="count-box">
+          <div className="count-box" onClick={action}>
             <span className="icoWrap">
               <span className={`icoImg ${ico}`}></span>
               <em className="icotitle">{text}</em>
@@ -196,6 +210,18 @@ export default (props) => {
       context.action.updateCloseFanCnt(true)
     }
   }
+  //func Good count
+  const viewGoodList = () => {
+    if (myProfileNo !== profile.memNo) {
+      context.action.updateCloseGoodCnt(true)
+    } else {
+      if (profile.likeTotCnt > 0) {
+        context.action.updateCloseRank(true)
+        setRankTabType('tabGood')
+      }
+    }
+  }
+
   //스와이퍼
   const swiperParams = {
     spaceBetween: 2,
@@ -229,6 +255,7 @@ export default (props) => {
       context.action.updateClose(false)
       context.action.updateCloseFanCnt(false)
       context.action.updateCloseStarCnt(false)
+      context.action.updateCloseGoodCnt(false)
     } else if (e.state === 'layer') {
       setPopup(true)
     }
@@ -414,6 +441,38 @@ export default (props) => {
           <></>
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
+
+        <div className="fanListWrap">
+          {profile.likeTotCnt > 0 && (
+            <>
+              {myProfileNo === profile.memNo ? (
+                <button
+                  className="btn__fanRank cupid"
+                  onClick={() => {
+                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                    setRankTabType('tabGood')
+                  }}>
+                  왕큐피트
+                </button>
+              ) : (
+                <button
+                  className="btn__fanRank cupid"
+                  onClick={() => profile.likeTotCnt > 0 && context.action.updateCloseGoodCnt(true)}>
+                  왕큐피트
+                </button>
+              )}
+
+              <p
+                className="fanListWrap__cupidNick"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}>
+                {profile.cupidNickNm}
+              </p>
+            </>
+          )}
+        </div>
+
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
           {createCountList('star', profile.starCnt)}
@@ -458,7 +517,9 @@ export default (props) => {
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
+      {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
+      {context.closeRank === true && <ProfileRank {...props} name="랭킹" type={rankTabType} />}
       {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
     </div>
   )
