@@ -556,6 +556,18 @@ export default (props) => {
                 스토어
               </Link>
             </div>
+            {globalCtx.isDevIp && (
+              <div className="tab">
+                <Link
+                  to={'/clip'}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    history.push('/clip')
+                  }}>
+                  클립
+                </Link>
+              </div>
+            )}
           </div>
           <button
             className="broadBtn"

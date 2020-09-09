@@ -23,7 +23,8 @@ function RankBtnWrap() {
             className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
             onClick={() => {
               if (formState.rankType !== v.val) {
-                scrollTo(0, 0)
+                window.scrollTo(0, 0)
+
                 formDispatch({
                   type: 'RANK_TYPE',
                   val: v.val

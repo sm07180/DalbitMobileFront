@@ -2405,6 +2405,31 @@ export default class API {
   static postNewStarMemo = async (data) => {
     return await ajax({url: '/profile/star/memo', method: 'post', data})
   }
+  //clip
+  static getPopularList = async (params) => {
+    return await ajax({url: '/clip/main/pop/list', method: 'GET', params})
+  }
+  static getLatestList = async (params) => {
+    return await ajax({url: '/clip/main/latest/list', method: 'GET', params})
+  }
+  static getMainTop3List = async (params) => {
+    return await ajax({url: '/clip/main/top3/list', method: 'GET', params})
+  }
+  static getClipType = async (params) => {
+    return await ajax({url: '/clip/type', method: 'GET', params})
+  }
+  static getClipList = async (params) => {
+    return await ajax({url: '/clip/list', method: 'GET', params})
+  }
+  static getUploadList = async (params) => {
+    return await ajax({url: '/clip/upload/list', method: 'GET', params})
+  }
+  static getHistoryList = async (params) => {
+    return await ajax({url: '/clip/listen/list', method: 'GET', params})
+  }
+  static postClipPlay = async (data) => {
+    return await ajax({url: '/clip/play', method: 'post', data})
+  }
 
   static eventPackageJoinCheck = async (params) => {
     return await ajax({url: '/event/004/apply', method: 'GET', params})
