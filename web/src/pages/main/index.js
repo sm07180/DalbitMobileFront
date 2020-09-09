@@ -556,26 +556,26 @@ export default (props) => {
                 스토어
               </Link>
             </div>
-            {globalCtx.isDevIp && (
-              <>
-                <div className="tab">
-                  <Link
-                    to={'/clip'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip')
-                    }}>
-                    클립
-                  </Link>
-                </div>
-              </>
-            )}
-            {/* : (
+            {globalCtx.isDevIp ? (
               <>
                 <div className="tab tab--yellow">
                   <Link
                     className="newicon"
                     to={'/clip'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip')
+                    }}>
+                    클립<i>NEW</i>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip_open'}
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip_open')
@@ -584,7 +584,7 @@ export default (props) => {
                   </Link>
                 </div>
               </>
-            ) */}
+            )}
           </div>
           <button
             className="broadBtn"
