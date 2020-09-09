@@ -13,6 +13,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import NoResult from 'components/ui/noResult'
 //flag
 let currentPage = 1
 let timer
@@ -155,7 +156,7 @@ export default (props) => {
   if (chartListType === 'detail') {
     return (
       <div className="chartListDetail">
-        <ul className="chartListDetailBox">{makeList()}</ul>
+        <ul className="chartListDetailBox">{list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}</ul>
       </div>
     )
   } else {
@@ -163,6 +164,7 @@ export default (props) => {
     return (
       <div className="chartListSimple">
         <ul className="chartListSimpleBox">
+          {list.length === 0 && <NoResult text="등록 된 클립이" />}
           {list.map((item, idx) => {
             const {
               bgImg,
