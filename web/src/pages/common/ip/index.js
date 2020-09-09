@@ -5,21 +5,31 @@
 import React, {useState, useEffect, useContext} from 'react'
 //context
 import {Context} from 'context'
+import Api from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 
 export default () => {
+  const customHeader = JSON.parse(Api.customHeader)
   const context = useContext(Context)
   const {isDevIp} = context
   const [redirectList, setRedirectList] = useState([])
   useEffect(() => {
-    fetch('https://www.dalbitlive.com/ctrl/check/ip')
-      .then((res) => res.json())
-      .then((json) => {
-        const {list} = json
-        if (Array.isArray(list) && list.length) {
-          setRedirectList(list)
-          context.action.updateIsDevIp(true)
-        }
-      })
+    if (
+      (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 28) ||
+      (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
+    ) {
+      context.action.updateIsDevIp(true)
+    } else if (customHeader['os'] === OS_TYPE['Desktop']) {
+      fetch('https://www.dalbitlive.com/ctrl/check/ip')
+        .then((res) => res.json())
+        .then((json) => {
+          const {list} = json
+          if (Array.isArray(list) && list.length) {
+            setRedirectList(list)
+            context.action.updateIsDevIp(true)
+          }
+        })
+    }
   }, [])
 
   return (
