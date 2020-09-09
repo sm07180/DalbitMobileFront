@@ -170,8 +170,7 @@ export default (props) => {
       <WriteBoard {...props} set={setAction} />
 
       {/* 팬보드 리스트 영역 */}
-      {totalCount === 0 && <NoResult />}
-      {totalCount !== 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} />}
+      {totalCount > 0 ? <BoardList list={boardList} totalCount={totalCount} set={setAction} /> : <NoResult />}
     </div>
   )
 }

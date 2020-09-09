@@ -26,7 +26,6 @@ let currentPage = 1
 let timer
 let moreState = false
 const Notice = (props) => {
-  console.log(props)
   //context
   const context = useContext(Context)
   //memNo
@@ -138,13 +137,12 @@ const Notice = (props) => {
     const params = {
       memNo: urlrStr,
       page: 1,
-      records: 200
+      records: 10000
       // records: 20 * currentPage
     }
     const res = await Api.mypage_notice_inquire(params)
     if (res.result === 'success') {
       context.action.updateNoticeState(false)
-      console.log(res.data)
       if (res.data.paging && res.data.paging.totalPage === 1) {
         if (next) {
           moreState = false

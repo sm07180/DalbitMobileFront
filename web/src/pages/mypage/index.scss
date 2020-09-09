@@ -693,6 +693,12 @@
           color: $primary;
         }
       }
+      button {
+        .cnt {
+          font-weight: bold;
+          color: $black;
+        }
+      }
     }
     &__content {
       .noticeIsTop {

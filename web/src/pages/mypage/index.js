@@ -168,16 +168,16 @@ export default (props) => {
                   const {type, txt} = value
                   return (
                     <li className={tabSelected === idx ? `isSelected` : ``}>
-                      <button className="list" key={`list-${idx}`} onClick={() => changeTab(idx)}>
-                        {txt} <span className="cnt"></span>
+                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
+                        {txt} <span className="cnt">12</span>
                       </button>
                     </li>
                   )
                 })}
               </ul>
               <div className="profile-tab__content">
-                {tabSelected === 0 && <Notice type="mypage" />}
-                {tabSelected === 1 && <FanBoard type="mypage" />}
+                {tabSelected === 0 && <Notice type="subpage" />}
+                {tabSelected === 1 && <FanBoard type="subpage" />}
                 {tabSelected === 2 && <></>}
               </div>
 

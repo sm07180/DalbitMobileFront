@@ -29,12 +29,11 @@ export default (props) => {
   const list = props.list
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
-  const [replyWriteState, setReplyWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
   const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
   const [isOther, setIsOther] = useState(true)
-  const [writeType, setWriteType] = useState(true)
+  const [writeType, setWriteType] = useState('')
 
   //팬보드 댓글 온체인지
   const handleChangeInput = (e) => {
@@ -84,6 +83,7 @@ export default (props) => {
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
+    console.log(writeType)
     if (writeType === 'board') {
       params = {
         memNo: urlrStr,
@@ -150,10 +150,11 @@ export default (props) => {
     currentPage = 1
     // fetchData()
     // props.set(true)
-    if (props.type !== undefined) {
-      setWriteType('reply')
-    } else {
+    console.log(props.type)
+    if (props.type === undefined || props.type === 'subpage') {
       setWriteType('board')
+    } else if (props.type === 'reply') {
+      setWriteType('reply')
     }
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
@@ -164,6 +165,7 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
+    console.log(writeType)
     if (profile.memNo === urlrStr) {
       setIsOther(false)
     } else {
@@ -229,7 +231,7 @@ export default (props) => {
           </button>
         </div>
       )}
-      {writeType === 'reply' || writeState === true ? (
+      {(writeType !== 'board' || writeType !== '') && writeState === true ? (
         <div
           className="writeWrap__btn"
           onClick={() => {
