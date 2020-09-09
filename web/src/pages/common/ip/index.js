@@ -14,24 +14,24 @@ export default () => {
   const {isDevIp} = context
   const [redirectList, setRedirectList] = useState([])
   useEffect(() => {
-    if (
-      (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 28) ||
-      (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
-    ) {
-      context.action.updateIsDevIp(true)
-    } else {
-      fetch('https://www.dalbitlive.com/ctrl/check/ip')
-        .then((res) => res.json())
-        .then((json) => {
-          const {list} = json
-          if (Array.isArray(list) && list.length) {
-            setRedirectList(list)
+    fetch('https://www.dalbitlive.com/ctrl/check/ip')
+      .then((res) => res.json())
+      .then((json) => {
+        const {list} = json
+        if (Array.isArray(list) && list.length) {
+          setRedirectList(list)
+          context.action.updateIsDevIp(true)
+        } else {
+          if (
+            (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] > 28) ||
+            (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
+          ) {
             context.action.updateIsDevIp(true)
           } else {
             context.action.updateIsDevIp(false)
           }
-        })
-    }
+        }
+      })
   }, [])
 
   return (
