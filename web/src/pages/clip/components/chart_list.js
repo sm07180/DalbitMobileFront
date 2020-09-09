@@ -65,6 +65,9 @@ export default (props) => {
     if (result === 'success') {
       clipJoin(data, context)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
   const makeList = () => {
