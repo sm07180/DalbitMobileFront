@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
-export default props => {
+export default (props) => {
   const [check, setCheck] = useState(false)
   const ToggleCheck = () => {
     check ? setCheck(false) : setCheck(true)
@@ -19,8 +19,8 @@ export default props => {
 
 const CheckWrap = styled.div`
   position: relative;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   & input {
     width: 100%;
     height: 100%;

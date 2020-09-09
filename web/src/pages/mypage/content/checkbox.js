@@ -7,10 +7,10 @@ const Checkbox = ({fnClick, fnChange, title = '', checked = false}) => (
   <Wrap>
     <label>
       <input
-        onClick={e => {
+        onClick={(e) => {
           if (fnClick !== undefined) fnClick(e.target.checked)
         }}
-        onChange={e => {
+        onChange={(e) => {
           if (fnChange !== undefined) fnChange(e.target.checked)
         }}
         type="checkbox"
@@ -30,18 +30,64 @@ const Wrap = styled.div`
     color: #000;
     align-items: center;
     cursor: pointer;
-
     font-size: 16px;
     transform: skew(-0.03deg);
   }
   & input {
     display: block;
-    width: 24px;
-    height: 24px;
-    background: url(${CheckGray}) no-repeat center center/ cover;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    appearance: none;
+    border: none;
+    outline: none;
     cursor: pointer;
+    border-radius: 4px;
+    border: 1px solid #9e9e9e;
+    background-color: #ffffff;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    &::before {
+      content: '';
+      position: absolute;
+      width: 13%;
+      height: 50%;
+      top: 25%;
+      left: 57%;
+      background-color: #9e9e9e;
+      -ms-transform: rotate(45deg); /* IE 9 */
+      -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+      transform: rotate(45deg);
+      border-radius: 10px;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      width: 40%;
+      height: 13%;
+      background-color: #9e9e9e;
+      top: 50%;
+      left: 17%;
+      -ms-transform: rotate(45deg); /* IE 9 */
+      -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+      transform: rotate(45deg);
+      border-radius: 10px;
+    }
+
     &.on {
-      background: url(${CheckPurple}) no-repeat center center/ cover;
+      border-color: #fff;
+      background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
+      transition: 0.2s all ease 0s;
+
+      &::before,
+      &::after {
+        background-color: #fff;
+      }
     }
   }
   & .titlewrap {
