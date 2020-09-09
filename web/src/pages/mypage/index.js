@@ -40,6 +40,8 @@ let NewState = {
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
 
   //navi Array
   let navigationList = [
@@ -69,8 +71,7 @@ export default (props) => {
   }
 
   //context
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
+
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
