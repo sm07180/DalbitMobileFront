@@ -16,14 +16,14 @@ export function DalbitCheckbox(props) {
 
 DalbitCheckbox.defaultProps = {
   bgColor: '#632beb',
-  size: 18
+  size: 20
 }
 
 export default DalbitCheckbox
 
 const DalbitCheckboxWrap = styled.input`
-  width: ${(props) => (props.size ? `${props.size}px` : '18px')};
-  height: ${(props) => (props.size ? `${props.size}px` : '18px')};
+  width: ${(props) => (props.size ? `${props.size}px` : '20px')};
+  height: ${(props) => (props.size ? `${props.size}px` : '20px')};
   position: relative;
   overflow: hidden;
   border-radius: 4px;
@@ -37,6 +37,10 @@ const DalbitCheckboxWrap = styled.input`
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+
+  &.on.on {
+    display: inline-block;
+  }
 
   &::before {
     content: '';
@@ -70,6 +74,7 @@ const DalbitCheckboxWrap = styled.input`
     border-color: #fff;
     background-color: ${(props) => (props.bgColor ? `${props.bgColor}` : '#632beb')};
     transition: 0.2s all ease 0s;
+    border: 1px solid #632beb;
 
     &::before,
     &::after {

@@ -29,10 +29,10 @@
                 <path id="패스_18397" d="M99.8 472.7a.545.545 0 1 1-.545-.545.545.545 0 0 1 .545.545z" class="cls-9" data-name="패스 18397" transform="translate(-95.726 -472.152)"/>
             </g>
         </g>
-        <text id="_3" fill="#fff" stroke="#fa9a6c" stroke-linejoin="round" stroke-width="2px" data-name="3" font-family="NanumSquareEB, NanumSquare" font-size="15px" transform="translate(64 342.758)">
+        <text id="_3" fill="#fff" stroke="#fa9a6c" stroke-linejoin="round" stroke-width="2px" data-name="3" font-family="sans-serif;" font-size="15px" transform="translate(64 342.758)">
             <tspan x="-4.65" y="0">3</tspan>
         </text>
-        <text id="_3-2" fill="#fff" data-name="3" font-family="NanumSquareEB, NanumSquare" font-size="15px" transform="translate(64 342.758)">
+        <text id="_3-2" fill="#fff" data-name="3" font-family="sans-serif" font-size="15px" transform="translate(64 342.758)">
             <tspan x="-4.65" y="0">3</tspan>
         </text>
     </g>

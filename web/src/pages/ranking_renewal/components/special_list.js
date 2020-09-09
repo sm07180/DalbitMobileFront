@@ -20,6 +20,8 @@ function SpecialList({empty, fetching}) {
 
   const formDispatch = rankAction.formDispatch
 
+  const [dateTitle, setDateTitle] = useState('이번달')
+
   const handleDate = (type) => {
     const handle = changeDate(type, 3, formState.currentDate)
 
@@ -29,7 +31,21 @@ function SpecialList({empty, fetching}) {
     })
   }
 
-  const formatDate = useCallback(() => {}, [formState])
+  const formatDate = useCallback(() => {
+    const yy = formState.currentDate.getFullYear()
+    const mm = formState.currentDate.getMonth() + 1
+    const dd = formState.currentDate.getDate()
+
+    const cdt = new Date()
+    const cyy = cdt.getFullYear()
+    const cmm = cdt.getMonth() + 1
+
+    if (yy === cyy && mm === cmm) {
+      setDateTitle('이번달')
+    } else {
+      setDateTitle(`${yy}년 ${mm}월`)
+    }
+  }, [formState])
 
   const prevLast = () => {
     const yy = formState.currentDate.getFullYear()
@@ -81,7 +97,7 @@ function SpecialList({empty, fetching}) {
         </button>
 
         <div className="title">
-          <div className="titleWrap">이번달</div>
+          <div className="titleWrap">{dateTitle}</div>
         </div>
 
         <button
@@ -94,6 +110,7 @@ function SpecialList({empty, fetching}) {
           다음
         </button>
       </div>
+      <p>달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
       <ul>
         {empty === true ? (
           <NoResult />

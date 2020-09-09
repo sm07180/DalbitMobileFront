@@ -15,6 +15,10 @@ function RankBtnWrap({fetching}) {
 
   const formDispatch = rankAction.formDispatch
 
+  const syncScroll = () => {
+    window.scrollTo(0, 0)
+  }
+
   return (
     <div className="rankTab">
       {btnArray.map((v, idx) => {
@@ -25,10 +29,10 @@ function RankBtnWrap({fetching}) {
                 className={
                   formState.rankType === v.val ? 'rankTab__specialBtn rankTab__specialBtn--active' : 'rankTab__specialBtn'
                 }
-                onClick={() => {
+                onClick={async () => {
                   if (!fetching) {
                     if (formState.rankType !== v.val) {
-                      window.scrollTo(0, 0)
+                      await syncScroll()
                       formDispatch({
                         type: 'RANK_TYPE',
                         val: v.val
@@ -41,10 +45,10 @@ function RankBtnWrap({fetching}) {
             ) : (
               <button
                 className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-                onClick={() => {
+                onClick={async () => {
                   if (!fetching) {
                     if (formState.rankType !== v.val) {
-                      window.scrollTo(0, 0)
+                      await syncScroll()
                       formDispatch({
                         type: 'RANK_TYPE',
                         val: v.val

@@ -48,6 +48,9 @@ const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
+
+const Clip = React.lazy(() => import('pages/clip'))
+const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 export default () => {
   return (
     <React.Suspense
@@ -102,6 +105,8 @@ export default () => {
         <Route exact path="/service" component={Service} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/pc_open" component={PcOpen} />
+        <Route exact path="/clip" component={Clip} />
+        <Route exact path="/clip/tip" component={ClipTip} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
       </Switch>

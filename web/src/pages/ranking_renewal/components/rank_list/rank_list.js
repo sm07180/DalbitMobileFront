@@ -122,7 +122,7 @@ function RankList() {
                       </div>
 
                       <div>
-                        <div className="nickNameBox">
+                        <div className="nickNameBox nickNameBoxElipsis">
                           {nickNm}
                           <div className="nickNameImg">
                             {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}

@@ -108,11 +108,11 @@ export default (props) => {
     })
 
     if (res.result === 'success') {
+      props.set(true, writeType)
       writeToggle()
       setTextChange('')
       setIsScreet(false)
 
-      props.set(true)
       if (list instanceof Array) {
         let findIdx = list.findIndex((v) => {
           return v.boardIdx === context.fanboardReplyNum

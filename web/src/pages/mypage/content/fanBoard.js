@@ -57,34 +57,42 @@ export default (props) => {
     }, 10)
   }
   // 스크롤 더보기
-  const showMoreList = () => {
+  const showMoreList = async () => {
     if (moreState) {
-      setBoardList(boardList.concat(nextList))
+      let a = boardList.concat(nextList)
+      // console.log(boardList)
+      // console.log(nextList)
+      let obj = {}
+      a.forEach((v) => {
+        obj[v.boardIdx] = v
+      })
+
+      setBoardList(
+        Object.keys(obj).map((v) => {
+          return obj[v]
+        })
+      )
 
       if (total >= currentPage) {
-        console.log(total)
-        console.log(currentPage)
-        fetchData('next')
+        await fetchData('next')
       }
     }
   }
   const setAction = (value) => {
-    if (total >= currentPage) {
-      if (value === true) {
-        currentPage = 1
-        fetchData()
-      }
+    if (value === true) {
+      currentPage = 1
+      fetchData()
     }
   }
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-
+    // console.log(next, currentPage)
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,
-        page: currentPage,
-        records: 10
+        page: 1,
+        records: 10000
       }
     })
 
@@ -130,17 +138,17 @@ export default (props) => {
     currentPage = 1
     fetchData()
   }, [writeState])
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
+  // useEffect(() => {
+  //   window.addEventListener('scroll', scrollEvtHdr)
+  //   return () => {
+  //     window.removeEventListener('scroll', scrollEvtHdr)
+  //   }
+  // }, [nextList])
   useEffect(() => {
     if (profile.memNo === urlrStr) {
-      setIsOther(false)
-    } else {
       setIsOther(true)
+    } else {
+      setIsOther(false)
     }
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
