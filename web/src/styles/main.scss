@@ -559,6 +559,11 @@
         font-size: 16px;
         letter-spacing: -0.4px;
         line-height: 42px;
+
+        &--yellow {
+          color: #fef856;
+          display: flex;
+        }
         a {
           display: block;
           width: 100%;
@@ -566,6 +571,24 @@
           padding: 0 10px;
           text-align: center;
           font-weight: 600;
+
+          &.newicon {
+            display: flex;
+            align-items: center;
+            i {
+              margin-left: 6px;
+              display: inline-block;
+              background: #fef856;
+              color: $black;
+              font-style: normal;
+              font-size: 12px;
+              text-align: center;
+              line-height: 22px;
+              width: 40px;
+              height: 22px;
+              border-radius: 11px;
+            }
+          }
         }
       }
     }

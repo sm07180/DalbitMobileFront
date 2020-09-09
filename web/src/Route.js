@@ -22,6 +22,7 @@ const Customer = React.lazy(() => import('pages/customer'))
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const EventPage = React.lazy(() => import('pages/event_page'))
+const EventPcService = React.lazy(() => import('pages/event_pc_service'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
 const Specialdj = React.lazy(() => import('pages/event_specialdj'))
@@ -29,6 +30,7 @@ const Proofshot = React.lazy(() => import('pages/event_proofshot'))
 const Package = React.lazy(() => import('pages/event_package'))
 const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
+const ClipOpen = React.lazy(() => import('pages/clip_open'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
@@ -38,7 +40,7 @@ const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
 const SelfAuthResult = React.lazy(() => import('pages/self_auth_result'))
 const Agree = React.lazy(() => import('pages/agree'))
-const EventPcService = React.lazy(() => import('pages/event_pc_service'))
+
 const Secession = React.lazy(() => import('pages/secession'))
 const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
@@ -48,6 +50,9 @@ const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
+
+const Clip = React.lazy(() => import('pages/clip'))
+const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 export default () => {
   return (
     <React.Suspense
@@ -102,6 +107,9 @@ export default () => {
         <Route exact path="/service" component={Service} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/pc_open" component={PcOpen} />
+        <Route exact path="/clip_open" component={ClipOpen} />
+        <Route exact path="/clip" component={Clip} />
+        <Route exact path="/clip/tip" component={ClipTip} />
         <Route exact path="/redirect" component={TempLogin} />
         <Redirect to="/error" />
       </Switch>

@@ -119,7 +119,13 @@ export default (props) => {
                       context.toggleState &&
                       boardIdx === context.fanboardReplyNum &&
                       replyWriteState && (
-                        <WriteBoard isViewOn={context.fanboardReply.viewOn} set={setAction} type={'reply'} list={self} />
+                        <WriteBoard
+                          isViewOn={context.fanboardReply.viewOn}
+                          replyWriteState={replyWriteState}
+                          set={setAction}
+                          type={'reply'}
+                          list={self}
+                        />
                       )}
                   </div>
                 </React.Fragment>

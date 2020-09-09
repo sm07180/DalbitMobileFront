@@ -22,7 +22,7 @@ function Mylist(props) {
 
   const deleteFn = () => {
     global_ctx.action.confirm({
-      msg: '삭제하시겠습니끼?',
+      msg: '삭제하시겠습니까?',
       callback: async () => {
         const res = await Api.event_proofshot_dellete({
           data: {

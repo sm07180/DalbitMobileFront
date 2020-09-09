@@ -156,6 +156,8 @@ export default (props) => {
     } else if (props.type === 'reply') {
       setWriteType('reply')
     }
+
+    console.log(writeType)
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
   // useEffect(() => {
@@ -165,7 +167,6 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
-    console.log(writeType)
     if (profile.memNo === urlrStr) {
       setIsOther(false)
     } else {
@@ -231,7 +232,7 @@ export default (props) => {
           </button>
         </div>
       )}
-      {(writeType !== 'board' || writeType !== '') && writeState === true ? (
+      {props.replyWriteState || writeState === true ? (
         <div
           className="writeWrap__btn"
           onClick={() => {

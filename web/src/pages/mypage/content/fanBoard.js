@@ -151,9 +151,9 @@ export default (props) => {
   // }, [nextList])
   useEffect(() => {
     if (profile.memNo === urlrStr) {
-      setIsOther(false)
-    } else {
       setIsOther(true)
+    } else {
+      setIsOther(false)
     }
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()

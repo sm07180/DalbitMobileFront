@@ -16,10 +16,17 @@ import Report from './content/report.js'
 import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
+import MyClip from './content/myclip'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 // scss
+import ClipIcon from './static/menu_cast.svg'
+import Arrow from './static/arrow.svg'
+import newCircle from './static/new_circle.svg'
+import NoticeIcon from './static/profile/ic_notice_m.svg'
+import FanboardIcon from './static/profile/ic_fanboard_m.svg'
+
 import './index.scss'
 
 export default (props) => {
@@ -27,7 +34,6 @@ export default (props) => {
   let history = useHistory()
   //context
   const context = useContext(Context)
-  const globalCtx = useContext(Context)
   const {token, profile} = context
   let {memNo, category} = useParams()
 
@@ -51,15 +57,28 @@ export default (props) => {
     {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
-  const mypageNavList = [
-    {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-    {type: 'clip', txt: '클립', component: FanBoard, icon: MenuFanBoardeIcon}
-  ]
+  let mypageNavList
+  if (context.isDevIp) {
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+    ]
+  } else {
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+    ]
+  }
+
+  useEffect(() => {
+    context.action.updateUrlStr(memNo)
+  }, [])
 
   // memNo navi check
+  console.log(profile)
   if (profile && profile.memNo !== memNo) {
-    navigationList = navigationList.slice(0, 2)
+    navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
     // memNo = profile.memNo
   }
@@ -75,7 +94,7 @@ export default (props) => {
   }
   //check login push login
   if (!token.isLogin) {
-    props.history.push('/login')
+    window.location.href = '/login'
     return null
   }
   //--------------------------------------------
@@ -136,7 +155,19 @@ export default (props) => {
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
+  const profileCount = (idx) => {
+    switch (idx) {
+      case 0:
+        return profile.count.notice
+      case 1:
+        return profile.count.fanboard
+      case 2:
+        return profile.count.clip
 
+      default:
+        break
+    }
+  }
   const locationNav = (type) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
@@ -169,7 +200,7 @@ export default (props) => {
                   return (
                     <li className={tabSelected === idx ? `isSelected` : ``}>
                       <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
-                        {txt} <span className="cnt">12</span>
+                        {txt} <span className="cnt">{profileCount(idx)}</span>
                       </button>
                     </li>
                   )
@@ -206,12 +237,12 @@ export default (props) => {
               </div> */}
             </>
           )}
-          <div>
+          <React.Fragment>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </div>
+          </React.Fragment>
         </div>
       </Layout2>
     </Switch>

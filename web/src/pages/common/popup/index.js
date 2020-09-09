@@ -17,6 +17,7 @@ import AgreeDetail from 'pages/common/agree_detail'
 import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
 import AlarmPop from 'pages/common/alarm_pop'
+import ClipOpen from 'pages/common/clip_open'
 //
 export default (props) => {
   //state
@@ -86,6 +87,20 @@ export default (props) => {
             <ProofShot />
           </>
         )
+
+      case 'CLIP_OPEN':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <ClipOpen />
+          </>
+        )
+
       case 'ALARM':
         return (
           <>
@@ -120,6 +135,8 @@ export default (props) => {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
       setLayout('proofShot')
+    } else if (context.popup_code[0] == 'CLIP_OPEN') {
+      setLayout('clipopen')
     } else {
       setLayout('square')
     }
@@ -269,6 +286,20 @@ const Wrap = styled.div`
     max-height: auto;
     padding: 0;
     border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: fit-content;
+    }
+    & > button {
+      display: none;
+    }
+  }
+
+  &.clipopen {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 16px;
     @media (max-width: ${WIDTH_MOBILE}) {
       height: fit-content;
     }

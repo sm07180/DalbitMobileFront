@@ -6,7 +6,7 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
 import NoResult from 'components/ui/noResult'
 import Header from 'components/ui/new_header'
-
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import './index.scss'
 
 const currentDate = new Date()
@@ -18,6 +18,19 @@ export default function Alert() {
   const [allCheck, setAllCheck] = useState(false)
   const [empty, setEmpty] = useState(false)
   const [deleteActive, setDeleteActive] = useState(false)
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data, message} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, context)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   async function fetchData() {
     const res = await Api.my_notification({
       params: {
@@ -110,6 +123,9 @@ export default function Alert() {
         break
       case 44:
         history.push(`/rank?rankType=2&dateType=2`)
+        break
+      case 45:
+        fetchDataPlay(roomNo)
         break
       case 50:
         let mobileLink = link

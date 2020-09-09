@@ -23,7 +23,7 @@ export default (props) => {
   }
 
   return (
-    <>
+    <React.Fragment>
       {ctx.token.isLogin === true ? (
         <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edit_star`)}>
           <div className="txt">
@@ -94,7 +94,7 @@ export default (props) => {
           )
         })}
       </Swiper>
-    </>
+    </React.Fragment>
   )
 }
 
