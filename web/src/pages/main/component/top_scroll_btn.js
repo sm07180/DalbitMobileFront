@@ -20,18 +20,21 @@ export default (props) => {
   const urlrStr = history.location.pathname
 
   //출석도장
-  useEffect(() => {
-    async function fetchEventAttendCheck() {
-      const {result, data} = await API.getEventAttendCheck()
-      if (result === 'success') {
-        const {isCheck} = data
-        setAttendCheck(isCheck)
-      } else {
-        //실패
-      }
+  async function fetchEventAttendCheck() {
+    const {result, data} = await API.getEventAttendCheck()
+    if (result === 'success') {
+      const {isCheck} = data
+      setAttendCheck(isCheck)
+    } else {
+      //실패
     }
+  }
+
+  useEffect(() => {
     fetchEventAttendCheck()
   }, [])
+
+  console.log(attendCheck)
 
   const scrollToTop = () => {
     if (logoChange && window.scrollY) {

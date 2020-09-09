@@ -28,6 +28,7 @@ export default (props) => {
   const [rankInfo, setRankInfo] = useState('')
   const [starInfo, setStarInfo] = useState('')
   const [fanInfo, setFanInfo] = useState('')
+  const [goodInfo, setGoodInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
   //scroll
@@ -72,6 +73,23 @@ export default (props) => {
     })
     if (res.result === 'success') {
       setFanInfo(res.data.list)
+    } else {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+    return
+  }
+
+  const fetchDataGoodRank = async () => {
+    const res = await Api.mypage_good_ranking({
+      params: {
+        memNo: profile.memNo
+      }
+    })
+    if (res.result === 'success') {
+      setGoodInfo(res.data.list)
     } else {
       context.action.alert({
         callback: () => {},
@@ -141,6 +159,8 @@ export default (props) => {
       context.action.updateCloseFanCnt(false)
     } else if (name === '스타') {
       context.action.updateCloseStarCnt(false)
+    } else if (name === '좋아요') {
+      context.action.updateCloseGoodCnt(false)
     }
   }
 
@@ -152,6 +172,8 @@ export default (props) => {
       fetchData()
     } else if (name === '팬') {
       fetchDataHoleFan()
+    } else if (name === '좋아요') {
+      fetchDataGoodRank()
     }
   }, [select])
 
@@ -163,6 +185,8 @@ export default (props) => {
         context.action.updateCloseFanCnt(false)
       } else if (name === '스타') {
         context.action.updateCloseStarCnt(false)
+      } else if (name === '좋아요') {
+        context.action.updateCloseGoodCnt(false)
       }
     }
   }, [])
@@ -177,6 +201,7 @@ export default (props) => {
     context.action.updateClose(false)
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
+    context.action.updateCloseGoodCnt(false)
 
     history.push(link, {
       hash: window.location.hash
@@ -269,6 +294,37 @@ export default (props) => {
                         {fanInfo !== '' &&
                           name === '팬' &&
                           fanInfo.map((item, index) => {
+                            const {title, id, profImg, nickNm, isFan, memNo} = item
+                            let link = ''
+                            if (webview) {
+                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}?webview=${webview}` : `/menu/profile`
+                            } else {
+                              link = ctx.token.memNo !== memNo ? `/mypage/${memNo}` : `/menu/profile`
+                            }
+                            return (
+                              <div key={index} className={`fan-list ${urlrStr === memNo ? 'none' : ''}`}>
+                                <div onClick={() => ClickUrl(link)}>
+                                  <span
+                                    className="thumb"
+                                    style={{backgroundImage: `url(${profImg.thumb62x62})`}}
+                                    bg={profImg.thumb62x62}></span>
+                                  <span className="nickNm">{nickNm}</span>
+                                </div>
+                                {isFan === false && memNo !== ctx.token.memNo && (
+                                  <button onClick={() => Regist(memNo)} className="plusFan">
+                                    +팬등록
+                                  </button>
+                                )}
+                                {isFan === true && memNo !== ctx.token.memNo && (
+                                  <button onClick={() => Cancel(memNo, isFan)}>팬</button>
+                                )}
+                              </div>
+                            )
+                          })}
+
+                        {goodInfo !== '' &&
+                          name === '좋아요' &&
+                          goodInfo.map((item, index) => {
                             const {title, id, profImg, nickNm, isFan, memNo} = item
                             let link = ''
                             if (webview) {
