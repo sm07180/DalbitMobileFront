@@ -305,7 +305,7 @@ function Ranking() {
 
   useEffect(() => {
     const windowScrollEvent = () => {
-      console.log(window.scrollY)
+      // console.log(window.scrollY)
       if (window.scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
@@ -336,6 +336,7 @@ function Ranking() {
       timer = window.setTimeout(function () {
         //스크롤
         const diff = document.body.scrollHeight / (formState.page + 1)
+
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (totalPage > formState.page && formState.page < 25) {
             if (!fetching) {
@@ -353,7 +354,7 @@ function Ranking() {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [formState, totalPage])
+  }, [formState, totalPage, fetching])
 
   return (
     <Layout status={'no_gnb'}>
