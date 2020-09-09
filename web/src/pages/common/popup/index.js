@@ -295,8 +295,10 @@ const Wrap = styled.div`
   }
 
   &.clipopen {
-    width: 90%;
-    height: 80%;
+    padding: 16px;
+    box-sizing: border-box;
+    max-width: 360px;
+
     max-height: auto;
     padding: 0;
     border-radius: 16px;
