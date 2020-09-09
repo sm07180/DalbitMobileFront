@@ -17,7 +17,6 @@ import LoginStay from '../login/loginState'
 export default (props) => {
   let history = useHistory()
   let params = useParams()
-  console.log(params.category)
   const categoryList = [
     {type: 'nav', component: Nav},
     {type: 'profile', component: Profile},
