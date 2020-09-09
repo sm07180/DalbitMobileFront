@@ -154,7 +154,7 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipMainGender, context.clipMainRefresh, clipTypeActive])
+  }, [context.clipMainSort, context.clipMainGender, context.clipRefresh, clipTypeActive])
 
   if (chartListType === 'detail') {
     return (

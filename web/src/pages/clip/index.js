@@ -204,13 +204,16 @@ export default (props) => {
   // initial category
   const refreshCategory = () => {
     setClipTypeActive('')
+
     context.action.updateClipSort(0)
-    context.action.updateClipGender('')
-    if (context.clipMainRefresh) {
-      context.action.updateClipGender(false)
+    //context.action.updateClipGender('')
+    if (context.clipRefresh) {
+      context.action.updatClipRefresh(false)
+      // context.action.updateClipGender(false)
     } else {
       context.action.updatClipRefresh(true)
     }
+
     if (refreshAni) {
       setRefreshAni(false)
     } else {
@@ -228,7 +231,7 @@ export default (props) => {
       setDetailPopup(true)
     }
   }
-
+  console.log(context.clipRefresh)
   // #layer pop
   useEffect(() => {
     if (detailPopup) {
