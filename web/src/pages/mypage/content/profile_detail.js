@@ -117,7 +117,8 @@ export default (props) => {
       text = '스타'
       ico = 'type2'
     } else if (type === 'like') {
-      action = viewGoodList
+      // action = viewGoodList
+      action = ''
       text = '좋아요'
     }
     return (
@@ -442,7 +443,7 @@ export default (props) => {
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
-        <div className="fanListWrap">
+        {/* <div className="fanListWrap">
           {profile.likeTotCnt > 0 && (
             <>
               {myProfileNo === profile.memNo ? (
@@ -471,7 +472,7 @@ export default (props) => {
               </p>
             </>
           )}
-        </div>
+        </div> */}
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
