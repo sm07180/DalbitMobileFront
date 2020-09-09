@@ -19,7 +19,7 @@ export default () => {
       (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBulid'] > 136)
     ) {
       context.action.updateIsDevIp(true)
-    } else if (customHeader['os'] === OS_TYPE['Desktop']) {
+    } else {
       fetch('https://www.dalbitlive.com/ctrl/check/ip')
         .then((res) => res.json())
         .then((json) => {
