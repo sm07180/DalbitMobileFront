@@ -305,6 +305,7 @@ function Ranking() {
 
   useEffect(() => {
     const windowScrollEvent = () => {
+      console.log(window.scrollY)
       if (window.scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
@@ -352,7 +353,7 @@ function Ranking() {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [formState, totalPage, fetching])
+  }, [formState, totalPage])
 
   return (
     <Layout status={'no_gnb'}>
