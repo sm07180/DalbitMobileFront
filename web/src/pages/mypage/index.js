@@ -40,6 +40,8 @@ let NewState = {
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
 
   //navi Array
   let navigationList = [
@@ -55,14 +57,22 @@ export default (props) => {
     {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
-  const subNavList2 = [
-    {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon},
-    {type: 'my_clip', txt: '클립', icon: ClipIcon}
-  ]
+  let subNavList2
+  if (globalCtx.isDevIp) {
+    subNavList2 = [
+      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', icon: ClipIcon}
+    ]
+  } else {
+    subNavList2 = [
+      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
+    ]
+  }
+
   //context
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
+
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
