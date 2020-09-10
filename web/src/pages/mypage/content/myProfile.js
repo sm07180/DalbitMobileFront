@@ -12,7 +12,8 @@ const myProfile = (props) => {
   //context
   const context = useContext(Context)
   const myProfileNo = context.profile.memNo
-  if (myProfileNo === profile.memNo) return null
+  // console.log(profile, myProfileNo, profile.memNo)
+  // if (myProfileNo === profile.memNo) return null
   // loading
   if (profile === null) {
     return <div style={{minHeight: '300px'}}></div>
