@@ -279,10 +279,14 @@
         color: #fff;
       }
       .nickNameBox {
+        width: 110px;
         color: #fff;
         text-align: center;
         margin-top: 0px;
         margin-bottom: 8px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
       .countBox {
