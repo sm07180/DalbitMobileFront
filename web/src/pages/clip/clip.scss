@@ -222,6 +222,15 @@
   }
 
   .liveChart {
+    .fixedArea {
+      &.on {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 7;
+        width: 100%;
+      }
+    }
     &__titleBox {
       display: flex;
       justify-content: space-between;
@@ -254,7 +263,8 @@
 
     .swiper-container {
       border-bottom: 1px solid #eee;
-
+      background-color: #fff;
+      margin-top: -1px;
       .slideWrap {
         width: auto;
         margin: 0 8px;

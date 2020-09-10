@@ -5,14 +5,13 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+//svg
+import PlayIcon from '../clip_play.svg'
+import LikeIcon from '../clip_like.svg'
 //flag
 let currentPage = 1
 let timer
 let moreState = false
-
-//svg
-import PlayIcon from '../clip_play.svg'
-import LikeIcon from '../clip_like.svg'
 function ClipUpload() {
   let history = useHistory()
   let {memNo, category} = useParams()
