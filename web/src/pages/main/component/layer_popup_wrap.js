@@ -79,19 +79,20 @@ export default function LayerPopupWrap({data, setData}) {
           {popupData.title && popupData.is_title_view === 1 && <h3 className="popup__title">{popupData.title}</h3>}
           <div className="inner">
             <p className="contents textMargin" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
-
-            <button
-              className="btn-ok"
-              onClick={() => {
-                {
-                  popupData.is_button_view === 0 && handleDimClick()
-                }
-                {
-                  popupData.is_button_view === 1 && handleRoute(popupData)
-                }
-              }}>
-              {popupData.buttonNm}
-            </button>
+            <div className="btnWrap">
+              <button
+                className="btn-ok"
+                onClick={() => {
+                  {
+                    popupData.is_button_view === 0 && handleDimClick()
+                  }
+                  {
+                    popupData.is_button_view === 1 && handleRoute(popupData)
+                  }
+                }}>
+                {popupData.buttonNm}
+              </button>
+            </div>
           </div>
         </div>
 
