@@ -28,6 +28,8 @@ import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 import {RoomMake} from 'context/room'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
+import {Hybrid} from 'context/hybrid'
 
 // static
 import detailListIcon from './static/detaillist_circle_w.svg'
@@ -593,7 +595,30 @@ export default (props) => {
                 window.location.href = 'https://inforexseoul.page.link/Ws4t'
               } else {
                 if (!broadcastBtnActive) {
-                  RoomMake(globalCtx)
+                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                    if (Utility.getCookie('clip-player-info')) {
+                      globalCtx.action.confirm({
+                        msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                        callback: () => {
+                          clipExit(globalCtx)
+                          RoomMake(globalCtx)
+                        }
+                      })
+                    } else {
+                      RoomMake(globalCtx)
+                    }
+                  } else {
+                    globalCtx.action.confirm({
+                      msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                      callback: () => {
+                        sessionStorage.removeItem('room_no')
+                        Utility.setCookie('listen_room_no', null)
+                        Hybrid('ExitRoom', '')
+                        globalCtx.action.updatePlayer(false)
+                        RoomMake(globalCtx)
+                      }
+                    })
+                  }
                   setBroadcastBtnActive(true)
                   setTimeout(() => setBroadcastBtnActive(false), 3000)
                 }
