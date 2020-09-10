@@ -1817,16 +1817,24 @@
       line-height: 24px;
       border-radius: 25px;
       color: $white;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 700;
       letter-spacing: -0.4px;
       background: none;
       border-color: rgba(255, 255, 255, 0.5);
     }
     input::placeholder {
       color: $white;
+      font-size: 14px;
+      font-weight: 400;
     }
     input[type='password'] {
       margin-top: 8px;
+      &::placeholder {
+        color: $white;
+        font-size: 14px;
+        font-weight: 400;
+      }
     }
     .login-btn {
       display: block;
