@@ -76,7 +76,7 @@ export default function LayerPopupWrap({data, setData}) {
     return (
       <>
         <div className="popupBg">
-          {popupData.title && popupData.is_title_view === 1 && <div className="popup__title">{popupData.title}</div>}
+          {popupData.title && popupData.is_title_view === 1 && <h3 className="popup__title">{popupData.title}</h3>}
           <div className="inner">
             <p className="contents textMargin" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
 
