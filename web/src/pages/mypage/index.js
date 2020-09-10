@@ -34,7 +34,7 @@ export default (props) => {
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
-  const [updateBoardCount, setUpdateBoardCount] = useState(null)
+  const [updateBoardCount, setUpdateBoardCount] = useState(false)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
   const [tabSelected, setTabSelected] = useState(0)
