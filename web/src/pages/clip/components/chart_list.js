@@ -161,7 +161,7 @@ export default (props) => {
   if (chartListType === 'detail') {
     return (
       <div className="chartListDetail">
-        <ul className="chartListDetailBox" style={{cursor: 'pointer', marginTop: clipCategoryFixed ? '102px' : ''}}>
+        <ul className="chartListDetailBox" style={{marginTop: clipCategoryFixed ? '102px' : ''}}>
           {list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}
         </ul>
       </div>
@@ -170,7 +170,7 @@ export default (props) => {
     const windowHalfWidth = (window.innerWidth - 32) / 2
     return (
       <div className="chartListSimple">
-        <ul className="chartListSimpleBox" style={{cursor: 'pointer', marginTop: clipCategoryFixed ? '102px' : ''}}>
+        <ul className="chartListSimpleBox" style={{marginTop: clipCategoryFixed ? '102px' : ''}}>
           {list.length === 0 && <NoResult text="등록 된 클립이" />}
           {list.map((item, idx) => {
             const {

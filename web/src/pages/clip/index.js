@@ -303,7 +303,7 @@ export default (props) => {
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <></>
+          <div ref={recomendRef}></div>
         )}
         <div className="recentClip" ref={recentClipRef}>
           <h2 className="recentClip__title">최신 클립</h2>
