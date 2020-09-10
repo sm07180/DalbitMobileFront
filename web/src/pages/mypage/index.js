@@ -34,9 +34,9 @@ export default (props) => {
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
-  const [updateBoardCount, setUpdateBoardCount] = useState(false)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
+  const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
 
   //navi Array
@@ -54,7 +54,7 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-  if (!context.isDevIp) {
+  if (context.isDevIp) {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
@@ -68,12 +68,13 @@ export default (props) => {
   }
 
   // memNo navi check
-  // 타인프로필 profileInfo
+  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
     // memNo = profile.memNo
   }
+
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -105,7 +106,6 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        setUpdateBoardCount(false)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -126,13 +126,8 @@ export default (props) => {
 
     if (memNo) {
       settingProfileInfo(memNo)
-      if (tabSelected === 1) {
-        return
-      } else {
-        setTabSelected(0)
-      }
     }
-  }, [memNo, context.mypageFanCnt, updateBoardCount])
+  }, [memNo, context.mypageFanCnt])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [])
@@ -153,9 +148,6 @@ export default (props) => {
   }
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
-  }
-  const setAction = (value) => {
-    setUpdateBoardCount(value)
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -196,12 +188,12 @@ export default (props) => {
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <ul className="profile-tab">
+              {/* <ul className="profile-tab">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
-                    <li key={`nav-${idx}`} className={tabSelected === idx ? `isSelected` : ``}>
-                      <button onClick={() => changeTab(idx)}>
+                    <li className={tabSelected === idx ? `isSelected` : ``}>
+                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
                         {txt} <span className="cnt">{profileCount(idx)}</span>
                       </button>
                     </li>
@@ -210,11 +202,11 @@ export default (props) => {
               </ul>
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" set={setAction} />}
-                {!context.isDevIp ? tabSelected === 2 && <MyClip type="subpage" /> : <></>}
-              </div>
+                {tabSelected === 1 && <FanBoard type="subpage" />}
+                {tabSelected === 2 && <MyClip type="subpage" />}
+              </div> */}
 
-              {/* <div className="profile-menu">
+              <div className="profile-menu">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
@@ -236,7 +228,7 @@ export default (props) => {
                     </button>
                   )
                 })}
-              </div> */}
+              </div>
             </>
           )}
           <React.Fragment>
