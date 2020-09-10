@@ -284,6 +284,11 @@
 
     .chartListDetail {
       padding: 8px 2%;
+      .chartListDetailBox {
+        &.fixedOn {
+          margin-top: 102px;
+        }
+      }
       .chartListDetailItem {
         display: flex;
         align-items: center;
@@ -356,6 +361,9 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        &.fixedOn {
+          margin-top: 102px;
+        }
 
         .chartListSimpleItem {
           position: relative;
