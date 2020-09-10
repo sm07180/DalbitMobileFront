@@ -1,7 +1,7 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
-// import {RoomJoin} from 'context/room'
+import {RoomJoin} from 'context/room'
 import {printNumber} from '../../lib/common_fn'
 
 // context
@@ -121,7 +121,7 @@ function RankList() {
                         <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
                       </div>
 
-                      <div>
+                      <div className="w100">
                         <div className="nickNameBox">
                           {nickNm}
                           <div className="nickNameImg">
@@ -173,7 +173,29 @@ function RankList() {
                       <img
                         src={live}
                         onClick={() => {
-                          history.push(`/broadcast/${roomNo}`)
+                          if (context.adminChecker === true) {
+                            context.action.confirm_admin({
+                              //콜백처리
+                              callback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo,
+                                  shadow: 1
+                                })
+                              },
+                              //캔슬콜백처리
+                              cancelCallback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo,
+                                  shadow: 0
+                                })
+                              },
+                              msg: '관리자로 입장하시겠습니까?'
+                            })
+                          } else {
+                            RoomJoin({
+                              roomNo: roomNo
+                            })
+                          }
                         }}
                         className="liveBox__img"
                       />

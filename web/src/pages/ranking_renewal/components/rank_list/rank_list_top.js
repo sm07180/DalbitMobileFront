@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
-// import { RoomJoin } from "context/room";
+import {RoomJoin} from 'context/room'
 
 import {printNumber} from '../../lib/common_fn'
 
@@ -193,7 +193,29 @@ function RankListTop() {
                         <img
                           src={live}
                           onClick={() => {
-                            history.push(`/broadcast/${roomNo}`)
+                            if (context.adminChecker === true) {
+                              context.action.confirm_admin({
+                                //콜백처리
+                                callback: () => {
+                                  RoomJoin({
+                                    roomNo: roomNo,
+                                    shadow: 1
+                                  })
+                                },
+                                //캔슬콜백처리
+                                cancelCallback: () => {
+                                  RoomJoin({
+                                    roomNo: roomNo,
+                                    shadow: 0
+                                  })
+                                },
+                                msg: '관리자로 입장하시겠습니까?'
+                              })
+                            } else {
+                              RoomJoin({
+                                roomNo: roomNo
+                              })
+                            }
                           }}
                           className="liveBox__img"
                         />

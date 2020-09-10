@@ -21,6 +21,7 @@ import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
 
 //
 const Room = () => {
@@ -51,6 +52,17 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
+  //클립나가기
+  if (Utility.getCookie('clip-player-info')) {
+    return Room.context.action.confirm({
+      msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
+      callback: () => {
+        clipExit(Room.context)
+        RoomJoin(obj)
+      }
+    })
+  }
+
   const {roomNo, callbackFunc, shadow, mode} = obj
   /*const exdate = new Date()
   exdate.setHours(15)
@@ -331,6 +343,13 @@ export const RoomMake = async (context) => {
   //-----------------------------------------------------
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
+  let appVer = customHeader['appVer']
+  if(appVer === undefined){
+    appVer = customHeader['appVersion']
+    if(appVer === undefined){
+      appVer = 0
+    }
+  }
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
@@ -351,10 +370,25 @@ export const RoomMake = async (context) => {
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()
   if (!result) return
-  //## 실행
-  Hybrid('RoomMake')
-  console.log(
-    '%c' + `Native: RoomMake`,
-    'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
-  )
+  //## 실행 리얼 주석 시작
+  let broadSetting = {}
+  broadSetting["djListenerIn"] = false
+  broadSetting["djListenerOut"] = false
+
+  if(__NODE_ENV === 'dev'
+    || (_os === 1 && appVer > 29)
+    || (_os === 2 && appVer > 141)){
+    const apiSetting = await Api.getBroadcastSetting()
+    if(apiSetting && apiSetting.result === 'success' && apiSetting.data){
+      broadSetting["djListenerIn"] = apiSetting.data["djListenerIn"]
+      broadSetting["djListenerOut"] = apiSetting.data["djListenerIn"]
+    }
+  }
+  if(__NODE_ENV !== 'dev' && _os === 1 && appVer > 29){
+    Hybrid('RoomMake')
+  }else{
+    Hybrid('RoomMake', broadSetting)
+  }
+  //## 실행 리얼 주석 종료
+  //Hybrid('RoomMake') //원소스
 }

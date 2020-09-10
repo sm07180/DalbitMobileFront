@@ -11,7 +11,7 @@ import MyProfile from './content/myProfile.js'
 //import Navigation from './content/navigation.js'
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import BroadcastSetting from './content/broadcastSetting.js'
-import AppAlarm2 from './component/setting/appAlarm2'
+import AppAlarm2 from './content/appAlarm2'
 import Notice from './content/notice.js'
 import FanBoard from './content/fanBoard.js'
 import Wallet from './content/wallet.js'
@@ -19,9 +19,11 @@ import Report from './content/report.js'
 import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
+import MyClip from './content/myclip'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
+import ClipIcon from './static/menu_cast.svg'
 import Arrow from './static/arrow.svg'
 import newCircle from './static/new_circle.svg'
 import NoticeIcon from './static/profile/ic_notice_m.svg'
@@ -38,11 +40,14 @@ let NewState = {
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+  const context = useContext(Context)
+  const globalCtx = useContext(Context)
 
   //navi Array
   let navigationList = [
     {id: 0, type: 'notice', component: Notice, txt: '방송공지'},
     {id: 1, type: 'fanboard', component: FanBoard, txt: '팬 보드'},
+    {id: 9, type: 'my_clip', component: MyClip, txt: '클립'},
     {id: 2, type: 'wallet', component: Wallet, txt: '내 지갑'},
     {id: 3, type: 'report', component: Report, txt: '리포트'},
     {id: 4, type: 'alert', component: Alert, txt: '알림'},
@@ -52,19 +57,28 @@ export default (props) => {
     {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
-  const subNavList2 = [
-    {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-    {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
-  ]
+  let subNavList2
+  if (globalCtx.isDevIp) {
+    subNavList2 = [
+      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', icon: ClipIcon}
+    ]
+  } else {
+    subNavList2 = [
+      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
+    ]
+  }
+
   //context
-  const context = useContext(Context)
-  const globalCtx = useContext(Context)
+
   const {token, profile} = context
   //memNo Info
   let {memNo, category} = useParams()
-
-  let urlrStr = props.location.pathname
-
+  useEffect(() => {
+    context.action.updateUrlStr(memNo)
+  }, [])
   //state
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
@@ -72,7 +86,7 @@ export default (props) => {
   const [myPageNew, setMyPageNew] = useState({})
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
-    navigationList = navigationList.slice(0, 2)
+    navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
     // memNo = profile.memNo
   }
@@ -88,7 +102,7 @@ export default (props) => {
   }
   //check login push login
   if (!token.isLogin) {
-    props.history.push('/login')
+    window.location.href = '/login'
     return null
   }
   //--------------------------------------------
@@ -188,12 +202,12 @@ export default (props) => {
               </div>
             </>
           )}
-          <div>
+          <React.Fragment>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </div>
+          </React.Fragment>
         </div>
       </Layout2>
     </Switch>

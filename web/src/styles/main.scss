@@ -292,7 +292,7 @@
     }
 
     &.live-list {
-      padding: 0 16px 20px;
+      padding: 0 16px;
       .title-wrap {
         display: flex;
         flex-direction: column;
@@ -559,6 +559,11 @@
         font-size: 16px;
         letter-spacing: -0.4px;
         line-height: 42px;
+
+        &--yellow {
+          color: #fef856;
+          display: flex;
+        }
         a {
           display: block;
           width: 100%;
@@ -566,6 +571,27 @@
           padding: 0 10px;
           text-align: center;
           font-weight: 600;
+
+          &.newicon {
+            display: flex;
+            align-items: center;
+            color: #fef856;
+            i {
+              margin-bottom: 14px;
+              margin-left: 2px;
+
+              display: inline-block;
+              background: #fef856;
+              color: $black;
+              font-style: normal;
+              font-size: 10px;
+              text-align: center;
+              line-height: 15px;
+              width: 33px;
+              height: 15px;
+              border-radius: 11px;
+            }
+          }
         }
       }
     }
@@ -1791,16 +1817,24 @@
       line-height: 24px;
       border-radius: 25px;
       color: $white;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 700;
       letter-spacing: -0.4px;
       background: none;
       border-color: rgba(255, 255, 255, 0.5);
     }
     input::placeholder {
       color: $white;
+      font-size: 14px;
+      font-weight: 400;
     }
     input[type='password'] {
       margin-top: 8px;
+      &::placeholder {
+        color: $white;
+        font-size: 14px;
+        font-weight: 400;
+      }
     }
     .login-btn {
       display: block;

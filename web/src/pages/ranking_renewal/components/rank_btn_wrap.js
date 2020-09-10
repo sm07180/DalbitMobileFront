@@ -7,12 +7,16 @@ const btnArray = [
   {val: 3, text: '레벨'},
   {val: 4, text: '좋아요'}
 ]
-function RankBtnWrap() {
+function RankBtnWrap({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)
 
   const {formState} = rankState
 
   const formDispatch = rankAction.formDispatch
+
+  const syncScroll = () => {
+    window.scrollTo(0, 0)
+  }
 
   return (
     <div className="rankTab">
@@ -21,12 +25,16 @@ function RankBtnWrap() {
           <button
             key={idx}
             className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-            onClick={() => {
-              if (formState.rankType !== v.val)
-                formDispatch({
-                  type: 'RANK_TYPE',
-                  val: v.val
-                })
+            onClick={async () => {
+              if (!fetching) {
+                if (formState.rankType !== v.val) {
+                  await syncScroll()
+                  formDispatch({
+                    type: 'RANK_TYPE',
+                    val: v.val
+                  })
+                }
+              }
             }}>
             {v.text}
           </button>

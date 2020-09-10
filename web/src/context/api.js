@@ -849,6 +849,22 @@ export default class API {
       params: params
     })
   }
+
+  /**
+   * @brief 마이패이지 회원 좋아요 랭킹
+   * @method "GET"
+   * @create 이은지 2020.09.08
+   */
+  static mypage_good_ranking = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/good/list`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
   /**
    * @brief 방송방 팬 헤제(BJ팬 등록 경우 채팅방 알림)
    * @method "DELETE"
@@ -2405,6 +2421,31 @@ export default class API {
   static postNewStarMemo = async (data) => {
     return await ajax({url: '/profile/star/memo', method: 'post', data})
   }
+  //clip
+  static getPopularList = async (params) => {
+    return await ajax({url: '/clip/main/pop/list', method: 'GET', params})
+  }
+  static getLatestList = async (params) => {
+    return await ajax({url: '/clip/main/latest/list', method: 'GET', params})
+  }
+  static getMainTop3List = async (params) => {
+    return await ajax({url: '/clip/main/top3/list', method: 'GET', params})
+  }
+  static getClipType = async (params) => {
+    return await ajax({url: '/clip/type', method: 'GET', params})
+  }
+  static getClipList = async (params) => {
+    return await ajax({url: '/clip/list', method: 'GET', params})
+  }
+  static getUploadList = async (params) => {
+    return await ajax({url: '/clip/upload/list', method: 'GET', params})
+  }
+  static getHistoryList = async (params) => {
+    return await ajax({url: '/clip/listen/list', method: 'GET', params})
+  }
+  static postClipPlay = async (data) => {
+    return await ajax({url: '/clip/play', method: 'post', data})
+  }
 
   static eventPackageJoinCheck = async (params) => {
     return await ajax({url: '/event/004/apply', method: 'GET', params})
@@ -2511,6 +2552,13 @@ export default class API {
       url: '/mypage/broadcast/setting/edit',
       method: 'POST',
       data: data
+    })
+  }
+
+  static verisionCheck = async () => {
+    return await ajax({
+      url: '/center/version',
+      method: 'GET'
     })
   }
 }

@@ -71,6 +71,7 @@ export default (props) => {
     <React.Fragment>
       {/* 미디어 플레이어 */}
       {context.nativePlayer && context.player && visible && <Content {...props} update={update} />}
+      {/* <Content {...props} update={update} /> */}
     </React.Fragment>
   )
 }

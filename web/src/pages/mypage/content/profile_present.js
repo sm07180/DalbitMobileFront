@@ -8,14 +8,13 @@ import {useHistory} from 'react-router-dom'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Swiper from 'react-id-swiper'
-
-const testData = [50, 100, 500, 1000, 2000, 3000, 5000, 10000]
-// const testData = [20, 50, 100, 500, 1000]
+import {common} from '@material-ui/core/colors'
 
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   const history = useHistory()
   //-------------------------------------------------------- declare start
+  const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
   const [text, setText] = useState('')
   const [active, setActive] = useState(false)
@@ -55,10 +54,18 @@ export default (props) => {
     } else {
       setPoint(param)
       setActive(false)
-      setDirectDalCnt(testData[param])
+      setDirectDalCnt(splashData.giftDal[param])
       setText('')
     }
     setSend(true)
+  }
+
+  // 공통
+  async function commonData() {
+    const res = await Api.splash({})
+    if (res.result === 'success') {
+      setSplashData(res.data)
+    }
   }
 
   // 선물하기
@@ -70,62 +77,55 @@ export default (props) => {
       dalcount = parseInt(text)
     }
 
-    if (dalcount <= 0) {
-      context.action.alert({
-        callback: () => {
-          return
-        },
-        msg: '보낼 달 수량을 입력해 주세요'
-      })
-    }
-    if (dalcount < 10) {
-      context.action.alert({
-        callback: () => {
-          return
-        },
-        msg: '직접입력 선물은 최소 10달 부터 선물이 가능합니다.'
-      })
-      return
-    }
-    const res = await Api.member_gift_dal({
-      data: {
-        memNo: props.profile.memNo,
-        dal: dalcount
-      }
-    })
-    if (res.result === 'success') {
-      context.action.alert({
-        callback: () => {
-          setText(dalcount)
-          context.action.updateClosePresent(false)
-          async function updateMyPofile() {
-            const profileInfo = await Api.profile({params: {memNo: context.profile.memNo}})
-            if (profileInfo.result === 'success') {
-              context.action.updateProfile(profileInfo.data)
-            }
-            const myInfoRes = await Api.mypage()
-            if (myInfoRes.result === 'success') {
-              context.action.updateMyInfo(myInfoRes.data)
-            }
-          }
-          updateMyPofile()
-        },
-        msg: res.message
-      })
-    } else if (res.result === 'fail' && res.code === '-4') {
-      context.action.confirm({
-        msg: res.message,
-        buttonText: {
-          right: '충전하기'
-        },
-        callback: () => {
-          history.push('/pay/store')
+    if (dalcount >= splashData.giftDalMin) {
+      const res = await Api.member_gift_dal({
+        data: {
+          memNo: props.profile.memNo,
+          dal: dalcount
         }
       })
+      if (res.result === 'success') {
+        context.action.alert({
+          callback: () => {
+            setText(dalcount)
+            context.action.updateClosePresent(false)
+            async function updateMyPofile() {
+              const profileInfo = await Api.profile({params: {memNo: context.profile.memNo}})
+              if (profileInfo.result === 'success') {
+                context.action.updateProfile(profileInfo.data)
+              }
+              const myInfoRes = await Api.mypage()
+              if (myInfoRes.result === 'success') {
+                context.action.updateMyInfo(myInfoRes.data)
+              }
+            }
+            updateMyPofile()
+          },
+          msg: res.message
+        })
+      } else if (res.result === 'fail' && res.code === '-4') {
+        context.action.confirm({
+          msg: res.message,
+          buttonText: {
+            right: '충전하기'
+          },
+          callback: () => {
+            history.push('/pay/store')
+          }
+        })
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
     } else {
       context.action.alert({
-        msg: res.message
+        callback: () => {
+          return
+        },
+        msg: `직접입력 선물은 최소 ${splashData.giftDalMin}달 부터 선물이 가능합니다.`
       })
+      return
     }
   }
 
@@ -142,6 +142,11 @@ export default (props) => {
       price: osType === 2 ? iosPrice : totalPrice
     })
   }
+
+  useEffect(() => {
+    commonData()
+  }, [])
+
   useEffect(() => {
     context.action.updatePopup('CHARGE')
     context.action.updatePopupVisible(false)
@@ -188,13 +193,14 @@ export default (props) => {
                   </MyPoint>
 
                   <div className="pointList">
-                    {testData.map((data, idx) => {
-                      return (
-                        <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
-                          {Number(data).toLocaleString()}
-                        </PointButton>
-                      )
-                    })}
+                    {splashData &&
+                      splashData.giftDal.map((data, idx) => {
+                        return (
+                          <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
+                            {Number(data).toLocaleString()}
+                          </PointButton>
+                        )
+                      })}
                   </div>
 
                   <TextArea>
@@ -227,9 +233,17 @@ export default (props) => {
 }
 //-------------------------------------------------------- styled start
 const FixedBg = styled.div`
-  z-index: 24;
+  width: 100%;
+  max-width: 640px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   .wrapper {
+    width: 100%;
+    margin: auto;
     position: relative;
+
     &:after {
       content: '';
       clear: both;
@@ -239,7 +253,7 @@ const FixedBg = styled.div`
       display: block;
       position: absolute;
       top: -36px;
-      right: 8.335%;
+      right: 16px;
       width: 36px;
       height: 36px;
       background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
@@ -254,7 +268,7 @@ const FixedBg = styled.div`
     }
   }
   .scrollWrap {
-    width: 100vw;
+    width: 100%;
     max-height: 420px;
     flex: none;
   }
@@ -315,15 +329,15 @@ const Container = styled.div`
 `
 
 const HoleWrap = styled.div`
-  display: flex;
   position: fixed;
-
-  top: 50%;
-  transform: translateY(-50%);
-  left: 0;
-  align-items: center;
-  justify-content: center;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
   z-index: 24;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 const Dim = styled.div`
   position: fixed;
@@ -437,10 +451,18 @@ const Select = styled.div`
 const PointButton = styled.button`
   height: 32px;
   background: #fff;
-  font-size: 14px;
   margin-right: 4px;
   margin-bottom: 4px;
   width: calc((100% - 12px) / 4);
+  font-size: 14px;
+  color: #000;
+  font-weight: bold;
+  border-style: solid;
+  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#e0e0e0')};
+  border-width: 1px;
+  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
+  box-sizing: border-box;
+  border-radius: 12px;
 
   &:nth-child(4n) {
     margin-right: 0px;
@@ -449,17 +471,6 @@ const PointButton = styled.button`
   &:nth-child(n + 4) {
     margin-bottom: 0px;
   }
-
-  color: #000;
-  font-weight: bold;
-
-  border-style: solid;
-  border-color: ${(props) => (props.active == 'active' ? '#632beb' : '#bdbdbd')};
-  border-width: 1px;
-  border-radius: 10px;
-  color: ${(props) => (props.active == 'active' ? '#632beb' : '#000')};
-  font-size: 12px;
-  box-sizing: border-box;
 `
 const TextArea = styled.div`
   width: 100%;
@@ -484,14 +495,16 @@ const PointInput = styled.input`
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 10px;
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 16px;
+  font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.35px;
   border-color: ${(props) => (props.active === 'active' ? '#000' : '#e0e0e0')};
 
   &::placeholder {
-    color: #777;
+    color: #757575;
+    font-size: 14px;
+    font-weight: 400;
   }
   p {
     font-size: 12px;

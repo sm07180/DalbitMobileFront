@@ -12,7 +12,9 @@ import {OS_TYPE} from 'context/config.js'
 import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
-import Room, {RoomJoin} from 'context/room'
+import Room, {RoomJoin, RoomMake} from 'context/room'
+import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
+
 //util
 import Utility from 'components/lib/utility'
 
@@ -23,6 +25,20 @@ export default () => {
   const context = useContext(Context)
   //history
   let history = useHistory()
+  // 플레이가공
+  const clipPlay = async (clipNum) => {
+    const {result, data, message} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, context)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
   //
   //---------------------------------------------------------------------
   function update(event) {
@@ -317,6 +333,32 @@ export default () => {
         }
         googleLogin()
         break
+      case 'native-room-make':
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                RoomMake(context)
+              }
+            })
+          } else {
+            RoomMake(context)
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              RoomMake(context)
+            }
+          })
+        }
+        break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
         /**
@@ -330,10 +372,106 @@ export default () => {
       case 'react-gnb-close': //------------------------GNB 닫기
         context.action.updateGnbVisible(false)
         break
+
+      case 'clip-player-show': //------------------------클립플레이어 show
+        // if (__NODE_ENV === 'clip-player-show') {
+        //   alert('clip-player-audio-end')
+        // }
+        const dataString = JSON.stringify(event.detail)
+        Utility.setCookie('clip-player-info', dataString, 100)
+        sessionStorage.setItem('clip_info', dataString)
+        context.action.updateClipState(true)
+        context.action.updateClipPlayerInfo(event.detail)
+        context.action.updatePlayer(true)
+        break
+      case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
+        Utility.setCookie('clip-player-info', '', -1)
+        context.action.updateClipState(null)
+        context.action.updateClipPlayerState(null)
+        context.action.updateClipState(null)
+        context.action.updatePlayer(false)
+        break
+      case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        settingSessionInfo('ended')
+        break
+
+      case 'clip-player-start': //-----------------------클립 재생
+        settingSessionInfo('playing')
+        break
+
+      case 'clip-player-pause': //-----------------------클립 멈춤
+        settingSessionInfo('paused')
+        break
+      case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
+        if (!context.token.isLogin) return (window.location.href = '/login')
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                Hybrid('ClipUploadJoin')
+              }
+            })
+          } else {
+            Hybrid('ClipUploadJoin')
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 업로드하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              Hybrid('ClipUploadJoin')
+            }
+          })
+        }
+        break
+      case 'native-clip-record': //-----------------------네이티브 딤 메뉴에서 클립 녹음 클릭 시
+        if (!context.token.isLogin) return (window.location.href = '/login')
+        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+          if (Utility.getCookie('clip-player-info')) {
+            context.action.confirm({
+              msg: `현재 재생 중인 클립이 있습니다.\n클립을 녹음하시겠습니까?`,
+              callback: () => {
+                clipExit(context)
+                Hybrid('EnterClipRecord')
+              }
+            })
+          } else {
+            Hybrid('EnterClipRecord')
+          }
+        } else {
+          context.action.confirm({
+            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 녹음하시겠습니까?`,
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              Hybrid('ExitRoom', '')
+              context.action.updatePlayer(false)
+              Hybrid('EnterClipRecord')
+            }
+          })
+        }
+        break
       default:
         break
     }
   }
+
+  const settingSessionInfo = (type) => {
+    let data = Utility.getCookie('clip-player-info')
+    // if (__NODE_ENV === 'dev') {
+    //   Hybrid('ClipTest', data)
+    // }
+    data = JSON.parse(data)
+    data = {...data, playerState: type}
+    Utility.setCookie('clip-player-info', JSON.stringify(data))
+    context.action.updateClipPlayerState(type)
+  }
+
   function getMemNo(redirect) {
     if (_.hasIn(context, 'profile.memNo')) {
       return context.profile.memNo
@@ -507,6 +645,14 @@ export default () => {
       case '44': //-----------------랭킹 > FAN > 주간
         if (isLogin) window.location.href = `/rank?rankType=2&dateType=2`
         break
+      case '45': //-----------------Clip PLay
+        room_no = pushMsg.room_no
+        if (room_no) clipPlay(room_no)
+        break
+      case '46': //-----------------Clip PLay
+        room_no = pushMsg.room_no
+        if (room_no) clipPlay(room_no)
+        break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
         if (redirect_url !== undefined) {
@@ -576,6 +722,14 @@ export default () => {
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
+
+    /*----clip----*/
+    document.addEventListener('clip-player-show', update)
+    document.addEventListener('clip-player-end', update)
+    document.addEventListener('clip-player-audio-end', update)
+    document.addEventListener('clip-player-start', update)
+    document.addEventListener('clip-player-pause', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -591,8 +745,26 @@ export default () => {
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
+      /*----clip----*/
+      document.removeEventListener('clip-player-show', update)
+      document.removeEventListener('clip-player-end', update)
+      document.removeEventListener('clip-player-audio-end', update)
+      document.removeEventListener('clip-player-start', update)
+      document.removeEventListener('clip-player-pause', update)
     }
   }, [])
+
+  useEffect(() => {
+    document.addEventListener('native-room-make', update)
+    document.addEventListener('native-clip-upload', update)
+    document.addEventListener('native-clip-record', update)
+
+    return () => {
+      document.removeEventListener('native-room-make', update)
+      document.removeEventListener('native-clip-upload', update)
+      document.removeEventListener('native-clip-record', update)
+    }
+  }, [context.token])
   return (
     <React.Fragment>
       <Room />

@@ -75,29 +75,25 @@ const App = () => {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
 
-      // *** Native App case
-      /*if (__NODE_ENV === 'dev') {
-            alert(JSON.stringify(customHeader));
-            alert(isHybrid());
-        }*/
-
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
-          if (__NODE_ENV === 'dev') {
-            alert('after GetLoginToken isFirst : Y')
-          }
 
-          /*if (__NODE_ENV === 'dev'){
-              alert('sned loginData isFirst\n' + JSON.stringify(tokenInfo.data));
-            }*/
           if (
             sessionStorage.getItem('room_no') === undefined ||
             sessionStorage.getItem('room_no') === null ||
             sessionStorage.getItem('room_no') === ''
           ) {
             Utility.setCookie('native-player-info', '', -1)
+          }
+
+          if (
+            sessionStorage.getItem('clip_info') === undefined ||
+            sessionStorage.getItem('clip_info') === null ||
+            sessionStorage.getItem('clip_info') === ''
+          ) {
+            Utility.setCookie('clip-player-info', '', -1)
           }
 
           // replace custom header isFirst value 'Y' => 'N'
@@ -115,9 +111,6 @@ const App = () => {
           if (tokenInfo.data.authToken !== authToken) {
             //#토큰업데이트
             Hybrid('GetUpdateToken', tokenInfo.data)
-            /*if (__NODE_ENV === 'dev'){
-              alert('sned loginData\n' + JSON.stringify(tokenInfo.data));
-            }*/
           }
 
           // ?webview=new 형태로 이루어진 player종료
@@ -129,6 +122,17 @@ const App = () => {
             globalCtx.action.updatePlayer(true)
             globalCtx.action.updateMediaPlayerStatus(true)
             globalCtx.action.updateNativePlayer(parsed)
+          }
+        }
+
+        const nativeClipInfo = Utility.getCookie('clip-player-info')
+        if (nativeClipInfo) {
+          if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+            const parsed = JSON.parse(nativeClipInfo)
+            globalCtx.action.updateClipState(true)
+            globalCtx.action.updateClipPlayerState(parsed.playerState)
+            globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
+            globalCtx.action.updatePlayer(true)
           }
         }
 

@@ -361,9 +361,9 @@ export default (props) => {
                       <img className="icon" src={appleLogo} />
                     </button>
                   )}
-                  {/* <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+                  <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
                     <img className="icon" src={facebookLogo} />
-                  </button> */}
+                  </button>
                   <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
                     <img className="icon" src={naverLogo} />
                   </button>

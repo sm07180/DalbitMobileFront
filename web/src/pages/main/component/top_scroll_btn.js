@@ -9,6 +9,7 @@ import TopScrollIcon from '../static/ic_circle_top.svg'
 
 export default (props) => {
   const history = useHistory()
+  const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {logoChange} = globalCtx
@@ -19,16 +20,17 @@ export default (props) => {
   const urlrStr = history.location.pathname
 
   //출석도장
-  useEffect(() => {
-    async function fetchEventAttendCheck() {
-      const {result, data} = await API.getEventAttendCheck()
-      if (result === 'success') {
-        const {isCheck} = data
-        setAttendCheck(isCheck)
-      } else {
-        //실패
-      }
+  async function fetchEventAttendCheck() {
+    const {result, data} = await API.getEventAttendCheck()
+    if (result === 'success') {
+      const {isCheck} = data
+      setAttendCheck(isCheck)
+    } else {
+      //실패
     }
+  }
+
+  useEffect(() => {
     fetchEventAttendCheck()
   }, [])
 
@@ -60,7 +62,7 @@ export default (props) => {
   }
 
   return (
-    <FixedButton>
+    <FixedButton className={context.player ? 'usePlayer' : ''}>
       {urlrStr !== '/rank' && attendStampState()}
 
       {/* <TopScrollBtn onClick={scrollToTop} logoChange={logoChange} /> */}
@@ -78,6 +80,10 @@ const FixedButton = styled.div`
     &:first-child {
       margin-top: 0;
     }
+  }
+
+  &.usePlayer {
+    bottom: 70px;
   }
 `
 const AttendStamp = styled.button`

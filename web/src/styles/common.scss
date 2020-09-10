@@ -250,3 +250,34 @@ table {
     display: flex;
   }
 }
+
+.content-article {
+  &.player_show {
+    > div,
+    section {
+      padding-bottom: 60px;
+    }
+    .refresh-wrap,
+    .header-wrap {
+      padding-bottom: 0;
+    }
+  }
+}
+
+//
+div.MuiToolbar-root,
+.MuiToolbar-regular,
+.MuiPickersToolbar-toolbar,
+.MuiPickersDatePickerRoot-toolbar,
+.MuiToolbar-gutters {
+  background: #632beb;
+}
+.MuiPickersDay-daySelected.MuiPickersDay-daySelected {
+  background: #632beb;
+}
+.MuiPickersYear-yearSelected {
+  color: #632beb;
+}
+.MuiButton-label {
+  color: #632beb;
+}

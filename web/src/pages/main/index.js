@@ -7,6 +7,7 @@ import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
+import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import Lottie from 'react-lottie'
 
@@ -27,6 +28,8 @@ import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
 import Utility from 'components/lib/utility'
 import {RoomMake} from 'context/room'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
+import {Hybrid} from 'context/hybrid'
 
 // static
 import detailListIcon from './static/detaillist_circle_w.svg'
@@ -65,6 +68,7 @@ export default (props) => {
 
   //context
   const globalCtx = useContext(Context)
+  const {rankAction} = useContext(RankContext)
   const history = useHistory()
 
   // state
@@ -94,6 +98,31 @@ export default (props) => {
   const [payState, setPayState] = useState(false)
 
   useEffect(() => {
+    rankAction.formDispatch &&
+      rankAction.formDispatch({
+        type: 'RESET'
+      })
+
+    rankAction.setLevelList && rankAction.setLevelList([])
+
+    rankAction.setLikeList && rankAction.setLikeList([])
+
+    rankAction.setRankList && rankAction.setRankList([])
+
+    rankAction.setMyInfo &&
+      rankAction.setMyInfo({
+        isReward: false,
+        myGiftPoint: 0,
+        myListenerPoint: 0,
+        myRank: 0,
+        myUpDown: '',
+        myBroadPoint: 0,
+        myLikePoint: 0,
+        myPoint: 0,
+        myListenPoint: 0,
+        time: ''
+      })
+
     if (window.sessionStorage) {
       const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
       Object.keys(window.sessionStorage).forEach((key) => {
@@ -106,14 +135,37 @@ export default (props) => {
     if (sessionStorage.getItem('ranking_tab') !== null) {
       if (sessionStorage.getItem('ranking_tab') === 'dj') {
         setRankType('fan')
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 2
+          })
         sessionStorage.setItem('ranking_tab', 'fan')
       } else {
         setRankType('dj')
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 1
+          })
         sessionStorage.setItem('ranking_tab', 'dj')
       }
     } else {
       const randomData = Math.random() >= 0.5 ? 'dj' : 'fan'
       setRankType(randomData)
+      if (randomData === 'dj') {
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 1
+          })
+      } else {
+        rankAction.formDispatch &&
+          rankAction.formDispatch({
+            type: 'RANK_TYPE',
+            val: 2
+          })
+      }
       sessionStorage.setItem('ranking_tab', randomData)
     }
 
@@ -433,9 +485,19 @@ export default (props) => {
           setLiveGender('')
           if (sessionStorage.getItem('ranking_tab') === 'dj') {
             setRankType('fan')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 2
+              })
             sessionStorage.setItem('ranking_tab', 'fan')
           } else {
             setRankType('dj')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 1
+              })
             sessionStorage.setItem('ranking_tab', 'dj')
           }
           setLiveListType('detail')
@@ -496,6 +558,35 @@ export default (props) => {
                 스토어
               </Link>
             </div>
+            {globalCtx.isDevIp ? (
+              <>
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip')
+                    }}>
+                    클립<i>NEW</i>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip_open'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip_open')
+                    }}>
+                    클립<i>NEW</i>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
           <button
             className="broadBtn"
@@ -504,7 +595,30 @@ export default (props) => {
                 window.location.href = 'https://inforexseoul.page.link/Ws4t'
               } else {
                 if (!broadcastBtnActive) {
-                  RoomMake(globalCtx)
+                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                    if (Utility.getCookie('clip-player-info')) {
+                      globalCtx.action.confirm({
+                        msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                        callback: () => {
+                          clipExit(globalCtx)
+                          RoomMake(globalCtx)
+                        }
+                      })
+                    } else {
+                      RoomMake(globalCtx)
+                    }
+                  } else {
+                    globalCtx.action.confirm({
+                      msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                      callback: () => {
+                        sessionStorage.removeItem('room_no')
+                        Utility.setCookie('listen_room_no', null)
+                        Hybrid('ExitRoom', '')
+                        globalCtx.action.updatePlayer(false)
+                        RoomMake(globalCtx)
+                      }
+                    })
+                  }
                   setBroadcastBtnActive(true)
                   setTimeout(() => setBroadcastBtnActive(false), 3000)
                 }
@@ -533,14 +647,30 @@ export default (props) => {
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
-                <button className={`text ${rankType === 'dj' ? 'active' : ''}`} onClick={() => setRankType('dj')}>
+                <button
+                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
+                  onClick={() => {
+                    setRankType('dj')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 1
+                      })
+                  }}>
                   DJ
                 </button>
 
                 <button
                   style={{marginLeft: '2px'}}
                   className={`text ${rankType === 'fan' ? 'active' : ''}`}
-                  onClick={() => setRankType('fan')}>
+                  onClick={() => {
+                    setRankType('fan')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 2
+                      })
+                  }}>
                   팬
                 </button>
               </div>

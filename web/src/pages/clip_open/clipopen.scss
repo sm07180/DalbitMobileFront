@@ -1,0 +1,25 @@
+#clipOpen {
+  max-width: 720px;
+  margin: auto;
+
+  .content {
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .buttonWrap {
+      position: relative;
+
+      button {
+        position: absolute;
+        width: 31%;
+        height: 6%;
+        left: 35%;
+        bottom: 3%;
+        text-indent: -99999px;
+      }
+    }
+  }
+}
