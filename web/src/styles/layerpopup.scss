@@ -169,6 +169,7 @@
           margin-top: 16px;
           padding: 0px 14px;
           box-sizing: border-box;
+          word-wrap: break-word;
         }
 
         .btnWrap {
@@ -372,8 +373,56 @@
           }
         }
       }
+      .popup__inner {
+        text-align: left;
+        background-color: $white;
+        padding: 0px 16px;
+        .inner {
+          padding: 14px 0;
+        }
+      }
     }
     &-report {
+      .popup__inner {
+        text-align: left;
+        background-color: $white;
+        padding: 0px 16px;
+        .inner {
+          padding: 14px 0;
+        }
+
+        .btnWrap {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-top: 10px;
+          padding: 0;
+          button {
+            display: block;
+            width: 49%;
+            height: 48px;
+            border-radius: 10px;
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: 600;
+          }
+          .btn {
+            &__cancel {
+              border: 1px solid $primary;
+              color: $primary;
+            }
+            &__ok {
+              color: $white;
+              background-color: $mediumGray;
+              cursor: initial;
+              &.on {
+                background-color: $primary;
+                cursor: pointer;
+              }
+            }
+          }
+        }
+      }
       .reportWrap {
         &__textareaWrap {
           width: 100%;
@@ -421,36 +470,6 @@
           font-weight: 600;
         }
       }
-      .btnWrap {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        margin-top: 10px;
-        button {
-          display: block;
-          width: 49%;
-          height: 48px;
-          border-radius: 10px;
-          padding: 8px 0;
-          font-size: 14px;
-          font-weight: 600;
-        }
-        .btn {
-          &__cancel {
-            border: 1px solid $primary;
-            color: $primary;
-          }
-          &__ok {
-            color: $white;
-            background-color: $mediumGray;
-            cursor: initial;
-            &.on {
-              background-color: $primary;
-              cursor: pointer;
-            }
-          }
-        }
-      }
     }
     &-fanlist {
       .scrollWrap {
@@ -472,6 +491,9 @@
         }
       }
       .popup__inner {
+        text-align: left;
+        background-color: $white;
+        padding: 0px 16px;
         .inner {
           padding: 0;
         }
