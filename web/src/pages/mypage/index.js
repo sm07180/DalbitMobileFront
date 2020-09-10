@@ -34,10 +34,9 @@ export default (props) => {
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
-  const [updateCount, setUpdateCount] = useState(null)
+  const [updateBoardCount, setUpdateBoardCount] = useState(null)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
-  const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
 
   //navi Array
@@ -55,7 +54,7 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-  if (context.isDevIp) {
+  if (!context.isDevIp) {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
@@ -75,7 +74,6 @@ export default (props) => {
   } else if (profile && profile.memNo === memNo) {
     // memNo = profile.memNo
   }
-
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
@@ -107,7 +105,7 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        setUpdateCount(false)
+        setUpdateBoardCount(false)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -128,9 +126,13 @@ export default (props) => {
 
     if (memNo) {
       settingProfileInfo(memNo)
-      setTabSelected(0)
+      if (tabSelected === 1) {
+        return
+      } else {
+        setTabSelected(0)
+      }
     }
-  }, [memNo, context.mypageFanCnt, updateCount])
+  }, [memNo, context.mypageFanCnt, updateBoardCount])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [])
@@ -153,7 +155,7 @@ export default (props) => {
     return null
   }
   const setAction = (value) => {
-    setUpdateCount(value)
+    setUpdateBoardCount(value)
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -198,8 +200,8 @@ export default (props) => {
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
-                    <li className={tabSelected === idx ? `isSelected` : ``}>
-                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
+                    <li key={`nav-${idx}`} className={tabSelected === idx ? `isSelected` : ``}>
+                      <button onClick={() => changeTab(idx)}>
                         {txt} <span className="cnt">{profileCount(idx)}</span>
                       </button>
                     </li>
@@ -209,7 +211,7 @@ export default (props) => {
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
                 {tabSelected === 1 && <FanBoard type="subpage" set={setAction} />}
-                {context.isDevIp ? tabSelected === 2 && <MyClip type="subpage" /> : <></>}
+                {!context.isDevIp ? tabSelected === 2 && <MyClip type="subpage" /> : <></>}
               </div>
 
               {/* <div className="profile-menu">

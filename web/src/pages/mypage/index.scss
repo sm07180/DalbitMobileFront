@@ -681,7 +681,8 @@
       position: relative;
       display: flex;
       justify-content: center;
-      width: 33.33%;
+      // width: 33.33%;
+      width: inherit;
       text-align: center;
       &.isSelected {
         &::before {
