@@ -69,7 +69,7 @@ export default (props) => {
   }
 
   // memNo navi check
-  console.log(profileInfo)
+  // 타인프로필 profileInfo
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {

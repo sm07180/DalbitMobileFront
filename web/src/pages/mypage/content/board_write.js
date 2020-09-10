@@ -150,14 +150,11 @@ export default (props) => {
     currentPage = 1
     // fetchData()
     // props.set(true)
-    console.log(props.type)
     if (props.type === undefined || props.type === 'subpage') {
       setWriteType('board')
     } else if (props.type === 'reply') {
       setWriteType('reply')
     }
-
-    console.log(writeType)
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
   // useEffect(() => {
