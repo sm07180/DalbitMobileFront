@@ -333,7 +333,6 @@ function Ranking() {
   }, [formState, context.token.isLogin])
 
   useEffect(() => {
-    console.log(window.scrollY)
     const windowScrollEvent = () => {
       if (window.scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
