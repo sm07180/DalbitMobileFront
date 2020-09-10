@@ -302,10 +302,48 @@ function Ranking() {
 
   useEffect(() => {
     if (scrollY > 0) {
-      if (formState.rankType === 1 && formState.rankType === 2) {
+      if (formState.rankType === 1 || formState.rankType === 2) {
         window.scrollTo(0, scrollY - 114)
       } else {
         window.scrollTo(0, scrollY)
+      }
+
+      if (scrollY >= 48) {
+        if (fixedWrapRef.current.classList.length === 0) {
+          fixedWrapRef.current.className = 'fixed'
+        }
+        if (listWrapRef.current) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+            if (context.token.isLogin) {
+              if (listWrapRef.current.classList.length === 1) {
+                listWrapRef.current.className = 'listFixed more'
+              }
+            } else {
+              if (listWrapRef.current.classList.length === 0) {
+                listWrapRef.current.className = 'listFixed'
+              }
+            }
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+            listWrapRef.current.className = 'listFixed special'
+          } else {
+            listWrapRef.current.className = 'listFixed other'
+          }
+        }
+      } else {
+        fixedWrapRef.current.className = ''
+        if (listWrapRef.current) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+            if (context.token.isLogin) {
+              listWrapRef.current.className = 'more'
+            } else {
+              listWrapRef.current.className = ''
+            }
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+            listWrapRef.current.className = 'special'
+          } else {
+            listWrapRef.current.className = 'other'
+          }
+        }
       }
     }
   }, [])
@@ -344,7 +382,7 @@ function Ranking() {
           fixedWrapRef.current.className = 'fixed'
         }
         if (listWrapRef.current) {
-          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
               if (listWrapRef.current.classList.length === 1) {
                 listWrapRef.current.className = 'listFixed more'
@@ -354,21 +392,25 @@ function Ranking() {
                 listWrapRef.current.className = 'listFixed'
               }
             }
-          } else {
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
+          } else {
+            listWrapRef.current.className = 'listFixed other'
           }
         }
       } else {
         fixedWrapRef.current.className = ''
         if (listWrapRef.current) {
-          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
               listWrapRef.current.className = 'more'
             } else {
               listWrapRef.current.className = ''
             }
-          } else {
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'special'
+          } else {
+            listWrapRef.current.className = 'other'
           }
         }
       }
@@ -419,8 +461,16 @@ function Ranking() {
           )}
           {formState.rankType === RANK_TYPE.SPECIAL && <SpecialHistoryHandle fetching={fetching} />}
         </div>
-        {formState.rankType === RANK_TYPE.LEVEL && <LevelListWrap empty={empty} />}
-        {formState.rankType === RANK_TYPE.LIKE && <LikeListWrap empty={empty} />}
+        {formState.rankType === RANK_TYPE.LEVEL && (
+          <div ref={listWrapRef} className="other">
+            <LevelListWrap empty={empty} />
+          </div>
+        )}
+        {formState.rankType === RANK_TYPE.LIKE && (
+          <div ref={listWrapRef} className="other">
+            <LikeListWrap empty={empty} />
+          </div>
+        )}
         {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef} className={`${context.token.isLogin && 'more'}`}>
             <RankListWrap empty={empty} />
