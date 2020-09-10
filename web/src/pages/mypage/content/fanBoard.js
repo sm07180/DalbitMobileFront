@@ -146,7 +146,7 @@ export default (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [writeState])
+  }, [writeState, urlrStr])
   // useEffect(() => {
   //   window.addEventListener('scroll', scrollEvtHdr)
   //   return () => {

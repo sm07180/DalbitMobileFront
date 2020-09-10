@@ -164,7 +164,7 @@ const Notice = (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [context.noticeState])
+  }, [context.noticeState, urlrStr])
 
   const showMoreList = () => {
     if (moreState) {

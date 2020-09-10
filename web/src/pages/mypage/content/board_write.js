@@ -83,7 +83,6 @@ export default (props) => {
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
-    console.log(writeType)
     if (writeType === 'board') {
       params = {
         memNo: urlrStr,

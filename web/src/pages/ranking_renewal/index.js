@@ -302,11 +302,7 @@ function Ranking() {
 
   useEffect(() => {
     if (scrollY > 0) {
-      if (formState.rankType === 1 || formState.rankType === 2) {
-        window.scrollTo(0, scrollY - 114)
-      } else {
-        window.scrollTo(0, scrollY)
-      }
+      window.scrollTo(0, scrollY)
 
       if (scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
