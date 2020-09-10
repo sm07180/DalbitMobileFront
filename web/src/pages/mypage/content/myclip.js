@@ -51,7 +51,7 @@ export default function Clip(props) {
   }, [])
   return (
     <div id="mypageClip">
-      <Header title="클립" />
+      {!props.type && <Header title="클립" />}
       {context.urlStr === context.profile.memNo && (
         <div className="header">
           <div className="header__tab">
