@@ -19,7 +19,7 @@ const Layout = (props) => {
   const {children, webview} = props
   const context = useContext(Context)
   const playerCls = useMemo(() => {
-    return context.player ? 'player_show' : ''
+    return context.player || context.clipState ? 'player_show' : ''
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------

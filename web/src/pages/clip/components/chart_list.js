@@ -14,14 +14,16 @@ import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import NoResult from 'components/ui/noResult'
+
 //flag
 let currentPage = 1
 let timer
 let moreState = false
+
 export default (props) => {
   const context = useContext(Context)
   let history = useHistory()
-  const {chartListType, clipTypeActive, clipType} = props
+  const {chartListType, clipTypeActive, clipType, clipCategoryFixed} = props
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
   const fetchDataList = async (next) => {
@@ -88,7 +90,7 @@ export default (props) => {
       } = item
 
       return (
-        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
+        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
             <img src={bgImg[`thumb190x190`]} alt={title} />
           </div>
@@ -154,19 +156,21 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipMainGender, context.clipRefresh, clipTypeActive])
+  }, [context.clipMainSort, context.clipRefresh, clipTypeActive])
 
   if (chartListType === 'detail') {
     return (
       <div className="chartListDetail">
-        <ul className="chartListDetailBox">{list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}</ul>
+        <ul className="chartListDetailBox" style={{marginTop: clipCategoryFixed ? '102px' : ''}}>
+          {list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}
+        </ul>
       </div>
     )
   } else {
     const windowHalfWidth = (window.innerWidth - 32) / 2
     return (
       <div className="chartListSimple">
-        <ul className="chartListSimpleBox">
+        <ul className="chartListSimpleBox" style={{marginTop: clipCategoryFixed ? '102px' : ''}}>
           {list.length === 0 && <NoResult text="등록 된 클립이" />}
           {list.map((item, idx) => {
             const {

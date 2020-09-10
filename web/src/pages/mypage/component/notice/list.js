@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import Api from 'context/api'
 //router
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 
 // image
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
@@ -17,10 +17,16 @@ import ArrowRight from '../../component/arrow_right.svg'
 import BookMark from '../../component/book_mark_red.svg'
 const List = (props) => {
   //context
-  let history = useHistory()
   const context = useContext(Context)
   const ctx = useContext(Context)
-  var urlrStr = props.location.pathname.split('/')[2]
+  let history = useHistory()
+  let location = useLocation()
+  let urlrStr
+  if (props.location) {
+    urlrStr = props.location.pathname.split('/')[2]
+  } else {
+    urlrStr = location.pathname.split('/')[2]
+  }
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers, nickNm, profImg, writeTs} = props
 

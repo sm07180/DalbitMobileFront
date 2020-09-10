@@ -1,10 +1,8 @@
 import React, {useContext, useState, useEffect, useRef} from 'react'
-import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
-import {COLOR_MAIN} from 'context/color'
 import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
@@ -18,15 +16,21 @@ import Header from 'components/ui/new_header'
 import './clip.scss'
 //static
 import newIcon from './static/new_circle_m.svg'
-import refreshIcon from './static/refresh_g.svg'
 import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
+// header scroll flag
+let tempScrollEvent = null
 export default (props) => {
-  //Hybrid('GetLoginTokenNewWin', loginInfo.data)
   const context = useContext(Context)
   let history = useHistory()
+  //fixed category
+  const recomendRef = useRef()
+  const recentClipRef = useRef()
+  const categoryBestClipRef = useRef()
+  const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
   //swiper
   const swiperParamsRecent = {
     slidesPerView: 'auto',
@@ -58,6 +62,24 @@ export default (props) => {
   const [clipType, setClipType] = useState([])
   const [clipTypeActive, setClipTypeActive] = useState('')
   const [refreshAni, setRefreshAni] = useState(false)
+  // scroll fixed func
+  const windowScrollEvent = () => {
+    const ClipHeaderHeight = 50
+    const recomendClipNode = recomendRef.current
+    const recentClipNode = recentClipRef.current
+    const categoryBestClipNode = categoryBestClipRef.current
+    const RecomendHeight = recomendClipNode.clientHeight
+    const categoryBestHeight = categoryBestClipNode.clientHeight
+    const recentClipHeight = recentClipNode.clientHeight
+    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + recentClipHeight
+    if (window.scrollY >= TopSectionHeight) {
+      setClipCategoryFixed(true)
+      setScrollY(TopSectionHeight)
+    } else {
+      setClipCategoryFixed(false)
+      setScrollY(0)
+    }
+  }
   //api func
   const fetchDataListPopular = async () => {
     const {result, data, message} = await Api.getPopularList({})
@@ -188,13 +210,19 @@ export default (props) => {
       )
     })
   }
+  const changeActiveCategory = (value) => {
+    setClipTypeActive(value)
+    if (scrollY !== 0) {
+      window.scrollTo(0, scrollY)
+    }
+  }
   const makeCategoryList = () => {
     return clipType.map((item, idx) => {
       const {cdNm, value} = item
       return (
         <div
           className={clipTypeActive === value ? 'slideWrap active' : 'slideWrap'}
-          onClick={() => setClipTypeActive(value)}
+          onClick={() => changeActiveCategory(value)}
           key={idx + `categoryTab`}>
           {cdNm}
         </div>
@@ -204,7 +232,9 @@ export default (props) => {
   // initial category
   const refreshCategory = () => {
     setClipTypeActive('')
-
+    if (scrollY !== 0) {
+      window.scrollTo(0, scrollY)
+    }
     context.action.updateClipSort(0)
     //context.action.updateClipGender('')
     if (context.clipRefresh) {
@@ -213,7 +243,6 @@ export default (props) => {
     } else {
       context.action.updatClipRefresh(true)
     }
-
     if (refreshAni) {
       setRefreshAni(false)
     } else {
@@ -231,7 +260,6 @@ export default (props) => {
       setDetailPopup(true)
     }
   }
-  console.log(context.clipRefresh)
   // #layer pop
   useEffect(() => {
     if (detailPopup) {
@@ -244,18 +272,25 @@ export default (props) => {
       }
     }
   }, [detailPopup])
+  //---------------------------------------------------------
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-  //didmount
+  //------------------------------------------------------
   useEffect(() => {
     fetchDataListPopular()
     fetchDataListLatest()
     fetchDataListTop3()
     fetchDataClipType()
+  }, [])
+  //---------------------------------------
+  useEffect(() => {
+    window.removeEventListener('scroll', tempScrollEvent)
+    window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
   }, [])
   //---------------------------------------------------------------------
   return (
@@ -263,57 +298,65 @@ export default (props) => {
       <Header title="클립" />
       <div id="clipPage">
         {popularList.length > 0 ? (
-          <div className="recomClip">
+          <div className="recomClip" ref={recomendRef}>
             <h2 className="recomClip__title">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h2>
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <></>
+          <div ref={recomendRef}></div>
         )}
-        <div className="recentClip">
+        <div className="recentClip" ref={recentClipRef}>
           <h2 className="recentClip__title">최신 클립</h2>
           {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeLatestList()}</Swiper> : <></>}
         </div>
         {top3On && Object.keys(listTop3).length !== 0 && (
-          <div className="categoryBest">
+          <div className="categoryBest" ref={categoryBestClipRef}>
             <Swiper {...swiperParamsBest}>{listTop3 && makeTop3List()}</Swiper>
           </div>
         )}
         <div className="liveChart">
-          <div className="liveChart__titleBox">
-            <h2>
-              실시간 차트{' '}
-              <img
-                src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
-                className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                style={{cursor: 'pointer'}}
-                onClick={() => refreshCategory()}
-              />
-            </h2>
-
-            <div className="sequenceBox">
-              <div className="sequenceItem"></div>
-              <div className="sequenceItem">
-                <button type="button" onClick={() => setChartListType('detail')}>
-                  <img src={chartListType === 'detail' ? detailListIconActive : detailListIcon} />
-                </button>
-                <button type="button" onClick={() => setChartListType('simple')}>
-                  <img src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon} />
-                </button>
+          <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
+            <div className="liveChart__titleBox">
+              <h2>
+                실시간 차트{' '}
+                <img
+                  src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
+                  className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
+                  style={{cursor: 'pointer'}}
+                  onClick={() => refreshCategory()}
+                />
+              </h2>
+              <div className="sequenceBox">
+                <div className="sequenceItem"></div>
+                <div className="sequenceItem">
+                  <button type="button" onClick={() => setChartListType('detail')}>
+                    <img src={chartListType === 'detail' ? detailListIconActive : detailListIcon} />
+                  </button>
+                  <button type="button" onClick={() => setChartListType('simple')}>
+                    <img src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon} />
+                  </button>
+                </div>
               </div>
             </div>
+            {clipType.length > 0 ? (
+              <Swiper {...swiperParamsCategory}>
+                <div
+                  className={clipTypeActive === '' ? 'slideWrap active' : 'slideWrap'}
+                  onClick={() => changeActiveCategory('')}>
+                  전체
+                </div>
+                {makeCategoryList()}
+              </Swiper>
+            ) : (
+              <></>
+            )}
           </div>
-          {clipType.length > 0 ? (
-            <Swiper {...swiperParamsCategory}>
-              <div className={clipTypeActive === '' ? 'slideWrap active' : 'slideWrap'} onClick={() => setClipTypeActive('')}>
-                전체
-              </div>
-              {makeCategoryList()}
-            </Swiper>
-          ) : (
-            <></>
-          )}
-          <ChartList chartListType={chartListType} clipTypeActive={clipTypeActive} clipType={clipType}></ChartList>
+          <ChartList
+            chartListType={chartListType}
+            clipTypeActive={clipTypeActive}
+            clipType={clipType}
+            clipCategoryFixed={clipCategoryFixed}
+          />
         </div>
       </div>
       {detailPopup && <DetailPopup setDetailPopup={setDetailPopup} />}
