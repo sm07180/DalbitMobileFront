@@ -2554,6 +2554,13 @@ export default class API {
       data: data
     })
   }
+
+  static verisionCheck = async () => {
+    return await ajax({
+      url: '/center/version',
+      method: 'GET'
+    })
+  }
 }
 
 API.customHeader = null
