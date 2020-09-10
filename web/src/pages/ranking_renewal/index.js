@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertDateToText} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate} from './lib/common_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -15,10 +15,11 @@ import RankBtnWrap from './components/rank_btn_wrap'
 import RankHandleDateBtn from './components/rank_handle_date_btn'
 import RankDateBtn from './components/date_btn_wrap'
 import MyProfile from './components/MyProfile'
+import SpecialHistoryHandle from './components/special_history_handle'
 import RankListWrap from './components/rank_list'
 import LevelListWrap from './components/level_list'
 import LikeListWrap from './components/like_list'
-
+import SpecialListWrap from './components/special_list'
 //constant
 import {RANK_TYPE} from './constant'
 
@@ -29,13 +30,12 @@ import level from 'pages/level'
 let timer
 let touchStartY = null
 let touchEndY = null
-
 const records = 50
 function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage} = rankState
+  const {formState, myInfo, rankList, levelList, likeList, totalPage, scrollY} = rankState
 
   const formDispatch = rankAction.formDispatch
   const setMyInfo = rankAction.setMyInfo
@@ -43,7 +43,8 @@ function Ranking() {
   const setLevelList = rankAction.setLevelList
   const setLikeList = rankAction.setLikeList
   const setTotalPage = rankAction.setTotalPage
-
+  const setSpecialList = rankAction.setSpecialList
+  const setScrollY = rankAction.setScrollY
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
   const [fetching, setFetching] = useState(false)
@@ -300,7 +301,35 @@ function Ranking() {
   }, [formState, myInfo, rankList, levelList, likeList])
 
   useEffect(() => {
-    fetchData()
+    if (scrollY > 0) {
+      window.scrollTo(0, scrollY - 114)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (formState.rankType !== RANK_TYPE.SPECIAL) fetchData()
+    else {
+      fetchSpecial()
+    }
+    async function fetchSpecial() {
+      setFetching(true)
+      const dateObj = convertSetSpecialDate(formState.currentDate)
+      const res = await Api.getSpecialDjHistory({
+        yy: dateObj.year,
+        mm: dateObj.month
+      })
+      if (res.result === 'success') {
+        if (res.data.list.length > 0) {
+          setSpecialList(res.data.list)
+          setEmpty(false)
+        } else {
+          setEmpty(true)
+          setSpecialList([])
+        }
+      }
+
+      setFetching(false)
+    }
   }, [formState, context.token.isLogin])
 
   useEffect(() => {
@@ -311,30 +340,38 @@ function Ranking() {
           fixedWrapRef.current.className = 'fixed'
         }
         if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            if (listWrapRef.current.classList.length === 1) {
-              listWrapRef.current.className = 'listFixed more'
+          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+            if (context.token.isLogin) {
+              if (listWrapRef.current.classList.length === 1) {
+                listWrapRef.current.className = 'listFixed more'
+              }
+            } else {
+              if (listWrapRef.current.classList.length === 0) {
+                listWrapRef.current.className = 'listFixed'
+              }
             }
           } else {
-            if (listWrapRef.current.classList.length === 0) {
-              listWrapRef.current.className = 'listFixed'
-            }
+            listWrapRef.current.className = 'listFixed special'
           }
         }
       } else {
         fixedWrapRef.current.className = ''
         if (listWrapRef.current) {
-          if (context.token.isLogin) {
-            listWrapRef.current.className = 'more'
+          if (formState.rankType !== RANK_TYPE.SPECIAL) {
+            if (context.token.isLogin) {
+              listWrapRef.current.className = 'more'
+            } else {
+              listWrapRef.current.className = ''
+            }
           } else {
-            listWrapRef.current.className = ''
+            listWrapRef.current.className = 'special'
           }
         }
       }
-
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(function () {
         //스크롤
+        setScrollY(window.scrollY)
         const diff = document.body.scrollHeight / (formState.page + 1)
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
@@ -350,7 +387,6 @@ function Ranking() {
     }
 
     window.addEventListener('scroll', windowScrollEvent)
-
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
@@ -370,19 +406,25 @@ function Ranking() {
             <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState.rankType !== 3 && formState.rankType !== 4 && `${realTime()}`}</div> */}
           </div>
-          {formState.rankType !== RANK_TYPE.LEVEL && formState.rankType !== RANK_TYPE.LIKE && (
+          {(formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) && (
             <>
               <RankDateBtn fetching={fetching} />
               <RankHandleDateBtn fetching={fetching} />
               <MyProfile fetching={fetching} />
             </>
           )}
+          {formState.rankType === RANK_TYPE.SPECIAL && <SpecialHistoryHandle fetching={fetching} />}
         </div>
-        {formState.rankType === 3 && <LevelListWrap empty={empty} />}
-        {formState.rankType === 4 && <LikeListWrap empty={empty} />}
-        {formState.rankType !== 3 && formState.rankType !== 4 && (
+        {formState.rankType === RANK_TYPE.LEVEL && <LevelListWrap empty={empty} />}
+        {formState.rankType === RANK_TYPE.LIKE && <LikeListWrap empty={empty} />}
+        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef} className={`${context.token.isLogin && 'more'}`}>
             <RankListWrap empty={empty} />
+          </div>
+        )}
+        {formState.rankType === RANK_TYPE.SPECIAL && (
+          <div ref={listWrapRef} className="special">
+            <SpecialListWrap empty={empty} fetching={fetching} />
           </div>
         )}
       </div>

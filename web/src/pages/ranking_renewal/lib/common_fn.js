@@ -12,6 +12,19 @@ export function convertDateFormat(value, Separator) {
   return year + Separator + month + Separator + day
 }
 
+export function convertSetSpecialDate(value) {
+  let month = value.getMonth() + 1
+
+  if (month < 10) {
+    month = '0' + month
+  }
+
+  return {
+    year: value.getFullYear(),
+    month: month
+  }
+}
+
 export function convertDateToText(dateType, currentDate, convertType) {
   const formDt = currentDate
   let formYear = formDt.getFullYear()

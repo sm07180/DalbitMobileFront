@@ -1675,6 +1675,14 @@ export default class API {
     })
   }
 
+  static getSpecialDjHistory = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/specialDj/history',
+      params: data
+    })
+  }
+
   static get_ranking = async (obj) => {
     const {param} = obj
     return await ajax({

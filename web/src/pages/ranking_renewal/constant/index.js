@@ -2,7 +2,8 @@ export const RANK_TYPE = {
   DJ: 1,
   FAN: 2,
   LEVEL: 3,
-  LIKE: 4
+  LIKE: 4,
+  SPECIAL: 5
 }
 export const DATE_TYPE = {
   DAY: 1,
