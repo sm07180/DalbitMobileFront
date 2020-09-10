@@ -80,7 +80,7 @@ export default (props) => {
               <span></span>
             </li>
           </ul>
-          <p>CAST</p>
+          <p>CLIP</p>
         </div>
         <div className="info">
           <div className="profile">
