@@ -6,6 +6,8 @@ import Utility from 'components/lib/utility'
 
 export const clipJoin = (data, context) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    data["commentOpen"] = false
+    data["playlistOpen"] = false
     Hybrid('ClipPlayerJoin', data)
   } else {
     context.action.confirm({
