@@ -57,13 +57,12 @@
 
     .popupBg {
       background: $white;
+      padding: 0px 2px;
       border-radius: 20px;
-      padding-bottom: 16px;
-      padding: 0px 8px;
       padding-bottom: 16px;
     }
     &__title {
-      margin: 0px 8px;
+      margin: 0px 14px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -127,7 +126,7 @@
       }
     }
     &__text {
-      width: calc(100% - 40px);
+      width: calc(100% - 16px);
       margin: 0 auto;
       text-align: right;
       .popup__inner {
@@ -150,7 +149,7 @@
           overflow: auto;
           max-height: 300px;
           font-size: 16px;
-          font-weight: 700px;
+
           line-height: 24px;
           color: $black;
           font-weight: 700;
@@ -168,19 +167,25 @@
 
         .textMargin {
           margin-top: 16px;
-          padding: 0px 8px;
+          padding: 0px 14px;
+          box-sizing: border-box;
         }
-        .btn-ok {
-          display: block;
+
+        .btnWrap {
           width: 100%;
-          margin-top: 16px;
-          padding: 12px 0;
-          border-radius: 12px;
-          background-color: #632beb;
-          color: #fff;
-          font-size: 18px;
-          font-weight: 600;
-          text-align: center;
+          padding: 0px 14px;
+          .btn-ok {
+            width: 100%;
+            display: block;
+            margin-top: 16px;
+            padding: 12px 0;
+            border-radius: 12px;
+            background-color: #632beb;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+          }
         }
       }
       .checkbox-wrap {
