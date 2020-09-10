@@ -16,6 +16,7 @@ export default function Service() {
   const [versionShow, setVersionShow] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [currentVersion, setCurrentVersion] = useState(false)
+  const [storeUrl, setStoreUrl] = useState('')
   const osTypeConvertToText = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
       return <span className="serviceWrap__user--point">구글Play스토어</span>
@@ -60,21 +61,27 @@ export default function Service() {
 
   const updateApp = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
-      Hybrid('openUrl', 'https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject')
+      Hybrid(
+        'openUrl',
+        storeUrl
+        // 'https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'
+      )
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       Hybrid(
         'openUrl',
-        'https://apps.apple.com/kr/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806'
+        storeUrl
+        // 'https://apps.apple.com/kr/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806'
       )
     }
   }
 
   useEffect(() => {
     async function fetchData() {
-      const {data} = await Api.splash()
+      const {data} = await Api.verisionCheck()
 
       setIsUpdate(data.isUpdate)
-      setCurrentVersion(data.version)
+      setCurrentVersion(data.nowVersion)
+      setStoreUrl(data.storeUrl)
     }
     if (customerHeader.os === OS_TYPE['Android']) {
       setVersionShow(true)
