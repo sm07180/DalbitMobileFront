@@ -128,6 +128,7 @@ export default (props) => {
 
     if (memNo) {
       settingProfileInfo(memNo)
+      setTabSelected(0)
     }
   }, [memNo, context.mypageFanCnt, updateCount])
   useEffect(() => {
@@ -208,7 +209,7 @@ export default (props) => {
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
                 {tabSelected === 1 && <FanBoard type="subpage" set={setAction} />}
-                {tabSelected === 2 && <MyClip type="subpage" />}
+                {context.isDevIp ? tabSelected === 2 && <MyClip type="subpage" /> : <></>}
               </div>
 
               {/* <div className="profile-menu">
