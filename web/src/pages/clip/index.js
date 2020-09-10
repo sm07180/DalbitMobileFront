@@ -291,6 +291,10 @@ export default (props) => {
     window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
+
+    return () => {
+      window.removeEventListener('scroll', tempScrollEvent)
+    }
   }, [])
   //---------------------------------------------------------------------
   return (

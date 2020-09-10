@@ -1,23 +1,22 @@
 // Api
 import React, {useCallback, useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+// context
+import {Context} from 'context'
 import Api from 'context/api'
 // router
-
-import Header from '../component/header.js'
+import {useHistory} from 'react-router-dom'
 // scss
 import '../myclip.scss'
 // components
 import ClipUpload from '../component/clip/clip_upload'
 import ClipHistory from '../component/clip/clip_history'
-// context
-import {Context} from 'context'
-
+import Header from '../component/header.js'
 // ----------------------------------------------------------------------
 export default function Clip(props) {
   //history
   let history = useHistory()
   const context = useContext(Context)
+  // divide components
   const createContents = () => {
     if (context.clipTab === 0) {
       return <ClipUpload />
@@ -25,6 +24,7 @@ export default function Clip(props) {
       return <ClipHistory />
     }
   }
+  //toggle tab
   const changeTab = (type) => {
     if (type === 0) {
       context.action.updateClipTab(0)
@@ -32,9 +32,7 @@ export default function Clip(props) {
       context.action.updateClipTab(1)
     }
   }
-  //   const uploadModal = () => {
-  //     history.push('/modal/my_clipUpload')
-  //   }
+  //----------------------------------------------------------------
   useEffect(() => {
     if (context.profile.memNo !== context.urlStr) {
       context.action.updateClipTab(0)
@@ -48,7 +46,11 @@ export default function Clip(props) {
       }
     }
     fetchDataClipType()
+    return () => {
+      context.action.updateClipTab(0)
+    }
   }, [])
+  // render---------------------------------------------------------
   return (
     <div id="mypageClip">
       {!props.type && <Header title="클립" />}
