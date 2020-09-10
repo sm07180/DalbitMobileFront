@@ -91,7 +91,7 @@ const GlobalProvider = (props) => {
   const [clipType, setClipType] = useState([])
   const [urlStr, setUrlStr] = useState('')
   //clipPlayer
-  const [clipState, setClipState] = useState('floating')
+  const [clipState, setClipState] = useState(false)
   const [clipPlayerState, setClipPlayerState] = useState(null)
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
