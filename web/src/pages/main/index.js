@@ -558,14 +558,15 @@ export default (props) => {
             </div>
             {globalCtx.isDevIp ? (
               <>
-                <div className="tab">
+                <div className="tab tab--yellow">
                   <Link
+                    className="newicon"
                     to={'/clip'}
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip')
                     }}>
-                    클립
+                    클립<i>NEW</i>
                   </Link>
                 </div>
               </>
@@ -574,7 +575,7 @@ export default (props) => {
                 <div className="tab tab--yellow">
                   <Link
                     className="newicon"
-                    to={'/clip'}
+                    to={'/clip_open'}
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip_open')
