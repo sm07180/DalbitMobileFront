@@ -103,7 +103,21 @@
 
   .rankTab {
     width: 100%;
+
+    .swiper-container {
+      // display: inline-block;
+      // width: calc(100% - 100px);
+      .swiper-wrapper {
+        width: 100%;
+
+        .swiper-slide {
+          width: auto;
+        }
+      }
+    }
+
     &__btn {
+      width: max-content;
       height: 32px;
       margin-right: 2px;
       padding: 0 12px;
@@ -119,6 +133,7 @@
     }
 
     &__specialBtn {
+      width: max-content;
       height: 32px;
       margin-right: 2px;
       padding: 0 12px;

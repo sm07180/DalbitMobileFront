@@ -75,6 +75,7 @@ function RankProvider(props) {
     time: ''
   })
   const [totalPage, setTotalPage] = useState(0)
+  const [scrollY, setScrollY] = useState(0)
 
   const rankState = {
     rankList,
@@ -83,7 +84,8 @@ function RankProvider(props) {
     likeList,
     specialList,
     myInfo,
-    totalPage
+    totalPage,
+    scrollY
   }
 
   const rankAction = {
@@ -93,7 +95,8 @@ function RankProvider(props) {
     setLikeList,
     setMyInfo,
     setTotalPage,
-    setSpecialList
+    setSpecialList,
+    setScrollY
   }
 
   const bundle = {

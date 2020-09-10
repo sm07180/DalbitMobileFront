@@ -35,7 +35,7 @@ function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage} = rankState
+  const {formState, myInfo, rankList, levelList, likeList, totalPage, scrollY} = rankState
 
   const formDispatch = rankAction.formDispatch
   const setMyInfo = rankAction.setMyInfo
@@ -44,7 +44,7 @@ function Ranking() {
   const setLikeList = rankAction.setLikeList
   const setTotalPage = rankAction.setTotalPage
   const setSpecialList = rankAction.setSpecialList
-
+  const setScrollY = rankAction.setScrollY
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
   const [fetching, setFetching] = useState(false)
@@ -301,6 +301,12 @@ function Ranking() {
   }, [formState, myInfo, rankList, levelList, likeList])
 
   useEffect(() => {
+    if (scrollY > 0) {
+      window.scrollTo(0, scrollY - 114)
+    }
+  }, [])
+
+  useEffect(() => {
     if (formState.rankType !== RANK_TYPE.SPECIAL) fetchData()
     else {
       fetchSpecial()
@@ -327,6 +333,7 @@ function Ranking() {
   }, [formState, context.token.isLogin])
 
   useEffect(() => {
+    console.log(window.scrollY)
     const windowScrollEvent = () => {
       if (window.scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
@@ -364,6 +371,7 @@ function Ranking() {
       if (timer) window.clearTimeout(timer)
       timer = window.setTimeout(function () {
         //스크롤
+        setScrollY(window.scrollY)
         const diff = document.body.scrollHeight / (formState.page + 1)
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (totalPage > formState.page && formState.page < 25) {
