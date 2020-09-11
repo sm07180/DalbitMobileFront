@@ -55,7 +55,7 @@ export default (props) => {
   const goBack = () => {
     if (globalCtx.player === false) {
       alert('고백?,ClipPlayerEnter')
-      history.goBack()
+      Hybrid('CloseLayerPopup')
     } else {
       alert('조인?,ClipPlayerEnter')
       Hybrid('ClipPlayerEnter')
