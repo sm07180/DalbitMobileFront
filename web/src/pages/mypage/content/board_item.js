@@ -10,6 +10,7 @@ import {useLocation, useHistory, useParams} from 'react-router-dom'
 // context
 import {Context} from 'context'
 import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 export default (props) => {
   let params = useParams()
   const LocationClip = params.clipNo
@@ -70,6 +71,7 @@ export default (props) => {
         if (res.result === 'success') {
           setThisBigIdx(0)
           props.set(true)
+          //Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
         } else if (res.result === 'fail') {
           context.action.alert({
             callback: () => {},
@@ -150,6 +152,7 @@ export default (props) => {
       setModifyState(false)
       context.action.updateBoardIdx(0)
       context.action.updateBoardModifyInfo(null)
+      //Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
       props.set(true)
     } else if (res.result === 'fail') {
       context.action.alert({

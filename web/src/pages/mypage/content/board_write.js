@@ -10,6 +10,7 @@ import qs from 'query-string'
 import {Context} from 'context'
 //api
 import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 // concat
 let currentPage = 1
@@ -113,6 +114,8 @@ export default (props) => {
           props.set(true, writeType)
           writeToggle()
           setTextChange('')
+          console.log(data.clipPlayInfo)
+          //Hybrid('ClipUpdateInfo', data.clipPlayInfo)
         }
       }
       fetchReplyAdd()
