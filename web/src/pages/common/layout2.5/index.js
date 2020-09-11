@@ -34,7 +34,9 @@ const Layout = (props) => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
+      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`} type={props.type === 'clipBack' ? 'clipBack' : ''}>
+        {children}
+      </Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* (클립)Player */}
