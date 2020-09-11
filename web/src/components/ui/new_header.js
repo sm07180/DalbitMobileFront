@@ -14,7 +14,8 @@ export default (props) => {
   const [scrollY, setScrollY] = useState(0)
 
   const globalCtx = useContext(Context)
-  let {goBack, type} = props
+  let {goBack, type, locHash} = props
+  console.log(type)
 
   if (goBack === undefined && type === undefined) {
     goBack = () => {
