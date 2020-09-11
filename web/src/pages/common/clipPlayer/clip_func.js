@@ -29,3 +29,7 @@ export const clipExit = (context) => {
   context.action.updateClipState(null)
   context.action.updatePlayer(false)
 }
+
+export const updateClipInfo = (data) => {
+  Hybrid('ClipUpdateInfo', data)
+}
