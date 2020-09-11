@@ -8,8 +8,8 @@ const btnArray = [
   {val: 1, text: 'DJ'},
   {val: 2, text: '팬'},
   {val: 3, text: '레벨'},
-  {val: 4, text: '좋아요'}
-  // {val: 5, text: '스페셜DJ', isSpecial: true}
+  {val: 4, text: '좋아요'},
+  {val: 5, text: '스페셜DJ', isSpecial: true}
 ]
 export default function RankBtnWrap({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)
@@ -31,7 +31,7 @@ export default function RankBtnWrap({fetching}) {
 
   return (
     <div className="rankTab">
-      {btnArray.map((v, idx) => {
+      {/* {btnArray.map((v, idx) => {
         return (
           <button
             key={idx}
@@ -50,8 +50,8 @@ export default function RankBtnWrap({fetching}) {
             {v.text}
           </button>
         )
-      })}
-      {/* {btnArray.length > 0 && (
+      })} */}
+      {btnArray.length > 0 && (
         <Swiper {...swiperParams}>
           {btnArray.map((v, idx) => {
             return (
@@ -96,7 +96,7 @@ export default function RankBtnWrap({fetching}) {
             )
           })}
         </Swiper>
-      )} */}
+      )}
     </div>
   )
 }
