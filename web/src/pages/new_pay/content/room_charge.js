@@ -21,15 +21,17 @@ import dalIcon from '../static/ic_moon_s.svg'
 import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
-export default () => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
+  let {tabType} = props
+  if (tabType === undefined || (tabType !== 'charge' && tabType !== 'change')) tabType = 'charge'
   //useState
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
   const [selected, setSelected] = useState(-1)
-  const [selectedItem, setSelectedItem] = useState('charge')
+  const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
 
@@ -148,11 +150,18 @@ export default () => {
         setMyByeol(Utility.addComma(res.data.byeolCnt))
         setMyDal(Utility.addComma(res.data.dalCnt))
         context.action.alert({
-          msg: res.message
+          msg: res.message,
+          callback: () => {
+            console.log('완료되엇습니다')
+            Hybrid('CloseLayerPopup')
+          }
         })
       } else {
         context.action.alert({
-          msg: res.message
+          msg: res.message,
+          callback: () => {
+            Hybrid('CloseLayerPopup')
+          }
         })
       }
     }

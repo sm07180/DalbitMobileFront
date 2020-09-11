@@ -23,7 +23,7 @@ export default () => {
   const params = useParams()
   const location = useLocation()
 
-  const {webview, canceltype} = qs.parse(location.search)
+  const {webview, canceltype, tabType} = qs.parse(location.search)
 
   const createContent = () => {
     let {title} = params
@@ -40,7 +40,7 @@ export default () => {
       case 'result':
         return <Result />
       case 'room':
-        return <RoomCharge />
+        return <RoomCharge tabType={tabType} />
       case 'store':
         return <StoreCharge />
       case 'bank':
