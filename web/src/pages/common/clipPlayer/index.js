@@ -1,8 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
+import qs from 'query-string'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+
 // etc
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -18,6 +20,7 @@ export default (props) => {
   //context
   const globalCtx = useContext(Context)
   const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
+  const {webview} = qs.parse(location.search)
 
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
@@ -56,7 +59,7 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null) return null
+  if (!clipState || clipPlayerInfo === null || webview === 'new') return null
 
   //---------------------------------------------------------------------
   return (
