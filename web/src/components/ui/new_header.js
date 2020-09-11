@@ -16,7 +16,7 @@ export default (props) => {
   const globalCtx = useContext(Context)
   let {goBack, type} = props
 
-  if (goBack === undefined) {
+  if (goBack === undefined && type === undefined) {
     goBack = () => {
       return history.goBack()
     }
