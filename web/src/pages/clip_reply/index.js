@@ -63,7 +63,7 @@ export default (props) => {
 
   //---------------------------------------------------------------------
   return (
-    <Layout2 {...props} webview={webview} status="no_gnb">
+    <Layout2 {...props} webview={webview} status="no_gnb" type={'clipBack'}>
       <div id="clip_reply">
         <div className="fanboard">
           {!props.type ? <Header title="클립 댓글" goBack={goBack} /> : <></>}

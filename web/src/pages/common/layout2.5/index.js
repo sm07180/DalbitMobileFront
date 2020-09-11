@@ -18,7 +18,8 @@ import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 //
 const Layout = (props) => {
-  const {children, webview} = props
+  const {children, webview, type} = props
+  console.log(type)
   const context = useContext(Context)
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
@@ -55,7 +56,7 @@ const Article = styled.article`
   background-color: #eeeeee;
   &.webview {
     .header-wrap .close-btn {
-      display: none;
+      display: ${(props) => (props.type === 'clipBack' ? 'block' : 'none')};
     }
   }
   /* player가 노출시 padding-bottom추가 */
