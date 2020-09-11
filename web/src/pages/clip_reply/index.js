@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import Api from 'context/api'
-import {useHistory, useParams, useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import qs from 'query-string'
 //context
 import {Context} from 'context'
@@ -55,6 +55,8 @@ export default (props) => {
   const checkPlayer = () => {
     if (globalCtx.clipPlayerInfo !== null) {
       Hybrid('ClipPlayerEnter')
+    } else {
+      return undefined
     }
   }
   //---------------------------------------------------------------------
