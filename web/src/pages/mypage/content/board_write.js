@@ -114,8 +114,8 @@ export default (props) => {
           props.set(true, writeType)
           writeToggle()
           setTextChange('')
-          console.log(data.clipPlayInfo)
-          //Hybrid('ClipUpdateInfo', data.clipPlayInfo)
+
+          Hybrid('ClipUpdateInfo', data.clipPlayInfo)
         }
       }
       fetchReplyAdd()

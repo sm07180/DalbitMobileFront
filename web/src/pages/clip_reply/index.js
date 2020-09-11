@@ -35,7 +35,7 @@ export default (props) => {
     if (result === 'success') {
       setBoardList(data.list)
       setTotalCount(data.paging.total)
-      Hybrid('ClipUpdateInfo', data.clipPlayInfo)
+      // Hybrid('ClipUpdateInfo', data.clipPlayInfo)
     } else {
       globalCtx.action.alert({
         msg: message
