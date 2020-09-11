@@ -17,6 +17,7 @@ import NoResult from 'components/ui/noResult'
 import '../mypage/index.scss'
 
 export default (props) => {
+  const globalCtx = useContext(Context)
   const {webview} = qs.parse(location.search)
   let params = useParams()
   const LocationClip = params.clipNo
@@ -51,7 +52,7 @@ export default (props) => {
   }, [])
 
   const checkPlayer = () => {
-    if (isHybrid()) {
+    if (globalCtx.clipPlayerState !== null) {
       Hybrid('ClipPlayerEnter')
     } else {
       history.goBack()
