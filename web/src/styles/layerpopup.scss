@@ -126,8 +126,9 @@
       }
     }
     &__text {
-      width: calc(100% - 16px);
-      margin: 0 auto;
+      max-width: 360px;
+      padding: 0px 16px;
+      margin: auto;
       text-align: right;
       .popup__inner {
         text-align: left;
@@ -152,7 +153,7 @@
 
           line-height: 24px;
           color: $black;
-          font-weight: 700;
+          font-weight: 500;
         }
         .contents::-webkit-scrollbar {
           width: 10px;
@@ -241,7 +242,9 @@
       }
     }
     &__img {
-      margin: 0px 16px;
+      max-width: 360px;
+      margin: auto;
+      padding: 0px 16px;
       text-align: right;
       box-sizing: border-box;
       .contents {
