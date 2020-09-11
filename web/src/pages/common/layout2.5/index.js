@@ -18,8 +18,8 @@ import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 //
 const Layout = (props) => {
-  const {children, webview, type} = props
-  console.log(type)
+  const {children, webview} = props
+
   const context = useContext(Context)
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
