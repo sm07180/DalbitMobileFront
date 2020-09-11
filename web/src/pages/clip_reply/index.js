@@ -60,7 +60,7 @@ export default (props) => {
           {globalCtx.clipPlayerInfo !== null && !props.type && (
             <Header title="클립 댓글" goBack={() => Hybrid('ClipPlayerEnter')} />
           )}
-          {globalCtx.clipPlayerInfo === null && !props.type && <Header title="클립 댓글" />}
+          {globalCtx.clipPlayerInfo === null && !props.type && <Header title="클립 댓글" goBack={() => history.go(-2)} />}
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
           {/* 클립댓글 리스트 영역 */}
           {totalCount > 0 ? (
