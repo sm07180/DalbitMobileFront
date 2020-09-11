@@ -22,7 +22,7 @@ export default (props) => {
         props.children
       )}
 
-      <button className="close-btn" onClick={goBack}>
+      <button className="close-btn" onClick={goBack} style={{zIndex: 48}}>
         <img src={closeBtn} alt="뒤로가기" />
       </button>
     </div>
