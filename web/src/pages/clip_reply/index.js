@@ -53,10 +53,8 @@ export default (props) => {
   }, [])
 
   const checkPlayer = () => {
-    if (globalCtx.clipPlayerState !== null) {
+    if (globalCtx.clipPlayerInfo !== null) {
       Hybrid('ClipPlayerEnter')
-    } else {
-      history.goBack()
     }
   }
   //---------------------------------------------------------------------
