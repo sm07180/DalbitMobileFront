@@ -68,7 +68,7 @@
       white-space: nowrap;
       height: 52px;
       box-sizing: border-box;
-      line-height: 54px;
+      line-height: 52px;
       font-size: 18px;
       font-weight: 600;
       text-align: center;
@@ -126,8 +126,9 @@
       }
     }
     &__text {
-      width: calc(100% - 16px);
-      margin: 0 auto;
+      max-width: 360px;
+      padding: 0px 16px;
+      margin: auto;
       text-align: right;
       .popup__inner {
         text-align: left;
@@ -152,7 +153,7 @@
 
           line-height: 24px;
           color: $black;
-          font-weight: 700;
+          font-weight: 500;
         }
         .contents::-webkit-scrollbar {
           width: 10px;
@@ -241,7 +242,9 @@
       }
     }
     &__img {
-      margin: 0px 16px;
+      max-width: 360px;
+      margin: auto;
+      padding: 0px 16px;
       text-align: right;
       box-sizing: border-box;
       .contents {
@@ -307,6 +310,18 @@
     }
     // exp 팝업
     &-exp {
+      .popup__text {
+        padding: 0px;
+      }
+
+      .close-btn {
+        top: -40px;
+        right: 0px;
+      }
+
+      .popup__title {
+        margin: 0px;
+      }
       ul {
         li {
           padding-top: 16px;
@@ -383,6 +398,25 @@
       }
     }
     &-report {
+      .desc {
+        margin-top: 16px;
+      }
+      .close-btn {
+        width: 32px;
+        height: 32px;
+        top: -40px;
+        right: 0px;
+      }
+      .popup__title {
+        margin: 0px;
+      }
+      .h3-tit {
+        border-bottom: solid 1px $lightGray;
+      }
+
+      .popup__text {
+        padding: 0px;
+      }
       .popup__inner {
         text-align: left;
         background-color: $white;
@@ -472,13 +506,31 @@
       }
     }
     &-fanlist {
+      .popup__text {
+        padding: 0px;
+      }
+      .close-btn {
+        top: -40px;
+        right: 0px;
+      }
+
+      .fan-list {
+        &:first-child {
+          margin-top: 16px;
+        }
+      }
+
+      .popup__title {
+        margin: 0px;
+      }
+
       .scrollWrap {
         &-inner {
           position: relative;
           width: 100%;
           min-height: 200px;
           margin: 0 auto;
-          padding: 12px;
+
           display: flex;
           flex-direction: column;
           overflow-x: hidden;
