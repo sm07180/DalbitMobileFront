@@ -1,6 +1,6 @@
 import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import Api from 'context/api'
-import {useHistory, useParams} from 'react-router-dom'
+import {useHistory, useParams, useHistory} from 'react-router-dom'
 import qs from 'query-string'
 //context
 import {Context} from 'context'
@@ -20,6 +20,7 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {webview} = qs.parse(location.search)
   let params = useParams()
+  let history = useHistory()
   const LocationClip = params.clipNo
   //state
   const [boardList, setBoardList] = useState([])
