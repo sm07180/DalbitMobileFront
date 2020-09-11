@@ -52,12 +52,16 @@ export default (props) => {
     fetchReplyList()
   }, [])
 
+  const goback = () => {
+    Hybrid('ClipPlayerEnter')
+  }
+
   //---------------------------------------------------------------------
   return (
     <Layout2 {...props} webview={webview} status="no_gnb">
       <div id="clip_reply">
         <div className="fanboard">
-          {!props.type ? <Header title="클립 댓글" type="backClip" locHash={props.location} /> : <></>}
+          {!props.type ? <Header title="클립 댓글" goback={goback} /> : <></>}
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
           {/* 클립댓글 리스트 영역 */}
           {totalCount > 0 ? (
