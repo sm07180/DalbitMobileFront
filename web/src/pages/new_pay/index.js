@@ -28,6 +28,7 @@ export default () => {
   const createContent = () => {
     let {title} = params
     const {state} = location
+
     if (state === undefined && Object.keys(params).length === 0 /*&& webview === 'new'*/) {
       title = 'room'
     }

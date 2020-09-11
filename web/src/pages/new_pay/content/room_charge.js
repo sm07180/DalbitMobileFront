@@ -27,6 +27,7 @@ export default (props) => {
   const {profile} = context
   let {tabType} = props
   if (tabType === undefined || (tabType !== 'charge' && tabType !== 'change')) tabType = 'charge'
+
   //useState
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
