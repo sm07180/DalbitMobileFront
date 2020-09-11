@@ -5,7 +5,7 @@ import qs from 'query-string'
 //context
 import {Context} from 'context'
 import Swiper from 'react-id-swiper'
-import {Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //layout
 import Layout2 from 'pages/common/layout2.5'

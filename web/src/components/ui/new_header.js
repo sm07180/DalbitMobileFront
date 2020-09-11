@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 // static
 import closeBtn from './ic_back.svg'
-
+import {isHybrid, Hybrid} from 'context/hybrid'
 export default (props) => {
   const history = useHistory()
 
