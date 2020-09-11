@@ -88,7 +88,6 @@ export default (props) => {
       currentPage = 1
       fetchData()
     }
-    console.log(props)
     if (props.set) {
       props.set(true)
     }
@@ -96,7 +95,6 @@ export default (props) => {
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-    // console.log(next, currentPage)
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,

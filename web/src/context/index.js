@@ -90,6 +90,8 @@ const GlobalProvider = (props) => {
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])
   const [urlStr, setUrlStr] = useState('')
+  const [boardIdx, setBoardIdx] = useState(-1)
+  const [boardModifyInfo, setBoardModifyInfo] = useState(null)
   //clipPlayer
   const [clipState, setClipState] = useState(false)
   const [clipPlayerState, setClipPlayerState] = useState(null)
@@ -378,6 +380,12 @@ const GlobalProvider = (props) => {
     updateUrlStr: (str) => {
       setUrlStr(str)
     },
+    updateBoardIdx: (num) => {
+      setBoardIdx(num)
+    },
+    updateBoardModifyInfo: (obj) => {
+      setBoardModifyInfo(obj)
+    },
     /**
      * 클립 상태
      * @string  entered, floating
@@ -465,7 +473,9 @@ const GlobalProvider = (props) => {
     clipState,
     clipPlayerState,
     clipPlayerInfo,
-    isDevIp
+    isDevIp,
+    boardIdx,
+    boardModifyInfo
   }
   return <Provider value={value}>{props.children}</Provider>
 }

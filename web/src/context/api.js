@@ -2454,7 +2454,18 @@ export default class API {
   static postClipPlay = async (data) => {
     return await ajax({url: '/clip/play', method: 'post', data})
   }
-
+  static getClipReplyList = async (params) => {
+    return await ajax({url: '/clip/reply/list', method: 'GET', params})
+  }
+  static postClipReplyDelete = async (data) => {
+    return await ajax({url: '/clip/reply/delete', method: 'post', data})
+  }
+  static postClipReplySumbit = async (data) => {
+    return await ajax({url: '/clip/reply/add', method: 'post', data})
+  }
+  static postClipReplyEdit = async (data) => {
+    return await ajax({url: '/clip/reply/edit', method: 'post', data})
+  }
   static eventPackageJoinCheck = async (params) => {
     return await ajax({url: '/event/004/apply', method: 'GET', params})
   }

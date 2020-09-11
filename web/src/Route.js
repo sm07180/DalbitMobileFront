@@ -112,7 +112,7 @@ export default () => {
         <Route exact path="/clip" component={Clip} />
         <Route exact path="/clip/tip" component={ClipTip} />
         <Route exact path="/redirect" component={TempLogin} />
-        <Route exact path="/clip/:memNo/reply" component={ClipReply} />
+        <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>
