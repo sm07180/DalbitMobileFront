@@ -82,9 +82,8 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                //context.action.updateCloseRank(true)
-                //setRankTabType('tabRank')
-                profile.fanRank.length > 0 && context.action.updateClose(true)
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
               }}>
               팬랭킹
             </button>
