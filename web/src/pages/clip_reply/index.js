@@ -53,8 +53,13 @@ export default (props) => {
   }, [])
 
   const goBack = () => {
-    alert('클립들어오는지?,ClipPlayerEnter')
-    Hybrid('ClipPlayerEnter')
+    if (globalCtx.player === false) {
+      alert('고백?,ClipPlayerEnter')
+      history.goBack()
+    } else {
+      alert('조인?,ClipPlayerEnter')
+      Hybrid('ClipPlayerEnter')
+    }
   }
 
   //---------------------------------------------------------------------
