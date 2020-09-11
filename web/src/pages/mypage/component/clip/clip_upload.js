@@ -217,7 +217,7 @@ function ClipUpload() {
         height: context.profile.memNo !== context.urlStr && 'calc(100vh - 50px)',
         backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
       }}>
-      {/* <button onClick={() => history.push(`/clip/101598429926109/reply`)}>댓글테스트</button> */}
+      <button onClick={() => history.push(`/clip/101598429926109/reply`)}>댓글테스트</button>
       {uploadListLoding && createContents()}
     </div>
   )
