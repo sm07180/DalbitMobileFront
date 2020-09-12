@@ -234,7 +234,14 @@ export default (props) => {
           <React.Fragment>
             {navigationList.map((value) => {
               const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+              return (
+                <Route
+                  exact
+                  path={`/mypage/${memNo}/${type}${webview === 'new' ? '?webview=new' : ''}`}
+                  component={component}
+                  key={type}
+                />
+              )
             })}
           </React.Fragment>
         </div>
