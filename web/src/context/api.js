@@ -2580,6 +2580,23 @@ export default class API {
       method: 'GET'
     })
   }
+
+  static getPlayList = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/clip/play/list',
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static postPlayListEdit = async () => {
+    return await ajax({
+      url: '/clip/play/list/edit',
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null
