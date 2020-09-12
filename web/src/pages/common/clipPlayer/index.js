@@ -311,6 +311,7 @@ const ClipPlayer = styled.div`
         max-width: calc(100% - 70px);
         min-width: 200px;
         p {
+          min-width: 120px;
           width: calc(100% - 50px);
           margin-top: 2px;
           font-size: 12px;
