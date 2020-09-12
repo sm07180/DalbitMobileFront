@@ -21,7 +21,7 @@ export default (props) => {
   const context = useContext(Context)
   const {webview} = qs.parse(location.search)
   //state
-  const [thisBigIdx, setThisBigIdx] = useState(0)
+
   const [writeState, setWriteState] = useState(false)
   //modify msg
   const [modifyState, setModifyState] = useState(false)
@@ -36,10 +36,9 @@ export default (props) => {
   }
   //토글 모어버튼
   const moreToggle = (boardIdx, contents) => {
-    if (thisBigIdx !== 0) {
-      setThisBigIdx(0)
+    if (boardIdx === context.boardIdx) {
+      context.action.updateBoardIdx(0)
     } else {
-      setThisBigIdx(boardIdx)
       context.action.updateBoardIdx(boardIdx)
     }
   }
@@ -53,7 +52,7 @@ export default (props) => {
 
     if (writeState === false) {
       setModifyState(true)
-      setThisBigIdx(0)
+
       setModifyMsg(contents)
     } else {
       setModifyState(false)
@@ -69,7 +68,6 @@ export default (props) => {
           replyIdx: boardIdx
         })
         if (res.result === 'success') {
-          setThisBigIdx(0)
           props.set(true)
 
           Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
@@ -91,7 +89,7 @@ export default (props) => {
         })
         if (res.result === 'success') {
           context.action.updateFanBoardBigIdxMsg(boardIdx)
-          setThisBigIdx(0)
+
           props.set(true)
         } else if (res.result === 'fail') {
           context.action.alert({
@@ -176,7 +174,7 @@ export default (props) => {
             {(urlrStr === context.token.memNo || props.data.writerNo === context.token.memNo) && props.type !== 'clip_board' ? (
               <>
                 <button className="btn__more" onClick={() => moreToggle(props.data.boardIdx, props.data.contents)}></button>
-                <div className={props.data.boardIdx === thisBigIdx ? 'moreList on' : 'moreList'}>
+                <div className={props.data.boardIdx === context.boardIdx ? 'moreList on' : 'moreList'}>
                   {/* {props.data.writerNo === context.token.memNo && (
                 <button onClick={() => editToggle(props.data.contents, props.data.boardIdx)}>수정하기</button>
               )} */}
