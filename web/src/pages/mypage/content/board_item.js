@@ -108,7 +108,7 @@ export default (props) => {
       if (webview) {
         context.token.memNo !== props.data.writerMemNo
           ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
-          : history.push(`/menu/profile`)
+          : history.push(`/menu/profile?webview=${webview}`)
       } else {
         context.token.memNo !== props.data.writerMemNo
           ? history.push(`/mypage/${props.data.writerMemNo}`)
@@ -118,7 +118,7 @@ export default (props) => {
       if (webview) {
         context.token.memNo !== props.data.writerNo
           ? history.push(`/mypage/${props.data.writerNo}?webview=${webview}`)
-          : history.push(`/menu/profile`)
+          : history.push(`/menu/profile?webview=${webview}`)
       } else {
         context.token.memNo !== props.data.writerNo
           ? history.push(`/mypage/${props.data.writerNo}`)
