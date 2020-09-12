@@ -30,6 +30,7 @@ export const clipExit = (context) => {
   context.action.updateClipPlayerState(null)
   context.action.updateClipState(null)
   context.action.updatePlayer(false)
+  Hybrid(`CloseLayerPopup`)
 }
 
 export const updateClipInfo = (data) => {
