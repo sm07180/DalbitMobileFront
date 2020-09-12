@@ -148,7 +148,7 @@ export default (props) => {
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   } else if (memNo === token.memNo) {
-    window.location.href = '/menu/profile'
+    history.push('/menu/profile')
   }
 
   if (codes !== '-2' && (!profileInfo || !profile)) {
