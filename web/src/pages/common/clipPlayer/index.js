@@ -59,7 +59,7 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null || webview === 'new') return null
+  // if (!clipState || clipPlayerInfo === null || webview === 'new') return null
 
   //---------------------------------------------------------------------
   return (
