@@ -61,7 +61,7 @@ export default (props) => {
     Hybrid('CloseLayerPopup')
   }
   useEffect(() => {
-    globalCtx.action.updateClipPlayerState(null)
+    globalCtx.action.updatePlayer(false)
     return () => {}
   }, [])
   //---------------------------------------------------------------------
