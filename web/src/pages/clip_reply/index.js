@@ -60,7 +60,10 @@ export default (props) => {
   const goBack = () => {
     Hybrid('CloseLayerPopup')
   }
-
+  useEffect(() => {
+    globalCtx.updateClipPlayerState(null)
+    return () => {}
+  }, [])
   //---------------------------------------------------------------------
   return (
     <Layout2 {...props} webview={webview} status="no_gnb" type={'clipBack'}>
