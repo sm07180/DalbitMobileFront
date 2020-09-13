@@ -11,9 +11,9 @@ export default () => {
       <div id="clipOpen">
         <Header title="클립 오픈 안내" />
         <div className="content">
-          <img src="https://image.dalbitlive.com//event/clip/20200909/newImg01.jpg" title="클립 오픈 안내" />
-          <img src="https://image.dalbitlive.com//event/clip/20200909/newImg02.jpg" title="클립 오픈 안내" />
-          <img src="https://image.dalbitlive.com//event/clip/20200909/newImg03.jpg" title="클립 오픈 안내" />
+          <img src="https://image.dalbitlive.com//event/clip/20209010/img01.jpg" title="클립 오픈 안내" />
+          <img src="https://image.dalbitlive.com//event/clip/20209010/img02.jpg" title="클립 오픈 안내" />
+          <img src="https://image.dalbitlive.com//event/clip/20209010/img03.jpg" title="클립 오픈 안내" />
           <div className="buttonWrap">
             <button
               onClick={() => {
@@ -21,7 +21,7 @@ export default () => {
               }}>
               클립 등록 유의사항
             </button>
-            <img src="https://image.dalbitlive.com//event/clip/20200909/newImg04.jpg" title="클립 오픈 안내" />
+            <img src="https://image.dalbitlive.com//event/clip/20209010/img04.jpg" title="클립 오픈 안내" />
           </div>
         </div>
       </div>

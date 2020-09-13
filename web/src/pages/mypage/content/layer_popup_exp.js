@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react'
 // static
-import CloseBtn from '../../menu/static/ic_closeBtn.svg'
+import CloseBtn from '../../menu/static/close_w_l.svg'
 import 'styles/layerpopup.scss'
 
 export default (props) => {

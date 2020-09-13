@@ -30,15 +30,6 @@ const reducer = (state, action) => {
         ...state,
         page: state.page + 1
       }
-
-    // if (totalPage > state.page && state.page < 25) {
-    //     return {
-    //       ...state,
-    //       page: state.page + 1
-    //     }
-    //   } else {
-    //     return state
-    //   }
     case 'INIT':
       return {
         ...state,
@@ -69,6 +60,7 @@ function RankProvider(props) {
   const [rankList, setRankList] = useState([])
   const [levelList, setLevelList] = useState([])
   const [likeList, setLikeList] = useState([])
+  const [specialList, setSpecialList] = useState([])
   const [formState, formDispatch] = useReducer(reducer, formInitData)
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -83,14 +75,17 @@ function RankProvider(props) {
     time: ''
   })
   const [totalPage, setTotalPage] = useState(0)
+  const [scrollY, setScrollY] = useState(0)
 
   const rankState = {
     rankList,
     formState,
     levelList,
     likeList,
+    specialList,
     myInfo,
-    totalPage
+    totalPage,
+    scrollY
   }
 
   const rankAction = {
@@ -99,7 +94,9 @@ function RankProvider(props) {
     setLevelList,
     setLikeList,
     setMyInfo,
-    setTotalPage
+    setTotalPage,
+    setSpecialList,
+    setScrollY
   }
 
   const bundle = {

@@ -18,6 +18,14 @@
     margin-top: 254px;
   }
 
+  .listFixed.special {
+    margin-top: 104px;
+  }
+
+  .listFixed.other {
+    margin-top: 48px;
+  }
+
   .listFixed {
     margin-top: 140px;
   }
@@ -98,7 +106,22 @@
   }
 
   .rankTab {
+    width: 100%;
+
+    .swiper-container {
+      // display: inline-block;
+      // width: calc(100% - 100px);
+      .swiper-wrapper {
+        width: 100%;
+
+        .swiper-slide {
+          width: auto;
+        }
+      }
+    }
+
     &__btn {
+      width: max-content;
       height: 32px;
       margin-right: 2px;
       padding: 0 12px;
@@ -111,6 +134,23 @@
         background-color: $primary;
         color: #fff;
       }
+    }
+
+    &__specialBtn {
+      width: max-content;
+      height: 32px;
+      margin-right: 2px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: solid 1px $red;
+      background-color: #fff;
+      color: $red;
+      font-size: 16px;
+      &--active {
+        background-color: $red;
+        color: #fff;
+      }
+      float: right;
     }
     // :last-child {
     //   height: 32px;
@@ -243,10 +283,14 @@
         color: #fff;
       }
       .nickNameBox {
+        width: 110px;
         color: #fff;
         text-align: center;
         margin-top: 0px;
         margin-bottom: 8px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
 
       .countBox {
@@ -797,6 +841,18 @@
     font-style: normal;
   }
 
+  .specialBox {
+    width: 44px;
+    height: 22px;
+    background-color: #000;
+    border-radius: 14px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+    text-align: center;
+    letter-spacing: -0.3px;
+  }
+
   .levelListBox {
     display: flex;
     align-items: center;
@@ -827,7 +883,9 @@
     .textBox {
       width: calc(100% - 150px);
     }
-
+    .test {
+      width: calc(100% - 168px);
+    }
     .nickNameBox {
       width: 100%;
       margin-top: 4px;
@@ -836,6 +894,31 @@
       white-space: nowrap;
       overflow-x: hidden;
       text-overflow: ellipsis;
+    }
+
+    .genderBox {
+      display: inline-flex;
+      padding-left: 5px;
+      background-size: 100%;
+      vertical-align: middle;
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background-image: url(./static/ico-male@2x.png);
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background-image: url(./static/ico-female@2x.png);
+        margin-left: 2px;
+      }
     }
 
     .bestFanBox {
@@ -1043,5 +1126,13 @@
       background: url('https://image.dalbitlive.com/ranking/reward_pop_character2@2x.png') no-repeat;
       background-size: 100%;
     }
+  }
+
+  .special__text {
+    padding: 11px 0;
+    background-color: $primary;
+    color: #fff;
+    font-size: 16px;
+    text-align: center;
   }
 }

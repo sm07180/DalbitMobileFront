@@ -1,8 +1,10 @@
 import React, {useState, useContext, useEffect} from 'react'
 import styled from 'styled-components'
+import qs from 'query-string'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+
 // etc
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -18,6 +20,7 @@ export default (props) => {
   //context
   const globalCtx = useContext(Context)
   const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
+  const {webview} = qs.parse(location.search)
 
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
@@ -80,7 +83,7 @@ export default (props) => {
               <span></span>
             </li>
           </ul>
-          <p>CAST</p>
+          <p>CLIP</p>
         </div>
         <div className="info">
           <div className="profile">
@@ -308,6 +311,7 @@ const ClipPlayer = styled.div`
         max-width: calc(100% - 70px);
         min-width: 200px;
         p {
+          min-width: 120px;
           width: calc(100% - 50px);
           margin-top: 2px;
           font-size: 12px;

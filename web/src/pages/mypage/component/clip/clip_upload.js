@@ -5,14 +5,13 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+//svg
+import PlayIcon from '../clip_play.svg'
+import LikeIcon from '../clip_like.svg'
 //flag
 let currentPage = 1
 let timer
 let moreState = false
-
-//svg
-import PlayIcon from '../clip_play.svg'
-import LikeIcon from '../clip_like.svg'
 function ClipUpload() {
   let history = useHistory()
   let {memNo, category} = useParams()
@@ -218,6 +217,7 @@ function ClipUpload() {
         height: context.profile.memNo !== context.urlStr && 'calc(100vh - 50px)',
         backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
       }}>
+      <button onClick={() => history.push(`/clip/101598429926109/reply`)}>댓글테스트</button>
       {uploadListLoding && createContents()}
     </div>
   )

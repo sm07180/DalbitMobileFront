@@ -75,40 +75,45 @@ export default function LayerPopupWrap({data, setData}) {
   const makeTextInner = (popupData) => {
     return (
       <>
-        {popupData.title && popupData.is_title_view === 1 && <div className="popup__title">{popupData.title}</div>}
-        <div className="inner">
-          <p className="contents" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
-          {popupData.is_cookie === 1 && (
-            <div className="checkbox-wrap">
-              <label htmlFor={`chk${popupData.idx}`} className="checkbox-label">
-                <input
-                  type="checkbox"
-                  id={`chk${popupData.idx}`}
-                  onClick={(e) => {
-                    setChecked({
-                      idx: popupData.idx,
-                      check: e.target.checked
-                    })
-                  }}
-                  className={`${checked.check && `active`}`}
-                />
-                오늘 하루 보지 않기
-              </label>
+        <div className="popupBg">
+          {popupData.title && popupData.is_title_view === 1 && <h3 className="popup__title">{popupData.title}</h3>}
+          <div className="inner">
+            <p className="contents textMargin" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
+            <div className="btnWrap">
+              <button
+                className="btn-ok"
+                onClick={() => {
+                  {
+                    popupData.is_button_view === 0 && handleDimClick()
+                  }
+                  {
+                    popupData.is_button_view === 1 && handleRoute(popupData)
+                  }
+                }}>
+                {popupData.buttonNm}
+              </button>
             </div>
-          )}
-          <button
-            className="btn-ok"
-            onClick={() => {
-              {
-                popupData.is_button_view === 0 && handleDimClick()
-              }
-              {
-                popupData.is_button_view === 1 && handleRoute(popupData)
-              }
-            }}>
-            {popupData.buttonNm}
-          </button>
+          </div>
         </div>
+
+        {popupData.is_cookie === 1 && (
+          <div className="checkbox-wrap">
+            <label htmlFor={`chk${popupData.idx}`} className="checkbox-label">
+              <input
+                type="checkbox"
+                id={`chk${popupData.idx}`}
+                onClick={(e) => {
+                  setChecked({
+                    idx: popupData.idx,
+                    check: e.target.checked
+                  })
+                }}
+                className={`${checked.check && `active`}`}
+              />
+              오늘 하루 보지 않기
+            </label>
+          </div>
+        )}
       </>
     )
   }
@@ -122,9 +127,19 @@ export default function LayerPopupWrap({data, setData}) {
           </a>
         </div>
         {popupData.is_cookie === 1 && (
-          <div className="checkbox-wrap" onClick={() => handleCookie(popupData.idx, 'image')}>
+          <div className="checkbox-wrap">
             <label htmlFor={`chk${popupData.idx}`} className="checkbox-label">
-              <input type="checkbox" id={`chk${popupData.idx}`} />
+              <input
+                type="checkbox"
+                id={`chk${popupData.idx}`}
+                onClick={(e) => {
+                  setChecked({
+                    idx: popupData.idx,
+                    check: e.target.checked
+                  })
+                }}
+                className={`${checked.check && `active`}`}
+              />
               오늘 하루 보지 않기
             </label>
           </div>

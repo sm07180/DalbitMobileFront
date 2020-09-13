@@ -134,7 +134,6 @@ export default (props) => {
       fetchData()
       fetchDataReplyList(context.fanboardReplyNum)
     }
-    console.log(props)
     if (props.set) {
       props.set(true)
     }
@@ -150,7 +149,6 @@ export default (props) => {
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
-    // console.log(next, currentPage)
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,
@@ -200,7 +198,7 @@ export default (props) => {
   useEffect(() => {
     currentPage = 1
     fetchData()
-  }, [writeState])
+  }, [writeState, urlrStr])
   // useEffect(() => {
   //   window.addEventListener('scroll', scrollEvtHdr)
   //   return () => {

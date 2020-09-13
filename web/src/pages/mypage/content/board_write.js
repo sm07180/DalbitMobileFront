@@ -10,8 +10,8 @@ import qs from 'query-string'
 import {Context} from 'context'
 //api
 import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
-
 // concat
 let currentPage = 1
 let timer
@@ -19,6 +19,8 @@ let moreState = false
 //layout
 export default (props) => {
   let location = useLocation()
+  let params = useParams()
+  const LocationClip = params.clipNo
   //context
   const ctx = useContext(Context)
   const context = useContext(Context)
@@ -83,7 +85,6 @@ export default (props) => {
   //팬보드 댓글추가
   async function PostBoardData() {
     let params, msg
-    console.log(writeType)
     if (writeType === 'board') {
       params = {
         memNo: urlrStr,
@@ -103,34 +104,52 @@ export default (props) => {
       msg = '내용을 입력해 주세요.'
     }
 
-    const res = await Api.mypage_fanboard_upload({
-      data: params
-    })
-
-    if (res.result === 'success') {
-      props.set(true, writeType)
-      writeToggle()
-      setTextChange('')
-      setIsScreet(false)
-
-      if (list instanceof Array) {
-        let findIdx = list.findIndex((v) => {
-          return v.boardIdx === context.fanboardReplyNum
+    if (writeType === 'clip_board') {
+      async function fetchReplyAdd() {
+        const {result, data, message} = await Api.postClipReplySumbit({
+          clipNo: LocationClip,
+          contents: textChange
         })
+        if (result === 'success') {
+          props.set(true, writeType)
+          writeToggle()
+          setTextChange('')
 
-        if (findIdx !== -1) {
-          list[findIdx].replyCnt++
+          Hybrid('ClipUpdateInfo', data.clipPlayInfo)
         }
       }
-    } else if (res.result === 'fail') {
-      if (textChange.length === 0) {
-        context.action.alert({
-          callback: () => {},
-          msg: msg
-        })
+      fetchReplyAdd()
+    } else {
+      const res = await Api.mypage_fanboard_upload({
+        data: params
+      })
+
+      if (res.result === 'success') {
+        props.set(true, writeType)
+        writeToggle()
+        setTextChange('')
+        setIsScreet(false)
+
+        if (list instanceof Array) {
+          let findIdx = list.findIndex((v) => {
+            return v.boardIdx === context.fanboardReplyNum
+          })
+
+          if (findIdx !== -1) {
+            list[findIdx].replyCnt++
+          }
+        }
+      } else if (res.result === 'fail') {
+        if (textChange.length === 0) {
+          context.action.alert({
+            callback: () => {},
+            msg: msg
+          })
+        }
       }
     }
   }
+
   // 팬보드 뉴표시
   async function getMyPageNewFanBoard() {
     const newFanBoard = await Api.getMyPageNewFanBoard()
@@ -154,6 +173,8 @@ export default (props) => {
       setWriteType('board')
     } else if (props.type === 'reply') {
       setWriteType('reply')
+    } else if (props.type === 'clip_board') {
+      setWriteType('clip_board')
     }
   }, [writeState, ctx.fanBoardBigIdx])
   //스크롤 콘켓
@@ -224,6 +245,7 @@ export default (props) => {
               <em>{textChange.length}</em> / 100
             </span>
           </span>
+
           <button className="btn__ok" onClick={() => PostBoardData()}>
             등록
           </button>

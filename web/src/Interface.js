@@ -463,9 +463,7 @@ export default () => {
 
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
-    // if (__NODE_ENV === 'dev') {
-    //   Hybrid('ClipTest', data)
-    // }
+    if (data === undefined) return null
     data = JSON.parse(data)
     data = {...data, playerState: type}
     Utility.setCookie('clip-player-info', JSON.stringify(data))

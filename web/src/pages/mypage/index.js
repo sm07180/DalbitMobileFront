@@ -34,7 +34,6 @@ export default (props) => {
 
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
-  const [updateCount, setUpdateCount] = useState(null)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
   const [isSelected, setIsSelected] = useState(false)
@@ -69,7 +68,7 @@ export default (props) => {
   }
 
   // memNo navi check
-  // 타인프로필 profileInfo
+  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -107,7 +106,6 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        setUpdateCount(false)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
@@ -128,9 +126,8 @@ export default (props) => {
 
     if (memNo) {
       settingProfileInfo(memNo)
-      setTabSelected(0)
     }
-  }, [memNo, context.mypageFanCnt, updateCount])
+  }, [memNo, context.mypageFanCnt])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [])
@@ -145,15 +142,17 @@ export default (props) => {
       })
     }
   }, [codes])
+  console.log('url', memNo)
+  console.log('url', token.memNo)
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
+  } else if (memNo === token.memNo && webview && webview === 'new') {
+    history.push('/menu/profile?webview=new')
   }
+
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
-  }
-  const setAction = (value) => {
-    setUpdateCount(value)
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -194,7 +193,7 @@ export default (props) => {
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <ul className="profile-tab">
+              {/* <ul className="profile-tab">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
@@ -208,11 +207,11 @@ export default (props) => {
               </ul>
               <div className="profile-tab__content">
                 {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" set={setAction} />}
-                {context.isDevIp ? tabSelected === 2 && <MyClip type="subpage" /> : <></>}
-              </div>
+                {tabSelected === 1 && <FanBoard type="subpage" />}
+                {tabSelected === 2 && <MyClip type="subpage" />}
+              </div> */}
 
-              {/* <div className="profile-menu">
+              <div className="profile-menu">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
@@ -234,7 +233,7 @@ export default (props) => {
                     </button>
                   )
                 })}
-              </div> */}
+              </div>
             </>
           )}
           <React.Fragment>

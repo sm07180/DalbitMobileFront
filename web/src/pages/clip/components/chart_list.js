@@ -1,5 +1,12 @@
 import React, {useEffect, useRef, useState, useContext} from 'react'
-
+//modules
+import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
+import {Context} from 'context'
+import {Hybrid} from 'context/hybrid'
+import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+//svg
 import playIcon from '../static/play_g_s.svg'
 import heartIcon from '../static/like_g_s.svg'
 import starIcon from '../static/cashstar_g_s.svg'
@@ -7,27 +14,25 @@ import EntryImg from '../static/person_w_s.svg'
 import SimplePlayIcon from '../static/simple_play.svg'
 import SimpleLikeIcon from '../static/simple_like.svg'
 import noBgAudioIcon from '../static/audio_s.svg'
-import Api from 'context/api'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-import {Hybrid} from 'context/hybrid'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+// components
 import NoResult from 'components/ui/noResult'
 //flag
 let currentPage = 1
 let timer
 let moreState = false
 export default (props) => {
+  //ctx
   const context = useContext(Context)
   let history = useHistory()
-  const {chartListType, clipTypeActive, clipType} = props
+  const {chartListType, clipTypeActive, clipType, clipCategoryFixed} = props
+  //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
+  //api
+  //   if (res.data.paging && res.data.paging.totalPage === 1) {
   const fetchDataList = async (next) => {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
-
     const res = await Api.getClipList({
       slctType: context.clipMainSort,
       subjectType: clipTypeActive,
@@ -70,8 +75,9 @@ export default (props) => {
       })
     }
   }
+  // make contents
   const makeList = () => {
-    return list.map((item, idx) => {
+    return list.map((detailsItem, idx) => {
       const {
         bgImg,
         gender,
@@ -85,10 +91,9 @@ export default (props) => {
         entryType,
         isSpecial,
         clipNo
-      } = item
-
+      } = detailsItem
       return (
-        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
+        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
             <img src={bgImg[`thumb190x190`]} alt={title} />
           </div>
@@ -97,9 +102,9 @@ export default (props) => {
               <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
               {isSpecial && <span className="specialIcon">S</span>}
               <span className="textBox__iconBox--type">
-                {clipType.map((v, index) => {
-                  if (v.value === subjectType) {
-                    return <React.Fragment key={idx + 'typeList'}>{v.cdNm}</React.Fragment>
+                {clipType.map((ClipTypeItem, index) => {
+                  if (ClipTypeItem.value === subjectType) {
+                    return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
                   }
                 })}
               </span>
@@ -126,13 +131,7 @@ export default (props) => {
       )
     })
   }
-
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
+  //scroll
   const showMoreList = () => {
     setList(list.concat(nextList))
     fetchDataList('next')
@@ -154,21 +153,30 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipMainGender, context.clipRefresh, clipTypeActive])
-
+  }, [context.clipMainSort, context.clipRefresh, clipTypeActive])
+  //----------------------------------------------------------------
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+  //-------------------------------------------------------------render
   if (chartListType === 'detail') {
     return (
       <div className="chartListDetail">
-        <ul className="chartListDetailBox">{list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}</ul>
+        <ul className={`chartListDetailBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
+          {list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}
+        </ul>
       </div>
     )
   } else {
     const windowHalfWidth = (window.innerWidth - 32) / 2
     return (
       <div className="chartListSimple">
-        <ul className="chartListSimpleBox">
+        <ul className={`chartListSimpleBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
           {list.length === 0 && <NoResult text="등록 된 클립이" />}
-          {list.map((item, idx) => {
+          {list.map((SimpleListItem, idx) => {
             const {
               bgImg,
               gender,
@@ -182,8 +190,7 @@ export default (props) => {
               isSpecial,
               entryType,
               clipNo
-            } = item
-
+            } = SimpleListItem
             return (
               <li
                 className="chartListSimpleItem"
@@ -203,7 +210,6 @@ export default (props) => {
                     </span> */}
                     {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                   </div>
-
                   <div className="topWrap__count">
                     <img className="topWrap__count--icon" src={SimplePlayIcon} />
                     <span className="topWrap__count--num">{playCnt}</span>
@@ -211,7 +217,6 @@ export default (props) => {
                     <span className="topWrap__count--num">{goodCnt}</span>
                   </div>
                 </div>
-
                 <div className="bottomWrap">
                   {/* <i className="bottomWrap__typeIcon">
                     <img src={noBgAudioIcon} alt="icon" />

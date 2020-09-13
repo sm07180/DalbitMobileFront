@@ -332,7 +332,7 @@ export default (props) => {
       setShowPresent(true)
       setShowEdit(false)
     }
-  }, [])
+  }, [profile.memNo])
 
   return (
     <div className="profile-detail">
