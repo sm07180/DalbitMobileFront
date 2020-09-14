@@ -41,22 +41,16 @@ export default (props) => {
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
   const [totalCount, setTotalCount] = useState(0)
-  const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
+  const [replyWriteState, setReplyWriteState] = useState(false)
+  const [boardReplyList, setBoardReplyList] = useState([])
 
   // context && location
   // let location = useLocation()
   // const context = useContext(Context)
   // var urlrStr = location.pathname.split('/')[2]
-  //전체 댓글리스트(props)
-  const TotalList = props.list
-  const TotalCount = props.totalCount
-  //state
-  const [replyWriteState, setReplyWriteState] = useState(false)
-  const [boardReplyList, setBoardReplyList] = useState([])
-
   //정보 댓글로 전달
-  const ReplyInfoTransfer = (boardIdx, item) => {
+  const viewReplyInfo = (boardIdx, item) => {
     context.action.updateReplyIdx(boardIdx)
     setReplyWriteState(true)
     fetchDataReplyList(boardIdx)
@@ -109,8 +103,6 @@ export default (props) => {
   const showMoreList = async () => {
     if (moreState) {
       let a = boardList.concat(nextList)
-      // console.log(boardList)
-      // console.log(nextList)
       let obj = {}
       a.forEach((v) => {
         obj[v.boardIdx] = v
@@ -138,14 +130,6 @@ export default (props) => {
       props.set(true)
     }
   }
-  // const setAction = (value, writeType) => {
-  //   console.log(value, writeType)
-
-  //   if (value === true) {
-  //     props.set(true)
-  //     fetchDataReplyList(context.fanboardReplyNum)
-  //   }
-  // }
   // 팬보드 글 조회
   async function fetchData(next) {
     currentPage = next ? ++currentPage : currentPage
@@ -206,11 +190,6 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
-    if (profile.memNo === urlrStr) {
-      setIsOther(true)
-    } else {
-      setIsOther(false)
-    }
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
@@ -230,10 +209,10 @@ export default (props) => {
       {totalCount > 0 ? (
         <div className="listWrap">
           <>
-            {TotalCount && (
+            {totalCount && (
               <div className="list-count">
                 <span>게시글</span>
-                <span>{TotalCount}</span>
+                <span>{totalCount}</span>
               </div>
             )}
             {boardList &&
@@ -246,7 +225,7 @@ export default (props) => {
                       {item && <BoardItem key={`board-${index}`} data={item} set={setAction} />}
 
                       <div className="list-item__bottom">
-                        <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                        <button className="btn__reply" onClick={() => viewReplyInfo(boardIdx, item)}>
                           {replyCnt > 0 ? (
                             <>
                               답글 <em>{replyCnt}</em>
