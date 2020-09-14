@@ -457,9 +457,9 @@ export default () => {
         }
         break
       case 'native-close-layer-popup': //---------- 안드로이드 물리 백키로 새창 닫았을때
-        if (__NODE_ENV === 'dev') {
-          alert('native-close-layer-popup')
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('native-close-layer-popup')
+        // }
         sessionStorage.removeItem('webview')
         break
       default:
