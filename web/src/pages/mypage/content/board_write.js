@@ -40,6 +40,7 @@ export default (props) => {
   //팬보드 댓글 온체인지
   const handleChangeInput = (e) => {
     const target = e.currentTarget
+    // console.log(target)
     if (target.value.length > 100) return
     setTextChange(e.target.value)
   }
@@ -149,7 +150,6 @@ export default (props) => {
       }
     }
   }
-
   // 팬보드 뉴표시
   async function getMyPageNewFanBoard() {
     const newFanBoard = await Api.getMyPageNewFanBoard()
@@ -164,7 +164,7 @@ export default (props) => {
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
 
-  //재조회 및 초기조회
+  // fetch
   useEffect(() => {
     currentPage = 1
     // fetchData()
@@ -190,17 +190,14 @@ export default (props) => {
     } else {
       setIsOther(true)
     }
-
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
-
     return () => {
       currentPage = 1
     }
   }, [])
 
-  //--------------------------------------------------
   return (
     <div className="writeWrap">
       <div className="writeWrap__top">

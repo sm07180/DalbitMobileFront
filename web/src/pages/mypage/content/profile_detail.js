@@ -257,6 +257,7 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
+    console.log(e)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -284,6 +285,7 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
     } else {
       if (locHash instanceof Object && locHash.state) {
+        log
         locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
       } else {
         history.goBack()

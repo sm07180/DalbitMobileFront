@@ -68,7 +68,6 @@ export default (props) => {
   }
 
   // memNo navi check
-  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -142,8 +141,6 @@ export default (props) => {
       })
     }
   }, [codes])
-  console.log('url', memNo)
-  console.log('url', token.memNo)
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
