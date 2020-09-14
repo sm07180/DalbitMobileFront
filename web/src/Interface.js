@@ -45,9 +45,9 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        if (__NODE_ENV === 'dev') {
-          alert('fore pushMsg :' + pushMsg)
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('fore pushMsg :' + pushMsg)
+        // }
 
         const isJsonString = (str) => {
           try {
@@ -75,10 +75,10 @@ export default () => {
         let room_no, mem_no, board_idx
 
         //개발쪽만 적용
-        if (__NODE_ENV === 'dev') {
-          alert('fore isLogin :' + isLogin)
-          alert('fore push_type :' + JSON.stringify(pushMsg))
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('fore isLogin :' + isLogin)
+        //   alert('fore push_type :' + JSON.stringify(pushMsg))
+        // }
 
         if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
           pushClick(pushMsg.push_idx)
