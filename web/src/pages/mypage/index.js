@@ -179,7 +179,12 @@ export default (props) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
-    history.push(`/mypage/${memNo}/${type}`)
+
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}/${type}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}/${type}`)
+    }
   }
   const changeTab = (type) => {
     if (type === 0) {
