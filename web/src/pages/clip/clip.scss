@@ -295,12 +295,28 @@
         padding: 10px 0;
 
         &__thumb {
+          position: relative;
           margin-right: 12px;
           width: 72px;
 
           img {
             width: 100%;
             border-radius: 12px;
+          }
+          &__playTime {
+            display: inline-block;
+            position: absolute;
+            right: 3px;
+            bottom: 3px;
+            padding: 0 4px;
+            height: 14px;
+            line-height: 14px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 12px;
+            height: 14px;
+            font-size: 10px;
+            font-weight: bold;
           }
         }
 
@@ -309,7 +325,7 @@
           &__iconBox {
             display: flex;
             align-items: center;
-            margin-bottom: 3px;
+            margin-top: 3px;
             &--type {
               min-width: 30px;
               background-color: #9e9e9e;

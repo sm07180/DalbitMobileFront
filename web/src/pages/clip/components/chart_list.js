@@ -7,7 +7,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //svg
-import playIcon from '../static/play_g_s.svg'
+import playIcon from '../static/visit_g_s.svg'
 import heartIcon from '../static/like_g_s.svg'
 import starIcon from '../static/cashstar_g_s.svg'
 import EntryImg from '../static/person_w_s.svg'
@@ -96,20 +96,9 @@ export default (props) => {
         <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
             <img src={bgImg[`thumb190x190`]} alt={title} />
+            <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
           <div className="textBox">
-            <div className="textBox__iconBox">
-              <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
-              {isSpecial && <span className="specialIcon">S</span>}
-              <span className="textBox__iconBox--type">
-                {clipType.map((ClipTypeItem, index) => {
-                  if (ClipTypeItem.value === subjectType) {
-                    return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
-                  }
-                })}
-              </span>
-              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-            </div>
             <p className="textBox__subject">{title} </p>
             <p className="textBox__nickName">{nickName}</p>
             <div className="textBox__detail">
@@ -125,6 +114,18 @@ export default (props) => {
                 <img src={starIcon} width={16} />
                 {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
               </span> */}
+            </div>
+            <div className="textBox__iconBox">
+              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
+              {isSpecial && <span className="specialIcon">S</span>}
+              <span className="textBox__iconBox--type">
+                {clipType.map((ClipTypeItem, index) => {
+                  if (ClipTypeItem.value === subjectType) {
+                    return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
+                  }
+                })}
+              </span>
+              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
             </div>
           </div>
         </li>
