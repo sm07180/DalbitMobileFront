@@ -399,7 +399,7 @@ export default function Qna() {
         />
         <textarea
           className="personalAddWrap__input personalAddWrap__input--textarea"
-          maxLength={200}
+          maxLength={2000}
           placeholder="작성하고자 하는 문의내용을 입력해주세요."
           onChange={(e) => setContent(e.target.value)}
         />
