@@ -1,3 +1,4 @@
+//
 import React, {useContext, useState, useEffect, useRef} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -46,6 +47,7 @@ export default (props) => {
     }
   }
   const swiperParamsCategory = {
+    slidesPerView: 'auto',
     slidesPerView: 'auto'
   }
   //state
@@ -321,15 +323,7 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2>
-                실시간 차트{' '}
-                <img
-                  src={'https://image.dalbitlive.com/main/200714/ico-refresh.svg'}
-                  className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                  style={{cursor: 'pointer'}}
-                  onClick={() => refreshCategory()}
-                />
-              </h2>
+              <h2>클립 인기 차트 </h2>
               <div className="sequenceBox">
                 <div className="sequenceItem"></div>
                 <div className="sequenceItem">
@@ -339,6 +333,12 @@ export default (props) => {
                   <button type="button" onClick={() => setChartListType('simple')}>
                     <img src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon} />
                   </button>
+                  <img
+                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                    className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
+                    style={{cursor: 'pointer'}}
+                    onClick={() => refreshCategory()}
+                  />
                 </div>
               </div>
             </div>
