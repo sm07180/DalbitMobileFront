@@ -18,6 +18,7 @@ let timer
 let moreState = false
 //layout
 export default (props) => {
+  console.log(props)
   let location = useLocation()
   let params = useParams()
   const LocationClip = params.clipNo
@@ -195,6 +196,12 @@ export default (props) => {
     }
     return () => {
       currentPage = 1
+    }
+  }, [])
+  useEffect(() => {
+    if (props.type === 'edit') {
+      setWriteState(true)
+      setTextChange(props.editMsg)
     }
   }, [])
 

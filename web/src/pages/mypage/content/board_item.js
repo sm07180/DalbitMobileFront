@@ -11,6 +11,9 @@ import {useLocation, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
+
+import WriteBoard from './board_write'
+
 export default (props) => {
   let params = useParams()
   const LocationClip = params.clipNo
@@ -176,9 +179,9 @@ export default (props) => {
               <>
                 <button className="btn__more" onClick={() => moreToggle(props.data.boardIdx, props.data.contents)}></button>
                 <div className={props.data.boardIdx === context.boardIdx ? 'moreList on' : 'moreList'}>
-                  {/* {props.data.writerNo === context.token.memNo && (
-                <button onClick={() => editToggle(props.data.contents, props.data.boardIdx)}>수정하기</button>
-              )} */}
+                  {props.data.writerNo === context.token.memNo && (
+                    <button onClick={() => editToggle(props.data.contents, props.data.boardIdx)}>수정하기</button>
+                  )}
                   <button onClick={() => deleteBoard(props.data.boardIdx)}>삭제하기</button>
                 </div>
               </>
@@ -211,30 +214,31 @@ export default (props) => {
       )}
       {/* 수정하기 */}
       {modifyState === true && (
-        <div className="writeWrap">
-          <div className="writeWrap__top">
-            <div className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}>
-              <img src={props.data.profImg.thumb190x190} alt={props.data.nickName} />
-              <strong>{props.data.nickName}</strong>
-            </div>
-            <div className="content_area">
-              <textarea autoFocus="autofocus" value={modifyMsg} onChange={handleChangeInput} />
-            </div>
-          </div>
-          <div className="writeWrap__btnWrap">
-            <span className="countBox">
-              <span className="count">
-                <em>{modifyMsg.length}</em> / 100
-              </span>
-            </span>
-            <button className="btn__ok" onClick={() => editBoard()}>
-              수정
-            </button>
-            <div className="writeWrap__btn" onClick={modifyCancel}>
-              <button className="btn__toggle">접기</button>
-            </div>
-          </div>
-        </div>
+        <WriteBoard type="edit" editMsg={modifyMsg} />
+        // <div className="writeWrap">
+        //   <div className="writeWrap__top">
+        //     <div className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}>
+        //       <img src={props.data.profImg.thumb190x190} alt={props.data.nickName} />
+        //       <strong>{props.data.nickName}</strong>
+        //     </div>
+        //     <div className="content_area">
+        //       <textarea autoFocus="autofocus" value={modifyMsg} onChange={handleChangeInput} />
+        //     </div>
+        //   </div>
+        //   <div className="writeWrap__btnWrap">
+        //     <span className="countBox">
+        //       <span className="count">
+        //         <em>{modifyMsg.length}</em> / 100
+        //       </span>
+        //     </span>
+        //     <button className="btn__ok" onClick={() => editBoard()}>
+        //       수정
+        //     </button>
+        //     <div className="writeWrap__btn" onClick={modifyCancel}>
+        //       <button className="btn__toggle">접기</button>
+        //     </div>
+        //   </div>
+        // </div>
       )}
     </>
   )
