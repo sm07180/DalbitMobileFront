@@ -428,7 +428,7 @@
               align-items: center;
               &--num,
               &--icon {
-                width: 16px;
+                min-width: 16px;
                 height: 16px;
                 margin-left: 2px;
                 font-weight: 600;
@@ -519,7 +519,7 @@
     background: url('./static/male.svg');
     background-color: #fff;
     border-radius: 10px;
-    margin-left: 2px;
+    margin-left: 1px;
   }
   .femaleIcon {
     background: url('./static/female.svg');

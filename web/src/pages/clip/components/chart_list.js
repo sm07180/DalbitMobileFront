@@ -104,11 +104,11 @@ export default (props) => {
             <div className="textBox__detail">
               <span className="textBox__detail--item">
                 <img src={playIcon} width={16} />
-                {playCnt}
+                {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
               </span>
               <span className="textBox__detail--item">
                 <img src={heartIcon} width={16} />
-                {goodCnt}
+                {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
               </span>
               {/* <span className="textBox__detail--item">
                 <img src={starIcon} width={16} />
@@ -213,9 +213,13 @@ export default (props) => {
                   </div>
                   <div className="topWrap__count">
                     <img className="topWrap__count--icon" src={SimplePlayIcon} />
-                    <span className="topWrap__count--num">{playCnt}</span>
+                    <span className="topWrap__count--num">
+                      {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
+                    </span>
                     <img className="topWrap__count--icon" src={SimpleLikeIcon} />
-                    <span className="topWrap__count--num">{goodCnt}</span>
+                    <span className="topWrap__count--num">
+                      {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                    </span>
                   </div>
                 </div>
                 <div className="bottomWrap">
