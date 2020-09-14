@@ -58,6 +58,7 @@ export default (props) => {
   }, [])
 
   const goBack = () => {
+    sessionStorage.removeItem('webview')
     Hybrid('CloseLayerPopup')
   }
   useEffect(() => {
