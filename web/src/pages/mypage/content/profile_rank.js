@@ -4,7 +4,7 @@ import {Context} from 'context'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import styled from 'styled-components'
 import API from 'context/api'
-
+import qs from 'query-string'
 import goldMedal from '../static/profile/medal_gold_m@2x.png'
 import silverMedal from '../static/profile/medal_silver_m@2x.png'
 import bronzeMedal from '../static/profile/medal_bronze_m@2x.png'
@@ -17,7 +17,7 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
   const {type} = props
-
+  const {webview} = qs.parse(location.search)
   const [rankingType, setRankingType] = useState(type === 'tabGood' ? 'all' : 'fan') // fan, all
   const [fanListType, setFanListType] = useState(1) //1: 최근, 2, 누적
   const [allListType, setAllListType] = useState(type === 'tabGood' ? 'good' : 'gift') //gift, good
@@ -114,6 +114,13 @@ export default (props) => {
     }
     fetchDataFanCancel(memNo)
   }
+  const Link = (memNo) => {
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
 
   useEffect(() => {
     fetchFanGood()
@@ -186,7 +193,7 @@ export default (props) => {
                               <div
                                 className="thumbBox"
                                 onClick={() => {
-                                  history.push(`/mypage/${memNo}`), context.action.updateCloseRank(false)
+                                  Link(memNo), context.action.updateCloseRank(false)
                                 }}>
                                 <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                                 {idx < 5 && (
@@ -254,7 +261,7 @@ export default (props) => {
                                 <div
                                   className="thumbBox"
                                   onClick={() => {
-                                    history.push(`/mypage/${memNo}`), context.action.updateCloseRank(false)
+                                    Link(memNo), context.action.updateCloseRank(false)
                                   }}>
                                   <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                                   {idx < 5 && (
@@ -307,7 +314,7 @@ export default (props) => {
                                 <div
                                   className="thumbBox"
                                   onClick={() => {
-                                    history.push(`/mypage/${memNo}`), context.action.updateCloseRank(false)
+                                    Link(memNo), context.action.updateCloseRank(false)
                                   }}>
                                   <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                                   {idx < 5 && (
