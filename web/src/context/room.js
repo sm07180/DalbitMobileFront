@@ -382,7 +382,7 @@ export const RoomMake = async (context) => {
       broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
     }
   }
-  if (__NODE_ENV !== 'dev' && _os === 1 && appVer > 29) {
+  if (__NODE_ENV !== 'dev' && _os === 1 && appVer < 29) {
     Hybrid('RoomMake')
   } else {
     Hybrid('RoomMake', broadSetting)
