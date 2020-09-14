@@ -32,6 +32,9 @@ export default (props) => {
   const {token, profile} = context
   let {memNo, category} = useParams()
 
+  if (webview && webview === 'new') {
+    sessionStorage.setItem('webview', 'new')
+  }
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   const [codes, setCodes] = useState('')
@@ -55,7 +58,7 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (context.isDevIp) {
-    if (webview && webview === 'new') {
+    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
         {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
