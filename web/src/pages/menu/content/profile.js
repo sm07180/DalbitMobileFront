@@ -178,7 +178,11 @@ export default (props) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
-    history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+    if (webview && webview === 'new') {
+      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+    } else {
+      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+    }
   }
 
   return (
