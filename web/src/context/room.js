@@ -363,7 +363,6 @@ export const RoomMake = async (context) => {
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()
   if (!result) return
-<<<<<<< HEAD
   //## 실행 리얼 주석 시작
   let broadSetting = {}
   broadSetting['djListenerIn'] = false
@@ -383,12 +382,4 @@ export const RoomMake = async (context) => {
   }
   //## 실행 리얼 주석 종료
   //Hybrid('RoomMake') //원소스
-=======
-  //## 실행
-  Hybrid('RoomMake')
-  console.log(
-    '%c' + `Native: RoomMake`,
-    'display:block;width:100%;padding:5px 10px;font-weight:bolder;font-size:14px;color:#fff;background:blue;'
-  )
->>>>>>> real
 }
