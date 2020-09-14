@@ -31,6 +31,7 @@ const Package = React.lazy(() => import('pages/event_package'))
 const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
+const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
@@ -112,7 +113,8 @@ export default () => {
         <Route exact path="/clip" component={Clip} />
         <Route exact path="/clip/tip" component={ClipTip} />
         <Route exact path="/redirect" component={TempLogin} />
-        <Route exact path="/clip/:memNo/reply" component={ClipReply} />
+        <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
+        <Route exact path="/clip/play_list" component={ClipPlayList} />
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>

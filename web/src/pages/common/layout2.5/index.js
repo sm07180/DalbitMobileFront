@@ -19,6 +19,7 @@ import Sticker from 'pages/common/sticker'
 //
 const Layout = (props) => {
   const {children, webview} = props
+  console.log(props.type)
   const context = useContext(Context)
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
@@ -33,7 +34,9 @@ const Layout = (props) => {
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
       <TopScrollBtn />
-      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`}>{children}</Article>
+      <Article className={webview ? `webview ${playerCls}` : `${playerCls}`} type={props.type === 'clipBack' ? 'clipBack' : ''}>
+        {children}
+      </Article>
       {/* (방송방)Player */}
       <NewPlayer {...props} />
       {/* (클립)Player */}
@@ -55,7 +58,7 @@ const Article = styled.article`
   background-color: #eeeeee;
   &.webview {
     .header-wrap .close-btn {
-      display: none;
+      display: ${(props) => (props.type === 'clipBack' ? 'block' : 'none')};
     }
   }
   /* player가 노출시 padding-bottom추가 */
