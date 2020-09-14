@@ -23,9 +23,9 @@ let first = true
 
 const AlarmArray = [
   {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림'},
-  {key: 'isStarClip', value: 0, text: '마이스타 클립 등록 알림'},
+  // {key: 'isStarClip', value: 0, text: '마이스타 클립 등록 알림'},
   {key: 'isGift', value: 0, text: '마이스타 방송공지 등록 알림'},
-  {key: 'isMyClip', value: 0, text: '내 클립 알림'},
+  // {key: 'isMyClip', value: 0, text: '내 클립 알림'},
   {key: 'isFan', value: 0, text: '신규 팬 추가 알림'},
   {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림'},
   {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림'},
