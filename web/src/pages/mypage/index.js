@@ -199,7 +199,7 @@ export default (props) => {
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      <Layout2 {...props} webview={webview} status="no_gnb">
+      <Layout2 {...props} webview={webview} status="no_gnb" type={webview && webview === 'new' ? 'clipBack' : ''}>
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
