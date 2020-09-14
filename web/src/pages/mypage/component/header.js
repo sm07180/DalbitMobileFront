@@ -22,6 +22,7 @@ export default (props) => {
     const {webview} = qs.parse(location.search)
     let referrer = document.referrer
     if (webview && webview === 'new' && isHybrid()) {
+      sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
 
       /*} else if (referrer.split('/')[4] === 'faq') {

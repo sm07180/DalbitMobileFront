@@ -11,6 +11,7 @@ export default (props) => {
   const goBack = () => {
     const {webview} = qs.parse(location.search)
     if (webview && webview === 'new' && isHybrid()) {
+      sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
     } else {
       history.push('/')

@@ -1,4 +1,5 @@
 import React, {useEffect, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 // component
@@ -10,6 +11,7 @@ import RankArrow from '../static/arrow_right_w.svg'
 import LiveIcon from '../static/ic_live.svg'
 import {Context} from 'context'
 export default (props) => {
+  const history = useHistory()
   const {list} = props
   const ctx = useContext(Context)
 
@@ -80,7 +82,7 @@ export default (props) => {
                 //   saveUrlAndRedirect(`/mypage/${memNo}`)
                 // }
                 // 20.08.25
-                saveUrlAndRedirect(`/mypage/${memNo}`)
+                history.push(`/mypage/${memNo}`)
               }}>
               <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
                 {roomNo !== undefined && roomNo !== '' && (

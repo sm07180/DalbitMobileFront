@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react'
-import styled from 'styled-components'
+import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
 import {saveUrlAndRedirect} from 'components/lib/link_control.js'
@@ -14,9 +14,9 @@ const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
 export default (props) => {
+  const history = useHistory()
   let {rankType, djRank, fanRank} = props
   const globalCtx = useContext(Context)
-
   const MyMemNo = globalCtx.profile && globalCtx.profile.memNo
 
   if (djRank === undefined || fanRank === undefined) {
@@ -40,7 +40,9 @@ export default (props) => {
               <div
                 className="rank-slide"
                 key={`dj-${idx}`}
-                onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
+                onClick={() => {
+                  history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                }}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   {idx > 2 ? (
                     // <div className="counting">{rank}</div>
@@ -62,7 +64,7 @@ export default (props) => {
               <div
                 className="rank-slide"
                 key={`fan-${idx}`}
-                onClick={() => saveUrlAndRedirect(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
+                onClick={() => history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   {idx > 2 ? (
                     <></>

@@ -222,6 +222,15 @@
   }
 
   .liveChart {
+    .fixedArea {
+      &.on {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 7;
+        width: 100%;
+      }
+    }
     &__titleBox {
       display: flex;
       justify-content: space-between;
@@ -254,7 +263,8 @@
 
     .swiper-container {
       border-bottom: 1px solid #eee;
-
+      background-color: #fff;
+      margin-top: -1px;
       .slideWrap {
         width: auto;
         margin: 0 8px;
@@ -274,6 +284,11 @@
 
     .chartListDetail {
       padding: 8px 2%;
+      .chartListDetailBox {
+        &.fixedOn {
+          margin-top: 102px;
+        }
+      }
       .chartListDetailItem {
         display: flex;
         align-items: center;
@@ -328,6 +343,7 @@
           }
 
           &__detail {
+            margin-top: 3px;
             font-size: 12px;
 
             &--item {
@@ -346,6 +362,9 @@
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        &.fixedOn {
+          margin-top: 102px;
+        }
 
         .chartListSimpleItem {
           position: relative;
@@ -472,7 +491,7 @@
     height: 16px;
     margin-right: 2px;
     line-height: 16px;
-    font-size: 7px;
+    font-size: 10px;
     text-align: center;
     color: #fff;
     background-color: rgb(236, 69, 95);

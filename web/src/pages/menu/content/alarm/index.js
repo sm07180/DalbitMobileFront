@@ -127,6 +127,9 @@ export default function Alert() {
       case 45:
         fetchDataPlay(roomNo)
         break
+      case 46:
+        fetchDataPlay(roomNo)
+        break
       case 50:
         let mobileLink = link
         try {
