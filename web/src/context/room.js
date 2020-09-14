@@ -375,14 +375,14 @@ export const RoomMake = async (context) => {
   broadSetting['djListenerIn'] = false
   broadSetting['djListenerOut'] = false
 
-  if (__NODE_ENV === 'dev' || (_os === 1 && appVer > 29) || (_os === 2 && appVer > 141)) {
+  if (__NODE_ENV === 'dev' || (_os === 1 && appVer > 30) || (_os === 2 && appVer > 141)) {
     const apiSetting = await Api.getBroadcastSetting()
     if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
       broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
       broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
     }
   }
-  if (__NODE_ENV !== 'dev' && _os === 1 && appVer < 29) {
+  if (__NODE_ENV !== 'dev' && _os === 1 && appVer < 30) {
     Hybrid('RoomMake')
   } else {
     Hybrid('RoomMake', broadSetting)
