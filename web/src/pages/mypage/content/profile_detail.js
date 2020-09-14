@@ -98,33 +98,39 @@ export default (props) => {
       </>
     )
   }
-  const createCountList = (type, count) => {
-    let action, text, ico
+  const viewLayer = (type) => {
+    console.log(type, showEdit)
     if (type === 'fan') {
       if (showEdit === true) {
-        action = editFan
+        editFan()
       } else {
-        action = viewFanList
+        viewFanList()
       }
+    } else if (type === 'star') {
+      if (showEdit === true) {
+        editStar()
+      } else {
+        viewStarList()
+      }
+    } else if (type === 'like') {
+      // viewGoodList()
+    }
+  }
+  const createCountList = (type, count) => {
+    let text, ico
+    if (type === 'fan') {
       text = '팬'
       ico = 'type1'
     } else if (type === 'star') {
-      if (showEdit === true) {
-        action = editStar
-      } else {
-        action = viewStarList
-      }
       text = '스타'
       ico = 'type2'
     } else if (type === 'like') {
-      // action = viewGoodList
-      action = ''
       text = '좋아요'
     }
     return (
       <>
         {type !== 'like' && count > 0 ? (
-          <div className="count-box" onClick={action}>
+          <div className="count-box" onClick={() => viewLayer(type)}>
             <span className="icoWrap">
               <span className={`icoImg ${ico}`}></span>
               <em className={`icotitle ${showEdit ? 'icotitle--active' : ''}`}>{text}</em>
@@ -132,7 +138,7 @@ export default (props) => {
             <em className="cntTitle">{count > 9999 ? Utility.printNumber(count) : Utility.addComma(count)}</em>
           </div>
         ) : (
-          <div className="count-box" onClick={action}>
+          <div className="count-box" onClick={() => viewLayer(type)}>
             <span className="icoWrap">
               <span className={`icoImg ${ico}`}></span>
               <em className="icotitle">{text}</em>
@@ -326,7 +332,7 @@ export default (props) => {
       setShowPresent(true)
       setShowEdit(false)
     }
-  }, [])
+  }, [profile.memNo])
 
   return (
     <div className="profile-detail">

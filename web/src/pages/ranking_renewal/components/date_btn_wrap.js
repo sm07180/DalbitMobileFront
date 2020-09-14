@@ -32,7 +32,9 @@ function DateBtnWrap({fetching}) {
             onClick={() => {
               if (fetching === false) {
                 if (formState.dateType !== v.val) {
+                  window.scrollTo(0, 0)
                   const someDate = v.val === 2 ? convertMonday() : v.val === 3 ? convertMonth() : new Date()
+
                   formDispatch({
                     type: 'DATE_TYPE',
                     val: {

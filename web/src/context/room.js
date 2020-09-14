@@ -344,9 +344,9 @@ export const RoomMake = async (context) => {
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
   let appVer = customHeader['appVer']
-  if(appVer === undefined){
+  if (appVer === undefined) {
     appVer = customHeader['appVersion']
-    if(appVer === undefined){
+    if (appVer === undefined) {
       appVer = 0
     }
   }
@@ -372,21 +372,19 @@ export const RoomMake = async (context) => {
   if (!result) return
   //## 실행 리얼 주석 시작
   let broadSetting = {}
-  broadSetting["djListenerIn"] = false
-  broadSetting["djListenerOut"] = false
+  broadSetting['djListenerIn'] = false
+  broadSetting['djListenerOut'] = false
 
-  if(__NODE_ENV === 'dev'
-    || (_os === 1 && appVer > 29)
-    || (_os === 2 && appVer > 141)){
+  if (__NODE_ENV === 'dev' || (_os === 1 && appVer > 29) || (_os === 2 && appVer > 141)) {
     const apiSetting = await Api.getBroadcastSetting()
-    if(apiSetting && apiSetting.result === 'success' && apiSetting.data){
-      broadSetting["djListenerIn"] = apiSetting.data["djListenerIn"]
-      broadSetting["djListenerOut"] = apiSetting.data["djListenerIn"]
+    if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
+      broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
+      broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
     }
   }
-  if(__NODE_ENV !== 'dev' && _os === 1 && appVer > 29){
+  if (__NODE_ENV !== 'dev' && _os === 1 && appVer > 29) {
     Hybrid('RoomMake')
-  }else{
+  } else {
     Hybrid('RoomMake', broadSetting)
   }
   //## 실행 리얼 주석 종료

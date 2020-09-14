@@ -397,13 +397,14 @@ const HoleWrap = styled.div`
 
   .tabWrap {
     display: flex;
-    padding-top: 4px;
 
     &__tab {
       width: 50%;
-      height: 48px;
+      height: 52px;
       text-align: center;
-      line-height: 48px;
+      line-height: 52px;
+      font-size: 18px;
+      font-weight: 700;
 
       &--active {
         color: #632beb;
@@ -423,6 +424,7 @@ const HoleWrap = styled.div`
 
     &__tab {
       padding: 0 5px;
+      font-size: 16px;
 
       &--active {
         color: #632beb;

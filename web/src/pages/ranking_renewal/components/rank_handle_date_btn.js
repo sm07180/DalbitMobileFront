@@ -48,7 +48,7 @@ function RankHandleDateBtn({fetching}) {
 
   useEffect(() => {
     formatDate()
-  }, [myInfo])
+  }, [formState])
 
   const prevLast = () => {
     let cy = formState.currentDate.getFullYear()

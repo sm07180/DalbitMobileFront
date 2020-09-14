@@ -1675,6 +1675,14 @@ export default class API {
     })
   }
 
+  static getSpecialDjHistory = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/specialDj/history',
+      params: data
+    })
+  }
+
   static get_ranking = async (obj) => {
     const {param} = obj
     return await ajax({
@@ -2446,7 +2454,18 @@ export default class API {
   static postClipPlay = async (data) => {
     return await ajax({url: '/clip/play', method: 'post', data})
   }
-
+  static getClipReplyList = async (params) => {
+    return await ajax({url: '/clip/reply/list', method: 'GET', params})
+  }
+  static postClipReplyDelete = async (data) => {
+    return await ajax({url: '/clip/reply/delete', method: 'post', data})
+  }
+  static postClipReplySumbit = async (data) => {
+    return await ajax({url: '/clip/reply/add', method: 'post', data})
+  }
+  static postClipReplyEdit = async (data) => {
+    return await ajax({url: '/clip/reply/edit', method: 'post', data})
+  }
   static eventPackageJoinCheck = async (params) => {
     return await ajax({url: '/event/004/apply', method: 'GET', params})
   }
@@ -2559,6 +2578,23 @@ export default class API {
     return await ajax({
       url: '/center/version',
       method: 'GET'
+    })
+  }
+
+  static getPlayList = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/clip/play/list',
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static postPlayListEdit = async () => {
+    return await ajax({
+      url: '/clip/play/list/edit',
+      method: 'POST',
+      data: data
     })
   }
 }

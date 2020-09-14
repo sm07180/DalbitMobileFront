@@ -9,7 +9,7 @@ import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
 // import CloseBtn from '../../menu/static/ic_closeBtn.svg'
-const CloseBtn = 'https://image.dalbitlive.com/images/common/ic_close_m@2x.png'
+const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
 import 'styles/layerpopup.scss'
 
 export default (props) => {

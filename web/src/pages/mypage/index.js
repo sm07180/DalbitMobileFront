@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useContext} from 'react'
-import styled from 'styled-components'
 import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -8,8 +7,6 @@ import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
 import MyProfile from './content/myProfile.js'
-//import Navigation from './content/navigation.js'
-import {saveUrlAndRedirect} from 'components/lib/link_control.js'
 import BroadcastSetting from './content/broadcastSetting.js'
 import AppAlarm2 from './content/appAlarm2'
 import Notice from './content/notice.js'
@@ -23,25 +20,24 @@ import MyClip from './content/myclip'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
+// scss
 import ClipIcon from './static/menu_cast.svg'
-import Arrow from './static/arrow.svg'
-import newCircle from './static/new_circle.svg'
-import NoticeIcon from './static/profile/ic_notice_m.svg'
-import FanboardIcon from './static/profile/ic_fanboard_m.svg'
-
 import './index.scss'
 
-//new State
-let NewState = {
-  fanboard: false,
-  notice: false,
-  wallet: false
-}
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
+  //context
   const context = useContext(Context)
-  const globalCtx = useContext(Context)
+  const {token, profile} = context
+  let {memNo, category} = useParams()
+
+  //프로필정보
+  const [profileInfo, setProfileInfo] = useState(null)
+  const [codes, setCodes] = useState('')
+  const [myPageNew, setMyPageNew] = useState({})
+  const [isSelected, setIsSelected] = useState(false)
+  const [tabSelected, setTabSelected] = useState(0)
 
   //navi Array
   let navigationList = [
@@ -57,34 +53,29 @@ export default (props) => {
     {id: 8, type: 'edit_star', component: EditStar, txt: '스타 관리'}
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
-  let subNavList2
-  if (globalCtx.isDevIp) {
-    subNavList2 = [
-      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon},
-      {type: 'my_clip', txt: '클립', icon: ClipIcon}
-    ]
+  let mypageNavList
+  if (context.isDevIp) {
+    if (webview && webview === 'new') {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+      ]
+    } else {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+        {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+      ]
+    }
   } else {
-    subNavList2 = [
-      {type: 'notice', txt: '방송공지', icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', icon: MenuFanBoardeIcon}
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
     ]
   }
 
-  //context
-
-  const {token, profile} = context
-  //memNo Info
-  let {memNo, category} = useParams()
-  useEffect(() => {
-    context.action.updateUrlStr(memNo)
-  }, [])
-  //state
-  //프로필정보
-  const [profileInfo, setProfileInfo] = useState(null)
-  const [codes, setCodes] = useState('')
-  const [myPageNew, setMyPageNew] = useState({})
   // memNo navi check
+  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -112,6 +103,9 @@ export default (props) => {
       setMyPageNew(res.data)
     }
     getMyPageNew()
+  }, [])
+  useEffect(() => {
+    setTabSelected(0)
   }, [])
 
   useEffect(() => {
@@ -141,7 +135,9 @@ export default (props) => {
       settingProfileInfo(memNo)
     }
   }, [memNo, context.mypageFanCnt])
-
+  useEffect(() => {
+    context.action.updateUrlStr(memNo)
+  }, [])
   // check 탈퇴회원
   useEffect(() => {
     if (codes === '-2') {
@@ -153,32 +149,83 @@ export default (props) => {
       })
     }
   }, [codes])
+  console.log('url', memNo)
+  console.log('url', token.memNo)
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
+  //else if (memNo === token.memNo && webview && webview === 'new') {
+  //   history.push('/menu/profile?webview=new')
+  // }
+
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }
+  const profileCount = (idx) => {
+    switch (idx) {
+      case 0:
+        return profileInfo.count.notice
+      case 1:
+        return profileInfo.count.fanboard
+      case 2:
+        return profileInfo.count.clip
 
+      default:
+        break
+    }
+  }
   const locationNav = (type) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
-    history.push(`/mypage/${memNo}/${type}`)
+
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}/${type}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}/${type}`)
+    }
   }
+  const changeTab = (type) => {
+    if (type === 0) {
+      setTabSelected(0)
+    } else if (type === 1) {
+      setTabSelected(1)
+    } else if (type === 2) {
+      setTabSelected(2)
+    }
+  }
+
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      <Layout2 {...props} webview={webview} status="no_gnb">
+      <Layout2 {...props} webview={webview} status="no_gnb" type={webview && webview === 'new' ? 'clipBack' : ''}>
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
+              {/* <ul className="profile-tab">
+                {mypageNavList.map((value, idx) => {
+                  const {type, txt} = value
+                  return (
+                    <li className={tabSelected === idx ? `isSelected` : ``}>
+                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
+                        {txt} <span className="cnt">{profileCount(idx)}</span>
+                      </button>
+                    </li>
+                  )
+                })}
+              </ul>
+              <div className="profile-tab__content">
+                {tabSelected === 0 && <Notice type="subpage" />}
+                {tabSelected === 1 && <FanBoard type="subpage" />}
+                {tabSelected === 2 && <MyClip type="subpage" />}
+              </div> */}
+
               <div className="profile-menu">
-                {subNavList2.map((value, idx) => {
+                {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
                     <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
