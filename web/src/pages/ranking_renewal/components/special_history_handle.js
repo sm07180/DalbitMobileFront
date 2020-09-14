@@ -44,7 +44,7 @@ export default function SpecialHistoryHandle({fetching}) {
     const mm = formState.currentDate.getMonth() + 1
     const dd = formState.currentDate.getDate()
 
-    const cdt = new Date('2020-07-01')
+    const cdt = new Date('2020-06-01')
     const cyy = cdt.getFullYear()
     const cmm = cdt.getMonth() + 1
 
