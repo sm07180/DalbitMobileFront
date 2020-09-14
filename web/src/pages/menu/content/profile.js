@@ -150,6 +150,13 @@ export default (props) => {
     fetchSelfAuth()
     // history.push('/money_exchange')
   }
+
+  console.log(profile.memNo)
+  //WEBVIEW CHECK
+  if (profile.memNo === token.memNo && webview && webview === 'new') {
+    history.push(`/mypage/${profile.memNo}?webview=new`)
+  }
+
   useEffect(() => {
     const getMyPageNew = async () => {
       if (profile !== null) {
@@ -171,7 +178,11 @@ export default (props) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
-    history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+    if (webview && webview === 'new') {
+      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+    } else {
+      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+    }
   }
 
   return (

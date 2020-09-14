@@ -55,11 +55,18 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (context.isDevIp) {
-    mypageNavList = [
-      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-      {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
-    ]
+    if (webview && webview === 'new') {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+      ]
+    } else {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+        {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+      ]
+    }
   } else {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -144,9 +151,10 @@ export default (props) => {
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
-  } else if (memNo === token.memNo && webview && webview === 'new') {
-    history.push('/menu/profile?webview=new')
   }
+  //else if (memNo === token.memNo && webview && webview === 'new') {
+  //   history.push('/menu/profile?webview=new')
+  // }
 
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
@@ -168,7 +176,12 @@ export default (props) => {
     context.action.updateFanboardReplyNum(false)
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
-    history.push(`/mypage/${memNo}/${type}`)
+
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}/${type}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}/${type}`)
+    }
   }
   const changeTab = (type) => {
     if (type === 0) {
@@ -183,7 +196,7 @@ export default (props) => {
   return (
     <Switch>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
-      <Layout2 {...props} webview={webview} status="no_gnb">
+      <Layout2 {...props} webview={webview} status="no_gnb" type={webview && webview === 'new' ? 'clipBack' : ''}>
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
