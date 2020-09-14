@@ -39,9 +39,6 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
 
-  if (webview && webview === 'new') {
-    sessionStorage.setItem('webview', 'new')
-  }
   // nav Array
   // const subNavList = [
   //   {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -52,20 +49,13 @@ export default (props) => {
   // ]
   let subNavList
   if (globalCtx.isDevIp) {
-    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
-      subNavList = [
-        {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
-      ]
-    } else {
-      subNavList = [
-        {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-        {type: 'my_clip', txt: '클립', icon: ClipIcon},
-        {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-        // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
-      ]
-    }
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+      {type: 'my_clip', txt: '클립', icon: ClipIcon},
+      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+      // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
+    ]
   } else {
     subNavList = [
       {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
@@ -74,7 +64,6 @@ export default (props) => {
       // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
     ]
   }
-
   const walletList = [
     {type: 'store', txt: '달 충전', icon: DalIcon},
     {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
@@ -266,54 +255,46 @@ export default (props) => {
                 )
               })}
             </div>
-            {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
-              <></>
-            ) : (
-              <div className="menu-box">
-                <button className="list" onClick={() => history.push(`/private`)}>
-                  <img className="icon" src={ProfileIcon} alt="프로필 설정" />
-                  <span className="text">프로필 설정</span>
-                  <span className="arrow"></span>
-                </button>
-                <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
-                  <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
-                  <span className="text">Push 알림 설정</span>
-                  <span className="arrow"></span>
-                </button>
-              </div>
-            )}
 
-            {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
-              <></>
-            ) : (
-              <div className="menu-box">
-                {customerList.map((value, idx) => {
-                  const {type, txt, icon} = value
-                  return (
-                    <button
-                      className="list"
-                      onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
-                      key={`list-${idx}`}>
-                      <img className="icon" src={icon} alt={txt} />
-                      <span className="text">{txt}</span>
-                      <span
-                        className={
-                          type === 'notice'
-                            ? myPageNew.notice
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : type === 'personal'
-                            ? myPageNew.qna
-                              ? 'arrow arrow--active'
-                              : 'arrow'
+            <div className="menu-box">
+              <button className="list" onClick={() => history.push(`/private`)}>
+                <img className="icon" src={ProfileIcon} alt="프로필 설정" />
+                <span className="text">프로필 설정</span>
+                <span className="arrow"></span>
+              </button>
+              <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
+                <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
+                <span className="text">Push 알림 설정</span>
+                <span className="arrow"></span>
+              </button>
+            </div>
+
+            <div className="menu-box">
+              {customerList.map((value, idx) => {
+                const {type, txt, icon} = value
+                return (
+                  <button
+                    className="list"
+                    onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
+                    key={`list-${idx}`}>
+                    <img className="icon" src={icon} alt={txt} />
+                    <span className="text">{txt}</span>
+                    <span
+                      className={
+                        type === 'notice'
+                          ? myPageNew.notice
+                            ? 'arrow arrow--active'
                             : 'arrow'
-                        }></span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
+                          : type === 'personal'
+                          ? myPageNew.qna
+                            ? 'arrow arrow--active'
+                            : 'arrow'
+                          : 'arrow'
+                      }></span>
+                  </button>
+                )
+              })}
+            </div>
             <button className="btn__logout" onClick={clickLogoutBtn}>
               로그아웃
             </button>
