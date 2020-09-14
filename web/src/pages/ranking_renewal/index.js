@@ -159,147 +159,6 @@ function Ranking() {
     return resolve()
   })
 
-  const fetchData = useCallback(async () => {
-    if (formState.rankType === RANK_TYPE.LEVEL) {
-      if (levelList.length > 0) {
-        if (formState.page > 1) {
-          const length = (formState.page - 1) * records
-          if (levelList.length > length) {
-            return
-          }
-        }
-      }
-    } else if (formState.rankType === RANK_TYPE.LIKE) {
-      if (likeList.length > 0) {
-        if (formState.page > 1) {
-          const length = (formState.page - 1) * records
-          if (likeList.length > length) {
-            return
-          }
-        }
-      }
-    } else {
-      if (rankList.length > 0) {
-        if (formState.page > 1) {
-          const length = (formState.page - 1) * records
-          if (rankList.length > length) {
-            return
-          }
-        }
-      }
-    }
-    setFetching(true)
-    const formatDate = convertDateFormat(formState.currentDate, '-')
-
-    const res = await Api.getRankList({
-      rankSlct: formState.rankType,
-      rankType: formState.dateType,
-      page: formState.page,
-      records: records,
-      rankingDate: formatDate,
-      type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
-    })
-    if (res.result === 'success' && res.data.list instanceof Array) {
-      if (res.data.list.length > 0) {
-        if (formState.rankType === 3) {
-          // level
-          if (formState.page > 1) {
-            if (levelList.length === 0) {
-              const res2 = await Api.getRankList({
-                rankSlct: formState.rankType,
-                rankType: formState.dateType,
-                page: 1,
-                records: records,
-                rankingDate: formatDate,
-                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
-              })
-
-              if (res2.result === 'success') {
-                setLevelList(res2.data.list.concat(res.data.list))
-              }
-            } else {
-              setLevelList(levelList.concat(res.data.list))
-            }
-          } else {
-            setLevelList(res.data.list)
-          }
-          setRankList([])
-          setLikeList([])
-          setTotalPage(res.data.paging.totalPage)
-        } else if (formState.rankType === 4) {
-          //good
-          if (formState.page > 1) {
-            if (likeList.length === 0) {
-              const res2 = await Api.getRankList({
-                rankSlct: formState.rankType,
-                rankType: formState.dateType,
-                page: 1,
-                records: records,
-                rankingDate: formatDate,
-                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
-              })
-
-              if (res2.result === 'success') {
-                setLikeList(res2.data.list.concat(res.data.list))
-              }
-            } else {
-              setLikeList(likeList.concat(res.data.list))
-            }
-          } else {
-            setLikeList(res.data.list)
-          }
-          setLevelList([])
-          setRankList([])
-          setTotalPage(res.data.paging.totalPage)
-        } else {
-          // dj, fan
-          if (formState.page > 1) {
-            if (rankList.length === 0) {
-              const res2 = await Api.getRankList({
-                rankSlct: formState.rankType,
-                rankType: formState.dateType,
-                page: 1,
-                records: records,
-                rankingDate: formatDate,
-                type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
-              })
-
-              if (res2.result === 'success') {
-                setRankList(res2.data.list.concat(res.data.list))
-              }
-            } else {
-              setRankList(rankList.concat(res.data.list))
-            }
-          } else {
-            setRankList(res.data.list)
-          }
-          setLevelList([])
-          setLikeList([])
-          setTotalPage(res.data.paging.totalPage)
-          setMyInfo({
-            myInfo,
-            ...res.data
-          })
-        }
-        setEmpty(false)
-      } else {
-        setEmpty(true)
-        setRankList([])
-        setLevelList([])
-        setLikeList([])
-        setMyInfo({...myInfo})
-      }
-    } else {
-      setEmpty(true)
-      setRankList([])
-      setLevelList([])
-      setLikeList([])
-      setMyInfo({...myInfo})
-    }
-
-    setFetching(false)
-  }, [formState, myInfo, rankList, levelList, likeList])
-
   useEffect(() => {
     if (scrollY > 0) {
       window.scrollTo(0, scrollY - 114)
@@ -307,8 +166,10 @@ function Ranking() {
   }, [])
 
   useEffect(() => {
-    if (formState.rankType !== RANK_TYPE.SPECIAL) fetchData()
-    else {
+    let didFetch = false
+    if (formState.rankType !== RANK_TYPE.SPECIAL) {
+      fetchData()
+    } else {
       fetchSpecial()
     }
     async function fetchSpecial() {
@@ -330,9 +191,112 @@ function Ranking() {
 
       setFetching(false)
     }
+
+    async function fetchData() {
+      if (!didFetch) {
+        if (formState.rankType === RANK_TYPE.LEVEL) {
+          if (levelList.length > 0) {
+            if (formState.page > 1) {
+              const length = (formState.page - 1) * records
+              if (levelList.length > length) {
+                return
+              }
+            }
+          }
+        } else if (formState.rankType === RANK_TYPE.LIKE) {
+          if (likeList.length > 0) {
+            if (formState.page > 1) {
+              const length = (formState.page - 1) * records
+              if (likeList.length > length) {
+                return
+              }
+            }
+          }
+        } else {
+          if (rankList.length > 0) {
+            if (formState.page > 1) {
+              const length = (formState.page - 1) * records
+              if (rankList.length > length) {
+                return
+              }
+            }
+          }
+        }
+        setFetching(true)
+        const formatDate = convertDateFormat(formState.currentDate, '-')
+
+        const res = await Api.getRankList({
+          rankSlct: formState.rankType,
+          rankType: formState.dateType,
+          page: formState.page,
+          records: records,
+          rankingDate: formatDate,
+          type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
+        })
+        if (res.result === 'success' && res.data.list instanceof Array) {
+          if (res.data.list.length > 0) {
+            if (formState.rankType === 3) {
+              // level
+              if (formState.page > 1) {
+                setLevelList(levelList.concat(res.data.list))
+              } else {
+                setLevelList(res.data.list)
+              }
+              setRankList([])
+              setLikeList([])
+              setTotalPage(res.data.paging.totalPage)
+            } else if (formState.rankType === 4) {
+              //good
+              if (formState.page > 1) {
+                setLikeList(likeList.concat(res.data.list))
+              } else {
+                setLikeList(res.data.list)
+              }
+              setLevelList([])
+              setRankList([])
+              setTotalPage(res.data.paging.totalPage)
+            } else {
+              // dj, fan
+              if (formState.page > 1) {
+                setRankList(rankList.concat(res.data.list))
+              } else {
+                setRankList(res.data.list)
+              }
+              setLevelList([])
+              setLikeList([])
+              setTotalPage(res.data.paging.totalPage)
+              setMyInfo({
+                myInfo,
+                ...res.data
+              })
+            }
+            setEmpty(false)
+          } else {
+            setEmpty(true)
+            setRankList([])
+            setLevelList([])
+            setLikeList([])
+            setMyInfo({...myInfo})
+          }
+        } else {
+          setEmpty(true)
+          setRankList([])
+          setLevelList([])
+          setLikeList([])
+          setMyInfo({...myInfo})
+        }
+
+        setFetching(false)
+      }
+    }
+
+    return () => {
+      didFetch = true
+    }
   }, [formState, context.token.isLogin])
 
   useEffect(() => {
+    let didFetch = false
     const windowScrollEvent = () => {
       if (window.scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
@@ -375,9 +339,11 @@ function Ranking() {
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (totalPage > formState.page && formState.page < 25) {
             if (!fetching) {
-              formDispatch({
-                type: 'PAGE'
-              })
+              if (!didFetch) {
+                formDispatch({
+                  type: 'PAGE'
+                })
+              }
             }
           }
         }
@@ -387,6 +353,7 @@ function Ranking() {
     window.addEventListener('scroll', windowScrollEvent)
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
+      didFetch = true
     }
   }, [formState, totalPage, fetching])
 
