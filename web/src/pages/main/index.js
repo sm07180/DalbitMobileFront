@@ -698,20 +698,7 @@ export default (props) => {
           <div className="section live-list" ref={LiveSectionRef}>
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
-                <button
-                  className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`}
-                  onClick={async () => {
-                    // setReloadInit(true)
-                    // await fetchMainInitData()
-                    setLiveRefresh(true)
-                    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-                    await fetchLiveList(true)
-                    setLiveRefresh(false)
-                    // setReloadInit(false)
-                  }}>
-                  실시간 LIVE
-                  <img src="https://image.dalbitlive.com/main/200714/ico-refresh.svg" alt="새로고침" />
-                </button>
+                <span className="txt">실시간 LIVE</span>
                 <div className="sequence-wrap">
                   {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
@@ -732,6 +719,19 @@ export default (props) => {
                       src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
                       alt="리스트 형식으로 리스트 보여주기"
                     />
+                  </button>
+                  <button
+                    className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`}
+                    onClick={async () => {
+                      // setReloadInit(true)
+                      // await fetchMainInitData()
+                      setLiveRefresh(true)
+                      await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+                      await fetchLiveList(true)
+                      setLiveRefresh(false)
+                      // setReloadInit(false)
+                    }}>
+                    <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg" alt="새로고침" />
                   </button>
                 </div>
               </div>

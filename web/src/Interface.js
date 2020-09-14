@@ -45,9 +45,9 @@ export default () => {
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
-        if (__NODE_ENV === 'dev') {
-          alert('fore pushMsg :' + pushMsg)
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('fore pushMsg :' + pushMsg)
+        // }
 
         const isJsonString = (str) => {
           try {
@@ -76,8 +76,8 @@ export default () => {
 
         //개발쪽만 적용
         if (__NODE_ENV === 'dev') {
-          alert('fore isLogin :' + isLogin)
-          alert('fore push_type :' + JSON.stringify(pushMsg))
+          // alert('fore isLogin :' + isLogin)
+          // alert('fore push_type :' + JSON.stringify(pushMsg))
         }
 
         if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
@@ -364,7 +364,6 @@ export default () => {
         /**
          * @example debug({title:'타이틀내용',msg:'메시지내용', callback: () => { alert('test')      }})
          */
-        //context.action.alert(detail)
         break
       case 'react-gnb-open': //-------------------------GNB 열기
         context.action.updateGnbVisible(true)
@@ -374,9 +373,6 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        // if (__NODE_ENV === 'clip-player-show') {
-        //   alert('clip-player-audio-end')
-        // }
         const dataString = JSON.stringify(event.detail)
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
@@ -457,9 +453,6 @@ export default () => {
         }
         break
       case 'native-close-layer-popup': //---------- 안드로이드 물리 백키로 새창 닫았을때
-        // if (__NODE_ENV === 'dev') {
-        //   alert('native-close-layer-popup')
-        // }
         sessionStorage.removeItem('webview')
         break
       default:
@@ -490,9 +483,9 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    if (__NODE_ENV === 'dev') {
-      alert('back pushMsg :' + pushMsg)
-    }
+    // if (__NODE_ENV === 'dev') {
+    //   alert('back pushMsg :' + pushMsg)
+    // }
 
     const isJsonString = (str) => {
       try {
@@ -550,10 +543,10 @@ export default () => {
     let room_no, mem_no, board_idx, redirect_url
 
     //개발쪽만 적용
-    if (__NODE_ENV === 'dev') {
-      alert('back isLogin :' + isLogin)
-      alert('back pushMsg :' + JSON.stringify(pushMsg))
-    }
+    // if (__NODE_ENV === 'dev') {
+    //   alert('back isLogin :' + isLogin)
+    //   alert('back pushMsg :' + JSON.stringify(pushMsg))
+    // }
     //---------------------[분기처리시작]
 
     if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
@@ -690,14 +683,11 @@ export default () => {
   }
 
   function nativeGetTid(event) {
-    //alert('app에서 전달받음.')
     let nativeTid = event.detail
     if (event.detail.isExist == null) {
       //IOS
-      //alert('IOS 입니다.')
     } else {
       //ANDROID
-      //alert('안드로이드 입니다.')
       if (event.detail.isExist) {
         if (event.detail.tid == '') {
           nativeTid = 'adbrix'
