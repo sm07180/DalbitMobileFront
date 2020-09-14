@@ -121,10 +121,10 @@ export default (props) => {
                 <img src={heartIcon} width={16} />
                 {goodCnt}
               </span>
-              <span className="textBox__detail--item">
+              {/* <span className="textBox__detail--item">
                 <img src={starIcon} width={16} />
                 {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
-              </span>
+              </span> */}
             </div>
           </div>
         </li>
