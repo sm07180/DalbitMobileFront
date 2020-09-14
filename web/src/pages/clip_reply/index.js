@@ -34,7 +34,12 @@ export default (props) => {
     })
     if (result === 'success') {
       setBoardList(data.list)
-      setTotalCount(data.paging.total)
+      if (data.paging) {
+        setTotalCount(data.paging.total)
+      } else {
+        setTotalCount(0)
+      }
+
       // Hybrid('ClipUpdateInfo', data.clipPlayInfo)
     } else {
       globalCtx.action.alert({

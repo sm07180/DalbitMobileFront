@@ -58,13 +58,13 @@ export default (props) => {
       }
     } else {
       context.action.alert({
-        msg: message
+        msg: res.message
       })
     }
   }
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
-    const {result, data} = await Api.postClipPlay({
+    const {result, data, message} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
