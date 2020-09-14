@@ -7,7 +7,7 @@ import Utility from 'components/lib/utility'
 export const clipJoin = (data, context) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     // clipExit(context)
-    if (!context.player && Utility.getCookie('clip-player-info') && context.clipState) {
+    if (!context.player && context.clipState) {
       return context.action.alert({
         msg: '현재 청취 중인 클립이 있습니다.'
       })
