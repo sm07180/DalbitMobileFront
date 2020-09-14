@@ -101,6 +101,18 @@ export default (props) => {
           <div className="textBox">
             <p className="textBox__subject">{title} </p>
             <p className="textBox__nickName">{nickName}</p>
+            <div className="textBox__iconBox">
+              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
+              {isSpecial && <span className="specialIcon">S</span>}
+              <span className="textBox__iconBox--type">
+                {clipType.map((ClipTypeItem, index) => {
+                  if (ClipTypeItem.value === subjectType) {
+                    return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
+                  }
+                })}
+              </span>
+              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+            </div>
             <div className="textBox__detail">
               <span className="textBox__detail--item">
                 <img src={playIcon} width={16} />
@@ -114,18 +126,6 @@ export default (props) => {
                 <img src={starIcon} width={16} />
                 {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
               </span> */}
-            </div>
-            <div className="textBox__iconBox">
-              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
-              {isSpecial && <span className="specialIcon">S</span>}
-              <span className="textBox__iconBox--type">
-                {clipType.map((ClipTypeItem, index) => {
-                  if (ClipTypeItem.value === subjectType) {
-                    return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
-                  }
-                })}
-              </span>
-              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
             </div>
           </div>
         </li>
