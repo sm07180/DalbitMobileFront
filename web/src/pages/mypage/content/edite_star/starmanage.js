@@ -33,7 +33,7 @@ let moreState = false
 //---------------------------------------------------------------------------------
 export default (props) => {
   const {sortNum} = props
-  console.log(sortNum)
+  const {webview} = qs.parse(location.search)
   let history = useHistory()
   //context
   const ctx = useContext(Context)
@@ -292,7 +292,13 @@ export default (props) => {
       msg: '스타 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
     })
   }
-
+  const Link = (memNo) => {
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
   return (
     <Wrap>
       {(ctx.fanEditeLength === -1 || ctx.fanEditeLength === 0) && <NoResult />}
@@ -303,7 +309,7 @@ export default (props) => {
             <React.Fragment key={idx}>
               {nickNm !== '' && (
                 <div className="list">
-                  <div className="list__imgBox" onClick={() => history.push(`/mypage/${memNo}`)}>
+                  <div className="list__imgBox" onClick={() => Link(memNo)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
                   <div className="list__infoBox">

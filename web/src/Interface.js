@@ -456,6 +456,12 @@ export default () => {
           })
         }
         break
+      case 'native-close-layer-popup': //---------- 안드로이드 물리 백키로 새창 닫았을때
+        if (__NODE_ENV === 'dev') {
+          alert('native-close-layer-popup')
+        }
+        sessionStorage.removeItem('webview')
+        break
       default:
         break
     }
@@ -727,6 +733,7 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
+    document.addEventListener('native-close-layer-popup', update)
 
     return () => {
       /*----native----*/
@@ -749,6 +756,7 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+      document.removeEventListener('native-close-layer-popup', update)
     }
   }, [])
 
