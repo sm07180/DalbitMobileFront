@@ -148,9 +148,9 @@ function ClipUpload() {
                     <div className="uploadList__cnt">
                       <em className="uploadList__cnt play">{playCnt}</em>
                       <em className="uploadList__cnt like">{goodCnt}</em>
-                      <em className="uploadList__cnt star">
+                      {/* <em className="uploadList__cnt star">
                         {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
-                      </em>
+                      </em> */}
                     </div>
                   </div>
                 </div>
