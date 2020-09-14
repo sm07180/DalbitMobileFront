@@ -698,7 +698,7 @@ export default (props) => {
           <div className="section live-list" ref={LiveSectionRef}>
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
-                <span class="txt">실시간 LIVE</span>
+                <span className="txt">실시간 LIVE</span>
                 <div className="sequence-wrap">
                   {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
