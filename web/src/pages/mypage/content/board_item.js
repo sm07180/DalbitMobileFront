@@ -101,6 +101,7 @@ export default (props) => {
       fetchDataDelete()
     }
   }
+
   const Link = () => {
     if (props.type === 'clip_board') {
       if (webview) {
