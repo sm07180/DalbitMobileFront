@@ -85,6 +85,7 @@ export default (props) => {
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
+      sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
     } else {

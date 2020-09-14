@@ -1,13 +1,13 @@
 /**
  *
  */
-import React, { useMemo, useEffect, useContext, useState } from 'react'
+import React, {useMemo, useEffect, useContext, useState} from 'react'
 import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 
 //context
-import { IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE } from 'context/config'
-import { Context } from 'context'
+import {IMG_SERVER, WIDTH_TABLET, WIDTH_MOBILE} from 'context/config'
+import {Context} from 'context'
 import Footer from 'pages/common/footer'
 
 //layout
@@ -15,20 +15,21 @@ import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
 import qs from 'query-string'
 
-import { Hybrid, isHybrid } from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
 import closeBtn from 'pages/menu/static/ic_close.svg'
 
-const Layout = props => {
-  const { logo_status } = props
+const Layout = (props) => {
+  const {logo_status} = props
 
   //context
   const context = useContext(Context)
   //initalize
-  const { children } = props
-  const { webview } = qs.parse(location.search)
+  const {children} = props
+  const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
     if (isHybrid() && webview && webview === 'new') {
+      sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
     } else {
       window.history.back()
@@ -43,10 +44,7 @@ const Layout = props => {
           <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />
           <Logo>
             <NavLink to="/" exact>
-              <img
-                src="https://image.dalbitlive.com/images/api/logo_p_l_new.png"
-                className="logo"
-              />
+              <img src="https://image.dalbitlive.com/images/api/logo_p_l_new.png" className="logo" />
             </NavLink>
           </Logo>
         </>
