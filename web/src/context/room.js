@@ -378,7 +378,11 @@ export const RoomMake = async (context) => {
   if (__NODE_ENV !== 'dev' && _os === 1 && appVer < 30) {
     Hybrid('RoomMake')
   } else {
-    Hybrid('RoomMake', broadSetting)
+    if(_os === 1){
+      Hybrid('RoomMake')
+    }else{
+      Hybrid('RoomMake', broadSetting)
+    }
   }
   //## 실행 리얼 주석 종료
   //Hybrid('RoomMake') //원소스
