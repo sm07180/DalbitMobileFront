@@ -142,10 +142,15 @@ export default (props) => {
       })
     }
   }, [codes])
+  console.log('url', memNo)
+  console.log('url', token.memNo)
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
+  } else if (memNo === token.memNo && webview && webview === 'new') {
+    history.push('/menu/profile?webview=new')
   }
+
   if (codes !== '-2' && (!profileInfo || !profile)) {
     return null
   }

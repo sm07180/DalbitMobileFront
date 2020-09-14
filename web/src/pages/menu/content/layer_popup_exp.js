@@ -202,16 +202,16 @@ const PopupWrap = styled.div`
       }
     }
   }
-    @media (max-width: ${WIDTH_MOBILE_S}) {
-      .content-wrap {
-        height: 88%;
-      }
-      .contents-box {
-        height: 88%;
-        overflow-y: auto;
-        ul {
-          height: 100%;
-        }
+  @media (max-width: ${WIDTH_MOBILE_S}) {
+    .content-wrap {
+      height: 88%;
+    }
+    .contents-box {
+      height: 88%;
+      overflow-y: auto;
+      ul {
+        height: 100%;
       }
     }
+  }
 `

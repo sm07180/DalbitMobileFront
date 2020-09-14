@@ -10,7 +10,8 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
-import CloseBtn from '../../menu/static/ic_closeBtn.svg'
+
+import CloseBtn from '../static/close_w_l.svg'
 
 export default (props) => {
   const {webview} = qs.parse(location.search)

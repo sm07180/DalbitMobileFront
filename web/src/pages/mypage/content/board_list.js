@@ -24,6 +24,7 @@ export default (props) => {
   //전체 댓글리스트(props)
   const TotalList = props.list
   const TotalCount = props.totalCount
+  const boardType = props.type
   //state
   const [replyWriteState, setReplyWriteState] = useState(false)
   const [boardReplyList, setBoardReplyList] = useState([])
@@ -58,11 +59,11 @@ export default (props) => {
     }
   }
   const setAction = (value, writeType) => {
-    console.log(value, writeType)
-
     if (value === true) {
       props.set(true)
-      fetchDataReplyList(context.fanboardReplyNum)
+      if (writeType !== 'clip_board') {
+        fetchDataReplyList(context.fanboardReplyNum)
+      }
     }
   }
   //--------------------------------------------------------------------------
@@ -83,19 +84,21 @@ export default (props) => {
               return (
                 <React.Fragment key={index}>
                   <div className={`list-item ${boardIdx === context.fanboardReplyNum && 'on'}`}>
-                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} />}
+                    {item && <BoardItem key={`board-${index}`} data={item} set={props.set} type={boardType} />}
+                    {boardType !== 'clip_board' && (
+                      <div className="list-item__bottom">
+                        <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
+                          {replyCnt > 0 ? (
+                            <>
+                              답글 <em>{replyCnt}</em>
+                            </>
+                          ) : (
+                            <>답글쓰기</>
+                          )}
+                        </button>
+                      </div>
+                    )}
 
-                    <div className="list-item__bottom">
-                      <button className="btn__reply" onClick={() => ReplyInfoTransfer(boardIdx, item)}>
-                        {replyCnt > 0 ? (
-                          <>
-                            답글 <em>{replyCnt}</em>
-                          </>
-                        ) : (
-                          <>답글쓰기</>
-                        )}
-                      </button>
-                    </div>
                     {context.fanboardReplyNum &&
                       context.toggleState &&
                       boardIdx === context.fanboardReplyNum &&

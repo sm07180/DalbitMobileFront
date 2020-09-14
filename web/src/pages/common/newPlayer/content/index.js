@@ -304,6 +304,7 @@ const MediaPlayer = styled.div`
     .info {
       max-width: calc(100% - 70px);
       p {
+        min-width: 120px;
         width: calc(100% - 50px);
         margin-top: 2px;
         font-size: 12px;
