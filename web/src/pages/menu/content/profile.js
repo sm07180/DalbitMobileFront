@@ -150,6 +150,13 @@ export default (props) => {
     fetchSelfAuth()
     // history.push('/money_exchange')
   }
+
+  console.log(profile.memNo)
+  //WEBVIEW CHECK
+  if (profile.memNo === token.memNo && webview && webview === 'new') {
+    history.push(`/mypage/${profile.memNo}?webview=new`)
+  }
+
   useEffect(() => {
     const getMyPageNew = async () => {
       if (profile !== null) {
