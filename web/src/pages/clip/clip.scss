@@ -235,14 +235,18 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 3%;
-      background-color: #eee;
+      padding: 16px 16px 8px 16px;
+      box-sizing: border-box;
+      background-color: #fff;
 
       h2 {
         display: flex;
         align-items: center;
         font-size: 18px;
         font-weight: 800;
+        letter-spacing: -0.36px;
+        font-stretch: normal;
+        font-style: normal;
       }
 
       .sequenceBox {
@@ -255,38 +259,58 @@
           margin-left: 16px;
 
           button {
-            margin-left: 3px;
+            margin-left: 4px;
+            &:nth-of-type(2) {
+              position: relative;
+              &:before {
+                content: '';
+                display: block;
+                position: absolute;
+                right: -8px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1px;
+                height: 12px;
+                background-color: #e0e0e0;
+              }
+            }
           }
         }
       }
     }
 
     .swiper-container {
-      border-bottom: 1px solid #eee;
+      // border-bottom: 1px solid #eee;
       background-color: #fff;
       margin-top: -1px;
+      padding: 0 0 8px 3%;
       .slideWrap {
         width: auto;
-        margin: 0 8px;
+        margin-right: 4px;
+        font-weight: 600;
+        padding: 0 11px;
+        border-radius: 12px;
+        border: solid 1px #e0e0e0;
+        box-sizing: border-box;
         flex-shrink: 0;
-        height: 40px;
-        line-height: 40px;
+        height: 32px;
+        line-height: 32px;
         font-size: 14px;
         color: #424242;
         cursor: pointer;
         &.active {
-          color: #632beb;
-          font-weight: 700;
-          border-bottom: 1px solid #632beb;
+          color: #fff;
+          border: solid 1px #632beb;
+          background-color: #632beb;
         }
       }
     }
 
     .chartListDetail {
-      padding: 8px 2%;
+      padding: 0px 2% 10px 16px;
       .chartListDetailBox {
         &.fixedOn {
-          margin-top: 102px;
+          margin-top: 86px;
         }
       }
       .chartListDetailItem {
@@ -444,9 +468,10 @@
     }
   }
   .refresh-icon {
-    margin-left: 6px;
+    position: relative;
+    margin-left: 16px;
     &--active {
-      margin-left: 6px;
+      margin-left: 16px;
       animation: anim 0.36s;
     }
   }
