@@ -81,7 +81,7 @@ export default (props) => {
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
 
-        console.log('1')
+        console.log('login success')
         //--##
         /**
          * @마이페이지 redirect
@@ -112,7 +112,10 @@ export default (props) => {
             const decodedUrl = decodeURIComponent(redirect)
             return (window.location.href = decodedUrl)
           }
-          globalCtx.action.updateProfile(profileInfo.data)
+
+          console.log(profileInfo.data)
+          globalCtx.action.updateProfile(profileInfo.data) // 타인/내정보 update
+          globalCtx.action.updateMyInfo(profileInfo.data) // 내정보 update
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {
