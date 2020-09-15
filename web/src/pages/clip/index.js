@@ -322,7 +322,7 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2>클립 인기 차트 </h2>
+              <h2 onClick={() => refreshCategory()}>클립 인기 차트 </h2>
               <div className="sequenceBox">
                 <div className="sequenceItem"></div>
                 <div className="sequenceItem">
