@@ -10,7 +10,7 @@
   left: 0;
   width: 100%;
   height: 48px;
-  background-color: $white;
+  background-color: $primary;
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
   z-index: 20;
   padding: 0 6px;
@@ -22,7 +22,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    width: 80px;
+    // width: 80px;
     .icon {
       position: relative;
       display: block;
@@ -52,6 +52,10 @@
   .gnb-logo {
     width: 103px;
     font-size: 0;
+
+    img {
+      width: 100%;
+    }
   }
   .mic-btn {
     display: flex;
@@ -60,7 +64,6 @@
     width: 80px;
     height: 50px;
     border-radius: 27px;
-    background: linear-gradient($primary, #4c13d5);
   }
 }
 
@@ -78,14 +81,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 54px;
-  width: 86px;
+  width: 100px;
+  height: 40px;
   top: 4px;
   left: 50%;
-  border-radius: 27px;
+  border-radius: 30px;
   z-index: 50;
   transform: translateX(-50%);
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16);
   background-color: $white;
 }
 
@@ -538,32 +540,21 @@
     display: flex;
     position: relative;
     align-items: center;
-    height: 42px;
-    background-color: $primary;
+    height: 48px;
     box-sizing: border-box;
     z-index: 1;
     .broadBtn {
-      position: absolute;
-      right: 0;
-      top: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding-left: 23px;
-      width: 108px;
-      height: 42px;
-      background-color: $black;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 1.13;
-      letter-spacing: -0.4px;
+      position: relative;
+      width: 68px;
+      height: 40px;
+      margin: 0 auto;
+      border-radius: 22px;
+      background-color: $primary;
       color: $white;
       &::before {
         display: inline-block;
+        margin: 0 auto;
         content: '';
-        position: absolute;
-        top: 3px;
-        left: 3px;
         width: 36px;
         height: 36px;
         background: url(https://image.dalbitlive.com/main/200714/white_broad.svg) no-repeat 0 0;
@@ -572,46 +563,57 @@
     .left-side {
       display: flex;
       flex-direction: row;
+      align-items: center;
+      height: 48px;
+
       padding-left: 6px;
+      width: 100%;
       .tab {
-        height: 42px;
-        color: $white;
+        width: 18%;
+        min-width: 67px;
         font-size: 16px;
         letter-spacing: -0.4px;
-        line-height: 42px;
+        line-height: 46px;
+        text-align: center;
+        padding: 0 10px;
 
-        &--yellow {
-          color: #fef856;
-          display: flex;
-        }
-        a {
+        // &--yellow {
+        //   color: #fef856;
+        //   display: flex;
+        // }
+
+        &__item {
           display: block;
           width: 100%;
           height: 100%;
-          padding: 0 10px;
+          border-bottom: 2px solid $white;
           text-align: center;
-          font-weight: 600;
+          font-weight: 800;
 
-          &.newicon {
-            display: flex;
-            align-items: center;
-            color: #fef856;
-            i {
-              margin-bottom: 14px;
-              margin-left: 2px;
-
-              display: inline-block;
-              background: #fef856;
-              color: $black;
-              font-style: normal;
-              font-size: 10px;
-              text-align: center;
-              line-height: 15px;
-              width: 33px;
-              height: 15px;
-              border-radius: 11px;
-            }
+          &--active {
+            border-color: $primary;
           }
+
+          // &.newicon {
+          //   display: flex;
+          //   align-items: center;
+          //   color: #fef856;
+          //   i {
+          //     margin-bottom: 14px;
+          //     margin-left: 2px;
+
+          //     display: inline-block;
+          //     background: #fef856;
+          //     color: $black;
+          //     font-style: normal;
+          //     font-size: 10px;
+          //     text-align: center;
+          //     line-height: 15px;
+          //     width: 33px;
+          //     height: 15px;
+          //     border-radius: 11px;
+          //   }
+          // }
         }
       }
     }
