@@ -13,7 +13,7 @@ import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} 
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
-import PxBtnIcon from '../../static/ic_p_xbtn.svg'
+import PxBtnIcon from '../../static/close_w_l.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
@@ -33,7 +33,7 @@ let moreState = false
 //---------------------------------------------------------------------------------
 export default (props) => {
   const {sortNum} = props
-  console.log(sortNum)
+
   let history = useHistory()
   //context
   const ctx = useContext(Context)
@@ -359,25 +359,44 @@ export default (props) => {
               메모
               <button onClick={ClosePop} />
             </div>
-            <div className="txtCnt">
-              <textarea
-                placeholder="회원을 기억하기 위한 메모를 입력해주세요.
+
+            <div className="writeWrap">
+              <div className="txtCnt">
+                <textarea
+                  placeholder="회원을 기억하기 위한 메모를 입력해주세요.
                 최대 500자까지 저장 가능합니다."
-                defaultValue={memoContent}
-                onChange={memoChange}></textarea>
-              <span className="txtcount">{memoContent.length} / 500</span>
+                  defaultValue={memoContent}
+                  onChange={memoChange}></textarea>
+              </div>
+              <span className="txtcount">
+                <b>{memoContent.length}</b> / 500
+              </span>
+
+              <div className="saveBtnWrap">
+                {memoContent.length > 0 ? (
+                  <>
+                    <button className="saveBtn" onClick={ClosePop}>
+                      취소
+                    </button>
+                    <button className="active" onClick={postMemo}>
+                      {defaultMemo === '' ? '저장하기' : '수정하기'}
+                    </button>
+                  </>
+                ) : defaultMemo === '' ? (
+                  <>
+                    <button onClick={ClosePop}>취소</button>
+                    <button>확인</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={ClosePop}>취소</button>
+                    <button className="active" onClick={postMemo}>
+                      수정하기
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
-            {memoContent.length > 0 ? (
-              <button className="saveBtn saveBtn--active" onClick={postMemo}>
-                {defaultMemo === '' ? '저장하기' : '수정하기'}
-              </button>
-            ) : defaultMemo === '' ? (
-              <button className="saveBtn">저장하기</button>
-            ) : (
-              <button className="saveBtn saveBtn--active" onClick={postMemo}>
-                수정하기
-              </button>
-            )}
           </div>
         </div>
       )}
@@ -568,76 +587,100 @@ const Wrap = styled.div`
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.7);
     .memoContents {
+      margin: 0px 16px;
       display: flex;
       align-items: center;
       flex-direction: column;
-      width: 300px;
-      min-height: 296px;
+      box-sizing: border-box;
+      width: 100%;
+      max-width: 328px;
       background-color: #fff;
-      border-radius: 16px;
+      border-radius: 20px;
+      overflow: hidden;
+
+      .writeWrap {
+        width: 100%;
+        background: #eee;
+      }
       .txtCnt {
         position: relative;
+        padding: 0px 16px;
         textarea {
-          margin-top: 12px;
+          margin-top: 16px;
           border: 1px solid #e0e0e0;
-          width: 268px;
+          width: 100%;
           min-height: 160px;
           border-radius: 12px;
-          padding: 8px 10px;
+          padding: 14px 16px;
           box-sizing: border-box;
-          font-size: 14px;
+          font-size: 16px;
           text-align: left;
-          color: #424242;
+          color: #000;
           &::placeholder {
             font-size: 14px;
             line-height: 1.43;
             letter-spacing: -0.4px;
             text-align: left;
-            color: #757575;
+            color: #9e9e9e;
             font-weight: normal;
             letter-spacing: normal;
           }
         }
-        .txtcount {
-          position: absolute;
-          bottom: 8px;
-          right: 10px;
-          font-size: 12px;
-          line-height: 1.42;
-          letter-spacing: normal;
-          text-align: left;
-          color: #e0e0e0;
+      }
+      .txtcount {
+        display: block;
+        width: 100%;
+        padding: 0px 16px;
+        box-sizing: border-box;
+        font-size: 12px;
+        text-align: left;
+        text-align: right;
+        color: #616161;
+        b {
+          color: #000;
         }
       }
-      .saveBtn {
-        width: 268px;
-        margin-top: 16px;
-        line-height: 44px;
-        border-radius: 12px;
-        background-color: #bdbdbd;
-        font-size: 16px;
-        letter-spacing: normal;
-        text-align: center;
-        color: #ffffff;
-        &--active {
-          background-color: #6b36eb;
+
+      .saveBtnWrap {
+        display: flex;
+        margin-top: 24px;
+        padding: 0px 16px 16px 16px;
+
+        button {
+          flex: 1;
+          line-height: 44px;
+          border-radius: 12px;
+          background-color: #bdbdbd;
+          font-size: 16px;
+          text-align: center;
+          color: #fff;
+          font-weight: 700;
+
+          &.active {
+            background-color: #6b36eb;
+          }
+          &:first-child {
+            margin-right: 4px;
+            background-color: #757575;
+          }
         }
       }
 
       .memoContent__popTitle {
-        position: relative;
         width: 100%;
+        display: block;
+        position: relative;
         text-align: center;
         border-bottom: 1px solid #eeeeee;
-        font-size: 16px;
-        font-weight: 800;
-        line-height: 44px;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 52px;
         color: #000000;
+        box-sizing: border-box;
         button {
           position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          right: 6px;
+          top: -40px;
+          right: 0px;
           width: 32px;
           height: 32px;
           background: url(${PxBtnIcon});
