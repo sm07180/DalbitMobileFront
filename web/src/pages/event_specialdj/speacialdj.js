@@ -81,18 +81,15 @@ export default (props) => {
         if (imageData[index].content_type === 'image') {
           return <img src={imageData[index].image_mobile_url} key={index} alt={`이미지 컨텐츠 ${index}`} />
         } else if (imageData[index].content_type === 'button') {
-          return (
-            <button
-              key={index}
-              style={{color: `${imageData[index].button_name_color}`, background: `${imageData[index].button_color}`}}
-              className="buttonLink"
-              onClick={() => {
-                //history.push('/modal/specialdj_goods')
-                globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
-              }}>
-              {imageData[index].button_name}
-            </button>
-          )
+          //           return (
+          //             <button
+          //               key={index}
+          //               style={{color: `${imageData[index].button_name_color}`, background: `${imageData[index].button_color}`}}
+          //               className="buttonLink"
+          // >
+          //               {imageData[index].button_name}
+          //             </button>
+          //           )
         }
       })
     )
@@ -109,11 +106,28 @@ export default (props) => {
           <h2>{infoData.title}</h2>
           <button onClick={goBack}>닫기 버튼</button>
         </div>
-        <div className="contentImg">{imgItem()}</div>
+        <div className="contentImg">
+          <button
+            className="startingPopup"
+            onClick={() => {
+              globalCtx.action.updatePopup('TERMS', 'specialdj-starting')
+            }}>
+            선발 요건 확인하기
+          </button>
+
+          <button
+            className="goodsPopup"
+            onClick={() => {
+              globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
+            }}>
+            굿즈 상품 미리보기
+          </button>
+          {imgItem()}
+        </div>
 
         {token.isLogin === true ? (
           <>
-            <img src="https://image.dalbitlive.com/event/specialdj/20200824/title.jpg" alt="선발 방식" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20200914/title.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
               {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)

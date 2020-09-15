@@ -7,13 +7,17 @@
 
   .title {
     position: relative;
+    height: 52px;
+
+    color: #000;
+    margin: 0px 16px;
 
     h2 {
       margin: auto;
       margin-bottom: 13px;
-      font-size: 16px;
-      height: 44px;
-      line-height: 44px;
+      font-size: 18px;
+      height: 52px;
+      line-height: 52px;
       letter-spacing: -0.4px;
       text-align: center;
       border-bottom: 1px solid #eaeaea;
@@ -39,9 +43,7 @@
     margin-bottom: 10px;
     letter-spacing: -0.35px;
   }
-  ul {
-    margin-bottom: 30px;
-  }
+
   ul li {
     position: relative;
     padding-left: 16px;
