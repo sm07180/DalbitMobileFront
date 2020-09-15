@@ -92,12 +92,6 @@ export default (props) => {
       case 'CLIP_EVENT':
         return (
           <>
-            <button
-              onClick={() => {
-                context.action.updatePopupVisible(false)
-              }}>
-              팝업닫기
-            </button>
             <ClipEvent />
           </>
         )
@@ -105,12 +99,6 @@ export default (props) => {
       case 'CLIP_OPEN':
         return (
           <>
-            <button
-              onClick={() => {
-                context.action.updatePopupVisible(false)
-              }}>
-              팝업닫기
-            </button>
             <ClipOpen />
           </>
         )
