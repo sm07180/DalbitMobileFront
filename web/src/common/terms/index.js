@@ -89,15 +89,6 @@ export default (props) => {
 //---------------------------------------------------------------------
 //styled
 const Terms = styled.div`
-  & > div > div > div {
-    padding: 10px 25px 35px 25px;
-
-    * {
-      text-align: justify;
-      color: #424242;
-      transform: skew(-0.03deg);
-    }
-  }
   & > div > div:nth-child(2) {
     display: none;
   }
@@ -129,11 +120,5 @@ const Terms = styled.div`
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.3px;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    & > div > div > div {
-      padding: 5px 20px 30px 20px;
-    }
   }
 `
