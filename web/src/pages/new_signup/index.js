@@ -704,7 +704,7 @@ export default (props) => {
       validatePwd()
       validatePwdCheck()
     }
-    validateBirth()
+    // validateBirth()
     validateTerm()
   }
   useEffect(() => {
@@ -861,17 +861,17 @@ export default (props) => {
         )}
 
         {/* 생년월일 ---------------------------------------------------------- */}
-        <InputItem button={false} validate={validate.birth.check}>
+        {/* <InputItem button={false} validate={validate.birth.check}>
           <div className="layer">
             <label htmlFor="birth">생년월일</label>
             <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
           </div>
           {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
         </InputItem>
-        <p className="birthText">허위정보로 가입 시 이용을 제한할 수 있습니다.</p>
+        <p className="birthText">허위정보로 가입 시 이용을 제한할 수 있습니다.</p> */}
 
         {/* 성별 ---------------------------------------------------------- */}
-        <GenderInput gender={gender}>
+        {/* <GenderInput gender={gender}>
           <button className="male" value="m" onClick={genderBtnHandle}>
             남자
             <img src={IcoMale} />
@@ -880,7 +880,7 @@ export default (props) => {
             여자
             <img src={IcoFemale} />
           </button>
-        </GenderInput>
+        </GenderInput> */}
 
         {/* 약관 ---------------------------------------------------------- */}
         <TermsInput openState={termOpen}>{createTermsItem()}</TermsInput>
