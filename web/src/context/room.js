@@ -368,9 +368,9 @@ export const RoomMake = async (context) => {
   const result = await broadCheck()
   if (!result) return
   //## 실행 리얼 주석 시작
-  // let broadSetting = {}
-  // broadSetting['djListenerIn'] = false
-  // broadSetting['djListenerOut'] = false
+  let broadSetting = {}
+  broadSetting['djListenerIn'] = false
+  broadSetting['djListenerOut'] = false
 
   if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 32) || (_os === 2 && appBuild > 141)) {
     const apiSetting = await Api.getBroadcastSetting()
@@ -385,5 +385,5 @@ export const RoomMake = async (context) => {
     Hybrid('RoomMake', broadSetting)
   }
   //## 실행 리얼 주석 종료
-  Hybrid('RoomMake') //원소스
+  //Hybrid('RoomMake') //원소스
 }
