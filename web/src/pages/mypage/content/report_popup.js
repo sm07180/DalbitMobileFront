@@ -10,7 +10,7 @@ import moment from 'moment'
 import {COLOR_MAIN} from 'context/color'
 
 //static
-import closeIco from '../static/ico_close.svg'
+import closeIco from '../static/close_w_l.svg'
 
 //component
 import DatePicker from './datepicker'
@@ -148,35 +148,40 @@ const Container = styled.div`
   align-items: center;
 `
 const Popup = styled.div`
-  width: calc(100% - 32px);
-  max-width: 360px;
-  border-radius: 16px;
+  width: 100%;
+  max-width: 328px;
+  border-radius: 20px;
   background-color: #fff;
+  box-sizing: border-box;
+  padding: 0px 16px 16px 16px;
 
   .header {
     position: relative;
     border-bottom: 1px solid #e0e0e0;
     h1 {
-      padding: 13px 0;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 16px;
       font-weight: 800;
       color: #000;
       text-align: center;
+      height: 52px;
+      line-height: 52px;
     }
     button {
       position: absolute;
-      top: 4px;
-      right: 7px;
+      width: 32px;
+      height: 32px;
+      top: -40px;
+      right: 0px;
+      z-index: 20;
     }
   }
 
   .cont-wrap {
-    padding: 23px 16px 16px 16px;
-
+    padding-top: 16px;
     .confirm {
+      margin-top: 16px;
       width: 100%;
-      margin-top: 24px;
       height: 44px;
       line-height: 44px;
       font-size: 18px;

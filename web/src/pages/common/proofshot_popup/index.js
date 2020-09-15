@@ -9,7 +9,6 @@ export default () => {
     <div id="proofShoptPopupWrap">
       <div className="title">
         <h2>이벤트 안내</h2>
-        <button onClick={() => context.action.updatePopupVisible(false)}>확인</button>
       </div>
       <div className="content">
         <h3>선물 지급 안내</h3>
@@ -18,6 +17,8 @@ export default () => {
           <li>Best 10은 내부 회의를 통해 선정됩니다.</li>
           <li>이벤트 종료 후 공지사항을 통해 선물 지급 내용을 확인할 수 있습니다.</li>
         </ul>
+        <br />
+
         <h3>유의사항 안내</h3>
         <ul>
           <li>

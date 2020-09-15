@@ -10,7 +10,7 @@
 
   .loginBox {
     padding: 16px 12px;
-    background: #f2f2f2;
+    background: #cdee5b;
   }
 
   .title {
@@ -39,8 +39,27 @@
   }
 
   .contentImg {
+    position: relative;
     background: url('./static/button_bg.jpg');
     background-size: 100%;
+
+    .startingPopup {
+      position: absolute;
+      width: 55.5%;
+      height: 4%;
+      left: 22.3%;
+      top: 27.4%;
+      text-indent: -999999px;
+    }
+
+    .goodsPopup {
+      position: absolute;
+      width: 82.3%;
+      height: 4%;
+      left: 8.9%;
+      bottom: 28%;
+      text-indent: -999999px;
+    }
 
     img {
       display: block;
@@ -137,14 +156,15 @@
 
   .buttonOn {
     display: flex;
-    width: 82%;
+    width: 96%;
     margin: auto;
     align-items: center;
     justify-content: center;
-    height: 40px;
-    font-size: 16px;
+    height: 44px;
+    font-size: 18px;
+    font-weight: 700;
     color: #fff;
-    border-radius: 30px;
+    border-radius: 12px;
     background: #632beb;
   }
 

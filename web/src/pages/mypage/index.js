@@ -70,6 +70,12 @@ export default (props) => {
         {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
       ]
     }
+
+    // mypageNavList = [
+    //   {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+    //   {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+    //   {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+    // ]
   } else {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -141,7 +147,7 @@ export default (props) => {
   }, [memNo, context.mypageFanCnt])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
-  }, [])
+  }, [memNo])
   // check 탈퇴회원
   useEffect(() => {
     if (codes === '-2') {
@@ -153,8 +159,7 @@ export default (props) => {
       })
     }
   }, [codes])
-  console.log('url', memNo)
-  console.log('url', token.memNo)
+
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
