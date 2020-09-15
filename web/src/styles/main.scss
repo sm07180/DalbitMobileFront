@@ -315,14 +315,10 @@
           padding: 22px 0 16px 0;
           border-bottom: 1px solid $lighterGray;
           .txt {
-            &::after {
+            .ico-lottie {
               display: inline-block;
-              content: '';
-              margin-left: 4px;
-              width: 24px;
-              height: 24px;
+              margin: -2px 0 0 6px;
               vertical-align: middle;
-              // background: url() no-repeat 0 0;
             }
           }
           .btn {
