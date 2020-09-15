@@ -327,17 +327,26 @@ export default (props) => {
                 <div className="sequenceItem"></div>
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
-                    <img src={chartListType === 'detail' ? detailListIconActive : detailListIcon} />
+                    <img
+                      src={chartListType === 'detail' ? detailListIconActive : detailListIcon}
+                      alt="카테고리 디테일 버튼 이미지"
+                    />
                   </button>
                   <button type="button" onClick={() => setChartListType('simple')}>
-                    <img src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon} />
+                    <img
+                      src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                      alt="카테고리 심플 버튼 이미지"
+                    />
                   </button>
-                  <img
-                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
-                    className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                    style={{cursor: 'pointer'}}
-                    onClick={() => refreshCategory()}
-                  />
+                  <button>
+                    <img
+                      src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                      className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
+                      style={{cursor: 'pointer'}}
+                      onClick={() => refreshCategory()}
+                      alt="카테고리 리프래시 아이콘 이미지"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
