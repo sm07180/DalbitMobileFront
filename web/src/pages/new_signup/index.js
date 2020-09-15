@@ -124,8 +124,8 @@ export default (props) => {
     loginPwd: '',
     loginPwdCheck: '',
     nickNm: '',
-    birth: null,
-    gender: 'n',
+    // birth: null,
+    // gender: 'n',
     profImgUrl: '',
     memType: 'p',
     allTerm: 'n',
@@ -140,7 +140,7 @@ export default (props) => {
 
   function validateReducer(state, validate) {
     if (validate.name === 'nickNm' && validate.check) {
-      if (state.loginPwd.check && state.loginPwdCheck.check && state.birth.check && state.term.check) {
+      if (state.loginPwd.check && state.loginPwdCheck.check && state.term.check) {
         sighUpFetch()
       }
     }
@@ -174,10 +174,10 @@ export default (props) => {
       check: true,
       text: ''
     },
-    birth: {
-      check: true,
-      text: ''
-    },
+    // birth: {
+    //   check: true,
+    //   text: ''
+    // },
     term: {
       check: true,
       text: ''
@@ -189,8 +189,8 @@ export default (props) => {
     loginPwd,
     loginPwdCheck,
     nickNm,
-    birth,
-    gender,
+    // birth,
+    // gender,
     profImgUrl,
     memType,
     allTerm,
@@ -650,9 +650,9 @@ export default (props) => {
         memType: changes.memType,
         memId: changes.memId,
         memPwd: changes.loginPwd,
-        gender: changes.gender,
+        // gender: changes.gender,
         nickNm: changes.nickNm,
-        birth: changes.birth,
+        // birth: changes.birth,
         term1: changes.term1,
         term2: changes.term2,
         term3: changes.term3,
