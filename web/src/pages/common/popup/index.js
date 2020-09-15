@@ -171,10 +171,6 @@ const Container = styled.div`
   & .logo {
     margin-top: 0;
   }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    padding: 0;
-  }
 `
 const Wrap = styled.div`
   border-radius: 20px;
@@ -183,11 +179,10 @@ const Wrap = styled.div`
   position: relative;
   background: #fff;
   &.round {
-    width: 500px;
-    padding: 16px 0;
+    max-width: 328px;
     max-height: 430px;
     max-height: auto;
-    border-radius: 10px;
+    border-radius: 12px;
     @media (max-width: ${WIDTH_MOBILE}) {
       height: 100%;
       max-height: 430px;
@@ -205,9 +200,6 @@ const Wrap = styled.div`
         height: 100%;
         max-height: 100%;
         border-radius: 0;
-      }
-      &.terms {
-        width: 90%;
       }
     }
   }
