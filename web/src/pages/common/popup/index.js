@@ -162,12 +162,19 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  width: 100%;
-  padding: 0px 16px;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   z-index: 100;
+  box-sizing: border-box;
+  margin: 0px 16px;
+
+  & .logo {
+    margin-top: 0;
+  }
+
+  @media (max-width: ${WIDTH_MOBILE}) {
+    padding: 0;
+  }
 `
 const Wrap = styled.div`
   border-radius: 20px;
@@ -175,6 +182,79 @@ const Wrap = styled.div`
   max-width: 328px;
   position: relative;
   background: #fff;
+  &.round {
+    width: 500px;
+    padding: 16px 0;
+    max-height: 430px;
+    max-height: auto;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 430px;
+    }
+    &.charge {
+      width: 340px;
+      max-height: 430px;
+      padding: 0;
+      height: auto;
+    }
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      &.charge {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+      }
+      &.terms {
+        width: 90%;
+      }
+    }
+  }
+
+  &.guidance {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 430px;
+    }
+
+    & > button {
+      display: none;
+    }
+  }
+
+  &.agreeDetail {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: 100%;
+      max-height: 430px;
+    }
+
+    & > button {
+      display: none;
+    }
+  }
+
+  &.rankPopup {
+    width: 90%;
+    height: fit-content;
+    max-height: 430px;
+    padding: 0;
+    border-radius: 10px;
+    @media (max-width: ${WIDTH_MOBILE}) {
+      height: fit-content;
+      max-height: 430px;
+    }
+  }
 
   & > button {
     display: inline-block;
