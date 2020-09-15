@@ -10,17 +10,16 @@ import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 
 ////---------------------------------------------------------------------
 export default (props) => {
-    //---------------------------------------------------------------------
-    return (
-        <Content>
-            <h2>굿즈 상품 미리보기</h2>
+  //---------------------------------------------------------------------
+  return (
+    <Content>
+      <h2>굿즈 상품 미리보기</h2>
 
-            <p>
-                <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
-            </p>
-
-        </Content>
-    )
+      <p>
+        <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
+      </p>
+    </Content>
+  )
 }
 
 //---------------------------------------------------------------------
@@ -29,9 +28,9 @@ const Content = styled.div`
   p {
     font-size: 12px !important;
   }
-  
-  p img{
-    width:100%
+
+  p img {
+    width: 100%;
   }
 
   h2 {

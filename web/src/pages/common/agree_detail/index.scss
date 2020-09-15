@@ -1,15 +1,17 @@
 #agreeDetailWrap {
-  padding: 20px 10px;
+  padding: 16px;
   .title {
-    margin-bottom: 10px;
+    font-size: 18px;
+    padding-bottom: 16px;
     text-align: center;
-    font-size: 16px;
-    font-weight: bold;
+    color: #000;
+    margin-bottom: 16px;
+    font-weight: 700;
+    border-bottom: 1px solid #dedede;
   }
 
   .content {
     display: flex;
-
     flex-direction: column;
     margin-bottom: 20px;
     font-size: 12px;
@@ -17,12 +19,13 @@
   }
 
   & > button {
-    position: absolute;
-    bottom: 10px;
-    width: 95%;
-    padding: 10px 0;
+    height: 44px;
+    line-height: 44px;
     background-color: #632beb;
     color: white;
     border-radius: 12px;
+    font-weight: 700;
+    display: block;
+    width: 100%;
   }
 }

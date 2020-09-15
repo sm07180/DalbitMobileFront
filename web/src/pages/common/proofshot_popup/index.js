@@ -9,7 +9,6 @@ export default () => {
     <div id="proofShoptPopupWrap">
       <div className="title">
         <h2>이벤트 안내</h2>
-        <button onClick={() => context.action.updatePopupVisible(false)}>확인</button>
       </div>
       <div className="content">
         <h3>선물 지급 안내</h3>
