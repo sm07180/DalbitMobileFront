@@ -6,6 +6,7 @@
  * @param {callback} function          //콜백처리받을 함수명(확인하기 클릭시)
  * @param {title} string               //상단제목없으면 노출안됨
  * @param {msg} string(html)           //메시지영역 노출 (html or)
+ * @param {remsg}} string(html)           //메시지영역 노출 (html or)
  */
 import React, {useRef, useContext, useEffect} from 'react'
 import styled from 'styled-components'
@@ -61,13 +62,13 @@ export default (props) => {
   return (
     <Alert>
       <button className="btnClose">
-        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} onClick={btnClose} />
+        <img src={`${IMG_SERVER}/images/api/close_w_l.svg`} onClick={btnClose} />
       </button>
       <div className="wrap-message">
         {/* 타이틀 */}
         {__NODE_ENV === 'dev' && context.message.title && context.message.className !== 'mobile' && (
           <h1
-            className={`${context.message.className ? context.message.className : ''}`}
+            className={`title ${context.message.className ? context.message.className : ''}`}
             dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>
         )}
         {context.message.className === 'mobile' && (
@@ -80,6 +81,12 @@ export default (props) => {
           <div
             className={`msg ${context.message.className ? context.message.className : ''}`}
             dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></div>
+        )}
+        {/* 강조 되묻기 */}
+        {context.message.remsg && (
+          <b
+            className={`remsg ${context.message.className ? context.message.className : ''}`}
+            dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.remsg)}}></b>
         )}
       </div>
       <div className="wrap-btn">
@@ -99,21 +106,25 @@ export default (props) => {
 //---------------------------------------------------------------------
 const Alert = styled.section`
   position: relative;
-  width: 320px;
+  width: 100%;
+  max-width: 328px;
+  margin: 0px 16px;
   padding: 16px;
-  border-radius: 10px;
+  border-radius: 20px;
   background: #fff;
   box-sizing: border-box;
   .wrap-message {
     width: 100%;
-    padding-top: 20px;
   }
 
   /* 타이틀 */
   h1 {
     display: block;
     text-align: center;
-    font-weight: normal;
+    font-size: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #000;
 
     &.mobile {
       font-size: 14px;
@@ -123,8 +134,12 @@ const Alert = styled.section`
   }
   /* 메시지 */
   .msg {
-    padding: 40px 20px;
-    font-size: 17px;
+    font-size: 16px;
+    padding: 16px 10px 0;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
@@ -133,6 +148,7 @@ const Alert = styled.section`
     word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
+    color: #000;
 
     &.mobile {
       font-size: 13px;
@@ -140,13 +156,25 @@ const Alert = styled.section`
       text-align: left;
     }
   }
+
+  .remsg {
+    display: block;
+    font-size: 22px;
+    color: #632beb;
+    line-height: 26px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
   .wrap-btn {
     width: 100%;
-    margin-top: 20px;
+    padding-top: 16px;
     text-align: center;
     /* 버튼 */
     button {
       display: inline-block;
+      font-size: 18px;
+      font-weight: 700;
       width: 100%;
       padding: 10px 0;
       color: #fff;
@@ -159,11 +187,11 @@ const Alert = styled.section`
   .btnClose {
     display: inline-block;
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: -40px;
+    right: 0px;
     img {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
     }
   }
 `

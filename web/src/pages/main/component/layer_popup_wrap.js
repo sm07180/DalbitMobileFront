@@ -78,7 +78,9 @@ export default function LayerPopupWrap({data, setData}) {
         <div className="popupBg">
           {popupData.title && popupData.is_title_view === 1 && <h3 className="popup__title">{popupData.title}</h3>}
           <div className="inner">
-            <p className="contents textMargin" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
+            <div className="innerScroll">
+              <p className="contents" dangerouslySetInnerHTML={{__html: Utility.nl2br(popupData.contents)}}></p>
+            </div>
             <div className="btnWrap">
               <button
                 className="btn-ok"
