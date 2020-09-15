@@ -338,12 +338,11 @@ export default (props) => {
                       alt="카테고리 심플 버튼 이미지"
                     />
                   </button>
-                  <button>
+                  <button
+                    className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
+                    onClick={() => refreshCategory()}>
                     <img
                       src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
-                      className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                      style={{cursor: 'pointer'}}
-                      onClick={() => refreshCategory()}
                       alt="카테고리 리프래시 아이콘 이미지"
                     />
                   </button>

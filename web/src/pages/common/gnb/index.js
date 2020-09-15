@@ -8,12 +8,12 @@ import {RoomMake} from 'context/room'
 
 // static image
 //import Logo from './static/logo@2x.png'
-import Logo from './static/logo_w_no_symbol.svg'
-import Search from './static/search_w.svg'
-import Alarm from './static/alarm_w.svg'
+import Logo from './static/logo_real.svg'
+import Search from './static/ic_search.svg'
+import Alarm from './static/ic_alarm.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
-import Mic from './static/ic_broadcastng_p.svg'
+import Mic from './static/ic_broadcastng.svg'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 // style
@@ -104,6 +104,25 @@ export default (props) => {
           <button onClick={() => moveToMenu('search')}>
             <img className="icon" src={Search} alt="검색버튼" />
           </button>
+
+          {newAlarm === true ? (
+            <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
+              <Lottie
+                options={{
+                  loop: true,
+                  autoPlay: true,
+                  path: `https://image.dalbitlive.com/event/200805/ic_alarm_dot.json`
+                }}
+              />
+            </div>
+          ) : (
+            <button onClick={() => moveToLogin('alarm')}>
+              <img className="icon" src={Alarm} alt="알람버튼" />
+            </button>
+          )}
+
+          {context.news && <span className="news">&nbsp;</span>}
+          {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
         </div>
         {logoChange ? (
           <div className="micWrap">
@@ -129,25 +148,7 @@ export default (props) => {
           </h1>
         )}
         <div className="icon-wrap">
-          {newAlarm === true ? (
-            <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
-              <Lottie
-                options={{
-                  loop: true,
-                  autoPlay: true,
-                  path: `https://image.dalbitlive.com/event/200805/alarmdot_w.json`
-                }}
-              />
-            </div>
-          ) : (
-            <button onClick={() => moveToLogin('alarm')}>
-              <img className="icon" src={Alarm} alt="알람버튼" />
-            </button>
-          )}
-
-          {context.news && <span className="news">&nbsp;</span>}
-          {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
-          {/* <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} /> */}
+          <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} />
           {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
         </div>
       </div>
