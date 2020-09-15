@@ -91,12 +91,6 @@ export default (props) => {
       case 'CLIP_OPEN':
         return (
           <>
-            <button
-              onClick={() => {
-                context.action.updatePopupVisible(false)
-              }}>
-              팝업닫기
-            </button>
             <ClipOpen />
           </>
         )
@@ -134,7 +128,7 @@ export default (props) => {
     } else if (context.popup_code[0] == 'RANK_POP' || context.popup_code[0] == 'ALARM') {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
-      setLayout('proofShot')
+      setLayout('clipopen')
     } else if (context.popup_code[0] == 'CLIP_OPEN') {
       setLayout('clipopen')
     } else {
