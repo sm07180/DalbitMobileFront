@@ -18,6 +18,8 @@ import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
 import AlarmPop from 'pages/common/alarm_pop'
 import ClipOpen from 'pages/common/clip_open'
+import ClipEvent from 'pages/common/clip_event'
+
 //
 export default (props) => {
   //state
@@ -87,6 +89,18 @@ export default (props) => {
             <ProofShot />
           </>
         )
+      case 'CLIP_EVENT':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <ClipEvent />
+          </>
+        )
 
       case 'CLIP_OPEN':
         return (
@@ -135,8 +149,10 @@ export default (props) => {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
       setLayout('proofShot')
+    } else if (context.popup_code[0] == 'CLIP_EVENT') {
+      setLayout('clipEvent')
     } else if (context.popup_code[0] == 'CLIP_OPEN') {
-      setLayout('clipopen')
+      setLayout('clipOpen')
     } else {
       setLayout('square')
     }
