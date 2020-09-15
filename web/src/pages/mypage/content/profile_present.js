@@ -239,8 +239,10 @@ const FixedBg = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+
   .wrapper {
-    width: 100%;
+    max-width: 360px;
     margin: auto;
     position: relative;
 
@@ -252,11 +254,11 @@ const FixedBg = styled.div`
     .close {
       display: block;
       position: absolute;
-      top: -36px;
+      top: -40px;
       right: 16px;
-      width: 36px;
-      height: 36px;
-      background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+      width: 32px;
+      height: 32px;
+      background: url(${IMG_SERVER}/images/api/close_w_l.svg) no-repeat center;
     }
 
     & .scrollCustom {

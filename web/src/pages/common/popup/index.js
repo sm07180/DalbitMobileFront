@@ -184,206 +184,30 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  padding-left: 25px;
-  padding-right: 25px;
+  width: 100%;
+  padding: 0px 16px;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   z-index: 100;
-
-  & .logo {
-    margin-top: 0;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    padding: 0;
-  }
 `
 const Wrap = styled.div`
+  border-radius: 20px;
+  width: 100%;
+  max-width: 328px;
   position: relative;
-  width: 520px;
-  padding: 50px 40px;
   background: #fff;
-  @media (max-width: ${WIDTH_MOBILE}) {
-    width: 100%;
-    height: 100%;
-    padding: 60px 5%;
-  }
-
-  &.round {
-    width: 500px;
-    padding: 16px 0;
-    height: 80%;
-    max-height: auto;
-    border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 80%;
-    }
-    &.charge {
-      width: 340px;
-      max-height: 90%;
-      padding: 0;
-      height: auto;
-    }
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      &.charge {
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-        border-radius: 0;
-      }
-      &.terms {
-        width: 90%;
-      }
-    }
-  }
-
-  &.guidance {
-    width: 90%;
-    height: 80%;
-    max-height: auto;
-    padding: 0;
-    border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 80%;
-    }
-
-    & > button {
-      display: none;
-    }
-  }
-
-  &.agreeDetail {
-    width: 90%;
-    height: 80%;
-    max-height: auto;
-    padding: 0;
-    border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 240px;
-    }
-
-    & > button {
-      display: none;
-    }
-  }
-
-  &.rankPopup {
-    width: 90%;
-    height: 80%;
-    height: fit-content;
-    max-height: 450px;
-    padding: 0;
-    border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: fit-content;
-      max-height: 310px;
-    }
-  }
 
   & > button {
     display: inline-block;
     position: absolute;
-    width: 36px;
-    height: 36px;
-    top: -35px;
+    width: 32px;
+    height: 32px;
+    top: -40px;
     right: 0;
-    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
+    background: url(${IMG_SERVER}/images/api/close_w_l.svg) no-repeat center;
     text-indent: -9999px;
     cursor: pointer;
-  }
-
-  &.proofShot {
-    width: 90%;
-    height: 80%;
-    max-height: auto;
-    padding: 0;
-    border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: fit-content;
-    }
-    & > button {
-      display: none;
-    }
-  }
-
-  &.clipopen {
-    padding: 16px;
-    box-sizing: border-box;
-    max-width: 360px;
-
-    max-height: auto;
-    padding: 0;
-    border-radius: 16px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: fit-content;
-    }
-    & > button {
-      display: none;
-    }
-  }
-
-  & > button {
-    display: inline-block;
-    position: absolute;
-    width: 36px;
-    height: 36px;
-    top: -35px;
-    right: 0;
-    background: url(${IMG_SERVER}/images/common/ic_close_m@2x.png) no-repeat center center / cover;
-    text-indent: -9999px;
-    cursor: pointer;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    &.square {
-      & > button {
-        top: 18px;
-        right: 8px;
-        width: 30px;
-        height: 30px;
-        z-index: 10;
-        &:before,
-        &:after {
-          position: absolute;
-          top: 0;
-          left: 15px;
-          content: ' ';
-          height: 30px;
-          width: 1px;
-          background-color: #959595;
-        }
-        &:before {
-          transform: rotate(45deg);
-        }
-        &:after {
-          transform: rotate(-45deg);
-        }
-      }
-    }
-    &.charge {
-      & > button {
-        top: 15px;
-        left: 4%;
-        width: 30px;
-        height: 30px;
-        z-index: 10;
-        &:before {
-          position: absolute;
-          left: 11px;
-          top: 8px;
-          width: 10px;
-          height: 10px;
-          border-left: 2px solid #757575;
-          border-top: 2px solid #757575;
-          transform: rotate(-45deg);
-          content: '';
-        }
-      }
-    }
   }
 `
 const Background = styled.div`
@@ -393,7 +217,6 @@ const Background = styled.div`
   width: 100%;
   height: 100%;
   z-index: 100;
-  background: rgba(0, 0, 0, 0.8);
   background: rgba(0, 0, 0, 0.8);
   z-index: -1;
 `

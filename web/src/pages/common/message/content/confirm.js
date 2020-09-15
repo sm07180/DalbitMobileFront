@@ -80,11 +80,15 @@ export default (props) => {
   return (
     <Alert>
       <button className="btnClose">
-        <img src={`${IMG_SERVER}/images/common/ic_close_gray@2x.png`} onClick={btnClose} />
+        <img src={`${IMG_SERVER}/images/api/close_w_l.svg`} onClick={btnClose} />
       </button>
       <div className="wrap-message">
         {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
+
+        {context.message.remsg && (
+          <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></b>
+        )}
       </div>
       <div className="wrap-btn">
         <button ref={refBtn} className="cancel" {...cancel}>
@@ -100,9 +104,11 @@ export default (props) => {
 //---------------------------------------------------------------------
 const Alert = styled.section`
   position: relative;
-  width: 320px;
+  width: 100%;
+  max-width: 328px;
+  margin: 0px 16px;
   padding: 16px;
-  border-radius: 10px;
+  border-radius: 20px;
   background: #fff;
   /* border: 1px solid #ccc; */
   box-sizing: border-box;
@@ -113,17 +119,27 @@ const Alert = styled.section`
   h1 {
     display: block;
     text-align: center;
-    font-weight: normal;
+    font-size: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e0e0e0;
+    color: #000;
   }
   /* 메시지 */
   .msg {
-    padding: 38px 20px 20px;
-    font-size: 17px;
+    font-size: 16px;
+    padding: 16px 10px 0;
+    min-height: 80px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     line-height: 1.4;
     letter-spacing: -0.5px;
     word-break: keep-all;
     text-align: center;
     transform: skew(-0.03deg);
+    color: #000;
 
     em {
       font-size: 16px;
@@ -133,6 +149,7 @@ const Alert = styled.section`
     }
     strong {
       display: block;
+      width: 100% !important;
       margin-top: 4px;
       font-size: 22px;
       font-weight: bold;
@@ -145,8 +162,18 @@ const Alert = styled.section`
     }
   }
 
+  .remsg {
+    display: block;
+    font-size: 22px;
+    color: #632beb;
+    line-height: 26px;
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
   .wrap-btn {
     display: flex;
+    padding-top: 16px;
     /* margin-top: 20px; */
     text-align: center;
     button {
@@ -154,31 +181,29 @@ const Alert = styled.section`
       padding: 5px 0;
       color: #fff;
       height: 44px;
-      border-radius: 10px;
+      border-radius: 12px;
       background-color: ${COLOR_MAIN};
+      font-size: 18px;
+      font-weight: 700;
       /* 취소 */
       &:nth-child(odd) {
         margin-right: 4px;
-        border: 1px solid #632beb;
-        color: #632beb;
-        background: #fff;
+        background: #757575;
       }
       /* 확인 */
-      &:nth-child(even) {
-        margin-left: 4px;
-      }
     }
   }
   .btnClose {
     display: inline-block;
     position: absolute;
-    top: 2px;
-    right: 2px;
+    top: -40px;
+    right: 0px;
+
     cursor: pointer;
     z-index: 1;
     img {
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
     }
     .purpleColor {
       font-size: 22px;

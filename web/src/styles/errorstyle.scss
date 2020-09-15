@@ -2,52 +2,60 @@
 
 /*error 페이지 css*/
 #error {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 360px;
-  .logoImg {
-    width: 243px;
-    height: 63px;
-    background: url('https://image.dalbitlive.com/images/api/dalbitlogo.png') no-repeat center center / cover;
-    font-size: 0;
+  max-width: 360px;
+  margin: auto;
+
+  padding: 0px 16px;
+  box-sizing: border-box;
+  .closeButon {
+    width: 32px;
+    height: 32px;
+    text-indent: -999999px;
+    position: absolute;
+    right: 18px;
+    top: 26px;
+    background: url('https://image.dalbitlive.com/svg/close_g_l.svg') center no-repeat;
   }
-  .errorTitle {
-    margin: 60px 0 44px 0;
-    color: $primary;
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1.07;
-    letter-spacing: -0.7px;
-    transform: skew(-0.03deg);
+  .img {
+    width: 100px;
+    height: 100px;
+    margin: 132px auto 24px auto;
+    background: url('https://image.dalbitlive.com/images/api/20200914/errorImg.png') center no-repeat;
   }
-  .details {
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    line-height: 1.75;
+
+  .title {
+    font-size: 24px;
+    margin-bottom: 24px;
+    color: #ec455f;
+    letter-spacing: -0.6px;
     text-align: center;
-    color: #757575;
-    transform: skew(-0.03deg);
   }
-  .btn {
-    display: block;
-    margin: 44px 0 44px 0;
-    padding: 16px 58px;
-    border-radius: 10px;
-    border: 1px solid $primary;
-    color: $primary;
-    font-size: 16px;
-    letter-spacing: -0.4px;
-    transform: skew(-0.03deg);
+  .text {
+    margin-bottom: 40px;
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    letter-spacing: -0.35px;
   }
-  .bottomImg {
-    width: 100%;
-    height: 274.3px;
-    background: url('https://image.dalbitlive.com/images/api/img_noresult.png') no-repeat center center / cover;
-    font-size: 0;
+
+  .buttonWrap {
+    display: flex;
+    button {
+      border-radius: 12px;
+      height: 44px;
+      line-height: 44px;
+      font-size: 18px;
+      color: #fff;
+      text-align: center;
+      margin-right: 4px;
+      flex: 1;
+      background: #707070;
+      font-weight: 700;
+
+      &:last-child {
+        margin-right: 0px;
+        background: $primary;
+      }
+    }
   }
 }
