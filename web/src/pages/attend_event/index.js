@@ -12,6 +12,8 @@ import './attend_event.scss'
 import AttendList from './attend_list'
 import {Link, useHistory} from 'react-router-dom'
 import WinList from './attend_win_list'
+import qs from 'query-string'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import btnClose from './static/ico_close.svg'
@@ -35,6 +37,15 @@ export default (props) => {
   const [newWinList, setNewWinList] = useState(false)
 
   const phoneInput = useRef()
+  const {webview} = qs.parse(location.search)
+
+  const clickCloseBtn = () => {
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      return history.push('/')
+    }
+  }
 
   const swiperParams = {
     loop: true,
@@ -303,11 +314,9 @@ export default (props) => {
       <div id="attend-event">
         <div className="event-main">
           <img src={`${IMG_SERVER}/event/attend/200811/img_top@2x.png`} className="img-top" />
-          <Link to="/">
-            <button className="btn-back">
-              <img src={btnClose} />
-            </button>
-          </Link>
+          <button className="btn-back" onClick={() => clickCloseBtn()}>
+            <img src={btnClose} />
+          </button>
 
           <p className="main-text">- 방송(청취) 30분이 됐다면? -</p>
 

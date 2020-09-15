@@ -32,6 +32,9 @@ export default (props) => {
   const {token, profile} = context
   let {memNo, category} = useParams()
 
+  if (webview && webview === 'new') {
+    sessionStorage.setItem('webview', 'new')
+  }
   //프로필정보
   const [profileInfo, setProfileInfo] = useState(null)
   const [codes, setCodes] = useState('')
@@ -55,7 +58,7 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (context.isDevIp) {
-    if (webview && webview === 'new') {
+    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
         {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
@@ -67,6 +70,12 @@ export default (props) => {
         {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
       ]
     }
+
+    // mypageNavList = [
+    //   {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+    //   {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+    //   {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+    // ]
   } else {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -84,6 +93,7 @@ export default (props) => {
   // close hybrid func
   const clickCloseBtn = () => {
     if (isHybrid()) {
+      sessionStorage.removeItem('webview')
       Hybrid('CloseLayerPopup')
       context.action.updatenoticeIndexNum('')
     } else {
@@ -136,7 +146,7 @@ export default (props) => {
   }, [memNo, context.mypageFanCnt])
   useEffect(() => {
     context.action.updateUrlStr(memNo)
-  }, [])
+  }, [memNo])
   // check 탈퇴회원
   useEffect(() => {
     if (codes === '-2') {
@@ -148,6 +158,7 @@ export default (props) => {
       })
     }
   }, [codes])
+
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview

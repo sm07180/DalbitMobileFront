@@ -191,7 +191,8 @@ export default (props) => {
     } else {
       setIsOther(true)
     }
-    if (context.token.memNo === profile.memNo) {
+
+    if (props.type !== 'clip_board' && context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
     return () => {

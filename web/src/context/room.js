@@ -343,12 +343,9 @@ export const RoomMake = async (context) => {
   //-----------------------------------------------------
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
-  let appVer = customHeader['appVer']
-  if (appVer === undefined) {
-    appVer = customHeader['appVersion']
-    if (appVer === undefined) {
-      appVer = 0
-    }
+  let appBuild = customHeader['appBuild']
+  if (appBuild === undefined) {
+    appBuild = 1
   }
   //#1 로그인체크
   if (!token.isLogin) {
@@ -371,22 +368,22 @@ export const RoomMake = async (context) => {
   const result = await broadCheck()
   if (!result) return
   //## 실행 리얼 주석 시작
-  let broadSetting = {}
-  broadSetting['djListenerIn'] = false
-  broadSetting['djListenerOut'] = false
+  // let broadSetting = {}
+  // broadSetting['djListenerIn'] = false
+  // broadSetting['djListenerOut'] = false
 
-  if (__NODE_ENV === 'dev' || (_os === 1 && appVer > 29) || (_os === 2 && appVer > 141)) {
-    const apiSetting = await Api.getBroadcastSetting()
-    if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
-      broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
-      broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
-    }
-  }
-  if (__NODE_ENV !== 'dev' && _os === 1 && appVer > 29) {
-    Hybrid('RoomMake')
-  } else {
-    Hybrid('RoomMake', broadSetting)
-  }
+  // if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 31) || (_os === 2 && appBuild > 141)) {
+  //   const apiSetting = await Api.getBroadcastSetting()
+  //   if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
+  //     broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
+  //     broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
+  //   }
+  // }
+  // if (__NODE_ENV !== 'dev' && _os === 1 && appBuild > 31) {
+  //   Hybrid('RoomMake')
+  // } else {
+  //   Hybrid('RoomMake', broadSetting)
+  // }
   //## 실행 리얼 주석 종료
-  //Hybrid('RoomMake') //원소스
+  Hybrid('RoomMake') //원소스
 }
