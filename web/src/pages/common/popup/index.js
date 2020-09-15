@@ -180,16 +180,15 @@ const Wrap = styled.div`
   background: #fff;
   &.round {
     max-width: 328px;
-    max-height: 430px;
+    max-height: 446px;
     max-height: auto;
     border-radius: 12px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 430px;
-    }
+    height: 100%;
+    max-height: 446px;
+
     &.charge {
       width: 340px;
-      max-height: 430px;
+      max-height: 446px;
       padding: 0;
       height: auto;
     }
@@ -210,10 +209,8 @@ const Wrap = styled.div`
     max-height: auto;
     padding: 0;
     border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 430px;
-    }
+    height: 100%;
+    max-height: 446px;
 
     & > button {
       display: none;
@@ -226,10 +223,9 @@ const Wrap = styled.div`
     max-height: auto;
     padding: 0;
     border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: 100%;
-      max-height: 430px;
-    }
+
+    height: 100%;
+    max-height: 446px;
 
     & > button {
       display: none;
@@ -239,13 +235,12 @@ const Wrap = styled.div`
   &.rankPopup {
     width: 90%;
     height: fit-content;
-    max-height: 430px;
+    max-height: 446px;
     padding: 0;
     border-radius: 10px;
-    @media (max-width: ${WIDTH_MOBILE}) {
-      height: fit-content;
-      max-height: 430px;
-    }
+    height: 100%;
+    height: fit-content;
+    max-height: 446px;
   }
 
   & > button {

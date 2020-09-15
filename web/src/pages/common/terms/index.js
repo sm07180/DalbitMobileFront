@@ -19,7 +19,7 @@ import Maketing from './content/maketing'
 import EventDetail from './content/event_detail'
 import EventGiftDetail from './content/event_gift_detail'
 import SpecialDjGoodsDetail from './content/specialdj-goods-detail'
-// import SpecialdjStarting from './content/specialdj-starting'
+import SpecialdjStarting from './content/specialdj-starting'
 
 import './index.scss'
 ////---------------------------------------------------------------------
