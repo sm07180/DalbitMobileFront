@@ -288,7 +288,6 @@ export default (props) => {
       })
     } else {
       return context.action.alert({
-        title: `${res.messageKey}`,
         msg: `${res.message}`
       })
     }

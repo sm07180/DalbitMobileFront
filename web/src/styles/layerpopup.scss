@@ -132,7 +132,7 @@
       text-align: right;
       .popup__inner {
         text-align: left;
-        border-radius: 12px;
+        border-radius: 20px;
         box-sizing: border-box;
 
         .inner {
@@ -146,29 +146,31 @@
             }
           }
         }
-        .contents {
-          overflow: auto;
-          max-height: 300px;
-          font-size: 16px;
 
+        .innerScroll {
+          overflow-y: auto;
+          overflow-x: hidden;
+          max-height: 300px;
+
+          &::-webkit-scrollbar {
+            width: 10px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: rgba(0, 0, 0, 0.4);
+          }
+          &::-webkit-scrollbar-track {
+            background-color: $white;
+          }
+        }
+        .contents {
+          font-size: 16px;
           line-height: 24px;
           color: $black;
           font-weight: 500;
-        }
-        .contents::-webkit-scrollbar {
-          width: 10px;
-        }
-        .contents::-webkit-scrollbar-thumb {
-          border-radius: 6px;
-          background: rgba(0, 0, 0, 0.4);
-        }
-        .contents::-webkit-scrollbar-track {
-          background-color: $white;
-        }
-
-        .textMargin {
           margin-top: 16px;
           padding: 0px 14px;
+          width: 104%;
           box-sizing: border-box;
           word-wrap: break-word;
         }
@@ -427,27 +429,29 @@
 
         .btnWrap {
           display: flex;
-          justify-content: space-between;
-          width: 100%;
+          text-align: center;
+          padding: 0px;
           margin-top: 10px;
-          padding: 0;
+          margin-bottom: 2px;
           button {
-            display: block;
-            width: 49%;
-            height: 48px;
+            flex: 1;
+            padding: 5px 0;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            height: 44px;
             border-radius: 10px;
-            padding: 8px 0;
-            font-size: 14px;
-            font-weight: 600;
           }
           .btn {
             &__cancel {
-              border: 1px solid $primary;
-              color: $primary;
+              margin-right: 4px;
+              background: $greishGray;
+              color: $white;
             }
             &__ok {
               color: $white;
-              background-color: $mediumGray;
+              background-color: $primary;
+
               cursor: initial;
               &.on {
                 background-color: $primary;
