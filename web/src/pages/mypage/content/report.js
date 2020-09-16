@@ -67,7 +67,7 @@ export default (props) => {
     pickdata: false
   })
 
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(2)
   const [selectType, setSelectType] = useState(0)
   const [moreState, setMoreState] = useState(false)
   const [currentPickdata, setCurrentPickdata] = useState()
@@ -96,6 +96,9 @@ export default (props) => {
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {
+      console.log(`pickdataPrev`, changes.pickdataPrev)
+      console.log(`pickdataNext`, changes.pickdataNext)
+
       if (res.data.list == false) {
         if (!next) {
           setbroadtotal([])
@@ -139,7 +142,7 @@ export default (props) => {
         if (!next) {
           setlistentotal([])
           setListenData([])
-          setResultState(0)
+          setResultState(2)
         }
         setMoreState(false)
       } else {
@@ -159,6 +162,7 @@ export default (props) => {
       })
     }
   }
+
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
