@@ -573,7 +573,7 @@ export default (props) => {
                   to={'/clip'}
                   onClick={(event) => {
                     event.preventDefault()
-                    if (customHeader['os'] === OS_TYPE['IOS']) {
+                    if (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBuild'] < 145) {
                       globalCtx.action.alert({
                         msg: `클립 기능 업데이트를 위해\n 앱 스토어 심사 중입니다.\n잠시만 기다려주세요.\n※ PC, Android를 통해 먼저 클립을 만나보세요!`
                       })
