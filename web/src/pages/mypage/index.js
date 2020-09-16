@@ -191,6 +191,11 @@ export default (props) => {
     }
   }
 
+  if (!token.isLogin) {
+    window.location.href = '/login'
+    return null
+  }
+
   return (
     <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
