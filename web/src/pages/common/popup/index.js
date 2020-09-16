@@ -24,6 +24,7 @@ export default (props) => {
   const [layout, setLayout] = useState('')
   //context
   const context = useContext(Context)
+
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {

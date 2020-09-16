@@ -8,6 +8,8 @@ import {useHistory} from 'react-router-dom'
 import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
 import qs from 'query-string'
+import plusImg from './static/btn_plus.png'
+import minusImg from './static/btn_plus.png'
 
 let subSelect1 = ''
 let subSelect2 = ''
@@ -297,14 +299,14 @@ export default (props) => {
 
       <div className="checkWrite">
         <div className="list list--top">
-          <div className="list__title list__title--abolsute">이름(실명)</div>
           <div className="list__inpuText">
+            <p>이름(실명)</p>
             <input type="text" onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요." maxLength="4" />
           </div>
         </div>
         <div className="list list--bottom">
-          <div className="list__title list__title--abolsute">휴대폰번호</div>
           <div className="list__inpuText">
+            <p>휴대폰번호</p>
             <input
               type="tel"
               value={phone}
@@ -341,14 +343,14 @@ export default (props) => {
               />
             </div>
             <button className="list__plusButton" onClick={() => setMorelist(!moreList)}>
-              {moreList === true ? '삭제' : '추가'}
+              {moreList === true ? <img src={plusImg} alt="삭제" /> : <img src={minusImg} alt="추가" />}
             </button>
           </div>
         </div>
         {moreList ? moreButton() : <></>}
 
         <div className="list__box">
-          <div className="list__title list__title--marginTop">방송 소개</div>
+          <div className="list__title list__title">방송 소개</div>
           <textarea
             className="list__textarea"
             onChange={handleChange}

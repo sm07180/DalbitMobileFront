@@ -2,15 +2,20 @@
  * @file terms/content/event_gift_detail.js
  * @brief 이벤트 경품 상세소개
  */
-import React from 'react'
-import './scss/specialdj-starting.scss'
+import React, {useContext} from 'react'
+import {Link, useHistory} from 'react-router-dom'
+import {Context} from 'context'
 
+import './scss/specialdj-starting.scss'
 import NumberImg01 from './static/specialdj_starting_number01.png'
 import NumberImg02 from './static/specialdj_starting_number02.png'
 import NumberImg03 from './static/specialdj_starting_number03.png'
 
 ////---------------------------------------------------------------------
 export default (props) => {
+  console.log(props)
+  const history = useHistory()
+
   //---------------------------------------------------------------------
   return (
     <div id="specialdjStarting">
@@ -45,7 +50,12 @@ export default (props) => {
         </li>
       </ul>
       <p className="subText">※ 자세한 내용은 공지사항을 통해 확인 바랍니다.</p>
-      <button>공지사항 보러가기</button>
+      <button
+        onClick={() => {
+          history.push('customer/notice/121')
+        }}>
+        공지사항 보러가기
+      </button>
     </div>
   )
 }
