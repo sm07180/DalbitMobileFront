@@ -105,7 +105,7 @@ export default (props) => {
             <img className="icon" src={Search} alt="검색버튼" />
           </button>
         </div>
-        {logoChange ? (
+        {customHeader['os'] === OS_TYPE['IOS'] && logoChange ? (
           <div className="micWrap">
             <div
               className="mic-btn"
