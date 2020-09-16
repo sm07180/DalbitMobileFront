@@ -20,15 +20,24 @@ export default function Alert() {
   const [deleteActive, setDeleteActive] = useState(false)
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
-    const {result, data, message} = await Api.postClipPlay({
+    const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
       clipJoin(data, context)
     } else {
-      context.action.alert({
-        msg: message
-      })
+      if (code === '-99') {
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            history.push('/login')
+          }
+        })
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
     }
   }
   async function fetchData() {

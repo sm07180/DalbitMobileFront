@@ -5,7 +5,7 @@ import {RankContext} from 'context/rank_ctx'
 
 import {changeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
 
-import benefitIcon from '../static/ico-benefit.png'
+import benefitIcon from '../static/ico-benefit_@2x.png'
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()

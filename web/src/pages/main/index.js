@@ -10,6 +10,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
+import qs from 'query-string'
 import Lottie from 'react-lottie'
 
 // components
@@ -546,99 +547,107 @@ export default (props) => {
         onTouchStart={mainTouchStart}
         onTouchMove={mainTouchMove}
         onTouchEnd={mainTouchEnd}>
-        <div ref={SubMainRef} className="main-gnb">
-          <div className="left-side">
-            <div className="tab">
-              <Link
-                to={'/rank'}
-                onClick={(event) => {
-                  event.preventDefault()
-                  history.push('/rank')
-                }}>
-                랭킹
-              </Link>
-            </div>
-            <div className="tab">
-              <Link
-                onClick={(event) => {
-                  event.preventDefault()
-                  StoreLink(globalCtx, history)
-                }}
-                to={'/rank'}>
-                스토어
-              </Link>
-            </div>
-            {globalCtx.isDevIp ? (
-              <>
-                <div className="tab">
-                  <NavLink
-                    className="tab__item newIcon"
-                    activeClassName={'tab__item--active'}
-                    to={'/clip'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip')
-                    }}>
-                    클립 <i>N</i>
-                    {/* 클립<i>NEW</i> */}
-                  </NavLink>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="tab tab--yellow">
-                  <Link
-                    className="newicon"
-                    to={'/clip_open'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip_open')
-                    }}>
-                    클립<i>NEW</i>
-                  </Link>
-                </div>
-              </>
-            )}
-          </div>
-          <button
-            className="broadBtn"
-            onClick={() => {
-              if (customHeader['os'] === OS_TYPE['Desktop']) {
-                window.location.href = 'https://inforexseoul.page.link/Ws4t'
-              } else {
-                if (!broadcastBtnActive) {
-                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                    if (Utility.getCookie('clip-player-info')) {
-                      globalCtx.action.confirm({
-                        msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
-                        callback: () => {
-                          clipExit(globalCtx)
-                          RoomMake(globalCtx)
-                        }
+        {customHeader['os'] !== OS_TYPE['Android'] ? (
+          <div ref={SubMainRef} className="main-gnb">
+            <div className="left-side">
+              <div className="tab">
+                <NavLink
+                  className="tab__item"
+                  activeClassName={'tab__item--active'}
+                  onClick={(event) => {
+                    event.preventDefault()
+                  }}
+                  to={'/'}>
+                  라이브
+                </NavLink>
+              </div>
+              <div className="tab">
+                <NavLink
+                  className="tab__item newIcon"
+                  activeClassName={'tab__item--active'}
+                  to={'/clip'}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    if (customHeader['os'] === OS_TYPE['IOS']) {
+                      globalCtx.action.alert({
+                        msg: `클립 기능 업데이트를 위해\n 앱 스토어 심사 중입니다.\n잠시만 기다려주세요.\n※ PC, Android를 통해 먼저 클립을 만나보세요!`
                       })
                     } else {
-                      RoomMake(globalCtx)
+                      history.push('/clip')
                     }
+                  }}>
+                  클립 <i>N</i>
+                  {/* 클립<i>NEW</i> */}
+                </NavLink>
+              </div>
+
+              <button
+                className="broadBtn"
+                onClick={() => {
+                  if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
                   } else {
-                    globalCtx.action.confirm({
-                      msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
-                      callback: () => {
-                        sessionStorage.removeItem('room_no')
-                        Utility.setCookie('listen_room_no', null)
-                        Hybrid('ExitRoom', '')
-                        globalCtx.action.updatePlayer(false)
-                        RoomMake(globalCtx)
+                    if (!broadcastBtnActive) {
+                      if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                        if (Utility.getCookie('clip-player-info')) {
+                          globalCtx.action.confirm({
+                            msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                            callback: () => {
+                              clipExit(globalCtx)
+                              RoomMake(globalCtx)
+                            }
+                          })
+                        } else {
+                          RoomMake(globalCtx)
+                        }
+                      } else {
+                        globalCtx.action.confirm({
+                          msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                          callback: () => {
+                            sessionStorage.removeItem('room_no')
+                            Utility.setCookie('listen_room_no', null)
+                            Hybrid('ExitRoom', '')
+                            globalCtx.action.updatePlayer(false)
+                            RoomMake(globalCtx)
+                          }
+                        })
                       }
-                    })
+                      setBroadcastBtnActive(true)
+                      setTimeout(() => setBroadcastBtnActive(false), 3000)
+                    }
                   }
-                  setBroadcastBtnActive(true)
-                  setTimeout(() => setBroadcastBtnActive(false), 3000)
-                }
-              }
-            }}>
-            방송하기
-          </button>
-        </div>
+                }}></button>
+
+              <div className="tab">
+                <NavLink
+                  className="tab__item"
+                  activeClassName={'tab__item--active'}
+                  to={'/rank'}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    history.push('/rank')
+                  }}>
+                  랭킹
+                </NavLink>
+              </div>
+
+              <div className="tab">
+                <NavLink
+                  className="tab__item"
+                  activeClassName={'tab__item--active'}
+                  to={'/rank'}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    history.push('/menu/profile')
+                  }}>
+                  마이
+                </NavLink>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
 
         <div ref={RecommendRef} className="main-slide">
           {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}

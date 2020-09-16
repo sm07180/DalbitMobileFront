@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import {Switch, Route, useParams, useHistory} from 'react-router-dom'
+import {Switch, Route, useParams, useHistory, Redirect} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
@@ -26,7 +26,6 @@ export default (props) => {
 
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-
   // useEffect(() => {
   //   const {memNo} = token
   //   Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
@@ -36,26 +35,30 @@ export default (props) => {
   //   })
   // }, [globalCtx.close])
 
-  if (token.isLogin === false && params.category === 'profile') {
-    window.location.href = '/login'
-    return null
-  }
+  // if (token.isLogin === false && params.category === 'profile') {
+  //   window.location.href = '/login'
+  //   return null
+  // }
 
   return (
     <>
       {/* 로그인 대기창  */}
       {/* <LoginStay /> */}
       {/* 2.5v myProfile  */}
-      <Layout {...props} status="no_gnb">
-        <MenuWrap>
-          <Switch>
-            {categoryList.map((value) => {
-              const {type, component} = value
-              return <Route exact path={`/menu/${type}`} component={component} key={type} />
-            })}
-          </Switch>
-        </MenuWrap>
-      </Layout>
+      {!profile && token.isLogin === false && params.category === 'profile' ? (
+        <Redirect to={`/login`} />
+      ) : (
+        <Layout {...props} status="no_gnb">
+          <MenuWrap>
+            <Switch>
+              {categoryList.map((value) => {
+                const {type, component} = value
+                return <Route exact path={`/menu/${type}`} component={component} key={type} />
+              })}
+            </Switch>
+          </MenuWrap>
+        </Layout>
+      )}
     </>
   )
 }
