@@ -356,12 +356,6 @@ export default (props) => {
                       alt="카테고리 리프래시 아이콘 이미지"
                     />
                   </button>
-                  <img
-                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
-                    className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
-                    style={{cursor: 'pointer'}}
-                    onClick={() => refreshCategory()}
-                  />
                 </div>
               </div>
             </div>
