@@ -54,8 +54,14 @@ const records = 30
 
 let touchStartY = null
 let touchEndY = null
-
+let GnbHeight = 48
 export default (props) => {
+  useEffect(() => {
+    if (customHeader['os'] === OS_TYPE['Android']) {
+      GnbHeight = 0
+    }
+  }, [])
+
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -272,7 +278,6 @@ export default (props) => {
   }
 
   const windowScrollEvent = () => {
-    const GnbHeight = 48
     const sectionMarginTop = 24
     const LiveTabDefaultHeight = 48
 
