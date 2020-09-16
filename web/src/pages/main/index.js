@@ -290,17 +290,17 @@ export default (props) => {
     const BannerSectionNode = BannerSectionRef.current
 
     const LiveSectionNode = LiveSectionRef.current
-
     const MainHeight = MainNode.clientHeight
-    const SubMainHeight = SubMainNode.clientHeight
+    // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
+    // alert('///')
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode.clientHeight
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+    const TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
@@ -308,8 +308,8 @@ export default (props) => {
       setLiveCategoryFixed(false)
     }
 
-    const GAP = 500
-
+    const GAP = 100
+    // console.log(window.scrollY + window.innerHeight, MainHeight + GnbHeight - GAP)
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
