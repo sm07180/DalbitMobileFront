@@ -81,7 +81,7 @@ function RankListTop() {
                             history.push(`/mypage/${memNo}`)
                           }
                         } else {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/login`)
                         }
                       }}>
                       <img src={holder} className="thumbBox__frame" />
@@ -97,7 +97,7 @@ function RankListTop() {
                             history.push(`/mypage/${memNo}`)
                           }
                         } else {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/login`)
                         }
                       }}>
                       {/* <p className={levelName}>
