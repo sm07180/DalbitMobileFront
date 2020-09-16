@@ -549,24 +549,16 @@ export default (props) => {
         <div ref={SubMainRef} className="main-gnb">
           <div className="left-side">
             <div className="tab">
-              <Link
-                to={'/rank'}
-                onClick={(event) => {
-                  event.preventDefault()
-                  history.push('/rank')
-                }}>
-                랭킹
-              </Link>
-            </div>
-            <div className="tab">
-              <Link
+              <NavLink
+                className="tab__item"
+                activeClassName={'tab__item--active'}
                 onClick={(event) => {
                   event.preventDefault()
                   StoreLink(globalCtx, history)
                 }}
-                to={'/rank'}>
-                스토어
-              </Link>
+                to={'/'}>
+                라이브
+              </NavLink>
             </div>
             {globalCtx.isDevIp ? (
               <>
@@ -587,57 +579,83 @@ export default (props) => {
             ) : (
               <>
                 <div className="tab tab--yellow">
-                  <Link
-                    className="newicon"
+                  <NavLink
+                    className="tab__item newicon"
+                    activeClassName={'tab__item--active'}
                     to={'/clip_open'}
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip_open')
                     }}>
                     클립<i>NEW</i>
-                  </Link>
+                  </NavLink>
                 </div>
               </>
             )}
-          </div>
-          <button
-            className="broadBtn"
-            onClick={() => {
-              if (customHeader['os'] === OS_TYPE['Desktop']) {
-                window.location.href = 'https://inforexseoul.page.link/Ws4t'
-              } else {
-                if (!broadcastBtnActive) {
-                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                    if (Utility.getCookie('clip-player-info')) {
+
+            <button
+              className="broadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                } else {
+                  if (!broadcastBtnActive) {
+                    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                      if (Utility.getCookie('clip-player-info')) {
+                        globalCtx.action.confirm({
+                          msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                          callback: () => {
+                            clipExit(globalCtx)
+                            RoomMake(globalCtx)
+                          }
+                        })
+                      } else {
+                        RoomMake(globalCtx)
+                      }
+                    } else {
                       globalCtx.action.confirm({
-                        msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                        msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
                         callback: () => {
-                          clipExit(globalCtx)
+                          sessionStorage.removeItem('room_no')
+                          Utility.setCookie('listen_room_no', null)
+                          Hybrid('ExitRoom', '')
+                          globalCtx.action.updatePlayer(false)
                           RoomMake(globalCtx)
                         }
                       })
-                    } else {
-                      RoomMake(globalCtx)
                     }
-                  } else {
-                    globalCtx.action.confirm({
-                      msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
-                      callback: () => {
-                        sessionStorage.removeItem('room_no')
-                        Utility.setCookie('listen_room_no', null)
-                        Hybrid('ExitRoom', '')
-                        globalCtx.action.updatePlayer(false)
-                        RoomMake(globalCtx)
-                      }
-                    })
+                    setBroadcastBtnActive(true)
+                    setTimeout(() => setBroadcastBtnActive(false), 3000)
                   }
-                  setBroadcastBtnActive(true)
-                  setTimeout(() => setBroadcastBtnActive(false), 3000)
                 }
-              }
-            }}>
-            방송하기
-          </button>
+              }}></button>
+
+            <div className="tab">
+              <NavLink
+                className="tab__item"
+                activeClassName={'tab__item--active'}
+                to={'/rank'}
+                onClick={(event) => {
+                  event.preventDefault()
+                  history.push('/rank')
+                }}>
+                랭킹
+              </NavLink>
+            </div>
+
+            <div className="tab">
+              <NavLink
+                className="tab__item"
+                activeClassName={'tab__item--active'}
+                to={'/rank'}
+                onClick={(event) => {
+                  event.preventDefault()
+                  history.push('/menu/profile')
+                }}>
+                마이
+              </NavLink>
+            </div>
+          </div>
         </div>
 
         <div ref={RecommendRef} className="main-slide">
