@@ -126,15 +126,6 @@ export default (props) => {
       }
     }
     BeforeLogout(globalCtx, fetchLogout)
-    // globalCtx.action.confirm({
-    //   callback: () => {
-
-    //     setTimeout(() => {
-
-    //     }, 500)
-    //   },
-    //   msg: '로그아웃 하시겠습니까?'
-    // })
   }
   const checkSelfAuth = async () => {
     let myBirth
