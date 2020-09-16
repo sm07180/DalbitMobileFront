@@ -3,6 +3,8 @@
  * @brief React 최초실행시토큰검증및 필수작업
  */
 import React, {useMemo, useState, useEffect, useContext, useCallback} from 'react'
+import {ErrorBoundary} from 'react-error-boundary'
+import 'styles/errorstyle.scss'
 
 //context
 import {Context} from 'context'
@@ -237,8 +239,52 @@ const App = () => {
     fetchAdmin()
   }, [])
 
+  function ErrorFallback({error, resetErrorBoundary}){
+    if(error){
+      Api.error_log({
+        data: {
+          os: 'mobile'
+          , appVer: customHeader.appVersion
+          , dataType: __NODE_ENV
+          , commandType: window.location.pathname
+          , desc: error.name + '\n' + error.message + '\n' + error.stack
+        }
+      })
+    }
+
+    return (
+        <section id="error">
+          <button
+              className="closeButon"
+              onClick={() => {
+                window.location.href = '/'
+              }}>
+            닫기
+          </button>
+
+          <div className="img"></div>
+
+          <p className="text">
+            해당 페이지 접속이 지연되고 있습니다.
+            <br />
+            다시 시도해주세요
+          </p>
+
+          <div className="buttonWrap">
+            <button
+                onClick={() => {
+                  window.location.href = '/'
+                }}>
+              확인
+            </button>
+          </div>
+        </section>
+    )
+  }
+
   return (
-    <>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}>
       {/* {ready && <Interface />}
       {ready && <Route />} */}
 
@@ -260,7 +306,7 @@ const App = () => {
           />
         </>
       )}
-    </>
+    </ErrorBoundary>
   )
 }
 export default App
