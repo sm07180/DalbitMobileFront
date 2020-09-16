@@ -14,7 +14,7 @@
     &__title {
       font-size: 18px;
       letter-spacing: -0.45px;
-      font-weight: 800;
+      font-weight: 700;
     }
 
     &__btnBack {
@@ -24,6 +24,12 @@
       top: 6px;
       left: 2%;
     }
+  }
+
+  .moerButtonSize {
+    width: 44px;
+    height: 44px;
+    margin-left: 2px;
   }
   .checkWrite {
     box-sizing: border-box;
@@ -72,6 +78,12 @@
         color: #bdbdbd;
         text-align: right;
         margin-top: 4px;
+        margin-left: auto;
+        font-weight: normal;
+        color: $darkGray;
+        b {
+          color: $black;
+        }
       }
 
       &__title {
@@ -114,6 +126,10 @@
           &::placeholder {
             font-size: 14px;
             color: $mediumGray;
+            font-weight: 400;
+          }
+          &:focus {
+            border-color: $black;
           }
         }
       }
@@ -137,18 +153,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-left: 16px;
         margin-right: auto;
         color: #fff;
         font-size: 16px;
-        width: 71px;
-        height: 40px;
-        border-radius: 10px;
-
-        img {
-          width: 44px;
-          height: 44px;
-        }
       }
 
       &--bottom20 {
@@ -161,25 +168,25 @@
       &__textarea {
         width: 100%;
         min-height: 136px;
-        padding: 10px;
-        font-size: 14px;
-        color: #333;
+        padding: 16px 13px;
+        font-size: 16px;
+        letter-spacing: -0.4px;
+        color: $black;
+        font-weight: 700;
         border: 1px solid #9e9e9e;
         border-radius: 10px;
         background: #fff;
         overflow: hidden;
+        box-sizing: border-box;
 
-        ::-webkit-input-placeholder {
+        &::placeholder {
+          font-size: 14px;
           color: #bdbdbd;
+          font-weight: normal;
         }
-        :-moz-placeholder {
-          color: #bdbdbd;
-        }
-        ::-moz-placeholder {
-          color: #bdbdbd;
-        }
-        :-ms-input-placeholder {
-          color: #bdbdbd;
+
+        &:focus {
+          border-color: $black;
         }
       }
       &__titleGray {
