@@ -69,7 +69,7 @@ function RankList() {
                           history.push(`/mypage/${memNo}`)
                         }
                       } else {
-                        history.push(`/mypage/${memNo}`)
+                        history.push(`/login`)
                       }
                     }}>
                     <p className="myRanking__left--ranking">{rank}</p>
@@ -113,7 +113,7 @@ function RankList() {
                           history.push(`/mypage/${memNo}`)
                         }
                       } else {
-                        history.push(`/mypage/${memNo}`)
+                        history.push(`/login`)
                       }
                     }}>
                     <div className="myRanking__rightWrap">
