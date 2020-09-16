@@ -730,6 +730,7 @@ export default () => {
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
+    document.addEventListener('native-back-click', update)
 
     /*----clip----*/
     document.addEventListener('clip-player-show', update)
@@ -761,6 +762,7 @@ export default () => {
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
       document.removeEventListener('native-close-layer-popup', update)
+      document.removeEventListener('native-back-click', update)
     }
   }, [])
 
