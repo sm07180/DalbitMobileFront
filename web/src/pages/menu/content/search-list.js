@@ -26,8 +26,6 @@ export default (props) => {
     }
   }
   const linkMypage = (memNo) => {
-    console.log(memNo)
-    console.log(ctx.profile.memNo)
     if (ctx.token.isLogin === true) {
       if (memNo !== ctx.profile.memNo) {
         history.push(`/mypage/${memNo}`)
