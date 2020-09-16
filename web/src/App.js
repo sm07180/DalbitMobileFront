@@ -208,14 +208,14 @@ const App = () => {
       })
     }
   }
-  const myInfoRes = useCallback(async () => {
-    console.log('??')
+  const myInfoRes = async () => {
+    console.log('myInfoRes')
     const res = await Api.mypage()
     if (res.result === 'success') {
       console.log(res.data)
       globalCtx.action.updateMyInfo(res.data)
     }
-  }, [globalCtx.myInfo])
+  }
   //admincheck
   const fetchAdmin = async () => {
     const adminFunc = await Api.getAdmin()
@@ -237,6 +237,8 @@ const App = () => {
 
     // Renew all initial data
     fetchData()
+  }, [])
+  useEffect(() => {
     fetchAdmin()
     myInfoRes()
   }, [])
