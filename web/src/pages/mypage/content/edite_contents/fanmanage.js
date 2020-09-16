@@ -13,7 +13,7 @@ import Utility, {dateFormatterKor, settingAlarmTime, printNumber, minuteToTime} 
 import PtimeIcon from '../../static/ic_p_time.svg'
 import PstarIcon from '../../static/ic_p_star.svg'
 import PlastTimeIcon from '../../static/ic_p_headphone.svg'
-import PxBtnIcon from '../../static/ic_p_xbtn.svg'
+import PxBtnIcon from '../../static/close_w_l.svg'
 import PmemoGray from '../../static/ic_p_mem_g.svg'
 import PmemoDark from '../../static/ic_p_mem_b.svg'
 import PdeleteBtn from '../../static/ic_p_delete.svg'
@@ -581,11 +581,11 @@ const Wrap = styled.div`
       max-width: 328px;
       background-color: #fff;
       border-radius: 20px;
-      overflow: hidden;
 
       .writeWrap {
         width: 100%;
         background: #eee;
+        border-radius: 0 0 20px 20px;
       }
       .txtCnt {
         position: relative;

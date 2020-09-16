@@ -171,7 +171,14 @@ export const RoomJoin = async (obj) => {
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      if (res.code === '-4' || res.code === '-10') {
+      if (res.code === '-99') {
+        Room.context.action.alert({
+          msg: res.message,
+          callback: () => {
+            window.location.href = '/login'
+          }
+        })
+      } else if (res.code === '-4' || res.code === '-10') {
         try {
           Room.context.action.confirm({
             msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
@@ -368,22 +375,22 @@ export const RoomMake = async (context) => {
   const result = await broadCheck()
   if (!result) return
   //## 실행 리얼 주석 시작
-  // let broadSetting = {}
-  // broadSetting['djListenerIn'] = false
-  // broadSetting['djListenerOut'] = false
+  let broadSetting = {}
+  broadSetting['djListenerIn'] = false
+  broadSetting['djListenerOut'] = false
 
-  // if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 31) || (_os === 2 && appBuild > 141)) {
-  //   const apiSetting = await Api.getBroadcastSetting()
-  //   if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
-  //     broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
-  //     broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
-  //   }
-  // }
-  // if (__NODE_ENV !== 'dev' && _os === 1 && appBuild > 31) {
-  //   Hybrid('RoomMake')
-  // } else {
-  //   Hybrid('RoomMake', broadSetting)
-  // }
+  if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 32) || (_os === 2 && appBuild > 141)) {
+    const apiSetting = await Api.getBroadcastSetting()
+    if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
+      broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
+      broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
+    }
+  }
+  if (__NODE_ENV !== 'dev' && _os === 1 && appBuild < 32) {
+    Hybrid('RoomMake')
+  } else {
+    Hybrid('RoomMake', broadSetting)
+  }
   //## 실행 리얼 주석 종료
-  Hybrid('RoomMake') //원소스
+  //Hybrid('RoomMake') //원소스
 }
