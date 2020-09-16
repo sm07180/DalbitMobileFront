@@ -1,5 +1,5 @@
 import React, {useContext, useEffect} from 'react'
-import {Switch, Route, useParams, useHistory} from 'react-router-dom'
+import {Switch, Route, useParams, useHistory, Redirect} from 'react-router-dom'
 import styled from 'styled-components'
 
 import Nav from './content/nav.js'
@@ -36,16 +36,17 @@ export default (props) => {
   //   })
   // }, [globalCtx.close])
 
-  if (token.isLogin === false && params.category === 'profile') {
-    window.location.href = '/login'
-    return null
-  }
+  // if (token.isLogin === false && params.category === 'profile') {
+  //   window.location.href = '/login'
+  //   return null
+  // }
 
   return (
     <>
       {/* 로그인 대기창  */}
       {/* <LoginStay /> */}
       {/* 2.5v myProfile  */}
+      {token.isLogin === false && params.category === 'profile' && <Redirect to={`/login`} />}
       <Layout {...props} status="no_gnb">
         <MenuWrap>
           <Switch>

@@ -102,10 +102,7 @@ export default (props) => {
     }
   }
   //check login push login
-  if (!token.isLogin) {
-    window.location.href = '/login'
-    return null
-  }
+
   //--------------------------------------------
   useEffect(() => {
     const getMyPageNew = async () => {
@@ -206,7 +203,7 @@ export default (props) => {
   }
 
   return (
-    <Switch>
+    <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb" type={webview && webview === 'new' ? 'clipBack' : ''}>
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
@@ -258,14 +255,14 @@ export default (props) => {
               </div>
             </>
           )}
-          <React.Fragment>
+          <Switch>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </React.Fragment>
+          </Switch>
         </div>
       </Layout2>
-    </Switch>
+    </>
   )
 }
