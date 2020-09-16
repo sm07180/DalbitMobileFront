@@ -88,8 +88,6 @@ export default (props) => {
     }
   }
 
-  console.log(attendCheck)
-
   return (
     <FixedButton className={context.player ? 'usePlayer' : ''}>
       {urlrStr !== '/rank' && attendStampState()}
