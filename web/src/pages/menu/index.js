@@ -35,10 +35,10 @@ export default (props) => {
   //   })
   // }, [globalCtx.close])
 
-  // if (token.isLogin === false && params.category === 'profile') {
-  //   window.location.href = '/login'
-  //   return null
-  // }
+  if (token.isLogin === false && params.category === 'profile') {
+    window.location.href = '/login'
+    return null
+  }
 
   return (
     <>
