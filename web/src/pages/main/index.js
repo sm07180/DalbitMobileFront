@@ -58,7 +58,7 @@ let GnbHeight = 48
 export default (props) => {
   useEffect(() => {
     if (customHeader['os'] === OS_TYPE['Android']) {
-      GnbHeight = 0
+      GnbHeight = 96
     }
   }, [])
 

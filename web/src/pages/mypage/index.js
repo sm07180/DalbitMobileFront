@@ -73,7 +73,6 @@ export default (props) => {
     ]
   }
   // memNo navi check
-  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -109,6 +108,7 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
+        console.log(context.myInfo.dalCnt)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
