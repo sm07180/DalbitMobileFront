@@ -556,7 +556,6 @@ export default (props) => {
                   activeClassName={'tab__item--active'}
                   onClick={(event) => {
                     event.preventDefault()
-                    StoreLink(globalCtx, history)
                   }}
                   to={'/'}>
                   라이브
