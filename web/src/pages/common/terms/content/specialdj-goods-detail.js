@@ -13,7 +13,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <h2>굿즈 상품 미리보기</h2>
+      <h2 className="title">굿즈 상품 미리보기</h2>
 
       <p>
         <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
@@ -25,6 +25,7 @@ export default (props) => {
 //---------------------------------------------------------------------
 //styled
 const Content = styled.div`
+  padding: 0px 16px 16px 16px;
   p {
     font-size: 12px !important;
   }
@@ -33,10 +34,13 @@ const Content = styled.div`
     width: 100%;
   }
 
-  h2 {
-    font-size: 16px !important;
-    text-align: center !important;
-    font-weight: bold !important;
+  .title.title {
+    font-size: 18px;
+    line-height: 52px;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+    padding: 0px;
   }
 
   h3 {

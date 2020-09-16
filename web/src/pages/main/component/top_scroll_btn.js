@@ -3,12 +3,9 @@ import styled from 'styled-components'
 import API from 'context/api'
 import {Context} from 'context'
 import {Link, useHistory} from 'react-router-dom'
-import Lottie from 'react-lottie'
-import {IMG_SERVER} from 'context/config'
 
 // static
 import TopScrollIcon from '../static/ic_circle_top.svg'
-import stampActive from '../static/stamp_active.json'
 
 export default (props) => {
   const history = useHistory()
@@ -17,7 +14,7 @@ export default (props) => {
   const {token} = globalCtx
   const {logoChange} = globalCtx
 
-  const [attendCheck, setAttendCheck] = useState(0)
+  const [attendCheck, setAttendCheck] = useState(false)
 
   //pathname
   const urlrStr = history.location.pathname
@@ -26,8 +23,8 @@ export default (props) => {
   async function fetchEventAttendCheck() {
     const {result, data} = await API.getEventAttendCheck()
     if (result === 'success') {
-      const {attendanceCheck} = data
-      setAttendCheck(attendanceCheck)
+      const {isCheck} = data
+      setAttendCheck(isCheck)
     } else {
       //실패
     }
@@ -44,7 +41,7 @@ export default (props) => {
   }
 
   const attendStampState = () => {
-    if (token.isLogin && attendCheck === 1) {
+    if (token.isLogin && !attendCheck) {
       if (globalCtx.attendStamp === true) {
         return (
           <AttendStamp
@@ -57,30 +54,6 @@ export default (props) => {
               history.push('/attend_event')
             }}
           />
-        )
-      } else {
-        return null
-      }
-    } else if (token.isLogin && attendCheck === 2) {
-      if (globalCtx.attendStamp === true) {
-        return (
-          <AttendStampActive
-            logoChange={logoChange}
-            onClick={() => {
-              try {
-                fbq('track', 'attend_event')
-                firebase.analytics().logEvent('attend_event')
-              } catch (e) {}
-              history.push('/attend_event')
-            }}>
-            <Lottie
-              options={{
-                loop: true,
-                autoPlay: true,
-                animationData: stampActive
-              }}
-            />
-          </AttendStampActive>
         )
       } else {
         return null
@@ -121,12 +94,6 @@ const AttendStamp = styled.button`
   background-position: center;
   background-size: cover;
   background-image: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png');
-`
-
-const AttendStampActive = styled.button`
-  display: ${(props) => (props.logoChange ? 'block' : 'none')};
-  width: 48px;
-  height: 48px;
 `
 
 const TopScrollBtn = styled.button`

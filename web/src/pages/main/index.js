@@ -443,7 +443,15 @@ export default (props) => {
     },
     [reloadInit]
   )
-
+  const RefreshFunc = async () => {
+    // setReloadInit(true)
+    // await fetchMainInitData()
+    setLiveRefresh(true)
+    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+    await fetchLiveList(true)
+    setLiveRefresh(false)
+    // setReloadInit(false)
+  }
   const mainTouchEnd = useCallback(
     async (e) => {
       if (reloadInit === true) return
@@ -523,12 +531,6 @@ export default (props) => {
     },
     [reloadInit]
   )
-  const RefreshFunc = async () => {
-    setLiveRefresh(true)
-    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList(true)
-    setLiveRefresh(false)
-  }
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -568,16 +570,18 @@ export default (props) => {
             </div>
             {globalCtx.isDevIp ? (
               <>
-                <div className="tab tab--yellow">
-                  <Link
-                    className="newicon"
+                <div className="tab">
+                  <NavLink
+                    className="tab__item newIcon"
+                    activeClassName={'tab__item--active'}
                     to={'/clip'}
                     onClick={(event) => {
                       event.preventDefault()
                       history.push('/clip')
                     }}>
-                    클립<i>NEW</i>
-                  </Link>
+                    클립 <i>N</i>
+                    {/* 클립<i>NEW</i> */}
+                  </NavLink>
                 </div>
               </>
             ) : (
