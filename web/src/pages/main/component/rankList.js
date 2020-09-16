@@ -41,7 +41,11 @@ export default (props) => {
                 className="rank-slide"
                 key={`dj-${idx}`}
                 onClick={() => {
-                  history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                  if (globalCtx.token.isLogin) {
+                    history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                  } else {
+                    history.push('/login')
+                  }
                 }}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   {idx > 2 ? (
