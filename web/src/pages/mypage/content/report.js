@@ -96,9 +96,6 @@ export default (props) => {
       }
     })
     if (res.result === 'success' && _.hasIn(res.data, 'list')) {
-      console.log(`pickdataPrev`, changes.pickdataPrev)
-      console.log(`pickdataNext`, changes.pickdataNext)
-
       if (res.data.list == false) {
         if (!next) {
           setbroadtotal([])
@@ -142,7 +139,7 @@ export default (props) => {
         if (!next) {
           setlistentotal([])
           setListenData([])
-          setResultState(2)
+          setResultState(0)
         }
         setMoreState(false)
       } else {
