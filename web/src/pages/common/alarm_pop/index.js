@@ -58,8 +58,20 @@ export default function AlarmPop() {
           <br /> 1:1 문의에 답변이 등록되면
           <br /> 메시지로 알려드립니다.
         </p>
-      ) : (
-        <h1> HelloWorld </h1>
+      ) : context.popup_code[1] === 'isStarClip' ? (
+        <p>
+        내가 팬으로 등록한
+        <br /> 스타가 클립을 올리면
+        <br /> Push 메시지로 알려드립니다.
+      </p>
+      ) : context.popup_code[1] === 'isMyClip' ? (
+        <p>
+        내가 등록한 클립에
+        <br /> 댓글, 좋아요, 선물이 등록되면
+        <br /> 메시지로 알려드립니다.
+      </p>
+
+
       )}
 
       <button
