@@ -7,6 +7,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import {StoreLink} from 'context/link'
 // components
 import MyProfile from './myProfile'
+import {BeforeLogout} from 'common/logout_func'
 // static svg
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
@@ -38,6 +39,7 @@ export default (props) => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
+  const customHeader = JSON.parse(Api.customHeader)
 
   if (webview && webview === 'new') {
     sessionStorage.setItem('webview', 'new')
@@ -51,11 +53,18 @@ export default (props) => {
   //   // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   // ]
   let subNavList
-  if (globalCtx.isDevIp) {
-    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
+
+  if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
+    ]
+  } else {
+    if (customHeader['os'] === OS_TYPE['IOS']) {
       subNavList = [
         {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
+        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+        {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
       ]
     } else {
       subNavList = [
@@ -63,16 +72,8 @@ export default (props) => {
         {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
         {type: 'my_clip', txt: '클립', icon: ClipIcon},
         {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-        // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
       ]
     }
-  } else {
-    subNavList = [
-      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-      // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
-    ]
   }
 
   const walletList = [
@@ -123,12 +124,16 @@ export default (props) => {
       }
       setFetching(false)
     }
-    globalCtx.action.confirm({
-      callback: () => {
-        fetchLogout()
-      },
-      msg: '로그아웃 하시겠습니까?'
-    })
+    BeforeLogout(globalCtx, fetchLogout)
+    // globalCtx.action.confirm({
+    //   callback: () => {
+
+    //     setTimeout(() => {
+
+    //     }, 500)
+    //   },
+    //   msg: '로그아웃 하시겠습니까?'
+    // })
   }
   const checkSelfAuth = async () => {
     let myBirth

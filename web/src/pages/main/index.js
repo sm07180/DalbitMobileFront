@@ -560,38 +560,25 @@ export default (props) => {
                 라이브
               </NavLink>
             </div>
-            {globalCtx.isDevIp ? (
-              <>
-                <div className="tab">
-                  <NavLink
-                    className="tab__item newIcon"
-                    activeClassName={'tab__item--active'}
-                    to={'/clip'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip')
-                    }}>
-                    클립 <i>N</i>
-                    {/* 클립<i>NEW</i> */}
-                  </NavLink>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="tab tab--yellow">
-                  <NavLink
-                    className="tab__item newicon"
-                    activeClassName={'tab__item--active'}
-                    to={'/clip_open'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip_open')
-                    }}>
-                    클립<i>NEW</i>
-                  </NavLink>
-                </div>
-              </>
-            )}
+            <div className="tab">
+              <NavLink
+                className="tab__item newIcon"
+                activeClassName={'tab__item--active'}
+                to={'/clip'}
+                onClick={(event) => {
+                  event.preventDefault()
+                  if (customHeader['os'] === OS_TYPE['IOS']) {
+                    globalCtx.action.alert({
+                      msg: `클립 기능 업데이트를 위해\n 앱 스토어 심사 중입니다.\n잠시만 기다려주세요.\n※ PC, Android를 통해 먼저 클립을 만나보세요!`
+                    })
+                  } else {
+                    history.push('/clip')
+                  }
+                }}>
+                클립 <i>N</i>
+                {/* 클립<i>NEW</i> */}
+              </NavLink>
+            </div>
 
             <button
               className="broadBtn"
