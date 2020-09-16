@@ -209,6 +209,7 @@ const App = () => {
     }
   }
   const myInfoRes = useCallback(async () => {
+    console.log('??')
     const res = await Api.mypage()
     if (res.result === 'success') {
       console.log(res.data)
