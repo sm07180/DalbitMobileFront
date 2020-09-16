@@ -297,13 +297,13 @@ export default (props) => {
 
       <div className="checkWrite">
         <div className="list list--top">
-          <div className="list__title ">이름 (실명)</div>
+          <div className="list__title list__title--abolsute">이름(실명)</div>
           <div className="list__inpuText">
             <input type="text" onChange={(e) => setName(e.target.value)} placeholder="이름을 입력하세요." maxLength="4" />
           </div>
         </div>
         <div className="list list--bottom">
-          <div className="list__title">휴대폰번호</div>
+          <div className="list__title list__title--abolsute">휴대폰번호</div>
           <div className="list__inpuText">
             <input
               type="tel"

@@ -26,6 +26,9 @@
   .checkWrite {
     box-sizing: border-box;
     padding: 0px 16px;
+    background: #eee;
+    overflow: hidden;
+    height: 100vh;
 
     .morePopup {
       background: rgba(000, 000, 000, 0.4);
@@ -43,8 +46,17 @@
     }
 
     .list {
+      position: relative;
       display: flex;
       margin-bottom: 12px;
+      &__title {
+        &--abolsute {
+          font-size: 12px;
+          position: absolute;
+          left: 10px;
+          top: 10px;
+        }
+      }
 
       &__margin {
         height: 42px;
@@ -71,8 +83,6 @@
         margin-left: auto;
         font-size: 16px;
         font-weight: 600;
-        margin-right: 14px;
-        margin-bottom: 12px;
 
         &--marginTop {
           margin-top: 36px;
