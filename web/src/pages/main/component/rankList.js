@@ -41,6 +41,7 @@ export default (props) => {
                 className="rank-slide"
                 key={`dj-${idx}`}
                 onClick={() => {
+                  console.log(globalCtx.token.isLogin)
                   if (globalCtx.token.isLogin) {
                     history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
                   } else {
@@ -68,7 +69,13 @@ export default (props) => {
               <div
                 className="rank-slide"
                 key={`fan-${idx}`}
-                onClick={() => history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)}>
+                onClick={() => {
+                  if (globalCtx.token.isLogin) {
+                    history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                  } else {
+                    history.push('/login')
+                  }
+                }}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   {idx > 2 ? (
                     <></>
