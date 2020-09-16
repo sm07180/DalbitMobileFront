@@ -324,10 +324,13 @@ export default (props) => {
           <h2 className="recentClip__title">최신 클립</h2>
           {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeLatestList()}</Swiper> : <></>}
         </div>
-        {top3On && Object.keys(listTop3).length !== 0 && (
+
+        {top3On && Object.keys(listTop3).length !== 0 ? (
           <div className="categoryBest" ref={categoryBestClipRef}>
             <Swiper {...swiperParamsBest}>{listTop3 && makeTop3List()}</Swiper>
           </div>
+        ) : (
+          <div ref={categoryBestClipRef}></div>
         )}
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
