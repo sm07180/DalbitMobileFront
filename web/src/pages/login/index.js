@@ -95,7 +95,6 @@ export default (props) => {
 
         globalCtx.action.updateToken(loginInfo.data)
         const profileInfo = await Api.profile({params: {memNo}})
-        const myInfo = await Api.mypage()
         setTimeout(() => {
           fetchAdmin()
         }, 10)
@@ -115,7 +114,6 @@ export default (props) => {
           }
 
           globalCtx.action.updateProfile(profileInfo.data) // 타인/내정보 update
-          globalCtx.action.updateMyInfo(myInfo.data) // 내정보 update
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {
