@@ -18,6 +18,8 @@ import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
 import AlarmPop from 'pages/common/alarm_pop'
 import ClipOpen from 'pages/common/clip_open'
+import ClipEvent from 'pages/common/clip_event'
+
 //
 export default (props) => {
   //state
@@ -87,6 +89,12 @@ export default (props) => {
             <ProofShot />
           </>
         )
+      case 'CLIP_EVENT':
+        return (
+          <>
+            <ClipEvent />
+          </>
+        )
 
       case 'CLIP_OPEN':
         return (
@@ -128,9 +136,9 @@ export default (props) => {
     } else if (context.popup_code[0] == 'RANK_POP' || context.popup_code[0] == 'ALARM') {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
-      setLayout('clipopen')
+      setLayout('clipOpen')
     } else if (context.popup_code[0] == 'CLIP_OPEN') {
-      setLayout('clipopen')
+      setLayout('clipOpen')
     } else {
       setLayout('square')
     }
