@@ -531,12 +531,6 @@ export default (props) => {
     },
     [reloadInit]
   )
-  const RefreshFunc = async () => {
-    setLiveRefresh(true)
-    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList(true)
-    setLiveRefresh(false)
-  }
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
