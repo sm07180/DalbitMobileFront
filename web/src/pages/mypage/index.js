@@ -108,7 +108,6 @@ export default (props) => {
       const profileInfo = await Api.profile({params: {memNo: memNo}})
       if (profileInfo.result === 'success') {
         setProfileInfo(profileInfo.data)
-        console.log(context.myInfo.dalCnt)
         if (profileInfo.code === '-2') {
           context.action.alert({
             callback: () => {
