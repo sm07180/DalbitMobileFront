@@ -26,7 +26,6 @@ export default (props) => {
 
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
-
   // useEffect(() => {
   //   const {memNo} = token
   //   Api.profile({params: {memNo: memNo}}).then((profileInfo) => {
@@ -46,17 +45,20 @@ export default (props) => {
       {/* 로그인 대기창  */}
       {/* <LoginStay /> */}
       {/* 2.5v myProfile  */}
-      {token.isLogin === false && params.category === 'profile' && <Redirect to={`/login`} />}
-      <Layout {...props} status="no_gnb">
-        <MenuWrap>
-          <Switch>
-            {categoryList.map((value) => {
-              const {type, component} = value
-              return <Route exact path={`/menu/${type}`} component={component} key={type} />
-            })}
-          </Switch>
-        </MenuWrap>
-      </Layout>
+      {!profile && token.isLogin === false && params.category === 'profile' ? (
+        <Redirect to={`/login`} />
+      ) : (
+        <Layout {...props} status="no_gnb">
+          <MenuWrap>
+            <Switch>
+              {categoryList.map((value) => {
+                const {type, component} = value
+                return <Route exact path={`/menu/${type}`} component={component} key={type} />
+              })}
+            </Switch>
+          </MenuWrap>
+        </Layout>
+      )}
     </>
   )
 }
