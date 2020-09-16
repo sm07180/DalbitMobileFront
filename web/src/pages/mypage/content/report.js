@@ -168,7 +168,7 @@ export default (props) => {
   let dateDefault = ''
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
-    pickdataPrev: dateToday,
+    pickdataPrev: dateWeekAgo,
     pickdataNext: dateToday
   })
   const [dateprev, setDateprev] = useState('')
