@@ -1,3 +1,4 @@
+//
 import React, {useContext, useState, useEffect, useRef} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -232,11 +233,11 @@ export default (props) => {
   }
   // initial category
   const refreshCategory = () => {
-    setClipTypeActive('')
+    // setClipTypeActive('')
     if (scrollY !== 0) {
       window.scrollTo(0, scrollY)
     }
-    context.action.updateClipSort(0)
+    // context.action.updateClipSort(0)
     //context.action.updateClipGender('')
     if (context.clipRefresh) {
       context.action.updatClipRefresh(false)
@@ -322,15 +323,29 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2>클립 인기 차트 </h2>
+              <h2 onClick={() => refreshCategory()}>클립 인기 차트 </h2>
               <div className="sequenceBox">
                 <div className="sequenceItem"></div>
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
-                    <img src={chartListType === 'detail' ? detailListIconActive : detailListIcon} />
+                    <img
+                      src={chartListType === 'detail' ? detailListIconActive : detailListIcon}
+                      alt="카테고리 디테일 버튼 이미지"
+                    />
                   </button>
                   <button type="button" onClick={() => setChartListType('simple')}>
-                    <img src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon} />
+                    <img
+                      src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                      alt="카테고리 심플 버튼 이미지"
+                    />
+                  </button>
+                  <button
+                    className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
+                    onClick={() => refreshCategory()}>
+                    <img
+                      src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                      alt="카테고리 리프래시 아이콘 이미지"
+                    />
                   </button>
                   <img
                     src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}

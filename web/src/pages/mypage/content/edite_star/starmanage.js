@@ -602,11 +602,11 @@ const Wrap = styled.div`
       max-width: 328px;
       background-color: #fff;
       border-radius: 20px;
-      overflow: hidden;
 
       .writeWrap {
         width: 100%;
         background: #eee;
+        border-radius: 0 0 20px 20px;
       }
       .txtCnt {
         position: relative;

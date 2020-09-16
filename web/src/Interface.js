@@ -75,10 +75,10 @@ export default () => {
         let room_no, mem_no, board_idx
 
         //개발쪽만 적용
-        if (__NODE_ENV === 'dev') {
-          // alert('fore isLogin :' + isLogin)
-          // alert('fore push_type :' + JSON.stringify(pushMsg))
-        }
+        // if (__NODE_ENV === 'dev') {
+        //   alert('fore isLogin :' + isLogin)
+        //   alert('fore push_type :' + JSON.stringify(pushMsg))
+        // }
 
         if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {
           pushClick(pushMsg.push_idx)
@@ -455,6 +455,11 @@ export default () => {
       case 'native-close-layer-popup': //---------- 안드로이드 물리 백키로 새창 닫았을때
         sessionStorage.removeItem('webview')
         break
+      case 'native-back-click': //---------- 안드로이드 물리 백키 클릭 이벤트 발생
+          //TODO:레이어닫는지?백이동인지 확인 백이동일경우 Hybrid('goBack') 호출
+          alert('');
+          Hybrid('goBack')
+        break;
       default:
         break
     }
@@ -483,9 +488,9 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    // if (__NODE_ENV === 'dev') {
-    //   alert('back pushMsg :' + pushMsg)
-    // }
+    if (__NODE_ENV === 'dev') {
+      alert('back pushMsg :' + pushMsg)
+    }
 
     const isJsonString = (str) => {
       try {
@@ -543,10 +548,10 @@ export default () => {
     let room_no, mem_no, board_idx, redirect_url
 
     //개발쪽만 적용
-    // if (__NODE_ENV === 'dev') {
-    //   alert('back isLogin :' + isLogin)
-    //   alert('back pushMsg :' + JSON.stringify(pushMsg))
-    // }
+    if (__NODE_ENV === 'dev') {
+      alert('back isLogin :' + isLogin)
+      alert('back pushMsg :' + JSON.stringify(pushMsg))
+    }
     //---------------------[분기처리시작]
 
     if (pushMsg.push_idx && pushMsg.push_idx !== undefined && pushMsg.push_idx !== null && pushMsg.push_idx !== '') {

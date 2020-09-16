@@ -7,7 +7,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //svg
-import playIcon from '../static/play_g_s.svg'
+import playIcon from '../static/visit_g_s.svg'
 import heartIcon from '../static/like_g_s.svg'
 import starIcon from '../static/cashstar_g_s.svg'
 import EntryImg from '../static/person_w_s.svg'
@@ -96,10 +96,13 @@ export default (props) => {
         <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
             <img src={bgImg[`thumb190x190`]} alt={title} />
+            <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
           <div className="textBox">
+            <p className="textBox__subject">{title} </p>
+            <p className="textBox__nickName">{nickName}</p>
             <div className="textBox__iconBox">
-              <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
+              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
               {isSpecial && <span className="specialIcon">S</span>}
               <span className="textBox__iconBox--type">
                 {clipType.map((ClipTypeItem, index) => {
@@ -110,16 +113,14 @@ export default (props) => {
               </span>
               {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
             </div>
-            <p className="textBox__subject">{title} </p>
-            <p className="textBox__nickName">{nickName}</p>
             <div className="textBox__detail">
               <span className="textBox__detail--item">
                 <img src={playIcon} width={16} />
-                {playCnt}
+                {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
               </span>
               <span className="textBox__detail--item">
                 <img src={heartIcon} width={16} />
-                {goodCnt}
+                {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
               </span>
               {/* <span className="textBox__detail--item">
                 <img src={starIcon} width={16} />
@@ -212,9 +213,13 @@ export default (props) => {
                   </div>
                   <div className="topWrap__count">
                     <img className="topWrap__count--icon" src={SimplePlayIcon} />
-                    <span className="topWrap__count--num">{playCnt}</span>
+                    <span className="topWrap__count--num">
+                      {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
+                    </span>
                     <img className="topWrap__count--icon" src={SimpleLikeIcon} />
-                    <span className="topWrap__count--num">{goodCnt}</span>
+                    <span className="topWrap__count--num">
+                      {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                    </span>
                   </div>
                 </div>
                 <div className="bottomWrap">

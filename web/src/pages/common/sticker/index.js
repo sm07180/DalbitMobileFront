@@ -118,6 +118,14 @@ export default (props) => {
                 window.location.href = `/customer/notice/${board_idx}`
               }
               break
+            case '45': //-----------------Clip PLay
+              room_no = context.stickerMsg.room_no
+              if (room_no) clipPlay(room_no)
+              break
+            case '46': //-----------------Clip PLay
+              room_no = context.stickerMsg.room_no
+              if (room_no) clipPlay(room_no)
+              break
             default:
               //------------------기본값
               //window.location.href = `/`

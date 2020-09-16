@@ -17,7 +17,7 @@ const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 
-function LikeList() {
+function LikeList({empty}) {
   const context = useContext(Context)
   const {rankState} = useContext(RankContext)
   const history = useHistory()
@@ -34,7 +34,9 @@ function LikeList() {
             }}
           />
         </li>
-        {likeList.length > 0 &&
+        {empty === true ? (
+          <NoResult />
+        ) : (
           likeList.map((list, index) => {
             const {
               nickNm,
@@ -98,7 +100,7 @@ function LikeList() {
                   </div>
                   <div className="nickNameBox">{nickNm}</div>
                   {/* <div className="countBox">
-                  </div> */}
+                      </div> */}
                   <div className="bestFanBox">
                     <span className="bestFanBox__label">왕큐피트</span>
                     <span
@@ -121,44 +123,44 @@ function LikeList() {
                 </div>
 
                 {/* {roomNo !== '' && (
-                <div className="liveBox">
-                  <img
-                    src={live}
-                    onClick={() => {
-                      if (context.adminChecker === true) {
-                        context.action.confirm_admin({
-                          //콜백처리
-                          callback: () => {
-                            RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 1
+                    <div className="liveBox">
+                      <img
+                        src={live}
+                        onClick={() => {
+                          if (context.adminChecker === true) {
+                            context.action.confirm_admin({
+                              //콜백처리
+                              callback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo,
+                                  shadow: 1
+                                })
+                              },
+                              //캔슬콜백처리
+                              cancelCallback: () => {
+                                RoomJoin({
+                                  roomNo: roomNo,
+                                  shadow: 0
+                                })
+                              },
+                              msg: '관리자로 입장하시겠습니까?'
                             })
-                          },
-                          //캔슬콜백처리
-                          cancelCallback: () => {
+                          } else {
                             RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 0
+                              roomNo: roomNo
                             })
-                          },
-                          msg: '관리자로 입장하시겠습니까?'
-                        })
-                      } else {
-                        RoomJoin({
-                          roomNo: roomNo
-                        })
-                      }
-                    }}
-                    className="liveBox__img"
-                  />
-                  <br />
-                  LIVE
-                </div>
-              )} */}
+                          }
+                        }}
+                        className="liveBox__img"
+                      />
+                      <br />
+                      LIVE
+                    </div>
+                  )} */}
               </li>
             )
-          })}
-        {likeList.length === 0 && <NoResult />}
+          })
+        )}
       </ul>
     </>
   )
