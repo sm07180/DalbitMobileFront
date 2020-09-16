@@ -12,7 +12,6 @@ export const clipJoin = (data, context) => {
   //     msg: '현재 청취 중인 클립이 있습니다.'
   //   })
   // }
-  if (!context.token.isLogin) window.location.href = '/login'
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     // clipExit(context)
 
