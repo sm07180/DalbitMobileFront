@@ -169,12 +169,11 @@ export default (props) => {
   }
 
   //WEBVIEW CHECK
+  if (profile.memNo === token.memNo && webview && webview === 'new') {
+    history.push(`/mypage/${profile.memNo}?webview=new`)
+  }
 
   useEffect(() => {
-    if (profile.memNo === token.memNo && webview && webview === 'new') {
-      history.push(`/mypage/${profile.memNo}?webview=new`)
-      return
-    }
     const getMyPageNew = async () => {
       if (profile !== null) {
         const res = await Api.getMyPageNew(profile.memNo)
