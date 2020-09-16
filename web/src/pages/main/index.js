@@ -54,13 +54,13 @@ const records = 30
 
 let touchStartY = null
 let touchEndY = null
-let GnbHeight = 48
+// let GnbHeight = 48
 export default (props) => {
-  useEffect(() => {
-    if (customHeader['os'] === OS_TYPE['Android']) {
-      GnbHeight = 96
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (customHeader['os'] === OS_TYPE['Android']) {
+  //     GnbHeight = 96
+  //   }
+  // }, [])
 
   // reference
   const MainRef = useRef()
@@ -278,6 +278,7 @@ export default (props) => {
   }
 
   const windowScrollEvent = () => {
+    const GnbHeight = 48
     const sectionMarginTop = 24
     const LiveTabDefaultHeight = 48
 
@@ -307,7 +308,7 @@ export default (props) => {
       setLiveCategoryFixed(false)
     }
 
-    const GAP = 300
+    const GAP = 500
 
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
