@@ -274,6 +274,14 @@
                 background-color: #e0e0e0;
               }
             }
+            &.btn__refresh {
+              position: relative;
+              margin-left: 16px;
+              &--active {
+                margin-left: 16px;
+                animation: anim 0.36s;
+              }
+            }
           }
         }
       }
@@ -385,7 +393,8 @@
           &__detail {
             margin-top: 3px;
             font-size: 12px;
-
+            display: flex;
+            align-items: center;
             &--item {
               display: inline-block;
               margin-right: 5px;
@@ -481,14 +490,6 @@
           }
         }
       }
-    }
-  }
-  .refresh-icon {
-    position: relative;
-    margin-left: 16px;
-    &--active {
-      margin-left: 16px;
-      animation: anim 0.36s;
     }
   }
   .allIcon,

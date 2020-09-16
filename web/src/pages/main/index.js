@@ -4,6 +4,7 @@
  */
 import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
 import {NavLink} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -41,6 +42,7 @@ import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import CrownIcon from './static/crown.jpg'
 import CrownLottie from './static/crown_lottie.json'
+import LiveLottie from './static/live_lottie.json'
 
 import 'styles/main.scss'
 
@@ -521,6 +523,12 @@ export default (props) => {
     },
     [reloadInit]
   )
+  const RefreshFunc = async () => {
+    setLiveRefresh(true)
+    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+    await fetchLiveList(true)
+    setLiveRefresh(false)
+  }
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -539,113 +547,93 @@ export default (props) => {
         <div ref={SubMainRef} className="main-gnb">
           <div className="left-side">
             <div className="tab">
-              <NavLink
-                className="tab__item"
-                activeClassName={'tab__item--active'}
-                onClick={(event) => {
-                  event.preventDefault()
-                  StoreLink(globalCtx, history)
-                }}
-                to={'/'}>
-                라이브
-              </NavLink>
-            </div>
-            {globalCtx.isDevIp ? (
-              <>
-                <div className="tab tab--yellow">
-                  <NavLink
-                    className="tab__item newicon"
-                    activeClassName={'tab__item--active'}
-                    to={'/clip'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip')
-                    }}>
-                    클립
-                    {/* 클립<i>NEW</i> */}
-                  </NavLink>
-                </div>
-              </>
-            ) : (
-              <>
-                <div className="tab tab--yellow">
-                  <NavLink
-                    className="tab__item newicon"
-                    activeClassName={'tab__item--active'}
-                    to={'/clip_open'}
-                    onClick={(event) => {
-                      event.preventDefault()
-                      history.push('/clip_open')
-                    }}>
-                    클립<i>NEW</i>
-                  </NavLink>
-                </div>
-              </>
-            )}
-
-            <button
-              className="broadBtn"
-              onClick={() => {
-                if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
-                } else {
-                  if (!broadcastBtnActive) {
-                    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                      if (Utility.getCookie('clip-player-info')) {
-                        globalCtx.action.confirm({
-                          msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
-                          callback: () => {
-                            clipExit(globalCtx)
-                            RoomMake(globalCtx)
-                          }
-                        })
-                      } else {
-                        RoomMake(globalCtx)
-                      }
-                    } else {
-                      globalCtx.action.confirm({
-                        msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
-                        callback: () => {
-                          sessionStorage.removeItem('room_no')
-                          Utility.setCookie('listen_room_no', null)
-                          Hybrid('ExitRoom', '')
-                          globalCtx.action.updatePlayer(false)
-                          RoomMake(globalCtx)
-                        }
-                      })
-                    }
-                    setBroadcastBtnActive(true)
-                    setTimeout(() => setBroadcastBtnActive(false), 3000)
-                  }
-                }
-              }}></button>
-
-            <div className="tab">
-              <NavLink
-                className="tab__item"
-                activeClassName={'tab__item--active'}
+              <Link
                 to={'/rank'}
                 onClick={(event) => {
                   event.preventDefault()
                   history.push('/rank')
                 }}>
                 랭킹
-              </NavLink>
+              </Link>
             </div>
-
             <div className="tab">
-              <NavLink
-                className="tab__item"
-                activeClassName={'tab__item--active'}
-                to={'/rank'}
+              <Link
                 onClick={(event) => {
                   event.preventDefault()
-                  history.push('/menu/profile')
-                }}>
-                마이
-              </NavLink>
+                  StoreLink(globalCtx, history)
+                }}
+                to={'/rank'}>
+                스토어
+              </Link>
             </div>
+            {globalCtx.isDevIp ? (
+              <>
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip')
+                    }}>
+                    클립<i>NEW</i>
+                  </Link>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="tab tab--yellow">
+                  <Link
+                    className="newicon"
+                    to={'/clip_open'}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      history.push('/clip_open')
+                    }}>
+                    클립<i>NEW</i>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
+          <button
+            className="broadBtn"
+            onClick={() => {
+              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                window.location.href = 'https://inforexseoul.page.link/Ws4t'
+              } else {
+                if (!broadcastBtnActive) {
+                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                    if (Utility.getCookie('clip-player-info')) {
+                      globalCtx.action.confirm({
+                        msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                        callback: () => {
+                          clipExit(globalCtx)
+                          RoomMake(globalCtx)
+                        }
+                      })
+                    } else {
+                      RoomMake(globalCtx)
+                    }
+                  } else {
+                    globalCtx.action.confirm({
+                      msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                      callback: () => {
+                        sessionStorage.removeItem('room_no')
+                        Utility.setCookie('listen_room_no', null)
+                        Hybrid('ExitRoom', '')
+                        globalCtx.action.updatePlayer(false)
+                        RoomMake(globalCtx)
+                      }
+                    })
+                  }
+                  setBroadcastBtnActive(true)
+                  setTimeout(() => setBroadcastBtnActive(false), 3000)
+                }
+              }
+            }}>
+            방송하기
+          </button>
         </div>
 
         <div ref={RecommendRef} className="main-slide">
@@ -718,7 +706,20 @@ export default (props) => {
           <div className="section live-list" ref={LiveSectionRef}>
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
-                <span className="txt">실시간 LIVE</span>
+                <span className="txt" onClick={RefreshFunc}>
+                  실시간 LIVE
+                  <span className="ico-lottie">
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoPlay: true,
+                        animationData: LiveLottie
+                      }}
+                      width={24}
+                    />
+                  </span>
+                </span>
+
                 <div className="sequence-wrap">
                   {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
@@ -740,17 +741,7 @@ export default (props) => {
                       alt="리스트 형식으로 리스트 보여주기"
                     />
                   </button>
-                  <button
-                    className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`}
-                    onClick={async () => {
-                      // setReloadInit(true)
-                      // await fetchMainInitData()
-                      setLiveRefresh(true)
-                      await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-                      await fetchLiveList(true)
-                      setLiveRefresh(false)
-                      // setReloadInit(false)
-                    }}>
+                  <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`} onClick={RefreshFunc}>
                     <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg" alt="새로고침" />
                   </button>
                 </div>

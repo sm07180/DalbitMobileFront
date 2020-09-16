@@ -118,7 +118,7 @@ const Alert = styled.section`
   /* 메시지 */
   .msg {
     padding: 38px 20px 20px;
-    font-size: 17px;
+    font-size: 16px;
     line-height: 1.4;
     letter-spacing: -0.5px;
     word-break: keep-all;

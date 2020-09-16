@@ -17,6 +17,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static
 import btnClose from './static/ico_close.svg'
+import arrowIcon from './static/ic_arrow_y_down.svg'
 
 let intervalId = null
 
@@ -35,6 +36,7 @@ export default (props) => {
   const [lunarDate, setLunarDate] = useState('')
   const [winList, setWinList] = useState(false)
   const [newWinList, setNewWinList] = useState(false)
+  const [noticeView, setNoticeView] = useState(false)
 
   const phoneInput = useRef()
   const {webview} = qs.parse(location.search)
@@ -47,6 +49,14 @@ export default (props) => {
     }
   }
 
+  const buttonToogle = () => {
+    if (noticeView === false) {
+      setNoticeView(true)
+    } else {
+      setNoticeView(false)
+    }
+  }
+
   const swiperParams = {
     loop: true,
     direction: 'vertical',
@@ -54,7 +64,6 @@ export default (props) => {
     resistanceRatio: 0,
     autoplay: {
       delay: 2500
-      // disableOnInteraction: false
     }
   }
 
@@ -404,9 +413,11 @@ export default (props) => {
         </div>
 
         <div className="event-notice">
-          <p className="title">이벤트 유의사항</p>
+          <p className={`title ${noticeView === true ? 'active' : ''}`} onClick={buttonToogle}>
+            이벤트 유의사항 {noticeView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
+          </p>
 
-          <ul>
+          <ul className={`notice-list ${noticeView === true ? 'active' : ''}`}>
             <li>
               출석 버튼은 00시 기준 종료된 방송 또는 청취 시간의 합이 30분 이 상일 때 선택할 수 있습니다.
               <br />
