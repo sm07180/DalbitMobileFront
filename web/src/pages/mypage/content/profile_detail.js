@@ -320,19 +320,16 @@ export default (props) => {
     }
   }, [mypageReport, close, closeFanCnt, closeStarCnt])
   useEffect(() => {
-    if (context.adminChecker === true && myProfileNo === profile.memNo) {
-      setShowAdmin(true)
-    } else if (context.adminChecker === 'fail') {
-      setShowAdmin(false)
-    }
-  }, [])
-  useEffect(() => {
     if (myProfileNo === profile.memNo) {
+      if (context.adminChecker === true) {
+        setShowAdmin(true)
+      }
       setShowPresent(false)
       setShowEdit(true)
     } else {
       setShowPresent(true)
       setShowEdit(false)
+      setShowAdmin(false)
     }
   }, [profile.memNo])
 
