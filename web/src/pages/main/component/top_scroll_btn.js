@@ -44,8 +44,6 @@ export default (props) => {
   }
 
   const attendStampState = () => {
-    console.log(globalCtx.attendStamp)
-    console.log(attendCheck)
     if (token.isLogin && attendCheck === 1) {
       if (globalCtx.attendStamp === true) {
         return (
