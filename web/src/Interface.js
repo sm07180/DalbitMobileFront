@@ -466,7 +466,7 @@ export default () => {
         break
       case 'native-back-click': //---------- 안드로이드 물리 백키 클릭 이벤트 발생
         //TODO:레이어닫는지?백이동인지 확인 백이동일경우 Hybrid('goBack') 호출
-        alert('')
+        alert('event:native-back-click')
         Hybrid('goBack')
         break
       default:
