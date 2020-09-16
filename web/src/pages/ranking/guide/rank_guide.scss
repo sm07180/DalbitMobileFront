@@ -105,6 +105,11 @@
         color: #424242;
         font-weight: 700;
 
+        img {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
         &.rank {
           font-weight: 700;
         }
