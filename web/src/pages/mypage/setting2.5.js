@@ -245,8 +245,8 @@ export default (props) => {
       return
     }
   }
-  // upload validate
-  const saveUpload = async () => {
+
+  const beforeSaveUpload = () => {
     if (!profile.nickNm || !nickname) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
@@ -266,6 +266,19 @@ export default (props) => {
         }
       })
     }
+    if (gender === 'n') {
+      return context.action.confirm({
+        msg: '성별을 선택하지 않으셨습니다. \n 이대로 저장하시겠습니까?',
+        callback: () => {
+          saveUpload()
+        }
+      })
+    }
+
+    saveUpload()
+  }
+  // upload validate
+  const saveUpload = async () => {
     //##submit
     const data = {
       gender: gender,
@@ -518,7 +531,7 @@ export default (props) => {
                   {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
                 </div>
 
-                <SaveBtn className={`${active === true && 'active'}`} onClick={saveUpload}>
+                <SaveBtn className={`${active === true && 'active'}`} onClick={beforeSaveUpload}>
                   저장
                 </SaveBtn>
               </div>

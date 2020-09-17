@@ -234,13 +234,15 @@ export default (props) => {
       params: {
         page: reset === true ? 1 : livePage,
         records: records,
-        roomType: selectedLiveRoomType,
-        searchType: liveAlign,
-        gender: liveGender
+        roomType: reset === true ? '' : selectedLiveRoomType,
+        searchType: reset === true ? 1 : liveAlign,
+        gender: reset === true ? '' : liveGender
       }
     })
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
+
+      console.log(list)
       if (paging) {
         const {totalPage, next} = paging
         setLivePage(next)
@@ -493,7 +495,8 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          await fetchLiveListAsInit()
+          await fetchLiveList(true)
+          // await fetchLiveListAsInit()
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
