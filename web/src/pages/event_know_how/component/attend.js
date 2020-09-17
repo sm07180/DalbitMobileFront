@@ -43,6 +43,7 @@ function Attend() {
   const history = useHistory()
 
   const [refresh, setRefresh] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
 
   const fetchData = async () => {
     const res = await Api.knowhow_list({
@@ -86,6 +87,7 @@ function Attend() {
   }, [tab])
 
   useEffect(() => {
+    window.scrollTo(0, 0)
     const scrollEv = () => {
       if (tab === TAB_TYPE.ATTEND) {
         if (TabRef.current) {
@@ -147,29 +149,48 @@ function Attend() {
           </div>
           <div className="home__bottom">
             <img src="https://image.dalbitlive.com/event/knowhow/20200902/img_event_bottom.png" />
-            <div className="home__bottom--contents">
-              <p className="title">선물 지급 안내</p>
-              <p>
-                <span>· </span> 대상자에게는 이벤트 종료 후 9월 28일 공지와 함께
-                <br />
-                일괄 지급합니다.
-              </p>
-              <p>
-                <span>· </span> 운영진 회의를 통해 1~3위를 선정합니다.
-                <br />
-                단, 적합한 대상자가 없다고 판단될 경우
-                <br />
-                선정자를 발표하지않을 수 있습니다.
-              </p>
-              <p className="title">유의사항 안내</p>
-              <p>
-                <span>· </span> 이벤트 취지와 어울리지 않는 내용 혹은 운영 정책에 위배된 이미지 또는 글이 확인되는 경우 무 통보
-                삭제 및 제재 조치를 할 수 있습니다. (예시: 타인 사진 도용, 음란성, 혐오감조성, 비속어 등)
-              </p>
-              <p>
-                <span>·</span> 참여한 이벤트 내용은 사전 고지 없이 서비스 마케팅으로 활용될 수 있습니다.
-              </p>
+            <div className="home__bottom--button">
+              <button
+                onClick={() => {
+                  setTab(TAB_TYPE.ATTEND)
+                }}>
+                이벤트 참여하기
+              </button>
             </div>
+            <div
+              className={'home__bottom--contentsWrap'}
+              onClick={() => {
+                setIsOpen(!isOpen)
+              }}>
+              {isOpen === false ? (
+                <span className="open">이벤트 유의사항 확인하기</span>
+              ) : (
+                <span className="close">이벤트 유의사항 닫기</span>
+              )}
+            </div>
+            {isOpen === true && (
+              <div className="home__bottom--contents">
+                <p className="title">선물 지급 안내</p>
+                <p>
+                  <span>· </span> 대상자에게는 이벤트 종료 후 9월 28일 공지와 함께 일괄 지급합니다.
+                </p>
+                <p>
+                  <span>· </span> 운영진 회의를 통해 1~3위를 선정합니다.
+                  <br />
+                  단, 적합한 대상자가 없다고 판단될 경우
+                  <br />
+                  선정자를 발표하지않을 수 있습니다.
+                </p>
+                <p className="title">유의사항 안내</p>
+                <p>
+                  <span>· </span> 이벤트 취지와 어울리지 않는 내용 혹은 운영 정책에 위배된 이미지 또는 글이 확인되는 경우 무 통보
+                  삭제 및 제재 조치를 할 수 있습니다. (예시: 타인 사진 도용, 음란성, 혐오감조성, 비속어 등)
+                </p>
+                <p>
+                  <span>·</span> 참여한 이벤트 내용은 사전 고지 없이 서비스 마케팅으로 활용될 수 있습니다.
+                </p>
+              </div>
+            )}
           </div>
         </div>
       )}

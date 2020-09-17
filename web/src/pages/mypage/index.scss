@@ -321,6 +321,18 @@
             background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
           }
         }
+        .newIcon {
+          position: absolute;
+          top: 12px;
+          left: 10px;
+          padding: 0 6px;
+          font-size: 12px;
+          text-align: center;
+          line-height: 16px;
+          background: $blue;
+          color: $white;
+          border-radius: 12px;
+        }
 
         .specialIcon {
           position: absolute;

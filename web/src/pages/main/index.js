@@ -42,8 +42,8 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import CrownIcon from './static/crown.jpg'
-import CrownLottie from './static/crown_lottie.json'
-import LiveLottie from './static/live_lottie.json'
+// import CrownLottie from './static/crown_lottie.json'
+// import LiveLottie from './static/live_lottie.json'
 
 import 'styles/main.scss'
 
@@ -300,16 +300,21 @@ export default (props) => {
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-
+    let TopSectionHeight
+    if (customHeader['os'] === OS_TYPE['Android']) {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+    } else {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+    }
+    console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
+      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
     }
 
     const GAP = 100
-    // console.log(window.scrollY + window.innerHeight, MainHeight + GnbHeight - GAP)
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
@@ -418,6 +423,10 @@ export default (props) => {
 
   useEffect(() => {
     fetchMainPopupData('6')
+
+    return () => {
+      globalCtx.action.updateAttendStamp(false)
+    }
   }, [])
 
   const [reloadInit, setReloadInit] = useState(false)
@@ -660,14 +669,14 @@ export default (props) => {
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
-                <Lottie
+                {/* <Lottie
                   options={{
                     loop: true,
                     autoPlay: true,
                     animationData: CrownLottie
                   }}
                   width={40}
-                />
+                /> */}
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -726,14 +735,14 @@ export default (props) => {
                 <span className="txt" onClick={RefreshFunc}>
                   실시간 LIVE
                   <span className="ico-lottie">
-                    <Lottie
+                    {/* <Lottie
                       options={{
                         loop: true,
                         autoPlay: true,
                         animationData: LiveLottie
                       }}
                       width={24}
-                    />
+                    /> */}
                   </span>
                 </span>
 
