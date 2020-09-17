@@ -150,7 +150,9 @@ function Attend() {
             <div className="home__bottom--contents">
               <p className="title">선물 지급 안내</p>
               <p>
-                <span>· </span> 대상자에게는 이벤트 종료 후 9월 28일 공지와 함께 일괄 지급합니다.
+                <span>· </span> 대상자에게는 이벤트 종료 후 9월 28일 공지와 함께
+                <br />
+                일괄 지급합니다.
               </p>
               <p>
                 <span>· </span> 운영진 회의를 통해 1~3위를 선정합니다.
