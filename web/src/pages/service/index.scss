@@ -31,22 +31,22 @@
 
         &--gray {
           margin-top: 8px;
-          color: #757575;
+          color: $greishGray;
 
           & > button {
             margin-left: 10px;
             padding: 3px 8px;
-            border: 1px solid #ec455f;
+            border: 1px solid $red;
             border-radius: 12px;
             font-size: 14px;
-            color: #ec455f;
+            color: $red;
           }
         }
       }
 
       &--point {
         font-weight: bold;
-        color: #632beb;
+        color: $primary;
       }
     }
     &__caption {
@@ -66,9 +66,9 @@
       }
 
       &--question {
-        color: #757575;
+        color: $greishGray;
         &--point {
-          color: #632beb;
+          color: $primary;
           cursor: pointer;
         }
       }
@@ -104,7 +104,7 @@
         }
 
         .gray {
-          color: #757575;
+          color: $greishGray;
           font-size: 12px;
         }
       }
@@ -117,7 +117,7 @@
 
       &--button {
         padding: 13px 42px;
-        background-color: #632beb;
+        background-color: $primary;
         border-radius: 22px;
         color: #fff;
       }
@@ -125,7 +125,7 @@
 
     &__policy {
       font-size: 12px;
-      color: #757575;
+      color: $greishGray;
       text-align: center;
     }
   }

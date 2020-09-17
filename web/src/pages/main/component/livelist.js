@@ -92,7 +92,7 @@ const makeContents = (props) => {
 
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
-              {isNew === true && <span className="new-dj-icon">신입</span>}
+              {isNew === true && <span className="new-dj-icon">신입DJ</span>}
             </div>
             <div className="title">{title}</div>
             <div className="nickname">{bjNickNm}</div>

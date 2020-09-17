@@ -29,7 +29,7 @@ export default (props) => {
       <Swiper {...swiperParams}>
         {list instanceof Array &&
           list.map((bannerData, index) => {
-            const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
+            const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title} = bannerData
 
             return (
               <div
@@ -119,6 +119,7 @@ export default (props) => {
                   <div className="topSlide__iconWrap">
                     {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                     {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
+                    {isNew === true ? <em className="newIcon">신입DJ</em> : ''}
                     {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
                     {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
