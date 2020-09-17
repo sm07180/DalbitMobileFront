@@ -367,7 +367,7 @@
               font-size: 14px;
               color: #632beb;
               font-weight: normal;
-              letter-spacing: -0.2px;
+              letter-spacing: -0.5px;
             }
           }
 
@@ -375,14 +375,14 @@
             display: flex;
             align-items: center;
             height: 20px;
-            letter-spacing: -0.2px;
+            letter-spacing: -0.5px;
             span {
               color: #424242;
               flex: 1;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
-              letter-spacing: -0.2px;
+              letter-spacing: -0.5px;
             }
           }
           &__nickName {
@@ -439,8 +439,8 @@
             &--item {
               color: #424242;
               font-size: 12px;
-              letter-spacing: -0.2px;
-              margin-right: 12px;
+              letter-spacing: -0.5px;
+              margin-right: 8px;
               font-weight: 400;
 
               img {
