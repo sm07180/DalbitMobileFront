@@ -38,7 +38,7 @@ export default (props) => {
   const [boardList, setBoardList] = useState([])
   const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
-  const [totalCount, setTotalCount] = useState(0)
+  const [totalCount, setTotalCount] = useState(-1)
   const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
   // 스크롤 이벤트
@@ -172,7 +172,13 @@ export default (props) => {
       <WriteBoard {...props} set={setAction} />
 
       {/* 팬보드 리스트 영역 */}
-      {totalCount > 0 ? <BoardList list={boardList} totalCount={totalCount} set={setAction} /> : <NoResult />}
+      {totalCount === -1 && (
+        <div className="loading">
+          <span></span>
+        </div>
+      )}
+      {totalCount === 0 && <NoResult />}
+      {totalCount > 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} />}
     </div>
   )
 }
