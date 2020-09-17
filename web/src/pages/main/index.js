@@ -54,8 +54,14 @@ const records = 30
 
 let touchStartY = null
 let touchEndY = null
-
+// let GnbHeight = 48
 export default (props) => {
+  // useEffect(() => {
+  //   if (customHeader['os'] === OS_TYPE['Android']) {
+  //     GnbHeight = 96
+  //   }
+  // }, [])
+
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -284,17 +290,17 @@ export default (props) => {
     const BannerSectionNode = BannerSectionRef.current
 
     const LiveSectionNode = LiveSectionRef.current
-
     const MainHeight = MainNode.clientHeight
-    const SubMainHeight = SubMainNode.clientHeight
+    // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
+    // alert('///')
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode.clientHeight
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = SubMainHeight + RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+    const TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
 
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
@@ -303,8 +309,8 @@ export default (props) => {
       if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
     }
 
-    const GAP = 300
-
+    const GAP = 100
+    // console.log(window.scrollY + window.innerHeight, MainHeight + GnbHeight - GAP)
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
@@ -472,12 +478,10 @@ export default (props) => {
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
-          console.log(str_angle)
           let head_slice = str_angle.slice(7)
           let tail_slice = head_slice.slice(0, 4)
           return Number(tail_slice)
         })()
-        console.log(current_angle)
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -573,7 +577,7 @@ export default (props) => {
                   to={'/clip'}
                   onClick={(event) => {
                     event.preventDefault()
-                    if (customHeader['os'] === OS_TYPE['IOS']) {
+                    if (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBuild'] < 145) {
                       globalCtx.action.alert({
                         msg: `클립 기능 업데이트를 위해\n 앱 스토어 심사 중입니다.\n잠시만 기다려주세요.\n※ PC, Android를 통해 먼저 클립을 만나보세요!`
                       })

@@ -142,7 +142,7 @@ function Attend() {
           <div className="home__top">
             <img src="https://image.dalbitlive.com/event/knowhow/20200902/img_event_top.png" />
             <div>
-              <span>참여기간 : 9/7~9/20</span>
+              <span>참여기간 : 9/17~9/27</span>
             </div>
           </div>
           <div className="home__bottom">
@@ -150,10 +150,16 @@ function Attend() {
             <div className="home__bottom--contents">
               <p className="title">선물 지급 안내</p>
               <p>
-                <span>· </span> 이벤트 종료 후 9월 22일 공지사항에서 당첨자를 발표합니다.
+                <span>· </span> 대상자에게는 이벤트 종료 후 9월 28일 공지와 함께
+                <br />
+                일괄 지급합니다.
               </p>
               <p>
                 <span>· </span> 운영진 회의를 통해 1~3위를 선정합니다.
+                <br />
+                단, 적합한 대상자가 없다고 판단될 경우
+                <br />
+                선정자를 발표하지않을 수 있습니다.
               </p>
               <p className="title">유의사항 안내</p>
               <p>

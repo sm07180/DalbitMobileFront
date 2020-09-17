@@ -106,21 +106,22 @@ export const RoomJoin = async (obj) => {
       let res = {}
       res = await Api.broad_join_vw({data: {roomNo}})
       const {code, result, data} = res
-
       if (code === '-3') {
-        context.action.alert({
-          msg: '종료된 방송입니다.',
-          callback: () => {
-            sessionStorage.removeItem('room_no')
-            Utility.setCookie('listen_room_no', null)
-            context.action.updatePlayer(false)
-            setTimeout(() => {
-              window.location.href = '/'
-            }, 100)
-          }
-        })
-      } else {
-        Hybrid('EnterRoom', '')
+        if (code === '-3') {
+          context.action.alert({
+            msg: '종료된 방송입니다.',
+            callback: () => {
+              sessionStorage.removeItem('room_no')
+              Utility.setCookie('listen_room_no', null)
+              context.action.updatePlayer(false)
+              setTimeout(() => {
+                window.location.href = '/'
+              }, 100)
+            }
+          })
+        } else {
+          Hybrid('EnterRoom', '')
+        }
       }
     }
     commonJoin()
@@ -201,13 +202,28 @@ export const RoomJoin = async (obj) => {
         } catch (er) {
           alert(er)
         }
+      } else if (res.code === '-6') {
+        async function fetchData() {
+          const authCheck = await Api.self_auth_check()
+          if (authCheck.result === 'success') {
+            Room.context.action.alert({
+              msg: '20세 이상만 입장할 수 있는 방송입니다.'
+            })
+          } else {
+            Room.context.action.alert({
+              msg: '20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.',
+              callback: () => {
+                window.location.href = '/private'
+              }
+            })
+          }
+        }
+
+        fetchData()
       } else {
         Room.context.action.alert({
           msg: res.message,
-          callback: () => {
-            // window.location.reload()
-            window.location.href = '/'
-          }
+          callback: () => {}
         })
       }
       return false

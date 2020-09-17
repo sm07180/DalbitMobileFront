@@ -9,7 +9,7 @@ import './checkwrite.scss'
 import closeBtn from './static/ic_back.svg'
 import qs from 'query-string'
 import plusImg from './static/btn_plus.png'
-import minusImg from './static/btn_plus.png'
+import minusImg from './static/btn_minus.png'
 
 let subSelect1 = ''
 let subSelect2 = ''
@@ -257,6 +257,9 @@ export default (props) => {
               block={select2 === ''}
             />
           </div>
+          <button onClick={() => setMorelist(!moreList)}>
+            <img src={minusImg} alt="삭제" className="moerButtonSize" />
+          </button>
         </div>
       </div>
     )
@@ -343,29 +346,42 @@ export default (props) => {
               />
             </div>
             <button className="list__plusButton" onClick={() => setMorelist(!moreList)}>
-              {moreList === true ? <img src={plusImg} alt="삭제" /> : <img src={minusImg} alt="추가" />}
+              {moreList === true ? (
+                <img src={minusImg} alt="삭제" className="moerButtonSize" />
+              ) : (
+                <img src={plusImg} alt="추가" className="moerButtonSize" />
+              )}
             </button>
           </div>
         </div>
         {moreList ? moreButton() : <></>}
 
         <div className="list__box">
-          <div className="list__title list__title">방송 소개</div>
+          <div className="list__title">
+            방송 소개
+            <div className="list__textNumber">
+              <b>{title.length}</b>/1,000
+            </div>
+          </div>
           <textarea
             className="list__textarea"
             onChange={handleChange}
             maxLength="1000"
             placeholder="DJ님의 방송에 대해 자세히 설명해 주세요.&#10;(최대 1,000자)"></textarea>
-          <div className="list__textNumber">{title.length}/1,000</div>
         </div>
         <div className="list__box">
-          <div className="list__title">내가 스페셜 DJ가 된다면?!</div>
+          <div className="list__title">
+            내가 스페셜 DJ가 된다면?!
+            <div className="list__textNumber">
+              <b>{contents.length}</b>/1,000
+            </div>
+          </div>
           <textarea
             className="list__textarea"
             onChange={handleChange2}
             placeholder="DJ님의 방송에 대해 자세히 설명해 주세요. &#10;(최대 1,000자)"
             maxLength="1000"></textarea>
-          <div className="list__textNumber">{contents.length}/1,000</div>
+
           <button
             className={`button ${deligate ? 'button--on' : ''}`}
             // onClick={() => specialdjUpload()}

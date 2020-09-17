@@ -54,7 +54,7 @@ export default (props) => {
   // ]
   let subNavList
 
-  if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
+  if (sessionStorage.getItem('webview') === 'new' && __NODE_ENV !== 'dev') {
     subNavList = [
       {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
       {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
@@ -160,7 +160,7 @@ export default (props) => {
   }
 
   //WEBVIEW CHECK
-  if (profile.memNo === token.memNo && webview && webview === 'new') {
+  if (profile.memNo === token.memNo && webview && webview === 'new' && __NODE_ENV !== 'dev') {
     history.push(`/mypage/${profile.memNo}?webview=new`)
   }
 
@@ -282,7 +282,7 @@ export default (props) => {
                 </div>
               )}
 
-              {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
+              {sessionStorage.getItem('webview') === 'new' && __NODE_ENV !== 'dev' ? (
                 <></>
               ) : (
                 <div className="menu-box">

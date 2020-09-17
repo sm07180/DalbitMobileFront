@@ -67,7 +67,7 @@ export default (props) => {
     pickdata: false
   })
 
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(2)
   const [selectType, setSelectType] = useState(0)
   const [moreState, setMoreState] = useState(false)
   const [currentPickdata, setCurrentPickdata] = useState()
@@ -159,6 +159,7 @@ export default (props) => {
       })
     }
   }
+
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
