@@ -26,8 +26,7 @@ export default (props) => {
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  if (context.myInfo.dalCnt === null) {
-  }
+  console.log(context.myInfo)
   let myDalCnt = context.myInfo.dalCnt
   myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start

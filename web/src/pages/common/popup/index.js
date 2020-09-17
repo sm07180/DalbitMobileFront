@@ -26,6 +26,7 @@ export default (props) => {
   const [layout, setLayout] = useState('')
   //context
   const context = useContext(Context)
+
   //   레이어팝업컨텐츠
   const makePopupContents = () => {
     switch (context.popup_code[0]) {
@@ -136,9 +137,7 @@ export default (props) => {
     } else if (context.popup_code[0] == 'RANK_POP' || context.popup_code[0] == 'ALARM') {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
-      setLayout('proofShot')
-    } else if (context.popup_code[0] == 'CLIP_EVENT') {
-      setLayout('clipEvent')
+      setLayout('clipOpen')
     } else if (context.popup_code[0] == 'CLIP_OPEN') {
       setLayout('clipOpen')
     } else {
@@ -172,12 +171,15 @@ const Container = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  width: 100%;
-  padding: 0px 16px;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   z-index: 100;
+  box-sizing: border-box;
+  margin: 0px 16px;
+
+  & .logo {
+    margin-top: 0;
+  }
 `
 const Wrap = styled.div`
   border-radius: 20px;
@@ -185,6 +187,70 @@ const Wrap = styled.div`
   max-width: 328px;
   position: relative;
   background: #fff;
+  &.round {
+    max-width: 328px;
+    max-height: 446px;
+    max-height: auto;
+    border-radius: 12px;
+    height: 100%;
+    max-height: 446px;
+
+    &.charge {
+      width: 340px;
+      max-height: 446px;
+      padding: 0;
+      height: auto;
+    }
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      &.charge {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        border-radius: 0;
+      }
+    }
+  }
+
+  &.guidance {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+    height: 100%;
+    max-height: 446px;
+
+    & > button {
+      display: none;
+    }
+  }
+
+  &.agreeDetail {
+    width: 90%;
+    height: 80%;
+    max-height: auto;
+    padding: 0;
+    border-radius: 10px;
+
+    height: 100%;
+    max-height: 446px;
+
+    & > button {
+      display: none;
+    }
+  }
+
+  &.rankPopup {
+    width: 90%;
+    height: fit-content;
+    max-height: 446px;
+    padding: 0;
+    border-radius: 10px;
+    height: 100%;
+    height: fit-content;
+    max-height: 446px;
+  }
 
   & > button {
     display: inline-block;

@@ -19,7 +19,7 @@ import Maketing from './content/maketing'
 import EventDetail from './content/event_detail'
 import EventGiftDetail from './content/event_gift_detail'
 import SpecialDjGoodsDetail from './content/specialdj-goods-detail'
-// import SpecialdjStarting from './content/specialdj-starting'
+import SpecialdjStarting from './content/specialdj-starting'
 
 import './index.scss'
 ////---------------------------------------------------------------------
@@ -67,7 +67,11 @@ export default (props) => {
   }
 
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    return () => {
+      context.action.updatePopupVisible(false)
+    }
+  }, [])
 
   //---------------------------------------------------------------------
   return (
@@ -82,15 +86,6 @@ export default (props) => {
 //---------------------------------------------------------------------
 //styled
 const Terms = styled.div`
-  & > div > div > div {
-    padding: 10px 25px 35px 25px;
-
-    * {
-      text-align: justify;
-      color: #424242;
-      transform: skew(-0.03deg);
-    }
-  }
   & > div > div:nth-child(2) {
     display: none;
   }
@@ -122,11 +117,5 @@ const Terms = styled.div`
     font-size: 14px;
     line-height: 20px;
     letter-spacing: -0.3px;
-  }
-
-  @media (max-width: ${WIDTH_MOBILE}) {
-    & > div > div > div {
-      padding: 5px 20px 30px 20px;
-    }
   }
 `

@@ -32,7 +32,8 @@
     "react-router-dom": "^5.1.2",
     "styled-components": "^4.4.1",
     "swiper": "^5.2.1",
-    "url-loader": "^3.0.0"
+    "url-loader": "^3.0.0",
+    "react-error-boundary": "^3.0.2"
   },
   "scripts": {
     "start": "webpack-dev-server --env=dev --mode=development",

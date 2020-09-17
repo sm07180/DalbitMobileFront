@@ -7,7 +7,8 @@ export default function AppInfo() {
   const history = useHistory()
   const context = useContext(Context)
 
-  const {myInfo} = context
+  const {profile} = context
+
   const handleHistory = (url) => {
     history.push(`/customer/appInfo/${url}`)
   }
@@ -39,7 +40,7 @@ export default function AppInfo() {
       </div>
       <div className="appInfoWrap__eachDiv">
         <div>사용자 ID</div>
-        {myInfo && myInfo.memId && <div>{myInfo.memId}</div>}
+        {profile && profile.memId && <div>{profile.memId}</div>}
       </div>
     </div>
   )

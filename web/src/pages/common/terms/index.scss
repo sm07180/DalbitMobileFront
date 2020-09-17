@@ -70,10 +70,20 @@
 }
 
 .termsWrap {
-  padding: 20px 30px 40px 30px;
+  margin: 0px 16px;
+  border-radius: 20px;
   background-color: white;
   font-size: 14px;
   line-height: 1.56;
+  h2 {
+    line-height: 52px;
+    color: #000;
+    text-align: center;
+    border-bottom: solid 1px #e0e0e0;
+    padding: 0px;
+    font-size: 18px;
+    font-weight: 700;
+  }
   h3 {
     margin-top: 10px;
   }

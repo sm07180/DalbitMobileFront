@@ -9,6 +9,10 @@ import Checkbox from './checkbox'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
+import {Hybrid} from 'context/hybrid'
+// etc
+import Utility from 'components/lib/utility'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
 
 //
 const Exit = (props) => {
@@ -46,6 +50,9 @@ const Exit = (props) => {
           })
         }
       }
+      if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+        if (Utility.getCookie('clip-player-info')) {
+        }
       secfun()
     } else {
       console.log(res)

@@ -1,0 +1,65 @@
+@import '../../../../../styles/variables';
+#specialdjStarting {
+  width: 100%;
+  padding: 0px 16px 16px 16px;
+  box-sizing: border-box;
+  h1 {
+    height: 52px;
+    line-height: 52px;
+    font-size: 18px;
+    text-align: center;
+    color: $black;
+    border-bottom: 1px solid $lightestGray;
+  }
+
+  .notice.notice {
+    margin-top: 24px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.4px;
+    color: #424242;
+    text-align: center;
+  }
+
+  .numberImg {
+    width: 40px;
+    height: 24px;
+    display: block;
+    margin: auto;
+    margin-bottom: 9px;
+  }
+
+  .list {
+    li {
+      width: 100%;
+      border-radius: 10px;
+      background: $lighterGray;
+      color: $black;
+      text-align: center;
+      padding-top: 12px;
+      padding-bottom: 24px;
+      margin-bottom: 12px;
+    }
+  }
+  .subText {
+    font-size: 13px;
+    color: $greishGray;
+    letter-spacing: -0.33px;
+    margin-bottom: 23px;
+  }
+
+  button {
+    display: block;
+    width: 100%;
+    background: $primary;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 12px;
+    color: $white;
+  }
+}

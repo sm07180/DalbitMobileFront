@@ -171,7 +171,14 @@ export const RoomJoin = async (obj) => {
     if (callbackFunc !== undefined) callbackFunc()
     //
     if (res.result === 'fail') {
-      if (res.code === '-4' || res.code === '-10') {
+      if (res.code === '-99') {
+        Room.context.action.alert({
+          msg: res.message,
+          callback: () => {
+            window.location.href = '/login'
+          }
+        })
+      } else if (res.code === '-4' || res.code === '-10') {
         try {
           Room.context.action.confirm({
             msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',

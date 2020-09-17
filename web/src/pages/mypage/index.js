@@ -23,6 +23,7 @@ import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 // scss
 import ClipIcon from './static/menu_cast.svg'
 import './index.scss'
+import {OS_TYPE} from 'context/config'
 
 export default (props) => {
   const {webview} = qs.parse(location.search)
@@ -41,6 +42,7 @@ export default (props) => {
   const [myPageNew, setMyPageNew] = useState({})
   const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
+  const customHeader = JSON.parse(Api.customHeader)
 
   //navi Array
   let navigationList = [
@@ -57,34 +59,20 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-  if (context.isDevIp) {
-    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
-      mypageNavList = [
-        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
-      ]
-    } else {
-      mypageNavList = [
-        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-        {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
-      ]
-    }
 
-    // mypageNavList = [
-    //   {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-    //   {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-    //   {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
-    // ]
-  } else {
+  if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') || customHeader['os'] === OS_TYPE['IOS']) {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
     ]
+  } else {
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', component: FanBoard, icon: ClipIcon}
+    ]
   }
-
   // memNo navi check
-  console.log(profileInfo)
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
   } else if (profile && profile.memNo === memNo) {
@@ -102,10 +90,7 @@ export default (props) => {
     }
   }
   //check login push login
-  if (!token.isLogin) {
-    window.location.href = '/login'
-    return null
-  }
+
   //--------------------------------------------
   useEffect(() => {
     const getMyPageNew = async () => {
@@ -205,8 +190,13 @@ export default (props) => {
     }
   }
 
+  if (!token.isLogin) {
+    window.location.href = '/login'
+    return null
+  }
+
   return (
-    <Switch>
+    <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
       <Layout2 {...props} webview={webview} status="no_gnb" type={webview && webview === 'new' ? 'clipBack' : ''}>
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
@@ -258,14 +248,14 @@ export default (props) => {
               </div>
             </>
           )}
-          <React.Fragment>
+          <Switch>
             {navigationList.map((value) => {
               const {type, component} = value
               return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
             })}
-          </React.Fragment>
+          </Switch>
         </div>
       </Layout2>
-    </Switch>
+    </>
   )
 }
