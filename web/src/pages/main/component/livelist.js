@@ -75,10 +75,12 @@ const makeContents = (props) => {
         key={`live-${idx}`}
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+
+        {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
-            <div className="icon-wrap">
-              {os === 3 && <span className="pc-icon">PC</span>}
+            {/* <div className="icon-wrap">
               {categoryList && (
                 <div className="type-text">
                   {(() => {
@@ -89,13 +91,31 @@ const makeContents = (props) => {
                   })()}
                 </div>
               )}
+            </div> */}
+            <div className="title">
+              <p className="category">
+                {liveListType === 'detail' ? (
+                  <>
+                    {(() => {
+                      const target = categoryList.find((category) => category['cd'] === roomType)
+                      if (target && target['cdNm']) {
+                        return target['cdNm']
+                      }
+                    })()}
+                  </>
+                ) : (
+                  ''
+                )}
+              </p>
 
-              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
-              {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
-              {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+              <i className="line"></i>
+              <span>{title}</span>
             </div>
-            <div className="title">{title}</div>
-            <div className="nickname">{bjNickNm}</div>
+            <div className="nickname">
+              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+              {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+              {bjNickNm}
+            </div>
             <div className="detail">
               <div className="value">
                 <img src={PeopleIcon} />
@@ -143,7 +163,7 @@ const makeContents = (props) => {
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
             </div>
             <div className="bottom-wrap">
-              {os === 3 ? <span className="pc-icon">PC</span> : ''}
+              {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
               <div className="type-icon-wrap">
                 <img className="type-icon" src={noBgAudioIcon} />
               </div>
