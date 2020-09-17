@@ -76,7 +76,7 @@ const makeContents = (props) => {
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
 
-        {os === 3 && <i className="iconPc">pc</i>}
+        {os === 3 && <i className="iconPc">PC</i>}
 
         {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
 
