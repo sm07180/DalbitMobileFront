@@ -308,7 +308,7 @@ const ClipPlayer = styled.div`
         display: none;
       }
       .info {
-        max-width: calc(100% - 70px);
+        width: calc(100% - 70px);
         min-width: 200px;
         p {
           min-width: 120px;
