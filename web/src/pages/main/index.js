@@ -300,8 +300,13 @@ export default (props) => {
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
-    const TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-
+    let TopSectionHeight
+    if (customHeader['os'] === OS_TYPE['Android']) {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+    } else {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+    }
+    console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
@@ -310,7 +315,6 @@ export default (props) => {
     }
 
     const GAP = 100
-    // console.log(window.scrollY + window.innerHeight, MainHeight + GnbHeight - GAP)
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
       !concatenating &&
