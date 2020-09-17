@@ -306,6 +306,7 @@ export default (props) => {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
+      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
     }
 
     const GAP = 100
@@ -418,6 +419,10 @@ export default (props) => {
 
   useEffect(() => {
     fetchMainPopupData('6')
+
+    return () => {
+      globalCtx.action.updateAttendStamp(false)
+    }
   }, [])
 
   const [reloadInit, setReloadInit] = useState(false)

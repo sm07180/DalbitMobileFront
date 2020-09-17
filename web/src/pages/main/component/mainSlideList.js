@@ -119,8 +119,8 @@ export default (props) => {
                   <div className="topSlide__iconWrap">
                     {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                     {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
-                    {isNew === true ? <em className="newIcon">신입DJ</em> : ''}
                     {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
+                    {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
                     {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
 
