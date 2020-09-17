@@ -662,9 +662,9 @@ export default (props) => {
           <></>
         )}
 
-        {/* <div ref={RecommendRef} className="main-slide">
+        <div ref={RecommendRef} className="main-slide">
           {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
-        </div> */}
+        </div>
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">
@@ -715,9 +715,9 @@ export default (props) => {
             </div>
           </div>
 
-          {/* <div className="section banner">
+          <div className="section banner">
             <BannerList ref={BannerSectionRef} bannerPosition="9" />
-          </div> */}
+          </div>
 
           <div
             className={`section my-star ${
