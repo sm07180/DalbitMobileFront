@@ -100,7 +100,6 @@ export default (props) => {
     )
   }
   const viewLayer = (type) => {
-    console.log(type, showEdit)
     if (type === 'fan') {
       if (showEdit === true) {
         editFan()
