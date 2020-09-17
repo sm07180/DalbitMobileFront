@@ -1010,14 +1010,13 @@
     }
 
     .iconPc {
-      display: inline-block;
+      display: flex;
+      align-items: center;
       position: absolute;
-      left: 45px;
-      bottom: 3px;
-      // right: 3px;
-      // bottom: 3px;
-      padding: 0 10px;
-      line-height: 11px;
+      left: 48px;
+      bottom: 4px;
+      padding: 0 8px;
+
       background: rgba(0, 0, 0, 0.6);
       color: #fff;
       border-radius: 12px;
