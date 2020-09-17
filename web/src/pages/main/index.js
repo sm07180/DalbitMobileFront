@@ -234,15 +234,13 @@ export default (props) => {
       params: {
         page: reset === true ? 1 : livePage,
         records: records,
-        roomType: reset === true ? '' : selectedLiveRoomType,
-        searchType: reset === true ? 1 : liveAlign,
-        gender: reset === true ? '' : liveGender
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
       }
     })
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
-
-      console.log(list)
       if (paging) {
         const {totalPage, next} = paging
         setLivePage(next)
@@ -475,12 +473,10 @@ export default (props) => {
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
-          console.log(str_angle)
           let head_slice = str_angle.slice(7)
           let tail_slice = head_slice.slice(0, 4)
           return Number(tail_slice)
         })()
-        console.log(current_angle)
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -495,8 +491,7 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          await fetchLiveList(true)
-          // await fetchLiveListAsInit()
+          await fetchLiveListAsInit()
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)

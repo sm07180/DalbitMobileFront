@@ -209,10 +209,8 @@ const App = () => {
     }
   }
   const myInfoRes = async () => {
-    console.log('myInfoRes')
     const res = await Api.mypage()
     if (res.result === 'success') {
-      console.log(res.data)
       globalCtx.action.updateMyInfo(res.data)
     }
   }
