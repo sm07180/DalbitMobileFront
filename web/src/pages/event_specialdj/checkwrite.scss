@@ -26,6 +26,21 @@
     }
   }
 
+  .specialdjSelect {
+    .options.options {
+      font-weight: 700;
+      color: #000;
+      &::before {
+        top: 18px;
+        height: 1px;
+      }
+      &::after {
+        top: 18px;
+        height: 1px;
+      }
+    }
+  }
+
   .moerButtonSize {
     width: 44px;
     height: 44px;
