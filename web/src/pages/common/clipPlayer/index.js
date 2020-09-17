@@ -35,7 +35,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              Hybrid('ClipPlayerPause')
+              Hybrid('ClipFloatingControl', 'CLIP_PAUSE')
               globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
             }}>
@@ -47,7 +47,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              Hybrid('ClipPlayerStart')
+              Hybrid('ClipFloatingControl', 'CLIP_PLAY')
               globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
             }}>
@@ -91,7 +91,7 @@ export default (props) => {
           </div>
           <p
             onClick={() => {
-              Hybrid('ClipPlayerEnter')
+              Hybrid('ClipFloatingControl', 'CLIP_RESUME')
             }}>
             <b>{clipPlayerInfo.nickname}</b>
             <span>{clipPlayerInfo.title}</span>

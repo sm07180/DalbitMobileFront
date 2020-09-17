@@ -33,7 +33,7 @@ export const clipJoin = (data, context) => {
 }
 
 export const clipExit = (context) => {
-  Hybrid('ClipPlayerEnd')
+  Hybrid('ClipFloatingControl', 'CLIP_FINISH')
   Utility.setCookie('clip-player-info', '', -1)
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
