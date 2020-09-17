@@ -26,10 +26,14 @@ export default (props) => {
     }
   }
   const linkMypage = (memNo) => {
-    if (memNo !== ctx.profile.memNo) {
-      history.push(`/mypage/${memNo}`)
-    } else if (memNo === ctx.profile.memNo) {
-      history.push(`/menu/profile`)
+    if (ctx.token.isLogin === true) {
+      if (memNo !== ctx.profile.memNo) {
+        history.push(`/mypage/${memNo}`)
+      } else if (memNo === ctx.profile.memNo) {
+        history.push(`/menu/profile`)
+      }
+    } else {
+      history.push('/login')
     }
   }
   //makeContents

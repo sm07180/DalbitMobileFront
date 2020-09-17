@@ -172,7 +172,7 @@ const Popup = styled.div`
       width: 32px;
       height: 32px;
       top: -40px;
-      right: 0px;
+      right: -16px;
       z-index: 20;
     }
   }

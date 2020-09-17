@@ -47,6 +47,7 @@ export default (props) => {
     }
   }
   const swiperParamsCategory = {
+    slidesPerView: 'auto',
     slidesPerView: 'auto'
   }
   //state
@@ -127,15 +128,24 @@ export default (props) => {
   }
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
-    const {result, data, message} = await Api.postClipPlay({
+    const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
       clipJoin(data, context)
     } else {
-      context.action.alert({
-        msg: message
-      })
+      if (code === '-99') {
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            history.push('/login')
+          }
+        })
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
     }
   }
   // make contents
@@ -314,10 +324,13 @@ export default (props) => {
           <h2 className="recentClip__title">최신 클립</h2>
           {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeLatestList()}</Swiper> : <></>}
         </div>
-        {top3On && Object.keys(listTop3).length !== 0 && (
+
+        {top3On && Object.keys(listTop3).length !== 0 ? (
           <div className="categoryBest" ref={categoryBestClipRef}>
             <Swiper {...swiperParamsBest}>{listTop3 && makeTop3List()}</Swiper>
           </div>
+        ) : (
+          <div ref={categoryBestClipRef}></div>
         )}
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>

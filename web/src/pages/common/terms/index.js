@@ -67,7 +67,11 @@ export default (props) => {
   }
 
   //useEffect
-  useEffect(() => {}, [])
+  useEffect(() => {
+    return () => {
+      context.action.updatePopupVisible(false)
+    }
+  }, [])
 
   //---------------------------------------------------------------------
   return (

@@ -7,6 +7,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import {StoreLink} from 'context/link'
 // components
 import MyProfile from './myProfile'
+import {BeforeLogout} from 'common/logout_func'
 // static svg
 import TimeIcon from '../static/profile/ic_time_m_p.svg'
 import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
@@ -38,6 +39,7 @@ export default (props) => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
+  const customHeader = JSON.parse(Api.customHeader)
 
   if (webview && webview === 'new') {
     sessionStorage.setItem('webview', 'new')
@@ -51,11 +53,18 @@ export default (props) => {
   //   // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
   // ]
   let subNavList
-  if (globalCtx.isDevIp) {
-    if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
+
+  if (sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new')) {
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
+    ]
+  } else {
+    if (customHeader['os'] === OS_TYPE['IOS']) {
       subNavList = [
         {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
+        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+        {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
       ]
     } else {
       subNavList = [
@@ -63,16 +72,8 @@ export default (props) => {
         {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
         {type: 'my_clip', txt: '클립', icon: ClipIcon},
         {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-        // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
       ]
     }
-  } else {
-    subNavList = [
-      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-      // {type: 'editeFan', txt: '팬관리', icon: BroadNoticeIcon}
-    ]
   }
 
   const walletList = [
@@ -115,20 +116,16 @@ export default (props) => {
         globalCtx.action.updateToken(logoutInfo.data)
         globalCtx.action.updateProfile(null)
         props.history.push('/')
+        return
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
           title: '로그아웃 실패',
           msg: `${logoutInfo.message}`
         })
+        setFetching(false)
       }
-      setFetching(false)
     }
-    globalCtx.action.confirm({
-      callback: () => {
-        fetchLogout()
-      },
-      msg: '로그아웃 하시겠습니까?'
-    })
+    BeforeLogout(globalCtx, fetchLogout)
   }
   const checkSelfAuth = async () => {
     let myBirth
@@ -162,7 +159,6 @@ export default (props) => {
     // history.push('/money_exchange')
   }
 
-  console.log(profile.memNo)
   //WEBVIEW CHECK
   if (profile.memNo === token.memNo && webview && webview === 'new') {
     history.push(`/mypage/${profile.memNo}?webview=new`)
@@ -184,6 +180,8 @@ export default (props) => {
         globalCtx.action.updateProfile(profileInfo.data)
       }
     })
+
+    return () => {}
   }, [])
   const locationNav = (type) => {
     context.action.updateFanboardReplyNum(false)
@@ -197,113 +195,68 @@ export default (props) => {
   }
 
   return (
-    <div id="mypage">
-      {profile !== null && token && token.isLogin && (
-        <>
-          <MyProfile profile={profile} {...props} webview={webview} />
+    <>
+      <div id="mypage">
+        {profile !== null && token && token.isLogin && (
+          <>
+            <MyProfile profile={profile} {...props} webview={webview} />
 
-          <div className="profile-menu">
-            <div className="menu-box">
-              {walletList.map((value, idx) => {
-                const {type, txt, icon} = value
-                if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
-                  return <></>
-                } else {
-                  return (
-                    <button
-                      className="list"
-                      key={`list-${idx}`}
-                      onClick={(e) => {
-                        if (type === 'wallet' || type === 'report') {
-                          history.push(`/mypage/${profile.memNo}/${type}`)
-                        } else if (type === 'store') {
-                          e.preventDefault()
-                          StoreLink(globalCtx, props.history)
-                        } else if (type === 'money_exchange') {
-                          e.preventDefault()
-                          checkSelfAuth()
-                        }
-                      }}>
-                      <img className="icon" src={icon} alt={txt} />
-                      <span className="text">{txt}</span>
-                      {type === 'store' ? (
-                        <span className="price">{profile.dalCnt.toLocaleString()}</span>
-                      ) : type === 'money_exchange' ? (
-                        <span className="price">{profile.byeolCnt.toLocaleString()}</span>
-                      ) : (
-                        <></>
-                      )}
-                      <span
-                        className={
-                          type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
-                        }></span>
-                    </button>
-                  )
-                }
-              })}
-            </div>
-
-            <div className="menu-box">
-              {subNavList.map((value, idx) => {
-                const {type, txt, icon} = value
-                return (
-                  <button className="list" onClick={() => locationNav(type)} key={`list-${idx}`}>
-                    <img className="icon" src={icon} alt={txt} />
-                    <span className="text">{txt}</span>
-                    <span
-                      className={
-                        type === 'notice'
-                          ? myPageNew.broadNotice
-                            ? 'arrow arrow--active'
-                            : 'arrow'
-                          : type === 'fanboard'
-                          ? myPageNew.fanBoard
-                            ? 'arrow arrow--active'
-                            : 'arrow'
-                          : 'arrow'
-                      }></span>
-                  </button>
-                )
-              })}
-            </div>
-            {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
-              <></>
-            ) : (
+            <div className="profile-menu">
               <div className="menu-box">
-                <button className="list" onClick={() => history.push(`/private`)}>
-                  <img className="icon" src={ProfileIcon} alt="프로필 설정" />
-                  <span className="text">프로필 설정</span>
-                  <span className="arrow"></span>
-                </button>
-                <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
-                  <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
-                  <span className="text">Push 알림 설정</span>
-                  <span className="arrow"></span>
-                </button>
+                {walletList.map((value, idx) => {
+                  const {type, txt, icon} = value
+                  if (type === 'money_exchange' && context.customHeader['os'] === OS_TYPE['IOS']) {
+                    return <></>
+                  } else {
+                    return (
+                      <button
+                        className="list"
+                        key={`list-${idx}`}
+                        onClick={(e) => {
+                          if (type === 'wallet' || type === 'report') {
+                            history.push(`/mypage/${profile.memNo}/${type}`)
+                          } else if (type === 'store') {
+                            e.preventDefault()
+                            StoreLink(globalCtx, props.history)
+                          } else if (type === 'money_exchange') {
+                            e.preventDefault()
+                            checkSelfAuth()
+                          }
+                        }}>
+                        <img className="icon" src={icon} alt={txt} />
+                        <span className="text">{txt}</span>
+                        {type === 'store' ? (
+                          <span className="price">{profile.dalCnt.toLocaleString()}</span>
+                        ) : type === 'money_exchange' ? (
+                          <span className="price">{profile.byeolCnt.toLocaleString()}</span>
+                        ) : (
+                          <></>
+                        )}
+                        <span
+                          className={
+                            type === 'wallet' ? (myPageNew.dal || myPageNew.byeol ? 'arrow arrow--active' : 'arrow') : 'arrow'
+                          }></span>
+                      </button>
+                    )
+                  }
+                })}
               </div>
-            )}
 
-            {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
-              <></>
-            ) : (
               <div className="menu-box">
-                {customerList.map((value, idx) => {
+                {subNavList.map((value, idx) => {
                   const {type, txt, icon} = value
                   return (
-                    <button
-                      className="list"
-                      onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
-                      key={`list-${idx}`}>
+                    <button className="list" onClick={() => locationNav(type)} key={`list-${idx}`}>
                       <img className="icon" src={icon} alt={txt} />
                       <span className="text">{txt}</span>
                       <span
                         className={
                           type === 'notice'
-                            ? myPageNew.notice
+                            ? myPageNew.broadNotice
                               ? 'arrow arrow--active'
                               : 'arrow'
-                            : type === 'personal'
-                            ? myPageNew.qna
+                            : type === 'fanboard'
+                            ? myPageNew.fanBoard
                               ? 'arrow arrow--active'
                               : 'arrow'
                             : 'arrow'
@@ -312,15 +265,62 @@ export default (props) => {
                   )
                 })}
               </div>
-            )}
+              {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
+                <></>
+              ) : (
+                <div className="menu-box">
+                  <button className="list" onClick={() => history.push(`/private`)}>
+                    <img className="icon" src={ProfileIcon} alt="프로필 설정" />
+                    <span className="text">프로필 설정</span>
+                    <span className="arrow"></span>
+                  </button>
+                  <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
+                    <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
+                    <span className="text">Push 알림 설정</span>
+                    <span className="arrow"></span>
+                  </button>
+                </div>
+              )}
 
-            <button className="btn__logout" onClick={clickLogoutBtn}>
-              로그아웃
-            </button>
-            {/* <Controller /> */}
-          </div>
-        </>
-      )}
-    </div>
+              {sessionStorage.getItem('webview') === 'new' || (webview && webview === 'new') ? (
+                <></>
+              ) : (
+                <div className="menu-box">
+                  {customerList.map((value, idx) => {
+                    const {type, txt, icon} = value
+                    return (
+                      <button
+                        className="list"
+                        onClick={() => history.push(`${type === 'service' ? `/${type}` : `/customer/${type}`}`)}
+                        key={`list-${idx}`}>
+                        <img className="icon" src={icon} alt={txt} />
+                        <span className="text">{txt}</span>
+                        <span
+                          className={
+                            type === 'notice'
+                              ? myPageNew.notice
+                                ? 'arrow arrow--active'
+                                : 'arrow'
+                              : type === 'personal'
+                              ? myPageNew.qna
+                                ? 'arrow arrow--active'
+                                : 'arrow'
+                              : 'arrow'
+                          }></span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+
+              <button className="btn__logout" onClick={clickLogoutBtn}>
+                로그아웃
+              </button>
+              {/* <Controller /> */}
+            </div>
+          </>
+        )}
+      </div>
+    </>
   )
 }

@@ -64,7 +64,7 @@ function LevelList({empty}) {
                           history.push(`/mypage/${memNo}`)
                         }
                       } else {
-                        history.push(`/mypage/${memNo}`)
+                        history.push(`/login`)
                       }
                     }}>
                     <img src={holder} className="thumbBox__frame" />
@@ -92,7 +92,7 @@ function LevelList({empty}) {
                               history.push(`/mypage/${fanMemNo}`)
                             }
                           } else {
-                            history.push(`/mypage/${fanMemNo}`)
+                            history.push(`/login`)
                           }
                         }}>
                         {fanNickNm}

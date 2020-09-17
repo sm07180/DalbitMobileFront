@@ -11,18 +11,32 @@ export default () => {
       <div id="clipOpen">
         <Header title="클립 오픈 안내" />
         <div className="content">
-          <img src="https://image.dalbitlive.com//event/clip/20209010/img01.jpg" title="클립 오픈 안내" />
-          <img src="https://image.dalbitlive.com//event/clip/20209010/img02.jpg" title="클립 오픈 안내" />
-          <img src="https://image.dalbitlive.com//event/clip/20209010/img03.jpg" title="클립 오픈 안내" />
-          <div className="buttonWrap">
-            <button
-              onClick={() => {
-                global_ctx.action.updatePopup('CLIP_OPEN')
-              }}>
-              클립 등록 유의사항
-            </button>
-            <img src="https://image.dalbitlive.com//event/clip/20209010/img04.jpg" title="클립 오픈 안내" />
-          </div>
+          <button
+            className="clipButton"
+            onClick={() => {
+              global_ctx.action.updatePopup('CLIP_OPEN')
+            }}>
+            클립 등록 유의사항
+          </button>
+
+          <button
+            className="eventButton"
+            onClick={() => {
+              global_ctx.action.updatePopup('CLIP_EVENT')
+            }}>
+            이벤트 유의사항
+          </button>
+
+          <img src="https://image.dalbitlive.com//event/clip/20200916/newImg01.jpg" alt="클립 오픈안내" />
+          <img
+            src="https://image.dalbitlive.com//event/clip/20200916/newImg02.jpg"
+            alt="오픈 일에 내 클립 (녹음 파일)을 등록하면 달을 드립니다."
+          />
+          <img
+            src="https://image.dalbitlive.com//event/clip/20200916/newImg03.jpg"
+            alt="참여 방법 1분 이상 ~ 5분 이하 클립 녹음파일을 공개 설정으로 업로드하면 끝"
+          />
+          <img src="https://image.dalbitlive.com//event/clip/20200916/newImg04.jpg" alt="베스트 클립 top 10을 선발합니다." />
         </div>
       </div>
     </Layout>

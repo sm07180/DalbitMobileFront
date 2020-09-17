@@ -19,7 +19,6 @@ import Sticker from 'pages/common/sticker'
 //
 const Layout = (props) => {
   const {children, webview} = props
-  console.log(props.type)
   const context = useContext(Context)
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''

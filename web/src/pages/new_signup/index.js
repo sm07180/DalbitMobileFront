@@ -251,10 +251,10 @@ export default (props) => {
       })
       if (code === '-1') {
         context.action.alert({
-          msg: message,
-          callback: () => {
-            props.history.push('/login')
-          }
+          msg: message
+          // callback: () => {
+          //   props.history.push('/login')
+          // }
         })
       }
     }

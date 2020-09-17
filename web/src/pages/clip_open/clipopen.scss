@@ -3,23 +3,31 @@
   margin: auto;
 
   .content {
+    position: relative;
+
     img {
       display: block;
       width: 100%;
       height: auto;
     }
 
-    .buttonWrap {
-      position: relative;
+    .clipButton {
+      position: absolute;
+      text-indent: -99999px;
+      width: 35.1%;
+      height: 1.1%;
+      left: 12.1%;
+      top: 40.9%;
+      z-index: 1;
+    }
 
-      button {
-        position: absolute;
-        width: 31%;
-        height: 6%;
-        left: 35%;
-        bottom: 3%;
-        text-indent: -99999px;
-      }
+    .eventButton {
+      position: absolute;
+      text-indent: -99999px;
+      width: 29.2%;
+      height: 1.2%;
+      left: 20.2%;
+      bottom: 18.4%;
     }
   }
 }
