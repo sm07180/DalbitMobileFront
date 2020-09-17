@@ -407,7 +407,7 @@ export default () => {
 
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
-        if (detail.onCall) sessionStorage.setItem('onCall', 'true')
+        if (detail.onCall === true) sessionStorage.setItem('onCall', 'true')
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
