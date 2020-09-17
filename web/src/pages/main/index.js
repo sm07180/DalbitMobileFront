@@ -306,6 +306,7 @@ export default (props) => {
       setLiveCategoryFixed(true)
     } else {
       setLiveCategoryFixed(false)
+      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
     }
 
     const GAP = 100
@@ -418,6 +419,10 @@ export default (props) => {
 
   useEffect(() => {
     fetchMainPopupData('6')
+
+    return () => {
+      globalCtx.action.updateAttendStamp(false)
+    }
   }, [])
 
   const [reloadInit, setReloadInit] = useState(false)
@@ -473,12 +478,10 @@ export default (props) => {
       if (heightDiff >= 100) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
-          console.log(str_angle)
           let head_slice = str_angle.slice(7)
           let tail_slice = head_slice.slice(0, 4)
           return Number(tail_slice)
         })()
-        console.log(current_angle)
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
