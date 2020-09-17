@@ -35,7 +35,11 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              Hybrid('ClipFloatingControl', 'CLIP_PAUSE')
+              if (__NODE_ENV === 'dev') {
+                Hybrid('ClipFloatingControl', CLIP_PAUSE)
+              } else {
+                Hybrid('ClipPlayerPause')
+              }
               globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
             }}>
@@ -47,7 +51,11 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              Hybrid('ClipFloatingControl', 'CLIP_PLAY')
+              if (__NODE_ENV === 'dev') {
+                Hybrid('ClipFloatingControl', CLIP_PLAY)
+              } else {
+                Hybrid('ClipPlayerStart')
+              }
               globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
             }}>
@@ -91,7 +99,11 @@ export default (props) => {
           </div>
           <p
             onClick={() => {
-              Hybrid('ClipFloatingControl', 'CLIP_RESUME')
+              if (__NODE_ENV === 'dev') {
+                Hybrid('ClipFloatingControl', CLIP_RESUME)
+              } else {
+                Hybrid('ClipPlayerEnter')
+              }
             }}>
             <b>{clipPlayerInfo.nickname}</b>
             <span>{clipPlayerInfo.title}</span>

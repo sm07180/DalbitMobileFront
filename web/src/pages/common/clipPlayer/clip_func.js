@@ -5,17 +5,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 export const clipJoin = (data, context) => {
-  // alert(context.player)
-  // alert(context.clipState)
-  // if (!context.player && context.clipState) {
-  //   return context.action.alert({
-  //     msg: '현재 청취 중인 클립이 있습니다.'
-  //   })
-  // }
-
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-    // clipExit(context)
-
     Hybrid('ClipPlayerJoin', data)
   } else {
     context.action.confirm({
@@ -33,8 +23,12 @@ export const clipJoin = (data, context) => {
 }
 
 export const clipExit = (context) => {
-  Hybrid('ClipFloatingControl', 'CLIP_FINISH')
   Utility.setCookie('clip-player-info', '', -1)
+  if (__NODE_ENV === 'dev') {
+    Hybrid('ClipFloatingControl', CLIP_FINISH)
+  } else {
+    Hybrid('ClipPlayerEnd')
+  }
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)

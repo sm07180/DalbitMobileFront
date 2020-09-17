@@ -105,7 +105,7 @@ export default function Alert() {
         history.push(`/mypage/${memNo}/fanboard`)
         break
       case 32:
-        history.push(`/mypage/${memNo}/wallet`)
+        history.push(`/mypage/${context.profile.memNo}/wallet`)
         break
       case 33:
         break
