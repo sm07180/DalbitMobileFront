@@ -37,6 +37,7 @@ export const isAndroid = () => {
  * @param any     info          //*data (string or object )
  *
  */
+
 export const Hybrid = (func, info) => {
   if (!isHybrid()) return
 
@@ -50,7 +51,10 @@ export const Hybrid = (func, info) => {
         window.android[func]()
       } else {
         try {
-          window.android[func](JSON.stringify(info))
+          if (typeof info === 'string') {
+            return window.android[func](info)
+          }
+          return window.android[func](JSON.stringify(info))
         } catch (e) {
           if (func === 'openUrl' || func === 'openCall') {
             window.android[func]('{"url":"' + info + '"}')

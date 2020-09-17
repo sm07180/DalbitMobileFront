@@ -36,7 +36,7 @@ export default (props) => {
           <button
             onClick={() => {
               if (__NODE_ENV === 'dev') {
-                Hybrid('ClipFloatingControl', CLIP_PAUSE)
+                Hybrid('ClipFloatingControl', 'CLIP_PAUSE')
               } else {
                 Hybrid('ClipPlayerPause')
               }
@@ -52,7 +52,7 @@ export default (props) => {
           <button
             onClick={() => {
               if (__NODE_ENV === 'dev') {
-                Hybrid('ClipFloatingControl', CLIP_PLAY)
+                Hybrid('ClipFloatingControl', 'CLIP_PLAY')
               } else {
                 Hybrid('ClipPlayerStart')
               }
@@ -100,7 +100,7 @@ export default (props) => {
           <p
             onClick={() => {
               if (__NODE_ENV === 'dev') {
-                Hybrid('ClipFloatingControl', CLIP_RESUME)
+                Hybrid('ClipFloatingControl', 'CLIP_RESUME')
               } else {
                 Hybrid('ClipPlayerEnter')
               }
