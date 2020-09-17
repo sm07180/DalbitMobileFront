@@ -19,7 +19,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   //context
   const globalCtx = useContext(Context)
-  const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
+  // const {clipState, clipPlayerState, clipPlayerInfo} = globalCtx
   const {webview} = qs.parse(location.search)
 
   const settingSessionInfo = (type) => {
@@ -59,7 +59,13 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null) return null
+  // if (!clipState || clipPlayerInfo === null) return null
+  const clipPlayerState = 'playing'
+  const clipPlayerInfo = {
+    bgImg: '',
+    nickname: 'zz',
+    title: 'zz'
+  }
 
   //---------------------------------------------------------------------
   return (
@@ -308,7 +314,7 @@ const ClipPlayer = styled.div`
         display: none;
       }
       .info {
-        max-width: calc(100% - 70px);
+        width: calc(100% - 70px);
         min-width: 200px;
         p {
           min-width: 120px;
