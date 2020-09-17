@@ -371,7 +371,7 @@ export default (props) => {
         </div>
         <div className="list__box">
           <div className="list__title">
-            내가 스페셜 DJ가 된다면?!{' '}
+            내가 스페셜 DJ가 된다면?!
             <div className="list__textNumber">
               <b>{contents.length}</b>/1,000
             </div>
