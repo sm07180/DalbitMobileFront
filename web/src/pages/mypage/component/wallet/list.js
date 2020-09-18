@@ -44,18 +44,6 @@ export default (props) => {
           <span className="sub">최근 6개월</span>
         </span>
 
-        <div className="table__select">
-          <button
-            onClick={() => {
-              setShowFilter(true)
-            }}>
-            <img src={ArrowDownIcon} />
-            {isFiltering === false ? '전체 내역' : '달 내역'}({totalCnt}건)
-          </button>
-
-          {/* <SelectBox state={popurState} dispatch={popurDispatch} /> */}
-        </div>
-
         {/* <Selector onChange={(e) => change(parseInt(e.target.value))} ref={selectorRef}>
           <option value={0}>전체</option>
           <option value={1}>구매</option>
@@ -64,7 +52,17 @@ export default (props) => {
         </Selector> */}
         {/* <div className="arrowBtn"></div> */}
       </TopArea>
+      <SelectWrap
+        onClick={() => {
+          setShowFilter(true)
+        }}>
+        <button>
+          <img src={ArrowDownIcon} />
+          {isFiltering === false ? '전체 내역' : '달 내역'}({totalCnt}건)
+        </button>
 
+        {/* <SelectBox state={popurState} dispatch={popurDispatch} /> */}
+      </SelectWrap>
       <ListWrap>
         {/* <div className="list title">
           <span className="how-to-get">구분</span>
@@ -237,6 +235,7 @@ const TopArea = styled.div`
   flex-direction: row;
 
   .title {
+    width: 100%;
     .main {
       font-size: 16px;
       line-height: 18px;
@@ -253,15 +252,27 @@ const TopArea = styled.div`
       letter-spacing: normal;
       text-align: left;
       color: #bdbdbd;
+      float: right;
     }
   }
 
   .table__select {
-    & > button {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-    }
+  }
+`
+
+const SelectWrap = styled.div`
+  display: flex;
+  align-items: center;
+  height: 44px;
+  margin-top: 11px;
+  padding: 0 8px;
+  background-color: #fff;
+  border-radius: 12px;
+  & > button {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: bold;
   }
 `
 
