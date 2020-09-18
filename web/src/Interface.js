@@ -477,9 +477,11 @@ export default () => {
       case 'native-call-state': //---------- 안드로이드 전화 on/off 발생
         const {onCall} = event.detail
         if (onCall === true) {
+          alert(1)
           sessionStorage.setItem('onCall', 'on')
         }
         if (onCall === false) {
+          alert(2)
           sessionStorage.removeItem('onCall')
         } else {
           if (__NODE_ENV === 'dev') {
