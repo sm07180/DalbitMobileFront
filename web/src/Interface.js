@@ -13,7 +13,7 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
-import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
+import {clipJoin, clipExit, backFunc} from 'pages/common/clipPlayer/clip_func'
 
 //util
 import Utility from 'components/lib/utility'
@@ -466,16 +466,18 @@ export default () => {
         break
       case 'native-back-click': //---------- 안드로이드 물리 백키 클릭 이벤트 발생
         //TODO:레이어닫는지?백이동인지 확인 백이동일경우 Hybrid('goBack') 호출
-        // if (__NODE_ENV === 'dev') {
-        //   alert('event:native-back-click')
-        // }
-        Hybrid('goBack')
-        break
+        if (context.backState === null) {
+          Hybrid('goBack')
+        } else {
+          backFunc('', context)
+        }
+      // break
       default:
         break
     }
   }
-
+  console.log(context.backState)
+  console.log(context.backState)
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
     if (data === undefined) return null
@@ -732,7 +734,6 @@ export default () => {
     document.addEventListener('react-debug', update)
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
-    document.addEventListener('native-back-click', update)
 
     /*----clip----*/
     document.addEventListener('clip-player-show', update)
@@ -764,7 +765,6 @@ export default () => {
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
       document.removeEventListener('native-close-layer-popup', update)
-      document.removeEventListener('native-back-click', update)
     }
   }, [])
 
@@ -779,6 +779,13 @@ export default () => {
       document.removeEventListener('native-clip-record', update)
     }
   }, [context.token])
+  useEffect(() => {
+    document.addEventListener('native-back-click', update)
+    return () => {
+      document.removeEventListener('native-back-click', update)
+    }
+  }, [context.backState])
+
   return (
     <React.Fragment>
       <Room />

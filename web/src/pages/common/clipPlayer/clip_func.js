@@ -37,3 +37,8 @@ export const clipExit = (context) => {
 export const updateClipInfo = (data) => {
   Hybrid('ClipUpdateInfo', data)
 }
+export const backFunc = (data, context) => {
+  setTimeout(() => {
+    context.action.updateSetBack(null)
+  }, 100)
+}
