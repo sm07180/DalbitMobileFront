@@ -1,12 +1,10 @@
 import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import Api from 'context/api'
-import {useHistory, useParams} from 'react-router-dom'
+import {useParams} from 'react-router-dom'
 import qs from 'query-string'
 //context
 import {Context} from 'context'
-import Swiper from 'react-id-swiper'
-import {isHybrid, Hybrid} from 'context/hybrid'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import {Hybrid} from 'context/hybrid'
 //layout
 import Layout2 from 'pages/common/layout2.5'
 import Header from 'components/ui/new_header'
@@ -15,17 +13,14 @@ import WriteBoard from '../../pages/mypage/content/board_write'
 import NoResult from 'components/ui/noResult'
 //scss
 import '../mypage/index.scss'
-
 export default (props) => {
   const globalCtx = useContext(Context)
   const {webview} = qs.parse(location.search)
   let params = useParams()
-  let history = useHistory()
   const LocationClip = params.clipNo
   //state
   const [boardList, setBoardList] = useState([])
-
-  const [totalCount, setTotalCount] = useState(0)
+  const [totalCount, setTotalCount] = useState(-1)
   //list fetch
   async function fetchReplyList() {
     const {result, data} = await Api.getClipReplyList({
@@ -39,8 +34,6 @@ export default (props) => {
       } else {
         setTotalCount(0)
       }
-
-      // Hybrid('ClipUpdateInfo', data.clipPlayInfo)
     } else {
       globalCtx.action.alert({
         msg: message
@@ -52,37 +45,36 @@ export default (props) => {
     if (value === true) {
       fetchReplyList()
     }
-
     if (props.set) {
       props.set(true)
     }
   }
-
-  useEffect(() => {
-    fetchReplyList()
-  }, [])
-
   const goBack = () => {
     sessionStorage.removeItem('webview')
     Hybrid('CloseLayerPopup')
   }
+  //---------------------------------------------------------------------
+  useEffect(() => {
+    fetchReplyList()
+  }, [])
   useEffect(() => {
     globalCtx.action.updatePlayer(false)
     return () => {}
   }, [])
-  //---------------------------------------------------------------------
+  //-----------------------render
   return (
     <Layout2 {...props} webview={webview} status="no_gnb" type={'clipBack'}>
       <div id="clip_reply">
         <div className="fanboard">
           {!props.type ? <Header title="클립 댓글" goBack={goBack} /> : <></>}
           <WriteBoard {...props} type={'clip_board'} set={setAction} />
-          {/* 클립댓글 리스트 영역 */}
-          {totalCount > 0 ? (
-            <BoardList list={boardList} totalCount={totalCount} set={setAction} type="clip_board" />
-          ) : (
-            <NoResult />
+          {totalCount === -1 && (
+            <div className="loading">
+              <span></span>
+            </div>
           )}
+          {totalCount === 0 && <NoResult />}
+          {totalCount > 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} type="clip_board" />}
         </div>
       </div>
     </Layout2>
