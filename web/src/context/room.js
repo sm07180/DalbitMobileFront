@@ -52,6 +52,8 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
+  const {roomNo, callbackFunc, shadow, mode} = obj
+
   //클립나가기
   if (Utility.getCookie('clip-player-info')) {
     return Room.context.action.confirm({
@@ -63,7 +65,22 @@ export const RoomJoin = async (obj) => {
     })
   }
 
-  const {roomNo, callbackFunc, shadow, mode} = obj
+  if (shadow === undefined) {
+    if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
+      return Room.context.action.confirm_admin({
+        callback: () => {
+          RoomJoin({roomNo: roomNo, shadow: 1})
+        },
+        cancelCallback: () => {
+          RoomJoin({roomNo: roomNo, shadow: 0})
+        },
+        msg: '관리자로 입장하시겠습니까?'
+      })
+    } else if (Room.context.adminChecker === true && roomNo === Utility.getCookie('listen_room_no')) {
+      return Hybrid('EnterRoom', '')
+    }
+  }
+
   /*const exdate = new Date()
   exdate.setHours(15)
   exdate.setMinutes(0)

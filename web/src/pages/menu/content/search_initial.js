@@ -44,29 +44,7 @@ const makeContents = (props) => {
         <LiveList
           key={`live-${idx}`}
           onClick={() => {
-            if (ctx.adminChecker === true) {
-              ctx.action.confirm_admin({
-                //콜백처리
-                callback: () => {
-                  RoomJoin({
-                    roomNo: roomNo + '',
-                    shadow: 1
-                  })
-                },
-                //캔슬콜백처리
-                cancelCallback: () => {
-                  RoomJoin({
-                    roomNo: roomNo + '',
-                    shadow: 0
-                  })
-                },
-                msg: '관리자로 입장하시겠습니까?'
-              })
-            } else {
-              RoomJoin({
-                roomNo: roomNo + ''
-              })
-            }
+            RoomJoin({roomNo: roomNo, shadow: 0})
           }}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
@@ -147,29 +125,7 @@ const makeContents = (props) => {
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
                   onClick={() => {
-                    if (ctx.adminChecker === true) {
-                      ctx.action.confirm_admin({
-                        //콜백처리
-                        callback: () => {
-                          RoomJoin({
-                            roomNo: lastList.roomNo + '',
-                            shadow: 1
-                          })
-                        },
-                        //캔슬콜백처리
-                        cancelCallback: () => {
-                          RoomJoin({
-                            roomNo: lastList.roomNo + '',
-                            shadow: 0
-                          })
-                        },
-                        msg: '관리자로 입장하시겠습니까?'
-                      })
-                    } else {
-                      RoomJoin({
-                        roomNo: lastList.roomNo + ''
-                      })
-                    }
+                    RoomJoin({roomNo: lastList.roomNo})
                   }}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (
