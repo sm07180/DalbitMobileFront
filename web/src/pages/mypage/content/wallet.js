@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
+import React, {useState, useEffect, useContext, useReducer, useCallback} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -18,81 +18,110 @@ import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import Header from '../component/header.js'
+import paging from 'components/ui/paging.js'
+import WalletPop from '../component/wallet/wallet_pop'
+
+import '../index.scss'
 
 // concat
-let currentPage = 1
+
 let timer
-let moreState = false
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'page':
+      return {
+        ...state,
+        currentPage: action.val
+      }
+    case 'filter':
+      return {
+        ...state,
+        currentPage: 1,
+        filterList: action.val
+      }
+    case 'type':
+      return {
+        coinType: action.val,
+        currentPage: 1,
+        filterList: []
+      }
+  }
+}
+
 export default (props) => {
   let history = useHistory()
   const context = useContext(Context)
-  const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
-  const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+
+  const [formState, formDispatch] = useReducer(reducer, {
+    coinType: 'dal',
+    currentPage: 1,
+    filterList: []
+  })
+  const [totalPage, setTotalPage] = useState(1)
   const [totalCoin, setTotalCoin] = useState(null)
-  const [searching, setSearching] = useState(true)
-  const [controllState, setcontrollState] = useState(false)
-  const [nextList, setNextList] = useState(false)
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
-  const [page, setPage] = useState(1)
+  const [showFilter, setShowFilter] = useState(false)
+  const [isFiltering, setIsFiltering] = useState(false)
+  const [totalCnt, setTotalCnt] = useState(0)
+
+  const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
+
   const changeCoinTypeClick = (type) => {
-    setCoinType(type)
-
-    setcontrollState(!controllState)
-    setWalletType(0)
+    formDispatch({
+      type: 'type',
+      val: type
+    })
   }
 
-  const returnCoinText = (t) => {
-    return t === 'dal' ? '달' : '별'
-  }
+  const returnCoinText = useCallback(
+    (t) => {
+      return t === 'dal' ? '달' : '별'
+    },
+    [formState.coinType]
+  )
   const returnCoinImg = (t) => {
     return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
-  async function fetchData(next) {
-    currentPage = next ? ++currentPage : currentPage
-    const response = await Api.mypage_wallet_inquire({
-      coinType,
-      walletType,
-      page: currentPage,
-      records: 15
-    })
-    if (response.result === 'success') {
-      setSearching(false)
-      const {list, dalTotCnt, byeolTotCnt, paging} = response.data
-      if (coinType === 'dal') {
-        setTotalCoin(dalTotCnt)
-      } else if (coinType === 'byeol') {
-        setTotalCoin(byeolTotCnt)
-      }
-      if (response.code === '0') {
-        if (next !== 'next') {
-          setListDetailed(false)
-        }
-        moreState = false
-      } else {
-        if (next) {
-          moreState = true
-          setNextList(response.data.list)
-        } else {
-          setListDetailed(response.data.list)
-          fetchData('next')
-        }
-      }
-    } else {
-    }
-  }
+  // async function fetchData(next) {
+  //   currentPage = next ? ++currentPage : currentPage
+  //   const response = await Api.mypage_wallet_inquire({
+  //     coinType,
+  //     walletType,
+  //     page: currentPage,
+  //     records: 15
+  //   })
+  //   if (response.result === 'success') {
+  //     setSearching(false)
+  //     const {list, dalTotCnt, byeolTotCnt, paging} = response.data
+  //     if (coinType === 'dal') {
+  //       setTotalCoin(dalTotCnt)
+  //     } else if (coinType === 'byeol') {
+  //       setTotalCoin(byeolTotCnt)
+  //     }
+  //     if (response.code === '0') {
+  //       if (next !== 'next') {
+  //         setListDetailed(false)
+  //       }
+  //       moreState = false
+  //     } else {
+  //       if (next) {
+  //         moreState = true
+  //         setNextList(response.data.list)
+  //       } else {
+  //         setListDetailed(response.data.list)
+  //         fetchData('next')
+  //       }
+  //     }
+  //   } else {
+  //   }
+  // }
 
   //재조회 및 초기조회
-  useEffect(() => {
-    currentPage = 1
-    fetchData()
-  }, [coinType, walletType, page])
+  // useEffect(() => {
+  //   currentPage = 1
+  //   fetchData()
+  // }, [coinType, walletType, page])
   //스크롤 콘켓
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
 
   const checkSelfAuth = async () => {
     let myBirth
@@ -127,28 +156,41 @@ export default (props) => {
   }
 
   //콘켓 쇼모어 이벤트
-  const showMoreList = () => {
-    if (moreState) {
-      setListDetailed(listDetailed.concat(nextList))
-      fetchData('next')
+
+  useEffect(() => {
+    //스크롤 이벤트
+    let fetching = false
+
+    const scrollEvtHdr = (event) => {
+      if (timer) window.clearTimeout(timer)
+      timer = window.setTimeout(function () {
+        //스크롤
+        const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+        const body = document.body
+        const html = document.documentElement
+        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+        const windowBottom = windowHeight + window.pageYOffset
+        const diff = docHeight / 3
+        if (totalPage > formState.currentPage && windowBottom >= docHeight - diff) {
+          // showMoreList()
+          if (!fetching) {
+            console.log('fetching', fetching)
+            console.log('currentPage', formState.currentPage)
+            formDispatch({
+              type: 'page',
+              val: formState.currentPage + 1
+            })
+          }
+        }
+      }, 50)
     }
-  }
-  //스크롤 이벤트
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      if (moreState && windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
+
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+      fetching = true
+    }
+  }, [totalPage, formState])
 
   async function getMyPageNewWallet() {
     const newFanBoard = await Api.getMyPageNewWallet()
@@ -164,25 +206,152 @@ export default (props) => {
     mypageNewStg.byeol = byeol === undefined || byeol === null || byeol === '' ? 0 : byeol
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
+
+  const fetchPop = useCallback(
+    async function () {
+      const res = await Api.getMypageWalletPop({
+        walletType: formState.coinType === 'dal' ? 1 : 0
+      })
+
+      if (res.result === 'success') {
+        if (res.data.list instanceof Array && res.data.list.length > 0) {
+          let cnt = 0
+          res.data.list.forEach((v) => {
+            cnt += v.cnt
+            v.checked = true
+          })
+          formDispatch({
+            type: 'filter',
+            val: res.data.list
+          })
+          setTotalCnt(cnt)
+        }
+      }
+    },
+    [formState.coinType]
+  )
+
+  const fetchData = useCallback(
+    async function () {
+      let walletCode = ''
+
+      if (formState.filterList.length > 0) {
+        if (
+          formState.filterList.every((v) => {
+            return v.checked
+          })
+        ) {
+          walletCode = 0
+        } else {
+          walletCode = formState.filterList
+            .filter((v) => {
+              return v.checked
+            })
+            .reduce((acc, cur, idx, self) => {
+              if (self.length - 1 === idx) {
+                return acc + cur.walletCode
+              } else {
+                return acc + cur.walletCode + '|'
+              }
+            }, walletCode)
+        }
+        const res = await Api.getMypageWalletList({
+          walletType: formState.coinType === 'dal' ? 1 : 0,
+          walletCode: walletCode,
+          page: formState.currentPage,
+          records: 15
+        })
+
+        if (res.result === 'success') {
+          if (formState.currentPage > 1) {
+            setListDetailed(listDetailed.concat(res.data.list))
+          } else {
+            setListDetailed(res.data.list)
+          }
+          if (formState.coinType === 'dal') {
+            setTotalCoin(res.data.dalTotCnt)
+          } else {
+            setTotalCoin(res.data.byeolTotCnt)
+          }
+
+          if (res.data.paging) {
+            setTotalPage(res.data.paging.totalPage)
+          } else {
+            setTotalPage(1)
+          }
+        } else {
+        }
+      } else {
+      }
+    },
+    [formState, listDetailed]
+  )
+
+  useEffect(() => {
+    fetchData()
+  }, [formState])
+
+  useEffect(() => {
+    fetchPop()
+  }, [formState.coinType])
+
   useEffect(() => {
     getMyPageNewWallet()
   }, [])
 
+  useEffect(() => {
+    console.log(listDetailed)
+  }, [listDetailed])
+
+  useEffect(() => {
+    if (formState.filterList instanceof Array && formState.filterList.length > 0) {
+      let cnt = 0
+      formState.filterList.forEach((v) => {
+        if (v.checked) cnt += v.cnt
+      })
+      setTotalCnt(cnt)
+
+      setIsFiltering(
+        !formState.filterList.every((v) => {
+          return v.checked
+        })
+      )
+    }
+  }, [formState.filterList])
+
+  useEffect(() => {
+    if (showFilter) {
+      document.body.style.overflowY = 'hidden'
+    } else {
+      document.body.style.overflowY = ''
+    }
+  }, [showFilter])
+
   return (
     <div>
+      {showFilter && formState.filterList.length > 0 && (
+        <div
+          id="wallet_layer"
+          onClick={() => {
+            setShowFilter(false)
+          }}>
+          <WalletPop formState={formState} formDispatch={formDispatch} setShowFilter={setShowFilter} />
+        </div>
+      )}
+
       {/* 공통타이틀 */}
       <Header title="내 지갑" />
       <Wrap>
         <TitleWrap>
           <CoinTypeBtn
-            className={coinType === 'dal' ? 'active' : ''}
+            className={formState.coinType === 'dal' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('dal')
             }}>
             달
           </CoinTypeBtn>
           <CoinTypeBtn
-            className={coinType === 'byeol' ? 'active' : ''}
+            className={formState.coinType === 'byeol' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('byeol')
             }}>
@@ -191,16 +360,16 @@ export default (props) => {
         </TitleWrap>
 
         <CoinCountingView>
-          <CoinCurrentStatus className={coinType === 'dal' ? 'active' : ''}>
-            <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
+          <CoinCurrentStatus className={formState.coinType === 'dal' ? 'active' : ''}>
+            <span className="text">{`현재 보유 ${returnCoinText(formState.coinType)}:`}</span>
             <span className="current-value">
               {totalCoin !== null && Number(totalCoin).toLocaleString()}
-              {coinType === 'byeol' ? <em>별</em> : <em>달</em>}
+              {formState.coinType === 'byeol' ? <em>별</em> : <em>달</em>}
             </span>
           </CoinCurrentStatus>
 
           <div>
-            {coinType === 'dal' ? (
+            {formState.coinType === 'dal' ? (
               <>
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
@@ -260,13 +429,12 @@ export default (props) => {
           </div>
         </CoinCountingView>
         <List
-          searching={searching}
-          coinType={coinType}
-          walletType={walletType}
           walletData={listDetailed}
           returnCoinText={returnCoinText}
-          setWalletType={setWalletType}
-          controllState={controllState}
+          isFiltering={isFiltering}
+          setShowFilter={setShowFilter}
+          totalCnt={totalCnt}
+          formState={formState}
         />
       </Wrap>
     </div>

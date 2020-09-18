@@ -1189,6 +1189,22 @@ export default class API {
     return await ajax({url: `/mypage/${coinType}`, method: 'GET', params})
   }
 
+  static getMypageWalletList = async (params) => {
+    return await ajax({
+      url: '/mypage/wallet/list',
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static getMypageWalletPop = async (params) => {
+    return await ajax({
+      url: '/mypage/wallet/pop',
+      method: 'GET',
+      params: params
+    })
+  }
+
   /**
    * @brief 회원 차단하기
    * @method "POST"
