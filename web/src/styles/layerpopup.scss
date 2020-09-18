@@ -136,6 +136,7 @@
         box-sizing: border-box;
 
         .inner {
+          padding-top: 16px;
           .checkbox-wrap {
             margin-top: 16px;
             cursor: pointer;
@@ -168,7 +169,6 @@
           line-height: 24px;
           color: $black;
           font-weight: 500;
-          margin-top: 16px;
           padding: 0px 14px;
           width: 104%;
           box-sizing: border-box;
