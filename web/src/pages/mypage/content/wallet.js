@@ -34,11 +34,26 @@ const reducer = (state, action) => {
         currentPage: action.val
       }
     case 'filter':
-      return {
-        ...state,
-        currentPage: 1,
-        filterList: action.val
+      if (
+        action.val.every((v) => {
+          return !v.checked
+        })
+      ) {
+        return {
+          ...state,
+          currentPage: 1,
+          filterList: action.val,
+          allChecked: true
+        }
+      } else {
+        return {
+          ...state,
+          currentPage: 1,
+          filterList: action.val,
+          allChecked: false
+        }
       }
+
     case 'type':
       return {
         coinType: action.val,
@@ -300,18 +315,21 @@ export default (props) => {
   useEffect(() => {
     if (formState.filterList instanceof Array && formState.filterList.length > 0) {
       let cnt = 0
-      formState.filterList.forEach((v) => {
-        if (v.checked) cnt += v.cnt
-      })
+      if (formState.allChecked === true) {
+        formState.filterList.forEach((v) => {
+          cnt += v.cnt
+        })
+      } else {
+        formState.filterList.forEach((v) => {
+          if (v.checked) cnt += v.cnt
+        })
+      }
+
       setTotalCnt(cnt)
 
-      setIsFiltering(
-        !formState.filterList.every((v) => {
-          return v.checked
-        })
-      )
+      setIsFiltering(!formState.allChecked)
     }
-  }, [formState.filterList])
+  }, [formState.filterList, formState.allChecked])
 
   useEffect(() => {
     if (showFilter) {
