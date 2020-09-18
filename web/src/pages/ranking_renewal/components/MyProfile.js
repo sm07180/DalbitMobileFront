@@ -74,9 +74,6 @@ export default function MyProfile() {
       return (
         <>
           <p className="myRanking__left--now colorWhite">순위 없음</p>
-          <p className="rankingChange">
-            <span></span>
-          </p>
         </>
       )
     }
@@ -97,10 +94,14 @@ export default function MyProfile() {
     }
     return (
       <>
-        <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-        <p className="rankingChange">
-          <span className={myUpDownName}>{myUpDownValue}</span>
-        </p>
+        <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '순위 없음' : myInfo.myRank}</p>
+        {myInfo.myRank === 0 ? (
+          ''
+        ) : (
+          <p className="rankingChange">
+            <span className={myUpDownName}>{myUpDownValue}</span>
+          </p>
+        )}
       </>
     )
   }, [myInfo])
