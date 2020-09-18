@@ -54,26 +54,18 @@ export default (props) => {
   // ]
   let subNavList
 
-  if (sessionStorage.getItem('webview') === 'new' && __NODE_ENV !== 'dev') {
+  if (sessionStorage.getItem('webview') === 'new') {
     subNavList = [
       {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
       {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon}
     ]
   } else {
-    if (customHeader['os'] === OS_TYPE['IOS']) {
-      subNavList = [
-        {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-        {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-      ]
-    } else {
-      subNavList = [
-        {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
-        {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
-        {type: 'my_clip', txt: '클립', icon: ClipIcon},
-        {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
-      ]
-    }
+    subNavList = [
+      {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
+      {type: 'my_clip', txt: '클립', icon: ClipIcon},
+      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+    ]
   }
 
   const walletList = [
@@ -160,7 +152,7 @@ export default (props) => {
   }
 
   //WEBVIEW CHECK
-  if (profile.memNo === token.memNo && webview && webview === 'new' && __NODE_ENV !== 'dev') {
+  if (profile.memNo === token.memNo && webview && webview === 'new') {
     history.push(`/mypage/${profile.memNo}?webview=new`)
   }
 
@@ -282,7 +274,7 @@ export default (props) => {
                 </div>
               )}
 
-              {sessionStorage.getItem('webview') === 'new' && __NODE_ENV !== 'dev' ? (
+              {sessionStorage.getItem('webview') === 'new' ? (
                 <></>
               ) : (
                 <div className="menu-box">

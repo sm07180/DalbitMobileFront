@@ -553,14 +553,13 @@ export default (props) => {
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
       </div>
-
       <div
         className="main-wrap"
         ref={MainRef}
         onTouchStart={mainTouchStart}
         onTouchMove={mainTouchMove}
         onTouchEnd={mainTouchEnd}>
-        {customHeader['os'] !== OS_TYPE['Android'] ? (
+        {customHeader['os'] === OS_TYPE['Desktop'] && (
           <div ref={SubMainRef} className="main-gnb">
             <div className="left-side">
               <div className="tab">
@@ -580,20 +579,11 @@ export default (props) => {
                   activeClassName={'tab__item--active'}
                   to={'/clip'}
                   onClick={(event) => {
-                    event.preventDefault()
-                    if (customHeader['os'] === OS_TYPE['IOS'] && customHeader['appBuild'] < 145) {
-                      globalCtx.action.alert({
-                        msg: `클립 기능 업데이트를 위해\n 앱 스토어 심사 중입니다.\n잠시만 기다려주세요.\n※ PC, Android를 통해 먼저 클립을 만나보세요!`
-                      })
-                    } else {
-                      history.push('/clip')
-                    }
+                    history.push('/clip')
                   }}>
                   클립 <i>N</i>
-                  {/* 클립<i>NEW</i> */}
                 </NavLink>
               </div>
-
               <button
                 className="broadBtn"
                 onClick={() => {
@@ -658,8 +648,6 @@ export default (props) => {
               </div>
             </div>
           </div>
-        ) : (
-          <></>
         )}
 
         <div ref={RecommendRef} className="main-slide">
@@ -810,7 +798,6 @@ export default (props) => {
             </div>
           </div>
         </div>
-
         {popup && (
           <LayerPopup
             alignSet={alignSet}
@@ -822,9 +809,7 @@ export default (props) => {
             resetFetchList={resetFetchList}
           />
         )}
-
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>
     </Layout>
