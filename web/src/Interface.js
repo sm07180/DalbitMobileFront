@@ -382,8 +382,7 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        let dataString = JSON.stringify(event.detail)
-        dataString = {...dataString, ...{playerState: 'paused'}}
+        let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
@@ -403,12 +402,10 @@ export default () => {
 
       case 'clip-player-start': //-----------------------클립 재생
         settingSessionInfo('playing')
-        if (sessionStorage.getItem('onCall') === 'true') sessionStorage.removeItem('onCall')
         break
 
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
-        if (detail.onCall === true) sessionStorage.setItem('onCall', 'true')
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
@@ -479,8 +476,7 @@ export default () => {
         if (onCall === true) {
           alert(1)
           sessionStorage.setItem('onCall', 'on')
-        }
-        if (onCall === false) {
+        } else if (onCall === false) {
           alert(2)
           sessionStorage.removeItem('onCall')
         } else {
