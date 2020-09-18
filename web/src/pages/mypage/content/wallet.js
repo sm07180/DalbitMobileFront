@@ -278,6 +278,8 @@ export default (props) => {
             setTotalPage(1)
           }
         } else {
+          setListDetailed([])
+          setTotalPage(1)
         }
       } else {
       }
