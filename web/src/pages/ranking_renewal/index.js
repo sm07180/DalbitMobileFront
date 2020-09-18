@@ -387,11 +387,11 @@ function Ranking() {
               (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
               (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
               (formState.page < 40 &&
-                (formState.rankType === RANK_TYPE.DJ || formState.ranktype === RANK_TYPE.FAN) &&
-                formStae.dateType === DATE_TYPE.MONTH) ||
+                (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                formState.dateType === DATE_TYPE.MONTH) ||
               (formState.page < 60 &&
-                (formState.rankType === RANK_TYPE.DJ || formState.ranktype === RANK_TYPE.FAN) &&
-                formStae.dateType === DATE_TYPE.YEAR))
+                (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                formState.dateType === DATE_TYPE.YEAR))
           ) {
             if (!fetching) {
               if (!didFetch) {
