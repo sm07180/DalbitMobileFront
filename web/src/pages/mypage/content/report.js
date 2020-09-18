@@ -67,7 +67,7 @@ export default (props) => {
     pickdata: false
   })
 
-  const [active, setActive] = useState(2)
+  const [active, setActive] = useState(0)
   const [selectType, setSelectType] = useState(0)
   const [moreState, setMoreState] = useState(false)
   const [currentPickdata, setCurrentPickdata] = useState()
@@ -159,7 +159,6 @@ export default (props) => {
       })
     }
   }
-
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
@@ -169,14 +168,14 @@ export default (props) => {
   let dateDefault = ''
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
-    pickdataPrev: dateWeekAgo,
+    pickdataPrev: dateToday,
     pickdataNext: dateToday
   })
   const [dateprev, setDateprev] = useState('')
   const [datenext, setDatenext] = useState('')
   //---------------------------------------------------------------------
   const afterSelected = () => {
-    setActive(2)
+    setActive(4)
     setPickerCssOn(true)
   }
   //datepicker에서 올려준 값 받아서 pickdata 바로 변경하기
@@ -222,7 +221,7 @@ export default (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setActive(2)
+      setActive(0)
       setPickerCssOn(false)
     }, 10)
   }, [])
@@ -231,7 +230,7 @@ export default (props) => {
   const setType = (value) => {
     setSelectType(value)
     //setMoreState(false)
-    setActive(2)
+    setActive(0)
     setBroadData([])
     setListenData([])
     setResultState(1)
@@ -240,7 +239,7 @@ export default (props) => {
     setlistentotal([])
     setResultState(1)
     setPickerCssOn(false)
-    setChanges({pickdataPrev: dateWeekAgo, pickdataNext: dateToday})
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
   }
   //date format
   const dateFormat = (strFormatFromServer) => {
@@ -278,17 +277,17 @@ export default (props) => {
 
   const Toggletab = () => {
     setResultState(-1)
-    setActive(2)
+    setActive(0)
     setBroadData([])
     setListenData([])
 
     setbroadtotal([])
     setlistentotal([])
     setPickerCssOn(false)
-    setChanges({pickdataPrev: dateWeekAgo, pickdataNext: dateToday})
+    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
     ctx.action.updateReportDate({
-      type: 2,
-      prev: dateWeekAgo,
+      type: 0,
+      prev: dateToday,
       next: dateToday
     })
 
@@ -345,7 +344,7 @@ export default (props) => {
   }
   useEffect(() => {
     ctx.action.updateReportDate({
-      type: 2,
+      type: 0,
       prev: changes.pickdataPrev,
       next: changes.pickdataNext
     })

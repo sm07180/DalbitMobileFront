@@ -73,28 +73,28 @@ export default (props) => {
     }
   }, [logoChange])
 
-   useEffect(() => {
-     async function alarmCheck() {
-       const {result, data} = await Api.mypage_alarm_check()
-       if (result === 'success') {
-         const {newCnt} = data
-         if (newCnt > 0) {
-           setNewAlarm(true)
-         }
-       }
-     }
+  useEffect(() => {
+    async function alarmCheck() {
+      const {result, data} = await Api.mypage_alarm_check()
+      if (result === 'success') {
+        const {newCnt} = data
+        if (newCnt > 0) {
+          setNewAlarm(true)
+        }
+      }
+    }
 
     if (!newAlarm) {
       alarmCheck()
       alarmCheckIntervalId = setInterval(alarmCheck, 5000)
     }
 
-     return () => {
-       if (alarmCheckIntervalId) {
-         clearInterval(alarmCheckIntervalId)
-       }
-     }
-   }, [])
+    return () => {
+      if (alarmCheckIntervalId) {
+        clearInterval(alarmCheckIntervalId)
+      }
+    }
+  }, [])
 
   return (
     <>
@@ -129,7 +129,7 @@ export default (props) => {
           </h1>
         )}
         <div className="icon-wrap">
-          {/* {newAlarm === true ? (
+          {newAlarm === true ? (
             <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
               <Lottie
                 options={{
@@ -143,7 +143,7 @@ export default (props) => {
             <button onClick={() => moveToLogin('alarm')}>
               <img className="icon" src={Alarm} alt="알람버튼" />
             </button>
-          )} */}
+          )}
 
           {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}

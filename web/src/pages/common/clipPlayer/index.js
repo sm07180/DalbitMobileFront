@@ -35,7 +35,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              if (sessionStorage.getItem('onCall') === 'true') return null
+              if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerPause')
               globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
@@ -48,7 +48,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
-              if (sessionStorage.getItem('onCall') === 'true') return null
+              if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerStart')
               globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
