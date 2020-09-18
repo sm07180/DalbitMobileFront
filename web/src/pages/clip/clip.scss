@@ -479,17 +479,26 @@
           max-height: 330px;
           padding: 10px;
           margin-bottom: 10px;
-          background-color: rgba(0, 0, 0, 0.3);
           background-size: cover;
           background-position: center center;
           background-repeat: no-repeat;
           overflow: hidden;
           border-radius: 16px;
           box-sizing: border-box;
-
+          .dim {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+          }
           .topWrap {
             display: flex;
             justify-content: space-between;
+            position: relative;
+            z-index: 2;
             &__count {
               display: flex;
               align-items: center;
@@ -514,10 +523,9 @@
           .bottomWrap {
             display: flex;
             flex-direction: column;
-
+            z-index: 2;
             position: absolute;
             bottom: 10px;
-
             &__typeIcon {
               width: 26px;
               background-color: rgba(254, 189, 86, 0.5);

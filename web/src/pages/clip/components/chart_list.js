@@ -248,6 +248,7 @@ export default (props) => {
                   <p className="bottomWrap__nick">{nickName}</p>
                   <p className="bottomWrap__title">{title}</p>
                 </div>
+                <div className="dim"></div>
               </li>
             )
           })}
