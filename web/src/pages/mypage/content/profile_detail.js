@@ -434,13 +434,15 @@ export default (props) => {
             </span>
           </strong>
         </div>
-        {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>}
-        {profile.isNew === true ? (
+        {/* {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>} */}
+        {profile.isSpecial === true ? (
+          <span className="specialIcon">스페셜 DJ</span>
+        ) : profile.isNew === true ? (
           <span className="newIcon">신입 DJ</span>
         ) : profile.isNewListener === true ? (
           <span className="newIcon">신입청취자</span>
         ) : (
-          <span className="blind">신입</span>
+          <span className="blind">no badge</span>
         )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}

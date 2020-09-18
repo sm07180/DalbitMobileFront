@@ -21,17 +21,6 @@ export default () => {
         if (Array.isArray(list) && list.length) {
           setRedirectList(list)
           context.action.updateIsDevIp(true)
-        } else {
-          let appBuild = customHeader['appBuild']
-          if (appBuild === undefined) appBuild = 0
-          if (
-            (customHeader['os'] === OS_TYPE['Android'] && appBuild > 28) ||
-            (customHeader['os'] === OS_TYPE['IOS'] && appBuild > 136)
-          ) {
-            context.action.updateIsDevIp(true)
-          } else {
-            context.action.updateIsDevIp(false)
-          }
         }
       })
   }, [])

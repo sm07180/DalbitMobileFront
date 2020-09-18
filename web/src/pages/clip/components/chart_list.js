@@ -104,24 +104,28 @@ export default (props) => {
       return (
         <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
+            {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
             <img src={bgImg[`thumb190x190`]} alt={title} />
             <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
           <div className="textBox">
-            <p className="textBox__subject">{title} </p>
-            <p className="textBox__nickName">{nickName}</p>
-            <div className="textBox__iconBox">
-              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
-              {isSpecial && <span className="specialIcon">S</span>}
-              <span className="textBox__iconBox--type">
+            <p className="textBox__subject">
+              <p className="textBox__iconBox--type">
                 {clipType.map((ClipTypeItem, index) => {
                   if (ClipTypeItem.value === subjectType) {
                     return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
                   }
                 })}
-              </span>
+              </p>
+
+              <i className="line"></i>
+              <span>{title}</span>
+            </p>
+            <p className="textBox__nickName">
               {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-            </div>
+              {nickName}
+            </p>
+
             <div className="textBox__detail">
               <span className="textBox__detail--item">
                 <img src={playIcon} width={16} />
