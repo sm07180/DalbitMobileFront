@@ -233,7 +233,7 @@
     }
     &__titleBox {
       display: flex;
-      justify-content: space-between;
+      // justify-content: space-between;
       align-items: center;
       padding: 16px 16px 8px 16px;
       box-sizing: border-box;
@@ -252,7 +252,7 @@
       .sequenceBox {
         display: flex;
         align-items: center;
-
+        margin-left: auto;
         .sequenceItem {
           display: flex;
           align-items: center;
@@ -651,6 +651,35 @@
     }
     100% {
       transform: rotate(-360deg);
+    }
+  }
+  .sortTypeWrap {
+    .sortBtn {
+      font-size: 18px;
+      font-weight: normal;
+      letter-spacing: -0.36px;
+      text-align: left;
+      color: #000000;
+      margin-left: 12px;
+      &:nth-child(1) {
+        position: relative;
+        &:after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          right: -6px;
+          transform: translateY(-50%);
+          width: 1px;
+          height: 12px;
+          background-color: #e0e0e0;
+        }
+      }
+      &.active {
+        font-size: 18px;
+        letter-spacing: -0.36px;
+        font-weight: 800;
+        color: #632beb;
+      }
     }
   }
 }
