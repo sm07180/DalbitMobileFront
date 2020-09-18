@@ -382,8 +382,7 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        let dataString = JSON.stringify(event.detail)
-        dataString = {...dataString, ...{playerState: 'paused'}}
+        let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
