@@ -80,7 +80,7 @@ export default function ClipHistory() {
       return (
         <div className="uploadList">
           {historyList.map((item, idx) => {
-            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, gender} = item
+            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, replyCnt, subjectType, title, gender} = item
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
@@ -108,8 +108,10 @@ export default function ClipHistory() {
                     <strong className="uploadList__title">{title}</strong>
                     <em className="uploadList__nickName">{nickName}</em>
                     <div className="uploadList__cnt">
-                      <em className="uploadList__cnt play">{playCnt}</em>
-                      <em className="uploadList__cnt like">{goodCnt}</em>
+                      <em className="uploadList__cnt message">{replyCnt}</em>
+                      <em className="uploadList__cnt like">
+                        {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                      </em>
                       {/* <em className="uploadList__cnt star">
                         {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
                       </em> */}
