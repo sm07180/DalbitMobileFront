@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
+import React, {useState, useEffect, useContext, useReducer, useCallback} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -70,6 +70,10 @@ export default (props) => {
     filterList: [],
     allChecked: true
   })
+  const [totalCnt, setTotalCnt] = useState(0)
+  const [showFilter, setShowFilter] = useState(false)
+  const [isFiltering, setIsFiltering] = useState(false)
+
   const [totalPage, setTotalPage] = useState(1)
   const [totalCoin, setTotalCoin] = useState(null)
   const [searching, setSearching] = useState(true)
@@ -78,10 +82,10 @@ export default (props) => {
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
   const [page, setPage] = useState(1)
   const changeCoinTypeClick = (type) => {
-    setCoinType(type)
-
-    setcontrollState(!controllState)
-    setWalletType(0)
+    formDispatch({
+      type: 'type',
+      val: type
+    })
   }
 
   const returnCoinText = (t) => {
@@ -90,45 +94,7 @@ export default (props) => {
   const returnCoinImg = (t) => {
     return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
-  async function fetchData(next) {
-    currentPage = next ? ++currentPage : currentPage
-    const response = await Api.mypage_wallet_inquire({
-      coinType,
-      walletType,
-      page: currentPage,
-      records: 15
-    })
-    if (response.result === 'success') {
-      setSearching(false)
-      const {list, dalTotCnt, byeolTotCnt, paging} = response.data
-      if (coinType === 'dal') {
-        setTotalCoin(dalTotCnt)
-      } else if (coinType === 'byeol') {
-        setTotalCoin(byeolTotCnt)
-      }
-      if (response.code === '0') {
-        if (next !== 'next') {
-          setListDetailed(false)
-        }
-        moreState = false
-      } else {
-        if (next) {
-          moreState = true
-          setNextList(response.data.list)
-        } else {
-          setListDetailed(response.data.list)
-          fetchData('next')
-        }
-      }
-    } else {
-    }
-  }
 
-  //재조회 및 초기조회
-  useEffect(() => {
-    currentPage = 1
-    fetchData()
-  }, [coinType, walletType, page])
   //스크롤 콘켓
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
@@ -332,14 +298,14 @@ export default (props) => {
       <Wrap>
         <TitleWrap>
           <CoinTypeBtn
-            className={coinType === 'dal' ? 'active' : ''}
+            className={formState.coinType === 'dal' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('dal')
             }}>
             달
           </CoinTypeBtn>
           <CoinTypeBtn
-            className={coinType === 'byeol' ? 'active' : ''}
+            className={formState.coinType === 'byeol' ? 'active' : ''}
             onClick={() => {
               changeCoinTypeClick('byeol')
             }}>
@@ -348,16 +314,16 @@ export default (props) => {
         </TitleWrap>
 
         <CoinCountingView>
-          <CoinCurrentStatus className={coinType === 'dal' ? 'active' : ''}>
-            <span className="text">{`현재 보유 ${returnCoinText(coinType)}:`}</span>
+          <CoinCurrentStatus className={formState.coinType === 'dal' ? 'active' : ''}>
+            <span className="text">{`현재 보유 ${returnCoinText(formState.coinType)}:`}</span>
             <span className="current-value">
               {totalCoin !== null && Number(totalCoin).toLocaleString()}
-              {coinType === 'byeol' ? <em>별</em> : <em>달</em>}
+              {formState.coinType === 'byeol' ? <em>별</em> : <em>달</em>}
             </span>
           </CoinCurrentStatus>
 
           <div>
-            {coinType === 'dal' ? (
+            {formState.coinType === 'dal' ? (
               <>
                 {context.customHeader['os'] === OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
@@ -416,15 +382,7 @@ export default (props) => {
             )}
           </div>
         </CoinCountingView>
-        <List
-          searching={searching}
-          coinType={coinType}
-          walletType={walletType}
-          walletData={listDetailed}
-          returnCoinText={returnCoinText}
-          setWalletType={setWalletType}
-          controllState={controllState}
-        />
+        <List searching={searching} walletData={listDetailed} returnCoinText={returnCoinText} controllState={controllState} />
       </Wrap>
     </div>
   )
