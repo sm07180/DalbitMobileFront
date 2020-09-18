@@ -22,12 +22,55 @@ import Header from '../component/header.js'
 // concat
 let currentPage = 1
 let timer
-let moreState = false
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'page':
+      return {
+        ...state,
+        currentPage: action.val
+      }
+    case 'filter':
+      if (
+        action.val.every((v) => {
+          return !v.checked
+        })
+      ) {
+        return {
+          ...state,
+          currentPage: 1,
+          filterList: action.val,
+          allChecked: true
+        }
+      } else {
+        return {
+          ...state,
+          currentPage: 1,
+          filterList: action.val,
+          allChecked: false
+        }
+      }
+
+    case 'type':
+      return {
+        coinType: action.val,
+        currentPage: 1,
+        filterList: [],
+        allChecked: true
+      }
+  }
+}
+
 export default (props) => {
   let history = useHistory()
   const context = useContext(Context)
-  const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
-  const [walletType, setWalletType] = useState(0) // 전체: 0, 구매: 1, 선물: 2, 교환: 3
+
+  const [formState, formDispatch] = useReducer(reducer, {
+    coinType: 'dal',
+    currentPage: 1,
+    filterList: [],
+    allChecked: true
+  })
+  const [totalPage, setTotalPage] = useState(1)
   const [totalCoin, setTotalCoin] = useState(null)
   const [searching, setSearching] = useState(true)
   const [controllState, setcontrollState] = useState(false)
@@ -164,9 +207,123 @@ export default (props) => {
     mypageNewStg.byeol = byeol === undefined || byeol === null || byeol === '' ? 0 : byeol
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
+
+  const fetchPop = useCallback(
+    async function () {
+      const res = await Api.getMypageWalletPop({
+        walletType: formState.coinType === 'dal' ? 1 : 0
+      })
+
+      if (res.result === 'success') {
+        if (res.data.list instanceof Array && res.data.list.length > 0) {
+          let cnt = 0
+          res.data.list.forEach((v) => {
+            cnt += v.cnt
+            v.checked = false
+          })
+          formDispatch({
+            type: 'filter',
+            val: res.data.list
+          })
+          setTotalCnt(cnt)
+        }
+      }
+    },
+    [formState.coinType]
+  )
+
+  const fetchData = useCallback(
+    async function () {
+      let walletCode = ''
+
+      if (formState.filterList.length > 0) {
+        if (formState.allChecked === true) {
+          walletCode = 0
+        } else {
+          walletCode = formState.filterList
+            .filter((v) => {
+              return v.checked
+            })
+            .reduce((acc, cur, idx, self) => {
+              if (self.length - 1 === idx) {
+                return acc + cur.walletCode
+              } else {
+                return acc + cur.walletCode + '|'
+              }
+            }, walletCode)
+        }
+        const res = await Api.getMypageWalletList({
+          walletType: formState.coinType === 'dal' ? 1 : 0,
+          walletCode: walletCode,
+          page: formState.currentPage,
+          records: 15
+        })
+
+        if (res.result === 'success') {
+          if (formState.currentPage > 1) {
+            setListDetailed(listDetailed.concat(res.data.list))
+          } else {
+            setListDetailed(res.data.list)
+          }
+          if (formState.coinType === 'dal') {
+            setTotalCoin(res.data.dalTotCnt)
+          } else {
+            setTotalCoin(res.data.byeolTotCnt)
+          }
+
+          if (res.data.paging) {
+            setTotalPage(res.data.paging.totalPage)
+          } else {
+            setTotalPage(1)
+          }
+        } else {
+          setListDetailed([])
+          setTotalPage(1)
+        }
+      } else {
+      }
+    },
+    [formState, listDetailed]
+  )
+
+  useEffect(() => {
+    fetchData()
+  }, [formState])
+
+  useEffect(() => {
+    fetchPop()
+  }, [formState.coinType])
+
   useEffect(() => {
     getMyPageNewWallet()
   }, [])
+
+  useEffect(() => {
+    if (formState.filterList instanceof Array && formState.filterList.length > 0) {
+      let cnt = 0
+      if (formState.allChecked === true) {
+        formState.filterList.forEach((v) => {
+          cnt += v.cnt
+        })
+      } else {
+        formState.filterList.forEach((v) => {
+          if (v.checked) cnt += v.cnt
+        })
+      }
+
+      setTotalCnt(cnt)
+
+      setIsFiltering(!formState.allChecked)
+    }
+  }, [formState.filterList, formState.allChecked])
+
+  useEffect(() => {
+    if (showFilter) {
+      document.body.style.overflowY = 'hidden'
+    } else {
+      document.body.style.overflowY = ''
+    }
+  }, [showFilter])
 
   return (
     <div>
