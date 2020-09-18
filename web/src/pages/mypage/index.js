@@ -61,10 +61,18 @@ export default (props) => {
   let mypageNavList
 
   if (sessionStorage.getItem('webview') === 'new') {
-    mypageNavList = [
-      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
-    ]
+    if (__NODE_ENV === 'dev') {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+        {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+      ]
+    } else {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+      ]
+    }
   } else {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
