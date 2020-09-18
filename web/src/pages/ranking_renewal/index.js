@@ -21,7 +21,7 @@ import LevelListWrap from './components/level_list'
 import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
 //constant
-import {RANK_TYPE} from './constant'
+import {DATE_TYPE, RANK_TYPE} from './constant'
 
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './index.scss'
@@ -381,7 +381,18 @@ function Ranking() {
         const diff = document.body.scrollHeight / (formState.page + 1)
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
-          if (totalPage > formState.page && formState.page < 25) {
+          if (
+            totalPage > formState.page &&
+            ((formState.page < 20 &&
+              (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+              (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
+              (formState.page < 40 &&
+                (formState.rankType === RANK_TYPE.DJ || formState.ranktype === RANK_TYPE.FAN) &&
+                formStae.dateType === DATE_TYPE.MONTH) ||
+              (formState.page < 60 &&
+                (formState.rankType === RANK_TYPE.DJ || formState.ranktype === RANK_TYPE.FAN) &&
+                formStae.dateType === DATE_TYPE.YEAR))
+          ) {
             if (!fetching) {
               if (!didFetch) {
                 formDispatch({
