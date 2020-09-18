@@ -26,18 +26,18 @@ function WalletPop({formState, formDispatch, setShowFilter}) {
 
   const allCheckEv = useCallback(() => {
     if (allChecked === true) {
-      setAllChecked(false)
-      setFilter(
-        filter.map((v) => {
-          v.checked = false
-          return v
-        })
-      )
+      // setAllChecked(false)
+      // setFilter(
+      //   filter.map((v) => {
+      //     v.checked = false
+      //     return v
+      //   })
+      // )
     } else {
       setAllChecked(true)
       setFilter(
         filter.map((v) => {
-          v.checked = true
+          v.checked = false
           return v
         })
       )

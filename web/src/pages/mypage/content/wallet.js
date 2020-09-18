@@ -43,7 +43,8 @@ const reducer = (state, action) => {
       return {
         coinType: action.val,
         currentPage: 1,
-        filterList: []
+        filterList: [],
+        allChecked: true
       }
   }
 }
@@ -55,7 +56,8 @@ export default (props) => {
   const [formState, formDispatch] = useReducer(reducer, {
     coinType: 'dal',
     currentPage: 1,
-    filterList: []
+    filterList: [],
+    allChecked: true
   })
   const [totalPage, setTotalPage] = useState(1)
   const [totalCoin, setTotalCoin] = useState(null)
@@ -216,7 +218,7 @@ export default (props) => {
           let cnt = 0
           res.data.list.forEach((v) => {
             cnt += v.cnt
-            v.checked = true
+            v.checked = false
           })
           formDispatch({
             type: 'filter',
@@ -234,11 +236,7 @@ export default (props) => {
       let walletCode = ''
 
       if (formState.filterList.length > 0) {
-        if (
-          formState.filterList.every((v) => {
-            return v.checked
-          })
-        ) {
+        if (formState.allChecked === true) {
           walletCode = 0
         } else {
           walletCode = formState.filterList
