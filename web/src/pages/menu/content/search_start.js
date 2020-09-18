@@ -27,6 +27,7 @@ export default (props) => {
   const [liveGender, setLiveGender] = useState('')
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
 
   const fetchLiveList = async (reset) => {
     setLiveList(null)
@@ -55,6 +56,17 @@ export default (props) => {
   }
   useEffect(() => {
     resetFetchList()
+    Api.splash().then((res) => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          const concatenated = categoryList.concat(roomType)
+          setCategoryList(concatenated)
+        }
+      }
+    })
   }, [selectedLiveRoomType])
 
   return (
@@ -62,7 +74,7 @@ export default (props) => {
       <div className="liveList">
         {Array.isArray(liveList) ? (
           liveList.length > 0 ? (
-            <LiveList list={liveList} liveListType="detail" type="search" />
+            <LiveList list={liveList} liveListType="detail" categoryList={categoryList} type="search" />
           ) : (
             <NoResult />
           )

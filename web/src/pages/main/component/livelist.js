@@ -22,7 +22,6 @@ const makeContents = (props) => {
   const context = useContext(Context)
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
-
   return list.map((list, idx) => {
     const {
       roomNo,
@@ -75,26 +74,28 @@ const makeContents = (props) => {
         key={`live-${idx}`}
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
-
         {os === 3 && <i className="iconPc">PC</i>}
-
         {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
 
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
-            {/* <div className="icon-wrap">
-              {categoryList && (
-                <div className="type-text">
-                  {(() => {
-                    const target = categoryList.find((category) => category['cd'] === roomType)
-                    if (target && target['cdNm']) {
-                      return target['cdNm']
-                    }
-                  })()}
-                </div>
-              )}
-            </div> */}
             <div className="title">
+              <p className="category">
+                {categoryList && (
+                  <>
+                    {(() => {
+                      const target = categoryList.find((category) => category['cd'] === roomType)
+                      if (target && target['cdNm']) {
+                        return target['cdNm']
+                      }
+                    })()}
+                  </>
+                )}
+              </p>
+              <i className="line"></i>
+              <span>{title}</span>
+            </div>
+            {/* <div className="title">
               <p className="category">
                 {liveListType === 'detail' ? (
                   <>
@@ -112,7 +113,7 @@ const makeContents = (props) => {
 
               <i className="line"></i>
               <span>{title}</span>
-            </div>
+            </div> */}
             <div className="nickname">
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}

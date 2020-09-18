@@ -75,19 +75,19 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      if (!newAlarm) {
-        const {result, data} = await Api.mypage_alarm_check()
-        if (result === 'success') {
-          const {newCnt} = data
-          if (newCnt > 0) {
-            setNewAlarm(true)
-          }
+      const {result, data} = await Api.mypage_alarm_check()
+      if (result === 'success') {
+        const {newCnt} = data
+        if (newCnt > 0) {
+          setNewAlarm(true)
         }
       }
     }
 
-    alarmCheck()
-    alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+    if (!newAlarm) {
+      alarmCheck()
+      alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+    }
 
     return () => {
       if (alarmCheckIntervalId) {
