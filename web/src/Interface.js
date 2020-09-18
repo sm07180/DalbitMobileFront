@@ -479,8 +479,7 @@ export default () => {
         if (onCall === true) {
           alert(1)
           sessionStorage.setItem('onCall', 'on')
-        }
-        if (onCall === false) {
+        } else if (onCall === false) {
           alert(2)
           sessionStorage.removeItem('onCall')
         } else {
