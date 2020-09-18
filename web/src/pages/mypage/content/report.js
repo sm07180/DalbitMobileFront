@@ -58,7 +58,7 @@ const selectBoxData = [
 
 let currentPage = 1
 let timer
-
+let moreState = false
 export default (props) => {
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -67,9 +67,9 @@ export default (props) => {
     pickdata: false
   })
 
-  const [active, setActive] = useState(0)
+  const [active, setActive] = useState(2)
   const [selectType, setSelectType] = useState(0)
-  const [moreState, setMoreState] = useState(false)
+
   const [currentPickdata, setCurrentPickdata] = useState()
   const [pickerState, setPickerState] = useState(true)
   const [broadData, setBroadData] = useState([])
@@ -102,10 +102,10 @@ export default (props) => {
           setBroadData([])
           setResultState(0)
         }
-        setMoreState(false)
+        moreState = false
       } else {
         if (next) {
-          setMoreState(true)
+          moreState = true
           setNextList(res.data.list)
         } else {
           setBroadData(res.data.list)
@@ -141,10 +141,10 @@ export default (props) => {
           setListenData([])
           setResultState(0)
         }
-        setMoreState(false)
+        moreState = false
       } else {
         if (next) {
-          setMoreState(true)
+          moreState = true
           setNextList(res.data.list)
         } else {
           setListenData(res.data.list)
@@ -159,6 +159,7 @@ export default (props) => {
       })
     }
   }
+
   //생년월일 유효성에서 계산할 현재 년도 date
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
@@ -168,7 +169,7 @@ export default (props) => {
   let dateDefault = ''
   // changes 초기값 셋팅
   const [changes, setChanges] = useState({
-    pickdataPrev: dateToday,
+    pickdataPrev: dateWeekAgo,
     pickdataNext: dateToday
   })
   const [dateprev, setDateprev] = useState('')
@@ -221,7 +222,7 @@ export default (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      setActive(0)
+      setActive(2)
       setPickerCssOn(false)
     }, 10)
   }, [])
@@ -230,7 +231,7 @@ export default (props) => {
   const setType = (value) => {
     setSelectType(value)
     //setMoreState(false)
-    setActive(0)
+    setActive(2)
     setBroadData([])
     setListenData([])
     setResultState(1)
@@ -239,7 +240,7 @@ export default (props) => {
     setlistentotal([])
     setResultState(1)
     setPickerCssOn(false)
-    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
+    setChanges({pickdataPrev: dateWeekAgo, pickdataNext: dateToday})
   }
   //date format
   const dateFormat = (strFormatFromServer) => {
@@ -277,17 +278,17 @@ export default (props) => {
 
   const Toggletab = () => {
     setResultState(-1)
-    setActive(0)
+    setActive(2)
     setBroadData([])
     setListenData([])
 
     setbroadtotal([])
     setlistentotal([])
     setPickerCssOn(false)
-    setChanges({pickdataPrev: dateToday, pickdataNext: dateToday})
+    setChanges({pickdataPrev: dateWeekAgo, pickdataNext: dateToday})
     ctx.action.updateReportDate({
-      type: 0,
-      prev: dateToday,
+      type: 2,
+      prev: dateWeekAgo,
       next: dateToday
     })
 
@@ -344,7 +345,7 @@ export default (props) => {
   }
   useEffect(() => {
     ctx.action.updateReportDate({
-      type: 0,
+      type: 2,
       prev: changes.pickdataPrev,
       next: changes.pickdataNext
     })
@@ -483,7 +484,6 @@ export default (props) => {
                         </MobileDetailTab>
                       )
                     })}
-
                   {selectType === 1 &&
                     listenData.map((value, idx) => {
                       const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)
