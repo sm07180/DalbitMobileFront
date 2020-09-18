@@ -13,7 +13,7 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
-import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
+import {clipJoin, clipExit, backFunc} from 'pages/common/clipPlayer/clip_func'
 
 //util
 import Utility from 'components/lib/utility'
@@ -470,6 +470,12 @@ export default () => {
         //   alert('event:native-back-click')
         // }
         Hybrid('goBack')
+        if (context.backState === null) {
+          Hybrid('goBack')
+        } else {
+          backFunc('', context)
+        }
+        // break
         break
       case 'native-call-state': //---------- 안드로이드 전화 on/off 발생
         const {onCall} = event.detail
@@ -478,12 +484,12 @@ export default () => {
         } else if (onCall === false) {
           sessionStorage.removeItem('onCall')
         }
-        break
       default:
         break
     }
   }
-
+  console.log(context.backState)
+  console.log(context.backState)
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
     if (data === undefined) return null
@@ -774,7 +780,6 @@ export default () => {
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
       document.removeEventListener('native-close-layer-popup', update)
-      document.removeEventListener('native-back-click', update)
     }
   }, [])
 
@@ -789,6 +794,13 @@ export default () => {
       document.removeEventListener('native-clip-record', update)
     }
   }, [context.token])
+  useEffect(() => {
+    document.addEventListener('native-back-click', update)
+    return () => {
+      document.removeEventListener('native-back-click', update)
+    }
+  }, [context.backState])
+
   return (
     <React.Fragment>
       <Room />

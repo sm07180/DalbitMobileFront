@@ -4,6 +4,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useParams} from 'react-router-dom'
 import {useLocation, useHistory} from 'react-router-dom'
+import {backFunc} from 'pages/common/clipPlayer/clip_func'
 //modules
 import qs from 'query-string'
 // context
@@ -198,6 +199,42 @@ export default (props) => {
     return () => {
       currentPage = 1
     }
+  }, [])
+
+  if (writeState === true) {
+    context.action.updateSetBack(setWriteState(false))
+  } else {
+    context.action.updateSetBack(null)
+  }
+
+  // window.onpopstate = function (event) {
+  //   history.pushState(null, null, location.href)
+  //   if (writeState === true) {
+  //     context.action.updateSetBack(true)
+  //     setWriteState(false)
+  //   }
+  // }
+  // window.onpageshow = function (event) {
+  //   if (event.persisted) {
+  //     context.action.updateSetBack(true)
+  //     setWriteState(false)
+  //   }
+  // }
+  // if (writeState === true) {
+  //   document.addEventListener('backbutton', setWriteState(false), false)
+  // }
+  // if (writeState === true) {
+  //   history.pushState(null, null, location.href)
+  //   setWriteState(false)
+  // }
+
+  useEffect(() => {
+    // if (context.backState) {
+    //   setWriteState(false)
+    // }
+    // return () => {
+    //   context.action.updateSetBack(null)
+    // }
   }, [])
 
   //--------------------------------------------------
