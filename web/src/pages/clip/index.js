@@ -23,8 +23,10 @@ import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 // header scroll flag
 let tempScrollEvent = null
+let randomData = Math.random() >= 0.5 ? 0 : 4
 export default (props) => {
   const context = useContext(Context)
+
   let history = useHistory()
   //fixed category
   const recomendRef = useRef()
@@ -57,7 +59,7 @@ export default (props) => {
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
-  const [selectType, setSelectType] = useState(0)
+  const [selectType, setSelectType] = useState(randomData)
   // top3 list
   const [listTop3, setListTop3] = useState({})
   const [top3On, setTop3On] = useState(false)
@@ -319,7 +321,7 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
-  useEffect(() => {}, [])
+
   return (
     <Layout {...props} status="no_gnb">
       <Header title="클립" />
