@@ -39,30 +39,7 @@ export default (props) => {
           switch (push_type + '') {
             case '1': //-----------------방송방 [room_no]
               room_no = context.stickerMsg.room_no
-
-              if (context.adminChecker === true) {
-                context.action.confirm_admin({
-                  //콜백처리
-                  callback: () => {
-                    RoomJoin({
-                      roomNo: room_no,
-                      shadow: 1
-                    })
-                  },
-                  //캔슬콜백처리
-                  cancelCallback: () => {
-                    RoomJoin({
-                      roomNo: room_no,
-                      shadow: 0
-                    })
-                  },
-                  msg: '관리자로 입장하시겠습니까?'
-                })
-              } else {
-                RoomJoin({
-                  roomNo: room_no
-                })
-              }
+              RoomJoin({roomNo: room_no})
               break
             case '2': //------------------메인
               window.location.href = '/'

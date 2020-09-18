@@ -121,42 +121,6 @@ function LikeList({empty}) {
                     <span className="bestFanBox__icon">{fanGoodCnt}</span>
                   </div>
                 </div>
-
-                {/* {roomNo !== '' && (
-                    <div className="liveBox">
-                      <img
-                        src={live}
-                        onClick={() => {
-                          if (context.adminChecker === true) {
-                            context.action.confirm_admin({
-                              //콜백처리
-                              callback: () => {
-                                RoomJoin({
-                                  roomNo: roomNo,
-                                  shadow: 1
-                                })
-                              },
-                              //캔슬콜백처리
-                              cancelCallback: () => {
-                                RoomJoin({
-                                  roomNo: roomNo,
-                                  shadow: 0
-                                })
-                              },
-                              msg: '관리자로 입장하시겠습니까?'
-                            })
-                          } else {
-                            RoomJoin({
-                              roomNo: roomNo
-                            })
-                          }
-                        }}
-                        className="liveBox__img"
-                      />
-                      <br />
-                      LIVE
-                    </div>
-                  )} */}
               </li>
             )
           })

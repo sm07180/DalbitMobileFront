@@ -66,6 +66,21 @@ export default function MyProfile() {
   const createMyProfile = useCallback(() => {
     const {myUpDown} = myInfo
 
+    if (
+      ((formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK) && myInfo.myRank > 1000) ||
+      (formState.dateType === DATE_TYPE.MONTH && myInfo.myRank > 2000) ||
+      (formState.dateType === DATE_TYPE.YEAR && myInfo.myRank > 3000)
+    ) {
+      return (
+        <>
+          <p className="myRanking__left--now colorWhite myRanking__left--text">순위 없음</p>
+          <p className="rankingChange">
+            <span></span>
+          </p>
+        </>
+      )
+    }
+
     let myUpDownName,
       myUpDownValue = ''
     if (myUpDown[0] === '+') {
@@ -80,7 +95,14 @@ export default function MyProfile() {
     } else {
       myUpDownName = `rankingChange__stop`
     }
-    return <span className={myUpDownName}>{myUpDownValue}</span>
+    return (
+      <>
+        <p className={`myRanking__left--now colorWhite ${myInfo.myRank === 0 ? 'myRanking__left--text' : ''}`}>
+          {myInfo.myRank === 0 ? '순위 없음' : myInfo.myRank}
+        </p>
+        <p className="rankingChange">{myInfo.myRank === 0 ? '' : <span className={myUpDownName}>{myUpDownValue}</span>}</p>
+      </>
+    )
   }, [myInfo])
 
   useEffect(() => {
@@ -140,8 +162,7 @@ export default function MyProfile() {
                   ">
                     내 랭킹
                   </p>
-                  <p className="myRanking__left--now colorWhite">{myInfo.myRank === 0 ? '' : myInfo.myRank}</p>
-                  <p className="rankingChange">{createMyProfile()}</p>
+                  {createMyProfile()}
                 </div>
 
                 <div className="thumbBox thumbBox__profile">
