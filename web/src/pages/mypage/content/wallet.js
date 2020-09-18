@@ -174,8 +174,6 @@ export default (props) => {
         if (totalPage > formState.currentPage && windowBottom >= docHeight - diff) {
           // showMoreList()
           if (!fetching) {
-            console.log('fetching', fetching)
-            console.log('currentPage', formState.currentPage)
             formDispatch({
               type: 'page',
               val: formState.currentPage + 1
@@ -298,10 +296,6 @@ export default (props) => {
   useEffect(() => {
     getMyPageNewWallet()
   }, [])
-
-  useEffect(() => {
-    console.log(listDetailed)
-  }, [listDetailed])
 
   useEffect(() => {
     if (formState.filterList instanceof Array && formState.filterList.length > 0) {

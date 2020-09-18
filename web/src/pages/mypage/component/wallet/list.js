@@ -255,6 +255,14 @@ const TopArea = styled.div`
       color: #bdbdbd;
     }
   }
+
+  .table__select {
+    & > button {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+  }
 `
 
 const ListContainer = styled.div`

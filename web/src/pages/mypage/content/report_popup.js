@@ -21,7 +21,7 @@ export default (props) => {
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
   const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
-  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth(), +1)).format('YYYYMMDD')
 
   const {
     active,
