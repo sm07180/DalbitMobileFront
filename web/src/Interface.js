@@ -382,8 +382,10 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        const dataString = JSON.stringify(event.detail)
+        let dataString = JSON.stringify(event.detail)
+        dataString = {...dataString, ...{playerState: 'paused'}}
         Utility.setCookie('clip-player-info', dataString, 100)
+
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
@@ -472,6 +474,20 @@ export default () => {
         //   alert('event:native-back-click')
         // }
         Hybrid('goBack')
+        break
+      case 'native-call-state': //---------- 안드로이드 전화 on/off 발생
+        const {onCall} = event.detail
+        if (onCall === true) {
+          sessionStorage.setItem('onCall', 'on')
+        }
+        if (onCall === false) {
+          sessionStorage.removeItem('onCall')
+        } else {
+          if (__NODE_ENV === 'dev') {
+            alert('onCall 타입', onCall)
+            alert(typeof onCall)
+          }
+        }
         break
       default:
         break
@@ -735,6 +751,7 @@ export default () => {
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
     document.addEventListener('native-back-click', update)
+    document.addEventListener('native-call-state', update)
 
     /*----clip----*/
     document.addEventListener('clip-player-show', update)
@@ -759,6 +776,7 @@ export default () => {
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
+      document.addEventListener('native-call-state', update)
       /*----clip----*/
       document.removeEventListener('clip-player-show', update)
       document.removeEventListener('clip-player-end', update)
