@@ -385,7 +385,6 @@ export default () => {
         let dataString = JSON.stringify(event.detail)
         dataString = {...dataString, ...{playerState: 'paused'}}
         Utility.setCookie('clip-player-info', dataString, 100)
-
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
