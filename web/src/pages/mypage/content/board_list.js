@@ -43,6 +43,13 @@ export default (props) => {
     context.action.updateBoardModifyInfo(null)
     // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
   }
+  //대댓글 클릭시 포커스
+  useEffect(() => {
+    if (context.fanboardReplyNum) {
+      console.log(document.getElementsByClassName('list-item on'))
+      window.scrollTo(0, document.getElementsByClassName('list-item on')[0].offsetTop - 10)
+    }
+  }, [context.fanboardReplyNum])
   // 팬보드 댓글 조회
   async function fetchDataReplyList(boardIdx) {
     const res = await Api.member_fanboard_reply({
