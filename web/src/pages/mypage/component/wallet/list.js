@@ -85,7 +85,7 @@ export default (props) => {
                 <span className={`how-to-get type-${type}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
                 <span className="detail">{contents}</span>
                 <span className="type">
-                  {dalCnt !== undefined ? dalCnt : byeolCnt}
+                  {formState.coinType === 'dal' ? dalCnt : byeolCnt}
                   <em>{returnCoinText(formState.coinType)}</em>
                 </span>
                 <span className="date">{timeFormat(updateDt)}</span>
