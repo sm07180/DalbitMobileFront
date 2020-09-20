@@ -141,29 +141,7 @@ export default (props) => {
         const {roomNo, memNo, type} = mode.select
         //라이브중아님,사용자검색
         if (roomNo !== '' && roomNo !== '0') {
-          if (context.adminChecker === true) {
-            context.action.confirm_admin({
-              //콜백처리
-              callback: () => {
-                RoomJoin({
-                  roomNo: roomNo,
-                  shadow: 1
-                })
-              },
-              //캔슬콜백처리
-              cancelCallback: () => {
-                RoomJoin({
-                  roomNo: roomNo,
-                  shadow: 0
-                })
-              },
-              msg: '관리자로 입장하시겠습니까?'
-            })
-          } else {
-            RoomJoin({
-              roomNo: roomNo
-            })
-          }
+          RoomJoin({roomNo: roomNo})
         } else if (roomNo === '0') {
           history.push(`/mypage/${memNo}/`)
         }

@@ -354,29 +354,7 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              if (context.adminChecker === true) {
-                context.action.confirm_admin({
-                  //콜백처리
-                  callback: () => {
-                    RoomJoin({
-                      roomNo: profile.roomNo,
-                      shadow: 1
-                    })
-                  },
-                  //캔슬콜백처리
-                  cancelCallback: () => {
-                    RoomJoin({
-                      roomNo: profile.roomNo,
-                      shadow: 0
-                    })
-                  },
-                  msg: '관리자로 입장하시겠습니까?'
-                })
-              } else {
-                RoomJoin({
-                  roomNo: profile.roomNo
-                })
-              }
+              RoomJoin({roomNo: profile.roomNo})
             }}>
             <img src={LiveIcon} className="ico-live" />
             <span>Live</span>

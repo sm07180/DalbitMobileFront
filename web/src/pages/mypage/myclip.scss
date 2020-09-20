@@ -165,6 +165,11 @@
             margin-right: 2px;
             width: 16px;
             height: 16px;
+            background: url('./static/message.svg');
+          }
+        }
+        &.play {
+          &:before {
             background: url('./static/clip_play_cnt.svg');
           }
         }
