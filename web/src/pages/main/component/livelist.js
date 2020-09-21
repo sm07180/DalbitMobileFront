@@ -16,7 +16,7 @@ import Util from 'components/lib/utility.js'
 
 // static
 import PeopleIcon from '../static/people_g_s.svg'
-import EntryImg from '../static/person_w_s.svg'
+import EntryImg from '../static/new_person_w_s.svg'
 
 const makeContents = (props) => {
   const context = useContext(Context)
@@ -147,9 +147,9 @@ const makeContents = (props) => {
             </div>
             <div className="bottom-wrap">
               {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
-              <div className="type-icon-wrap">
+              {/* <div className="type-icon-wrap">
                 <img className="type-icon" src={noBgAudioIcon} />
-              </div>
+              </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
             </div>
           </div>
