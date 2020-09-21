@@ -16,7 +16,7 @@ import Util from 'components/lib/utility.js'
 
 // static
 import PeopleIcon from '../static/people_g_s.svg'
-import EntryImg from '../static/person_w_s.svg'
+import EntryImg from '../static/new_person_w_s.svg'
 
 const makeContents = (props) => {
   const context = useContext(Context)
