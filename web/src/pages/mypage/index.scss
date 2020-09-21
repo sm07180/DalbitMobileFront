@@ -1095,7 +1095,6 @@
             margin-left: 10px;
             &__name {
               display: block;
-              height: 20px;
               line-height: 20px;
               max-width: 200px;
               white-space: nowrap;
@@ -1116,10 +1115,10 @@
 
             &__lock {
               display: inline-block;
-              width: 16px;
-              height: 16px;
-              margin-right: 4px;
-              vertical-align: -3px;
+              width: 24px;
+              height: 24px;
+              margin-right: 1px;
+              vertical-align: -6px;
               background: url('./static/lock_g.svg') no-repeat center;
             }
           }
