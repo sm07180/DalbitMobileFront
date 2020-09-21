@@ -13,8 +13,8 @@ import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
-import {clipJoin, clipExit, backFunc} from 'pages/common/clipPlayer/clip_func'
-
+import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
+import {backFunc} from 'components/lib/back_func'
 //util
 import Utility from 'components/lib/utility'
 
@@ -469,11 +469,10 @@ export default () => {
         // if (__NODE_ENV === 'dev') {
         //   alert('event:native-back-click')
         // }
-        Hybrid('goBack')
         if (context.backState === null) {
           Hybrid('goBack')
         } else {
-          backFunc('', context)
+          backFunc(context)
         }
         // break
         break
@@ -488,8 +487,7 @@ export default () => {
         break
     }
   }
-  console.log(context.backState)
-  console.log(context.backState)
+
   const settingSessionInfo = (type) => {
     let data = Utility.getCookie('clip-player-info')
     if (data === undefined) return null
@@ -776,7 +774,7 @@ export default () => {
     return () => {
       document.removeEventListener('native-back-click', update)
     }
-  }, [context.backState])
+  }, [context.backFunction, context.backState])
 
   return (
     <React.Fragment>

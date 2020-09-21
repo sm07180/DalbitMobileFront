@@ -199,42 +199,39 @@ export default (props) => {
       getMyPageNewFanBoard()
     }
   }, [])
-
-  // if (writeState === true) {
-  //   context.action.updateSetBack(setWriteState(false))
-  // } else {
-  //   context.action.updateSetBack(null)
-  // }
-
-  // window.onpopstate = function (event) {
-  //   history.pushState(null, null, location.href)
-  //   if (writeState === true) {
-  //     context.action.updateSetBack(true)
-  //     setWriteState(false)
-  //   }
-  // }
-  // window.onpageshow = function (event) {
-  //   if (event.persisted) {
-  //     context.action.updateSetBack(true)
-  //     setWriteState(false)
-  //   }
-  // }
-  // if (writeState === true) {
-  //   document.addEventListener('backbutton', setWriteState(false), false)
-  // }
-  // if (writeState === true) {
-  //   history.pushState(null, null, location.href)
-  //   setWriteState(false)
-  // }
-
+  //팬보드 안드로이드 접기 로직
   useEffect(() => {
-    // if (context.backState) {
-    //   setWriteState(false)
-    // }
-    // return () => {
-    //   context.action.updateSetBack(null)
-    // }
-  }, [])
+    if (context.backFunction.name === 'booleanType' && !context.backFunction.value) {
+      //글쓰기
+      setWriteState(context.backFunction.value)
+      //댓글닫기
+      context.action.updateFanboardReplyNum(-1)
+      //수정하기 취소
+      if (props.type === 'modify') {
+        props.setCancelModify()
+      }
+      //초기화
+      context.action.updateBackFunction({
+        name: ''
+      })
+      context.action.updateSetBack(null)
+    }
+  }, [context.backFunction])
+  useEffect(() => {
+    //안드로이드 백 이니셜 분기
+    if (writeState || context.fanboardReplyNum !== -1 || context.fanboardReplyNum !== false) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({
+        name: 'booleanType',
+        value: true
+      })
+    } else {
+      context.action.updateSetBack(null)
+    }
+    return () => {
+      context.action.updateSetBack(null)
+    }
+  }, [writeState, context.fanboardReplyNum])
 
   //재조회 및 초기조회
   useEffect(() => {

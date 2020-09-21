@@ -100,6 +100,7 @@ const GlobalProvider = (props) => {
   const [isDevIp, setIsDevIp] = useState(false)
   //back
   const [backState, setBackState] = useState(null)
+  const [backFunction, setBackFunction] = useState({name: ''})
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -413,6 +414,9 @@ const GlobalProvider = (props) => {
     },
     updateSetBack: (boolean) => {
       setBackState(boolean)
+    },
+    updateBackFunction: (obj) => {
+      setBackFunction(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -480,7 +484,8 @@ const GlobalProvider = (props) => {
     isDevIp,
     boardIdx,
     boardModifyInfo,
-    backState
+    backState,
+    backFunction
   }
   return <Provider value={value}>{props.children}</Provider>
 }
