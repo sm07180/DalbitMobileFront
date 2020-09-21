@@ -1,56 +1,33 @@
-import React, {useState, useEffect, useRef, useContext} from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import SelectBox from 'components/ui/selectBox.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {WIDTH_MOBILE} from 'context/config'
 
 import NoResult from 'components/ui/noResult'
 // svg
-import ExBg from '../ex.svg'
+
 import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
 import GiftPinkIcon from '../../static/ic_gift_pink.svg'
 import ExchangeIcon from '../../static/ic_exchange_purple.svg'
 import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
 import MoneyIcon from '../../static/money_blue.svg'
-import Live from '../ic_live.svg'
+
 export default (props) => {
   const {formState, walletData, returnCoinText, totalCnt, isFiltering, setShowFilter} = props
-  let selectorRef = useRef()
+
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(4, 6), date.slice(6)].join('.')
     return `${date}`
   }
-  //--------------------------------------------------------------
-
-  //------------------------------------------------------------
-  const change = (e) => {
-    setWalletType(e)
-  }
 
   return (
     <ListContainer>
-      {/* <SelectBox
-        className="mypage-wallet-select-box"
-        boxList={selectWalletTypeData}
-        onChangeEvent={setWalletType}
-        controllState={controllState}
-      /> */}
-
       <TopArea>
         <span className="title">
           <span className="main">{`${returnCoinText(formState.coinType)} 상세내역`}</span>
           <span className="sub">최근 6개월</span>
         </span>
-
-        {/* <Selector onChange={(e) => change(parseInt(e.target.value))} ref={selectorRef}>
-          <option value={0}>전체</option>
-          <option value={1}>구매</option>
-          <option value={2}>선물</option>
-          <option value={3}>교환</option>
-        </Selector> */}
-        {/* <div className="arrowBtn"></div> */}
       </TopArea>
       <SelectWrap
         onClick={() => {
@@ -58,25 +35,10 @@ export default (props) => {
         }}>
         <button>
           <img src={ArrowDownIcon} />
-          {isFiltering === false ? '전체 내역' : '달 내역'}({totalCnt}건)
+          {isFiltering === false ? '전체 내역' : formState.coinType === 'byeol' ? '별내역' : '달내역'}({totalCnt}건)
         </button>
-
-        {/* <SelectBox state={popurState} dispatch={popurDispatch} /> */}
       </SelectWrap>
       <ListWrap>
-        {/* <div className="list title">
-          <span className="how-to-get">구분</span>
-          <span className="detail">내역</span>
-          <span className="type">{returnCoinText(coinType)}</span>
-          <span className="date">날짜</span>
-        </div> */}
-        {/* {searching ? (
-          <SearchList>
-            {[...Array(10).keys()].map((idx) => (
-              <div className="search-list" key={idx} />
-            ))}
-          </SearchList>
-        ) :  */}
         {Array.isArray(walletData) ? (
           walletData.map((data, index) => {
             const {contents, type, dalCnt, byeolCnt, updateDt} = data
