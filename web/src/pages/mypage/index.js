@@ -291,7 +291,7 @@ export default (props) => {
               </div> */}
             </>
           ) : (
-            <div ref={mypageRef}></div>
+            <div ref={mypageRef} style={{display: 'none'}}></div>
           )}
           <Switch>
             {navigationList.map((value) => {
