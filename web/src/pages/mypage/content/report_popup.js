@@ -155,14 +155,16 @@ const Popup = styled.div`
 
   .header {
     position: relative;
-    border-bottom: 1px solid #e0e0e0;
+
     h1 {
-      padding: 13px 0;
-      font-size: 16px;
-      line-height: 16px;
+      margin: 0px 16px;
+      height: 52px;
+      line-height: 52px;
+      font-size: 18px;
       font-weight: 800;
       color: #000;
       text-align: center;
+      border-bottom: 1px solid #e0e0e0;
     }
     button {
       position: absolute;
