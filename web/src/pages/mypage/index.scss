@@ -989,7 +989,7 @@
         .btn__ok {
           width: 100%;
           height: 44px;
-          margin-top: 10px;
+          margin-top: 6px;
           border-radius: 12px;
           background-color: $primary;
           font-size: 18px;
@@ -1061,7 +1061,7 @@
             flex-direction: column;
             position: absolute;
             right: 20px;
-            top: 30px;
+            top: 34px;
             width: 80px;
             border: 1px solid #e0e0e0;
             background-color: #fff;
@@ -1096,7 +1096,6 @@
             margin-left: 10px;
             &__name {
               display: block;
-              height: 20px;
               line-height: 20px;
               max-width: 200px;
               white-space: nowrap;
@@ -1117,10 +1116,10 @@
 
             &__lock {
               display: inline-block;
-              width: 16px;
-              height: 16px;
-              margin-right: 4px;
-              vertical-align: -3px;
+              width: 24px;
+              height: 24px;
+              margin-right: 1px;
+              vertical-align: -6px;
               background: url('./static/lock_g.svg') no-repeat center;
             }
           }
