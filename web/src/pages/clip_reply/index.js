@@ -58,6 +58,7 @@ export default (props) => {
     fetchReplyList()
   }, [])
   useEffect(() => {
+    globalCtx.action.updateSetBack(null)
     globalCtx.action.updatePlayer(false)
     return () => {}
   }, [])

@@ -45,6 +45,7 @@ export default (props) => {
   }
   //대댓글 클릭시 포커스
   useEffect(() => {
+    console.log('..', context.fanboardReplyNum)
     if (context.fanboardReplyNum && context.fanboardReplyNum !== -1) {
       console.log(document.getElementsByClassName('list-item on'))
       window.scrollTo(0, document.getElementsByClassName('list-item on')[0].offsetTop - 10)

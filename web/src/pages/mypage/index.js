@@ -245,25 +245,27 @@ export default (props) => {
               <div ref={mypageRef}>
                 <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
               </div>
-
-              <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
-                {mypageNavList.map((value, idx) => {
-                  const {type, txt} = value
-                  return (
-                    <li key={`list-${idx}`} className={tabSelected === idx ? `isSelected` : ``}>
-                      <button onClick={() => changeTab(idx)}>
-                        {txt} <span className="cnt">{profileCount(idx)}</span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '64px' : 0}}>
-                {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" />}
-                {tabSelected === 2 && <MyClip type="subpage" />}
-              </div>
-
+              {mypageNavList && (
+                <React.Fragment>
+                  <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
+                    {mypageNavList.map((value, idx) => {
+                      const {type, txt} = value
+                      return (
+                        <li className={tabSelected === idx ? `isSelected` : ``} key={`list-${idx}`}>
+                          <button onClick={() => changeTab(idx)}>
+                            {txt} <span className="cnt">{profileCount(idx)}</span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                  <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '64px' : 0}}>
+                    {tabSelected === 0 && <Notice type="subpage" />}
+                    {tabSelected === 1 && <FanBoard type="subpage" />}
+                    {tabSelected === 2 && <MyClip type="subpage" />}
+                  </div>
+                </React.Fragment>
+              )}
               {/* <div className="profile-menu">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value

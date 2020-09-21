@@ -152,6 +152,7 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
+    context.action.updateSetBack(null)
     if (profile.memNo === urlrStr) {
       setIsOther(true)
     } else {
@@ -160,6 +161,7 @@ export default (props) => {
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
+
     // return () => {
     //   currentPage = 1
     // }
