@@ -250,8 +250,8 @@ export default (props) => {
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
-                    <li className={tabSelected === idx ? `isSelected` : ``}>
-                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
+                    <li key={`list-${idx}`} className={tabSelected === idx ? `isSelected` : ``}>
+                      <button onClick={() => changeTab(idx)}>
                         {txt} <span className="cnt">{profileCount(idx)}</span>
                       </button>
                     </li>
