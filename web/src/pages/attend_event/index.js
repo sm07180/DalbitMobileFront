@@ -151,7 +151,7 @@ export default (props) => {
             })
           } else {
             globalCtx.action.alert({
-              msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">기프티콘은 넘나 아쉬운 것..</p></div>`
+              msg: `<div class="attend-alert-box" ><p class="title">매일 출석체크 선물 지급 완료!</p><p class="sub-title">아쉽지만 기프티콘은<br />당첨되지 않았네요..ㅠㅠ<br />다음 주에는 기프티콘<br />당첨의 행운이 있기를..!</p></div>`
             })
           }
         } else {

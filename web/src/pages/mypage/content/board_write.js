@@ -4,18 +4,16 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useParams} from 'react-router-dom'
 import {useLocation, useHistory} from 'react-router-dom'
+import {backFunc} from 'pages/common/clipPlayer/clip_func'
 //modules
 import qs from 'query-string'
+
 // context
 import {Context} from 'context'
 //api
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
-// concat
-let currentPage = 1
-let timer
-let moreState = false
 //layout
 export default (props) => {
   let location = useLocation()
@@ -29,14 +27,11 @@ export default (props) => {
   let urlrStr = location.pathname.split('/')[2]
   //state
   const list = props.list
-  const [nextList, setNextList] = useState(false)
   const [writeState, setWriteState] = useState(false)
   const [textChange, setTextChange] = useState('')
-  const [totalCount, setTotalCount] = useState(0)
   const [isScreet, setIsScreet] = useState(false)
   const [isOther, setIsOther] = useState(true)
   const [writeType, setWriteType] = useState('')
-
   //팬보드 댓글 온체인지
   const handleChangeInput = (e) => {
     const target = e.currentTarget
@@ -47,39 +42,15 @@ export default (props) => {
   const writeToggle = () => {
     if (writeState === false) {
       setWriteState(true)
+      context.action.updateBoardIdx(0)
+      context.action.updateBoardModifyInfo(null)
     } else {
       setWriteState(false)
+      context.action.updateBoardIdx(0)
+      context.action.updateBoardModifyInfo(null)
     }
-  }
-  //팬보드 리스트 조회
-  async function fetchData(next) {
-    currentPage = next ? ++currentPage : currentPage
-    const res = await Api.mypage_fanboard_list({
-      params: {
-        memNo: urlrStr,
-        page: currentPage,
-        records: 10
-      }
-    })
-    if (res.result === 'success') {
-      if (res.code === '0') {
-        if (next !== 'next') {
-          setList(false)
-          setTotalCount(0)
-        }
-        moreState = false
-      } else {
-        if (next) {
-          moreState = true
-          setNextList(res.data.list)
-          setTotalCount(res.data.paging.total)
-        } else {
-          setList(res.data.list)
-          setTotalCount(res.data.paging.total)
-          fetchData('next')
-        }
-      }
-    } else {
+    if (props.type === 'modify') {
+      props.setCancelModify()
     }
   }
   //팬보드 댓글추가
@@ -89,7 +60,7 @@ export default (props) => {
       params = {
         memNo: urlrStr,
         depth: 1,
-        content: textChange,
+        contents: textChange,
         viewOn: isScreet === true ? 0 : 1
       }
       msg = '내용을 입력해 주세요.'
@@ -97,13 +68,12 @@ export default (props) => {
       params = {
         memNo: urlrStr,
         depth: 2,
-        content: textChange,
+        contents: textChange,
         viewOn: isScreet === true ? 0 : 1,
-        boardNo: context.fanboardReplyNum
+        parentGroupIdx: context.fanboardReplyNum
       }
       msg = '내용을 입력해 주세요.'
     }
-
     if (writeType === 'clip_board') {
       async function fetchReplyAdd() {
         const {result, data, message} = await Api.postClipReplySumbit({
@@ -114,7 +84,6 @@ export default (props) => {
           props.set(true, writeType)
           writeToggle()
           setTextChange('')
-
           Hybrid('ClipUpdateInfo', data.clipPlayInfo)
         }
       }
@@ -123,18 +92,17 @@ export default (props) => {
       const res = await Api.mypage_fanboard_upload({
         data: params
       })
-
       if (res.result === 'success') {
         props.set(true, writeType)
+        context.action.updateBoardIdx(0)
+        context.action.updateBoardModifyInfo(null)
         writeToggle()
         setTextChange('')
         setIsScreet(false)
-
         if (list instanceof Array) {
           let findIdx = list.findIndex((v) => {
             return v.boardIdx === context.fanboardReplyNum
           })
-
           if (findIdx !== -1) {
             list[findIdx].replyCnt++
           }
@@ -149,7 +117,6 @@ export default (props) => {
       }
     }
   }
-
   // 팬보드 뉴표시
   async function getMyPageNewFanBoard() {
     const newFanBoard = await Api.getMyPageNewFanBoard()
@@ -163,12 +130,111 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
+  //수정하기 fetch
+  async function editBoard(editType) {
+    if (editType === 'fanboardEdit') {
+      const res = await Api.mypage_board_edit({
+        data: {
+          memNo: urlrStr,
+          replyIdx: props.replyIdx,
+          contents: textChange
+        }
+      })
+      if (res.result === 'success') {
+        props.setCancelModify()
+        props.set(true)
+        context.action.updateBoardIdx(0)
+        context.action.updateBoardModifyInfo(null)
+        //Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
+    } else if (editType === 'clipEdit') {
+      const res = await Api.postClipReplyEdit({
+        clipNo: LocationClip,
+        contents: textChange,
+        replyIdx: props.replyIdx
+      })
+      if (res.result === 'success') {
+        props.setCancelModify()
+        props.set(true)
+        context.action.updateBoardIdx(0)
+        context.action.updateBoardModifyInfo(null)
+        Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
+        props.set(true)
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          callback: () => {},
+          msg: res.message
+        })
+      }
+    }
+  }
+  // 댓글마다 인덱스 번호 입력시 큰댓글 접힘
+  useEffect(() => {
+    if (props.type !== 'modify' && context.boardIdx !== 0) {
+      setWriteState(false)
+    }
+  }, [context.boardIdx])
+  // 수정하기 초기 메세지값 초기화및 설정
+  useEffect(() => {
+    if (props.type === 'modify') {
+      setTextChange(props.modifyMsg)
+      setWriteState(true)
+    } else {
+      setWriteState(false)
+    }
+  }, [])
+  //팬보드일경우 아덜쇼 뉴팬보드표시
+  useEffect(() => {
+    if (profile.memNo === urlrStr) {
+      setIsOther(false)
+    } else {
+      setIsOther(true)
+    }
+    if (props.type !== 'clip_board' && context.token.memNo === profile.memNo) {
+      getMyPageNewFanBoard()
+    }
+  }, [])
+  //팬보드 안드로이드 접기 로직
+  useEffect(() => {
+    if (context.backFunction.name === 'booleanType' && !context.backFunction.value) {
+      //글쓰기
+      setWriteState(context.backFunction.value)
+      //댓글닫기
+      context.action.updateFanboardReplyNum(-1)
+      //수정하기 취소
+      if (props.type === 'modify') {
+        props.setCancelModify()
+      }
+      //초기화
+      context.action.updateBackFunction({
+        name: ''
+      })
+      context.action.updateSetBack(null)
+    }
+  }, [context.backFunction])
+  useEffect(() => {
+    //안드로이드 백 이니셜 분기
+    if (writeState || context.fanboardReplyNum !== -1 || context.fanboardReplyNum !== false) {
+      context.action.updateSetBack(true)
+      context.action.updateBackFunction({
+        name: 'booleanType',
+        value: true
+      })
+    } else {
+      context.action.updateSetBack(null)
+    }
+    return () => {
+      context.action.updateSetBack(null)
+    }
+  }, [writeState, context.fanboardReplyNum])
 
   //재조회 및 초기조회
   useEffect(() => {
-    currentPage = 1
-    // fetchData()
-    // props.set(true)
     if (props.type === undefined || props.type === 'subpage') {
       setWriteType('board')
     } else if (props.type === 'reply') {
@@ -177,29 +243,6 @@ export default (props) => {
       setWriteType('clip_board')
     }
   }, [writeState, ctx.fanBoardBigIdx])
-  //스크롤 콘켓
-  // useEffect(() => {
-  //   window.addEventListener('scroll', scrollEvtHdr)
-  //   return () => {
-  //     window.removeEventListener('scroll', scrollEvtHdr)
-  //   }
-  // }, [nextList])
-  useEffect(() => {
-    if (profile.memNo === urlrStr) {
-      setIsOther(false)
-    } else {
-      setIsOther(true)
-    }
-
-    if (props.type !== 'clip_board' && context.token.memNo === profile.memNo) {
-      getMyPageNewFanBoard()
-    }
-
-    return () => {
-      currentPage = 1
-    }
-  }, [])
-
   //--------------------------------------------------
   return (
     <div className="writeWrap">
@@ -245,10 +288,15 @@ export default (props) => {
               <em>{textChange.length}</em> / 100
             </span>
           </span>
-
-          <button className="btn__ok" onClick={() => PostBoardData()}>
-            등록
-          </button>
+          {props.type === 'modify' ? (
+            <button className="btn__ok" onClick={() => editBoard(props.editType)}>
+              수정
+            </button>
+          ) : (
+            <button className="btn__ok" onClick={() => PostBoardData()}>
+              등록
+            </button>
+          )}
         </div>
       )}
       {props.replyWriteState || writeState === true ? (

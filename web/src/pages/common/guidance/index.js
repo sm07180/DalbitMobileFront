@@ -48,6 +48,7 @@ export default function Guidance({state, dispatch}) {
                 5. 개인정보 수집 및 이용을 확인하신 후 동의를 위한 체크를 완료합니다.
                 <br />
                 6. [환전 신청하기] 버튼을 클릭 후 신청완료 됩니다.
+                <br />※ 환전신청은 매일 1회 신청이 가능합니다.
                 <br />※ 만약 법정대리인(보호자) 동의 완료정보와 다른 가족의 은행계좌로 입금 받을 경우 가족관계 여부 확인을 위한
                 주민등록 등본 또는 가족관계증명서를 추가 첨부합니다.
               </div>
@@ -55,42 +56,6 @@ export default function Guidance({state, dispatch}) {
             <div className="guidance__list">
               <div className="guidance__list--title">◈ 환전신청 후 입금일정</div>
               <div className="guidance__list--gray">
-                <div className="guidance__list--bold">1. 일반회원</div>
-                <div className="guidance__list--flex">
-                  <div className="guidance__list--spacing">-</div> 환전 신청 마감 : 매 주 월요일, 수요일 23시59분 (주2회)
-                </div>
-                <div className="guidance__list--flex">
-                  <div className="guidance__list--spacing">-</div>
-                  <div>
-                    <div>서류확인 및 입금</div>
-                    <div className="guidance__list--flex">
-                      <div className="guidance__list--spacing">▶</div>
-                      <div>
-                        <span>목요일 00시부터 일요일 23시 59분까지 신청 건은</span>
-                        <br />
-                        <span className="guidance__list--red"> 월요일 오전 11시부터 순차적으로 입금</span>
-                      </div>
-                    </div>
-                    <div className="guidance__list--flex">
-                      <div className="guidance__list--spacing">▶</div>
-                      <div>
-                        <span>월요일 00시부터 수요일 23시 59분 신청 건은</span>
-                        <br />
-                        <span className="guidance__list--red"> 목요일 오전 11시부터 순차적으로 입금.</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="guidance__list--flex">
-                  <div className="guidance__list--spacing">-</div> 단, 공휴일일 경우 다음날 환전이 됩니다.
-                </div>
-                ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 휴대폰 SMS를 통해 확인이 가능합니다.
-                <br />
-                (SMS결과는 휴대폰 연락처가 있는 회원에게만 발송하여 드립니다.)
-                <br />
-                <div className="guidance__list--flex">
-                  <div className="guidance__list--bold">2. 스페셜 회원</div> {/* 볼드처리 */}
-                </div>
                 <div className="guidance__list--flex">
                   <div className="guidance__list--spacing">-</div> <div>환전 신청 마감 : 매 일 23시59분 (주5회)</div>
                 </div>
@@ -102,6 +67,9 @@ export default function Guidance({state, dispatch}) {
                   <div className="guidance__list--spacing">-</div>
                   <div>단, 토요일/일요일/공휴일인 경우 다음날 환전이 됩니다.</div>
                 </div>
+                ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 달빛 라이브 알림을 통해 확인이 가능합니다.
+                <br />
+
               </div>
             </div>
             <div className="guidance__list">
@@ -166,6 +134,15 @@ export default function Guidance({state, dispatch}) {
                 - 별을 달로 교환하는 방법 : “마이페이지&gt;내지갑&gt;별”에서 [달교환] 버튼을 클릭하시면 즉시 처리되어 아이템선물이
                 가능합니다. (수수료 없음)
               </div>
+            </div>
+          </div>
+          <div className="guidance__list">
+            <div className="guidance__list--title">■ 부칙</div>
+            <div className="guidance__list--gray">
+              4. 본 환전정책 Ver4.0은 2020년 9월 21일부터 적용됩니다.<br/>
+              3. 본 환전정책 Ver3.0은 2020년 8월 20일부터 적용됩니다.<br/>
+              2. 본 환전정책 Ver2.0은 2020년 7월 6일부터 적용됩니다.<br/>
+              1. 본 환전정책 Ver1.0은 2020년 6월 1일부터 적용됩니다.
             </div>
           </div>
         </div>
