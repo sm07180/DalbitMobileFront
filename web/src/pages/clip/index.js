@@ -23,8 +23,10 @@ import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 // header scroll flag
 let tempScrollEvent = null
+let randomData = Math.random() >= 0.5 ? 0 : 4
 export default (props) => {
   const context = useContext(Context)
+
   let history = useHistory()
   //fixed category
   const recomendRef = useRef()
@@ -57,6 +59,8 @@ export default (props) => {
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
+  const [selectType, setSelectType] = useState(4)
+  // const [selectType, setSelectType] = useState(randomData)
   // top3 list
   const [listTop3, setListTop3] = useState({})
   const [top3On, setTop3On] = useState(false)
@@ -227,6 +231,16 @@ export default (props) => {
       window.scrollTo(0, scrollY)
     }
   }
+  const changeActiveSort = (value) => {
+    if (value === selectType) {
+      refreshCategory()
+    } else {
+      setSelectType(value)
+    }
+    if (scrollY !== 0) {
+      window.scrollTo(0, scrollY)
+    }
+  }
   const makeCategoryList = () => {
     return clipType.map((item, idx) => {
       const {cdNm, value} = item
@@ -308,6 +322,7 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
+
   return (
     <Layout {...props} status="no_gnb">
       <Header title="클립" />
@@ -335,7 +350,21 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory()}>클립 인기 차트 </h2>
+              <h2 onClick={() => refreshCategory()}>클립</h2>
+              <div className="sortTypeWrap">
+                <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
+                  최신순
+                </button>
+                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
+                  인기순
+                </button>
+                {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
+                  최신순
+                </button>
+                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
+                  인기순
+                </button> */}
+              </div>
               <div className="sequenceBox">
                 <div className="sequenceItem"></div>
                 <div className="sequenceItem">
@@ -376,6 +405,7 @@ export default (props) => {
             )}
           </div>
           <ChartList
+            selectType={selectType}
             chartListType={chartListType}
             clipTypeActive={clipTypeActive}
             clipType={clipType}

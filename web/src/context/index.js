@@ -98,7 +98,9 @@ const GlobalProvider = (props) => {
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
   const [isDevIp, setIsDevIp] = useState(false)
-
+  //back
+  const [backState, setBackState] = useState(null)
+  const [backFunction, setBackFunction] = useState({name: ''})
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -409,6 +411,12 @@ const GlobalProvider = (props) => {
     },
     updateIsDevIp: (boolean) => {
       setIsDevIp(boolean)
+    },
+    updateSetBack: (boolean) => {
+      setBackState(boolean)
+    },
+    updateBackFunction: (obj) => {
+      setBackFunction(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -475,7 +483,9 @@ const GlobalProvider = (props) => {
     clipPlayerInfo,
     isDevIp,
     boardIdx,
-    boardModifyInfo
+    boardModifyInfo,
+    backState,
+    backFunction
   }
   return <Provider value={value}>{props.children}</Provider>
 }

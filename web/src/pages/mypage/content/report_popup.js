@@ -21,7 +21,7 @@ export default (props) => {
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
   const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
-  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth(), +1)).format('YYYYMMDD')
 
   const {
     active,
@@ -148,40 +148,37 @@ const Container = styled.div`
   align-items: center;
 `
 const Popup = styled.div`
-  width: 100%;
-  max-width: 328px;
-  border-radius: 20px;
+  width: calc(100% - 32px);
+  max-width: 360px;
+  border-radius: 16px;
   background-color: #fff;
-  box-sizing: border-box;
-  padding: 0px 16px 16px 16px;
 
   .header {
     position: relative;
-    border-bottom: 1px solid #e0e0e0;
+
     h1 {
+      margin: 0px 16px;
+      height: 52px;
+      line-height: 52px;
       font-size: 18px;
-      line-height: 16px;
       font-weight: 800;
       color: #000;
       text-align: center;
-      height: 52px;
-      line-height: 52px;
+      border-bottom: 1px solid #e0e0e0;
     }
     button {
       position: absolute;
-      width: 32px;
-      height: 32px;
       top: -40px;
-      right: -16px;
-      z-index: 20;
+      right: 0px;
     }
   }
 
   .cont-wrap {
-    padding-top: 16px;
+    padding: 23px 16px 16px 16px;
+
     .confirm {
-      margin-top: 16px;
       width: 100%;
+      margin-top: 24px;
       height: 44px;
       line-height: 44px;
       font-size: 18px;

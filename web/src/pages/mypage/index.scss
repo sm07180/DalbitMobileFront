@@ -321,6 +321,18 @@
             background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
           }
         }
+        .newIcon {
+          position: absolute;
+          top: 12px;
+          left: 10px;
+          padding: 0 6px;
+          font-size: 12px;
+          text-align: center;
+          line-height: 16px;
+          background: $blue;
+          color: $white;
+          border-radius: 12px;
+        }
 
         .specialIcon {
           position: absolute;
@@ -678,6 +690,14 @@
     margin-top: 12px;
     background: $white;
     border-bottom: 1px solid $lightGray;
+    &.fixed {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin-top: 0;
+      z-index: 10;
+    }
     > li {
       position: relative;
       display: flex;
@@ -1147,6 +1167,9 @@
       }
       .reply-list {
         padding: 12px 0 12px 16px;
+        &.modify {
+          padding: 0;
+        }
         background-color: #fbfbfb;
         border-top: 1px solid $lighterGray;
         .thumb {
@@ -1170,6 +1193,92 @@
           }
         }
       }
+    }
+  }
+}
+
+#wallet_layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#walletPop {
+  width: 328px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 20px;
+
+  .title {
+    padding: 16px 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 21px;
+    text-align: center;
+  }
+
+  .contents {
+    min-height: 441px;
+    padding: 12px 16px;
+    background-color: #eee;
+
+    &__buttonWrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 100%;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      background-color: #fff;
+      & > button {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px;
+        text-align: left;
+
+        & > span {
+          margin-left: 10px;
+          font-size: 14px;
+        }
+      }
+
+      & > button:not(:last-child) {
+        border-bottom: 1px solid #eee;
+      }
+    }
+  }
+
+  .buttonWrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 16px 16px 16px;
+    background-color: #eee;
+    border-radius: 0 0 20px 20px;
+    & > button {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      line-height: 21px;
+      text-align: center;
+    }
+
+    & > button:first-child {
+      margin-right: 4px;
+      background-color: #757575;
+    }
+
+    & > button:last-child {
+      background-color: #632beb;
     }
   }
 }

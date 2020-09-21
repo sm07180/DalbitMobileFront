@@ -16,13 +16,12 @@ import Util from 'components/lib/utility.js'
 
 // static
 import PeopleIcon from '../static/people_g_s.svg'
-import EntryImg from '../static/person_w_s.svg'
+import EntryImg from '../static/new_person_w_s.svg'
 
 const makeContents = (props) => {
   const context = useContext(Context)
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
-
   return list.map((list, idx) => {
     const {
       roomNo,
@@ -44,29 +43,9 @@ const makeContents = (props) => {
     } = list
 
     const alertCheck = (roomNo) => {
-      if (context.adminChecker === true) {
-        context.action.confirm_admin({
-          //콜백처리
-          callback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 1
-            })
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 0
-            })
-          },
-          msg: '관리자로 입장하시겠습니까?'
-        })
-      } else {
-        RoomJoin({
-          roomNo: roomNo
-        })
-      }
+      RoomJoin({
+        roomNo: roomNo
+      })
     }
 
     return (
@@ -75,27 +54,51 @@ const makeContents = (props) => {
         key={`live-${idx}`}
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+        {os === 3 && <i className="iconPc">PC</i>}
+        {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
-            <div className="icon-wrap">
-              {os === 3 && <span className="pc-icon">PC</span>}
-              {categoryList && (
-                <div className="type-text">
-                  {(() => {
-                    const target = categoryList.find((category) => category['cd'] === roomType)
-                    if (target && target['cdNm']) {
-                      return target['cdNm']
-                    }
-                  })()}
-                </div>
-              )}
-
-              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
-              {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
-              {isNew === true && <span className="new-dj-icon">신입</span>}
+            <div className="title">
+              <p className="category">
+                {categoryList && (
+                  <>
+                    {(() => {
+                      const target = categoryList.find((category) => category['cd'] === roomType)
+                      if (target && target['cdNm']) {
+                        return target['cdNm']
+                      }
+                    })()}
+                  </>
+                )}
+              </p>
+              <i className="line"></i>
+              <span>{title}</span>
             </div>
-            <div className="title">{title}</div>
-            <div className="nickname">{bjNickNm}</div>
+            {/* <div className="title">
+              <p className="category">
+                {liveListType === 'detail' ? (
+                  <>
+                    {(() => {
+                      const target = categoryList.find((category) => category['cd'] === roomType)
+                      if (target && target['cdNm']) {
+                        return target['cdNm']
+                      }
+                    })()}
+                  </>
+                ) : (
+                  ''
+                )}
+              </p>
+
+              <i className="line"></i>
+              <span>{title}</span>
+            </div> */}
+            <div className="nickname">
+              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+              {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+              {bjNickNm}
+            </div>
             <div className="detail">
               <div className="value">
                 <img src={PeopleIcon} />
@@ -143,10 +146,10 @@ const makeContents = (props) => {
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
             </div>
             <div className="bottom-wrap">
-              {os === 3 ? <span className="pc-icon">PC</span> : ''}
-              <div className="type-icon-wrap">
+              {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
+              {/* <div className="type-icon-wrap">
                 <img className="type-icon" src={noBgAudioIcon} />
-              </div>
+              </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
             </div>
           </div>

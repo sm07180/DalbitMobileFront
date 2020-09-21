@@ -58,7 +58,7 @@ const selectBoxData = [
 
 let currentPage = 1
 let timer
-
+let moreState = false
 export default (props) => {
   const context = useContext(Context)
   const ctx = useContext(Context)
@@ -69,7 +69,7 @@ export default (props) => {
 
   const [active, setActive] = useState(2)
   const [selectType, setSelectType] = useState(0)
-  const [moreState, setMoreState] = useState(false)
+
   const [currentPickdata, setCurrentPickdata] = useState()
   const [pickerState, setPickerState] = useState(true)
   const [broadData, setBroadData] = useState([])
@@ -102,10 +102,10 @@ export default (props) => {
           setBroadData([])
           setResultState(0)
         }
-        setMoreState(false)
+        moreState = false
       } else {
         if (next) {
-          setMoreState(true)
+          moreState = true
           setNextList(res.data.list)
         } else {
           setBroadData(res.data.list)
@@ -141,10 +141,10 @@ export default (props) => {
           setListenData([])
           setResultState(0)
         }
-        setMoreState(false)
+        moreState = false
       } else {
         if (next) {
-          setMoreState(true)
+          moreState = true
           setNextList(res.data.list)
         } else {
           setListenData(res.data.list)
@@ -176,7 +176,7 @@ export default (props) => {
   const [datenext, setDatenext] = useState('')
   //---------------------------------------------------------------------
   const afterSelected = () => {
-    setActive(2)
+    setActive(4)
     setPickerCssOn(true)
   }
   //datepicker에서 올려준 값 받아서 pickdata 바로 변경하기
@@ -484,7 +484,6 @@ export default (props) => {
                         </MobileDetailTab>
                       )
                     })}
-
                   {selectType === 1 &&
                     listenData.map((value, idx) => {
                       const TimeDeclare = Math.floor((parseInt(value.endTs) - parseInt(value.startTs)) / 60)

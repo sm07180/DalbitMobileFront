@@ -3,7 +3,7 @@
  * @brief 마이페이지 팬보드2.5v
  */
 
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 // modules
 import qs from 'query-string'
 import {useLocation, useHistory, useParams} from 'react-router-dom'
@@ -11,9 +11,7 @@ import {useLocation, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
-
-import WriteBoard from './board_write'
-
+import BoardModify from './board_write'
 export default (props) => {
   let params = useParams()
   const LocationClip = params.clipNo
@@ -24,7 +22,6 @@ export default (props) => {
   const context = useContext(Context)
   const {webview} = qs.parse(location.search)
   //state
-
   const [writeState, setWriteState] = useState(false)
   //modify msg
   const [modifyState, setModifyState] = useState(false)
@@ -52,16 +49,13 @@ export default (props) => {
       contents: contents,
       replyIdx: boardIdx
     })
-
     if (writeState === false) {
       setModifyState(true)
-
       setModifyMsg(contents)
     } else {
       setModifyState(false)
     }
   }
-
   //삭제하기 fetch
   const deleteBoard = (boardIdx, clipMemNo) => {
     if (props.type === 'clip_board') {
@@ -72,7 +66,6 @@ export default (props) => {
         })
         if (res.result === 'success') {
           props.set(true)
-
           Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
         } else if (res.result === 'fail') {
           context.action.alert({
@@ -87,12 +80,11 @@ export default (props) => {
         const res = await Api.mypage_fanboard_delete({
           data: {
             memNo: urlrStr,
-            boardIdx: boardIdx
+            replyIdx: boardIdx
           }
         })
         if (res.result === 'success') {
           context.action.updateFanBoardBigIdxMsg(boardIdx)
-
           props.set(true)
         } else if (res.result === 'fail') {
           context.action.alert({
@@ -104,7 +96,14 @@ export default (props) => {
       fetchDataDelete()
     }
   }
-
+  //접기 버튼
+  const modifyCancel = () => {
+    context.action.updateBoardIdx(0)
+    setModifyState(false)
+  }
+  const setCancelModify = () => {
+    modifyCancel()
+  }
   const Link = () => {
     if (props.type === 'clip_board') {
       if (webview) {
@@ -118,12 +117,12 @@ export default (props) => {
       }
     } else {
       if (webview) {
-        context.token.memNo !== props.data.writerNo
-          ? history.push(`/mypage/${props.data.writerNo}?webview=${webview}`)
+        context.token.memNo !== props.data.writerMemNo
+          ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
           : history.push(`/menu/profile?webview=${webview}`)
       } else {
-        context.token.memNo !== props.data.writerNo
-          ? history.push(`/mypage/${props.data.writerNo}`)
+        context.token.memNo !== props.data.writerMemNo
+          ? history.push(`/mypage/${props.data.writerMemNo}`)
           : history.push(`/menu/profile`)
       }
     }
@@ -133,59 +132,18 @@ export default (props) => {
       context.action.updateBoardIdx(0)
     }
   }, [])
-  //팬보드 댓글 온체인지
-  const handleChangeInput = (e) => {
-    const target = e.currentTarget
-    if (target.value.length > 100) return
-    setModifyMsg(e.target.value)
-  }
   useEffect(() => {
     if (context.boardModifyInfo && context.boardModifyInfo.replyIdx !== props.data.replyIdx) {
       setModifyState(false)
     }
   }, [context.boardModifyInfo])
-  //수정하기 fetch
-  async function editBoard() {
-    const res = await Api.postClipReplyEdit({
-      clipNo: LocationClip,
-      contents: modifyMsg,
-      replyIdx: props.data.replyIdx
-    })
-    if (res.result === 'success') {
-      setModifyState(false)
-      context.action.updateBoardIdx(0)
-      context.action.updateBoardModifyInfo(null)
-
-      Hybrid('ClipUpdateInfo', res.data.clipPlayInfo)
-      props.set(true)
-    } else if (res.result === 'fail') {
-      context.action.alert({
-        callback: () => {},
-        msg: res.message
-      })
-    }
-  }
-  //접기 버튼
-  const modifyCancel = () => {
-    context.action.updateBoardIdx(0)
-    setModifyState(false)
-  }
+  //render----------------------------------
   return (
     <>
       {modifyState === false && (
         <>
           <div className="list-item__header">
-            {(urlrStr === context.token.memNo || props.data.writerNo === context.token.memNo) && props.type !== 'clip_board' ? (
-              <>
-                <button className="btn__more" onClick={() => moreToggle(props.data.boardIdx, props.data.contents)}></button>
-                <div className={props.data.boardIdx === context.boardIdx ? 'moreList on' : 'moreList'}>
-                  {props.data.writerNo === context.token.memNo && (
-                    <button onClick={() => editToggle(props.data.contents, props.data.boardIdx)}>수정하기</button>
-                  )}
-                  <button onClick={() => deleteBoard(props.data.boardIdx)}>삭제하기</button>
-                </div>
-              </>
-            ) : props.data.writerMemNo === context.token.memNo || props.data.clipMemNo === context.token.memNo ? (
+            {urlrStr === context.token.memNo || props.data.writerMemNo === context.token.memNo ? (
               <>
                 <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
                 <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
@@ -213,32 +171,15 @@ export default (props) => {
         </>
       )}
       {/* 수정하기 */}
-      {modifyState === true && (
-        <WriteBoard type="edit" editMsg={modifyMsg} />
-        // <div className="writeWrap">
-        //   <div className="writeWrap__top">
-        //     <div className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}>
-        //       <img src={props.data.profImg.thumb190x190} alt={props.data.nickName} />
-        //       <strong>{props.data.nickName}</strong>
-        //     </div>
-        //     <div className="content_area">
-        //       <textarea autoFocus="autofocus" value={modifyMsg} onChange={handleChangeInput} />
-        //     </div>
-        //   </div>
-        //   <div className="writeWrap__btnWrap">
-        //     <span className="countBox">
-        //       <span className="count">
-        //         <em>{modifyMsg.length}</em> / 100
-        //       </span>
-        //     </span>
-        //     <button className="btn__ok" onClick={() => editBoard()}>
-        //       수정
-        //     </button>
-        //     <div className="writeWrap__btn" onClick={modifyCancel}>
-        //       <button className="btn__toggle">접기</button>
-        //     </div>
-        //   </div>
-        // </div>
+      {modifyState === true && context.boardModifyInfo && context.boardModifyInfo.replyIdx === props.data.replyIdx && (
+        <BoardModify
+          type="modify"
+          setCancelModify={setCancelModify}
+          modifyMsg={modifyMsg}
+          replyIdx={props.data.replyIdx}
+          editType={props.type === 'clip_board' ? 'clipEdit' : 'fanboardEdit'}
+          set={props.set}
+        />
       )}
     </>
   )

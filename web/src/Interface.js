@@ -14,7 +14,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import Room, {RoomJoin, RoomMake} from 'context/room'
 import {clipJoin, clipExit} from 'pages/common/clipPlayer/clip_func'
-
+import {backFunc} from 'components/lib/back_func'
 //util
 import Utility from 'components/lib/utility'
 
@@ -382,7 +382,7 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        const dataString = JSON.stringify(event.detail)
+        let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
         context.action.updateClipState(true)
@@ -469,8 +469,20 @@ export default () => {
         // if (__NODE_ENV === 'dev') {
         //   alert('event:native-back-click')
         // }
-        Hybrid('goBack')
+        if (context.backState === null) {
+          Hybrid('goBack')
+        } else {
+          backFunc(context)
+        }
+        // break
         break
+      case 'native-call-state': //---------- 안드로이드 전화 on/off 발생
+        const {onCall} = event.detail
+        if (onCall === true) {
+          sessionStorage.setItem('onCall', 'on')
+        } else if (onCall === false) {
+          sessionStorage.removeItem('onCall')
+        }
       default:
         break
     }
@@ -572,30 +584,7 @@ export default () => {
     switch (push_type + '') {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
-        //RoomJoin(room_no)
-        if (context.adminChecker === true) {
-          context.action.confirm_admin({
-            //콜백처리
-            callback: () => {
-              RoomJoin({
-                roomNo: room_no,
-                shadow: 1
-              })
-            },
-            //캔슬콜백처리
-            cancelCallback: () => {
-              RoomJoin({
-                roomNo: room_no,
-                shadow: 0
-              })
-            },
-            msg: '관리자로 입장하시겠습니까?'
-          })
-        } else {
-          RoomJoin({
-            roomNo: room_no
-          })
-        }
+        RoomJoin({roomNo: room_no})
         break
       case '2': //------------------메인
         window.location.href = '/'
@@ -637,7 +626,7 @@ export default () => {
       case '37': //-----------------1:1 문의 답변
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/customer/personal/qnaList`
+          if (isLogin) window.location.href = `/customer/qnaList`
         }
         break
       case '38': //-----------------스타의 방송공지
@@ -733,6 +722,7 @@ export default () => {
     document.addEventListener('react-gnb-open', update)
     document.addEventListener('react-gnb-close', update)
     document.addEventListener('native-back-click', update)
+    document.addEventListener('native-call-state', update)
 
     /*----clip----*/
     document.addEventListener('clip-player-show', update)
@@ -757,6 +747,7 @@ export default () => {
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)
       document.removeEventListener('react-gnb-close', update)
+      document.addEventListener('native-call-state', update)
       /*----clip----*/
       document.removeEventListener('clip-player-show', update)
       document.removeEventListener('clip-player-end', update)
@@ -764,7 +755,6 @@ export default () => {
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
       document.removeEventListener('native-close-layer-popup', update)
-      document.removeEventListener('native-back-click', update)
     }
   }, [])
 
@@ -779,6 +769,13 @@ export default () => {
       document.removeEventListener('native-clip-record', update)
     }
   }, [context.token])
+  useEffect(() => {
+    document.addEventListener('native-back-click', update)
+    return () => {
+      document.removeEventListener('native-back-click', update)
+    }
+  }, [context.backFunction, context.backState])
+
   return (
     <React.Fragment>
       <Room />

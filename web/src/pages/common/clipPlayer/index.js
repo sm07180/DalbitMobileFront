@@ -35,6 +35,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
+              if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerPause')
               globalCtx.action.updateClipPlayerState('paused')
               settingSessionInfo('paused')
@@ -47,6 +48,7 @@ export default (props) => {
         return (
           <button
             onClick={() => {
+              if (sessionStorage.getItem('onCall') === 'on') return null
               Hybrid('ClipPlayerStart')
               globalCtx.action.updateClipPlayerState('playing')
               settingSessionInfo('playing')
@@ -308,7 +310,7 @@ const ClipPlayer = styled.div`
         display: none;
       }
       .info {
-        max-width: calc(100% - 70px);
+        width: calc(100% - 70px);
         min-width: 200px;
         p {
           min-width: 120px;

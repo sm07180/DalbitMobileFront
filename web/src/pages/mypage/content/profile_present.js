@@ -204,7 +204,7 @@ export default (props) => {
 
                   <TextArea>
                     <PointInput
-                      placeholder="직접 입력"
+                      placeholder="달은 10개부터 선물할 수 있습니다."
                       type="number"
                       maxLength="10"
                       value={text}
@@ -294,6 +294,7 @@ const Container = styled.div`
   overflow: hidden;
 
   .contentPadding {
+    min-height: 358px;
     padding: 0px 16px 16px 16px;
   }
 
@@ -324,6 +325,8 @@ const Container = styled.div`
   }
 
   .pointList {
+    min-width: 293px;
+    min-height: 68px;
     display: flex;
     flex-wrap: wrap;
   }

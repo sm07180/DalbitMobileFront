@@ -100,7 +100,6 @@ export default (props) => {
     )
   }
   const viewLayer = (type) => {
-    console.log(type, showEdit)
     if (type === 'fan') {
       if (showEdit === true) {
         editFan()
@@ -357,29 +356,7 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              if (context.adminChecker === true) {
-                context.action.confirm_admin({
-                  //콜백처리
-                  callback: () => {
-                    RoomJoin({
-                      roomNo: profile.roomNo,
-                      shadow: 1
-                    })
-                  },
-                  //캔슬콜백처리
-                  cancelCallback: () => {
-                    RoomJoin({
-                      roomNo: profile.roomNo,
-                      shadow: 0
-                    })
-                  },
-                  msg: '관리자로 입장하시겠습니까?'
-                })
-              } else {
-                RoomJoin({
-                  roomNo: profile.roomNo
-                })
-              }
+              RoomJoin({roomNo: profile.roomNo})
             }}>
             <img src={LiveIcon} className="ico-live" />
             <span>Live</span>
@@ -437,7 +414,16 @@ export default (props) => {
             </span>
           </strong>
         </div>
-        {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>}
+        {/* {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>} */}
+        {profile.isSpecial === true ? (
+          <span className="specialIcon">스페셜 DJ</span>
+        ) : profile.isNew === true ? (
+          <span className="newIcon">신입 DJ</span>
+        ) : profile.isNewListener === true ? (
+          <span className="newIcon">신입청취자</span>
+        ) : (
+          <span className="blind">no badge</span>
+        )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
         {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (

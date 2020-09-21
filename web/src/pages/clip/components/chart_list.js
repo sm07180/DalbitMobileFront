@@ -14,6 +14,8 @@ import EntryImg from '../static/person_w_s.svg'
 import SimplePlayIcon from '../static/simple_play.svg'
 import SimpleLikeIcon from '../static/simple_like.svg'
 import noBgAudioIcon from '../static/audio_s.svg'
+import SimpleMessageIcon from '../static/message.svg'
+import SimpleMessageIconW from '../static/message_w.svg'
 // components
 import NoResult from 'components/ui/noResult'
 //flag
@@ -24,7 +26,7 @@ export default (props) => {
   //ctx
   const context = useContext(Context)
   let history = useHistory()
-  const {chartListType, clipTypeActive, clipType, clipCategoryFixed} = props
+  const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType} = props
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
@@ -34,7 +36,8 @@ export default (props) => {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getClipList({
-      slctType: context.clipMainSort,
+      // slctType: context.clipMainSort,
+      slctType: selectType,
       subjectType: clipTypeActive,
       djType: 0,
       gender: '',
@@ -99,33 +102,38 @@ export default (props) => {
         goodCnt,
         entryType,
         isSpecial,
-        clipNo
+        clipNo,
+        replyCnt
       } = detailsItem
       return (
         <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
           <div className="chartListDetailItem__thumb">
+            {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
             <img src={bgImg[`thumb190x190`]} alt={title} />
             <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
           <div className="textBox">
-            <p className="textBox__subject">{title} </p>
-            <p className="textBox__nickName">{nickName}</p>
-            <div className="textBox__iconBox">
-              {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
-              {isSpecial && <span className="specialIcon">S</span>}
-              <span className="textBox__iconBox--type">
+            <p className="textBox__subject">
+              <p className="textBox__iconBox--type">
                 {clipType.map((ClipTypeItem, index) => {
                   if (ClipTypeItem.value === subjectType) {
                     return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
                   }
                 })}
-              </span>
+              </p>
+
+              <i className="line"></i>
+              <span>{title}</span>
+            </p>
+            <p className="textBox__nickName">
               {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-            </div>
+              {nickName}
+            </p>
+
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <img src={playIcon} width={16} />
-                {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
+                <img src={SimpleMessageIcon} width={16} />
+                {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
                 <img src={heartIcon} width={16} />
@@ -163,7 +171,8 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipRefresh, clipTypeActive])
+  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, selectType])
+
   //----------------------------------------------------------------
   useEffect(() => {
     window.addEventListener('scroll', scrollEvtHdr)
@@ -199,7 +208,8 @@ export default (props) => {
               goodCnt,
               isSpecial,
               entryType,
-              clipNo
+              clipNo,
+              replyCnt
             } = SimpleListItem
             return (
               <li
@@ -221,9 +231,9 @@ export default (props) => {
                     {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                   </div>
                   <div className="topWrap__count">
-                    <img className="topWrap__count--icon" src={SimplePlayIcon} />
+                    <img className="topWrap__count--icon" src={SimpleMessageIconW} />
                     <span className="topWrap__count--num">
-                      {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
+                      {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
                     </span>
                     <img className="topWrap__count--icon" src={SimpleLikeIcon} />
                     <span className="topWrap__count--num">
@@ -238,6 +248,7 @@ export default (props) => {
                   <p className="bottomWrap__nick">{nickName}</p>
                   <p className="bottomWrap__title">{title}</p>
                 </div>
+                <div className="dim"></div>
               </li>
             )
           })}

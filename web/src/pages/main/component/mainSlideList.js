@@ -29,7 +29,7 @@ export default (props) => {
       <Swiper {...swiperParams}>
         {list instanceof Array &&
           list.map((bannerData, index) => {
-            const {bannerUrl, profImg, isAdmin, isSpecial, nickNm, roomNo, roomType, title} = bannerData
+            const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title} = bannerData
 
             return (
               <div
@@ -51,29 +51,7 @@ export default (props) => {
                         }
                       }
                     } else {
-                      if (context.adminChecker === true) {
-                        context.action.confirm_admin({
-                          //콜백처리
-                          callback: () => {
-                            RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 1
-                            })
-                          },
-                          //캔슬콜백처리
-                          cancelCallback: () => {
-                            RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 0
-                            })
-                          },
-                          msg: '관리자로 입장하시겠습니까?'
-                        })
-                      } else {
-                        RoomJoin({
-                          roomNo: roomNo
-                        })
-                      }
+                      RoomJoin({roomNo: roomNo})
                     }
                   }
                   if (roomType === 'link') {
@@ -85,29 +63,7 @@ export default (props) => {
                     }
                   } else {
                     if (isHybrid() && roomNo) {
-                      if (context.adminChecker === true) {
-                        context.action.confirm_admin({
-                          //콜백처리
-                          callback: () => {
-                            RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 1
-                            })
-                          },
-                          //캔슬콜백처리
-                          cancelCallback: () => {
-                            RoomJoin({
-                              roomNo: roomNo,
-                              shadow: 0
-                            })
-                          },
-                          msg: '관리자로 입장하시겠습니까?'
-                        })
-                      } else {
-                        RoomJoin({
-                          roomNo: roomNo
-                        })
-                      }
+                      RoomJoin({roomNo: roomNo})
                     }
                   }
                 }}>
@@ -120,6 +76,7 @@ export default (props) => {
                     {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                     {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
                     {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
+                    {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
                     {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
 

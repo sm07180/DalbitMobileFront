@@ -125,11 +125,11 @@
     &__talbeLeft {
       display: flex;
       align-items: center;
-
       flex-basis: 124px;
       padding: 8px 12px;
       border-right: 1px solid #e0e0e0;
       border-bottom: 1px solid #e0e0e0;
+      background: #d1d1d1;
     }
     &__talbeRight {
       display: flex;
@@ -138,16 +138,18 @@
       justify-content: space-between;
       padding: 8px 12px;
       border-bottom: 1px solid #e0e0e0;
+      font-weight: 700;
+      background: #eee;
 
-      &--red {
-        color: #ec455f;
-        font-weight: 700;
-      }
+      // &--red {
+      //   color: #ec455f;
+      //   font-weight: 700;
+      // }
 
-      &--purple {
-        color: #632beb;
-        font-weight: 700;
-      }
+      // &--purple {
+      //   color: #632beb;
+      //   font-weight: 700;
+      // }
     }
   }
 

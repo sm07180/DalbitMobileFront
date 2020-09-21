@@ -75,19 +75,19 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      if (!newAlarm) {
-        const {result, data} = await Api.mypage_alarm_check()
-        if (result === 'success') {
-          const {newCnt} = data
-          if (newCnt > 0) {
-            setNewAlarm(true)
-          }
+      const {result, data} = await Api.mypage_alarm_check()
+      if (result === 'success') {
+        const {newCnt} = data
+        if (newCnt > 0) {
+          setNewAlarm(true)
         }
       }
     }
 
-    alarmCheck()
-    alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+    if (!newAlarm) {
+      alarmCheck()
+      alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+    }
 
     return () => {
       if (alarmCheckIntervalId) {
@@ -105,7 +105,7 @@ export default (props) => {
             <img className="icon" src={Search} alt="검색버튼" />
           </button>
         </div>
-        {customHeader['os'] === OS_TYPE['IOS'] && logoChange ? (
+        {/* {customHeader['os'] === OS_TYPE['IOS'] && logoChange ? (
           <div className="micWrap">
             <div
               className="mic-btn"
@@ -127,7 +127,10 @@ export default (props) => {
           <h1 className="gnb-logo" onClick={reLoad}>
             <img src={Logo} alt="달빛라이브" />
           </h1>
-        )}
+        )} */}
+        <h1 className="gnb-logo" onClick={reLoad}>
+          <img src={Logo} alt="달빛라이브" />
+        </h1>
         <div className="icon-wrap">
           {newAlarm === true ? (
             <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
