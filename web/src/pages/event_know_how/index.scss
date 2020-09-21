@@ -88,8 +88,10 @@
       &--contentsWrap {
         position: relative;
         margin-top: 17.7px;
-        padding: 18px 0;
+        height: 48px;
+        line-height: 48px;
         background-color: #ffdd71;
+        color: #000;
         text-align: center;
         & > span {
           height: 23px;
@@ -99,6 +101,7 @@
           &.open::after {
             content: '';
             position: absolute;
+            top: 13px;
             width: 23px;
             height: 23px;
             background: url(./static/arrow_right_b.svg) no-repeat center;
@@ -109,6 +112,7 @@
           &.close::after {
             content: '';
             position: absolute;
+            top: 13px;
             width: 23px;
             height: 23px;
             background: url(./static/arrow_right_b.svg) no-repeat center;
@@ -128,7 +132,7 @@
         .title {
           margin-top: 16px;
           color: #242424;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: bold;
           line-height: 26px;
           letter-spacing: -0.42px;
@@ -136,6 +140,8 @@
 
         & > p {
           display: flex;
+          font-size: 14px;
+          line-height: 20px;
           & > span {
             margin-right: 4px;
           }
