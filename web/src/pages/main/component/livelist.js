@@ -147,9 +147,9 @@ const makeContents = (props) => {
             </div>
             <div className="bottom-wrap">
               {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
-              <div className="type-icon-wrap">
+              {/* <div className="type-icon-wrap">
                 <img className="type-icon" src={noBgAudioIcon} />
-              </div>
+              </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
             </div>
           </div>
