@@ -10,7 +10,7 @@ import moment from 'moment'
 import {COLOR_MAIN} from 'context/color'
 
 //static
-import closeIco from '../static/ico_close.svg'
+import closeIco from '../static/close_w_l.svg'
 
 //component
 import DatePicker from './datepicker'
@@ -166,8 +166,8 @@ const Popup = styled.div`
     }
     button {
       position: absolute;
-      top: 4px;
-      right: 7px;
+      top: -40px;
+      right: 0px;
     }
   }
 
