@@ -213,7 +213,7 @@ export default (props) => {
           {!category && (
             <>
               <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              {/* <ul className="profile-tab">
+              <ul className="profile-tab">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
@@ -229,9 +229,9 @@ export default (props) => {
                 {tabSelected === 0 && <Notice type="subpage" />}
                 {tabSelected === 1 && <FanBoard type="subpage" />}
                 {tabSelected === 2 && <MyClip type="subpage" />}
-              </div> */}
+              </div>
 
-              <div className="profile-menu">
+              {/* <div className="profile-menu">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
                   return (
@@ -253,7 +253,7 @@ export default (props) => {
                     </button>
                   )
                 })}
-              </div>
+              </div> */}
             </>
           )}
           <Switch>
