@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -24,7 +24,8 @@ import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 import ClipIcon from './static/menu_cast.svg'
 import './index.scss'
 import {OS_TYPE} from 'context/config'
-
+// header scroll flag
+let tempScrollEvent = null
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
@@ -43,6 +44,35 @@ export default (props) => {
   const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
   const customHeader = JSON.parse(Api.customHeader)
+  //
+  const mypageRef = useRef()
+  const [mypageFixed, setMypageFixed] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+  //
+  // scroll fixed func
+  const windowScrollEvent = () => {
+    const myPageHeaderNode = mypageRef.current
+    const myPageHeaderHeight = myPageHeaderNode.clientHeight
+    const TopSectionHeight = myPageHeaderHeight
+
+    if (window.scrollY >= TopSectionHeight) {
+      setMypageFixed(true)
+      setScrollY(TopSectionHeight)
+    } else {
+      setMypageFixed(false)
+      setScrollY(0)
+    }
+  }
+  //---------------------------------------
+  useEffect(() => {
+    window.removeEventListener('scroll', tempScrollEvent)
+    window.addEventListener('scroll', windowScrollEvent)
+    tempScrollEvent = windowScrollEvent
+
+    return () => {
+      window.removeEventListener('scroll', tempScrollEvent)
+    }
+  }, [])
 
   //navi Array
   let navigationList = [
@@ -212,8 +242,11 @@ export default (props) => {
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
           {!category && (
             <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              <ul className="profile-tab">
+              <div ref={mypageRef}>
+                <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
+              </div>
+
+              <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
                 {mypageNavList.map((value, idx) => {
                   const {type, txt} = value
                   return (
@@ -225,7 +258,7 @@ export default (props) => {
                   )
                 })}
               </ul>
-              <div className="profile-tab__content">
+              <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '64px' : 0}}>
                 {tabSelected === 0 && <Notice type="subpage" />}
                 {tabSelected === 1 && <FanBoard type="subpage" />}
                 {tabSelected === 2 && <MyClip type="subpage" />}

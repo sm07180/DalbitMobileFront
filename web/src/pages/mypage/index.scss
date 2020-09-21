@@ -690,6 +690,15 @@
     margin-top: 12px;
     background: $white;
     border-bottom: 1px solid $lightGray;
+    &.fixedOn {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 7;
+      width: 100%;
+      margin-top: 0;
+      // padding-top: 87px;
+    }
     > li {
       position: relative;
       display: flex;
