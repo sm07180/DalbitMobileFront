@@ -240,7 +240,7 @@ export default (props) => {
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
-          {!category && (
+          {!category ? (
             <>
               <div ref={mypageRef}>
                 <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
@@ -290,6 +290,8 @@ export default (props) => {
                 })}
               </div> */}
             </>
+          ) : (
+            <div ref={mypageRef}></div>
           )}
           <Switch>
             {navigationList.map((value) => {
