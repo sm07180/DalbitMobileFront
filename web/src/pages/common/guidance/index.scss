@@ -16,18 +16,20 @@
         color: #000;
       }
       &--button {
+        top: -40px;
         position: absolute;
-        width: 36px;
-        height: 36px;
-
-        right: 12px;
+        width: 32px;
+        height: 32px;
+        right: -16px;
+        background: url(https://image.dalbitlive.com/svg/close_w_l.svg) center no-repeat;
+        cursor: pointer;
       }
     }
   }
 
   .guidance {
     overflow-y: scroll;
-    max-height: 300px;
+    max-height: 370px;
     padding: 16px 14px;
     display: flex;
     flex-direction: column;
