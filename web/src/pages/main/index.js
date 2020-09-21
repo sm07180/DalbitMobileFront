@@ -54,14 +54,7 @@ const records = 30
 
 let touchStartY = null
 let touchEndY = null
-// let GnbHeight = 48
 export default (props) => {
-  // useEffect(() => {
-  //   if (customHeader['os'] === OS_TYPE['Android']) {
-  //     GnbHeight = 96
-  //   }
-  // }, [])
-
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -293,7 +286,6 @@ export default (props) => {
     const MainHeight = MainNode.clientHeight
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
-    // alert('///')
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode.clientHeight
@@ -301,10 +293,10 @@ export default (props) => {
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
     let TopSectionHeight
-    if (customHeader['os'] === OS_TYPE['Android']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-    } else {
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
       TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+    } else {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
     }
     console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {

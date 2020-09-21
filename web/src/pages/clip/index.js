@@ -59,7 +59,8 @@ export default (props) => {
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
-  const [selectType, setSelectType] = useState(randomData)
+  const [selectType, setSelectType] = useState(4)
+  // const [selectType, setSelectType] = useState(randomData)
   // top3 list
   const [listTop3, setListTop3] = useState({})
   const [top3On, setTop3On] = useState(false)
@@ -351,12 +352,18 @@ export default (props) => {
             <div className="liveChart__titleBox">
               <h2 onClick={() => refreshCategory()}>클립</h2>
               <div className="sortTypeWrap">
-                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
-                  인기순
-                </button>
                 <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
                   최신순
                 </button>
+                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
+                  인기순
+                </button>
+                {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
+                  최신순
+                </button>
+                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
+                  인기순
+                </button> */}
               </div>
               <div className="sequenceBox">
                 <div className="sequenceItem"></div>
