@@ -94,7 +94,7 @@ export default function Alert() {
         history.push(`/mypage/${memNo}`)
         break
       case 37:
-        history.push('/customer/personal/qnaList')
+        history.push('/customer/qnaList')
         break
       case 38:
         history.push(`/mypage/${memNo}/notice`)

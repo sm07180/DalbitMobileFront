@@ -626,7 +626,7 @@ export default () => {
       case '37': //-----------------1:1 문의 답변
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/customer/personal/qnaList`
+          if (isLogin) window.location.href = `/customer/qnaList`
         }
         break
       case '38': //-----------------스타의 방송공지
