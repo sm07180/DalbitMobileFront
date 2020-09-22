@@ -41,9 +41,10 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
-import CrownIcon from './static/crown.jpg'
-// import CrownLottie from './static/crown_lottie.json'
-// import LiveLottie from './static/live_lottie.json'
+import CrownIcon from './static/ic_crown.png'
+import LiveIcon from './static/ic_newlive.png'
+import CrownLottie from './static/crown_lottie.json'
+import LiveLottie from './static/live_lottie.json'
 
 import 'styles/main.scss'
 
@@ -657,6 +658,9 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
+                <span>
+                  <img src={CrownIcon} alt="실시간랭킹" />
+                </span>
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -715,6 +719,7 @@ export default (props) => {
                 <span className="txt" onClick={RefreshFunc}>
                   실시간 LIVE
                   <span className="ico-lottie">
+                    <img src={LiveIcon} alt="실시간라이브" />
                     {/* <Lottie
                       options={{
                         loop: true,
