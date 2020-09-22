@@ -9,7 +9,7 @@ export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
 
-  const {isEdit, list, clipType} = playListCtx
+  const {isEdit, list, clipType, sortType} = playListCtx
 
   const fetchDataClipType = async () => {
     const {result, data, message} = await Api.getClipType({})
@@ -23,7 +23,7 @@ export default () => {
   const fetchPlayList = async () => {
     const {result, data, message} = await Api.getPlayList({
       params: {
-        sortType: 1,
+        sortType: sortType,
         records: 100
       }
     })
@@ -74,22 +74,13 @@ export default () => {
   }, [])
 
   useEffect(() => {
-    if (!isEdit) fetchPlayList()
+    if (!isEdit) {
+      playListCtx.action.updateDeleteList('')
+      fetchPlayList()
+    }
   }, [isEdit])
 
   if (list.length === 0) return null
-
-  const goBack = () => {
-    Hybrid('CloseLayerPopup')
-  }
-
-  const handleBtnClick = () => {
-    setIsEdit(!isEdit)
-  }
-
-  const handleDataList = (list) => {
-    console.log('데이터를 갖고옵시다', list)
-  }
 
   return (
     <div className={`playListWrap ${isEdit ? 'off' : 'on'}`}>

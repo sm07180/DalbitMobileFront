@@ -29,10 +29,9 @@ export default () => {
   }
 
   const fetchEdit = async () => {
-    const {result, data, message} = await Api.postPlayListEdit({
+    const {result, message} = await Api.postPlayListEdit({
       data: {
         sortType: sortType,
-        deleteClipNoList: deleteList,
         sortClipNoList: sortList
       }
     })
@@ -45,6 +44,7 @@ export default () => {
   const handleBtnClick = () => {
     if (isEdit) {
       playListCtx.action.updateIsEdit(false)
+      console.log('sortList', sortList)
       fetchEdit()
     } else {
       playListCtx.action.updateIsEdit(true)

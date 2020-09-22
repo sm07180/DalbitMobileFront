@@ -15,7 +15,13 @@ export default (props) => {
   const {isEdit, list, clipType, sortType, deleteList} = playListCtx
 
   const onChangeHandle = (oldIndex, newIndex) => {
-    playListCtx.action.updateList(arrayMove(list, oldIndex, newIndex))
+    let arrayList = arrayMove(list, oldIndex, newIndex)
+    playListCtx.action.updateList(arrayList)
+    arrayList = arrayList.map((item, idx) => {
+      return item['clipNo']
+    })
+    playListCtx.action.updateSortList(arrayList.join('|'))
+    sortType !== 0 && playListCtx.action.updateSortType(0)
   }
 
   const filterList = ['사용자설정', '많이 재생한 순', '좋아요 순', '선물 순', '재생목록 추가 순']
@@ -34,6 +40,7 @@ export default (props) => {
   }
 
   const handleFilterClick = async (idx) => {
+    playListCtx.action.updateSortType(idx)
     const {result, data, message} = await Api.getPlayList({
       params: {
         sortType: idx,
@@ -41,8 +48,8 @@ export default (props) => {
       }
     })
     if (result === 'success') {
+      console.log(data.list)
       playListCtx.action.updateList(data.list)
-      playListCtx.action.updateSortType(idx)
       setIsFilterOn(false)
     } else {
       globalCtx.action.alert({msg: message})
@@ -66,6 +73,7 @@ export default (props) => {
   }
 
   const deleteListFunc = async () => {
+    playListCtx.action.updateSortType(0)
     const {result, message} = await Api.postPlayListEdit({
       data: {
         sortType: 0,
@@ -74,6 +82,7 @@ export default (props) => {
     })
     if (result === 'success') {
       handleFilterClick(0)
+      playListCtx.action.updateDeleteList('')
     } else {
       globalCtx.action.alert({msg: message})
     }
