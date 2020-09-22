@@ -198,6 +198,12 @@ table {
   border-bottom: 1px solid #d2d2d2;
   box-sizing: border-box;
 
+  &.fixed {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+  }
+
   .header-title {
     font-size: 18px;
     color: $black;
