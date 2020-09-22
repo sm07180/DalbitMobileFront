@@ -12,7 +12,7 @@ import List from '../component/notice/list.js'
 import WritePage from '../component/notice/writePage.js'
 import Header from '../component/header.js'
 import Paging from 'components/ui/paging.js'
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 import Checkbox from './checkbox'
 // image,color //
 import pen from 'images/pen.svg'
@@ -251,7 +251,7 @@ const Notice = (props) => {
         <></>
       )}
       {listPage === -1 ? (
-        <NoResult />
+        <NoResult type="default" text="방송공지가 없습니다." />
       ) : (
         <>
           {listPage.length !== -1 && (
@@ -314,7 +314,7 @@ const Notice = (props) => {
                     })
                   ) : (
                     <>
-                      <NoResult />
+                      <NoResult type="default" text="방송공지가 없습니다." />
                       <br />
                       <br />
                       <br />

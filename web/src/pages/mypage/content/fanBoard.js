@@ -15,7 +15,7 @@ import Header from 'components/ui/new_header.js'
 import BoardList from './board_list'
 import WriteBoard from './board_write'
 //svg
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 // concat
 // let currentPage = 1
 // let timer
@@ -154,6 +154,7 @@ export default (props) => {
     )
   }
   const windowScrollEvent = () => {
+    // console.log(BoardListRef.current)
     if (BoardListRef) {
       const boardListNode = BoardListRef.current
       const boardListHeight = boardListNode.offsetTop
@@ -175,9 +176,11 @@ export default (props) => {
     }
   }
   useEffect(() => {
-    window.addEventListener('scroll', windowScrollEvent)
-    return () => {
-      window.removeEventListener('scroll', windowScrollEvent)
+    if (props.writeBtnCheck) {
+      window.addEventListener('scroll', windowScrollEvent)
+      return () => {
+        window.removeEventListener('scroll', windowScrollEvent)
+      }
     }
   }, [props.writeBtnCheck])
 
@@ -225,7 +228,7 @@ export default (props) => {
           <span></span>
         </div>
       )}
-      {totalCount === 0 && <NoResult />}
+      {totalCount === 0 && <NoResult type="default" text="등록된 팬보드가 없습니다." />}
       {totalCount > 0 && (
         <div ref={BoardListRef}>
           <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />

@@ -117,9 +117,6 @@ export default (props) => {
       window.history.go(-1)
     }
   }
-  //check login push login
-
-  //--------------------------------------------
   useEffect(() => {
     const getMyPageNew = async () => {
       const res = await Api.getMyPageNew(memNo)
@@ -128,8 +125,8 @@ export default (props) => {
     getMyPageNew()
   }, [])
   useEffect(() => {
-    setTabSelected(0)
-  }, [])
+    setTabSelected(1)
+  }, [memNo])
 
   useEffect(() => {
     const settingProfileInfo = async (memNo) => {
@@ -177,10 +174,6 @@ export default (props) => {
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
-  //else if (memNo === token.memNo && webview && webview === 'new') {
-  //   history.push('/menu/profile?webview=new')
-  // }
-
   if (!profileInfo || !profile) {
     return null
   }
