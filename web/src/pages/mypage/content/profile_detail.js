@@ -256,7 +256,6 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
-    console.log(e)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)

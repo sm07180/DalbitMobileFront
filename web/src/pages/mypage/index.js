@@ -63,7 +63,7 @@ export default (props) => {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [])
+  }, [memNo])
 
   //navi Array
   let navigationList = [
@@ -80,7 +80,6 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-
   if (sessionStorage.getItem('webview') === 'new') {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},

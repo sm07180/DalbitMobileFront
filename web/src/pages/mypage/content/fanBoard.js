@@ -154,21 +154,23 @@ export default (props) => {
     )
   }
   const windowScrollEvent = () => {
-    const boardListNode = BoardListRef.current
-    const boardListHeight = boardListNode.offsetTop
-    if (props.type) {
-      if (props.writeBtnCheck) {
-        setWriteBtnCheck(true)
+    if (BoardListRef) {
+      const boardListNode = BoardListRef.current
+      const boardListHeight = boardListNode.offsetTop
+      if (props.type) {
+        if (props.writeBtnCheck) {
+          setWriteBtnCheck(true)
+        } else {
+          setWriteBtnCheck(false)
+        }
       } else {
-        setWriteBtnCheck(false)
-      }
-    } else {
-      if (window.scrollY >= boardListHeight) {
-        setWriteBtnCheck(true)
-        setScrollY(boardListHeight)
-      } else {
-        setWriteBtnCheck(false)
-        setScrollY(0)
+        if (window.scrollY >= boardListHeight) {
+          setWriteBtnCheck(true)
+          setScrollY(boardListHeight)
+        } else {
+          setWriteBtnCheck(false)
+          setScrollY(0)
+        }
       }
     }
   }
