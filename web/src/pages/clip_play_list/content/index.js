@@ -25,7 +25,18 @@ export default () => {
   const {isEdit, sortType, deleteList, sortList} = playListCtx
 
   const goBack = () => {
-    Hybrid('CloseLayerPopup')
+    if (isEdit) {
+      //에딧중이라면
+      globalCtx.action.confirm({
+        msg: '편집 중인 내용을 \n 취소하시겠습니까? \n 변경된 내용은 저장되지 않습니다.',
+        callback: () => {
+          Hybrid('CloseLayerPopup')
+        }
+      })
+    } else {
+      //에딧중이 아니라면
+      Hybrid('CloseLayerPopup')
+    }
   }
 
   const fetchEdit = async () => {
@@ -43,9 +54,13 @@ export default () => {
 
   const handleBtnClick = () => {
     if (isEdit) {
-      playListCtx.action.updateIsEdit(false)
-      console.log('sortList', sortList)
-      fetchEdit()
+      globalCtx.action.confirm({
+        msg: '변경된 내용을 저장하시겠습니까?',
+        callback: () => {
+          playListCtx.action.updateIsEdit(false)
+          fetchEdit()
+        }
+      })
     } else {
       playListCtx.action.updateIsEdit(true)
     }

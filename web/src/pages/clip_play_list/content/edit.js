@@ -88,7 +88,20 @@ export default (props) => {
     }
   }
 
-  const handleAllClick = () => {}
+  const handleAllClick = () => {
+    if (isAllClick) {
+      //선택해재
+      playListCtx.action.updateDeleteList('')
+      setIsAllClick(false)
+    } else {
+      //전체선택
+      let all = list.map((item, idx) => {
+        return item['clipNo']
+      })
+      playListCtx.action.updateDeleteList(all.join('|'))
+      setIsAllClick(true)
+    }
+  }
 
   useEffect(() => {
     console.log(deleteList)
@@ -105,7 +118,7 @@ export default (props) => {
   return (
     <div className={`playListWrap ${isEdit ? 'on edit' : 'off'}`}>
       <div className="playListSorter">
-        <button className="playListSorter__selectBtn" onClick={handleAllClick}>
+        <button className={`playListSorter__selectBtn ${isAllClick ? 'on' : 'off'}`} onClick={handleAllClick}>
           {isAllClick ? '선택해제' : '전체선택'}
         </button>
         <button

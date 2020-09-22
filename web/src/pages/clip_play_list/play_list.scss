@@ -86,6 +86,9 @@
     }
     &__selectBtn {
       padding: 0 16px;
+      &.on {
+        color: #ffe600;
+      }
     }
 
     &__sortBtn {
