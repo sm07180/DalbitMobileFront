@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 // context
 import Api from 'context/api'
 import {Context} from 'context'
@@ -336,9 +336,9 @@ export default (props) => {
   return (
     <div className="profile-detail">
       {token && token.isLogin && showAdmin && (
-        <a href="/admin/image" className="adminBtn">
+        <Link to="/admin/clip" className="adminBtn">
           <img src={AdminIcon} alt="관리자아이콘" />
-        </a>
+        </Link>
       )}
       <button className="closeBtn" onClick={goBack}>
         <span className="blind">프로필 닫기</span>
