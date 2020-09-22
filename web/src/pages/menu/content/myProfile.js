@@ -3,8 +3,6 @@
  * @brief 2.5v 마이페이지 상단에 보이는 내 프로필 component.
  */
 import React, {useContext} from 'react'
-import {Context} from 'context'
-
 import ProfileDetail from '../../mypage/content/profile_detail'
 
 const myProfile = (props) => {

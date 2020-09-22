@@ -246,35 +246,6 @@ table {
   //     margin-right: 2px;
   //   }
   // }
-  .write-btn {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    bottom: 16px;
-    right: 6px;
-    color: $white;
-    font-weight: bold;
-    font-size: 14px;
-    width: 64px;
-    height: 64px;
-    padding-top: 22px;
-    border-radius: 50%;
-    background-color: $primary;
-    z-index: 1;
-    &::before {
-      display: block;
-      background: url('../pages/mypage/static/ic_write.svg') no-repeat center center / cover;
-      content: '';
-      width: 24px;
-      height: 24px;
-      position: absolute;
-      top: 8px;
-    }
-  }
-  .on {
-    display: flex;
-  }
 }
 
 .content-article {
@@ -290,7 +261,37 @@ table {
   }
 }
 
-//
+.write-btn {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 16px;
+  right: 6px;
+  color: $white;
+  font-weight: bold;
+  font-size: 14px;
+  width: 64px;
+  height: 64px;
+  padding-top: 22px;
+  border-radius: 50%;
+  background-color: $primary;
+  z-index: 1;
+  &::before {
+    display: block;
+    background: url('../pages/mypage/static/ic_write.svg') no-repeat center center / cover;
+    content: '';
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+  }
+
+  &.on {
+    display: block;
+  }
+}
+
 div.MuiToolbar-root,
 .MuiToolbar-regular,
 .MuiPickersToolbar-toolbar,
