@@ -26,6 +26,7 @@ export default (props) => {
   const ctx = useContext(Context)
   const context = useContext(Context)
   const {profile} = ctx
+  console.log(props.writeBtnCheck)
   //urlNumber
   let urlrStr
   if (props.location) {
@@ -154,28 +155,33 @@ export default (props) => {
     )
   }
   const windowScrollEvent = () => {
-    const boardListNode = BoardListRef.current
-    const boardListHeight = boardListNode.offsetTop
-    if (props.type) {
-      if (props.writeBtnCheck) {
-        setWriteBtnCheck(true)
+    console.log(BoardListRef.current)
+    if (BoardListRef) {
+      const boardListNode = BoardListRef.current
+      const boardListHeight = boardListNode.offsetTop
+      if (props.type) {
+        if (props.writeBtnCheck) {
+          setWriteBtnCheck(true)
+        } else {
+          setWriteBtnCheck(false)
+        }
       } else {
-        setWriteBtnCheck(false)
-      }
-    } else {
-      if (window.scrollY >= boardListHeight) {
-        setWriteBtnCheck(true)
-        setScrollY(boardListHeight)
-      } else {
-        setWriteBtnCheck(false)
-        setScrollY(0)
+        if (window.scrollY >= boardListHeight) {
+          setWriteBtnCheck(true)
+          setScrollY(boardListHeight)
+        } else {
+          setWriteBtnCheck(false)
+          setScrollY(0)
+        }
       }
     }
   }
   useEffect(() => {
-    window.addEventListener('scroll', windowScrollEvent)
-    return () => {
-      window.removeEventListener('scroll', windowScrollEvent)
+    if (props.writeBtnCheck) {
+      window.addEventListener('scroll', windowScrollEvent)
+      return () => {
+        window.removeEventListener('scroll', windowScrollEvent)
+      }
     }
   }, [props.writeBtnCheck])
 
