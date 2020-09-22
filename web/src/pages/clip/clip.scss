@@ -384,12 +384,18 @@
             align-items: center;
             height: 20px;
             letter-spacing: -0.5px;
-            span {
+            .title {
               color: #424242;
               flex: 1;
               white-space: nowrap;
               text-overflow: ellipsis;
               overflow: hidden;
+              letter-spacing: -0.5px;
+            }
+            .subject {
+              font-size: 14px;
+              color: #632beb;
+              font-weight: normal;
               letter-spacing: -0.5px;
             }
           }
