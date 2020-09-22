@@ -10,7 +10,7 @@ export default (props) => {
   const history = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
 
-  let {goBack} = props
+  let {goBack, type} = props
   if (goBack === undefined) {
     goBack = () => {
       return history.goBack()
@@ -18,7 +18,7 @@ export default (props) => {
   }
 
   return (
-    <div className="new header-wrap">
+    <div className={`new header-wrap ${type !== undefined ? type : ''}`}>
       {props.title ? (
         <h2 className={`header-title${props.title.length > 18 ? ' isLong' : ''}`}>{props.title}</h2>
       ) : (

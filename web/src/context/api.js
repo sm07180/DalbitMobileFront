@@ -2606,7 +2606,8 @@ export default class API {
     })
   }
 
-  static postPlayListEdit = async () => {
+  static postPlayListEdit = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
       url: '/clip/play/list/edit',
       method: 'POST',
