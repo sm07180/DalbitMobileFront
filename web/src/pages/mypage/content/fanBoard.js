@@ -41,7 +41,7 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(-1)
   const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
-  const [writeBtnCheck, setWriteBtnCheck] = useState(false)
+  const [isWriteBtn, setIsWriteBtn] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
   // 스크롤 이벤트
@@ -143,46 +143,31 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
-  const WriteToggle = () => {
-    setWriteState(true)
-  }
-  const createWriteBtn = () => {
-    return (
-      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
-        쓰기
-      </button>
-    )
-  }
   const windowScrollEvent = () => {
-    // console.log(BoardListRef.current)
-    if (BoardListRef) {
-      const boardListNode = BoardListRef.current
-      const boardListHeight = boardListNode.offsetTop
-      if (props.type) {
-        if (props.writeBtnCheck) {
-          setWriteBtnCheck(true)
-        } else {
-          setWriteBtnCheck(false)
-        }
+    const boardListNode = BoardListRef.current
+    const boardListHeight = boardListNode.offsetTop
+    if (props.type) {
+      if (props.isShowBtn) {
+        setIsWriteBtn(true)
       } else {
-        if (window.scrollY >= boardListHeight) {
-          setWriteBtnCheck(true)
-          setScrollY(boardListHeight)
-        } else {
-          setWriteBtnCheck(false)
-          setScrollY(0)
-        }
+        setIsWriteBtn(false)
+      }
+    } else {
+      if (window.scrollY >= boardListHeight) {
+        setIsWriteBtn(true)
+        setScrollY(boardListHeight)
+      } else {
+        setIsWriteBtn(false)
+        setScrollY(0)
       }
     }
   }
   useEffect(() => {
-    if (props.writeBtnCheck) {
-      window.addEventListener('scroll', windowScrollEvent)
-      return () => {
-        window.removeEventListener('scroll', windowScrollEvent)
-      }
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [props.writeBtnCheck])
+  }, [props.isShowBtn])
 
   //재조회 및 초기조회
   useEffect(() => {
@@ -221,7 +206,7 @@ export default (props) => {
       ) : (
         <></>
       )}
-      <WriteBoard {...props} writeCheck={writeState} set={setAction} />
+      <WriteBoard {...props} isShowBtn={isWriteBtn} set={setAction} />
       {/* 팬보드 리스트 영역 */}
       {totalCount === -1 && (
         <div className="loading">
@@ -234,8 +219,6 @@ export default (props) => {
           <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
         </div>
       )}
-
-      {writeBtnCheck && createWriteBtn()}
     </div>
   )
 }

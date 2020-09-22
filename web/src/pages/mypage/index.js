@@ -42,20 +42,22 @@ export default (props) => {
   const [myPageNew, setMyPageNew] = useState({})
   const [tabSelected, setTabSelected] = useState(0)
   const mypageRef = useRef()
-  const [writeBtnCheck, setWriteBtnCheck] = useState(false)
+  const [showWriteBtn, setShowWriteBtn] = useState(false)
   const [mypageFixed, setMypageFixed] = useState(false)
   // scroll fixed func
   const windowScrollEvent = () => {
-    const myPageHeaderNode = mypageRef.current
-    const myPageHeaderHeight = myPageHeaderNode.clientHeight
-    // const TopSectionHeight = myPageHeaderHeight
+    if (mypageRef.current) {
+      const myPageHeaderNode = mypageRef.current
+      const myPageHeaderHeight = myPageHeaderNode.clientHeight
+      // const TopSectionHeight = myPageHeaderHeight
 
-    if (window.scrollY >= myPageHeaderHeight) {
-      setWriteBtnCheck(true)
-      setMypageFixed(true)
-    } else {
-      setWriteBtnCheck(false)
-      setMypageFixed(false)
+      if (window.scrollY >= myPageHeaderHeight) {
+        setShowWriteBtn(true)
+        setMypageFixed(true)
+      } else {
+        setShowWriteBtn(false)
+        setMypageFixed(false)
+      }
     }
   }
   useEffect(() => {
@@ -244,34 +246,11 @@ export default (props) => {
                   </ul>
                   <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '40px' : 0}}>
                     {tabSelected === 0 && <Notice type="userprofile" />}
-                    {tabSelected === 1 && <FanBoard writeBtnCheck={writeBtnCheck} type="userprofile" />}
+                    {tabSelected === 1 && <FanBoard isShowBtn={showWriteBtn} type="userprofile" />}
                     {tabSelected === 2 && <MyClip type="userprofile" />}
                   </div>
                 </React.Fragment>
               )}
-              {/* <div className="profile-menu">
-                {mypageNavList.map((value, idx) => {
-                  const {type, txt, icon, component} = value
-                  return (
-                    <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
-                      <img className="icon" src={icon} />
-                      <span className="text">{txt}</span>
-                      <span
-                        className={
-                          type === 'notice'
-                            ? myPageNew.broadNotice
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : type === 'fanboard'
-                            ? myPageNew.fanBoard
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : 'arrow'
-                        }></span>
-                    </button>
-                  )
-                })}
-              </div> */}
             </>
           ) : (
             <div ref={mypageRef} style={{display: 'none'}}></div>
