@@ -285,6 +285,8 @@ table {
     height: 24px;
     position: absolute;
     top: 8px;
+    left: 50%;
+    margin-left: -12px;
   }
 
   &.on {
