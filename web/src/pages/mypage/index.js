@@ -244,7 +244,7 @@ export default (props) => {
                       return (
                         <li className={tabSelected === idx ? `isSelected` : ``} key={`list-${idx}`}>
                           <button onClick={() => changeTab(idx)}>
-                            {txt} <span className="cnt">{profileCount(idx)}</span>
+                            {txt} ({profileCount(idx)})
                           </button>
                         </li>
                       )
