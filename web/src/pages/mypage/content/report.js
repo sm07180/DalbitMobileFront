@@ -189,8 +189,8 @@ export default (props) => {
 
     setChanges({
       ...changes,
-      pickdataPrev: value,
-      pickdataNext: dateToday
+      pickdataPrev: value
+      // pickdataNext: dateToday
     })
 
     if (btn == 'dayAgo') {

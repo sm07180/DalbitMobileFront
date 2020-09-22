@@ -25,7 +25,6 @@ import ClipIcon from './static/menu_cast.svg'
 import './index.scss'
 import {OS_TYPE} from 'context/config'
 // header scroll flag
-let tempScrollEvent = null
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
@@ -41,36 +40,28 @@ export default (props) => {
   const [profileInfo, setProfileInfo] = useState(null)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
-  const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
-  const customHeader = JSON.parse(Api.customHeader)
-  //
   const mypageRef = useRef()
+  const [writeBtnCheck, setWriteBtnCheck] = useState(false)
   const [mypageFixed, setMypageFixed] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
-  //
   // scroll fixed func
   const windowScrollEvent = () => {
     const myPageHeaderNode = mypageRef.current
     const myPageHeaderHeight = myPageHeaderNode.clientHeight
-    const TopSectionHeight = myPageHeaderHeight
+    // const TopSectionHeight = myPageHeaderHeight
 
-    if (window.scrollY >= TopSectionHeight) {
+    if (window.scrollY >= myPageHeaderHeight) {
+      setWriteBtnCheck(true)
       setMypageFixed(true)
-      setScrollY(TopSectionHeight)
     } else {
+      setWriteBtnCheck(false)
       setMypageFixed(false)
-      setScrollY(0)
     }
   }
-  //---------------------------------------
   useEffect(() => {
-    window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
-
     return () => {
-      window.removeEventListener('scroll', tempScrollEvent)
+      window.removeEventListener('scroll', windowScrollEvent)
     }
   }, [])
 
@@ -172,16 +163,16 @@ export default (props) => {
     context.action.updateUrlStr(memNo)
   }, [memNo])
   // check 탈퇴회원
-  useEffect(() => {
-    if (codes === '-2') {
-      context.action.alert({
-        callback: () => {
-          window.history.back()
-        },
-        msg: '회원정보를 찾을 수 없습니다.'
-      })
-    }
-  }, [codes])
+  // useEffect(() => {
+  //   if (codes === '-2') {
+  //     context.action.alert({
+  //       callback: () => {
+  //         window.history.back()
+  //       },
+  //       msg: '회원정보를 찾을 수 없습니다.'
+  //     })
+  //   }
+  // }, [codes])
 
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
@@ -191,7 +182,7 @@ export default (props) => {
   //   history.push('/menu/profile?webview=new')
   // }
 
-  if (codes !== '-2' && (!profileInfo || !profile)) {
+  if (!profileInfo || !profile) {
     return null
   }
   const profileCount = (idx) => {
@@ -207,17 +198,17 @@ export default (props) => {
         break
     }
   }
-  const locationNav = (type) => {
-    context.action.updateFanboardReplyNum(false)
-    context.action.updateFanboardReply(false)
-    context.action.updateToggleAction(false)
+  // const locationNav = (type) => {
+  //   context.action.updateFanboardReplyNum(false)
+  //   context.action.updateFanboardReply(false)
+  //   context.action.updateToggleAction(false)
 
-    if (webview && webview === 'new') {
-      history.push(`/mypage/${memNo}/${type}?webview=new`)
-    } else {
-      history.push(`/mypage/${memNo}/${type}`)
-    }
-  }
+  //   if (webview && webview === 'new') {
+  //     history.push(`/mypage/${memNo}/${type}?webview=new`)
+  //   } else {
+  //     history.push(`/mypage/${memNo}/${type}`)
+  //   }
+  // }
   const changeTab = (type) => {
     if (type === 0) {
       setTabSelected(0)
@@ -240,30 +231,32 @@ export default (props) => {
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
-          {!category && (
+          {!category ? (
             <>
               <div ref={mypageRef}>
                 <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
               </div>
-
-              <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
-                {mypageNavList.map((value, idx) => {
-                  const {type, txt} = value
-                  return (
-                    <li className={tabSelected === idx ? `isSelected` : ``}>
-                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
-                        {txt} <span className="cnt">{profileCount(idx)}</span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '64px' : 0}}>
-                {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" />}
-                {tabSelected === 2 && <MyClip type="subpage" />}
-              </div>
-
+              {mypageNavList && (
+                <React.Fragment>
+                  <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
+                    {mypageNavList.map((value, idx) => {
+                      const {type, txt} = value
+                      return (
+                        <li className={tabSelected === idx ? `isSelected` : ``} key={`list-${idx}`}>
+                          <button onClick={() => changeTab(idx)}>
+                            {txt} <span className="cnt">{profileCount(idx)}</span>
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                  <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '40px' : 0}}>
+                    {tabSelected === 0 && <Notice type="userprofile" />}
+                    {tabSelected === 1 && <FanBoard writeBtnCheck={writeBtnCheck} type="userprofile" />}
+                    {tabSelected === 2 && <MyClip type="userprofile" />}
+                  </div>
+                </React.Fragment>
+              )}
               {/* <div className="profile-menu">
                 {mypageNavList.map((value, idx) => {
                   const {type, txt, icon, component} = value
@@ -288,6 +281,8 @@ export default (props) => {
                 })}
               </div> */}
             </>
+          ) : (
+            <div ref={mypageRef} style={{display: 'none'}}></div>
           )}
           <Switch>
             {navigationList.map((value) => {
