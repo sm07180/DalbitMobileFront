@@ -1,11 +1,14 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
+import Api from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 // static
 import closeBtn from './ic_back.svg'
 
 export default (props) => {
   const history = useHistory()
+  const customHeader = JSON.parse(Api.customHeader)
 
   let {goBack} = props
   if (goBack === undefined) {
@@ -21,10 +24,11 @@ export default (props) => {
       ) : (
         props.children
       )}
-
-      <button className="close-btn" onClick={goBack}>
-        <img src={closeBtn} alt="뒤로가기" />
-      </button>
+      {(props.type !== 'noBack' || customHeader['os'] === OS_TYPE['Desktop']) && (
+        <button className="close-btn" onClick={goBack}>
+          <img src={closeBtn} alt="뒤로가기" />
+        </button>
+      )}
     </div>
   )
 }

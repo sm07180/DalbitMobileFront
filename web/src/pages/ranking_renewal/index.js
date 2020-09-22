@@ -415,7 +415,7 @@ function Ranking() {
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
-        <Header title="랭킹" />
+        <Header title="랭킹" type="noBack" />
         <div className="refresh-wrap" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
