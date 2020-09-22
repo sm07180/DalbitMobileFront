@@ -89,6 +89,20 @@
       display: flex;
       flex-direction: column;
 
+      &__topWrap {
+        align-items: center;
+        width: 100%;
+        display: flex;
+        line-height: 1.3;
+      }
+
+      &__line {
+        flex-basis: 1px;
+        height: 10px;
+        background: #bdbdbd;
+        margin: 0px 6px;
+      }
+
       &__container {
         display: flex;
         align-items: center;
@@ -107,37 +121,32 @@
         display: flex;
       }
       &__category {
-        display: inline-block;
-        padding: 0 6px;
-        height: 16px;
-        margin-bottom: 5px;
-        line-height: 16px;
-        border-radius: 8px;
-        background-color: #9e9e9e;
-        font-size: 12px;
-        letter-spacing: -0.3px;
-        text-align: center;
-        color: #ffffff;
+        font-size: 14px;
+        color: #632beb;
+        font-weight: normal;
+        letter-spacing: -0.5px;
       }
       &__title {
-        margin-bottom: 4px;
         font-size: 14px;
-        font-weight: 600;
-        line-height: 1.14;
-        text-align: left;
-        color: #000000;
+        color: #424242;
+        flex: 1;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        letter-spacing: -0.5px;
       }
       &__nickName {
         font-size: 12px;
         font-weight: normal;
         font-stretch: normal;
         font-style: normal;
-        line-height: 1.08;
+        line-height: 1.3;
         letter-spacing: normal;
-        text-align: left;
         color: #000000;
+        margin: 7px 0px;
       }
       &__details {
+        width: 100%;
         em,
         strong {
           display: block;
@@ -166,21 +175,25 @@
             width: 16px;
             height: 16px;
             background: url('./static/message.svg');
+            opacity: 0.8;
           }
         }
         &.play {
           &:before {
             background: url('./static/clip_play_cnt.svg');
+            opacity: 0.8;
           }
         }
         &.star {
           &:before {
             background: url('./static/clip_stat_cnt.svg');
+            opacity: 0.8;
           }
         }
         &.like {
           &:before {
             background: url('./static/clip_like_cnt.svg');
+            opacity: 0.8;
           }
         }
       }

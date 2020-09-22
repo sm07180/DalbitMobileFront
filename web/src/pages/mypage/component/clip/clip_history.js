@@ -87,26 +87,32 @@ export default function ClipHistory() {
                 <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
-                    {context.clipType.map((v, index) => {
-                      if (v.value === subjectType) {
-                        return (
-                          <div key={index} className="uploadList__categoryWrap">
-                            <span className="uploadList__category">{v.cdNm}</span>
-                            {/* {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />} */}
-                          </div>
-                        )
-                      }
-                    })}
+                    <div className="uploadList__topWrap">
+                      {context.clipType.map((v, index) => {
+                        if (v.value === subjectType) {
+                          return (
+                            <div key={index} className="uploadList__categoryWrap">
+                              <span className="uploadList__category">{v.cdNm}</span>
+                              {/* {gender !== '' && <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} />} */}
+                            </div>
+                          )
+                        }
+                      })}
 
-                    {/* {globalState.clipType
+                      <i className="uploadList__line"></i>
+
+                      {/* {globalState.clipType
                       .filter((v) => {
                         if (v.value === subjectType) return v;
                       })
                       .map((v1, index) => {
                         return <span key={index}>{v1.cdNm}</span>;
                       })} */}
-                    <strong className="uploadList__title">{title}</strong>
+                      <strong className="uploadList__title">{title}</strong>
+                    </div>
+
                     <em className="uploadList__nickName">{nickName}</em>
+
                     <div className="uploadList__cnt">
                       <em className="uploadList__cnt message">{replyCnt}</em>
                       <em className="uploadList__cnt like">
