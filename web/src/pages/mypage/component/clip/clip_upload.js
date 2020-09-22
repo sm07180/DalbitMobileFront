@@ -108,7 +108,7 @@ function ClipUpload() {
   }
   useEffect(() => {
     fetchDataList()
-  }, [])
+  }, [context.urlStr])
 
   const createContents = () => {
     if (uploadList.length === 0) {

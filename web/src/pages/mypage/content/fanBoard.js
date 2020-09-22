@@ -34,6 +34,7 @@ export default (props) => {
   } else {
     urlrStr = location.pathname.split('/')[2]
   }
+  const BoardListRef = useRef()
   //state
   const [boardList, setBoardList] = useState([])
   const [nextList, setNextList] = useState(false)
@@ -41,6 +42,8 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(-1)
   const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
+  const [writeBtnCheck, setWriteBtnCheck] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   // 스크롤 이벤트
   // const scrollEvtHdr = (event) => {
@@ -144,59 +147,41 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
-
-  const boardType = props.type
-  //state
-  const [replyWriteState, setReplyWriteState] = useState(false)
-  const [boardReplyList, setBoardReplyList] = useState([])
-  //정보 댓글로 전달
-  const ReplyInfoTransfer = (boardIdx, item) => {
-    context.action.updateReplyIdx(boardIdx)
-    setReplyWriteState(true)
-    //drill reply fetch
-    fetchDataReplyList(boardIdx)
-    //분기 체크
-    if (context.fanboardReplyNum === boardIdx) {
-      context.action.updateFanboardReplyNum(-1)
-    } else {
-      context.action.updateFanboardReplyNum(boardIdx)
-    }
-    context.action.updateFanboardReply(item)
-    context.action.updateToggleAction(true)
-    //초기화
-    context.action.updateBoardIdx(0)
-    context.action.updateBoardModifyInfo(null)
-    // window.scrollTo({top: 0, left: 0, behavior: 'auto'})
+  const WriteToggle = () => {
+    setWriteState(true)
   }
-  //대댓글 클릭시 포커스
-  useEffect(() => {
-    console.log('..', context.fanboardReplyNum)
-    if (context.fanboardReplyNum && context.fanboardReplyNum !== -1) {
-      console.log(document.getElementsByClassName('list-item on'))
-      window.scrollTo(0, document.getElementsByClassName('list-item on')[0].offsetTop - 10)
-    }
-  }, [context.fanboardReplyNum])
-  // 팬보드 댓글 조회
-  async function fetchDataReplyList(boardIdx) {
-    const res = await Api.member_fanboard_reply({
-      params: {
-        memNo: urlrStr,
-        replyIdx: boardIdx
+  const createWriteBtn = () => {
+    return (
+      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
+        쓰기
+      </button>
+    )
+  }
+  const windowScrollEvent = () => {
+    const boardListNode = BoardListRef.current
+    const boardListHeight = boardListNode.offsetTop
+    if (props.type) {
+      if (props.writeBtnCheck) {
+        setWriteBtnCheck(true)
+      } else {
+        setWriteBtnCheck(false)
       }
-    })
-    if (res.result === 'success') {
-      setBoardReplyList(res.data.list)
-    } else if (res.result === 'fail') {
+    } else {
+      if (window.scrollY >= boardListHeight) {
+        setWriteBtnCheck(true)
+        setScrollY(boardListHeight)
+      } else {
+        setWriteBtnCheck(false)
+        setScrollY(0)
+      }
     }
   }
-  // const setAction = (value, writeType) => {
-  //   if (value === true) {
-  //     props.set(true)
-  //     if (writeType !== 'clip_board') {
-  //       fetchDataReplyList(context.fanboardReplyNum)
-  //     }
-  //   }
-  // }
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [props.writeBtnCheck])
 
   //재조회 및 초기조회
   useEffect(() => {
@@ -228,8 +213,14 @@ export default (props) => {
   //--------------------------------------------------
   return (
     <div className="fanboard">
-      {!props.type ? <Header title="팬보드" /> : <></>}
-      <WriteBoard {...props} set={setAction} />
+      {!props.type ? (
+        <Header>
+          <h2 className="header-title">팬보드</h2>
+        </Header>
+      ) : (
+        <></>
+      )}
+      <WriteBoard {...props} writeCheck={writeState} set={setAction} />
       {/* 팬보드 리스트 영역 */}
       {/* {totalCount === -1 && (
         <div className="loading">
@@ -312,6 +303,14 @@ export default (props) => {
           <span></span>
         </div>
       )}
+      {totalCount === 0 && <NoResult />}
+      {totalCount > 0 && (
+        <div ref={BoardListRef}>
+          <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
+        </div>
+      )}
+
+      {writeBtnCheck && createWriteBtn()}
     </div>
   )
 }

@@ -188,6 +188,11 @@ export default (props) => {
       setWriteState(false)
     }
   }, [])
+  useEffect(() => {
+    if (props.writeCheck === true) {
+      setWriteState(true)
+    }
+  }, [props.writeCheck])
   //팬보드일경우 아덜쇼 뉴팬보드표시
   useEffect(() => {
     if (profile.memNo === urlrStr) {
@@ -235,7 +240,7 @@ export default (props) => {
 
   //재조회 및 초기조회
   useEffect(() => {
-    if (props.type === undefined || props.type === 'subpage') {
+    if (props.type === undefined || props.type === 'userprofile') {
       setWriteType('board')
     } else if (props.type === 'reply') {
       setWriteType('reply')

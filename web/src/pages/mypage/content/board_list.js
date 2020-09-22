@@ -14,9 +14,9 @@ import WriteBoard from './board_write'
 //--------------------------------------------------------------------------
 export default (props) => {
   // context && location
-  let location = useLocation()
   const context = useContext(Context)
-  var urlrStr = location.pathname.split('/')[2]
+  let location = useLocation()
+  let urlrStr = location.pathname.split('/')[2]
   //전체 댓글리스트(props)
   const TotalList = props.list
   const TotalCount = props.totalCount
@@ -24,6 +24,7 @@ export default (props) => {
   //state
   const [replyWriteState, setReplyWriteState] = useState(false)
   const [boardReplyList, setBoardReplyList] = useState([])
+
   //정보 댓글로 전달
   const ReplyInfoTransfer = (boardIdx, item) => {
     context.action.updateReplyIdx(boardIdx)
@@ -45,10 +46,14 @@ export default (props) => {
   }
   //대댓글 클릭시 포커스
   useEffect(() => {
-    console.log('..', context.fanboardReplyNum)
     if (context.fanboardReplyNum && context.fanboardReplyNum !== -1) {
-      console.log(document.getElementsByClassName('list-item on'))
-      window.scrollTo(0, document.getElementsByClassName('list-item on')[0].offsetTop - 10)
+      let listTop = document.getElementsByClassName('list-item on')[0].offsetTop
+      if (props.boardType === 'userprofile') {
+        let userProfileHeight = document.getElementsByClassName('profile-info')[0].clientHeight
+        window.scrollTo(0, listTop + userProfileHeight - 8)
+      } else {
+        window.scrollTo(0, listTop - 8)
+      }
     }
   }, [context.fanboardReplyNum])
   // 팬보드 댓글 조회
