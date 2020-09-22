@@ -13,7 +13,6 @@ import Api from 'context/api'
 //components
 import Header from 'components/ui/new_header.js'
 import BoardList from './board_list'
-import BoardItem from './board_item'
 import WriteBoard from './board_write'
 //svg
 import NoResult from 'components/ui/noResult'
@@ -90,9 +89,6 @@ export default (props) => {
     }
     if (props.set) {
       props.set(true)
-    }
-    if (writeType !== 'clip_board') {
-      fetchDataReplyList(context.fanboardReplyNum)
     }
   }
   // 팬보드 글 조회
@@ -222,83 +218,7 @@ export default (props) => {
       )}
       <WriteBoard {...props} writeCheck={writeState} set={setAction} />
       {/* 팬보드 리스트 영역 */}
-      {/* {totalCount === -1 && (
-        <div className="loading">
-          <span></span>
-        </div>
-      )}
-      {totalCount === 0 && <NoResult />} */}
-      {/* {totalCount > 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} />} */}
-
-      {totalCount > 0 ? (
-        <div className="listWrap">
-          <>
-            {totalCount && (
-              <div className="list-count">
-                <span>게시글</span>
-                <span>{totalCount}</span>
-              </div>
-            )}
-            {boardList &&
-              boardList !== false &&
-              boardList.map((item, index, self) => {
-                const {replyCnt, replyIdx} = item
-                return (
-                  <React.Fragment key={index}>
-                    <div className={`list-item ${replyIdx === context.fanboardReplyNum && 'on'}`}>
-                      {item && <BoardItem key={`board-${index}`} data={item} set={props.set} type={boardType} />}
-                      {boardType !== 'clip_board' && (
-                        <div className="list-item__bottom">
-                          <button className="btn__reply" onClick={() => ReplyInfoTransfer(replyIdx, item)}>
-                            {replyCnt > 0 ? (
-                              <>
-                                답글 <em>{replyCnt}</em>
-                              </>
-                            ) : (
-                              <>답글쓰기</>
-                            )}
-                          </button>
-                        </div>
-                      )}
-                      {replyIdx === context.fanboardReplyNum &&
-                        boardReplyList &&
-                        boardReplyList !== false &&
-                        boardReplyList.map((item1, index1) => {
-                          return (
-                            <div
-                              className={
-                                item1.replyIdx === (context.boardModifyInfo && context.boardModifyInfo.replyIdx)
-                                  ? `reply-list modify`
-                                  : `reply-list `
-                              }
-                              key={index1}>
-                              <BoardItem
-                                key={`reply-${index1}`}
-                                data={item1}
-                                set={setAction}
-                                isViewOn={context.fanboardReply.viewOn}
-                                replyShowIdx={context.fanboardReplyNum}
-                                titleReplyInfo={context.fanboardReply}
-                              />
-                            </div>
-                          )
-                        })}
-                      {replyIdx === context.fanboardReplyNum && replyWriteState && (
-                        <WriteBoard
-                          isViewOn={context.fanboardReply.viewOn}
-                          replyWriteState={replyWriteState}
-                          set={setAction}
-                          type={'reply'}
-                          list={self}
-                        />
-                      )}
-                    </div>
-                  </React.Fragment>
-                )
-              })}
-          </>
-        </div>
-      ) : (
+      {totalCount === -1 && (
         <div className="loading">
           <span></span>
         </div>
