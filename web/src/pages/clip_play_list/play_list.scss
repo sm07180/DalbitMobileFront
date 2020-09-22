@@ -5,12 +5,12 @@
   height: 100%;
 
   .playListWrap {
-    padding: 16px;
-    margin: 40px 0 0 0;
+    // padding: 16px;
+    margin: 50px 0 0 0;
     &.on {
       display: block;
       &.edit {
-        margin-top: 90px;
+        margin-top: 100px;
         height: 100%;
       }
     }
@@ -77,6 +77,12 @@
       padding: 0 16px 0 26px;
       background: url(static/delete_b.svg) no-repeat left center;
       background-size: 24px;
+      &.none {
+        background: none;
+        width: 70px;
+        font-size: 0;
+        cursor: inherit;
+      }
     }
     &__selectBtn {
       padding: 0 16px;
@@ -138,12 +144,21 @@
 #playListItem {
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 16px;
   outline: none;
+
+  &.edit {
+    cursor: pointer;
+  }
+
+  &.on {
+    background: rgba(66, 88, 254, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06);
+  }
 
   button {
     position: absolute;
-    right: -54px;
+    right: -50px;
     top: 12px;
     width: 62px;
     height: 62px;
@@ -161,6 +176,9 @@
     margin-right: 12px;
     width: 72px;
     cursor: pointer;
+    &.edit {
+      cursor: auto;
+    }
 
     img {
       width: 100%;

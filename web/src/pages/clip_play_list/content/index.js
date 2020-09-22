@@ -45,7 +45,7 @@ export default () => {
   const handleBtnClick = () => {
     if (isEdit) {
       playListCtx.action.updateIsEdit(false)
-      // fetchEdit()
+      fetchEdit()
     } else {
       playListCtx.action.updateIsEdit(true)
     }

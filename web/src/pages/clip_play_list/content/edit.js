@@ -8,59 +8,14 @@ import {PlayListStore} from '../store'
 export default (props) => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
-  const [scrollState, setScrollState] = useState(false)
-  const [selectedItem, setSelectedItem] = useState([])
-  const [isFilterOn, setIsFilterOn] = useState(false)
 
-  const {isEdit, list, clipType, sortType} = playListCtx
+  const [isFilterOn, setIsFilterOn] = useState(false)
+  const [isAllClick, setIsAllClick] = useState(false)
+
+  const {isEdit, list, clipType, sortType, deleteList} = playListCtx
 
   const onChangeHandle = (oldIndex, newIndex) => {
     playListCtx.action.updateList(arrayMove(list, oldIndex, newIndex))
-  }
-
-  const arrayToString = (array) => {}
-
-  const fetchPlayList = async () => {
-    const {result, data, message} = await Api.getPlayList({
-      params: {
-        sortType: 1,
-        records: 100
-      }
-    })
-    if (result === 'success') {
-      playListCtx.action.updateList(data.list)
-    } else {
-      globalCtx.action.alert({msg: message})
-    }
-  }
-
-  const updatePlayList = async (sort, deleteList, sortList) => {
-    if (deleteList.length === 0) {
-      deleteList = ''
-    } else {
-      deleteList = arrayToString(deleteList)
-    }
-
-    if (sortList.length === 0) {
-      sortList = ''
-    } else {
-      sortList = arrayToString(sortList)
-    }
-
-    const {result, data, message} = await Api.postPlayListEdit({
-      data: {
-        sortType: sort,
-        deleteClipNoList: deleteList,
-        sortClipNoList: sortList
-      }
-    })
-    if (result === 'success') {
-      console.log('data', data)
-    } else {
-      globalCtx.action.alert({
-        msg: message
-      })
-    }
   }
 
   const filterList = ['사용자설정', '많이 재생한 순', '좋아요 순', '선물 순', '재생목록 추가 순']
@@ -94,6 +49,42 @@ export default (props) => {
     }
   }
 
+  const handleListItemClick = (clipNo) => {
+    if (deleteList.includes(clipNo)) {
+      if (deleteList.includes(`|${clipNo}`)) {
+        playListCtx.action.updateDeleteList(deleteList.replace(`|${clipNo}`, ''))
+      } else {
+        playListCtx.action.updateDeleteList(deleteList.replace(`${clipNo}`, ''))
+      }
+    } else {
+      if (deleteList === '') {
+        playListCtx.action.updateDeleteList(clipNo)
+      } else {
+        playListCtx.action.updateDeleteList(deleteList + `|${clipNo}`)
+      }
+    }
+  }
+
+  const deleteListFunc = async () => {
+    const {result, message} = await Api.postPlayListEdit({
+      data: {
+        sortType: 0,
+        deleteClipNoList: deleteList
+      }
+    })
+    if (result === 'success') {
+      handleFilterClick(0)
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
+
+  const handleAllClick = () => {}
+
+  useEffect(() => {
+    console.log(deleteList)
+  }, [deleteList])
+
   useEffect(() => {
     if (isFilterOn) {
       document.body.style.overflow = 'hidden'
@@ -105,15 +96,24 @@ export default (props) => {
   return (
     <div className={`playListWrap ${isEdit ? 'on edit' : 'off'}`}>
       <div className="playListSorter">
-        <button className="playListSorter__selectBtn">전체선택</button>
+        <button className="playListSorter__selectBtn" onClick={handleAllClick}>
+          {isAllClick ? '선택해제' : '전체선택'}
+        </button>
         <button
           className="playListSorter__sortBtn"
           onClick={() => {
             setIsFilterOn(!isFilterOn)
           }}>
-          정렬순
+          {filterList[sortType]}
         </button>
-        <button className="playListSorter__deleteBtn">삭제</button>
+        {deleteList ? (
+          <button className="playListSorter__deleteBtn" onClick={deleteListFunc}>
+            삭제
+          </button>
+        ) : (
+          <button className="playListSorter__deleteBtn none">삭제</button>
+        )}
+
         <ul className={`playListSorterList ${isFilterOn ? 'on' : 'off'}`}>{makeFilterBtn()}</ul>
       </div>
       <div
@@ -130,13 +130,19 @@ export default (props) => {
             style={{
               padding: 0
             }}
-            className={`playListBox ${scrollState ? 'on' : 'off'}`}>
+            className={`playListBox`}>
             {children}
           </ul>
         )}
         renderItem={({value, props, isDragged}) => (
-          <li {...props} id="playListItem">
-            <div className="playListItem__thumb">
+          <li
+            {...props}
+            id="playListItem"
+            className={`edit ${deleteList.includes(value['clipNo']) ? 'on' : 'off'}`}
+            onClick={() => {
+              handleListItemClick(value['clipNo'])
+            }}>
+            <div className="playListItem__thumb edit">
               <img src={value['bgImg']['thumb80x80']} alt="thumb" />
               <span className="playListItem__thumb--playTime">{value['filePlayTime']}</span>
             </div>
