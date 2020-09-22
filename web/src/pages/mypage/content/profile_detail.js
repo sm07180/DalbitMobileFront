@@ -285,7 +285,6 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
     } else {
       if (locHash instanceof Object && locHash.state) {
-        log
         locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
       } else {
         history.goBack()
