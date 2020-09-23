@@ -490,17 +490,17 @@
               letter-spacing: normal;
               text-align: center;
               color: $greishBrown;
-              &--active {
-                &:after {
-                  margin-left: 8px;
-                  display: inline-block;
-                  content: '';
-                  width: 16px;
-                  height: 16px;
-                  background: url('../menu/static/fan_setting.svg');
-                  cursor: pointer;
-                }
-              }
+              // &--active {
+              //   &:after {
+              //     margin-left: 8px;
+              //     display: inline-block;
+              //     content: '';
+              //     width: 16px;
+              //     height: 16px;
+              //     background: url('../menu/static/fan_setting.svg');
+              //     cursor: pointer;
+              //   }
+              // }
             }
             .cntTitle {
               font-size: 20px;

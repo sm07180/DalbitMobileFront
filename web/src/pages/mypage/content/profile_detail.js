@@ -466,7 +466,7 @@ export default (props) => {
                   onClick={() => {
                     {
                       profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                      setRankTabType('tabRank')
+                      setRankTabType('tabGood')
                     }
                   }}>
                   왕큐피트
@@ -476,7 +476,7 @@ export default (props) => {
                   className="btn__fanRank cupid"
                   onClick={() => {
                     profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
-                    setRankTabType('tabRank')
+                    setRankTabType('tabGood')
                   }}>
                   왕큐피트
                 </button>
