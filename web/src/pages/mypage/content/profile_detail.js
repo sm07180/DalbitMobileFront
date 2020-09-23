@@ -353,12 +353,9 @@ export default (props) => {
         )}
 
         {token && token.isLogin && showAdmin && (
-          <button
-            onClick={() => {
-              history.push(`/admin/clip`)
-            }}>
+          <a href="/admin/clip">
             <img src={AdminIcon} alt="관리자아이콘" />
-          </button>
+          </a>
         )}
       </div>
 
