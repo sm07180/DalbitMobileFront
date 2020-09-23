@@ -53,6 +53,7 @@ export default (props) => {
         break
       case mode.callback !== undefined: //---------------------콜백처리
         //콜백
+        context.action.alert({visible: false})
         if (mode.callback === 'confirm' && context.message.callback !== undefined) {
           context.message.callback()
         }
@@ -60,7 +61,7 @@ export default (props) => {
         if (mode.callback === 'cancel' && context.message.cancelCallback !== undefined) {
           context.message.cancelCallback()
         }
-        context.action.alert({visible: false})
+
         break
     }
   }

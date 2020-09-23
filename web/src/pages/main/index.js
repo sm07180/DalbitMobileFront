@@ -11,7 +11,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
-import Lottie from 'react-lottie'
+//import Lottie from 'react-lottie'
 
 // components
 import Layout from 'pages/common/layout'
@@ -41,9 +41,10 @@ import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
-import CrownIcon from './static/crown.jpg'
-// import CrownLottie from './static/crown_lottie.json'
-// import LiveLottie from './static/live_lottie.json'
+//import CrownIcon from './static/ic_crown.png'
+//import LiveIcon from './static/ic_newlive.png'
+//import CrownLottie from './static/crown_lottie.json'
+//import LiveLottie from './static/live_lottie.json'
 
 import 'styles/main.scss'
 
@@ -54,14 +55,7 @@ const records = 30
 
 let touchStartY = null
 let touchEndY = null
-// let GnbHeight = 48
 export default (props) => {
-  // useEffect(() => {
-  //   if (customHeader['os'] === OS_TYPE['Android']) {
-  //     GnbHeight = 96
-  //   }
-  // }, [])
-
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -105,6 +99,9 @@ export default (props) => {
   const customHeader = JSON.parse(Api.customHeader)
 
   const [payState, setPayState] = useState(false)
+
+  const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
+  const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
 
   useEffect(() => {
     rankAction.formDispatch &&
@@ -293,7 +290,6 @@ export default (props) => {
     const MainHeight = MainNode.clientHeight
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
-    // alert('///')
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode.clientHeight
@@ -301,12 +297,11 @@ export default (props) => {
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
     let TopSectionHeight
-    if (customHeader['os'] === OS_TYPE['Android']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-    } else {
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
       TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+    } else {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
     }
-    console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
@@ -451,10 +446,13 @@ export default (props) => {
       touchEndY = e.touches[0].clientY
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 50
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        if (heightDiff <= heightDiffFixed) {
+          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        }
       }
     },
     [reloadInit]
@@ -478,8 +476,8 @@ export default (props) => {
       const refreshIconNode = arrowRefreshRef.current
 
       const heightDiff = (touchEndY - touchStartY) / ratio
-
-      if (heightDiff >= 100) {
+      const heightDiffFixed = 48
+      if (heightDiff >= heightDiffFixed) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
@@ -665,6 +663,9 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
+                <span>
+                  <img src={CrownWebp} alt="실시간랭킹" width={40} />
+                </span>
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -723,6 +724,7 @@ export default (props) => {
                 <span className="txt" onClick={RefreshFunc}>
                   실시간 LIVE
                   <span className="ico-lottie">
+                    <img src={LiveWebp} alt="실시간라이브" width={24} />
                     {/* <Lottie
                       options={{
                         loop: true,

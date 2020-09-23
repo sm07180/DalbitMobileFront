@@ -44,6 +44,7 @@ function BC_SettingTitle() {
       })
       setTitle('')
       setList(res.data.list)
+      setDeleteIdx(-1)
     }
   }, [deleteIdx, list])
 

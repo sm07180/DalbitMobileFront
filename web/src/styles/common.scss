@@ -229,32 +229,29 @@ table {
     cursor: pointer;
   }
 
-  .write-btn {
-    display: none;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    color: $white;
-    font-weight: bold;
-    font-size: 14px;
-    width: 72px;
-    height: 32px;
-    border-radius: 16px;
-    background-color: $primary;
-    :before {
-      display: block;
-      background: url('../pages/mypage/static/ic_write.svg') no-repeat center center / cover;
-      content: '';
-      width: 24px;
-      height: 24px;
-      margin-right: 2px;
-    }
-  }
-  .on {
-    display: flex;
-  }
+  // .write-btn {
+  //   display: none;
+  //   justify-content: center;
+  //   align-items: center;
+  //   position: absolute;
+  //   top: 8px;
+  //   right: 8px;
+  //   color: $white;
+  //   font-weight: bold;
+  //   font-size: 14px;
+  //   width: 72px;
+  //   height: 32px;
+  //   border-radius: 16px;
+  //   background-color: $primary;
+  //   :before {
+  //     display: block;
+  //     background: url('../pages/mypage/static/ic_write.svg') no-repeat center center / cover;
+  //     content: '';
+  //     width: 24px;
+  //     height: 24px;
+  //     margin-right: 2px;
+  //   }
+  // }
 }
 
 .content-article {
@@ -270,7 +267,66 @@ table {
   }
 }
 
-//
+.write-btn {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 16px;
+  right: 6px;
+  color: $white;
+  font-weight: bold;
+  font-size: 14px;
+  width: 64px;
+  height: 64px;
+  padding-top: 22px;
+  border-radius: 50%;
+  background-color: $primary;
+  z-index: 1;
+  &::before {
+    display: block;
+    background: url('../pages/mypage/static/ic_write.svg') no-repeat center center / cover;
+    content: '';
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    margin-left: -12px;
+  }
+
+  &.on {
+    display: block;
+  }
+}
+
+.noResultWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  span {
+    font-size: 14px;
+    line-height: 1.25;
+    color: #777;
+    &.noResult {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 14px;
+      &::before {
+        display: inline-block;
+        content: '';
+        width: 82px;
+        height: 68px;
+        margin-bottom: 10px;
+        background: url('../components/ui/ic_noResult.svg') no-repeat center;
+      }
+    }
+  }
+}
+
 div.MuiToolbar-root,
 .MuiToolbar-regular,
 .MuiPickersToolbar-toolbar,

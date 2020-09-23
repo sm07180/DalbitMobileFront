@@ -11,16 +11,15 @@ import {Context} from 'context'
 //api
 import Api from 'context/api'
 //components
-// import Header from '../component/header.js'
 import Header from 'components/ui/new_header.js'
 import BoardList from './board_list'
 import WriteBoard from './board_write'
 //svg
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 // concat
-let currentPage = 1
-let timer
-let total = 2
+// let currentPage = 1
+// let timer
+// let total = 2
 //layout
 export default (props) => {
   //context
@@ -34,6 +33,7 @@ export default (props) => {
   } else {
     urlrStr = location.pathname.split('/')[2]
   }
+  const BoardListRef = useRef()
   //state
   const [boardList, setBoardList] = useState([])
   const [nextList, setNextList] = useState(false)
@@ -41,32 +41,31 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(-1)
   const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
+  const [isWriteBtn, setIsWriteBtn] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
+
   // 스크롤 이벤트
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
+  // const scrollEvtHdr = (event) => {
+  //   if (timer) window.clearTimeout(timer)
+  //   timer = window.setTimeout(function () {
+  //     //스크롤
+  //     const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+  //     const body = document.body
+  //     const html = document.documentElement
+  //     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+  //     const windowBottom = windowHeight + window.pageYOffset
 
-      if (moreState && windowBottom >= docHeight - 200) {
-        // console.log(boardList.length)
-        // console.log(currentPage * 10)
+  //     if (moreState && windowBottom >= docHeight - 200) {
 
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
+  //       showMoreList()
+  //     } else {
+  //     }
+  //   }, 10)
+  // }
   // 스크롤 더보기
   const showMoreList = async () => {
     if (moreState) {
       let a = boardList.concat(nextList)
-      // console.log(boardList)
-      // console.log(nextList)
       let obj = {}
       a.forEach((v) => {
         obj[v.boardIdx] = v
@@ -85,7 +84,7 @@ export default (props) => {
   }
   const setAction = (value) => {
     if (value === true) {
-      currentPage = 1
+      // currentPage = 1
       fetchData()
     }
     if (props.set) {
@@ -94,7 +93,7 @@ export default (props) => {
   }
   // 팬보드 글 조회
   async function fetchData(next) {
-    currentPage = next ? ++currentPage : currentPage
+    // currentPage = next ? ++currentPage : currentPage
     const res = await Api.mypage_fanboard_list({
       params: {
         memNo: urlrStr,
@@ -102,30 +101,34 @@ export default (props) => {
         records: 10000
       }
     })
-
     if (res.result === 'success') {
-      if (res.code === '0') {
-        if (next !== 'next') {
-          setBoardList(false)
-          setTotalCount(0)
-        }
-        setMoreState(false)
+      setBoardList(res.data.list)
+      if (res.data.paging) {
+        setTotalCount(res.data.paging.total)
       } else {
-        if (next) {
-          setMoreState(true)
-          setNextList(res.data.list)
-          setTotalCount(res.data.paging.total)
-        } else {
-          setBoardList(res.data.list)
-          setTotalCount(res.data.paging.total)
-          fetchData('next')
-        }
+        setTotalCount(0)
       }
-
-      if (total === 2) {
-        if (res.data.paging) total = res.data.paging.totalPage
-      }
-    } else {
+      //   if (res.code === '0') {
+      //     if (next !== 'next') {
+      //       setBoardList(false)
+      //       setTotalCount(0)
+      //     }
+      //     setMoreState(false)
+      //   } else {
+      //     if (next) {
+      //       setMoreState(true)
+      //       setNextList(res.data.list)
+      //       setTotalCount(res.data.paging.total)
+      //     } else {
+      //       setBoardList(res.data.list)
+      //       setTotalCount(res.data.paging.total)
+      //       fetchData('next')
+      //     }
+      //   }
+      //   if (total === 2) {
+      //     if (res.data.paging) total = res.data.paging.totalPage
+      //   }
+      // } else {
     }
   }
   async function getMyPageNewFanBoard() {
@@ -140,9 +143,35 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
+  const windowScrollEvent = () => {
+    const boardListNode = BoardListRef.current
+    const boardListHeight = boardListNode.offsetTop
+    if (props.type) {
+      if (props.isShowBtn) {
+        setIsWriteBtn(true)
+      } else {
+        setIsWriteBtn(false)
+      }
+    } else {
+      if (window.scrollY >= boardListHeight) {
+        setIsWriteBtn(true)
+        setScrollY(boardListHeight)
+      } else {
+        setIsWriteBtn(false)
+        setScrollY(0)
+      }
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [props.isShowBtn])
+
   //재조회 및 초기조회
   useEffect(() => {
-    currentPage = 1
+    //currentPage = 1
     fetchData()
   }, [writeState, urlrStr])
   // useEffect(() => {
@@ -152,6 +181,7 @@ export default (props) => {
   //   }
   // }, [nextList])
   useEffect(() => {
+    context.action.updateSetBack(null)
     if (profile.memNo === urlrStr) {
       setIsOther(true)
     } else {
@@ -160,25 +190,35 @@ export default (props) => {
     if (context.token.memNo === profile.memNo) {
       getMyPageNewFanBoard()
     }
-    return () => {
-      currentPage = 1
-    }
+
+    // return () => {
+    //   currentPage = 1
+    // }
   }, [])
 
   //--------------------------------------------------
   return (
     <div className="fanboard">
-      {!props.type ? <Header title="팬보드" /> : <></>}
-      <WriteBoard {...props} set={setAction} />
-
+      {!props.type ? (
+        <Header>
+          <h2 className="header-title">팬보드</h2>
+        </Header>
+      ) : (
+        <></>
+      )}
+      <WriteBoard {...props} isShowBtn={isWriteBtn} set={setAction} />
       {/* 팬보드 리스트 영역 */}
       {totalCount === -1 && (
         <div className="loading">
           <span></span>
         </div>
       )}
-      {totalCount === 0 && <NoResult />}
-      {totalCount > 0 && <BoardList list={boardList} totalCount={totalCount} set={setAction} />}
+      {totalCount === 0 && <NoResult type="default" text="등록된 팬보드가 없습니다." />}
+      {totalCount > 0 && (
+        <div ref={BoardListRef}>
+          <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
+        </div>
+      )}
     </div>
   )
 }

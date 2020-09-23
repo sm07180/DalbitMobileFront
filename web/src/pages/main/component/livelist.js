@@ -16,7 +16,7 @@ import Util from 'components/lib/utility.js'
 
 // static
 import PeopleIcon from '../static/people_g_s.svg'
-import EntryImg from '../static/person_w_s.svg'
+import EntryImg from '../static/new_person_w_s.svg'
 
 const makeContents = (props) => {
   const context = useContext(Context)
@@ -43,29 +43,9 @@ const makeContents = (props) => {
     } = list
 
     const alertCheck = (roomNo) => {
-      if (context.adminChecker === true) {
-        context.action.confirm_admin({
-          //콜백처리
-          callback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 1
-            })
-          },
-          //캔슬콜백처리
-          cancelCallback: () => {
-            RoomJoin({
-              roomNo: roomNo,
-              shadow: 0
-            })
-          },
-          msg: '관리자로 입장하시겠습니까?'
-        })
-      } else {
-        RoomJoin({
-          roomNo: roomNo
-        })
-      }
+      RoomJoin({
+        roomNo: roomNo
+      })
     }
 
     return (
@@ -167,9 +147,9 @@ const makeContents = (props) => {
             </div>
             <div className="bottom-wrap">
               {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
-              <div className="type-icon-wrap">
+              {/* <div className="type-icon-wrap">
                 <img className="type-icon" src={noBgAudioIcon} />
-              </div>
+              </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
             </div>
           </div>

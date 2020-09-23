@@ -604,6 +604,7 @@ const SearchArea = styled.div`
 `
 
 const Content = styled.div`
+  padding: 0 16px;
   .titleCount {
     margin-bottom: 8px;
     font-size: 16px;

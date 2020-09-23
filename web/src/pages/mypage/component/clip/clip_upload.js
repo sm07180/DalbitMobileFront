@@ -8,6 +8,7 @@ import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //svg
 import PlayIcon from '../clip_play.svg'
 import LikeIcon from '../clip_like.svg'
+import MessageIcon from './message_w.svg'
 //flag
 let currentPage = 1
 let timer
@@ -107,7 +108,7 @@ function ClipUpload() {
   }
   useEffect(() => {
     fetchDataList()
-  }, [])
+  }, [context.urlStr])
 
   const createContents = () => {
     if (uploadList.length === 0) {
@@ -132,34 +133,41 @@ function ClipUpload() {
       return (
         <div className="uploadList">
           {uploadList.map((item, idx) => {
-            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title} = item
+            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, replyCnt} = item
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
                 <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
-                    {context.clipType.map((v, index) => {
-                      if (v.value === subjectType) {
-                        return (
-                          <span key={index} className="uploadList__category">
-                            {v.cdNm}
-                          </span>
-                        )
-                      }
-                    })}
-                    {/* {globalState.clipType
+                    <div className="uploadList__topWrap">
+                      {context.clipType.map((v, index) => {
+                        if (v.value === subjectType) {
+                          return (
+                            <span key={index} className="uploadList__category">
+                              {v.cdNm}
+                            </span>
+                          )
+                        }
+                      })}
+                      <i className="uploadList__line"></i>
+                      {/* {globalState.clipType
                       .filter((v) => {
                         if (v.value === subjectType) return v;
                       })
                       .map((v1, index) => {
                         return <span key={index}>{v1.cdNm}</span>;
                       })} */}
-                    <strong className="uploadList__title">{title}</strong>
+                      <strong className="uploadList__title">{title}</strong>
+                    </div>
                     <em className="uploadList__nickName">{nickName}</em>
                     <div className="uploadList__cnt">
-                      <em className="uploadList__cnt play">{playCnt}</em>
-                      <em className="uploadList__cnt like">{goodCnt}</em>
+                      <em className="uploadList__cnt play">
+                        {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
+                      </em>
+                      <em className="uploadList__cnt like">
+                        {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                      </em>
                       {/* <em className="uploadList__cnt star">
                         {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
                       </em> */}
@@ -178,7 +186,7 @@ function ClipUpload() {
         <div className="listSimple">
           <ul className="listSimpleBox">
             {uploadList.map((item, idx) => {
-              const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title} = item
+              const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, replyCnt} = item
               return (
                 <React.Fragment key={`uploadList-${idx}`}>
                   <li
@@ -200,10 +208,12 @@ function ClipUpload() {
                         }
                       })} */}
                       <div className="topWrap__count">
-                        <img className="topWrap__count--icon" src={PlayIcon} />
-                        <span className="topWrap__count--num">{playCnt}</span>
+                        <img className="topWrap__count--icon" src={MessageIcon} />
+                        <span className="topWrap__count--num">{replyCnt}</span>
                         <img className="topWrap__count--icon" src={LikeIcon} />
-                        <span className="topWrap__count--num">{goodCnt}</span>
+                        <span className="topWrap__count--num">
+                          {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                        </span>
                       </div>
                     </div>
 

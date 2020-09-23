@@ -16,6 +16,8 @@ import useChange from 'components/hooks/useChange'
 // svg
 import BlackPlusIcon from '../black_plus.svg'
 import BackIcon from '../black_plus.svg'
+
+import './index.scss'
 export default (props) => {
   //-----------------------------------------------------------------------------
   //contenxt
@@ -196,8 +198,7 @@ export default (props) => {
 }
 
 const Content = styled.div`
-  margin-top: 16px;
-
+  padding: 0 16px;
   .input-wrap {
     display: flex;
     padding: 0 8px 0 16px;
@@ -339,3 +340,24 @@ const Content = styled.div`
     }
   }
 `
+
+// import React, {useState, useEffect} from 'react'
+
+// function BanWord() {
+
+//   const [tab, setTab] = useState(0);
+
+//   useEffect(() => {
+
+//   }, [])
+//   return (
+//     <div id="banwordWrap">
+//       <div className="buttonWrap">
+//         <button>개별</button>
+//         <button>통합</button>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default React.memo(BanWord)

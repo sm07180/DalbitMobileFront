@@ -10,7 +10,7 @@ import moment from 'moment'
 import {COLOR_MAIN} from 'context/color'
 
 //static
-import closeIco from '../static/ico_close.svg'
+import closeIco from '../static/close_w_l.svg'
 
 //component
 import DatePicker from './datepicker'
@@ -21,7 +21,7 @@ export default (props) => {
   const dateToday = moment(new Date()).format('YYYYMMDD')
   const dateDayAgo = moment(new Date().setDate(new Date().getDate() - 1)).format('YYYYMMDD')
   const dateWeekAgo = moment(new Date().setDate(new Date().getDate() - 7)).format('YYYYMMDD')
-  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth() - 1)).format('YYYYMMDD')
+  const dateMonthAgo = moment(new Date().setMonth(new Date().getMonth(), +1)).format('YYYYMMDD')
 
   const {
     active,
@@ -155,19 +155,21 @@ const Popup = styled.div`
 
   .header {
     position: relative;
-    border-bottom: 1px solid #e0e0e0;
+
     h1 {
-      padding: 13px 0;
-      font-size: 16px;
-      line-height: 16px;
+      margin: 0px 16px;
+      height: 52px;
+      line-height: 52px;
+      font-size: 18px;
       font-weight: 800;
       color: #000;
       text-align: center;
+      border-bottom: 1px solid #e0e0e0;
     }
     button {
       position: absolute;
-      top: 4px;
-      right: 7px;
+      top: -40px;
+      right: 0px;
     }
   }
 

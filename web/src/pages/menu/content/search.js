@@ -33,6 +33,8 @@ export default (props) => {
   const [btnIdx, setBtnIdx] = useState(0)
   const [totalMemCnt, setTotalMemCnt] = useState(0)
   const [totalLiveCnt, setTotalLiveCnt] = useState(0)
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
+
   //---------------------------------------------------------------------
   //fetch 사용자검색
   async function fetchMember(query, next) {
@@ -141,29 +143,7 @@ export default (props) => {
         const {roomNo, memNo, type} = mode.select
         //라이브중아님,사용자검색
         if (roomNo !== '' && roomNo !== '0') {
-          if (context.adminChecker === true) {
-            context.action.confirm_admin({
-              //콜백처리
-              callback: () => {
-                RoomJoin({
-                  roomNo: roomNo,
-                  shadow: 1
-                })
-              },
-              //캔슬콜백처리
-              cancelCallback: () => {
-                RoomJoin({
-                  roomNo: roomNo,
-                  shadow: 0
-                })
-              },
-              msg: '관리자로 입장하시겠습니까?'
-            })
-          } else {
-            RoomJoin({
-              roomNo: roomNo
-            })
-          }
+          RoomJoin({roomNo: roomNo})
         } else if (roomNo === '0') {
           history.push(`/mypage/${memNo}/`)
         }
@@ -213,6 +193,21 @@ export default (props) => {
       fetchLive(query)
     }
   }, [btnIdx])
+
+  useEffect(() => {
+    API.splash().then((res) => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          const concatenated = categoryList.concat(roomType)
+          setCategoryList(concatenated)
+        }
+      }
+    })
+  }, [])
+
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function () {
@@ -306,7 +301,9 @@ export default (props) => {
             )}
           </div>
         )}
-        {query !== '' && (btnIdx === 0 || btnIdx === 1) && <List update={update} type="live" fetch={live} />}
+        {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
+          <List className="liveList" update={update} type="live" fetch={live} categoryList={categoryList} />
+        )}
         {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
           <div className="typeTitle">
             <span className="title">DJ</span>

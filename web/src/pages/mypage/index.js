@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -24,7 +24,7 @@ import MenuFanBoardeIcon from './static/menu_fanboard.svg'
 import ClipIcon from './static/menu_cast.svg'
 import './index.scss'
 import {OS_TYPE} from 'context/config'
-
+// header scroll flag
 export default (props) => {
   const {webview} = qs.parse(location.search)
   let history = useHistory()
@@ -40,9 +40,32 @@ export default (props) => {
   const [profileInfo, setProfileInfo] = useState(null)
   const [codes, setCodes] = useState('')
   const [myPageNew, setMyPageNew] = useState({})
-  const [isSelected, setIsSelected] = useState(false)
   const [tabSelected, setTabSelected] = useState(0)
-  const customHeader = JSON.parse(Api.customHeader)
+  const mypageRef = useRef()
+  const [showWriteBtn, setShowWriteBtn] = useState(false)
+  const [mypageFixed, setMypageFixed] = useState(false)
+  // scroll fixed func
+  const windowScrollEvent = () => {
+    if (mypageRef.current) {
+      const myPageHeaderNode = mypageRef.current
+      const myPageHeaderHeight = myPageHeaderNode.clientHeight
+      // const TopSectionHeight = myPageHeaderHeight
+
+      if (window.scrollY >= myPageHeaderHeight) {
+        setShowWriteBtn(true)
+        setMypageFixed(true)
+      } else {
+        setShowWriteBtn(false)
+        setMypageFixed(false)
+      }
+    }
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', windowScrollEvent)
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+    }
+  }, [memNo])
 
   //navi Array
   let navigationList = [
@@ -59,13 +82,20 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-
   if (sessionStorage.getItem('webview') === 'new') {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
     ]
   } else {
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+    ]
+  }
+
+  if (__NODE_ENV === 'dev') {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
@@ -89,9 +119,6 @@ export default (props) => {
       window.history.go(-1)
     }
   }
-  //check login push login
-
-  //--------------------------------------------
   useEffect(() => {
     const getMyPageNew = async () => {
       const res = await Api.getMyPageNew(memNo)
@@ -100,8 +127,8 @@ export default (props) => {
     getMyPageNew()
   }, [])
   useEffect(() => {
-    setTabSelected(0)
-  }, [])
+    setTabSelected(1)
+  }, [memNo])
 
   useEffect(() => {
     const settingProfileInfo = async (memNo) => {
@@ -134,26 +161,22 @@ export default (props) => {
     context.action.updateUrlStr(memNo)
   }, [memNo])
   // check 탈퇴회원
-  useEffect(() => {
-    if (codes === '-2') {
-      context.action.alert({
-        callback: () => {
-          window.history.back()
-        },
-        msg: '회원정보를 찾을 수 없습니다.'
-      })
-    }
-  }, [codes])
+  // useEffect(() => {
+  //   if (codes === '-2') {
+  //     context.action.alert({
+  //       callback: () => {
+  //         window.history.back()
+  //       },
+  //       msg: '회원정보를 찾을 수 없습니다.'
+  //     })
+  //   }
+  // }, [codes])
 
   // my MemNo vs Your check
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
-  //else if (memNo === token.memNo && webview && webview === 'new') {
-  //   history.push('/menu/profile?webview=new')
-  // }
-
-  if (codes !== '-2' && (!profileInfo || !profile)) {
+  if (!profileInfo || !profile) {
     return null
   }
   const profileCount = (idx) => {
@@ -169,17 +192,17 @@ export default (props) => {
         break
     }
   }
-  const locationNav = (type) => {
-    context.action.updateFanboardReplyNum(false)
-    context.action.updateFanboardReply(false)
-    context.action.updateToggleAction(false)
+  // const locationNav = (type) => {
+  //   context.action.updateFanboardReplyNum(false)
+  //   context.action.updateFanboardReply(false)
+  //   context.action.updateToggleAction(false)
 
-    if (webview && webview === 'new') {
-      history.push(`/mypage/${memNo}/${type}?webview=new`)
-    } else {
-      history.push(`/mypage/${memNo}/${type}`)
-    }
-  }
+  //   if (webview && webview === 'new') {
+  //     history.push(`/mypage/${memNo}/${type}?webview=new`)
+  //   } else {
+  //     history.push(`/mypage/${memNo}/${type}`)
+  //   }
+  // }
   const changeTab = (type) => {
     if (type === 0) {
       setTabSelected(0)
@@ -202,51 +225,35 @@ export default (props) => {
         {/* 2.5v 리뉴얼 상대방 마이페이지 */}
         <div id="mypage">
           {/*webview && webview === 'new' && <img className="close-btn" src={closeBtn} onClick={clickCloseBtn} />*/}
-          {!category && (
+          {!category ? (
             <>
-              <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
-              {/* <ul className="profile-tab">
-                {mypageNavList.map((value, idx) => {
-                  const {type, txt} = value
-                  return (
-                    <li className={tabSelected === idx ? `isSelected` : ``}>
-                      <button key={`list-${idx}`} onClick={() => changeTab(idx)}>
-                        {txt} <span className="cnt">{profileCount(idx)}</span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-              <div className="profile-tab__content">
-                {tabSelected === 0 && <Notice type="subpage" />}
-                {tabSelected === 1 && <FanBoard type="subpage" />}
-                {tabSelected === 2 && <MyClip type="subpage" />}
-              </div> */}
-
-              <div className="profile-menu">
-                {mypageNavList.map((value, idx) => {
-                  const {type, txt, icon, component} = value
-                  return (
-                    <button className="list" key={`list-${idx}`} onClick={() => locationNav(type)}>
-                      <img className="icon" src={icon} />
-                      <span className="text">{txt}</span>
-                      <span
-                        className={
-                          type === 'notice'
-                            ? myPageNew.broadNotice
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : type === 'fanboard'
-                            ? myPageNew.fanBoard
-                              ? 'arrow arrow--active'
-                              : 'arrow'
-                            : 'arrow'
-                        }></span>
-                    </button>
-                  )
-                })}
+              <div ref={mypageRef}>
+                <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
               </div>
+              {mypageNavList && (
+                <React.Fragment>
+                  <ul className={`profile-tab ${mypageFixed ? 'fixedOn' : ''}`}>
+                    {mypageNavList.map((value, idx) => {
+                      const {type, txt} = value
+                      return (
+                        <li className={tabSelected === idx ? `isSelected` : ``} key={`list-${idx}`}>
+                          <button onClick={() => changeTab(idx)}>
+                            {txt} ({profileCount(idx)})
+                          </button>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                  <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '40px' : 0}}>
+                    {tabSelected === 0 && <Notice type="userprofile" />}
+                    {tabSelected === 1 && <FanBoard isShowBtn={showWriteBtn} type="userprofile" />}
+                    {tabSelected === 2 && <MyClip type="userprofile" />}
+                  </div>
+                </React.Fragment>
+              )}
             </>
+          ) : (
+            <div ref={mypageRef} style={{display: 'none'}}></div>
           )}
           <Switch>
             {navigationList.map((value) => {
