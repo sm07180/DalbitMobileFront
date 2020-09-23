@@ -6,6 +6,7 @@
   background-color: $lighterGray;
   .refresh-wrap {
     display: none;
+    max-height: 48px;
   }
   .fixed {
     position: fixed;
