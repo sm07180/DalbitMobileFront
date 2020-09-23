@@ -118,6 +118,14 @@ export default (props) => {
     fetchDataFanCancel(memNo)
   }
 
+  const Link = (memNo) => {
+    if (webview && webview === 'new') {
+      history.push(`/mypage/${memNo}?webview=new`)
+    } else {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
+
   useEffect(() => {
     /* popup떳을시 scroll 막는 코드 */
     document.body.style.overflow = 'hidden'
@@ -182,7 +190,7 @@ export default (props) => {
                           <div
                             className="thumbBox"
                             onClick={() => {
-                              Link(memNo), context.action.updateCloseRank(false)
+                              Link(memNo), context.action.updateCloseFanRank(false)
                             }}>
                             <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
@@ -229,7 +237,7 @@ export default (props) => {
                           <div
                             className="thumbBox"
                             onClick={() => {
-                              Link(memNo), context.action.updateCloseRank(false)
+                              Link(memNo), context.action.updateCloseFanRank(false)
                             }}>
                             <img src={profImg.thumb120x120} className="thumbBox__thumb" alt="thumb" />
                             {idx < 5 && (
