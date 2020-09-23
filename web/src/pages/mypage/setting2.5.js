@@ -371,7 +371,7 @@ export default (props) => {
         <Layout {...props} status="no_gnb">
           <Content>
             <SettingWrap>
-              <Header title="프로필 설정" />
+              <Header title="프로필 수정" />
               {/* 공통타이틀:TopWrap */}
               <div className="individual_Wrap">
                 <ProfileImg>

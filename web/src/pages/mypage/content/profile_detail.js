@@ -20,6 +20,7 @@ import ProfileRank from './profile_rank'
 import ProfileFanRank from './profile_fanRank'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
+import EditIcon from '../static/edit_g_l.svg'
 
 export default (props) => {
   //context & webview
@@ -341,11 +342,21 @@ export default (props) => {
 
   return (
     <div className="profile-detail">
-      {token && token.isLogin && showAdmin && (
-        <a href="/admin/clip" className="adminBtn">
-          <img src={AdminIcon} alt="관리자아이콘" />
-        </a>
-      )}
+      <div className="adminEditButton">
+        <button
+          onClick={() => {
+            history.push(`/private`)
+          }}>
+          <img src={EditIcon} alt="마이프로필 수정하기" />
+        </button>
+
+        {token && token.isLogin && showAdmin && (
+          <button href="/admin/clip">
+            <img src={AdminIcon} alt="관리자아이콘" />
+          </button>
+        )}
+      </div>
+
       <button className="closeBtn" onClick={goBack}>
         <span className="blind">프로필 닫기</span>
       </button>
