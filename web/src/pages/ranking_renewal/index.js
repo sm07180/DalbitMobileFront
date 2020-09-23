@@ -82,9 +82,9 @@ function Ranking() {
       const refreshIconNode = arrowRefreshRef.current
 
       touchEndY = e.touches[0].clientY
-
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 50
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapRef.current.style.display = 'block'

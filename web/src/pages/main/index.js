@@ -299,7 +299,6 @@ export default (props) => {
     } else {
       TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
     }
-    console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
@@ -444,10 +443,13 @@ export default (props) => {
       touchEndY = e.touches[0].clientY
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 50
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        if (heightDiff <= heightDiffFixed) {
+          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        }
       }
     },
     [reloadInit]
@@ -471,8 +473,8 @@ export default (props) => {
       const refreshIconNode = arrowRefreshRef.current
 
       const heightDiff = (touchEndY - touchStartY) / ratio
-
-      if (heightDiff >= 100) {
+      const heightDiffFixed = 48
+      if (heightDiff >= heightDiffFixed) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
