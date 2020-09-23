@@ -77,6 +77,10 @@
       text-align: left;
       color: #000000;
     }
+    &__btn {
+      font-size: 14px;
+    }
+
     .slideWrap {
       position: relative;
       width: 24%;
@@ -169,6 +173,14 @@
         font-size: 18px;
         padding-bottom: 5px;
         font-weight: 700;
+      }
+
+      &__btn {
+        position: absolute;
+        right: 25px;
+        font-size: 14px;
+        padding-right: 28px;
+        background: url('./static/arrow_down_g.svg') no-repeat right;
       }
 
       &__subTitle {

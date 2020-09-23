@@ -185,6 +185,23 @@ export default (props) => {
       )
     })
   }
+
+  const HandleClick = (e) => {
+    setClipTypeActive(e.target.value)
+    setTimeout(() => {
+      window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
+    }, 50)
+  }
+  useEffect(() => {
+    //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
+    if (Object.values(listTop3).length > 0) {
+      const btnElem = document.getElementsByClassName('slideWrap__btn')
+      for (let i = 0; i < btnElem.length; i++) {
+        btnElem[i].addEventListener('click', HandleClick, false)
+      }
+    }
+  }, [listTop3])
+
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
       if (item.length === 0) return null
@@ -197,11 +214,7 @@ export default (props) => {
               return (
                 <div key={idx}>
                   <h3 className="slideWrap__title">{cdNm}</h3>
-                  <button
-                    className="slideWrap__btn"
-                    onClick={() => {
-                      changeActiveCategory(value)
-                    }}>
+                  <button className="slideWrap__btn" value={value}>
                     더보기
                   </button>
                 </div>
@@ -315,9 +328,9 @@ export default (props) => {
   }, [])
   //------------------------------------------------------
   useEffect(() => {
+    fetchDataListTop3()
     fetchDataListPopular()
     fetchDataListLatest()
-    fetchDataListTop3()
     fetchDataClipType()
   }, [])
   //---------------------------------------
