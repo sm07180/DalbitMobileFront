@@ -5,6 +5,8 @@ import Api from 'context/api'
 import {Hybrid} from 'context/hybrid'
 import {PlayListStore} from '../store'
 
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+
 export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
@@ -34,6 +36,17 @@ export default () => {
     }
   }
 
+  const clipPlay = async (clipNum) => {
+    const {result, data, message} = await Api.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, globalCtx)
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
+
   const createList = () => {
     if (list.length === 0) return null
     return list.map((item, idx) => {
@@ -44,12 +57,16 @@ export default () => {
           <div
             className="playListItem__thumb"
             onClick={() => {
-              alert('재생')
+              clipPlay(clipNo)
             }}>
             <img src={bgImg['thumb80x80']} alt="thumb" />
             <span className="playListItem__thumb--playTime">{filePlayTime}</span>
           </div>
-          <div className="textBox">
+          <div
+            className="textBox"
+            onClick={() => {
+              clipPlay(clipNo)
+            }}>
             <div className="textBox__iconBox">
               <span className="textBox__iconBox--type">
                 {clipType.map((item, index) => {

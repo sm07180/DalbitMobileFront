@@ -36,6 +36,21 @@
       left: 12px;
       z-index: 16;
     }
+    .adminEditButton {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: -60px;
+      left: 20px;
+      z-index: 16;
+      button {
+        margin-left: 2px;
+
+        &:first-child {
+          margin-left: 0;
+        }
+      }
+    }
     .reportIcon {
       position: absolute;
       top: -60px;
@@ -475,17 +490,17 @@
               letter-spacing: normal;
               text-align: center;
               color: $greishBrown;
-              &--active {
-                &:after {
-                  margin-left: 8px;
-                  display: inline-block;
-                  content: '';
-                  width: 16px;
-                  height: 16px;
-                  background: url('../menu/static/fan_setting.svg');
-                  cursor: pointer;
-                }
-              }
+              // &--active {
+              //   &:after {
+              //     margin-left: 8px;
+              //     display: inline-block;
+              //     content: '';
+              //     width: 16px;
+              //     height: 16px;
+              //     background: url('../menu/static/fan_setting.svg');
+              //     cursor: pointer;
+              //   }
+              // }
             }
             .cntTitle {
               font-size: 20px;

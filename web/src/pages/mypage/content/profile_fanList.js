@@ -208,6 +208,14 @@ export default (props) => {
       hash: window.location.hash
     })
   }
+
+  useEffect(() => {
+    /* popup떳을시 scroll 막는 코드 */
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
   return (
     <div id="mainLayerPopup" onClick={closePopup}>
       <div className="popup popup-fanlist">
