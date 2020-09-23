@@ -82,9 +82,8 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                //context.action.updateCloseRank(true)
-                //setRankTabType('tabRank')
-                profile.fanRank.length > 0 && context.action.updateClose(true)
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
               }}>
               팬랭킹
             </button>
@@ -113,7 +112,7 @@ export default (props) => {
         viewStarList()
       }
     } else if (type === 'like') {
-      // viewGoodList()
+      viewGoodList()
     }
   }
   const createCountList = (type, count) => {
@@ -434,7 +433,7 @@ export default (props) => {
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
-        {/* <div className="fanListWrap">
+        <div className="fanListWrap">
           {profile.likeTotCnt > 0 && (
             <>
               {myProfileNo === profile.memNo ? (
@@ -463,7 +462,7 @@ export default (props) => {
               </p>
             </>
           )}
-        </div> */}
+        </div>
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
