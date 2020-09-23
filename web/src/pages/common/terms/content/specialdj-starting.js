@@ -20,13 +20,7 @@ export default (props) => {
   return (
     <div id="specialdjStarting">
       <h1>스페셜 Dj 선발 요건</h1>
-      <p className="notice">
-        스페셜 DJ에 관한 회원분들의
-        <br />
-        의견을 반영하여 다음과 같이
-        <br />
-        선발 요건이 변경 되었습니다.
-      </p>
+      <p className="notice">스페셜 DJ 선발요건은 다음과 같습니다.</p>
 
       <ul className="list">
         <li>
