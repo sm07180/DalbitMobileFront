@@ -64,31 +64,17 @@ export default (props) => {
             onClick={() => {
               props.update({select: {...list, type: props.type}})
             }}>
+            {/* 해당 페이지는 main list clasdsName을 동일하게 사용하고 있습니다. */}
             <div className="broadcast-img" style={{backgroundImage: `url(${profImg && profImg['thumb190x190']})`}} />
 
             {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
 
             <div className="broadcast-content">
               <div className="title">
-                <p className="category">
-                  {categoryList && (
-                    <>
-                      {(() => {
-                        const target = categoryList.find((category) => category['cd'] === roomType)
-                        if (target && target['cdNm']) {
-                          return target['cdNm']
-                        }
-                      })()}
-                    </>
-                  )}
-                </p>
-
-                {/* <i className="line"></i>
-                <span>{title}</span> */}
+                {gender !== 'n' && <img className="gender-icon" src={gender === 'm' ? maleIcon : femaleIcon} />}
               </div>
 
               <div className="nickname">
-                {gender !== 'n' && <img className="gender-icon" src={gender === 'm' ? maleIcon : femaleIcon} />}
                 {isNew === true && <span className="new-dj-icon">신입DJ</span>}
                 {nickNm}
               </div>
@@ -128,6 +114,7 @@ export default (props) => {
             onClick={() => {
               props.update({select: {...list, type: props.type}})
             }}>
+            {/* 해당 페이지는 main list clasdsName을 동일하게 사용하고 있습니다. */}
             <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg && bjProfImg['thumb190x190']})`}} />
             {os === 3 && <i className="iconPc">PC</i>}
             {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
