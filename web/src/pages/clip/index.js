@@ -187,14 +187,23 @@ export default (props) => {
       let subjectMap = item[0].subjectType
       return (
         <div className="slideWrap" key={idx} style={{display: item.length !== 3 ? 'none' : 'block'}}>
-          <h3 className="slideWrap__title">
-            {clipType.map((item, idx) => {
-              const {cdNm, value} = item
-              if (subjectMap === value) {
-                return cdNm
-              }
-            })}
-          </h3>
+          {clipType.map((item, idx) => {
+            const {cdNm, value} = item
+            if (subjectMap === value) {
+              return (
+                <div key={idx}>
+                  <h3 className="slideWrap__title">{cdNm}</h3>
+                  <button
+                    className="slideWrap__btn"
+                    onClick={() => {
+                      changeActiveCategory(value)
+                    }}>
+                    더보기
+                  </button>
+                </div>
+              )
+            }
+          })}
           <p className="slideWrap__subTitle">주제별 인기 클립 Top 3</p>
           <ul>
             {item.map((item, idx) => {
