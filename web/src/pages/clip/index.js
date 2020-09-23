@@ -21,6 +21,7 @@ import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
+import filterIcon from './static/choose_circle_w.svg'
 // header scroll flag
 let tempScrollEvent = null
 let randomData = Math.random() >= 0.5 ? 0 : 4
@@ -372,14 +373,8 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory()}>클립</h2>
+              <h2 onClick={() => refreshCategory()}>최신 클립</h2>
               <div className="sortTypeWrap">
-                <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
-                  최신순
-                </button>
-                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
-                  인기순
-                </button>
                 {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
                   최신순
                 </button>
@@ -388,7 +383,12 @@ export default (props) => {
                 </button> */}
               </div>
               <div className="sequenceBox">
-                <div className="sequenceItem"></div>
+                <div className="sequenceItem">
+                  <button type="button" onClick={() => setDetailPopup(true)}>
+                    <span>최신순</span>
+                    <img src={filterIcon} alt="카테고리 필터 이미지" />
+                  </button>
+                </div>
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
                     <img
