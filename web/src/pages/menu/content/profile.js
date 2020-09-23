@@ -262,8 +262,8 @@ export default (props) => {
               ) : (
                 <div className="menu-box">
                   <button className="list" onClick={() => history.push(`/private`)}>
-                    <img className="icon" src={ProfileIcon} alt="프로필 설정" />
-                    <span className="text">프로필 설정</span>
+                    <img className="icon" src={ProfileIcon} alt="프로필 수정" />
+                    <span className="text">프로필 수정</span>
                     <span className="arrow"></span>
                   </button>
                   {/* <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
