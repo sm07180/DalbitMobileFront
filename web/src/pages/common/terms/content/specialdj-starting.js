@@ -19,7 +19,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <div id="specialdjStarting">
-      <h1>스페셜 Dj 선발 요건</h1>
+      <h1>스페셜 DJ 선발 요건</h1>
       <p className="notice">스페셜 DJ 선발요건은 다음과 같습니다.</p>
 
       <ul className="list">
