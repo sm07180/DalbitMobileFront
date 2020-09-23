@@ -62,7 +62,11 @@ export default () => {
             <img src={bgImg['thumb80x80']} alt="thumb" />
             <span className="playListItem__thumb--playTime">{filePlayTime}</span>
           </div>
-          <div className="textBox">
+          <div
+            className="textBox"
+            onClick={() => {
+              clipPlay(clipNo)
+            }}>
             <div className="textBox__iconBox">
               <span className="textBox__iconBox--type">
                 {clipType.map((item, index) => {
