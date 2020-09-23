@@ -69,7 +69,6 @@ export default function Guidance({state, dispatch}) {
                 </div>
                 ※ 운영자 검토 후 입력된 통장으로 현금이 입금되고, 입금 후에는 달빛 라이브 알림을 통해 확인이 가능합니다.
                 <br />
-
               </div>
             </div>
             <div className="guidance__list">
@@ -139,9 +138,12 @@ export default function Guidance({state, dispatch}) {
           <div className="guidance__list">
             <div className="guidance__list--title">■ 부칙</div>
             <div className="guidance__list--gray">
-              4. 본 환전정책 Ver4.0은 2020년 9월 21일부터 적용됩니다.<br/>
-              3. 본 환전정책 Ver3.0은 2020년 8월 20일부터 적용됩니다.<br/>
-              2. 본 환전정책 Ver2.0은 2020년 7월 6일부터 적용됩니다.<br/>
+              4. 본 환전정책 Ver4.0은 2020년 9월 21일부터 적용됩니다.
+              <br />
+              3. 본 환전정책 Ver3.0은 2020년 8월 20일부터 적용됩니다.
+              <br />
+              2. 본 환전정책 Ver2.0은 2020년 7월 6일부터 적용됩니다.
+              <br />
               1. 본 환전정책 Ver1.0은 2020년 6월 1일부터 적용됩니다.
             </div>
           </div>

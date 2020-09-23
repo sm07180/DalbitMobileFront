@@ -60,7 +60,7 @@ export const RoomJoin = async (obj) => {
       msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
       callback: () => {
         clipExit(Room.context)
-        RoomJoin(obj)
+        return RoomJoin(obj)
       }
     })
   }
@@ -69,10 +69,10 @@ export const RoomJoin = async (obj) => {
     if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
       return Room.context.action.confirm_admin({
         callback: () => {
-          RoomJoin({roomNo: roomNo, shadow: 1})
+          return RoomJoin({roomNo: roomNo, shadow: 1})
         },
         cancelCallback: () => {
-          RoomJoin({roomNo: roomNo, shadow: 0})
+          return RoomJoin({roomNo: roomNo, shadow: 0})
         },
         msg: '관리자로 입장하시겠습니까?'
       })
@@ -240,7 +240,9 @@ export const RoomJoin = async (obj) => {
       } else {
         Room.context.action.alert({
           msg: res.message,
-          callback: () => {}
+          callback: () => {
+            window.location.reload()
+          }
         })
       }
       return false

@@ -47,12 +47,14 @@ export default (props) => {
   //대댓글 클릭시 포커스
   useEffect(() => {
     if (context.fanboardReplyNum && context.fanboardReplyNum !== -1) {
-      let listTop = document.getElementsByClassName('list-item on')[0].offsetTop
-      if (props.boardType === 'userprofile') {
-        let userProfileHeight = document.getElementsByClassName('profile-info')[0].clientHeight
-        window.scrollTo(0, listTop + userProfileHeight - 8)
-      } else {
-        window.scrollTo(0, listTop - 8)
+      if (document.getElementsByClassName('list-item on')[0]) {
+        let listTop = document.getElementsByClassName('list-item on')[0].offsetTop
+        if (props.boardType === 'userprofile') {
+          let userProfileHeight = document.getElementsByClassName('profile-info')[0].clientHeight
+          window.scrollTo(0, listTop + userProfileHeight - 8)
+        } else {
+          window.scrollTo(0, listTop - 8)
+        }
       }
     }
   }, [context.fanboardReplyNum])

@@ -325,7 +325,7 @@ export default (props) => {
 
   return (
     <Layout {...props} status="no_gnb">
-      <Header title="클립" />
+      <Header title="클립" type="noBack" />
       <div id="clipPage">
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef}>

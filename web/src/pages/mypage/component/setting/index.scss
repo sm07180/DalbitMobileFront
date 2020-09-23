@@ -1,3 +1,5 @@
+@import '../../../../styles/variables';
+
 #broadcast_setting {
   display: flex;
   flex-direction: column;
@@ -43,6 +45,28 @@
       &.on {
         background: url(../ic_alarmtoggleon.svg) no-repeat center center / 100%;
       }
+    }
+  }
+}
+
+#banwordWrap {
+  padding: 0 16px;
+
+  .buttonWrap {
+    button {
+      margin-right: 2px;
+      padding: 8px 27px;
+      background-color: #fff;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 16px;
+    }
+
+    button.on {
+      background-color: $primary;
+      border: 1px solid $primary;
+      color: #f5f5f5;
     }
   }
 }

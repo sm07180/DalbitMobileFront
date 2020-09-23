@@ -114,16 +114,16 @@ export default (props) => {
           </div>
           <div className="textBox">
             <p className="textBox__subject">
-              <p className="textBox__iconBox--type">
+              <span className="subject">
                 {clipType.map((ClipTypeItem, index) => {
                   if (ClipTypeItem.value === subjectType) {
                     return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
                   }
                 })}
-              </p>
+              </span>
 
               <i className="line"></i>
-              <span>{title}</span>
+              <span className="title">{title}</span>
             </p>
             <p className="textBox__nickName">
               {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}

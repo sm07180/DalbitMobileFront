@@ -82,9 +82,8 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                //context.action.updateCloseRank(true)
-                //setRankTabType('tabRank')
-                profile.fanRank.length > 0 && context.action.updateClose(true)
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
               }}>
               팬랭킹
             </button>
@@ -113,7 +112,7 @@ export default (props) => {
         viewStarList()
       }
     } else if (type === 'like') {
-      // viewGoodList()
+      viewGoodList()
     }
   }
   const createCountList = (type, count) => {
@@ -256,7 +255,6 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
-    console.log(e)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -285,7 +283,6 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
     } else {
       if (locHash instanceof Object && locHash.state) {
-        log
         locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
       } else {
         history.goBack()
@@ -337,7 +334,7 @@ export default (props) => {
   return (
     <div className="profile-detail">
       {token && token.isLogin && showAdmin && (
-        <a href="/admin/image" className="adminBtn">
+        <a href="/admin/clip" className="adminBtn">
           <img src={AdminIcon} alt="관리자아이콘" />
         </a>
       )}
@@ -436,7 +433,7 @@ export default (props) => {
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
-        {/* <div className="fanListWrap">
+        <div className="fanListWrap">
           {profile.likeTotCnt > 0 && (
             <>
               {myProfileNo === profile.memNo ? (
@@ -465,7 +462,7 @@ export default (props) => {
               </p>
             </>
           )}
-        </div> */}
+        </div>
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
