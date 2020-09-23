@@ -240,7 +240,9 @@ export const RoomJoin = async (obj) => {
       } else {
         Room.context.action.alert({
           msg: res.message,
-          callback: () => {}
+          callback: () => {
+            window.location.reload()
+          }
         })
       }
       return false
