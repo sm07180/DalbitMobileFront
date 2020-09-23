@@ -41,6 +41,13 @@
       top: -60px;
       left: 20px;
       z-index: 16;
+      img {
+        width: 32px;
+        height: 32px;
+        &:last-child {
+          margin-left: 4px;
+        }
+      }
     }
     .reportIcon {
       position: absolute;
