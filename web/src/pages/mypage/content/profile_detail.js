@@ -343,12 +343,14 @@ export default (props) => {
   return (
     <div className="profile-detail">
       <div className="adminEditButton">
-        <button
-          onClick={() => {
-            history.push(`/private`)
-          }}>
-          <img src={EditIcon} alt="마이프로필 수정하기" />
-        </button>
+        {profile.memNo == myProfileNo && (
+          <button
+            onClick={() => {
+              history.push(`/private`)
+            }}>
+            <img src={EditIcon} alt="마이프로필 수정하기" />
+          </button>
+        )}
 
         {token && token.isLogin && showAdmin && (
           <button
