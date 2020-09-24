@@ -656,6 +656,13 @@ export default () => {
         room_no = pushMsg.room_no
         if (room_no) clipPlay(room_no)
         break
+      case '47': //-----------------Clip PLay
+        room_no = pushMsg.room_no
+        if (room_no) clipPlay(room_no)
+        break
+      case '48': //-----------------마이클립
+        if (isLogin) window.location.href = `/mypage/${context.profile.memNo}/my_clip`
+        break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link
         if (redirect_url !== undefined) {
