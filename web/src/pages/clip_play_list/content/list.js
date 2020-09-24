@@ -53,12 +53,24 @@ export default () => {
       const {clipNo, title, nickName, subjectType, filePlayTime, bgImg, gender} = item
       const genderClassName = gender === 'f' ? 'female' : gender === 'm' ? 'male' : ''
       return (
-        <li id="playListItem" key={`${idx}-playList`}>
+        <li
+          id="playListItem"
+          className={`${clipNo === sessionStorage.getItem('play_clip_no') ? 'playing' : 'off'}`}
+          key={`${idx}-playList`}>
           <div
             className="playListItem__thumb"
             onClick={() => {
               clipPlay(clipNo)
             }}>
+            {clipNo === sessionStorage.getItem('play_clip_no') && (
+              <div className="playingbarWrap">
+                <div className="playingbar">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            )}
             <img src={bgImg['thumb80x80']} alt="thumb" />
             <span className="playListItem__thumb--playTime">{filePlayTime}</span>
           </div>
