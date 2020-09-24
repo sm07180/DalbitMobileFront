@@ -69,6 +69,7 @@ const GlobalProvider = (props) => {
     prev: '',
     next: ''
   })
+  const [imageEditor, setImageEditor] = useState(null)
   const [walletIdx, setWalletIdx] = useState(0)
   const [nativeTid, setNativeTid] = useState('init')
   const [fanTab, setFanTab] = useState(0)
@@ -329,6 +330,10 @@ const GlobalProvider = (props) => {
     updateReportDate: (string) => {
       setReportDate(string)
     },
+
+    updateImageEditor: (obj) => {
+      setImageEditor(obj)
+    },
     updateWalletIdx: (num) => {
       setWalletIdx(num)
     },
@@ -464,6 +469,7 @@ const GlobalProvider = (props) => {
     replyIdx,
     noticeState,
     reportDate,
+    imageEditor,
     walletIdx,
     nativeTid,
     fanTab,
