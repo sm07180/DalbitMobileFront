@@ -77,6 +77,10 @@
       text-align: left;
       color: #000000;
     }
+    &__btn {
+      font-size: 14px;
+    }
+
     .slideWrap {
       position: relative;
       width: 24%;
@@ -171,6 +175,14 @@
         font-weight: 700;
       }
 
+      &__btn {
+        position: absolute;
+        right: 25px;
+        font-size: 14px;
+        padding-right: 28px;
+        background: url('./static/arrow_down_g.svg') no-repeat right;
+      }
+
       &__subTitle {
         margin-bottom: 26px;
         font-size: 14px;
@@ -257,6 +269,28 @@
           display: flex;
           align-items: center;
           margin-left: 16px;
+
+          &:nth-of-type(1) {
+            position: relative;
+            &:before {
+              content: '';
+              display: block;
+              position: absolute;
+              right: -9px;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 1px;
+              height: 12px;
+              background-color: #e0e0e0;
+            }
+          }
+
+          span {
+            padding-right: 5px;
+            font-size: 12px;
+            color: #424242;
+            line-height: 32px;
+          }
 
           button {
             margin-left: 4px;
@@ -372,6 +406,7 @@
             border: solid 1px;
 
             &--type {
+              font-style: normal;
               font-size: 14px;
               color: #632beb;
               font-weight: normal;
