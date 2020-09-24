@@ -13,6 +13,7 @@ import Layout from 'pages/common/layout'
 import ChartList from './components/chart_list'
 import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
+import BannerList from '../main/component/bannerList'
 //scss
 import './clip.scss'
 //static
@@ -31,7 +32,8 @@ export default (props) => {
   let history = useHistory()
   //fixed category
   const recomendRef = useRef()
-  const recentClipRef = useRef()
+  const rankClipRef = useRef()
+  const BannerSectionRef = useRef()
   const categoryBestClipRef = useRef()
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [scrollY, setScrollY] = useState(0)
@@ -59,7 +61,7 @@ export default (props) => {
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
-  const [latestList, setLatestList] = useState([])
+  const [rankList, setrankList] = useState([])
   const [selectType, setSelectType] = useState(4)
   // const [selectType, setSelectType] = useState(randomData)
   // top3 list
@@ -73,12 +75,14 @@ export default (props) => {
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 50
     const recomendClipNode = recomendRef.current
-    const recentClipNode = recentClipRef.current
+    const BannerSectionNode = BannerSectionRef.current
+    const rankClipNode = rankClipRef.current
     const categoryBestClipNode = categoryBestClipRef.current
     const RecomendHeight = recomendClipNode.clientHeight
     const categoryBestHeight = categoryBestClipNode.clientHeight
-    const recentClipHeight = recentClipNode.clientHeight
-    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + recentClipHeight
+    const rankClipHeight = rankClipNode.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
@@ -102,7 +106,7 @@ export default (props) => {
   const fetchDataListLatest = async () => {
     const {result, data, message} = await Api.getLatestList({})
     if (result === 'success') {
-      setLatestList(data.list)
+      setrankList(data.list)
     } else {
       context.action.alert({
         msg: message
@@ -160,6 +164,7 @@ export default (props) => {
       const {bgImg, clipNo, type, nickName} = item
       return (
         <li className="recomClipItem" key={`popular-` + idx} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
+          <span className="recomClipItem__subject">고민/사연</span>
           <div className="recomClipItem__thumb">
             <img src={bgImg['thumb336x336']} alt="thumb" />
           </div>
@@ -168,8 +173,8 @@ export default (props) => {
       )
     })
   }
-  const makeLatestList = () => {
-    return latestList.map((item, idx) => {
+  const makeRankList = () => {
+    return rankList.map((item, idx) => {
       const {bgImg, clipNo, nickName, title} = item
       if (!item) return null
       return (
@@ -177,10 +182,10 @@ export default (props) => {
           <div className="slideWrap__thumb">
             <img src={bgImg['thumb336x336']} alt={title} />
           </div>
-          <i className="slideWrap__iconNew">
+          {/* <i className="slideWrap__iconNew">
             <img src={newIcon} />
-          </i>
-          <p className="slideWrap__subject">{title}</p>
+          </i> */}
+          {/* <p className="slideWrap__subject">{title}</p> */}
           <p className="slideWrap__nicknName">{nickName}</p>
         </div>
       )
@@ -349,7 +354,6 @@ export default (props) => {
   return (
     <Layout {...props} status="no_gnb">
       <Header title="클립" type="noBack" />
-
       <div id="clipPage">
         <div className="myClip">
           <h2 className="myClip__title">내 클립 현황</h2>
@@ -388,9 +392,16 @@ export default (props) => {
         ) : (
           <div ref={recomendRef}></div>
         )}
-        <div className="recentClip" ref={recentClipRef}>
-          <h2 className="recentClip__title">최신 클립</h2>
-          {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeLatestList()}</Swiper> : <></>}
+
+        <div className="clipBanner">
+          <BannerList ref={BannerSectionRef} bannerPosition="9" />
+        </div>
+        <div className="rankClip" ref={rankClipRef}>
+          <div className="rankClip__title">
+            클립 랭킹
+            <button onClick={() => history.push(`/rank`)} />
+          </div>
+          {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
         </div>
 
         {top3On && Object.keys(listTop3).length !== 0 ? (

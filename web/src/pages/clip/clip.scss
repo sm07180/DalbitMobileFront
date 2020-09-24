@@ -14,7 +14,7 @@
   .myClip {
     padding: 16px 3% 16px 3%;
     &__title {
-      padding-bottom: 12px;
+      padding-bottom: 18px;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
@@ -56,7 +56,7 @@
   }
   .recomClip {
     padding: 16px 3%;
-    border-bottom: 4px solid #ebebeb;
+    // border-bottom: 4px solid #ebebeb;
     background-color: #fff;
 
     &__title {
@@ -93,12 +93,29 @@
       .recomClipItem {
         overflow: hidden;
         position: relative;
-        width: 32%;
+        width: 31%;
         margin-bottom: 10px;
-        margin-right: 2%;
+        margin-right: 3%;
         border-radius: 16px;
         &:nth-child(3n) {
           margin-right: 0;
+        }
+        &__subject {
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-bottom-right-radius: 16px;
+          width: auto;
+          padding: 4px 6px;
+          box-sizing: border-box;
+          background-color: #000000;
+          font-size: 11px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: -0.28px;
+          text-align: center;
+          color: #ffffff;
         }
         &__thumb {
           img {
@@ -126,32 +143,44 @@
     }
   }
 
-  .recentClip {
+  .rankClip {
     padding: 20px 0 19px 0;
-    border-bottom: 4px solid #ebebeb;
+
+    // border-bottom: 4px solid #ebebeb;
     &__title {
-      padding: 0 3% 12px 3%;
+      display: flex;
+      align-items: center;
+      padding: 0 16px 22px 16px;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
       letter-spacing: normal;
       text-align: left;
       color: #000000;
+      button {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-left: 2px;
+        background: url('./static/arrow_right.svg');
+      }
     }
     &__btn {
       font-size: 14px;
     }
-
+    .swiper-container {
+      margin-left: 16px;
+    }
     .slideWrap {
       position: relative;
-      width: 24%;
-      margin-left: 2%;
+      width: 92px;
+
       flex-shrink: 0;
 
       &__thumb {
         img {
           width: 100%;
-          border-radius: 50%;
+          border-radius: 20px;
         }
       }
 
@@ -181,15 +210,23 @@
       }
 
       &__nicknName {
-        margin-top: 4px;
-        font-size: 12px;
+        margin-top: 12px;
+        // font-size: 12px;
         text-align: center;
         width: 100%;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
         word-wrap: normal;
-        color: #757575;
+        // color: #757575;
+        font-size: 16px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: center;
+        color: #424242;
       }
     }
   }
@@ -800,6 +837,89 @@
         letter-spacing: -0.36px;
         font-weight: 800;
         color: #632beb;
+      }
+    }
+  }
+  .clipBanner {
+    .slideWrap {
+      position: relative;
+
+      &.active {
+        display: none;
+      }
+
+      .swiper-container {
+        height: auto;
+        .banner {
+          img {
+            width: 100%;
+          }
+        }
+        .swiper-pagination-fraction {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          bottom: 7px;
+          right: 46px;
+          left: auto;
+          width: 45px;
+          height: 24px;
+          font-size: 12px;
+          letter-spacing: 3px;
+          background-color: rgba(0, 0, 0, 0.6);
+          color: white;
+          border-radius: 24px;
+          .swiper-pagination-total {
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    .bannerNumber {
+      border: solid 1px;
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      width: 45px;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+      p {
+        opacity: 0.5;
+      }
+    }
+
+    .moreButton {
+      position: absolute;
+      right: 11px;
+      bottom: 7px;
+      z-index: 2;
+      width: 33px;
+      height: 24px;
+      border-radius: 24px;
+      background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
+
+      &.active {
+        background: #000 url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+      }
+    }
+
+    .basicBanner {
+      margin-bottom: 10px;
+      position: relative;
+    }
+    .bannerView {
+      display: none;
+      img {
+        width: 100%;
+      }
+      &.active {
+        display: block;
       }
     }
   }
