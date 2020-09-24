@@ -11,6 +11,7 @@ import {RoomMake} from 'context/room'
 import Logo from './static/logo_w_no_symbol.svg'
 import Search from './static/search_w.svg'
 import Alarm from './static/alarm_w.svg'
+import Store from './static/store_w.svg'
 import My from './static/ic_my.svg'
 import Menu from './static/ic_menu.svg'
 import Mic from './static/ic_broadcastng_p.svg'
@@ -51,6 +52,9 @@ export default (props) => {
     }
     if (category === 'alarm') {
       context.action.updateNews(false)
+    }
+    if (category === 'store') {
+      return history.push(`/pay/${category}`)
     }
     return history.push(`/menu/${category}`)
   }
@@ -104,6 +108,11 @@ export default (props) => {
           <button onClick={() => moveToMenu('search')}>
             <img className="icon" src={Search} alt="검색버튼" />
           </button>
+          <div className="icon-wrap">
+            <button onClick={() => moveToLogin('store')}>
+              <img className="icon" src={Store} alt="스토어버튼" />
+            </button>
+          </div>
         </div>
         {/* {customHeader['os'] === OS_TYPE['IOS'] && logoChange ? (
           <div className="micWrap">
