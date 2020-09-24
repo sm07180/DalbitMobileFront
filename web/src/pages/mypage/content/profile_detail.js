@@ -343,17 +343,19 @@ export default (props) => {
   return (
     <div className="profile-detail">
       <div className="adminEditButton">
-        <button
-          onClick={() => {
-            history.push(`/private`)
-          }}>
-          <img src={EditIcon} alt="마이프로필 수정하기" />
-        </button>
+        {profile.memNo == myProfileNo && (
+          <button
+            onClick={() => {
+              history.push(`/private`)
+            }}>
+            <img src={EditIcon} alt="마이프로필 수정하기" />
+          </button>
+        )}
 
         {token && token.isLogin && showAdmin && (
-          <button href="/admin/clip">
+          <a href="/admin/clip">
             <img src={AdminIcon} alt="관리자아이콘" />
-          </button>
+          </a>
         )}
       </div>
 
@@ -461,7 +463,7 @@ export default (props) => {
                   onClick={() => {
                     {
                       profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                      setRankTabType('tabRank')
+                      setRankTabType('tabGood')
                     }
                   }}>
                   왕큐피트
@@ -471,7 +473,7 @@ export default (props) => {
                   className="btn__fanRank cupid"
                   onClick={() => {
                     profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
-                    setRankTabType('tabRank')
+                    setRankTabType('tabGood')
                   }}>
                   왕큐피트
                 </button>

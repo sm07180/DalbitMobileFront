@@ -1,5 +1,7 @@
+@import '../../styles/_variables';
+
 #mypageClip {
-  background-color: #fff;
+  background-color: $white;
   height: 100vh;
   .uploadBtn {
     bottom: 16px;
@@ -12,13 +14,13 @@
     width: 64px;
     height: 64px;
     border-radius: 50%;
-    background-color: #632beb;
+    background-color: $primary;
     font-size: 14px;
     font-weight: 600;
     letter-spacing: -0.35px;
     line-height: 1.14;
     text-align: center;
-    color: #ffffff;
+    color: $white;
     &:before {
       display: block;
       content: '';
@@ -38,16 +40,16 @@
     }
 
     &__tabBtn {
-      color: #757575;
+      color: $greishGray;
       width: 50%;
       height: 36px;
       box-sizing: border-box;
-      border-bottom: 1px solid #e0e0e0;
-      background: #fff;
+      border-bottom: 1px solid $lightGray;
+      background: $white;
       font-weight: 700;
       &--active {
-        color: #632beb;
-        border-color: #632beb;
+        color: $primary;
+        border-color: $primary;
       }
     }
   }
@@ -70,7 +72,7 @@
         line-height: 1.38;
         letter-spacing: -0.4px;
         text-align: center;
-        color: #9e9e9e;
+        color: $gray;
       }
       &__uploadBtn {
         display: block;
@@ -78,11 +80,11 @@
         height: 48px;
         margin-top: 28px;
         border-radius: 25px;
-        background-color: #632beb;
+        background-color: $primary;
         font-size: 16px;
         font-weight: 800;
         text-align: center;
-        color: #ffffff;
+        color: $white;
       }
     }
     .uploadList {
@@ -99,7 +101,7 @@
       &__line {
         flex-basis: 1px;
         height: 10px;
-        background: #bdbdbd;
+        background: $mediumGray;
         margin: 0px 6px;
       }
 
@@ -124,13 +126,13 @@
       }
       &__category {
         font-size: 14px;
-        color: #632beb;
+        color: $primary;
         font-weight: normal;
         letter-spacing: -0.5px;
       }
       &__title {
         font-size: 14px;
-        color: #424242;
+        color: $greishBrown;
         flex: 1;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -144,7 +146,7 @@
         font-style: normal;
         line-height: 1.3;
         letter-spacing: normal;
-        color: #000000;
+        color: $black;
         margin: 7px 0px;
       }
       &__details {
@@ -169,7 +171,7 @@
           font-style: normal;
           letter-spacing: -0.3px;
           text-align: left;
-          color: #424242;
+          color: $greishBrown;
           &:before {
             content: '';
             display: block;
@@ -208,18 +210,18 @@
       height: 32px;
       margin-right: 4px;
       border-radius: 12px;
-      border: solid 1px #e0e0e0;
-      background-color: #ffffff;
+      border: solid 1px $lightGray;
+      background-color: $white;
       font-size: 14px;
       font-weight: 600;
       letter-spacing: -0.35px;
       text-align: center;
-      color: #000000;
+      color: $black;
 
       &--active {
-        background-color: #632beb;
-        border: solid 1px #632beb;
-        color: #fff;
+        background-color: $primary;
+        border: solid 1px $primary;
+        color: $white;
       }
     }
   }
@@ -262,7 +264,7 @@
           }
           &__count {
             margin-left: auto;
-            color: #fff;
+            color: $white;
             font-size: 11px;
             font-weight: normal;
             text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
@@ -271,7 +273,7 @@
             font-style: normal;
             letter-spacing: -0.28px;
             text-align: left;
-            color: #ffffff;
+            color: $white;
             z-index: 3;
             &--icon,
             &--num {
@@ -288,21 +290,21 @@
           z-index: 3;
 
           &__nick {
-            color: #fff;
+            color: $white;
             font-weight: normal;
             font-size: 12px;
           }
           &__title {
             margin-top: 2px;
             max-width: 140px;
-            color: #fff;
+            color: $white;
             font-size: 14px;
             font-weight: 600;
             font-style: normal;
             line-height: 1.14;
             letter-spacing: normal;
             text-align: left;
-            color: #ffffff;
+            color: $white;
             text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
@@ -318,13 +320,13 @@
     width: 24px;
     height: 16px;
     background: url('./component/male.svg');
-    background-color: #fff;
+    background-color: $white;
     border-radius: 10px;
     margin-left: 2px;
   }
   .femaleIcon {
     background: url('./component/female.svg');
-    background-color: #fff;
+    background-color: $white;
     border-radius: 10px;
   }
 }

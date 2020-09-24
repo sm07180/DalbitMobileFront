@@ -19,6 +19,7 @@ import FeMaleIcon from './static/ico_female.svg'
 import calIcon from './static/calender_b.svg'
 import delIcon from './static/del_g.svg'
 import {templateSettings} from 'lodash'
+import './setting.scss'
 
 export default (props) => {
   // ctx
@@ -369,709 +370,173 @@ export default (props) => {
         <Redirect to={`/`} />
       ) : (
         <Layout {...props} status="no_gnb">
-          <Content>
-            <SettingWrap>
-              <Header title="프로필 수정" />
-              {/* 공통타이틀:TopWrap */}
-              <div className="individual_Wrap">
-                <ProfileImg>
-                  <label htmlFor="profileImg">
-                    <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+          <section id="myProfileSetting">
+            <Header title="프로필 수정" />
+            {/* 공통타이틀:TopWrap */}
+            <div className="individual_Wrap">
+              <div className="imageWrap">
+                <label htmlFor="profileImg">
+                  <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
 
-                    <div
-                      className="backImg"
-                      style={{
-                        backgroundImage: `url("${
-                          tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''
-                        }")`,
-                        backgroundColor: '#333'
-                      }}></div>
-                    {/* <img
+                  <div
+                    className="backImg"
+                    style={{
+                      backgroundImage: `url("${tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}")`,
+                      backgroundColor: '#333'
+                    }}></div>
+                  {/* <img
                       src={tempPhoto ? tempPhoto : profile.profImg ? profile.profImg['thumb150x150'] : ''}
                       className="backImg"></img> */}
-                    <img
-                      src={camera}
-                      style={{
-                        position: 'absolute',
-                        bottom: '-5px',
-                        right: '-15px'
-                      }}
-                      className="cameraImg"
-                    />
-                  </label>
-                </ProfileImg>
-
-                <AuthWrap>
-                  <label>본인인증</label>
-                  <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
-                  <button
-                    onClick={() => {
-                      authReq('5', formTag)
-                    }}>
-                    본인인증
-                  </button>
-                </AuthWrap>
-                <GenderAlertMsg className={authState ? 'authPass' : 'notAuth'}>
-                  {authState ? '본인인증이 완료 되었으며, 재 인증도 가능합니다.' : '본인인증을 완료하지 않으셨습니다.'}
-                </GenderAlertMsg>
-
-                <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
-
-                <div className="nickname">
-                  <span className="matchTitle">닉네임</span>
-                  <NicknameInput
-                    id="nickName"
-                    ref={nicknameReference}
-                    matchTitle
-                    autoComplete="off"
-                    // defaultValue={profile.nickNm}
-                    value={nickname}
-                    onChange={changeNickname}
-                    maxLength="20"
+                  <img
+                    src={camera}
+                    style={{
+                      position: 'absolute',
+                      bottom: '-5px',
+                      right: '-15px'
+                    }}
+                    className="cameraImg"
                   />
-                  <button
-                    onClick={() => {
-                      setNickname('')
-                    }}>
-                    <img src={delIcon} alt="삭제"></img>
-                  </button>
-                </div>
+                </label>
+              </div>
 
-                <UserId>
-                  <span className="matchTitle">UID</span>
-                  <span>{profile.memId}</span>
-                </UserId>
+              <div className="authWrap">
+                <label>본인인증</label>
+                <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
+                <button
+                  onClick={() => {
+                    authReq('5', formTag)
+                  }}>
+                  본인인증
+                </button>
+              </div>
+              <span className={`authComment ${authState ? 'authPass' : 'notAuth'}`}>
+                {authState ? '본인인증이 완료 되었으며, 재 인증도 가능합니다.' : '본인인증을 완료하지 않으셨습니다.'}
+              </span>
 
-                {token.memNo[0] === '1' && (
+              <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
+
+              <div className="nickname">
+                <span className="matchTitle">닉네임</span>
+                <input
+                  id="nickName"
+                  ref={nicknameReference}
+                  autoComplete="off"
+                  type="text"
+                  // defaultValue={profile.nickNm}
+                  value={nickname}
+                  onChange={changeNickname}
+                  maxLength="20"
+                />
+                <button
+                  onClick={() => {
+                    setNickname('')
+                  }}>
+                  <img src={delIcon} alt="삭제"></img>
+                </button>
+              </div>
+
+              <div className="uid">
+                <span className="matchTitle">UID</span>
+                <span>{profile.memId}</span>
+              </div>
+
+              {token.memNo[0] === '1' && (
+                <>
+                  <div className="passwordWrap">
+                    <span className="matchTitle">비밀번호</span>
+                    <div className="passwordBox">
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                      <span className="ico" />
+                    </div>
+
+                    <button className="btn__password">
+                      <a href="/password">비밀번호 변경</a>
+                    </button>
+                  </div>
+                </>
+              )}
+
+              <div className="birthBox">
+                <span className="matchTitle">생년월일</span>
+                <span className="text">{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(
+                  6
+                )}`}</span>
+                <span className="authComment">본인인증 정보로 자동 갱신됩니다.</span>
+              </div>
+              <div className={`genderWrap ${firstSetting ? 'before' : 'after'}`}>
+                {firstSetting ? (
                   <>
-                    <PasswordWrap>
-                      <span className="matchTitle">비밀번호</span>
-                      <PasswordTextWrap>
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                        <PasswordCircle />
-                      </PasswordTextWrap>
+                    <div
+                      className={`genderTab ${gender === 'm' ? '' : 'off'}`}
+                      onClick={() => {
+                        if (gender === 'm') {
+                          setGender('n')
+                        } else {
+                          setGender('m')
+                        }
+                      }}>
+                      남자
+                    </div>
 
-                      <PasswordRedirectBtn>
-                        <a href="/password">비밀번호 변경</a>
-                      </PasswordRedirectBtn>
-                    </PasswordWrap>
+                    <div
+                      className={`genderTab ${gender === 'f' ? '' : 'off'}`}
+                      onClick={() => {
+                        if (gender === 'f') {
+                          setGender('n')
+                        } else {
+                          setGender('f')
+                        }
+                      }}>
+                      여자
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {profile.gender === 'm' ? (
+                      <div className={`genderTab one-btn man ${profile.gender === 'm' ? '' : 'off'}`}>남자</div>
+                    ) : (
+                      <div className={`genderTab one-btn woman ${profile.gender === 'f' ? '' : 'off'}`}>여자</div>
+                    )}
                   </>
                 )}
-
-                <div className="birthBox">
-                  <span className="matchTitle">생년월일</span>
-                  <BirthDate>{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}</BirthDate>
-                  <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
-                </div>
-                <GenderWrap className={firstSetting ? 'before' : 'after'}>
-                  {firstSetting ? (
-                    <>
-                      <GenderTab
-                        className={gender === 'm' ? '' : 'off'}
-                        onClick={() => {
-                          if (gender === 'm') {
-                            setGender('n')
-                          } else {
-                            setGender('m')
-                          }
-                        }}>
-                        남자
-                      </GenderTab>
-
-                      <GenderTab
-                        className={gender === 'f' ? '' : 'off'}
-                        onClick={() => {
-                          if (gender === 'f') {
-                            setGender('n')
-                          } else {
-                            setGender('f')
-                          }
-                        }}>
-                        여자
-                      </GenderTab>
-                    </>
-                  ) : (
-                    <>
-                      {profile.gender === 'm' ? (
-                        <GenderTab className={`one-btn man ${profile.gender === 'm' ? '' : 'off'}`}>남자</GenderTab>
-                      ) : (
-                        <GenderTab className={`one-btn woman ${profile.gender === 'f' ? '' : 'off'}`}>여자</GenderTab>
-                      )}
-                    </>
-                  )}
-                </GenderWrap>
-                <GenderAlertMsg>본인인증 정보로 자동 갱신됩니다.</GenderAlertMsg>
-
-                <div className="msg-wrap">
-                  <label className="input-label">프로필 메시지</label>
-                  <button
-                    onClick={() => {
-                      setProfileMsg('')
-                    }}>
-                    <img src={delIcon} alt="삭제"></img>
-                  </button>
-                  <DalbitTextArea
-                    defaultValue={profile.profMsg}
-                    state={profileMsg}
-                    setState={setProfileMsg}
-                    cols={20}
-                    rows={5}
-                    className="MsgText"
-                    placeholder="프로필 메시지는 최대 100자까지 입력할 수 있습니다."
-                  />
-                  {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
-                </div>
-
-                <SaveBtn className={`${active === true && 'active'}`} onClick={beforeSaveUpload}>
-                  저장
-                </SaveBtn>
               </div>
-            </SettingWrap>
-          </Content>
+              <span className="authComment">본인인증 정보로 자동 갱신됩니다.</span>
+
+              <div className="msg-wrap">
+                <label className="input-label">프로필 메시지</label>
+                <button
+                  onClick={() => {
+                    setProfileMsg('')
+                  }}>
+                  <img src={delIcon} alt="삭제"></img>
+                </button>
+                <DalbitTextArea
+                  defaultValue={profile.profMsg}
+                  state={profileMsg}
+                  setState={setProfileMsg}
+                  cols={20}
+                  rows={5}
+                  className="msgText"
+                  placeholder="프로필 메시지는 최대 100자까지 입력할 수 있습니다."
+                />
+                {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
+              </div>
+
+              <button className={`btn__save ${active === true && 'active'}`} onClick={beforeSaveUpload}>
+                저장
+              </button>
+            </div>
+          </section>
         </Layout>
       )}
     </Switch>
   )
 }
-// style
-const AuthWrap = styled.div`
-  position: relative;
-  padding: 20px 16px 0px 16px;
-  height: 58px;
-  background-color: #f5f5f5;
-  color: #9e9e9e;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  font-size: 16px;
-  z-index: 3;
-  label {
-    position: absolute;
-    top: 9px;
-    left: 16px;
-    z-index: 2;
-    font-size: 12px;
-    line-height: 1.08;
-    color: #000000;
-  }
-  p {
-    font-size: 16px;
-    line-height: 18px;
-    padding-top: 9px;
-    &.authPass {
-      color: #000000;
-      font-weight: bold;
-    }
-    &.notAuth {
-      font-size: 14px;
-      color: #bdbdbd;
-    }
-  }
-  button {
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    font-size: 14px;
-    color: #ffffff;
-    width: 70px;
-    height: 32px;
-    border-radius: 9px;
-    background: #bdbdbd;
-  }
-`
-const SaveBtn = styled.button`
-  margin-top: 32px;
-  width: 100%;
-  letter-spacing: -0.4px;
-  background-color: #632beb;
-  cursor: pointer;
-  margin-bottom: 20px;
-  background-color: #e0e0e0;
-  color: #fff;
-  line-height: 44px;
-  font-size: 18px;
-  border-radius: 12px;
-  font-weight: bold;
-
-  &.active {
-    background-color: #632beb;
-  }
-`
-const MsgText = styled.textarea`
-  display: block;
-  width: 100%;
-  border: 1px solid #e0e0e0;
-  resize: none;
-  padding: 12px;
-  height: 116px;
-  font-family: inherit;
-  color: #000000;
-  transform: skew(-0.03deg);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 20px;
-  outline: none;
-  border-radius: 12px;
-  :focus {
-    border: 1px solid #000;
-  }
-`
-
-const MsgTitle = styled.div`
-  color: #616161;
-  letter-spacing: -0.4px;
-  font-size: 16px;
-  margin-top: 24px;
-  margin-bottom: 8px;
-`
-
-const GenderAlertMsg = styled.div`
-  position: relative;
-  width: 100%;
-  padding: 22px 0 0 0;
-  margin-top: -15px;
-  left: 0;
-  bottom: 0;
-  z-index: 2;
-  text-align: center;
-  height: 44px;
-  margin-bottom: 4px;
-  background-color: #9e9e9e;
-  color: #616161;
-  font-size: 11px;
-  font-weight: bold;
-  color: #fff;
-  vertical-align: bottom;
-  border-radius: 12px;
-  letter-spacing: -0.5px;
-  transform: skew(-0.03deg);
-  &.notAuth {
-    background: #ec455f;
-  }
-`
-
-const GenderTab = styled.div`
-  width: 50%;
-  height: 44px;
-  line-height: 44px;
-  text-align: left;
-  user-select: none;
-  box-sizing: border-box;
-  color: #9e9e9e;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 12px 0 0 12px;
-  padding-left: 16px;
-
-  &.one-btn {
-    text-align: center;
-    &.woman {
-      color: #f35da3 !important;
-      border: 1px solid #f35da3;
-    }
-    &.man {
-      color: #27a2db !important;
-      border: 1px solid #27a2db;
-    }
-  }
-
-  ::after {
-    display: inline-block;
-    width: 24px;
-    height: 16px;
-    margin-left: 5px;
-    background: url(${MaleIcon}) no-repeat center;
-    content: '';
-    vertical-align: top;
-    margin-top: 14px;
-  }
-
-  & + & {
-    border-radius: 0 12px 12px 0;
-
-    ::after {
-      display: inline-block;
-      width: 24px;
-      height: 16px;
-      margin-left: 5px;
-      background: url(${FeMaleIcon}) no-repeat center;
-      content: '';
-      vertical-align: top;
-      margin-top: 14px;
-    }
-  }
-
-  &.woman::after {
-    background: url(${FeMaleIcon}) no-repeat center;
-  }
-
-  &.off {
-    color: #9e9e9e;
-    border: 1px solid #000;
-  }
-`
-const GenderWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  border: 1px solid #e0e0e0;
-  z-index: 3;
-  &.after {
-    border: 0;
-  }
-  border-radius: 12px;
-  margin-top: 24px;
-  position: relative;
-  &.before > div {
-    border: 1px solid #000;
-    background-color: #fff;
-    text-align: center;
-    color: #000;
-    padding-left: 0;
-    &.off {
-      color: #9e9e9e;
-      border: 1px solid #f5f5f5;
-      background-color: #f5f5f5;
-    }
-  }
-
-  &.before > div:nth-child(2).off {
-    border-left: 1px solid #e0e0e0;
-  }
-  &.before > div:nth-child(2) {
-    border-left: 1px solid #000;
-  }
-
-  &.after > div {
-    width: 100%;
-    background-color: #f5f5f5;
-    border-radius: 12px;
-    cursor: not-allowed;
-    &.off {
-      color: #9e9e9e;
-      background-color: #fff;
-    }
-  }
-`
-
-const BirthDate = styled.div`
-  position: relative;
-  padding: 29px 16px 0 16px;
-  height: 62px;
-  z-index: 3;
-  border-radius: 12px;
-  border: solid 1px #e0e0e0;
-  box-sizing: border-box;
-  background-color: #f5f5f5;
-  color: #616161;
-  cursor: not-allowed;
-  font-size: 16px;
-  font-weight: 600;
-  color: #9e9e9e;
-  border-bottom: none;
-  background: #f5f5f5 url(${calIcon}) no-repeat right 8px top 24px;
-`
-
-const PasswordRedirectBtn = styled.button`
-  width: 100px;
-  display: flex;
-  margin-top: 22px;
-  /* align-items: center; */
-  justify-content: center;
-  a {
-    display: block;
-    width: 100%;
-    height: 32px;
-    font-size: 16px;
-    color: #fff;
-    font-size: 14px;
-    line-height: 32px;
-    background-color: #bdbdbd;
-    border-radius: 8px;
-  }
-`
-
-const PasswordCircle = styled.div`
-  display: block;
-  width: 8px;
-  height: 8px;
-  background-color: #9e9e9e;
-  border-radius: 50%;
-  margin: 0 2px;
-`
-
-const PasswordTextWrap = styled.div`
-  display: flex;
-  /* display: none; */
-  /* align-items: center; */
-  width: calc(100% - 128px);
-  margin-top: 29px;
-  border-right: none;
-  /* background-color: #eee; */
-  box-sizing: border-box;
-  padding: 6px 0 6px 0px;
-  cursor: not-allowed;
-`
-
-const PasswordWrap = styled.div`
-  position: relative;
-  padding: 0px 4px 0px 16px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 100%;
-  height: 62px;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  background-color: #f5f5f5;
-  margin-bottom: 4px;
-
-  .matchTitle {
-    position: absolute;
-    top: 9px;
-    left: 16px;
-    z-index: 2;
-    font-size: 12px;
-    line-height: 1.08;
-    color: #000000;
-  }
-`
-
-const UserId = styled.div`
-  position: relative;
-  padding: 20px 16px 0px 16px;
-  height: 58px;
-  background-color: #f5f5f5;
-  box-sizing: border-box;
-  color: #9e9e9e;
-  letter-spacing: -0.35px;
-  cursor: not-allowed;
-  border-radius: 12px;
-  border: 1px solid #e0e0e0;
-  font-size: 16px;
-  margin-bottom: 4px;
-
-  .matchTitle {
-    position: absolute;
-    top: 9px;
-    left: 16px;
-    z-index: 2;
-    font-size: 12px;
-    line-height: 1.08;
-    color: #000000;
-  }
-
-  span:nth-child(2) {
-    display: inline-block;
-    line-height: 36px;
-    height: 36px;
-  }
-`
-const NicknameInput = styled.input.attrs({type: 'text'})`
-  display: flex;
-  align-items: center;
-  border: 1px solid #e0e0e0;
-  padding: 20px 16px 0px 16px;
-  width: 100%;
-  height: 58px;
-  border-radius: 12px;
-  background-color: #fff;
-  font-size: 16px;
-  font-weight: 800;
-  color: #000000;
-  margin-bottom: 4px;
-  :focus {
-    border: 1px solid #000;
-  }
-`
-
-const ProfileImg = styled.div`
-  position: relative;
-  margin: 0 auto;
-  margin-bottom: 12px;
-  margin-top: 20px;
-  /* border: 1px solid #8556f5; */
-  border-radius: 50%;
-  width: 72px;
-  height: 72px;
-  /* cursor: pointer; */
-  /* background-size: cover;
-  background-position: center; */
-  .cameraImg {
-    width: 30px;
-    height: 30px;
-  }
-  .backImg {
-    display: block;
-    width: 72px;
-    height: 72px;
-    border: 1px solid #8556f5;
-    border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-  }
-  label {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    cursor: pointer;
-    input[type='file'] {
-      position: absolute;
-      width: 0;
-      height: 0;
-    }
-  }
-
-  & > input[type='file'] {
-    position: absolute;
-    width: 0;
-    height: 0;
-  }
-`
-
-const SettingWrap = styled.div`
-  width: 100%;
-  .individual_Wrap {
-    padding: 0 16px;
-  }
-  .close-btn {
-    position: absolute;
-    /* top: 6px; */
-    left: 6px;
-  }
-  .msg-wrap {
-    position: relative;
-    button {
-      position: absolute;
-      top: -3px;
-      right: 0;
-    }
-  }
-`
-
-const Content = styled.section`
-  background-color: #eeeeee;
-  margin: 0 0 0px 0;
-  height: 100%;
-  overflow: auto;
-  .MsgText {
-    display: block;
-    width: 100%;
-    border: 1px solid #e0e0e0;
-    resize: none;
-    padding: 12px;
-    height: 116px;
-    font-family: inherit;
-    color: #000000;
-    transform: skew(-0.03deg);
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 20px;
-    outline: none;
-    border-radius: 12px;
-    :focus {
-      border: 1px solid #000;
-    }
-  }
-
-  .birthBox {
-    position: relative;
-    height: 72px;
-    margin-bottom: 13px;
-    .matchTitle {
-      position: absolute;
-      top: 9px;
-      left: 16px;
-      z-index: 5;
-      font-size: 12px;
-      line-height: 1.08;
-      color: #000000;
-    }
-  }
-  canvas {
-    position: relative;
-    margin: 0 auto;
-    margin-bottom: 16px;
-    margin-top: 20px;
-    border: 1px solid #8556f5;
-    border-radius: 50%;
-    width: 72px;
-    height: 72px;
-    cursor: pointer;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .input-label {
-    display: block;
-    width: 100%;
-    font-size: 16px;
-    line-height: 16px;
-    margin-top: 16px;
-    margin-bottom: 8px;
-    font-weight: 800;
-    color: #000000;
-
-    &.require:after {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      font-weight: bold;
-      background: url(${IMG_SERVER}/images/api/icn_asterisk.svg) no-repeat center;
-      content: '';
-      vertical-align: bottom;
-    }
-
-    span {
-      font-size: 12px;
-    }
-  }
-  .nickname {
-    position: relative;
-    .matchTitle {
-      position: absolute;
-      top: 12px;
-      left: 16px;
-      z-index: 2;
-      font-size: 12px;
-      line-height: 1.08;
-      color: #000000;
-    }
-    button {
-      position: absolute;
-      right: 4px;
-      top: 4px;
-    }
-  }
-`
-const TopWrap = styled.div`
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid ${COLOR_MAIN};
-  align-items: center;
-  margin-top: 24px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  button:nth-child(1) {
-    width: 24px;
-    height: 24px;
-    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
-  }
-  .title {
-    width: calc(100% - 24px);
-    color: ${COLOR_MAIN};
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: -0.5px;
-    text-align: center;
-  }
-`
