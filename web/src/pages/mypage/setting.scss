@@ -1,0 +1,381 @@
+@import '../../styles/_variables';
+
+#myProfileSetting {
+  background-color: $lighterGray;
+  margin: 0 0 0px 0;
+  height: 100%;
+  overflow: auto;
+
+  .settingWrap {
+    padding: 0 16px;
+
+    .imgBox {
+      position: relative;
+      margin: 0 auto;
+      margin-bottom: 12px;
+      margin-top: 20px;
+      border-radius: 50%;
+      width: 72px;
+      height: 72px;
+      .cameraImg {
+        width: 30px;
+        height: 30px;
+      }
+      .backImg {
+        display: block;
+        width: 72px;
+        height: 72px;
+        border: 1px solid $primary;
+        border-radius: 50%;
+        background-size: cover;
+        background-position: center;
+      }
+      label {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        cursor: pointer;
+        input[type='file'] {
+          position: absolute;
+          width: 0;
+          height: 0;
+        }
+      }
+
+      > input[type='file'] {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+    }
+    .inputBox {
+      position: relative;
+      padding: 20px 16px 0px 16px;
+      margin-top: 4px;
+      height: 62px;
+      background-color: $whiteGray;
+      color: $gray;
+      border-radius: 12px;
+      border: 1px solid $lightGray;
+      font-size: 16px;
+      z-index: 3;
+      &:first-child {
+        margin-top: 0;
+      }
+      p {
+        font-size: 16px;
+        line-height: 18px;
+        padding-top: 12px;
+        &.authPass {
+          color: $black;
+          font-weight: bold;
+        }
+        &.notAuth {
+          font-size: 14px;
+          color: $mediumGray;
+        }
+      }
+
+      .input__label {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        z-index: 2;
+        font-size: 12px;
+        line-height: 1.08;
+        color: $black;
+      }
+      .input__text {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding-top: 10px;
+        font-size: 16px;
+        background-color: transparent;
+        color: $gray;
+        &.password {
+          padding-top: 18px;
+        }
+        .ico {
+          display: block;
+          width: 8px;
+          height: 8px;
+          background-color: $gray;
+          border-radius: 50%;
+          margin: 0 2px;
+        }
+      }
+      .passwordBox {
+        display: flex;
+        width: calc(100% - 128px);
+        margin-top: 29px;
+        border-right: none;
+        box-sizing: border-box;
+        padding: 6px 0 6px 0px;
+        cursor: not-allowed;
+      }
+      .btn__del {
+        position: absolute;
+        right: 4px;
+        top: 4px;
+      }
+      .btn__confirm {
+        position: absolute;
+        right: 4px;
+        bottom: 4px;
+        min-width: 60px;
+        height: 32px;
+        padding: 0 6px;
+        font-size: 14px;
+        color: $white;
+        background: $mediumGray;
+        border-radius: 10px;
+      }
+      &__nickname {
+        background: $white;
+        .input__text {
+          font-weight: bold;
+          color: $black;
+        }
+      }
+      &__birth {
+        background: $whiteGray url('./static/calender_b.svg') no-repeat right 8px top 24px;
+        .input__text {
+          font-weight: bold;
+        }
+      }
+    }
+    .commentBox {
+      display: block;
+      position: relative;
+      width: 100%;
+      padding: 22px 0 0 0;
+      margin-top: -15px;
+      left: 0;
+      bottom: 0;
+      z-index: 2;
+      text-align: center;
+      height: 44px;
+      margin-bottom: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 12px;
+      letter-spacing: -0.5px;
+      background-color: $gray;
+      color: $white;
+      transform: skew(-0.03deg);
+      &.notAuth {
+        background: #ec455f;
+      }
+    }
+    .genderBox {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      border: 1px solid $lightGray;
+      z-index: 3;
+      border-radius: 12px;
+      margin-top: 4px;
+      &.after {
+        border: 0;
+      }
+      &.before > div {
+        border: 1px solid $black;
+        background-color: $white;
+        text-align: center;
+        color: $black;
+        padding-left: 0;
+        &.off {
+          color: $gray;
+          border: 1px solid $whiteGray;
+          background-color: $whiteGray;
+        }
+      }
+
+      &.before > div:nth-child(2).off {
+        border-left: 1px solid $lightGray;
+      }
+      &.before > div:nth-child(2) {
+        border-left: 1px solid $black;
+      }
+
+      &.after > div {
+        width: 100%;
+        background-color: $whiteGray;
+        border-radius: 12px;
+        cursor: not-allowed;
+        &.off {
+          color: $gray;
+          background-color: $white;
+        }
+      }
+    }
+    .genderTab {
+      width: 50%;
+      height: 44px;
+      line-height: 44px;
+      text-align: left;
+      user-select: none;
+      box-sizing: border-box;
+      color: $gray;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 12px 0 0 12px;
+      padding-left: 16px;
+
+      &.one-btn {
+        text-align: center;
+        &.woman {
+          color: #f35da3;
+          border: 1px solid #f35da3;
+        }
+        &.man {
+          color: #27a2db;
+          border: 1px solid #27a2db;
+        }
+      }
+
+      &::after {
+        display: inline-block;
+        width: 24px;
+        height: 16px;
+        margin-left: 5px;
+        background: url('./static/ico_male.svg') no-repeat center;
+        content: '';
+        vertical-align: top;
+        margin-top: 14px;
+      }
+
+      & + & {
+        border-radius: 0 12px 12px 0;
+
+        &::after {
+          display: inline-block;
+          width: 24px;
+          height: 16px;
+          margin-left: 5px;
+          background: url('./static/ico_female.svg') no-repeat center;
+          content: '';
+          vertical-align: top;
+          margin-top: 14px;
+        }
+      }
+
+      &.woman::after {
+        background: url('./static/ico_female.svg') no-repeat center;
+      }
+
+      &.off {
+        color: $gray;
+        border: 1px solid $black;
+      }
+    }
+    .msgBox {
+      position: relative;
+      button {
+        position: absolute;
+        top: -3px;
+        right: 0;
+      }
+      .msgText {
+        display: block;
+        width: 100%;
+        border: 1px solid $lightGray;
+        resize: none;
+        padding: 12px;
+        height: 116px;
+        font-family: inherit;
+        color: $black;
+        transform: skew(-0.03deg);
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        outline: none;
+        border-radius: 12px;
+        :focus {
+          border: 1px solid $black;
+        }
+      }
+      .input-label {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        line-height: 16px;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        font-weight: 800;
+        color: $black;
+
+        &.require::after {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          font-weight: bold;
+          background: url(https://image.dalbitlive.com/images/api/icn_asterisk.svg) no-repeat center;
+          content: '';
+          vertical-align: bottom;
+        }
+
+        span {
+          font-size: 12px;
+        }
+      }
+    }
+    .btn__save {
+      margin-top: 32px;
+      width: 100%;
+      letter-spacing: -0.4px;
+      background-color: $primary;
+      cursor: pointer;
+      margin-bottom: 20px;
+      background-color: $mediumGray;
+      color: $white;
+      line-height: 44px;
+      font-size: 18px;
+      border-radius: 12px;
+      font-weight: bold;
+
+      &.isActive {
+        background-color: $primary;
+      }
+    }
+  }
+  canvas {
+    position: relative;
+    margin: 0 auto;
+    margin-bottom: 16px;
+    margin-top: 20px;
+    border: 1px solid $primary;
+    border-radius: 50%;
+    width: 72px;
+    height: 72px;
+    cursor: pointer;
+    background-size: cover;
+    background-position: center;
+  }
+
+  .topWrap {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid $primary;
+    align-items: center;
+    margin-top: 24px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    button:nth-child(1) {
+      width: 24px;
+      height: 24px;
+      background: url(https://image.dalbitlive.com/images/api/btn_back.png) no-repeat center center / cover;
+    }
+    .title {
+      width: calc(100% - 24px);
+      color: $primary;
+      font-size: 18px;
+      font-weight: bold;
+      letter-spacing: -0.5px;
+      text-align: center;
+    }
+  }
+}

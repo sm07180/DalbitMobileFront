@@ -6,6 +6,7 @@
   background-color: $lighterGray;
   .refresh-wrap {
     display: none;
+    max-height: 48px;
   }
   .fixed {
     position: fixed;
@@ -455,6 +456,8 @@
     min-width: 60px;
 
     &__pic {
+      margin-top: 13px;
+      width: 71%;
       border-radius: 50%;
       width: 100%;
     }

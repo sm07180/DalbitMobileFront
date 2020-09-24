@@ -17,8 +17,10 @@ import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import ProfileRank from './profile_rank'
+import ProfileFanRank from './profile_fanRank'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
+import EditIcon from '../static/edit_g_l.svg'
 
 export default (props) => {
   //context & webview
@@ -37,6 +39,7 @@ export default (props) => {
   const [showPresent, setShowPresent] = useState(false)
   const [showEdit, setShowEdit] = useState(false)
   const [rankTabType, setRankTabType] = useState('tabRank') //tabRank, tabgood
+
   //pop
   const [popupExp, setPopupExp] = useState(false)
   const figureZoom = () => {
@@ -82,14 +85,18 @@ export default (props) => {
             <button
               className="btn__fanRank"
               onClick={() => {
-                //context.action.updateCloseRank(true)
-                //setRankTabType('tabRank')
-                profile.fanRank.length > 0 && context.action.updateClose(true)
+                context.action.updateCloseRank(true)
+                setRankTabType('tabRank')
               }}>
               팬랭킹
             </button>
           ) : (
-            <button className="btn__fanRank" onClick={() => profile.fanRank.length > 0 && context.action.updateClose(true)}>
+            <button
+              className="btn__fanRank"
+              onClick={() => {
+                profile.fanRank.length > 0 && context.action.updateCloseFanRank(true)
+                setRankTabType('tabRank')
+              }}>
               팬랭킹
             </button>
           )}
@@ -113,7 +120,7 @@ export default (props) => {
         viewStarList()
       }
     } else if (type === 'like') {
-      // viewGoodList()
+      viewGoodList()
     }
   }
   const createCountList = (type, count) => {
@@ -220,7 +227,8 @@ export default (props) => {
   //func Good count
   const viewGoodList = () => {
     if (myProfileNo !== profile.memNo) {
-      context.action.updateCloseGoodCnt(true)
+      context.action.updateCloseFanRank(true)
+      setRankTabType('tabGood')
     } else {
       if (profile.likeTotCnt > 0) {
         context.action.updateCloseRank(true)
@@ -256,7 +264,6 @@ export default (props) => {
 
   //팝업실행
   const popStateEvent = (e) => {
-    console.log(e)
     if (e.state === null) {
       setPopup(false)
       context.action.updateMypageReport(false)
@@ -285,7 +292,6 @@ export default (props) => {
       Hybrid('CloseLayerPopup')
     } else {
       if (locHash instanceof Object && locHash.state) {
-        log
         locHash.state.hash === '#layer' ? history.go(-2) : history.goBack()
       } else {
         history.goBack()
@@ -336,11 +342,23 @@ export default (props) => {
 
   return (
     <div className="profile-detail">
-      {token && token.isLogin && showAdmin && (
-        <a href="/admin/image" className="adminBtn">
-          <img src={AdminIcon} alt="관리자아이콘" />
-        </a>
-      )}
+      <div className="adminEditButton">
+        {profile.memNo == myProfileNo && (
+          <button
+            onClick={() => {
+              history.push(`/private`)
+            }}>
+            <img src={EditIcon} alt="마이프로필 수정하기" />
+          </button>
+        )}
+
+        {token && token.isLogin && showAdmin && (
+          <a href="/admin/clip">
+            <img src={AdminIcon} alt="관리자아이콘" />
+          </a>
+        )}
+      </div>
+
       <button className="closeBtn" onClick={goBack}>
         <span className="blind">프로필 닫기</span>
       </button>
@@ -436,22 +454,27 @@ export default (props) => {
         )}
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
-        {/* <div className="fanListWrap">
+        <div className="fanListWrap">
           {profile.likeTotCnt > 0 && (
             <>
               {myProfileNo === profile.memNo ? (
                 <button
                   className="btn__fanRank cupid"
                   onClick={() => {
-                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                    setRankTabType('tabGood')
+                    {
+                      profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                      setRankTabType('tabGood')
+                    }
                   }}>
                   왕큐피트
                 </button>
               ) : (
                 <button
                   className="btn__fanRank cupid"
-                  onClick={() => profile.likeTotCnt > 0 && context.action.updateCloseGoodCnt(true)}>
+                  onClick={() => {
+                    profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
+                    setRankTabType('tabGood')
+                  }}>
                   왕큐피트
                 </button>
               )}
@@ -465,7 +488,7 @@ export default (props) => {
               </p>
             </>
           )}
-        </div> */}
+        </div>
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
@@ -513,7 +536,8 @@ export default (props) => {
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
-      {context.closeRank === true && <ProfileRank {...props} name="랭킹" type={rankTabType} />}
+      {context.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹" />}
+      {context.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹" />}
       {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
     </div>
   )

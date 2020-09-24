@@ -52,6 +52,7 @@ const GlobalProvider = (props) => {
   const [closeGoodCnt, setCloseGoodCnt] = useState(false)
   const [closePresent, setClosePresent] = useState(false)
   const [closeRank, setCloseRank] = useState(false)
+  const [closeFanRank, setCloseFanRank] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
   const [bannerCheck, setBannerCheck] = useState(false)
@@ -298,6 +299,9 @@ const GlobalProvider = (props) => {
     updateCloseRank: (bool) => {
       setCloseRank(bool)
     },
+    updateCloseFanRank: (bool) => {
+      setCloseFanRank(bool)
+    },
     updateBoardNumber: (num) => {
       setBoardNumber(num)
     },
@@ -451,6 +455,7 @@ const GlobalProvider = (props) => {
     closeGoodCnt,
     closePresent,
     closeRank,
+    closeFanRank,
     boardNumber,
     noticeIndexNum,
     bannerCheck,

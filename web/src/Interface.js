@@ -385,6 +385,7 @@ export default () => {
         let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
+        sessionStorage.setItem('clip_no', event.detail.clipNo)
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
         context.action.updatePlayer(true)
@@ -654,6 +655,13 @@ export default () => {
       case '46': //-----------------Clip PLay
         room_no = pushMsg.room_no
         if (room_no) clipPlay(room_no)
+        break
+      case '47': //-----------------Clip PLay
+        room_no = pushMsg.room_no
+        if (room_no) clipPlay(room_no)
+        break
+      case '48': //-----------------마이클립
+        if (isLogin) window.location.href = `/mypage/${context.profile.memNo}/my_clip`
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link

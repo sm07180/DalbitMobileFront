@@ -76,7 +76,7 @@ export default (props) => {
   ]
   const customerList = [
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
-    // {type: 'faq', txt: '이벤트', icon: EventIcon},
+    // {type: 'event', txt: '이벤트', icon: NoticeIcon},
     {type: 'service', txt: '고객센터', icon: CustomerIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
@@ -262,15 +262,15 @@ export default (props) => {
               ) : (
                 <div className="menu-box">
                   <button className="list" onClick={() => history.push(`/private`)}>
-                    <img className="icon" src={ProfileIcon} alt="프로필 설정" />
-                    <span className="text">프로필 설정</span>
+                    <img className="icon" src={ProfileIcon} alt="프로필 수정" />
+                    <span className="text">프로필 수정</span>
                     <span className="arrow"></span>
                   </button>
-                  <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
+                  {/* <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
                     <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
                     <span className="text">Push 알림 설정</span>
                     <span className="arrow"></span>
-                  </button>
+                  </button> */}
                 </div>
               )}
 

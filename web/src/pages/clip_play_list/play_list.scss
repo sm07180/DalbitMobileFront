@@ -1,16 +1,116 @@
+@import '../../styles/variables';
+
 #clipPlayList {
   position: relative;
+  height: 100%;
 
   .playListWrap {
-    padding: 16px;
-    margin-top: -10px;
+    // padding: 16px;
+    margin: 50px 0 0 0;
+    &.on {
+      display: block;
+      &.edit {
+        margin-top: 100px;
+        height: 100%;
+      }
+    }
+    &.off {
+      display: none;
+    }
+  }
+
+  .playListSorter {
+    position: fixed;
+    display: flex;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background: $primary;
+    z-index: 2;
+    justify-content: space-between;
+    &__dim {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      &.on {
+        display: block;
+      }
+    }
+    .playListSorterList {
+      display: none;
+      position: absolute;
+      left: 0;
+      top: 50px;
+      width: 100%;
+      padding: 10px 20%;
+      background: #fff;
+      text-align: center;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
+      &.on {
+        display: block;
+      }
+      &__item {
+        padding: 10px 0;
+        font-size: 14px;
+        line-height: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        &.on {
+          color: $primary;
+        }
+      }
+    }
+    button {
+      color: #fff;
+      height: 50px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    &__deleteBtn {
+      padding: 0 16px 0 26px;
+      background: url(static/delete_b.svg) no-repeat left center;
+      background-size: 24px;
+      &.none {
+        background: none;
+        width: 70px;
+        font-size: 0;
+        cursor: inherit;
+      }
+    }
+    &__selectBtn {
+      padding: 0 16px;
+      &.on {
+        color: #ffe600;
+      }
+    }
+
+    &__sortBtn {
+      padding: 0 16px;
+      &:after {
+        display: inline-block;
+        margin-left: 4px;
+        border-top: 7px solid #fff;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        vertical-align: bottom;
+        content: '';
+      }
+    }
   }
 
   .playlistEdit {
     position: relative;
     &__headerBtn {
       display: block;
-      position: absolute;
+      position: fixed;
       right: 10px;
       top: 8px;
       width: 54px;
@@ -25,10 +125,11 @@
       letter-spacing: -0.35px;
       text-align: center;
       color: #757575;
+      z-index: 3;
       &--edit {
         border-radius: 16px;
-        border: solid 1px #632beb;
-        background-color: #632beb;
+        border: solid 1px $primary;
+        background-color: $primary;
         color: #fff;
       }
     }
@@ -39,19 +140,48 @@
     justify-content: space-between;
     width: 362px;
     height: 52px;
-    background-color: #632beb;
+    background-color: $primary;
   }
 }
 
 #playListItem {
   display: flex;
   align-items: center;
-  padding: 10px 0;
+  padding: 10px 16px;
+  outline: none;
+
+  &.edit {
+    cursor: pointer;
+  }
+
+  &.on {
+    background: rgba(66, 88, 254, 0.1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06);
+  }
+
+  button {
+    position: absolute;
+    right: -47px;
+    top: 12px;
+    width: 62px;
+    height: 62px;
+    span {
+      display: block;
+      width: 16px;
+      margin: 5px auto;
+      height: 1px;
+      background: #000;
+    }
+  }
 
   .playListItem__thumb {
     position: relative;
     margin-right: 12px;
     width: 72px;
+    cursor: pointer;
+    &.edit {
+      cursor: auto;
+    }
 
     img {
       width: 100%;
@@ -79,7 +209,7 @@
   }
 
   .textBox {
-    width: calc(100% - 90px);
+    width: calc(100% - 132px);
     &__iconBox {
       display: flex;
       align-items: center;
@@ -202,7 +332,7 @@
     .textBox {
       &__subject,
       &__nickName {
-        color: #632beb;
+        color: $primary;
       }
     }
   }

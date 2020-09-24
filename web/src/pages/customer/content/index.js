@@ -16,7 +16,7 @@ import Banner from './banner'
 import Tab from './tab'
 import Notice from './notice/list'
 import NoticeDetail from './notice/detail'
-// import Faq from './faq/index';
+import Event from './event/index'
 import Faq from './faq/list'
 import FaqDetail from './faq/detail'
 import Personal from './personal/index'
@@ -39,6 +39,9 @@ const Index = (props) => {
   switch (title) {
     case 'notice':
       header = '공지사항'
+      break
+    case 'event':
+      header = '이벤트'
       break
     case 'faq':
       header = 'FAQ'
@@ -108,6 +111,7 @@ const Index = (props) => {
           <Route path="/customer" exact component={Notice} />
           <Route path="/customer/notice" exact component={Notice} />
           <Route path="/customer/notice/:number" exact component={NoticeDetail} />
+          <Route path="/customer/event" exact component={Event} />
           <Route path="/customer/faq" exact component={Faq} />
           <Route path="/customer/faq/:number" exact component={FaqDetail} />
           <Route path="/customer/personal" exact component={Personal} />

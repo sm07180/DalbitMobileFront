@@ -84,9 +84,9 @@ function Ranking() {
       const refreshIconNode = arrowRefreshRef.current
 
       touchEndY = e.touches[0].clientY
-
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 50
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapRef.current.style.display = 'block'
@@ -425,7 +425,7 @@ function Ranking() {
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
-        <Header title="랭킹" />
+        <Header title="랭킹" type="noBack" />
         <div className="refresh-wrap" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />

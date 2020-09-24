@@ -39,7 +39,7 @@ export default (props) => {
     setTextChange(e.target.value)
   }
   //쓰기버튼 토글이벤트
-  const writeToggle = () => {
+  const writeToggle = (arg) => {
     if (writeState === false) {
       setWriteState(true)
       context.action.updateBoardIdx(0)
@@ -173,6 +173,14 @@ export default (props) => {
       }
     }
   }
+  const createWriteBtn = () => {
+    return (
+      <button onClick={() => writeToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
+        쓰기
+      </button>
+    )
+  }
+
   // 댓글마다 인덱스 번호 입력시 큰댓글 접힘
   useEffect(() => {
     if (props.type !== 'modify' && context.boardIdx !== 0) {
@@ -188,11 +196,12 @@ export default (props) => {
       setWriteState(false)
     }
   }, [])
-  useEffect(() => {
-    if (props.writeCheck === true) {
-      setWriteState(true)
-    }
-  }, [props.writeCheck])
+  // useEffect(() => {
+  //   console.log(props.isWrite)
+  //   if (props.isWrite === true) {
+  //     setWriteState(true)
+  //   }
+  // }, [props.isWrite])
   //팬보드일경우 아덜쇼 뉴팬보드표시
   useEffect(() => {
     if (profile.memNo === urlrStr) {
@@ -255,7 +264,7 @@ export default (props) => {
         <div
           className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
           onClick={() => {
-            writeToggle()
+            writeToggle(writeState)
           }}>
           <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
           {writeState === false && (
@@ -311,13 +320,14 @@ export default (props) => {
             if (writeType === 'reply') {
               context.action.updateFanboardReplyNum(-1)
             }
-            writeToggle()
+            writeToggle(writeState)
           }}>
           <button className="btn__toggle">접기</button>
         </div>
       ) : (
         <></>
       )}
+      {props.isShowBtn && createWriteBtn()}
     </div>
   )
 }

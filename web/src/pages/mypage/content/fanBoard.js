@@ -15,7 +15,7 @@ import Header from 'components/ui/new_header.js'
 import BoardList from './board_list'
 import WriteBoard from './board_write'
 //svg
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 // concat
 // let currentPage = 1
 // let timer
@@ -41,7 +41,7 @@ export default (props) => {
   const [totalCount, setTotalCount] = useState(-1)
   const [isOther, setIsOther] = useState(true)
   const [moreState, setMoreState] = useState(false)
-  const [writeBtnCheck, setWriteBtnCheck] = useState(false)
+  const [isWriteBtn, setIsWriteBtn] = useState(false)
   const [scrollY, setScrollY] = useState(0)
 
   // 스크롤 이벤트
@@ -143,31 +143,21 @@ export default (props) => {
     mypageNewStg.fanBoard = fanBoard === undefined || fanBoard === null || fanBoard === '' ? 0 : fanBoard
     localStorage.setItem('mypageNew', JSON.stringify(mypageNewStg))
   }
-  const WriteToggle = () => {
-    setWriteState(true)
-  }
-  const createWriteBtn = () => {
-    return (
-      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
-        쓰기
-      </button>
-    )
-  }
   const windowScrollEvent = () => {
     const boardListNode = BoardListRef.current
     const boardListHeight = boardListNode.offsetTop
     if (props.type) {
-      if (props.writeBtnCheck) {
-        setWriteBtnCheck(true)
+      if (props.isShowBtn) {
+        setIsWriteBtn(true)
       } else {
-        setWriteBtnCheck(false)
+        setIsWriteBtn(false)
       }
     } else {
       if (window.scrollY >= boardListHeight) {
-        setWriteBtnCheck(true)
+        setIsWriteBtn(true)
         setScrollY(boardListHeight)
       } else {
-        setWriteBtnCheck(false)
+        setIsWriteBtn(false)
         setScrollY(0)
       }
     }
@@ -177,7 +167,7 @@ export default (props) => {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [props.writeBtnCheck])
+  }, [props.isShowBtn])
 
   //재조회 및 초기조회
   useEffect(() => {
@@ -216,21 +206,19 @@ export default (props) => {
       ) : (
         <></>
       )}
-      <WriteBoard {...props} writeCheck={writeState} set={setAction} />
+      <WriteBoard {...props} isShowBtn={isWriteBtn} set={setAction} />
       {/* 팬보드 리스트 영역 */}
       {totalCount === -1 && (
         <div className="loading">
           <span></span>
         </div>
       )}
-      {totalCount === 0 && <NoResult />}
+      {totalCount === 0 && <NoResult type="default" text="등록된 팬보드가 없습니다." />}
       {totalCount > 0 && (
         <div ref={BoardListRef}>
           <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
         </div>
       )}
-
-      {writeBtnCheck && createWriteBtn()}
     </div>
   )
 }

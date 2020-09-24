@@ -198,6 +198,12 @@ table {
   border-bottom: 1px solid #d2d2d2;
   box-sizing: border-box;
 
+  &.fixed {
+    position: fixed;
+    top: 0;
+    z-index: 2;
+  }
+
   .header-title {
     font-size: 18px;
     color: $black;
@@ -285,10 +291,39 @@ table {
     height: 24px;
     position: absolute;
     top: 8px;
+    left: 50%;
+    margin-left: -12px;
   }
 
   &.on {
     display: block;
+  }
+}
+
+.noResultWrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  span {
+    font-size: 14px;
+    line-height: 1.25;
+    color: #777;
+    &.noResult {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      font-size: 14px;
+      &::before {
+        display: inline-block;
+        content: '';
+        width: 82px;
+        height: 68px;
+        margin-bottom: 10px;
+        background: url('../components/ui/ic_noResult.svg') no-repeat center;
+      }
+    }
   }
 }
 

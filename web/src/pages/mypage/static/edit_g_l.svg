@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="edit_g_l" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-1,.cls-3{fill:none}.cls-3{stroke:#757575;stroke-linecap:round;stroke-width:1.5px;stroke-linejoin:round}
+        </style>
+    </defs>
+    <path id="사각형_2409" d="M0 0H32V32H0z" class="cls-1"/>
+    <g id="그룹_19789" transform="translate(-317.868 -405.264)">
+        <g id="Layer_2" transform="translate(325.43 412.846)">
+            <g id="edit-2">
+                <path id="사각형_2407" d="M0 0H16V16H0z" class="cls-1" transform="translate(.438 .418)"/>
+                <g id="그룹_19122" transform="translate(.92 17.702)">
+                    <path id="선_192" fill="none" stroke="#757575" stroke-linecap="round" stroke-width="1.5px" d="M0 0L15.037 0"/>
+                </g>
+            </g>
+        </g>
+        <g id="그룹_19786" transform="translate(326.696 411.264)">
+            <path id="패스_18410" d="M326.508 425.821l4.525-.246 9.77-9.77-4.048-4.048-9.77 9.77z" class="cls-3" transform="translate(-326.508 -411.757)"/>
+            <path id="선_193" d="M4.048 4.048L0 0" class="cls-3" transform="translate(7.02 3.226)"/>
+        </g>
+    </g>
+</svg>

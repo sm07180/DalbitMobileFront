@@ -134,7 +134,7 @@
         .txt {
           width: 34px;
           font-size: 16px;
-          color: #000;
+          color: $black;
           font-weight: bold;
         }
         .icon {
@@ -182,7 +182,7 @@
           margin-top: 6px;
           overflow: hidden;
           text-overflow: ellipsis;
-          color: #616161;
+          color: $darkGray;
           font-size: 12px;
           /* letter-spacing: -0.28px; */
           white-space: nowrap;
@@ -219,7 +219,7 @@
           left: 0;
           color: $black;
           border-radius: 50%;
-          background-color: #e0e0e0;
+          background-color: $lightGray;
           width: 24px;
           height: 24px;
           font-size: 10px;
@@ -464,8 +464,8 @@
         width: 48px;
         height: 32px;
         text-align: center;
-        border: 1px solid #e0e0e0;
-        color: #000;
+        border: 1px solid $lightGray;
+        color: $black;
 
         &.active {
           font-size: 16px;
@@ -473,8 +473,8 @@
           line-height: 1.13;
           letter-spacing: normal;
           color: $black;
-          background-color: #632beb;
-          color: #fff;
+          background-color: $primary;
+          color: $white;
           border: none;
         }
       }
@@ -635,8 +635,8 @@
         width: 48px;
         height: 32px;
         text-align: center;
-        border: 1px solid #e0e0e0;
-        color: #000;
+        border: 1px solid $lightGray;
+        color: $black;
 
         &.active {
           font-size: 16px;
@@ -644,8 +644,8 @@
           line-height: 1.13;
           letter-spacing: normal;
           color: $black;
-          background-color: #632beb;
-          color: #fff;
+          background-color: $primary;
+          color: $white;
           border: none;
         }
       }
@@ -1018,7 +1018,7 @@
       padding: 0 8px;
 
       background: rgba(0, 0, 0, 0.6);
-      color: #fff;
+      color: $white;
       border-radius: 12px;
       height: 14px;
       font-size: 10px;
@@ -1045,8 +1045,7 @@
       .title {
         display: flex;
         align-items: center;
-        height: 20px;
-
+        line-height: 1.3;
         span {
           color: #242424;
           flex: 1;
@@ -1057,7 +1056,7 @@
         }
 
         p.category {
-          color: #632beb;
+          color: $primary;
           font-size: 14px;
           font-weight: normal;
           letter-spacing: -0.5px;
@@ -1076,7 +1075,8 @@
         display: flex;
         align-items: center;
         font-size: 12px;
-        color: #616161;
+        color: $darkGray;
+        line-height: 1.3;
         margin: 7px 0px;
         font-weight: normal;
         .gender-icon {
@@ -1103,7 +1103,7 @@
         }
 
         .type-text {
-          color: #632beb;
+          color: $primary;
           font-size: 14px;
           font-weight: normal;
         }
@@ -1132,7 +1132,7 @@
         align-items: center;
 
         .broadcast-type {
-          color: #632beb;
+          color: $primary;
           font-size: 11px;
           letter-spacing: -0.28px;
           margin-right: 10px;
@@ -1158,9 +1158,9 @@
   }
   &__flex {
     position: relative;
-    width: calc(50% - 2px);
-    min-height: 170px;
-    margin: 0 0 4px 4px;
+    width: calc(50% - 8px);
+    min-height: 156px;
+    margin: 0 0 16px 16px;
     border-radius: 16px;
     background-color: $lighterGray;
     background-size: cover;
@@ -1233,12 +1233,13 @@
       .special-icon {
         width: 16px;
         height: 16px;
-        border-radius: 50%;
-        line-height: 16px;
-        font-size: 7px;
-        text-align: center;
-        color: $white;
-        background-color: $red;
+        background: url('../pages/menu/static/new_s.svg');
+        // border-radius: 50%;
+        // line-height: 16px;
+        // font-size: 7px;
+        // text-align: center;
+        // color: $white;
+        // background-color: $red;
       }
       .all-icon {
         width: 24px;
@@ -1269,24 +1270,42 @@
       right: 6px;
       display: flex;
       z-index: 1;
-
+      align-items: center;
       .entry-img {
         display: block;
+        margin-left: 4px;
       }
       .count-txt {
         color: $white;
-        font-size: 13px;
-        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: -0.3px;
       }
     }
     .bottom-wrap {
+      width: 100%;
       position: absolute;
-      bottom: 6px;
-      left: 6px;
+      bottom: 10px;
+      left: 10px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      // align-items: center;
       z-index: 1;
-
+      .roomTitle {
+        width: 80%;
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.14;
+        letter-spacing: -0.42px;
+        text-align: left;
+        color: #ffffff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .pc-icon {
         color: $white;
         font-size: 11px;
@@ -1313,8 +1332,16 @@
       }
 
       .dj-nickname {
+        display: block;
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         color: $white;
+        font-weight: normal;
         font-size: 12px;
+        line-height: 1.08;
+        letter-spacing: -0.36px;
       }
     }
   }
@@ -1421,6 +1448,7 @@
         top: 6px;
         right: 6px;
         display: flex;
+
         z-index: 1;
 
         .entry-img {
@@ -1523,7 +1551,7 @@
       top: 23px;
       width: 100%;
       height: 1px;
-      background: #e0e0e0;
+      background: $lightGray;
       content: '';
     }
   }
@@ -1533,10 +1561,10 @@
     width: 113px;
     margin: 40px auto;
     padding-right: 28px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid $lightGray;
     border-radius: 46px;
     background: $white;
-    color: #616161;
+    color: $darkGray;
     font-size: 14px;
     line-height: 46px;
     z-index: 1;

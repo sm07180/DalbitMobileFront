@@ -33,6 +33,8 @@ export default (props) => {
   const [btnIdx, setBtnIdx] = useState(0)
   const [totalMemCnt, setTotalMemCnt] = useState(0)
   const [totalLiveCnt, setTotalLiveCnt] = useState(0)
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
+
   //---------------------------------------------------------------------
   //fetch 사용자검색
   async function fetchMember(query, next) {
@@ -191,6 +193,21 @@ export default (props) => {
       fetchLive(query)
     }
   }, [btnIdx])
+
+  useEffect(() => {
+    API.splash().then((res) => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          const concatenated = categoryList.concat(roomType)
+          setCategoryList(concatenated)
+        }
+      }
+    })
+  }, [])
+
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function () {
@@ -284,7 +301,9 @@ export default (props) => {
             )}
           </div>
         )}
-        {query !== '' && (btnIdx === 0 || btnIdx === 1) && <List update={update} type="live" fetch={live} />}
+        {query !== '' && (btnIdx === 0 || btnIdx === 1) && (
+          <List className="liveList" update={update} type="live" fetch={live} categoryList={categoryList} />
+        )}
         {query !== '' && (btnIdx === 0 || btnIdx === 2) && (
           <div className="typeTitle">
             <span className="title">DJ</span>
