@@ -52,13 +52,13 @@ export default () => {
   useEffect(() => {
     window.addEventListener('storage', () => {
       alert('스토리지변경')
-      setPlayClipNo = useState(sessionStorage.getItem('play_clip_no'))
+      setPlayClipNo(sessionStorage.getItem('play_clip_no'))
     })
 
     return () => {
       window.removeEventListener('storage', () => {
         alert('스토리지변경')
-        setPlayClipNo = useState(sessionStorage.getItem('play_clip_no'))
+        setPlayClipNo(sessionStorage.getItem('play_clip_no'))
       })
     }
   }, [])
