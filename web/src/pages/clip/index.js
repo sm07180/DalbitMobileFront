@@ -349,13 +349,40 @@ export default (props) => {
   return (
     <Layout {...props} status="no_gnb">
       <Header title="클립" type="noBack" />
-      <div>
-        <h2 className="myClip__title">내 클립 현황</h2>
-      </div>
+
       <div id="clipPage">
+        <div className="myClip">
+          <h2 className="myClip__title">내 클립 현황</h2>
+          <ul className="myClipWrap">
+            <li>
+              <em>등록 게시물</em>
+              <span>10</span>
+            </li>
+            <li>
+              <em>청취횟수</em>
+              <span>2181</span>
+            </li>
+            <li>
+              <em>받은 좋아요</em>
+              <span>581</span>
+            </li>
+            <li>
+              <em>받은 선물</em>
+              <span>10</span>
+            </li>
+          </ul>
+        </div>
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef}>
-            <h2 className="recomClip__title">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h2>
+            <div className="recomClip__title">
+              {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
+              <div className="recomClip__title__rightSide">
+                <span className="recomClip__title__date">2020.09.17 00:00</span>
+                <button className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`} onClick={() => refreshCategory()}>
+                  <img src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'} alt="인기 리프래시 아이콘 이미지" />
+                </button>
+              </div>
+            </div>
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (

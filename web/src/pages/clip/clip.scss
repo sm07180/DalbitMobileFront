@@ -11,18 +11,79 @@
       align-items: center;
     }
   }
-
-  .recomClip {
-    padding: 16px 3%;
-    border-bottom: 4px solid #ebebeb;
-    background-color: #fff;
-
+  .myClip {
+    padding: 16px 3% 16px 3%;
     &__title {
       padding-bottom: 12px;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
       color: #000;
+    }
+  }
+  .myClipWrap {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    li {
+      position: relative;
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid #e0e0e0;
+      &:last-child {
+        border: none;
+      }
+      em {
+        display: block;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: normal;
+        font-style: normal;
+        color: #424242;
+      }
+      span {
+        margin-top: 8px;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: -0.45px;
+        color: #632beb;
+      }
+    }
+  }
+  .recomClip {
+    padding: 16px 3%;
+    border-bottom: 4px solid #ebebeb;
+    background-color: #fff;
+
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 32px;
+      margin-bottom: 12px;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.17;
+      color: #000;
+
+      &__rightSide {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+      &__date {
+        margin-right: 8px;
+        font-size: 12px;
+        line-height: 1.08;
+        letter-spacing: -0.3px;
+        text-align: left;
+        font-weight: normal;
+        color: #757575;
+      }
     }
 
     .recomClipBox {
