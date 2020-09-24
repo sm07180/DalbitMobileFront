@@ -141,7 +141,7 @@ const makeContents = (props) => {
               ) : (
                 <span className="all-icon">ALL</span>
               )} */}
-              {!isSpecial && <span className="special-icon">S</span>}
+              {isSpecial && <span className="special-icon"></span>}
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIconW : femaleIconW} />}
             </div>
             <div className="entry-count">
