@@ -151,15 +151,15 @@ function RankHandleDateBtn({fetching}) {
       <div className="title">
         <div className="titleWrap">
           {dateTitle.header}
-          <img
+          {/* <img
             src={benefitIcon}
             className="benefitSize"
             onClick={() => {
               history.push('/rank/benefit')
             }}
-          />
+          /> */}
         </div>
-        <span>{dateTitle.date}</span>
+        {/* <span>{dateTitle.date}</span> */}
       </div>
 
       <button

@@ -29,7 +29,7 @@ function RankList() {
   const creatList = () => {
     return (
       <>
-        <div className="userRanking">
+        <div className="userRanking bottomList">
           {rankList.length > 3 &&
             rankList.slice(3).map((item, index) => {
               const {
@@ -60,7 +60,7 @@ function RankList() {
               return (
                 <div className="myRanking rankingList" key={index}>
                   <div
-                    className="myRanking__left"
+                    className="myRanking__rank"
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
@@ -72,7 +72,7 @@ function RankList() {
                         history.push(`/login`)
                       }
                     }}>
-                    <p className="myRanking__left--ranking">{rank}</p>
+                    <p className="myRanking__rank--ranking">{rank}</p>
                     <p className="rankingChange">
                       {upDown === 'new' ? (
                         <span className="rankingChange__new">NEW</span>
@@ -104,7 +104,7 @@ function RankList() {
                   </div>
 
                   <div
-                    className="myRanking__right"
+                    className="myRanking__content"
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
@@ -116,54 +116,52 @@ function RankList() {
                         history.push(`/login`)
                       }
                     }}>
-                    <div className="myRanking__rightWrap">
-                      <div className="thumbBox">
-                        <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                    <div className="thumbBox">
+                      <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                    </div>
+
+                    <div className="infoBox">
+                      <div className="nickNameBox">
+                        {nickNm}
+                        <div className="nickNameImg">
+                          {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
+                          <span className={genderName}>{gender}</span>
+                          {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                        </div>
                       </div>
 
-                      <div className="w100">
-                        <div className="nickNameBox">
-                          {nickNm}
-                          <div className="nickNameImg">
-                            {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
-                            <span className={genderName}>{gender}</span>
-                            {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
-                          </div>
-                        </div>
+                      <div className="countBox">
+                        {formState.rankType === 1 && (
+                          <>
+                            <span className="countBox__item">
+                              <img src={people} />
+                              {printNumber(listenerPoint)}
+                            </span>
 
-                        <div className="countBox">
-                          {formState.rankType === 1 && (
-                            <>
-                              <span className="countBox__item">
-                                <img src={people} />
-                                {printNumber(listenerPoint)}
-                              </span>
+                            <span className="countBox__item">
+                              <img src={like} />
+                              {printNumber(goodPoint)}
+                            </span>
 
-                              <span className="countBox__item">
-                                <img src={like} />
-                                {printNumber(goodPoint)}
-                              </span>
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {printNumber(broadcastPoint)}
+                            </span>
+                          </>
+                        )}
 
-                              <span className="countBox__item">
-                                <img src={time} />
-                                {printNumber(broadcastPoint)}
-                              </span>
-                            </>
-                          )}
-
-                          {formState.rankType === 2 && (
-                            <>
-                              <span className="countBox__item">
-                                <img src={StarCountIcon} />
-                                {printNumber(starCnt)}
-                              </span>
-                              <span className="countBox__item">
-                                <img src={time} />
-                                {printNumber(listenPoint)}
-                              </span>
-                            </>
-                          )}
-                        </div>
+                        {formState.rankType === 2 && (
+                          <>
+                            <span className="countBox__item">
+                              <img src={StarCountIcon} />
+                              {printNumber(starCnt)}
+                            </span>
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {printNumber(listenPoint)}
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

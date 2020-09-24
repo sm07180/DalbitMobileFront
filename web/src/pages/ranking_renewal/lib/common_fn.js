@@ -67,7 +67,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
     if (dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '오늘',
+          header: '실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (agoyear === formYear && agomonth === formMonth && formDate === agoday) {
@@ -77,7 +77,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
         }
       } else {
         return {
-          header: '일간 순위',
+          header: `${formYear}.${formMonth}.${formDate}`,
           date: `${formYear}.${formMonth}.${formDate}`
         }
       }
@@ -95,7 +95,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
 
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '이번주',
+          header: '이번주 실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
@@ -109,7 +109,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
         const rangeMonth = b.getMonth() + 1
         const rangeDate = b.getDate()
         return {
-          header: '주간 순위',
+          header: `${formYear}.${formMonth}. ${Math.ceil(formDate / 7)}주`,
           date: 'time'
         }
       }
@@ -126,7 +126,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
         }
       } else {
         return {
-          header: '월간 순위',
+          header: `${formYear}.${formMonth}`,
           date: `${formYear}.${formMonth}`
         }
       }

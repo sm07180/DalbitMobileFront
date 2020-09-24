@@ -14,8 +14,11 @@
     z-index: 3;
   }
 
-  .listFixed.more {
-    margin-top: 254px;
+  .listFixed {
+    margin-top: 140px;
+    position: fixed;
+    width: 100%;
+    top: 0;
   }
 
   .listFixed.special {
@@ -24,10 +27,6 @@
 
   .listFixed.other {
     margin-top: 48px;
-  }
-
-  .listFixed {
-    margin-top: 140px;
   }
 
   .respansiveBox {
@@ -86,6 +85,11 @@
       top: 4px;
       left: 2%;
     }
+  }
+
+  .rankTop3Box {
+    padding: 0 16px;
+    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
   }
 
   .rankTopBox {
@@ -186,7 +190,8 @@
     justify-content: space-between;
     height: 56px;
     padding: 0px 10px;
-    background: #fff;
+    background: $primary;
+    color: #fff;
 
     .subDay {
       font-size: 12px;
@@ -200,7 +205,6 @@
       flex-direction: column;
       font-size: 16px;
       font-weight: 700;
-      color: $primary;
 
       .titleWrap {
         position: relative;
@@ -227,27 +231,25 @@
     .prevButton {
       font-size: 14px;
       font-weight: 700;
-      color: #bdbdbd;
-      background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_g.svg') left center no-repeat;
+      color: $white;
+      background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_b.svg') left center no-repeat;
       padding-left: 24px;
+      opacity: 0.5;
+
       &.active {
-        color: #000;
-        font-weight: 700;
-        background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_b_on.svg') left center no-repeat;
+        opacity: 1;
       }
     }
     .nextButton {
       font-size: 14px;
       font-weight: 700;
-      color: #bdbdbd;
+      color: $white;
       padding-right: 24px;
-      background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_g.svg') right center no-repeat;
+      background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_b.svg') right center no-repeat;
+      opacity: 0.5;
 
       &.active {
-        color: #000;
-        font-weight: 700;
-
-        background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_b_on.svg') right center no-repeat;
+        opacity: 1;
       }
     }
   }
@@ -256,47 +258,22 @@
     overflow: hidden;
     position: relative;
 
-    .profileItme {
-      margin-left: auto;
-      flex: 1;
-    }
+    &.profileBox {
+      background: $white;
+      border-radius: 16px;
+      margin-bottom: 12px;
 
-    &__profile {
-      background: $primary;
-
-      // & > div:first-child {
-      //   position: absolute;
-      //   z-index: 0;
-      //   top: 0;
-      //   left: calc(50% - 210px);
-      // }
-      &__wrap {
+      .profileWrap {
         display: flex;
         align-items: center;
         width: 100%;
-        padding: 7px 0;
+        padding: 8px 0;
         position: relative;
-        z-index: 2;
       }
 
-      .colorWhite {
-        color: #fff;
-      }
       .nickNameBox {
-        width: 110px;
-        color: #fff;
-        text-align: center;
-        margin-top: 0px;
-        margin-bottom: 8px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-      }
-
-      .countBox {
-        &__item {
-          color: #fff;
-        }
+        width: calc(100% - 20px);
+        margin-bottom: 4px;
       }
 
       &--fixed {
@@ -307,14 +284,9 @@
       }
     }
 
-    &__left {
-      min-width: 80px;
-      flex-basis: 80px;
+    &__rank {
+      min-width: 64px;
       text-align: center;
-
-      &--profile {
-        flex: 1;
-      }
 
       &--title {
         font-size: 12px;
@@ -323,13 +295,15 @@
       }
 
       &--now {
-        font-size: 24px;
-        height: 26px;
-        line-height: 26px;
-        color: #000;
+        width: 40px;
+        height: 20px;
+        margin: 6px auto 5px auto;
+        border-radius: 12px;
+        background-color: #000000;
+        color: $white;
         font-weight: 700;
-        margin-top: 4px;
-        margin-bottom: 1px;
+        font-size: 12px;
+        line-height: 20px;
       }
 
       &--point {
@@ -347,31 +321,33 @@
         height: 20px;
         margin: 0 auto 4px auto;
         border-radius: 12px;
-        background-color: #616161;
+        background-color: #eee;
         font-size: 12px;
-        color: #fff;
+        font-weight: 800;
       }
+
       &--text {
-        font-size: 20px;
+        padding-top: 9px;
+        font-size: 12px;
+        line-height: 15px;
+        white-space: pre-wrap;
       }
     }
 
-    &__right {
-      flex: 1;
-    }
-
-    &__rightWrap {
+    &__content {
       display: flex;
       align-items: center;
+      width: 100%;
 
-      .w100 {
+      .infoBox {
         width: 100%;
-        .nickNameBox {
-          width: calc(100% - 70px);
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
+      }
+
+      .nickNameBox {
+        width: calc(100% - 70px);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -407,7 +383,6 @@
           display: inline-block;
           width: 12px;
           height: 12px;
-
           margin-right: 1px;
           background: url('./static/ico-ranking-profile-up@2x.png') no-repeat;
           background-size: 100%;
@@ -474,55 +449,26 @@
 
   .thumbBox {
     position: relative;
-    width: 100px;
-    height: 100px;
-    text-align: center;
-
-    &__frame {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-    }
+    width: 60px;
+    height: 60px;
+    margin-right: 6px;
+    min-width: 60px;
 
     &__pic {
-      margin-top: 15px;
-      width: 71%;
       border-radius: 50%;
-    }
-
-    &__profile {
-      flex-basis: 100;
-
-      .thumbBox__frame {
-        width: 100px;
-      }
-      .thumbBox__pic {
-        justify-content: center;
-        width: 70px;
-      }
+      width: 100%;
     }
   }
 
   .rankingList {
     display: flex;
+    margin-bottom: 4px;
     align-items: center;
     position: relative;
     padding: 12px 0;
-    border-bottom: 1px solid $lighterGray;
     background-color: #fff;
+    border-radius: 16px;
 
-    .thumbBox {
-      width: 60px;
-      height: 60px;
-      margin-right: 6px;
-      min-width: 60px;
-
-      &__pic {
-        margin-top: 0;
-        width: 100%;
-      }
-    }
     .nickNameBox {
       margin-top: 0;
       font-size: 14px;
@@ -532,7 +478,7 @@
       padding-left: 0;
     }
 
-    .myRanking__left--point {
+    .myRanking__rank--point {
       padding-top: 0px;
     }
 
@@ -610,7 +556,6 @@
 
     &__block {
       display: flex;
-      justify-content: center;
       margin-bottom: 2px;
     }
   }
@@ -643,7 +588,7 @@
     flex-direction: column;
     margin-top: 8px;
     font-size: 16px;
-    color: #000;
+    color: $black;
     font-weight: bold;
 
     .nickNameImg {
@@ -651,6 +596,20 @@
       align-content: center;
       margin-top: 4px;
       margin-right: auto;
+
+      &__level {
+        display: inline-block;
+        height: 16px;
+        padding: 0 10px;
+        border-radius: 10px;
+        background-color: $mediumGray;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: -0.3px;
+        color: $white;
+        text-align: center;
+        font-weight: 300;
+      }
     }
 
     .genderBox {
@@ -730,98 +689,322 @@
     }
   }
 
+  .bottom {
+    .isMem {
+      margin-top: 560px;
+    }
+
+    .notMem {
+      margin-top: 451px;
+    }
+  }
+
   .userRanking {
+    &.bottomList {
+      width: 100%;
+      background-color: #eee;
+      padding: 16px;
+      position: relative;
+      border-radius: 20px;
+      margin-top: -20px;
+    }
+
     .TopBox {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding: 12px 0;
-      background: $lighterGray;
+      width: 328px;
+      height: 290px;
+      margin: 0 auto;
+      background: url(https://image.dalbitlive.com/ranking/podium@3x.png) bottom;
+      background-repeat: no-repeat;
+      background-size: 100%;
 
-      .thumbBox {
-        width: 100px;
-        height: 100px;
-        margin: 0 auto;
-      }
-
-      .countBox {
-        margin-top: 7px;
-
-        &__item {
-          &--point {
-            margin-top: 3px;
-          }
-        }
-      }
-
-      .iconBox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 4px;
+      &.isLabel {
+        height: 322px;
       }
 
       &__item {
         position: relative;
-        padding: 9px;
-        background-color: #fff;
-        text-align: center;
-        width: 49.5%;
 
-        .nickNameBox {
-          flex-direction: row;
-          justify-content: center;
+        .realLabelDj,
+        .realLabelFan {
+          position: relative;
+          margin: 0 auto;
+          padding: 0 8px;
+          height: 32px;
+          width: fit-content;
+          line-height: 32px;
+          border-radius: 14px;
+          background-color: rgba(0, 0, 0, 0.4);
+          text-align: center;
+          color: #fff;
+          font-size: 12px;
+          background-position: 2px 2px;
+          background-size: 28px;
+          background-repeat: no-repeat;
+
+          &::before {
+            display: inline-block;
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 7px;
+            height: 5px;
+            background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+          }
+
+          &::after {
+            display: inline-block;
+            padding-left: 22px;
+          }
         }
 
-        &:first-child {
+        .TopBoxThumb {
+          position: absolute;
           width: 100%;
-          padding-top: 116px;
-          margin-bottom: 4px;
-          .nickName {
-            display: flex;
-            justify-content: center;
-            font-size: 18px;
+          text-align: center;
+
+          &__pic {
+            position: relative;
+            border-radius: 50%;
+            width: 100%;
           }
 
-          .thumbBox {
-            width: 128px;
-            height: 128px;
+          &__deco {
             position: absolute;
-            top: 2px;
-            left: 0;
-            right: 0;
+            left: 50%;
+            bottom: -15px;
+            text-align: center;
+            z-index: 1;
+          }
+
+          &::after {
+            content: '';
+            display: block;
+            position: absolute;
+          }
+        }
+
+        .nickName {
+          position: absolute;
+          width: 80%;
+          margin-left: 10%;
+          text-align: center;
+          font-size: 12px;
+          color: #fff;
+          height: 30px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+
+        &:nth-of-type(1) {
+          width: 112px;
+          order: 2;
+
+          .realLabelDj {
+            background-image: url(https://image.dalbitlive.com/ranking/djr1@3x.png);
+
+            &::after {
+              content: '실시간1위';
+            }
+          }
+
+          .realLabelFan {
+            background-image: url(https://image.dalbitlive.com/ranking/fanr1@3x.png);
+
+            &::after {
+              content: '회장';
+            }
+          }
+
+          .TopBoxThumb {
+            bottom: 170px;
 
             &__pic {
-              margin-top: 17px;
+              width: 88px;
             }
-          }
 
-          .nickNameBox {
-            font-size: 16px;
-            display: flex;
-            align-items: center;
+            &__deco {
+              &.dj {
+                width: 84px;
+                margin-left: -42px;
+                bottom: -17px;
+              }
 
-            .iconBox {
-              display: flex;
-              align-items: center;
-              margin-left: 6px;
-              margin-top: 0px;
-            }
-          }
-
-          .countBox {
-            border-top: 0;
-            margin-top: 2px;
-
-            &__item {
-              &--point {
-                display: inline-block;
+              &.fan {
+                width: 58px;
+                margin-left: -29px;
+                bottom: -17px;
               }
             }
 
-            // .countBoxInner {
-            //   display: inline-block;
-            // }
+            &.dj {
+              &::after {
+                top: -30px;
+                left: 11px;
+                width: 94px;
+                height: 122px;
+                background: url(https://image.dalbitlive.com/ranking/djrf1@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -30px;
+                left: 11px;
+                width: 94px;
+                height: 122px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf1@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickName {
+            bottom: 60px;
+          }
+        }
+        &:nth-of-type(2) {
+          width: 108px;
+          order: 1;
+
+          .realLabelDj {
+            margin-top: 50px;
+            background-image: url(https://image.dalbitlive.com/ranking/djr2@3x.png);
+
+            &::after {
+              content: '실시간2위';
+            }
+          }
+
+          .realLabelFan {
+            margin-top: 50px;
+            background-image: url(https://image.dalbitlive.com/ranking/fanr2@3x.png);
+
+            &::after {
+              content: '부회장';
+            }
+          }
+
+          .TopBoxThumb {
+            bottom: 140px;
+
+            &__pic {
+              width: 72px;
+            }
+
+            &__deco {
+              &.dj {
+                width: 70px;
+                margin-left: -35px;
+                bottom: -15px;
+              }
+
+              &.fan {
+                width: 36px;
+                margin-left: -18px;
+              }
+            }
+
+            &.dj {
+              &::after {
+                top: -25px;
+                left: 16px;
+                width: 76px;
+                height: 99px;
+                background: url(https://image.dalbitlive.com/ranking/djrf2@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -25px;
+                left: 16px;
+                width: 76px;
+                height: 99px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf2@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickName {
+            bottom: 40px;
+          }
+        }
+
+        &:nth-of-type(3) {
+          width: 108px;
+          order: 3;
+
+          .realLabelDj {
+            margin-top: 78px;
+            background-image: url(https://image.dalbitlive.com/ranking/djr3@3x.png);
+            &::after {
+              content: '실시간3위';
+            }
+          }
+
+          .realLabelFan {
+            margin-top: 78px;
+            background-image: url(https://image.dalbitlive.com/ranking/fanr3@3x.png);
+
+            &::after {
+              content: '사장';
+            }
+          }
+
+          .TopBoxThumb {
+            bottom: 130px;
+
+            &__pic {
+              width: 60px;
+            }
+
+            &__deco {
+              &.dj {
+                width: 56px;
+                margin-left: -28px;
+              }
+
+              &.fan {
+                width: 34px;
+                margin-left: -17px;
+              }
+            }
+
+            &.dj {
+              &::after {
+                top: -23px;
+                left: 21px;
+                width: 66px;
+                height: 86px;
+                background: url(https://image.dalbitlive.com/ranking/djrf3@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -23px;
+                left: 21px;
+                width: 66px;
+                height: 86px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf3@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickName {
+            bottom: 35px;
           }
         }
       }
@@ -829,16 +1012,13 @@
   }
 
   .specialDj {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 16px;
+    line-height: 16px;
     padding: 0 8px;
     margin-left: 4px;
     border-radius: 10px;
     background-color: #ec455f;
     font-size: 12px;
-    line-height: 1;
     color: #fff;
     font-weight: 300;
     font-style: normal;
@@ -869,6 +1049,7 @@
       height: 100px;
       margin-right: 2px;
       min-width: 100px;
+      text-align: center;
 
       &__pic {
         margin-top: 13px;

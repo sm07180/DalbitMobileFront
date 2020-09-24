@@ -4,7 +4,7 @@ import {RankContext} from 'context/rank_ctx'
 import {convertMonday, convertMonth} from '../lib/common_fn'
 
 const btnArray = [
-  {val: 1, text: '오늘'},
+  {val: 1, text: '일간'},
   {val: 2, text: '주간'},
   {val: 3, text: '월간'},
   {val: 4, text: '연간'}
