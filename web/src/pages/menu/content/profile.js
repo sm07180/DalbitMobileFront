@@ -76,7 +76,7 @@ export default (props) => {
   ]
   const customerList = [
     {type: 'notice', txt: '공지사항', icon: NoticeIcon},
-    // {type: 'faq', txt: '이벤트', icon: EventIcon},
+    // {type: 'event', txt: '이벤트', icon: NoticeIcon},
     {type: 'service', txt: '고객센터', icon: CustomerIcon},
     {type: 'faq', txt: 'FAQ', icon: FaqIcon},
     {type: 'personal', txt: '1:1문의', icon: InquireIcon},
