@@ -400,7 +400,7 @@ export default (props) => {
               </div>
 
               <div className="inputBox">
-                <label className="input__label" for="auth">
+                <label className="input__label" htmlFor="auth">
                   본인인증
                 </label>
                 <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
@@ -419,7 +419,7 @@ export default (props) => {
               <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
 
               <div className="inputBox inputBox__nickname">
-                <label className="input__label" for="nickName">
+                <label className="input__label" htmlFor="nickName">
                   닉네임
                 </label>
                 <input
@@ -443,7 +443,7 @@ export default (props) => {
               </div>
 
               <div className="inputBox">
-                <label className="input__label" for="uid">
+                <label className="input__label" htmlFor="uid">
                   UID
                 </label>
                 <input className="input__text" id="uid" value={profile.memId} readOnly />
@@ -452,7 +452,7 @@ export default (props) => {
               {token.memNo[0] === '1' && (
                 <>
                   <div className="inputBox">
-                    <label className="input__label" for="password">
+                    <label className="input__label" htmlFor="password">
                       비밀번호
                     </label>
                     <div className="input__text password">
@@ -476,7 +476,7 @@ export default (props) => {
               )}
 
               <div className="inputBox inputBox__birth">
-                <label className="input__label" for="password">
+                <label className="input__label" htmlFor="password">
                   생년월일
                 </label>
                 <input
