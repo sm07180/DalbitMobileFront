@@ -8,9 +8,18 @@ import styled from 'styled-components'
 import API from 'context/api'
 import Room, {RoomJoin} from 'context/room'
 import {Context} from 'context'
+import Util from 'components/lib/utility.js'
+
 // component
 import NoResult from 'components/ui/noResult'
-
+import maleIcon from '../static/ico_male.svg'
+import femaleIcon from '../static/ico_female.svg'
+import hitIcon from '../static/ico_hit_g.svg'
+import likeIcon from '../static/ico_like_g_s.svg'
+import boostIcon from '../static/ico_like_g.svg'
+import starIcon from '../static/ico_hit_g_s.svg'
+import PeopleIcon from '../static/people_g_s.svg'
+import EntryImg from '../static/new_person_w_s.svg'
 export default (props) => {
   let history = useHistory()
   const ctx = useContext(Context)
@@ -41,29 +50,35 @@ export default (props) => {
     if (props.fetch === null || props.fetch === undefined) return
     const list = props.fetch
     const type = props.type
+    const categoryList = props.categoryList
 
     if (list == false || list == undefined) {
       return <NoResult className={`search`} />
     } else if (type === 'member') {
       return list.map((list, idx) => {
-        const {nickNm, profImg, roomNo, memNo, isSpecial, gender, fanCnt} = list
+        const {nickNm, profImg, roomNo, memNo, isNew, isSpecial, gender, fanCnt} = list
         return (
-          <div key={idx} className="list">
-            <div
-              className="btnWrap"
-              onClick={() => {
-                props.update({select: {...list, type: props.type}})
-              }}>
-              <img src={profImg.thumb150x150} onClick={() => linkMypage(memNo)} />
-              <div className="infoBox">
-                {roomNo !== '' && <em></em>}
-                <span className="infoBox__nick">{nickNm}</span>
-                <div className="detail">
-                  {gender === 'f' && <span className="female" />}
-                  {gender === 'm' && <span className="male"></span>}
-                  {isSpecial === true && <span className="special"></span>}
+          <div key={idx} className="liveList__item" onClick={() => linkMypage(memNo)}>
+            {/* 해당 페이지는 main list clasdsName을 동일하게 사용하고 있습니다. */}
+            <div className="broadcast-img" style={{backgroundImage: `url(${profImg && profImg['thumb190x190']})`}} />
+
+            {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+
+            <div className="broadcast-content">
+              <div className="title">
+                {gender !== 'n' && <img className="gender-icon" src={gender === 'm' ? maleIcon : femaleIcon} />}
+              </div>
+
+              <div className="nickname">
+                {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+                {nickNm}
+              </div>
+
+              <div className="detail">
+                <div className="value">
+                  <img src={PeopleIcon} />
+                  <span>{Util.printNumber(fanCnt)}</span>
                 </div>
-                <p className="fanCnt">{fanCnt}</p>
               </div>
             </div>
           </div>
@@ -78,56 +93,73 @@ export default (props) => {
           bjGender,
           isSpecial,
           roomType,
-          entryType,
-          byeolCnt,
-          entryCnt,
           isNew,
-          isPop,
-          isRecomm,
+          os,
+          bjProfImg,
           likeCnt,
+          totalCnt,
+          entryCnt,
+          boostCnt,
           title
         } = list
         return (
-          <div key={idx} className="listLive">
-            <div
-              className="btnWrap"
-              onClick={() => {
-                props.update({select: {...list, type: props.type}})
-              }}>
-              <img
-                src={bgImg.thumb88x88}
-                onClick={() => {
-                  RoomJoin({roomNo: roomNo})
-                }}
-              />
-              <div className="infoBox">
-                {/* {roomNo !== '' && <em></em>} */}
-                <div className="detail">
-                  {entryType === 0 && <span className="entry" />}
-                  {entryType === 1 && <span className="entry-fan" />}
-                  {entryType === 2 && <span className="entry-limit" />}
-                  {roomType === '00' && <span className="cate">일상/소통</span>}
-                  {roomType === '01' && <span className="cate">힐링</span>}
-                  {roomType === '02' && <span className="cate">노래/연주</span>}
-                  {roomType === '03' && <span className="cate">수다/챗</span>}
-                  {roomType === '04' && <span className="cate">미팅/소개팅</span>}
-                  {roomType === '05' && <span className="cate">고민/사연</span>}
-                  {roomType === '06' && <span className="cate">책/여행</span>}
-                  {roomType === '07' && <span className="cate">먹방/요리</span>}
-                  {roomType === '08' && <span className="cate">건강/스포츠</span>}
-                  {roomType === '09' && <span className="cate">ASMR</span>}
-                  {roomType === '10' && <span className="cate"> 판매/영업</span>}
-                  {bjGender === 'f' && <span className="female" />}
-                  {bjGender === 'm' && <span className="male"></span>}
-                  {isSpecial === true && <span className="special"></span>}
+          <div
+            key={idx}
+            className="liveList__item"
+            onClick={() => {
+              props.update({select: {...list, type: props.type}})
+            }}>
+            {/* 해당 페이지는 main list clasdsName을 동일하게 사용하고 있습니다. */}
+            <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg && bjProfImg['thumb190x190']})`}} />
+            {os === 3 && <i className="iconPc">PC</i>}
+            {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+            <div className="broadcast-content">
+              <div className="title">
+                <p className="category">
+                  {categoryList && (
+                    <>
+                      {(() => {
+                        const target = categoryList.find((category) => category['cd'] === roomType)
+                        if (target && target['cdNm']) {
+                          return target['cdNm']
+                        }
+                      })()}
+                    </>
+                  )}
+                </p>
+
+                <i className="line"></i>
+                <span>{title}</span>
+              </div>
+
+              <div className="nickname">
+                {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+                {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+                {bjNickNm}
+              </div>
+
+              <div className="detail">
+                <div className="value">
+                  <img src={PeopleIcon} />
+                  <span>{Util.printNumber(totalCnt)}</span>
                 </div>
-                <span className="infoBox__roomTitle">{title}</span>
-                <span className="infoBox__nick">{bjNickNm}</span>
-                <div className="roomCnt">
-                  <p className="fanCnt">{entryCnt}</p>
-                  <p className="likeCnt">{likeCnt}</p>
-                  <p className="starCnt">{byeolCnt}</p>
+
+                <div className="value">
+                  <img src={hitIcon} />
+                  <span>{Util.printNumber(entryCnt)}</span>
                 </div>
+
+                {boostCnt > 0 ? (
+                  <div className="value">
+                    <img src={boostIcon} />
+                    <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
+                  </div>
+                ) : (
+                  <div className="value">
+                    <img src={likeIcon} />
+                    <span>{Util.printNumber(likeCnt)}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
