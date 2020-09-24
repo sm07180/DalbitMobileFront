@@ -179,7 +179,13 @@ export default (props) => {
         const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
+        console.log(img, img.src)
+        if (img !== null) {
+          history.push('/ImageEditor')
+        }
+        return
 
+        // 저장 과정
         setPhotoUploading(true)
         setTempPhoto(originalCacheURL)
 
