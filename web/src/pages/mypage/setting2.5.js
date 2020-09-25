@@ -373,8 +373,8 @@ export default (props) => {
           <section id="myProfileSetting">
             <Header title="프로필 수정" />
             {/* 공통타이틀:TopWrap */}
-            <div className="individual_Wrap">
-              <div className="imageWrap">
+            <div className="settingWrap">
+              <div className="imgBox">
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
 
@@ -399,25 +399,31 @@ export default (props) => {
                 </label>
               </div>
 
-              <div className="authWrap">
-                <label>본인인증</label>
+              <div className="inputBox">
+                <label className="input__label" htmlFor="auth">
+                  본인인증
+                </label>
                 <p className={authState ? 'authPass' : 'notAuth'}>{authState ? phone : '본인인증을 해주세요.'}</p>
                 <button
+                  className="btn__confirm"
                   onClick={() => {
                     authReq('5', formTag)
                   }}>
                   본인인증
                 </button>
               </div>
-              <span className={`authComment ${authState ? 'authPass' : 'notAuth'}`}>
+              <span className={`commentBox ${authState ? 'authPass' : 'notAuth'}`}>
                 {authState ? '본인인증이 완료 되었으며, 재 인증도 가능합니다.' : '본인인증을 완료하지 않으셨습니다.'}
               </span>
 
               <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
 
-              <div className="nickname">
-                <span className="matchTitle">닉네임</span>
+              <div className="inputBox inputBox__nickname">
+                <label className="input__label" htmlFor="nickName">
+                  닉네임
+                </label>
                 <input
+                  className="input__text"
                   id="nickName"
                   ref={nicknameReference}
                   autoComplete="off"
@@ -428,6 +434,7 @@ export default (props) => {
                   maxLength="20"
                 />
                 <button
+                  className="btn__del"
                   onClick={() => {
                     setNickname('')
                   }}>
@@ -435,16 +442,20 @@ export default (props) => {
                 </button>
               </div>
 
-              <div className="uid">
-                <span className="matchTitle">UID</span>
-                <span>{profile.memId}</span>
+              <div className="inputBox">
+                <label className="input__label" htmlFor="uid">
+                  UID
+                </label>
+                <input className="input__text" id="uid" value={profile.memId} readOnly />
               </div>
 
               {token.memNo[0] === '1' && (
                 <>
-                  <div className="passwordWrap">
-                    <span className="matchTitle">비밀번호</span>
-                    <div className="passwordBox">
+                  <div className="inputBox">
+                    <label className="input__label" htmlFor="password">
+                      비밀번호
+                    </label>
+                    <div className="input__text password">
                       <span className="ico" />
                       <span className="ico" />
                       <span className="ico" />
@@ -457,21 +468,26 @@ export default (props) => {
                       <span className="ico" />
                     </div>
 
-                    <button className="btn__password">
-                      <a href="/password">비밀번호 변경</a>
+                    <button className="btn__confirm" onClick={() => history.push('/password')}>
+                      비밀번호 변경
                     </button>
                   </div>
                 </>
               )}
 
-              <div className="birthBox">
-                <span className="matchTitle">생년월일</span>
-                <span className="text">{`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(
-                  6
-                )}`}</span>
-                <span className="authComment">본인인증 정보로 자동 갱신됩니다.</span>
+              <div className="inputBox inputBox__birth">
+                <label className="input__label" htmlFor="password">
+                  생년월일
+                </label>
+                <input
+                  className="input__text"
+                  id="password"
+                  value={`${profile.birth.slice(0, 4)}.${profile.birth.slice(4, 6)}.${profile.birth.slice(6)}`}
+                  readOnly
+                />
               </div>
-              <div className={`genderWrap ${firstSetting ? 'before' : 'after'}`}>
+              <span className="commentBox">본인인증 정보로 자동 갱신됩니다.</span>
+              <div className={`genderBox ${firstSetting ? 'before' : 'after'}`}>
                 {firstSetting ? (
                   <>
                     <div
@@ -508,9 +524,9 @@ export default (props) => {
                   </>
                 )}
               </div>
-              <span className="authComment">본인인증 정보로 자동 갱신됩니다.</span>
+              <span className="commentBox">본인인증 정보로 자동 갱신됩니다.</span>
 
-              <div className="msg-wrap">
+              <div className="msgBox">
                 <label className="input-label">프로필 메시지</label>
                 <button
                   onClick={() => {
@@ -530,7 +546,7 @@ export default (props) => {
                 {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
               </div>
 
-              <button className={`btn__save ${active === true && 'active'}`} onClick={beforeSaveUpload}>
+              <button className={`btn__save ${active === true && 'isActive'}`} onClick={beforeSaveUpload}>
                 저장
               </button>
             </div>

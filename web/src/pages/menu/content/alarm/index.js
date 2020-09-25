@@ -117,6 +117,12 @@ export default function Alert() {
       case 46:
         fetchDataPlay(roomNo)
         break
+      case 47:
+        fetchDataPlay(roomNo)
+        break
+      case 48:
+        history.push(`/mypage/${context.profile.memNo}/my_clip`)
+        break
       case 50:
         let mobileLink = link
         try {
