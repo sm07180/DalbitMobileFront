@@ -400,6 +400,8 @@
       }
     }
     &-report {
+      margin: 16px;
+      // 마이페이지 신고하기
       .desc {
         margin-top: 16px;
       }
@@ -420,8 +422,8 @@
         text-align: center;
         h3 {
           font-size: 24px;
-          margin-top: 34px;
-          margin-bottom: 4px;
+          margin-top: 18px;
+          margin-bottom: 2px;
           color: $black;
           display: block;
         }
@@ -435,7 +437,7 @@
         img {
           display: block;
           margin: auto;
-          padding-bottom: 30px;
+          padding-bottom: 26px;
         }
 
         span {
