@@ -61,7 +61,9 @@ export const RoomJoin = async (obj) => {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
     })
-    return false
+    if (shadow === undefined) {
+      return false
+    }
   } else {
     if (sessionStorage.getItem('room_active') === null) {
       sessionStorage.setItem('room_active', 'N')
