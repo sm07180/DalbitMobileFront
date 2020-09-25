@@ -53,6 +53,25 @@ export default Room
  */
 export const RoomJoin = async (obj) => {
   const {roomNo, callbackFunc, shadow, mode} = obj
+  const customHeader = JSON.parse(Api.customHeader)
+  const sessionRoomNo = sessionStorage.getItem('room_no')
+  //const sessionRoomActive = sessionStorage.getItem('room_active')
+
+  if (sessionStorage.getItem('room_active') === 'N') {
+    Room.context.action.alert({
+      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+    })
+    return false
+  } else {
+    if (sessionStorage.getItem('room_active') === null) {
+      sessionStorage.setItem('room_active', 'N')
+    }
+  }
+
+  if (customHeader['os'] === OS_TYPE['Desktop']) {
+    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+    return false
+  }
 
   //클립나가기
   if (Utility.getCookie('clip-player-info')) {
@@ -60,7 +79,11 @@ export const RoomJoin = async (obj) => {
       msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
       callback: () => {
         clipExit(Room.context)
+        sessionStorage.removeItem('room_active')
         return RoomJoin(obj)
+      },
+      cancelCallback: () => {
+        sessionStorage.removeItem('room_active')
       }
     })
   }
@@ -69,9 +92,11 @@ export const RoomJoin = async (obj) => {
     if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
       return Room.context.action.confirm_admin({
         callback: () => {
+          sessionStorage.removeItem('room_active')
           return RoomJoin({roomNo: roomNo, shadow: 1})
         },
         cancelCallback: () => {
+          sessionStorage.removeItem('room_active')
           return RoomJoin({roomNo: roomNo, shadow: 0})
         },
         msg: '관리자로 입장하시겠습니까?'
@@ -96,24 +121,6 @@ export const RoomJoin = async (obj) => {
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
-  const customHeader = JSON.parse(Api.customHeader)
-
-  if (customHeader['os'] === OS_TYPE['Desktop']) {
-    window.location.href = 'https://inforexseoul.page.link/Ws4t'
-    return false
-  }
-  const sessionRoomNo = sessionStorage.getItem('room_no')
-  //const sessionRoomActive = sessionStorage.getItem('room_active')
-
-  if (sessionStorage.getItem('room_active') === 'N') {
-    Room.context.action.alert({
-      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-    })
-  } else {
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
-  }
 
   /**
    * @title Room.roomNo , roomNo 비교
@@ -129,6 +136,7 @@ export const RoomJoin = async (obj) => {
             msg: '종료된 방송입니다.',
             callback: () => {
               sessionStorage.removeItem('room_no')
+              sessionStorage.removeItem('room_active')
               Utility.setCookie('listen_room_no', null)
               context.action.updatePlayer(false)
               setTimeout(() => {
@@ -137,6 +145,7 @@ export const RoomJoin = async (obj) => {
             }
           })
         } else {
+          sessionStorage.removeItem('room_active')
           Hybrid('EnterRoom', '')
         }
       }
@@ -172,11 +181,11 @@ export const RoomJoin = async (obj) => {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
         sessionStorage.removeItem('room_no')
+        sessionStorage.removeItem('room_active')
         Utility.setCookie('listen_room_no', null)
         Room.context.action.updatePlayer(false)
         Hybrid('ExitRoom', '')
         //--쿠기
-      } else {
       }
       console.log(exit)
     }
@@ -193,6 +202,7 @@ export const RoomJoin = async (obj) => {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
+            sessionStorage.removeItem('room_active')
             window.location.href = '/login'
           }
         })
@@ -205,18 +215,25 @@ export const RoomJoin = async (obj) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
                   setTimeout(() => {
+                    sessionStorage.removeItem('room_active')
                     RoomJoin(obj)
                   }, 700)
                 } else {
+                  sessionStorage.removeItem('room_active')
                   globalCtx.action.alert({
                     msg: `${loginInfo.message}`
                   })
                 }
               }
+              sessionStorage.removeItem('room_active')
               callResetListen('')
+            },
+            cancelCallback: () => {
+              sessionStorage.removeItem('room_active')
             }
           })
         } catch (er) {
+          sessionStorage.removeItem('room_active')
           alert(er)
         }
       } else if (res.code === '-6') {
@@ -224,12 +241,16 @@ export const RoomJoin = async (obj) => {
           const authCheck = await Api.self_auth_check()
           if (authCheck.result === 'success') {
             Room.context.action.alert({
-              msg: '20세 이상만 입장할 수 있는 방송입니다.'
+              msg: '20세 이상만 입장할 수 있는 방송입니다.',
+              callback: () => {
+                sessionStorage.removeItem('room_active')
+              }
             })
           } else {
             Room.context.action.alert({
               msg: '20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.',
               callback: () => {
+                sessionStorage.removeItem('room_active')
                 window.location.href = '/private'
               }
             })
@@ -241,6 +262,7 @@ export const RoomJoin = async (obj) => {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
+            sessionStorage.removeItem('room_active')
             window.location.reload()
           }
         })

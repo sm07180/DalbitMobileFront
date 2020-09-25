@@ -38,6 +38,7 @@ export default (props) => {
                   if (roomNo && roomNo !== undefined) {
                     if (nickNm === 'banner') {
                       if (roomType === 'link') {
+                        context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
                         } else {
@@ -51,18 +52,6 @@ export default (props) => {
                         }
                       }
                     } else {
-                      RoomJoin({roomNo: roomNo})
-                    }
-                  }
-                  if (roomType === 'link') {
-                    context.action.updatenoticeIndexNum(roomNo)
-                    if (roomNo !== '' && !roomNo.startsWith('http')) {
-                      history.push(`${roomNo}`)
-                    } else if (roomNo !== '' && roomNo.startsWith('http')) {
-                      window.location.href = `${roomNo}`
-                    }
-                  } else {
-                    if (isHybrid() && roomNo) {
                       RoomJoin({roomNo: roomNo})
                     }
                   }
