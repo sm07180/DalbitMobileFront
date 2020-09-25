@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useRef, useCallback} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
 import {useHistory} from 'react-router-dom'
 import {authReq} from 'pages/self_auth'
@@ -17,7 +17,7 @@ import './setting.scss'
 export default (props) => {
   // ctx
   const context = useContext(Context)
-  const {profile, token, editImage} = context
+  const {profile, token, tempImage, editImage} = context
   const history = useHistory()
   // state
   const [nickname, setNickname] = useState('')
@@ -30,7 +30,7 @@ export default (props) => {
   const [photoUploading, setPhotoUploading] = useState(false)
   const [firstSetting, setFirstSetting] = useState(false)
   const [mypageBirth, setMypageBirth] = useState('')
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(true)
   //ref
   const nicknameReference = useRef()
   const formTag = useRef(null)
@@ -118,6 +118,7 @@ export default (props) => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
+          context.action.updateTempImage(originalCacheURL)
           context.action.updateEditImage(originalCacheURL)
           history.push('/ImageEditor')
         }
@@ -125,31 +126,35 @@ export default (props) => {
     }
   }
   // 이미지 editor 후 upload
-  const uploadImage = () => {
+  const uploadImage = useCallback(() => {
     setPhotoUploading(true)
-    setTempPhoto(editImage)
-    uploadImageToServer(editImage)
-    async function uploadImageToServer(data) {
-      const res = await Api.image_upload({
-        data: {
-          dataURL: data,
-          uploadType: 'profile'
-        }
-      })
-      if (res.result === 'success') {
-        setPhotoPath(res.data.path)
-        setPhotoUploading(false)
-      } else {
-        context.action.alert({
-          msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
-          title: '',
-          callback: () => {
-            context.action.alert({visible: false})
+    if (tempImage !== editImage) {
+      setActive(false)
+      setTempPhoto(editImage)
+      uploadImageToServer(editImage)
+      async function uploadImageToServer(data) {
+        const res = await Api.image_upload({
+          data: {
+            dataURL: data,
+            uploadType: 'profile'
           }
         })
+        if (res.result === 'success') {
+          setPhotoPath(res.data.path)
+          setPhotoUploading(false)
+          setActive(true)
+        } else {
+          context.action.alert({
+            msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+            title: '',
+            callback: () => {
+              context.action.alert({visible: false})
+            }
+          })
+        }
       }
     }
-  }
+  }, [editImage])
   // change nick name func
   const changeNickname = (e) => {
     const {currentTarget} = e
@@ -240,18 +245,20 @@ export default (props) => {
     }
   }, [profile])
 
-  useEffect(() => {
-    if (
-      (nickname !== '' && nickname !== context.profile.nickNm) ||
-      (nickname !== '' && profileMsg !== context.profile.profMsg) ||
-      (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
-      (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
-    ) {
-      setActive(true)
-    } else {
-      setActive(false)
-    }
-  }, [nickname, profileMsg, photoPath, gender])
+  // useEffect(() => {
+  //   console.log(nickname, profileMsg, photoPath, gender)
+  //   if (
+  //     (nickname !== '' && nickname !== context.profile.nickNm) ||
+  //     (profileMsg !== '' && profileMsg !== context.profile.profMsg) ||
+  //     (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
+  //     (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
+  //   ) {
+  //     setActive(true)
+  //   } else {
+  //     console.log('error?')
+  //     setActive(false)
+  //   }
+  // }, [nickname, profileMsg, photoPath, gender])
 
   useEffect(() => {
     const getMyPageNew = async () => {

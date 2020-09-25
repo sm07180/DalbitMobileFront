@@ -29,8 +29,13 @@ export default (props) => {
     }
   }
   const submit = () => {
-    cropImage()
-    history.goBack()
+    if (typeof cropper !== 'undefined') {
+      // setCropData(cropper.getCroppedCanvas().toDataURL())
+      if (context.editImage) {
+        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
+      }
+      history.goBack()
+    }
   }
 
   useEffect(() => {
@@ -53,7 +58,7 @@ export default (props) => {
           </div>
         </Header>
         <Cropper
-          style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          // style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={image}
