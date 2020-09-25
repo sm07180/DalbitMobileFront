@@ -75,7 +75,7 @@ export default function SpecialHistoryHandle({fetching}) {
     formatDate()
   }, [formState])
   return (
-    <div className="detailView">
+    <div className="detailView isSpecial">
       <button
         className={`prevButton ${prevLast() && fetching === false && 'active'}`}
         onClick={() => {

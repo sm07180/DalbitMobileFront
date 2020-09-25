@@ -19,18 +19,17 @@ function LevelList({empty}) {
 
   return (
     <>
-      <ul>
-        <li className="renewalBox">
-          <span>매일 00시 집계 및 갱신</span>
-          <img
-            src={guideIcon}
-            onClick={() => {
-              context.action.updatePopup('RANK_POP', 'level')
-              // context.action.updatePopup('RANK_POP', 'level')
-            }}
-          />
-        </li>
-
+      <div className="renewalBox">
+        <span>매일 00시 집계 및 갱신</span>
+        <img
+          src={guideIcon}
+          onClick={() => {
+            context.action.updatePopup('RANK_POP', 'level')
+            // context.action.updatePopup('RANK_POP', 'level')
+          }}
+        />
+      </div>
+      <ul className="levelListWrap">
         {empty === true ? (
           <NoResult type="default" text="랭킹이 없습니다." />
         ) : (

@@ -16,6 +16,7 @@ import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_g_s.svg'
 import peopleWhite from '../static/people_g_s.svg'
 import timeWhite from '../static/time_g_s.svg'
+import trophyImg from '../static/rankingtop_back@2x.png'
 
 export default function MyProfile() {
   const history = useHistory()
@@ -130,10 +131,14 @@ export default function MyProfile() {
               {myInfo.rewardRank}위 <span>축하합니다</span>
             </p>
 
-            <div className="rewordBox__character1"></div>
-            <div className="rewordBox__character2"></div>
+            <div className="rewordBox__character1">
+              <img src={trophyImg} width={84} alt="trophy" />
+            </div>
+
             <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
-              보상 받기
+              보상
+              <br />
+              받기
             </button>
           </div>
 

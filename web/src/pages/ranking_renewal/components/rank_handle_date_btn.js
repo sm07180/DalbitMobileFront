@@ -4,8 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {RankContext} from 'context/rank_ctx'
 
 import {changeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
-
-import benefitIcon from '../static/ico-benefit_@2x.png'
+import {RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()
@@ -137,7 +136,7 @@ function RankHandleDateBtn({fetching}) {
   }
 
   return (
-    <div className="detailView">
+    <div className={`detailView `}>
       <button
         className={`prevButton ${prevLast() && fetching === false && 'active'}`}
         onClick={() => {

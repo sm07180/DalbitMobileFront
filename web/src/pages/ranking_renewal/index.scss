@@ -39,12 +39,10 @@
     align-items: center;
     justify-content: flex-end;
     padding: 5px 16px;
-    background-color: #fff;
-    border-top: 1px solid $primary;
-    border-bottom: 1px solid $lighterGray;
     text-align: right;
-    color: #616161;
+    color: $darkGray;
     font-size: 12px;
+    background-color: $lighterGray;
 
     & > span {
       display: inline-block;
@@ -214,13 +212,6 @@
         justify-content: center;
       }
 
-      .benefitSize {
-        width: 57px;
-        height: 22px;
-        display: inline-block;
-        margin-left: 7px;
-        vertical-align: top;
-      }
       span {
         display: block;
         font-size: 12px;
@@ -251,6 +242,20 @@
 
       &.active {
         opacity: 1;
+      }
+    }
+
+    &.isSpecial {
+      color: $primary;
+      background-color: #eee;
+
+      .prevButton {
+        background: url('https://image.dalbitlive.com/svg/20200806/arrow_left_b_on.svg') left center no-repeat;
+        color: $black;
+      }
+      .nextButton {
+        background: url('https://image.dalbitlive.com/svg/20200806/arrow_right_b_on.svg') right center no-repeat;
+        color: $black;
       }
     }
   }
@@ -338,14 +343,14 @@
     &__content {
       display: flex;
       align-items: center;
-      width: 100%;
+      width: calc(100% - 70px);
 
       .infoBox {
         width: 100%;
       }
 
       .nickNameBox {
-        width: calc(100% - 70px);
+        width: 65%;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -456,7 +461,6 @@
     min-width: 60px;
 
     &__pic {
-      margin-top: 13px;
       width: 71%;
       border-radius: 50%;
       width: 100%;
@@ -490,8 +494,8 @@
     }
 
     .liveBox {
-      top: 12px;
-      right: 12px;
+      top: 4px;
+      right: 4px;
     }
   }
 
@@ -703,6 +707,8 @@
   }
 
   .userRanking {
+    position: relative;
+
     &.bottomList {
       width: 100%;
       background-color: #eee;
@@ -710,6 +716,20 @@
       position: relative;
       border-radius: 20px;
       margin-top: -20px;
+    }
+
+    .benefitSize {
+      position: absolute;
+      bottom: 28px;
+      left: 100px;
+      width: 128px;
+      height: 20px;
+      display: inline-block;
+      vertical-align: top;
+
+      img {
+        width: 100%;
+      }
     }
 
     .TopBox {
@@ -1020,7 +1040,7 @@
     padding: 0 8px;
     margin-left: 4px;
     border-radius: 10px;
-    background-color: #ec455f;
+    background-color: $red;
     font-size: 12px;
     color: #fff;
     font-weight: 300;
@@ -1030,13 +1050,17 @@
   .specialBox {
     width: 44px;
     height: 22px;
-    background-color: #000;
+    background-color: $lighterGray;
     border-radius: 14px;
     font-weight: bold;
-    font-size: 16px;
-    color: #fff;
+    font-size: 14px;
     text-align: center;
     letter-spacing: -0.3px;
+  }
+
+  .levelListWrap {
+    padding: 0 16px;
+    background-color: $lighterGray;
   }
 
   .levelListBox {
@@ -1044,8 +1068,9 @@
     align-items: center;
     position: relative;
     padding: 4px 12px;
-    border-bottom: 1px solid $lighterGray;
     background-color: #fff;
+    margin-bottom: 4px;
+    border-radius: 16px;
 
     .thumbBox {
       width: 100px;
@@ -1266,60 +1291,60 @@
   .rewordBox {
     overflow: hidden;
     position: relative;
-    padding: 15px 0 8px;
-    background: url('https://image.dalbitlive.com/ranking/reward_pop_bg@2x.png') no-repeat;
-    background-size: cover;
-    text-align: center;
+    margin-bottom: 12px;
+    padding: 18px 0;
+    border-radius: 16px;
+    border: solid 2px #febd56;
 
     &__top {
       color: #fff;
       font-size: 22px;
+      letter-spacing: -0.55px;
       font-weight: 700;
       line-height: 22px;
+      text-align: center;
 
       span {
+        display: inline-block;
         display: block;
+        margin-top: 4px;
         font-size: 14px;
         font-weight: 500;
+        color: #febd56;
       }
     }
 
     &__btnGet {
-      margin-top: 13px;
-      width: 161px;
-      height: 32px;
-      border-radius: 16px;
-      border: 2px solid #febd56;
-      background-color: #ffffff;
+      position: absolute;
+      right: 11px;
+      top: 14px;
+      width: 56px;
+      height: 56px;
+      border-radius: 30px;
+      background-color: #ec455f;
+      line-height: 18px;
       font-weight: 700;
+      color: #fff;
     }
 
     &__character1 {
       position: absolute;
-      left: -15px;
+      left: 0;
       bottom: 0;
-      width: 92px;
-      height: 97px;
-      background: url('https://image.dalbitlive.com/ranking/reward_pop_character1@2x.png') no-repeat;
-      background-size: 100%;
-    }
-
-    &__character2 {
-      position: absolute;
-      right: -25px;
-      bottom: 0;
-      width: 103px;
-      height: 89px;
-      background: url('https://image.dalbitlive.com/ranking/reward_pop_character2@2x.png') no-repeat;
-      background-size: 100%;
     }
   }
 
-  .special__text {
-    padding: 11px 0;
-    background-color: $primary;
-    color: #fff;
-    font-size: 16px;
-    text-align: center;
+  .specialPage {
+    padding: 0 16px;
+
+    .specialText {
+      margin-bottom: 4px;
+      padding: 11px 0;
+      background-color: $primary;
+      color: #fff;
+      font-size: 14px;
+      text-align: center;
+      border-radius: 16px;
+    }
   }
 }

@@ -21,6 +21,7 @@ import LevelListWrap from './components/level_list'
 import RankListTop from './components/rank_list/rank_list_top'
 import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
+import NoResult from 'components/ui/new_noResult'
 //constant
 import {DATE_TYPE, RANK_TYPE} from './constant'
 
@@ -313,6 +314,8 @@ function Ranking() {
                 ...res.data
               })
             }
+          }
+          if (res.data.list.length > 4) {
             setEmpty(false)
           } else {
             setEmpty(true)
@@ -447,11 +450,15 @@ function Ranking() {
 
         {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef}>
-            <div className="rankTop3Box">
-              <MyProfile fetching={fetching} />
+            {empty === true ? (
+              <NoResult text="조회된 결과가 없습니다." />
+            ) : (
+              <div className="rankTop3Box">
+                <MyProfile fetching={fetching} />
 
-              <RankListTop />
-            </div>
+                <RankListTop />
+              </div>
+            )}
           </div>
         )}
 

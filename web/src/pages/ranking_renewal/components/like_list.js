@@ -24,16 +24,16 @@ function LikeList({empty}) {
   const {likeList} = rankState
   return (
     <>
-      <ul>
-        <li className="renewalBox">
-          <span>매일 00시 집계 및 갱신</span>
-          <img
-            src={guideIcon}
-            onClick={() => {
-              context.action.updatePopup('RANK_POP', 'like')
-            }}
-          />
-        </li>
+      <div className="renewalBox">
+        <span>매일 00시 집계 및 갱신</span>
+        <img
+          src={guideIcon}
+          onClick={() => {
+            context.action.updatePopup('RANK_POP', 'like')
+          }}
+        />
+      </div>
+      <ul className="levelListWrap">
         {empty === true ? (
           <NoResult />
         ) : (

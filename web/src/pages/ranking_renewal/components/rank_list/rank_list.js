@@ -12,7 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import point from '../../static/ico-point.png'
 import point2x from '../../static/ico-point@2x.png'
 import like from '../../static/like_g_s.svg'
-import live from '../../static/live.svg'
+import live from '../../static/live_m.svg'
 import people from '../../static/people_g_s.svg'
 import time from '../../static/time_g_s.svg'
 import StarCountIcon from '../../static/circle_star_s_g.svg'
@@ -175,8 +175,6 @@ function RankList() {
                         }}
                         className="liveBox__img"
                       />
-                      <br />
-                      LIVE
                     </div>
                   )}
                 </div>

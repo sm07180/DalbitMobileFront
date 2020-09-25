@@ -3,16 +3,10 @@ import React from 'react'
 import RankList from './rank_list'
 import NoResult from 'components/ui/noResult'
 
-function RankListWrap({empty}) {
+function RankListWrap() {
   return (
     <>
-      {empty === true ? (
-        <NoResult />
-      ) : (
-        <>
-          <RankList />
-        </>
-      )}
+      <RankList />
     </>
   )
 }
