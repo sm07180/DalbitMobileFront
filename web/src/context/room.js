@@ -53,6 +53,25 @@ export default Room
  */
 export const RoomJoin = async (obj) => {
   const {roomNo, callbackFunc, shadow, mode} = obj
+  const customHeader = JSON.parse(Api.customHeader)
+  const sessionRoomNo = sessionStorage.getItem('room_no')
+  //const sessionRoomActive = sessionStorage.getItem('room_active')
+
+  if (sessionStorage.getItem('room_active') === 'N') {
+    Room.context.action.alert({
+      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
+    })
+    return false
+  } else {
+    if (sessionStorage.getItem('room_active') === null) {
+      sessionStorage.setItem('room_active', 'N')
+    }
+  }
+
+  if (customHeader['os'] === OS_TYPE['Desktop']) {
+    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+    return false
+  }
 
   //클립나가기
   if (Utility.getCookie('clip-player-info')) {
@@ -96,24 +115,6 @@ export const RoomJoin = async (obj) => {
   const _day = today.getUTCDate() + ''
   const _hour = Number(today.getHours())
   const _min = Number(today.getMinutes())
-  const customHeader = JSON.parse(Api.customHeader)
-
-  if (customHeader['os'] === OS_TYPE['Desktop']) {
-    window.location.href = 'https://inforexseoul.page.link/Ws4t'
-    return false
-  }
-  const sessionRoomNo = sessionStorage.getItem('room_no')
-  //const sessionRoomActive = sessionStorage.getItem('room_active')
-
-  if (sessionStorage.getItem('room_active') === 'N') {
-    Room.context.action.alert({
-      msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
-    })
-  } else {
-    if (sessionStorage.getItem('room_active') === null) {
-      sessionStorage.setItem('room_active', 'N')
-    }
-  }
 
   /**
    * @title Room.roomNo , roomNo 비교
