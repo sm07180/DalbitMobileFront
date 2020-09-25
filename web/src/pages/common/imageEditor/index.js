@@ -8,50 +8,52 @@ import '../../mypage/setting.scss'
 
 export default (props) => {
   const context = useContext(Context)
-  const defaultSrc = context.imageEditor
+  const defaultSrc = context.editImage
   let history = useHistory()
 
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
   const [cropper, setCropper] = useState(null)
 
-  const getCropData = () => {
+  const cropImage = () => {
     if (typeof cropper !== 'undefined') {
       setCropData(cropper.getCroppedCanvas().toDataURL())
-      if (context.imageEditor) {
-        context.action.updateImageEditor(cropper.getCroppedCanvas().toDataURL())
+      if (context.editImage) {
+        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
       }
     }
   }
-  const getRotateData = () => {
+  const rotateImage = () => {
     if (typeof cropper !== 'undefined') {
       setCropData(cropper.rotate(90))
     }
   }
-  const goSubmit = () => {
-    getCropData()
+  const submit = () => {
+    cropImage()
     history.goBack()
   }
 
   useEffect(() => {
-    console.log(props)
-
-    console.log(context.imageEditor)
+    console.log(image)
+    if (image === null) {
+      history.goBack()
+    }
   }, [])
+
   return (
     <Content>
       <div id="imageEditor">
         <Header>
           <div className="btnBox">
-            <button onClick={getCropData}>Crop</button>
-            <button onClick={getRotateData}>Rotate</button>
-            <button className="btn__ok" onClick={goSubmit}>
+            {/* <button onClick={cropImage}>Crop</button> */}
+            <button onClick={rotateImage}>Rotate</button>
+            <button className="btn__ok" onClick={submit}>
               자르기
             </button>
           </div>
         </Header>
         <Cropper
-          // style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={image}
@@ -67,9 +69,11 @@ export default (props) => {
             setCropper(instance)
           }}
         />
+        {/* result view 
         <div className="box" style={{width: '50%', margin: '0 auto', height: '300px'}}>
           <img style={{width: '100%'}} src={cropData} alt="cropped" />
         </div>
+        */}
       </div>
     </Content>
   )

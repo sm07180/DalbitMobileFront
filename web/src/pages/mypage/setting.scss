@@ -340,6 +340,9 @@
       &.isActive {
         background-color: $primary;
       }
+      &.false {
+        cursor: none;
+      }
     }
   }
   canvas {

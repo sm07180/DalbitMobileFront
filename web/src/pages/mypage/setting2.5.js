@@ -1,32 +1,23 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {Switch, Redirect, Link} from 'react-router-dom'
-import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
-import {authReq, openAuthPage} from 'pages/self_auth'
+import {authReq} from 'pages/self_auth'
 //layout
 import Layout from 'pages/common/layout'
 import Header from './component/header'
 //context
 import Api from 'context/api'
 import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import {DalbitTextArea} from './content/textarea'
 //image
 import camera from 'images/camera.svg'
-import MaleIcon from './static/ico_male.svg'
-import FeMaleIcon from './static/ico_female.svg'
-import calIcon from './static/calender_b.svg'
 import delIcon from './static/del_g.svg'
-import {templateSettings} from 'lodash'
 import './setting.scss'
 
 export default (props) => {
-  console.log(props)
   // ctx
   const context = useContext(Context)
-  const {profile, token, imageEditor} = context
-  const {isOAuth} = token
+  const {profile, token, editImage} = context
   const history = useHistory()
   // state
   const [nickname, setNickname] = useState('')
@@ -45,8 +36,8 @@ export default (props) => {
   const formTag = useRef(null)
   // setting img upload func  + mobile rotater
   const profileImageUpload = (e) => {
-    const target = e.currentTarget
     let reader = new FileReader()
+    const target = e.currentTarget
     const file = target.files[0]
     const fileName = file.name
     const fileSplited = fileName.split('.')
@@ -64,21 +55,20 @@ export default (props) => {
         }
       })
     }
-    //파일을 배열 버퍼로 읽는 최신 약속 기반 API
     reader.readAsArrayBuffer(file)
     //오리엔테이션 뽑아내는 함수
     function getOrientation(buffer) {
-      var view = new DataView(buffer)
+      let view = new DataView(buffer)
       if (view.getUint16(0, false) !== 0xffd8) {
         return {
           buffer: view.buffer,
           orientation: -2
         }
       }
-      var length = view.byteLength,
-        offset = 2
+      let length = view.byteLength
+      let offset = 2
       while (offset < length) {
-        var marker = view.getUint16(offset, false)
+        let marker = view.getUint16(offset, false)
         offset += 2
         if (marker === 0xffe1) {
           if (view.getUint32((offset += 2), false) !== 0x45786966) {
@@ -87,11 +77,11 @@ export default (props) => {
               orientation: -1
             }
           }
-          var little = view.getUint16((offset += 6), false) === 0x4949
+          let little = view.getUint16((offset += 6), false) === 0x4949
           offset += view.getUint32(offset + 4, little)
-          var tags = view.getUint16(offset, little)
+          let tags = view.getUint16(offset, little)
           offset += 2
-          for (var i = 0; i < tags; i++) {
+          for (let i = 0; i < tags; i++) {
             if (view.getUint16(offset + i * 12, little) === 0x0112) {
               const orientation = view.getUint16(offset + i * 12 + 8, little)
               view.setUint16(offset + i * 12 + 8, 1, little)
@@ -112,64 +102,6 @@ export default (props) => {
         orientation: -1
       }
     }
-    //캔버스로 그려서 dataurl 로 뽑아내는 함수
-    function drawAdjustImage(img, orientation) {
-      const cnvs = document.createElement('canvas')
-      const ctx = cnvs.getContext('2d')
-      let dx = 0
-      let dy = 0
-      let dw
-      let dh
-      let deg = 0
-      let vt = 1
-      let hr = 1
-      let rad
-      let sin
-      let cos
-      cnvs.width = orientation >= 5 ? img.height : img.width
-      cnvs.height = orientation >= 5 ? img.width : img.height
-      switch (orientation) {
-        case 2: // flip horizontal
-          hr = -1
-          dx = cnvs.width
-          break
-        case 3: // rotate 180 degrees
-          deg = 180
-          dx = cnvs.width
-          dy = cnvs.height
-          break
-        case 4: // flip upside down
-          vt = -1
-          dy = cnvs.height
-          break
-        case 5: // flip upside down and rotate 90 degrees clock wise
-          vt = -1
-          deg = 90
-          break
-        case 6: // rotate 90 degrees clock wise
-          deg = 90
-          dx = cnvs.width
-          break
-        case 7: // flip upside down and rotate 270 degrees clock wise
-          vt = -1
-          deg = 270
-          dx = cnvs.width
-          dy = cnvs.height
-          break
-        case 8: // rotate 270 degrees clock wise
-          deg = 270
-          dy = cnvs.height
-          break
-      }
-      rad = deg * (Math.PI / 180)
-      sin = Math.sin(rad)
-      cos = Math.cos(rad)
-      ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
-      dw = orientation >= 5 ? cnvs.height : cnvs.width
-      dh = orientation >= 5 ? cnvs.width : cnvs.height
-      ctx.drawImage(img, 0, 0, dw, dh)
-      return cnvs.toDataURL('image/jpeg', 1.0)
-    }
     reader.onload = async () => {
       if (reader.result) {
         const originalBuffer = reader.result
@@ -180,59 +112,23 @@ export default (props) => {
         const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
-        if (img !== null) {
-          context.action.updateImageEditor(originalCacheURL)
-          console.log('setting', originalCacheURL)
+        img.onload = async () => {
+          const limitSize = 1280
+          if (img.width > limitSize || img.height > limitSize) {
+            img.width = img.width / 5
+            img.height = img.height / 5
+          }
+          context.action.updateEditImage(originalCacheURL)
           history.push('/ImageEditor')
         }
       }
     }
   }
-  // change nick name func
-  const changeNickname = (e) => {
-    const {currentTarget} = e
-    if (currentTarget.value.length > 20) {
-      return
-    }
-    setNickname(currentTarget.value)
-    // setNickname(currentTarget.value.replace(/ /g, ''))
-  }
-  // change Msg func
-
-  const changeMsg = (e) => {
-    let {value} = e.target
-    const lines = value.split('\n').length
-    const a = value.split('\n')
-    const cols = 30
-    if (lines < 6) {
-      if (a[lines - 1].length % cols === 0 && a[lines - 1].length > 0) {
-        value += '\n'
-      } else if (a[lines - 1].length > cols) {
-        const b = a[lines - 1].substr(0, cols) + '\n' + a[lines - 1].substr(cols, a[lines - 1].length - 1)
-        a.pop()
-        value = a.join('\n') + '\n' + b
-      }
-      setProfileMsg(value)
-    } else if (lines > 5) {
-      return
-    }
-  }
+  // 이미지 editor 후 upload
   const uploadImage = () => {
-    console.log('upload!')
-
     setPhotoUploading(true)
-    setTempPhoto(imageEditor)
-
-    // img.onload = async () => {
-    //   const limitSize = 1280
-    //   if (img.width > limitSize || img.height > limitSize) {
-    //     img.width = img.width / 5
-    //     img.height = img.height / 5
-    //   }
-
-    //   const encodedDataAsBase64 = drawAdjustImage(img, orientation)
-    //   uploadImageToServer(encodedDataAsBase64)
-    // }
+    setTempPhoto(editImage)
+    uploadImageToServer(editImage)
     async function uploadImageToServer(data) {
       const res = await Api.image_upload({
         data: {
@@ -254,7 +150,16 @@ export default (props) => {
       }
     }
   }
-  const beforeSaveUpload = () => {
+  // change nick name func
+  const changeNickname = (e) => {
+    const {currentTarget} = e
+    if (currentTarget.value.length > 20) {
+      return
+    }
+    setNickname(currentTarget.value)
+    // setNickname(currentTarget.value.replace(/ /g, ''))
+  }
+  const validationCheck = () => {
     if (!profile.nickNm || !nickname) {
       return context.action.alert({
         msg: '닉네임을 입력해주세요.',
@@ -282,12 +187,9 @@ export default (props) => {
         }
       })
     }
-
     saveUpload()
   }
-  // upload validate
   const saveUpload = async () => {
-    //##submit
     const data = {
       gender: gender,
       nickNm: nickname || profile.nickNm,
@@ -295,7 +197,7 @@ export default (props) => {
       profMsg: profileMsg,
       profImg: photoPath || profile.profImg.path
     }
-    //fetch
+    console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -370,8 +272,8 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    console.log(imageEditor)
-    if (imageEditor !== null) uploadImage()
+    // console.log(editImage)
+    if (editImage !== null) uploadImage()
   }, [])
   //------------------------------------------------------
   return (
@@ -387,7 +289,6 @@ export default (props) => {
               <div className="imgBox">
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
-                  <div>{tempPhoto}</div>
 
                   <div
                     className="backImg"
@@ -557,7 +458,7 @@ export default (props) => {
                 {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
               </div>
 
-              <button className={`btn__save ${active === true && 'isActive'}`} onClick={beforeSaveUpload}>
+              <button className={`btn__save ${active === true && 'isActive'}`} onClick={validationCheck}>
                 저장
               </button>
             </div>
