@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 import {RankContext} from 'context/rank_ctx'
 
-import {changeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
+import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
 import {RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {
@@ -38,7 +38,7 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const handleDate = (some) => {
-    const handle = changeDate(some, formState.dateType, formState.currentDate)
+    const handle = liveBoxchangeDate(some, formState.dateType, formState.currentDate)
     formDispatch({
       type: 'DATE',
       val: handle
