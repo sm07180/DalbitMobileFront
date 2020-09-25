@@ -54,7 +54,11 @@ export default (props) => {
       context.action.updateNews(false)
     }
     if (category === 'store') {
-      return history.push(`/pay/${category}`)
+      if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
+        return webkit.messageHandlers.openInApp.postMessage('')
+      } else {
+        return history.push(`/pay/${category}`)
+      }
     }
     return history.push(`/menu/${category}`)
   }
