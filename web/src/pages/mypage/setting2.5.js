@@ -22,9 +22,10 @@ import {templateSettings} from 'lodash'
 import './setting.scss'
 
 export default (props) => {
+  console.log(props)
   // ctx
   const context = useContext(Context)
-  const {profile, token} = context
+  const {profile, token, imageEditor} = context
   const {isOAuth} = token
   const history = useHistory()
   // state
@@ -179,46 +180,10 @@ export default (props) => {
         const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
-        console.log(img, img.src)
         if (img !== null) {
+          context.action.updateImageEditor(originalCacheURL)
+          console.log('setting', originalCacheURL)
           history.push('/ImageEditor')
-        }
-        return
-
-        // 저장 과정
-        setPhotoUploading(true)
-        setTempPhoto(originalCacheURL)
-
-        img.onload = async () => {
-          const limitSize = 1280
-          if (img.width > limitSize || img.height > limitSize) {
-            img.width = img.width / 5
-            img.height = img.height / 5
-          }
-
-          const encodedDataAsBase64 = drawAdjustImage(img, orientation)
-          uploadImageToServer(encodedDataAsBase64)
-        }
-
-        async function uploadImageToServer(data) {
-          const res = await Api.image_upload({
-            data: {
-              dataURL: data,
-              uploadType: 'profile'
-            }
-          })
-          if (res.result === 'success') {
-            setPhotoPath(res.data.path)
-            setPhotoUploading(false)
-          } else {
-            context.action.alert({
-              msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
-              title: '',
-              callback: () => {
-                context.action.alert({visible: false})
-              }
-            })
-          }
         }
       }
     }
@@ -252,7 +217,43 @@ export default (props) => {
       return
     }
   }
+  const uploadImage = () => {
+    console.log('upload!')
 
+    setPhotoUploading(true)
+    setTempPhoto(imageEditor)
+
+    // img.onload = async () => {
+    //   const limitSize = 1280
+    //   if (img.width > limitSize || img.height > limitSize) {
+    //     img.width = img.width / 5
+    //     img.height = img.height / 5
+    //   }
+
+    //   const encodedDataAsBase64 = drawAdjustImage(img, orientation)
+    //   uploadImageToServer(encodedDataAsBase64)
+    // }
+    async function uploadImageToServer(data) {
+      const res = await Api.image_upload({
+        data: {
+          dataURL: data,
+          uploadType: 'profile'
+        }
+      })
+      if (res.result === 'success') {
+        setPhotoPath(res.data.path)
+        setPhotoUploading(false)
+      } else {
+        context.action.alert({
+          msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
+          title: '',
+          callback: () => {
+            context.action.alert({visible: false})
+          }
+        })
+      }
+    }
+  }
   const beforeSaveUpload = () => {
     if (!profile.nickNm || !nickname) {
       return context.action.alert({
@@ -312,7 +313,19 @@ export default (props) => {
       })
     }
   }
-  //----------------------------------------------------
+  const checkAuth = () => {
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        setAuthState(true)
+        setPhone(res.data.phoneNo)
+      } else {
+        setAuthState(false)
+      }
+    }
+    fetchSelfAuth()
+  }
+
   useEffect(() => {
     if (profile !== null) {
       setNickname(profile.nickNm)
@@ -338,19 +351,6 @@ export default (props) => {
     }
   }, [nickname, profileMsg, photoPath, gender])
 
-  const checkAuth = () => {
-    async function fetchSelfAuth() {
-      const res = await Api.self_auth_check({})
-      if (res.result === 'success') {
-        setAuthState(true)
-        setPhone(res.data.phoneNo)
-      } else {
-        setAuthState(false)
-      }
-    }
-    fetchSelfAuth()
-  }
-
   useEffect(() => {
     const getMyPageNew = async () => {
       if (profile === null || profile || profile.birth === '') {
@@ -369,6 +369,10 @@ export default (props) => {
     checkAuth()
   }, [])
 
+  useEffect(() => {
+    console.log(imageEditor)
+    if (imageEditor !== null) uploadImage()
+  }, [])
   //------------------------------------------------------
   return (
     <Switch>
@@ -383,6 +387,7 @@ export default (props) => {
               <div className="imgBox">
                 <label htmlFor="profileImg">
                   <input id="profileImg" type="file" accept="image/jpg, image/jpeg, image/png" onChange={profileImageUpload} />
+                  <div>{tempPhoto}</div>
 
                   <div
                     className="backImg"

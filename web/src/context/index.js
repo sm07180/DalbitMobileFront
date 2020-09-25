@@ -332,6 +332,7 @@ const GlobalProvider = (props) => {
     },
 
     updateImageEditor: (obj) => {
+      console.log(obj)
       setImageEditor(obj)
     },
     updateWalletIdx: (num) => {

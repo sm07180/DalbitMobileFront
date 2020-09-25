@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import {Context} from 'Context'
+import {Context} from 'context'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header'
 import Cropper from 'react-cropper'
@@ -8,8 +8,7 @@ import '../../mypage/setting.scss'
 
 export default (props) => {
   const context = useContext(Context)
-  console.log(context)
-  const defaultSrc = 'https://raw.githubusercontent.com/roadmanfong/react-cropper/master/example/img/child.jpg'
+  const defaultSrc = context.imageEditor
   let history = useHistory()
 
   const [image, setImage] = useState(defaultSrc)
@@ -36,6 +35,8 @@ export default (props) => {
 
   useEffect(() => {
     console.log(props)
+
+    console.log(context.imageEditor)
   }, [])
   return (
     <Content>
