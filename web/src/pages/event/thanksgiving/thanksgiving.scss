@@ -7,6 +7,26 @@
     max-width: 100%;
   }
 
+  .title {
+    position: relative;
+    h2 {
+      font-size: 18px;
+      text-align: center;
+      line-height: 49px;
+      color: #000;
+      border-bottom: 1px solid #d2d2d2;
+    }
+    button {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      width: 40px;
+      height: 40px;
+      background: url(../static/close.svg) center no-repeat;
+      text-indent: -999999px;
+    }
+  }
+
   .middleWrap {
     height: 68px;
     padding: 0 30px;
