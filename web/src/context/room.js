@@ -81,6 +81,9 @@ export const RoomJoin = async (obj) => {
         clipExit(Room.context)
         sessionStorage.removeItem('room_active')
         return RoomJoin(obj)
+      },
+      cancelCallback: () => {
+        sessionStorage.removeItem('room_active')
       }
     })
   }
@@ -224,6 +227,9 @@ export const RoomJoin = async (obj) => {
               }
               sessionStorage.removeItem('room_active')
               callResetListen('')
+            },
+            cancelCallback: () => {
+              sessionStorage.removeItem('room_active')
             }
           })
         } catch (er) {
