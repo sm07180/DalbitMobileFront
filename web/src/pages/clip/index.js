@@ -189,8 +189,10 @@ export default (props) => {
 
   const HandleClick = (e) => {
     setClipTypeActive(e.target.value)
+
     setTimeout(() => {
       window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
+      changeActiveSort(0)
     }, 50)
   }
   useEffect(() => {
@@ -373,22 +375,23 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory()}>최신 클립</h2>
+              {/* <h2 onClick={() => refreshCategory()}>최신 클립</h2> */}
+              <h2 onClick={() => refreshCategory()}>클립</h2>
               <div className="sortTypeWrap">
-                {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
+                <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
                   최신순
                 </button>
                 <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
                   인기순
-                </button> */}
+                </button>
               </div>
               <div className="sequenceBox">
-                <div className="sequenceItem">
+                {/* <div className="sequenceItem">
                   <button type="button" onClick={() => setDetailPopup(true)}>
                     <span>최신순</span>
                     <img src={filterIcon} alt="카테고리 필터 이미지" />
                   </button>
-                </div>
+                </div> */}
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
                     <img
