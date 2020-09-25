@@ -8,7 +8,7 @@ import '../../mypage/setting.scss'
 
 export default (props) => {
   const context = useContext(Context)
-  const defaultSrc = context.editImage
+  const defaultSrc = context.tempImage
   let history = useHistory()
 
   const [image, setImage] = useState(defaultSrc)
@@ -39,7 +39,6 @@ export default (props) => {
   }
 
   useEffect(() => {
-    console.log(image)
     if (image === null) {
       history.goBack()
     }
@@ -58,7 +57,7 @@ export default (props) => {
           </div>
         </Header>
         <Cropper
-          // style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={image}

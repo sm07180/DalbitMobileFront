@@ -30,7 +30,7 @@ export default (props) => {
   const [photoUploading, setPhotoUploading] = useState(false)
   const [firstSetting, setFirstSetting] = useState(false)
   const [mypageBirth, setMypageBirth] = useState('')
-  const [active, setActive] = useState(true)
+  const [active, setActive] = useState(false)
   //ref
   const nicknameReference = useRef()
   const formTag = useRef(null)
@@ -127,8 +127,8 @@ export default (props) => {
   }
   // 이미지 editor 후 upload
   const uploadImage = useCallback(() => {
-    setPhotoUploading(true)
-    if (tempImage !== editImage) {
+    if (editImage && tempImage !== editImage) {
+      setPhotoUploading(true)
       setActive(false)
       setTempPhoto(editImage)
       uploadImageToServer(editImage)
@@ -140,9 +140,16 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          setPhotoPath(res.data.path)
-          setPhotoUploading(false)
-          setActive(true)
+          context.action.alert({
+            msg: '업로드성공',
+            title: '',
+            callback: () => {
+              setPhotoPath(res.data.path)
+              setPhotoUploading(false)
+              setActive(true)
+              context.action.updateEditImage('')
+            }
+          })
         } else {
           context.action.alert({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
@@ -154,7 +161,7 @@ export default (props) => {
         }
       }
     }
-  }, [editImage])
+  }, [])
   // change nick name func
   const changeNickname = (e) => {
     const {currentTarget} = e
@@ -202,7 +209,6 @@ export default (props) => {
       profMsg: profileMsg,
       profImg: photoPath || profile.profImg.path
     }
-    console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -279,7 +285,6 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    // console.log(editImage)
     if (editImage !== null) uploadImage()
   }, [])
   //------------------------------------------------------
@@ -465,7 +470,10 @@ export default (props) => {
                 {/* <GenderAlertMsg>프로필 메시지는 최대 100자까지 입력할 수 있습니다.</GenderAlertMsg> */}
               </div>
 
-              <button className={`btn__save ${active === true && 'isActive'}`} onClick={validationCheck}>
+              <button
+                className={`btn__save ${active === true && 'isActive'}`}
+                disabled={!active ? true : false}
+                onClick={validationCheck}>
                 저장
               </button>
             </div>
