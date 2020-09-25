@@ -79,6 +79,7 @@ export const RoomJoin = async (obj) => {
       msg: '현재 재생 중인 클립이 있습니다.\n방송에 입장하시겠습니까?',
       callback: () => {
         clipExit(Room.context)
+        sessionStorage.removeItem('room_active')
         return RoomJoin(obj)
       }
     })
@@ -88,9 +89,11 @@ export const RoomJoin = async (obj) => {
     if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
       return Room.context.action.confirm_admin({
         callback: () => {
+          sessionStorage.removeItem('room_active')
           return RoomJoin({roomNo: roomNo, shadow: 1})
         },
         cancelCallback: () => {
+          sessionStorage.removeItem('room_active')
           return RoomJoin({roomNo: roomNo, shadow: 0})
         },
         msg: '관리자로 입장하시겠습니까?'
@@ -206,6 +209,7 @@ export const RoomJoin = async (obj) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
                   setTimeout(() => {
+                    sessionStorage.removeItem('room_active')
                     RoomJoin(obj)
                   }, 700)
                 } else {
