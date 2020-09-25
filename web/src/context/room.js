@@ -133,6 +133,7 @@ export const RoomJoin = async (obj) => {
             msg: '종료된 방송입니다.',
             callback: () => {
               sessionStorage.removeItem('room_no')
+              sessionStorage.removeItem('room_active')
               Utility.setCookie('listen_room_no', null)
               context.action.updatePlayer(false)
               setTimeout(() => {
@@ -141,6 +142,7 @@ export const RoomJoin = async (obj) => {
             }
           })
         } else {
+          sessionStorage.removeItem('room_active')
           Hybrid('EnterRoom', '')
         }
       }
@@ -176,11 +178,11 @@ export const RoomJoin = async (obj) => {
       const exit = await Api.broad_exit({data: {roomNo: sessionRoomNo}})
       if (exit.result === 'success') {
         sessionStorage.removeItem('room_no')
+        sessionStorage.removeItem('room_active')
         Utility.setCookie('listen_room_no', null)
         Room.context.action.updatePlayer(false)
         Hybrid('ExitRoom', '')
         //--쿠기
-      } else {
       }
       console.log(exit)
     }
@@ -197,6 +199,7 @@ export const RoomJoin = async (obj) => {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
+            sessionStorage.removeItem('room_active')
             window.location.href = '/login'
           }
         })
@@ -213,15 +216,18 @@ export const RoomJoin = async (obj) => {
                     RoomJoin(obj)
                   }, 700)
                 } else {
+                  sessionStorage.removeItem('room_active')
                   globalCtx.action.alert({
                     msg: `${loginInfo.message}`
                   })
                 }
               }
+              sessionStorage.removeItem('room_active')
               callResetListen('')
             }
           })
         } catch (er) {
+          sessionStorage.removeItem('room_active')
           alert(er)
         }
       } else if (res.code === '-6') {
@@ -229,12 +235,16 @@ export const RoomJoin = async (obj) => {
           const authCheck = await Api.self_auth_check()
           if (authCheck.result === 'success') {
             Room.context.action.alert({
-              msg: '20세 이상만 입장할 수 있는 방송입니다.'
+              msg: '20세 이상만 입장할 수 있는 방송입니다.',
+              callback: () => {
+                sessionStorage.removeItem('room_active')
+              }
             })
           } else {
             Room.context.action.alert({
               msg: '20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.',
               callback: () => {
+                sessionStorage.removeItem('room_active')
                 window.location.href = '/private'
               }
             })
@@ -246,6 +256,7 @@ export const RoomJoin = async (obj) => {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
+            sessionStorage.removeItem('room_active')
             window.location.reload()
           }
         })
