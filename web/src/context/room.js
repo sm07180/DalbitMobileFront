@@ -209,6 +209,7 @@ export const RoomJoin = async (obj) => {
                 const fetchResetListen = await Api.postResetListen({})
                 if (fetchResetListen.result === 'success') {
                   setTimeout(() => {
+                    sessionStorage.removeItem('room_active')
                     RoomJoin(obj)
                   }, 700)
                 } else {
