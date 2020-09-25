@@ -2616,32 +2616,28 @@ export default class API {
   }
 
   /* 추석이벤트 */
-  static getChooseokCheck = async (obj) => {
-    const {url, method, data} = obj || {}
+  static getChooseokCheck = async () => {
     return await ajax({
       url: '/event/chooseok/check',
       method: 'GET'
     })
   }
 
-  static getChooseokDalCheck = async (obj) => {
-    const {url, method, data} = obj || {}
+  static getChooseokDalCheck = async () => {
     return await ajax({
       url: '/event/chooseok/freeDal/check',
       method: 'GET'
     })
   }
 
-  static getChooseokPurchase = async (obj) => {
-    const {url, method, data} = obj || {}
+  static getChooseokPurchase = async () => {
     return await ajax({
       url: '/event/chooseok/purchase/select',
       method: 'GET'
     })
   }
 
-  static getChooseokBonus = async (obj) => {
-    const {url, method, data} = obj || {}
+  static getChooseokBonus = async () => {
     return await ajax({
       url: '/event/chooseok/purchase/bonus',
       method: 'GET'
