@@ -54,18 +54,6 @@ export default (props) => {
                       RoomJoin({roomNo: roomNo})
                     }
                   }
-                  if (roomType === 'link') {
-                    context.action.updatenoticeIndexNum(roomNo)
-                    if (roomNo !== '' && !roomNo.startsWith('http')) {
-                      history.push(`${roomNo}`)
-                    } else if (roomNo !== '' && roomNo.startsWith('http')) {
-                      window.location.href = `${roomNo}`
-                    }
-                  } else {
-                    if (isHybrid() && roomNo) {
-                      RoomJoin({roomNo: roomNo})
-                    }
-                  }
                 }}>
                 <div
                   className={`topSlide__bg ${nickNm !== 'banner' && `broadcast`}`}
