@@ -38,6 +38,7 @@ export default (props) => {
                   if (roomNo && roomNo !== undefined) {
                     if (nickNm === 'banner') {
                       if (roomType === 'link') {
+                        context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
                         } else {
