@@ -40,8 +40,12 @@ export default () => {
   }
 
   useEffect(() => {
-    fetchMyPurchase()
+    if (context.token.isLogin) fetchMyPurchase()
   }, [])
+
+  useEffect(() => {
+    if (!context.token.isLogin) history.push('/login?redirect=/event/thanksgiving')
+  }, [context.token.isLogin])
 
   return (
     <>
