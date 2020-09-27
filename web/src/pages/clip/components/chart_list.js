@@ -42,9 +42,10 @@ export default (props) => {
       djType: 0,
       gender: '',
       page: currentPage,
-      records: 8
+      records: 10
     })
     if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+      // setList(res.data.list)
       if (res.data.list.length === 0) {
         if (!next) {
           setList([])
@@ -179,7 +180,7 @@ export default (props) => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [nextList])
+  }, [nextList, clipTypeActive])
   //-------------------------------------------------------------render
   if (chartListType === 'detail') {
     return (

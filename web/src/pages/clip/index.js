@@ -21,6 +21,7 @@ import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
+import filterIcon from './static/choose_circle_w.svg'
 // header scroll flag
 let tempScrollEvent = null
 let randomData = Math.random() >= 0.5 ? 0 : 4
@@ -185,20 +186,44 @@ export default (props) => {
       )
     })
   }
+
+  const HandleClick = (e) => {
+    setClipTypeActive(e.target.value)
+
+    setTimeout(() => {
+      window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
+      setSelectType(0)
+    }, 150)
+  }
+  useEffect(() => {
+    //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
+    if (Object.values(listTop3).length > 0) {
+      const btnElem = document.getElementsByClassName('slideWrap__btn')
+      for (let i = 0; i < btnElem.length; i++) {
+        btnElem[i].addEventListener('click', HandleClick, false)
+      }
+    }
+  }, [listTop3])
+
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
       if (item.length === 0) return null
       let subjectMap = item[0].subjectType
       return (
         <div className="slideWrap" key={idx} style={{display: item.length !== 3 ? 'none' : 'block'}}>
-          <h3 className="slideWrap__title">
-            {clipType.map((item, idx) => {
-              const {cdNm, value} = item
-              if (subjectMap === value) {
-                return cdNm
-              }
-            })}
-          </h3>
+          {clipType.map((item, idx) => {
+            const {cdNm, value} = item
+            if (subjectMap === value) {
+              return (
+                <div key={idx}>
+                  <h3 className="slideWrap__title">{cdNm}</h3>
+                  <button className="slideWrap__btn" value={value}>
+                    더보기
+                  </button>
+                </div>
+              )
+            }
+          })}
           <p className="slideWrap__subTitle">주제별 인기 클립 Top 3</p>
           <ul>
             {item.map((item, idx) => {
@@ -306,9 +331,9 @@ export default (props) => {
   }, [])
   //------------------------------------------------------
   useEffect(() => {
+    fetchDataListTop3()
     fetchDataListPopular()
     fetchDataListLatest()
-    fetchDataListTop3()
     fetchDataClipType()
   }, [])
   //---------------------------------------
@@ -350,6 +375,7 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
+              {/* <h2 onClick={() => refreshCategory()}>최신 클립</h2> */}
               <h2 onClick={() => refreshCategory()}>클립</h2>
               <div className="sortTypeWrap">
                 <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
@@ -358,15 +384,14 @@ export default (props) => {
                 <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
                   인기순
                 </button>
-                {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
-                  최신순
-                </button>
-                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
-                  인기순
-                </button> */}
               </div>
               <div className="sequenceBox">
-                <div className="sequenceItem"></div>
+                {/* <div className="sequenceItem">
+                  <button type="button" onClick={() => setDetailPopup(true)}>
+                    <span>최신순</span>
+                    <img src={filterIcon} alt="카테고리 필터 이미지" />
+                  </button>
+                </div> */}
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
                     <img
