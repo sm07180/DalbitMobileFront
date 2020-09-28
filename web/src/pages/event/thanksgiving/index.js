@@ -17,7 +17,17 @@ export default () => {
   const fetchGetBonus = async () => {
     const res = await Api.getChooseokBonus()
 
-    if (res) {
+    if (res.result === 'success') {
+      if (500 <= myDal <= 1999) {
+        context.action.alert({msg: '추가 보너스 15달이 지급되었습니다'})
+      } else if (2000 <= myDal <= 4999) {
+        context.action.alert({msg: '추가 보너스 80달이 지급되었습니다'})
+      } else if (5000 <= myDal) {
+        context.action.alert({msg: '추가 보너스 250달이 지급되었습니다'})
+      } else {
+        context.action.alert({msg: res.message})
+      }
+    } else {
       context.action.alert({msg: res.message})
     }
   }
@@ -41,6 +51,8 @@ export default () => {
 
   useEffect(() => {
     if (context.token.isLogin) fetchMyPurchase()
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'event'})
   }, [])
 
   useEffect(() => {

@@ -11,6 +11,7 @@ import 'styles/layerpopup.scss'
 export default function LayerPopupWrap({setEventPop, popupData}) {
   //context
   const globalCtx = useContext(Context)
+  const [existOtherPopup, setExistOtherPopup] = useState(false)
 
   const [checked, setChecked] = useState({
     idx: -1,
@@ -59,6 +60,7 @@ export default function LayerPopupWrap({setEventPop, popupData}) {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+    if (popupData.length > 0) setExistOtherPopup(true)
 
     return () => {
       if (popupData.length === 0) document.body.style.overflow = ''
@@ -66,7 +68,7 @@ export default function LayerPopupWrap({setEventPop, popupData}) {
   }, [popupData])
 
   return (
-    <div id="mainLayerPopup" className="event" onClick={handleDimClick}>
+    <div id="mainLayerPopup" className={`${existOtherPopup ? 'event' : 'one-event'}`} onClick={handleDimClick}>
       <div className="popup">
         <div className="popup__wrap">
           <div className={`popbox active`}>
