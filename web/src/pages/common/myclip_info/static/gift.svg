@@ -1,0 +1,44 @@
+
+<svg id="gifbox" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #fff;
+      }
+
+      .cls-1 {
+        opacity: 0;
+      }
+
+      .cls-3 {
+        fill: #dabeff;
+      }
+
+      .cls-4 {
+        fill: none;
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect id="사각형_6296" data-name="사각형 6296" class="cls-1" width="24" height="24"/>
+  <g id="그룹_19226" data-name="그룹 19226" transform="translate(-290.113 -116.196)">
+    <g id="그룹_19222" data-name="그룹 19222" transform="translate(293.264 122.483)">
+      <path id="패스_18433" data-name="패스 18433" class="cls-2" d="M88.907,220.388v9.324a1.74,1.74,0,0,0,1.814,1.655h6.4V220.388Z" transform="translate(-87.981 -216.154)"/>
+      <path id="패스_18434" data-name="패스 18434" class="cls-2" d="M130.156,220.388h-8.213v10.979h6.4a1.74,1.74,0,0,0,1.814-1.655Z" transform="translate(-112.806 -216.154)"/>
+      <rect id="사각형_6293" data-name="사각형 6293" class="cls-2" width="8.105" height="3.118" transform="translate(0)"/>
+      <rect id="사각형_6294" data-name="사각형 6294" class="cls-2" width="8.105" height="3.118" transform="translate(10.174)"/>
+    </g>
+    <g id="그룹_19231" data-name="그룹 19231" transform="translate(300.964 126.806)">
+      <rect id="사각형_6290" data-name="사각형 6290" class="cls-3" width="2.775" height="9.89" transform="translate(0.001 0)"/>
+      <rect id="사각형_6292" data-name="사각형 6292" class="cls-3" width="2.775" height="10.89" transform="translate(0 0)"/>
+    </g>
+    <path id="패스_18441" data-name="패스 18441" class="cls-4" d="M255.055,69.354c.7.7,2.3,4.829,2.3,4.829s-4.132-1.606-4.829-2.3a1.786,1.786,0,1,1,2.525-2.525Z" transform="translate(45.054 48.865)"/>
+    <path id="패스_18442" data-name="패스 18442" class="cls-4" d="M260.413,69.354c-.7.7-2.3,4.829-2.3,4.829s4.132-1.606,4.829-2.3a1.786,1.786,0,0,0-2.525-2.525Z" transform="translate(44.302 48.865)"/>
+    <g id="그룹_19223" data-name="그룹 19223" transform="translate(300.964 122.296)">
+      <rect id="사각형_6290-2" data-name="사각형 6290" class="cls-3" width="2.775" height="2.514" transform="translate(0.001 0)"/>
+      <rect id="사각형_6292-2" data-name="사각형 6292" class="cls-3" width="2.775" height="3.514" transform="translate(0 0)"/>
+    </g>
+  </g>
+</svg>

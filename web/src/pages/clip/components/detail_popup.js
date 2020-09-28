@@ -45,18 +45,18 @@ export default function detailPopup(props) {
             <div className="text">클립 정렬 조건</div>
             <div className="tab-wrap">
               <div>
-                <button type="button" className={sortState === 0 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(0)}>
+                <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
                   최신순
                 </button>
-                <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
+                <button type="button" className={sortState === 3 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(3)}>
                   선물순
                 </button>
               </div>
               <div>
-                <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
+                <button type="button" className={sortState === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(2)}>
                   인기순
                 </button>
-                <button type="button" className={sortState === 3 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(3)}>
+                <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
                   play 순
                 </button>
               </div>

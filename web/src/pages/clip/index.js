@@ -72,6 +72,7 @@ export default (props) => {
   const [clipType, setClipType] = useState([])
   const [clipTypeActive, setClipTypeActive] = useState('')
   const [refreshAni, setRefreshAni] = useState(false)
+  const [randomList, setRandomList] = useState([])
   // scroll fixed func
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 50
@@ -162,9 +163,25 @@ export default (props) => {
       }
     }
   }
+  //
+  function shuffle(a) {
+    // console.log(popularList.filter((item,idx)=>{
+    //   return(
+
+    //   )
+    // }))
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      console.log(j)
+      ;[a[i], a[j]] = [a[j], a[i]]
+    }
+    // setRandomList(a)
+    return a
+  }
+  console.log(randomList)
   // make contents
   const makePoupularList = () => {
-    return popularList.map((item, idx) => {
+    return shuffle(popularList.slice(0, 6)).map((item, idx) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
@@ -208,7 +225,7 @@ export default (props) => {
 
     setTimeout(() => {
       window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
-      setSelectType(0)
+      context.action.updateClipSort(2)
     }, 150)
   }
   useEffect(() => {
@@ -444,24 +461,24 @@ export default (props) => {
               <h2 onClick={() => refreshCategory('category')}>최신 클립</h2>
               {/* <h2 onClick={() => refreshCategory()}>최신 클립</h2> */}
 
-              <div className="sortTypeWrap">
+              {/* <div className="sortTypeWrap">
                 <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
                   최신순
                 </button>
                 <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
                   인기순
                 </button>
-              </div>
+              </div> */}
               <div className="sequenceBox">
-                {/* <div className="sequenceItem">
+                <div className="sequenceItem">
                   <button type="button" onClick={() => setDetailPopup(true)}>
-                    {context.clipMainSort === 0 && <span>최신순</span>}
-                    {context.clipMainSort === 1 && <span>선물순</span>}
-                    {context.clipMainSort === 3 && <span>play 순</span>}
-                    {context.clipMainSort === 4 && <span>인기순</span>}
+                    {context.clipMainSort === 1 && <span>최신순</span>}
+                    {context.clipMainSort === 3 && <span>선물순</span>}
+                    {context.clipMainSort === 4 && <span>play 순</span>}
+                    {context.clipMainSort === 2 && <span>인기순</span>}
                     <img src={filterIcon} alt="카테고리 필터 이미지" />
                   </button>
-                </div> */}
+                </div>
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
                     <img
