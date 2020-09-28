@@ -35,7 +35,7 @@ export default (props) => {
       {rankType === 'dj' ? (
         <Swiper {...swiperParams}>
           {djRank.map((dj, idx) => {
-            const {rank, nickNm, memNo, profImg} = dj
+            const {rank, nickNm, memNo, profImg, liveBadgeList} = dj
             return (
               <div
                 className="rank-slide"
@@ -53,7 +53,8 @@ export default (props) => {
                     // <div className="counting">{rank}</div>
                     <></>
                   ) : (
-                    <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    // <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    <img className="medal-img" src={liveBadgeList[0].icon} />
                   )}
                 </div>
                 <div className="nickname">{nickNm}</div>
@@ -64,7 +65,7 @@ export default (props) => {
       ) : (
         <Swiper {...swiperParams}>
           {fanRank.map((fan, idx) => {
-            const {rank, nickNm, memNo, profImg} = fan
+            const {rank, nickNm, memNo, profImg, liveBadgeList} = fan
             return (
               <div
                 className="rank-slide"
@@ -78,9 +79,11 @@ export default (props) => {
                 }}>
                 <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
                   {idx > 2 ? (
+                    // <div className="counting">{rank}</div>
                     <></>
                   ) : (
-                    <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    // <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    <img className="medal-img" src={liveBadgeList[0].icon} />
                   )}
                 </div>
                 <div className="nickname">{nickNm}</div>

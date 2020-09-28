@@ -238,10 +238,10 @@
           background-position: center;
           .medal-img {
             position: absolute;
-            top: -5px;
-            left: -6px;
-            width: 26px;
-            height: 30px;
+            bottom: -8px;
+            right: 0px;
+            width: 36px;
+            height: 36px;
           }
         }
         .nickname {
@@ -751,13 +751,17 @@
       }
 
       &__iconWrap {
-        em {
+        .iconWrapper {
+          display: flex;
           position: absolute;
           left: 16px;
           top: 8px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        }
+        em {
+          display: block;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
           width: 52px;
           height: 18px;
           margin-right: 4px;
@@ -766,6 +770,7 @@
           font-size: 11px;
           line-height: 18px;
           border-radius: 20px;
+          text-align: center;
         }
         .eventIcon {
           background: $yellow;
@@ -1122,9 +1127,16 @@
         letter-spacing: -0.35px;
       }
       .nickname {
-        color: #757575;
-        font-size: 12px;
-        letter-spacing: -0.3px;
+        > em {
+          max-width: 100px;
+          color: #757575;
+          font-size: 12px;
+          font-style: normal;
+          letter-spacing: -0.3px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
       .detail {
         display: flex;
@@ -2091,5 +2103,38 @@
     .close-btn {
       top: 5px;
     }
+  }
+}
+.badgeIcon {
+  // margin-right: 4px;
+  &.topImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    color: #fff;
+    border-radius: 14px;
+    box-sizing: border-box;
+    height: auto;
+    padding: 0 6px;
+    font-size: 10px;
+    > img {
+      margin-right: 2px;
+    }
+  }
+  &.text {
+    width: 52px;
+    height: 18px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    border: solid 1px #c4c4c4;
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 18px;
+    letter-spacing: -0.25px;
+    text-align: center;
+    color: #424242;
   }
 }

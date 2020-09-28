@@ -29,7 +29,7 @@ export default (props) => {
       <Swiper {...swiperParams}>
         {list instanceof Array &&
           list.map((bannerData, index) => {
-            const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title} = bannerData
+            const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title, liveBadgeList} = bannerData
 
             return (
               <div
@@ -62,10 +62,38 @@ export default (props) => {
                     backgroundImage: `url("${bannerUrl}")`
                   }}>
                   <div className="topSlide__iconWrap">
-                    {isAdmin ? <em className="adminIcon">운영자</em> : ''}
-                    {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
-                    {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
-                    {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
+                    <div className="iconWrapper">
+                      {isAdmin ? <em className="adminIcon">운영자</em> : ''}
+                      {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
+                      {liveBadgeList &&
+                        liveBadgeList.length !== 0 &&
+                        liveBadgeList.map((item, idx) => {
+                          return (
+                            <React.Fragment key={idx + `badge`}>
+                              {item.icon !== '' ? (
+                                <div
+                                  className="badgeIcon topImg"
+                                  style={{
+                                    background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                    marginRight: '4px'
+                                  }}>
+                                  <img src={item.icon} style={{height: '16px'}} />
+                                  {item.text}
+                                </div>
+                              ) : (
+                                <div
+                                  style={{background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`}}
+                                  className="badgeIcon text">
+                                  {item.text}
+                                </div>
+                              )}
+                            </React.Fragment>
+                          )
+                        })}
+                      {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
+                      {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
+                    </div>
+
                     {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
 
