@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import './thanksgiving.scss'
 import Api from 'context/api'
+import LayerPopupPay from './layer_popup_pay'
 // context
 import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
@@ -13,11 +14,27 @@ export default () => {
   let history = useHistory()
   const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
+  const [payState, setPayState] = useState(false)
+
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
 
   const fetchGetBonus = async () => {
     const res = await Api.getChooseokBonus()
 
-    if (res) {
+    if (res.result === 'success') {
+      if (5000 <= myDal) {
+        return context.action.alert({msg: '추가 보너스 250달이 지급되었습니다'})
+      } else if (2000 <= myDal <= 4999) {
+        return context.action.alert({msg: '추가 보너스 80달이 지급되었습니다'})
+      } else if (500 <= myDal <= 1999) {
+        return context.action.alert({msg: '추가 보너스 15달이 지급되었습니다'})
+      } else {
+        return context.action.alert({msg: res.message})
+      }
+    } else {
       context.action.alert({msg: res.message})
     }
   }
@@ -35,12 +52,21 @@ export default () => {
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
       return webkit.messageHandlers.openInApp.postMessage('')
     } else {
-      return history.push('/pay/store')
+      return history.push('/pay/store?event=3')
     }
   }
 
   useEffect(() => {
     if (context.token.isLogin) fetchMyPurchase()
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'event'})
+    if (sessionStorage.getItem('pay_info') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
+      setPayState(payInfo)
+    }
+    return () => {
+      context.action.updateSetBack(null)
+    }
   }, [])
 
   useEffect(() => {
@@ -54,7 +80,8 @@ export default () => {
           <h2>한가위 달 구매 이벤트</h2>
           <button
             onClick={() => {
-              history.push('/')
+              // history.push('/')
+              window.location.href = '/'
             }}>
             닫기
           </button>
@@ -82,6 +109,7 @@ export default () => {
           </button>
         </div>
       </div>
+      {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
     </>
   )
 }

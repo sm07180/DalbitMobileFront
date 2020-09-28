@@ -54,7 +54,6 @@ export default (props) => {
     }
   }
   const swiperParamsCategory = {
-    slidesPerView: 'auto',
     slidesPerView: 'auto'
   }
   //state

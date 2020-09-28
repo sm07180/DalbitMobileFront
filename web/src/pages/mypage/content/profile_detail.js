@@ -246,6 +246,7 @@ export default (props) => {
   //뱃지
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
+
     const {text, icon, startColor, endColor} = item
     //-----------------------------------------------------------------------
     return (

@@ -119,6 +119,7 @@
 
     &.my-star {
       display: none;
+      margin-top: 20px;
       padding: 20px 0 16px 16px;
       background: $lighterGray;
       &.visible {
@@ -239,7 +240,7 @@
           background-position: center;
           .medal-img {
             position: absolute;
-            bottom: -8px;
+            bottom: 4px;
             right: 0px;
             width: 36px;
             height: 36px;
@@ -292,6 +293,9 @@
           }
         }
       }
+    }
+    &.banner {
+      padding: 0 16px;
     }
 
     &.live-list {
@@ -849,90 +853,6 @@
         .swiper-pagination-current {
           color: $white;
         }
-      }
-    }
-  }
-
-  .main-banner {
-    .slideWrap {
-      position: relative;
-
-      &.active {
-        display: none;
-      }
-
-      .swiper-container {
-        height: auto;
-        .banner {
-          img {
-            width: 100%;
-          }
-        }
-        .swiper-pagination-fraction {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          bottom: 7px;
-          right: 46px;
-          left: auto;
-          width: 45px;
-          height: 24px;
-          font-size: 12px;
-          letter-spacing: 3px;
-          background-color: rgba(0, 0, 0, 0.6);
-          color: white;
-          border-radius: 24px;
-          .swiper-pagination-total {
-            font-weight: normal;
-          }
-        }
-      }
-    }
-
-    .bannerNumber {
-      border: solid 1px;
-      position: absolute;
-      left: 0px;
-      bottom: 0px;
-      background: rgba(0, 0, 0, 0.5);
-      color: $white;
-      width: 45px;
-      font-size: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1;
-      p {
-        opacity: 0.5;
-      }
-    }
-
-    .moreButton {
-      position: absolute;
-      right: 11px;
-      bottom: 7px;
-      z-index: 2;
-      width: 33px;
-      height: 24px;
-      border-radius: 24px;
-      background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
-
-      &.active {
-        background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
-      }
-    }
-
-    .basicBanner {
-      margin-bottom: 10px;
-      position: relative;
-    }
-    .bannerView {
-      display: none;
-      img {
-        width: 100%;
-      }
-      &.active {
-        display: block;
       }
     }
   }
@@ -2113,15 +2033,15 @@
     align-items: center;
     justify-content: center;
     width: auto;
+    height: auto;
+    padding: 0 6px 0 3px;
     color: #fff;
     border-radius: 14px;
     box-sizing: border-box;
-    height: auto;
-    padding: 0 6px;
-    font-size: 10px;
-    > img {
-      margin-right: 2px;
-    }
+    font-size: 12px;
+    font-weight: normal;
+
+    line-height: 1.2;
   }
   &.text {
     width: 52px;

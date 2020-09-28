@@ -10,6 +10,9 @@ export const backFunc = (context) => {
     case 'booleanType':
       context.action.updateBackFunction({name: 'booleanType', value: false})
       break
+    case 'event':
+      window.location.href = '/'
+      break
 
     default:
       break
