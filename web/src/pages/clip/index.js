@@ -101,6 +101,7 @@ export default (props) => {
     const {result, data, message} = await Api.getPopularList({})
     if (result === 'success') {
       setPopularList(data.list)
+      setRandomList(shuffle(data.list).slice(0, 6))
       setPopularType(data.type)
     } else {
       context.action.alert({
@@ -108,6 +109,7 @@ export default (props) => {
       })
     }
   }
+
   const fetchDataListLatest = async () => {
     const {result, data, message} = await Api.getLatestList({})
     if (result === 'success') {
@@ -118,7 +120,7 @@ export default (props) => {
       })
     }
   }
-  console.log(clipType)
+
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -172,16 +174,17 @@ export default (props) => {
     // }))
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
-      console.log(j)
+
       ;[a[i], a[j]] = [a[j], a[i]]
     }
-    // setRandomList(a)
     return a
   }
-  console.log(randomList)
+  useEffect(() => {
+    // setRandomList(shuffle(popularList).slice(0, 6))
+  }, [])
   // make contents
   const makePoupularList = () => {
-    return shuffle(popularList.slice(0, 6)).map((item, idx) => {
+    return popularList.slice(0, 6).map((item, idx) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
@@ -324,7 +327,15 @@ export default (props) => {
       context.action.updatClipRefresh(false)
       // context.action.updateClipGender(false)
     } else if (type === 'popular') {
+      //fetchDataListPopular()
+
+      let newList = popularList.filter(function (x) {
+        return randomList.indexOf(x) < 0
+      })
+      setRandomList(popularList.slice(0, 6))
+      setPopularList(newList)
       fetchDataListPopular()
+      console.log('sadas', newList.slice(0, 6))
     } else {
       context.action.updatClipRefresh(true)
     }
@@ -383,7 +394,7 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
-  console.log(context.clipMainSort)
+
   return (
     <Layout {...props} status="no_gnb">
       <Header title="클립" type="noBack" description="clip" />
