@@ -86,7 +86,7 @@ const GlobalProvider = (props) => {
   const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
   //clip
   const [clipMainSort, setClipMainSort] = useState(0)
-  const [clipMainGender, setClipMainGender] = useState('')
+  const [clipMainDate, setClipMainDate] = useState('')
   const [clipRefresh, setClipRefresh] = useState(false)
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])
@@ -371,8 +371,8 @@ const GlobalProvider = (props) => {
     updateClipSort: (boolean) => {
       setClipMainSort(boolean)
     },
-    updateClipGender: (string) => {
-      setClipMainGender(string)
+    updateClipDate: (string) => {
+      setClipMainDate(string)
     },
     updatClipRefresh: (boolean) => {
       setClipRefresh(boolean)
@@ -478,7 +478,7 @@ const GlobalProvider = (props) => {
     fanboardReply,
     fanboardReplyNum,
     clipMainSort,
-    clipMainGender,
+    clipMainDate,
     clipRefresh,
     clipTab,
     clipType,

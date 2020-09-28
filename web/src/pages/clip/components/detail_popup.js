@@ -14,20 +14,21 @@ export default function detailPopup(props) {
   }
 
   const applyClick = () => {
+    context.action.updateClipSort(sortState)
     setDetailPopup(false)
     // resetFetchList()
-    context.action.setClipMainSort(sortState)
-    context.action.setClipMainGender(sortGender)
+
+    //context.action.setClipMainGender(sortGender)
   }
   const sortFunc = (type) => {
     setSortState(type)
   }
-  const genderFunc = (type) => {
-    setSortGender(type)
+  const DateFunc = (type) => {
+    context.action.updateClipDate(type)
   }
   useEffect(() => {
-    setSortState(context.clipMainSort)
-    setSortGender(context.clipMainGender)
+    // setSortState(context.clipMainSort)
+    // setSortGender(context.clipMainGender)
   }, [])
   return (
     <PopupWrap>
@@ -40,35 +41,54 @@ export default function detailPopup(props) {
         </div>
         <div className="inner-wrap">
           <div className="each-line">
-            <div className="text">정렬기준</div>
+            <div className="text">클립 정렬 조건</div>
             <div className="tab-wrap">
-              <button type="button" className={sortState === 0 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(0)}>
-                최신순
-              </button>
-              <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
-                인기순
-              </button>
-              <button type="button" className={sortState === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(2)}>
-                재생순
-              </button>
+              <div>
+                <button type="button" className={sortState === 0 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(0)}>
+                  최신순
+                </button>
+                <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
+                  선물순
+                </button>
+              </div>
+              <div>
+                <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
+                  인기순
+                </button>
+                <button type="button" className={sortState === 3 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(3)}>
+                  play 순
+                </button>
+              </div>
             </div>
           </div>
 
           <div className="each-line">
-            <div className="text">DJ 타입</div>
+            <div className="text">검색 기간</div>
             <div className="tab-wrap dj-type">
-              <button type="button" className={'tab-btn '} onClick={() => genderFunc('')}>
-                마이스타
+              <button
+                type="button"
+                className={context.clipMainDate === 0 ? 'tab-btn active' : 'tab-btn'}
+                onClick={() => DateFunc(0)}>
+                24시간
               </button>
-              <button type="button" className={'tab-btn '} onClick={() => genderFunc('')}>
-                스페셜DJ
+              <button
+                type="button"
+                className={context.clipMainDate === 1 ? 'tab-btn active' : 'tab-btn'}
+                onClick={() => DateFunc(1)}>
+                7일
               </button>
-              <button type="button" className={sortGender === 'f' ? 'tab-btn active' : 'tab-btn'} onClick={() => genderFunc('f')}>
+              <button
+                type="button"
+                className={context.clipMainDate === 2 ? 'tab-btn active' : 'tab-btn'}
+                onClick={() => DateFunc(2)}>
+                전체
+              </button>
+              {/* <button type="button" className={sortGender === 'f' ? 'tab-btn active' : 'tab-btn'} onClick={() => genderFunc('f')}>
                 여자
               </button>
               <button type="button" className={sortGender === 'm' ? 'tab-btn active' : 'tab-btn'} onClick={() => genderFunc('m')}>
                 남자
-              </button>
+              </button> */}
             </div>
           </div>
           <div className="btn-wrap">
@@ -139,28 +159,33 @@ const PopupWrap = styled.div`
       .text {
         font-size: 16px;
         font-weight: 600;
-        margin-bottom: 10px;
+        margin-bottom: 6px;
         color: #000;
       }
 
       .tab-wrap {
         display: flex;
-        flex-direction: row;
+        flex-wrap: wrap;
         justify-content: space-between;
+        > div {
+          display: flex;
+          flex-direction: column;
+          width: 49.3%;
+        }
         .tab-btn {
           border: 1px solid #e0e0e0;
           border-radius: 12px;
           font-size: 14px;
           color: #000;
           background: #fff;
-          width: 32.3%;
+          width: 100%;
           line-height: 42px;
           height: 42px;
           align-content: space-between;
           box-sizing: border-box;
           text-align: center;
           font-weight: bold;
-
+          margin-top: 4px;
           &.active {
             border-color: #632beb;
             color: #632beb;
@@ -170,7 +195,7 @@ const PopupWrap = styled.div`
         &.dj-type {
           flex-wrap: wrap;
           .tab-btn {
-            width: 49.3%;
+            width: 32.5%;
             margin-bottom: 4px;
           }
         }

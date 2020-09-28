@@ -12,7 +12,7 @@
     }
   }
   .myClip {
-    padding: 16px 3% 16px 3%;
+    padding: 28px 3% 16px 3%;
     &__title {
       padding-bottom: 18px;
       font-size: 18px;
@@ -33,24 +33,49 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border-right: 1px solid #e0e0e0;
+      border-right: 1px solid rgba(230, 230, 230, 0.8);
+
       &:last-child {
         border: none;
       }
       em {
         display: block;
+        width: 33px;
+        height: 33px;
         font-size: 14px;
         letter-spacing: -0.35px;
         font-weight: normal;
         font-style: normal;
         color: #424242;
+        border-radius: 50%;
+      }
+      &.upload {
+        em {
+          background: #1f9de6 url('./static/upload.svg') no-repeat center center / 24px;
+        }
+      }
+      &.listen {
+        em {
+          background: #ffa929 url('./static/listen.svg') no-repeat center center / 24px;
+        }
+      }
+      &.like {
+        em {
+          background: #ec455f url('./static/like.svg') no-repeat center center / 24px;
+        }
+      }
+      &.gift {
+        em {
+          background: #994bff url('./static/gift.svg') no-repeat center center / 24px;
+        }
       }
       span {
-        margin-top: 8px;
-        font-size: 18px;
+        margin-top: 6px;
+        font-size: 14px;
         font-weight: 600;
-        letter-spacing: -0.45px;
-        color: #632beb;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: #424242;
       }
     }
   }
@@ -58,7 +83,14 @@
     padding: 16px 3%;
     // border-bottom: 4px solid #ebebeb;
     background-color: #fff;
-
+    .btn__refresh {
+      position: relative;
+      margin-left: 8px;
+      &--active {
+        margin-left: 8px;
+        animation: anim 0.36s;
+      }
+    }
     &__title {
       display: flex;
       justify-content: space-between;
@@ -76,7 +108,7 @@
         margin-left: auto;
       }
       &__date {
-        margin-right: 8px;
+        //margin-right: 8px;
         font-size: 12px;
         line-height: 1.08;
         letter-spacing: -0.3px;
@@ -841,6 +873,8 @@
     }
   }
   .clipBanner {
+    padding: 0 16px;
+
     .slideWrap {
       position: relative;
 

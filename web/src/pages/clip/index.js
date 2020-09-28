@@ -32,6 +32,7 @@ export default (props) => {
   let history = useHistory()
   //fixed category
   const recomendRef = useRef()
+  const myClipRef = useRef()
   const rankClipRef = useRef()
   const BannerSectionRef = useRef()
   const categoryBestClipRef = useRef()
@@ -74,15 +75,18 @@ export default (props) => {
   // scroll fixed func
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 50
+    const myClipNode = myClipRef.current
     const recomendClipNode = recomendRef.current
     const BannerSectionNode = BannerSectionRef.current
     const rankClipNode = rankClipRef.current
     const categoryBestClipNode = categoryBestClipRef.current
+    const myClipHeight = myClipNode.clientHeight
     const RecomendHeight = recomendClipNode.clientHeight
     const categoryBestHeight = categoryBestClipNode.clientHeight
     const rankClipHeight = rankClipNode.clientHeight
     const BannerSectionHeight = BannerSectionNode.clientHeight
-    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight
+    const TopSectionHeight =
+      ClipHeaderHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight + myClipHeight
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
@@ -113,6 +117,7 @@ export default (props) => {
       })
     }
   }
+  console.log(clipType)
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -161,10 +166,16 @@ export default (props) => {
   const makePoupularList = () => {
     return popularList.map((item, idx) => {
       if (!item) return null
-      const {bgImg, clipNo, type, nickName} = item
+      const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
         <li className="recomClipItem" key={`popular-` + idx} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
-          <span className="recomClipItem__subject">고민/사연</span>
+          <span className="recomClipItem__subject">
+            {clipType.map((ClipTypeItem, index) => {
+              if (ClipTypeItem.value === subjectType) {
+                return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
+              }
+            })}
+          </span>
           <div className="recomClipItem__thumb">
             <img src={bgImg['thumb336x336']} alt="thumb" />
           </div>
@@ -283,19 +294,22 @@ export default (props) => {
     })
   }
   // initial category
-  const refreshCategory = () => {
+  const refreshCategory = (type) => {
     // setClipTypeActive('')
     if (scrollY !== 0) {
       window.scrollTo(0, scrollY)
     }
     // context.action.updateClipSort(0)
     //context.action.updateClipGender('')
-    if (context.clipRefresh) {
+    if (context.clipRefresh && type === 'category') {
       context.action.updatClipRefresh(false)
       // context.action.updateClipGender(false)
+    } else if (type === 'popular') {
+      fetchDataListPopular()
     } else {
       context.action.updatClipRefresh(true)
     }
+
     if (refreshAni) {
       setRefreshAni(false)
     } else {
@@ -350,29 +364,29 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
-
+  console.log(context.clipMainSort)
   return (
     <Layout {...props} status="no_gnb">
-      <Header title="클립" type="noBack" />
+      <Header title="클립" type="noBack" description="clip" />
       <div id="clipPage">
-        <div className="myClip">
+        <div className="myClip" ref={myClipRef}>
           <h2 className="myClip__title">내 클립 현황</h2>
           <ul className="myClipWrap">
-            <li>
-              <em>등록 게시물</em>
-              <span>10</span>
+            <li className="upload">
+              <em></em>
+              <span>10건</span>
             </li>
-            <li>
-              <em>청취횟수</em>
-              <span>2181</span>
+            <li className="listen">
+              <em></em>
+              <span>2181회</span>
             </li>
-            <li>
-              <em>받은 좋아요</em>
-              <span>581</span>
+            <li className="like">
+              <em></em>
+              <span>581개</span>
             </li>
-            <li>
-              <em>받은 선물</em>
-              <span>10</span>
+            <li className="gift">
+              <em></em>
+              <span>10별</span>
             </li>
           </ul>
         </div>
@@ -382,8 +396,13 @@ export default (props) => {
               {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
               <div className="recomClip__title__rightSide">
                 <span className="recomClip__title__date">2020.09.17 00:00</span>
-                <button className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`} onClick={() => refreshCategory()}>
-                  <img src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'} alt="인기 리프래시 아이콘 이미지" />
+                <button
+                  className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
+                  onClick={() => refreshCategory('popular')}>
+                  <img
+                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                    alt="인기클립 리프래시 아이콘 이미지"
+                  />
                 </button>
               </div>
             </div>
@@ -394,7 +413,7 @@ export default (props) => {
         )}
 
         <div className="clipBanner">
-          <BannerList ref={BannerSectionRef} bannerPosition="9" />
+          <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
         <div className="rankClip" ref={rankClipRef}>
           <div className="rankClip__title">
@@ -414,7 +433,7 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory()}>최신 클립</h2>
+              <h2 onClick={() => refreshCategory('category')}>최신 클립</h2>
               <div className="sortTypeWrap">
                 {/* <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
                   최신순
@@ -426,7 +445,10 @@ export default (props) => {
               <div className="sequenceBox">
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setDetailPopup(true)}>
-                    <span>최신순</span>
+                    {context.clipMainSort === 0 && <span>최신순</span>}
+                    {context.clipMainSort === 1 && <span>선물순</span>}
+                    {context.clipMainSort === 3 && <span>play 순</span>}
+                    {context.clipMainSort === 4 && <span>인기순</span>}
                     <img src={filterIcon} alt="카테고리 필터 이미지" />
                   </button>
                 </div>
@@ -445,7 +467,7 @@ export default (props) => {
                   </button>
                   <button
                     className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
-                    onClick={() => refreshCategory()}>
+                    onClick={() => refreshCategory('category')}>
                     <img
                       src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
                       alt="카테고리 리프래시 아이콘 이미지"
