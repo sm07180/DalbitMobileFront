@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Header from 'components/ui/new_header'
 import Cropper from 'react-cropper'
 import '../../mypage/setting.scss'
+import ImageRotation from './static/ico-rotation.svg'
 
 export default (props) => {
   const context = useContext(Context)
@@ -50,9 +51,12 @@ export default (props) => {
         <Header>
           <div className="btnBox">
             {/* <button onClick={cropImage}>Crop</button> */}
-            <button onClick={rotateImage}>Rotate</button>
+            <button onClick={cropImage}>회전</button>
+            {/* <button onClick={rotateImage}>
+              <img src={ImageRotation} alt="회전" />
+            </button> */}
             <button className="btn__ok" onClick={submit}>
-              자르기
+              저장
             </button>
           </div>
         </Header>

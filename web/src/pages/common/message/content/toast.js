@@ -30,13 +30,37 @@ const Toast = styled.section`
   position: fixed;
   bottom: 16px;
   left: 16px;
+  opacity: 0;
+
+  animation-name: toastFadeInOut;
+  animation-duration: 2.4s;
+  animation-timing-function: ease-in-out;
+
   width: calc(100% - 32px);
   border-radius: 12px;
   height: auto;
-  padding: 16px;
+  padding: 10px;
   text-align: center;
   font-size: 16px;
-  background: rgba(0, 0, 0, 0.5);
+  background-color: rgba(99, 43, 235, 0.9);
   color: #fff;
   z-index: 120;
+
+  @keyframes toastFadeInOut {
+    0% {
+      bottom: -50px;
+    }
+    20% {
+      bottom: 16px;
+      opacity: 1;
+    }
+    80% {
+      bottom: 16px;
+      opacity: 1;
+    }
+    100% {
+      bottom: 32px;
+      opacity: 0;
+    }
+  }
 `

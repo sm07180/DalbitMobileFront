@@ -140,16 +140,13 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          context.action.alert({
-            msg: '업로드성공',
-            title: '',
-            callback: () => {
-              setPhotoPath(res.data.path)
-              setPhotoUploading(false)
-              setActive(true)
-              context.action.updateEditImage('')
-            }
+          context.action.toast({
+            msg: '업로드성공'
           })
+          setPhotoPath(res.data.path)
+          setPhotoUploading(false)
+          setActive(true)
+          context.action.updateEditImage('')
         } else {
           context.action.alert({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
