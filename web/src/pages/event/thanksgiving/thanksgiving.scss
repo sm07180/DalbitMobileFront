@@ -1,0 +1,153 @@
+#thxGiving {
+  position: relative;
+  max-width: 640px;
+  width: 100%;
+  margin: 0 auto;
+  & > img {
+    max-width: 100%;
+  }
+
+  .title {
+    position: relative;
+    h2 {
+      font-size: 18px;
+      text-align: center;
+      line-height: 49px;
+      color: #000;
+      border-bottom: 1px solid #d2d2d2;
+    }
+    button {
+      position: absolute;
+      top: 4px;
+      right: 6px;
+      width: 40px;
+      height: 40px;
+      background: url(../static/close.svg) center no-repeat;
+      text-indent: -999999px;
+    }
+  }
+
+  .middleWrap {
+    height: 68px;
+    padding: 0 30px;
+    background: #312a6b;
+    .middle {
+      &__inner {
+        display: flex;
+        height: 68px;
+        padding: 6px;
+        border-radius: 12px;
+        border: 2px solid #ffe45d;
+        background: #1b1455;
+        p {
+          width: calc(100% - 190px);
+          margin-left: 24px;
+          padding-left: 42px;
+          background: url('https://image.dalbitlive.com/event/thxgiving/ic_moon.png') no-repeat left center;
+          background-size: 32px;
+          font-size: 24px;
+          color: #ffe45d;
+          line-height: 52px;
+          span {
+            float: right;
+            font-size: 30px;
+            line-height: 48px;
+            color: #fff;
+            vertical-align: top;
+            em {
+              padding-left: 5px;
+              line-height: 52px;
+              vertical-align: top;
+              font-style: normal;
+              font-size: 21px;
+            }
+          }
+        }
+        button {
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  .bottomWrap {
+    position: absolute;
+    bottom: 15.5%;
+    width: 100%;
+    height: auto;
+    text-align: center;
+    button {
+      max-width: 364px;
+      width: 60%;
+      margin-top: 30px;
+      img {
+        max-width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    .middleWrap {
+      height: 56px;
+
+      .middle__inner {
+        height: 56px;
+        p {
+          width: calc(100% - 135px);
+          margin-left: 12px;
+          padding-left: 32px;
+          font-size: 20px;
+          background-size: 24px;
+          letter-spacing: -0.4px;
+          line-height: 40px;
+          span {
+            font-size: 26px;
+            line-height: 40px;
+            em {
+              font-size: 18px;
+              line-height: 40px;
+            }
+          }
+        }
+        button {
+          img {
+            height: 40px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 490px) {
+    .middleWrap {
+      height: 50px;
+      padding: 0 15px;
+
+      .middle__inner {
+        height: 50px;
+        p {
+          width: calc(100% - 110px);
+          margin-left: 6px;
+          padding-left: 25px;
+          font-size: 17px;
+          background-size: 18px;
+          letter-spacing: -0.6px;
+          line-height: 32px;
+          span {
+            font-size: 20px;
+            line-height: 32px;
+            em {
+              font-size: 14px;
+              line-height: 32px;
+            }
+          }
+        }
+        button {
+          img {
+            height: 34px;
+          }
+        }
+      }
+    }
+  }
+}

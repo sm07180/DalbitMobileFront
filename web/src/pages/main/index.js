@@ -22,6 +22,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
+import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
@@ -97,6 +98,11 @@ export default (props) => {
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
   const customHeader = JSON.parse(Api.customHeader)
+
+  const eventPopupStartTime = new Date('2020-09-25T09:00:00')
+  const eventPopupEndTime = new Date('2020-10-04T23:59:59')
+  const nowTime = new Date()
+  const [eventPop, setEventPop] = useState(false)
 
   const [payState, setPayState] = useState(false)
 
@@ -371,6 +377,21 @@ export default (props) => {
     }
   }
 
+  async function fetchThxgivingCheck() {
+    const res = await Api.getChooseokCheck()
+
+    if (res.result === 'success') {
+      setEventPop(true)
+      const {memNo} = globalCtx.token
+      const item = localStorage.getItem(`popup_event${memNo}`)
+      if (item !== null && item === memNo) {
+        setEventPop(false)
+      }
+    } else {
+      setEventPop(false)
+    }
+  }
+
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
@@ -418,7 +439,7 @@ export default (props) => {
 
   useEffect(() => {
     fetchMainPopupData('6')
-
+    fetchThxgivingCheck()
     return () => {
       globalCtx.action.updateAttendStamp(false)
     }
@@ -812,6 +833,10 @@ export default (props) => {
           />
         )}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
+        {Utility.getCookie('popup_event') === undefined &&
+          eventPop &&
+          nowTime >= eventPopupStartTime &&
+          nowTime < eventPopupEndTime && <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>
     </Layout>
