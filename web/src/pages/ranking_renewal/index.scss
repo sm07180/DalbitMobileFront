@@ -716,6 +716,7 @@
       position: relative;
       border-radius: 20px;
       margin-top: -20px;
+      box-sizing: border-box;
     }
 
     .benefitSize {
@@ -1059,7 +1060,7 @@
   }
 
   .levelListWrap {
-    padding: 0 16px;
+    padding: 0 16px 16px 16px;
     background-color: $lighterGray;
   }
 

@@ -53,6 +53,32 @@ function RankListTop() {
       }
     }
 
+    if (formState.rankType === 1) {
+      if (status) {
+        timeNow = <div className="realLabelDj"></div>
+        if (TopBoxRef.current) {
+          TopBoxRef.current.className = 'TopBox isLabel'
+        }
+      } else {
+        timeNow = ''
+        if (TopBoxRef.current) {
+          TopBoxRef.current.className = 'TopBox'
+        }
+      }
+    } else if (formState.rankType === 2) {
+      if (status) {
+        timeNow = <div className="realLabelFan"></div>
+        if (TopBoxRef.current) {
+          TopBoxRef.current.className = 'TopBox isLabel'
+        }
+      } else {
+        timeNow = ''
+        if (TopBoxRef.current) {
+          TopBoxRef.current.className = 'TopBox'
+        }
+      }
+    }
+
     // if (formState.rankType === 1) {
     //   if (formState.dateType === 1) {
     //     if (year === formYear && month === formMonth && formDate === date) {
