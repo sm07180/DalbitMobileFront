@@ -45,7 +45,7 @@ export default () => {
     if (context.customHeader['os'] === OS_TYPE['IOS']) {
       return webkit.messageHandlers.openInApp.postMessage('')
     } else {
-      return history.push('/pay/store')
+      return history.push('/pay/store?event=3')
     }
   }
 
@@ -53,6 +53,9 @@ export default () => {
     if (context.token.isLogin) fetchMyPurchase()
     context.action.updateSetBack(true)
     context.action.updateBackFunction({name: 'event'})
+    return () => {
+      context.action.updateSetBack(false)
+    }
   }, [])
 
   useEffect(() => {

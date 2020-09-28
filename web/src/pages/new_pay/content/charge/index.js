@@ -43,8 +43,9 @@ export default () => {
   const formTag = useRef(null)
 
   //결제 data 셋팅
-  const {name, price, itemNo, webview} = qs.parse(location.search)
-  const pageCode = webview === 'new' ? '2' : '1'
+  const {name, price, itemNo, webview, event} = qs.parse(location.search)
+  let pageCode = webview === 'new' ? '2' : '1'
+  if (event === '3') pageCode = '3'
 
   let payMethod = [
     {type: '무통장 입금(계좌이체)', code: 'coocon'},
