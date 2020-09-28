@@ -37,7 +37,8 @@ export default (props) => {
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getClipList({
       // slctType: context.clipMainSort,
-      slctType: selectType,
+      slctType: context.clipMainSort,
+      dateType: context.clipMainDate,
       subjectType: clipTypeActive,
       djType: 0,
       gender: '',
@@ -172,7 +173,7 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, selectType])
+  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, context.clipMainDate])
 
   //----------------------------------------------------------------
   useEffect(() => {

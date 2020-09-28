@@ -13,18 +13,122 @@
       align-items: center;
     }
   }
+  .myClip {
+    padding: 28px 3% 16px 3%;
+    &__title {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-bottom: 18px;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.17;
+      color: #000;
+      &:after {
+        display: block;
+        content: '';
+        margin-left: 4px;
+        width: 24px;
+        height: 24px;
+        background: url('./static/infomyclip.svg');
+      }
+    }
+  }
+  .myClipWrap {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    li {
+      position: relative;
+      width: 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-right: 1px solid rgba(230, 230, 230, 0.8);
 
+      &:last-child {
+        border: none;
+      }
+      em {
+        display: block;
+        width: 33px;
+        height: 33px;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: normal;
+        font-style: normal;
+        color: #424242;
+        border-radius: 50%;
+      }
+      &.upload {
+        em {
+          background: #1f9de6 url('./static/upload.svg') no-repeat center center / 24px;
+        }
+      }
+      &.listen {
+        em {
+          background: #ffa929 url('./static/listen.svg') no-repeat center center / 24px;
+        }
+      }
+      &.like {
+        em {
+          background: #ec455f url('./static/like.svg') no-repeat center center / 24px;
+        }
+      }
+      &.gift {
+        em {
+          background: #994bff url('./static/gift.svg') no-repeat center center / 24px;
+        }
+      }
+      span {
+        margin-top: 6px;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: -0.35px;
+        text-align: center;
+        color: #424242;
+      }
+    }
+  }
   .recomClip {
     padding: 16px 16px;
     //border-bottom: 4px solid #ebebeb;
     background-color: $white;
-
+    .btn__refresh {
+      position: relative;
+      margin-left: 8px;
+      &--active {
+        margin-left: 8px;
+        animation: anim 0.36s;
+      }
+    }
     &__title {
-      padding-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 32px;
+      margin-bottom: 12px;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
       color: $black;
+
+      &__rightSide {
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+      }
+      &__date {
+        //margin-right: 8px;
+        font-size: 12px;
+        line-height: 1.08;
+        letter-spacing: -0.3px;
+        text-align: left;
+        font-weight: normal;
+        color: #757575;
+      }
     }
 
     .recomClipBox {
@@ -34,12 +138,29 @@
       .recomClipItem {
         overflow: hidden;
         position: relative;
-        width: 32%;
+        width: 31%;
         margin-bottom: 10px;
-        margin-right: 2%;
+        margin-right: 3%;
         border-radius: 16px;
         &:nth-child(3n) {
           margin-right: 0;
+        }
+        &__subject {
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-bottom-right-radius: 16px;
+          width: auto;
+          padding: 4px 6px;
+          box-sizing: border-box;
+          background-color: #000000;
+          font-size: 11px;
+          font-weight: normal;
+          font-stretch: normal;
+          font-style: normal;
+          letter-spacing: -0.28px;
+          text-align: center;
+          color: #ffffff;
         }
         &__thumb {
           img {
@@ -67,32 +188,44 @@
     }
   }
 
-  .recentClip {
+  .rankClip {
     padding: 20px 0 19px 0;
-    border-bottom: 4px solid #ebebeb;
+
+    // border-bottom: 4px solid #ebebeb;
     &__title {
       padding: 0 16px 12px 16px;
+      display: flex;
+      align-items: center;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
       letter-spacing: normal;
       text-align: left;
       color: $black;
+      button {
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-left: 2px;
+        background: url('./static/arrow_right.svg');
+      }
     }
     &__btn {
       font-size: 14px;
     }
-
+    .swiper-container {
+      margin-left: 16px;
+    }
     .slideWrap {
       position: relative;
-      width: 24%;
-      margin-left: 2%;
+      width: 92px;
+
       flex-shrink: 0;
 
       &__thumb {
         img {
           width: 100%;
-          border-radius: 50%;
+          border-radius: 20px;
         }
       }
 
@@ -122,8 +255,8 @@
       }
 
       &__nicknName {
-        margin-top: 4px;
-        font-size: 12px;
+        margin-top: 12px;
+        // font-size: 12px;
         text-align: center;
         width: 100%;
         text-overflow: ellipsis;
@@ -131,6 +264,13 @@
         white-space: nowrap;
         word-wrap: normal;
         color: $greishGray;
+        font-size: 16px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.13;
+        letter-spacing: normal;
+        text-align: center;
       }
     }
   }
