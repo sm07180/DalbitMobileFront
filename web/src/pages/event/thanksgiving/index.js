@@ -66,7 +66,8 @@ export default () => {
           <h2>한가위 달 구매 이벤트</h2>
           <button
             onClick={() => {
-              history.push('/')
+              // history.push('/')
+              window.location.href = '/'
             }}>
             닫기
           </button>
