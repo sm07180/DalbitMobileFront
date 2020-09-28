@@ -484,7 +484,7 @@ export default (props) => {
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory('category')}>최신 클립</h2>
+              <h2 onClick={() => refreshCategory('category')}>실시간 클립</h2>
               {/* <h2 onClick={() => refreshCategory()}>최신 클립</h2> */}
 
               {/* <div className="sortTypeWrap">
