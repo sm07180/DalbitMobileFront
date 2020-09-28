@@ -833,10 +833,9 @@ export default (props) => {
           />
         )}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-        {Utility.getCookie('popup_event') === undefined &&
-          eventPop &&
-          nowTime >= eventPopupStartTime &&
-          nowTime < eventPopupEndTime && <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />}
+        {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
+          <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
+        )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>
     </Layout>
