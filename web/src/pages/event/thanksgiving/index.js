@@ -13,6 +13,12 @@ export default () => {
   let history = useHistory()
   const context = useContext(Context)
   const [myDal, setMyDal] = useState(0)
+  const [payState, setPayState] = useState(false)
+
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
 
   const fetchGetBonus = async () => {
     const res = await Api.getChooseokBonus()
@@ -53,6 +59,10 @@ export default () => {
     if (context.token.isLogin) fetchMyPurchase()
     context.action.updateSetBack(true)
     context.action.updateBackFunction({name: 'event'})
+    if (sessionStorage.getItem('pay_info') !== null) {
+      const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
+      setPayState(payInfo)
+    }
     return () => {
       context.action.updateSetBack(false)
     }
@@ -98,6 +108,7 @@ export default () => {
           </button>
         </div>
       </div>
+      {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
     </>
   )
 }
