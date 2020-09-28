@@ -2614,6 +2614,35 @@ export default class API {
       data: data
     })
   }
+
+  /* 추석이벤트 */
+  static getChooseokCheck = async () => {
+    return await ajax({
+      url: '/event/chooseok/check',
+      method: 'GET'
+    })
+  }
+
+  static getChooseokDalCheck = async () => {
+    return await ajax({
+      url: '/event/chooseok/freeDal/check',
+      method: 'GET'
+    })
+  }
+
+  static getChooseokPurchase = async () => {
+    return await ajax({
+      url: '/event/chooseok/purchase/select',
+      method: 'GET'
+    })
+  }
+
+  static getChooseokBonus = async () => {
+    return await ajax({
+      url: '/event/chooseok/purchase/bonus',
+      method: 'GET'
+    })
+  }
 }
 
 API.customHeader = null

@@ -58,12 +58,7 @@ export default (props) => {
       return list.map((list, idx) => {
         const {nickNm, profImg, roomNo, memNo, isNew, isSpecial, gender, fanCnt} = list
         return (
-          <div
-            key={idx}
-            className="liveList__item"
-            onClick={() => {
-              props.update({select: {...list, type: props.type}})
-            }}>
+          <div key={idx} className="liveList__item" onClick={() => linkMypage(memNo)}>
             {/* 해당 페이지는 main list clasdsName을 동일하게 사용하고 있습니다. */}
             <div className="broadcast-img" style={{backgroundImage: `url(${profImg && profImg['thumb190x190']})`}} />
 
@@ -118,7 +113,6 @@ export default (props) => {
             <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg && bjProfImg['thumb190x190']})`}} />
             {os === 3 && <i className="iconPc">PC</i>}
             {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
-
             <div className="broadcast-content">
               <div className="title">
                 <p className="category">

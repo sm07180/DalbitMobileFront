@@ -244,8 +244,8 @@ export default (props) => {
     resistanceRatio: 0
   }
   //뱃지
-  const BadgeSlide = profile.fanBadgeList.map((item, index) => {
-    if (!profile.hasOwnProperty('fanBadgeList')) return null
+  const BadgeSlide = profile.liveBadgeList.map((item, index) => {
+    if (!profile.hasOwnProperty('liveBadgeList')) return null
     const {text, icon, startColor, endColor} = item
     //-----------------------------------------------------------------------
     return (
@@ -353,12 +353,9 @@ export default (props) => {
         )}
 
         {token && token.isLogin && showAdmin && (
-          <button
-            onClick={() => {
-              history.push(`/admin/clip`)
-            }}>
+          <a href="/admin/clip">
             <img src={AdminIcon} alt="관리자아이콘" />
-          </button>
+          </a>
         )}
       </div>
 
@@ -447,7 +444,7 @@ export default (props) => {
         )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-        {profile.fanBadgeList && profile.fanBadgeList.length > 0 ? (
+        {profile.liveBadgeList && profile.liveBadgeList.length > 0 ? (
           <div className="badgeWrap">
             <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
           </div>

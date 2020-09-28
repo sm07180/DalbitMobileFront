@@ -11,6 +11,8 @@ export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
 
+  const [playClipNo, setPlayClipNo] = useState(sessionStorage.getItem('play_clip_no'))
+
   const {isEdit, list, clipType, sortType} = playListCtx
 
   const fetchDataClipType = async () => {
@@ -47,18 +49,41 @@ export default () => {
     }
   }
 
+  useEffect(() => {
+    window.addEventListener('storage', () => {
+      alert('스토리지변경')
+      setPlayClipNo(sessionStorage.getItem('play_clip_no'))
+    })
+
+    return () => {
+      window.removeEventListener('storage', () => {
+        alert('스토리지변경')
+        setPlayClipNo(sessionStorage.getItem('play_clip_no'))
+      })
+    }
+  }, [])
+
   const createList = () => {
     if (list.length === 0) return null
     return list.map((item, idx) => {
       const {clipNo, title, nickName, subjectType, filePlayTime, bgImg, gender} = item
       const genderClassName = gender === 'f' ? 'female' : gender === 'm' ? 'male' : ''
       return (
-        <li id="playListItem" key={`${idx}-playList`}>
+        <li id="playListItem" className={`${clipNo === playClipNo ? 'playing' : 'off'}`} key={`${idx}-playList`}>
           <div
             className="playListItem__thumb"
             onClick={() => {
               clipPlay(clipNo)
             }}>
+            {clipNo === playClipNo && (
+              <div className="playingbarWrap">
+                <div className="playingbar">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            )}
             <img src={bgImg['thumb80x80']} alt="thumb" />
             <span className="playListItem__thumb--playTime">{filePlayTime}</span>
           </div>

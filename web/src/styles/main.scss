@@ -52,6 +52,7 @@
   .gnb-logo {
     width: 103px;
     font-size: 0;
+    margin-left: -30px;
 
     img {
       width: 100%;
@@ -238,10 +239,10 @@
           background-position: center;
           .medal-img {
             position: absolute;
-            top: -5px;
-            left: -6px;
-            width: 26px;
-            height: 30px;
+            bottom: -8px;
+            right: 0px;
+            width: 36px;
+            height: 36px;
           }
         }
         .nickname {
@@ -751,13 +752,17 @@
       }
 
       &__iconWrap {
-        em {
+        .iconWrapper {
+          display: flex;
           position: absolute;
           left: 16px;
           top: 8px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+        }
+        em {
+          display: block;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
           width: 52px;
           height: 18px;
           margin-right: 4px;
@@ -766,6 +771,7 @@
           font-size: 11px;
           line-height: 18px;
           border-radius: 20px;
+          text-align: center;
         }
         .eventIcon {
           background: $yellow;
@@ -1122,9 +1128,16 @@
         letter-spacing: -0.35px;
       }
       .nickname {
-        color: #757575;
-        font-size: 12px;
-        letter-spacing: -0.3px;
+        > em {
+          max-width: 100px;
+          color: #757575;
+          font-size: 12px;
+          font-style: normal;
+          letter-spacing: -0.3px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
       }
       .detail {
         display: flex;
@@ -1158,9 +1171,9 @@
   }
   &__flex {
     position: relative;
-    width: calc(50% - 2px);
-    min-height: 170px;
-    margin: 0 0 4px 4px;
+    width: calc(50% - 8px);
+    min-height: 156px;
+    margin: 0 0 16px 16px;
     border-radius: 16px;
     background-color: $lighterGray;
     background-size: cover;
@@ -1233,12 +1246,13 @@
       .special-icon {
         width: 16px;
         height: 16px;
-        border-radius: 50%;
-        line-height: 16px;
-        font-size: 7px;
-        text-align: center;
-        color: $white;
-        background-color: $red;
+        background: url('../pages/menu/static/new_s.svg');
+        // border-radius: 50%;
+        // line-height: 16px;
+        // font-size: 7px;
+        // text-align: center;
+        // color: $white;
+        // background-color: $red;
       }
       .all-icon {
         width: 24px;
@@ -1269,24 +1283,42 @@
       right: 6px;
       display: flex;
       z-index: 1;
-
+      align-items: center;
       .entry-img {
         display: block;
+        margin-left: 4px;
       }
       .count-txt {
         color: $white;
-        font-size: 13px;
-        text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+        font-size: 12px;
+        font-weight: normal;
+        letter-spacing: -0.3px;
       }
     }
     .bottom-wrap {
+      width: 100%;
       position: absolute;
-      bottom: 6px;
-      left: 6px;
+      bottom: 10px;
+      left: 10px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      // align-items: center;
       z-index: 1;
-
+      .roomTitle {
+        width: 80%;
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.14;
+        letter-spacing: -0.42px;
+        text-align: left;
+        color: #ffffff;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
       .pc-icon {
         color: $white;
         font-size: 11px;
@@ -1313,8 +1345,16 @@
       }
 
       .dj-nickname {
+        display: block;
+        width: 80%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         color: $white;
+        font-weight: normal;
         font-size: 12px;
+        line-height: 1.08;
+        letter-spacing: -0.36px;
       }
     }
   }
@@ -1421,6 +1461,7 @@
         top: 6px;
         right: 6px;
         display: flex;
+
         z-index: 1;
 
         .entry-img {
@@ -2063,5 +2104,38 @@
     .close-btn {
       top: 5px;
     }
+  }
+}
+.badgeIcon {
+  // margin-right: 4px;
+  &.topImg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    color: #fff;
+    border-radius: 14px;
+    box-sizing: border-box;
+    height: auto;
+    padding: 0 6px;
+    font-size: 10px;
+    > img {
+      margin-right: 2px;
+    }
+  }
+  &.text {
+    width: 52px;
+    height: 18px;
+    border-radius: 14px;
+    box-sizing: border-box;
+    border: solid 1px #c4c4c4;
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 18px;
+    letter-spacing: -0.25px;
+    text-align: center;
+    color: #424242;
   }
 }

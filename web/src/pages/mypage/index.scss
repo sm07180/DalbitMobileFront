@@ -14,7 +14,7 @@
     min-height: 300px;
     .closeBtn {
       position: absolute;
-      top: -60px;
+      top: -46px;
       right: 20px;
       width: 32px;
       height: 32px;
@@ -32,7 +32,7 @@
     }
     .adminBtn {
       position: absolute;
-      top: -60px;
+      top: -46px;
       left: 12px;
       z-index: 16;
     }
@@ -40,7 +40,7 @@
       display: flex;
       align-items: center;
       position: absolute;
-      top: -60px;
+      top: -46px;
       left: 20px;
       z-index: 16;
       button {
@@ -53,7 +53,7 @@
     }
     .reportIcon {
       position: absolute;
-      top: -60px;
+      top: -46px;
       width: 32px;
       height: 32px;
       left: 20px;
@@ -71,7 +71,7 @@
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       background-color: $white;
-      z-index: 3;
+      z-index: 4;
       padding: 0 24px 20px;
       .profile-content {
         text-align: center;
@@ -379,6 +379,7 @@
           .swiper-slide {
             display: block;
             width: auto;
+            min-width: 72px;
             height: auto;
           }
           .swiper-wrapper {
@@ -421,7 +422,7 @@
           }
 
           .fan-badge img {
-            width: 42px;
+            width: auto;
             height: 26px;
           }
           .fan-badge span {

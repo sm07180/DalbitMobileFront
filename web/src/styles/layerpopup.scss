@@ -11,6 +11,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  &.event {
+    background-color: rgba(0, 0, 0, 0);
+  }
   .popup {
     position: relative;
     width: 640px;
@@ -250,10 +253,20 @@
       text-align: right;
       box-sizing: border-box;
       .contents {
+        position: relative;
         a {
           border-radius: 20px;
           display: block;
           overflow: hidden;
+          img {
+            width: 100%;
+          }
+        }
+        .event__btn {
+          width: 240px;
+          position: absolute;
+          left: calc(50% - 120px);
+          bottom: 16px;
           img {
             width: 100%;
           }

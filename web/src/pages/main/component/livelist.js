@@ -8,6 +8,8 @@ import {Context} from 'context'
 import noBgAudioIcon from '../static/audio_s.svg'
 import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
+import maleIconW from '../static/gender_m_w.svg'
+import femaleIconW from '../static/gender_w_w.svg'
 import hitIcon from '../static/ico_hit_g.svg'
 import likeIcon from '../static/ico_like_g_s.svg'
 import boostIcon from '../static/ico_like_g.svg'
@@ -17,7 +19,7 @@ import Util from 'components/lib/utility.js'
 // static
 import PeopleIcon from '../static/people_g_s.svg'
 import EntryImg from '../static/new_person_w_s.svg'
-
+import EntryImgW from '../static/person_w.svg'
 const makeContents = (props) => {
   const context = useContext(Context)
   const {list, liveListType, categoryList} = props
@@ -38,6 +40,7 @@ const makeContents = (props) => {
       boostCnt,
       rank,
       os,
+      liveBadgeList,
       isNew,
       totalCnt
     } = list
@@ -55,7 +58,6 @@ const makeContents = (props) => {
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
         {os === 3 && <i className="iconPc">PC</i>}
-        {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
 
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
@@ -97,7 +99,36 @@ const makeContents = (props) => {
             <div className="nickname">
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}
-              {bjNickNm}
+              {liveBadgeList &&
+                liveBadgeList.length !== 0 &&
+                liveBadgeList.map((item, idx) => {
+                  return (
+                    <React.Fragment key={idx + `badge`}>
+                      {item.icon !== '' ? (
+                        <div
+                          className="badgeIcon topImg"
+                          style={{
+                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                            marginRight: '4px'
+                          }}>
+                          <img src={item.icon} style={{height: '16px'}} />
+                          {item.text}
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                            marginRight: '4px'
+                          }}
+                          className="badgeIcon text">
+                          {item.text}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  )
+                })}
+              {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+              <em>{bjNickNm}</em>
             </div>
             <div className="detail">
               <div className="value">
@@ -132,18 +163,19 @@ const makeContents = (props) => {
         ) : (
           <div className="broadcast-content">
             <div className="top-status">
-              {entryType === 2 ? (
+              {/* {entryType === 2 ? (
                 <span className="twenty-icon">20</span>
               ) : entryType === 1 ? (
                 <span className="fan-icon">FAN</span>
               ) : (
                 <span className="all-icon">ALL</span>
-              )}
-              {isSpecial && <span className="special-icon">S</span>}
+              )} */}
+              {isSpecial && <span className="special-icon"></span>}
+              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIconW : femaleIconW} />}
             </div>
             <div className="entry-count">
-              <img className="entry-img" src={EntryImg} />
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
+              <img className="entry-img" src={EntryImgW} />
             </div>
             <div className="bottom-wrap">
               {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
@@ -151,6 +183,7 @@ const makeContents = (props) => {
                 <img className="type-icon" src={noBgAudioIcon} />
               </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
+              <span className="roomTitle">{title}</span>
             </div>
           </div>
         )}
