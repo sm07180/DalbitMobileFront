@@ -13,6 +13,7 @@ import Layout from 'pages/common/layout'
 import ChartList from './components/chart_list'
 import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
+import BannerList from '../main/component/bannerList'
 //scss
 import './clip.scss'
 //static
@@ -32,6 +33,7 @@ export default (props) => {
   //fixed category
   const recomendRef = useRef()
   const recentClipRef = useRef()
+  const BannerSectionRef = useRef()
   const categoryBestClipRef = useRef()
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [scrollY, setScrollY] = useState(0)
@@ -51,7 +53,6 @@ export default (props) => {
   }
   const swiperParamsCategory = {
     slidesPerView: 'auto',
-    slidesPerView: 'auto'
   }
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
@@ -73,12 +74,14 @@ export default (props) => {
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 50
     const recomendClipNode = recomendRef.current
+    const BannerSectionNode = BannerSectionRef.current
     const recentClipNode = recentClipRef.current
     const categoryBestClipNode = categoryBestClipRef.current
     const RecomendHeight = recomendClipNode.clientHeight
     const categoryBestHeight = categoryBestClipNode.clientHeight
     const recentClipHeight = recentClipNode.clientHeight
-    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + recentClipHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const TopSectionHeight = ClipHeaderHeight + RecomendHeight + categoryBestHeight + BannerSectionHeight + recentClipHeight
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
@@ -360,6 +363,9 @@ export default (props) => {
         ) : (
           <div ref={recomendRef}></div>
         )}
+        <div className="clipBanner">
+          <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
+        </div>
         <div className="recentClip" ref={recentClipRef}>
           <h2 className="recentClip__title">최신 클립</h2>
           {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeLatestList()}</Swiper> : <></>}
