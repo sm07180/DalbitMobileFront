@@ -64,7 +64,7 @@ export default () => {
       setPayState(payInfo)
     }
     return () => {
-      context.action.updateSetBack(false)
+      context.action.updateSetBack(null)
     }
   }, [])
 
