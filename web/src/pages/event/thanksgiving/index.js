@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import './thanksgiving.scss'
 import Api from 'context/api'
+import LayerPopupPay from './layer_popup_pay'
 // context
 import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
