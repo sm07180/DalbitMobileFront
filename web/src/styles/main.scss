@@ -2033,15 +2033,15 @@
     align-items: center;
     justify-content: center;
     width: auto;
+    height: auto;
+    padding: 0 6px 0 3px;
     color: #fff;
     border-radius: 14px;
     box-sizing: border-box;
-    height: auto;
-    padding: 0 6px;
-    font-size: 10px;
-    > img {
-      margin-right: 2px;
-    }
+    font-size: 12px;
+    font-weight: normal;
+
+    line-height: 1.2;
   }
   &.text {
     width: 52px;

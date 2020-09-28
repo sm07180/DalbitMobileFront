@@ -244,7 +244,7 @@ export default (props) => {
     resistanceRatio: 0
   }
   //뱃지
-  const BadgeSlide = profile.liveBadgeList.map((item, index) => {
+  const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList')) return null
     const {text, icon, startColor, endColor} = item
     //-----------------------------------------------------------------------
