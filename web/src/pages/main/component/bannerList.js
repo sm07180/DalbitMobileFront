@@ -129,7 +129,7 @@ export default React.forwardRef((props, ref) => {
   useEffect(() => {}, [])
 
   return (
-    <div ref={ref} className="main-banner">
+    <div ref={ref} className="bannerWrap">
       <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
         <div className="bannerNumber"></div>
         {list && (

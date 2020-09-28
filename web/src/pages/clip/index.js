@@ -52,7 +52,7 @@ export default (props) => {
     }
   }
   const swiperParamsCategory = {
-    slidesPerView: 'auto',
+    slidesPerView: 'auto'
   }
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
@@ -364,7 +364,7 @@ export default (props) => {
           <div ref={recomendRef}></div>
         )}
         <div className="clipBanner">
-          <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
+          <BannerList ref={BannerSectionRef} bannerPosition="10" />
         </div>
         <div className="recentClip" ref={recentClipRef}>
           <h2 className="recentClip__title">최신 클립</h2>
