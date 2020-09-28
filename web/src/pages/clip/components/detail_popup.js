@@ -7,14 +7,15 @@ import {Context} from 'context'
 export default function detailPopup(props) {
   const {setDetailPopup} = props
   const context = useContext(Context)
-  const [sortState, setSortState] = useState(0)
-  const [sortGender, setSortGender] = useState('')
+  const [sortState, setSortState] = useState(context.clipMainSort)
+  const [sortDate, setSortDate] = useState(context.clipMainDate)
   const closePopup = () => {
     setDetailPopup(false)
   }
 
   const applyClick = () => {
     context.action.updateClipSort(sortState)
+    context.action.updateClipDate(sortDate)
     setDetailPopup(false)
     // resetFetchList()
 
@@ -24,7 +25,7 @@ export default function detailPopup(props) {
     setSortState(type)
   }
   const DateFunc = (type) => {
-    context.action.updateClipDate(type)
+    setSortDate(type)
   }
   useEffect(() => {
     // setSortState(context.clipMainSort)
@@ -65,22 +66,13 @@ export default function detailPopup(props) {
           <div className="each-line">
             <div className="text">검색 기간</div>
             <div className="tab-wrap dj-type">
-              <button
-                type="button"
-                className={context.clipMainDate === 0 ? 'tab-btn active' : 'tab-btn'}
-                onClick={() => DateFunc(0)}>
+              <button type="button" className={sortDate === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(1)}>
                 24시간
               </button>
-              <button
-                type="button"
-                className={context.clipMainDate === 1 ? 'tab-btn active' : 'tab-btn'}
-                onClick={() => DateFunc(1)}>
+              <button type="button" className={sortDate === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(2)}>
                 7일
               </button>
-              <button
-                type="button"
-                className={context.clipMainDate === 2 ? 'tab-btn active' : 'tab-btn'}
-                onClick={() => DateFunc(2)}>
+              <button type="button" className={sortDate === 0 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(0)}>
                 전체
               </button>
               {/* <button type="button" className={sortGender === 'f' ? 'tab-btn active' : 'tab-btn'} onClick={() => genderFunc('f')}>

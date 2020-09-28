@@ -14,11 +14,22 @@
   .myClip {
     padding: 28px 3% 16px 3%;
     &__title {
+      display: flex;
+      align-items: center;
+      position: relative;
       padding-bottom: 18px;
       font-size: 18px;
       font-weight: 800;
       line-height: 1.17;
       color: #000;
+      &:after {
+        display: block;
+        content: '';
+        margin-left: 4px;
+        width: 24px;
+        height: 24px;
+        background: url('./static/infomyclip.svg');
+      }
     }
   }
   .myClipWrap {
@@ -886,6 +897,8 @@
         height: auto;
         .banner {
           img {
+            height: 65px;
+            border-radius: 12px;
             width: 100%;
           }
         }

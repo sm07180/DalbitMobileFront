@@ -10,7 +10,6 @@ import {OS_TYPE} from '../../../context/config'
 import {Hybrid} from 'context/hybrid'
 
 export default React.forwardRef((props, ref) => {
-  console.log(props.type)
   const globalCtx = useContext(Context)
   const history = useHistory()
   const [bannerView, setBannerView] = useState(false)
@@ -57,13 +56,7 @@ export default React.forwardRef((props, ref) => {
 
       return (
         <div className="banner" key={`banner-${idx}`}>
-          <img
-            src={bannerUrl}
-            alt={title}
-            linkurl={linkUrl}
-            linktype={linkType}
-            style={{borderRadius: props.type === 'clip' ? '12px' : '', height: props.type === 'clip' ? '65px' : 'auto'}}
-          />
+          <img src={bannerUrl} alt={title} linkurl={linkUrl} linktype={linkType} />
         </div>
       )
     })

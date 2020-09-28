@@ -18,6 +18,7 @@ import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
 import AlarmPop from 'pages/common/alarm_pop'
 import ClipOpen from 'pages/common/clip_open'
+import ClipInfo from 'pages/common/myclip_info'
 import ClipEvent from 'pages/common/clip_event'
 
 //
@@ -103,7 +104,12 @@ export default (props) => {
             <ClipOpen />
           </>
         )
-
+      case 'MYCLIP':
+        return (
+          <>
+            <ClipInfo />
+          </>
+        )
       case 'ALARM':
         return (
           <>

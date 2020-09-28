@@ -86,7 +86,7 @@ const GlobalProvider = (props) => {
   const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
   //clip
   const [clipMainSort, setClipMainSort] = useState(0)
-  const [clipMainDate, setClipMainDate] = useState('')
+  const [clipMainDate, setClipMainDate] = useState(2)
   const [clipRefresh, setClipRefresh] = useState(false)
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])

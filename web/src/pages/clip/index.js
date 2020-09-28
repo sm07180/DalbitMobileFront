@@ -370,7 +370,13 @@ export default (props) => {
       <Header title="클립" type="noBack" description="clip" />
       <div id="clipPage">
         <div className="myClip" ref={myClipRef}>
-          <h2 className="myClip__title">내 클립 현황</h2>
+          <h2
+            className="myClip__title"
+            onClick={() => {
+              context.action.updatePopup('MYCLIP')
+            }}>
+            내 클립 현황
+          </h2>
           <ul className="myClipWrap">
             <li className="upload">
               <em></em>
