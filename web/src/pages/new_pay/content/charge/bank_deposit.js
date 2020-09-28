@@ -24,7 +24,7 @@ import icoDown from '../../static/arrow_down_g.svg'
 export default () => {
   const location = useLocation()
   const history = useHistory()
-  const {prdtNm, prdtPrice, itemNo, webview} = location.state
+  const {prdtNm, prdtPrice, itemNo, webview, event} = location.state
   const context = useContext(Context)
 
   //state
@@ -99,7 +99,8 @@ export default () => {
           name: data.rcptNm,
           bankNo: data.accountNo,
           phone: data.phoneNo,
-          webview: webview
+          webview: webview,
+          event: event
         }
       })
     } else {

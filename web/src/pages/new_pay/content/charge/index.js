@@ -80,7 +80,8 @@ export default () => {
           prdtNm: name,
           prdtPrice: price,
           itemNo: itemNo,
-          webview: webview
+          webview: webview,
+          event: event
         }
       })
     }

@@ -18,7 +18,7 @@ import Header from 'components/ui/new_header'
 export default () => {
   const location = useLocation()
   const history = useHistory()
-  const {itemPrice, name, bankNo, phone, webview} = location.state
+  const {itemPrice, name, bankNo, phone, webview, event} = location.state
   const pageCode = webview === 'new' ? '2' : '1'
 
   const handleClick = () => {
@@ -26,7 +26,11 @@ export default () => {
       Hybrid('CloseLayerPopup')
       Hybrid('ClosePayPopup')
     } else {
-      history.push('/')
+      if (event === '3') {
+        history.push('/event/thanksgiving')
+      } else {
+        history.push('/')
+      }
     }
   }
 
