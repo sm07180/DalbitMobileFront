@@ -334,10 +334,14 @@ export default (props) => {
       context.action.updatClipRefresh(false)
       // context.action.updateClipGender(false)
     } else if (type === 'popular') {
-      let newList = popularList.filter(function (x) {
-        return randomList.indexOf(x) < 0
-      })
-      setRandomList(newList.slice(0, 6))
+      if (popularList.length > 6) {
+        let newList = popularList.filter(function (x) {
+          return randomList.indexOf(x) < 0
+        })
+        setRandomList(newList.slice(0, 6))
+      } else {
+        fetchDataListPopular()
+      }
     } else {
       context.action.updatClipRefresh(true)
     }
