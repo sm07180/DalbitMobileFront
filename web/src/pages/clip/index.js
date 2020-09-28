@@ -7,6 +7,7 @@ import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import Utility, {printNumber, addComma} from 'components/lib/utility'
 //layout
 import Layout from 'pages/common/layout'
 // components
@@ -73,6 +74,8 @@ export default (props) => {
   const [clipTypeActive, setClipTypeActive] = useState('')
   const [refreshAni, setRefreshAni] = useState(false)
   const [randomList, setRandomList] = useState([])
+  const [myData, setMyDate] = useState([])
+  const [date, setDate] = useState('')
   // scroll fixed func
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 50
@@ -101,7 +104,8 @@ export default (props) => {
     const {result, data, message} = await Api.getPopularList({})
     if (result === 'success') {
       setPopularList(data.list)
-      setRandomList(shuffle(data.list).slice(0, 6))
+      setDate(data.checkDate)
+      setRandomList(data.list.slice(0, 6))
       setPopularType(data.type)
     } else {
       context.action.alert({
@@ -109,7 +113,17 @@ export default (props) => {
       })
     }
   }
-
+  //api func
+  const fetchMyData = async () => {
+    const {result, data, message} = await Api.getMyClipData({})
+    if (result === 'success') {
+      setMyDate(data)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   const fetchDataListLatest = async () => {
     const {result, data, message} = await Api.getLatestList({})
     if (result === 'success') {
@@ -167,11 +181,6 @@ export default (props) => {
   }
   //
   function shuffle(a) {
-    // console.log(popularList.filter((item,idx)=>{
-    //   return(
-
-    //   )
-    // }))
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
 
@@ -179,12 +188,10 @@ export default (props) => {
     }
     return a
   }
-  useEffect(() => {
-    // setRandomList(shuffle(popularList).slice(0, 6))
-  }, [])
+
   // make contents
   const makePoupularList = () => {
-    return popularList.slice(0, 6).map((item, idx) => {
+    return randomList.map((item, idx) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
@@ -327,15 +334,10 @@ export default (props) => {
       context.action.updatClipRefresh(false)
       // context.action.updateClipGender(false)
     } else if (type === 'popular') {
-      //fetchDataListPopular()
-
       let newList = popularList.filter(function (x) {
         return randomList.indexOf(x) < 0
       })
-      setRandomList(popularList.slice(0, 6))
-      setPopularList(newList)
-      fetchDataListPopular()
-      console.log('sadas', newList.slice(0, 6))
+      setRandomList(newList.slice(0, 6))
     } else {
       context.action.updatClipRefresh(true)
     }
@@ -382,6 +384,9 @@ export default (props) => {
     fetchDataListPopular()
     fetchDataListLatest()
     fetchDataClipType()
+    if (context.token.isLogin === true) {
+      fetchMyData()
+    }
   }, [])
   //---------------------------------------
   useEffect(() => {
@@ -399,39 +404,45 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <Header title="클립" type="noBack" description="clip" />
       <div id="clipPage">
-        <div className="myClip" ref={myClipRef}>
-          <h2
-            className="myClip__title"
-            onClick={() => {
-              context.action.updatePopup('MYCLIP')
-            }}>
-            내 클립 현황
-          </h2>
-          <ul className="myClipWrap">
-            <li className="upload">
-              <em></em>
-              <span>10건</span>
-            </li>
-            <li className="listen">
-              <em></em>
-              <span>2181회</span>
-            </li>
-            <li className="like">
-              <em></em>
-              <span>581개</span>
-            </li>
-            <li className="gift">
-              <em></em>
-              <span>10별</span>
-            </li>
-          </ul>
-        </div>
+        {context.token.isLogin === true ? (
+          <div className="myClip" ref={myClipRef}>
+            <h2
+              className="myClip__title"
+              onClick={() => {
+                context.action.updatePopup('MYCLIP')
+              }}>
+              내 클립 현황
+            </h2>
+
+            <ul className="myClipWrap">
+              <li className="upload">
+                <em></em>
+                <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
+              </li>
+              <li className="listen">
+                <em></em>
+                <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
+              </li>
+              <li className="like">
+                <em></em>
+                <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
+              </li>
+              <li className="gift">
+                <em></em>
+                <span>{myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별</span>
+              </li>
+            </ul>
+          </div>
+        ) : (
+          <div ref={myClipRef}></div>
+        )}
+
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef}>
             <div className="recomClip__title">
               {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
               <div className="recomClip__title__rightSide">
-                <span className="recomClip__title__date">2020.09.17 00:00</span>
+                <span className="recomClip__title__date">{date}</span>
                 <button
                   className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
                   onClick={() => refreshCategory('popular')}>
@@ -452,9 +463,13 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
         <div className="rankClip" ref={rankClipRef}>
-          <div className="rankClip__title">
+          {/* <div className="rankClip__title">
             클립 랭킹
             <button onClick={() => history.push(`/rank`)} />
+          </div> */}
+          <div className="rankClip__title">
+            최신 클립
+            {/* <button onClick={() => history.push(`/rank`)} /> */}
           </div>
           {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
         </div>

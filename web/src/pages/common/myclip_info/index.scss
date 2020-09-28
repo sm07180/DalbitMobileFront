@@ -42,9 +42,16 @@
   ul {
     display: flex;
     flex-direction: column;
+    li {
+      margin-bottom: 20px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+    }
     span {
       display: flex;
       align-items: center;
+
       font-size: 16px;
       font-weight: 600;
       color: #000000;
@@ -61,8 +68,24 @@
           background: #1f9de6 url('./static/upload.svg') no-repeat center center / 24px;
         }
       }
+      &.listen {
+        &:before {
+          background: #ffa929 url('./static/listen.svg') no-repeat center center / 24px;
+        }
+      }
+      &.like {
+        &:before {
+          background: #ec455f url('./static/like.svg') no-repeat center center / 24px;
+        }
+      }
+      &.gift {
+        &:before {
+          background: #994bff url('./static/gift.svg') no-repeat center center / 24px;
+        }
+      }
     }
     p {
+      margin-top: 6px;
       font-size: 14px;
       font-weight: normal;
       letter-spacing: normal;

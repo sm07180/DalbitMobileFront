@@ -2489,6 +2489,9 @@ export default class API {
     return await ajax({url: '/event/004/apply', method: 'POST', data})
   }
 
+  static getMyClipData = async (params) => {
+    return await ajax({url: '/clip/myclip', method: 'GET', params})
+  }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"
