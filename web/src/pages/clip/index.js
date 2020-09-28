@@ -81,15 +81,13 @@ export default (props) => {
     const myClipNode = myClipRef.current
     const recomendClipNode = recomendRef.current
     const BannerSectionNode = BannerSectionRef.current
-    const recentClipNode = recentClipRef.current
     const rankClipNode = rankClipRef.current
     const categoryBestClipNode = categoryBestClipRef.current
     const myClipHeight = myClipNode.clientHeight
     const RecomendHeight = recomendClipNode.clientHeight
     const categoryBestHeight = categoryBestClipNode.clientHeight
-    const recentClipHeight = recentClipNode.clientHeight
-    const BannerSectionHeight = BannerSectionNode.clientHeight
     const rankClipHeight = rankClipNode.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight
     const TopSectionHeight =
       ClipHeaderHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight + myClipHeight
     if (window.scrollY >= TopSectionHeight) {
