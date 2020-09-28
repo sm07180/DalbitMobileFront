@@ -382,6 +382,11 @@ export default (props) => {
 
     if (res.result === 'success') {
       setEventPop(true)
+      const {memNo} = globalCtx.token
+      const item = localStorage.getItem(`popup_event${memNo}`)
+      if (item !== null && item === memNo) {
+        setEventPop(false)
+      }
     } else {
       setEventPop(false)
     }
