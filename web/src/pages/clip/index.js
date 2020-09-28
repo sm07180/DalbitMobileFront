@@ -192,8 +192,8 @@ export default (props) => {
 
     setTimeout(() => {
       window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
-      changeActiveSort(0)
-    }, 50)
+      setSelectType(0)
+    }, 150)
   }
   useEffect(() => {
     //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
