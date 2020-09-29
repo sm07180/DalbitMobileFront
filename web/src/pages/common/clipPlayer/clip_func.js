@@ -6,11 +6,12 @@ import Utility from 'components/lib/utility'
 
 export const clipJoin = (data, context) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-    if (Utility.getCookie('play_clip_no') !== undefined || Utility.getCookie('play_clip_no') === data.clipNo) {
-      Hybrid('CloseLayerPopup')
-    } else {
-      Hybrid('ClipPlayerJoin', data)
-    }
+    Hybrid('ClipPlayerJoin', data)
+    // if (Utility.getCookie('play_clip_no') !== undefined || Utility.getCookie('play_clip_no') === data.clipNo) {
+    //   Hybrid('CloseLayerPopup')
+    // } else {
+    //   Hybrid('ClipPlayerJoin', data)
+    // }
   } else {
     context.action.confirm({
       msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
