@@ -7,8 +7,6 @@ import Utility from 'components/lib/utility'
 export const clipJoin = (data, context) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     Hybrid('ClipPlayerJoin', data)
-    var str = 'test'
-    NewHybrid('ClipPlay', str, data)
   } else {
     context.action.confirm({
       msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
@@ -24,13 +22,27 @@ export const clipJoin = (data, context) => {
   }
 }
 
-// export const clipProfileJoin = (data, type, context) => {
-//   if(type === 'list'){
-//     NewHybrid('ClipPlay','listPlay', data)
-//   }else if(type === ''){
-
-//   }
-// }
+export const clipProfileJoin = (data, type, context) => {
+  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    if (type === 'list') {
+      Hybrid('ClipPlayerJoin', data)
+    } else if (type === 'player') {
+      NewHybrid('ClipPlay', str, data)
+    }
+  } else {
+    context.action.confirm({
+      msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
+      callback: () => {
+        clipExit(context)
+        sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
+        Hybrid('ExitRoom', '')
+        context.action.updatePlayer(false)
+        clipJoin(data, context)
+      }
+    })
+  }
+}
 
 export const clipExit = (context) => {
   Utility.setCookie('clip-player-info', '', -1)
