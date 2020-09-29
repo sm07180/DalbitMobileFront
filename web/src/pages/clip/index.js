@@ -77,7 +77,7 @@ export default (props) => {
   const [date, setDate] = useState('')
   // scroll fixed func
   const windowScrollEvent = () => {
-    const ClipHeaderHeight = 50
+    const ClipHeaderHeight = 120
     const myClipNode = myClipRef.current
     const recomendClipNode = recomendRef.current
     const BannerSectionNode = BannerSectionRef.current
@@ -89,7 +89,7 @@ export default (props) => {
     const rankClipHeight = rankClipNode.clientHeight
     const BannerSectionHeight = BannerSectionNode.clientHeight
     const TopSectionHeight =
-      ClipHeaderHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight + myClipHeight
+      ClipHeaderHeight + myClipHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
