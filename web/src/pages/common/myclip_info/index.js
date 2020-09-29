@@ -14,20 +14,20 @@ export default () => {
       <div className="content">
         <ul>
           <li>
-            <span className="upload">등록 게시물 수</span>
-            <p>본인이 등록한 클립 게시물 중 공개 설정된 클립의 개수 입니다.</p>
+            <span className="upload">등록 클립 수</span>
+            <p>등록한 클립 중 공개 설정된 클립의 수</p>
           </li>
           <li>
             <span className="listen">청취 횟수</span>
-            <p>본인이 등록한 클립 게시물의 유저들의 청취 횟수 입니다.</p>
+            <p>등록한 모든 클립의 청취 횟수</p>
           </li>
           <li>
             <span className="like">받은 좋아요</span>
-            <p>본인이 등록한 모든 클립 게시물이 받은 좋아요 수를 합산한 개수입니다.</p>
+            <p>등록한 모든 클립의 받은 좋아요 수</p>
           </li>
           <li>
             <span className="gift">받은 선물</span>
-            <p>본인이 등록한 클립 게시물이 받은 선물(별)의 수를 합산한 개수입니다.</p>
+            <p>등록한 모든 클립의 받은 선물 수</p>
           </li>
         </ul>
       </div>

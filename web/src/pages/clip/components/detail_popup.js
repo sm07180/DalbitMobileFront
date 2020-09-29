@@ -57,7 +57,7 @@ export default function detailPopup(props) {
                   인기순
                 </button>
                 <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
-                  play 순
+                  재생순
                 </button>
               </div>
             </div>

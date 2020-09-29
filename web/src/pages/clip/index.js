@@ -112,6 +112,22 @@ export default (props) => {
       })
     }
   }
+  //
+  function shuffle(a) {
+    // console.log(popularList.filter((item,idx)=>{
+    //   return(
+
+    //   )
+    // }))
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      console.log(j)
+      ;[a[i], a[j]] = [a[j], a[i]]
+    }
+    // setRandomList(a)
+    return a
+  }
+  //
   //api func
   const fetchMyData = async () => {
     const {result, data, message} = await Api.getMyClipData({})
@@ -177,15 +193,6 @@ export default (props) => {
         })
       }
     }
-  }
-  //
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-
-      ;[a[i], a[j]] = [a[j], a[i]]
-    }
-    return a
   }
 
   // make contents
@@ -337,7 +344,7 @@ export default (props) => {
         let newList = popularList.filter(function (x) {
           return randomList.indexOf(x) < 0
         })
-        setRandomList(newList.slice(0, 6))
+        setRandomList(shuffle(newList).slice(0, 6))
       } else {
         fetchDataListPopular()
       }
@@ -445,7 +452,7 @@ export default (props) => {
             <div className="recomClip__title">
               {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
               <div className="recomClip__title__rightSide">
-                <span className="recomClip__title__date">{date}</span>
+                <span className="recomClip__title__date">매일 00시, 12시 갱신</span>
                 <button
                   className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
                   onClick={() => refreshCategory('popular')}>
@@ -503,7 +510,7 @@ export default (props) => {
                   <button type="button" onClick={() => setDetailPopup(true)}>
                     {context.clipMainSort === 1 && <span>최신순</span>}
                     {context.clipMainSort === 3 && <span>선물순</span>}
-                    {context.clipMainSort === 4 && <span>play 순</span>}
+                    {context.clipMainSort === 4 && <span>재생순</span>}
                     {context.clipMainSort === 2 && <span>인기순</span>}
                     <img src={filterIcon} alt="카테고리 필터 이미지" />
                   </button>
