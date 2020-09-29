@@ -246,8 +246,8 @@ export default (props) => {
   //뱃지
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
-
     const {text, icon, startColor, endColor} = item
+    console.log(item)
     //-----------------------------------------------------------------------
     return (
       <div className="badgeSlide" key={index}>
@@ -445,11 +445,9 @@ export default (props) => {
         )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-
         <div className="badgeWrap">
           <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
         </div>
-
         {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
 
         <div className="fanListWrap">

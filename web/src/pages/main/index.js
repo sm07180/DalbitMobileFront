@@ -779,7 +779,7 @@ export default (props) => {
                     />
                   </button>
                   <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`} onClick={RefreshFunc}>
-                    <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg" alt="새로고침" />
+                    <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.png" alt="새로고침" />
                   </button>
                 </div>
               </div>
