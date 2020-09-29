@@ -452,7 +452,7 @@ export default (props) => {
             <div className="recomClip__title">
               {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
               <div className="recomClip__title__rightSide">
-                <span className="recomClip__title__date">{date}</span>
+                <span className="recomClip__title__date">매일 00시, 12시 갱신</span>
                 <button
                   className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
                   onClick={() => refreshCategory('popular')}>
