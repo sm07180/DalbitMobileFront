@@ -71,7 +71,7 @@
       border-top-left-radius: 20px;
       border-top-right-radius: 20px;
       background-color: $white;
-      z-index: 3;
+      z-index: 4;
       padding: 0 24px 20px;
       .profile-content {
         text-align: center;
@@ -379,6 +379,7 @@
           .swiper-slide {
             display: block;
             width: auto;
+            min-width: 72px;
             height: auto;
           }
           .swiper-wrapper {
@@ -421,7 +422,7 @@
           }
 
           .fan-badge img {
-            width: 42px;
+            width: auto;
             height: 26px;
           }
           .fan-badge span {
@@ -547,6 +548,12 @@
           justify-content: center;
 
           &__cupidNick {
+            max-width: calc(100% - 96px);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+            display: block;
             font-size: 14px;
             font-weight: 800;
             line-height: 26px;

@@ -83,10 +83,18 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (sessionStorage.getItem('webview') === 'new') {
-    mypageNavList = [
-      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
-    ]
+    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+        {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+      ]
+    } else {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+      ]
+    }
   } else {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},

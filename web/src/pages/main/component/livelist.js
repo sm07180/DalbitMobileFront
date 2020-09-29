@@ -40,6 +40,7 @@ const makeContents = (props) => {
       boostCnt,
       rank,
       os,
+      liveBadgeList,
       isNew,
       totalCnt
     } = list
@@ -57,7 +58,6 @@ const makeContents = (props) => {
         onClick={() => alertCheck(roomNo)}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
         {os === 3 && <i className="iconPc">PC</i>}
-        {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
 
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
@@ -99,7 +99,36 @@ const makeContents = (props) => {
             <div className="nickname">
               {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}
-              {bjNickNm}
+              {liveBadgeList &&
+                liveBadgeList.length !== 0 &&
+                liveBadgeList.map((item, idx) => {
+                  return (
+                    <React.Fragment key={idx + `badge`}>
+                      {item.icon !== '' ? (
+                        <div
+                          className="badgeIcon topImg"
+                          style={{
+                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                            marginRight: '4px'
+                          }}>
+                          <img src={item.icon} style={{height: '16px'}} />
+                          {item.text}
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                            marginRight: '4px'
+                          }}
+                          className="badgeIcon text">
+                          {item.text}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  )
+                })}
+              {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+              <em>{bjNickNm}</em>
             </div>
             <div className="detail">
               <div className="value">

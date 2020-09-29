@@ -37,14 +37,16 @@ export default (props) => {
     currentPage = next ? ++currentPage : currentPage
     const res = await Api.getClipList({
       // slctType: context.clipMainSort,
-      slctType: selectType,
+      slctType: context.clipMainSort,
+      dateType: context.clipMainDate,
       subjectType: clipTypeActive,
       djType: 0,
       gender: '',
       page: currentPage,
-      records: 8
+      records: 10
     })
     if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+      // setList(res.data.list)
       if (res.data.list.length === 0) {
         if (!next) {
           setList([])
@@ -171,7 +173,7 @@ export default (props) => {
   }
   useEffect(() => {
     fetchDataList()
-  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, selectType])
+  }, [context.clipMainSort, context.clipRefresh, clipTypeActive, context.clipMainDate])
 
   //----------------------------------------------------------------
   useEffect(() => {
@@ -179,7 +181,7 @@ export default (props) => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [nextList])
+  }, [nextList, clipTypeActive])
   //-------------------------------------------------------------render
   if (chartListType === 'detail') {
     return (

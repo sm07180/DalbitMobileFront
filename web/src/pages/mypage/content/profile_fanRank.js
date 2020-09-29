@@ -10,11 +10,13 @@ import {Context} from 'context'
 
 //scroll
 import {Scrollbars} from 'react-custom-scrollbars'
-import NoResult from 'pages/main/component/NoResult.js'
+import NoResult from 'components/ui/new_noResult'
+import GuidePopup from './guide_user.js'
 
 import goldMedal from '../static/profile/medal_gold_m@2x.png'
 import silverMedal from '../static/profile/medal_silver_m@2x.png'
 import bronzeMedal from '../static/profile/medal_bronze_m@2x.png'
+import hintIcon from '../static/hint.svg'
 
 export default (props) => {
   const {webview} = qs.parse(location.search)
@@ -33,6 +35,7 @@ export default (props) => {
   const [select, setSelect] = useState('')
   const [fanListType, setFanListType] = useState(1) //1: 최근, 2: 누적
   const [tabType, setTabType] = useState(type === 'tabGood' ? 'good' : 'recent') //recent, accrue, good
+  const [detailPopup, setDetailPopup] = useState(false)
 
   //api
   const fetchData = async () => {
@@ -126,6 +129,27 @@ export default (props) => {
     }
   }
 
+  // #layer pop func
+  const popStateEvent = (e) => {
+    if (e.state === null) {
+      setDetailPopup(false)
+    } else if (e.state === 'layer') {
+      setDetailPopup(true)
+    }
+  }
+  // #layer pop
+  useEffect(() => {
+    if (detailPopup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+      }
+    } else if (!detailPopup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+      }
+    }
+  }, [detailPopup])
+
   useEffect(() => {
     /* popup떳을시 scroll 막는 코드 */
     document.body.style.overflow = 'hidden'
@@ -155,13 +179,16 @@ export default (props) => {
           <h2 className="title">랭킹</h2>
 
           <div className="innerTabWrap">
+            <button className="innerTabWrap__guide" onClick={() => setDetailPopup(true)}>
+              <img src={hintIcon} />
+            </button>
             <div
               className={`innerTabWrap__tab ${tabType === 'recent' ? 'innerTabWrap__tab--active' : ''}`}
               onClick={() => {
                 setFanListType(1)
                 setTabType('recent')
               }}>
-              최근
+              최근 팬
             </div>
             <div
               className={`innerTabWrap__tab ${tabType === 'accrue' ? 'innerTabWrap__tab--active' : ''}`}
@@ -169,7 +196,7 @@ export default (props) => {
                 setFanListType(2)
                 setTabType('accrue')
               }}>
-              누적
+              누적 팬
             </div>
             <div
               className={`innerTabWrap__tab ${tabType === 'good' ? 'innerTabWrap__tab--active' : ''}`}
@@ -222,7 +249,10 @@ export default (props) => {
                   })}
                 </>
               ) : (
-                <NoResult />
+                <NoResult
+                  type="default"
+                  text={tabType === 'recent' ? '최근 3개월 간 선물한 팬이 없습니다.' : '선물한 팬이 없습니다.'}
+                />
               )}
             </ul>
           ) : (
@@ -273,11 +303,12 @@ export default (props) => {
                   })}
                 </>
               ) : (
-                <NoResult />
+                <NoResult type="default" text="좋아요를 보낸 회원이 없습니다." />
               )}
             </ul>
           )}
         </div>
+        {detailPopup && <GuidePopup setDetailPopup={setDetailPopup} />}
       </HoleWrap>
     </>
   )
@@ -347,12 +378,19 @@ const HoleWrap = styled.div`
   }
 
   .innerTabWrap {
+    position: relative;
     display: flex;
     justify-content: center;
     height: 40px;
     line-height: 40px;
     background-color: #f5f5f5;
     border-bottom: 1px solid #e0e0e0;
+
+    &__guide {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
 
     &__tab {
       padding: 0 5px;

@@ -2,7 +2,6 @@
 
 #mypageClip {
   background-color: $white;
-  height: 100vh;
   .uploadBtn {
     bottom: 16px;
     right: 16px;
@@ -56,8 +55,9 @@
   .uploadWrap {
     display: flex;
     flex-direction: column;
-    padding: 16px 0 0 16px;
+    padding: 16px 16px;
     box-sizing: border-box;
+    min-height: 100vh;
     // justify-content: center;
     // align-content: center;
     // margin-top: 120px;

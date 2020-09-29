@@ -74,3 +74,41 @@ export const Hybrid = (func, info) => {
       break
   }
 }
+
+export const NewHybrid = (func, type, info) => {
+  if (!isHybrid()) return
+
+  const customHeader = JSON.parse(Api.customHeader)
+  switch (customHeader['os']) {
+    // Android
+    case OS_TYPE['Android']: {
+      if (window.android[func] === null || window.android[func] === undefined || typeof window.android[func] !== 'function')
+        return
+      if (info === '' || info === null || info === undefined) {
+        window.android[func]()
+      } else {
+        try {
+          window.android[func](type, JSON.stringify(info))
+        } catch (e) {
+          if (func === 'openUrl' || func === 'openCall') {
+            window.android[func]('{"type":"' + type + '""url":"' + info + '"}')
+          }
+        }
+      }
+      break
+    }
+    // IOS
+    case OS_TYPE['IOS']: {
+      if (webkit === null || webkit === undefined) return
+      if (info === '' || info === null || info === undefined) {
+        //IOS는 string으로라도 넣어주어야함
+        if (webkit.messageHandlers[func]) webkit.messageHandlers[func].postMessage('')
+      } else {
+        if (webkit.messageHandlers[func]) webkit.messageHandlers[func].postMessage(type, info)
+      }
+      break
+    }
+    default:
+      break
+  }
+}

@@ -4,10 +4,14 @@ import Layout from 'pages/common/layout'
 import Api from 'context/api'
 import {List, arrayMove} from 'react-movable'
 import {PlayListStore} from '../store'
+import Utility from 'components/lib/utility'
 
 export default (props) => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
+
+  sessionStorage.setItem('play_clip_no', '101600394204306')
+  const playClipNo = sessionStorage.getItem('play_clip_no')
 
   const [isFilterOn, setIsFilterOn] = useState(false)
   const [isAllClick, setIsAllClick] = useState(false)

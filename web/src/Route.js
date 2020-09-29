@@ -19,6 +19,7 @@ const Pay = React.lazy(() => import('pages/new_pay'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
+const Event = React.lazy(() => import('pages/event'))
 
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
@@ -70,6 +71,7 @@ export default () => {
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event_proofshot" component={Proofshot} />
         <Route exact path="/event_package" component={Package} />
         <Route exact path="/event_specialdj" component={Specialdj} />
