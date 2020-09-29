@@ -28,7 +28,7 @@ export default (props) => {
 //---------------------------------------------------------------------
 const Toast = styled.section`
   position: fixed;
-  bottom: 16px;
+  bottom: 26px;
   left: 16px;
   opacity: 0;
 
