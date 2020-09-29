@@ -357,16 +357,16 @@ table {
         display: flex;
         justify-content: center;
         align-items: center;
-        bottom: 7px;
-        right: 46px;
+        bottom: 4px;
+        right: 38px;
         left: auto;
         width: 45px;
         height: 24px;
         font-size: 12px;
         letter-spacing: 3px;
-        background-color: rgba(0, 0, 0, 0.6);
+        background-color: rgba(0, 0, 0, 0.4);
         color: white;
-        border-radius: 24px;
+        border-radius: 12px;
         .swiper-pagination-total {
           font-weight: normal;
         }
@@ -376,16 +376,15 @@ table {
 
   .moreButton {
     position: absolute;
-    right: 11px;
-    bottom: 7px;
+    right: 4px;
+    bottom: 4px;
     z-index: 2;
-    width: 33px;
+    width: 32px;
     height: 24px;
-    border-radius: 24px;
-    background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
-
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.6) url('https://image.dalbitlive.com/main/200714/ico-banner-down.svg') center no-repeat;
     &.active {
-      background: $black url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
+      background: rgba(0, 0, 0, 0.6) url('https://image.dalbitlive.com/main/200714/ico-banner-up.svg') center no-repeat;
     }
   }
 
