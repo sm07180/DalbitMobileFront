@@ -100,7 +100,9 @@
     margin-left: 16px;
     &--active {
       margin-left: 16px;
-      animation: anim 0.36s;
+      img {
+        animation: anim 0.36s;
+      }
     }
     img {
       width: 100%;

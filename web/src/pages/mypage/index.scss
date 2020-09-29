@@ -548,6 +548,12 @@
           justify-content: center;
 
           &__cupidNick {
+            max-width: calc(100% - 96px);
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+            display: block;
             font-size: 14px;
             font-weight: 800;
             line-height: 26px;
