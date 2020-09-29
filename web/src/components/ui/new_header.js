@@ -5,6 +5,7 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 // static
 import closeBtn from './ic_back.svg'
+import closeBtnWhite from './ic_back_white.png'
 
 export default (props) => {
   const history = useHistory()
@@ -14,6 +15,14 @@ export default (props) => {
   if (goBack === undefined) {
     goBack = () => {
       return history.goBack()
+    }
+  }
+
+  const imgClose = () => {
+    if (type === 'blackBg') {
+      return closeBtnWhite
+    } else {
+      return closeBtn
     }
   }
 
@@ -27,7 +36,7 @@ export default (props) => {
       )}
       {(props.type !== 'noBack' || customHeader['os'] === OS_TYPE['Desktop']) && (
         <button className="close-btn" onClick={goBack}>
-          <img src={closeBtn} alt="뒤로가기" />
+          <img src={imgClose()} alt="뒤로가기" />
         </button>
       )}
     </div>

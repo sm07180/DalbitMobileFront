@@ -5,7 +5,8 @@ import styled from 'styled-components'
 import Header from 'components/ui/new_header'
 import Cropper from 'react-cropper'
 import '../../mypage/setting.scss'
-import ImageRotation from './static/ico-rotation.svg'
+import ImageRotation from './static/ico-rotation.png'
+import ImageCrop from './static/ico-crop.png'
 
 export default (props) => {
   const context = useContext(Context)
@@ -48,15 +49,13 @@ export default (props) => {
   return (
     <Content>
       <div id="imageEditor">
-        <Header>
+        <Header type="blackBg">
           <div className="btnBox">
-            {/* <button onClick={cropImage}>Crop</button> */}
-            <button onClick={cropImage}>회전</button>
-            {/* <button onClick={rotateImage}>
+            <button onClick={rotateImage}>
               <img src={ImageRotation} alt="회전" />
-            </button> */}
-            <button className="btn__ok" onClick={submit}>
-              저장
+            </button>
+            <button className="btn__ok" onClick={cropImage}>
+              <img src={ImageCrop} alt="자르기" />
             </button>
           </div>
         </Header>
@@ -82,6 +81,9 @@ export default (props) => {
           <img style={{width: '100%'}} src={cropData} alt="cropped" />
         </div>
         */}
+        <button class="btn__save" onClick={submit}>
+          저장
+        </button>
       </div>
     </Content>
   )
@@ -89,7 +91,8 @@ export default (props) => {
 
 const Content = styled.div`
   min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
   #imageEditor {
     .header-wrap {
       background: transparent;
@@ -105,6 +108,20 @@ const Content = styled.div`
           }
         }
       }
+    }
+    .btn__save {
+      position: absolute;
+      bottom: 14px;
+      width: 94%;
+      margin: 0 3%;
+      margin-top: 32px;
+      letter-spacing: -0.4px;
+      line-height: 44px;
+      font-size: 18px;
+      font-weight: bold;
+      background-color: #632beb;
+      color: #fff;
+      border-radius: 12px;
     }
   }
 `
