@@ -81,7 +81,7 @@ export default (props) => {
           <img style={{width: '100%'}} src={cropData} alt="cropped" />
         </div>
         */}
-        <button class="btn__save" onClick={submit}>
+        <button className="btn__save" onClick={submit}>
           저장
         </button>
       </div>
@@ -101,10 +101,15 @@ const Content = styled.div`
         position: absolute;
         right: 16px;
         button {
+          width: 24px;
+          height: 24px;
           margin-left: 10px;
           color: #fff;
           &:first-child {
             margin-left: 0;
+          }
+          img {
+            width: 100%;
           }
         }
       }
