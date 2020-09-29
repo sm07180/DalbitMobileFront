@@ -348,13 +348,12 @@
                 height: 12px;
                 background: $lightGray;
                 position: absolute;
-                left: 0px;
+                left: -8px;
                 top: 50%;
                 margin-top: -6px;
               }
               img {
                 width: 100%;
-                margin-left: 8px;
               }
               &.btn__refresh--active {
                 img {
@@ -375,7 +374,7 @@
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(-360deg);
+      transform: rotate(360deg);
     }
   }
   .room_cnt {
@@ -519,6 +518,9 @@
         //   background: $lightGray;
         //   margin-right: 8px;
         // }
+      }
+      .simple-list-icon {
+        margin-right: 8px;
       }
 
       .sequence-icon,
