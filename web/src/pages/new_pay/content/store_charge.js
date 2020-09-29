@@ -9,6 +9,7 @@ import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import _ from 'lodash'
 import Utility from 'components/lib/utility'
+import qs from 'query-string'
 
 //context
 import {Context} from 'context'
@@ -24,6 +25,9 @@ export default () => {
   const context = useContext(Context)
   const {profile} = context
   const history = useHistory()
+
+  let {event} = qs.parse(location.search)
+  if (event === undefined) event = 0
 
   //useState
   const [list, setList] = useState(false)
@@ -96,7 +100,7 @@ export default () => {
       const {name, price, itemNo} = selected
       history.push({
         pathname: '/pay/charge',
-        search: `?name=${name}&price=${price}&itemNo=${itemNo}`
+        search: `?name=${name}&price=${price}&itemNo=${itemNo}&event=${event}`
       })
     } else {
       history.push('/login')

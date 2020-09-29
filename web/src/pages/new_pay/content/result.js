@@ -128,7 +128,11 @@ export default () => {
         }
         // alert(JSON.stringify(payInfo))
         sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
-        window.location.href = '/'
+        if (returntype === 'store') {
+          window.location.href = '/'
+        } else if (returntype === 'chooseok') {
+          window.location.href = '/event/thanksgiving'
+        }
       }
     } else {
       if (returntype === 'room') {

@@ -1,5 +1,11 @@
 @import '../../styles/variables';
 
+$size: 20px;
+$speed: 1.3s;
+$bar-width: 3px;
+$gutter-width: 3px;
+$bar-color: white;
+
 #clipPlayList {
   position: relative;
   height: 100%;
@@ -335,5 +341,64 @@
         color: $primary;
       }
     }
+  }
+
+  &.playing {
+    .textBox__subject {
+      color: $primary;
+    }
+    .textBox__nickName {
+      color: $primary;
+    }
+    .playingbarWrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0.6);
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+    }
+    .playingbar {
+      position: absolute;
+      margin: 0 auto;
+      top: calc(50% - 10px);
+      left: calc(50% - 10px);
+      width: $size;
+      height: $size;
+
+      span {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        top: 0;
+        width: $bar-width;
+        background-color: $bar-color;
+        animation: up-down $speed infinite;
+        border-radius: 2px;
+
+        &:nth-child(2) {
+          left: $bar-width + $gutter-width;
+          animation-delay: -$speed / 3 * 2;
+        }
+
+        &:nth-child(3) {
+          left: $bar-width * 2 + $gutter-width * 2;
+          animation-delay: -$speed / 3;
+        }
+      }
+    }
+  }
+}
+
+@keyframes up-down {
+  from {
+    top: $size;
+  }
+  50% {
+    top: 4px;
+  }
+  to {
+    top: $size;
   }
 }

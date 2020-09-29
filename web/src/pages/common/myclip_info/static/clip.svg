@@ -1,0 +1,35 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient);
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #fff;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .cls-3 {
+        fill: none;
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="0.5" y1="1" x2="0.5" y2="0.427" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#febd56"/>
+      <stop offset="1" stop-color="#ec455f"/>
+    </linearGradient>
+  </defs>
+  <g id="record_w" transform="translate(-1 -1)">
+    <path id="패스_18444" data-name="패스 18444" class="cls-1" d="M12,0A12,12,0,1,1,0,12,12,12,0,0,1,12,0Z" transform="translate(1 1)"/>
+    <circle id="타원_642" data-name="타원 642" class="cls-2" cx="1.872" cy="1.872" r="1.872" transform="translate(11.128 11.128)"/>
+    <path id="패스_18372" data-name="패스 18372" class="cls-3" d="M347.268,252.134a7.456,7.456,0,0,1,7.457,7.457" transform="translate(-334.191 -246.668)"/>
+    <path id="패스_18373" data-name="패스 18373" class="cls-3" d="M346.1,268.214a7.457,7.457,0,0,1-7.457-7.457" transform="translate(-333.18 -247.679)"/>
+  </g>
+</svg>

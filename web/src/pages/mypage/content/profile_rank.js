@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import styled from 'styled-components'
 import API from 'context/api'
 import qs from 'query-string'
@@ -10,8 +10,10 @@ import silverMedal from '../static/profile/medal_silver_m@2x.png'
 import bronzeMedal from '../static/profile/medal_bronze_m@2x.png'
 import dalIcon from '../static/profile/ic_moon_s@2x.png'
 import goodIcon from '../static/profile/like_red_m@2x.png'
+import hintIcon from '../static/hint.svg'
 
-import NoResult from 'pages/main/component/NoResult.js'
+import NoResult from 'components/ui/new_noResult'
+import GuidePopup from './guide_my.js'
 
 export default (props) => {
   const context = useContext(Context)
@@ -25,6 +27,7 @@ export default (props) => {
   const [goodList, setGoodList] = useState([])
   const [fanGiftList, setFanGiftList] = useState([])
   const [select, setSelect] = useState('')
+  const [detailPopup, setDetailPopup] = useState(false)
 
   async function fetchFanRank() {
     const {result, data} = await API.mypage_fan_ranking({
@@ -149,6 +152,35 @@ export default (props) => {
     }
   }, [select])
 
+  // #layer pop func
+  const popStateEvent = (e) => {
+    if (e.state === null) {
+      setDetailPopup(false)
+    } else if (e.state === 'layer') {
+      setDetailPopup(true)
+    }
+  }
+  // #layer pop
+  useEffect(() => {
+    if (detailPopup) {
+      if (window.location.hash === '') {
+        window.history.pushState('layer', '', '/#layer')
+      }
+    } else if (!detailPopup) {
+      if (window.location.hash === '#layer') {
+        window.history.back()
+      }
+    }
+  }, [detailPopup])
+
+  useEffect(() => {
+    /* popup떳을시 scroll 막는 코드 */
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <>
       <HoleWrap>
@@ -180,6 +212,10 @@ export default (props) => {
                     onClick={() => setFanListType(2)}>
                     누적
                   </div>
+
+                  <button className="innerTabWrap__guide" onClick={() => setDetailPopup(true)}>
+                    <img src={hintIcon} />
+                  </button>
                 </div>
 
                 <ul className="rankList scrollWrap">
@@ -229,7 +265,10 @@ export default (props) => {
                       })}
                     </>
                   ) : (
-                    <NoResult />
+                    <NoResult
+                      type="default"
+                      text={fanListType === 1 ? '최근 3개월 간 선물한 팬이 없습니다.' : '선물한 팬이 없습니다.'}
+                    />
                   )}
                 </ul>
               </>
@@ -247,6 +286,10 @@ export default (props) => {
                     onClick={() => setAllListType('good')}>
                     좋아요
                   </div>
+
+                  <button className="innerTabWrap__guide" onClick={() => setDetailPopup(true)}>
+                    <img src={hintIcon} />
+                  </button>
                 </div>
 
                 {allListType === 'gift' ? (
@@ -299,7 +342,7 @@ export default (props) => {
                         })}
                       </>
                     ) : (
-                      <NoResult />
+                      <NoResult type="default" text="선물한 회원이 없습니다." />
                     )}
                   </ul>
                 ) : (
@@ -352,7 +395,7 @@ export default (props) => {
                         })}
                       </>
                     ) : (
-                      <NoResult />
+                      <NoResult type="default" text="좋아요를 보낸 회원이 없습니다." />
                     )}
                   </ul>
                 )}
@@ -360,6 +403,7 @@ export default (props) => {
             )}
           </div>
         </div>
+        {detailPopup && <GuidePopup setDetailPopup={setDetailPopup} />}
       </HoleWrap>
     </>
   )
@@ -422,12 +466,19 @@ const HoleWrap = styled.div`
   }
 
   .innerTabWrap {
+    position: relative;
     display: flex;
     justify-content: center;
     height: 40px;
     line-height: 40px;
     background-color: #f5f5f5;
     border-bottom: 1px solid #e0e0e0;
+
+    &__guide {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
 
     &__tab {
       padding: 0 5px;
