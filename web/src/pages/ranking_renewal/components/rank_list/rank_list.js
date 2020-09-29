@@ -47,8 +47,7 @@ function RankList() {
                 isSpecial,
                 roomNo,
                 memNo,
-                starCnt,
-                liveBadgeList
+                starCnt
               } = item
               let genderName
 
@@ -76,9 +75,7 @@ function RankList() {
                     <p className="myRanking__rank--ranking">{rank}</p>
                     <p className="rankingChange">
                       {upDown === 'new' ? (
-                        <span classN ame="rankingChange__new">
-                          NEW
-                        </span>
+                        <span className="rankingChange__new">NEW</span>
                       ) : upDown > 0 ? (
                         <span className="rankingChange__up">{Math.abs(upDown)}</span>
                       ) : upDown < 0 ? (
@@ -129,34 +126,6 @@ function RankList() {
                         <div className="nickNameImg">
                           {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
                           <span className={genderName}>{gender}</span>
-                          {liveBadgeList &&
-                            liveBadgeList.length !== 0 &&
-                            liveBadgeList.map((item, idx) => {
-                              return (
-                                <React.Fragment key={idx + `badge`}>
-                                  {item.icon !== '' ? (
-                                    <div
-                                      className="badgeIcon topImg"
-                                      style={{
-                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                        marginLeft: '4px'
-                                      }}>
-                                      <img src={item.icon} style={{height: '16px'}} />
-                                      {item.text}
-                                    </div>
-                                  ) : (
-                                    <div
-                                      style={{
-                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                        marginLeft: '4px'
-                                      }}
-                                      className="badgeIcon text">
-                                      {item.text}
-                                    </div>
-                                  )}
-                                </React.Fragment>
-                              )
-                            })}
                           {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                         </div>
                       </div>

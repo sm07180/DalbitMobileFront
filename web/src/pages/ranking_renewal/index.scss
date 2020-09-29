@@ -591,11 +591,12 @@
   }
 
   .nickNameBox {
+    align-items: center;
+    flex-direction: column;
     margin-top: 8px;
     font-size: 16px;
     color: $black;
     font-weight: bold;
-    line-height: 1.2;
 
     .nickNameImg {
       display: flex;
@@ -744,11 +745,6 @@
 
       &.isLabel {
         height: 322px;
-      .iconBox {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        // margin-top: 4px;
       }
 
       &__item {
@@ -788,9 +784,6 @@
             display: inline-block;
             padding-left: 22px;
           }
-        .nickNameBox {
-          // flex-direction: row;
-          // justify-content: center;
         }
 
         .TopBoxThumb {
@@ -810,13 +803,6 @@
             bottom: -15px;
             text-align: center;
             z-index: 1;
-          padding-top: 116px;
-          margin-bottom: 4px;
-          .nickName {
-            // display: flex;
-            // align-items: center;
-            // justify-content: center;
-            font-size: 18px;
           }
 
           &::after {
@@ -928,16 +914,6 @@
 
             &::after {
               content: '부회장';
-          .nickNameBox {
-            font-size: 16px;
-            // display: flex;
-            // align-items: center;
-            .iconBox {
-              display: inline-flex;
-              // align-items: center;
-              margin-left: 6px;
-              vertical-align: middle;
-              // margin-top: 0px;
             }
           }
 
@@ -1061,12 +1037,10 @@
   }
 
   .specialDj {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
     height: 16px;
-    padding: 0 4px;
-    margin-left: 2px;
+    line-height: 16px;
+    padding: 0 8px;
+    margin-left: 4px;
     border-radius: 10px;
     background-color: $red;
     font-size: 12px;
