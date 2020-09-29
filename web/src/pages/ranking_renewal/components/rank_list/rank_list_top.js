@@ -1,4 +1,4 @@
-import React, {useContext, useState, useRef} from 'react'
+import React, {useContext, useState, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
@@ -28,89 +28,32 @@ function RankListTop() {
 
   const TopBoxRef = useRef(null)
 
-  const realTimeNow = () => {
-    const formDt = formState.currentDate
-    let formYear = formDt.getFullYear()
-    let formMonth = formDt.getMonth() + 1
-    let formDate = formDt.getDate()
-
-    const cDate = new Date()
-    let year = cDate.getFullYear()
-    let month = cDate.getMonth() + 1
-    let date = cDate.getDate()
-
+  const realTimeNow = useCallback(() => {
     let timeNow
     const status = convertDateToText(formState.dateType, formState.currentDate, 0)
-    if (status) {
-      timeNow = <div className="realLabelDj"></div>
-      if (TopBoxRef.current) {
+    if (TopBoxRef.current) {
+      if (status) {
         TopBoxRef.current.className = 'TopBox isLabel'
-      }
-    } else {
-      timeNow = ''
-      if (TopBoxRef.current) {
+        if (formState.rankType === 1) {
+          timeNow = <div className="realLabelDj"></div>
+        } else if (formState.rankType === 2) {
+          timeNow = <div className="realLabelFan"></div>
+        }
+      } else {
         TopBoxRef.current.className = 'TopBox'
-      }
-    }
-
-    if (formState.rankType === 1) {
-      if (status) {
-        timeNow = <div className="realLabelDj"></div>
-        if (TopBoxRef.current) {
-          TopBoxRef.current.className = 'TopBox isLabel'
-        }
-      } else {
         timeNow = ''
-        if (TopBoxRef.current) {
-          TopBoxRef.current.className = 'TopBox'
-        }
-      }
-    } else if (formState.rankType === 2) {
-      if (status) {
-        timeNow = <div className="realLabelFan"></div>
-        if (TopBoxRef.current) {
-          TopBoxRef.current.className = 'TopBox isLabel'
-        }
-      } else {
-        timeNow = ''
-        if (TopBoxRef.current) {
-          TopBoxRef.current.className = 'TopBox'
-        }
       }
     }
 
     // if (formState.rankType === 1) {
-    //   if (formState.dateType === 1) {
-    //     if (year === formYear && month === formMonth && formDate === date) {
-    //       timeNow = <div className="realLabelDj"></div>
-    //       if (TopBoxRef.current) {
-    //         TopBoxRef.current.className = 'TopBox isLabel'
-    //       }
-    //     } else {
-    //       timeNow = ''
-    //       if (TopBoxRef.current) {
-    //         TopBoxRef.current.className = 'TopBox'
-    //       }
-    //     }
-    //   }
+    //   timeNow = <div className="realLabelDj"></div>
     // } else if (formState.rankType === 2) {
-    //   if (formState.dateType === 1) {
-    //     if (year === formYear && month === formMonth && formDate === date) {
-    //       timeNow = <div className="realLabelFan"></div>
-    //       if (TopBoxRef.current) {
-    //         TopBoxRef.current.className = 'TopBox isLabel'
-    //       }
-    //     } else {
-    //       timeNow = ''
-    //       if (TopBoxRef.current) {
-    //         TopBoxRef.current.className = 'TopBox'
-    //       }
-    //     }
-    //   }
+    //   timeNow = <div className="realLabelFan"></div>
+    // } else {
+    //   timeNow = ''
     // }
-
     return timeNow
-  }
+  }, [formState, TopBoxRef])
 
   const creatList = () => {
     const rank = rankList
@@ -129,13 +72,25 @@ function RankListTop() {
           <div className="TopBox" ref={TopBoxRef}>
             {rankResult.slice(0, 3).map((item, index) => {
               if (item === null) return <div className="TopBox__item" key={index}></div>
-              const {nickNm, profImg} = item
+              const {nickNm, profImg, memNo} = item
 
               return (
                 <div className="TopBox__item" key={index}>
                   {realTimeNow()}
 
-                  <div className={`TopBoxThumb ${formState.rankType === 1 ? 'dj' : 'fan'}`}>
+                  <div
+                    className={`TopBoxThumb ${formState.rankType === 1 ? 'dj' : 'fan'}`}
+                    onClick={() => {
+                      if (context.token.isLogin) {
+                        if (context.token.memNo === memNo) {
+                          history.push(`/menu/profile`)
+                        } else {
+                          history.push(`/mypage/${memNo}`)
+                        }
+                      } else {
+                        history.push(`/login`)
+                      }
+                    }}>
                     <img src={profImg.thumb120x120} className="TopBoxThumb__pic" />
 
                     {formState.rankType === 1 ? (

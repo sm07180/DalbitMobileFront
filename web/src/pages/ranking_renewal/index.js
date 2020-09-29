@@ -356,13 +356,9 @@ function Ranking() {
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
-              if (listWrapRef.current.classList.length === 1) {
-                listWrapRef.current.className = 'listFixed more'
-              }
+              listWrapRef.current.className = 'listFixed more'
             } else {
-              if (listWrapRef.current.classList.length === 0) {
-                listWrapRef.current.className = 'listFixed'
-              }
+              listWrapRef.current.className = 'listFixed'
             }
           } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
