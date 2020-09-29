@@ -3,8 +3,12 @@
   max-width: 640px;
   width: 100%;
   margin: 0 auto;
+  background: #1b1555;
   & > img {
     max-width: 100%;
+  }
+  > div.title {
+    background: #fff;
   }
 
   .title {
@@ -148,6 +152,14 @@
           }
         }
       }
+    }
+  }
+}
+
+.player_show {
+  #thxGiving {
+    .bottomWrap {
+      bottom: 20%;
     }
   }
 }
