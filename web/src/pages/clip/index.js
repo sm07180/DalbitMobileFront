@@ -112,6 +112,22 @@ export default (props) => {
       })
     }
   }
+  //
+  function shuffle(a) {
+    // console.log(popularList.filter((item,idx)=>{
+    //   return(
+
+    //   )
+    // }))
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      console.log(j)
+      ;[a[i], a[j]] = [a[j], a[i]]
+    }
+    // setRandomList(a)
+    return a
+  }
+  //
   //api func
   const fetchMyData = async () => {
     const {result, data, message} = await Api.getMyClipData({})
@@ -177,15 +193,6 @@ export default (props) => {
         })
       }
     }
-  }
-  //
-  function shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-
-      ;[a[i], a[j]] = [a[j], a[i]]
-    }
-    return a
   }
 
   // make contents
@@ -337,7 +344,7 @@ export default (props) => {
         let newList = popularList.filter(function (x) {
           return randomList.indexOf(x) < 0
         })
-        setRandomList(newList.slice(0, 6))
+        setRandomList(shuffle(newList).slice(0, 6))
       } else {
         fetchDataListPopular()
       }
