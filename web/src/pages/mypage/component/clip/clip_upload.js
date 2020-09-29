@@ -236,7 +236,7 @@ function ClipUpload() {
       className="uploadWrap"
       style={{
         padding: context.profile.memNo !== context.urlStr && '0',
-        height: context.profile.memNo !== context.urlStr && 'calc(100vh - 50px)',
+        minHeight: context.profile.memNo !== context.urlStr && '300px',
         backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
       }}>
       {/* <button onClick={() => history.push(`/clip/101598429926109/reply`)}>댓글테스트</button> */}
