@@ -139,7 +139,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
     } else if (dateType === 3) {
       if (year === formYear && month === formMonth) {
         return {
-          header: '이번달',
+          header: '이번달 실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (year === formYear && month - 1 === formMonth) {
@@ -155,7 +155,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
       }
     } else {
       return {
-        header: `${formYear}년`,
+        header: `${formYear}년 실시간`,
         date: '실시간 집계 중입니다.'
       }
     }

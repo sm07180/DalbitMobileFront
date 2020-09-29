@@ -3,7 +3,7 @@
 
 #ranking-page {
   // min-height: 100vh;
-  background-color: $lighterGray;
+  // background-color: $lighterGray;
   .refresh-wrap {
     display: none;
     max-height: 48px;
@@ -722,11 +722,12 @@
     .benefitSize {
       position: absolute;
       bottom: 28px;
-      left: 100px;
+      left: 50%;
       width: 128px;
       height: 20px;
       display: inline-block;
       vertical-align: top;
+      margin-left: -64px;
 
       img {
         width: 100%;

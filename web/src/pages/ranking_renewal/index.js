@@ -451,7 +451,7 @@ function Ranking() {
         {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef}>
             {empty === true ? (
-              <NoResult text="조회된 결과가 없습니다." />
+              <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
               <div className="rankTop3Box">
                 <MyProfile fetching={fetching} />
@@ -472,13 +472,17 @@ function Ranking() {
             <LikeListWrap empty={empty} />
           </div>
         )}
-        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
-          <div ref={bottomWrapRef}>
-            <div className={`${context.token.isLogin ? 'isMem' : 'notMem'}`}>
-              <RankListWrap empty={empty} />
-            </div>
-          </div>
-        )}
+
+        {empty === true
+          ? ''
+          : (formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
+              <div ref={bottomWrapRef}>
+                <div className={`${context.token.isLogin ? 'isMem' : 'notMem'}`}>
+                  <RankListWrap empty={empty} />
+                </div>
+              </div>
+            )}
+
         {formState.rankType === RANK_TYPE.SPECIAL && (
           <div className="special">
             <SpecialListWrap empty={empty} fetching={fetching} />

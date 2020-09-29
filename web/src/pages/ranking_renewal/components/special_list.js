@@ -6,10 +6,12 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
 import NoResult from 'components/ui/noResult'
+import {RoomJoin} from 'context/room'
 
 import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
 import time from '../static/time_g_s.svg'
+import live from '../static/live_m.svg'
 
 function SpecialList({empty}) {
   const history = useHistory()
@@ -29,6 +31,7 @@ function SpecialList({empty}) {
             <>
               {specialList.map((v, idx) => {
                 let genderName
+
                 if (v.gender == 'm' || v.gender == 'f') {
                   genderName = `genderBox gender-${v.gender}`
                 } else {
@@ -86,6 +89,18 @@ function SpecialList({empty}) {
                         </span>
                       </div>
                     </div>
+
+                    {v.roomNo !== '' && (
+                      <div className="liveBox">
+                        <img
+                          src={live}
+                          onClick={() => {
+                            RoomJoin({roomNo: v.roomNo})
+                          }}
+                          className="liveBox__img"
+                        />
+                      </div>
+                    )}
                   </li>
                 )
               })}

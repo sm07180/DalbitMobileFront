@@ -74,7 +74,7 @@ export default function MyProfile() {
     ) {
       return (
         <>
-          <p className="myRanking__left--text">순위 없음</p>
+          <p className="myRanking__rank--text">순위 없음</p>
           <p className="rankingChange">
             <span></span>
           </p>
