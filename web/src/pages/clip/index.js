@@ -510,7 +510,7 @@ export default (props) => {
                   <button type="button" onClick={() => setDetailPopup(true)}>
                     {context.clipMainSort === 1 && <span>최신순</span>}
                     {context.clipMainSort === 3 && <span>선물순</span>}
-                    {context.clipMainSort === 4 && <span>play 순</span>}
+                    {context.clipMainSort === 4 && <span>재생순</span>}
                     {context.clipMainSort === 2 && <span>인기순</span>}
                     <img src={filterIcon} alt="카테고리 필터 이미지" />
                   </button>
