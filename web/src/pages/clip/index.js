@@ -450,7 +450,7 @@ export default (props) => {
                   className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
                   onClick={() => refreshCategory('popular')}>
                   <img
-                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                    src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.png'}
                     alt="인기클립 리프래시 아이콘 이미지"
                   />
                 </button>
@@ -525,7 +525,7 @@ export default (props) => {
                     className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
                     onClick={() => refreshCategory('category')}>
                     <img
-                      src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.svg'}
+                      src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.png'}
                       alt="카테고리 리프래시 아이콘 이미지"
                     />
                   </button>
