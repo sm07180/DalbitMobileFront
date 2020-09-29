@@ -85,7 +85,7 @@ export default function detailPopup(props) {
           </div>
           <div className="btn-wrap">
             <button className="apply-btn" onClick={applyClick}>
-              기간 적용
+              조건 적용
             </button>
           </div>
         </div>
