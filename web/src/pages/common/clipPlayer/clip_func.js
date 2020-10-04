@@ -9,15 +9,15 @@ export const clipJoin = (data, context, webview) => {
     if (webview === 'webview') {
       alert(sessionStorage.getItem('play_clip_no'))
       if (sessionStorage.getItem('play_clip_no') === data.clipNo) {
-        Hybrid('CloseLayerPopup')
+        return Hybrid('CloseLayerPopup')
       } else {
-        NewHybrid('ClipPlay', type, data)
+        return NewHybrid('ClipPlay', type, data)
       }
     } else {
-      Hybrid('ClipPlayerJoin', data)
+      return Hybrid('ClipPlayerJoin', data)
     }
   } else {
-    context.action.confirm({
+    return context.action.confirm({
       msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
       callback: () => {
         clipExit(context)
