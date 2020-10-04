@@ -4,35 +4,17 @@ import {Hybrid, NewHybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
 
-export const clipJoin = (data, context) => {
+export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-    Hybrid('ClipPlayerJoin', data)
-    // if (Utility.getCookie('play_clip_no') !== undefined || Utility.getCookie('play_clip_no') === data.clipNo) {
-    //   Hybrid('CloseLayerPopup')
-    // } else {
-    //   Hybrid('ClipPlayerJoin', data)
-    // }
-  } else {
-    context.action.confirm({
-      msg: '현재 청취 중인 방송방이 있습니다.\n클립을 재생하시겠습니까?',
-      callback: () => {
-        clipExit(context)
-        sessionStorage.removeItem('room_no')
-        Utility.setCookie('listen_room_no', null)
-        Hybrid('ExitRoom', '')
-        context.action.updatePlayer(false)
-        clipJoin(data, context)
+    if (webview === 'webview') {
+      alert(sessionStorage.getItem('play_clip_no'))
+      if (sessionStorage.getItem('play_clip_no') === data.clipNo) {
+        Hybrid('CloseLayerPopup')
+      } else {
+        NewHybrid('ClipPlay', type, data)
       }
-    })
-  }
-}
-
-export const clipProfileJoin = (data, type, context) => {
-  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-    if (type === 'list') {
+    } else {
       Hybrid('ClipPlayerJoin', data)
-    } else if (type === 'popup') {
-      NewHybrid('ClipPlay', type, data)
     }
   } else {
     context.action.confirm({
