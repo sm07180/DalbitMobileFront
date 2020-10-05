@@ -593,7 +593,7 @@ export default () => {
       case '31': //-----------------마이페이지>팬 보드
         mem_no = pushMsg.mem_no
         if (mem_no != undefined) {
-          if (isLogin) window.location.href = `/mypage/${mem_no}/fanboard`
+          if (isLogin) window.location.href = `/mypage/${mem_no}?tab=1`
         }
         break
       case '32': //-----------------마이페이지>내 지갑
@@ -633,7 +633,7 @@ export default () => {
       case '38': //-----------------스타의 방송공지
         mem_no = pushMsg.mem_no
         if (mem_no !== undefined) {
-          if (isLogin) window.location.href = `/mypage/${mem_no}/notice`
+          if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
         }
         break
       case '41': //-----------------랭킹 > DJ > 일간
@@ -661,7 +661,7 @@ export default () => {
         if (room_no) clipPlay(room_no)
         break
       case '48': //-----------------마이클립
-        if (isLogin) window.location.href = `/mypage/${context.profile.memNo}/my_clip`
+        if (isLogin) window.location.href = `/mypage/${context.profile.memNo}?tab=2`
         break
       case '50': //-----------------직접입력 URL
         redirect_url = pushMsg.link

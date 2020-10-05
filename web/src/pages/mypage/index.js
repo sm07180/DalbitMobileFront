@@ -26,11 +26,13 @@ import './index.scss'
 import {OS_TYPE} from 'context/config'
 // header scroll flag
 export default (props) => {
-  const {webview} = qs.parse(location.search)
+  const location = useLocation()
+  const {webview, tab} = qs.parse(location.search)
   let history = useHistory()
   //context
   const context = useContext(Context)
   const {token, profile} = context
+
   let {memNo, category} = useParams()
 
   if (webview && webview === 'new') {
@@ -44,6 +46,7 @@ export default (props) => {
   const mypageRef = useRef()
   const [showWriteBtn, setShowWriteBtn] = useState(false)
   const [mypageFixed, setMypageFixed] = useState(false)
+
   // scroll fixed func
   const windowScrollEvent = () => {
     if (mypageRef.current) {
@@ -134,8 +137,11 @@ export default (props) => {
     }
     getMyPageNew()
   }, [])
+
   useEffect(() => {
-    setTabSelected(1)
+    if (tab !== undefined) {
+      setTabSelected(Number(tab))
+    }
   }, [memNo])
 
   useEffect(() => {
@@ -225,7 +231,13 @@ export default (props) => {
     window.location.href = '/login'
     return null
   }
-
+  // useEffect(() => {
+  //   if (locationSearch && locationSearch.search === '?clip') {
+  //     setTabSelected(2)
+  //   } else {
+  //     return null
+  //   }
+  // }, [])
   return (
     <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
