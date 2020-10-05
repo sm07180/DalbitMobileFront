@@ -262,8 +262,11 @@
         }
       }
 
-      &.woman::after {
-        background: url('./static/ico_female.svg') no-repeat center;
+      &.woman {
+        border-radius: 0 12px 12px 0;
+        &::after {
+          background: url('./static/ico_female.svg') no-repeat center;
+        }
       }
 
       &.off {
