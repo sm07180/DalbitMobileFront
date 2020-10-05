@@ -30,14 +30,19 @@ function RankListTop() {
 
   const realTimeNow = useCallback(() => {
     let timeNow
+
     const status = convertDateToText(formState.dateType, formState.currentDate, 0)
     if (TopBoxRef.current) {
       if (status) {
-        TopBoxRef.current.className = 'TopBox isLabel'
-        if (formState.rankType === 1) {
+        if (formState.rankType === 1 && formState.dateType === 1) {
+          TopBoxRef.current.className = 'TopBox isLabel'
           timeNow = <div className="realLabelDj"></div>
-        } else if (formState.rankType === 2) {
+        } else if (formState.rankType === 2 && formState.dateType === 1) {
+          TopBoxRef.current.className = 'TopBox isLabel'
           timeNow = <div className="realLabelFan"></div>
+        } else {
+          TopBoxRef.current.className = 'TopBox'
+          timeNow = ''
         }
       } else {
         TopBoxRef.current.className = 'TopBox'

@@ -165,52 +165,52 @@ function Ranking() {
     return resolve()
   })
 
-  // useEffect(() => {
-  //   if (scrollY > 0) {
-  //     window.scrollTo(0, scrollY)
-  //     if (scrollY >= 48) {
-  //       if (fixedWrapRef.current.classList.length === 0) {
-  //         fixedWrapRef.current.className = 'fixed'
-  //       }
-  //       if (bottomWrapRef.current) {
-  //         bottomWrapRef.current.className = 'bottom'
-  //       }
+  useEffect(() => {
+    if (scrollY > 0) {
+      window.scrollTo(0, scrollY)
+      if (scrollY >= 48) {
+        if (fixedWrapRef.current.classList.length === 0) {
+          fixedWrapRef.current.className = 'fixed'
+        }
+        if (bottomWrapRef.current) {
+          bottomWrapRef.current.className = 'bottom'
+        }
 
-  //       if (listWrapRef.current) {
-  //         if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
-  //           if (context.token.isLogin) {
-  //             if (listWrapRef.current.classList.length === 1) {
-  //               listWrapRef.current.className = 'listFixed more'
-  //             }
-  //           } else {
-  //             if (listWrapRef.current.classList.length === 0) {
-  //               listWrapRef.current.className = 'listFixed'
-  //             }
-  //           }
-  //         } else if (formState.rankType === RANK_TYPE.SPECIAL) {
-  //           listWrapRef.current.className = 'listFixed special'
-  //         } else {
-  //           listWrapRef.current.className = 'listFixed other'
-  //         }
-  //       }
-  //     } else {
-  //       fixedWrapRef.current.className = ''
-  //       if (listWrapRef.current) {
-  //         if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
-  //           if (context.token.isLogin) {
-  //             listWrapRef.current.className = 'more'
-  //           } else {
-  //             listWrapRef.current.className = ''
-  //           }
-  //         } else if (formState.rankType === RANK_TYPE.SPECIAL) {
-  //           listWrapRef.current.className = 'special'
-  //         } else {
-  //           listWrapRef.current.className = 'other'
-  //         }
-  //       }
-  //     }
-  //   }
-  // }, [])
+        if (listWrapRef.current) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+            if (context.token.isLogin) {
+              if (listWrapRef.current.classList.length === 1) {
+                listWrapRef.current.className = 'listFixed more'
+              }
+            } else {
+              if (listWrapRef.current.classList.length === 0) {
+                listWrapRef.current.className = 'listFixed'
+              }
+            }
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+            listWrapRef.current.className = 'listFixed special'
+          } else {
+            listWrapRef.current.className = 'listFixed other'
+          }
+        }
+      } else {
+        fixedWrapRef.current.className = ''
+        if (listWrapRef.current) {
+          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+            if (context.token.isLogin) {
+              listWrapRef.current.className = 'more'
+            } else {
+              listWrapRef.current.className = ''
+            }
+          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+            listWrapRef.current.className = 'special'
+          } else {
+            listWrapRef.current.className = 'other'
+          }
+        }
+      }
+    }
+  }, [])
 
   useEffect(() => {
     let didFetch = false
@@ -394,8 +394,6 @@ function Ranking() {
         //스크롤
         setScrollY(window.scrollY)
         const diff = document.body.scrollHeight / (formState.page + 1)
-
-        console.log('totalPage', totalPage)
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (
