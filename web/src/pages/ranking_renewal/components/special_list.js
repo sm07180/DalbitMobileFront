@@ -6,10 +6,12 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
 import NoResult from 'components/ui/noResult'
+import {RoomJoin} from 'context/room'
 
 import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
 import time from '../static/time_g_s.svg'
+import live from '../static/live_m.svg'
 
 function SpecialList({empty}) {
   const history = useHistory()
@@ -20,42 +22,27 @@ function SpecialList({empty}) {
 
   return (
     <>
-      <p className="special__text">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
-      <ul>
-        {empty === true ? (
-          <NoResult />
-        ) : (
-          <>
-            {specialList.map((v, idx) => {
-              let genderName
-              if (v.gender == 'm' || v.gender == 'f') {
-                genderName = `genderBox gender-${v.gender}`
-              } else {
-                genderName = `genderBox`
-              }
+      <div className="specialPage">
+        <p className="specialText">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
+        <ul>
+          {empty === true ? (
+            <NoResult />
+          ) : (
+            <>
+              {specialList.map((v, idx) => {
+                let genderName
 
-              return (
-                <li key={idx} className="levelListBox">
-                  <div className="specialBox">{v.specialCnt}회</div>
-                  <div
-                    className="thumbBox"
-                    onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === v.memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${v.memNo}`)
-                        }
-                      } else {
-                        history.push('/login')
-                      }
-                    }}>
-                    <img src={v.holder} className="thumbBox__frame" />
-                    <img src={v.profImg.thumb120x120} className="thumbBox__pic" />
-                  </div>
-                  <div className="test">
+                if (v.gender == 'm' || v.gender == 'f') {
+                  genderName = `genderBox gender-${v.gender}`
+                } else {
+                  genderName = `genderBox`
+                }
+
+                return (
+                  <li key={idx} className="levelListBox">
+                    <div className="specialBox">{v.specialCnt}회</div>
                     <div
-                      className="nickNameBox"
+                      className="thumbBox"
                       onClick={() => {
                         if (context.token.isLogin) {
                           if (context.token.memNo === v.memNo) {
@@ -67,30 +54,60 @@ function SpecialList({empty}) {
                           history.push('/login')
                         }
                       }}>
-                      {v.nickNm}
+                      <img src={v.holder} className="thumbBox__frame" />
+                      <img src={v.profImg.thumb120x120} className="thumbBox__pic" />
                     </div>
-                    <div className="genderBox">
-                      <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
-                      <span className={genderName} />
+                    <div className="test">
+                      <div
+                        className="nickNameBox"
+                        onClick={() => {
+                          if (context.token.isLogin) {
+                            if (context.token.memNo === v.memNo) {
+                              history.push(`/menu/profile`)
+                            } else {
+                              history.push(`/mypage/${v.memNo}`)
+                            }
+                          } else {
+                            history.push('/login')
+                          }
+                        }}>
+                        {v.nickNm}
+                      </div>
+                      <div className="genderBox">
+                        <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
+                        <span className={genderName} />
+                      </div>
+                      <div className="countBox">
+                        <span>
+                          <img src={like} /> {v.goodCnt}
+                        </span>
+                        <span>
+                          <img src={people} /> {v.listenerCnt}
+                        </span>
+                        <span>
+                          <img src={time} /> {v.broadMin}
+                        </span>
+                      </div>
                     </div>
-                    <div className="countBox">
-                      <span>
-                        <img src={like} /> {v.goodCnt}
-                      </span>
-                      <span>
-                        <img src={people} /> {v.listenerCnt}
-                      </span>
-                      <span>
-                        <img src={time} /> {v.broadMin}
-                      </span>
-                    </div>
-                  </div>
-                </li>
-              )
-            })}
-          </>
-        )}
-      </ul>
+
+                    {v.roomNo !== '' && (
+                      <div className="liveBox">
+                        <img
+                          src={live}
+                          onClick={() => {
+                            RoomJoin({roomNo: v.roomNo})
+                          }}
+                          className="liveBox__img"
+                        />
+                      </div>
+                    )}
+                  </li>
+                )
+              })}
+            </>
+          )}
+        </ul>
+      </div>
     </>
   )
 }

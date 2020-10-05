@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useState, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
@@ -7,16 +7,16 @@ import {RankContext} from 'context/rank_ctx'
 import {RoomJoin} from 'context/room'
 
 import {printNumber} from '../../lib/common_fn'
+import {convertMonday, convertMonth, convertDateToText} from '../../lib/common_fn'
 
 //static
-import point from '../../static/ico-point.png'
-import point2x from '../../static/ico-point@2x.png'
-import like from '../../static/like_g_s.svg'
-import live from '../../static/live.svg'
-import people from '../../static/people_g_s.svg'
-import time from '../../static/time_g_s.svg'
-import StarCountIcon from '../../static/circle_star_s_g.svg'
-import list from 'pages/mypage/component/wallet/list'
+import benefitIcon from '../../static/benefit@2x.png'
+import goldDecoDj from '../../static/djrf1_deco@3x.png'
+import sliverDecoDj from '../../static/djrf2_deco@3x.png'
+import bronzeDecoDj from '../../static/djrf3_deco@3x.png'
+import goldDecoFan from '../../static/fanrf1_deco@3x.png'
+import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
+import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 
 function RankListTop() {
   const history = useHistory()
@@ -26,214 +26,104 @@ function RankListTop() {
   const {rankState} = useContext(RankContext)
   const {rankList, formState} = rankState
 
+  const TopBoxRef = useRef(null)
+
+  const realTimeNow = useCallback(() => {
+    let timeNow
+
+    const status = convertDateToText(formState.dateType, formState.currentDate, 0)
+    if (TopBoxRef.current) {
+      if (status) {
+        if (formState.rankType === 1 && formState.dateType === 1) {
+          TopBoxRef.current.className = 'TopBox isLabel'
+          timeNow = <div className="realLabelDj"></div>
+        } else if (formState.rankType === 2 && formState.dateType === 1) {
+          TopBoxRef.current.className = 'TopBox isLabel'
+          timeNow = <div className="realLabelFan"></div>
+        } else {
+          TopBoxRef.current.className = 'TopBox'
+          timeNow = ''
+        }
+      } else {
+        TopBoxRef.current.className = 'TopBox'
+        timeNow = ''
+      }
+    }
+
+    // if (formState.rankType === 1) {
+    //   timeNow = <div className="realLabelDj"></div>
+    // } else if (formState.rankType === 2) {
+    //   timeNow = <div className="realLabelFan"></div>
+    // } else {
+    //   timeNow = ''
+    // }
+    return timeNow
+  }, [formState, TopBoxRef])
+
   const creatList = () => {
+    const rank = rankList
+    const baseCount = 3
+
+    let rankResult
+    if (rank.length < 3) {
+      rankResult = [...rank].concat(Array(baseCount - rank.length).fill(null))
+    } else {
+      rankResult = rank
+    }
+
     return (
       <>
         <div className="userRanking">
-          <div className="TopBox">
-            {rankList.length > 0 &&
-              rankList.slice(0, 3).map((item, index) => {
-                const {
-                  gender,
+          <div className="TopBox" ref={TopBoxRef}>
+            {rankResult.slice(0, 3).map((item, index) => {
+              if (item === null) return <div className="TopBox__item" key={index}></div>
+              const {nickNm, profImg, memNo} = item
 
-                  grade,
-                  nickNm,
-                  rank,
-                  profImg,
-                  level,
-                  upDown,
-                  listenPoint,
-                  listenerPoint,
-                  goodPoint,
-                  broadcastPoint,
-                  fanPoint,
-                  djPoint,
-                  isSpecial,
-                  roomNo,
-                  memNo,
-                  holder,
-                  starCnt,
-                  liveBadgeList
-                } = item
+              return (
+                <div className="TopBox__item" key={index}>
+                  {realTimeNow()}
 
-                let rankName
-                let genderName
-
-                if (rank == 1 || rank == 2 || rank == 3) {
-                  rankName = `medal medalBox--top${rank}`
-                }
-                if (gender == 'm' || gender == 'f') {
-                  genderName = `genderBox gender-${gender}`
-                } else {
-                  genderName = `genderBox`
-                }
-
-                return (
                   <div
-                    className={'TopBox__item ' + `${context.token.isLogin && context.token.memNo === memNo ? 'active' : ''}`}
-                    key={index}>
-                    <div
-                      className="thumbBox"
-                      onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${memNo}`)
-                          }
-                        } else {
-                          history.push(`/login`)
-                        }
-                      }}>
-                      <img src={holder} className="thumbBox__frame" />
-                      <img src={profImg.thumb120x120} className="thumbBox__pic" />
-                    </div>
-
-                    <div
-                      onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${memNo}`)
-                          }
-                        } else {
-                          history.push(`/login`)
-                        }
-                      }}>
-                      {/* <p className={levelName}>
-                      Lv{level} {grade}
-                    </p> */}
-                      <div className="nickNameBox">
-                        <span className="nickName">
-                          {nickNm}
-                          <span className="iconBox">
-                            {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> */}
-                            <span className={genderName}>{gender}</span>
-
-                            {liveBadgeList &&
-                              liveBadgeList.length !== 0 &&
-                              liveBadgeList.map((item, idx) => {
-                                return (
-                                  <React.Fragment key={idx + `badge`}>
-                                    {item.icon !== '' ? (
-                                      <div
-                                        className="badgeIcon topImg"
-                                        style={{
-                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                          marginLeft: '4px'
-                                        }}>
-                                        <img src={item.icon} style={{height: '16px'}} />
-                                        {item.text}
-                                      </div>
-                                    ) : (
-                                      <div
-                                        style={{background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`}}
-                                        className="badgeIcon text">
-                                        {item.text}
-                                      </div>
-                                    )}
-                                  </React.Fragment>
-                                )
-                              })}
-                            {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
-                          </span>
-                        </span>
-                      </div>
-                    </div>
-
-                    <div
-                      className="countBox"
-                      onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${memNo}`)
-                          }
+                    className={`TopBoxThumb ${formState.rankType === 1 ? 'dj' : 'fan'}`}
+                    onClick={() => {
+                      if (context.token.isLogin) {
+                        if (context.token.memNo === memNo) {
+                          history.push(`/menu/profile`)
                         } else {
                           history.push(`/mypage/${memNo}`)
                         }
-                      }}>
-                      {formState.rankType === 1 && (
-                        <>
-                          {/* <span className="countBox__item countBox__item--point">
-                          <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                          {printNumber(djPoint)}
-                        </span> */}
+                      } else {
+                        history.push(`/login`)
+                      }
+                    }}>
+                    <img src={profImg.thumb120x120} className="TopBoxThumb__pic" />
 
-                          <div className="countBoxInner">
-                            <span className="countBox__item">
-                              <img src={people} />
-                              {printNumber(listenerPoint)}
-                            </span>
-                            <span className="countBox__item">
-                              <img src={like} />
-                              {printNumber(goodPoint)}
-                            </span>
-
-                            <span className="countBox__item">
-                              <img src={time} />
-                              {printNumber(broadcastPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-
-                      {formState.rankType === 2 && (
-                        <>
-                          {/* <span className="countBox__item countBox__item--point">
-                          <img src={point} />
-                          {printNumber(fanPoint)}
-                        </span> */}
-                          {/* <span className="countBox__item">
-                          <img src={moon} />
-                          {Util.printNumber(gift)}
-                        </span> */}
-                          <span className="countBox__item">
-                            <img src={StarCountIcon} />
-                            {printNumber(starCnt)}
-                          </span>
-                          <span className="countBox__item">
-                            <img src={time} />
-                            {printNumber(listenPoint)}
-                          </span>
-                        </>
-                      )}
-                    </div>
-
-                    <div className="medalBox">
-                      <p className={rankName}>{rank}</p>
-                      <p className="rankingChange">
-                        {upDown === 'new' ? (
-                          <span className="rankingChange__new">NEW</span>
-                        ) : upDown > 0 ? (
-                          <span className="rankingChange__up">{Math.abs(upDown)}</span>
-                        ) : upDown < 0 ? (
-                          <span className="rankingChange__down">{Math.abs(upDown)}</span>
-                        ) : (
-                          <></>
-                        )}
-                      </p>
-                    </div>
-
-                    {roomNo !== '' && (
-                      <div className="liveBox">
-                        <img
-                          src={live}
-                          onClick={() => {
-                            RoomJoin({roomNo: roomNo})
-                          }}
-                          className="liveBox__img"
-                        />
-                        <br />
-                        LIVE
-                      </div>
+                    {formState.rankType === 1 ? (
+                      <img
+                        className="TopBoxThumb__deco dj"
+                        src={index === 0 ? goldDecoDj : index === 1 ? sliverDecoDj : bronzeDecoDj}
+                      />
+                    ) : (
+                      <img
+                        className="TopBoxThumb__deco fan"
+                        src={index === 0 ? goldDecoFan : index === 1 ? sliverDecoFan : bronzeDecoFan}
+                      />
                     )}
                   </div>
-                )
-              })}
+
+                  <p className="nickName">{nickNm}</p>
+                </div>
+              )
+            })}
           </div>
+
+          {/* <div
+            className="benefitSize"
+            onClick={() => {
+              history.push('/rank/benefit')
+            }}>
+            <img src={benefitIcon} />
+          </div> */}
         </div>
       </>
     )

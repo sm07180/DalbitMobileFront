@@ -424,7 +424,7 @@ export default (props) => {
                     </div>
 
                     <div
-                      className={`genderTab ${gender === 'f' ? '' : 'off'}`}
+                      className={`woman genderTab ${gender === 'f' ? '' : 'off'}`}
                       onClick={() => {
                         if (gender === 'f') {
                           setGender('n')

@@ -3,9 +3,8 @@ import {useHistory} from 'react-router-dom'
 
 import {RankContext} from 'context/rank_ctx'
 
-import {changeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
-
-import benefitIcon from '../static/ico-benefit_@2x.png'
+import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
+import {RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()
@@ -39,7 +38,7 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const handleDate = (some) => {
-    const handle = changeDate(some, formState.dateType, formState.currentDate)
+    const handle = liveBoxchangeDate(some, formState.dateType, formState.currentDate)
     formDispatch({
       type: 'DATE',
       val: handle
@@ -137,7 +136,7 @@ function RankHandleDateBtn({fetching}) {
   }
 
   return (
-    <div className="detailView">
+    <div className={`detailView `}>
       <button
         className={`prevButton ${prevLast() && fetching === false && 'active'}`}
         onClick={() => {
@@ -151,15 +150,15 @@ function RankHandleDateBtn({fetching}) {
       <div className="title">
         <div className="titleWrap">
           {dateTitle.header}
-          <img
+          {/* <img
             src={benefitIcon}
             className="benefitSize"
             onClick={() => {
               history.push('/rank/benefit')
             }}
-          />
+          /> */}
         </div>
-        <span>{dateTitle.date}</span>
+        {/* <span>{dateTitle.date}</span> */}
       </div>
 
       <button
