@@ -125,11 +125,8 @@ export default function Alert() {
         fetchDataPlay(roomNo)
         break
       case 48:
-        if (context.profile.memNo === memNo) {
-          history.push(`/mypage/${context.profile.memNo}/my_clip`)
-        } else {
-          history.push(`/mypage/${memNo}?tab=2`)
-        }
+        history.push(`/mypage/${context.profile.memNo}/my_clip`)
+
         break
       case 50:
         let mobileLink = link
