@@ -7,7 +7,7 @@ import Navi from './navibar'
 import Api from 'context/api'
 import {Context} from 'context'
 import qs from 'query-string'
-export default props => {
+export default (props) => {
   //console.log(props.selectidx)
   //context------------------------------------------
   const store = useContext(BroadCastStore)
@@ -69,7 +69,7 @@ export default props => {
     }
   ]
   //셀렉트function-----------------------------------
-  const handleSelectChange = event => {
+  const handleSelectChange = (event) => {
     const value = event.target.value
     const indexs = event.target.id
     setSelect(value)
@@ -89,7 +89,12 @@ export default props => {
   const Reportmap = BTNInfo.map((live, index) => {
     const {title, id} = live
     return (
-      <BTN value={title} onClick={event => handleSelectChange(event)} className={select === title ? 'on' : ''} key={index} id={id}>
+      <BTN
+        value={title}
+        onClick={(event) => handleSelectChange(event)}
+        className={select === title ? 'on' : ''}
+        key={index}
+        id={id}>
         {title}
       </BTN>
     )
