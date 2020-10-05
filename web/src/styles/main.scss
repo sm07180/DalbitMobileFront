@@ -121,6 +121,10 @@
     box-sizing: border-box;
 
     &.rank {
+<<<<<<< HEAD
+=======
+      padding: 26px 0 32px;
+>>>>>>> real
       background-color: $white;
       color: $white;
       .swiper-container {
@@ -211,8 +215,7 @@
       }
     }
     &.banner {
-      margin-top: 20px;
-      padding: 0 16px;
+      padding: 0 16px 0 16px;
     }
     &.my-star {
       display: none;

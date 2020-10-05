@@ -11,12 +11,23 @@
 
     .imgBox {
       position: relative;
-      margin: 0 auto;
-      margin-bottom: 12px;
-      margin-top: 20px;
-      border-radius: 50%;
-      width: 72px;
-      height: 72px;
+      text-align: center;
+      label {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 8px;
+        margin-top: 20px;
+        border-radius: 50%;
+        width: 72px;
+        height: 72px;
+        cursor: pointer;
+        input[type='file'] {
+          position: absolute;
+          width: 0;
+          height: 0;
+        }
+      }
       .cameraImg {
         width: 30px;
         height: 30px;
@@ -30,24 +41,12 @@
         background-size: cover;
         background-position: center;
       }
-      label {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 100%;
-
-        cursor: pointer;
-        input[type='file'] {
-          position: absolute;
-          width: 0;
-          height: 0;
-        }
-      }
-
-      > input[type='file'] {
-        position: absolute;
-        width: 0;
-        height: 0;
+      .desc {
+        display: inline-block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        color: $primary;
       }
     }
     .inputBox {
@@ -294,7 +293,7 @@
         line-height: 20px;
         outline: none;
         border-radius: 12px;
-        :focus {
+        &:focus {
           border: 1px solid $black;
         }
       }
