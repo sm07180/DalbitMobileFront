@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 //styled
 import styled from 'styled-components'
 //context
@@ -7,6 +7,8 @@ import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
+import {PROFILE_REPORT_TAB} from './constant'
+import Caution from '../static/caution.png'
 
 // import CloseBtn from '../../menu/static/ic_closeBtn.svg'
 const CloseBtn = 'https://image.dalbitlive.com/images/api/close_w_l.svg'
@@ -25,8 +27,31 @@ export default (props) => {
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
   const [allFalse, setAllFalse] = useState(false)
+  const [pageType, setPageType] = useState(0)
   const [reportReason, setReportReason] = useState('')
   //api
+
+  async function fetchDataBlock() {
+    const {message, result, code} = await Api.mypage_black_add({
+      data: {
+        memNo: urlrStr
+      }
+    })
+    if (result === 'success') {
+      context.action.alert({
+        msg: message
+      })
+    } else if (code === '-3') {
+      context.action.alert({
+        msg: message
+      })
+    } else if (code === 'C006') {
+      context.action.alert({
+        msg: '이미 블랙리스트로 등록된\n회원입니다.'
+      })
+    }
+  }
+
   const fetchData = async () => {
     const res = await Api.member_declar({
       data: {
@@ -93,6 +118,15 @@ export default (props) => {
       setSelect(5)
     }
   }
+
+  const tabChange = () => {
+    if (pageType === PROFILE_REPORT_TAB.BLACK) {
+      setPageType(PROFILE_REPORT_TAB.DECLARATION)
+    } else {
+      setPageType(PROFILE_REPORT_TAB.BLACK)
+    }
+  }
+
   //신고하기버튼 벨리데이션 function-----------------------
   const SubmitBTNChange = () => {
     if (select != '') {
@@ -159,38 +193,79 @@ export default (props) => {
             <div className="popup__box popup__text">
               <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
                 <div className="popup__title popup__title--sub">
-                  <h3 className="h3-tit">신고</h3>
-                  <p className="desc">*허위 신고는 제제 대상이 될 수 있습니다.</p>
+                  <h3 className="h3-tit popup__tab">
+                    <button onClick={tabChange} className={pageType === PROFILE_REPORT_TAB.BLACK ? 'on' : ''}>
+                      <i></i>
+                      차단하기
+                    </button>
+                    <button onClick={tabChange} className={pageType === PROFILE_REPORT_TAB.DECLARATION ? 'on' : ''}>
+                      <i></i>
+                      신고하기
+                    </button>
+                  </h3>
                   <button className="close-btn close-btn--sub" onClick={() => closePopup()}>
                     <img src={CloseBtn} alt="닫기" />
                   </button>
                 </div>
                 <div className="inner">
-                  {Reportmap}
-                  <div className="reportWrap__textareaWrap">
-                    <textarea
-                      value={reportReason}
-                      onChange={reportChange}
-                      className="reportWrap__textarea"
-                      placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
-                    />
-                    <span className="reportWrap__textareaCount">{reportReason.length} / 100</span>
-                  </div>
-                  <div className="btnWrap">
-                    <button className="btn__cancel" onClick={closePopup}>
-                      취소
-                    </button>
+                  {pageType === PROFILE_REPORT_TAB.DECLARATION ? (
+                    <div class="declarationWrap">
+                      {Reportmap}
+                      <div className="reportWrap__textareaWrap">
+                        <textarea
+                          value={reportReason}
+                          onChange={reportChange}
+                          className="reportWrap__textarea"
+                          placeholder="상세한 신고 내용을 기재해주세요.허위 신고는 제제 대상이 될 수 있습니다. (최하 10글자 이상)"
+                        />
+                      </div>
+                      <span className="reportWrap__textareaCount">
+                        <b>{reportReason.length}</b> / 100
+                      </span>
+                      <div className="btnWrap">
+                        <button className="btn__cancel" onClick={closePopup}>
+                          취소
+                        </button>
 
-                    {active === true && reportReason.length > 9 ? (
-                      <button className={`btn__ok ${active === true ? 'on' : ''}`} onClick={() => SubmitClick()}>
-                        확인
-                      </button>
-                    ) : (
-                      <button className="btn__ok" onClick={validateReport}>
-                        확인
-                      </button>
-                    )}
-                  </div>
+                        {active === true && reportReason.length > 9 ? (
+                          <button className={`btn__ok ${active === true ? 'on' : ''}`} onClick={() => SubmitClick()}>
+                            확인
+                          </button>
+                        ) : (
+                          <button className="btn__ok" onClick={validateReport}>
+                            확인
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    pageType === PROFILE_REPORT_TAB.BLACK && (
+                      <div className="blackWrap">
+                        <div className="alertText">
+                          <h3>{profile.nickNm}</h3>
+                          <b>차단하시겠습니까?</b>
+
+                          <img src={Caution} />
+
+                          <span>
+                            차단한 회원은 나의 방송이 보이지 않으며,
+                            <br />
+                            방송에 입장할 수 없습니다.
+                          </span>
+
+                          <p>
+                            *차단한 회원은 마이페이지 &gt; 방송설정 &gt; 차단회원
+                            <br /> 관리 페이지에서 확인할 수 있습니다.
+                          </p>
+
+                          <div className="buttonWrap">
+                            <button onClick={closePopup}>취소</button>
+                            <button onClick={fetchDataBlock}>확인</button>
+                          </div>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             </div>
