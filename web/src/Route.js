@@ -18,6 +18,7 @@ const MySetting = React.lazy(() => import('pages/mypage/setting2.5.js'))
 const Pay = React.lazy(() => import('pages/new_pay'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
+const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
 
 const LevelInfo = React.lazy(() => import('pages/level'))
@@ -117,6 +118,7 @@ export default () => {
         <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
         <Route exact path="/clip/play_list" component={ClipPlayList} />
+        <Route exact path="/ImageEditor" component={ImageEditor} />
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>
