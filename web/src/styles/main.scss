@@ -204,8 +204,7 @@
     }
 
     &.rank {
-      margin-top: 26px;
-      // padding: 26px 0 32px;
+      padding: 26px 0 32px;
       background-color: $white;
       color: $white;
       .swiper-container {
@@ -296,8 +295,7 @@
       }
     }
     &.banner {
-      margin-top: 20px;
-      padding: 0 16px;
+      padding: 0 16px 0 16px;
     }
 
     &.live-list {

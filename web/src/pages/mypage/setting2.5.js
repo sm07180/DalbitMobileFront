@@ -397,6 +397,7 @@ export default (props) => {
                     className="cameraImg"
                   />
                 </label>
+                <span className="desc">512(가로)x512(세로) 이상의 사이즈를 권장합니다.</span>
               </div>
 
               <div className="inputBox">
