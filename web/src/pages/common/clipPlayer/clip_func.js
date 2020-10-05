@@ -7,20 +7,15 @@ import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-    alert(webview)
     if (webview === 'new') {
-      alert(Utility.getCookie('clip-player-info'))
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
-      alert(prevClipNo)
-      alert(data.clipNo)
       if (prevClipNo === data.clipNo) {
         return Hybrid('CloseLayerPopup')
       } else {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
           return Hybrid('ClipPlayerJoin', data)
         } else {
-          alert('안드로이드만 NewHybrid 진입')
           return NewHybrid('ClipPlay', type, data)
         }
       }
