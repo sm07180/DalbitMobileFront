@@ -112,13 +112,13 @@ function RankListTop() {
             })}
           </div>
 
-          <div
+          {/* <div
             className="benefitSize"
             onClick={() => {
               history.push('/rank/benefit')
             }}>
             <img src={benefitIcon} />
-          </div>
+          </div> */}
         </div>
       </>
     )

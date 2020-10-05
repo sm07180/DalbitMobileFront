@@ -4,6 +4,15 @@
 #ranking-page {
   // min-height: 100vh;
   // background-color: $lighterGray;
+
+  .benefitSize {
+    position: absolute;
+    bottom: 10px;
+    left: 16px;
+    display: inline-block;
+    vertical-align: top;
+  }
+
   .refresh-wrap {
     display: none;
     max-height: 48px;
@@ -261,7 +270,6 @@
   }
 
   .myRanking {
-    overflow: hidden;
     position: relative;
 
     &.profileBox {
@@ -275,11 +283,22 @@
         width: 100%;
         padding: 8px 0;
         position: relative;
+
+        .infoBox {
+          width: 94%;
+        }
       }
 
       .nickNameBox {
-        width: calc(100% - 20px);
+        width: 100%;
         margin-bottom: 4px;
+
+        .nick {
+          width: 90%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
       }
 
       &--fixed {
@@ -343,14 +362,13 @@
     &__content {
       display: flex;
       align-items: center;
-      width: calc(100% - 70px);
+      width: calc(100% - 112px);
 
       .infoBox {
-        width: 100%;
+        width: calc(100% - 50px);
       }
 
       .nickNameBox {
-        width: 65%;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
@@ -475,6 +493,33 @@
     padding: 12px 0;
     background-color: #fff;
     border-radius: 16px;
+
+    .thumbBox {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-right: 6px;
+      min-width: 60px;
+
+      &__frame {
+        position: absolute;
+        top: -21px;
+        left: 50%;
+        width: 62px;
+        height: 82px;
+        transform: translateX(-50%);
+
+        &--4rd {
+          background: url(https://image.dalbitlive.com/ranking/fanrf4@3x.png) no-repeat center center;
+          background-size: 100%;
+        }
+
+        &--5rd {
+          background: url(https://image.dalbitlive.com/ranking/fanrf5@3x.png) no-repeat center center;
+          background-size: 100%;
+        }
+      }
+    }
 
     .nickNameBox {
       margin-top: 0;
@@ -704,12 +749,17 @@
     .notMem {
       margin-top: 451px;
     }
+
+    &.special {
+      margin-top: 104px;
+    }
   }
 
   .userRanking {
     position: relative;
 
     &.bottomList {
+      overflow: hidden;
       width: 100%;
       background-color: #eee;
       padding: 16px;
@@ -717,21 +767,6 @@
       border-radius: 20px;
       margin-top: -20px;
       box-sizing: border-box;
-    }
-
-    .benefitSize {
-      position: absolute;
-      bottom: 28px;
-      left: 50%;
-      width: 128px;
-      height: 20px;
-      display: inline-block;
-      vertical-align: top;
-      margin-left: -64px;
-
-      img {
-        width: 100%;
-      }
     }
 
     .TopBox {
@@ -1058,6 +1093,7 @@
     font-size: 14px;
     text-align: center;
     letter-spacing: -0.3px;
+    line-height: 22px;
   }
 
   .levelListWrap {
@@ -1337,6 +1373,7 @@
   }
 
   .specialPage {
+    min-height: calc(100vh - 104px - 50px);
     padding: 0 16px;
     background-color: $lighterGray;
 

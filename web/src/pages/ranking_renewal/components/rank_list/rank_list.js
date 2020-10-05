@@ -42,12 +42,11 @@ function RankList() {
                 listenerPoint,
                 goodPoint,
                 broadcastPoint,
-                fanPoint,
-                djPoint,
                 isSpecial,
                 roomNo,
                 memNo,
-                starCnt
+                starCnt,
+                liveBadgeList
               } = item
               let genderName
 
@@ -84,23 +83,6 @@ function RankList() {
                         <></>
                       )}
                     </p>
-                    {/* {formState.rankType === 1 && (
-                    <>
-                      <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {printNumber(djPoint)}
-                      </p>
-                    </>
-                  )} */}
-
-                    {/* {formState.rankType === 2 && (
-                    <>
-                      <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {printNumber(fanPoint)}
-                      </p>
-                    </>
-                  )} */}
                   </div>
 
                   <div
@@ -117,15 +99,46 @@ function RankList() {
                       }
                     }}>
                     <div className="thumbBox">
-                      <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                      {formState.rankType === 2 && index < 2 && (
+                        <div className={`thumbBox__frame ${index === 0 ? 'thumbBox__frame--4rd' : 'thumbBox__frame--5rd'}`} />
+                      )}
+                      <img src={profImg.thumb120x120} className="thumbBox__pic" />
                     </div>
 
                     <div className="infoBox">
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                          {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
                           <span className={genderName}>{gender}</span>
+
+                          {liveBadgeList &&
+                            liveBadgeList.length !== 0 &&
+                            liveBadgeList.map((item, idx) => {
+                              return (
+                                <React.Fragment key={idx + `badge`}>
+                                  {item.icon !== '' ? (
+                                    <div
+                                      className="badgeIcon topImg"
+                                      style={{
+                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                        marginLeft: '4px'
+                                      }}>
+                                      <img src={item.icon} style={{height: '16px'}} />
+                                      {item.text}
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                        marginLeft: '4px'
+                                      }}
+                                      className="badgeIcon text">
+                                      {item.text}
+                                    </div>
+                                  )}
+                                </React.Fragment>
+                              )
+                            })}
                           {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                         </div>
                       </div>

@@ -29,11 +29,14 @@ import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './index.scss'
 import level from 'pages/level'
 
+import benefitIcon from './static/benefit@3x.png'
+
 let timer
 let touchStartY = null
 let touchEndY = null
 const records = 50
 function Ranking() {
+  const history = useHistory()
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
@@ -352,6 +355,9 @@ function Ranking() {
 
         if (bottomWrapRef.current) {
           bottomWrapRef.current.className = 'bottom'
+          if (formState.rankType === RANK_TYPE.SPECIAL) {
+            bottomWrapRef.current.className = 'bottom special'
+          }
         }
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
@@ -424,7 +430,16 @@ function Ranking() {
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
-        <Header title="랭킹" type="noBack" />
+        <Header type="noBack">
+          <h2 className="header-title">랭킹</h2>
+          <div
+            className="benefitSize"
+            onClick={() => {
+              history.push('/rank/benefit')
+            }}>
+            <img src={benefitIcon} width={60} alt="혜택" />
+          </div>
+        </Header>
         <div className="refresh-wrap" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
@@ -480,7 +495,7 @@ function Ranking() {
             )}
 
         {formState.rankType === RANK_TYPE.SPECIAL && (
-          <div className="special">
+          <div ref={bottomWrapRef} className="special">
             <SpecialListWrap empty={empty} fetching={fetching} />
           </div>
         )}
