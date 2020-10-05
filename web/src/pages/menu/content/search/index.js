@@ -2,10 +2,11 @@ import React, {useEffect, useState, useContext} from 'react'
 import styled from 'styled-components'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
-import API from 'context/api'
+
 import {Context} from 'context/index.js'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Room, {RoomJoin} from 'context/room'
+import API from 'context/api'
 // component
 import Header from 'components/ui/new_header.js'
 import InitialRecomend from './components/recomend'
@@ -31,7 +32,34 @@ export default (props) => {
   // state
   const [result, setResult] = useState('') //검색텍스트
   const [recoTab, setRecoTab] = useState(0) //초기 추천 탭
+  const [recoList, setRecoList] = useState([]) //초기 추천 탭 fetch list
   //fetch
+  // 초기추천탭 fetch list
+  const fetchInitialList = async (recoTab) => {
+    if (recoTab === 0) {
+      const res = await API.getSearchRecomend({
+        page: 1,
+        records: 10
+      })
+      if (res.result === 'success') {
+        console.log(res.data.list)
+        setRecoList(res.data.list)
+      } else {
+        alert(res.message)
+      }
+    } else if (recoTab === 1) {
+      const res = await API.getPopularList({
+        page: 1,
+        records: 10
+      })
+      if (res.result === 'success') {
+        console.log(res.data.list)
+        setRecoList(res.data.list)
+      } else {
+        alert(res.message)
+      }
+    }
+  }
 
   //function
   // fn : onChange => 검색 form 온체인지
@@ -48,7 +76,12 @@ export default (props) => {
       setResult('')
     }
   }, [])
-  console.log(recoTab)
+
+  // 초기 탭 호출
+  useEffect(() => {
+    fetchInitialList(recoTab)
+  }, [recoTab])
+
   //render ----------------------------------------------------
   return (
     <div id="search">
@@ -70,8 +103,8 @@ export default (props) => {
           </button>
         </form>
       </div>
-      {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) */}
-      <InitialRecomend setRecoTab={setRecoTab} />
+      {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) 2.recoList => data list*/}
+      <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} />
     </div>
   )
 }
