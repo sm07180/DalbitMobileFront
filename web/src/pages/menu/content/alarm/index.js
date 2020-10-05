@@ -80,7 +80,11 @@ export default function Alert() {
         history.push(`/customer/notice/${roomNo}`)
         break
       case 31:
-        history.push(`/mypage/${memNo}/fanboard`)
+        if (context.profile.memNo === memNo) {
+          history.push(`/mypage/${context.profile.memNo}/fanboard`)
+        } else {
+          history.push(`/mypage/${memNo}?tab=1`)
+        }
         break
       case 32:
         history.push(`/mypage/${context.profile.memNo}/wallet`)
@@ -97,7 +101,7 @@ export default function Alert() {
         history.push('/customer/qnaList')
         break
       case 38:
-        history.push(`/mypage/${memNo}/notice`)
+        history.push(`/mypage/${memNo}?tab=0`)
         break
       case 41:
         history.push(`/rank?rankType=1&dateType=1`)
@@ -122,6 +126,7 @@ export default function Alert() {
         break
       case 48:
         history.push(`/mypage/${context.profile.memNo}/my_clip`)
+
         break
       case 50:
         let mobileLink = link
