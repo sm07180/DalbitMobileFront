@@ -129,4 +129,5 @@ const LevelBox = styled.div`
   font-size: 16px;
   color: #fff;
   text-align: center;
+  line-height: 22px;
 `
