@@ -12,7 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import point from '../../static/ico-point.png'
 import point2x from '../../static/ico-point@2x.png'
 import like from '../../static/like_g_s.svg'
-import live from '../../static/live.svg'
+import live from '../../static/live_m.svg'
 import people from '../../static/people_g_s.svg'
 import time from '../../static/time_g_s.svg'
 import StarCountIcon from '../../static/circle_star_s_g.svg'
@@ -29,7 +29,7 @@ function RankList() {
   const creatList = () => {
     return (
       <>
-        <div className="userRanking">
+        <div className="userRanking bottomList">
           {rankList.length > 3 &&
             rankList.slice(3).map((item, index) => {
               const {
@@ -42,8 +42,6 @@ function RankList() {
                 listenerPoint,
                 goodPoint,
                 broadcastPoint,
-                fanPoint,
-                djPoint,
                 isSpecial,
                 roomNo,
                 memNo,
@@ -61,7 +59,7 @@ function RankList() {
               return (
                 <div className="myRanking rankingList" key={index}>
                   <div
-                    className="myRanking__left"
+                    className="myRanking__rank"
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
@@ -73,7 +71,7 @@ function RankList() {
                         history.push(`/login`)
                       }
                     }}>
-                    <p className="myRanking__left--ranking">{rank}</p>
+                    <p className="myRanking__rank--ranking">{rank}</p>
                     <p className="rankingChange">
                       {upDown === 'new' ? (
                         <span className="rankingChange__new">NEW</span>
@@ -85,27 +83,10 @@ function RankList() {
                         <></>
                       )}
                     </p>
-                    {/* {formState.rankType === 1 && (
-                    <>
-                      <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {printNumber(djPoint)}
-                      </p>
-                    </>
-                  )} */}
-
-                    {/* {formState.rankType === 2 && (
-                    <>
-                      <p className="myRanking__left--point">
-                        <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} className="myRanking__img" />
-                        {printNumber(fanPoint)}
-                      </p>
-                    </>
-                  )} */}
                   </div>
 
                   <div
-                    className="myRanking__right"
+                    className="myRanking__content"
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
@@ -117,82 +98,83 @@ function RankList() {
                         history.push(`/login`)
                       }
                     }}>
-                    <div className="myRanking__rightWrap">
-                      <div className="thumbBox">
-                        <img src={profImg.thumb120x120} width="50px" className="thumbBox__pic" />
+                    <div className="thumbBox">
+                      {formState.rankType === 2 && index < 2 && (
+                        <div className={`thumbBox__frame ${index === 0 ? 'thumbBox__frame--4rd' : 'thumbBox__frame--5rd'}`} />
+                      )}
+                      <img src={profImg.thumb120x120} className="thumbBox__pic" />
+                    </div>
+
+                    <div className="infoBox">
+                      <div className="nickNameBox">
+                        {nickNm}
+                        <div className="nickNameImg">
+                          <span className={genderName}>{gender}</span>
+
+                          {liveBadgeList &&
+                            liveBadgeList.length !== 0 &&
+                            liveBadgeList.map((item, idx) => {
+                              return (
+                                <React.Fragment key={idx + `badge`}>
+                                  {item.icon !== '' ? (
+                                    <div
+                                      className="badgeIcon topImg"
+                                      style={{
+                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                        marginLeft: '4px'
+                                      }}>
+                                      <img src={item.icon} style={{height: '16px'}} />
+                                      {item.text}
+                                    </div>
+                                  ) : (
+                                    <div
+                                      style={{
+                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                        marginLeft: '4px'
+                                      }}
+                                      className="badgeIcon text">
+                                      {item.text}
+                                    </div>
+                                  )}
+                                </React.Fragment>
+                              )
+                            })}
+                          {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                        </div>
                       </div>
 
-                      <div className="w100">
-                        <div className="nickNameBox">
-                          {nickNm}
-                          <div className="nickNameImg">
-                            {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`}  className="korea-m"/> */}
-                            <span className={genderName}>{gender}</span>
-                            {liveBadgeList &&
-                              liveBadgeList.length !== 0 &&
-                              liveBadgeList.map((item, idx) => {
-                                return (
-                                  <React.Fragment key={idx + `badge`}>
-                                    {item.icon !== '' ? (
-                                      <div
-                                        className="badgeIcon topImg"
-                                        style={{
-                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                          marginLeft: '4px'
-                                        }}>
-                                        <img src={item.icon} style={{height: '16px'}} />
-                                        {item.text}
-                                      </div>
-                                    ) : (
-                                      <div
-                                        style={{
-                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                          marginLeft: '4px'
-                                        }}
-                                        className="badgeIcon text">
-                                        {item.text}
-                                      </div>
-                                    )}
-                                  </React.Fragment>
-                                )
-                              })}
-                            {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
-                          </div>
-                        </div>
+                      <div className="countBox">
+                        {formState.rankType === 1 && (
+                          <>
+                            <span className="countBox__item">
+                              <img src={people} />
+                              {printNumber(listenerPoint)}
+                            </span>
 
-                        <div className="countBox">
-                          {formState.rankType === 1 && (
-                            <>
-                              <span className="countBox__item">
-                                <img src={people} />
-                                {printNumber(listenerPoint)}
-                              </span>
+                            <span className="countBox__item">
+                              <img src={like} />
+                              {printNumber(goodPoint)}
+                            </span>
 
-                              <span className="countBox__item">
-                                <img src={like} />
-                                {printNumber(goodPoint)}
-                              </span>
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {printNumber(broadcastPoint)}
+                            </span>
+                          </>
+                        )}
 
-                              <span className="countBox__item">
-                                <img src={time} />
-                                {printNumber(broadcastPoint)}
-                              </span>
-                            </>
-                          )}
-
-                          {formState.rankType === 2 && (
-                            <>
-                              <span className="countBox__item">
-                                <img src={StarCountIcon} />
-                                {printNumber(starCnt)}
-                              </span>
-                              <span className="countBox__item">
-                                <img src={time} />
-                                {printNumber(listenPoint)}
-                              </span>
-                            </>
-                          )}
-                        </div>
+                        {formState.rankType === 2 && (
+                          <>
+                            <span className="countBox__item">
+                              <img src={StarCountIcon} />
+                              {printNumber(starCnt)}
+                            </span>
+                            <span className="countBox__item">
+                              <img src={time} />
+                              {printNumber(listenPoint)}
+                            </span>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -206,8 +188,6 @@ function RankList() {
                         }}
                         className="liveBox__img"
                       />
-                      <br />
-                      LIVE
                     </div>
                   )}
                 </div>

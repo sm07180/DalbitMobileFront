@@ -7,8 +7,8 @@ import {RANK_TYPE} from '../constant'
 const btnArray = [
   {val: 1, text: 'DJ'},
   {val: 2, text: '팬'},
-  {val: 3, text: '레벨'},
   {val: 4, text: '좋아요'},
+  {val: 3, text: '레벨'},
   {val: 5, text: '스페셜DJ', isSpecial: true}
 ]
 export default function RankBtnWrap({fetching}) {

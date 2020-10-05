@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState, useCallback} from 'react'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
-import {changeDate} from '../lib/common_fn'
+import {liveBoxchangeDate} from '../lib/common_fn'
 
 export default function SpecialHistoryHandle({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)
@@ -15,7 +15,7 @@ export default function SpecialHistoryHandle({fetching}) {
   const [dateTitle, setDateTitle] = useState('이번달')
 
   const handleDate = (type) => {
-    const handle = changeDate(type, 3, formState.currentDate)
+    const handle = liveBoxchangeDate(type, 3, formState.currentDate)
 
     formDispatch({
       type: 'DATE',
@@ -75,7 +75,7 @@ export default function SpecialHistoryHandle({fetching}) {
     formatDate()
   }, [formState])
   return (
-    <div className="detailView">
+    <div className="detailView isSpecial">
       <button
         className={`prevButton ${prevLast() && fetching === false && 'active'}`}
         onClick={() => {
