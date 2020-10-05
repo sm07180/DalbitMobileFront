@@ -17,9 +17,10 @@ export const clipJoin = (data, context, webview) => {
       if (prevClipNo === data.clipNo) {
         return Hybrid('CloseLayerPopup')
       } else {
-        if (customHeader['os'] === OS_TYPE['IOS']) {
+        if (context.customHeader['os'] === OS_TYPE['IOS']) {
           return Hybrid('ClipPlayerJoin', data)
         } else {
+          alert('안드로이드만 NewHybrid 진입')
           return NewHybrid('ClipPlay', type, data)
         }
       }
