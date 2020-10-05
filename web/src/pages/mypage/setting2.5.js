@@ -199,6 +199,7 @@ export default (props) => {
     saveUpload()
   }
   const saveUpload = async () => {
+    console.log(photoPath, profile.profImg.path)
     const data = {
       gender: gender,
       nickNm: nickname || profile.nickNm,
@@ -240,7 +241,7 @@ export default (props) => {
     if (profile !== null) {
       setNickname(profile.nickNm)
       setProfileMsg(profile.profMsg)
-      setPhotoPath(profile.profImg.path)
+      // setPhotoPath(profile.profImg.path)
       setGender(profile.gender)
       if (profile.gender == 'n') {
         setFirstSetting(true)
@@ -248,20 +249,18 @@ export default (props) => {
     }
   }, [profile])
 
-  // useEffect(() => {
-  //   console.log(nickname, profileMsg, photoPath, gender)
-  //   if (
-  //     (nickname !== '' && nickname !== context.profile.nickNm) ||
-  //     (profileMsg !== '' && profileMsg !== context.profile.profMsg) ||
-  //     (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
-  //     (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
-  //   ) {
-  //     setActive(true)
-  //   } else {
-  //     console.log('error?')
-  //     setActive(false)
-  //   }
-  // }, [nickname, profileMsg, photoPath, gender])
+  useEffect(() => {
+    if (
+      (nickname !== '' && nickname !== context.profile.nickNm) ||
+      (profileMsg !== '' && profileMsg !== context.profile.profMsg) ||
+      (photoPath !== '' && photoPath !== context.profile.profImg.path) ||
+      (gender !== 'n' && gender !== '' && gender !== context.profile.gender)
+    ) {
+      setActive(true)
+    } else {
+      setActive(false)
+    }
+  }, [nickname, profileMsg, photoPath, gender])
 
   useEffect(() => {
     const getMyPageNew = async () => {

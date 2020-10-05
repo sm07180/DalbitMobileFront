@@ -16,23 +16,29 @@ export default (props) => {
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
   const [cropper, setCropper] = useState(null)
+  const [isCrop, setIsCrop] = useState(false)
 
+  const imageUrl = () => {
+    if (!isCrop) {
+      return image
+    } else {
+      return cropData
+    }
+  }
   const cropImage = () => {
     if (typeof cropper !== 'undefined') {
+      setIsCrop(true)
       setCropData(cropper.getCroppedCanvas().toDataURL())
-      if (context.editImage) {
-        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
-      }
     }
   }
   const rotateImage = () => {
     if (typeof cropper !== 'undefined') {
+      setIsCrop(false)
       setCropData(cropper.rotate(90))
     }
   }
   const submit = () => {
     if (typeof cropper !== 'undefined') {
-      // setCropData(cropper.getCroppedCanvas().toDataURL())
       if (context.editImage) {
         context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
       }
@@ -63,7 +69,7 @@ export default (props) => {
           style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
-          src={image}
+          src={imageUrl()}
           viewMode={1}
           guides={true}
           minCropBoxHeight={10}
