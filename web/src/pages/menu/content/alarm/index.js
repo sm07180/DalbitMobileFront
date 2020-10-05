@@ -80,7 +80,11 @@ export default function Alert() {
         history.push(`/customer/notice/${roomNo}`)
         break
       case 31:
-        history.push(`/mypage/${memNo}?tab=1`)
+        if (context.profile.memNo === memNo) {
+          history.push(`/mypage/${context.profile.memNo}/fanboard`)
+        } else {
+          history.push(`/mypage/${memNo}?tab=1`)
+        }
         break
       case 32:
         history.push(`/mypage/${context.profile.memNo}/wallet`)
@@ -121,7 +125,11 @@ export default function Alert() {
         fetchDataPlay(roomNo)
         break
       case 48:
-        history.push(`/mypage/${context.profile.memNo}?tab=2`)
+        if (context.profile.memNo === memNo) {
+          history.push(`/mypage/${context.profile.memNo}/my_clip`)
+        } else {
+          history.push(`/mypage/${memNo}?tab=2`)
+        }
         break
       case 50:
         let mobileLink = link
