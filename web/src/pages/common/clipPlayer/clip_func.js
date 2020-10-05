@@ -22,7 +22,7 @@ export const clipJoin = (data, context, webview) => {
           return Hybrid('ClipPlayerJoin', data)
         } else {
           alert('2')
-          return NewHybrid('ClipPlay', type, data)
+          return NewHybrid('ClipPlay', webview, data)
         }
       }
     } else {
