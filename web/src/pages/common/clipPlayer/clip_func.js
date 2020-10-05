@@ -16,7 +16,8 @@ export const clipJoin = (data, context, webview) => {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
           return Hybrid('ClipPlayerJoin', data)
         } else {
-          return NewHybrid('ClipPlay', webview, data)
+          // return NewHybrid('ClipPlay', webview, data)
+          return Hybrid('ClipPlayerJoin', data)
         }
       }
     } else {
