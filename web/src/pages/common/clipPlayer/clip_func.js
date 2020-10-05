@@ -8,8 +8,10 @@ export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     alert(webview)
     if (webview === 'new') {
-      alert(sessionStorage.getItem('play_clip_no'))
-      if (sessionStorage.getItem('play_clip_no') === data.clipNo) {
+      alert(Utility.getCookie('clip-player-info'))
+      let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
+      prevClipNo = prevClipNo.clipNo
+      if (prevClipNo === data.clipNo) {
         return Hybrid('CloseLayerPopup')
       } else {
         return NewHybrid('ClipPlay', type, data)
