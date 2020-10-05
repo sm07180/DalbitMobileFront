@@ -11,10 +11,15 @@ export const clipJoin = (data, context, webview) => {
       alert(Utility.getCookie('clip-player-info'))
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
+      alert(prevClipNo)
       if (prevClipNo === data.clipNo) {
         return Hybrid('CloseLayerPopup')
       } else {
-        return NewHybrid('ClipPlay', type, data)
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+          return Hybrid('ClipPlayerJoin', data)
+        } else {
+          return NewHybrid('ClipPlay', type, data)
+        }
       }
     } else {
       return Hybrid('ClipPlayerJoin', data)
