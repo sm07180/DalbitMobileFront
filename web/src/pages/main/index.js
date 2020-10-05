@@ -296,9 +296,9 @@ export default (props) => {
     const MainHeight = MainNode.clientHeight
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight
+    const RankSectionHeight = RankSectionNode.clientHeight + sectionMarginTop
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
 
     const LiveSectionHeight = LiveSectionNode.clientHeight + sectionMarginTop
 
