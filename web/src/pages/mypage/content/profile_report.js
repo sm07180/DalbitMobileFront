@@ -39,14 +39,23 @@ export default (props) => {
     })
     if (result === 'success') {
       context.action.alert({
+        callback: () => {
+          context.action.updateMypageReport(false)
+        },
         msg: message
       })
     } else if (code === '-3') {
       context.action.alert({
+        callback: () => {
+          context.action.updateMypageReport(false)
+        },
         msg: message
       })
     } else if (code === 'C006') {
       context.action.alert({
+        callback: () => {
+          context.action.updateMypageReport(false)
+        },
         msg: '이미 블랙리스트로 등록된\n회원입니다.'
       })
     }
