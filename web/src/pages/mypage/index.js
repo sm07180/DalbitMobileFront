@@ -139,7 +139,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if (tab !== undefined) {
+    if (tab !== undefined && profile.memNo !== memNo) {
       setTabSelected(Number(tab))
     }
   }, [memNo])
