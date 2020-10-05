@@ -1,3 +1,4 @@
+@import '../../../../styles/variables';
 #search {
   //서치 컨트롤러
   .controller {
@@ -77,14 +78,38 @@
         height: 160px;
         margin-bottom: 12px;
         border-radius: 16px;
-        background-color: rgba(0, 0, 0, 0.2);
+        background-size: cover;
+        background-repeat: no-repeat;
         &__info {
+          position: relative;
           display: flex;
-          margin: 0 6px;
+          margin: 4px 8px;
           justify-content: space-between;
+          z-index: 2;
         }
         &__iconBox {
-          .all {
+          display: flex;
+          align-items: center;
+          &__entry {
+            display: flex;
+            align-items: center;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: -0.28px;
+            text-align: left;
+            color: #ffffff;
+            &:before {
+              content: '';
+              display: block;
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+              background: url(./static/entry.svg);
+            }
+          }
+          img {
+            margin-right: 2px;
           }
         }
         &__title {
@@ -101,6 +126,174 @@
           letter-spacing: normal;
           text-align: left;
           color: #ffffff;
+          z-index: 2;
+        }
+      }
+    }
+  }
+  .dim {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .chartListDetail {
+    padding: 0px 2% 10px 16px;
+    .chartListDetailBox {
+      &.fixedOn {
+        margin-top: 86px;
+      }
+    }
+    .chartListDetailItem {
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+
+      &__thumb {
+        position: relative;
+        margin-right: 12px;
+        width: 72px;
+        .newSpecialIcon {
+          position: absolute;
+          text-indent: -99999px;
+          left: 0px;
+          top: 0px;
+          width: 51px;
+          height: 16px;
+          text-indent: -99999px;
+          background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+        }
+
+        img {
+          width: 100%;
+          border-radius: 12px;
+        }
+        &__playTime {
+          display: inline-block;
+          position: absolute;
+          right: 3px;
+          bottom: 3px;
+          padding: 0 4px;
+          height: 14px;
+          line-height: 14px;
+          background: rgba(0, 0, 0, 0.6);
+          color: $white;
+          border-radius: 12px;
+          height: 14px;
+          font-size: 10px;
+          font-weight: bold;
+        }
+      }
+
+      .textBox {
+        width: calc(100% - 90px);
+
+        &__iconBox {
+          display: inline-block;
+          width: 60px;
+          height: 30px;
+          border: solid 1px;
+
+          &--type {
+            font-style: normal;
+            font-size: 14px;
+            color: $primary;
+            font-weight: normal;
+            letter-spacing: -0.5px;
+          }
+        }
+
+        &__subject {
+          display: flex;
+          align-items: center;
+          height: 20px;
+          letter-spacing: -0.5px;
+          .title {
+            color: $greishBrown;
+            flex: 1;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+          }
+          .subject {
+            font-size: 14px;
+            color: $primary;
+            font-weight: normal;
+            letter-spacing: -0.5px;
+          }
+        }
+        &__nickName {
+          display: flex;
+          width: 100%;
+          margin: 7px 0px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          color: $darkGray;
+          line-height: 1.3;
+          letter-spacing: -0.5px;
+
+          .maleIcon,
+          .femaleIcon {
+            display: inline-block;
+            margin-right: 4px;
+            width: 24px;
+            height: 16px;
+            background: url('./static/male.svg');
+            background-color: $white;
+            border-radius: 10px;
+            margin-left: 1px;
+          }
+          .femaleIcon {
+            background: url('./static/female.svg');
+            background-color: $white;
+            border-radius: 10px;
+          }
+        }
+
+        &__subject {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: 700;
+        }
+
+        i.line {
+          flex-basis: 1px;
+          height: 10px;
+          background: $mediumGray;
+          margin: 0px 6px;
+        }
+
+        &__nickName {
+          font-size: 12px;
+        }
+
+        &__detail {
+          margin-top: 3px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          &--item {
+            color: $greishBrown;
+            font-size: 12px;
+            letter-spacing: -0.5px;
+            margin-right: 8px;
+            font-weight: 400;
+
+            img {
+              display: inline-block;
+              margin-right: 2px;
+              opacity: 0.8;
+            }
+          }
         }
       }
     }

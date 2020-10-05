@@ -33,16 +33,17 @@ export default (props) => {
   const [result, setResult] = useState('') //검색텍스트
   const [recoTab, setRecoTab] = useState(0) //초기 추천 탭
   const [recoList, setRecoList] = useState([]) //초기 추천 탭 fetch list
+  const [clipType, setClipType] = useState([])
+  const [memberList, setMemberList] = useState([])
   //fetch
   // 초기추천탭 fetch list
   const fetchInitialList = async (recoTab) => {
     if (recoTab === 0) {
       const res = await API.getSearchRecomend({
         page: 1,
-        records: 10
+        records: 20
       })
       if (res.result === 'success') {
-        console.log(res.data.list)
         setRecoList(res.data.list)
       } else {
         alert(res.message)
@@ -50,14 +51,43 @@ export default (props) => {
     } else if (recoTab === 1) {
       const res = await API.getPopularList({
         page: 1,
-        records: 10
+        records: 20
       })
       if (res.result === 'success') {
-        console.log(res.data.list)
         setRecoList(res.data.list)
       } else {
-        alert(res.message)
+        context.action.alert({
+          msg: message
+        })
       }
+    }
+  }
+  const fetchDataClipType = async () => {
+    const {result, data, message} = await API.getClipType({})
+    if (result === 'success') {
+      setClipType(data)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  //fetch 사용자검색
+  async function fetchSearch() {
+    const res = await API.member_search({
+      params: {
+        search: result,
+        page: 1,
+        records: 20
+      }
+    })
+    if (res.result === 'success') {
+      setMemberList(res.data.list)
+    } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
 
@@ -66,9 +96,12 @@ export default (props) => {
   const onChange = (e) => {
     setResult(e.target.value)
   }
-  const handleSubmit = (e) => {}
+  const handleSubmit = (e) => {
+    fetchSearch()
+  }
   //initial url decode
   useEffect(() => {
+    fetchDataClipType()
     if (search && searchText !== '') {
       setResult(decodeURI(searchText))
     }
@@ -103,8 +136,8 @@ export default (props) => {
           </button>
         </form>
       </div>
-      {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) 2.recoList => data list*/}
-      <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} />
+      {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) 2.recoList => data list* 3.클립 스플래시*/}
+      <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} clipType={clipType} />
     </div>
   )
 }
