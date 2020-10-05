@@ -397,16 +397,17 @@ function Ranking() {
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (
-            totalPage > formState.page &&
-            ((formState.page < 20 &&
-              (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-              (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
-              (formState.page < 40 &&
+            (totalPage > formState.page &&
+              ((formState.page < 20 &&
                 (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                formState.dateType === DATE_TYPE.MONTH) ||
-              (formState.page < 60 &&
-                (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                formState.dateType === DATE_TYPE.YEAR))
+                (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
+                (formState.page < 40 &&
+                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                  formState.dateType === DATE_TYPE.MONTH) ||
+                (formState.page < 60 &&
+                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                  formState.dateType === DATE_TYPE.YEAR))) ||
+            (formState.page < totalPage && (formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE))
           ) {
             if (!fetching) {
               if (!didFetch) {
