@@ -3,6 +3,7 @@ import React from 'react'
 import {Hybrid, NewHybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
+import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
@@ -12,6 +13,7 @@ export const clipJoin = (data, context, webview) => {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
       alert(prevClipNo)
+      alert(data.clipNo)
       if (prevClipNo === data.clipNo) {
         return Hybrid('CloseLayerPopup')
       } else {
