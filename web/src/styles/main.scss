@@ -112,100 +112,16 @@
 
 // main
 .main-wrap {
+  .main-content {
+    padding-top: 28px;
+  }
   .section {
     color: red;
     font-weight: 700;
     box-sizing: border-box;
 
-    &.my-star {
-      display: none;
-      margin-top: 20px;
-      padding: 20px 0 16px 16px;
-      background: $lighterGray;
-      &.visible {
-        display: block;
-      }
-      .title {
-        color: $white;
-        display: flex;
-        align-items: center;
-        flex-direction: row;
-        margin-right: 18px;
-        margin-bottom: 18px;
-
-        .txt {
-          width: 34px;
-          font-size: 16px;
-          color: $black;
-          font-weight: bold;
-        }
-        .icon {
-          width: 20px;
-          margin-left: 4px;
-        }
-      }
-
-      .swiper-container {
-        width: 100%;
-        margin: 0;
-        padding-right: 16px;
-      }
-
-      .list {
-        width: 60px;
-        cursor: pointer;
-
-        &:first-child {
-          margin-left: 0;
-        }
-        &:last-child {
-          margin-right: 0;
-        }
-
-        .image {
-          position: relative;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          background-size: cover;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-          color: $greishBrown;
-          font-size: 16px;
-          font-weight: 800;
-          letter-spacing: -0.32px;
-          background-color: $darkGray;
-        }
-
-        .text {
-          margin: 0 auto;
-          margin-top: 6px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          color: $darkGray;
-          font-size: 12px;
-          /* letter-spacing: -0.28px; */
-          white-space: nowrap;
-          text-align: center;
-        }
-        .liveIcon {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-          width: 20px;
-          height: 20px;
-          img {
-            width: 100%;
-          }
-        }
-      }
-    }
-
     &.rank {
-      margin-top: 26px;
-      // padding: 26px 0 32px;
+      padding: 26px 0 32px;
       background-color: $white;
       color: $white;
       .swiper-container {
@@ -296,10 +212,93 @@
       }
     }
     &.banner {
-      margin-top: 20px;
-      padding: 0 16px;
+      padding: 0 16px 0 16px;
     }
+    &.my-star {
+      display: none;
+      margin-top: 20px;
+      padding: 20px 0 16px 16px;
+      background: $lighterGray;
+      &.visible {
+        display: block;
+      }
+      .title {
+        color: $white;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        margin-right: 18px;
+        margin-bottom: 18px;
 
+        .txt {
+          width: 34px;
+          font-size: 16px;
+          color: $black;
+          font-weight: bold;
+        }
+        .icon {
+          width: 20px;
+          margin-left: 4px;
+        }
+      }
+
+      .swiper-container {
+        width: 100%;
+        margin: 0;
+        padding-right: 16px;
+      }
+
+      .list {
+        width: 60px;
+        cursor: pointer;
+
+        &:first-child {
+          margin-left: 0;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+
+        .image {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background-size: cover;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          color: $greishBrown;
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: -0.32px;
+          background-color: $darkGray;
+        }
+
+        .text {
+          margin: 0 auto;
+          margin-top: 6px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: $darkGray;
+          font-size: 12px;
+          /* letter-spacing: -0.28px; */
+          white-space: nowrap;
+          text-align: center;
+        }
+        .liveIcon {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 20px;
+          height: 20px;
+          img {
+            width: 100%;
+          }
+        }
+      }
+    }
     &.live-list {
       padding: 0 16px;
       .title-wrap {
@@ -348,13 +347,12 @@
                 height: 12px;
                 background: $lightGray;
                 position: absolute;
-                left: 0px;
+                left: -8px;
                 top: 50%;
                 margin-top: -6px;
               }
               img {
                 width: 100%;
-                margin-left: 8px;
               }
               &.btn__refresh--active {
                 img {
@@ -375,7 +373,7 @@
       transform: rotate(0deg);
     }
     100% {
-      transform: rotate(-360deg);
+      transform: rotate(360deg);
     }
   }
   .room_cnt {
@@ -519,6 +517,9 @@
         //   background: $lightGray;
         //   margin-right: 8px;
         // }
+      }
+      .simple-list-icon {
+        margin-right: 8px;
       }
 
       .sequence-icon,
