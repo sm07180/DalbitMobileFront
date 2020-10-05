@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Nav from './content/nav.js'
 
 import Profile from './content/profile.js'
-import Search from './content/search.js'
+import Search from './content/search'
 import Alarm from './content/alarm'
 
 import {Context} from 'context'
