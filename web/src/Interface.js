@@ -668,13 +668,7 @@ export default () => {
         break
       case '48': //-----------------마이클립
         if (isLogin) {
-          if (isLogin) {
-            if (context.profile.memNo === mem_no) {
-              window.location.href = `/mypage/${context.profile.memNo}/my_clip`
-            } else {
-              window.location.href = `/mypage/${mem_no}?tab=2`
-            }
-          }
+          window.location.href = `/mypage/${context.profile.memNo}/my_clip`
         }
         break
       case '50': //-----------------직접입력 URL
