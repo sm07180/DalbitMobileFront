@@ -752,7 +752,8 @@
     }
 
     .notMem {
-      margin-top: 451px;
+      // margin-top: 451px;
+      margin-top: 463px;
     }
 
     &.special {
@@ -1129,6 +1130,7 @@
   }
 
   .levelListWrap {
+    min-height: calc(100vh - 104px - 28px);
     padding: 0 16px 16px 16px;
     background-color: $lighterGray;
   }
@@ -1308,6 +1310,7 @@
       &--updown {
         text-align: center;
         height: 12px;
+        font-size: 12px;
         &__up {
           color: #eb2828;
           &::before {
