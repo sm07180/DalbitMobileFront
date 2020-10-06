@@ -34,6 +34,7 @@ export const clipJoin = (data, context, webview) => {
         }
       }
     } else {
+      clipExit(context)
       return Hybrid('ClipPlayerJoin', data)
     }
   } else {
