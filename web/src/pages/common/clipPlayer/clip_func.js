@@ -29,6 +29,9 @@ export const clipJoin = (data, context, webview) => {
     } else {
       if (sessionStorage.getItem('clip_active') === null) {
         sessionStorage.setItem('clip_active', 'N')
+        setTimeout(() => {
+          sessionStorage.removeItem('clip_active')
+        }, 600)
         return Hybrid('ClipPlayerJoin', data)
       }
     }
