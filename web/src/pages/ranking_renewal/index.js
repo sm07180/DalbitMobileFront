@@ -59,6 +59,7 @@ function Ranking() {
   const fixedWrapRef = useRef()
   const listWrapRef = useRef()
   const bottomWrapRef = useRef()
+  const TopRef = useRef()
   const refreshDefaultHeight = 49
 
   const rankTouchStart = useCallback(
@@ -173,7 +174,10 @@ function Ranking() {
           fixedWrapRef.current.className = 'fixed'
         }
         if (bottomWrapRef.current) {
-          bottomWrapRef.current.className = 'bottom'
+          // bottomWrapRef.current.className = 'bottom'
+          if (TopRef.current) {
+            bottomWrapRef.current.marginTop = TopRef.current.offsetHeight + 190 + 'px'
+          }
         }
 
         if (listWrapRef.current) {
@@ -359,9 +363,13 @@ function Ranking() {
         }
 
         if (bottomWrapRef.current) {
-          bottomWrapRef.current.className = 'bottom'
-          if (formState.rankType === RANK_TYPE.SPECIAL) {
-            bottomWrapRef.current.className = 'bottom special'
+          // bottomWrapRef.current.className = 'bottom'
+          // if (formState.rankType === RANK_TYPE.SPECIAL) {
+          //   bottomWrapRef.current.className = 'bottom special'
+          // }
+          if (TopRef.current) {
+            console.log(TopRef.current.offsetHeight)
+            bottomWrapRef.current.style.marginTop = TopRef.current.offsetHeight + 140 + 'px'
           }
         }
         if (listWrapRef.current) {
@@ -371,6 +379,8 @@ function Ranking() {
             } else {
               listWrapRef.current.className = 'listFixed'
             }
+            // if (TopRef.current) console.log()
+            // listWrapRef.current.style.marginTop = 190 + TopRef.current.offsetHeight + 'px'
           } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
           } else {
@@ -380,6 +390,7 @@ function Ranking() {
       } else {
         fixedWrapRef.current.className = ''
         bottomWrapRef.current.className = ''
+        bottomWrapRef.current.style.marginTop = '0px'
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
@@ -476,7 +487,7 @@ function Ranking() {
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className="rankTop3Box">
+              <div className="rankTop3Box" ref={TopRef}>
                 <MyProfile fetching={fetching} />
 
                 <RankListTop />
