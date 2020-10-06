@@ -27,7 +27,7 @@ export default (props) => {
   const [select, setSelect] = useState('')
   const [active, setActive] = useState(false)
   const [allFalse, setAllFalse] = useState(false)
-  const [pageType, setPageType] = useState(0)
+  const [pageType, setPageType] = useState(1)
   const [reportReason, setReportReason] = useState('')
   //api
 
