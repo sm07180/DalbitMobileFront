@@ -241,7 +241,7 @@ export default (props) => {
                             확인
                           </button>
                         ) : (
-                          <button className="btn__ok" onClick={validateReport}>
+                          <button className={`btn__ok ${reportReason.length > 9 ? 'on' : ''} `} onClick={validateReport}>
                             확인
                           </button>
                         )}
