@@ -736,7 +736,7 @@ export default (props) => {
             ref={StarSectionRef}>
             <div className="title-wrap">
               {globalCtx.token.isLogin === true ? (
-                <div className="title" onClick={() => (window.location.href = `/mypage/${ctx.profile.memNo}/edit_star`)}>
+                <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
                   <div className="txt">나의스타</div>
                   <img className="rank-arrow" src={RankArrow} />
                 </div>
