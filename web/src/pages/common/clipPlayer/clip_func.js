@@ -7,6 +7,21 @@ import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    if (sessionStorage.getItem('clip_active') === 'N') {
+      context.action.alert({
+        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
+      })
+      return false
+    } else {
+      if (sessionStorage.getItem('clip_active') === null) {
+        sessionStorage.setItem('clip_active', 'N')
+        setTimeout(() => {
+          context.action.alert({visible: false})
+          sessionStorage.removeItem('clip_active')
+        }, 3000)
+      }
+    }
+
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
@@ -21,7 +36,22 @@ export const clipJoin = (data, context, webview) => {
         }
       }
     } else {
-      return Hybrid('ClipPlayerJoin', data)
+      // clipExit(context)
+      // context.action.alert({visible: false})
+      // sessionStorage.setItem('clip_active', 'N')
+      if (Utility.getCookie('clip-player-info') !== undefined) {
+        let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
+        prevClipNo = prevClipNo.clipNo
+        if (prevClipNo === data.clipNo) {
+          return Hybrid('ClipPlayerJoin', data)
+        } else {
+          clipExit(context)
+          return Hybrid('ClipPlayerJoin', data)
+        }
+      } else {
+        clipExit(context)
+        return Hybrid('ClipPlayerJoin', data)
+      }
     }
   } else {
     return context.action.confirm({
