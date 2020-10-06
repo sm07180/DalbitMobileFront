@@ -7,6 +7,7 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 // router
 import {useParams, useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
+import qs from 'query-string'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 // scss
 
@@ -14,6 +15,7 @@ import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 export default function ClipHistory() {
   let history = useHistory()
   const context = useContext(Context)
+  const {webview} = qs.parse(location.search)
   // state
   const [currentPage, setCurrentPage] = useState(1)
   const [historyList, setHistoryList] = useState([])
@@ -46,7 +48,7 @@ export default function ClipHistory() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      clipJoin(data, context, webview)
     } else {
       if (code === '-99') {
         context.action.alert({

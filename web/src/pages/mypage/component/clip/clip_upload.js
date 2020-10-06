@@ -5,6 +5,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import qs from 'query-string'
 //svg
 import PlayIcon from '../clip_play.svg'
 import LikeIcon from '../clip_like.svg'
@@ -18,6 +19,7 @@ function ClipUpload() {
   let {memNo, category} = useParams()
 
   const context = useContext(Context)
+  const {webview} = qs.parse(location.search)
 
   const [uploadList, setUploadList] = useState([])
   const [nextList, setNextList] = useState([])
@@ -65,7 +67,7 @@ function ClipUpload() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      clipJoin(data, context, webview)
     } else {
       if (code === '-99') {
         context.action.alert({
