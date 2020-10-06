@@ -99,6 +99,7 @@ const GlobalProvider = (props) => {
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
   const [isDevIp, setIsDevIp] = useState(false)
+  const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
   const [backFunction, setBackFunction] = useState({name: ''})
@@ -421,6 +422,9 @@ const GlobalProvider = (props) => {
     },
     updateBackFunction: (obj) => {
       setBackFunction(obj)
+    },
+    updateRoomType: (string) => {
+      setRoomType(string)
     }
   }
   //---------------------------------------------------------------------
@@ -490,7 +494,8 @@ const GlobalProvider = (props) => {
     boardIdx,
     boardModifyInfo,
     backState,
-    backFunction
+    backFunction,
+    roomType
   }
   return <Provider value={value}>{props.children}</Provider>
 }

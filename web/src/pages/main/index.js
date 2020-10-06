@@ -190,6 +190,7 @@ export default (props) => {
         const {roomType} = data
         if (roomType) {
           const concatenated = categoryList.concat(roomType)
+          globalCtx.action.updateRoomType(concatenated)
           setCategoryList(concatenated)
         }
       }

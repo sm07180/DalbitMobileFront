@@ -51,6 +51,7 @@ export default (props) => {
     livetotal: 0,
     cliptotal: 0
   })
+
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
   //fetch
@@ -75,7 +76,7 @@ export default (props) => {
         setRecoList(res.data.list)
       } else {
         context.action.alert({
-          msg: message
+          msg: res.message
         })
       }
     }
@@ -94,16 +95,14 @@ export default (props) => {
   async function fetchSearchMember() {
     const res = await API.member_search({
       params: {
-        search: result,
-        page: 1,
-        records: 20
+        search: result
       }
     })
     if (res.result === 'success') {
       setMemberList(res.data)
     } else {
       context.action.alert({
-        msg: message
+        msg: res.message
       })
     }
   }
@@ -111,9 +110,7 @@ export default (props) => {
   async function fetchSearchLive() {
     const res = await API.broad_list({
       params: {
-        search: result,
-        page: 1,
-        records: 20
+        search: result
       }
     })
     if (res.result === 'success') {
@@ -128,9 +125,7 @@ export default (props) => {
     const res = await API.getClipList({
       search: result,
       slctType: 0,
-      dateType: 0,
-      page: 1,
-      records: 20
+      dateType: 0
     })
     if (res.result === 'success') {
       setClipList(res.data)
@@ -140,23 +135,24 @@ export default (props) => {
       })
     }
   }
+
+  const resetList = () => {
+    setMemberList([])
+    setClipList([])
+    setLiveList([])
+  }
   const holeSearch = () => {
+    resetList()
     if (filterType === 0) {
       fetchSearchMember()
       fetchSearchLive()
       fetchSearchClip()
     } else if (filterType === 1) {
       fetchSearchLive()
-      setMemberList([])
-      setClipList([])
     } else if (filterType === 2) {
       fetchSearchMember()
-      setClipList([])
-      setLiveList([])
     } else if (filterType === 3) {
       fetchSearchClip()
-      setMemberList([])
-      setLiveList([])
     }
   }
   //function
@@ -246,7 +242,14 @@ export default (props) => {
           )
         })}
       </div>
-      {CategoryType === 0 && <TotalList memberList={memberList} clipList={clipList} liveList={liveList} total={total} />}
+      <TotalList
+        memberList={memberList}
+        clipList={clipList}
+        liveList={liveList}
+        total={total}
+        clipType={clipType}
+        CategoryType={CategoryType}
+      />
     </div>
   )
 }
