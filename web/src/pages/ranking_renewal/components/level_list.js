@@ -5,7 +5,7 @@ import styled, {css} from 'styled-components'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 //static
 import guideIcon from '../static/guide_s.png'
 import fanIcon from '../static/ic_circle_fan_s_dkgr.svg'
@@ -31,7 +31,7 @@ function LevelList({empty}) {
       </div>
       <ul className="levelListWrap">
         {empty === true ? (
-          <NoResult type="default" text="랭킹이 없습니다." />
+          <NoResult type="default" text="조회 된 결과가 없습니다." />
         ) : (
           <>
             {levelList.map((list, index) => {
