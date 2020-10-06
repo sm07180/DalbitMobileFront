@@ -282,7 +282,7 @@ export default (props) => {
 
   const windowScrollEvent = () => {
     const GnbHeight = 48
-    const sectionMarginTop = 24
+    const sectionMarginTop = 30
     const LiveTabDefaultHeight = 48
 
     const MainNode = MainRef.current
@@ -298,7 +298,7 @@ export default (props) => {
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
 
     const LiveSectionHeight = LiveSectionNode.clientHeight
 
@@ -819,7 +819,7 @@ export default (props) => {
               </div>
             </div>
 
-            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '105px'}}>
+            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
