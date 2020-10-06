@@ -8,9 +8,10 @@ import {OS_TYPE} from 'context/config.js'
 export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (sessionStorage.getItem('clip_active') === 'N') {
-      return context.action.alert({
+      context.action.alert({
         msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
       })
+      return false
     } else {
       if (sessionStorage.getItem('clip_active') === null) {
         sessionStorage.setItem('clip_active', 'N')
