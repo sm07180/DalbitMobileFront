@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 
 import Room, {RoomJoin} from 'context/room'
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 // context
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
@@ -35,7 +35,7 @@ function LikeList({empty}) {
       </div>
       <ul className="levelListWrap">
         {empty === true ? (
-          <NoResult />
+          <NoResult type="default" text="조회 된 결과가 없습니다." />
         ) : (
           likeList.map((list, index) => {
             const {

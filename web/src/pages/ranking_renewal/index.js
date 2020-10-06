@@ -168,7 +168,7 @@ function Ranking() {
   useEffect(() => {
     if (scrollY > 0) {
       window.scrollTo(0, scrollY)
-      if (scrollY >= 48) {
+      if (scrollY >= 50) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
