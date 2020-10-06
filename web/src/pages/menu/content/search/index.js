@@ -46,12 +46,12 @@ export default (props) => {
   const [memberList, setMemberList] = useState([])
   const [liveList, setLiveList] = useState([])
   const [clipList, setClipList] = useState([])
+  const [searchState, setSearchState] = useState(false)
   const [total, setTotal] = useState({
     memtotal: 0,
     livetotal: 0,
     cliptotal: 0
   })
-
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
   //fetch
@@ -142,16 +142,16 @@ export default (props) => {
     setLiveList([])
   }
   const holeSearch = () => {
-    resetList()
-    if (filterType === 0) {
+    //resetList()
+    if (CategoryType === 0) {
       fetchSearchMember()
       fetchSearchLive()
       fetchSearchClip()
-    } else if (filterType === 1) {
+    } else if (CategoryType === 1) {
       fetchSearchLive()
-    } else if (filterType === 2) {
+    } else if (CategoryType === 2) {
       fetchSearchMember()
-    } else if (filterType === 3) {
+    } else if (CategoryType === 3) {
       fetchSearchClip()
     }
   }
@@ -161,6 +161,8 @@ export default (props) => {
     setResult(e.target.value)
   }
   const handleSubmit = (e) => {
+    setSearchState(true)
+    setCategoryType(filterType)
     e.preventDefault()
     holeSearch()
   }
@@ -174,7 +176,6 @@ export default (props) => {
       setResult('')
     }
   }, [])
-
   // 초기 탭 호출
   useEffect(() => {
     fetchInitialList(recoTab)
@@ -190,7 +191,8 @@ export default (props) => {
       current.removeEventListener('focus', handleFocus)
     }
   })
-
+  console.log('f', filterType)
+  console.log('c', CategoryType)
   //render ----------------------------------------------------
   return (
     <div id="search">
@@ -229,27 +231,31 @@ export default (props) => {
         </div>
       )}
       {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) 2.recoList => data list* 3.클립 스플래시*/}
-      <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} clipType={clipType} />
-      <div className="searchCategory">
-        {tabContent.map((item, idx) => {
-          return (
-            <button
-              key={`${idx}+categoryTab`}
-              onClick={() => setCategoryType(item.id)}
-              className={CategoryType === item.id ? 'activeFiter' : ''}>
-              {item.tab}
-            </button>
-          )
-        })}
-      </div>
-      <TotalList
-        memberList={memberList}
-        clipList={clipList}
-        liveList={liveList}
-        total={total}
-        clipType={clipType}
-        CategoryType={CategoryType}
-      />
+      {!searchState && <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} clipType={clipType} />}
+      {searchState && (
+        <>
+          <div className="searchCategory">
+            {tabContent.map((item, idx) => {
+              return (
+                <button
+                  key={`${idx}+categoryTab`}
+                  onClick={() => setCategoryType(item.id)}
+                  className={CategoryType === item.id ? 'activeFiter' : ''}>
+                  {item.tab}
+                </button>
+              )
+            })}
+          </div>
+          <TotalList
+            memberList={memberList}
+            clipList={clipList}
+            liveList={liveList}
+            total={total}
+            clipType={clipType}
+            CategoryType={CategoryType}
+          />
+        </>
+      )}
     </div>
   )
 }
