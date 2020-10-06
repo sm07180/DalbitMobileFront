@@ -92,6 +92,11 @@ export default (props) => {
               <label className="badge-label right">
                 <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스
               </label>
+              {myInfo.rewardPoint !== '' ? (
+                <label className="badge-label center">차기 스페셜DJ 선정 시 가산점 {myInfo.rewardPoint}점 지급</label>
+              ) : (
+                ''
+              )}
             </div>
           </div>
         </div>
@@ -122,6 +127,10 @@ const PopupWrap = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  img {
+    vertical-align: middle;
+  }
 
   .content-wrap {
     position: relative;
@@ -186,7 +195,7 @@ const PopupWrap = styled.div`
         .top-badge-title {
           width: 38%;
           font-size: 12px;
-          line-height: 28px;
+          line-height: 27px;
           letter-spacing: -0.3px;
           color: #424242;
           text-align: center;
@@ -199,7 +208,7 @@ const PopupWrap = styled.div`
           color: #fff;
           font-size: 12px;
           letter-spacing: -0.6px;
-          line-height: 26px;
+          line-height: 27px;
           text-align: center;
           font-weight: 700;
         }
@@ -207,6 +216,7 @@ const PopupWrap = styled.div`
 
       .bottom-badge-box {
         display: flex;
+        flex-wrap: wrap;
         justify-content: space-between;
         margin-top: 6px;
 
@@ -225,6 +235,11 @@ const PopupWrap = styled.div`
 
           &.right {
             width: 60%;
+          }
+
+          &.center {
+            margin-top: 6px;
+            width: 100%;
           }
         }
       }
