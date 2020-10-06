@@ -7,6 +7,19 @@ import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    if (sessionStorage.getItem('clip_active') === 'N') {
+      return context.action.alert({
+        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
+      })
+    } else {
+      if (sessionStorage.getItem('clip_active') === null) {
+        sessionStorage.setItem('clip_active', 'N')
+        setTimeout(() => {
+          sessionStorage.removeItem('clip_active')
+        }, 600)
+      }
+    }
+
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
@@ -20,17 +33,9 @@ export const clipJoin = (data, context, webview) => {
           return Hybrid('ClipPlayerJoin', data)
         }
       }
-    }
-
-    if (sessionStorage.getItem('clip_active') === 'N') {
-      return context.action.alert({
-        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
-      })
     } else {
-      if (sessionStorage.getItem('clip_active') === null) {
-        sessionStorage.setItem('clip_active', 'N')
-        return Hybrid('ClipPlayerJoin', data)
-      }
+      clipExit(context)
+      return Hybrid('ClipPlayerJoin', data)
     }
   } else {
     return context.action.confirm({
@@ -53,6 +58,7 @@ export const clipExit = (context) => {
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)
+  // sessionStorage.removeItem('clip_active')
 }
 
 export const updateClipInfo = (data) => {
