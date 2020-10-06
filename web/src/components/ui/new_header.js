@@ -27,7 +27,7 @@ export default (props) => {
       )}
       {(props.type !== 'noBack' || customHeader['os'] === OS_TYPE['Desktop']) && (
         <button className="close-btn" onClick={goBack}>
-          <img src={closeBtn} alt="뒤로가기" />
+          <img src={closeBtn} alt="뒤로가기q" />
         </button>
       )}
     </div>

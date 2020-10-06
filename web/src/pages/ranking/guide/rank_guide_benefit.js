@@ -43,48 +43,48 @@ export default (props) => {
             <tr>
               <td className="rank">1</td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topdd01@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdd01@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwd01@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwd01@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topfd01@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdf01@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwf01@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwf01@3x.png`} width={36} height={26} />
               </td>
             </tr>
 
             <tr>
               <td className="rank">2</td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topdd02@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdd02@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwd02@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwd02@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topfd02@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdf02@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwf02@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwf02@3x.png`} width={36} height={26} />
               </td>
             </tr>
 
             <tr>
               <td className="rank">3</td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topdd03@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdd03@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwd03@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwd03@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topfd03@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topdf03@3x.png`} width={36} height={26} />
               </td>
               <td>
-                <img src={`${IMG_SERVER}/images/api/ic_topwf03@2x.png`} width={36} height={24} />
+                <img src={`${IMG_SERVER}/ranking/ic_pc_topwf03@3x.png`} width={36} height={26} />
               </td>
             </tr>
           </tbody>

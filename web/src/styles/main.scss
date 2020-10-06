@@ -112,15 +112,13 @@
 
 // main
 .main-wrap {
-  .main-content {
-    padding-top: 28px;
-  }
   .section {
     color: red;
     font-weight: 700;
     box-sizing: border-box;
 
     &.rank {
+      padding: 26px 0 32px;
       background-color: $white;
       color: $white;
       .swiper-container {
@@ -211,8 +209,7 @@
       }
     }
     &.banner {
-      margin-top: 20px;
-      padding: 0 16px;
+      padding: 0 16px 0 16px;
     }
     &.my-star {
       display: none;

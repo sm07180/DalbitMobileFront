@@ -18,8 +18,10 @@ import MyProfile from './components/MyProfile'
 import SpecialHistoryHandle from './components/special_history_handle'
 import RankListWrap from './components/rank_list'
 import LevelListWrap from './components/level_list'
+import RankListTop from './components/rank_list/rank_list_top'
 import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
+import NoResult from 'components/ui/new_noResult'
 //constant
 import {DATE_TYPE, RANK_TYPE} from './constant'
 
@@ -27,11 +29,14 @@ import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import './index.scss'
 import level from 'pages/level'
 
+import benefitIcon from './static/benefit@3x.png'
+
 let timer
 let touchStartY = null
 let touchEndY = null
 const records = 50
 function Ranking() {
+  const history = useHistory()
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
@@ -53,6 +58,7 @@ function Ranking() {
   const arrowRefreshRef = useRef()
   const fixedWrapRef = useRef()
   const listWrapRef = useRef()
+  const bottomWrapRef = useRef()
   const refreshDefaultHeight = 49
 
   const rankTouchStart = useCallback(
@@ -162,11 +168,14 @@ function Ranking() {
   useEffect(() => {
     if (scrollY > 0) {
       window.scrollTo(0, scrollY)
-
       if (scrollY >= 48) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
+        if (bottomWrapRef.current) {
+          bottomWrapRef.current.className = 'bottom'
+        }
+
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
@@ -308,6 +317,8 @@ function Ranking() {
                 ...res.data
               })
             }
+          }
+          if (res.data.list.length > 4) {
             setEmpty(false)
           } else {
             setEmpty(true)
@@ -341,16 +352,19 @@ function Ranking() {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
+
+        if (bottomWrapRef.current) {
+          bottomWrapRef.current.className = 'bottom'
+          if (formState.rankType === RANK_TYPE.SPECIAL) {
+            bottomWrapRef.current.className = 'bottom special'
+          }
+        }
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
-              if (listWrapRef.current.classList.length === 1) {
-                listWrapRef.current.className = 'listFixed more'
-              }
+              listWrapRef.current.className = 'listFixed more'
             } else {
-              if (listWrapRef.current.classList.length === 0) {
-                listWrapRef.current.className = 'listFixed'
-              }
+              listWrapRef.current.className = 'listFixed'
             }
           } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
@@ -360,6 +374,7 @@ function Ranking() {
         }
       } else {
         fixedWrapRef.current.className = ''
+        bottomWrapRef.current.className = ''
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
@@ -382,16 +397,17 @@ function Ranking() {
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
           if (
-            totalPage > formState.page &&
-            ((formState.page < 20 &&
-              (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-              (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
-              (formState.page < 40 &&
+            (totalPage > formState.page &&
+              ((formState.page < 20 &&
                 (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                formState.dateType === DATE_TYPE.MONTH) ||
-              (formState.page < 60 &&
-                (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                formState.dateType === DATE_TYPE.YEAR))
+                (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
+                (formState.page < 40 &&
+                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                  formState.dateType === DATE_TYPE.MONTH) ||
+                (formState.page < 60 &&
+                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
+                  formState.dateType === DATE_TYPE.YEAR))) ||
+            (formState.page < totalPage && (formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE))
           ) {
             if (!fetching) {
               if (!didFetch) {
@@ -415,7 +431,16 @@ function Ranking() {
   return (
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
-        <Header title="랭킹" type="noBack" />
+        <Header type="noBack">
+          <h2 className="header-title">랭킹</h2>
+          <div
+            className="benefitSize"
+            onClick={() => {
+              history.push('/rank/benefit')
+            }}>
+            <img src={benefitIcon} width={60} alt="혜택" />
+          </div>
+        </Header>
         <div className="refresh-wrap" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
@@ -430,28 +455,48 @@ function Ranking() {
             <>
               <RankDateBtn fetching={fetching} />
               <RankHandleDateBtn fetching={fetching} />
-              <MyProfile fetching={fetching} />
             </>
           )}
           {formState.rankType === RANK_TYPE.SPECIAL && <SpecialHistoryHandle fetching={fetching} />}
         </div>
+
+        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
+          <div ref={listWrapRef}>
+            {empty === true ? (
+              <NoResult type="default" text="조회 된 결과가 없습니다." />
+            ) : (
+              <div className="rankTop3Box">
+                <MyProfile fetching={fetching} />
+
+                <RankListTop />
+              </div>
+            )}
+          </div>
+        )}
+
         {formState.rankType === RANK_TYPE.LEVEL && (
-          <div ref={listWrapRef} className="other">
+          <div ref={bottomWrapRef} className="other">
             <LevelListWrap empty={empty} />
           </div>
         )}
         {formState.rankType === RANK_TYPE.LIKE && (
-          <div ref={listWrapRef} className="other">
+          <div ref={bottomWrapRef} className="other">
             <LikeListWrap empty={empty} />
           </div>
         )}
-        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
-          <div ref={listWrapRef} className={`${context.token.isLogin && 'more'}`}>
-            <RankListWrap empty={empty} />
-          </div>
-        )}
+
+        {empty === true
+          ? ''
+          : (formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
+              <div ref={bottomWrapRef}>
+                <div className={`${context.token.isLogin ? 'isMem' : 'notMem'}`}>
+                  <RankListWrap empty={empty} />
+                </div>
+              </div>
+            )}
+
         {formState.rankType === RANK_TYPE.SPECIAL && (
-          <div ref={listWrapRef} className="special">
+          <div ref={bottomWrapRef} className="special">
             <SpecialListWrap empty={empty} fetching={fetching} />
           </div>
         )}

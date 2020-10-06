@@ -36,10 +36,34 @@ export function convertDateToText(dateType, currentDate, convertType) {
   let month = cDate.getMonth() + 1
   let date = cDate.getDate()
 
+  // if (convertType === 0) {
+  //   if (dateType === 1) {
+  //     if (year === formYear && month === formMonth && formDate === date) {
+  //       return '실시간 집계'
+  //     }
+  //   } else if (dateType === 2) {
+  //     const currentWeek = convertMonday()
+  //     year = currentWeek.getFullYear()
+  //     month = currentWeek.getMonth() + 1
+  //     date = currentWeek.getDate()
+  //     if (year === formYear && month === formMonth && formDate === date) {
+  //       return '실시간 집계'
+  //     }
+  //   } else if (dateType === 3) {
+  //     if (year === formYear && month === formMonth) {
+  //       return '실시간 집계'
+  //     }
+  //   } else {
+  //     if (year === formYear) {
+  //       return '실시간 집계'
+  //     }
+  //   }
+  //   return ''
+  // }
   if (convertType === 0) {
     if (dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
-        return '실시간 집계'
+        return true
       }
     } else if (dateType === 2) {
       const currentWeek = convertMonday()
@@ -47,18 +71,17 @@ export function convertDateToText(dateType, currentDate, convertType) {
       month = currentWeek.getMonth() + 1
       date = currentWeek.getDate()
       if (year === formYear && month === formMonth && formDate === date) {
-        return '실시간 집계'
+        return true
       }
     } else if (dateType === 3) {
       if (year === formYear && month === formMonth) {
-        return '실시간 집계'
+        return true
       }
     } else {
-      if (year === formYear) {
-        return '실시간 집계'
-      }
+      return false
     }
-    return ''
+    // return ''
+    return false
   } else if (convertType === 1) {
     const dayAgo = new Date(new Date().setDate(new Date().getDate() - 1))
     const agoyear = dayAgo.getFullYear()
@@ -67,7 +90,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
     if (dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '오늘',
+          header: '실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (agoyear === formYear && agomonth === formMonth && formDate === agoday) {
@@ -77,7 +100,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
         }
       } else {
         return {
-          header: '일간 순위',
+          header: `${formYear}.${formMonth}.${formDate}`,
           date: `${formYear}.${formMonth}.${formDate}`
         }
       }
@@ -95,7 +118,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
 
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '이번주',
+          header: '이번주 실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
@@ -109,14 +132,14 @@ export function convertDateToText(dateType, currentDate, convertType) {
         const rangeMonth = b.getMonth() + 1
         const rangeDate = b.getDate()
         return {
-          header: '주간 순위',
+          header: `${formYear}.${formMonth}. ${Math.ceil(formDate / 7)}주`,
           date: 'time'
         }
       }
     } else if (dateType === 3) {
       if (year === formYear && month === formMonth) {
         return {
-          header: '이번달',
+          header: '이번달 실시간',
           date: '실시간 집계 중입니다.'
         }
       } else if (year === formYear && month - 1 === formMonth) {
@@ -126,13 +149,13 @@ export function convertDateToText(dateType, currentDate, convertType) {
         }
       } else {
         return {
-          header: '월간 순위',
+          header: `${formYear}.${formMonth}`,
           date: `${formYear}.${formMonth}`
         }
       }
     } else {
       return {
-        header: `${formYear}년`,
+        header: `${formYear}년 실시간`,
         date: '실시간 집계 중입니다.'
       }
     }
@@ -171,7 +194,7 @@ export function convertMonth() {
   }
 }
 
-export function changeDate(some, dateType, currentDate) {
+export function liveBoxchangeDate(some, dateType, currentDate) {
   let day1 = currentDate
   let year = day1.getFullYear()
   let month = day1.getMonth() + 1
