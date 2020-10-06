@@ -36,8 +36,8 @@ export const clipJoin = (data, context, webview) => {
       }
     } else {
       // clipExit(context)
-      context.action.alert({visible: false})
-      sessionStorage.setItem('clip_active', 'N')
+      // context.action.alert({visible: false})
+      // sessionStorage.setItem('clip_active', 'N')
       return Hybrid('ClipPlayerJoin', data)
     }
   } else {
