@@ -122,7 +122,7 @@
       background-color: $white;
       color: $white;
       .swiper-container {
-        padding: 16px 0 0 16px;
+        padding: 12px 0 0 16px;
       }
       .rank-slide {
         position: relative;
@@ -409,14 +409,14 @@
       flex-direction: row;
       align-items: center;
       .ico-lottie {
-        position: relative;
         display: inline-block;
-        vertical-align: top;
-        top: 1px;
         margin-right: 4px;
       }
 
       .txt {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         color: $greishBrown;
         font-size: 18px;
         font-weight: bold;
