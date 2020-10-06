@@ -53,6 +53,7 @@ export const clipExit = (context) => {
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)
+  sessionStorage.removeItem('clip_active')
 }
 
 export const updateClipInfo = (data) => {
