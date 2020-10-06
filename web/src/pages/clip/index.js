@@ -505,16 +505,14 @@ export default (props) => {
                   인기순
                 </button>
               </div> */}
+              <button type="button" onClick={() => setDetailPopup(true)} className="sortCate">
+                {context.clipMainSort === 1 && <span>최신순</span>}
+                {context.clipMainSort === 3 && <span>선물순</span>}
+                {context.clipMainSort === 4 && <span>재생순</span>}
+                {context.clipMainSort === 2 && <span>인기순</span>}
+                <img src={filterIcon} alt="카테고리 필터 이미지" />
+              </button>
               <div className="sequenceBox">
-                <div className="sequenceItem">
-                  <button type="button" onClick={() => setDetailPopup(true)}>
-                    {context.clipMainSort === 1 && <span>최신순</span>}
-                    {context.clipMainSort === 3 && <span>선물순</span>}
-                    {context.clipMainSort === 4 && <span>재생순</span>}
-                    {context.clipMainSort === 2 && <span>인기순</span>}
-                    <img src={filterIcon} alt="카테고리 필터 이미지" />
-                  </button>
-                </div>
                 <div className="sequenceItem">
                   <button type="button" onClick={() => setChartListType('detail')}>
                     <img
