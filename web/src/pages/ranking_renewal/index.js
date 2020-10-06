@@ -59,6 +59,7 @@ function Ranking() {
   const fixedWrapRef = useRef()
   const listWrapRef = useRef()
   const bottomWrapRef = useRef()
+  const TopRef = useRef()
   const refreshDefaultHeight = 49
 
   const rankTouchStart = useCallback(
@@ -168,12 +169,15 @@ function Ranking() {
   useEffect(() => {
     if (scrollY > 0) {
       window.scrollTo(0, scrollY)
-      if (scrollY >= 48) {
+      if (scrollY >= 50) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
         if (bottomWrapRef.current) {
-          bottomWrapRef.current.className = 'bottom'
+          // bottomWrapRef.current.className = 'bottom'
+          if (TopRef.current) {
+            bottomWrapRef.current.marginTop = TopRef.current.offsetHeight + 190 + 'px'
+          }
         }
 
         if (listWrapRef.current) {
@@ -292,6 +296,7 @@ function Ranking() {
               setRankList([])
               setLikeList([])
               setTotalPage(res.data.paging.totalPage)
+              setEmpty(false)
             } else if (formState.rankType === 4) {
               //good
               if (formState.page > 1) {
@@ -302,12 +307,19 @@ function Ranking() {
               setLevelList([])
               setRankList([])
               setTotalPage(res.data.paging.totalPage)
+              setEmpty(false)
             } else {
               // dj, fan
               if (formState.page > 1) {
                 setRankList(rankList.concat(res.data.list))
+                setEmpty(false)
               } else {
-                setRankList(res.data.list)
+                if (res.data.list.length < 4) {
+                  setEmpty(true)
+                } else {
+                  setEmpty(false)
+                  setRankList(res.data.list)
+                }
               }
               setLevelList([])
               setLikeList([])
@@ -317,9 +329,6 @@ function Ranking() {
                 ...res.data
               })
             }
-          }
-          if (res.data.list.length > 4) {
-            setEmpty(false)
           } else {
             setEmpty(true)
             setRankList([])
@@ -354,9 +363,13 @@ function Ranking() {
         }
 
         if (bottomWrapRef.current) {
-          bottomWrapRef.current.className = 'bottom'
-          if (formState.rankType === RANK_TYPE.SPECIAL) {
-            bottomWrapRef.current.className = 'bottom special'
+          // bottomWrapRef.current.className = 'bottom'
+          // if (formState.rankType === RANK_TYPE.SPECIAL) {
+          //   bottomWrapRef.current.className = 'bottom special'
+          // }
+          if (TopRef.current) {
+            console.log(TopRef.current.offsetHeight)
+            bottomWrapRef.current.style.marginTop = TopRef.current.offsetHeight + 140 + 'px'
           }
         }
         if (listWrapRef.current) {
@@ -366,6 +379,8 @@ function Ranking() {
             } else {
               listWrapRef.current.className = 'listFixed'
             }
+            // if (TopRef.current) console.log()
+            // listWrapRef.current.style.marginTop = 190 + TopRef.current.offsetHeight + 'px'
           } else if (formState.rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
           } else {
@@ -375,6 +390,7 @@ function Ranking() {
       } else {
         fixedWrapRef.current.className = ''
         bottomWrapRef.current.className = ''
+        bottomWrapRef.current.style.marginTop = '0px'
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
@@ -396,24 +412,30 @@ function Ranking() {
         const diff = document.body.scrollHeight / (formState.page + 1)
 
         if (document.body.scrollHeight <= window.scrollY + window.innerHeight + diff) {
-          if (
-            (totalPage > formState.page &&
-              ((formState.page < 20 &&
-                (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
-                (formState.page < 40 &&
-                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                  formState.dateType === DATE_TYPE.MONTH) ||
-                (formState.page < 60 &&
-                  (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) &&
-                  formState.dateType === DATE_TYPE.YEAR))) ||
-            (formState.page < totalPage && (formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE))
-          ) {
-            if (!fetching) {
-              if (!didFetch) {
-                formDispatch({
-                  type: 'PAGE'
-                })
+          if (!fetching) {
+            if (!didFetch) {
+              if (totalPage > formState.page) {
+                if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+                  if (
+                    (formState.page < 20 && (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
+                    (formState.page < 40 && formState.dateType === DATE_TYPE.MONTH) ||
+                    (formState.page < 60 && formState.dateType === DATE_TYPE.YEAR)
+                  ) {
+                    formDispatch({
+                      type: 'PAGE'
+                    })
+                  }
+                } else if (formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE) {
+                  if (formState.page < 4) {
+                    formDispatch({
+                      type: 'PAGE'
+                    })
+                  }
+                } else {
+                  formDispatch({
+                    type: 'PAGE'
+                  })
+                }
               }
             }
           }
@@ -465,7 +487,7 @@ function Ranking() {
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className="rankTop3Box">
+              <div className="rankTop3Box" ref={TopRef}>
                 <MyProfile fetching={fetching} />
 
                 <RankListTop />
