@@ -15,9 +15,6 @@ export const clipJoin = (data, context, webview) => {
     } else {
       if (sessionStorage.getItem('clip_active') === null) {
         sessionStorage.setItem('clip_active', 'N')
-        setTimeout(() => {
-          sessionStorage.removeItem('clip_active')
-        }, 600)
       }
     }
 
@@ -42,6 +39,9 @@ export const clipJoin = (data, context, webview) => {
         let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
         prevClipNo = prevClipNo.clipNo
         if (prevClipNo === data.clipNo) {
+          return Hybrid('ClipPlayerJoin', data)
+        } else {
+          clipExit(context)
           return Hybrid('ClipPlayerJoin', data)
         }
       } else {
