@@ -17,6 +17,7 @@ import bronzeDecoDj from '../../static/djrf3_deco@3x.png'
 import goldDecoFan from '../../static/fanrf1_deco@3x.png'
 import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
+import liveIcon from '../../static/live_white_l.svg'
 
 function RankListTop() {
   const history = useHistory()
@@ -77,7 +78,7 @@ function RankListTop() {
           <div className="TopBox" ref={TopBoxRef}>
             {rankResult.slice(0, 3).map((item, index) => {
               if (item === null) return <div className="TopBox__item" key={index}></div>
-              const {nickNm, profImg, memNo} = item
+              const {nickNm, profImg, memNo, roomNo} = item
 
               return (
                 <div className="TopBox__item" key={index}>
@@ -110,8 +111,22 @@ function RankListTop() {
                       />
                     )}
                   </div>
-
-                  <p className="nickName">{nickNm}</p>
+                  {roomNo !== '' ? (
+                    <div
+                      className="nickNameBox"
+                      onClick={() => {
+                        RoomJoin({roomNo: roomNo})
+                      }}>
+                      <p className="nickNameBox__nick">{nickNm}</p>
+                      <i className="nickNameBox__live">
+                        <img src={liveIcon} />
+                      </i>
+                    </div>
+                  ) : (
+                    <div className="nickNameBox">
+                      <p className="nickNameBox__nick--noLive">{nickNm}</p>
+                    </div>
+                  )}
                 </div>
               )
             })}
