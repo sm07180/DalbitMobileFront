@@ -44,7 +44,7 @@ export default (props) => {
         context.action.alert({
           msg: res.message,
           callback: () => {
-            history.goBack()
+            window.location.href = '/'
           }
         })
       }
