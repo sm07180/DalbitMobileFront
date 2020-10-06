@@ -11,6 +11,7 @@ export const clipJoin = (data, context, webview) => {
       context.action.alert({
         msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
       })
+      return false
     } else {
       if (sessionStorage.getItem('clip_active') === null) {
         sessionStorage.setItem('clip_active', 'N')
