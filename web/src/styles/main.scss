@@ -409,14 +409,14 @@
       flex-direction: row;
       align-items: center;
       .ico-lottie {
-        position: relative;
         display: inline-block;
-        vertical-align: top;
-        top: 1px;
         margin-right: 4px;
       }
 
       .txt {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         color: $greishBrown;
         font-size: 18px;
         font-weight: bold;
