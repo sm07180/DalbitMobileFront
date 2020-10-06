@@ -18,7 +18,7 @@ export const clipJoin = (data, context, webview) => {
         setTimeout(() => {
           context.action.alert({visible: false})
           sessionStorage.removeItem('clip_active')
-        }, 3000)
+        }, 2000)
       }
     }
 
