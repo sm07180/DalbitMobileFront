@@ -282,7 +282,7 @@ export default (props) => {
 
   const windowScrollEvent = () => {
     const GnbHeight = 48
-    const sectionMarginTop = 24
+    const sectionMarginTop = 30
     const LiveTabDefaultHeight = 48
 
     const MainNode = MainRef.current
@@ -298,7 +298,7 @@ export default (props) => {
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
 
     const LiveSectionHeight = LiveSectionNode.clientHeight
 
@@ -684,7 +684,7 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                <span>
+                <span className="ico-lottie">
                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
                 </span>
                 <div className="txt">실시간 랭킹</div>
@@ -734,6 +734,19 @@ export default (props) => {
               initData.myStar === undefined || (Array.isArray(initData.myStar) && initData.myStar.length === 0) ? '' : 'visible'
             }`}
             ref={StarSectionRef}>
+            <div className="title-wrap">
+              {globalCtx.token.isLogin === true ? (
+                <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
+                  <div className="txt">나의스타</div>
+                  <img className="rank-arrow" src={RankArrow} />
+                </div>
+              ) : (
+                <div className="title">
+                  <div className="txt">나의스타</div>
+                  <img className="rank-arrow" src={RankArrow} />
+                </div>
+              )}
+            </div>
             <div className="content-wrap my-star-list">
               <StarList list={initData.myStar} />
             </div>
@@ -743,7 +756,6 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  실시간 LIVE
                   <span className="ico-lottie">
                     <img src={LiveIcon} alt="실시간라이브" width={24} />
                     {/* <Lottie
@@ -755,6 +767,7 @@ export default (props) => {
                       width={24}
                     /> */}
                   </span>
+                  실시간 LIVE
                 </span>
 
                 <div className="sequence-wrap">
@@ -806,7 +819,7 @@ export default (props) => {
               </div>
             </div>
 
-            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '105px'}}>
+            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
