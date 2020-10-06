@@ -100,18 +100,14 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      setMemberList(res.data.list)
-      setTotal({
-        ...total,
-        memtotal: res.data.paging.total
-      })
+      setMemberList(res.data)
     } else {
       context.action.alert({
         msg: message
       })
     }
   }
-  console.log(total.memtotal)
+
   async function fetchSearchLive() {
     const res = await API.broad_list({
       params: {
@@ -121,13 +117,7 @@ export default (props) => {
       }
     })
     if (res.result === 'success') {
-      setLiveList(res.data.list)
-      if (res.data.paging) {
-        setTotal({
-          ...total,
-          livetotal: res.data.paging.total
-        })
-      }
+      setLiveList(res.data)
     } else {
       context.action.alert({
         msg: message
@@ -143,11 +133,7 @@ export default (props) => {
       records: 20
     })
     if (res.result === 'success') {
-      setClipList(res.data.list)
-      setTotal({
-        ...total,
-        cliptotal: res.data.paging.total
-      })
+      setClipList(res.data)
     } else {
       context.action.alert({
         msg: message
@@ -260,14 +246,7 @@ export default (props) => {
           )
         })}
       </div>
-      {CategoryType === 0 && (
-        <TotalList
-          memberList={memberList.slice(0, 2)}
-          clipList={clipList.slice(0, 2)}
-          liveList={liveList.slice(0, 2)}
-          total={total}
-        />
-      )}
+      {CategoryType === 0 && <TotalList memberList={memberList} clipList={clipList} liveList={liveList} total={total} />}
     </div>
   )
 }

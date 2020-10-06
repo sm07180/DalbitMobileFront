@@ -10,7 +10,9 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 
 export default (props) => {
   const {memberList, clipList, liveList, total} = props
-  console.log(total)
+  console.log(memberList.list)
+  useEffect(() => {}, [])
+
   // ctx && path
   const context = useContext(Context)
   const history = useHistory()
@@ -19,23 +21,27 @@ export default (props) => {
   return (
     <div className="total">
       <div className="total__member">
-        {memberList.map((item, idx) => {
-          const {nickNm} = item
-          return <div key={`${idx}+categoryTab`}>{nickNm}</div>
-        })}
+        <h4>DJ</h4>
+
+        {memberList.list
+          ? memberList.list.slice(0, 2).map((item, idx) => {
+              const {nickNm} = item
+              return <div key={`${idx}+categoryTab`}>{nickNm}</div>
+            })
+          : '결과가없습니다.'}
       </div>
-      <div className="total__live">
-        {liveList.map((item, idx) => {
+      {/* <div className="total__live">
+        {liveList.list.map((item, idx) => {
           const {nickNm} = item
           return <div key={`${idx}+categoryTab`}>{nickNm}</div>
         })}
       </div>
       <div className="total__clip">
-        {clipList.map((item, idx) => {
+        {clipList.list.map((item, idx) => {
           const {nickNm} = item
           return <div key={`${idx}+categoryTab`}>{nickNm}</div>
         })}
-      </div>
+      </div> */}
     </div>
   )
 }
