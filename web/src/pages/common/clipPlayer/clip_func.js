@@ -31,6 +31,7 @@ export const clipJoin = (data, context, webview) => {
         }
       }
     } else {
+      sessionStorage.removeItem('clip_active')
       return Hybrid('ClipPlayerJoin', data)
     }
   } else {
