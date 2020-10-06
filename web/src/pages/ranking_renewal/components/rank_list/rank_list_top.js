@@ -17,7 +17,7 @@ import bronzeDecoDj from '../../static/djrf3_deco@3x.png'
 import goldDecoFan from '../../static/fanrf1_deco@3x.png'
 import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
-import liveIcon from '../../static/live_m2.svg'
+import liveIcon from '../../static/live_white_l.svg'
 
 function RankListTop() {
   const history = useHistory()
