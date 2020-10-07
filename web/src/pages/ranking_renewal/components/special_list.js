@@ -41,7 +41,7 @@ function SpecialList({empty}) {
                 return (
                   <li key={idx} className="levelListBox">
                     <div className="specialBox">
-                      {v.specialCnt === 1 ? <span className="new">NEW</span> : <span>{v.specialCnt}회</span>}
+                      {v.isNew === true ? <span className="new">NEW</span> : <span>{v.specialCnt}회</span>}
                     </div>
                     <div
                       className="thumbBox"
