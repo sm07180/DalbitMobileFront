@@ -9,7 +9,7 @@ export const clipJoin = (data, context, webview) => {
   alert(Utility.getCookie('listen_room_no') + '|' + sessionStorage.getItem('clip_active'))
   if (
     Utility.getCookie('listen_room_no') === undefined ||
-    Utility.getCookie('listen_room_no') === null ||
+    Utility.getCookie('listen_room_no') === 'null' ||
     Utility.getCookie('listen_room_no') === ''
   ) {
     alert(1)
