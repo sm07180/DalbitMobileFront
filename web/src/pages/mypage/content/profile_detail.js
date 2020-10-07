@@ -341,6 +341,27 @@ export default (props) => {
     }
   }, [profile.memNo])
 
+  const createLiveBtn = () => {
+    if (profile.roomNo !== '') {
+      if (webview === 'new') {
+        if (sessionStorage.getItem('clip_info')) {
+          return <></>
+        }
+      } else {
+        return (
+          <button
+            className="liveIcon"
+            onClick={() => {
+              RoomJoin({roomNo: profile.roomNo})
+            }}>
+            <img src={LiveIcon} className="ico-live" />
+            <span>Live</span>
+          </button>
+        )
+      }
+    }
+  }
+
   return (
     <div className="profile-detail">
       <div className="adminEditButton">
@@ -371,16 +392,7 @@ export default (props) => {
             </div>
           </>
         )}
-        {profile.roomNo !== '' && (
-          <button
-            className="liveIcon"
-            onClick={() => {
-              RoomJoin({roomNo: profile.roomNo})
-            }}>
-            <img src={LiveIcon} className="ico-live" />
-            <span>Live</span>
-          </button>
-        )}
+        {createLiveBtn()}
         <div className="profile-image">
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.url})`}}>
             <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} />
