@@ -119,7 +119,7 @@ export default (props) => {
   // }
 
   if (
-    (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+    (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== null) &&
     sessionStorage.getItem('webview') === 'new'
   ) {
     mypageNavList = [
@@ -132,11 +132,11 @@ export default (props) => {
     alert(Utility.getCookie('listen_room_no'))
     alert(sessionStorage.getItem('webview'))
     alert(
-      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== null) &&
         sessionStorage.getItem('webview') === 'new'
     )
     if (
-      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== null) &&
       sessionStorage.getItem('webview') === 'new'
     ) {
       alert(1)
