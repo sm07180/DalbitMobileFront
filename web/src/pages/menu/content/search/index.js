@@ -373,6 +373,7 @@ export default (props) => {
             total={total}
             clipType={clipType}
             CategoryType={CategoryType}
+            setCategoryType={setCategoryType}
           />
         </>
       )}

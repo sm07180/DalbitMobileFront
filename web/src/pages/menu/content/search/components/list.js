@@ -17,6 +17,7 @@ import TotalIcon from '../static/total.svg'
 import LiveIcon from '../static/live.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import ClipPlayerIcon from '../static/clip_player.svg'
+import ArrowIcon from '../static/arrow.svg'
 export default (props) => {
   const {memberList, clipList, liveList, total, clipType, CategoryType} = props
   // ctx && path
@@ -65,6 +66,9 @@ export default (props) => {
         <div className="total__member" style={{border: CategoryType !== 0 && 'none'}}>
           <h4 className="Title">
             DJ <span className="Title__count">{total && total.memtotal}</span>
+            {CategoryType === 0 && memberList && total.memtotal > 2 && (
+              <img src={ArrowIcon} onClick={() => props.setCategoryType(1)} />
+            )}
           </h4>
           {memberList && memberList.length !== 0 ? (
             (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
@@ -101,6 +105,9 @@ export default (props) => {
         <div className="total__live" style={{border: CategoryType !== 0 && 'none'}}>
           <h4 className="Title">
             방송 <span className="Title__count">{total && total.livetotal}</span>
+            {CategoryType === 0 && liveList && total.livetotal > 2 && (
+              <img src={ArrowIcon} onClick={() => props.setCategoryType(2)} />
+            )}
           </h4>
           <div className="chartListDetail" style={{paddingLeft: 0}}>
             {liveList && liveList.length !== 0 ? (
@@ -156,6 +163,9 @@ export default (props) => {
         <div className="total__clip" style={{border: 'none'}}>
           <h4 className="Title">
             클립 <span className="Title__count">{total && total.cliptotal}</span>
+            {CategoryType === 0 && clipList && total.cliptotal > 2 && (
+              <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />
+            )}
           </h4>
           <div className="chartListDetail" style={{paddingLeft: 0}}>
             {clipList && clipList.length !== 0 ? (
