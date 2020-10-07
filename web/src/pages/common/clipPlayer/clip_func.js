@@ -42,13 +42,16 @@ export const clipJoin = (data, context, webview) => {
         let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
         prevClipNo = prevClipNo.clipNo
         if (prevClipNo === data.clipNo) {
+          context.action.alert({visible: false})
           return Hybrid('ClipPlayerJoin', data)
         } else {
           clipExit(context)
+          context.action.alert({visible: false})
           return Hybrid('ClipPlayerJoin', data)
         }
       } else {
         clipExit(context)
+        context.action.alert({visible: false})
         return Hybrid('ClipPlayerJoin', data)
       }
     }
