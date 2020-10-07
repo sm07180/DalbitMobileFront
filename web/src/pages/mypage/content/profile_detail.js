@@ -375,7 +375,11 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              RoomJoin({roomNo: profile.roomNo})
+              if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
+                return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+              } else {
+                RoomJoin({roomNo: profile.roomNo})
+              }
             }}>
             <img src={LiveIcon} className="ico-live" />
             <span>Live</span>
