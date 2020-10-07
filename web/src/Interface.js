@@ -389,6 +389,7 @@ export default () => {
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
         context.action.updatePlayer(true)
+        sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)

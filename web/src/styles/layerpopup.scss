@@ -570,9 +570,9 @@
             }
             &__ok {
               color: $white;
-              background-color: $primary;
+              background-color: $mediumGray;
 
-              cursor: initial;
+              cursor: pointer;
               &.on {
                 background-color: $primary;
                 cursor: pointer;

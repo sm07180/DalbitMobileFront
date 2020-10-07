@@ -17,6 +17,11 @@
     display: none;
     max-height: 48px;
   }
+
+  .testWrap {
+    position: relative;
+    z-index: 3;
+  }
   .fixed {
     position: fixed;
     width: 100%;
@@ -588,6 +593,11 @@
       font-size: 12px;
       letter-spacing: -0.3px;
       color: #424242;
+
+      img {
+        opacity: 0.8;
+      }
+
       .ico-people {
         width: 16px;
         height: 16px;
@@ -640,7 +650,7 @@
     flex-direction: column;
     margin-top: 8px;
     font-size: 16px;
-    color: $black;
+    color: #242424;
     font-weight: bold;
 
     .nickNameImg {
@@ -747,7 +757,8 @@
     }
 
     .notMem {
-      margin-top: 451px;
+      // margin-top: 451px;
+      margin-top: 463px;
     }
 
     &.special {
@@ -847,7 +858,7 @@
           }
         }
 
-        .nickName {
+        .nickNameBox {
           position: absolute;
           width: 80%;
           margin-left: 10%;
@@ -855,12 +866,26 @@
           font-size: 12px;
           color: #fff;
           height: 30px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          line-height: 15px;
+
+          &__nick {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+
+            &--noLive {
+              overflow: hidden;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              line-height: 15px;
+            }
+          }
+
+          &__live {
+            display: block;
+            margin-top: 4px;
+          }
         }
 
         &:nth-of-type(1) {
@@ -927,7 +952,7 @@
             }
           }
 
-          .nickName {
+          .nickNameBox {
             bottom: 60px;
           }
         }
@@ -996,8 +1021,14 @@
             }
           }
 
-          .nickName {
+          .nickNameBox {
             bottom: 40px;
+
+            &__live {
+              img {
+                width: 20px;
+              }
+            }
           }
         }
 
@@ -1064,8 +1095,14 @@
             }
           }
 
-          .nickName {
+          .nickNameBox {
             bottom: 35px;
+
+            &__live {
+              img {
+                width: 20px;
+              }
+            }
           }
         }
       }
@@ -1098,6 +1135,7 @@
   }
 
   .levelListWrap {
+    min-height: calc(100vh - 104px - 28px);
     padding: 0 16px 16px 16px;
     background-color: $lighterGray;
   }
@@ -1277,6 +1315,7 @@
       &--updown {
         text-align: center;
         height: 12px;
+        font-size: 12px;
         &__up {
           color: #eb2828;
           &::before {

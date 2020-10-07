@@ -86,7 +86,10 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (sessionStorage.getItem('webview') === 'new') {
-    if (context.customHeader['os'] === OS_TYPE['IOS']) {
+    if (
+      context.customHeader['os'] === OS_TYPE['IOS'] ||
+      (context.customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] >= 35)
+    ) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
         {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
@@ -139,7 +142,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if (tab !== undefined) {
+    if (tab !== undefined && profile.memNo !== memNo) {
       setTabSelected(Number(tab))
     }
   }, [memNo])

@@ -118,11 +118,11 @@
     box-sizing: border-box;
 
     &.rank {
-      padding: 26px 0 32px;
+      padding: 26px 0 0;
       background-color: $white;
       color: $white;
       .swiper-container {
-        padding: 16px 0 0 16px;
+        padding: 12px 0 0 16px;
       }
       .rank-slide {
         position: relative;
@@ -196,12 +196,9 @@
       .title-wrap {
         .title {
           .txt {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 800;
-            font-stretch: normal;
-            font-style: normal;
             line-height: 1.13;
-            letter-spacing: normal;
             text-align: left;
             color: $black;
           }
@@ -209,13 +206,11 @@
       }
     }
     &.banner {
-      padding: 0 16px 0 16px;
+      padding: 20px 16px 0 16px;
     }
     &.my-star {
       display: none;
-      margin-top: 20px;
-      padding: 20px 0 16px 16px;
-      background: $lighterGray;
+      padding-top: 20px;
       &.visible {
         display: block;
       }
@@ -224,15 +219,6 @@
         display: flex;
         align-items: center;
         flex-direction: row;
-        margin-right: 18px;
-        margin-bottom: 18px;
-
-        .txt {
-          width: 34px;
-          font-size: 16px;
-          color: $black;
-          font-weight: bold;
-        }
         .icon {
           width: 20px;
           margin-left: 4px;
@@ -297,6 +283,7 @@
       }
     }
     &.live-list {
+      margin-top: 10px;
       padding: 0 16px;
       .title-wrap {
         display: flex;
@@ -316,17 +303,8 @@
 
         .title {
           justify-content: space-between;
-          height: 64px;
-          padding: 22px 0 16px 0;
+          padding: 8px 0 6px;
           border-bottom: 1px solid $lighterGray;
-
-          .txt {
-            .ico-lottie {
-              display: inline-block;
-              margin: -2px 0 0 6px;
-              vertical-align: middle;
-            }
-          }
           .btn {
             &__refresh {
               position: relative;
@@ -430,8 +408,15 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+      .ico-lottie {
+        display: inline-block;
+        margin-right: 4px;
+      }
 
       .txt {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         color: $greishBrown;
         font-size: 18px;
         font-weight: bold;
@@ -459,22 +444,18 @@
       }
 
       .text {
-        padding: 0 10px;
-        color: $white;
-        font-size: 16px;
-        line-height: 1.13;
-        letter-spacing: normal;
-        text-align: left;
-        border-radius: 12px;
         width: 48px;
         height: 32px;
+        padding: 0 10px;
+        font-size: 14px;
+        letter-spacing: normal;
+        font-weight: bold;
         text-align: center;
-        border: 1px solid $lightGray;
         color: $black;
+        border: 1px solid $lightGray;
+        border-radius: 12px;
 
         &.active {
-          font-size: 16px;
-          font-weight: 800;
           line-height: 1.13;
           letter-spacing: normal;
           color: $black;
@@ -535,10 +516,13 @@
       padding: 0;
     }
     &.my-star-list {
-      padding: 0;
       display: flex;
       align-items: center;
       flex-direction: row;
+      padding: 20px 0 16px 16px;
+      margin: 10px 16px 0 16px;
+      border-radius: 16px;
+      background: $whiteGray;
     }
     .liveList {
       padding: 16px 0;
