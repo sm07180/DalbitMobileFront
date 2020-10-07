@@ -87,8 +87,7 @@ export default (props) => {
   let mypageNavList
   if (sessionStorage.getItem('webview') === 'new') {
     if (
-      context.customHeader['os'] === OS_TYPE['IOS'] ||
-      (context.customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] >= 35)
+      context.customHeader['os'] === OS_TYPE['IOS'] || customHeader['appBuild'] >= 35)
     ) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -109,13 +108,6 @@ export default (props) => {
     ]
   }
 
-  if (__NODE_ENV === 'dev') {
-    mypageNavList = [
-      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-      {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
-    ]
-  }
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
