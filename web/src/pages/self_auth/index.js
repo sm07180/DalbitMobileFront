@@ -6,6 +6,7 @@ import Api from 'context/api'
 
 //context
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
@@ -109,6 +110,9 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <Header title="본인인증" goBack={goBack} />
       <Content>
+        <div className="img-wrap">
+          <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
+        </div>
         <div className="auth-wrap">
           {type === 'create' ? (
             <>
@@ -149,6 +153,10 @@ export default (props) => {
 
 const Content = styled.div`
   padding: 30px 16px;
+  .img-wrap {
+    padding-bottom: 20px;
+    text-align: center;
+  }
   .auth-wrap {
     padding: 10px 0;
     h4 {
