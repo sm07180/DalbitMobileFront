@@ -34,7 +34,7 @@ export default (props) => {
       ) : (
         props.children
       )}
-      {(props.type !== 'noBack' || customHeader['os'] === OS_TYPE['Desktop']) && (
+      {props.type !== 'noBack' && (
         <button className="close-btn" onClick={goBack}>
           <img src={imgClose()} alt="뒤로가기" />
         </button>

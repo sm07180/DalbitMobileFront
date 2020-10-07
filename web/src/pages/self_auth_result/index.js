@@ -64,6 +64,8 @@ export default (props) => {
       })
     } else if (returntype === 'profile') {
       setAuthState(4)
+    } else if (returntype === 'create') {
+      setAuthState(5)
     } else {
       checkAuth()
     }
@@ -175,6 +177,20 @@ export default (props) => {
               <button
                 onClick={() => {
                   history.push('/private')
+                }}>
+                확인
+              </button>
+            </div>
+          </div>
+        )
+      case 5: //방송방,클립 생성 본인인증 완료 후
+        return (
+          <div className="auth-wrap">
+            <h4>본인 인증이 완료되었습니다.</h4>
+            <div className="btn-wrap">
+              <button
+                onClick={() => {
+                  window.location.href = '/'
                 }}>
                 확인
               </button>
