@@ -184,7 +184,7 @@ export default (props) => {
       })
     }
 
-    if (reportReason.length > 10 && select !== '') {
+    if (reportReason.length >= 10 && select !== '') {
       fetchData()
     }
   }

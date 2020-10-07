@@ -180,14 +180,6 @@ export default (props) => {
         }
       })
     }
-    if (photoUploading) {
-      return context.action.alert({
-        msg: '프로필 사진 업로드 중입니다.',
-        callback: () => {
-          context.action.alert({visible: false})
-        }
-      })
-    }
     if (gender === 'n') {
       return context.action.confirm({
         msg: '성별을 선택하지 않으셨습니다. \n 이대로 저장하시겠습니까?',
@@ -474,6 +466,13 @@ export default (props) => {
                 저장
               </button>
             </div>
+            {photoUploading && (
+              <div className="loadingWrap">
+                <div className="loading">
+                  <span></span>
+                </div>
+              </div>
+            )}
           </section>
         </Layout>
       )}

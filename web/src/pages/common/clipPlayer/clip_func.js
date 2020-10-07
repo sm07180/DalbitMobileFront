@@ -20,17 +20,8 @@ export const clipJoin = (data, context, webview) => {
           return Hybrid('ClipPlayerJoin', data)
         }
       }
-    }
-
-    if (sessionStorage.getItem('clip_active') === 'N') {
-      return context.action.alert({
-        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
-      })
     } else {
-      if (sessionStorage.getItem('clip_active') === null) {
-        sessionStorage.setItem('clip_active', 'N')
-        return Hybrid('ClipPlayerJoin', data)
-      }
+      return Hybrid('ClipPlayerJoin', data)
     }
   } else {
     return context.action.confirm({
