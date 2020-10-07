@@ -427,7 +427,6 @@ export default () => {
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
         if (!authState) return (window.location.href = '/selfauth?type=create')
-        if (!checkSelfAuth()) return (window.location.href = '/selfauth?type=create')
         if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
           if (Utility.getCookie('clip-player-info')) {
             context.action.confirm({
