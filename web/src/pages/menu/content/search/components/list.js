@@ -1,12 +1,12 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
-import API from 'context/api'
 import {Context} from 'context/index.js'
 import Room, {RoomJoin} from 'context/room'
-import qs from 'query-string'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
+import API from 'context/api'
 //static
 import FemaleIcon from '../static/female.svg'
 import MaleIcon from '../static/male.svg'
@@ -14,22 +14,55 @@ import SpecialLong from '../static/special_long.svg'
 import PersonIcon from '../static/person.svg'
 import heartIcon from '../static/like_g_s.svg'
 import TotalIcon from '../static/total.svg'
-import AllIcon from '../static/all.svg'
-import FanIcon from '../static/fan.svg'
-import Restrict20 from '../static/restrict20.svg'
-import SpecialIcon from '../static/special.svg'
+import LiveIcon from '../static/live.svg'
 import SimpleMessageIcon from '../static/message.svg'
+import ClipPlayerIcon from '../static/clip_player.svg'
 export default (props) => {
   const {memberList, clipList, liveList, total, clipType, CategoryType} = props
   // ctx && path
-  console.log(clipList)
   const context = useContext(Context)
   const history = useHistory()
+  const Link = (memNo) => {
+    if (!context.token.isLogin) {
+      history.push(`/login`)
+    } else {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
+  const Join = (roomNo, memNo) => {
+    if (roomNo !== '' && roomNo !== '0') {
+      RoomJoin({roomNo: roomNo})
+    } else if (roomNo === '0') {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data, message, code} = await API.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, context)
+    } else {
+      if (code === '-99') {
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            history.push('/login')
+          }
+        })
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
+    }
+  }
   //render ----------------------------------------------------
   return (
     <div className="total">
       {(CategoryType === 0 || CategoryType === 1) && (
-        <div className="total__member">
+        <div className="total__member" style={{border: CategoryType !== 0 && 'none'}}>
           <h4 className="Title">
             DJ <span className="Title__count">{total && total.memtotal}</span>
           </h4>
@@ -38,12 +71,18 @@ export default (props) => {
               const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
               return (
                 <div key={`${idx}+categoryTab`} className="memberItem">
-                  <img src={profImg.thumb190x190} className="memberItem__profImg" />
+                  {roomNo !== '' && (
+                    <button onClick={() => Join(roomNo, memNo)} className="liveBtn">
+                      <img src={LiveIcon} />
+                      LIVE
+                    </button>
+                  )}
+                  <img src={profImg.thumb190x190} className="memberItem__profImg" onClick={() => Link(memNo)} />
                   <div className="memberItem__info">
                     <span className="memberItem__info__nick">{nickNm}</span>
                     <div className="memberItem__info__iconBox">
                       {gender === 'f' ? <img src={FemaleIcon} /> : gender === 'm' ? <img src={MaleIcon} /> : ''}
-                      {!isSpecial && <img src={SpecialLong} />}
+                      {isSpecial && <img src={SpecialLong} />}
                     </div>
                     <span className="memberItem__info__fanCnt">
                       <img src={PersonIcon} />
@@ -54,24 +93,24 @@ export default (props) => {
               )
             })
           ) : (
-            <NoResult text="DJ 검색결과가 없습니다." height={100} />
+            <NoResult text="DJ 검색결과가 없습니다." height={120} />
           )}
         </div>
       )}
       {(CategoryType === 0 || CategoryType === 2) && (
-        <div className="total__live">
+        <div className="total__live" style={{border: CategoryType !== 0 && 'none'}}>
           <h4 className="Title">
             방송 <span className="Title__count">{total && total.livetotal}</span>
           </h4>
           <div className="chartListDetail" style={{paddingLeft: 0}}>
             {liveList && liveList.length !== 0 ? (
               (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
-                const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt} = item
+                const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt, roomNo, memNo} = item
                 return (
                   <li className="chartListDetailItem" key={idx + 'list'}>
                     <div className="chartListDetailItem__thumb">
                       {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                      <img src={bgImg[`thumb190x190`]} alt={title} />
+                      <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => Join(roomNo, memNo)} />
                     </div>
                     <div className="textBox">
                       <p className="textBox__subject">
@@ -108,13 +147,13 @@ export default (props) => {
                 )
               })
             ) : (
-              <NoResult text="라이브 검색결과가 없습니다." height={100} />
+              <NoResult text="라이브 검색결과가 없습니다." height={120} />
             )}
           </div>
         </div>
       )}
       {(CategoryType === 0 || CategoryType === 3) && (
-        <div className="total__clip">
+        <div className="total__clip" style={{border: CategoryType !== 0 && 'none'}}>
           <h4 className="Title">
             클립 <span className="Title__count">{total && total.cliptotal}</span>
           </h4>
@@ -124,9 +163,10 @@ export default (props) => {
                 const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
                 return (
                   <li className="chartListDetailItem" key={idx + 'list'}>
+                    <img onClick={() => fetchDataPlay(clipNo)} className="clipBtnPlay" src={ClipPlayerIcon} />
                     <div className="chartListDetailItem__thumb">
                       {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                      <img src={bgImg[`thumb190x190`]} alt={title} />
+                      <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
                       <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
                     </div>
                     <div className="textBox">
@@ -160,7 +200,7 @@ export default (props) => {
                 )
               })
             ) : (
-              <NoResult text="클립 검색결과가 없습니다." height={100} />
+              <NoResult text="클립 검색결과가 없습니다." height={120} />
             )}
           </div>
         </div>

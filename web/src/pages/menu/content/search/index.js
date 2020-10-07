@@ -10,7 +10,7 @@ import API from 'context/api'
 // component
 import Header from 'components/ui/new_header.js'
 import InitialRecomend from './components/recomend'
-import TotalList from './components/total_list'
+import List from './components/list'
 import qs from 'query-string'
 //static
 import SearchIco from './static/ic_search.svg'
@@ -20,18 +20,6 @@ import './search.scss'
 let currentPage = 1
 let timer
 let moreState = false
-const tabContent = [
-  {id: 0, tab: '통합검색'},
-  {id: 1, tab: 'DJ'},
-  {id: 2, tab: '방송'},
-  {id: 3, tab: '클립'}
-]
-const filterContent = [
-  {id: 0, tab: '전체'},
-  {id: 1, tab: 'DJ'},
-  {id: 2, tab: '방송'},
-  {id: 3, tab: '클립'}
-]
 export default (props) => {
   // ctx && path
   const context = useContext(Context)
@@ -43,13 +31,14 @@ export default (props) => {
   const [result, setResult] = useState('') //검색텍스트
   const [recoTab, setRecoTab] = useState(0) //초기 추천 탭
   const [recoList, setRecoList] = useState([]) //초기 추천 탭 fetch list
-  const [filterType, setFilterType] = useState(0)
-  const [CategoryType, setCategoryType] = useState(0)
-  const [clipType, setClipType] = useState([])
+  const [filterType, setFilterType] = useState(0) //서치 필터 0.전체 1.dj 2.방송 3.클립
+  const [CategoryType, setCategoryType] = useState(0) //카테고리 토글 0.통합검색
+  const [clipType, setClipType] = useState([]) //splash clip type
+  const [searchState, setSearchState] = useState(false) //검색 어때요 ,리스트 분기
+  //list
   const [memberList, setMemberList] = useState([])
   const [liveList, setLiveList] = useState([])
   const [clipList, setClipList] = useState([])
-  const [searchState, setSearchState] = useState(false)
   const [nextList, setNextList] = useState(false)
   const [nextLive, setNextLive] = useState(false)
   const [nextClip, setNextClip] = useState(false)
@@ -57,38 +46,12 @@ export default (props) => {
     memtotal: 0,
     livetotal: 0,
     cliptotal: 0
-  })
+  }) //토탈 카운트
+  //input focus
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
-  //콘켓 쇼모어 이벤트
-  const showMoreList = () => {
-    if (moreState && CategoryType === 1) {
-      setMemberList(memberList.concat(nextList))
-      fetchSearchMember('next')
-    } else if (moreState && CategoryType === 2) {
-      setLiveList(liveList.concat(nextLive))
-      fetchSearchLive('next')
-    } else if (moreState && CategoryType === 3) {
-      setClipList(clipList.concat(nextClip))
-      fetchSearchClip('next')
-    }
-  }
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      if (moreState && windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-  //fetch
-  // 초기추천탭 fetch list
+  //------------------------Data--fetch
+  // 초기추천탭 Data
   const fetchInitialList = async (recoTab) => {
     if (recoTab === 0) {
       const res = await API.getSearchRecomend({
@@ -114,6 +77,7 @@ export default (props) => {
       }
     }
   }
+  // 클립타입 Data
   const fetchDataClipType = async () => {
     const {result, data, message} = await API.getClipType({})
     if (result === 'success') {
@@ -124,7 +88,7 @@ export default (props) => {
       })
     }
   }
-  //검색 fetch
+  //검색 fetch 1. 맴버 2. 방송방 3. 클립
   async function fetchSearchMember(next) {
     currentPage = next ? ++currentPage : currentPage
     const res = await API.member_search({
@@ -233,30 +197,71 @@ export default (props) => {
       })
     }
   }
+  //function
+  //클립 서치 분기
   const holeSearch = () => {
-    if (CategoryType === 0) {
-      fetchSearchMember()
-      fetchSearchLive()
-      fetchSearchClip()
-    } else if (CategoryType === 1) {
+    setTotal((prevState) => ({
+      ...prevState,
+      cliptotal: '',
+      memtotal: '',
+      livetotal: ''
+    }))
+    if (CategoryType === 1) {
       fetchSearchMember()
     } else if (CategoryType === 2) {
       fetchSearchLive()
     } else if (CategoryType === 3) {
       fetchSearchClip()
+    } else {
+      fetchSearchMember()
+      fetchSearchLive()
+      fetchSearchClip()
     }
   }
-  //function
   const onChange = (e) => {
     setResult(e.target.value)
   }
   const handleSubmit = (e) => {
-    currentPage = 1
-    setSearchState(true)
-    setCategoryType(filterType)
     e.preventDefault()
-    holeSearch()
+    if (result.length < 2) {
+      context.action.alert({
+        msg: `두 글자 이상 입력해 주세요.`
+      })
+    } else {
+      currentPage = 1
+      setSearchState(true)
+      setCategoryType(filterType)
+      holeSearch()
+    }
   }
+  //콘켓 쇼모어 이벤트
+  const showMoreList = () => {
+    if (moreState && CategoryType === 1) {
+      setMemberList(memberList.concat(nextList))
+      fetchSearchMember('next')
+    } else if (moreState && CategoryType === 2) {
+      setLiveList(liveList.concat(nextLive))
+      fetchSearchLive('next')
+    } else if (moreState && CategoryType === 3) {
+      setClipList(clipList.concat(nextClip))
+      fetchSearchClip('next')
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
   //initial url decode
   useEffect(() => {
     fetchDataClipType()
@@ -291,7 +296,7 @@ export default (props) => {
   }, [nextList])
   useEffect(() => {
     currentPage = 1
-    if (CategoryType !== 0) {
+    if (result.length > 1) {
       holeSearch()
     }
   }, [CategoryType])
@@ -301,22 +306,25 @@ export default (props) => {
       {/* 서치 헤더 */}
       <Header title="검색" />
       {/* 서치 컨트롤러 */}
-      <div className="controller">
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="query"
-            placeholder="검색어를 입력해 보세요."
-            value={result}
-            onChange={onChange}
-            className="controller__submitInput"
-            ref={IputEl}
-          />
-          <button type="submit" className="controller__submitBtn">
-            <img className="ico" src={SearchIco} />
-          </button>
-        </form>
+      <div className="controllerWrap">
+        <div className="controller" style={{borderColor: focus ? '#000' : '#e0e0e0'}}>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="query"
+              placeholder="검색어를 입력해 보세요."
+              value={result}
+              onChange={onChange}
+              className="controller__submitInput"
+              ref={IputEl}
+            />
+            <button type="submit" className="controller__submitBtn">
+              <img className="ico" src={SearchIco} />
+            </button>
+          </form>
+        </div>
       </div>
+
       {/* 서치필터 focus state => 인풋에 포커스 할시의 행위*/}
       {focus && (
         <div className="filterWrap">
@@ -348,7 +356,8 @@ export default (props) => {
               )
             })}
           </div>
-          <TotalList
+          {/* 서치 리스트 */}
+          <List
             memberList={memberList}
             clipList={clipList}
             liveList={liveList}
@@ -361,3 +370,16 @@ export default (props) => {
     </div>
   )
 }
+// map
+const tabContent = [
+  {id: 0, tab: '통합검색'},
+  {id: 1, tab: 'DJ'},
+  {id: 2, tab: '방송'},
+  {id: 3, tab: '클립'}
+]
+const filterContent = [
+  {id: 0, tab: '전체'},
+  {id: 1, tab: 'DJ'},
+  {id: 2, tab: '방송'},
+  {id: 3, tab: '클립'}
+]

@@ -4,6 +4,7 @@ import {useHistory, useLocation} from 'react-router-dom'
 import API from 'context/api'
 import {Context} from 'context/index.js'
 import Room, {RoomJoin} from 'context/room'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import qs from 'query-string'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 //static
@@ -13,6 +14,7 @@ import Restrict20 from '../static/restrict20.svg'
 import SpecialIcon from '../static/special.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import heartIcon from '../static/like_g_s.svg'
+import ClipPlayerIcon from '../static/clip_player.svg'
 const RecomendContent = [
   {id: 0, tab: '이 방송 어때요?'},
   {id: 1, tab: '이 클립 어때요?'}
@@ -28,6 +30,30 @@ export default (props) => {
   const ChangeButton = (type) => {
     props.setRecoTab(type)
     useChangeTab(type)
+  }
+
+  const Join = (roomNo, memNo) => {}
+  // 플레이가공
+  const fetchDataPlay = async (clipNum) => {
+    const {result, data, message, code} = await API.postClipPlay({
+      clipNo: clipNum
+    })
+    if (result === 'success') {
+      clipJoin(data, context)
+    } else {
+      if (code === '-99') {
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            history.push('/login')
+          }
+        })
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
+    }
   }
   //render ----------------------------------------------------
   return (
@@ -54,7 +80,8 @@ export default (props) => {
                 <div
                   className="simpleContainer"
                   key={`${idx}+broadRecomendList`}
-                  style={{backgroundImage: `url(${bgImg.thumb336x336})`}}>
+                  style={{backgroundImage: `url(${bgImg.thumb336x336})`}}
+                  onClick={() => RoomJoin({roomNo: roomNo})}>
                   <div className="simpleContainer__info">
                     <div className="simpleContainer__iconBox">
                       <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
@@ -71,9 +98,10 @@ export default (props) => {
               const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
               return (
                 <li className="chartListDetailItem" key={idx + 'list'}>
+                  <img onClick={() => fetchDataPlay(clipNo)} className="clipBtnPlay" src={ClipPlayerIcon} />
                   <div className="chartListDetailItem__thumb">
                     {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                    <img src={bgImg[`thumb190x190`]} alt={title} />
+                    <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
                     <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
                   </div>
                   <div className="textBox">
