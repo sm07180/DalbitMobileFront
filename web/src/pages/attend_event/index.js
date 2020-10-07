@@ -121,7 +121,12 @@ export default (props) => {
     fetchEventAttendLunarDate()
   }, [])
 
+  let isAttendClick = false
   const attendDateIn = () => {
+    if (isAttendClick) {
+      return false
+    }
+    isAttendClick = true
     async function fetchEventAttendDateIn() {
       const {result, data, message} = await API.postEventAttendIn()
       if (result === 'success') {
