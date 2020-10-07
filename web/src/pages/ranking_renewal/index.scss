@@ -17,6 +17,11 @@
     display: none;
     max-height: 48px;
   }
+
+  .testWrap {
+    position: relative;
+    z-index: 3;
+  }
   .fixed {
     position: fixed;
     width: 100%;
@@ -746,20 +751,20 @@
     }
   }
 
-  // .bottom {
-  //   .isMem {
-  //     margin-top: 560px;
-  //   }
+  .bottom {
+    .isMem {
+      margin-top: 560px;
+    }
 
-  //   .notMem {
-  //     // margin-top: 451px;
-  //     margin-top: 463px;
-  //   }
+    .notMem {
+      // margin-top: 451px;
+      margin-top: 463px;
+    }
 
-  //   &.special {
-  //     margin-top: 104px;
-  //   }
-  // }
+    &.special {
+      margin-top: 104px;
+    }
+  }
 
   .userRanking {
     position: relative;

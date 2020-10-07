@@ -357,19 +357,24 @@ function Ranking() {
     let didFetch = false
     const windowScrollEvent = () => {
       // console.log(window.scrollY)
-      if (window.scrollY >= 48) {
+      let scroll = window.scrollY || window.pageYOffset
+      if (scroll >= 50) {
         if (fixedWrapRef.current.classList.length === 0) {
           fixedWrapRef.current.className = 'fixed'
         }
 
         if (bottomWrapRef.current) {
           // bottomWrapRef.current.className = 'bottom'
-          // if (formState.rankType === RANK_TYPE.SPECIAL) {
-          //   bottomWrapRef.current.className = 'bottom special'
-          // }
-          if (TopRef.current) {
-            console.log(TopRef.current.offsetHeight)
-            bottomWrapRef.current.style.marginTop = TopRef.current.offsetHeight + 140 + 'px'
+          if (formState.rankType === RANK_TYPE.SPECIAL) {
+            bottomWrapRef.current.style.marginTop = '104px'
+          }
+          if (formState.rankType === RANK_TYPE.LIKE || formState.rankType === RANK_TYPE.LEVEL) {
+            bottomWrapRef.current.style.marginTop = '48px'
+          } else {
+            if (TopRef.current) {
+              console.log(TopRef.current.offsetHeight)
+              bottomWrapRef.current.style.marginTop = TopRef.current.offsetHeight + 140 + 'px'
+            }
           }
         }
         if (listWrapRef.current) {
