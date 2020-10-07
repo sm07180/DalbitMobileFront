@@ -5,8 +5,6 @@ import styled from 'styled-components'
 import Room, {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {Context} from 'context'
-
-// static
 import noBgAudioIcon from '../static/audio_s.svg'
 import maleIcon from '../static/ico_male.svg'
 import femaleIcon from '../static/ico_female.svg'
@@ -17,10 +15,11 @@ import likeIcon from '../static/ico_like_g_s.svg'
 import boostIcon from '../static/ico_like_g.svg'
 import starIcon from '../static/ico_hit_g_s.svg'
 import Util from 'components/lib/utility.js'
+
+// static
 import PeopleIcon from '../static/people_g_s.svg'
 import EntryImg from '../static/new_person_w_s.svg'
 import EntryImgW from '../static/person_w.svg'
-const boostIconAni = 'https://image.dalbitlive.com/ani/gif/ico_boost_ani.gif'
 const makeContents = (props) => {
   const context = useContext(Context)
   const {list, liveListType, categoryList} = props
@@ -144,7 +143,7 @@ const makeContents = (props) => {
 
               {boostCnt > 0 ? (
                 <div className="value">
-                  <img src={boostIconAni} />
+                  <img src={boostIcon} />
                   <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
                 </div>
               ) : (
