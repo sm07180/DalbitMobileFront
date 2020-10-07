@@ -375,6 +375,9 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
+              alert(webview)
+              alert(sessionStorage.getItem('play_clip_no'))
+              alert(webview === 'new' && sessionStorage.getItem('play_clip_no'))
               if (webview === 'new' && sessionStorage.getItem('play_clip_no')) {
                 return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
               } else {
