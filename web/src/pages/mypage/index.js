@@ -118,7 +118,10 @@ export default (props) => {
   //   ]
   // }
 
-  if (Utility.getCookie('listen_room_no') && sessionStorage.getItem('webview') === 'new') {
+  if (
+    (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+    sessionStorage.getItem('webview') === 'new'
+  ) {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
@@ -127,10 +130,15 @@ export default (props) => {
 
   useEffect(() => {
     alert(Utility.getCookie('listen_room_no'))
-    alert(sessionStorage.getItem('room_no'))
     alert(sessionStorage.getItem('webview'))
-    alert(sessionStorage.getItem('room_no') && sessionStorage.getItem('webview') === 'new')
-    if (Utility.getCookie('listen_room_no') && sessionStorage.getItem('webview') === 'new') {
+    alert(
+      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+        sessionStorage.getItem('webview') === 'new'
+    )
+    if (
+      (Utility.getCookie('listen_room_no') !== undefined || Utility.getCookie('listen_room_no') !== 'null') &&
+      sessionStorage.getItem('webview') === 'new'
+    ) {
       alert(1)
     } else {
       alert(2)
