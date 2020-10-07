@@ -6,7 +6,22 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
-  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+  if (
+    Utility.getCookie('listen_room_no') === undefined ||
+    Utility.getCookie('listen_room_no') === 'null' ||
+    Utility.getCookie('listen_room_no') === ''
+  ) {
+    console.log(sessionStorage.getItem('clip_active'))
+    if (sessionStorage.getItem('clip_active') === 'N') {
+      console.log('중복클릭이야')
+      context.action.alert({
+        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
+      })
+      return false
+    } else {
+      sessionStorage.setItem('clip_active', 'N')
+    }
+
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
@@ -20,15 +35,24 @@ export const clipJoin = (data, context, webview) => {
           return Hybrid('ClipPlayerJoin', data)
         }
       }
-    }
-
-    if (sessionStorage.getItem('clip_active') === 'N') {
-      return context.action.alert({
-        msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
-      })
     } else {
-      if (sessionStorage.getItem('clip_active') === null) {
-        sessionStorage.setItem('clip_active', 'N')
+      // clipExit(context)
+      // context.action.alert({visible: false})
+      // sessionStorage.setItem('clip_active', 'N')
+      if (Utility.getCookie('clip-player-info') !== undefined) {
+        let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
+        prevClipNo = prevClipNo.clipNo
+        if (prevClipNo === data.clipNo) {
+          context.action.alert({visible: false})
+          return Hybrid('ClipPlayerJoin', data)
+        } else {
+          clipExit(context)
+          context.action.alert({visible: false})
+          return Hybrid('ClipPlayerJoin', data)
+        }
+      } else {
+        clipExit(context)
+        context.action.alert({visible: false})
         return Hybrid('ClipPlayerJoin', data)
       }
     }
@@ -53,6 +77,7 @@ export const clipExit = (context) => {
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)
+  // sessionStorage.removeItem('clip_active')
 }
 
 export const updateClipInfo = (data) => {

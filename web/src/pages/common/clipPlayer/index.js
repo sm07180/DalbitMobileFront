@@ -102,6 +102,7 @@ export default (props) => {
         <button
           className="close"
           onClick={() => {
+            sessionStorage.removeItem('clip_active')
             clipExit(globalCtx)
           }}>
           닫기
