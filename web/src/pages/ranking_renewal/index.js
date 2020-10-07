@@ -282,11 +282,11 @@ function Ranking() {
           page: formState.page,
           records: records,
           rankingDate: formatDate,
-          type: formState.rankType === 3 ? 'level' : formState.rankType === 4 ? 'good' : 'page'
+          type: formState.rankType === RANK_TYPE.LEVEL ? 'level' : formState.rankType === RANK_TYPE.LIKE ? 'good' : 'page'
         })
         if (res.result === 'success' && res.data.list instanceof Array) {
           if (res.data.list.length > 0) {
-            if (formState.rankType === 3) {
+            if (formState.rankType === RANK_TYPE.LEVEL) {
               // level
               if (formState.page > 1) {
                 setLevelList(levelList.concat(res.data.list))
@@ -297,7 +297,7 @@ function Ranking() {
               setLikeList([])
               setTotalPage(res.data.paging.totalPage)
               setEmpty(false)
-            } else if (formState.rankType === 4) {
+            } else if (formState.rankType === RANK_TYPE.LIKE) {
               //good
               if (formState.page > 1) {
                 setLikeList(likeList.concat(res.data.list))
@@ -372,7 +372,6 @@ function Ranking() {
             bottomWrapRef.current.style.marginTop = '48px'
           } else {
             if (TopRef.current) {
-              console.log(TopRef.current.offsetHeight)
               bottomWrapRef.current.style.marginTop = TopRef.current.offsetHeight + 140 + 'px'
             }
           }

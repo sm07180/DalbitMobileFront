@@ -1,8 +1,8 @@
 export const RANK_TYPE = {
   DJ: 1,
   FAN: 2,
-  LEVEL: 3,
-  LIKE: 4,
+  LEVEL: 4,
+  LIKE: 3,
   SPECIAL: 5
 }
 export const DATE_TYPE = {
