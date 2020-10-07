@@ -18,6 +18,7 @@ import goldDecoFan from '../../static/fanrf1_deco@3x.png'
 import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 import liveIcon from '../../static/live_white_l.svg'
+import {RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 function RankListTop() {
   const history = useHistory()
@@ -35,10 +36,10 @@ function RankListTop() {
     const status = convertDateToText(formState.dateType, formState.currentDate, 0)
     if (TopBoxRef.current) {
       if (status) {
-        if (formState.rankType === 1 && formState.dateType === 1) {
+        if (formState.rankType === RANK_TYPE.DJ && formState.dateType === RANK_TYPE.DJ) {
           TopBoxRef.current.className = 'TopBox isLabel'
           timeNow = <div className="realLabelDj"></div>
-        } else if (formState.rankType === 2 && formState.dateType === 1) {
+        } else if (formState.rankType === RANK_TYPE.FAN && formState.dateType === RANK_TYPE.DJ) {
           TopBoxRef.current.className = 'TopBox isLabel'
           timeNow = <div className="realLabelFan"></div>
         } else {
