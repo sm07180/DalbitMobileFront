@@ -96,7 +96,7 @@ export default (props) => {
   // }
 
   if (sessionStorage.getItem('webview') === 'new') {
-    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    if (Utility.getCookie('listen_room_no') === 'undefined' || Utility.getCookie('listen_room_no') === 'null') {
       if (
         context.customHeader['os'] === OS_TYPE['IOS'] ||
         (context.customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] >= 35)
