@@ -17,6 +17,7 @@ import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
 import MyClip from './content/myclip'
+import Utility from 'components/lib/utility'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
@@ -117,7 +118,7 @@ export default (props) => {
   //   ]
   // }
 
-  if (sessionStorage.getItem('room_no') && sessionStorage.getItem('webview') === 'new') {
+  if (Utility.getCookie('listen_room_no') && sessionStorage.getItem('webview') === 'new') {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
@@ -125,10 +126,11 @@ export default (props) => {
   }
 
   useEffect(() => {
+    alert(Utility.getCookie('listen_room_no'))
     alert(sessionStorage.getItem('room_no'))
     alert(sessionStorage.getItem('webview'))
     alert(sessionStorage.getItem('room_no') && sessionStorage.getItem('webview') === 'new')
-    if (sessionStorage.getItem('room_no') && sessionStorage.getItem('webview') === 'new') {
+    if (Utility.getCookie('listen_room_no') && sessionStorage.getItem('webview') === 'new') {
       alert(1)
     } else {
       alert(2)
