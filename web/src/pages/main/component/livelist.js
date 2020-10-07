@@ -6,20 +6,8 @@ import Room, {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {Context} from 'context'
 
-// static
-import noBgAudioIcon from '../static/audio_s.svg'
-import maleIcon from '../static/ico_male.svg'
-import femaleIcon from '../static/ico_female.svg'
-import maleIconW from '../static/gender_m_w.svg'
-import femaleIconW from '../static/gender_w_w.svg'
-import hitIcon from '../static/ico_hit_g.svg'
-import likeIcon from '../static/ico_like_g_s.svg'
-import boostIcon from '../static/ico_like_g.svg'
-import starIcon from '../static/ico_hit_g_s.svg'
 import Util from 'components/lib/utility.js'
-import PeopleIcon from '../static/people_g_s.svg'
-import EntryImg from '../static/new_person_w_s.svg'
-import EntryImgW from '../static/person_w.svg'
+
 const boostIconAni = 'https://image.dalbitlive.com/ani/gif/ico_boost_ani.gif'
 const makeContents = (props) => {
   const context = useContext(Context)
@@ -98,7 +86,7 @@ const makeContents = (props) => {
               <span>{title}</span>
             </div> */}
             <div className="nickname">
-              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+              {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}
               {liveBadgeList &&
                 liveBadgeList.length !== 0 &&
@@ -133,12 +121,12 @@ const makeContents = (props) => {
             </div>
             <div className="detail">
               <div className="value">
-                <img src={PeopleIcon} />
+                <i className="value--peopl"></i>
                 <span>{Util.printNumber(totalCnt)}</span>
               </div>
 
               <div className="value">
-                <img src={hitIcon} />
+                <i className="value--hit"></i>
                 <span>{Util.printNumber(entryCnt)}</span>
               </div>
 
@@ -149,7 +137,7 @@ const makeContents = (props) => {
                 </div>
               ) : (
                 <div className="value">
-                  <img src={likeIcon} />
+                  <i className="value--like"></i>
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
@@ -164,25 +152,14 @@ const makeContents = (props) => {
         ) : (
           <div className="broadcast-content">
             <div className="top-status">
-              {/* {entryType === 2 ? (
-                <span className="twenty-icon">20</span>
-              ) : entryType === 1 ? (
-                <span className="fan-icon">FAN</span>
-              ) : (
-                <span className="all-icon">ALL</span>
-              )} */}
               {isSpecial && <span className="special-icon"></span>}
-              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIconW : femaleIconW} />}
+              {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
             </div>
             <div className="entry-count">
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
-              <img className="entry-img" src={EntryImgW} />
+              <i className="entry-img">방송 참여자</i>
             </div>
             <div className="bottom-wrap">
-              {/* {os === 3 ? <span className="pc-icon">PC</span> : ''} */}
-              {/* <div className="type-icon-wrap">
-                <img className="type-icon" src={noBgAudioIcon} />
-              </div> */}
               <div className="dj-nickname">{bjNickNm}</div>
               <span className="roomTitle">{title}</span>
             </div>

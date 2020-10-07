@@ -994,6 +994,19 @@
         font-weight: normal;
         .gender-icon {
           margin-right: 4px;
+          width: 24px;
+          height: 16px;
+          background-position: center;
+          background-repeat: no-repeat;
+          text-indent: -9999px;
+
+          &.male {
+            background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+          }
+
+          &.female {
+            background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+          }
         }
       }
 
@@ -1048,9 +1061,6 @@
       }
       .detail {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-
         .broadcast-type {
           color: $primary;
           font-size: 11px;
@@ -1059,18 +1069,33 @@
         }
         .value {
           display: flex;
-          align-items: center;
-          flex-direction: row;
-          color: #424242;
-          font-size: 12px;
-          font-weight: 400;
-          letter-spacing: -0.5px;
           margin-right: 8px;
 
-          img {
-            display: block;
-            margin-right: 2px;
+          span {
+            color: $greishBrown;
+            font-size: 12px;
+          }
+
+          i {
+            flex-basis: 16px;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+            display: inline-block;
+            background-position: center;
             opacity: 0.8;
+          }
+
+          &--peopl {
+            background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+          }
+
+          &--hit {
+            background-image: url(https://image.dalbitlive.com/svg/ico_hit_g.svg);
+          }
+
+          &--like {
+            background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
           }
         }
       }
@@ -1123,6 +1148,23 @@
       flex-direction: row;
       align-items: center;
       z-index: 1;
+
+      .gender-icon {
+        margin-right: 4px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+
+        &.male {
+          background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+        }
+
+        &.female {
+          background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+        }
+      }
 
       span {
         margin-right: 3px;
@@ -1190,10 +1232,15 @@
       right: 6px;
       display: flex;
       z-index: 1;
+
       align-items: center;
       .entry-img {
-        display: block;
+        width: 17px;
+        height: 17px;
+        text-indent: -9999px;
+        display: inline-block;
         margin-left: 4px;
+        background: url(https://image.dalbitlive.com/svg/person_w.svg) center no-repeat;
       }
       .count-txt {
         color: $white;
@@ -1368,7 +1415,6 @@
         top: 6px;
         right: 6px;
         display: flex;
-
         z-index: 1;
 
         .entry-img {
