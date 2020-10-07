@@ -22,7 +22,7 @@ import SimpleMessageIcon from '../static/message.svg'
 export default (props) => {
   const {memberList, clipList, liveList, total, clipType, CategoryType} = props
   // ctx && path
-
+  console.log(clipList)
   const context = useContext(Context)
   const history = useHistory()
   //render ----------------------------------------------------
@@ -31,10 +31,10 @@ export default (props) => {
       {(CategoryType === 0 || CategoryType === 1) && (
         <div className="total__member">
           <h4 className="Title">
-            DJ <span className="Title__count">{memberList.paging && memberList.paging.total}</span>
+            DJ <span className="Title__count">{total && total.memtotal}</span>
           </h4>
-          {memberList.list && memberList.list.length !== 0 ? (
-            (CategoryType === 1 ? memberList.list : memberList.list.slice(0, 2)).map((item, idx) => {
+          {memberList && memberList.length !== 0 ? (
+            (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
               const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
               return (
                 <div key={`${idx}+categoryTab`} className="memberItem">
@@ -61,11 +61,11 @@ export default (props) => {
       {(CategoryType === 0 || CategoryType === 2) && (
         <div className="total__live">
           <h4 className="Title">
-            방송 <span className="Title__count">{liveList.paging && liveList.paging.total}</span>
+            방송 <span className="Title__count">{total && total.livetotal}</span>
           </h4>
           <div className="chartListDetail" style={{paddingLeft: 0}}>
-            {liveList.list && liveList.list.length !== 0 ? (
-              (CategoryType === 2 ? liveList.list : liveList.list.slice(0, 2)).map((item, idx) => {
+            {liveList && liveList.length !== 0 ? (
+              (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
                 const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt} = item
                 return (
                   <li className="chartListDetailItem" key={idx + 'list'}>
@@ -116,11 +116,11 @@ export default (props) => {
       {(CategoryType === 0 || CategoryType === 3) && (
         <div className="total__clip">
           <h4 className="Title">
-            클립 <span className="Title__count">{clipList.paging && clipList.paging.total}</span>
+            클립 <span className="Title__count">{total && total.cliptotal}</span>
           </h4>
           <div className="chartListDetail" style={{paddingLeft: 0}}>
-            {clipList.list && clipList.list.length !== 0 ? (
-              (CategoryType === 3 ? clipList.list : clipList.list.slice(0, 2)).map((item, idx) => {
+            {clipList && clipList.length !== 0 ? (
+              (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
                 const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
                 return (
                   <li className="chartListDetailItem" key={idx + 'list'}>

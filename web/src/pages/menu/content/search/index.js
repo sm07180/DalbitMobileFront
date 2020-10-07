@@ -16,7 +16,10 @@ import qs from 'query-string'
 import SearchIco from './static/ic_search.svg'
 //scss
 import './search.scss'
-//flag
+// concat flag
+let currentPage = 1
+let timer
+let moreState = false
 const tabContent = [
   {id: 0, tab: '통합검색'},
   {id: 1, tab: 'DJ'},
@@ -47,6 +50,9 @@ export default (props) => {
   const [liveList, setLiveList] = useState([])
   const [clipList, setClipList] = useState([])
   const [searchState, setSearchState] = useState(false)
+  const [nextList, setNextList] = useState(false)
+  const [nextLive, setNextLive] = useState(false)
+  const [nextClip, setNextClip] = useState(false)
   const [total, setTotal] = useState({
     memtotal: 0,
     livetotal: 0,
@@ -54,6 +60,33 @@ export default (props) => {
   })
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
+  //콘켓 쇼모어 이벤트
+  const showMoreList = () => {
+    if (moreState && CategoryType === 1) {
+      setMemberList(memberList.concat(nextList))
+      fetchSearchMember('next')
+    } else if (moreState && CategoryType === 2) {
+      setLiveList(liveList.concat(nextLive))
+      fetchSearchLive('next')
+    } else if (moreState && CategoryType === 3) {
+      setClipList(clipList.concat(nextClip))
+      fetchSearchClip('next')
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
   //fetch
   // 초기추천탭 fetch list
   const fetchInitialList = async (recoTab) => {
@@ -92,75 +125,133 @@ export default (props) => {
     }
   }
   //검색 fetch
-  async function fetchSearchMember() {
+  async function fetchSearchMember(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await API.member_search({
       params: {
-        search: result
+        search: result,
+        page: currentPage,
+        records: 20
       }
     })
     if (res.result === 'success') {
-      setMemberList(res.data)
+      if (res.data.paging && res.data.paging.total !== 0) {
+        setTotal((prevState) => ({
+          ...prevState,
+          memtotal: res.data.paging.total
+        }))
+      }
+      if (res.code === '0') {
+        if (next !== 'next') {
+          setMemberList(res.data.list)
+        }
+        moreState = false
+      } else {
+        if (next) {
+          moreState = true
+          setNextList(res.data.list)
+        } else {
+          setMemberList(res.data.list)
+          fetchSearchMember('next')
+        }
+      }
     } else {
       context.action.alert({
         msg: res.message
       })
     }
   }
-
-  async function fetchSearchLive() {
+  async function fetchSearchLive(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await API.broad_list({
       params: {
-        search: result
+        search: result,
+        page: currentPage,
+        records: 20
       }
     })
     if (res.result === 'success') {
-      setLiveList(res.data)
+      if (res.data.paging && res.data.paging.total !== 0) {
+        setTotal((prevState) => ({
+          ...prevState,
+          livetotal: res.data.paging.total
+        }))
+      }
+      if (res.code === '0') {
+        if (next !== 'next') {
+          setLiveList(res.data.list)
+        }
+        moreState = false
+      } else {
+        if (next) {
+          moreState = true
+          setNextLive(res.data.list)
+        } else {
+          setLiveList(res.data.list)
+          fetchSearchLive('next')
+        }
+      }
     } else {
       context.action.alert({
-        msg: message
+        msg: res.message
       })
     }
   }
-  async function fetchSearchClip() {
+  async function fetchSearchClip(next) {
+    currentPage = next ? ++currentPage : currentPage
     const res = await API.getClipList({
       search: result,
       slctType: 0,
-      dateType: 0
+      dateType: 0,
+      page: currentPage,
+      records: 20
     })
     if (res.result === 'success') {
-      setClipList(res.data)
+      if (res.data.paging && res.data.paging.total !== 0) {
+        setTotal((prevState) => ({
+          ...prevState,
+          cliptotal: res.data.paging.total
+        }))
+      }
+      if (res.code === '0') {
+        if (next !== 'next') {
+          setClipList(res.data.list)
+        }
+        moreState = false
+      } else {
+        if (next) {
+          moreState = true
+          setNextClip(res.data.list)
+        } else {
+          setClipList(res.data.list)
+          fetchSearchClip('next')
+        }
+      }
     } else {
       context.action.alert({
-        msg: message
+        msg: res.message
       })
     }
   }
-
-  const resetList = () => {
-    setMemberList([])
-    setClipList([])
-    setLiveList([])
-  }
   const holeSearch = () => {
-    //resetList()
     if (CategoryType === 0) {
       fetchSearchMember()
       fetchSearchLive()
       fetchSearchClip()
     } else if (CategoryType === 1) {
-      fetchSearchLive()
-    } else if (CategoryType === 2) {
       fetchSearchMember()
+    } else if (CategoryType === 2) {
+      fetchSearchLive()
     } else if (CategoryType === 3) {
       fetchSearchClip()
     }
   }
   //function
-  // fn : onChange => 검색 form 온체인지
   const onChange = (e) => {
     setResult(e.target.value)
   }
   const handleSubmit = (e) => {
+    currentPage = 1
     setSearchState(true)
     setCategoryType(filterType)
     e.preventDefault()
@@ -191,8 +282,19 @@ export default (props) => {
       current.removeEventListener('focus', handleFocus)
     }
   })
-  console.log('f', filterType)
-  console.log('c', CategoryType)
+  //window Scroll
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+  useEffect(() => {
+    currentPage = 1
+    if (CategoryType !== 0) {
+      holeSearch()
+    }
+  }, [CategoryType])
   //render ----------------------------------------------------
   return (
     <div id="search">
