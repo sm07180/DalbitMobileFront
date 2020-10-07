@@ -55,18 +55,9 @@ export default (props) => {
   return (
     <Content>
       <div id="imageEditor">
-        <Header type="blackBg">
-          <div className="btnBox">
-            <button onClick={rotateImage}>
-              <img src={ImageRotation} alt="회전" />
-            </button>
-            <button className="btn__ok" onClick={cropImage}>
-              <img src={ImageCrop} alt="자르기" />
-            </button>
-          </div>
-        </Header>
+        <Header type="blackBg" />
         <Cropper
-          style={{height: 'calc(100vh - 50px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          style={{height: 'calc(100vh - 150px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={imageUrl()}
@@ -87,9 +78,18 @@ export default (props) => {
           <img style={{width: '100%'}} src={cropData} alt="cropped" />
         </div>
         */}
-        <button className="btn__save" onClick={submit}>
-          저장
-        </button>
+
+        <div className="btnBox">
+          <button onClick={rotateImage}>
+            <img src={ImageRotation} alt="회전" />
+          </button>
+          <button className="btn__ok" onClick={cropImage}>
+            <img src={ImageCrop} alt="자르기" />
+          </button>
+          <button className="btn__save" onClick={submit}>
+            저장
+          </button>
+        </div>
       </div>
     </Content>
   )
@@ -103,36 +103,38 @@ const Content = styled.div`
     .header-wrap {
       background: transparent;
       border-bottom: 0;
-      .btnBox {
-        position: absolute;
-        right: 16px;
-        button {
-          width: 24px;
-          height: 24px;
-          margin-left: 10px;
-          color: #fff;
-          &:first-child {
-            margin-left: 0;
-          }
-          img {
-            width: 100%;
-          }
+    }
+    .btnBox {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      padding: 0 0 14px;
+      background-color: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+      button {
+        width: 50%;
+        height: 54px;
+        color: #fff;
+        &:first-child {
+          margin-left: 0;
+        }
+        img {
+          width: 32px;
         }
       }
-    }
-    .btn__save {
-      position: absolute;
-      bottom: 14px;
-      width: 94%;
-      margin: 0 3%;
-      margin-top: 32px;
-      letter-spacing: -0.4px;
-      line-height: 44px;
-      font-size: 18px;
-      font-weight: bold;
-      background-color: #632beb;
-      color: #fff;
-      border-radius: 12px;
+      .btn__save {
+        width: 94%;
+        height: 44px;
+        margin: 0 3%;
+        letter-spacing: -0.4px;
+        line-height: 44px;
+        font-size: 18px;
+        font-weight: bold;
+        background-color: #632beb;
+        color: #fff;
+        border-radius: 12px;
+      }
     }
   }
 `

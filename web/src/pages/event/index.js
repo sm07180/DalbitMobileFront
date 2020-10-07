@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom'
 //component
 import Layout from 'pages/common/layout'
 import ThxGiving from './thanksgiving'
+import ClipEvent from './clip_event'
 
 export default () => {
   const params = useParams()
@@ -13,6 +14,8 @@ export default () => {
     switch (title) {
       case 'thanksgiving':
         return <ThxGiving />
+      case 'clip_event':
+        return <ClipEvent />
       default:
         return <></>
         break
