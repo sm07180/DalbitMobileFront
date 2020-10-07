@@ -142,11 +142,7 @@ export default (props) => {
       setActive(true)
     }
   }
-  const SubmitClick = () => {
-    if (select != '') {
-      fetchData()
-    }
-  }
+
   useEffect(() => {
     SubmitBTNChange()
   })
@@ -187,7 +183,12 @@ export default (props) => {
         msg: '신고 사유를 10자 이상 입력해주세요.'
       })
     }
+
+    if (reportReason.length > 10 && select !== '') {
+      fetchData()
+    }
   }
+
   useEffect(() => {
     window.onpopstate = (e) => {
       context.action.updateMypageReport(false)
@@ -218,7 +219,7 @@ export default (props) => {
                 </div>
                 <div className="inner">
                   {pageType === PROFILE_REPORT_TAB.DECLARATION ? (
-                    <div class="declarationWrap">
+                    <div className="declarationWrap">
                       {Reportmap}
                       <div className="reportWrap__textareaWrap">
                         <textarea
@@ -236,15 +237,11 @@ export default (props) => {
                           취소
                         </button>
 
-                        {active === true && reportReason.length > 9 ? (
-                          <button className={`btn__ok ${active === true ? 'on' : ''}`} onClick={() => SubmitClick()}>
-                            확인
-                          </button>
-                        ) : (
-                          <button className={`btn__ok ${reportReason.length > 9 ? 'on' : ''} `} onClick={validateReport}>
-                            확인
-                          </button>
-                        )}
+                        <button
+                          className={`btn__ok ${reportReason.length > 9 && select !== '' ? 'on' : ''}`}
+                          onClick={() => validateReport()}>
+                          확인
+                        </button>
                       </div>
                     </div>
                   ) : (
