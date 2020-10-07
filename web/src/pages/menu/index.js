@@ -49,7 +49,7 @@ export default (props) => {
         <Redirect to={`/login`} />
       ) : (
         <Layout {...props} status="no_gnb">
-          <MenuWrap style={{backgroundColor: params.category === 'search' && '#fff'}}>
+          <MenuWrap style={{backgroundColor: params && params.category === 'search' && '#fff'}}>
             <Switch>
               {categoryList.map((value) => {
                 const {type, component} = value

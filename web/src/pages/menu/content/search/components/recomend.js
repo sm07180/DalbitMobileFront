@@ -24,15 +24,16 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
   //props
-  const {recoList, clipType} = props
+  const {recoList, clipType, state, recoListClip} = props
+
   // state
   const [changeTab, useChangeTab] = useState(0)
+
   const ChangeButton = (type) => {
     props.setRecoTab(type)
     useChangeTab(type)
   }
 
-  const Join = (roomNo, memNo) => {}
   // 플레이가공
   const fetchDataPlay = async (clipNum) => {
     const {result, data, message, code} = await API.postClipPlay({
@@ -55,6 +56,14 @@ export default (props) => {
       }
     }
   }
+  useEffect(() => {
+    if (state && state.state === 'clip_search') {
+      ChangeButton(1)
+    }
+    return () => {
+      ChangeButton(0)
+    }
+  }, [])
   //render ----------------------------------------------------
   return (
     <div className="recomendWrap">
@@ -94,7 +103,7 @@ export default (props) => {
                 </div>
               )
             })
-          : recoList.map((item, idx) => {
+          : recoListClip.map((item, idx) => {
               const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
               return (
                 <li className="chartListDetailItem" key={idx + 'list'}>

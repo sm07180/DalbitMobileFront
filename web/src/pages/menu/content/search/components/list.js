@@ -153,7 +153,7 @@ export default (props) => {
         </div>
       )}
       {(CategoryType === 0 || CategoryType === 3) && (
-        <div className="total__clip" style={{border: CategoryType !== 0 && 'none'}}>
+        <div className="total__clip" style={{border: 'none'}}>
           <h4 className="Title">
             클립 <span className="Title__count">{total && total.cliptotal}</span>
           </h4>

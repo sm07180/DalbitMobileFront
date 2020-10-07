@@ -25,12 +25,14 @@ export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
   const location = useLocation()
-  const {search} = location
+  const {search, state} = location
+
   const searchText = search && search.split('?query=')[1]
   // state
   const [result, setResult] = useState('') //검색텍스트
   const [recoTab, setRecoTab] = useState(0) //초기 추천 탭
   const [recoList, setRecoList] = useState([]) //초기 추천 탭 fetch list
+  const [recoListClip, setRecoListClip] = useState([])
   const [filterType, setFilterType] = useState(0) //서치 필터 0.전체 1.dj 2.방송 3.클립
   const [CategoryType, setCategoryType] = useState(0) //카테고리 토글 0.통합검색
   const [clipType, setClipType] = useState([]) //splash clip type
@@ -69,7 +71,7 @@ export default (props) => {
         records: 20
       })
       if (res.result === 'success') {
-        setRecoList(res.data.list)
+        setRecoListClip(res.data.list)
       } else {
         context.action.alert({
           msg: res.message
@@ -324,7 +326,6 @@ export default (props) => {
           </form>
         </div>
       </div>
-
       {/* 서치필터 focus state => 인풋에 포커스 할시의 행위*/}
       {focus && (
         <div className="filterWrap">
@@ -341,7 +342,15 @@ export default (props) => {
         </div>
       )}
       {/* 서치 추천 라이브/클립 컴포넌트 -props 1.setRecoTab => tab state emit (require parents data fetch ) 2.recoList => data list* 3.클립 스플래시*/}
-      {!searchState && <InitialRecomend setRecoTab={setRecoTab} recoList={recoList} clipType={clipType} />}
+      {!searchState && (
+        <InitialRecomend
+          setRecoTab={setRecoTab}
+          recoList={recoList}
+          clipType={clipType}
+          state={state}
+          recoListClip={recoListClip}
+        />
+      )}
       {searchState && (
         <>
           <div className="searchCategory">
