@@ -6,20 +6,30 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
-  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+  alert(Utility.getCookie('listen_room_no') + '|' + sessionStorage.getItem('clip_active'))
+  if (
+    Utility.getCookie('listen_room_no') === undefined ||
+    Utility.getCookie('listen_room_no') === null ||
+    Utility.getCookie('listen_room_no') === ''
+  ) {
+    alert(1)
     if (sessionStorage.getItem('clip_active') === 'N') {
+      alert(2)
+
       context.action.alert({
         msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
       })
       return false
     } else {
-      if (sessionStorage.getItem('clip_active') === null) {
-        sessionStorage.setItem('clip_active', 'N')
-        // setTimeout(() => {
-        //   context.action.alert({visible: false})
-        //   sessionStorage.removeItem('clip_active')
-        // }, 2000)
-      }
+      alert(3)
+      //if (sessionStorage.getItem('clip_active') === null) {
+      sessionStorage.setItem('clip_active', 'N')
+      alert(sessionStorage.getItem('clip_active'))
+      // setTimeout(() => {
+      //   context.action.alert({visible: false})
+      //   sessionStorage.removeItem('clip_active')
+      // }, 2000)
+      //}
     }
 
     if (webview === 'new') {
@@ -43,19 +53,13 @@ export const clipJoin = (data, context, webview) => {
         let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
         prevClipNo = prevClipNo.clipNo
         if (prevClipNo === data.clipNo) {
-          context.action.alert({visible: false})
-          sessionStorage.removeItem('clip_active')
           return Hybrid('ClipPlayerJoin', data)
         } else {
           clipExit(context)
-          context.action.alert({visible: false})
-          sessionStorage.removeItem('clip_active')
           return Hybrid('ClipPlayerJoin', data)
         }
       } else {
         clipExit(context)
-        context.action.alert({visible: false})
-        sessionStorage.removeItem('clip_active')
         return Hybrid('ClipPlayerJoin', data)
       }
     }
