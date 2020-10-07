@@ -8,6 +8,16 @@ import {Context} from 'context'
 
 import Util from 'components/lib/utility.js'
 
+// static
+import maleIcon from '../static/ico_male.svg'
+import femaleIcon from '../static/ico_female.svg'
+import maleIconW from '../static/gender_m_w.svg'
+import femaleIconW from '../static/gender_w_w.svg'
+import hitIcon from '../static/ico_hit_g.svg'
+import likeIcon from '../static/ico_like_g_s.svg'
+import PeopleIcon from '../static/people_g_s.svg'
+import EntryImgW from '../static/person_w.svg'
+
 const boostIconAni = 'https://image.dalbitlive.com/ani/gif/ico_boost_ani.gif'
 const makeContents = (props) => {
   const context = useContext(Context)
