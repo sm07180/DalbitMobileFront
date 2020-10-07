@@ -17,7 +17,6 @@ import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
 import MyClip from './content/myclip'
-import Utility from 'components/lib/utility'
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
@@ -86,32 +85,16 @@ export default (props) => {
   ]
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
-
-  // if (__NODE_ENV === 'dev') {
-  //   mypageNavList = [
-  //     {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-  //     {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-  //     {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
-  //   ]
-  // }
-
   if (sessionStorage.getItem('webview') === 'new') {
-    if (Utility.getCookie('listen_room_no') === 'undefined' || Utility.getCookie('listen_room_no') === 'null') {
-      if (
-        context.customHeader['os'] === OS_TYPE['IOS'] ||
-        (context.customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] >= 35)
-      ) {
-        mypageNavList = [
-          {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-          {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
-          {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
-        ]
-      } else {
-        mypageNavList = [
-          {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
-          {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
-        ]
-      }
+    if (
+      context.customHeader['os'] === OS_TYPE['IOS'] ||
+      (context.customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] >= 35)
+    ) {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+        {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+      ]
     } else {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -126,6 +109,13 @@ export default (props) => {
     ]
   }
 
+  if (__NODE_ENV === 'dev') {
+    mypageNavList = [
+      {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+      {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+      {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+    ]
+  }
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
