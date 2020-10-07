@@ -48,6 +48,25 @@ export default () => {
     }
   }
 
+  //auth 상태체크
+  const checkSelfAuth = async () => {
+    let authResult = false
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        authResult = true
+      } else if (res.result === 'fail' && res.code === '0') {
+        authResult = false
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+      return authResult
+    }
+    fetchSelfAuth()
+  }
+
   //
   //---------------------------------------------------------------------
   function update(event) {
