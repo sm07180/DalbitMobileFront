@@ -11,6 +11,7 @@ export const clipJoin = (data, context, webview) => {
     Utility.getCookie('listen_room_no') === 'null' ||
     Utility.getCookie('listen_room_no') === ''
   ) {
+    console.log(sessionStorage.getItem('clip_active'))
     if (sessionStorage.getItem('clip_active') === 'N') {
       context.action.alert({
         msg: '클립 재생중입니다.\n 잠시만 기다려주세요.'
