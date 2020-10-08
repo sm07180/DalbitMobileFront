@@ -381,6 +381,7 @@ export default (props) => {
               if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
                 return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
               } else {
+                if (webview === 'new' && Utility.getCookie('listen_room_no')) return false
                 RoomJoin({roomNo: profile.roomNo})
               }
             }}>
