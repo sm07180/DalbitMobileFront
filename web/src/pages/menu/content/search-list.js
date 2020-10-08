@@ -66,7 +66,7 @@ export default (props) => {
 
             <div className="broadcast-content">
               <div className="title">
-                {gender !== 'n' && <img className="gender-icon" src={gender === 'm' ? maleIcon : femaleIcon} />}
+                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
               </div>
 
               <div className="nickname">
@@ -133,7 +133,7 @@ export default (props) => {
               </div>
 
               <div className="nickname">
-                {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별s</div>}
                 {isNew === true && <span className="new-dj-icon">신입DJ</span>}
                 {bjNickNm}
               </div>
