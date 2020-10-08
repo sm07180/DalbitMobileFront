@@ -52,7 +52,7 @@ export default () => {
 
   //auth 상태체크
   const checkSelfAuth = async () => {
-    const selfAuth = await Api.self_auth_check(context.token)
+    const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       setAuthState(false)
     } else {
@@ -740,8 +740,6 @@ export default () => {
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
-    checkSelfAuth()
-
     /*----native----*/
     document.addEventListener('native-push-foreground', update) //완료
     document.addEventListener('native-navigator', update) //완료
@@ -804,7 +802,12 @@ export default () => {
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
+  }, [context.token, authState])
+
+  useEffect(() => {
+    checkSelfAuth()
   }, [context.token])
+
   useEffect(() => {
     document.addEventListener('native-back-click', update)
     return () => {
