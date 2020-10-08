@@ -52,7 +52,7 @@ export default () => {
 
   //auth 상태체크
   const checkSelfAuth = async () => {
-    const selfAuth = await Api.self_auth_check(context.token)
+    const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       setAuthState(false)
     } else {
@@ -402,6 +402,7 @@ export default () => {
         context.action.updateClipPlayerInfo(event.detail)
         context.action.updatePlayer(true)
         sessionStorage.removeItem('clip_active')
+        context.action.alert({visible: false})
         break
       case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)
@@ -409,8 +410,10 @@ export default () => {
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         context.action.updatePlayer(false)
+        sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        sessionStorage.removeItem('clip_active')
         settingSessionInfo('ended')
         break
 
@@ -424,7 +427,6 @@ export default () => {
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
         if (!authState) return (window.location.href = '/selfauth?type=create')
-        if (!checkSelfAuth()) return (window.location.href = '/selfauth?type=create')
         if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
           if (Utility.getCookie('clip-player-info')) {
             context.action.confirm({
@@ -738,8 +740,6 @@ export default () => {
   //---------------------------------------------------------------------
   //useEffect addEventListener
   useEffect(() => {
-    checkSelfAuth()
-
     /*----native----*/
     document.addEventListener('native-push-foreground', update) //완료
     document.addEventListener('native-navigator', update) //완료
@@ -803,6 +803,11 @@ export default () => {
       document.removeEventListener('native-clip-record', update)
     }
   }, [context.token, authState])
+
+  useEffect(() => {
+    checkSelfAuth()
+  }, [context.token])
+
   useEffect(() => {
     document.addEventListener('native-back-click', update)
     return () => {
