@@ -20,11 +20,13 @@ const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 import likeRedIcon from '../static/like_red_m.svg'
 
+import {RANK_TYPE} from '../constant'
+
 function LikeList({empty}) {
   const context = useContext(Context)
   const {rankState} = useContext(RankContext)
   const history = useHistory()
-  const {likeList, rankList} = rankState
+  const {formState, likeList, rankList} = rankState
   return (
     <>
       <div className="guideIconBox">
@@ -40,10 +42,18 @@ function LikeList({empty}) {
         <NoResult type="default" text="조회 된 결과가 없습니다." />
       ) : (
         <>
-          <div className="likeTopBox">
-            <MyProfile />
-          </div>
-          <div className="userRanking bottomList">
+          {context.token.isLogin ? (
+            <div className="likeTopBox">
+              <MyProfile />
+            </div>
+          ) : (
+            ''
+          )}
+
+          <div
+            className={`userRanking bottomList ${
+              formState.rankType === RANK_TYPE.LIKE && !context.token.isLogin ? 'likeList' : ''
+            }`}>
             <ul>
               {rankList.map((list, index) => {
                 const {

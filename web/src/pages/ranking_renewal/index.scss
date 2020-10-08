@@ -782,6 +782,10 @@
       border-radius: 20px;
       margin-top: -20px;
       box-sizing: border-box;
+
+      &.likeList {
+        margin-top: 0;
+      }
     }
 
     .TopBox {
@@ -1382,14 +1386,14 @@
     overflow: hidden;
     position: relative;
     margin-bottom: 12px;
-    padding: 18px 0;
+    padding: 16px 0;
     border-radius: 16px;
     border: solid 2px #febd56;
 
     &__top {
       color: #fff;
       font-size: 22px;
-      letter-spacing: -0.55px;
+      letter-spacing: -1px;
       font-weight: 700;
       line-height: 22px;
       text-align: center;

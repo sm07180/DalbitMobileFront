@@ -10,6 +10,7 @@ import RandomBoxPop from './reward_randombox_pop'
 
 //static
 import CloseBtn from '../static/ic_close.svg'
+import {RANK_TYPE} from '../constant'
 
 export default (props) => {
   const {rankState, rankAction} = useContext(RankContext)
@@ -63,52 +64,87 @@ export default (props) => {
           <img src={CloseBtn} />
         </button>
         <div className="title-box">
-          <p className="title">{rewardPop.text}가 되셨습니다.</p>
+          {formState.rankType === RANK_TYPE.LIKE ? (
+            <p className="title">일간 좋아요 랭킹 {rewardPop.rank}위</p>
+          ) : (
+            <p className="title">{rewardPop.text}가 되셨습니다.</p>
+          )}
+
           <p className="sub-title">
             <img src={`${IMG_SERVER}/ranking/reward_pop_character3@2x.png`} width={41} height={26} /> 축하합니다
           </p>
         </div>
 
         <div className="reward-content">
-          <p className="title">{rewardPop.text} 보상</p>
+          {formState.rankType === RANK_TYPE.LIKE ? (
+            <>
+              <div className="reward-like-box">
+                <div className="reward">
+                  <span>보상</span>
+                  <label className="badge-label right">
+                    <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
+                  </label>
+                </div>
+                <p className="notice">
+                  보상 내역은 <span>마이페이지 &gt; 내 지갑</span>에서
+                  <br />
+                  확인하실 수 있습니다.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <p className="title">{rewardPop.text} 보상</p>
 
-          <div>
-            <div className="top-badge-box">
-              <span className="top-badge-title">TOP 배지</span>{' '}
-              <label
-                className="badge-label right"
-                style={{
-                  background: `linear-gradient(to right, ${rewardPop.startColor}, ${rewardPop.endColor}`
-                }}>
-                <img src={rewardPop.icon} width={42} height={26} />
-                <span>{rewardPop.text}</span>
-              </label>
-            </div>
-            <div className="bottom-badge-box">
-              <label className="badge-label">
-                {' '}
-                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
-              </label>{' '}
-              <label className="badge-label right">
-                <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스
-              </label>
-              {myInfo.rewardPoint !== '' ? (
-                <label className="badge-label center">차기 스페셜DJ 선정 시 가산점 {myInfo.rewardPoint}점 지급</label>
-              ) : (
-                ''
-              )}
-            </div>
-          </div>
+              <div>
+                <div className="top-badge-box">
+                  <span className="top-badge-title">TOP 배지</span>{' '}
+                  <label
+                    className="badge-label right"
+                    style={{
+                      background: `linear-gradient(to right, ${rewardPop.startColor}, ${rewardPop.endColor}`
+                    }}>
+                    <img src={rewardPop.icon} width={42} height={26} />
+                    <span>{rewardPop.text}</span>
+                  </label>
+                </div>
+                <div className="bottom-badge-box">
+                  <label className="badge-label">
+                    {' '}
+                    <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
+                  </label>{' '}
+                  <label className="badge-label right">
+                    <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스
+                  </label>
+                  {myInfo.rewardPoint !== '' ? (
+                    <label className="badge-label center">차기 스페셜DJ 선정 시 가산점 {myInfo.rewardPoint}점 지급</label>
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
-        <button onClick={() => openRandomPopup()} className="btn-random-box">
-          경험치 랜덤 박스 열기
-        </button>
+        {formState.rankType === RANK_TYPE.LIKE ? (
+          <button onClick={() => closePopup()} className="btn-random-box">
+            확인
+          </button>
+        ) : (
+          <button onClick={() => openRandomPopup()} className="btn-random-box">
+            경험치 랜덤 박스 열기
+          </button>
+        )}
 
-        <ul className="notice-box">
-          <li>* Top 배지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다.</li>
-          <li>* 경험치 랜덤 박스 보상은 데이터 업데이트 전까지 받아야합니다.</li>
-          <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li>
-        </ul>
+        {formState.rankType === RANK_TYPE.LIKE ? (
+          ''
+        ) : (
+          <ul className="notice-box">
+            <li>* Top 배지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다.</li>
+            <li>* 경험치 랜덤 박스 보상은 데이터 업데이트 전까지 받아야합니다.</li>
+            <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li>
+          </ul>
+        )}
       </div>
       {randomPopup && <RandomBoxPop setRandomPopup={setRandomPopup} setPopup={setPopup} />}
     </PopupWrap>
@@ -240,6 +276,47 @@ const PopupWrap = styled.div`
           &.center {
             margin-top: 6px;
             width: 100%;
+          }
+        }
+      }
+
+      .reward-like-box {
+        .reward {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 14px;
+
+          span {
+            font-size: 18px;
+            font-weight: bold;
+            color: #632beb;
+          }
+
+          label {
+            margin-left: 8px;
+            display: inline-block;
+            width: 96px;
+            height: 34px;
+            border-radius: 18px;
+            background-color: #efefef;
+            color: #424242;
+            font-size: 16px;
+            letter-spacing: -0.6px;
+            line-height: 34px;
+            text-align: center;
+            font-weight: 700;
+          }
+        }
+
+        .notice {
+          font-size: 12px;
+          color: #616161;
+          line-height: 16px;
+          text-align: center;
+
+          span {
+            text-decoration: underline;
           }
         }
       }

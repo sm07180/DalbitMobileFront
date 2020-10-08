@@ -68,7 +68,7 @@ function Ranking() {
         reloadInit === true ||
         window.scrollY !== 0 ||
         formState.rankType === RANK_TYPE.LEVEL ||
-        formState.rankType === RANK_TYPE.LIKE
+        formState.rankType === RANK_TYPE.SPECIAL
       )
         return
       touchStartY = e.touches[0].clientY
@@ -82,7 +82,7 @@ function Ranking() {
         reloadInit === true ||
         window.scrollY !== 0 ||
         formState.rankType === RANK_TYPE.LEVEL ||
-        formState.rankType === RANK_TYPE.LIKE
+        formState.rankType === RANK_TYPE.SPECIAL
       )
         return
       const iconWrapNode = iconWrapRef.current
@@ -104,7 +104,7 @@ function Ranking() {
 
   const rankTouchEnd = useCallback(
     async (e) => {
-      if (reloadInit === true || formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE) return
+      if (reloadInit === true || formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.SPECIAL) return
 
       const ratio = 3
       const transitionTime = 150
@@ -134,7 +134,11 @@ function Ranking() {
             refreshIconNode.style.transform = `rotate(${current_angle}deg)`
           }, 17)
 
-          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+          if (
+            formState.rankType === RANK_TYPE.DJ ||
+            formState.rankType === RANK_TYPE.FAN ||
+            formState.rankType === RANK_TYPE.LIKE
+          ) {
             formDispatch({
               type: 'INIT'
             })
@@ -303,7 +307,7 @@ function Ranking() {
                 setRankList(rankList.concat(res.data.list))
                 setEmpty(false)
               } else {
-                if (res.data.list.length < 4) {
+                if (res.data.list.length < 6) {
                   setEmpty(true)
                 } else {
                   setEmpty(false)
@@ -361,7 +365,7 @@ function Ranking() {
           if (formState.rankType === RANK_TYPE.LIKE) {
             bottomWrapRef.current.style.marginTop = '140px'
           }
-          if (formState.rankType === RANK_TYPE.LIKE || formState.rankType === RANK_TYPE.LEVEL) {
+          if (formState.rankType === RANK_TYPE.LEVEL) {
             bottomWrapRef.current.style.marginTop = '48px'
           } else {
             if (TopRef.current) {
@@ -510,9 +514,7 @@ function Ranking() {
           ? ''
           : (formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
               <div ref={bottomWrapRef}>
-                <div className={`${context.token.isLogin ? 'isMem' : 'notMem'}`}>
-                  <RankListWrap empty={empty} />
-                </div>
+                <RankListWrap empty={empty} />
               </div>
             )}
 

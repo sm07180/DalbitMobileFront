@@ -55,7 +55,6 @@ export default function MyProfile() {
 
       if (result === 'success') {
         setPopup(true)
-
         setRewardPop(data)
       } else {
         setMyInfo({...myInfo, isReward: false})
@@ -128,15 +127,14 @@ export default function MyProfile() {
     createMyRank()
   }, [formState.rankType])
 
-  console.log(myInfo)
-
   return (
     <>
       {myInfo.isReward ? (
         <>
           <div className="rewordBox">
             <p className="rewordBox__top">
-              {formState.dateType === DATE_TYPE.DAY ? '일간' : '주간'} {formState.rankType === RANK_TYPE.DJ ? 'DJ' : '팬'} 랭킹{' '}
+              {formState.dateType === DATE_TYPE.DAY ? '일간' : '주간'}{' '}
+              {formState.rankType === RANK_TYPE.DJ ? 'DJ' : formState.rankType === RANK_TYPE.FAN ? '팬' : '좋아요'} 랭킹{' '}
               {myInfo.rewardRank}위 <span>축하합니다</span>
             </p>
 
@@ -192,9 +190,9 @@ export default function MyProfile() {
                       
                     </div> */}
                         <div className="bestFanBox">
-                          <span className="bestFanBox__label">심쿵</span>
+                          <span className="bestFanBox__label">심쿵유발자</span>
                           {myInfo.myDjNickNm === '' ? (
-                            '1'
+                            ''
                           ) : (
                             <>
                               <span
@@ -208,7 +206,7 @@ export default function MyProfile() {
                                 }}>
                                 {myInfo.myDjNickNm}
                               </span>
-                              <span>
+                              <span className="bestFanBox__icon">
                                 <img src={likeIcon} />
                                 {myInfo.myDjGoodPoint}
                               </span>

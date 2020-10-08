@@ -10,7 +10,7 @@ export default (props) => {
     <div className="rankGuideWrap">
       <div className="benefitTop">
         <p className="benefitTop__title">
-          <img src={crownIcon} /> DJ / FAN TOP 3에 도전해보세요!
+          <img src={crownIcon} /> DJ / FAN / 좋아요 TOP 3에 도전해보세요!
         </p>
         <p>랭커만을 위한 스페셜한 혜택을 받게 됩니다.</p>
       </div>
@@ -96,9 +96,10 @@ export default (props) => {
 
         <table>
           <colgroup>
-            <col width="20%" />
-            <col width="40%" />
-            <col width="40%" />
+            <col width="10%" />
+            <col width="30%" />
+            <col width="30%" />
+            <col width="30%" />
           </colgroup>
 
           <thead>
@@ -106,6 +107,7 @@ export default (props) => {
               <th>랭킹</th>
               <th>DJ / FAN 일간</th>
               <th>DJ / FAN 주간</th>
+              <th>좋아요 일간</th>
             </tr>
           </thead>
 
@@ -118,6 +120,9 @@ export default (props) => {
               <td>
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 300
               </td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 100
+              </td>
             </tr>
 
             <tr>
@@ -127,6 +132,9 @@ export default (props) => {
               </td>
               <td>
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 200
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 50
               </td>
             </tr>
 
@@ -138,12 +146,16 @@ export default (props) => {
               <td>
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 100
               </td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 30
+              </td>
             </tr>
 
             <tr>
-              <td colSpan="3" className="random">
-                <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스 (EXP 50, 100, 200,
-                400, 500)
+              <td colSpan={4} className="random">
+                DJ / FAN 랭커에게는 경험치 랜덤 박스가 추가 지급됩니다.
+                <br />
+                경험치 랜덤 박스 (EXP 50, 100, 200, 400, 500)
               </td>
             </tr>
           </tbody>
