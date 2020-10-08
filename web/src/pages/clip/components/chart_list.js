@@ -233,11 +233,12 @@ export default (props) => {
                     {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                   </div>
                   <div className="topWrap__count">
-                    <img className="topWrap__count--icon" src={SimpleMessageIconW} />
+                    <i className="icon icon--lineMessage">흰색 라인 메세지 아이콘</i>
+
                     <span className="topWrap__count--num">
                       {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
                     </span>
-                    <img className="topWrap__count--icon" src={SimpleLikeIcon} />
+                    <i className="icon icon--lineMessage">흰색 라인 하트 아이콘</i>
                     <span className="topWrap__count--num">
                       {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
                     </span>
