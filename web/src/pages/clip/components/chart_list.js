@@ -238,7 +238,7 @@ export default (props) => {
                     <span className="topWrap__count--num">
                       {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
                     </span>
-                    <i className="icon icon--lineMessage">흰색 라인 하트 아이콘</i>
+                    <i className="icon icon--lineHeart">흰색 라인 하트 아이콘</i>
                     <span className="topWrap__count--num">
                       {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
                     </span>
