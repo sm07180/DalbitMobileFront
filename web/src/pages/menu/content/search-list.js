@@ -66,7 +66,7 @@ export default (props) => {
 
             <div className="broadcast-content">
               <div className="title">
-                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+                {gender !== 'n' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
               </div>
 
               <div className="nickname">
@@ -76,7 +76,7 @@ export default (props) => {
 
               <div className="detail">
                 <div className="value">
-                  <img src={PeopleIcon} />
+                  <i className="value--people"></i>
                   <span>{Util.printNumber(fanCnt)}</span>
                 </div>
               </div>
@@ -100,7 +100,8 @@ export default (props) => {
           totalCnt,
           entryCnt,
           boostCnt,
-          title
+          title,
+          liveBadgeList
         } = list
         return (
           <div
@@ -133,30 +134,60 @@ export default (props) => {
               </div>
 
               <div className="nickname">
-                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별s</div>}
+                {bjGender !== 'n' && <i className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</i>}
                 {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+
+                {liveBadgeList &&
+                  liveBadgeList.length !== 0 &&
+                  liveBadgeList.map((item, idx) => {
+                    return (
+                      <React.Fragment key={idx + `badge`}>
+                        {item.icon !== '' ? (
+                          <div
+                            className="badgeIcon topImg"
+                            style={{
+                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                              marginRight: '4px'
+                            }}>
+                            <img src={item.icon} style={{height: '16px'}} />
+                            {item.text}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                              marginRight: '4px'
+                            }}
+                            className="badgeIcon text">
+                            {item.text}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
+
                 {bjNickNm}
               </div>
 
               <div className="detail">
                 <div className="value">
-                  <img src={PeopleIcon} />
+                  <i className="value--people"></i>
                   <span>{Util.printNumber(totalCnt)}</span>
                 </div>
 
                 <div className="value">
-                  <img src={hitIcon} />
+                  <i className="value--hit"></i>
                   <span>{Util.printNumber(entryCnt)}</span>
                 </div>
 
                 {boostCnt > 0 ? (
                   <div className="value">
-                    <img src={boostIcon} />
+                    <i className="value--boost"></i>
                     <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
                   </div>
                 ) : (
                   <div className="value">
-                    <img src={likeIcon} />
+                    <i className="value--like"></i>
                     <span>{Util.printNumber(likeCnt)}</span>
                   </div>
                 )}

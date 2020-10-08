@@ -134,11 +134,11 @@ export default (props) => {
 
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <img src={SimpleMessageIcon} width={16} />
+                <i className="icon icon--people">사람 아이콘</i>
                 {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
-                <img src={heartIcon} width={16} />
+                <i className="icon icon--like">회색 하트 아이콘</i>
                 {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
               </span>
               {/* <span className="textBox__detail--item">
@@ -244,12 +244,16 @@ export default (props) => {
                       </span>
                     </div>
                   </div>
-                  <div className="bottomWrap">
-                    {/* <i className="bottomWrap__typeIcon">
-          <img src={noBgAudioIcon} alt="icon" />
-        </i> */}
-                    <p className="bottomWrap__nick">{nickName}</p>
-                    <p className="bottomWrap__title">{title}</p>
+                  <div className="topWrap__count">
+                    <i className="icon icon--lineMessage">흰색 라인 메세지 아이콘</i>
+
+                    <span className="topWrap__count--num">
+                      {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
+                    </span>
+                    <i className="icon icon--lineHeart">흰색 라인 하트 아이콘</i>
+                    <span className="topWrap__count--num">
+                      {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                    </span>
                   </div>
                   <div className="dim"></div>
                 </li>

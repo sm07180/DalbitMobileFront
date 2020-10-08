@@ -1077,13 +1077,13 @@
           }
 
           i {
-            flex-basis: 16px;
             width: 16px;
             height: 16px;
             margin-right: 4px;
             display: inline-block;
             background-position: center;
             opacity: 0.8;
+            text-indent: -9999px;
           }
 
           &--people {

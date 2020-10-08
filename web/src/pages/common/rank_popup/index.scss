@@ -17,6 +17,29 @@
     font-size: 16px;
     color: #000;
 
+    p {
+      text-align: center;
+      line-height: 24px;
+
+      &.topBox {
+        line-height: 26px;
+        font-weight: 800;
+      }
+
+      &.middleBox {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #616161;
+
+        span {
+          font-weight: bold;
+          &.colorRed {
+            color: #ec455f;
+          }
+        }
+      }
+    }
+
     & > span {
       text-align: center;
     }
