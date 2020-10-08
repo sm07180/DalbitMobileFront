@@ -608,13 +608,13 @@
               margin-right: 4px;
               width: 24px;
               height: 16px;
-              background: url('./static/male.svg');
+              background: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
               background-color: $white;
               border-radius: 10px;
               margin-left: 1px;
             }
             .femaleIcon {
-              background: url('./static/female.svg');
+              background: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
               background-color: $white;
               border-radius: 10px;
             }
@@ -649,6 +649,27 @@
               letter-spacing: -0.5px;
               margin-right: 8px;
               font-weight: 400;
+
+              i.icon {
+                width: 16px;
+                height: 16px;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: inline-block;
+                margin-right: 2px;
+                opacity: 0.8;
+                text-indent: -9999px;
+                display: inline-block;
+                vertical-align: middle;
+
+                &--people {
+                  background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+                }
+
+                &--like {
+                  background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+                }
+              }
 
               img {
                 display: inline-block;

@@ -81,13 +81,13 @@ function SpecialList({empty}) {
                       </div>
                       <div className="countBox">
                         <span>
-                          <img src={like} /> {v.goodCnt}
+                          <i className="icon icon--like">회색 하트 아이콘</i> {v.goodCnt}
                         </span>
                         <span>
-                          <img src={people} /> {v.listenerCnt}
+                          <i className="icon icon--people">사람 아이콘</i> {v.listenerCnt}
                         </span>
                         <span>
-                          <img src={time} /> {v.broadMin}
+                          <i className="icon icon--time">시계 아이콘</i> {v.broadMin}
                         </span>
                       </div>
                     </div>

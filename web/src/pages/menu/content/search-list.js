@@ -133,7 +133,7 @@ export default (props) => {
               </div>
 
               <div className="nickname">
-                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별s</div>}
+                {bjGender !== 'n' && <i className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</i>}
                 {isNew === true && <span className="new-dj-icon">신입DJ</span>}
                 {bjNickNm}
               </div>

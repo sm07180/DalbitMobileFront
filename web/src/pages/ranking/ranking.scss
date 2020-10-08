@@ -569,6 +569,18 @@
     font-size: 16px;
     font-weight: bold;
 
+    i.icon {
+      width: 22px;
+      height: 22px;
+      display: inline-block;
+      text-indent: -9999px;
+
+      &--whiteLike {
+        background-image: url(https://image.dalbitlive.com/svg/like_w_s.svg);
+        background-size: 22px;
+      }
+    }
+
     & img {
       width: 22px;
       height: 22px;
@@ -858,7 +870,7 @@
           content: '';
           width: 16px;
           height: 16px;
-          background: url('./static/like_g_s.svg') no-repeat 0 0;
+          background: url('https://image.dalbitlive.com/svg/ico_like_g_s.svg') no-repeat 0 0;
         }
       }
     }

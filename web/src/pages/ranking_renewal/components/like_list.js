@@ -95,7 +95,7 @@ function LikeList({empty}) {
                 </div>
                 <div className="textBox">
                   <div className="fanGoodBox">
-                    <img src={goodIcon} />
+                    <i className="icon icon--whiteLike">흰색 큰 하트</i>
                     <span>{totalGoodCnt.toLocaleString()}</span>
                   </div>
                   <div className="nickNameBox">{nickNm}</div>

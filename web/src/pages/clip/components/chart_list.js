@@ -134,11 +134,11 @@ export default (props) => {
 
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <img src={SimpleMessageIcon} width={16} />
+                <i className="icon icon--people">사람 아이콘</i>
                 {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
-                <img src={heartIcon} width={16} />
+                <i className="icon icon--like">회색 하트 아이콘</i>
                 {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
               </span>
               {/* <span className="textBox__detail--item">
