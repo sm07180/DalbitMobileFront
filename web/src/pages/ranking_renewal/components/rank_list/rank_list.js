@@ -109,7 +109,9 @@ function RankList() {
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                          <span className={genderName}>{gender}</span>
+                          {genderName !== 'n' && (
+                            <div className={`gender-icon ${genderName === 'm' ? 'male' : 'female'}`}>성별</div>
+                          )}
 
                           {liveBadgeList &&
                             liveBadgeList.length !== 0 &&
@@ -147,17 +149,17 @@ function RankList() {
                         {formState.rankType === 1 && (
                           <>
                             <span className="countBox__item">
-                              <img src={people} />
+                              <i className="icon icon--people">사람 아이콘</i>
                               {printNumber(listenerPoint)}
                             </span>
 
                             <span className="countBox__item">
-                              <img src={like} />
+                              <i className="icon icon--like">회색 하트 아이콘</i>
                               {printNumber(goodPoint)}
                             </span>
 
                             <span className="countBox__item">
-                              <img src={time} />
+                              <i className="icon icon--time">시계 아이콘</i>
                               {printNumber(broadcastPoint)}
                             </span>
                           </>
@@ -166,11 +168,11 @@ function RankList() {
                         {formState.rankType === 2 && (
                           <>
                             <span className="countBox__item">
-                              <img src={StarCountIcon} />
+                              <i className="icon icon--star">s 스타아이콘</i>
                               {printNumber(starCnt)}
                             </span>
                             <span className="countBox__item">
-                              <img src={time} />
+                              <i className="icon icon--time">시계 아이콘</i>
                               {printNumber(listenPoint)}
                             </span>
                           </>

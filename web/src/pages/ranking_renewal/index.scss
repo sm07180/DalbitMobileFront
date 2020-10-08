@@ -606,6 +606,41 @@
       letter-spacing: -0.3px;
       color: #424242;
 
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
+
       img {
         opacity: 0.8;
       }
@@ -631,6 +666,40 @@
     &__block {
       display: flex;
       margin-bottom: 2px;
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
     }
   }
 
@@ -676,6 +745,23 @@
         text-align: center;
         font-weight: 300;
       }
+
+      .gender-icon {
+        margin-right: 4px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+
+        &.male {
+          background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+        }
+
+        &.female {
+          background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+        }
+      }
     }
 
     .genderBox {
@@ -687,20 +773,6 @@
       &.korea-m {
         margin-left: 2px;
         border: 1px solid;
-      }
-
-      &.gender-m {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-male@2x.png);
-        margin-left: 2px;
-      }
-
-      &.gender-f {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-female@2x.png);
-        margin-left: 2px;
       }
     }
   }
@@ -1187,6 +1259,26 @@
 
     .textBox {
       width: calc(100% - 150px);
+
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
     }
     .test {
       width: calc(100% - 168px);
@@ -1262,7 +1354,7 @@
           content: '';
           width: 16px;
           height: 16px;
-          background: url('./static/like_g_s.svg') no-repeat 0 0;
+          background: url('https://image.dalbitlive.com/svg/ico_like_g_s.svg') no-repeat 0 0;
         }
       }
     }
@@ -1272,6 +1364,41 @@
       margin-top: 4px;
       padding-left: 5px;
       font-size: 12px;
+
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
       & > span {
         margin-right: 6px;
         font-size: 12px;

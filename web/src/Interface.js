@@ -646,6 +646,9 @@ export default () => {
           if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
         }
         break
+      case '40': //-----------------랭킹
+        if (isLogin) window.location.href = `/rank`
+        break
       case '41': //-----------------랭킹 > DJ > 일간
         if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`
         break
