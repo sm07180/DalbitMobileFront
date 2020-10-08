@@ -804,7 +804,7 @@ export default () => {
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
-  }, [context.token, authState])
+  }, [context.token])
   useEffect(() => {
     document.addEventListener('native-back-click', update)
     return () => {
