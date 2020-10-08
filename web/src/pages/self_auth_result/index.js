@@ -223,7 +223,7 @@ export default (props) => {
       {authState !== 0 && (
         <Content>
           <div className="img_wrap">
-            <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
+            <img src={`${IMG_SERVER}/images/api/rabbit_02.svg`} />
           </div>
           <h2>본인 인증 완료</h2>
           {createResult()}
