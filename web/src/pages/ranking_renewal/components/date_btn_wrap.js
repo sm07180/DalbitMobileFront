@@ -1,9 +1,12 @@
 import React, {useContext} from 'react'
+import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
 import {convertMonday, convertMonth} from '../lib/common_fn'
 
 import {DATE_TYPE, RANK_TYPE} from '../constant'
+
+import guideIcon from '../static/guide_s.png'
 
 const btnArray = [
   {val: DATE_TYPE.DAY, text: '일간'},
@@ -13,6 +16,7 @@ const btnArray = [
 ]
 
 function DateBtnWrap({fetching}) {
+  const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
   const {formState} = rankState
@@ -22,6 +26,14 @@ function DateBtnWrap({fetching}) {
     <div className="todayList">
       {formState.rankType === RANK_TYPE.LIKE ? (
         <>
+          <div className="guideIconBox">
+            <img
+              src={guideIcon}
+              onClick={() => {
+                context.action.updatePopup('RANK_POP', 'like')
+              }}
+            />
+          </div>
           {btnArray.slice(0, 2).map((v, idx) => {
             return (
               <button

@@ -50,7 +50,7 @@
 
   .guideIconBox {
     position: absolute;
-    top: 102px;
+    top: 5px;
     right: 16px;
   }
 
@@ -188,6 +188,7 @@
   }
 
   .todayList {
+    position: relative;
     height: 36px;
     border-bottom: 1px solid $lighterGray;
     text-align: center;

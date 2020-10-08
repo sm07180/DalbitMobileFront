@@ -23,6 +23,10 @@ export default (props) => {
   const [randomPopup, setRandomPopup] = useState(false)
   const closePopup = () => {
     setPopup(false)
+    setMyInfo({
+      ...myInfo,
+      isReward: false
+    })
   }
 
   const openRandomPopup = () => {

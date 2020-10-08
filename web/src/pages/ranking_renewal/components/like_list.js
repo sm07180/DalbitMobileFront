@@ -29,15 +29,6 @@ function LikeList({empty}) {
   const {formState, likeList, rankList} = rankState
   return (
     <>
-      <div className="guideIconBox">
-        <img
-          src={guideIcon}
-          onClick={() => {
-            context.action.updatePopup('RANK_POP', 'like')
-          }}
-        />
-      </div>
-
       {empty === true ? (
         <NoResult type="default" text="조회 된 결과가 없습니다." />
       ) : (
