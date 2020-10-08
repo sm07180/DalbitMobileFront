@@ -65,6 +65,7 @@ function LikeList({empty}) {
                   rank,
                   grade,
                   djGoodPoint,
+                  djMemNo,
                   roomNo,
                   memNo,
                   goodPoint,
@@ -111,7 +112,19 @@ function LikeList({empty}) {
                       <img src={profImg.thumb120x120} className="thumbBox__pic" />
                     </div>
                     <div className="likeDetailWrap">
-                      <div className="likeListDetail">
+                      <div
+                        className="likeListDetail"
+                        onClick={() => {
+                          if (context.token.isLogin) {
+                            if (context.token.memNo === memNo) {
+                              history.push(`/menu/profile`)
+                            } else {
+                              history.push(`/mypage/${memNo}`)
+                            }
+                          } else {
+                            history.push(`/login`)
+                          }
+                        }}>
                         <div className="fanGoodBox">
                           <img src={likeRedIcon} />
                           <span>{goodPoint.toLocaleString()}</span>
@@ -126,10 +139,10 @@ function LikeList({empty}) {
                           className="bestFanBox__nickname"
                           onClick={() => {
                             if (context.token.isLogin) {
-                              if (context.token.memNo === fanMemNo) {
+                              if (context.token.memNo === memNo) {
                                 history.push(`/menu/profile`)
                               } else {
-                                history.push(`/mypage/${fanMemNo}`)
+                                history.push(`/mypage/${djMemNo}`)
                               }
                             } else {
                               history.push(`/login`)
