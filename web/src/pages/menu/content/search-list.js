@@ -66,7 +66,7 @@ export default (props) => {
 
             <div className="broadcast-content">
               <div className="title">
-                {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+                {gender !== 'n' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
               </div>
 
               <div className="nickname">
