@@ -112,6 +112,7 @@ export default (props) => {
       <Content>
         <div className="img-wrap">
           <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
+          <h2>본인인증</h2>
         </div>
         <div className="auth-wrap">
           {type === 'create' ? (
@@ -156,15 +157,21 @@ const Content = styled.div`
   .img-wrap {
     padding-bottom: 20px;
     text-align: center;
+    h2 {
+      font-size: 24px;
+      line-height: 24px;
+      color: #000;
+      padding-top: 30px;
+    }
   }
   .auth-wrap {
     padding: 10px 0;
     h4 {
       text-align: center;
       color: #000;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
-      line-height: 24px;
+      line-height: 20px;
       strong {
         font-weight: 600;
       }
@@ -193,7 +200,7 @@ const Content = styled.div`
     }
     .btn-wrap {
       display: flex;
-      padding-top: 40px;
+      padding-top: 25px;
       button {
         flex: 1;
         height: 44px;

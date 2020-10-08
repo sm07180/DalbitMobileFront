@@ -11,6 +11,7 @@ import {COLOR_MAIN} from 'context/color'
 //layout
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
+import {IMG_SERVER} from 'context/config'
 
 //
 export default (props) => {
@@ -177,8 +178,11 @@ export default (props) => {
       case 4: //프로필 -> 자기자신 본인인증 완료 하였을 때
         return (
           <div className="auth-wrap">
-            <h4>본인 인증이 완료되었습니다.</h4>
-            <p>※ 확인을 누르시면 프로필 설정으로 돌아갑니다.</p>
+            <h5>
+              <span>본인 인증이 완료되었습니다.</span>
+              <br />
+              확인을 누르시면 프로필 설정으로 돌아갑니다.
+            </h5>
             <div className="btn-wrap">
               <button
                 onClick={() => {
@@ -192,7 +196,13 @@ export default (props) => {
       case 5: //방송방,클립 생성 본인인증 완료 후
         return (
           <div className="auth-wrap">
-            <h4>본인 인증이 완료되었습니다.</h4>
+            <h5>
+              <span>본인 인증이 완료되었습니다.</span>
+              <br />
+              이제 방송개설 및 클립등록이 정상적으로 가능합니다.
+              <br />
+              감사합니다!
+            </h5>
             <div className="btn-wrap">
               <button
                 onClick={() => {
@@ -216,8 +226,15 @@ export default (props) => {
       ) : (
         <Header title={authState === 3 ? '법정대리인(보호자) 동의 완료' : '본인 인증 완료'} goBack={goBack} />
       )}
-
-      <Content>{createResult()}</Content>
+      {authState !== 0 && (
+        <Content>
+          <div className="img_wrap">
+            <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
+          </div>
+          <h2>본인 인증 완료</h2>
+          {createResult()}
+        </Content>
+      )}
     </Layout>
   )
 }
@@ -225,6 +242,16 @@ export default (props) => {
 
 const Content = styled.div`
   padding: 30px 16px;
+  .img_wrap {
+    text-align: center;
+  }
+  h2 {
+    padding: 30px 0 22px 0;
+    color: #000;
+    font-size: 24px;
+    line-height: 24px;
+    text-align: center;
+  }
   .auth-wrap {
     h4 {
       text-align: center;
