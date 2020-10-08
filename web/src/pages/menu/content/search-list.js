@@ -100,7 +100,8 @@ export default (props) => {
           totalCnt,
           entryCnt,
           boostCnt,
-          title
+          title,
+          liveBadgeList
         } = list
         return (
           <div
@@ -135,6 +136,36 @@ export default (props) => {
               <div className="nickname">
                 {bjGender !== 'n' && <i className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</i>}
                 {isNew === true && <span className="new-dj-icon">신입DJ</span>}
+
+                {liveBadgeList &&
+                  liveBadgeList.length !== 0 &&
+                  liveBadgeList.map((item, idx) => {
+                    return (
+                      <React.Fragment key={idx + `badge`}>
+                        {item.icon !== '' ? (
+                          <div
+                            className="badgeIcon topImg"
+                            style={{
+                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                              marginRight: '4px'
+                            }}>
+                            <img src={item.icon} style={{height: '16px'}} />
+                            {item.text}
+                          </div>
+                        ) : (
+                          <div
+                            style={{
+                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                              marginRight: '4px'
+                            }}
+                            className="badgeIcon text">
+                            {item.text}
+                          </div>
+                        )}
+                      </React.Fragment>
+                    )
+                  })}
+
                 {bjNickNm}
               </div>
 
