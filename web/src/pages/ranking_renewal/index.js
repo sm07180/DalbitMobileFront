@@ -282,7 +282,7 @@ function Ranking() {
           page: formState.page,
           records: records,
           rankingDate: formatDate,
-          type: formState.rankType === RANK_TYPE.LEVEL ? 'level' : formState.rankType === RANK_TYPE.LIKE ? 'good' : 'page'
+          type: formState.rankType === RANK_TYPE.LEVEL ? 'level' : 'page'
         })
         if (res.result === 'success' && res.data.list instanceof Array) {
           if (res.data.list.length > 0) {
@@ -297,19 +297,8 @@ function Ranking() {
               setLikeList([])
               setTotalPage(res.data.paging.totalPage)
               setEmpty(false)
-            } else if (formState.rankType === RANK_TYPE.LIKE) {
-              //good
-              if (formState.page > 1) {
-                setLikeList(likeList.concat(res.data.list))
-              } else {
-                setLikeList(res.data.list)
-              }
-              setLevelList([])
-              setRankList([])
-              setTotalPage(res.data.paging.totalPage)
-              setEmpty(false)
             } else {
-              // dj, fan
+              // dj, fan, like
               if (formState.page > 1) {
                 setRankList(rankList.concat(res.data.list))
                 setEmpty(false)
@@ -368,6 +357,10 @@ function Ranking() {
           if (formState.rankType === RANK_TYPE.SPECIAL) {
             bottomWrapRef.current.style.marginTop = '104px'
           }
+
+          if (formState.rankType === RANK_TYPE.LIKE) {
+            bottomWrapRef.current.style.marginTop = '140px'
+          }
           if (formState.rankType === RANK_TYPE.LIKE || formState.rankType === RANK_TYPE.LEVEL) {
             bottomWrapRef.current.style.marginTop = '48px'
           } else {
@@ -394,7 +387,7 @@ function Ranking() {
       } else {
         fixedWrapRef.current.className = ''
         bottomWrapRef.current.className = ''
-        bottomWrapRef.current.style.marginTop = '0px'
+        bottomWrapRef.current.style.marginTop = '0'
         if (listWrapRef.current) {
           if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
             if (context.token.isLogin) {
@@ -477,7 +470,9 @@ function Ranking() {
             <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState.rankType !== 3 && formState.rankType !== 4 && `${realTime()}`}</div> */}
           </div>
-          {(formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) && (
+          {(formState.rankType === RANK_TYPE.DJ ||
+            formState.rankType === RANK_TYPE.FAN ||
+            formState.rankType === RANK_TYPE.LIKE) && (
             <>
               <RankDateBtn fetching={fetching} />
               <RankHandleDateBtn fetching={fetching} />

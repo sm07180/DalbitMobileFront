@@ -48,6 +48,12 @@
     padding: 0 16px;
   }
 
+  .guideIconBox {
+    position: absolute;
+    top: 102px;
+    right: 16px;
+  }
+
   .renewalBox {
     display: flex;
     align-items: center;
@@ -103,6 +109,12 @@
   .rankTop3Box {
     padding: 0 16px;
     background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+  }
+
+  .likeTopBox {
+    position: relative;
+    padding: 0 16px 16px 16px;
+    background-color: $primary;
   }
 
   .rankTopBox {
@@ -623,16 +635,8 @@
   }
 
   .fanGoodBox {
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    height: 22px;
-    padding: 0px 7px;
-    background-color: #ec455f;
-    border-radius: 14px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
+    color: #ec455f;
+    font-size: 14px;
 
     & img {
       width: 22px;
@@ -1433,6 +1437,122 @@
       font-size: 14px;
       text-align: center;
       border-radius: 16px;
+    }
+  }
+
+  .likeDetailWrap {
+    .likeListDetail {
+      display: flex;
+
+      .nickNameBox {
+        max-width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+      }
+    }
+
+    .fanGoodBox {
+      color: #ec455f;
+      font-size: 14px;
+
+      & img {
+        width: 22px;
+        height: 22px;
+      }
+
+      & span {
+        line-height: 24px;
+        letter-spacing: -0.4px;
+      }
+    }
+
+    .nickNameBox {
+      margin-top: 4px;
+      padding-left: 5px;
+      font-size: 14px;
+    }
+
+    .genderBox {
+      display: inline-flex;
+      padding-left: 5px;
+      background-size: 100%;
+      vertical-align: middle;
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+    }
+
+    .bestFanBox {
+      display: flex;
+      height: 18px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #632beb;
+      align-items: center;
+      &__label {
+        margin-right: 4px;
+        padding: 0 8px;
+        height: 16px;
+        color: #757575;
+        background-color: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      &__nickname {
+        max-width: 45%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+        cursor: pointer;
+      }
+      &__icon {
+        color: #424242;
+        word-spacing: -5px;
+      }
+    }
+
+    .countBox {
+      height: 18px;
+      margin-top: 4px;
+      padding-left: 5px;
+      font-size: 12px;
+      & > span {
+        margin-right: 6px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        word-spacing: -3px;
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .liveBox {
+      top: 12px;
+      right: 12px;
     }
   }
 }

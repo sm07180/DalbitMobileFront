@@ -17,10 +17,13 @@ import likeWhite from '../static/like_g_s.svg'
 import peopleWhite from '../static/people_g_s.svg'
 import timeWhite from '../static/time_g_s.svg'
 import trophyImg from '../static/rankingtop_back@2x.png'
+import likeIcon from '../static/like_g_s.svg'
+import likeRedIcon from '../static/like_red_m.svg'
 
 export default function MyProfile() {
   const history = useHistory()
   const global_ctx = useContext(Context)
+  const context = useContext(Context)
 
   const {token} = global_ctx
 
@@ -125,6 +128,8 @@ export default function MyProfile() {
     createMyRank()
   }, [formState.rankType])
 
+  console.log(myInfo)
+
   return (
     <>
       {myInfo.isReward ? (
@@ -153,11 +158,7 @@ export default function MyProfile() {
           {myProfile && (
             // <div className={`myRanking myRanking__profile ${isFixed === true && 'myRanking__profile--fixed'}`}>
             <div className={`myRanking profileBox`}>
-              <div
-                className="profileWrap"
-                onClick={() => {
-                  history.push(`/menu/profile`)
-                }}>
+              <div className="profileWrap">
                 <div className="myRanking__rank">
                   <p
                     className="myRanking__rank--title
@@ -167,90 +168,136 @@ export default function MyProfile() {
                   {createMyProfile()}
                 </div>
 
-                <div className="thumbBox">
+                <div
+                  className="thumbBox"
+                  onClick={() => {
+                    history.push(`/menu/profile`)
+                  }}>
                   <img src={myProfile.profImg.thumb120x120} className="thumbBox__pic" />
                 </div>
 
                 <div className="myRanking__content">
                   <div className="infoBox">
-                    <div className="nickNameBox">
-                      <p className="nick">{myProfile.nickNm}</p>
-                      <div className="nickNameImg">
-                        <span className="nickNameImg__level">Lv {myProfile.level}</span>
+                    {formState.rankType === RANK_TYPE.LIKE ? (
+                      <div className="likeDetailWrap">
+                        <div className="likeListDetail">
+                          <div className="fanGoodBox">
+                            <img src={likeRedIcon} />
+                            <span>{myInfo.myGoodPoint.toLocaleString()}</span>
+                          </div>
+                          <div className="nickNameBox">{myProfile.nickNm}</div>
+                        </div>
 
-                        {myInfo.myLiveBadgeList &&
-                          myInfo.myLiveBadgeList.length !== 0 &&
-                          myInfo.myLiveBadgeList.map((item, idx) => {
-                            return (
-                              <React.Fragment key={idx + `badge`}>
-                                {item.icon !== '' ? (
-                                  <div
-                                    className="badgeIcon topImg"
-                                    style={{
-                                      background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                      marginLeft: '4px'
-                                    }}>
-                                    <img src={item.icon} style={{height: '16px'}} />
-                                    {item.text}
-                                  </div>
-                                ) : (
-                                  <div
-                                    style={{
-                                      background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                      marginLeft: '4px'
-                                    }}
-                                    className="badgeIcon text">
-                                    {item.text}
-                                  </div>
-                                )}
-                              </React.Fragment>
-                            )
-                          })}
-
-                        {myProfile.isSpecial && <span className="specialDj">스페셜DJ</span>}
+                        {/* <div className="countBox">
+                      
+                    </div> */}
+                        <div className="bestFanBox">
+                          <span className="bestFanBox__label">심쿵</span>
+                          {myInfo.myDjNickNm === '' ? (
+                            '1'
+                          ) : (
+                            <>
+                              <span
+                                className="bestFanBox__nickname"
+                                onClick={() => {
+                                  if (context.token.isLogin) {
+                                    history.push(`/mypage/${myInfo.myDjMemNo}`)
+                                  } else {
+                                    history.push('/modal/login')
+                                  }
+                                }}>
+                                {myInfo.myDjNickNm}
+                              </span>
+                              <span>
+                                <img src={likeIcon} />
+                                {myInfo.myDjGoodPoint}
+                              </span>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="nickNameBox">
+                          <p className="nick">{myProfile.nickNm}</p>
+                          <div className="nickNameImg">
+                            <span className="nickNameImg__level">Lv {myProfile.level}</span>
 
-                    <div className="countBox countBox--profile">
-                      {formState.rankType == RANK_TYPE.DJ && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
-                            <span className="countBox__item">
-                              <img src={peopleWhite} />
-                              {Util.printNumber(myInfo.myListenerPoint)}
-                            </span>
-                            <span className="countBox__item">
-                              <img src={likeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myLikePoint)}
-                            </span>
+                            {myInfo.myLiveBadgeList &&
+                              myInfo.myLiveBadgeList.length !== 0 &&
+                              myInfo.myLiveBadgeList.map((item, idx) => {
+                                return (
+                                  <React.Fragment key={idx + `badge`}>
+                                    {item.icon !== '' ? (
+                                      <div
+                                        className="badgeIcon topImg"
+                                        style={{
+                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                          marginLeft: '4px'
+                                        }}>
+                                        <img src={item.icon} style={{height: '16px'}} />
+                                        {item.text}
+                                      </div>
+                                    ) : (
+                                      <div
+                                        style={{
+                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                          marginLeft: '4px'
+                                        }}
+                                        className="badgeIcon text">
+                                        {item.text}
+                                      </div>
+                                    )}
+                                  </React.Fragment>
+                                )
+                              })}
 
-                            <span className="countBox__item">
-                              <img src={timeWhite} className="icon__white" />
-                              {Util.printNumber(myInfo.myBroadPoint)}
-                            </span>
+                            {myProfile.isSpecial && <span className="specialDj">스페셜DJ</span>}
                           </div>
-                        </>
-                      )}
-                      {formState.rankType === RANK_TYPE.FAN && (
-                        <>
-                          <div className="countBox__block">
-                            <span className="countBox__item">
-                              <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
-                              {Util.printNumber(myInfo.myPoint)}
-                            </span>
+                        </div>
 
-                            <span className="countBox__item">
-                              <img src={timeWhite} />
-                              {Util.printNumber(myInfo.myListenPoint)}
-                            </span>
-                          </div>
-                        </>
-                      )}
-                    </div>
+                        <div className="countBox countBox--profile">
+                          {formState.rankType == RANK_TYPE.DJ && (
+                            <>
+                              <div className="countBox__block">
+                                <span className="countBox__item">
+                                  <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                  {Util.printNumber(myInfo.myPoint)}
+                                </span>
+                                <span className="countBox__item">
+                                  <img src={peopleWhite} />
+                                  {Util.printNumber(myInfo.myListenerPoint)}
+                                </span>
+                                <span className="countBox__item">
+                                  <img src={likeWhite} className="icon__white" />
+                                  {Util.printNumber(myInfo.myLikePoint)}
+                                </span>
+
+                                <span className="countBox__item">
+                                  <img src={timeWhite} className="icon__white" />
+                                  {Util.printNumber(myInfo.myBroadPoint)}
+                                </span>
+                              </div>
+                            </>
+                          )}
+                          {formState.rankType === RANK_TYPE.FAN && (
+                            <>
+                              <div className="countBox__block">
+                                <span className="countBox__item">
+                                  <img src={point} srcSet={`${point} 1x, ${point2x} 2x`} />
+                                  {Util.printNumber(myInfo.myPoint)}
+                                </span>
+
+                                <span className="countBox__item">
+                                  <img src={timeWhite} />
+                                  {Util.printNumber(myInfo.myListenPoint)}
+                                </span>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
