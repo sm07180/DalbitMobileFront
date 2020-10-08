@@ -865,10 +865,6 @@
       margin-top: 0;
     }
 
-    .txt_boost {
-      color: $red;
-    }
-
     .new-dj-icon {
       color: $white;
       font-size: 12px;
@@ -1074,6 +1070,10 @@
           span {
             color: $greishBrown;
             font-size: 12px;
+
+            &.txt_boost {
+              color: $red;
+            }
           }
 
           i {
