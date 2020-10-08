@@ -331,9 +331,9 @@ export default (props) => {
   // initial category
   const refreshCategory = (type) => {
     // setClipTypeActive('')
-    if (scrollY !== 0) {
-      window.scrollTo(0, scrollY)
-    }
+    // if (scrollY !== 0) {
+    //   window.scrollTo(0, scrollY)
+    // }
     // context.action.updateClipSort(0)
     //context.action.updateClipGender('')
     if (context.clipRefresh && type === 'category') {
