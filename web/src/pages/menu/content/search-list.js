@@ -76,7 +76,7 @@ export default (props) => {
 
               <div className="detail">
                 <div className="value">
-                  <img src={PeopleIcon} />
+                  <i className="value--people"></i>
                   <span>{Util.printNumber(fanCnt)}</span>
                 </div>
               </div>
@@ -140,23 +140,23 @@ export default (props) => {
 
               <div className="detail">
                 <div className="value">
-                  <img src={PeopleIcon} />
+                  <i className="value--people"></i>
                   <span>{Util.printNumber(totalCnt)}</span>
                 </div>
 
                 <div className="value">
-                  <img src={hitIcon} />
+                  <i className="value--hit"></i>
                   <span>{Util.printNumber(entryCnt)}</span>
                 </div>
 
                 {boostCnt > 0 ? (
                   <div className="value">
-                    <img src={boostIcon} />
+                    <i className="value--boost"></i>
                     <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
                   </div>
                 ) : (
                   <div className="value">
-                    <img src={likeIcon} />
+                    <i className="value--like"></i>
                     <span>{Util.printNumber(likeCnt)}</span>
                   </div>
                 )}

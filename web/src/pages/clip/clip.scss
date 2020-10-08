@@ -722,6 +722,22 @@
             &__count {
               display: flex;
               align-items: center;
+              i.icon {
+                width: 16px;
+                height: 16px;
+                display: block;
+                background-repeat: no-repeat;
+                background-position: center;
+                text-indent: -9999px;
+
+                &--lineMessage {
+                  background-image: url('https://image.dalbitlive.com/svg/line_message_w.svg');
+                }
+
+                &--lineHeart {
+                  background-image: url('https://image.dalbitlive.com/svg/line_heart_w.svg');
+                }
+              }
               &--num,
               &--icon {
                 min-width: 16px;
@@ -811,13 +827,13 @@
   .femaleIcon {
     width: 24px;
     height: 16px;
-    background: url('./static/male.svg');
+    background: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
     background-color: $white;
     border-radius: 10px;
     margin-left: 1px;
   }
   .femaleIcon {
-    background: url('./static/female.svg');
+    background: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
     background-color: $white;
     border-radius: 10px;
   }
