@@ -131,7 +131,7 @@ const makeContents = (props) => {
             </div>
             <div className="detail">
               <div className="value">
-                <i className="value--peopl"></i>
+                <i className="value--people"></i>
                 <span>{Util.printNumber(totalCnt)}</span>
               </div>
 
