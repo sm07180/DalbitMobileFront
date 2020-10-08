@@ -331,14 +331,12 @@ export default (props) => {
   // initial category
   const refreshCategory = (type) => {
     // setClipTypeActive('')
-    // if (scrollY !== 0) {
-    //   window.scrollTo(0, scrollY)
-    // }
-    // context.action.updateClipSort(0)
-    //context.action.updateClipGender('')
+    if (scrollY !== 0) {
+      window.scrollTo(0, scrollY)
+    }
+
     if (context.clipRefresh && type === 'category') {
       context.action.updatClipRefresh(false)
-      // context.action.updateClipGender(false)
     } else if (type === 'popular') {
       if (popularList.length > 6) {
         let newList = popularList.filter(function (x) {
