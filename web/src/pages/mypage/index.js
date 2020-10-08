@@ -107,7 +107,7 @@ export default (props) => {
     ]
   }
 
-  if (Utility.getCookie('listen_room_no') && Utility.getCookie('listen_room_no') !== undefined) {
+  if (__NODE_ENV === 'dev' && Utility.getCookie('listen_room_no') && Utility.getCookie('listen_room_no') !== undefined) {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
       {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
