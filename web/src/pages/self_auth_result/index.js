@@ -69,6 +69,12 @@ export default (props) => {
     } else {
       checkAuth()
     }
+
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'selfauth'})
+    return () => {
+      context.action.updateSetBack(null)
+    }
   }, [])
 
   const goWallet = () => {

@@ -11,6 +11,7 @@ export const backFunc = (context) => {
       context.action.updateBackFunction({name: 'booleanType', value: false})
       break
     case 'event':
+    case 'selfauth':
       window.location.href = '/'
       break
 
