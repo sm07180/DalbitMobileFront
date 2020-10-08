@@ -376,9 +376,6 @@ export default (props) => {
             className="liveIcon"
             onClick={() => {
               if (__NODE_ENV === 'dev') {
-                alert(webview)
-                alert(Utility.getCookie('listen_room_no'))
-                alert(webview === 'new' && Utility.getCookie('listen_room_no'))
                 if (webview === 'new' && Utility.getCookie('listen_room_no')) return false
                 return RoomJoin({roomNo: profile.roomNo})
               }
