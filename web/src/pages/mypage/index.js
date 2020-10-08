@@ -3,6 +3,7 @@ import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react
 import {Context} from 'context'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
@@ -86,6 +87,12 @@ export default (props) => {
   //타인 마이페이지 서브 컨텐츠 리스트
   let mypageNavList
   if (sessionStorage.getItem('webview') === 'new') {
+    if (Utility.getCookie('listen_room_no')) {
+      mypageNavList = [
+        {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+        {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+      ]
+    }
     if (context.customHeader['os'] === OS_TYPE['IOS'] || context.customHeader['appBuild'] >= 35) {
       mypageNavList = [
         {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
