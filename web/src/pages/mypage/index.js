@@ -121,7 +121,6 @@ export default (props) => {
   if (
     __NODE_ENV === 'dev' ||
     Utility.getCookie('listen_room_no') === undefined ||
-    !Utility.getCookie('listen_room_no') ||
     Utility.getCookie('listen_room_no') === 'null'
   ) {
     mypageNavList = [
