@@ -38,7 +38,7 @@ export default () => {
           <button
             className="btnClose"
             onClick={() => {
-              history.goBack()
+              history.push('/')
             }}>
             <img src={btnClose} alt="닫기" />
           </button>
@@ -81,7 +81,7 @@ const Content = styled.div`
     }
     .btnClose {
       position: absolute;
-      right: 16px;
+      right: 4px;
     }
     .event-notice {
       padding: 10px 10% 32px;
