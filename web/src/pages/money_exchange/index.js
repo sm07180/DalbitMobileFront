@@ -1,8 +1,11 @@
-import React, {useReducer, useEffect} from 'react'
+import React, {useReducer, useEffect, useState, useContext} from 'react'
 import DoExchange from './content/do_exchange'
 import Result from './content/result'
 import Message from 'pages/common/message'
+import Api from 'context/api'
+import {Context} from 'context'
 import './index.scss'
+import Layout from 'pages/common/layout/new_layout'
 
 function exchangeReducer(state, action) {
   switch (action.type) {
@@ -22,17 +25,45 @@ function exchangeReducer(state, action) {
   }
 }
 
-export default function MoneyExchange() {
+export default function MoneyExchange(props) {
+  const context = useContext(Context)
   const [exchangeState, exchangeDispatch] = useReducer(exchangeReducer, {status: 0})
 
+  const [auth, setAuth] = useState(false)
+  useEffect(() => {
+    async function fetchSelfAuth() {
+      let myBirth
+      const baseYear = new Date().getFullYear() - 11
+      const myInfoRes = await Api.mypage()
+      if (myInfoRes.result === 'success') {
+        myBirth = myInfoRes.data.birth.slice(0, 4)
+      }
+      if (myBirth > baseYear) {
+        setAuth(false)
+        context.action.alert({
+          msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`,
+          callback: () => props.history.push('/'),
+          cancleCallback: () => props.history.push('/')
+        })
+      } else {
+        setAuth(true)
+      }
+    }
+    fetchSelfAuth()
+  }, [])
+
   return (
-    <div className="exchange-modal">
-      <div className="exchangeWrap">
-        {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
-        {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
-      </div>
+    <>
+      {auth && (
+        <div className="exchange-modal">
+          <div className="exchangeWrap">
+            {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
+            {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
+          </div>
+        </div>
+      )}
       <Message />
-    </div>
+    </>
   )
 }
 
