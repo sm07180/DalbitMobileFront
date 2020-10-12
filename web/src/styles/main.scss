@@ -1610,9 +1610,27 @@
       }
     }
     .searchList {
+      .gender-icon {
+        margin-right: 4px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+
+        &.male {
+          background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+        }
+
+        &.female {
+          background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+        }
+      }
+
       text-align: left;
       padding: 0 16px 16px 16px;
       box-sizing: border-box;
+
       .search {
         margin-top: -10px;
       }
