@@ -6,7 +6,7 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
-  console.log('1' + sessionStorage.getItem('listening'))
+  // console.log('1' + sessionStorage.getItem('listening'))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {
@@ -31,15 +31,15 @@ export const clipJoin = (data, context, webview) => {
       if (Utility.getCookie('clip-player-info')) {
         prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
         prevClipNo = prevClipNo.clipNo
-        console.log(prevClipNo, data.clipNo)
+        // console.log(prevClipNo, data.clipNo)
         if (prevClipNo === data.clipNo) {
-          console.log('같은곡')
+          // console.log('같은곡')
           sessionStorage.setItem('listening', 'N')
         } else {
-          console.log('틀린곡')
+          // console.log('틀린곡')
           sessionStorage.setItem('listening', 'Y')
         }
-        console.log('2' + sessionStorage.getItem('listening'))
+        // console.log('2' + sessionStorage.getItem('listening'))
       }
 
       return Hybrid('ClipPlayerJoin', data)
