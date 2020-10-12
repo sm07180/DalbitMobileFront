@@ -1,0 +1,129 @@
+import React, {useState, useContext, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
+
+// context
+import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
+import styled from 'styled-components'
+
+import Header from 'components/ui/new_header.js'
+import arrowIconDown from './static/ico_arrow_down.svg'
+import arrowIconUp from './static/ico_arrow_down.svg'
+const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
+
+export default () => {
+  let history = useHistory()
+  const context = useContext(Context)
+  const [noticeView, setNoticeView] = useState(false)
+
+  const buttonToogle = () => {
+    if (noticeView === false) {
+      setNoticeView(true)
+    } else {
+      setNoticeView(false)
+    }
+  }
+  return (
+    <Content>
+      <div id="clipEvent">
+        <Header type="noBack">
+          <h2 className="header-title">클립 40% 추가 선물 이벤트</h2>
+          <button
+            className="btnClose"
+            onClick={() => {
+              history.goBack()
+            }}>
+            <img src={btnClose} alt="닫기" />
+          </button>
+        </Header>
+        <div className="event-content">
+          <img src="https://image.dalbitlive.com/event/attend/200811/img_top@2x.png" alt="클립 40% 추가 선물 이벤트" />
+        </div>
+        <div className="event-notice">
+          <p className={`title ${noticeView === true ? 'active' : ''}`} onClick={buttonToogle}>
+            이벤트 상세 설명 {noticeView === true ? '닫기' : '보기'}
+          </p>
+
+          <ul className={`notice-list ${noticeView === true ? 'active' : ''}`}>
+            <li>
+              선물시 40%의 달이 추가 선물(지급)됩니다. <br />
+              예) 골드바(10달) 선물시 40%(4달)을 포함한 총 14달이 선물 됩니다.{' '}
+            </li>
+            <li>
+              추가 선물은 소수점 이하는 지급되지 않습니다.
+              <br />
+              예) 도넛(13달) 선물 시 40%(5.2달)에서 0.2달이 제외된 18달(13달+5달)이 선물 됩니다.
+            </li>
+            <li>본 이벤트는 별도의 공지없이 마감 및 추가 지급 비율이 변동될 수 있습니다.</li>
+          </ul>
+        </div>
+      </div>
+    </Content>
+  )
+}
+const Content = styled.div`
+  #clipEvent {
+    width: 100%;
+    background: #009ea4;
+    color: #fff;
+    .event-content {
+      img {
+        width: 100%;
+      }
+    }
+    .btnClose {
+      position: absolute;
+      right: 16px;
+    }
+    .event-notice {
+      padding: 32px 36px;
+      font-size: 14px;
+      .title {
+        min-width: 288px;
+        max-width: 80%;
+        margin: 0 auto;
+        height: 34px;
+        border: 1px solid #fff;
+        border-radius: 12px;
+        font-size: 12px;
+        line-height: 34px;
+        text-align: center;
+        &::after {
+          position: relative;
+          top: -1px;
+          display: inline-block;
+          content: '';
+          vertical-align: middle;
+          width: 0;
+          height: 0;
+          margin-left: 5px;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid #fff;
+          border-radius: 2px;
+        }
+        &.active {
+          &::after {
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-bottom: 8px solid #fff;
+            border-top: 0;
+          }
+        }
+      }
+      .notice-list {
+        display: none;
+        padding: 30px 0;
+        &.active {
+          display: block;
+        }
+        li {
+          margin-top: 30px;
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+`
