@@ -25,7 +25,7 @@ import NoResult from 'components/ui/new_noResult'
 //constant
 import {DATE_TYPE, RANK_TYPE} from './constant'
 
-import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 import './index.scss'
 import level from 'pages/level'
 

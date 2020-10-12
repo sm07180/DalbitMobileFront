@@ -41,11 +41,11 @@ import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
-import arrowRefreshIcon from './static/ic_arrow_refresh.svg'
 import CrownIcon from './static/ic_crown.png'
 import LiveIcon from './static/ic_newlive.png'
 //import CrownLottie from './static/crown_lottie.json'
 //import LiveLottie from './static/live_lottie.json'
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 import 'styles/main.scss'
 
@@ -277,7 +277,7 @@ export default (props) => {
       }
 
       //const concatenated = currentList.concat(list)
-      const concatenated = Utility.contactRemoveUnique(currentList, list, "roomNo")
+      const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
       setLiveList(concatenated)
     }
   }
