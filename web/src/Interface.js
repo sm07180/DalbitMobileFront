@@ -4,7 +4,7 @@
  * @notice
  * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail:{info:'someDate'}}))
  */
-import React, {useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 //context
@@ -45,6 +45,18 @@ export default () => {
           msg: message
         })
       }
+    }
+  }
+
+  const [authState, setAuthState] = useState(false)
+
+  //auth 상태체크
+  const checkSelfAuth = async () => {
+    const selfAuth = await Api.self_auth_check({})
+    if (selfAuth.result === 'fail') {
+      setAuthState(false)
+    } else {
+      setAuthState(true)
     }
   }
 
@@ -400,8 +412,10 @@ export default () => {
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         context.action.updatePlayer(false)
+        sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
+        sessionStorage.removeItem('clip_active')
         settingSessionInfo('ended')
         break
 
@@ -414,6 +428,7 @@ export default () => {
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
+        if (!authState) return (window.location.href = '/selfauth?type=create')
         if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
           if (Utility.getCookie('clip-player-info')) {
             context.action.confirm({
@@ -441,6 +456,7 @@ export default () => {
         break
       case 'native-clip-record': //-----------------------네이티브 딤 메뉴에서 클립 녹음 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
+        if (!authState) return (window.location.href = '/selfauth?type=create')
         if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
           if (Utility.getCookie('clip-player-info')) {
             context.action.confirm({
@@ -791,7 +807,12 @@ export default () => {
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
+  }, [context.token, authState])
+
+  useEffect(() => {
+    checkSelfAuth()
   }, [context.token])
+
   useEffect(() => {
     document.addEventListener('native-back-click', update)
     return () => {
