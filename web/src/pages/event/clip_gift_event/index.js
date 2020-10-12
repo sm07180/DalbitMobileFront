@@ -37,7 +37,7 @@ export default () => {
           </button>
         </Header>
         <div className="event-content">
-          <img src="https://image.dalbitlive.com/event/attend/200811/img_top@2x.png" alt="클립 40% 추가 선물 이벤트" />
+          <img src="https://image.dalbitlive.com/event/clip/event/event_gift_201012.png" alt="클립 40% 추가 선물 이벤트" />
         </div>
         <div className="event-notice">
           <p className={`title ${noticeView === true ? 'active' : ''}`} onClick={buttonToogle}>
@@ -46,11 +46,11 @@ export default () => {
 
           <ul className={`notice-list ${noticeView === true ? 'active' : ''}`}>
             <li>
-              선물시 40%의 달이 추가 선물(지급)됩니다. <br />
+              <strong>선물시 40%의 달이 추가 선물(지급)</strong>됩니다. <br />
               예) 골드바(10달) 선물시 40%(4달)을 포함한 총 14달이 선물 됩니다.{' '}
             </li>
             <li>
-              추가 선물은 소수점 이하는 지급되지 않습니다.
+              추가 선물은 소수점 이하는 <strong>지급되지 않습니다.</strong>
               <br />
               예) 도넛(13달) 선물 시 40%(5.2달)에서 0.2달이 제외된 18달(13달+5달)이 선물 됩니다.
             </li>
@@ -76,11 +76,9 @@ const Content = styled.div`
       right: 16px;
     }
     .event-notice {
-      padding: 32px 36px;
+      padding: 10px 10% 32px;
       font-size: 14px;
       .title {
-        min-width: 288px;
-        max-width: 80%;
         margin: 0 auto;
         height: 34px;
         border: 1px solid #fff;
@@ -118,9 +116,20 @@ const Content = styled.div`
           display: block;
         }
         li {
+          position: relative;
           margin-top: 30px;
           &:first-child {
             margin-top: 0;
+          }
+          &::before {
+            position: absolute;
+            top: 7px;
+            left: -18px;
+            display: inline-block;
+            content: '';
+            width: 10px;
+            height: 3px;
+            background: #fbfb3a;
           }
         }
       }
