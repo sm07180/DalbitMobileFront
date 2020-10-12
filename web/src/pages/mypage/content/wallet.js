@@ -142,25 +142,25 @@ export default (props) => {
 
   const checkSelfAuth = async () => {
     //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
-    // let myBirth
-    // const baseYear = new Date().getFullYear() - 11
-    // const myInfoRes = await Api.mypage()
-    // if (myInfoRes.result === 'success') {
-    //   myBirth = myInfoRes.data.birth.slice(0, 4)
-    // }
-
-    // if (myBirth > baseYear) {
-    //   return context.action.alert({
-    //     msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-    //   })
-    // }
+    let myBirth
+    const baseYear = new Date().getFullYear() - 11
+    const myInfoRes = await Api.mypage()
+    if (myInfoRes.result === 'success') {
+      myBirth = myInfoRes.data.birth.slice(0, 4)
+    }
 
     async function fetchSelfAuth() {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
         const {parentsAgreeYn, adultYn} = res.data
         if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
-        history.push('/money_exchange')
+        if (myBirth > baseYear) {
+          return context.action.alert({
+            msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+          })
+        } else {
+          history.push('/money_exchange')
+        }
       } else if (res.result === 'fail' && res.code === '0') {
         history.push('/selfauth')
       } else {
