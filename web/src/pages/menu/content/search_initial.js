@@ -51,7 +51,7 @@ const makeContents = (props) => {
             <div className="icon-wrap">
               <img className="type-icon" src={audioIcon} />
               <div className="type-text">{broadcastLive[roomType]}</div>
-              {bjGender !== 'n' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
+              {bjGender !== '' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
               {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
             </div>
             <div className="title">{title}</div>
