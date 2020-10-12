@@ -865,10 +865,6 @@
       margin-top: 0;
     }
 
-    .txt_boost {
-      color: $red;
-    }
-
     .new-dj-icon {
       color: $white;
       font-size: 12px;
@@ -1074,28 +1070,33 @@
           span {
             color: $greishBrown;
             font-size: 12px;
+
+            &.txt_boost {
+              color: $red;
+            }
           }
 
           i {
-            flex-basis: 16px;
             width: 16px;
             height: 16px;
             margin-right: 4px;
             display: inline-block;
             background-position: center;
             opacity: 0.8;
+            text-indent: -9999px;
           }
 
           &--people {
             background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
           }
-
           &--hit {
             background-image: url(https://image.dalbitlive.com/svg/ico_hit_g.svg);
           }
-
           &--like {
             background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+          }
+          &--boost {
+            background-image: url(https://image.dalbitlive.com/svg/ico_like_g.svg);
           }
         }
       }

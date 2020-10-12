@@ -48,6 +48,12 @@
     padding: 0 16px;
   }
 
+  .guideIconBox {
+    position: absolute;
+    top: 5px;
+    right: 16px;
+  }
+
   .renewalBox {
     display: flex;
     align-items: center;
@@ -103,6 +109,12 @@
   .rankTop3Box {
     padding: 0 16px;
     background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+  }
+
+  .likeTopBox {
+    position: relative;
+    padding: 0 16px 16px 16px;
+    background-color: $primary;
   }
 
   .rankTopBox {
@@ -176,6 +188,7 @@
   }
 
   .todayList {
+    position: relative;
     height: 36px;
     border-bottom: 1px solid $lighterGray;
     text-align: center;
@@ -291,6 +304,10 @@
 
         .infoBox {
           width: 94%;
+
+          .likeDetailWrap {
+            width: 100%;
+          }
         }
       }
 
@@ -594,6 +611,41 @@
       letter-spacing: -0.3px;
       color: #424242;
 
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
+
       img {
         opacity: 0.8;
       }
@@ -619,20 +671,46 @@
     &__block {
       display: flex;
       margin-bottom: 2px;
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
     }
   }
 
   .fanGoodBox {
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    height: 22px;
-    padding: 0px 7px;
-    background-color: #ec455f;
-    border-radius: 14px;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
+    color: #ec455f;
+    font-size: 14px;
 
     & img {
       width: 22px;
@@ -672,6 +750,23 @@
         text-align: center;
         font-weight: 300;
       }
+
+      .gender-icon {
+        margin-right: 4px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+
+        &.male {
+          background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+        }
+
+        &.female {
+          background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+        }
+      }
     }
 
     .genderBox {
@@ -683,20 +778,6 @@
       &.korea-m {
         margin-left: 2px;
         border: 1px solid;
-      }
-
-      &.gender-m {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-male@2x.png);
-        margin-left: 2px;
-      }
-
-      &.gender-f {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-female@2x.png);
-        margin-left: 2px;
       }
     }
   }
@@ -778,6 +859,10 @@
       border-radius: 20px;
       margin-top: -20px;
       box-sizing: border-box;
+
+      &.likeList {
+        margin-top: 0;
+      }
     }
 
     .TopBox {
@@ -1179,10 +1264,27 @@
 
     .textBox {
       width: calc(100% - 150px);
+
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
     }
-    .test {
-      width: calc(100% - 168px);
-    }
+
     .nickNameBox {
       width: 100%;
       margin-top: 4px;
@@ -1254,7 +1356,7 @@
           content: '';
           width: 16px;
           height: 16px;
-          background: url('./static/like_g_s.svg') no-repeat 0 0;
+          background: url('https://image.dalbitlive.com/svg/ico_like_g_s.svg') no-repeat 0 0;
         }
       }
     }
@@ -1264,6 +1366,41 @@
       margin-top: 4px;
       padding-left: 5px;
       font-size: 12px;
+
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center center;
+        background-repeat: no-repeat;
+        opacity: 0.8;
+        text-indent: -9999px;
+        vertical-align: middle;
+
+        &--point {
+          background-image: url(https://image.dalbitlive.com/svg/.svg);
+        }
+
+        &--people {
+          background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+        }
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+
+        &--time {
+          background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+        }
+
+        &--star {
+          background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+        }
+        &--fan {
+          background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+        }
+      }
       & > span {
         margin-right: 6px;
         font-size: 12px;
@@ -1378,14 +1515,14 @@
     overflow: hidden;
     position: relative;
     margin-bottom: 12px;
-    padding: 18px 0;
+    padding: 16px 0;
     border-radius: 16px;
     border: solid 2px #febd56;
 
     &__top {
       color: #fff;
       font-size: 22px;
-      letter-spacing: -0.55px;
+      letter-spacing: -1px;
       font-weight: 700;
       line-height: 22px;
       text-align: center;
@@ -1433,6 +1570,127 @@
       font-size: 14px;
       text-align: center;
       border-radius: 16px;
+    }
+  }
+
+  .likeDetailWrap {
+    width: calc(100% - 110px);
+    .likeListDetail {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      .nickNameBox {
+        margin-top: 0;
+        margin-bottom: 0;
+        width: calc(100% - 80px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+      }
+    }
+
+    .fanGoodBox {
+      color: #ec455f;
+      font-size: 14px;
+      width: 60px;
+
+      & img {
+        width: 22px;
+        height: 22px;
+      }
+
+      & span {
+        line-height: 24px;
+        letter-spacing: -0.4px;
+      }
+    }
+
+    .nickNameBox {
+      padding-left: 5px;
+      font-size: 14px;
+    }
+
+    .genderBox {
+      display: inline-flex;
+      padding-left: 5px;
+      background-size: 100%;
+      vertical-align: middle;
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+    }
+
+    .bestFanBox {
+      display: flex;
+      height: 18px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #632beb;
+      align-items: center;
+      &__label {
+        margin-right: 4px;
+        padding: 0 8px;
+        height: 16px;
+        color: #757575;
+        background-color: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      &__nickname {
+        max-width: 45%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+        cursor: pointer;
+      }
+      &__icon {
+        color: #424242;
+        word-spacing: -5px;
+      }
+    }
+
+    .countBox {
+      height: 18px;
+      margin-top: 4px;
+      padding-left: 5px;
+      font-size: 12px;
+      & > span {
+        margin-right: 6px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        word-spacing: -3px;
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .liveBox {
+      top: 12px;
+      right: 12px;
     }
   }
 }

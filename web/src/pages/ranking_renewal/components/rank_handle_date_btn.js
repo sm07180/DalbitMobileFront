@@ -54,7 +54,13 @@ function RankHandleDateBtn({fetching}) {
     let cm = formState.currentDate.getMonth() + 1
     let cd = formState.currentDate.getDate()
     if (formState.dateType === 1) {
-      const cDt = new Date('2020-07-01')
+      const cDt = (() => {
+        if (formState.rankType === RANK_TYPE.LIKE) {
+          return new Date('2020-10-08')
+        } else {
+          return new Date('2020-07-01')
+        }
+      })()
 
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -66,7 +72,14 @@ function RankHandleDateBtn({fetching}) {
         return true
       }
     } else if (formState.dateType === 2) {
-      const cDt = new Date('2020-07-06')
+      const cDt = (() => {
+        if (formState.rankType === RANK_TYPE.LIKE) {
+          return new Date('2020-10-05')
+        } else {
+          return new Date('2020-07-06')
+        }
+      })()
+
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
       let yd = cDt.getDate()

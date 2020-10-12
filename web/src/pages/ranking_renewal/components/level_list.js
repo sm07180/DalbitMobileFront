@@ -73,10 +73,10 @@ function LevelList({empty}) {
                     <div className="nickNameBox">{nickNm}</div>
                     <div className="countBox">
                       <span>
-                        <img src={fanIcon} /> {fanCnt}
+                        <i className="icon icon--fan">F 회색 아이콘</i> {fanCnt}
                       </span>
                       <span>
-                        <img src={people} /> {listenerCnt}
+                        <i className="icon icon--people">회색 사람 아이콘</i> {listenerCnt}
                       </span>
                     </div>
                     <div className="bestFanBox">
