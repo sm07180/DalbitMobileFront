@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 // context
@@ -16,9 +16,16 @@ export default () => {
   const context = useContext(Context)
   const [noticeView, setNoticeView] = useState(false)
 
+  const noticeList = useRef()
+
   const buttonToogle = () => {
     if (noticeView === false) {
       setNoticeView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo(0, noticeListHeight)
+      }, 100)
     } else {
       setNoticeView(false)
     }
@@ -44,7 +51,7 @@ export default () => {
             이벤트 상세 설명 {noticeView === true ? '닫기' : '보기'}
           </p>
 
-          <ul className={`notice-list ${noticeView === true ? 'active' : ''}`}>
+          <ul ref={noticeList} className={`notice-list ${noticeView === true ? 'active' : ''}`}>
             <li>
               <strong>선물시 40%의 달이 추가 선물(지급)</strong>됩니다. <br />
               예) 골드바(10달) 선물시 40%(4달)을 포함한 총 14달이 선물 됩니다.{' '}
@@ -64,6 +71,7 @@ export default () => {
 const Content = styled.div`
   #clipEvent {
     width: 100%;
+    min-height: 100vh;
     background: #009ea4;
     color: #fff;
     .event-content {
