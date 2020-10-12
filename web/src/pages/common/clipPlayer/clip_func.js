@@ -26,6 +26,7 @@ export const clipJoin = (data, context, webview) => {
       if (sessionStorage.getItem('listening') === 'Y') {
         return context.action.alert({msg: '클립 접속 중입니다.'})
       }
+      sessionStorage.setItem('listening', 'Y')
       let prevClipNo
       if (Utility.getCookie('clip-player-info')) {
         prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
