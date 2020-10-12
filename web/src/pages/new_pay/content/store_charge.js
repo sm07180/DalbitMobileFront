@@ -19,6 +19,7 @@ import {COLOR_MAIN} from 'context/color'
 //components
 import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/noResult'
+import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 
 export default () => {
   //---------------------------------------------------------------------
@@ -35,6 +36,7 @@ export default () => {
   const [listState, setListState] = useState(-1)
   const [showAdmin, setShowAdmin] = useState(false)
   const [mydal, setMydal] = useState('0')
+  const [popupData, setPopupData] = useState([])
 
   //---------------------------------------------------------------------
   const fetchAdmin = async () => {
@@ -62,6 +64,34 @@ export default () => {
     }
   }
 
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    const {result, data, message} = res
+    if (result === 'success') {
+      if (data) {
+        setPopupData(
+          data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    } else {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }
   //---------------------------------------------------------------------
   //map
   const creatList = () => {
@@ -137,6 +167,7 @@ export default () => {
   useEffect(() => {
     fetchAdmin()
     getStoreList()
+    fetchMainPopupData('12')
   }, [])
 
   return (
@@ -147,6 +178,7 @@ export default () => {
           보유 달 <span>{mydal.toLocaleString()}</span>
         </p>
         {creatResult()}
+        {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
   )
