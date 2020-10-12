@@ -3,15 +3,15 @@
   //서치 컨트롤러
   .controllerWrap {
     padding: 12px 0;
-    background: #eee;
+    background: $lighterGray;
   }
   .controller {
     width: 320px;
     height: 44px;
     margin: 0 auto;
-    background-color: #fff;
+    background-color: $white;
     border-radius: 12px;
-    border: solid 1px #000;
+    border: solid 1px $black;
     > form {
       display: flex;
       justify-content: space-between;
@@ -23,8 +23,7 @@
       font-weight: 800;
       letter-spacing: normal;
       text-align: left;
-      color: #000;
-
+      color: $black;
       &::placeholder {
         font-size: 14px;
         font-weight: 600;
@@ -40,12 +39,12 @@
   }
   //서치 이니셜 추천
   .recomendWrap {
-    background-color: #fff;
+    background-color: $white;
     .initialTab {
       display: flex;
       width: 100%;
       height: 40px;
-      background-color: #fff;
+      background-color: $white;
       > button {
         width: 50%;
         text-align: center;
@@ -53,15 +52,15 @@
         font-weight: 600;
         letter-spacing: -0.4px;
         text-align: center;
-        color: #000;
-        border-bottom: 1px solid #e0e0e0;
+        color: $black;
+        border-bottom: 1px solid $lightGray;
         &.activeTab {
           font-size: 16px;
           font-weight: 800;
           letter-spacing: -0.4px;
           text-align: center;
-          color: #632beb;
-          border-bottom: 1px solid #632beb;
+          color: $primary;
+          border-bottom: 1px solid $primary;
         }
       }
     }
@@ -73,9 +72,6 @@
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      // &:nth-of-type(2n) {
-      //   margin-left: 8px;
-      // }
       .simpleContainer {
         position: relative;
         width: calc(50% - 4px);
@@ -102,7 +98,7 @@
             font-weight: 600;
             letter-spacing: -0.28px;
             text-align: left;
-            color: #ffffff;
+            color: $white;
             &:before {
               content: '';
               display: block;
@@ -129,7 +125,7 @@
           font-weight: normal;
           letter-spacing: normal;
           text-align: left;
-          color: #ffffff;
+          color: $white;
           z-index: 2;
         }
       }
@@ -147,27 +143,27 @@
   }
   //필터
   .filterWrap {
-    background-color: #eee;
+    background-color: $lighterGray;
     padding: 12px 16px;
     display: flex;
     > button {
       display: block;
       padding: 8px;
-      background-color: #fff;
+      background-color: $white;
       border-radius: 12px;
-      border: solid 1px #e0e0e0;
+      border: solid 1px $lightGray;
       margin-right: 7px;
       font-size: 14px;
       font-weight: 600;
       text-align: center;
-      color: #000;
+      color: $black;
       &:last-child {
         margin-right: 0;
       }
     }
     .activeFiter {
-      background-color: #632beb;
-      color: #fff;
+      background-color: $primary;
+      color: $white;
     }
   }
   .searchCategory {
@@ -179,13 +175,13 @@
       font-weight: 600;
       letter-spacing: -0.4px;
       text-align: center;
-      color: #000000;
-      background-color: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      color: $black;
+      background-color: $white;
+      border-bottom: 1px solid $lightGray;
     }
     .activeFiter {
-      border-bottom: 1px solid #632beb;
-      color: #632beb;
+      border-bottom: 1px solid $primary;
+      color: $primary;
     }
   }
   .chartListDetail {
@@ -215,7 +211,6 @@
           text-indent: -99999px;
           background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
         }
-
         img {
           width: 100%;
           border-radius: 12px;
@@ -236,16 +231,13 @@
           font-weight: bold;
         }
       }
-
       .textBox {
         width: calc(100% - 90px);
-
         &__iconBox {
           display: inline-block;
           width: 60px;
           height: 30px;
           border: solid 1px;
-
           &--type {
             font-style: normal;
             font-size: 14px;
@@ -254,7 +246,6 @@
             letter-spacing: -0.5px;
           }
         }
-
         &__subject {
           display: flex;
           align-items: center;
@@ -287,7 +278,6 @@
           color: $darkGray;
           line-height: 1.3;
           letter-spacing: -0.5px;
-
           .maleIcon,
           .femaleIcon {
             display: inline-block;
@@ -305,25 +295,21 @@
             border-radius: 10px;
           }
         }
-
         &__subject {
           display: flex;
           align-items: center;
           font-size: 14px;
           font-weight: 700;
         }
-
         i.line {
           flex-basis: 1px;
           height: 10px;
           background: $mediumGray;
           margin: 0px 6px;
         }
-
         &__nickName {
           font-size: 12px;
         }
-
         &__detail {
           margin-top: 3px;
           font-size: 12px;
@@ -335,7 +321,6 @@
             letter-spacing: -0.5px;
             margin-right: 8px;
             font-weight: 400;
-
             img {
               display: inline-block;
               margin-right: 2px;
@@ -354,24 +339,22 @@
       font-size: 16px;
       font-weight: 800;
       text-align: left;
-      color: #000;
+      color: $black;
       > img {
         display: block;
         margin-left: 8px;
       }
       &__count {
         margin-left: 8px;
-        color: #632beb;
+        color: $primary;
       }
     }
-
     &__member,
     &__live,
     &__clip {
-      background-color: #fff;
+      background-color: $white;
       padding: 16px 0 14px 16px;
-
-      border-bottom: 5px solid #eee;
+      border-bottom: 5px solid $lighterGray;
       .memberItem {
         position: relative;
         margin-top: 14px;
@@ -401,7 +384,7 @@
             display: flex;
             align-items: center;
             font-size: 12px;
-            color: #424242;
+            color: $greishBrown;
           }
           &__iconBox {
             display: flex;
@@ -415,7 +398,7 @@
       }
     }
     &__live {
-      background-color: #fff;
+      background-color: $white;
       padding: 16px 0 0 16px;
     }
   }
@@ -432,7 +415,7 @@
     font-weight: 800;
     letter-spacing: -0.25px;
     text-align: center;
-    color: #ec455f;
+    color: $red;
   }
   .clipBtnPlay {
     position: absolute;

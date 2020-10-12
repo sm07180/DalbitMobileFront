@@ -1,10 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
-import styled from 'styled-components'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
-
 import {Context} from 'context/index.js'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import Room, {RoomJoin} from 'context/room'
 import API from 'context/api'
 // component
@@ -16,6 +13,7 @@ import qs from 'query-string'
 import SearchIco from './static/ic_search.svg'
 //scss
 import './search.scss'
+
 // concat flag
 let currentPage = 1
 let timer
@@ -26,7 +24,7 @@ export default (props) => {
   const history = useHistory()
   const location = useLocation()
   const {search, state} = location
-
+  // initial query
   const searchText = search && search.split('?query=')[1]
   // state
   const [result, setResult] = useState('') //검색텍스트
@@ -48,7 +46,7 @@ export default (props) => {
     memtotal: 0,
     livetotal: 0,
     cliptotal: 0
-  }) //토탈 카운트
+  })
   //input focus
   const [focus, setFocus] = useState(false)
   const IputEl = useRef()
@@ -263,7 +261,6 @@ export default (props) => {
       }
     }, 10)
   }
-
   //initial url decode
   useEffect(() => {
     fetchDataClipType()

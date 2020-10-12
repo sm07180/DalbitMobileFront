@@ -15,26 +15,16 @@ import SpecialIcon from '../static/special.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import heartIcon from '../static/like_g_s.svg'
 import ClipPlayerIcon from '../static/clip_player.svg'
-const RecomendContent = [
-  {id: 0, tab: '이 방송 어때요?'},
-  {id: 1, tab: '이 클립 어때요?'}
-]
+
 export default (props) => {
   // ctx && path
   const context = useContext(Context)
   const history = useHistory()
   //props
   const {recoList, clipType, state, recoListClip} = props
-
   // state
   const [changeTab, useChangeTab] = useState(0)
-
-  const ChangeButton = (type) => {
-    props.setRecoTab(type)
-    useChangeTab(type)
-  }
-
-  // 플레이가공
+  // fetch clip play
   const fetchDataPlay = async (clipNum) => {
     const {result, data, message, code} = await API.postClipPlay({
       clipNo: clipNum
@@ -56,6 +46,12 @@ export default (props) => {
       }
     }
   }
+  // func
+  const ChangeButton = (type) => {
+    props.setRecoTab(type)
+    useChangeTab(type)
+  }
+  //-----------------------------------------------------------
   useEffect(() => {
     if (state && state.state === 'clip_search') {
       ChangeButton(1)
@@ -84,7 +80,7 @@ export default (props) => {
       <div className={changeTab === 0 ? 'simpleWrap' : 'chartListDetail'}>
         {recoList.length !== 0 && changeTab === 0
           ? recoList.map((item, idx) => {
-              const {bgImg, entryCnt, nickNm, isSpecial, roomNo, roomType, title, entryType} = item
+              const {bgImg, entryCnt, isSpecial, roomNo, title, entryType} = item
               return (
                 <div
                   className="simpleContainer"
@@ -147,3 +143,8 @@ export default (props) => {
     </div>
   )
 }
+// map
+const RecomendContent = [
+  {id: 0, tab: '이 방송 어때요?'},
+  {id: 1, tab: '이 클립 어때요?'}
+]

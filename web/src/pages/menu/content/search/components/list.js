@@ -18,11 +18,14 @@ import LiveIcon from '../static/live.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import ClipPlayerIcon from '../static/clip_player.svg'
 import ArrowIcon from '../static/arrow.svg'
+
 export default (props) => {
+  //props
   const {memberList, clipList, liveList, total, clipType, CategoryType} = props
   // ctx && path
   const context = useContext(Context)
   const history = useHistory()
+  // link & join & clip play
   const Link = (memNo) => {
     if (!context.token.isLogin) {
       history.push(`/login`)
@@ -37,7 +40,6 @@ export default (props) => {
       history.push(`/mypage/${memNo}`)
     }
   }
-  // 플레이가공
   const fetchDataPlay = async (clipNum) => {
     const {result, data, message, code} = await API.postClipPlay({
       clipNo: clipNum
