@@ -17,7 +17,7 @@ import noBgAudioIcon from '../static/audio_s.svg'
 import SimpleMessageIcon from '../static/message.svg'
 import SimpleMessageIconW from '../static/message_w.svg'
 // components
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 //flag
 let currentPage = 1
 let timer
@@ -134,11 +134,11 @@ export default (props) => {
 
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <img src={SimpleMessageIcon} width={16} />
+                <i className="icon icon--people">사람 아이콘</i>
                 {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
-                <img src={heartIcon} width={16} />
+                <i className="icon icon--like">회색 하트 아이콘</i>
                 {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
               </span>
               {/* <span className="textBox__detail--item">
@@ -172,6 +172,7 @@ export default (props) => {
     }, 10)
   }
   useEffect(() => {
+    setList([])
     fetchDataList()
   }, [context.clipMainSort, context.clipRefresh, clipTypeActive, context.clipMainDate])
 
@@ -187,7 +188,7 @@ export default (props) => {
     return (
       <div className="chartListDetail">
         <ul className={`chartListDetailBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
-          {list.length === 0 ? <NoResult text="등록 된 클립이" /> : makeList()}
+          {list.length > 0 ? makeList() : <NoResult height={600} />}
         </ul>
       </div>
     )
@@ -196,64 +197,64 @@ export default (props) => {
     return (
       <div className="chartListSimple">
         <ul className={`chartListSimpleBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
-          {list.length === 0 && <NoResult text="등록 된 클립이" />}
-          {list.map((SimpleListItem, idx) => {
-            const {
-              bgImg,
-              gender,
-              filePlayTime,
-              nickName,
-              playCnt,
-              title,
-              subjectType,
-              byeolCnt,
-              goodCnt,
-              isSpecial,
-              entryType,
-              clipNo,
-              replyCnt
-            } = SimpleListItem
-            return (
-              <li
-                className="chartListSimpleItem"
-                style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
-                key={`simpleList` + idx}
-                onClick={() => fetchDataPlay(clipNo)}>
-                <div className="topWrap">
-                  <div className="topWrap__status">
-                    <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
-                    {isSpecial && <span className="specialIcon">S</span>}
-                    {/* <span className="categoryIcon">
-                      {clipType.map((v, index) => {
-                        if (v.value === subjectType) {
-                          return <React.Fragment key={index + 'typeList'}>{v.cdNm}</React.Fragment>
-                        }
-                      })}
-                    </span> */}
-                    {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+          {list.length > 0 ? (
+            list.map((SimpleListItem, idx) => {
+              const {
+                bgImg,
+                gender,
+                filePlayTime,
+                nickName,
+                playCnt,
+                title,
+                subjectType,
+                byeolCnt,
+                goodCnt,
+                isSpecial,
+                entryType,
+                clipNo,
+                replyCnt
+              } = SimpleListItem
+              return (
+                <li
+                  className="chartListSimpleItem"
+                  style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
+                  key={`simpleList` + idx}
+                  onClick={() => fetchDataPlay(clipNo)}>
+                  <div className="topWrap">
+                    <div className="topWrap__status">
+                      <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
+                      {isSpecial && <span className="specialIcon">S</span>}
+                      {/* <span className="categoryIcon">
+            {clipType.map((v, index) => {
+              if (v.value === subjectType) {
+                return <React.Fragment key={index + 'typeList'}>{v.cdNm}</React.Fragment>
+              }
+            })}
+          </span> */}
+                      {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                    </div>
+                    <div className="topWrap__count">
+                      <i className="icon icon--lineMessage">흰색 라인 메세지 아이콘</i>
+                      <span className="topWrap__count--num">
+                        {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
+                      </span>
+                      <i className="icon icon--lineHeart">흰색 라인 하트 아이콘</i>
+                      <span className="topWrap__count--num">
+                        {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                      </span>
+                    </div>
                   </div>
-                  <div className="topWrap__count">
-                    <img className="topWrap__count--icon" src={SimpleMessageIconW} />
-                    <span className="topWrap__count--num">
-                      {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
-                    </span>
-                    <img className="topWrap__count--icon" src={SimpleLikeIcon} />
-                    <span className="topWrap__count--num">
-                      {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
-                    </span>
+                  <div className="bottomWrap">
+                    <p className="bottomWrap__nick">{nickName}</p>
+                    <p className="bottomWrap__title">{title}</p>
                   </div>
-                </div>
-                <div className="bottomWrap">
-                  {/* <i className="bottomWrap__typeIcon">
-                    <img src={noBgAudioIcon} alt="icon" />
-                  </i> */}
-                  <p className="bottomWrap__nick">{nickName}</p>
-                  <p className="bottomWrap__title">{title}</p>
-                </div>
-                <div className="dim"></div>
-              </li>
-            )
-          })}
+                  <div className="dim"></div>
+                </li>
+              )
+            })
+          ) : (
+            <NoResult height={600} />
+          )}
         </ul>
       </div>
     )

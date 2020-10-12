@@ -258,4 +258,51 @@ export default class Utility {
       return false
     }
   }
+
+  /**
+   * 배열 concat 시 유니키값 지정해여 제외
+   * @param original : 원 배열 (Array)
+   * @param newArray : concat할 배열 (Array)
+   * @param keyName : unique 키 네임 (String)
+   * @returns {Array}
+   */
+  static contactRemoveUnique = (original, newArray, keyName) => {
+    if(original === undefined || original === null || !Array.isArray(original) || original.length < 1){
+      return newArray
+    }else if(newArray === undefined || newArray === null || !Array.isArray(newArray) || newArray.length < 1){
+      return original
+    }else{
+      let retArray = original
+      let isContains = false
+      newArray.map((item1) => {
+        original.map((item2) => {
+          if(item1[keyName] == item2[keyName]){
+            isContains = true
+          }
+        })
+        if(isContains == false){
+          retArray.push(item1)
+        }
+      })
+      return retArray
+    }
+  }
+
+  /**
+   * 배열에서 키값 String(,)으로 반환
+   * @param array : 키값 찾을 배열 (Array)
+   * @param keyName : unique 키 네임 (String)
+   * @returns {string}
+   */
+  static getUniqueIds = (array, keyName) => {
+    if(array === undefined || array === null || !Array.isArray(array) || array.length < 1 || keyName === undefined || keyName === null || keyName === ''){
+      return ''
+    }else{
+      const ids = new Array();
+      array.map((item) => {
+        array.push(item[keyName])
+      })
+      return ids.join(',')
+    }
+  }
 }

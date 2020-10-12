@@ -52,7 +52,7 @@ import 'styles/main.scss'
 let concatenating = false
 let tempScrollEvent = null
 
-const records = 30
+const records = 50
 
 let touchStartY = null
 let touchEndY = null
@@ -256,6 +256,8 @@ export default (props) => {
   const concatLiveList = async () => {
     concatenating = true
 
+    const currentList = [...liveList]
+    console.debug()
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage,
@@ -274,8 +276,8 @@ export default (props) => {
         setTotalLivePage(totalPage)
       }
 
-      const currentList = [...liveList]
-      const concatenated = currentList.concat(list)
+      //const concatenated = currentList.concat(list)
+      const concatenated = Utility.contactRemoveUnique(currentList, list, "roomNo")
       setLiveList(concatenated)
     }
   }
