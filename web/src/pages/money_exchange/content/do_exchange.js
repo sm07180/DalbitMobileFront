@@ -7,11 +7,13 @@ import Api from 'context/api'
 
 import calcAge from 'components/lib/calc_age'
 import {Inspection} from './common_fn'
+import Utility from 'components/lib/utility'
+
 import MakeCalcContents from './subcontent/do_exchange_calc'
 import MakeRadioWrap from './subcontent/do_exchange_radio_wrap'
 import MakeFormWrap from './subcontent/do_exchange_form'
 import MakeRepplyWrap from './subcontent/do_exchange_repply'
-
+import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 import Header from 'components/ui/new_header'
 import Popup from 'pages/common/popup'
 
@@ -176,6 +178,7 @@ export default function DoExchange({state, dispatch}) {
 
   const [radioCheck, setRadioCheck] = useState(0)
   const [formData, formDispatch] = useReducer(FormDataReducer, formInit)
+  const [popupData, setPopupData] = useState([])
 
   const userProfile = context.profile || {}
 
@@ -300,6 +303,34 @@ export default function DoExchange({state, dispatch}) {
     }
   }
 
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    const {result, data, message} = res
+    if (result === 'success') {
+      if (data) {
+        setPopupData(
+          data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    } else {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
       context.action.alert({
@@ -346,6 +377,8 @@ export default function DoExchange({state, dispatch}) {
     }
 
     fetchData()
+
+    fetchMainPopupData('11')
 
     // context.action.alert({
     //   className: 'mobile',
@@ -432,6 +465,7 @@ export default function DoExchange({state, dispatch}) {
         {radioCheck === 1 && <MakeRepplyWrap state={exchangeHistory.value} inspection={checkInspection} />}
       </div>
       <Popup />
+      {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
     </div>
   )
 }
