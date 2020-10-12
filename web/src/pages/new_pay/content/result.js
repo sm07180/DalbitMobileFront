@@ -101,6 +101,7 @@ export default () => {
         try {
           fbq('track', 'Purchase')
           firebase.analytics().logEvent('Purchase')
+          kakaoPixel('114527450721661229').purchase();
         } catch (e) {}
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
@@ -114,6 +115,7 @@ export default () => {
         try {
           fbq('track', 'Purchase', {price: prdtPrice})
           firebase.analytics().logEvent('Purchase', {price: prdtPrice})
+          kakaoPixel('114527450721661229').purchase({total_price: prdtPrice,currency:'KRW'})
         } catch (e) {}
         makePayType()
         const payInfo = {

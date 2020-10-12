@@ -282,10 +282,11 @@ export const RoomJoin = async (obj) => {
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
       Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
-      //Facebook,Firebase 이벤트 호출
+      //TODO:Facebook,Firebase 이벤트 호출 추후 앱 배포 되면 삭
       try {
         fbq('track', 'RoomJoin')
         firebase.analytics().logEvent('RoomJoin')
+        kakaoPixel('114527450721661229').viewCart('RoomJoin')
       } catch (e) {}
       return true
     }
