@@ -141,18 +141,19 @@ export default (props) => {
   //스크롤 콘켓
 
   const checkSelfAuth = async () => {
-    let myBirth
-    const baseYear = new Date().getFullYear() - 11
-    const myInfoRes = await Api.mypage()
-    if (myInfoRes.result === 'success') {
-      myBirth = myInfoRes.data.birth.slice(0, 4)
-    }
+    //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
+    // let myBirth
+    // const baseYear = new Date().getFullYear() - 11
+    // const myInfoRes = await Api.mypage()
+    // if (myInfoRes.result === 'success') {
+    //   myBirth = myInfoRes.data.birth.slice(0, 4)
+    // }
 
-    if (myBirth > baseYear) {
-      return context.action.alert({
-        msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-      })
-    }
+    // if (myBirth > baseYear) {
+    //   return context.action.alert({
+    //     msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+    //   })
+    // }
 
     async function fetchSelfAuth() {
       const res = await Api.self_auth_check({})
