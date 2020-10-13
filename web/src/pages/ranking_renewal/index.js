@@ -96,7 +96,7 @@ function Ranking() {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         iconWrapRef.current.style.display = 'block'
         iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+        refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
       }
     },
     [reloadInit, formState]
