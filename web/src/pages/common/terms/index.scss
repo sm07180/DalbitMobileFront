@@ -83,6 +83,7 @@
     padding: 0px;
     font-size: 18px;
     font-weight: 700;
+    margin-bottom: 17px;
   }
   h3 {
     margin-top: 10px;
@@ -213,40 +214,101 @@
       content: counter(depth1) '.';
     }
 
+    .block {
+      display: block;
+      margin-top: 10px;
+    }
+
     &.no-space {
+      padding: 0px;
       li {
         margin-top: 0;
       }
     }
+
+    .lineBox {
+      margin-top: 15px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #eee;
+      display: inline-block;
+      line-height: 22px;
+      color: #616161;
+      font-size: 13px;
+
+      b {
+        display: block;
+        margin-bottom: 12px;
+      }
+    }
   }
   ol.depth2 {
+    padding-left: 10px;
     margin-top: 10px;
     list-style-type: hangul;
+
     & > li {
       margin-top: 10px;
       padding-left: 0;
       color: #616161;
     }
     li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
     }
   }
   ol.depth3 {
-    margin-left: -15px;
+    margin-top: 5px;
+    margin-left: -5px;
 
     li {
       color: #616161;
       text-align: left !important;
     }
     li:before {
-      left: 4px;
-      content: '-';
+      left: -8px;
     }
     &.depth-info {
       margin-left: 0;
     }
   }
-  .desc {
-    margin-top: 10px;
+}
+.depth-info {
+  b {
+    display: block;
+    margin-bottom: 7px;
+  }
+  p {
+    padding: 7px;
+    font-size: 14px;
+  }
+  display: block;
+  margin-top: 20px;
+  padding: 15px;
+  ul {
+    margin-top: 5px;
+    display: block;
+  }
+  li {
+    list-style: none;
+  }
+  ol.depth2-line {
+    & > li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
+      counter-increment: depth1;
+      position: absolute;
+      left: -8px;
+      content: '-';
+    }
+  }
+
+  ol.depth2-number {
+    li {
+      padding: 0px;
+    }
   }
 }
 
