@@ -6,6 +6,8 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 
 export const clipJoin = (data, context, webview) => {
+  // console.log('1' + sessionStorage.getItem('listening'))
+
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
@@ -21,6 +23,25 @@ export const clipJoin = (data, context, webview) => {
         }
       }
     } else {
+      if (sessionStorage.getItem('listening') === 'Y') {
+        return context.action.alert({msg: '클립 접속 중입니다.'})
+      }
+      sessionStorage.setItem('listening', 'Y')
+      let prevClipNo
+      if (Utility.getCookie('clip-player-info')) {
+        prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
+        prevClipNo = prevClipNo.clipNo
+        // console.log(prevClipNo, data.clipNo)
+        if (prevClipNo === data.clipNo) {
+          // console.log('같은곡')
+          sessionStorage.setItem('listening', 'N')
+        } else {
+          // console.log('틀린곡')
+          sessionStorage.setItem('listening', 'Y')
+        }
+        // console.log('2' + sessionStorage.getItem('listening'))
+      }
+
       return Hybrid('ClipPlayerJoin', data)
     }
   } else {

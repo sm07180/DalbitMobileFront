@@ -394,7 +394,6 @@ export default () => {
         break
 
       case 'clip-player-show': //------------------------클립플레이어 show
-        console.log('1' + sessionStorage.getItem('clip_active'))
         let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
@@ -404,7 +403,8 @@ export default () => {
         context.action.updatePlayer(true)
         sessionStorage.removeItem('clip_active')
         context.action.alert({visible: false})
-        console.log('2' + sessionStorage.getItem('clip_active'))
+        sessionStorage.setItem('listening', 'N')
+        console.log(sessionStorage.getItem('listening'))
         break
       case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)
