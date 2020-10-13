@@ -436,9 +436,6 @@ export default (props) => {
       setPayState(payInfo)
     }
 
-    playLottie(CrownLottie, document.getElementById("lottieCrown"))
-    playLottie(LiveLottie, document.getElementById("lottieLive"))
-
     return () => {
       sessionStorage.removeItem('pay_info')
       window.removeEventListener('popstate', popStateEvent)
@@ -707,8 +704,8 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                <span className="ico-lottie" id={"lottieCrown"} style={{"width": 40}}>
-                  {/*<img src={CrownIcon} alt="실시간랭킹" width={40} />*/}
+                <span className="ico-lottie">
+                  <img src={CrownIcon} alt="실시간랭킹" width={40} />
                 </span>
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
@@ -772,8 +769,8 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <span className="ico-lottie" id={"lottieLive"} style={{"width":24}}>
-                    {/*<img src={LiveIcon} alt="실시간라이브" width={24} />*/}
+                  <span className="ico-lottie">
+                    <img src={LiveIcon} alt="실시간라이브" width={24} />
                     {/* <Lottie
                       options={{
                         loop: true,
