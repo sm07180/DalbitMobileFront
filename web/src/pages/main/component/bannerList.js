@@ -133,11 +133,17 @@ export default React.forwardRef((props, ref) => {
       {list && list.length > 0 && (
         <div ref={ref} className="bannerWrap">
           <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
-            <div className="bannerNumber"></div>
-            <button
-              className={`moreButton moreButtonT ${bannerView === true ? 'active' : ''}`}
-              onClick={() => buttonToogle()}></button>
-            <Swiper {...params}>{createSliderList()}</Swiper>
+            {list.length > 1 ? (
+              <>
+                <div className="bannerNumber"></div>
+                <button
+                  className={`moreButton moreButtonT ${bannerView === true ? 'active' : ''}`}
+                  onClick={() => buttonToogle()}></button>
+                <Swiper {...params}>{createSliderList()}</Swiper>
+              </>
+            ) : (
+              <>{createSliderList()}</>
+            )}
           </div>
           <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
         </div>
