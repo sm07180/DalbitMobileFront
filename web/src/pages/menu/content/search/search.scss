@@ -14,7 +14,6 @@
     border: solid 1px $black;
     > form {
       display: flex;
-      justify-content: space-between;
       align-items: center;
     }
     &__submitInput {
@@ -35,7 +34,7 @@
     &__submitBtn {
       width: 40px;
       height: 40px;
-      margin-right: 6px;
+      margin-left: auto;
     }
   }
   //서치 이니셜 추천
