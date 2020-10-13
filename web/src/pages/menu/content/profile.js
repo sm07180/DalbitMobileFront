@@ -131,6 +131,11 @@ export default (props) => {
     async function fetchSelfAuth() {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
+        if (res.data.company === '기타') {
+          return context.action.alert({
+            msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
+          })
+        }
         const {parentsAgreeYn, adultYn} = res.data
         if (parentsAgreeYn === 'n' && adultYn === 'n') return props.history.push('/selfauth_result')
         if (myBirth > baseYear) {

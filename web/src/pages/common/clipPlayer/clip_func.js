@@ -24,7 +24,7 @@ export const clipJoin = (data, context, webview) => {
       }
     } else {
       if (sessionStorage.getItem('listening') === 'Y') {
-        return context.action.alert({msg: '클립 접속 중입니다.'})
+        return context.action.alert({msg: '클립 재생 중 입니다.'})
       }
       sessionStorage.setItem('listening', 'Y')
       let prevClipNo

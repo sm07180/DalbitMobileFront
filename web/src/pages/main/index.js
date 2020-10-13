@@ -475,7 +475,7 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         if (heightDiff <= heightDiffFixed) {
           iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
         }
       }
     },
@@ -517,7 +517,7 @@ export default (props) => {
             if (Math.abs(current_angle) === 360) {
               current_angle = 0
             }
-            current_angle -= 10
+            current_angle += 10
             refreshIconNode.style.transform = `rotate(${current_angle}deg)`
           }, 17)
 

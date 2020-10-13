@@ -46,7 +46,17 @@ export default function MoneyExchange(props) {
           cancleCallback: () => props.history.push('/')
         })
       } else {
-        setAuth(true)
+        const res = await Api.self_auth_check({})
+        if (res.data.company === '기타') {
+          setAuth(false)
+          context.action.alert({
+            msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`,
+            callback: () => props.history.push('/'),
+            cancleCallback: () => props.history.push('/')
+          })
+        } else {
+          setAuth(true)
+        }
       }
     }
     fetchSelfAuth()
