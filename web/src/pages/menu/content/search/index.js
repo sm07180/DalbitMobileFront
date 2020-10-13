@@ -299,7 +299,7 @@ export default (props) => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [nextList])
+  }, [nextList, nextClip, nextLive])
   useEffect(() => {
     currentPage = 1
     if (result.length > 1) {
