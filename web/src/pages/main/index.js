@@ -223,8 +223,8 @@ export default (props) => {
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
       if (paging) {
-        const {totalPage, next} = paging
-        setLivePage(next)
+        const {totalPage, page} = paging
+        setLivePage(page)
         setTotalLivePage(totalPage)
       }
       setLiveList(list)
@@ -245,8 +245,8 @@ export default (props) => {
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
       if (paging) {
-        const {totalPage, next} = paging
-        setLivePage(next)
+        const {totalPage, page} = paging
+        setLivePage(page)
         setTotalLivePage(totalPage)
       }
       setLiveList(list)
@@ -260,7 +260,7 @@ export default (props) => {
     console.debug()
     const broadcastList = await Api.broad_list({
       params: {
-        page: livePage,
+        page: livePage + 1,
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -271,14 +271,16 @@ export default (props) => {
     if (broadcastList.result === 'success') {
       const {list, paging} = broadcastList.data
       if (paging) {
-        const {totalPage, next} = paging
-        setLivePage(next)
+        const {totalPage, page} = paging
+        setLivePage(page)
         setTotalLivePage(totalPage)
       }
 
-      //const concatenated = currentList.concat(list)
-      const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
-      setLiveList(concatenated)
+      if(list !== undefined && list !== null && Array.isArray(list) && list.length > 0){
+        //const concatenated = currentList.concat(list)
+        const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
+        setLiveList(concatenated)
+      }
     }
   }
 
