@@ -235,6 +235,11 @@ export default (props) => {
       setFocus(false)
     }
   }
+  const changeFilter = (id) => {
+    // setFilterType(id)
+    setCategoryType(id)
+    setFocus(false)
+  }
 
   //콘켓 쇼모어 이벤트
   const showMoreList = () => {
@@ -302,11 +307,7 @@ export default (props) => {
     }
   }, [CategoryType])
   //render ----------------------------------------------------
-  const dd = (id) => {
-    // setFilterType(id)
-    setCategoryType(id)
-    setFocus(false)
-  }
+
   return (
     <div id="search">
       {/* 서치 헤더 */}
@@ -361,7 +362,7 @@ export default (props) => {
                 return (
                   <button
                     key={`${idx}+categoryTab`}
-                    onClick={() => dd(item.id)}
+                    onClick={() => changeFilter(item.id)}
                     className={CategoryType === item.id ? 'activeFiter' : ''}>
                     {item.tab}
                   </button>
