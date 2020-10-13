@@ -15,6 +15,7 @@ import ChartList from './components/chart_list'
 import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
 import BannerList from '../main/component/bannerList'
+import LayerPopupWrap from '../main/component/layer_popup_wrap'
 //scss
 import './clip.scss'
 //static
@@ -39,6 +40,7 @@ export default (props) => {
   const categoryBestClipRef = useRef()
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [popupData, setPopupData] = useState([])
   //swiper
   const swiperParamsRecent = {
     slidesPerView: 'auto',
@@ -98,21 +100,6 @@ export default (props) => {
       setScrollY(0)
     }
   }
-  //api func
-  const fetchDataListPopular = async () => {
-    const {result, data, message} = await Api.getPopularList({})
-    if (result === 'success') {
-      setPopularList(data.list)
-      setDate(data.checkDate)
-      setRandomList(data.list.slice(0, 6))
-      setPopularType(data.type)
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
-  }
-  //
   function shuffle(a) {
     // console.log(popularList.filter((item,idx)=>{
     //   return(
@@ -127,8 +114,20 @@ export default (props) => {
     // setRandomList(a)
     return a
   }
-  //
   //api func
+  const fetchDataListPopular = async () => {
+    const {result, data, message} = await Api.getPopularList({})
+    if (result === 'success') {
+      setPopularList(data.list)
+      setDate(data.checkDate)
+      setRandomList(data.list.slice(0, 6))
+      setPopularType(data.type)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   const fetchMyData = async () => {
     const {result, data, message} = await Api.getMyClipData({})
     if (result === 'success') {
@@ -149,7 +148,6 @@ export default (props) => {
       })
     }
   }
-
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -367,6 +365,27 @@ export default (props) => {
       setDetailPopup(true)
     }
   }
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    }
+  }
   // #layer pop
   useEffect(() => {
     if (detailPopup) {
@@ -392,6 +411,7 @@ export default (props) => {
     fetchDataListPopular()
     fetchDataListLatest()
     fetchDataClipType()
+    fetchMainPopupData(13)
     if (context.token.isLogin === true) {
       fetchMyData()
     }
@@ -557,6 +577,7 @@ export default (props) => {
           />
         </div>
       </div>
+      {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       {detailPopup && <DetailPopup setDetailPopup={setDetailPopup} />}
     </Layout>
   )
