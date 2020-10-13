@@ -120,7 +120,7 @@ export default (props) => {
             if (Math.abs(current_angle) === 360) {
               current_angle = 0
             }
-            current_angle -= 10
+            current_angle += 10
             refreshIconNode.style.transform = `rotate(${current_angle}deg)`
           }, 17)
 
