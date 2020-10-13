@@ -12,6 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
 //import Lottie from 'react-lottie'
+import LottiePlayer from "lottie-web";
 
 // components
 import Layout from 'pages/common/layout'
@@ -43,8 +44,8 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import CrownIcon from './static/ic_crown.png'
 import LiveIcon from './static/ic_newlive.png'
-//import CrownLottie from './static/crown_lottie.json'
-//import LiveLottie from './static/live_lottie.json'
+import CrownLottie from './static/crown_lottie.json'
+import LiveLottie from './static/live_lottie.json'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 import 'styles/main.scss'
@@ -330,6 +331,22 @@ export default (props) => {
     }
   }
 
+  const playLottie = (lottieObj, elem) => {
+    if(lottieObj != null && elem != null){
+      const lottieAnimation = LottiePlayer.loadAnimation({
+        container: elem,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        animationData: lottieObj,
+      });
+      lottieAnimation.addEventListener('complete', ()=>{
+        lottieAnimation.destroy()
+        playLottie(lottieObj, elem)
+      })
+    }
+  }
+
   const resetFetchList = () => {
     setLivePage(1)
     fetchLiveList(true)
@@ -418,6 +435,9 @@ export default (props) => {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
       setPayState(payInfo)
     }
+
+    playLottie(CrownLottie, document.getElementById("lottieCrown"))
+    playLottie(LiveLottie, document.getElementById("lottieLive"))
 
     return () => {
       sessionStorage.removeItem('pay_info')
@@ -687,8 +707,8 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                <span className="ico-lottie">
-                  <img src={CrownIcon} alt="실시간랭킹" width={40} />
+                <span className="ico-lottie" id={"lottieCrown"} style={{"width": 40}}>
+                  {/*<img src={CrownIcon} alt="실시간랭킹" width={40} />*/}
                 </span>
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
@@ -752,8 +772,8 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <span className="ico-lottie">
-                    <img src={LiveIcon} alt="실시간라이브" width={24} />
+                  <span className="ico-lottie" id={"lottieLive"} style={{"width":24}}>
+                    {/*<img src={LiveIcon} alt="실시간라이브" width={24} />*/}
                     {/* <Lottie
                       options={{
                         loop: true,
