@@ -218,13 +218,7 @@ table {
     top: 0;
     z-index: 2;
   }
-  .clipIcon {
-    display: block;
-    width: 24px;
-    background: url('../pages/clip/static/clip.svg');
-    height: 24px;
-    margin-right: 8px;
-  }
+
   .searchIcon {
     position: absolute;
     left: 8px;
@@ -246,6 +240,20 @@ table {
       font-size: 14px;
       line-height: 24px;
       letter-spacing: -1.2px;
+    }
+    &.isClip {
+      position: relative;
+      &::before {
+        position: absolute;
+        left: -28px;
+        top: 50%;
+        transform: translateY(-50%);
+        content: '';
+        display: block;
+        width: 24px;
+        height: 24px;
+        background: url('../pages/clip/static/clip.svg');
+      }
     }
   }
 

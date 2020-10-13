@@ -28,7 +28,7 @@ export default (props) => {
 
   return (
     <div className={`new header-wrap ${type !== undefined ? type : ''}`}>
-      {props.description === 'clip' && (
+      {/* {props.description === 'clip' && (
         <span
           className="searchIcon"
           onClick={() =>
@@ -39,8 +39,8 @@ export default (props) => {
               }
             })
           }></span>
-      )}
-      {props.description === 'clip' && <span className="clipIcon"></span>}
+      )} */}
+      {/* {props.description === 'clip' && <span className="clipIcon"></span>} */}
       {props.title ? (
         <h2 className={`header-title${props.title.length > 18 ? ' isLong' : ''}`}>{props.title}</h2>
       ) : (
