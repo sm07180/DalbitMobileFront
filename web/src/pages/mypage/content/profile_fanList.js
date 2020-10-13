@@ -55,11 +55,15 @@ export default (props) => {
   const fetchDataStar = async () => {
     const res = await Api.mypage_star_list({
       params: {
-        memNo: urlrStr
+        memNo: urlrStr,
+        page: 1,
+        records: 100,
+        sortType: 0
       }
     })
     if (res.result === 'success') {
-      setStarInfo(res.data)
+      console.log(res.data.list)
+      setStarInfo(res.data.list)
     } else {
       //console.log(res)
     }
