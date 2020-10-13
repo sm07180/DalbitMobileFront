@@ -1,0 +1,426 @@
+@import '../../../../styles/variables';
+#search {
+  //서치 컨트롤러
+  .controllerWrap {
+    padding: 12px 0;
+    background: $lighterGray;
+  }
+  .controller {
+    width: 320px;
+    height: 44px;
+    margin: 0 auto;
+    background-color: $white;
+    border-radius: 12px;
+    border: solid 1px $black;
+    > form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    &__submitInput {
+      margin-left: 16px;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: normal;
+      text-align: left;
+      color: $black;
+      &::placeholder {
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: normal;
+        text-align: left;
+        color: #9e9e9e;
+      }
+    }
+    &__submitBtn {
+      width: 40px;
+      height: 40px;
+    }
+  }
+  //서치 이니셜 추천
+  .recomendWrap {
+    background-color: $white;
+    .initialTab {
+      display: flex;
+      width: 100%;
+      height: 40px;
+      background-color: $white;
+      > button {
+        width: 50%;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: -0.4px;
+        text-align: center;
+        color: $black;
+        border-bottom: 1px solid $lightGray;
+        &.activeTab {
+          font-size: 16px;
+          font-weight: 800;
+          letter-spacing: -0.4px;
+          text-align: center;
+          color: $primary;
+          border-bottom: 1px solid $primary;
+        }
+      }
+    }
+    .simpleWrap,
+    .detailWrap {
+      padding: 16px 16px 0 16px;
+    }
+    .simpleWrap {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .simpleContainer {
+        position: relative;
+        width: calc(50% - 4px);
+        height: 160px;
+        margin-bottom: 12px;
+        border-radius: 16px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        &__info {
+          position: relative;
+          display: flex;
+          margin: 4px 8px;
+          justify-content: space-between;
+          z-index: 2;
+        }
+        &__iconBox {
+          display: flex;
+          align-items: center;
+          &__entry {
+            display: flex;
+            align-items: center;
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.6);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: -0.28px;
+            text-align: left;
+            color: $white;
+            &:before {
+              content: '';
+              display: block;
+              width: 16px;
+              height: 16px;
+              margin-right: 4px;
+              background: url(./static/entry.svg);
+            }
+          }
+          img {
+            margin-right: 2px;
+          }
+        }
+        &__title {
+          width: 90%;
+          position: absolute;
+          bottom: 8px;
+          left: 6px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          font-size: 12px;
+          font-weight: normal;
+          letter-spacing: normal;
+          text-align: left;
+          color: $white;
+          z-index: 2;
+        }
+      }
+    }
+  }
+  .dim {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  //필터
+  .filterWrap {
+    background-color: $lighterGray;
+    padding: 12px 16px;
+    display: flex;
+    > button {
+      display: block;
+      padding: 8px;
+      background-color: $white;
+      border-radius: 12px;
+      border: solid 1px $lightGray;
+      margin-right: 7px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      color: $black;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    .activeFiter {
+      background-color: $primary;
+      color: $white;
+    }
+  }
+  .searchCategory {
+    display: flex;
+    > button {
+      flex: 0.25;
+      padding: 10px 0;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.4px;
+      text-align: center;
+      color: $black;
+      background-color: $white;
+      border-bottom: 1px solid $lightGray;
+    }
+    .activeFiter {
+      border-bottom: 1px solid $primary;
+      color: $primary;
+    }
+  }
+  .chartListDetail {
+    padding: 0px 2% 10px 16px;
+    .chartListDetailBox {
+      &.fixedOn {
+        margin-top: 86px;
+      }
+    }
+    .chartListDetailItem {
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 10px 0;
+
+      &__thumb {
+        position: relative;
+        margin-right: 12px;
+        width: 72px;
+        .newSpecialIcon {
+          position: absolute;
+          text-indent: -99999px;
+          left: 0px;
+          top: 0px;
+          width: 51px;
+          height: 16px;
+          text-indent: -99999px;
+          background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+        }
+        img {
+          width: 100%;
+          border-radius: 12px;
+        }
+        &__playTime {
+          display: inline-block;
+          position: absolute;
+          right: 3px;
+          bottom: 3px;
+          padding: 0 4px;
+          height: 14px;
+          line-height: 14px;
+          background: rgba(0, 0, 0, 0.6);
+          color: $white;
+          border-radius: 12px;
+          height: 14px;
+          font-size: 10px;
+          font-weight: bold;
+        }
+      }
+      .textBox {
+        width: calc(100% - 90px);
+        &__iconBox {
+          display: inline-block;
+          width: 60px;
+          height: 30px;
+          border: solid 1px;
+          &--type {
+            font-style: normal;
+            font-size: 14px;
+            color: $primary;
+            font-weight: normal;
+            letter-spacing: -0.5px;
+          }
+        }
+        &__subject {
+          display: flex;
+          align-items: center;
+          height: 20px;
+          letter-spacing: -0.5px;
+          .title {
+            color: $greishBrown;
+            flex: 0.9;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+          }
+          .subject {
+            font-size: 14px;
+            color: $primary;
+            font-weight: normal;
+            letter-spacing: -0.5px;
+          }
+        }
+        &__nickName {
+          display: flex;
+          width: 100%;
+          margin: 7px 0px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          color: $darkGray;
+          line-height: 1.3;
+          letter-spacing: -0.5px;
+          .maleIcon,
+          .femaleIcon {
+            display: inline-block;
+            margin-right: 4px;
+            width: 24px;
+            height: 16px;
+            background: url('./static/male.svg');
+            background-color: $white;
+            border-radius: 10px;
+            margin-left: 1px;
+          }
+          .femaleIcon {
+            background: url('./static/female.svg');
+            background-color: $white;
+            border-radius: 10px;
+          }
+        }
+        &__subject {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: 700;
+        }
+        i.line {
+          flex-basis: 1px;
+          height: 10px;
+          background: $mediumGray;
+          margin: 0px 6px;
+        }
+        &__nickName {
+          font-size: 12px;
+        }
+        &__detail {
+          margin-top: 3px;
+          font-size: 12px;
+          display: flex;
+          align-items: center;
+          &--item {
+            color: $greishBrown;
+            font-size: 12px;
+            letter-spacing: -0.5px;
+            margin-right: 8px;
+            font-weight: 400;
+            img {
+              display: inline-block;
+              margin-right: 2px;
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+    }
+  }
+  //토탈 서치
+  .total {
+    .Title {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 800;
+      text-align: left;
+      color: $black;
+      > img {
+        display: block;
+        margin-left: 8px;
+      }
+      &__count {
+        margin-left: 8px;
+        color: $primary;
+      }
+    }
+    &__member,
+    &__live,
+    &__clip {
+      background-color: $white;
+      padding: 16px 0 14px 16px;
+      border-bottom: 5px solid $lighterGray;
+      .memberItem {
+        position: relative;
+        margin-top: 14px;
+        display: flex;
+        &__profImg {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          margin-right: 12px;
+        }
+        &__info {
+          display: flex;
+          justify-content: center;
+          flex-direction: column;
+          &__nick {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: normal;
+            text-align: left;
+            color: #242424;
+          }
+          &__fanCnt {
+            margin-top: 6px;
+            > img {
+              margin-right: 4px;
+            }
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: $greishBrown;
+          }
+          &__iconBox {
+            display: flex;
+            align-items: center;
+            > img {
+              margin-right: 6px;
+            }
+            margin-top: 6px;
+          }
+        }
+      }
+    }
+    &__live {
+      background-color: $white;
+      padding: 16px 0 0 16px;
+    }
+  }
+  .liveBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: -0.25px;
+    text-align: center;
+    color: $red;
+  }
+  .clipBtnPlay {
+    position: absolute;
+    top: 50%;
+    right: 0px;
+    transform: translateY(-50%);
+  }
+}
