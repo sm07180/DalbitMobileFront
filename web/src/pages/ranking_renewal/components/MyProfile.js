@@ -72,7 +72,8 @@ export default function MyProfile() {
     if (
       ((formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK) && myInfo.myRank > 1000) ||
       (formState.dateType === DATE_TYPE.MONTH && myInfo.myRank > 2000) ||
-      (formState.dateType === DATE_TYPE.YEAR && myInfo.myRank > 3000)
+      (formState.dateType === DATE_TYPE.YEAR && myInfo.myRank > 3000) ||
+      (formState.rankType === RANK_TYPE.LIKE && myInfo.myRank > 201)
     ) {
       return (
         <>
