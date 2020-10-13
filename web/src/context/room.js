@@ -282,10 +282,11 @@ export const RoomJoin = async (obj) => {
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
       Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
-      //Facebook,Firebase 이벤트 호출
+      //TODO:Facebook,Firebase 이벤트 호출 추후 앱 배포 되면 삭
       try {
         fbq('track', 'RoomJoin')
         firebase.analytics().logEvent('RoomJoin')
+        kakaoPixel('114527450721661229').viewCart('RoomJoin')
       } catch (e) {}
       return true
     }
@@ -417,16 +418,12 @@ export const RoomMake = async (context) => {
     return
   }
 
-  //#2 본인인증 (Android만 실행 개발중)
-  /*---------20.04.08 임시로 막아둠
-  if (_os === OS_TYPE['Android']) {
-    const selfAuth = await Api.self_auth_check(token)
-    if (selfAuth.result === 'fail') {
-      window.location.href = '/selfauth'
-      return
-    }
+  //#2 본인인증
+  const selfAuth = await Api.self_auth_check(token)
+  if (selfAuth.result === 'fail') {
+    window.location.href = '/selfauth?type=create'
+    return
   }
-  */
 
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()

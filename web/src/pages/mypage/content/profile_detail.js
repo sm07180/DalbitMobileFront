@@ -405,32 +405,30 @@ export default (props) => {
         <div className="title">
           Lv{profile.level} {profile.level !== 0 && `${profile.grade}`}
         </div>
-        <div className="levelInfoWrap">
-          {urlrStr == 'profile' && (
-            <>
-              <div className="levelBox">
-                <div className="levelBar">
-                  <span
-                    className="expBarStatus"
-                    style={{
-                      width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
-                    }}></span>
-                  <span className="expTitle expTitle--start">0</span>
-                  <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
-                </div>
-
-                <div className="levelInfo">
-                  <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
-                    <span className="blind">경험치</span>
-                  </button>
-                  EXP
-                  <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
-                  <span className="expTitle expTitle--rate">{profile.expRate}%</span>
-                </div>
+        {urlrStr == 'profile' && (
+          <div className="levelInfoWrap">
+            <div className="levelBox">
+              <div className="levelBar">
+                <span
+                  className="expBarStatus"
+                  style={{
+                    width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
+                  }}></span>
+                <span className="expTitle expTitle--start">0</span>
+                <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
               </div>
-            </>
-          )}
-        </div>
+
+              <div className="levelInfo">
+                <button className="btn-info" onClick={() => setPopupExp(popup ? false : true)}>
+                  <span className="blind">경험치</span>
+                </button>
+                EXP
+                <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
+                <span className="expTitle expTitle--rate">{profile.expRate}%</span>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="nameWrap">
           <strong>
             {profile.nickNm}
@@ -453,46 +451,46 @@ export default (props) => {
         )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-        <div className="badgeWrap">
-          <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
-        </div>
-        {profile.fanRank.length !== 0 && <div className="fanListWrap">{createFanList()}</div>}
+        {profile.liveBadgeList && profile.liveBadgeList.length > 0 && (
+          <div className="badgeWrap">
+            <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
+          </div>
+        )}
+        {profile.fanRank.length > 0 && <div className="fanListWrap">{createFanList()}</div>}
 
-        <div className="fanListWrap">
-          {profile.likeTotCnt > 0 && (
-            <>
-              {myProfileNo === profile.memNo ? (
-                <button
-                  className="btn__fanRank cupid"
-                  onClick={() => {
-                    {
-                      profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                      setRankTabType('tabGood')
-                    }
-                  }}>
-                  왕큐피트
-                </button>
-              ) : (
-                <button
-                  className="btn__fanRank cupid"
-                  onClick={() => {
-                    profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
-                    setRankTabType('tabGood')
-                  }}>
-                  왕큐피트
-                </button>
-              )}
-
-              <p
-                className="fanListWrap__cupidNick"
+        {profile.likeTotCnt > 0 && (
+          <div className="fanListWrap">
+            {myProfileNo === profile.memNo ? (
+              <button
+                className="btn__fanRank cupid"
                 onClick={() => {
-                  history.push(`/mypage/${profile.cupidMemNo}`)
+                  {
+                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                    setRankTabType('tabGood')
+                  }
                 }}>
-                {profile.cupidNickNm}
-              </p>
-            </>
-          )}
-        </div>
+                왕큐피트
+              </button>
+            ) : (
+              <button
+                className="btn__fanRank cupid"
+                onClick={() => {
+                  profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
+                  setRankTabType('tabGood')
+                }}>
+                왕큐피트
+              </button>
+            )}
+
+            <p
+              className="fanListWrap__cupidNick"
+              onClick={() => {
+                history.push(`/mypage/${profile.cupidMemNo}`)
+              }}>
+              {profile.cupidNickNm}
+            </p>
+          </div>
+        )}
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}

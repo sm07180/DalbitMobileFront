@@ -1,9 +1,12 @@
 import React, {useContext, useState, useEffect, useRef} from 'react'
+import {useLocation} from 'react-router-dom'
+import qs from 'query-string'
 import styled from 'styled-components'
 import Api from 'context/api'
 
 //context
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 import {COLOR_MAIN} from 'context/color'
 
 //layout
@@ -75,6 +78,11 @@ export const authReq = async (code, formTagRef) => {
 
 //
 export default (props) => {
+  const location = useLocation()
+
+  const {type} = qs.parse(location.search)
+  console.log(type)
+
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -84,7 +92,11 @@ export default (props) => {
 
   //인증 요청 버튼
   function authClick() {
-    authReq('4', formTag)
+    if (type === 'create') {
+      authReq('6', formTag)
+    } else {
+      authReq('4', formTag)
+    }
   }
 
   const goBack = () => {
@@ -98,18 +110,35 @@ export default (props) => {
     <Layout {...props} status="no_gnb">
       <Header title="본인인증" goBack={goBack} />
       <Content>
+        <div className="img-wrap">
+          <img src={`${IMG_SERVER}/images/api/img_rabbit_02.svg`} />
+          <h2>본인인증</h2>
+        </div>
         <div className="auth-wrap">
-          <h4>
-            환전 승인을 받기 위해서는
-            <br />
-            <span>본인인증 절차</span>가 필요합니다.
-          </h4>
-          <p>
-            ※ 환전 신청은 12세 이상의 회원만 가능합니다.
-            <br />
-            ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
-            <br />※ 12세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
-          </p>
+          {type === 'create' ? (
+            <>
+              <h4>
+                <span>처음 방송개설 및 클립등록 시</span>
+                <br />
+                본인인증을 필수로 받으셔야 합니다.
+              </h4>
+            </>
+          ) : (
+            <>
+              <h4>
+                환전 승인을 받기 위해서는
+                <br />
+                <span>본인인증 절차</span>가 필요합니다.
+              </h4>
+              <p>
+                ※ 환전 신청은 12세 이상의 회원만 가능합니다.
+                <br />
+                ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
+                <br />※ 12세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
+              </p>
+            </>
+          )}
+
           <div className="btn-wrap">
             <button onClick={authClick}>본인 인증하기</button>
           </div>
@@ -123,13 +152,24 @@ export default (props) => {
 
 const Content = styled.div`
   padding: 30px 16px;
+  .img-wrap {
+    padding-bottom: 20px;
+    text-align: center;
+    h2 {
+      font-size: 24px;
+      line-height: 24px;
+      color: #000;
+      padding-top: 30px;
+    }
+  }
   .auth-wrap {
+    padding: 10px 0;
     h4 {
       text-align: center;
       color: #000;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 400;
-      line-height: 24px;
+      line-height: 20px;
       strong {
         font-weight: 600;
       }
@@ -158,7 +198,7 @@ const Content = styled.div`
     }
     .btn-wrap {
       display: flex;
-      padding-top: 30px;
+      padding-top: 25px;
       button {
         flex: 1;
         height: 44px;

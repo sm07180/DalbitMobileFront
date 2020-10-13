@@ -85,7 +85,7 @@ const makeContents = (props) => {
               <span>{title}</span>
             </div> */}
             <div className="nickname">
-              {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+              {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}
               {liveBadgeList &&
                 liveBadgeList.length !== 0 &&
@@ -152,7 +152,7 @@ const makeContents = (props) => {
           <div className="broadcast-content">
             <div className="top-status">
               {isSpecial && <span className="special-icon"></span>}
-              {bjGender !== 'n' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+              {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
             </div>
             <div className="entry-count">
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>

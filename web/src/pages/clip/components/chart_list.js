@@ -222,7 +222,7 @@ export default (props) => {
                   onClick={() => fetchDataPlay(clipNo)}>
                   <div className="topWrap">
                     <div className="topWrap__status">
-                      <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} />
+                      {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
                       {isSpecial && <span className="specialIcon">S</span>}
                       {/* <span className="categoryIcon">
             {clipType.map((v, index) => {
@@ -231,7 +231,6 @@ export default (props) => {
               }
             })}
           </span> */}
-                      {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                     </div>
                     <div className="topWrap__count">
                       <i className="icon icon--lineMessage">흰색 라인 메세지 아이콘</i>
@@ -245,8 +244,11 @@ export default (props) => {
                     </div>
                   </div>
                   <div className="bottomWrap">
-                    <p className="bottomWrap__nick">{nickName}</p>
                     <p className="bottomWrap__title">{title}</p>
+                    <div className="bottomWrap__nick">
+                      {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                      {nickName}
+                    </div>
                   </div>
                   <div className="dim"></div>
                 </li>

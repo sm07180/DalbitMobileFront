@@ -109,9 +109,7 @@ function RankList() {
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                          {genderName !== 'n' && (
-                            <div className={`gender-icon ${genderName === 'm' ? 'male' : 'female'}`}>성별</div>
-                          )}
+                          {gender !== '' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
 
                           {liveBadgeList &&
                             liveBadgeList.length !== 0 &&

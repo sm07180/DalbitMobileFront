@@ -669,6 +669,7 @@ export default (props) => {
       try {
         fbq('track', 'CompleteRegistration')
         firebase.analytics().logEvent('CompleteRegistration')
+        kakaoPixel('114527450721661229').completeRegistration();
       } catch (e) {}
 
       context.action.alert({
@@ -729,6 +730,7 @@ export default (props) => {
     try {
       fbq('track', 'Lead')
       firebase.analytics().logEvent('Lead')
+      kakaoPixel('114527450721661229').participation()
     } catch (e) {}
   }, [])
 
