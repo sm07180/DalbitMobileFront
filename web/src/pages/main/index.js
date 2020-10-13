@@ -39,7 +39,6 @@ import detailListIcon from './static/detaillist_circle_w.svg'
 import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
-import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import CrownIcon from './static/ic_crown.png'
 import LiveIcon from './static/ic_newlive.png'
@@ -65,10 +64,8 @@ export default (props) => {
   const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
   const LiveSectionRef = useRef()
-
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
-  const liveArrowRefreshRef = useRef()
 
   //context
   const globalCtx = useContext(Context)
@@ -76,39 +73,394 @@ export default (props) => {
   const history = useHistory()
 
   // state
-  const [initData, setInitData] = useState({})
-  const [liveList, setLiveList] = useState(null)
-  const [rankType, setRankType] = useState('') // type: dj, fan
-  const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
-
-  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
-  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
-  const [popup, setPopup] = useState(false)
-  const [popupNotice, setPopupNotice] = useState(false)
-  const [popupData, setPopupData] = useState([])
-  const [scrollY, setScrollY] = useState(0)
-  const [liveRefresh, setLiveRefresh] = useState(false)
-
+  const [initData, setInitData] = useState({}) // main init
+  const [rankType, setRankType] = useState('') // ranking > type: dj, fan
+  const [liveList, setLiveList] = useState(null) // live list
+  const [liveListType, setLiveListType] = useState('detail') // live list type: detail, simple
+  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('') // live room type
+  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}]) //live category list
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
-
   const [livePage, setLivePage] = useState(1)
   const [totalLivePage, setTotalLivePage] = useState(null)
 
-  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
-  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
-  const customHeader = JSON.parse(Api.customHeader)
+  const [liveCategoryFixed, setLiveCategoryFixed] = useState(false) // category fixed state
+  const [scrollY, setScrollY] = useState(0) // scrollY state
+  const [liveRefresh, setLiveRefresh] = useState(false) // top refresh state
+  const [broadcastBtnActive, setBroadcastBtnActive] = useState(false) //방송하기 버튼
+  const [reloadInit, setReloadInit] = useState(false)
 
+  const [popup, setPopup] = useState(false)
+  const [eventPop, setEventPop] = useState(false) // event용 팝업
+  const [payState, setPayState] = useState(false)
+  const [popupData, setPopupData] = useState([]) // 관리자 메인 팝업
+
+  const customHeader = JSON.parse(Api.customHeader)
   const eventPopupStartTime = new Date('2020-09-25T09:00:00')
   const eventPopupEndTime = new Date('2020-10-04T23:59:59')
   const nowTime = new Date()
-  const [eventPop, setEventPop] = useState(false)
+  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
+  const swiperParams = {
+    slidesPerView: 'auto'
+  }
 
-  const [payState, setPayState] = useState(false)
+  // fetch
+  // 메인 init data - live
+  const fetchMainInitData = async () => {
+    const initData = await Api.main_init_data()
+    if (initData.result === 'success') {
+      const {djRank, fanRank, recommend, myStar} = initData.data
+      setInitData({
+        recommend,
+        djRank,
+        fanRank,
+        myStar
+      })
+    }
+  }
 
-  const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
-  const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
+  const fetchLiveListRefresh = async () => {
+    // setLiveList(null)
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: 1,
+        records: records,
+        roomType: '',
+        searchType: 1,
+        gender: ''
+      }
+    })
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, page} = paging
+        setLivePage(page)
+        setTotalLivePage(totalPage)
+      }
+      setLiveList(list)
+    }
+  }
 
+  const fetchLiveList = async (arg) => {
+    console.log(arg)
+
+    const currentList = liveList
+    if (arg === false) {
+      concatenating = true
+    }
+    setLiveList(null)
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: arg === true ? 1 : livePage,
+        records: records,
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
+      }
+    })
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, page} = paging
+        setLivePage(page)
+        setTotalLivePage(totalPage)
+      }
+      if (arg === false) {
+        if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
+          //const concatenated = currentList.concat(list)
+          const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
+          setLiveList(concatenated)
+        }
+      } else {
+        setLiveList(list)
+      }
+    }
+  }
+
+  const concatLiveList = async () => {
+    concatenating = true
+
+    const currentList = [...liveList]
+    console.debug()
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: livePage + 1,
+        records: records,
+        roomType: selectedLiveRoomType,
+        searchType: liveAlign,
+        gender: liveGender
+      }
+    })
+
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage, page} = paging
+        setLivePage(page)
+        setTotalLivePage(totalPage)
+      }
+
+      if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
+        //const concatenated = currentList.concat(list)
+        const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
+        setLiveList(concatenated)
+      }
+    }
+  }
+
+  const resetFetchList = () => {
+    setLivePage(1)
+    fetchLiveList(true)
+  }
+
+  // 관리자 메인 팝업
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) {
+        setPopupData(
+          res.data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    }
+  }
+
+  // 추석이벤트
+  async function fetchThxgivingCheck() {
+    console.log('..')
+    const res = await Api.getChooseokCheck()
+
+    if (res.result === 'success') {
+      setEventPop(true)
+      const {memNo} = globalCtx.token
+      const item = localStorage.getItem(`popup_event${memNo}`)
+      if (item !== null && item === memNo) {
+        setEventPop(false)
+      }
+    } else {
+      setEventPop(false)
+    }
+  }
+
+  // func
+  const popStateEvent = (e) => {
+    if (e.state === null) {
+      setPopup(false)
+    } else if (e.state === 'layer') {
+      setPopup(true)
+    }
+  }
+  const goRank = () => {
+    history.push(`/rank`, rankType)
+  }
+  const windowScrollEvent = () => {
+    const GnbHeight = 48
+    const sectionMarginTop = 30
+    const LiveTabDefaultHeight = 48
+
+    const MainNode = MainRef.current
+    const SubMainNode = SubMainRef.current
+    const RecommendNode = RecommendRef.current
+    const RankSectionNode = RankSectionRef.current
+    const StarSectionNode = StarSectionRef.current
+    const BannerSectionNode = BannerSectionRef.current
+
+    const LiveSectionNode = LiveSectionRef.current
+    const MainHeight = MainNode.clientHeight
+    // const SubMainHeight = SubMainNode.clientHeight
+    const RecommendHeight = RecommendNode.clientHeight
+    const RankSectionHeight = RankSectionNode.clientHeight
+    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
+    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
+
+    const LiveSectionHeight = LiveSectionNode.clientHeight
+
+    let TopSectionHeight
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+    } else {
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+    }
+    if (window.scrollY >= TopSectionHeight) {
+      setLiveCategoryFixed(true)
+    } else {
+      setLiveCategoryFixed(false)
+      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
+    }
+
+    const GAP = 100
+    if (
+      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+      !concatenating &&
+      Array.isArray(liveList) &&
+      liveList.length &&
+      livePage <= totalLivePage
+    ) {
+      // concatLiveList()
+      fetchLiveList(false)
+    }
+  }
+  const setPayPopup = () => {
+    setPayState(false)
+    sessionStorage.removeItem('pay_info')
+  }
+
+  const refreshDefaultHeight = 48
+  const mainTouchStart = useCallback(
+    (e) => {
+      if (reloadInit === true || window.scrollY !== 0) return
+
+      touchStartY = e.touches[0].clientY
+    },
+    [reloadInit]
+  )
+
+  const mainTouchMove = useCallback(
+    (e) => {
+      if (reloadInit === true || window.scrollY !== 0) return
+
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      touchEndY = e.touches[0].clientY
+      const ratio = 3
+      const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 50
+
+      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
+        if (heightDiff <= heightDiffFixed) {
+          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+        }
+      }
+    },
+    [reloadInit]
+  )
+
+  const RefreshFunc = async () => {
+    // setReloadInit(true)
+    // await fetchMainInitData()
+    setLiveRefresh(true)
+    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+    await fetchLiveList(true)
+    setLiveRefresh(false)
+    // setReloadInit(false)
+  }
+  const mainTouchEnd = useCallback(
+    async (e) => {
+      if (reloadInit === true) return
+
+      const ratio = 3
+      const transitionTime = 150
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 48
+      if (heightDiff >= heightDiffFixed) {
+        let current_angle = (() => {
+          const str_angle = refreshIconNode.style.transform
+          let head_slice = str_angle.slice(7)
+          let tail_slice = head_slice.slice(0, 4)
+          return Number(tail_slice)
+        })()
+        if (typeof current_angle === 'number') {
+          setReloadInit(true)
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+
+          const loadIntervalId = setInterval(() => {
+            if (Math.abs(current_angle) === 360) {
+              current_angle = 0
+            }
+            current_angle += 10
+            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+          }, 17)
+
+          await fetchMainInitData()
+          await fetchLiveListRefresh()
+
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+          clearInterval(loadIntervalId)
+
+          setLiveAlign(1)
+          setLiveGender('')
+          if (sessionStorage.getItem('ranking_tab') === 'dj') {
+            setRankType('fan')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 2
+              })
+            sessionStorage.setItem('ranking_tab', 'fan')
+          } else {
+            setRankType('dj')
+            rankAction.formDispatch &&
+              rankAction.formDispatch({
+                type: 'RANK_TYPE',
+                val: 1
+              })
+            sessionStorage.setItem('ranking_tab', 'dj')
+          }
+          setLiveListType('detail')
+          setSelectedLiveRoomType('')
+          setReloadInit(false)
+        }
+      }
+
+      const promiseSync = () =>
+        new Promise((resolve, _) => {
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          setTimeout(() => resolve(), transitionTime)
+        })
+
+      await promiseSync()
+      iconWrapNode.style.transitionDuration = '0ms'
+      refreshIconNode.style.transform = 'rotate(0)'
+      touchStartY = null
+      touchEndY = null
+    },
+    [reloadInit]
+  )
+
+  // 초기호출
+  useEffect(() => {
+    // 메인 초기 데이터 호출
+    fetchMainInitData()
+    // 메인 관리자 팝업
+    fetchMainPopupData('6')
+    // splash data api
+    Api.splash().then((res) => {
+      const {result} = res
+      if (result === 'success') {
+        const {data} = res
+        const {roomType} = data
+        if (roomType) {
+          const concatenated = categoryList.concat(roomType)
+          setCategoryList(concatenated)
+        }
+      }
+    })
+    // 추석이벤트
+    // fetchThxgivingCheck()
+    return () => {
+      globalCtx.action.updateAttendStamp(false)
+    }
+  }, [])
+
+  // 랭킹관련
   useEffect(() => {
     rankAction.formDispatch &&
       rankAction.formDispatch({
@@ -116,9 +468,7 @@ export default (props) => {
       })
 
     rankAction.setLevelList && rankAction.setLevelList([])
-
     rankAction.setLikeList && rankAction.setLikeList([])
-
     rankAction.setRankList && rankAction.setRankList([])
 
     rankAction.setMyInfo &&
@@ -180,222 +530,9 @@ export default (props) => {
       }
       sessionStorage.setItem('ranking_tab', randomData)
     }
-
-    fetchMainInitData()
-
-    Api.splash().then((res) => {
-      const {result} = res
-      if (result === 'success') {
-        const {data} = res
-        const {roomType} = data
-        if (roomType) {
-          const concatenated = categoryList.concat(roomType)
-          setCategoryList(concatenated)
-        }
-      }
-    })
   }, [])
 
-  const fetchMainInitData = async () => {
-    const initData = await Api.main_init_data()
-    if (initData.result === 'success') {
-      const {djRank, fanRank, recommend, myStar} = initData.data
-      setInitData({
-        recommend,
-        djRank,
-        fanRank,
-        myStar
-      })
-    }
-  }
-
-  const fetchLiveListAsInit = async () => {
-    // setLiveList(null)
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: 1,
-        records: records,
-        roomType: '',
-        searchType: 1,
-        gender: ''
-      }
-    })
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        setTotalLivePage(totalPage)
-      }
-      setLiveList(list)
-    }
-  }
-
-  const fetchLiveList = async (reset) => {
-    setLiveList(null)
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: reset === true ? 1 : livePage,
-        records: records,
-        roomType: selectedLiveRoomType,
-        searchType: liveAlign,
-        gender: liveGender
-      }
-    })
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        setTotalLivePage(totalPage)
-      }
-      setLiveList(list)
-    }
-  }
-
-  const concatLiveList = async () => {
-    concatenating = true
-
-    const currentList = [...liveList]
-    console.debug()
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: livePage + 1,
-        records: records,
-        roomType: selectedLiveRoomType,
-        searchType: liveAlign,
-        gender: liveGender
-      }
-    })
-
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        setTotalLivePage(totalPage)
-      }
-
-      if(list !== undefined && list !== null && Array.isArray(list) && list.length > 0){
-        //const concatenated = currentList.concat(list)
-        const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
-        setLiveList(concatenated)
-      }
-    }
-  }
-
-  const windowScrollEvent = () => {
-    const GnbHeight = 48
-    const sectionMarginTop = 30
-    const LiveTabDefaultHeight = 48
-
-    const MainNode = MainRef.current
-    const SubMainNode = SubMainRef.current
-    const RecommendNode = RecommendRef.current
-    const RankSectionNode = RankSectionRef.current
-    const StarSectionNode = StarSectionRef.current
-    const BannerSectionNode = BannerSectionRef.current
-
-    const LiveSectionNode = LiveSectionRef.current
-    const MainHeight = MainNode.clientHeight
-    // const SubMainHeight = SubMainNode.clientHeight
-    const RecommendHeight = RecommendNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
-
-    const LiveSectionHeight = LiveSectionNode.clientHeight
-
-    let TopSectionHeight
-    if (customHeader['os'] === OS_TYPE['Desktop']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
-    } else {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-    }
-    if (window.scrollY >= TopSectionHeight) {
-      setLiveCategoryFixed(true)
-    } else {
-      setLiveCategoryFixed(false)
-      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
-    }
-
-    const GAP = 100
-    if (
-      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
-      !concatenating &&
-      Array.isArray(liveList) &&
-      liveList.length &&
-      livePage <= totalLivePage
-    ) {
-      concatLiveList()
-    }
-  }
-
-  const resetFetchList = () => {
-    setLivePage(1)
-    fetchLiveList(true)
-  }
-
-  const popStateEvent = (e) => {
-    if (e.state === null) {
-      setPopup(false)
-    } else if (e.state === 'layer') {
-      setPopup(true)
-    }
-  }
-
-  const swiperParams = {
-    slidesPerView: 'auto'
-  }
-
-  const goRank = () => {
-    history.push(`/rank`, rankType)
-  }
-
-  const alignSet = {1: '추천', 2: '좋아요', 3: '청취자'}
-
-  const setPayPopup = () => {
-    setPayState(false)
-    sessionStorage.removeItem('pay_info')
-  }
-
-  async function fetchMainPopupData(arg) {
-    const res = await Api.getBanner({
-      params: {
-        position: arg
-      }
-    })
-
-    if (res.result === 'success') {
-      if (res.hasOwnProperty('data')) {
-        setPopupData(
-          res.data.filter((v) => {
-            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
-              return v
-            } else {
-              return false
-            }
-          })
-        )
-      }
-    }
-  }
-
-  async function fetchThxgivingCheck() {
-    const res = await Api.getChooseokCheck()
-
-    if (res.result === 'success') {
-      setEventPop(true)
-      const {memNo} = globalCtx.token
-      const item = localStorage.getItem(`popup_event${memNo}`)
-      if (item !== null && item === memNo) {
-        setEventPop(false)
-      }
-    } else {
-      setEventPop(false)
-    }
-  }
-
+  // 팝업관련
   useEffect(() => {
     if (popup) {
       if (window.location.hash === '') {
@@ -430,10 +567,7 @@ export default (props) => {
     }
   }, [])
 
-  useEffect(() => {
-    resetFetchList()
-  }, [selectedLiveRoomType])
-
+  // 실시간 라이브 스크롤 이벤트
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
@@ -441,133 +575,11 @@ export default (props) => {
     concatenating = false
   }, [liveList])
 
+  // 실시간 라이브 - 카테고리 sorting
   useEffect(() => {
-    fetchMainPopupData('6')
-    fetchThxgivingCheck()
-    return () => {
-      globalCtx.action.updateAttendStamp(false)
-    }
-  }, [])
-
-  const [reloadInit, setReloadInit] = useState(false)
-  const refreshDefaultHeight = 48
-
-  const mainTouchStart = useCallback(
-    (e) => {
-      if (reloadInit === true || window.scrollY !== 0) return
-
-      touchStartY = e.touches[0].clientY
-    },
-    [reloadInit]
-  )
-
-  const mainTouchMove = useCallback(
-    (e) => {
-      if (reloadInit === true || window.scrollY !== 0) return
-
-      const iconWrapNode = iconWrapRef.current
-      const refreshIconNode = arrowRefreshRef.current
-
-      touchEndY = e.touches[0].clientY
-      const ratio = 3
-      const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 50
-
-      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        if (heightDiff <= heightDiffFixed) {
-          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
-        }
-      }
-    },
-    [reloadInit]
-  )
-  const RefreshFunc = async () => {
-    // setReloadInit(true)
-    // await fetchMainInitData()
-    setLiveRefresh(true)
-    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList(true)
-    setLiveRefresh(false)
-    // setReloadInit(false)
-  }
-  const mainTouchEnd = useCallback(
-    async (e) => {
-      if (reloadInit === true) return
-
-      const ratio = 3
-      const transitionTime = 150
-      const iconWrapNode = iconWrapRef.current
-      const refreshIconNode = arrowRefreshRef.current
-
-      const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 48
-      if (heightDiff >= heightDiffFixed) {
-        let current_angle = (() => {
-          const str_angle = refreshIconNode.style.transform
-          let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
-          return Number(tail_slice)
-        })()
-        if (typeof current_angle === 'number') {
-          setReloadInit(true)
-          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
-
-          const loadIntervalId = setInterval(() => {
-            if (Math.abs(current_angle) === 360) {
-              current_angle = 0
-            }
-            current_angle += 10
-            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
-          }, 17)
-
-          await fetchMainInitData()
-          await fetchLiveListAsInit()
-
-          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-          clearInterval(loadIntervalId)
-
-          setLiveAlign(1)
-          setLiveGender('')
-          if (sessionStorage.getItem('ranking_tab') === 'dj') {
-            setRankType('fan')
-            rankAction.formDispatch &&
-              rankAction.formDispatch({
-                type: 'RANK_TYPE',
-                val: 2
-              })
-            sessionStorage.setItem('ranking_tab', 'fan')
-          } else {
-            setRankType('dj')
-            rankAction.formDispatch &&
-              rankAction.formDispatch({
-                type: 'RANK_TYPE',
-                val: 1
-              })
-            sessionStorage.setItem('ranking_tab', 'dj')
-          }
-          setLiveListType('detail')
-          setSelectedLiveRoomType('')
-          setReloadInit(false)
-        }
-      }
-
-      const promiseSync = () =>
-        new Promise((resolve, _) => {
-          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight}px`
-          setTimeout(() => resolve(), transitionTime)
-        })
-
-      await promiseSync()
-      iconWrapNode.style.transitionDuration = '0ms'
-      refreshIconNode.style.transform = 'rotate(0)'
-      touchStartY = null
-      touchEndY = null
-    },
-    [reloadInit]
-  )
+    console.log('reseet fetch')
+    resetFetchList()
+  }, [selectedLiveRoomType])
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
