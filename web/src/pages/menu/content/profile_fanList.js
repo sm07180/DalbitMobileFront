@@ -66,7 +66,8 @@ export default (props) => {
   const fetchDataHoleFan = async () => {
     const res = await Api.mypage_fan_list({
       params: {
-        memNo: myProfileNo
+        memNo: myProfileNo,
+        sortType: 0
       }
     })
     if (res.result === 'success') {
