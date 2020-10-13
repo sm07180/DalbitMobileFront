@@ -232,8 +232,15 @@ export default (props) => {
       setSearchState(true)
       setCategoryType(filterType)
       holeSearch()
+      setFocus(false)
     }
   }
+  const changeFilter = (id) => {
+    // setFilterType(id)
+    setCategoryType(id)
+    setFocus(false)
+  }
+
   //콘켓 쇼모어 이벤트
   const showMoreList = () => {
     if (moreState && CategoryType === 1) {
@@ -300,13 +307,14 @@ export default (props) => {
     }
   }, [CategoryType])
   //render ----------------------------------------------------
+
   return (
     <div id="search">
       {/* 서치 헤더 */}
       <Header title="검색" />
       {/* 서치 컨트롤러 */}
       <div className="controllerWrap">
-        <div className="controller" style={{borderColor: focus ? '#000' : '#e0e0e0'}}>
+        <div className={`controller ${focus ? 'focus' : ''}`}>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -317,9 +325,7 @@ export default (props) => {
               className="controller__submitInput"
               ref={IputEl}
             />
-            <button type="submit" className="controller__submitBtn">
-              <img className="ico" src={SearchIco} />
-            </button>
+            <button type="submit" className="controller__submitBtn" />
           </form>
         </div>
       </div>
@@ -331,7 +337,7 @@ export default (props) => {
               <button
                 key={`${idx}+filterTab`}
                 onClick={() => setFilterType(item.id)}
-                className={filterType === item.id ? 'activeFiter' : ''}>
+                className={filterType === item.id || filterType === 0 ? 'activeFiter' : ''}>
                 {item.tab}
               </button>
             )
@@ -350,18 +356,20 @@ export default (props) => {
       )}
       {searchState && (
         <>
-          <div className="searchCategory">
-            {tabContent.map((item, idx) => {
-              return (
-                <button
-                  key={`${idx}+categoryTab`}
-                  onClick={() => setCategoryType(item.id)}
-                  className={CategoryType === item.id ? 'activeFiter' : ''}>
-                  {item.tab}
-                </button>
-              )
-            })}
-          </div>
+          {filterType === 0 && (
+            <div className="searchCategory">
+              {tabContent.map((item, idx) => {
+                return (
+                  <button
+                    key={`${idx}+categoryTab`}
+                    onClick={() => changeFilter(item.id)}
+                    className={CategoryType === item.id ? 'activeFiter' : ''}>
+                    {item.tab}
+                  </button>
+                )
+              })}
+            </div>
+          )}
           {/* 서치 리스트 */}
           <List
             memberList={memberList}
