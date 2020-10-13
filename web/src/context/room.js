@@ -418,12 +418,12 @@ export const RoomMake = async (context) => {
     return
   }
 
-  //#2 본인인증
-  const selfAuth = await Api.self_auth_check(token)
-  if (selfAuth.result === 'fail') {
-    window.location.href = '/selfauth?type=create'
-    return
-  }
+  //#2 본인인증 임시 막기
+  // const selfAuth = await Api.self_auth_check(token)
+  // if (selfAuth.result === 'fail') {
+  //   window.location.href = '/selfauth?type=create'
+  //   return
+  // }
 
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()
