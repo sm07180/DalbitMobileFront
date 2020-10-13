@@ -785,9 +785,24 @@
               word-wrap: normal;
             }
             &__nick {
+              display: flex;
               color: $white;
               font-size: 12px;
-              margin-bottom: 2px;
+              margin-top: 4px;
+              .maleIcon,
+              .femaleIcon {
+                width: 24px;
+                height: 16px;
+                background: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
+                background-color: $white;
+                border-radius: 10px;
+                margin-right: 4px;
+              }
+              .femaleIcon {
+                background: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
+                background-color: $white;
+                border-radius: 10px;
+              }
             }
           }
         }
