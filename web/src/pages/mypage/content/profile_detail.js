@@ -56,7 +56,11 @@ export default (props) => {
         const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
         if (memNo == myProfileNo) {
-          link = `/menu/profile`
+          if (webview) {
+            link = `/mypage/${memNo}?webview=${webview}`
+          } else {
+            link = `/menu/profile`
+          }
         } else {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
