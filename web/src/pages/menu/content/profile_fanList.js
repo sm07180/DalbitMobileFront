@@ -50,12 +50,15 @@ export default (props) => {
   const fetchDataStar = async () => {
     const res = await Api.mypage_star_list({
       params: {
-        memNo: myProfileNo
+        memNo: myProfileNo,
+        page: 1,
+        records: 100,
+        sortType: 0
       }
     })
     if (res.result === 'success') {
       // console.log(res.data)
-      setStarInfo(res.data)
+      setStarInfo(res.data.list)
       //console.log(res)
     } else {
       //console.log(res)
@@ -66,7 +69,8 @@ export default (props) => {
   const fetchDataHoleFan = async () => {
     const res = await Api.mypage_fan_list({
       params: {
-        memNo: myProfileNo
+        memNo: myProfileNo,
+        sortType: 0
       }
     })
     if (res.result === 'success') {

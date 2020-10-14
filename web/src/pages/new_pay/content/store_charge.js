@@ -21,7 +21,7 @@ import Header from 'components/ui/new_header'
 import NoResult from 'components/ui/noResult'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 
-export default () => {
+export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
@@ -29,10 +29,10 @@ export default () => {
 
   let {event} = qs.parse(location.search)
   if (event === undefined) event = 0
-
+  const {selected, setSelected} = props
   //useState
   const [list, setList] = useState(false)
-  const [selected, setSelected] = useState(-1)
+  // const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
   const [showAdmin, setShowAdmin] = useState(false)
   const [mydal, setMydal] = useState('0')
@@ -110,7 +110,8 @@ export default () => {
                   num: index,
                   name: item.itemNm,
                   price: item.salePrice,
-                  itemNo: item.itemNo
+                  itemNo: item.itemNo,
+                  event: event
                 })
               }
             }}>
@@ -126,12 +127,21 @@ export default () => {
   }
 
   function chargeClick() {
+    const {name, price, itemNo} = selected
     if (context.token.isLogin) {
-      const {name, price, itemNo} = selected
-      history.push({
-        pathname: '/pay/charge',
-        search: `?name=${name}&price=${price}&itemNo=${itemNo}&event=${event}`
-      })
+      if (selected !== -1) {
+        history.push({
+          pathname: '/pay/charge',
+          search: `?name=${name}&price=${price}&itemNo=${itemNo}&event=${event}`
+        })
+      } else {
+        context.action.alert({
+          msg: '충전할 상품을 선택해주세요.',
+          callback: () => {
+            return
+          }
+        })
+      }
     } else {
       history.push('/login')
     }
@@ -154,7 +164,7 @@ export default () => {
               }}>
               취소
             </button>
-            <button onClick={chargeClick} className="charge" disabled={selected == -1 ? true : false}>
+            <button onClick={chargeClick} className="charge">
               결제하기
             </button>
           </div>
