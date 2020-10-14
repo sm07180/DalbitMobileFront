@@ -13,9 +13,11 @@ import MakeCalcContents from './subcontent/do_exchange_calc'
 import MakeRadioWrap from './subcontent/do_exchange_radio_wrap'
 import MakeFormWrap from './subcontent/do_exchange_form'
 import MakeRepplyWrap from './subcontent/do_exchange_repply'
+import MakeAddWrap from './subcontent/do_exchange_add'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 import Header from 'components/ui/new_header'
 import Popup from 'pages/common/popup'
+import AddPop from './subcontent/do_exchange_add_pop'
 
 const FormDataReducer = (state, action) => {
   switch (action.type) {
@@ -179,7 +181,10 @@ export default function DoExchange({state, dispatch}) {
   const [radioCheck, setRadioCheck] = useState(0)
   const [formData, formDispatch] = useReducer(FormDataReducer, formInit)
   const [popupData, setPopupData] = useState([])
-
+  //환전하기 리뉴얼  state
+  const [addList, setAddList] = useState([])
+  const [AddPopup, setAddPopup] = useState(false)
+  const [addInfo, setAddInfo] = useState({})
   const userProfile = context.profile || {}
 
   const exchangeSubmit = async () => {
@@ -331,6 +336,19 @@ export default function DoExchange({state, dispatch}) {
       })
     }
   }
+  //환전하기 리뉴얼
+  async function fetchSearchAccount() {
+    const res = await Api.exchangeSearchAccount({})
+    const {result, data, message} = res
+    if (result === 'success') {
+      console.log()
+      setAddList(data.list)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
       context.action.alert({
@@ -377,7 +395,7 @@ export default function DoExchange({state, dispatch}) {
     }
 
     fetchData()
-
+    fetchSearchAccount()
     fetchMainPopupData('11')
 
     // context.action.alert({
@@ -394,7 +412,7 @@ export default function DoExchange({state, dispatch}) {
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
   }, [])
-
+  console.log(addInfo)
   return (
     <div className="doExchangeWrap">
       <Header title="환전하기" />
@@ -452,7 +470,6 @@ export default function DoExchange({state, dispatch}) {
 
         {exchangeCalc.basicCash > 0 && <MakeCalcContents exchangeCalc={exchangeCalc} />}
 
-        <div className="doExchangeWrap__contentsHeader">입금 정보</div>
         {exchangeHistory.exist && (
           <MakeRadioWrap
             radioCheck={radioCheck}
@@ -461,11 +478,22 @@ export default function DoExchange({state, dispatch}) {
             }}
           />
         )}
+        <div className="doExchangeWrap__contentsHeader">
+          {radioCheck === 1 ? '최근 입금 정보' : radioCheck === 2 ? '내 계좌 관리' : '신규 입금 정보'}
+          {radioCheck === 2 && (
+            <button className="plusBtn" onClick={() => setAddPopup(true)}>
+              계좌추가
+            </button>
+          )}
+        </div>
         {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
         {radioCheck === 1 && <MakeRepplyWrap state={exchangeHistory.value} inspection={checkInspection} />}
+        {radioCheck === 2 && <MakeAddWrap state={exchangeHistory.value} inspection={checkInspection} addList={addList} />}
       </div>
       <Popup />
       {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
+      {/* 계좌추가 팝업 */}
+      {AddPopup && <AddPop setAddPopup={setAddPopup} setAddInfo={setAddInfo} />}
     </div>
   )
 }

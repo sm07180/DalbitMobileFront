@@ -2646,6 +2646,19 @@ export default class API {
       method: 'GET'
     })
   }
+  // 환전하기 리뉴얼
+  static exchangeAddAccount = async () => {
+    return await ajax({
+      url: '/member/exchange/account/add',
+      method: 'POST'
+    })
+  }
+  static exchangeSearchAccount = async () => {
+    return await ajax({
+      url: '/member/exchange/account/list',
+      method: 'GET'
+    })
+  }
 }
 
 API.customHeader = null
