@@ -577,10 +577,30 @@ export default (props) => {
 
   // 실시간 라이브 - 카테고리 sorting
   useEffect(() => {
-    console.log('reseet fetch')
+    console.log('reset fetch')
     resetFetchList()
   }, [selectedLiveRoomType])
 
+  // const [a, setA] = useState({
+  //   roomType: 0, // Contant All,
+  //   page: 1
+  // })
+
+  // const testEv = useCallback((arg) => {
+  //   setA({
+  //     roomType: arg,
+  //     page: 1
+  //   })
+  // }, [])
+
+  // setA({
+  //   ...a,
+  //   page: page + 1
+  // })
+
+  // useEffect(() => {
+  //   fetchLiveList()
+  // }, [a])
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div className="refresh-wrap" ref={iconWrapRef}>
