@@ -5,7 +5,7 @@
  * @brief 결제 index
  */
 
-import React, {useEffect, useContext, useState} from 'react'
+import React, {useEffect, useContext, useState, useCallback} from 'react'
 import {useParams, useLocation} from 'react-router-dom'
 import qs from 'query-string'
 
@@ -25,7 +25,15 @@ export default () => {
 
   const {webview, canceltype, tabType} = qs.parse(location.search)
 
-  const createContent = () => {
+  const [selected, setSelected] = useState({
+    num: 3,
+    name: '달 300',
+    price: 33000,
+    itemNo: 'A1555',
+    event: 0
+  })
+
+  const createContent = useCallback(() => {
     let {title} = params
     const {state} = location
 
@@ -43,7 +51,7 @@ export default () => {
       case 'room':
         return <RoomCharge tabType={tabType} />
       case 'store':
-        return <StoreCharge />
+        return <StoreCharge selected={selected} setSelected={setSelected} />
       case 'bank':
         return <BankDeposit />
       case 'bank_wait':
@@ -52,6 +60,6 @@ export default () => {
         return <></>
         break
     }
-  }
+  }, [selected, params, location])
   return <Layout status="no_gnb">{createContent()}</Layout>
 }

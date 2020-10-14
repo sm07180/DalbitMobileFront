@@ -373,15 +373,15 @@ table {
       display: none;
     }
 
+    .banner {
+      img {
+        width: 100%;
+        // height: 65px;
+        border-radius: 16px;
+      }
+    }
     .swiper-container {
       height: auto;
-      .banner {
-        img {
-          width: 100%;
-          // height: 65px;
-          border-radius: 16px;
-        }
-      }
       .swiper-pagination-fraction {
         display: flex;
         justify-content: center;

@@ -890,7 +890,7 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({
       ...obj,
-      url: url || `/profile/star`,
+      url: url || `/profile/star/list/new`,
       method: method || 'GET',
       params: params
     })
@@ -905,7 +905,7 @@ export default class API {
     const {url, method, params} = obj || {}
     return await ajax({
       ...obj,
-      url: url || `/profile/fan/list`,
+      url: url || `/profile/fan/list/new`,
       method: method || 'GET',
       params: params
     })
