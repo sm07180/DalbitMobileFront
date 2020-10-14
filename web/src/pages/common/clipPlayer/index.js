@@ -61,9 +61,10 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null || webview === 'new') return null
+  if (!clipState || clipPlayerInfo === null || webview === 'new' || Utility.getCookie('clip-player-info') == undefined)
+    return null
 
-  //---------------------------------------------------------------------
+  //------------------------------------------------------------------------
   return (
     <ClipPlayer>
       <div className="player-wrap">

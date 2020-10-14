@@ -379,14 +379,19 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              if (__NODE_ENV === 'dev') {
-                if (webview === 'new') {
+              if (webview === 'new') {
+                if (
+                  context.customHeader['os'] === OS_TYPE['Android'] ||
+                  (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
+                ) {
                   return RoomJoin({roomNo: profile.roomNo})
                 }
-                if (webview === 'new' && Utility.getCookie('listen_room_no')) {
-                  return false
-                }
               }
+
+              if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                return false
+              }
+
               if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
                 return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
               } else {
