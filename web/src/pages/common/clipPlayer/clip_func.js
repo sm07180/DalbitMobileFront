@@ -64,9 +64,9 @@ export const clipJoin = (data, context, webview) => {
 }
 
 export const clipExit = (context) => {
-  alert('클립정상종료')
+  // alert('클립정상종료')
   Utility.setCookie('clip-player-info', '', -1)
-  alert(Utility.getCookie('clip-player-info'))
+  // alert(Utility.getCookie('clip-player-info'))
   Hybrid('ClipPlayerEnd')
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)

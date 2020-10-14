@@ -29,11 +29,10 @@ export default (props) => {
     Utility.setCookie('clip-player-info', JSON.stringify(data))
   }
 
-  if (Utility.getCookie('clip-player-info')) {
-    let data = Utility.getCookie('clip-player-info')
-    data = JSON.parse(data)
-    // alert(data)
-  }
+  // if (Utility.getCookie('clip-player-info')) {
+  //   let data = Utility.getCookie('clip-player-info')
+  //   data = JSON.parse(data)
+  // }
 
   const makePlayBtn = () => {
     switch (clipPlayerState) {
