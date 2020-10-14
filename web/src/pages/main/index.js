@@ -51,7 +51,7 @@ import 'styles/main.scss'
 let concatenating = false
 let tempScrollEvent = null
 
-const records = 50
+const records = 20
 
 let touchStartY = null
 let touchEndY = null
@@ -89,7 +89,10 @@ export default (props) => {
   const [liveRefresh, setLiveRefresh] = useState(false) // top refresh state
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false) //방송하기 버튼
   const [reloadInit, setReloadInit] = useState(false)
-
+  const [liveType, setliveType] = useState({
+    roomType: '',
+    liveListPage: 1
+  })
   const [popup, setPopup] = useState(false)
   const [eventPop, setEventPop] = useState(false) // event용 팝업
   const [payState, setPayState] = useState(false)
@@ -141,39 +144,28 @@ export default (props) => {
     }
   }
 
-  const fetchLiveList = async (arg) => {
-    console.log(arg)
-
-    const currentList = liveList
-    if (arg === false) {
-      concatenating = true
-    }
+  const fetchLiveList = async () => {
     setLiveList(null)
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: arg === true ? 1 : livePage,
-        records: records,
-        roomType: selectedLiveRoomType,
-        searchType: liveAlign,
-        gender: liveGender
-      }
+    let param = {
+      page: livePage,
+      records: records,
+      roomType: liveType.roomType,
+      searchType: liveAlign,
+      gender: liveGender
+    }
+    console.log(param)
+    const res = await Api.broad_list({
+      params: param
     })
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
+    if (res.result === 'success') {
+      const {list, paging} = res.data
+      console.log(list)
       if (paging) {
         const {totalPage, page} = paging
         setLivePage(page)
         setTotalLivePage(totalPage)
       }
-      if (arg === false) {
-        if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
-          //const concatenated = currentList.concat(list)
-          const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
-          setLiveList(concatenated)
-        }
-      } else {
-        setLiveList(list)
-      }
+      setLiveList(list)
     }
   }
 
@@ -209,8 +201,12 @@ export default (props) => {
   }
 
   const resetFetchList = () => {
-    setLivePage(1)
-    fetchLiveList(true)
+    setliveType({
+      roomType: '',
+      liveListPage: 1
+    })
+    // setLivePage(1)
+    // fetchLiveList(true)
   }
 
   // 관리자 메인 팝업
@@ -302,13 +298,13 @@ export default (props) => {
     const GAP = 100
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
-      !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
       livePage <= totalLivePage
     ) {
+      console.log('scroll')
       // concatLiveList()
-      fetchLiveList(false)
+      fetchLiveList()
     }
   }
   const setPayPopup = () => {
@@ -353,7 +349,7 @@ export default (props) => {
     // await fetchMainInitData()
     setLiveRefresh(true)
     await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList(true)
+    await fetchLiveList()
     setLiveRefresh(false)
     // setReloadInit(false)
   }
@@ -414,7 +410,11 @@ export default (props) => {
             sessionStorage.setItem('ranking_tab', 'dj')
           }
           setLiveListType('detail')
-          setSelectedLiveRoomType('')
+          // setSelectedLiveRoomType('')
+          setliveType({
+            roomType: '',
+            liveListPage: 1
+          })
           setReloadInit(false)
         }
       }
@@ -576,31 +576,27 @@ export default (props) => {
   }, [liveList])
 
   // 실시간 라이브 - 카테고리 sorting
-  useEffect(() => {
-    console.log('reset fetch')
-    resetFetchList()
-  }, [selectedLiveRoomType])
-
-  // const [a, setA] = useState({
-  //   roomType: 0, // Contant All,
-  //   page: 1
-  // })
-
-  // const testEv = useCallback((arg) => {
-  //   setA({
-  //     roomType: arg,
-  //     page: 1
-  //   })
-  // }, [])
-
-  // setA({
-  //   ...a,
-  //   page: page + 1
-  // })
-
   // useEffect(() => {
-  //   fetchLiveList()
-  // }, [a])
+  //   console.log('reset fetch')
+  //   resetFetchList()
+  // }, [selectedLiveRoomType])
+
+  // 실시간 라이브 - 카테고리 sorting
+  const changeCategory = useCallback(
+    (arg) => {
+      console.log('chg', arg)
+      setliveType({
+        roomType: arg,
+        liveListPage: 1
+      })
+    },
+    [liveType]
+  )
+
+  useEffect(() => {
+    fetchLiveList()
+  }, [liveType])
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div className="refresh-wrap" ref={iconWrapRef}>
@@ -835,9 +831,9 @@ export default (props) => {
                         .map((key, idx) => {
                           return (
                             <div
-                              className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                              className={`list ${key.cd === liveType.roomType ? 'active' : ''}`}
                               key={`list-${idx}`}
-                              onClick={() => setSelectedLiveRoomType(key.cd)}>
+                              onClick={() => changeCategory(key.cd)}>
                               {key.cdNm}
                             </div>
                           )
