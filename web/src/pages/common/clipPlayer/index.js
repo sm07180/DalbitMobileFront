@@ -29,13 +29,6 @@ export default (props) => {
     Utility.setCookie('clip-player-info', JSON.stringify(data))
   }
 
-  let cookieData = false
-
-  if (Utility.getCookie('clip-player-info')) {
-    cookieData = Utility.getCookie('clip-player-info')
-    cookieData = JSON.parse(data)
-  }
-
   const makePlayBtn = () => {
     switch (clipPlayerState) {
       case 'playing':
@@ -68,7 +61,7 @@ export default (props) => {
     }
   }
 
-  if (!clipState || clipPlayerInfo === null || webview === 'new' || cookieData === undefined || cookieData === 'null') return null
+  if (!clipState || clipPlayerInfo === null || webview === 'new') return null
 
   //---------------------------------------------------------------------
   return (
