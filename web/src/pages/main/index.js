@@ -276,7 +276,7 @@ export default (props) => {
         setTotalLivePage(totalPage)
       }
 
-      if(list !== undefined && list !== null && Array.isArray(list) && list.length > 0){
+      if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
         //const concatenated = currentList.concat(list)
         const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
         setLiveList(concatenated)
@@ -476,7 +476,7 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         if (heightDiff <= heightDiffFixed) {
           iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
         }
       }
     },
