@@ -387,6 +387,7 @@ export default (props) => {
                   return RoomJoin({roomNo: profile.roomNo})
                 }
               }
+
               if (webview === 'new' && Utility.getCookie('listen_room_no')) {
                 return false
               }
