@@ -56,7 +56,11 @@ export default (props) => {
         const {memNo, profImg, rank} = profile.fanRank[index]
         let link = ''
         if (memNo == myProfileNo) {
-          link = `/menu/profile`
+          if (webview) {
+            link = `/mypage/${memNo}?webview=${webview}`
+          } else {
+            link = `/menu/profile`
+          }
         } else {
           link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
         }
@@ -354,7 +358,7 @@ export default (props) => {
         )}
 
         {token && token.isLogin && showAdmin && (
-          <a href="/admin/clip">
+          <a href="/admin/question">
             <img src={AdminIcon} alt="관리자아이콘" />
           </a>
         )}
@@ -375,6 +379,14 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
+              if (__NODE_ENV === 'dev') {
+                if (webview === 'new') {
+                  return RoomJoin({roomNo: profile.roomNo})
+                }
+                if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                  return false
+                }
+              }
               if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
                 return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
               } else {
