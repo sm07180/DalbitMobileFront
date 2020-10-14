@@ -25,7 +25,13 @@ export default () => {
 
   const {webview, canceltype, tabType} = qs.parse(location.search)
 
-  const [selected, setSelected] = useState(-1)
+  const [selected, setSelected] = useState({
+    num: 3,
+    name: '달 300',
+    price: 33000,
+    itemNo: 'A1555',
+    event: 0
+  })
 
   const createContent = useCallback(() => {
     let {title} = params
@@ -39,7 +45,7 @@ export default () => {
     }
     switch (title) {
       case 'charge':
-        return <Charge selected={selected} />
+        return <Charge />
       case 'result':
         return <Result />
       case 'room':

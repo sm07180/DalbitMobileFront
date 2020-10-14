@@ -28,7 +28,7 @@ import icoMore from '../../static/icn_more_xs_gr.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
-export default (props) => {
+export default () => {
   const history = useHistory()
 
   //context
@@ -41,9 +41,9 @@ export default (props) => {
 
   //ref
   const formTag = useRef(null)
-  const {selected} = props
+
   //결제 data 셋팅
-  const {name, price, itemNo, webview, event} = selected
+  const {name, price, itemNo, webview, event} = qs.parse(location.search)
   let pageCode = webview === 'new' ? '2' : '1'
   if (event === '3') pageCode = '3'
 
