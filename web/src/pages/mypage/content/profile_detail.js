@@ -354,7 +354,7 @@ export default (props) => {
         )}
 
         {token && token.isLogin && showAdmin && (
-          <a href="/admin/clip">
+          <a href="/admin/question">
             <img src={AdminIcon} alt="관리자아이콘" />
           </a>
         )}
