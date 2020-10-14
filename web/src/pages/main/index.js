@@ -121,7 +121,7 @@ export default (props) => {
   }
 
   const fetchLiveListRefresh = async () => {
-    // setLiveList(null)
+    setLiveList(null)
     const broadcastList = await Api.broad_list({
       params: {
         page: 1,
@@ -137,13 +137,17 @@ export default (props) => {
         const {totalPage, page} = paging
         setLivePage(page)
         setTotalLivePage(totalPage)
+        setliveType({
+          roomType: '',
+          liveListPage: 1
+        })
       }
       setLiveList(list)
     }
   }
 
   const fetchLiveList = async (arg) => {
-    // setLiveList(null)
+    if (!arg) setLiveList(null)
     let param = {
       page: livePage,
       records: records,
@@ -158,19 +162,22 @@ export default (props) => {
     if (res.result === 'success') {
       const {list, paging} = res.data
       console.log(res.data, paging)
-      // if (paging) {
-      const {totalPage, page, next} = paging
-      setLivePage(next)
-      setTotalLivePage(totalPage)
-      if (page <= totalPage && arg) {
-        const currentList = [...liveList]
-        const concatenated = currentList.concat(list)
-        setLiveList(concatenated)
+      if (paging) {
+        const {totalPage, page, next} = paging
+        setLivePage(next)
+        setTotalLivePage(totalPage)
+        if (page <= totalPage && arg) {
+          const currentList = [...liveList]
+          const concatenated = currentList.concat(list)
+          setLiveList(concatenated)
+        } else {
+          console.log('no next')
+          setLiveList(list)
+        }
       } else {
-        console.log('nono next')
+        console.log('else')
         setLiveList(list)
       }
-      // }
     }
   }
 
