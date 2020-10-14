@@ -64,11 +64,11 @@ export const clipJoin = (data, context, webview) => {
 }
 
 export const clipExit = (context) => {
-  Utility.setCookie('clip-player-info', '', -1)
-  Hybrid('ClipPlayerEnd')
   context.action.updateClipState(null)
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)
+  Utility.setCookie('clip-player-info', '', -1)
+  Hybrid('ClipPlayerEnd')
 }
 
 export const updateClipInfo = (data) => {
