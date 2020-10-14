@@ -50,11 +50,9 @@ import 'styles/main.scss'
 
 let concatenating = false
 let tempScrollEvent = null
-
-const records = 20
-
 let touchStartY = null
 let touchEndY = null
+const records = 20
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -144,8 +142,8 @@ export default (props) => {
     }
   }
 
-  const fetchLiveList = async () => {
-    setLiveList(null)
+  const fetchLiveList = async (arg) => {
+    // setLiveList(null)
     let param = {
       page: livePage,
       records: records,
@@ -159,13 +157,20 @@ export default (props) => {
     })
     if (res.result === 'success') {
       const {list, paging} = res.data
-      console.log(list)
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        setTotalLivePage(totalPage)
+      console.log(res.data, paging)
+      // if (paging) {
+      const {totalPage, page, next} = paging
+      setLivePage(next)
+      setTotalLivePage(totalPage)
+      if (page <= totalPage && arg) {
+        const currentList = [...liveList]
+        const concatenated = currentList.concat(list)
+        setLiveList(concatenated)
+      } else {
+        console.log('nono next')
+        setLiveList(list)
       }
-      setLiveList(list)
+      // }
     }
   }
 
@@ -205,7 +210,7 @@ export default (props) => {
       roomType: '',
       liveListPage: 1
     })
-    // setLivePage(1)
+    setLivePage(1)
     // fetchLiveList(true)
   }
 
@@ -298,13 +303,15 @@ export default (props) => {
     const GAP = 100
     if (
       window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+      !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
       livePage <= totalLivePage
     ) {
+      concatenating = true
       console.log('scroll')
       // concatLiveList()
-      fetchLiveList()
+      fetchLiveList(concatenating)
     }
   }
   const setPayPopup = () => {
@@ -589,6 +596,7 @@ export default (props) => {
         roomType: arg,
         liveListPage: 1
       })
+      setLivePage(1)
     },
     [liveType]
   )
