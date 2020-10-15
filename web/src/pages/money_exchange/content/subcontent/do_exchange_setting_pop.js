@@ -5,33 +5,53 @@ import CloseBtn from '../../static/close_w_l.svg'
 import {Context} from 'context'
 
 export default function detailPopup(props) {
-  const {setAddPopup} = props
+  const {setSettingPopup, modifyInfo} = props
   const context = useContext(Context)
-
   const [addName, setAddName] = useState('')
   const [addBank, setAddBank] = useState('')
   const [addAccountNumber, setAccountNumber] = useState('')
+  const [accountName, setAccountName] = useState('')
+  const [addIdx, setAddIdx] = useState('')
 
   const closePopup = () => {
-    setAddPopup(false)
+    setSettingPopup(false)
+  }
+  const deletePopup = () => {
+    setSettingPopup(false)
+    props.setDeleteState({
+      state: true,
+      modifyIdx: addIdx
+    })
+    props.setModiBool(true)
   }
   const applyClick = () => {
-    setAddPopup(false)
-    props.setAddInfo({
+    setSettingPopup(false)
+    props.setModiInfo({
       name: addName,
       bank: addBank,
-      accountNumber: addAccountNumber
+      accountNumber: addAccountNumber,
+      accountName: accountName,
+      idx: addIdx
     })
-    props.setAddBool(true)
+    props.setModiBool(true)
   }
   const AddBankFunc = (code) => {
-    setAddBank(code)
+    setAddBank(code.split(',')[0])
+    setAccountName(code.split(',')[1])
   }
+  useEffect(() => {
+    setAddBank(modifyInfo.bankCode)
+    setAddName(modifyInfo.accountName)
+    setAccountNumber(modifyInfo.accountNo)
+    setAccountName(modifyInfo.bankName)
+    setAddIdx(modifyInfo.idx)
+  }, [])
   return (
     <PopupWrap>
+      ``
       <div className="content-wrap">
         <div className="title-wrap">
-          <div className="text">계좌 추가</div>
+          <div className="text">계좌 수정</div>
           <button className="close-btn" onClick={() => closePopup()}>
             <img src={CloseBtn} alt="close" />
           </button>
@@ -40,9 +60,14 @@ export default function detailPopup(props) {
           <div className="each-line">
             <div className="tab-wrap">
               <div className="formData__list">
-                <div className="formData__title">예금주</div>
+                <div className="formData__title">이름</div>
                 <div className="formData__input">
-                  <input type="text" className="formData__input--text" onChange={(e) => setAddName(e.target.value)} />
+                  <input
+                    type="text"
+                    className="formData__input--text"
+                    onChange={(e) => setAddName(e.target.value)}
+                    defaultValue={modifyInfo.accountName}
+                  />
                 </div>
               </div>
               <div className="formData__list">
@@ -51,7 +76,7 @@ export default function detailPopup(props) {
                   <select onChange={(e) => AddBankFunc(e.target.value)}>
                     {bankList.map((v, idx) => {
                       return (
-                        <option key={idx} value={[v.value, v.text]} text={v.text}>
+                        <option key={idx} value={[v.value, v.text]} selected={modifyInfo.bankCode == v.value && 'selected'}>
                           {v.text}
                         </option>
                       )
@@ -67,14 +92,15 @@ export default function detailPopup(props) {
                     className="formData__input--text"
                     onChange={(e) => setAccountNumber(e.target.value)}
                     placeholder="입력 주세요"
+                    defaultValue={addAccountNumber}
                   />
                 </div>
               </div>
             </div>
           </div>
           <div className="btn-wrap">
-            <button className="apply-btn delete" onClick={closePopup}>
-              취소
+            <button className="apply-btn delete" onClick={deletePopup}>
+              삭제
             </button>
             <button className="apply-btn" onClick={applyClick}>
               등록
@@ -203,7 +229,7 @@ const PopupWrap = styled.div`
     }
   }
 `
-const bankList = [
+let bankList = [
   {text: '은행선택', value: 0},
   {text: '경남은행', value: 39},
   {text: '광주은행', value: 34},

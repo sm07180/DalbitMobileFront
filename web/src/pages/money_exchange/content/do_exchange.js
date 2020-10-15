@@ -1,14 +1,12 @@
 import React, {useState, useContext, useEffect, useReducer} from 'react'
 import {useHistory} from 'react-router-dom'
-
 import {Context} from 'context'
 import Api from 'context/api'
 // import {selfAuthCheck, getExchangeHistory, getExchangeCalc, exchangeApply, exchangeReApply} from 'common/api'
-
 import calcAge from 'components/lib/calc_age'
 import {Inspection} from './common_fn'
 import Utility from 'components/lib/utility'
-
+//components
 import MakeCalcContents from './subcontent/do_exchange_calc'
 import MakeRadioWrap from './subcontent/do_exchange_radio_wrap'
 import MakeFormWrap from './subcontent/do_exchange_form'
@@ -16,8 +14,10 @@ import MakeRepplyWrap from './subcontent/do_exchange_repply'
 import MakeAddWrap from './subcontent/do_exchange_add'
 import LayerPopupWrap from '../../main/component/layer_popup_wrap.js'
 import Header from 'components/ui/new_header'
+//pop
 import Popup from 'pages/common/popup'
 import AddPop from './subcontent/do_exchange_add_pop'
+import SettingPop from './subcontent/do_exchange_setting_pop'
 
 const FormDataReducer = (state, action) => {
   switch (action.type) {
@@ -30,7 +30,6 @@ const FormDataReducer = (state, action) => {
           byeolCnt: action.val
         }
       }
-
     case 'name':
       return {
         ...state,
@@ -177,14 +176,23 @@ export default function DoExchange({state, dispatch}) {
     exist: false,
     value: {}
   })
-
   const [radioCheck, setRadioCheck] = useState(0)
   const [formData, formDispatch] = useReducer(FormDataReducer, formInit)
   const [popupData, setPopupData] = useState([])
   //환전하기 리뉴얼  state
-  const [addList, setAddList] = useState([])
-  const [AddPopup, setAddPopup] = useState(false)
-  const [addInfo, setAddInfo] = useState({})
+  const [addList, setAddList] = useState([]) // 추가계좌조회리스트
+  const [AddPopup, setAddPopup] = useState(false) // 추가계좌 포맷(체킹)
+  const [SettingPopup, setSettingPopup] = useState(false)
+  const [modifyInfo, setModifyInfo] = useState('') //수정계좌 포맷 fetch용
+  const [addInfo, setAddInfo] = useState('') //추가된 계좌 정보 fetch용
+  const [addBool, setAddBool] = useState(false) //추가 팝업 감지 체크
+  const [modiInfo, setModiInfo] = useState('') //수정정보조회로 각종 탭을통한 props 전딜
+  const [modiBool, setModiBool] = useState(false) //수정 팝업 감지 체크
+  const [recent, setRecent] = useState('') //최근
+  const [recentCheck, setRecentCheck] = useState(false)
+  const [recentInfo, setRecentInfo] = useState('')
+  const [deleteState, setDeleteState] = useState(false)
+
   const userProfile = context.profile || {}
 
   const exchangeSubmit = async () => {
@@ -216,11 +224,21 @@ export default function DoExchange({state, dispatch}) {
       })
     }
   }
-
   const repplySubmit = async () => {
-    const paramData = {
-      byeol: formData.byeolCnt,
-      exchangeIdx: exchangeHistory.value['exchangeIdx']
+    let paramData = {}
+    if (recentInfo !== '') {
+      paramData = {
+        byeol: formData.byeolCnt,
+        exchangeIdx: exchangeHistory.value['exchangeIdx'],
+        accountName: recentInfo.accountName,
+        accountNo: recentInfo.accountNo,
+        bankCode: recentInfo.bankCode
+      }
+    } else {
+      paramData = {
+        byeol: formData.byeolCnt,
+        exchangeIdx: exchangeHistory.value['exchangeIdx']
+      }
     }
 
     const res = await Api.exchangeReApply({data: {...paramData}})
@@ -349,6 +367,58 @@ export default function DoExchange({state, dispatch}) {
       })
     }
   }
+  async function fetchAddAccount() {
+    const res = await Api.exchangeAddAccount({
+      data: {
+        accountName: addInfo.name,
+        accountNo: addInfo.accountNumber,
+        bankCode: addInfo.bank.split(',')[0],
+        bankName: addInfo.bank.split(',')[1]
+      }
+    })
+    const {result, data, message} = res
+    setAddBool(false)
+    if (result === 'success') {
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+  async function fetchDeleteAccount() {
+    const res = await Api.exchangeDeleteAccount({
+      data: {
+        idx: deleteState.modifyIdx
+      }
+    })
+    const {result, data, message} = res
+    setModiBool(false)
+    if (result === 'success') {
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+  async function fetchModiAccount() {
+    const res = await Api.exchangeEditAccount({
+      data: {
+        accountName: modiInfo.name,
+        accountNo: modiInfo.accountNumber,
+        bankCode: modiInfo.bank,
+        bankName: modiInfo.accountName,
+        idx: modiInfo.idx
+      }
+    })
+    const {result, data, message} = res
+    setModiBool(false)
+    if (result === 'success') {
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   useEffect(() => {
     if (formData.noUsage === true && formData.usageAlert === true) {
       context.action.alert({
@@ -412,7 +482,24 @@ export default function DoExchange({state, dispatch}) {
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
   }, [])
-  console.log(addInfo)
+
+  useEffect(() => {
+    if (modiBool && deleteState !== '') {
+      fetchDeleteAccount()
+    } else if (modiBool) {
+      fetchModiAccount()
+    } else if (addBool && !modiBool) {
+      fetchAddAccount()
+    } else {
+      fetchSearchAccount()
+    }
+  }, [modiBool, addBool])
+  useEffect(() => {
+    if (recent !== '') {
+      setRadioCheck(1)
+      setRecentInfo(recent)
+    }
+  }, [recent])
   return (
     <div className="doExchangeWrap">
       <Header title="환전하기" />
@@ -467,14 +554,14 @@ export default function DoExchange({state, dispatch}) {
           }}>
           환전 계산하기
         </button>
-
         {exchangeCalc.basicCash > 0 && <MakeCalcContents exchangeCalc={exchangeCalc} />}
-
         {exchangeHistory.exist && (
           <MakeRadioWrap
             radioCheck={radioCheck}
             handleEv={(prop) => {
               setRadioCheck(prop)
+              setRecentCheck(false)
+              setRecentInfo('')
             }}
           />
         )}
@@ -487,13 +574,38 @@ export default function DoExchange({state, dispatch}) {
           )}
         </div>
         {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
-        {radioCheck === 1 && <MakeRepplyWrap state={exchangeHistory.value} inspection={checkInspection} />}
-        {radioCheck === 2 && <MakeAddWrap state={exchangeHistory.value} inspection={checkInspection} addList={addList} />}
+        {radioCheck === 1 && (
+          <MakeRepplyWrap
+            state={exchangeHistory.value}
+            inspection={checkInspection}
+            recentCheck={recentCheck}
+            recentInfo={recentInfo}
+          />
+        )}
+        {radioCheck === 2 && (
+          <MakeAddWrap
+            addList={addList}
+            setSettingPopup={setSettingPopup}
+            setModifyInfo={setModifyInfo}
+            setRecent={setRecent}
+            setRecentCheck={setRecentCheck}
+          />
+        )}
       </div>
       <Popup />
       {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       {/* 계좌추가 팝업 */}
-      {AddPopup && <AddPop setAddPopup={setAddPopup} setAddInfo={setAddInfo} />}
+      {AddPopup && <AddPop setAddPopup={setAddPopup} setAddInfo={setAddInfo} setAddBool={setAddBool} />}
+      {/* 계좌수정 팝업 */}
+      {SettingPopup && (
+        <SettingPop
+          setSettingPopup={setSettingPopup}
+          modifyInfo={modifyInfo}
+          setModiInfo={setModiInfo}
+          setModiBool={setModiBool}
+          setDeleteState={setDeleteState}
+        />
+      )}
     </div>
   )
 }
