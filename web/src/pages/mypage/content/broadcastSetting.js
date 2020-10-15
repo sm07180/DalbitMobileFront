@@ -24,7 +24,7 @@ import ArrowIcon from '../component/arrow_right.svg'
 import closeBtn from '../component/ic_back.svg'
 const selectBoxData = [
   {value: BC_SETTING_TYPE.PUSH, text: 'Push 알림 설정'},
-  // {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
+  {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
   {value: BC_SETTING_TYPE.BANWORD, text: '금지어 관리'},
   {value: BC_SETTING_TYPE.MANAGER, text: '매니저 관리'},
   {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'}
