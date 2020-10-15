@@ -384,6 +384,11 @@ export default (props) => {
                   context.customHeader['os'] === OS_TYPE['Android'] ||
                   (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
                 ) {
+                  //IOS 웹뷰에서 같은 방 진입시
+                  if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
+                    return Hybrid('CloseLayerPopup')
+                  }
+                  //
                   return RoomJoin({roomNo: profile.roomNo})
                 }
               }
