@@ -75,7 +75,7 @@ export default (props) => {
             </h4>
           )}
           <div className={`total__member ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && (
+            {filterType === 0 && memberList.length !== 0 && (
               <h4 className="Title">
                 DJ <span className="Title__count">{total && total.memtotal}</span>
                 {CategoryType === 0 && memberList && total.memtotal > 2 && (
@@ -126,7 +126,7 @@ export default (props) => {
             </h4>
           )}
           <div className={`total__live ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && (
+            {filterType === 0 && liveList.length !== 0 && (
               <h4 className="Title">
                 방송 <span className="Title__count">{total && total.livetotal}</span>
                 {CategoryType === 0 && liveList && total.livetotal > 2 && (
