@@ -91,11 +91,10 @@ export default () => {
         }
       })
     }
-
     const {result, data, message} = await Api[fetch]({
       data: {
         Prdtnm: name,
-        Prdtprice: price,
+        Prdtprice: totalPrice * totalQuantity,
         itemNo: itemNo,
         pageCode: pageCode,
         pgCode: code,
