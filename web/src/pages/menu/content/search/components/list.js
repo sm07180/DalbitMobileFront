@@ -66,7 +66,7 @@ export default (props) => {
     <div className="total">
       {(CategoryType === 0 || CategoryType === 1) && (
         <>
-          {filterType !== 0 && memberList.length !== 0 && (
+          {filterType !== 0 && CategoryType !== 0 && memberList.length !== 0 && (
             <h4 className="Title topPositon">
               DJ <span className="Title__count">{total && total.memtotal}</span>
               {CategoryType === 0 && memberList && total.memtotal > 2 && (
@@ -117,7 +117,7 @@ export default (props) => {
       )}
       {(CategoryType === 0 || CategoryType === 2) && (
         <>
-          {filterType !== 0 && liveList.length !== 0 && (
+          {filterType !== 0 && CategoryType !== 0 && liveList.length !== 0 && (
             <h4 className="Title topPositon">
               방송 <span className="Title__count">{total && total.livetotal}</span>
               {CategoryType === 0 && liveList && total.livetotal > 2 && (
@@ -187,7 +187,7 @@ export default (props) => {
       )}
       {(CategoryType === 0 || CategoryType === 3) && (
         <>
-          {filterType !== 0 && clipList.length !== 0 && (
+          {filterType !== 0 && CategoryType !== 0 && clipList.length !== 0 && (
             <h4 className="Title topPositon">
               클립 <span className="Title__count">{total && total.cliptotal}</span>
               {CategoryType === 0 && clipList && total.cliptotal > 2 && (
