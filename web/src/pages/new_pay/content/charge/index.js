@@ -84,10 +84,11 @@ export default () => {
         pathname: '/pay/bank',
         state: {
           prdtNm: name,
-          prdtPrice: price,
+          prdtPrice: totalPrice * totalQuantity,
           itemNo: itemNo,
           webview: webview,
-          event: event
+          event: event,
+          itemAmt: totalQuantity
         }
       })
     }

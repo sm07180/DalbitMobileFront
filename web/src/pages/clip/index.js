@@ -442,7 +442,7 @@ export default (props) => {
             })
           }></span>
         <span className="clipIcon"></span>
-        <h2 className="header-title isClip">클립</h2>
+        <h2 className="header-title">클립</h2>
       </Header>
       <div id="clipPage">
         {context.token.isLogin === true ? (
