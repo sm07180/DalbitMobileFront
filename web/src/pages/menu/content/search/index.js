@@ -372,6 +372,7 @@ export default (props) => {
           )}
           {/* 서치 리스트 */}
           <List
+            filterType={filterType}
             memberList={memberList}
             clipList={clipList}
             liveList={liveList}
