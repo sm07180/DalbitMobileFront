@@ -466,7 +466,10 @@ export default function DoExchange({state, dispatch}) {
     }
 
     fetchData()
-    fetchSearchAccount()
+    if (radioCheck === 2) {
+      fetchSearchAccount()
+    }
+
     fetchMainPopupData('11')
 
     // context.action.alert({
@@ -491,9 +494,11 @@ export default function DoExchange({state, dispatch}) {
     } else if (addBool && !modiBool) {
       fetchAddAccount()
     } else {
-      fetchSearchAccount()
+      if (radioCheck === 2) {
+        fetchSearchAccount()
+      }
     }
-  }, [modiBool, addBool, deleteState])
+  }, [modiBool, addBool, deleteState, radioCheck])
   useEffect(() => {
     if (recent !== '') {
       setRadioCheck(1)
