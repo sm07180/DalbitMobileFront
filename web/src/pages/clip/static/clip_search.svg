@@ -1,0 +1,20 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="search_g" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-2{stroke:#424242;stroke-linecap:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <path id="사각형_238" d="M0 0H40V40H0z" class="cls-1"/>
+    <g id="Layer" transform="translate(10 10)">
+        <g id="Vrstva_92">
+            <g id="그룹_10295">
+                <g id="타원_99" class="cls-2">
+                    <circle cx="8.333" cy="8.333" r="8.333"/>
+                    <circle cx="8.333" cy="8.333" r="7.583" class="cls-1"/>
+                </g>
+                <path id="선_95" d="M0 0L5.556 5.556" class="cls-2" transform="translate(13.889 13.889)"/>
+            </g>
+        </g>
+    </g>
+</svg>
