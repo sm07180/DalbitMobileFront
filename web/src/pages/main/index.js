@@ -68,7 +68,7 @@ export default (props) => {
   // state
   const [initData, setInitData] = useState({}) // main init
   const [rankType, setRankType] = useState('') // ranking > type: dj, fan
-  const [liveList, setLiveList] = useState(null) // live list
+  const [liveList, setLiveList] = useState([]) // live list
   const [liveListType, setLiveListType] = useState('detail') // live list type: detail, simple
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('') // live room type
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}]) //live category list
@@ -533,7 +533,7 @@ export default (props) => {
         if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
       }
 
-      const GAP = 100
+      const GAP = 200
       console.log(liveType.liveListPage, totalLivePage)
       if (
         window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
@@ -550,7 +550,6 @@ export default (props) => {
         })
       }
     }
-    console.log('scroll')
     // window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
     // tempScrollEvent = windowScrollEvent
@@ -602,14 +601,14 @@ export default (props) => {
         setTotalLivePage(totalPage)
         if (liveType.liveListPage > 1) {
           if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
-            const concatenated = Utility.contactRemoveUnique(liveList, list, 'roomNo')
+            const concatenated = Utility.contactRemoveUnique([...liveList], list, 'roomNo')
             setLiveList(concatenated)
           }
         } else {
           setLiveList(list)
         }
       } else {
-        setLiveList(list)
+        // setLiveList(list)
       }
     }
   }
@@ -617,6 +616,12 @@ export default (props) => {
   useEffect(() => {
     fetchLiveList()
   }, [liveType])
+
+  useEffect(() => {
+    if (liveType.liveListPage * records > liveList.length) {
+      fetchLiveList()
+    }
+  }, [liveType, liveList])
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>

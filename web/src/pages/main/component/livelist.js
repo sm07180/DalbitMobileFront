@@ -8,14 +8,8 @@ import {Context} from 'context'
 
 import Util from 'components/lib/utility.js'
 
-export default function LiveList({liveList, liveListType, categoryList}) {
-  console.log(liveList)
-  console.log(liveListType)
-
-  useEffect(() => {
-    console.log('list!!!!')
-  }, [liveList])
-
+export default function LiveList(props) {
+  const {liveList, liveListType, categoryList} = props
   return (
     <React.Fragment>
       <Room />

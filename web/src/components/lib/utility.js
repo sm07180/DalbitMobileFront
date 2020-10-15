@@ -267,20 +267,20 @@ export default class Utility {
    * @returns {Array}
    */
   static contactRemoveUnique = (original, newArray, keyName) => {
-    if(original === undefined || original === null || !Array.isArray(original) || original.length < 1){
+    if (original === undefined || original === null || !Array.isArray(original) || original.length < 1) {
       return newArray
-    }else if(newArray === undefined || newArray === null || !Array.isArray(newArray) || newArray.length < 1){
+    } else if (newArray === undefined || newArray === null || !Array.isArray(newArray) || newArray.length < 1) {
       return original
-    }else{
+    } else {
       let retArray = original
       let isContains = false
-      newArray.map((item1) => {
-        original.map((item2) => {
-          if(item1[keyName] == item2[keyName]){
+      newArray.forEach((item1) => {
+        original.forEach((item2) => {
+          if (item1[keyName] == item2[keyName]) {
             isContains = true
           }
         })
-        if(isContains == false){
+        if (isContains == false) {
           retArray.push(item1)
         }
       })
@@ -295,10 +295,18 @@ export default class Utility {
    * @returns {string}
    */
   static getUniqueIds = (array, keyName) => {
-    if(array === undefined || array === null || !Array.isArray(array) || array.length < 1 || keyName === undefined || keyName === null || keyName === ''){
+    if (
+      array === undefined ||
+      array === null ||
+      !Array.isArray(array) ||
+      array.length < 1 ||
+      keyName === undefined ||
+      keyName === null ||
+      keyName === ''
+    ) {
       return ''
-    }else{
-      const ids = new Array();
+    } else {
+      const ids = new Array()
       array.map((item) => {
         array.push(item[keyName])
       })
