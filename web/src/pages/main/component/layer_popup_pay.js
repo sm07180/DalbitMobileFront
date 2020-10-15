@@ -10,7 +10,7 @@ let prevGender = null
 
 export default (props) => {
   const {setPopup, info} = props
-  const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno} = info
+  const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno, itemCnt} = info
 
   // reference
   const layerWrapRef = useRef()
@@ -91,7 +91,10 @@ export default (props) => {
             </div>
           </div>
           <div className="exchangeList">
-            상품명 <div className="exchangeList__text">{prdtNm}</div>
+            상품명
+            <div className="exchangeList__text">
+              {prdtNm} X {itemCnt}
+            </div>
           </div>
           <div className="exchangeList">
             결제수단 <div className="exchangeList__text">{payType}</div>
