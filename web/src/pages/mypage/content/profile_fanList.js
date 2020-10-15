@@ -14,7 +14,10 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import CloseBtn from '../static/close_w_l.svg'
 
 export default (props) => {
-  const {webview} = qs.parse(location.search)
+  let {webview} = qs.parse(location.search)
+  if (sessionStorage.getItem('webview') === 'new') {
+    webview = 'new'
+  }
   const {name} = props
   //context------------------------------------------
   const context = useContext(Context)
@@ -208,7 +211,6 @@ export default (props) => {
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
     context.action.updateCloseGoodCnt(false)
-
     history.push(link, {
       hash: window.location.hash
     })
