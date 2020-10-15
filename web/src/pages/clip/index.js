@@ -430,7 +430,20 @@ export default (props) => {
 
   return (
     <Layout {...props} status="no_gnb">
-      <Header title="클립" type="noBack" description="clip" />
+      <Header type="noBack">
+        <span
+          className="searchIcon"
+          onClick={() =>
+            history.push({
+              pathname: '/menu/search',
+              state: {
+                state: 'clip_search'
+              }
+            })
+          }></span>
+        <span className="clipIcon"></span>
+        <h2 className="header-title">클립</h2>
+      </Header>
       <div id="clipPage">
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>

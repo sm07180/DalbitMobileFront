@@ -2492,6 +2492,9 @@ export default class API {
   static getMyClipData = async (params) => {
     return await ajax({url: '/clip/myclip', method: 'GET', params})
   }
+  static getSearchRecomend = async (params) => {
+    return await ajax({url: '/search/room/recommand/list', method: 'GET', params})
+  }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"
