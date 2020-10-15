@@ -41,6 +41,13 @@ export default function detailPopup(props) {
   const AddBankFunc = (code) => {
     setAddBank(code)
   }
+  const trackOnChange = (e) => {
+    if (!isNaN(e.target.value) && e.target.value.length < 21) {
+      setAccountNumber(e.target.value.trim())
+    } else {
+      return false
+    }
+  }
   return (
     <PopupWrap>
       <div className="content-wrap">
@@ -79,7 +86,8 @@ export default function detailPopup(props) {
                   <input
                     type="tel"
                     className="formData__input--text"
-                    onChange={(e) => setAccountNumber(e.target.value)}
+                    value={addAccountNumber}
+                    onChange={(e) => trackOnChange(e)}
                     placeholder="입력 주세요"
                   />
                 </div>
