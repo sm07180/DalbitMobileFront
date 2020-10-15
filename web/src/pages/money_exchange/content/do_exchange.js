@@ -191,7 +191,7 @@ export default function DoExchange({state, dispatch}) {
   const [recent, setRecent] = useState('') //최근
   const [recentCheck, setRecentCheck] = useState(false)
   const [recentInfo, setRecentInfo] = useState('')
-  const [deleteState, setDeleteState] = useState(false)
+  const [deleteState, setDeleteState] = useState('')
 
   const userProfile = context.profile || {}
 
@@ -392,9 +392,9 @@ export default function DoExchange({state, dispatch}) {
       }
     })
     const {result, data, message} = res
-    setDeleteState(false)
     setModiBool(false)
     if (result === 'success') {
+      setDeleteState('')
     } else {
       context.action.alert({
         msg: message
@@ -412,6 +412,7 @@ export default function DoExchange({state, dispatch}) {
       }
     })
     const {result, data, message} = res
+
     setModiBool(false)
     if (result === 'success') {
     } else {
@@ -486,10 +487,11 @@ export default function DoExchange({state, dispatch}) {
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
   }, [])
+  console.log(deleteState)
   useEffect(() => {
-    if (modiBool && deleteState !== false) {
+    if (modiBool && deleteState !== '') {
       fetchDeleteAccount()
-    } else if (modiBool) {
+    } else if (modiBool && deleteState === '') {
       fetchModiAccount()
     } else if (addBool && !modiBool) {
       fetchAddAccount()

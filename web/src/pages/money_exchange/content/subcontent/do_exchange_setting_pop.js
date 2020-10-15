@@ -29,7 +29,7 @@ export default function detailPopup(props) {
       },
       //캔슬콜백처리
       cancelCallback: () => {},
-      msg: '계좌를 정말로 삭제하시겠습니까?'
+      msg: '선택하신 환전 계좌정보를 삭제하시겠습니까?'
     })
   }
   const applyClick = () => {
