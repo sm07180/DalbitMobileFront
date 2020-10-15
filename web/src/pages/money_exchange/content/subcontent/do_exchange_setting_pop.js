@@ -48,7 +48,6 @@ export default function detailPopup(props) {
   }, [])
   return (
     <PopupWrap>
-      ``
       <div className="content-wrap">
         <div className="title-wrap">
           <div className="text">계좌 수정</div>
