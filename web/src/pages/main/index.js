@@ -3,16 +3,16 @@
  * @brief 메인페이지
  */
 import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
-import {NavLink} from 'react-router-dom'
-import {Link} from 'react-router-dom'
+import {useHistory, NavLink} from 'react-router-dom'
 //context
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
-import {StoreLink} from 'context/link'
-import qs from 'query-string'
+import {RoomMake} from 'context/room'
+import {clipExit} from 'pages/common/clipPlayer/clip_func'
+import {Hybrid} from 'context/hybrid'
 //import Lottie from 'react-lottie'
-
 // components
 import Layout from 'pages/common/layout'
 import MainSlideList from './component/mainSlideList.js'
@@ -28,11 +28,6 @@ import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 
 import Swiper from 'react-id-swiper'
-import {useHistory} from 'react-router-dom'
-import Utility from 'components/lib/utility'
-import {RoomMake} from 'context/room'
-import {clipExit} from 'pages/common/clipPlayer/clip_func'
-import {Hybrid} from 'context/hybrid'
 
 // static
 import detailListIcon from './static/detaillist_circle_w.svg'
@@ -48,11 +43,11 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 
 import 'styles/main.scss'
 
-let concatenating = false
+// let moreState = false
 let tempScrollEvent = null
 let touchStartY = null
 let touchEndY = null
-const records = 20
+const records = 8
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -135,7 +130,7 @@ export default (props) => {
       const {list, paging} = broadcastList.data
       if (paging) {
         const {totalPage, page} = paging
-        setLivePage(page)
+        // setLivePage(page)
         setTotalLivePage(totalPage)
         setliveType({
           roomType: '',
@@ -146,43 +141,8 @@ export default (props) => {
     }
   }
 
-  const fetchLiveList = async (arg) => {
-    if (!arg) setLiveList(null)
-    let param = {
-      page: livePage,
-      records: records,
-      roomType: liveType.roomType,
-      searchType: liveAlign,
-      gender: liveGender
-    }
-    console.log(param)
-    const res = await Api.broad_list({
-      params: param
-    })
-    if (res.result === 'success') {
-      const {list, paging} = res.data
-      console.log(res.data, paging)
-      if (paging) {
-        const {totalPage, page, next} = paging
-        setLivePage(next)
-        setTotalLivePage(totalPage)
-        if (page <= totalPage && arg) {
-          const currentList = [...liveList]
-          const concatenated = currentList.concat(list)
-          setLiveList(concatenated)
-        } else {
-          console.log('no next')
-          setLiveList(list)
-        }
-      } else {
-        console.log('else')
-        setLiveList(list)
-      }
-    }
-  }
-
   const concatLiveList = async () => {
-    concatenating = true
+    moreState = true
 
     const currentList = [...liveList]
     console.debug()
@@ -200,7 +160,7 @@ export default (props) => {
       const {list, paging} = broadcastList.data
       if (paging) {
         const {totalPage, page} = paging
-        setLivePage(page)
+        // setLivePage(page)
         setTotalLivePage(totalPage)
       }
 
@@ -217,7 +177,7 @@ export default (props) => {
       roomType: '',
       liveListPage: 1
     })
-    setLivePage(1)
+    // setLivePage(1)
     // fetchLiveList(true)
   }
 
@@ -272,55 +232,7 @@ export default (props) => {
   const goRank = () => {
     history.push(`/rank`, rankType)
   }
-  const windowScrollEvent = () => {
-    const GnbHeight = 48
-    const sectionMarginTop = 30
-    const LiveTabDefaultHeight = 48
 
-    const MainNode = MainRef.current
-    const SubMainNode = SubMainRef.current
-    const RecommendNode = RecommendRef.current
-    const RankSectionNode = RankSectionRef.current
-    const StarSectionNode = StarSectionRef.current
-    const BannerSectionNode = BannerSectionRef.current
-
-    const LiveSectionNode = LiveSectionRef.current
-    const MainHeight = MainNode.clientHeight
-    // const SubMainHeight = SubMainNode.clientHeight
-    const RecommendHeight = RecommendNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
-
-    const LiveSectionHeight = LiveSectionNode.clientHeight
-
-    let TopSectionHeight
-    if (customHeader['os'] === OS_TYPE['Desktop']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
-    } else {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
-    }
-    if (window.scrollY >= TopSectionHeight) {
-      setLiveCategoryFixed(true)
-    } else {
-      setLiveCategoryFixed(false)
-      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
-    }
-
-    const GAP = 100
-    if (
-      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
-      !concatenating &&
-      Array.isArray(liveList) &&
-      liveList.length &&
-      livePage <= totalLivePage
-    ) {
-      concatenating = true
-      console.log('scroll')
-      // concatLiveList()
-      fetchLiveList(concatenating)
-    }
-  }
   const setPayPopup = () => {
     setPayState(false)
     sessionStorage.removeItem('pay_info')
@@ -362,8 +274,9 @@ export default (props) => {
     // setReloadInit(true)
     // await fetchMainInitData()
     setLiveRefresh(true)
-    await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList()
+    // await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+    // await fetchLiveList()
+    changeCategory(liveType.roomType)
     setLiveRefresh(false)
     // setReloadInit(false)
   }
@@ -563,8 +476,8 @@ export default (props) => {
 
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
-    window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
+    // window.addEventListener('scroll', windowScrollEvent)
+    // tempScrollEvent = windowScrollEvent
 
     if (sessionStorage.getItem('pay_info') !== null) {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
@@ -574,20 +487,79 @@ export default (props) => {
     return () => {
       sessionStorage.removeItem('pay_info')
       window.removeEventListener('popstate', popStateEvent)
-      window.removeEventListener('scroll', windowScrollEvent)
-      window.removeEventListener('scroll', tempScrollEvent)
-      tempScrollEvent = null
-      concatenating = false
+      // window.removeEventListener('scroll', windowScrollEvent)
+      // window.removeEventListener('scroll', tempScrollEvent)
+      // tempScrollEvent = null
+      // moreState = false
     }
   }, [])
 
   // 실시간 라이브 스크롤 이벤트
   useEffect(() => {
-    window.removeEventListener('scroll', tempScrollEvent)
+    let didFetch = false
+
+    const windowScrollEvent = () => {
+      const GnbHeight = 48
+      const sectionMarginTop = 30
+      const LiveTabDefaultHeight = 48
+
+      const MainNode = MainRef.current
+      const SubMainNode = SubMainRef.current
+      const RecommendNode = RecommendRef.current
+      const RankSectionNode = RankSectionRef.current
+      const StarSectionNode = StarSectionRef.current
+      const BannerSectionNode = BannerSectionRef.current
+
+      const LiveSectionNode = LiveSectionRef.current
+      const MainHeight = MainNode.clientHeight
+      // const SubMainHeight = SubMainNode.clientHeight
+      const RecommendHeight = RecommendNode.clientHeight
+      const RankSectionHeight = RankSectionNode.clientHeight
+      const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
+      const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
+
+      const LiveSectionHeight = LiveSectionNode.clientHeight
+
+      let TopSectionHeight
+      if (customHeader['os'] === OS_TYPE['Desktop']) {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+      } else {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+      }
+      if (window.scrollY >= TopSectionHeight) {
+        setLiveCategoryFixed(true)
+      } else {
+        setLiveCategoryFixed(false)
+        if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
+      }
+
+      const GAP = 100
+      console.log(liveType.liveListPage, totalLivePage)
+      if (
+        window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+        liveType.liveListPage < totalLivePage &&
+        !didFetch
+      ) {
+        // moreState = true
+
+        // concatLiveList()
+        // fetchLiveList(moreState)
+        setliveType({
+          ...liveType,
+          liveListPage: liveType.liveListPage + 1
+        })
+      }
+    }
+    console.log('scroll')
+    // window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
-    concatenating = false
-  }, [liveList])
+    // tempScrollEvent = windowScrollEvent
+    // moreState = false
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+      didFetch = true
+    }
+  }, [liveList, totalLivePage, liveType])
 
   // 실시간 라이브 - 카테고리 sorting
   // useEffect(() => {
@@ -596,17 +568,51 @@ export default (props) => {
   // }, [selectedLiveRoomType])
 
   // 실시간 라이브 - 카테고리 sorting
-  const changeCategory = useCallback(
-    (arg) => {
-      console.log('chg', arg)
-      setliveType({
-        roomType: arg,
-        liveListPage: 1
-      })
-      setLivePage(1)
-    },
-    [liveType]
-  )
+  const changeCategory = useCallback((arg) => {
+    setliveType({
+      roomType: arg,
+      liveListPage: 1
+    })
+  }, [])
+
+  const fetchLiveList = async () => {
+    // if (!moreState) {
+    //   console.log('more')
+    //   // setLivePage(1)
+    //   setLiveList(null)
+    // }
+
+    // console.log(livePage)
+    let param = {
+      page: liveType.liveListPage,
+      records: records,
+      roomType: liveType.roomType,
+      searchType: 1,
+      gender: ''
+    }
+    const res = await Api.broad_list({
+      params: param
+    })
+    if (res.result === 'success') {
+      const {list, paging} = res.data
+      // console.log(res.data, paging)
+      if (paging) {
+        const {totalPage, page, next} = paging
+        // setLivePage(next)
+        setTotalLivePage(totalPage)
+        if (liveType.liveListPage > 1) {
+          if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
+            const concatenated = Utility.contactRemoveUnique(liveList, list, 'roomNo')
+            setLiveList(concatenated)
+          }
+        } else {
+          setLiveList(list)
+        }
+      } else {
+        setLiveList(list)
+      }
+    }
+  }
 
   useEffect(() => {
     fetchLiveList()
@@ -863,7 +869,7 @@ export default (props) => {
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
-                    <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                    <LiveList liveList={liveList} liveListType={liveListType} categoryList={categoryList} />
                   </div>
                 ) : (
                   <NoResult />
