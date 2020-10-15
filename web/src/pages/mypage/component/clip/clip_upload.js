@@ -6,6 +6,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import qs from 'query-string'
+import {OS_TYPE} from 'context/config.js'
 //svg
 import PlayIcon from '../clip_play.svg'
 import LikeIcon from '../clip_like.svg'
@@ -125,7 +126,20 @@ function ClipUpload() {
               클립 업로드
             </button>
           ) : (
-            <button className="noResult__uploadBtn" onClick={() => history.push('/clip')}>
+            <button
+              className="noResult__uploadBtn"
+              onClick={() => {
+                //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
+                if (webview === 'new') {
+                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                    history.push(`/clip`)
+                  } else {
+                    return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
+                  }
+                } else {
+                  history.push(`/clip`)
+                }
+              }}>
               청취 하러가기
             </button>
           )}
