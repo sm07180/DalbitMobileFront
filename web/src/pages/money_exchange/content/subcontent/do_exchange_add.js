@@ -14,7 +14,9 @@ export default function MakeAddWrap(props) {
     return newNum.join(' ')
   }
 
-  const ShowSettingPop = (item) => {
+  const ShowSettingPop = (e, item) => {
+    e.stopPropagation()
+
     props.setSettingPopup(true)
     props.setModifyInfo(item)
   }
@@ -34,7 +36,7 @@ export default function MakeAddWrap(props) {
               <span className="accountItem__bankInfo">
                 {bankName} {insert(accountNo)}
               </span>
-              <button className="settingBtn" onClick={() => ShowSettingPop(item)} />
+              <button className="settingBtn" onClick={(e) => ShowSettingPop(e, item)} />
             </div>
           )
         })}

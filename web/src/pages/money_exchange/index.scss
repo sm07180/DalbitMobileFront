@@ -214,6 +214,9 @@
     }
 
     .formData {
+      &.recent {
+        min-height: 400px;
+      }
       &__list {
         display: flex;
         align-items: center;
@@ -524,9 +527,9 @@
         top: 50%;
         transform: translateY(-50%);
         right: 8px;
-        width: 24px;
-        height: 24px;
-        background: url(./static/setting.svg);
+        width: 50px;
+        height: 50px;
+        background: url(./static/setting.svg) no-repeat center center / 24px;
       }
     }
   }

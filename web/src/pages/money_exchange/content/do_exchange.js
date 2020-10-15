@@ -484,9 +484,9 @@ export default function DoExchange({state, dispatch}) {
   }, [])
 
   useEffect(() => {
-    if (modiBool && deleteState !== '') {
+    if (modiBool && deleteState !== false) {
       fetchDeleteAccount()
-    } else if (modiBool) {
+    } else if (modiBool && !deleteState) {
       fetchModiAccount()
     } else if (addBool && !modiBool) {
       fetchAddAccount()

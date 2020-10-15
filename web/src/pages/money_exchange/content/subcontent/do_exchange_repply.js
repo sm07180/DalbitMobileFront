@@ -3,7 +3,7 @@ import React from 'react'
 export default function MakeRepplyWrap({state, inspection, recentCheck, recentInfo}) {
   return (
     <>
-      <div className="formData">
+      <div className={`formData ${recentInfo !== '' ? 'recent' : ''}`}>
         <div className="formData__list formData__list--disabled">
           <div className="formData__title">예금주</div>
           <div className="formData__input">

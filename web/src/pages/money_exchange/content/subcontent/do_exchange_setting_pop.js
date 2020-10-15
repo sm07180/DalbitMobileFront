@@ -103,7 +103,7 @@ export default function detailPopup(props) {
               삭제
             </button>
             <button className="apply-btn" onClick={applyClick}>
-              등록
+              수정
             </button>
           </div>
         </div>
