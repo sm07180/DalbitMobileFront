@@ -207,7 +207,6 @@ export default (props) => {
   }, [])
 
   const ClickUrl = (link) => {
-    alert(webview)
     context.action.updateClose(false)
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
