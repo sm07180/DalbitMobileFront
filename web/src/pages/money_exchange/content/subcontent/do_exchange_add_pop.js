@@ -16,13 +16,27 @@ export default function detailPopup(props) {
     setAddPopup(false)
   }
   const applyClick = () => {
-    setAddPopup(false)
-    props.setAddInfo({
-      name: addName,
-      bank: addBank,
-      accountNumber: addAccountNumber
-    })
-    props.setAddBool(true)
+    if (addName === '') {
+      context.action.alert({
+        msg: '예금주명을 입력해주세요'
+      })
+    } else if (addBank === '') {
+      context.action.alert({
+        msg: '은행을 선택해주세요'
+      })
+    } else if (addAccountNumber === '') {
+      context.action.alert({
+        msg: '계좌번호를 입력해주세요'
+      })
+    } else {
+      setAddPopup(false)
+      props.setAddInfo({
+        name: addName,
+        bank: addBank,
+        accountNumber: addAccountNumber
+      })
+      props.setAddBool(true)
+    }
   }
   const AddBankFunc = (code) => {
     setAddBank(code)

@@ -392,6 +392,7 @@ export default function DoExchange({state, dispatch}) {
       }
     })
     const {result, data, message} = res
+    setDeleteState(false)
     setModiBool(false)
     if (result === 'success') {
     } else {
@@ -482,18 +483,18 @@ export default function DoExchange({state, dispatch}) {
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
   }, [])
-
+  console.log(modiBool)
   useEffect(() => {
     if (modiBool && deleteState !== false) {
       fetchDeleteAccount()
-    } else if (modiBool && !deleteState) {
+    } else if (modiBool) {
       fetchModiAccount()
     } else if (addBool && !modiBool) {
       fetchAddAccount()
     } else {
       fetchSearchAccount()
     }
-  }, [modiBool, addBool])
+  }, [modiBool, addBool, deleteState])
   useEffect(() => {
     if (recent !== '') {
       setRadioCheck(1)

@@ -17,23 +17,45 @@ export default function detailPopup(props) {
     setSettingPopup(false)
   }
   const deletePopup = () => {
-    setSettingPopup(false)
-    props.setDeleteState({
-      state: true,
-      modifyIdx: addIdx
+    context.action.confirm({
+      //콜백처리
+      callback: () => {
+        setSettingPopup(false)
+        props.setDeleteState({
+          state: true,
+          modifyIdx: addIdx
+        })
+        props.setModiBool(true)
+      },
+      //캔슬콜백처리
+      cancelCallback: () => {},
+      msg: '계좌를 정말로 삭제하시겠습니까?'
     })
-    props.setModiBool(true)
   }
   const applyClick = () => {
-    setSettingPopup(false)
-    props.setModiInfo({
-      name: addName,
-      bank: addBank,
-      accountNumber: addAccountNumber,
-      accountName: accountName,
-      idx: addIdx
-    })
-    props.setModiBool(true)
+    if (addName === '') {
+      context.action.alert({
+        msg: '예금주명을 입력해주세요'
+      })
+    } else if (addBank === '') {
+      context.action.alert({
+        msg: '은행을 선택해주세요'
+      })
+    } else if (addAccountNumber === '') {
+      context.action.alert({
+        msg: '계좌번호를 입력해주세요'
+      })
+    } else {
+      setSettingPopup(false)
+      props.setModiInfo({
+        name: addName,
+        bank: addBank,
+        accountNumber: addAccountNumber,
+        accountName: accountName,
+        idx: addIdx
+      })
+      props.setModiBool(true)
+    }
   }
   const AddBankFunc = (code) => {
     setAddBank(code.split(',')[0])
