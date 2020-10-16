@@ -20,7 +20,8 @@ export default function detailPopup(props) {
       context.action.alert({
         msg: '예금주명을 입력해주세요'
       })
-    } else if (addBank === '') {
+    } else if (addBank === '' || addBank.split(',')[0] == 0) {
+      console.log(addBank)
       context.action.alert({
         msg: '은행을 선택해주세요'
       })

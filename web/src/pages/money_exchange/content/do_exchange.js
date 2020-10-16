@@ -397,7 +397,15 @@ export default function DoExchange({state, dispatch}) {
     setModiInfo('')
     setModiBool(false)
     if (result === 'success') {
-      setDeleteState('')
+      context.action.alert({
+        //콜백처리
+        callback: () => {
+          setDeleteState('')
+        },
+        //캔슬콜백처리
+        cancelCallback: () => {},
+        msg: message
+      })
     } else {
       context.action.alert({
         msg: message
@@ -420,6 +428,9 @@ export default function DoExchange({state, dispatch}) {
     setModiInfo('')
     setModiBool(false)
     if (result === 'success') {
+      context.action.alert({
+        msg: message
+      })
     } else {
       context.action.alert({
         msg: message
