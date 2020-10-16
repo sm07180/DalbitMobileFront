@@ -25,9 +25,9 @@ export default function detailPopup(props) {
       context.action.alert({
         msg: '은행을 선택해주세요'
       })
-    } else if (addAccountNumber === '') {
+    } else if (addAccountNumber === '' || addAccountNumber.length < 9) {
       context.action.alert({
-        msg: '계좌번호를 입력해주세요'
+        msg: '계좌번호를 확인해주세요'
       })
     } else {
       setAddPopup(false)
