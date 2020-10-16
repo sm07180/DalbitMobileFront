@@ -115,10 +115,48 @@ export default (props) => {
               const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
               return (
                 <li className="chartListDetailItem" key={idx + 'list'}>
-                  <img onClick={() => fetchDataPlay(clipNo)} className="clipBtnPlay" src={ClipPlayerIcon} />
+                  <img
+                    onClick={() => {
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        }
+                      } else {
+                        fetchDataPlay(clipNo)
+                      }
+                    }}
+                    className="clipBtnPlay"
+                    src={ClipPlayerIcon}
+                  />
                   <div className="chartListDetailItem__thumb">
                     {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                    <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
+                    <img
+                      src={bgImg[`thumb190x190`]}
+                      alt={title}
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          fetchDataPlay(clipNo)
+                        }
+                      }}
+                    />
                     <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
                   </div>
                   <div className="textBox">
