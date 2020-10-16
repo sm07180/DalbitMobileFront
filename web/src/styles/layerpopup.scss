@@ -746,4 +746,99 @@
       }
     }
   }
+
+  .appDownloadPopup {
+    display: flex;
+    flex-direction: column;
+    margin: 0px 16px;
+    &__closeButton {
+      z-index: 1;
+      margin-left: auto;
+      position: relative;
+      width: 32px;
+      height: 32px;
+      font-size: 0;
+      margin-bottom: 8px;
+      background: url('https://image.dalbitlive.com/images/api/close_w_l.svg') no-repeat 0 0;
+    }
+
+    &__monnImg {
+      width: 100%;
+      height: 110px;
+      position: absolute;
+      left: 0px;
+      top: -38px;
+
+      background: url(https://image.dalbitlive.com//images/popup/appdownload/moon.png) no-repeat center;
+      background-size: 110px;
+    }
+
+    &__content {
+      min-width: 328px;
+      position: relative;
+      background: $white;
+      padding: 16px;
+      border-radius: 20px;
+      box-sizing: border-box;
+      b {
+        font-size: 18px;
+        text-align: center;
+        letter-spacing: -0.8px;
+        color: $primary;
+        line-height: 24px;
+        display: block;
+        margin-bottom: 20px;
+        margin-top: 60px;
+      }
+      p {
+        text-align: center;
+        font-size: 14px;
+        color: $black;
+        line-height: 20px;
+        letter-spacing: -0.8px;
+        margin-bottom: 24px;
+        font-weight: bold;
+      }
+
+      button {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 48px;
+        color: $white;
+        font-size: 18px;
+        text-align: center;
+        background: $primary;
+        border-radius: 9px;
+        font-weight: bold;
+        letter-spacing: -0.8px;
+
+        &.androidIcon {
+          &::before {
+            content: '';
+            margin-left: 20px;
+            margin-right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: url(https://image.dalbitlive.com//images/popup/appdownload/app_android_icon.png) center no-repeat $black;
+            background-size: 25px;
+          }
+        }
+
+        &.iosIcon {
+          &::before {
+            content: '';
+            margin-left: 20px;
+            margin-right: 10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: url(https://image.dalbitlive.com//images/popup/appdownload/app_ios_icon.png) center no-repeat $black;
+            background-size: 25px;
+          }
+        }
+      }
+    }
+  }
 }

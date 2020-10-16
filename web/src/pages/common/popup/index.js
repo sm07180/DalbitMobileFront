@@ -20,6 +20,7 @@ import AlarmPop from 'pages/common/alarm_pop'
 import ClipOpen from 'pages/common/clip_open'
 import ClipInfo from 'pages/common/myclip_info'
 import ClipEvent from 'pages/common/clip_event'
+import AppDownAlrt from 'pages/common/appDownAlrt'
 
 //
 export default (props) => {
@@ -91,6 +92,19 @@ export default (props) => {
             <ProofShot />
           </>
         )
+      case 'APPDWON':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <AppDownAlrt />
+          </>
+        )
+
       case 'CLIP_EVENT':
         return (
           <>

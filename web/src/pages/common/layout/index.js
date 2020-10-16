@@ -11,8 +11,10 @@ import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
 import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
-import React, {useContext, useMemo} from 'react'
+import React, {useContext, useMemo, useEffect, useState} from 'react'
 import styled from 'styled-components'
+import Utility from 'components/lib/utility'
+import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
 
 //
 const Layout = (props) => {
@@ -24,6 +26,16 @@ const Layout = (props) => {
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
+  const [appPopupState, setAppPopupState] = useState(true)
+  useEffect(() => {
+    if (context.token.isLogin) {
+      if (Utility.getCookie('AppPopup')) {
+        setAppPopupState(false)
+      } else {
+        setAppPopupState(true)
+      }
+    }
+  }, [context.token.isLogin])
 
   return (
     <>

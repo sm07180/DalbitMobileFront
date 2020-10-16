@@ -5,10 +5,13 @@ import styled from 'styled-components'
 import Room, {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
 
 import Util from 'components/lib/utility.js'
 
 const makeContents = (props) => {
+  const customHeader = JSON.parse(Api.customHeader)
+  const globalCtx = useContext(Context)
   const context = useContext(Context)
   const {list, liveListType, categoryList} = props
   const evenList = list.filter((v, idx) => idx % 2 === 0)
@@ -43,7 +46,13 @@ const makeContents = (props) => {
       <div
         className={`${liveListType === 'detail' ? 'liveList__item' : 'liveList__flex'}`}
         key={`live-${idx}`}
-        onClick={() => alertCheck(roomNo)}>
+        onClick={() => {
+          if (customHeader['os'] === OS_TYPE['Desktop']) {
+            globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 2)
+          } else {
+            alertCheck(roomNo)
+          }
+        }}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
         {os === 3 && <i className="iconPc">PC</i>}
 

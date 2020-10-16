@@ -8,6 +8,7 @@ import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {OS_TYPE} from 'context/config.js'
 //layout
 import Layout from 'pages/common/layout'
 // components
@@ -30,6 +31,8 @@ let tempScrollEvent = null
 let randomData = Math.random() >= 0.5 ? 0 : 4
 export default (props) => {
   const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
+  const globalCtx = useContext(Context)
 
   let history = useHistory()
   //fixed category
@@ -199,7 +202,17 @@ export default (props) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
-        <li className="recomClipItem" key={`popular-` + idx} onClick={() => fetchDataPlay(clipNo)} style={{cursor: 'pointer'}}>
+        <li
+          className="recomClipItem"
+          key={`popular-` + idx}
+          onClick={() => {
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+            } else {
+              fetchDataPlay(clipNo)
+            }
+          }}
+          style={{cursor: 'pointer'}}>
           <span className="recomClipItem__subject">
             {clipType.map((ClipTypeItem, index) => {
               if (ClipTypeItem.value === subjectType) {
@@ -220,7 +233,17 @@ export default (props) => {
       const {bgImg, clipNo, nickName, title} = item
       if (!item) return null
       return (
-        <div className="slideWrap" onClick={() => fetchDataPlay(clipNo)} key={`latest-` + idx} style={{cursor: 'pointer'}}>
+        <div
+          className="slideWrap"
+          onClick={() => {
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+            } else {
+              fetchDataPlay(clipNo)
+            }
+          }}
+          key={`latest-` + idx}
+          style={{cursor: 'pointer'}}>
           <div className="slideWrap__thumb">
             <img src={bgImg['thumb336x336']} alt={title} />
           </div>
@@ -278,7 +301,13 @@ export default (props) => {
               return (
                 <li
                   className="categoryBestItem"
-                  onClick={() => fetchDataPlay(clipNo)}
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}
                   key={idx + `toplist`}
                   style={{zIndex: 7, cursor: 'pointer'}}>
                   <span className="categoryBestItem__num">{rank}</span>

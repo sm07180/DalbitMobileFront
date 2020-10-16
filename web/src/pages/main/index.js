@@ -492,6 +492,7 @@ export default (props) => {
     setLiveRefresh(false)
     // setReloadInit(false)
   }
+
   const mainTouchEnd = useCallback(
     async (e) => {
       if (reloadInit === true) return
@@ -612,7 +613,8 @@ export default (props) => {
                 className="broadBtn"
                 onClick={() => {
                   if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                    globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 1)
+                    // window.location.href = 'https://inforexseoul.page.link/Ws4t'
                   } else {
                     if (!broadcastBtnActive) {
                       if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
