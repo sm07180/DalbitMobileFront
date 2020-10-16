@@ -132,7 +132,6 @@ export default () => {
   }, [selectedPay])
 
   const makeDisabled = (type) => {
-    console.log(Number(totalPrice) * totalQuantity)
     switch (type) {
       case '페이코':
         if (Number(totalPrice) * totalQuantity > 100000) return true
@@ -157,7 +156,6 @@ export default () => {
     }
     return currentPayMethod.map((item, idx) => {
       const {type} = item
-      console.log('type', type)
       const disabledState = makeDisabled(type)
       return (
         <button
@@ -350,6 +348,10 @@ const Content = styled.div`
       &.on {
         border-color: ${COLOR_MAIN};
         color: ${COLOR_MAIN};
+      }
+      &:disabled {
+        color: #9e9e9e;
+        background: #f5f5f5;
       }
     }
     button:nth-child(1) {
