@@ -26,7 +26,7 @@ const Layout = (props) => {
   })
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
-  const [appPopupState, setAppPopupState] = useState(true)
+  const [appPopupState, setAppPopupState] = useState(false)
   useEffect(() => {
     if (context.token.isLogin) {
       if (Utility.getCookie('AppPopup')) {
