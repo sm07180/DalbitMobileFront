@@ -12,7 +12,7 @@ export default function detailPopup(props) {
   const [addAccountNumber, setAccountNumber] = useState('')
   const [accountName, setAccountName] = useState('')
   const [addIdx, setAddIdx] = useState('')
-
+  const [beforeAccount, setBeforeAccount] = useState('')
   const closePopup = () => {
     setSettingPopup(false)
   }
@@ -23,7 +23,8 @@ export default function detailPopup(props) {
         setSettingPopup(false)
         props.setDeleteState({
           state: true,
-          modifyIdx: addIdx
+          modifyIdx: addIdx,
+          beforeAccount: beforeAccount
         })
         props.setModiBool(true)
       },
@@ -52,6 +53,7 @@ export default function detailPopup(props) {
         bank: addBank,
         accountNumber: addAccountNumber,
         accountName: accountName,
+        beforeAccount: beforeAccount,
         idx: addIdx
       })
       props.setModiBool(true)
@@ -65,6 +67,7 @@ export default function detailPopup(props) {
     setAddBank(modifyInfo.bankCode)
     setAddName(modifyInfo.accountName)
     setAccountNumber(modifyInfo.accountNo)
+    setBeforeAccount(modifyInfo.accountNo)
     setAccountName(modifyInfo.bankName)
     setAddIdx(modifyInfo.idx)
   }, [])

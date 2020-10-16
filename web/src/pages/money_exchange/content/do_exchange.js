@@ -388,7 +388,8 @@ export default function DoExchange({state, dispatch}) {
   async function fetchDeleteAccount() {
     const res = await Api.exchangeDeleteAccount({
       data: {
-        idx: deleteState.modifyIdx
+        idx: deleteState.modifyIdx,
+        beforeAccountNo: deleteState.beforeAccount
       }
     })
     const {result, data, message} = res
@@ -408,6 +409,7 @@ export default function DoExchange({state, dispatch}) {
         accountNo: modiInfo.accountNumber,
         bankCode: modiInfo.bank,
         bankName: modiInfo.accountName,
+        beforeAccountNo: modiInfo.beforeAccount,
         idx: modiInfo.idx
       }
     })
@@ -487,7 +489,7 @@ export default function DoExchange({state, dispatch}) {
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
   }, [])
-  console.log(deleteState)
+
   useEffect(() => {
     if (modiBool && deleteState !== '') {
       fetchDeleteAccount()
