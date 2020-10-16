@@ -1,25 +1,35 @@
 import React from 'react'
 
-export default function MakeRepplyWrap({state, inspection}) {
+export default function MakeRepplyWrap({state, inspection, recentCheck, recentInfo}) {
   return (
     <>
-      <div className="formData">
+      <div className={`formData ${recentInfo !== '' ? 'recent' : ''}`}>
         <div className="formData__list formData__list--disabled">
           <div className="formData__title">예금주</div>
           <div className="formData__input">
-            <div className="formData__input--disable">{state.accountName || ''}</div>
+            <div className="formData__input--disable">{recentInfo !== '' ? recentInfo.accountName : state.accountName || ''}</div>
           </div>
         </div>
         <div className="formData__list formData__list--disabled">
           <div className="formData__title">은행</div>
           <div className="formData__input">
             <div className="formData__input--disable">
-              {bankList.findIndex((v) => {
-                return v.value == state.bankCode
-              }) !== -1
+              {recentInfo === ''
+                ? bankList.findIndex((v) => {
+                    return v.value == state.bankCode
+                  }) !== -1
+                  ? bankList[
+                      bankList.findIndex((v) => {
+                        return v.value == state.bankCode
+                      })
+                    ].text
+                  : ''
+                : bankList.findIndex((v) => {
+                    return v.value == recentInfo.bankCode
+                  }) !== -1
                 ? bankList[
                     bankList.findIndex((v) => {
-                      return v.value == state.bankCode
+                      return v.value == recentInfo.bankCode
                     })
                   ].text
                 : ''}
@@ -29,30 +39,34 @@ export default function MakeRepplyWrap({state, inspection}) {
         <div className="formData__list formData__list--disabled">
           <div className="formData__title">계좌번호</div>
           <div className="formData__input">
-            <div className="formData__input--disable">{state.accountNo}</div>
+            <div className="formData__input--disable">{recentInfo !== '' ? recentInfo.accountNo : state.accountNo}</div>
           </div>
         </div>
-        <div className="formData__list formData__list--disabled">
-          <div className="formData__title">주민등록번호</div>
-          <div className="formData__input">
-            <span className="formData__input">{state.socialNo || ''}</span>
-            <span className="formData__input--line">-</span>
-            <span className="formData__input">*******</span>
-          </div>
-        </div>
-        <div className="formData__list formData__list--disabled">
-          <div className="formData__title">전화번호</div>
-          <div className="formData__input">
-            <div className="formData__input--disable">{state.phoneNo || ''}</div>
-          </div>
-        </div>
-        <div className="formData__list formData__list--disabled">
-          <div className="formData__title">주소</div>
-          <div className="formData__input--address">
-            <div className="formData__input--disable">{state.address1 || ''}</div>
-            {state.address2 && <div className="formData__input--disable formData__input--address--mt">{state.address2}</div>}
-          </div>
-        </div>
+        {!recentCheck && (
+          <>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">주민등록번호</div>
+              <div className="formData__input">
+                <span className="formData__input">{state.socialNo || ''}</span>
+                <span className="formData__input--line">-</span>
+                <span className="formData__input">*******</span>
+              </div>
+            </div>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">전화번호</div>
+              <div className="formData__input">
+                <div className="formData__input--disable">{state.phoneNo || ''}</div>
+              </div>
+            </div>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">주소</div>
+              <div className="formData__input--address">
+                <div className="formData__input--disable">{state.address1 || ''}</div>
+                {state.address2 && <div className="formData__input--disable formData__input--address--mt">{state.address2}</div>}
+              </div>
+            </div>
+          </>
+        )}
         <button className="doExchangeButton active" onClick={() => inspection(1)}>
           환전 신청하기
         </button>

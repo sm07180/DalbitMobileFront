@@ -2649,6 +2649,38 @@ export default class API {
       method: 'GET'
     })
   }
+  // 환전하기 리뉴얼
+
+  static exchangeAddAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/add',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeSearchAccount = async () => {
+    return await ajax({
+      url: '/member/exchange/account/list',
+      method: 'GET'
+    })
+  }
+  static exchangeDeleteAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeEditAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/edit',
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null
