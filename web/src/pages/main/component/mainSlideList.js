@@ -63,7 +63,7 @@ export default (props) => {
                             }
                           })
                         } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                         }
                       } else {
                         RoomJoin({roomNo: roomNo})
