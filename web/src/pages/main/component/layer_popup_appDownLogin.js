@@ -8,6 +8,8 @@ import Utility from 'components/lib/utility'
 import 'styles/layerpopup.scss'
 
 export default function LayerPopupAppDownLogin(props) {
+  const context = useContext(Context)
+
   const {appPopupState, setAppPopupState} = props
   const handleDimClick = () => {
     setAppPopupState(false)

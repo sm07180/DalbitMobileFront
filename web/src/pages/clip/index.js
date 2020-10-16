@@ -207,7 +207,7 @@ export default (props) => {
           key={`popular-` + idx}
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
+              if (context.token.isLogin === false) {
                 context.action.alert({
                   msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
                   callback: () => {
@@ -215,7 +215,7 @@ export default (props) => {
                   }
                 })
               } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
               fetchDataPlay(clipNo)
