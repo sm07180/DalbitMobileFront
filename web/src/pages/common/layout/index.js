@@ -16,6 +16,8 @@ import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
 
+import Api from 'context/api'
+import {OS_TYPE} from 'context/config'
 //
 const Layout = (props) => {
   const {children, webview} = props
@@ -27,11 +29,17 @@ const Layout = (props) => {
   const isMainPage = location.pathname === '/' ? true : false
   //---------------------------------------------------------------------
   const [appPopupState, setAppPopupState] = useState(false)
+
+  const customHeader = document.getElementById('customHeader')
+
   useEffect(() => {
-    if (context.token.isLogin) {
+    const customHeader = JSON.parse(Api.customHeader)
+    if (context.token.isLogin && customHeader['os'] === OS_TYPE.Desktop) {
+      console.log('??!!')
       if (Utility.getCookie('AppPopup')) {
         setAppPopupState(false)
       } else {
+        console.log('??')
         setAppPopupState(true)
       }
     }
