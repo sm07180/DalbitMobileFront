@@ -75,26 +75,24 @@ export default (props) => {
             </h4>
           )}
           <div className={`total__member ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && memberList.length !== 0 && (
-              <h4 className="Title">
+            {filterType === 0 && (
+              <h4 className="Title" onClick={() => props.setCategoryType(1)}>
                 DJ <span className="Title__count">{total && total.memtotal}</span>
-                {CategoryType === 0 && memberList && total.memtotal > 2 && (
-                  <img src={ArrowIcon} onClick={() => props.setCategoryType(1)} />
-                )}
+                {CategoryType === 0 && memberList && <img src={ArrowIcon} />}
               </h4>
             )}
             {memberList && memberList.length !== 0 ? (
               (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
                 const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
                 return (
-                  <div key={`${idx}+categoryTab`} className="memberItem">
+                  <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
                     {roomNo !== '' && (
                       <button onClick={() => Join(roomNo, memNo)} className="liveBtn">
                         <img src={LiveIcon} />
                         LIVE
                       </button>
                     )}
-                    <img src={profImg.thumb190x190} className="memberItem__profImg" onClick={() => Link(memNo)} />
+                    <img src={profImg.thumb190x190} className="memberItem__profImg" />
                     <div className="memberItem__info">
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
@@ -126,12 +124,10 @@ export default (props) => {
             </h4>
           )}
           <div className={`total__live ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && liveList.length !== 0 && (
-              <h4 className="Title">
+            {filterType === 0 && (
+              <h4 className="Title" onClick={() => props.setCategoryType(2)}>
                 방송 <span className="Title__count">{total && total.livetotal}</span>
-                {CategoryType === 0 && liveList && total.livetotal > 2 && (
-                  <img src={ArrowIcon} onClick={() => props.setCategoryType(2)} />
-                )}
+                {CategoryType === 0 && liveList && <img src={ArrowIcon} />}
               </h4>
             )}
             <div className="chartListDetail pdl0">
@@ -139,10 +135,10 @@ export default (props) => {
                 (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
                   const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt, roomNo, memNo} = item
                   return (
-                    <li className="chartListDetailItem" key={idx + 'list'}>
+                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => Join(roomNo, memNo)}>
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                        <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => Join(roomNo, memNo)} />
+                        <img src={bgImg[`thumb190x190`]} alt={title} />
                       </div>
                       <div className="textBox">
                         <p className="textBox__subject">
@@ -190,18 +186,14 @@ export default (props) => {
           {filterType !== 0 && CategoryType !== 0 && clipList.length !== 0 && (
             <h4 className="Title topPositon">
               클립 <span className="Title__count">{total && total.cliptotal}</span>
-              {CategoryType === 0 && clipList && total.cliptotal > 2 && (
-                <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />
-              )}
+              {CategoryType === 0 && clipList && <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />}
             </h4>
           )}
           <div className="total__clip borderNone">
-            {filterType === 0 && clipList.length !== 0 && (
-              <h4 className="Title">
+            {filterType === 0 && (
+              <h4 className="Title" onClick={() => props.setCategoryType(3)}>
                 클립 <span className="Title__count">{total && total.cliptotal}</span>
-                {CategoryType === 0 && clipList && total.cliptotal > 2 && (
-                  <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />
-                )}
+                {CategoryType === 0 && clipList && <img src={ArrowIcon} />}
               </h4>
             )}
             <div className="chartListDetail pdl0">
@@ -209,8 +201,8 @@ export default (props) => {
                 (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
                   const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
                   return (
-                    <li className="chartListDetailItem" key={idx + 'list'}>
-                      <img onClick={() => fetchDataPlay(clipNo)} className="clipBtnPlay" src={ClipPlayerIcon} />
+                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
+                      <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                         <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
