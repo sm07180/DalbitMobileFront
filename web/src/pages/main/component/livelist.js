@@ -130,7 +130,7 @@ const makeContents = (props) => {
               </div>
 
               {boostCnt > 0 ? (
-                <div className="value">
+                <div className="value isBoost">
                   <i className="value--boost"></i>
                   <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
                 </div>

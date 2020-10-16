@@ -437,7 +437,7 @@ export const RoomMake = async (context) => {
     const apiSetting = await Api.getBroadcastSetting()
     if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
       broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
-      broadSetting['djListenerOut'] = apiSetting.data['djListenerIn']
+      broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
     }
   }
   if (__NODE_ENV !== 'dev' && _os === 1 && appBuild < 32) {
