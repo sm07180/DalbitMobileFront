@@ -194,7 +194,7 @@ export default () => {
           <label>결제상품</label>
           <p>{name}</p>
         </div>
-        <div className="field">
+        {/*<div className="field">
           <label>상품수량</label>
           <p className="quantity">
             <button className="plus" onClick={() => quantityCalc('plus')}>
@@ -205,7 +205,7 @@ export default () => {
               -
             </button>
           </p>
-        </div>
+        </div>*/}
         <div className="field">
           <label>결제금액</label>
           <p>
