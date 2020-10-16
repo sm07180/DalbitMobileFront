@@ -116,7 +116,16 @@ export default (props) => {
           key={idx + 'list'}
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
             } else {
               fetchDataPlay(clipNo)
             }

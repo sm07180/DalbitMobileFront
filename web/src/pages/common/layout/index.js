@@ -61,6 +61,9 @@ const Layout = (props) => {
       <Message {...props} />
       {/* IP노출 */}
       <Ip {...props} />
+
+      {/* 앱 다운 팝업 안내 */}
+      <LayerPopupAppDownLogin {...props} />
     </>
   )
 }

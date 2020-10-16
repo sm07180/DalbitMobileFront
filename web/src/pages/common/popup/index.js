@@ -92,7 +92,7 @@ export default (props) => {
             <ProofShot />
           </>
         )
-      case 'APPDWON':
+      case 'APPDOWN':
         return (
           <>
             <button

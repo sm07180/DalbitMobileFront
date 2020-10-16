@@ -7,6 +7,7 @@ import Room, {RoomJoin} from 'context/room'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import qs from 'query-string'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {OS_TYPE} from 'context/config'
 //static
 import AllIcon from '../static/all.svg'
 import FanIcon from '../static/fan.svg'
@@ -20,6 +21,7 @@ export default (props) => {
   // ctx && path
   const context = useContext(Context)
   const history = useHistory()
+  const customHeader = JSON.parse(API.customHeader)
   //props
   const {recoList, clipType, state, recoListClip} = props
   // state
@@ -86,7 +88,17 @@ export default (props) => {
                   className="simpleContainer"
                   key={`${idx}+broadRecomendList`}
                   style={{backgroundImage: `url(${bgImg.thumb336x336})`}}
-                  onClick={() => RoomJoin({roomNo: roomNo})}>
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        history.push('/login')
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                      }
+                    } else {
+                      RoomJoin({roomNo: roomNo})
+                    }
+                  }}>
                   <div className="simpleContainer__info">
                     <div className="simpleContainer__iconBox">
                       <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />

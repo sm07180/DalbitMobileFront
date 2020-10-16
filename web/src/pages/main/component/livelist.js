@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
@@ -10,6 +11,7 @@ import {OS_TYPE} from 'context/config.js'
 import Util from 'components/lib/utility.js'
 
 const makeContents = (props) => {
+  let history = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
   const globalCtx = useContext(Context)
   const context = useContext(Context)
@@ -48,7 +50,16 @@ const makeContents = (props) => {
         key={`live-${idx}`}
         onClick={() => {
           if (customHeader['os'] === OS_TYPE['Desktop']) {
-            globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 2)
+            if (globalCtx.token.isLogin === false) {
+              globalCtx.action.alert({
+                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                callback: () => {
+                  history.push('/login')
+                }
+              })
+            } else {
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+            }
           } else {
             alertCheck(roomNo)
           }

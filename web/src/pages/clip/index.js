@@ -207,7 +207,16 @@ export default (props) => {
           key={`popular-` + idx}
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
             } else {
               fetchDataPlay(clipNo)
             }
@@ -237,7 +246,16 @@ export default (props) => {
           className="slideWrap"
           onClick={() => {
             if (customHeader['os'] === OS_TYPE['Desktop']) {
-              globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
             } else {
               fetchDataPlay(clipNo)
             }
@@ -303,7 +321,16 @@ export default (props) => {
                   className="categoryBestItem"
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      globalCtx.action.updatePopup('APPDWON', 'appDownAlrt', 4)
+                      if (globalCtx.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
                     } else {
                       fetchDataPlay(clipNo)
                     }

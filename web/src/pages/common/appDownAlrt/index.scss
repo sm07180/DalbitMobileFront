@@ -11,10 +11,12 @@
     font-size: 0;
     margin-bottom: 8px;
     background: url('https://image.dalbitlive.com/images/api/close_w_l.svg') no-repeat 0 0;
+    z-index: 1;
   }
 
   &__monnImg {
-    width: 100%;
+    width: 236px;
+    left: 30px;
     height: 110px;
     background: url('https://image.dalbitlive.com//images/popup/appdownload/moon.png') no-repeat center;
     background-size: 110px;
