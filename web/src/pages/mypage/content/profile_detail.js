@@ -28,6 +28,7 @@ export default (props) => {
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   const {profile, location, webview, locHash} = props
+  const customHeader = JSON.parse(Api.customHeader)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -379,31 +380,44 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              if (webview === 'new') {
-                if (
-                  context.customHeader['os'] === OS_TYPE['Android'] ||
-                  (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
-                ) {
-                  //IOS 웹뷰에서 같은 방 진입시
-                  if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
-                    return Hybrid('CloseLayerPopup')
-                  }
-                  //
-                  return RoomJoin({roomNo: profile.roomNo})
-                }
-              }
-
-              if (webview === 'new' && Utility.getCookie('listen_room_no')) {
-                return false
-              }
-
-              if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
-              } else {
-                if (webview === 'new' && Utility.getCookie('listen_room_no') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                  return false
+              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                if (context.token.isLogin === false) {
+                  context.action.alert({
+                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    callback: () => {
+                      history.push('/login')
+                    }
+                  })
                 } else {
-                  RoomJoin({roomNo: profile.roomNo})
+                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                }
+              } else {
+                if (webview === 'new') {
+                  if (
+                    context.customHeader['os'] === OS_TYPE['Android'] ||
+                    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
+                  ) {
+                    //IOS 웹뷰에서 같은 방 진입시
+                    if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
+                      return Hybrid('CloseLayerPopup')
+                    }
+                    //
+                    return RoomJoin({roomNo: profile.roomNo})
+                  }
+                }
+
+                if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                  return false
+                }
+
+                if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
+                  return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                } else {
+                  if (webview === 'new' && Utility.getCookie('listen_room_no') && context.customHeader['os'] === OS_TYPE['IOS']) {
+                    return false
+                  } else {
+                    RoomJoin({roomNo: profile.roomNo})
+                  }
                 }
               }
             }}>

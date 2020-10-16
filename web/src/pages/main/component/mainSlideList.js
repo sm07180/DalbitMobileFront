@@ -1,15 +1,17 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-
+import Api from 'context/api'
 import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 
 import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import {OS_TYPE} from 'context/config.js'
 
 export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
+  const customHeader = JSON.parse(Api.customHeader)
   const {list} = props
 
   const swiperParams = {
@@ -52,7 +54,20 @@ export default (props) => {
                         }
                       }
                     } else {
-                      RoomJoin({roomNo: roomNo})
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                        }
+                      } else {
+                        RoomJoin({roomNo: roomNo})
+                      }
                     }
                   }
                 }}>

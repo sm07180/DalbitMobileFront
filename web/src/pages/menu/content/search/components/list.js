@@ -7,6 +7,7 @@ import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 import API from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 //static
 import FemaleIcon from '../static/female.svg'
 import MaleIcon from '../static/male.svg'
@@ -24,6 +25,7 @@ export default (props) => {
   const {memberList, clipList, liveList, total, clipType, CategoryType, filterType} = props
   // ctx && path
   const context = useContext(Context)
+  const customHeader = JSON.parse(API.customHeader)
   const history = useHistory()
   // link & join & clip play
   const Link = (memNo) => {
@@ -87,7 +89,24 @@ export default (props) => {
                 return (
                   <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
                     {roomNo !== '' && (
-                      <button onClick={() => Join(roomNo, memNo)} className="liveBtn">
+                      <button
+                        onClick={() => {
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                            }
+                          } else {
+                            Join(roomNo, memNo)
+                          }
+                        }}
+                        className="liveBtn">
                         <img src={LiveIcon} />
                         LIVE
                       </button>
@@ -135,7 +154,25 @@ export default (props) => {
                 (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
                   const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt, roomNo, memNo} = item
                   return (
-                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => Join(roomNo, memNo)}>
+                    <li
+                      className="chartListDetailItem"
+                      key={idx + 'list'}
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          Join(roomNo, memNo)
+                        }
+                      }}>
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                         <img src={bgImg[`thumb190x190`]} alt={title} />
@@ -201,11 +238,48 @@ export default (props) => {
                 (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
                   const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
                   return (
-                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
+                    <li
+                      className="chartListDetailItem"
+                      key={idx + 'list'}
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          fetchDataPlay(clipNo)
+                        }
+                      }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                        <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
+                        <img
+                          src={bgImg[`thumb190x190`]}
+                          alt={title}
+                          onClick={() => {
+                            if (customHeader['os'] === OS_TYPE['Desktop']) {
+                              if (context.token.isLogin === false) {
+                                context.action.alert({
+                                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                  callback: () => {
+                                    history.push('/login')
+                                  }
+                                })
+                              } else {
+                                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                              }
+                            } else {
+                              fetchDataPlay(clipNo)
+                            }
+                          }}
+                        />
                         <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
                       </div>
                       <div className="textBox">

@@ -240,7 +240,22 @@ export default (props) => {
                   className="chartListSimpleItem"
                   style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
                   key={`simpleList` + idx}
-                  onClick={() => fetchDataPlay(clipNo)}>
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (globalCtx.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
                   <div className="topWrap">
                     <div className="topWrap__status">
                       {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
