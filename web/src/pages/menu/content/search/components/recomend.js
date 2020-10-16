@@ -114,27 +114,26 @@ export default (props) => {
           : recoListClip.map((item, idx) => {
               const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
               return (
-                <li className="chartListDetailItem" key={idx + 'list'}>
-                  <img
-                    onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
+                <li
+                  className="chartListDetailItem"
+                  key={idx + 'list'}
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
                       } else {
-                        fetchDataPlay(clipNo)
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
-                    }}
-                    className="clipBtnPlay"
-                    src={ClipPlayerIcon}
-                  />
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
+                  <img className="clipBtnPlay" src={ClipPlayerIcon} />
                   <div className="chartListDetailItem__thumb">
                     {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                     <img
