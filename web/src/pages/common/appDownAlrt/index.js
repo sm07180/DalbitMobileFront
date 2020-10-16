@@ -25,7 +25,7 @@ export default (props) => {
 
         <b>
           {pageName == 1 ? (
-            '방송방 생성을 '
+            '방송방 생성 및 클립 등록을 '
           ) : pageName == 2 ? (
             '방송방 청취를 '
           ) : pageName == 3 ? (
@@ -35,7 +35,7 @@ export default (props) => {
           ) : (
             <></>
           )}
-          위해서는
+          위해
           <br /> 달빛라이브 어플을 설치하신 후<br /> 이용이 가능합니다.
         </b>
 
