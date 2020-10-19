@@ -6,6 +6,7 @@ import Layout from 'pages/common/layout'
 import ThxGiving from './thanksgiving'
 import ClipEventNative from './clip_event'
 import ClipGiftEvent from './clip_gift_event'
+import AttendEvent from './event_attend_new'
 
 export default () => {
   const params = useParams()
@@ -19,6 +20,8 @@ export default () => {
         return <ClipEventNative />
       case 'clip_gift_event':
         return <ClipGiftEvent />
+      case 'attend_event':
+        return <AttendEvent />
       default:
         return <></>
         break
