@@ -134,60 +134,60 @@ export default () => {
     return currentPayMethod.map((item, idx) => {
       const {type} = item
       return (
-        <button key={idx} className={type === selectedPay.type ? 'on' : ''} onClick={() => setSelectedPay(item)}>
-          {type}
-        </button>
+          <button key={idx} className={type === selectedPay.type ? 'on' : ''} onClick={() => setSelectedPay(item)}>
+            {type}
+          </button>
       )
     })
   }
 
   return (
-    <>
-      {webview !== 'new' && <Header title="달 충전" />}
-      <Content className={webview}>
-        <h2>구매 내역</h2>
-        <div className="field">
-          <label>결제상품</label>
-          <p>{name}</p>
-        </div>
-        <div className="field">
-          <label>결제금액</label>
-          <p>
-            <strong>{Number(price).toLocaleString()} 원</strong>
-          </p>
-        </div>
+      <>
+        {webview !== 'new' && <Header title="달 충전" />}
+        <Content className={webview}>
+          <h2>구매 내역</h2>
+          <div className="field">
+            <label>결제상품</label>
+            <p>{name}</p>
+          </div>
+          <div className="field">
+            <label>결제금액</label>
+            <p>
+              <strong>{Number(price).toLocaleString()} 원</strong>
+            </p>
+          </div>
 
-        <h2 className="more-tab">
-          결제 수단
-          {/* <button
+          <h2 className="more-tab">
+            결제 수단
+            {/* <button
             onClick={() => {
               setMoreState(!moreState)
             }}>
             {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
           </button> */}
-        </h2>
-        <div className="select-item">{createMethodBtn('top')}</div>
-        <div className="more-wrap">
-          {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
-          <div className={`select-item more true`}>{createMethodBtn('more')}</div>
-        </div>
+          </h2>
+          <div className="select-item">{createMethodBtn('top')}</div>
+          <div className="more-wrap">
+            {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
+            <div className={`select-item more true`}>{createMethodBtn('more')}</div>
+          </div>
 
-        <div className="info-wrap">
-          <h5>
-            달 충전 안내
-            <span>
+          <div className="info-wrap">
+            <h5>
+              달 충전 안내
+              <span>
               <strong>결제 문의</strong>1522-0251
             </span>
-          </h5>
-          <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-          <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-          <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-          <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
-        </div>
+            </h5>
+            <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+            <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+            <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+            <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          </div>
 
-        <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
-      </Content>
-    </>
+          <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
+        </Content>
+      </>
   )
 }
 

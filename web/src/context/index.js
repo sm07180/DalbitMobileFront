@@ -101,6 +101,7 @@ const GlobalProvider = (props) => {
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
   const [isDevIp, setIsDevIp] = useState(false)
+  const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
   const [backFunction, setBackFunction] = useState({name: ''})
@@ -187,8 +188,8 @@ const GlobalProvider = (props) => {
       setProfile(profile)
     },
     //팝업컨텐츠
-    updatePopup: (str, terms) => {
-      setPopup([str, terms])
+    updatePopup: (str, terms, pageName) => {
+      setPopup([str, terms, pageName])
       //팝업
       setVisible(true)
     },
@@ -429,6 +430,9 @@ const GlobalProvider = (props) => {
     },
     updateBackFunction: (obj) => {
       setBackFunction(obj)
+    },
+    updateRoomType: (string) => {
+      setRoomType(string)
     }
   }
   //---------------------------------------------------------------------
@@ -500,7 +504,8 @@ const GlobalProvider = (props) => {
     boardIdx,
     boardModifyInfo,
     backState,
-    backFunction
+    backFunction,
+    roomType
   }
   return <Provider value={value}>{props.children}</Provider>
 }

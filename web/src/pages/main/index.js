@@ -190,6 +190,7 @@ export default (props) => {
         const {roomType} = data
         if (roomType) {
           const concatenated = categoryList.concat(roomType)
+          globalCtx.action.updateRoomType(concatenated)
           setCategoryList(concatenated)
         }
       }
@@ -491,6 +492,7 @@ export default (props) => {
     setLiveRefresh(false)
     // setReloadInit(false)
   }
+
   const mainTouchEnd = useCallback(
     async (e) => {
       if (reloadInit === true) return
@@ -611,7 +613,16 @@ export default (props) => {
                 className="broadBtn"
                 onClick={() => {
                   if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+                    if (globalCtx.token.isLogin === false) {
+                      globalCtx.action.alert({
+                        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                        callback: () => {
+                          history.push('/login')
+                        }
+                      })
+                    } else {
+                      globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                    }
                   } else {
                     if (!broadcastBtnActive) {
                       if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {

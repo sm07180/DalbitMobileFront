@@ -2492,6 +2492,9 @@ export default class API {
   static getMyClipData = async (params) => {
     return await ajax({url: '/clip/myclip', method: 'GET', params})
   }
+  static getSearchRecomend = async (params) => {
+    return await ajax({url: '/search/room/recommand/list', method: 'GET', params})
+  }
   /**
    * @brief 1계정 1청취 대응 타기기 방종료
    * @method "POST"
@@ -2644,6 +2647,38 @@ export default class API {
     return await ajax({
       url: '/event/chooseok/purchase/bonus',
       method: 'GET'
+    })
+  }
+  // 환전하기 리뉴얼
+
+  static exchangeAddAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/add',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeSearchAccount = async () => {
+    return await ajax({
+      url: '/member/exchange/account/list',
+      method: 'GET'
+    })
+  }
+  static exchangeDeleteAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeEditAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/edit',
+      method: 'POST',
+      data: data
     })
   }
 }

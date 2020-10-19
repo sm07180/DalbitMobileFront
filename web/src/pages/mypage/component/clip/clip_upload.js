@@ -6,6 +6,7 @@ import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import qs from 'query-string'
+import {OS_TYPE} from 'context/config.js'
 //svg
 import PlayIcon from '../clip_play.svg'
 import LikeIcon from '../clip_like.svg'
@@ -17,6 +18,7 @@ let moreState = false
 function ClipUpload() {
   let history = useHistory()
   let {memNo, category} = useParams()
+  const customHeader = JSON.parse(Api.customHeader)
 
   const context = useContext(Context)
   const {webview} = qs.parse(location.search)
@@ -121,11 +123,54 @@ function ClipUpload() {
             <br /> {context.urlStr === context.profile.memNo && '클립을 업로드해 보세요.'}
           </span>
           {context.urlStr === context.profile.memNo ? (
-            <button className="noResult__uploadBtn" onClick={() => uploadModal()}>
+            <button
+              className="noResult__uploadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
+                  } else {
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
+                  }
+                } else {
+                  uploadModal()
+                }
+              }}>
               클립 업로드
             </button>
           ) : (
-            <button className="noResult__uploadBtn" onClick={() => history.push('/clip')}>
+            <button
+              className="noResult__uploadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
+                  } else {
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                  }
+                } else {
+                  //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
+                  if (webview === 'new') {
+                    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                      history.push(`/clip`)
+                    } else {
+                      return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
+                    }
+                  } else {
+                    history.push(`/clip`)
+                  }
+                }
+              }}>
               청취 하러가기
             </button>
           )}
@@ -139,7 +184,24 @@ function ClipUpload() {
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
-                <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
+                <div
+                  className="uploadList__container"
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     <div className="uploadList__topWrap">
@@ -193,7 +255,22 @@ function ClipUpload() {
                 <React.Fragment key={`uploadList-${idx}`}>
                   <li
                     className="listSimpleItem"
-                    onClick={() => fetchDataPlay(clipNo)}
+                    onClick={() => {
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        }
+                      } else {
+                        fetchDataPlay(clipNo)
+                      }
+                    }}
                     style={{
                       backgroundImage: `url('${bgImg[`thumb336x336`]}')`,
                       height: `${windowHalfWidth}px`,

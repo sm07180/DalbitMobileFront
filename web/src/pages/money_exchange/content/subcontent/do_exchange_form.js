@@ -118,9 +118,6 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
       }
     }
   }
-
-  useEffect(() => {}, [])
-
   useEffect(() => {
     if (state.fSocialNo.length === 6) {
       document.getElementById('bsocialNo').focus()
