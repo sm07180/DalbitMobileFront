@@ -141,7 +141,7 @@ export default (props) => {
         })
         if (res.result === 'success') {
           context.action.toast({
-            msg: '업로드성공'
+            msg: '업로드성공 \n저장버튼을 눌러주세요'
           })
           setPhotoPath(res.data.path)
           setPhotoUploading(false)
@@ -191,7 +191,6 @@ export default (props) => {
     saveUpload()
   }
   const saveUpload = async () => {
-    console.log(photoPath, profile.profImg.path)
     const data = {
       gender: gender,
       nickNm: nickname || profile.nickNm,
