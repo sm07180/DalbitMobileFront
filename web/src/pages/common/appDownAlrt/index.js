@@ -67,7 +67,7 @@ export default (props) => {
           <br />
           이용하실 수 있습니다.
         </p>
-        {osCheck === OS_TYPE['Android'] || osCheck === OS_TYPE['Desktop'] ? (
+        {osCheck === OS_TYPE['Android'] ? (
           <button
             className="androidIcon"
             onClick={() => {

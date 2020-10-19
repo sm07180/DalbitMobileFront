@@ -30,16 +30,14 @@ const Layout = (props) => {
   //---------------------------------------------------------------------
   const [appPopupState, setAppPopupState] = useState(false)
 
-  const customHeader = document.getElementById('customHeader')
+  const customHeader = JSON.parse(Api.customHeader)
+  const noAppCheck = customHeader['os'] === OS_TYPE['Desktop']
 
   useEffect(() => {
-    const customHeader = JSON.parse(Api.customHeader)
-    if (context.token.isLogin && customHeader['os'] === OS_TYPE.Desktop) {
-      console.log('??!!')
+    if (context.token.isLogin && noAppCheck) {
       if (Utility.getCookie('AppPopup')) {
         setAppPopupState(false)
       } else {
-        console.log('??')
         setAppPopupState(true)
       }
     }
