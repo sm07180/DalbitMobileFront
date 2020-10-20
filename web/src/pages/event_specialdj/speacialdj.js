@@ -60,7 +60,7 @@ export default (props) => {
       let reckoning = Math.ceil(minusTime / 3600 / 24 / 1000)
 
       if (reckoning < 1) {
-        return '금일 24:00 종료'
+        return '금일 23:59:59 종료'
       } else {
         return `종료 ${reckoning} 일 전`
       }
