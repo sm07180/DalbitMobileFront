@@ -138,7 +138,9 @@ export default (props) => {
 
   function confirm() {
     context.action.confirm({
-      msg: '작성한 내용으로 스페셜 DJ를 신청하시겠습니까?<br/>(신청 후 수정은 불가능합니다.)',
+      remsg: '신청하시겠습니까?',
+      msg: '스페셜DJ 신청서 작성을 완료한 뒤에는 신청 내용 수정이 불가능합니다.',
+
       //콜백처리
       callback: () => {
         specialdjUpload()
@@ -239,29 +241,33 @@ export default (props) => {
 
   function moreButton() {
     return (
-      <div className="selectBottom">
-        <div className="list__selectBox list__selectBox--bottom">
-          <div className="slectBox">
-            <SelectBox
-              className="specialdjSelect"
-              boxList={selectlist.slice(0, selectlist.length - 1)}
-              onChangeEvent={(e) => setSelect2(e)}
-            />
+      <>
+        <div className="selectBottom">
+          <div className="list__selectBox list__selectBox--bottom">
+            <div className="slectBox">
+              <SelectBox
+                className="specialdjSelect"
+                boxList={selectlist.slice(0, selectlist.length - 1)}
+                onChangeEvent={(e) => setSelect2(e)}
+              />
+            </div>
+            <div className="slectLine">~</div>
+            <div className="slectBox">
+              <SelectBox
+                boxList={nextSelect2}
+                className="specialdjSelect"
+                onChangeEvent={(e) => setSelectsub2(e)}
+                block={select2 === ''}
+              />
+            </div>
+            <button onClick={() => setMorelist(!moreList)}>
+              <img src={minusImg} alt="삭제" className="moerButtonSize" />
+            </button>
           </div>
-          <div className="slectLine">~</div>
-          <div className="slectBox">
-            <SelectBox
-              boxList={nextSelect2}
-              className="specialdjSelect"
-              onChangeEvent={(e) => setSelectsub2(e)}
-              block={select2 === ''}
-            />
-          </div>
-          <button onClick={() => setMorelist(!moreList)}>
-            <img src={minusImg} alt="삭제" className="moerButtonSize" />
-          </button>
         </div>
-      </div>
+
+        <b className="selctNotice">주 방송시간은 최대 2개까지 선택 가능합니다.</b>
+      </>
     )
   }
 
