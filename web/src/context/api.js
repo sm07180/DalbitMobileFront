@@ -2421,6 +2421,14 @@ export default class API {
     return await ajax({url: '/event/lunar/date', method: 'GET', params})
   }
 
+  static getEventRouletteCoupon = async (params) => {
+    return await ajax({url: '/event/roulette/coupon', method: 'GET', params})
+  }
+
+  static getEventRouletteStart = async (params) => {
+    return await ajax({url: '/event/roulette/start', method: 'GET', params})
+  }
+
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }

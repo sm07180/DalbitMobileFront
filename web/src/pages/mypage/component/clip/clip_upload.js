@@ -123,22 +123,52 @@ function ClipUpload() {
             <br /> {context.urlStr === context.profile.memNo && '클립을 업로드해 보세요.'}
           </span>
           {context.urlStr === context.profile.memNo ? (
-            <button className="noResult__uploadBtn" onClick={() => uploadModal()}>
+            <button
+              className="noResult__uploadBtn"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
+                  } else {
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
+                  }
+                } else {
+                  uploadModal()
+                }
+              }}>
               클립 업로드
             </button>
           ) : (
             <button
               className="noResult__uploadBtn"
               onClick={() => {
-                //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
-                if (webview === 'new') {
-                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                    history.push(`/clip`)
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
                   } else {
-                    return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                   }
                 } else {
-                  history.push(`/clip`)
+                  //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
+                  if (webview === 'new') {
+                    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                      history.push(`/clip`)
+                    } else {
+                      return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
+                    }
+                  } else {
+                    history.push(`/clip`)
+                  }
                 }
               }}>
               청취 하러가기
@@ -225,7 +255,22 @@ function ClipUpload() {
                 <React.Fragment key={`uploadList-${idx}`}>
                   <li
                     className="listSimpleItem"
-                    onClick={() => fetchDataPlay(clipNo)}
+                    onClick={() => {
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        }
+                      } else {
+                        fetchDataPlay(clipNo)
+                      }
+                    }}
                     style={{
                       backgroundImage: `url('${bgImg[`thumb336x336`]}')`,
                       height: `${windowHalfWidth}px`,

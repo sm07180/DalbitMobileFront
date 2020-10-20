@@ -97,7 +97,15 @@ function SpecialList({empty}) {
                         <img
                           src={live}
                           onClick={() => {
-                            RoomJoin({roomNo: v.roomNo})
+                            if (customHeader['os'] === OS_TYPE['Desktop']) {
+                              if (context.token.isLogin === false) {
+                                history.push('/login')
+                              } else {
+                                context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                              }
+                            } else {
+                              RoomJoin({roomNo: v.roomNo})
+                            }
                           }}
                           className="liveBox__img"
                         />

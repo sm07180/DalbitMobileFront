@@ -192,18 +192,22 @@ export default () => {
           <label>결제상품</label>
           <p>{name}</p>
         </div>
-        <div className="field">
-          <label>상품수량</label>
-          <p className="quantity">
-            <button className="plus" onClick={() => quantityCalc('plus')}>
-              +
-            </button>
-            <span>{totalQuantity}</span>
-            <button className="minus" onClick={() => quantityCalc('minus')}>
-              -
-            </button>
-          </p>
-        </div>
+
+        {(__NODE_ENV !== 'real' || context.token.memNo === '51594275686446') && (
+          <div className="field">
+            <label>상품수량</label>
+            <p className="quantity">
+              <button className="minus" onClick={() => quantityCalc('minus')}>
+                -
+              </button>
+              <span>{totalQuantity}</span>
+              <button className="plus" onClick={() => quantityCalc('plus')}>
+                +
+              </button>
+            </p>
+          </div>
+        )}
+
         <div className="field">
           <label>결제금액</label>
           <p>
