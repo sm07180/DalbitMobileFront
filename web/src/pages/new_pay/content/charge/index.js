@@ -25,6 +25,8 @@ import Header from 'components/ui/new_header'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
+import icoPlus from '../../static/add.svg'
+import icoMinus from '../../static/minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -44,6 +46,10 @@ export default () => {
 
   //결제 data 셋팅
   const {name, price, itemNo, webview, event} = qs.parse(location.search)
+
+  const [totalQuantity, setTotalQuantity] = useState(1)
+  const [totalPrice, setTOtalPrice] = useState(price)
+
   let pageCode = webview === 'new' ? '2' : '1'
   if (event === '3') pageCode = '3'
 
@@ -78,21 +84,22 @@ export default () => {
         pathname: '/pay/bank',
         state: {
           prdtNm: name,
-          prdtPrice: price,
+          prdtPrice: totalPrice * totalQuantity,
           itemNo: itemNo,
           webview: webview,
-          event: event
+          event: event,
+          itemAmt: totalQuantity
         }
       })
     }
-
     const {result, data, message} = await Api[fetch]({
       data: {
         Prdtnm: name,
-        Prdtprice: price,
+        Prdtprice: totalPrice * totalQuantity,
         itemNo: itemNo,
         pageCode: pageCode,
-        pgCode: code
+        pgCode: code,
+        itemAmt: totalQuantity
       }
     })
 
@@ -124,6 +131,22 @@ export default () => {
     if (selectedPay.type) payFetch()
   }, [selectedPay])
 
+  const makeDisabled = (type) => {
+    switch (type) {
+      case '페이코':
+        if (Number(totalPrice) * totalQuantity > 100000) return true
+      case '티머니':
+        if (Number(totalPrice) * totalQuantity > 500000) return true
+      case '캐시비':
+        if (Number(totalPrice) * totalQuantity > 500000) return true
+      case '휴대폰 결제':
+        if (Number(totalPrice) * totalQuantity > 1000000) return true
+      default:
+        return false
+        break
+    }
+  }
+
   const createMethodBtn = (type) => {
     let currentPayMethod = []
     if (type === 'more') {
@@ -133,61 +156,96 @@ export default () => {
     }
     return currentPayMethod.map((item, idx) => {
       const {type} = item
+      const disabledState = makeDisabled(type)
       return (
-          <button key={idx} className={type === selectedPay.type ? 'on' : ''} onClick={() => setSelectedPay(item)}>
-            {type}
-          </button>
+        <button
+          key={idx}
+          className={type === selectedPay.type ? 'on' : ''}
+          onClick={() => setSelectedPay(item)}
+          disabled={disabledState}>
+          {type}
+        </button>
       )
     })
   }
 
+  const quantityCalc = (type) => {
+    if (type === 'plus') {
+      if (totalQuantity === 10) {
+        return context.action.toast({msg: '최대 10개까지 구매 가능합니다.'})
+      }
+      setTotalQuantity(totalQuantity + 1)
+    } else if (type === 'minus') {
+      if (totalQuantity === 1) {
+        return context.action.toast({msg: '최소 1개부터 구매 가능합니다.'})
+      }
+      setTotalQuantity(totalQuantity - 1)
+    }
+  }
+
   return (
-      <>
-        {webview !== 'new' && <Header title="달 충전" />}
-        <Content className={webview}>
-          <h2>구매 내역</h2>
+    <>
+      {webview !== 'new' && <Header title="달 충전" />}
+      <Content className={webview}>
+        <h2>구매 내역</h2>
+        <div className="field">
+          <label>결제상품</label>
+          <p>{name}</p>
+        </div>
+
+        {(__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') && (
           <div className="field">
-            <label>결제상품</label>
-            <p>{name}</p>
-          </div>
-          <div className="field">
-            <label>결제금액</label>
-            <p>
-              <strong>{Number(price).toLocaleString()} 원</strong>
+            <label>상품수량</label>
+            <p className="quantity">
+              <button className="plus" onClick={() => quantityCalc('plus')}>
+                +
+              </button>
+              <span>{totalQuantity}</span>
+              <button className="minus" onClick={() => quantityCalc('minus')}>
+                -
+              </button>
             </p>
           </div>
+        )}
 
-          <h2 className="more-tab">
-            결제 수단
-            {/* <button
+        <div className="field">
+          <label>결제금액</label>
+          <p>
+            <strong>{(Number(totalPrice) * totalQuantity).toLocaleString()} 원</strong>
+          </p>
+        </div>
+
+        <h2 className="more-tab">
+          결제 수단
+          {/* <button
             onClick={() => {
               setMoreState(!moreState)
             }}>
             {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
           </button> */}
-          </h2>
-          <div className="select-item">{createMethodBtn('top')}</div>
-          <div className="more-wrap">
-            {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
-            <div className={`select-item more true`}>{createMethodBtn('more')}</div>
-          </div>
+        </h2>
+        <div className="select-item">{createMethodBtn('top')}</div>
+        <div className="more-wrap">
+          {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
+          <div className={`select-item more true`}>{createMethodBtn('more')}</div>
+        </div>
 
-          <div className="info-wrap">
-            <h5>
-              달 충전 안내
-              <span>
+        <div className="info-wrap">
+          <h5>
+            달 충전 안내
+            <span>
               <strong>결제 문의</strong>1522-0251
             </span>
-            </h5>
-            <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-            <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-            <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-            <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
-          </div>
+          </h5>
+          <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
+          <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
+          <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
+          <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+        </div>
 
-          <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
-        </Content>
-      </>
+        <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
+      </Content>
+    </>
   )
 }
 
@@ -245,11 +303,34 @@ const Content = styled.div`
       font-weight: bold;
     }
     p {
+      color: #000;
       margin-left: auto;
       font-size: 14px;
       font-weight: bold;
       strong {
         font-size: 18px;
+      }
+      &.quantity {
+        span {
+          display: inline-block;
+          width: 50px;
+          font-size: 18px;
+          font-weight: bold;
+          text-align: center;
+        }
+      }
+      button {
+        width: 24px;
+        height: 24px;
+        background: rgb(238 238 238);
+        text-indent: -9999px;
+        border-radius: 3px;
+        &.plus {
+          background: #eeeeee url(${icoPlus}) no-repeat center;
+        }
+        &.minus {
+          background: #eeeeee url(${icoMinus}) no-repeat center;
+        }
       }
     }
   }
@@ -271,6 +352,10 @@ const Content = styled.div`
       &.on {
         border-color: ${COLOR_MAIN};
         color: ${COLOR_MAIN};
+      }
+      &:disabled {
+        color: #9e9e9e;
+        background: #f5f5f5;
       }
     }
     button:nth-child(1) {
