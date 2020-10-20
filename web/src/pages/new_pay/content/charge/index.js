@@ -197,12 +197,12 @@ export default () => {
           <div className="field">
             <label>상품수량</label>
             <p className="quantity">
-              <button className="plus" onClick={() => quantityCalc('plus')}>
-                +
-              </button>
-              <span>{totalQuantity}</span>
               <button className="minus" onClick={() => quantityCalc('minus')}>
                 -
+              </button>
+              <span>{totalQuantity}</span>
+              <button className="plus" onClick={() => quantityCalc('plus')}>
+                +
               </button>
             </p>
           </div>
