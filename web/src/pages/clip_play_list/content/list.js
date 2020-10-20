@@ -12,6 +12,7 @@ export default () => {
   const playListCtx = useContext(PlayListStore)
 
   const [playClipNo, setPlayClipNo] = useState(sessionStorage.getItem('play_clip_no'))
+  const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx
 
@@ -27,12 +28,13 @@ export default () => {
   const fetchPlayList = async () => {
     const {result, data, message} = await Api.getPlayList({
       params: {
-        sortType: sortType,
+        sortType: 1,
         records: 100
       }
     })
     if (result === 'success') {
       playListCtx.action.updateList(data.list)
+      setTotalList(data.paging.total)
     } else {
       globalCtx.action.alert({msg: message})
     }
@@ -51,13 +53,13 @@ export default () => {
 
   useEffect(() => {
     window.addEventListener('storage', () => {
-      alert('스토리지변경')
+      // alert('스토리지변경')
       setPlayClipNo(sessionStorage.getItem('play_clip_no'))
     })
 
     return () => {
       window.removeEventListener('storage', () => {
-        alert('스토리지변경')
+        // alert('스토리지변경')
         setPlayClipNo(sessionStorage.getItem('play_clip_no'))
       })
     }
@@ -125,8 +127,13 @@ export default () => {
   if (list.length === 0) return null
 
   return (
-    <div className={`playListWrap ${isEdit ? 'off' : 'on'}`}>
-      <ul className="playListBox">{createList()}</ul>
-    </div>
+    <>
+      <div className={`playListWrap ${isEdit ? 'off' : 'on'}`}>
+        <p className="totalListItem">
+          총 목록 수 <span>{totalList}</span>
+        </p>
+        <ul className="playListBox">{createList()}</ul>
+      </div>
+    </>
   )
 }
