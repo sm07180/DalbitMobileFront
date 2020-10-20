@@ -53,9 +53,6 @@ export default function Result({state, dispatch}) {
         <div className="resultWrap__list__notice">
           위의 내용으로 환전 신청이 완료되었습니다.
           <br />
-          <br />
-          환전 신청이 완료되었습니다.
-          <br />
           실제 입금까지는 최대 2~3일 소요될 예정입니다.
           <br />
           관련 문의는 고객센터로 부탁드립니다.

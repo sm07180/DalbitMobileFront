@@ -49,6 +49,13 @@ export default function detailPopup(props) {
       return false
     }
   }
+  const validateName = (name) => {
+    if (name.length > 20) {
+      return false
+    } else {
+      setAddName(name)
+    }
+  }
   return (
     <PopupWrap>
       <div className="content-wrap">
@@ -64,7 +71,12 @@ export default function detailPopup(props) {
               <div className="formData__list">
                 <div className="formData__title">예금주</div>
                 <div className="formData__input">
-                  <input type="text" className="formData__input--text" onChange={(e) => setAddName(e.target.value)} />
+                  <input
+                    type="text"
+                    className="formData__input--text"
+                    onChange={(e) => validateName(e.target.value)}
+                    value={addName}
+                  />
                 </div>
               </div>
               <div className="formData__list">
