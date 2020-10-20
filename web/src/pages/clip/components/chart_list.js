@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {OS_TYPE} from 'context/config.js'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 //svg
 import playIcon from '../static/visit_g_s.svg'
@@ -30,6 +31,8 @@ export default (props) => {
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
+  const customHeader = JSON.parse(Api.customHeader)
+  const globalCtx = useContext(Context)
   //api
   //   if (res.data.paging && res.data.paging.totalPage === 1) {
   const fetchDataList = async (next) => {
@@ -108,7 +111,25 @@ export default (props) => {
         replyCnt
       } = detailsItem
       return (
-        <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
+        <li
+          className="chartListDetailItem"
+          key={idx + 'list'}
+          onClick={() => {
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(clipNo)
+            }
+          }}>
           <div className="chartListDetailItem__thumb">
             {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
             <img src={bgImg[`thumb190x190`]} alt={title} />

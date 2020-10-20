@@ -188,8 +188,8 @@ const GlobalProvider = (props) => {
       setProfile(profile)
     },
     //팝업컨텐츠
-    updatePopup: (str, terms) => {
-      setPopup([str, terms])
+    updatePopup: (str, terms, pageName) => {
+      setPopup([str, terms, pageName])
       //팝업
       setVisible(true)
     },

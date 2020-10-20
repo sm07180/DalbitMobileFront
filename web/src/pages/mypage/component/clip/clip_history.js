@@ -23,6 +23,7 @@ export default function ClipHistory() {
   const [totalPage, setTotalPage] = useState(0)
   const [historyLoding, setHistoryLoading] = useState('')
   const [historyTab, setHistoryTab] = useState(0)
+  const customHeader = JSON.parse(Api.customHeader)
   // fetch data
   const fetchDataList = async () => {
     const {result, data, message} = await Api.getHistoryList({
@@ -100,7 +101,24 @@ export default function ClipHistory() {
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
-                <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
+                <div
+                  className="uploadList__container"
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     <div className="uploadList__topWrap">

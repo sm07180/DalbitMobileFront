@@ -18,6 +18,7 @@ let moreState = false
 function ClipUpload() {
   let history = useHistory()
   let {memNo, category} = useParams()
+  const customHeader = JSON.parse(Api.customHeader)
 
   const context = useContext(Context)
   const {webview} = qs.parse(location.search)
@@ -153,7 +154,24 @@ function ClipUpload() {
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
-                <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
+                <div
+                  className="uploadList__container"
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     <div className="uploadList__topWrap">
