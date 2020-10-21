@@ -47,12 +47,11 @@ export const openAuthPage = (formTagRef) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef, event) => {
+export const authReq = async (code, formTagRef) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
-      authType: '0',
-      url: event
+      authType: '0'
     }
   })
   if (res.result == 'success' && res.code == 0) {
@@ -94,7 +93,7 @@ export default (props) => {
   //인증 요청 버튼
   function authClick() {
     if (event) {
-      return authReq('7', formTag, event)
+      return authReq(event, formTag)
     }
     if (type === 'create') {
       authReq('6', formTag)
@@ -123,6 +122,14 @@ export default (props) => {
             <>
               <h4>
                 <span>처음 방송개설 및 클립등록 시</span>
+                <br />
+                본인인증을 필수로 받으셔야 합니다.
+              </h4>
+            </>
+          ) : event ? (
+            <>
+              <h4>
+                <span>이벤트 참여 또는 경품 수령을 위해</span>
                 <br />
                 본인인증을 필수로 받으셔야 합니다.
               </h4>
