@@ -664,8 +664,11 @@ export default () => {
           if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
         }
         break
-      case '40': //-----------------랭킹
-        if (isLogin) window.location.href = `/rank`
+      case '39': //-----------------좋아요
+        if (isLogin) window.location.href = `/rank?rankType=3&dateType=2`
+        break
+      case '40': //-----------------좋아요 랭킹 일간
+        if (isLogin) window.location.href = `/rank?rankType=3&dateType=1`
         break
       case '41': //-----------------랭킹 > DJ > 일간
         if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`

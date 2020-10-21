@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertSetSpecialDate} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth} from './lib/common_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -34,6 +34,7 @@ import benefitIcon from './static/benefit@3x.png'
 let timer
 let touchStartY = null
 let touchEndY = null
+let initial = true
 const records = 50
 function Ranking() {
   const history = useHistory()
@@ -218,15 +219,46 @@ function Ranking() {
         }
       }
     }
+
+    return () => {
+      initial = true
+    }
   }, [])
 
   useEffect(() => {
     let didFetch = false
-    if (formState.rankType !== RANK_TYPE.SPECIAL) {
-      fetchData()
+    let search = location.search
+
+    if (initial && search) {
+      const searchRankType = parseInt(search.match(/[1-9]/g)[0])
+      const searchDateType = parseInt(search.match(/[1-9]/g)[1])
+      let searchCurrentDate = new Date()
+
+      if (searchDateType === DATE_TYPE.WEEK) {
+        searchCurrentDate = convertMonday()
+      } else if (searchDateType === DATE_TYPE.MONTH) {
+        searchCurrentDate = convertMonth()
+      }
+
+      // 초기화.
+      initial = false
+
+      formDispatch({
+        type: 'SEARCH',
+        val: {
+          rankType: searchRankType,
+          dateType: searchDateType,
+          currentDate: searchCurrentDate
+        }
+      })
     } else {
-      fetchSpecial()
+      if (formState.rankType !== RANK_TYPE.SPECIAL) {
+        fetchData()
+      } else {
+        fetchSpecial()
+      }
     }
+
     async function fetchSpecial() {
       setFetching(true)
       const dateObj = convertSetSpecialDate(formState.currentDate)
