@@ -10,9 +10,7 @@ import ImageCrop from './static/ico-crop.png'
 
 export default () => {
   let history = useHistory()
-
   const {location} = history
-
   const context = useContext(Context)
   const defaultSrc = location.state['src'] || ''
 
@@ -58,14 +56,14 @@ export default () => {
       <div id="imageEditor">
         <Header type="blackBg" />
         <Cropper
-          style={{height: 'calc(100vh - 150px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={imageUrl()}
           viewMode={1}
           guides={true}
-          minCropBoxHeight={10}
-          minCropBoxWidth={10}
+          minCropBoxWidth={100}
+          minCropBoxHeight={100}
           background={false}
           responsive={true}
           autoCropArea={1}
