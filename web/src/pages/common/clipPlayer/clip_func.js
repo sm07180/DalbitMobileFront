@@ -4,9 +4,32 @@ import {Hybrid, NewHybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
+import Api from 'context/api'
 
 export const clipJoin = (data, context, webview) => {
   // console.log('1' + sessionStorage.getItem('listening'))
+
+  let totalData = {playing: data.clipNo}
+
+  const fetchPlayList = async () => {
+    const {result, data, message} = await Api.getPlayList({
+      params: {
+        sortType: 0,
+        records: 100
+      }
+    })
+    if (result === 'success') {
+      const playListClipNo = data.list.map((item) => {
+        return item.clipNo
+      })
+      totalData = {...totalData, list: playListClipNo}
+      console.log(totalData)
+    } else {
+      context.action.alert({msg: message})
+    }
+  }
+
+  fetchPlayList()
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {

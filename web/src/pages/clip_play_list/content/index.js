@@ -70,13 +70,13 @@ export default () => {
     <Layout status="no_gnb">
       <div id="clipPlayList">
         <Header title="재생목록" type="fixed" goBack={goBack} />
-        <button
+        {/* <button
           className={`playlistEdit__headerBtn ${!isEdit ? '' : 'playlistEdit__headerBtn--edit'}`}
           onClick={() => handleBtnClick()}>
           {isEdit ? '완료' : '편집'}
-        </button>
+        </button> */}
         <PlayList />
-        <PlayListEdit />
+        {/* <PlayListEdit /> */}
       </div>
     </Layout>
   )
