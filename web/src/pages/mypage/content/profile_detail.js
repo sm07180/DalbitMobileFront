@@ -487,7 +487,7 @@ export default (props) => {
         )}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-        {profile.liveBadgeList && profile.liveBadgeList.length > 0 && (
+        {((profile.fanBadgeList && profile.fanBadgeList.length > 0) || (profile.liveBadgeList && profile.liveBadgeList.length > 0)) && (
           <div className="badgeWrap">
             <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
           </div>
