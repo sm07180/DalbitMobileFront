@@ -14,7 +14,7 @@ export default () => {
   return (
     <>
       <div id="clipEvent">
-        <h2>이벤트 페이지 추가 생성 확인</h2>
+        <h2>게스트 가이드</h2>
         <button
           onClick={() => {
             window.location.href = '/'
