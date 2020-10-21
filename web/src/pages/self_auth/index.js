@@ -47,11 +47,12 @@ export const openAuthPage = (formTagRef) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef) => {
+export const authReq = async (code, formTagRef, event) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
-      authType: '0'
+      authType: '0',
+      url: event
     }
   })
   if (res.result == 'success' && res.code == 0) {
@@ -80,8 +81,8 @@ export const authReq = async (code, formTagRef) => {
 export default (props) => {
   const location = useLocation()
 
-  const {type} = qs.parse(location.search)
-  console.log(type)
+  const {type, event} = qs.parse(location.search)
+  console.log(type, event)
 
   //---------------------------------------------------------------------
   //context
@@ -92,6 +93,9 @@ export default (props) => {
 
   //인증 요청 버튼
   function authClick() {
+    if (event) {
+      return authReq('7', formTag, event)
+    }
     if (type === 'create') {
       authReq('6', formTag)
     } else {
