@@ -3,6 +3,8 @@ import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
+import qs from 'query-string'
+import {Hybrid} from 'context/hybrid'
 // static
 import closeBtn from './ic_back.svg'
 import closeBtnWhite from './ic_back_white.png'
@@ -10,11 +12,16 @@ import closeBtnWhite from './ic_back_white.png'
 export default (props) => {
   const history = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
+  const {webview} = qs.parse(location.search)
 
   let {goBack, type} = props
   if (goBack === undefined) {
     goBack = () => {
-      return history.goBack()
+      if (webview === 'new') {
+        return Hybrid('CloseLayerPopup')
+      } else {
+        return history.goBack()
+      }
     }
   }
 
