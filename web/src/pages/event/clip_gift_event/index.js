@@ -41,7 +41,6 @@ export default () => {
           <button
             className="btnClose"
             onClick={() => {
-              alert(webview)
               if (webview === 'new') {
                 Hybrid('CloseLayerPopup')
               } else {
