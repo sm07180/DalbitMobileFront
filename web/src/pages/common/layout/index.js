@@ -68,7 +68,7 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
-      {appPopupState === true && context.token.isLogin && (
+      {appPopupState === true && context.token.isLogin && noAppCheck && (
         <>
           <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />
         </>

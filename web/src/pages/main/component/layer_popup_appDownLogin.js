@@ -13,7 +13,7 @@ export default function LayerPopupAppDownLogin(props) {
   const {appPopupState, setAppPopupState} = props
   const handleDimClick = () => {
     setAppPopupState(false)
-    Utility.setCookie('AppPopup', true, 60)
+    Utility.setCookie('AppPopup', true, 9999)
   }
 
   const [osCheck, setOsCheck] = useState(-1)
