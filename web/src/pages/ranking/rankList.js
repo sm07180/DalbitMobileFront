@@ -154,7 +154,20 @@ export default (props) => {
                     <img
                       src={live}
                       onClick={() => {
-                        RoomJoin({roomNo: roomNo})
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                          }
+                        } else {
+                          RoomJoin({roomNo: roomNo})
+                        }
                       }}
                       className="liveBox__img"
                     />

@@ -1,13 +1,16 @@
 import React, {useEffect, useRef, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
 import Room, {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
 
 import Util from 'components/lib/utility.js'
 
+<<<<<<< HEAD
 export default function LiveList(props) {
   const {liveList, liveListType, categoryList} = props
   return (
@@ -39,6 +42,64 @@ export default function LiveList(props) {
             roomNo: roomNo
           })
         }
+=======
+const makeContents = (props) => {
+  let history = useHistory()
+  const customHeader = JSON.parse(Api.customHeader)
+  const globalCtx = useContext(Context)
+  const context = useContext(Context)
+  const {list, liveListType, categoryList} = props
+  const evenList = list.filter((v, idx) => idx % 2 === 0)
+  return list.map((list, idx) => {
+    const {
+      roomNo,
+      roomType,
+      bjProfImg,
+      bjNickNm,
+      bjGender,
+      title,
+      likeCnt,
+      entryCnt,
+      entryType,
+      giftCnt,
+      isSpecial,
+      boostCnt,
+      rank,
+      os,
+      liveBadgeList,
+      isNew,
+      totalCnt
+    } = list
+
+    const alertCheck = (roomNo) => {
+      RoomJoin({
+        roomNo: roomNo
+      })
+    }
+
+    return (
+      <div
+        className={`${liveListType === 'detail' ? 'liveList__item' : 'liveList__flex'}`}
+        key={`live-${idx}`}
+        onClick={() => {
+          if (customHeader['os'] === OS_TYPE['Desktop']) {
+            if (globalCtx.token.isLogin === false) {
+              globalCtx.action.alert({
+                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                callback: () => {
+                  history.push('/login')
+                }
+              })
+            } else {
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+            }
+          } else {
+            alertCheck(roomNo)
+          }
+        }}>
+        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
+        {os === 3 && <i className="iconPc">PC</i>}
+>>>>>>> real
 
         return (
           <div
@@ -130,6 +191,7 @@ export default function LiveList(props) {
                     <span>{Util.printNumber(entryCnt)}</span>
                   </div>
 
+<<<<<<< HEAD
                   {boostCnt > 0 ? (
                     <div className="value">
                       <i className="value--boost"></i>
@@ -147,6 +209,12 @@ export default function LiveList(props) {
                         <span>{Util.printNumber(giftCnt)}</span>
                       </div>
                     )} */}
+=======
+              {boostCnt > 0 ? (
+                <div className="value isBoost">
+                  <i className="value--boost"></i>
+                  <span className="txt_boost">{Util.printNumber(likeCnt)}</span>
+>>>>>>> real
                 </div>
               </div>
             ) : (

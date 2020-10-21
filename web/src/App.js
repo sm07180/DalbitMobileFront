@@ -223,6 +223,17 @@ const App = () => {
       globalCtx.action.updateAdminChecker(false)
     }
   }
+  //SPLASH Room
+  async function fetchSplash() {
+    const res = await Api.splash({})
+    if (res.result === 'success') {
+      const {data} = res
+      const {roomType} = data
+      if (roomType) {
+        globalCtx.action.updateRoomType(roomType)
+      }
+    }
+  }
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
@@ -239,8 +250,8 @@ const App = () => {
   useEffect(() => {
     fetchAdmin()
     myInfoRes()
+    fetchSplash()
   }, [])
-
   function ErrorFallback({error, resetErrorBoundary}) {
     if (error) {
       Api.error_log({

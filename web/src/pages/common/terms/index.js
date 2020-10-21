@@ -28,6 +28,7 @@ export default (props) => {
   const context = useContext(Context)
   //ref
   const termsArea = useRef(null)
+
   //   레이어팝업컨텐츠
   const makeTermsContents = () => {
     switch (context.popup_code[1]) {
@@ -53,6 +54,7 @@ export default (props) => {
       case 'specialdj-starting': {
         return <SpecialdjStarting {...props} />
       }
+
       default:
         return <div>약관 컨텐츠가 정의되지않음</div>
     }

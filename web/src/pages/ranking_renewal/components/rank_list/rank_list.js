@@ -1,8 +1,9 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-
+import Api from 'context/api'
 import {RoomJoin} from 'context/room'
 import {printNumber} from '../../lib/common_fn'
+import {OS_TYPE} from 'context/config.js'
 
 // context
 import {Context} from 'context'
@@ -21,6 +22,7 @@ function RankList() {
   //context
   const context = useContext(Context)
   const {rankState} = useContext(RankContext)
+  const customHeader = JSON.parse(Api.customHeader)
 
   const {rankList, formState} = rankState
 
@@ -184,7 +186,20 @@ function RankList() {
                       <img
                         src={live}
                         onClick={() => {
-                          RoomJoin({roomNo: roomNo})
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                            }
+                          } else {
+                            RoomJoin({roomNo: roomNo})
+                          }
                         }}
                         className="liveBox__img"
                       />

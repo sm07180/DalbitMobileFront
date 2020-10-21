@@ -4,6 +4,7 @@ import React, {useCallback, useContext, useEffect, useState} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {OS_TYPE} from 'context/config.js'
 // router
 import {useParams, useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -22,6 +23,7 @@ export default function ClipHistory() {
   const [totalPage, setTotalPage] = useState(0)
   const [historyLoding, setHistoryLoading] = useState('')
   const [historyTab, setHistoryTab] = useState(0)
+  const customHeader = JSON.parse(Api.customHeader)
   // fetch data
   const fetchDataList = async () => {
     const {result, data, message} = await Api.getHistoryList({
@@ -73,7 +75,33 @@ export default function ClipHistory() {
             청취내역이 없습니다.
             <br /> 지금바로 청취해 보세요.
           </span>
-          <button className="noResult__uploadBtn" onClick={() => history.push(`/clip`)}>
+          <button
+            className="noResult__uploadBtn"
+            onClick={() => {
+              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                if (context.token.isLogin === false) {
+                  context.action.alert({
+                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    callback: () => {
+                      history.push('/login')
+                    }
+                  })
+                } else {
+                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                }
+              } else {
+                //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
+                if (webview === 'new') {
+                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                    history.push(`/clip`)
+                  } else {
+                    return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
+                  }
+                } else {
+                  history.push(`/clip`)
+                }
+              }
+            }}>
             청취 하러가기
           </button>
         </div>
@@ -86,7 +114,24 @@ export default function ClipHistory() {
 
             return (
               <React.Fragment key={`uploadList-${idx}`}>
-                <div className="uploadList__container" onClick={() => fetchDataPlay(clipNo)}>
+                <div
+                  className="uploadList__container"
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
                     <div className="uploadList__topWrap">

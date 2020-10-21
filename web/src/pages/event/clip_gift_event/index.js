@@ -38,7 +38,7 @@ export default () => {
           <button
             className="btnClose"
             onClick={() => {
-              history.push('/')
+              history.goBack()
             }}>
             <img src={btnClose} alt="닫기" />
           </button>

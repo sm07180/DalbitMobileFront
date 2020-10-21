@@ -25,6 +25,8 @@ import Header from 'components/ui/new_header'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
+import icoPlus from '../../static/add.svg'
+import icoMinus from '../../static/minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -44,6 +46,10 @@ export default () => {
 
   //결제 data 셋팅
   const {name, price, itemNo, webview, event} = qs.parse(location.search)
+
+  const [totalQuantity, setTotalQuantity] = useState(1)
+  const [totalPrice, setTOtalPrice] = useState(price)
+
   let pageCode = webview === 'new' ? '2' : '1'
   if (event === '3') pageCode = '3'
 
@@ -78,21 +84,22 @@ export default () => {
         pathname: '/pay/bank',
         state: {
           prdtNm: name,
-          prdtPrice: price,
+          prdtPrice: totalPrice * totalQuantity,
           itemNo: itemNo,
           webview: webview,
-          event: event
+          event: event,
+          itemAmt: totalQuantity
         }
       })
     }
-
     const {result, data, message} = await Api[fetch]({
       data: {
         Prdtnm: name,
-        Prdtprice: price,
+        Prdtprice: totalPrice * totalQuantity,
         itemNo: itemNo,
         pageCode: pageCode,
-        pgCode: code
+        pgCode: code,
+        itemAmt: totalQuantity
       }
     })
 
@@ -124,6 +131,22 @@ export default () => {
     if (selectedPay.type) payFetch()
   }, [selectedPay])
 
+  const makeDisabled = (type) => {
+    switch (type) {
+      case '페이코':
+        if (Number(totalPrice) * totalQuantity > 100000) return true
+      case '티머니':
+        if (Number(totalPrice) * totalQuantity > 500000) return true
+      case '캐시비':
+        if (Number(totalPrice) * totalQuantity > 500000) return true
+      case '휴대폰 결제':
+        if (Number(totalPrice) * totalQuantity > 1000000) return true
+      default:
+        return false
+        break
+    }
+  }
+
   const createMethodBtn = (type) => {
     let currentPayMethod = []
     if (type === 'more') {
@@ -133,12 +156,31 @@ export default () => {
     }
     return currentPayMethod.map((item, idx) => {
       const {type} = item
+      const disabledState = makeDisabled(type)
       return (
-        <button key={idx} className={type === selectedPay.type ? 'on' : ''} onClick={() => setSelectedPay(item)}>
+        <button
+          key={idx}
+          className={type === selectedPay.type ? 'on' : ''}
+          onClick={() => setSelectedPay(item)}
+          disabled={disabledState}>
           {type}
         </button>
       )
     })
+  }
+
+  const quantityCalc = (type) => {
+    if (type === 'plus') {
+      if (totalQuantity === 10) {
+        return context.action.toast({msg: '최대 10개까지 구매 가능합니다.'})
+      }
+      setTotalQuantity(totalQuantity + 1)
+    } else if (type === 'minus') {
+      if (totalQuantity === 1) {
+        return context.action.toast({msg: '최소 1개부터 구매 가능합니다.'})
+      }
+      setTotalQuantity(totalQuantity - 1)
+    }
   }
 
   return (
@@ -150,10 +192,24 @@ export default () => {
           <label>결제상품</label>
           <p>{name}</p>
         </div>
+
+        <div className="field">
+          <label>상품수량</label>
+          <p className="quantity">
+            <button className="minus" onClick={() => quantityCalc('minus')}>
+              -
+            </button>
+            <span>{totalQuantity}</span>
+            <button className="plus" onClick={() => quantityCalc('plus')}>
+              +
+            </button>
+          </p>
+        </div>
+
         <div className="field">
           <label>결제금액</label>
           <p>
-            <strong>{Number(price).toLocaleString()} 원</strong>
+            <strong>{(Number(totalPrice) * totalQuantity).toLocaleString()} 원</strong>
           </p>
         </div>
 
@@ -245,11 +301,34 @@ const Content = styled.div`
       font-weight: bold;
     }
     p {
+      color: #000;
       margin-left: auto;
       font-size: 14px;
       font-weight: bold;
       strong {
         font-size: 18px;
+      }
+      &.quantity {
+        span {
+          display: inline-block;
+          width: 50px;
+          font-size: 18px;
+          font-weight: bold;
+          text-align: center;
+        }
+      }
+      button {
+        width: 24px;
+        height: 24px;
+        background: rgb(238 238 238);
+        text-indent: -9999px;
+        border-radius: 3px;
+        &.plus {
+          background: #eeeeee url(${icoPlus}) no-repeat center;
+        }
+        &.minus {
+          background: #eeeeee url(${icoMinus}) no-repeat center;
+        }
       }
     }
   }
@@ -271,6 +350,10 @@ const Content = styled.div`
       &.on {
         border-color: ${COLOR_MAIN};
         color: ${COLOR_MAIN};
+      }
+      &:disabled {
+        color: #9e9e9e;
+        background: #f5f5f5;
       }
     }
     button:nth-child(1) {

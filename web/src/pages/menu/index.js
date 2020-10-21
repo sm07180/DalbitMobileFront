@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Nav from './content/nav.js'
 
 import Profile from './content/profile.js'
-import Search from './content/search.js'
+import Search from './content/search'
 import Alarm from './content/alarm'
 
 import {Context} from 'context'
@@ -49,7 +49,7 @@ export default (props) => {
         <Redirect to={`/login`} />
       ) : (
         <Layout {...props} status="no_gnb">
-          <MenuWrap>
+          <MenuWrap style={{backgroundColor: params && params.category === 'search' && '#fff'}}>
             <Switch>
               {categoryList.map((value) => {
                 const {type, component} = value

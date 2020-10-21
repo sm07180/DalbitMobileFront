@@ -7,6 +7,7 @@ import React, {useRef, useContext, useEffect} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
+import Utility from 'components/lib/utility'
 
 const lifeTime = 2500 // milisec
 
@@ -23,7 +24,11 @@ export default (props) => {
   }, [])
 
   //---------------------------------------------------------------------
-  return <Toast>{msg}</Toast>
+  return (
+    <Toast>
+      <div dangerouslySetInnerHTML={{__html: Utility.nl2br(msg)}}></div>
+    </Toast>
+  )
 }
 //---------------------------------------------------------------------
 const Toast = styled.section`

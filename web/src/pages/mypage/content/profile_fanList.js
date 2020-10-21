@@ -14,7 +14,10 @@ import {Scrollbars} from 'react-custom-scrollbars'
 import CloseBtn from '../static/close_w_l.svg'
 
 export default (props) => {
-  const {webview} = qs.parse(location.search)
+  let {webview} = qs.parse(location.search)
+  if (sessionStorage.getItem('webview') === 'new') {
+    webview = 'new'
+  }
   const {name} = props
   //context------------------------------------------
   const context = useContext(Context)
@@ -55,11 +58,15 @@ export default (props) => {
   const fetchDataStar = async () => {
     const res = await Api.mypage_star_list({
       params: {
-        memNo: urlrStr
+        memNo: urlrStr,
+        page: 1,
+        records: 100,
+        sortType: 0
       }
     })
     if (res.result === 'success') {
-      setStarInfo(res.data)
+      console.log(res.data.list)
+      setStarInfo(res.data.list)
     } else {
       //console.log(res)
     }
@@ -204,7 +211,6 @@ export default (props) => {
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
     context.action.updateCloseGoodCnt(false)
-
     history.push(link, {
       hash: window.location.hash
     })
