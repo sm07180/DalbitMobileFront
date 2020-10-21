@@ -272,6 +272,11 @@ export default (props) => {
     }
     getMyPageNew()
     checkAuth()
+
+    return () => {
+      context.action.updateTempImage(null)
+      context.action.updateEditImage(null)
+    }
   }, [])
 
   useEffect(() => {
