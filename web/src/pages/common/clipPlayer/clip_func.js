@@ -9,7 +9,7 @@ import Api from 'context/api'
 export const clipJoin = (data, context, webview) => {
   // console.log('1' + sessionStorage.getItem('listening'))
 
-  let totalData = {playing: data.clipNo}
+  let totalData = {playing: data}
 
   const fetchPlayList = async () => {
     const {result, data, message} = await Api.getPlayList({
