@@ -8,10 +8,11 @@ import '../../mypage/setting.scss'
 import ImageRotation from './static/ico-rotation.png'
 import ImageCrop from './static/ico-crop.png'
 
-export default (props) => {
-  const context = useContext(Context)
-  const defaultSrc = context.tempImage
+export default () => {
   let history = useHistory()
+  const {location} = history
+  const context = useContext(Context)
+  const defaultSrc = location.state['src'] || ''
 
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
@@ -39,15 +40,13 @@ export default (props) => {
   }
   const submit = () => {
     if (typeof cropper !== 'undefined') {
-      if (context.editImage) {
-        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
-      }
+      context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
       history.goBack()
     }
   }
 
   useEffect(() => {
-    if (image === null) {
+    if (image === null || image === '') {
       history.goBack()
     }
   }, [])
@@ -57,14 +56,14 @@ export default (props) => {
       <div id="imageEditor">
         <Header type="blackBg" />
         <Cropper
-          style={{height: 'calc(100vh - 150px)', width: '100%', display: 'flex', alignItems: 'center'}}
+          style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
           preview=".img-preview"
           src={imageUrl()}
           viewMode={1}
           guides={true}
-          minCropBoxHeight={10}
-          minCropBoxWidth={10}
+          minCropBoxWidth={100}
+          minCropBoxHeight={100}
           background={false}
           responsive={true}
           autoCropArea={1}
