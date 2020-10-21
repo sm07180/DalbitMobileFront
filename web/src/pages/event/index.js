@@ -7,6 +7,7 @@ import ThxGiving from './thanksgiving'
 import ClipEventNative from './clip_event'
 import ClipGiftEvent from './clip_gift_event'
 import AttendEvent from './event_attend_new'
+import PlusEvent from './plus_event'
 
 export default () => {
   const params = useParams()
@@ -22,6 +23,9 @@ export default () => {
         return <ClipGiftEvent />
       case 'attend_event':
         return <AttendEvent />
+      case 'plus_event':
+        return <PlusEvent />
+
       default:
         return <></>
         break
