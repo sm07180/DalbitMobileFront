@@ -15,7 +15,7 @@ export default () => {
 
   const context = useContext(Context)
   const defaultSrc = location.state['src'] || ''
-  console.log(defaultSrc)
+
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
   const [cropper, setCropper] = useState(null)
