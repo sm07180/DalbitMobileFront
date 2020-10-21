@@ -142,13 +142,24 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          context.action.toast({
-            msg: '업로드성공 \n저장버튼을 눌러주세요'
-          })
-          setPhotoPath(res.data.path)
-          setPhotoUploading(false)
-          setActive(true)
-          context.action.updateTempImage(editImage)
+          const data = {
+            gender: gender,
+            nickNm: nickname || profile.nickNm,
+            birth: profile.birth,
+            profMsg: profileMsg,
+            profImg: res.data.path
+          }
+          const res2 = await Api.profile_edit({data})
+
+          if (res2.result === 'success') {
+            context.action.toast({
+              msg: '프로필 이미지 업로드 성공'
+            })
+            setPhotoPath(res.data.path)
+            setPhotoUploading(false)
+            setActive(true)
+            context.action.updateTempImage(editImage)
+          }
           // context.action.updateEditImage('')
         } else {
           context.action.alert({
