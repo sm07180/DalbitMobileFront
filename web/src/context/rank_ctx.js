@@ -42,6 +42,13 @@ const reducer = (state, action) => {
         currentDate: new Date(),
         page: 1
       }
+    case 'SEARCH':
+      return {
+        rankType: action.val.rankType,
+        dateType: action.val.dateType,
+        currentDate: action.val.currentDate,
+        page: 1
+      }
     default:
       return {
         ...state

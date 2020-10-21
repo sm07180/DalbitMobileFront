@@ -182,7 +182,7 @@ export default function MyProfile() {
                         <div className="likeListDetail">
                           <div className="fanGoodBox">
                             <img src={likeRedIcon} />
-                            <span>{myInfo.myGoodPoint.toLocaleString()}</span>
+                            <span>{myInfo.myGoodPoint && myInfo.myGoodPoint.toLocaleString()}</span>
                           </div>
                           <div className="nickNameBox">{myProfile.nickNm}</div>
                         </div>
