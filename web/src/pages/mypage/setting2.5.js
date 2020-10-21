@@ -24,7 +24,7 @@ export default (props) => {
   const [gender, setGender] = useState(null)
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
-  const [tempPhoto, setTempPhoto] = useState(null)
+  const [tempPhoto, setTempPhoto] = useState(editImage)
   const [phone, setPhone] = useState('')
   const [authState, setAuthState] = useState(true)
   const [photoUploading, setPhotoUploading] = useState(false)
@@ -118,19 +118,21 @@ export default (props) => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-          context.action.updateTempImage(originalCacheURL)
-          context.action.updateEditImage(originalCacheURL)
-          history.push('/ImageEditor')
+          // context.action.updateTempImage(originalCacheURL)
+          // context.action.updateEditImage(originalCacheURL)
+          history.push('/ImageEditor', {
+            src: originalCacheURL
+          })
         }
       }
     }
   }
   // 이미지 editor 후 upload
   const uploadImage = useCallback(() => {
-    if (editImage && tempImage !== editImage) {
+    if (editImage) {
+      console.log('upload')
       setPhotoUploading(true)
       setActive(false)
-      setTempPhoto(editImage)
       uploadImageToServer(editImage)
       async function uploadImageToServer(data) {
         const res = await Api.image_upload({
@@ -140,13 +142,25 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          context.action.toast({
-            msg: '업로드성공 \n저장버튼을 눌러주세요'
-          })
-          setPhotoPath(res.data.path)
-          setPhotoUploading(false)
-          setActive(true)
-          context.action.updateEditImage('')
+          const data = {
+            gender: gender,
+            nickNm: nickname || profile.nickNm,
+            birth: profile.birth,
+            profMsg: profileMsg,
+            profImg: res.data.path
+          }
+          const res2 = await Api.profile_edit({data})
+
+          if (res2.result === 'success') {
+            context.action.toast({
+              msg: '프로필 이미지 업로드 성공'
+            })
+            setPhotoPath(res.data.path)
+            setPhotoUploading(false)
+            setActive(true)
+            context.action.updateTempImage(editImage)
+          }
+          // context.action.updateEditImage('')
         } else {
           context.action.alert({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
@@ -269,11 +283,22 @@ export default (props) => {
     }
     getMyPageNew()
     checkAuth()
+
+    return () => {
+      context.action.updateTempImage(null)
+      context.action.updateEditImage(null)
+    }
   }, [])
 
   useEffect(() => {
-    if (editImage !== null) uploadImage()
-  }, [])
+    if (editImage !== null && editImage !== tempImage) {
+      uploadImage()
+    }
+
+    return () => {
+      return
+    }
+  }, [editImage, tempImage])
   //------------------------------------------------------
   return (
     <Switch>

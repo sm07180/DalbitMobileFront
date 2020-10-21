@@ -374,6 +374,7 @@ export default function Qna() {
         type="text"
         className="personalAddWrap__input"
         value={name}
+        autoComplete="off"
         disabled={context.token.isLogin}
         placeholder="이름 또는 닉네임을 입력하세요."
         onChange={(e) => {
@@ -393,6 +394,7 @@ export default function Qna() {
       <div className="personalAddWrap__content">
         <input
           type="text"
+          autoComplete="off"
           className="personalAddWrap__input"
           placeholder="제목을 입력하세요."
           onChange={(e) => setTitle(e.target.value)}
@@ -483,6 +485,7 @@ export default function Qna() {
                 disabled={!checks[1]}
                 className="personalAddWrap__input"
                 type="email"
+                autoComplete="off"
                 onChange={(e) => {
                   setEmail(e.target.value)
                 }}
@@ -492,6 +495,7 @@ export default function Qna() {
                 disabled={!checks[0]}
                 className="personalAddWrap__input"
                 type="tel"
+                autoComplete="off"
                 value={phone}
                 onChange={(e) => {
                   if (e.target.value.length < 16 && !isNaN(e.target.value)) {
