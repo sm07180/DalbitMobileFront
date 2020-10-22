@@ -70,8 +70,8 @@ export default (props) => {
     } else if (returntype === 'event') {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
-      console.log('changeUrl', changeUrl)
-      return history.push(changeUrl)
+      console.log('changeUrl', changeUrl, typeof changeUrl)
+      return (window.location.href = changeUrl)
     } else {
       checkAuth()
     }
