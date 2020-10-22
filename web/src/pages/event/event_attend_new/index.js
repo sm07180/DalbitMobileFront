@@ -7,8 +7,8 @@ import {EventAttendProvider} from './attend_ctx'
 
 export default function EventAttend() {
   return (
-    <EventAttendProvider>
-      <Content />
-    </EventAttendProvider>
+    // <EventAttendProvider>
+    <Content />
+    // </EventAttendProvider>
   )
 }

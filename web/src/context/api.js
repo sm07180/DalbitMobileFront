@@ -2429,6 +2429,18 @@ export default class API {
     return await ajax({url: '/event/roulette/start', method: 'GET', params})
   }
 
+  static getEventRouletteWin = async (params) => {
+    return await ajax({url: '/event/roulette/win', method: 'GET', params})
+  }
+
+  static getEventRouletteApply = async (params) => {
+    return await ajax({url: '/event/roulette/apply', method: 'GET', params})
+  }
+
+  static postEventRoulettePhone = async (data) => {
+    return await ajax({url: '/event/roulette/phone', method: 'POST', data})
+  }
+
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }

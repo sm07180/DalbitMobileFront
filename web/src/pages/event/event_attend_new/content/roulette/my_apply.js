@@ -1,20 +1,24 @@
 import React, {useState, useEffect} from 'react'
 
 import API from 'context/api'
-
 //components
 import Layout from 'pages/common/layout'
 import {useHistory} from 'react-router-dom'
 
-//staic
-import newIcon from '../../static/new_circle_m.svg'
-
 export default () => {
   const history = useHistory()
-  const [winList, setWinList] = useState({})
+
+  const [applyList, setApplyList] = useState({})
 
   const goBack = () => {
     return history.goBack()
+  }
+
+  async function fetchEventRouletteApply() {
+    const {result, data} = await API.getEventRouletteApply()
+    if (result === 'success') {
+      setApplyList(data.list)
+    }
   }
 
   const dateFormatter = (date) => {
@@ -24,23 +28,13 @@ export default () => {
     let month = date.substring(4, 6)
     let day = date.substring(6, 8)
     let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일`
+    return `${month}월 ${day}일 ${time}`
     // return `${month}월 ${day}일 ${time}`
   }
 
-  async function fetchEventRouletteWin() {
-    const {result, data} = await API.getEventRouletteWin({
-      winType: 0
-    })
-    if (result === 'success') {
-      setWinList(data.list)
-    }
-  }
-
-  //-------------------
-
+  //--------------------
   useEffect(() => {
-    fetchEventRouletteWin()
+    fetchEventRouletteApply()
   }, [])
 
   return (
@@ -48,7 +42,7 @@ export default () => {
       <div id="attendEventPage">
         <div className="win-list-box">
           <div className="header">
-            <h1 className="header__title">기프티콘 당첨자</h1>
+            <h1 className="header__title">나의 참여 이력</h1>
             <button className="header__btnBack" onClick={goBack}>
               <img src="https://image.dalbitlive.com/svg/ic_back.svg" alt="뒤로가기" />
             </button>
@@ -70,20 +64,24 @@ export default () => {
 
               <thead>
                 <tr>
-                  <th>기프티콘</th>
-                  <th>당첨 일시</th>
-                  <th>당첨자</th>
+                  <th>획득</th>
+                  <th>참여 일시</th>
+                  <th>수령 연락처</th>
                 </tr>
               </thead>
 
               <tbody>
-                {!winList.length ? (
+                {!applyList.length ? (
                   <tr>
-                    <td colSpan="3">당첨자 곧 등장 예정! 행운의 주인공은?</td>
+                    <td colSpan="3">
+                      룰렛 참여내역이 없습니다.
+                      <br />
+                      응모권을 획득 후 이벤트에 참여해주세요!
+                    </td>
                   </tr>
                 ) : (
-                  winList.map((item, index) => {
-                    const {itemNo, winDt, nickNm, profImg, isNew, memNo} = item
+                  applyList.map((item, index) => {
+                    const {itemNo, applyDt, phone} = item
 
                     const gift_pair = () => {
                       let giftItem
@@ -111,21 +109,10 @@ export default () => {
 
                     return (
                       <tr key={index}>
-                        <td>{gift_pair()}</td>
-                        <td className="date">
-                          <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
-
-                          {dateFormatter(winDt)}
-                        </td>
-                        <td
-                          className="nick"
-                          onClick={() => {
-                            history.push(`/mypage/${memNo}`)
-                          }}>
-                          <div className="thumb">
-                            <img src={profImg.thumb120x120} />
-                          </div>
-                          <p>{nickNm}</p>
+                        <td className="gift">{gift_pair()}</td>
+                        <td className="date">{dateFormatter(applyDt)}</td>
+                        <td className="phone">
+                          <p>{phone === '' ? '해당없음' : `${phone}`}</p>
                         </td>
                       </tr>
                     )

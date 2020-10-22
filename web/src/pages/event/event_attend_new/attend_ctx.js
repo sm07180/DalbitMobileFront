@@ -1,13 +1,19 @@
 import React, {useState, createContext} from 'react'
+
+import {WIN_TYPE} from './constant'
+
 //Context
 const AttendContext = createContext()
 const {Provider} = AttendContext
 //
 const EventAttendProvider = (props) => {
   //state
-  const [tab, setTab] = useState('attend')
+  const [tab, setTab] = useState('attend') //attend, roulette
   const [popRoulette, setPopRoulette] = useState(false)
-  const [couponCnt, setCouponCnt] = useState(-1)
+  const [popGifticon, setPopGifticon] = useState(false)
+  const [inputEndDate, setInputEndDate] = useState('00:00')
+  const [winIdx, setWinIdx] = useState(-1)
+  const [couponCnt, setCouponCnt] = useState(0)
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
     totalExp: 0,
@@ -15,6 +21,8 @@ const EventAttendProvider = (props) => {
   })
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
+
+  const [itemNo, setItemNo] = useState(0) //당첨된 아이템
 
   //---------------------------------------------------------------------
 
@@ -24,7 +32,12 @@ const EventAttendProvider = (props) => {
     couponCnt,
     summaryList,
     statusList,
-    dateList
+    dateList,
+
+    popGifticon,
+    inputEndDate,
+    winIdx,
+    itemNo
   }
 
   const eventAttendAction = {
@@ -33,7 +46,12 @@ const EventAttendProvider = (props) => {
     setCouponCnt,
     setSummaryList,
     setStatusList,
-    setDateList
+    setDateList,
+
+    setPopGifticon,
+    setInputEndDate,
+    setWinIdx,
+    setItemNo
   }
 
   const bundle = {

@@ -1,0 +1,155 @@
+@import '../../../../../styles/variables';
+@import '../../../../../styles/mixins';
+
+.attendTab {
+  .topBanner {
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    button.attend {
+      position: absolute;
+      left: 20%;
+      bottom: 8%;
+      width: 60%;
+    }
+  }
+
+  .attendStatebox {
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    .attendStateList {
+      display: flex;
+      justify-content: center;
+      position: absolute;
+      left: 8%;
+      top: 35%;
+      width: 70%;
+      padding: 10px 0;
+      background-color: $white;
+      border-radius: 12px;
+      font-size: 14px;
+      letter-spacing: -0.5px;
+      text-align: center;
+
+      dd {
+        padding: 0 5px 0 2px;
+        font-weight: 800;
+      }
+    }
+  }
+
+  .stampBoxWrap {
+    padding: 14px 0;
+    background-color: #91313f;
+  }
+  .stampBox {
+    display: flex;
+    flex-wrap: wrap;
+    background-image: url(https://image.dalbitlive.com/event/attend/201019/event_img_01_3@2x.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    padding: 14% 5% 2% 5%;
+
+    .stampBoxItem {
+      position: relative;
+      width: 25%;
+      padding: 0 5px;
+      margin-bottom: 3%;
+      box-sizing: border-box;
+      font-size: 12px;
+      color: #8c8a8a;
+
+      img {
+        width: 100%;
+      }
+
+      &__date {
+        position: absolute;
+        top: 34%;
+        width: 90%;
+        text-align: center;
+      }
+
+      &__exp {
+        position: absolute;
+        bottom: 6%;
+        width: 90%;
+        text-align: center;
+        font-size: 11px;
+        letter-spacing: -0.5px;
+      }
+
+      &.today {
+        color: #26837c;
+      }
+
+      &.success {
+        color: #a71427;
+      }
+    }
+
+    .pointBox {
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .bonusBox {
+    position: relative;
+    padding: 0 4% 5% 4%;
+    background-color: #91313f;
+
+    img {
+      width: 100%;
+    }
+
+    dl {
+      display: flex;
+      position: absolute;
+      top: 21.5%;
+      left: 43%;
+      width: 60%;
+      font-size: 14px;
+      letter-spacing: -0.5px;
+
+      dd {
+        font-weight: 800;
+        padding: 0 5px 0 3px;
+      }
+    }
+  }
+}
+
+.msg {
+  .alertBox {
+    &__title {
+      padding-bottom: 10px;
+      font-weight: 700;
+    }
+
+    &__giftImage {
+      padding: 16px 0;
+      text-align: center;
+    }
+
+    &__giftTitle {
+      padding-bottom: 8px;
+      font-size: 22px;
+      color: #632beb;
+    }
+
+    &__content {
+      padding-bottom: 24px;
+      line-height: 22px;
+    }
+  }
+}
