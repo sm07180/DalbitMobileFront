@@ -190,7 +190,11 @@ export default (props) => {
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                         <img src={bgImg[`thumb190x190`]} alt={title} />
-                        {gstProfImg && <span className="thumb-guest">{gstProfImg.thumb190x190}</span>}
+                        {gstProfImg.thumb190x190 && (
+                          <span className="thumb-guest">
+                            <img src={gstProfImg.thumb190x190} alt="게스트" />
+                          </span>
+                        )}
                       </div>
                       <div className="textBox">
                         <p className="textBox__subject">

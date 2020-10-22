@@ -66,7 +66,11 @@ const makeContents = (props) => {
           }
         }}>
         <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}}>
-          {gstProfImg && <span className="thumb-guest">{gstProfImg.thumb190x190}</span>}
+          {gstProfImg.thumb190x190 && (
+            <span className="thumb-guest">
+              <img src={gstProfImg.thumb190x190} alt="게스트" />
+            </span>
+          )}
         </div>
 
         {liveListType === 'detail' ? (

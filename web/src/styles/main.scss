@@ -922,10 +922,14 @@
         position: absolute;
         right: 0;
         bottom: 0;
-        width: 34px;
-        height: 34px;
+        width: 32px;
+        height: 32px;
         border: 1px solid #9a9a9a;
         border-radius: 11px;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
       }
     }
 
