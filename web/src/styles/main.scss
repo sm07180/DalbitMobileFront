@@ -918,23 +918,28 @@
       background-size: cover;
       background-position: center;
       background-color: $lighterGray;
+      .thumb-guest {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 34px;
+        height: 34px;
+        border: 1px solid #9a9a9a;
+        border-radius: 11px;
+      }
     }
 
     .iconPc {
       display: flex;
       align-items: center;
-      position: absolute;
-      left: 48px;
-      bottom: 4px;
-      padding: 0 8px;
-
-      background: #f26d4a;
-      color: $white;
+      height: 16px;
+      padding: 0 4px;
+      margin-right: 4px;
       border-radius: 12px;
-      height: 14px;
-      font-size: 10px;
-      font-weight: normal;
+      font-size: 12px;
       font-style: normal;
+      border: 1px solid #f26d4a;
+      color: #f26d4a;
     }
     .newSpecialIcon {
       z-index: 1;

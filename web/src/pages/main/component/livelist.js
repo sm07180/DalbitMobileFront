@@ -35,7 +35,8 @@ const makeContents = (props) => {
       os,
       liveBadgeList,
       isNew,
-      totalCnt
+      totalCnt,
+      gstProfImg
     } = list
 
     const alertCheck = (roomNo) => {
@@ -64,8 +65,9 @@ const makeContents = (props) => {
             alertCheck(roomNo)
           }
         }}>
-        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
-        {os === 3 && <i className="iconPc">PC</i>}
+        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}}>
+          {gstProfImg && <span className="thumb-guest">{gstProfImg.thumb190x190}</span>}
+        </div>
 
         {liveListType === 'detail' ? (
           <div className="broadcast-content">
@@ -106,6 +108,7 @@ const makeContents = (props) => {
             </div> */}
             <div className="nickname">
               {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+              {os === 3 && <i className="iconPc">PC</i>}
               {isNew === true && <span className="new-dj-icon">신입DJ</span>}
               {liveBadgeList &&
                 liveBadgeList.length !== 0 &&

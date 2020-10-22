@@ -152,7 +152,21 @@ export default (props) => {
             <div className="chartListDetail pdl0">
               {liveList && liveList.length !== 0 ? (
                 (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
-                  const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt, roomNo, memNo} = item
+                  const {
+                    title,
+                    bgImg,
+                    isSpecial,
+                    gender,
+                    bjNickNm,
+                    roomType,
+                    entryCnt,
+                    totalCnt,
+                    likeCnt,
+                    roomNo,
+                    memNo,
+                    os,
+                    gstProfImg
+                  } = item
                   return (
                     <li
                       className="chartListDetailItem"
@@ -176,6 +190,7 @@ export default (props) => {
                       <div className="chartListDetailItem__thumb">
                         {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                         <img src={bgImg[`thumb190x190`]} alt={title} />
+                        {gstProfImg && <span className="thumb-guest">{gstProfImg.thumb190x190}</span>}
                       </div>
                       <div className="textBox">
                         <p className="textBox__subject">
@@ -191,6 +206,7 @@ export default (props) => {
                         </p>
                         <p className="textBox__nickName">
                           {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                          {os === 3 && <i className="iconPc">PC</i>}
                           {bjNickNm}
                         </p>
                         <div className="textBox__detail">
