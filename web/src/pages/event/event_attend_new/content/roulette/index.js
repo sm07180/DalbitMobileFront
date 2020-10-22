@@ -72,12 +72,16 @@ export default function RouletteTab() {
         msg: '로그인 후 참여해주세요.'
       })
     } else {
-      if (eventAttendState.couponCnt !== 0) {
-        eventAttendAction.setPopRoulette(popRoulette ? false : true)
+      if (globalCtx.selfAuth === false) {
+        history.push('/selfauth?event=/event/event_attend')
       } else {
-        globalCtx.action.alert({
-          msg: '응모권을 획득 후 참여해주세요.'
-        })
+        if (eventAttendState.couponCnt !== 0) {
+          eventAttendAction.setPopRoulette(popRoulette ? false : true)
+        } else {
+          globalCtx.action.alert({
+            msg: '응모권을 획득 후 참여해주세요.'
+          })
+        }
       }
     }
   }
