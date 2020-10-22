@@ -7,13 +7,10 @@ import ThxGiving from './thanksgiving'
 import ClipEventNative from './clip_event'
 import ClipGiftEvent from './clip_gift_event'
 import AttendEvent from './event_attend_new'
-<<<<<<< HEAD
 import AttendGiftWinner from './event_attend_new/content/roulette/gift_winner'
 import AttendMyApply from './event_attend_new/content/roulette/my_apply'
 import {EventAttendProvider} from './event_attend_new/attend_ctx'
-=======
 import GuestGuide from './guest_guide'
->>>>>>> origin/selfauth
 
 export default () => {
   const params = useParams()
