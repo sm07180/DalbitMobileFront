@@ -82,7 +82,6 @@ export default (props) => {
 
   const {type, event} = qs.parse(location.search)
   console.log(type, event)
-  console.log(event.replaceAll('/', 'DALBIT'))
 
   //---------------------------------------------------------------------
   //context
