@@ -71,7 +71,7 @@ export default (props) => {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
       console.log('changeUrl', changeUrl, typeof changeUrl)
-      return (window.location.href = changeUrl)
+      return history.push(changeUrl)
     } else {
       checkAuth()
     }
