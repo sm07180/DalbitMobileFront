@@ -68,7 +68,7 @@ export default (props) => {
     } else if (returntype === 'create') {
       setAuthState(5)
     } else if (returntype === 'event') {
-      let changeUrl = url.replaceAll('DALBIT', '/')
+      let changeUrl = url.split('DALBIT').join('/')
       console.log('changeUrl', changeUrl)
       history.push(changeUrl)
     } else {
