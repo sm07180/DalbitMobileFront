@@ -93,7 +93,7 @@ export default (props) => {
           <div className="exchangeList">
             상품명
             <div className="exchangeList__text">
-              {prdtNm}{/* X {itemCnt}*/}
+              {prdtNm} X {itemCnt}
             </div>
           </div>
           <div className="exchangeList">

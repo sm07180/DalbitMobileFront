@@ -31,7 +31,12 @@ export default (props) => {
   //useState
   const [chargeList, setChargeList] = useState(false)
   const [exchangeList, setExchangeList] = useState(false)
-  const [selected, setSelected] = useState(-1)
+  const [selected, setSelected] = useState({
+    num: 3,
+    name: '달 300',
+    price: 33000,
+    itemNo: 'A1555'
+  })
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
@@ -137,6 +142,7 @@ export default (props) => {
       url: url,
       title: '달 충전하기'
     }
+    console.log('urlObj', urlObj)
     Hybrid('OpenPayPopup', urlObj)
   }
 

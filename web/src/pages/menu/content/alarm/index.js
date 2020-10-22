@@ -103,8 +103,11 @@ export default function Alert() {
       case 38:
         history.push(`/mypage/${memNo}?tab=0`)
         break
+      case 39:
+        history.push(`/rank?rankType=3&dateType=2`)
+        break
       case 40:
-        history.push(`/rank`)
+        history.push(`/rank?rankType=3&dateType=1`)
         break
       case 41:
         history.push(`/rank?rankType=1&dateType=1`)

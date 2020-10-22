@@ -105,6 +105,8 @@ const GlobalProvider = (props) => {
   //back
   const [backState, setBackState] = useState(null)
   const [backFunction, setBackFunction] = useState({name: ''})
+  //selfauth
+  const [selfAuth, setSelfAuth] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -433,6 +435,9 @@ const GlobalProvider = (props) => {
     },
     updateRoomType: (string) => {
       setRoomType(string)
+    },
+    updateSelfAuth: (boolean) => {
+      setSelfAuth(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -505,7 +510,8 @@ const GlobalProvider = (props) => {
     boardModifyInfo,
     backState,
     backFunction,
-    roomType
+    roomType,
+    selfAuth
   }
   return <Provider value={value}>{props.children}</Provider>
 }

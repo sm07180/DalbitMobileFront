@@ -63,6 +63,13 @@ export default function detailPopup(props) {
     setAddBank(code.split(',')[0])
     setAccountName(code.split(',')[1])
   }
+  const validateName = (name) => {
+    if (name.length > 20) {
+      return false
+    } else {
+      setAddName(name)
+    }
+  }
   useEffect(() => {
     setAddBank(modifyInfo.bankCode)
     setAddName(modifyInfo.accountName)
@@ -97,8 +104,8 @@ export default function detailPopup(props) {
                   <input
                     type="text"
                     className="formData__input--text"
-                    onChange={(e) => setAddName(e.target.value)}
-                    defaultValue={modifyInfo.accountName}
+                    value={addName}
+                    onChange={(e) => validateName(e.target.value)}
                   />
                 </div>
               </div>

@@ -1,5 +1,5 @@
 .speacialdj {
-  max-width: 720px;
+  max-width: 460px;
   min-width: 320px;
   margin: auto;
 
@@ -10,7 +10,8 @@
 
   .loginBox {
     padding: 16px 12px;
-    background: #cdee5b;
+    padding: 0 12px 16px 12px;
+    background: #244a95;
   }
 
   .title {
@@ -40,24 +41,22 @@
 
   .contentImg {
     position: relative;
-    background: url('./static/button_bg.jpg');
-    background-size: 100%;
 
     .startingPopup {
       position: absolute;
-      width: 55.5%;
-      height: 4%;
-      left: 22.3%;
-      top: 27.4%;
+      width: 38.5%;
+      height: 2.9%;
+      left: 30.9%;
+      top: 22.9%;
       text-indent: -999999px;
     }
 
     .goodsPopup {
       position: absolute;
-      width: 82.3%;
-      height: 4%;
-      left: 8.9%;
-      bottom: 28%;
+      width: 22.7%;
+      height: 2.2%;
+      left: 71.7%;
+      bottom: 54%;
       text-indent: -999999px;
     }
 
@@ -75,7 +74,7 @@
     letter-spacing: -0.35px;
     color: #000;
     line-height: 30px;
-    background: url('./static/content_bg.jpg');
+    background: url('https://image.dalbitlive.com/event/specialdj/20201019/bg.jpg');
     background-size: 100%;
     p {
       color: #ff5a00;
@@ -99,7 +98,7 @@
     width: 100%;
     margin: auto;
     box-sizing: border-box;
-    background: url('./static/content_bg.jpg');
+    background: url('https://image.dalbitlive.com/event/specialdj/20201019/bg.jpg');
     background-size: 100%;
     margin: auto;
     overflow: hidden;
@@ -125,7 +124,7 @@
     &__talbeLeft {
       display: flex;
       align-items: center;
-      flex-basis: 124px;
+      flex-basis: 140px;
       padding: 8px 12px;
       border-right: 1px solid #e0e0e0;
       border-bottom: 1px solid #e0e0e0;
@@ -163,8 +162,12 @@
     font-size: 18px;
     font-weight: 700;
     color: #fff;
-    border-radius: 12px;
-    background: #632beb;
+    border-radius: 22px;
+    background: #b36d45;
+
+    &--purple {
+      background: #632beb;
+    }
   }
 
   .buttonOff {

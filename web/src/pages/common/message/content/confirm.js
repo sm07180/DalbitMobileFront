@@ -90,7 +90,7 @@ export default (props) => {
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
 
         {context.message.remsg && (
-          <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></b>
+          <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.remsg)}}></b>
         )}
       </div>
       <div className="wrap-btn">
