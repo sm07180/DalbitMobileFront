@@ -93,7 +93,9 @@ export default (props) => {
   //인증 요청 버튼
   function authClick() {
     if (event) {
-      return authReq(event, formTag)
+      let url = event.replaceAll('/', 'DALBIT')
+      console.log(url)
+      return authReq(url, formTag)
     }
     if (type === 'create') {
       authReq('6', formTag)

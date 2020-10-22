@@ -68,7 +68,9 @@ export default (props) => {
     } else if (returntype === 'create') {
       setAuthState(5)
     } else if (returntype === 'event') {
-      history.push(url)
+      let changeUrl = url.replaceAll('DALBIT', '/')
+      console.log('changeUrl', changeUrl)
+      history.push(changeUrl)
     } else {
       checkAuth()
     }
