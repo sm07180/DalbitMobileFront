@@ -65,7 +65,7 @@ export default function RouletteTab() {
           history.push({
             pathname: '/login',
             state: {
-              state: '/event/attend_event?type=roulette'
+              state: 'event/attend_event?type=roulette'
             }
           })
         },
@@ -73,7 +73,7 @@ export default function RouletteTab() {
       })
     } else {
       if (globalCtx.selfAuth === false) {
-        history.push('/selfauth?event=/event/event_attend')
+        history.push('/selfauth?event=/event/attend_event')
       } else {
         if (eventAttendState.couponCnt !== 0) {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)

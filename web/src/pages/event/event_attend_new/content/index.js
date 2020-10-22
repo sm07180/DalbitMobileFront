@@ -51,8 +51,6 @@ export default () => {
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-
-    cons
   }, [])
 
   return (
@@ -65,7 +63,7 @@ export default () => {
           <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />
         </div>
 
-        <div className={`tabWrap ${tabFixed ? 'fixed' : ''}`} ref={tabRef}>
+        <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>
           <button
             type="button"
             onClick={() => eventAttendAction.setTab('attend')}
