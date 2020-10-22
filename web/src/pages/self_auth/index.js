@@ -95,7 +95,6 @@ export default (props) => {
     if (event) {
       let url = event.split('/').join('DAL')
       url = url.split('_').join('BIT')
-      alert(url)
       return authReq(url, formTag)
     }
     if (type === 'create') {
