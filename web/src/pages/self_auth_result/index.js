@@ -22,7 +22,7 @@ export default (props) => {
   const location = useLocation()
 
   // const {result, code, message, returntype} = _.hasIn(props, 'location.state.result') ? props.location.state : ''
-  const {result, code, message, returntype} = qs.parse(location.search)
+  const {result, code, message, returntype, url} = qs.parse(location.search)
 
   /**
    * authState
@@ -67,6 +67,8 @@ export default (props) => {
       setAuthState(4)
     } else if (returntype === 'create') {
       setAuthState(5)
+    } else if (returntype === 'event') {
+      history.push(url)
     } else {
       checkAuth()
     }

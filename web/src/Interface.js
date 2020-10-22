@@ -55,8 +55,10 @@ export default () => {
     const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       setAuthState(false)
+      context.action.updateSelfAuth(false)
     } else {
       setAuthState(true)
+      context.action.updateSelfAuth(true)
     }
   }
 
