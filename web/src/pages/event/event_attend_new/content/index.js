@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import {AttendContext} from '../attend_ctx'
 import {IMG_SERVER} from 'context/config'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 
 // component
 import Layout from 'pages/common/layout'
@@ -9,9 +9,12 @@ import AttendPage from './attend'
 import RoulettePage from './roulette'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import {StyleSheetManager} from 'styled-components'
 
 export default () => {
   const history = useHistory()
+  const params = useParams()
+
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {tab} = eventAttendState
   const {webview, type} = qs.parse(location.search)
@@ -41,7 +44,13 @@ export default () => {
 
   //-------------------
   useEffect(() => {
-    if (type === 'roulette') {
+    // if (type === 'roulette') {
+    //   eventAttendAction.setTab('roulette')
+    // } else {
+    //   eventAttendAction.setTab('attend')
+    // }
+
+    if (params.type === 'roulette') {
       eventAttendAction.setTab('roulette')
     } else {
       eventAttendAction.setTab('attend')
