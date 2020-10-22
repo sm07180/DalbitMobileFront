@@ -1,28 +1,32 @@
 import React, {useEffect, useContext, useState} from 'react'
+import API from 'context/api'
 import {AttendContext} from '../../attend_ctx'
 import {IMG_SERVER} from 'context/config'
+
+import BonusPop from './popBonus'
 
 export default () => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
+  const [popup, setPopup] = useState(false)
 
   const createCheckIn = (check_ok) => {
-    if (check_ok === 0) {
+    if (check_ok === 1) {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/200804/stamp_fail@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/201019/stamp_success_img@2x.png`} />
         </>
       )
-    } else if (check_ok === 1) {
+    } else if (check_ok === 2) {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/200804/stamp_success@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/201019/stamp_today@2x.png`} />
         </>
       )
     } else {
       return (
         <>
-          <img src={`${IMG_SERVER}/event/attend/200804/stamp_gray@2x.png`} />
+          <img src={`${IMG_SERVER}/event/attend/201019/stamp_fail_img@2x.png`} />
         </>
       )
     }
@@ -30,12 +34,45 @@ export default () => {
 
   const createBonus = () => {
     if (statusList.bonus === '0') {
-      return <>보너스 해당없음</>
-    } else if (statusList.bonus === '0') {
-      return <>보너스 받을 수 있음</>
+      return ''
+    } else if (statusList.bonus === '1') {
+      return (
+        <div className="bonusBox">
+          <button onClick={clickGiftButton}>
+            <img src={`${IMG_SERVER}/event/attend/201019/btn_bonus@2x.png`} alt="보너스 선물 받기" />
+          </button>
+        </div>
+      )
     } else {
-      return <>보너스 받았음</>
+      return (
+        <div className="bonusBox">
+          <img src={`${IMG_SERVER}/event/attend/201019/box_text@2x.png`} alt="보너스 지급 내역" />
+
+          <dl>
+            <dt>보너스 달:</dt>
+            <dd>{statusList.dal}</dd>
+            <dt>경험치(EXP):</dt>
+            <dd>{statusList.exp}</dd>
+          </dl>
+        </div>
+      )
     }
+  }
+
+  const clickGiftButton = () => {
+    async function fetchEventAttendGift() {
+      const {result, data} = await API.postEventAttendGift()
+      if (result === 'success') {
+        const {status, summary} = data
+        eventAttendAction.setSummaryList(summary)
+        eventAttendAction.setStatusList(status)
+        eventAttendAction.setDateList(dateList)
+        setPopup(popup ? false : true)
+      } else {
+        //실패
+      }
+    }
+    fetchEventAttendGift()
   }
 
   const creatList = () => {
@@ -60,61 +97,50 @@ export default () => {
 
     return (
       <>
-        <ul className="stampBox">
-          {result.map((item, index) => {
-            let class_name = ''
-            let check_ok = ''
+        <div className="stampBoxWrap">
+          <ul className="stampBox">
+            {result.map((item, index) => {
+              let class_name = ''
+              let check_ok = ''
 
-            if (item !== null) check_ok = item.check_ok
+              if (item !== null) check_ok = item.check_ok
 
-            if (item !== null) {
-              class_name = `stampBoxItem ${check_ok === 1 ? 'success' : check_ok === 0 ? 'fail' : 'today'}`
-            } else if (item === null) {
-              class_name = 'stampBoxItem'
-            }
+              if (item !== null) {
+                class_name = `stampBoxItem ${check_ok === 1 ? 'success' : check_ok === 0 ? 'fail' : 'today'}`
+              } else if (item === null) {
+                class_name = 'stampBoxItem'
+              }
 
-            if (index === 7) {
-              if (statusList.bonus === '0') {
+              if (index === 7) {
                 return (
-                  <div key={`event-date-${index}`} className="pointBox basic">
-                    스탬프실패
-                  </div>
-                )
-              } else {
-                return (
-                  <div key={`event-date-${index}`} className="point-box complete">
-                    스탬프성공
-                  </div>
+                  <li key={`event-date-${index}`} className="stampBoxItem pointBox">
+                    {statusList.bonus === '0' ? (
+                      <img src={`${IMG_SERVER}/event/attend/201019/stamp_bonus@2x.png`} />
+                    ) : (
+                      <img src={`${IMG_SERVER}/event/attend/201019/stamp_bonus_after@2x.png`} />
+                    )}
+                  </li>
                 )
               }
-            }
 
-            return (
-              <li className={class_name} key={`event-date-${index}`}>
-                <div className="stamp-box-item-wrap">
-                  <div className="stamp-area">
-                    {createCheckIn(check_ok)}
+              return (
+                <li className={class_name} key={`event-date-${index}`}>
+                  {createCheckIn(check_ok)}
 
-                    {item !== null && item.is_today && (
-                      <span className="today-icon">
-                        <img src={`${IMG_SERVER}/event/attend/200804/label_today@2x.png`} />
-                      </span>
-                    )}
-                  </div>
-                  <p className="stamp-date">{date_pair[index]}</p>
-
-                  <p className="stamp-exp">
-                    {check_ok === 1 ? <>{text[index]} 획득!</> : check_ok === 0 ? <>출석체크 실패!</> : <>{text[index]}</>}
+                  <p className="stampBoxItem__date">
+                    {check_ok === 1 ? '출석성공' : check_ok === 0 ? '출석실패' : `${date_pair[index]}`}
                   </p>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+
+                  <p className="stampBoxItem__exp">{text[index]}</p>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
 
         <div>{createBonus()}</div>
 
-        {/* {popup && <LayerPopup setPopup={setPopup} statusList={statusList} setStatusList={setStatusList}></LayerPopup>} */}
+        {popup && <BonusPop setPopup={setPopup}></BonusPop>}
       </>
     )
   }

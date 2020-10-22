@@ -2,34 +2,51 @@ import React, {useContext, useEffect, useRef, useState} from 'react'
 
 import {AttendContext} from '../attend_ctx'
 
+import arrowIcon from './../static/ic_arrow_y_down.svg'
+
 export default (props) => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
 
   const [attendView, setAttendView] = useState(false)
   const [rouletteView, setRouletteView] = useState(false)
 
+  const noticeList = useRef()
+
   const buttonToogle = () => {
     if (attendView === false) {
       setAttendView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo(0, noticeListHeight)
+      }, 100)
     } else {
       setAttendView(false)
     }
 
     if (rouletteView === false) {
       setRouletteView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo(0, noticeListHeight)
+      }, 100)
     } else {
       setRouletteView(false)
     }
   }
 
   return (
-    <div className="noticeWrap">
+    <>
       {eventAttendState.tab === 'attend' ? (
-        <>
-          <div className="noticeWrap__title" onClick={buttonToogle}>
-            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'}
+        <div className="noticeWrap attend">
+          <div
+            className={`noticeWrap__title
+           ${attendView === true ? 'active' : ''}`}
+            onClick={buttonToogle}>
+            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
           </div>
-          <div className={`noticeListBox ${attendView === true ? 'active' : ''}`}>
+          <div ref={noticeList} className={`noticeListBox ${attendView === true ? 'active' : ''}`}>
             <ul>
               <li>
                 출석은 00시 기준 방송 또는 청취 시간의 합이 30분 이상일 때 완료할 수 있습니다. 예시) 23:40-00:10의 방송 또는 청취
@@ -42,13 +59,13 @@ export default (props) => {
               <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
             </ul>
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <div className="noticeWrap__title" onClick={buttonToogle}>
-            이벤트 유의사항 {rouletteView === true ? '닫기' : '확인하기'}
+        <div className="noticeWrap roulette">
+          <div className={`noticeWrap__title ${attendView === true ? 'active' : ''}`} onClick={buttonToogle}>
+            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
           </div>
-          <div className={`noticeListBox ${rouletteView === true ? 'active' : ''}`}>
+          <div ref={noticeList} className={`noticeListBox ${rouletteView === true ? 'active' : ''}`}>
             <p>이벤트 취지</p>
             <ul>
               <li>
@@ -79,8 +96,8 @@ export default (props) => {
               </li>
             </ul>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }
