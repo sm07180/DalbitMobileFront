@@ -48,7 +48,7 @@ export default (props) => {
       <p className="subText">※ 자세한 내용은 공지사항을 통해 확인 바랍니다.</p>
       <button
         onClick={() => {
-          history.push('/customer/notice/136')
+          history.push('/customer/notice/176')
         }}>
         공지사항 보러가기
       </button>
