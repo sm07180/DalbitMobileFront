@@ -94,7 +94,7 @@ export default (props) => {
   function authClick() {
     if (event) {
       let url = event.split('/').join('DAL')
-      url = event.split('_').join('BIT')
+      url = url.split('_').join('BIT')
       alert(url)
       return authReq(url, formTag)
     }

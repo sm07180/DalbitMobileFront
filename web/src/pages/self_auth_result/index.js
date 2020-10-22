@@ -69,7 +69,7 @@ export default (props) => {
       setAuthState(5)
     } else if (returntype === 'event') {
       let changeUrl = url.split('DAL').join('/')
-      changeUrl = url.split('BIT').join('_')
+      changeUrl = changeUrl.split('BIT').join('_')
       console.log('changeUrl', changeUrl)
       history.push(changeUrl)
     } else {
