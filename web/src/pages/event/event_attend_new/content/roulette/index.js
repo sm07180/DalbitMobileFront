@@ -79,7 +79,7 @@ export default function RouletteTab() {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)
         } else {
           globalCtx.action.alert({
-            msg: '응모권을 획득 후 참여해주세요.'
+            msg: '응모권을 획득 후 참여해주세요!'
           })
         }
       }
