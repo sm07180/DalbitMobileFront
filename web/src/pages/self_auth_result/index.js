@@ -68,9 +68,18 @@ export default (props) => {
     } else if (returntype === 'create') {
       setAuthState(5)
     } else if (returntype === 'event') {
-      history.push(url)
+      let changeUrl = url.split('DAL').join('/')
+      changeUrl = changeUrl.split('BIT').join('_')
+      console.log('changeUrl', changeUrl, typeof changeUrl)
+      return history.push(changeUrl)
     } else {
       checkAuth()
+    }
+
+    context.action.updateSetBack(true)
+    context.action.updateBackFunction({name: 'selfauth'})
+    return () => {
+      context.action.updateSetBack(null)
     }
   }, [])
 
