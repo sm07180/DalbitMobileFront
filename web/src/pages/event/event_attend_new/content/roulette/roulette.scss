@@ -23,7 +23,7 @@
 
       &__cnt {
         position: absolute;
-        bottom: 38%;
+        bottom: 33%;
         right: 5%;
         width: 25%;
         display: flex;
@@ -43,18 +43,21 @@
     }
   }
 
-  .giftWinnerWrap {
+  .giftWinner {
     padding: 0 2% 20px 2%;
     background-color: #097b70;
   }
 
-  .giftWinnerBox {
+  .giftWinnerWrap {
     overflow: hidden;
+    border-radius: 36px;
+    border: 4px solid #1f645e;
+  }
+
+  .giftWinnerBox {
     display: flex;
     letter-spacing: -1px;
     font-size: 14px;
-    border-radius: 36px;
-    border: 4px solid #1f645e;
     background-color: #fff;
 
     label {

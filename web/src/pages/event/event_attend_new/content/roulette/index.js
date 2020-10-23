@@ -110,31 +110,33 @@ export default function RouletteTab() {
         </div>
       </div>
 
-      <div className="giftWinnerWrap">
-        <div
-          className="giftWinnerBox"
-          onClick={() => {
-            history.push('/event/attend_event_gift')
-          }}>
-          <label>기프티콘 당첨</label>
+      <div className="giftWinner">
+        <div className="giftWinnerWrap">
+          <div
+            className="giftWinnerBox"
+            onClick={() => {
+              history.push('/event/attend_event_gift')
+            }}>
+            <label>기프티콘 당첨</label>
 
-          {winList ? (
-            <Swiper {...swiperParams}>
-              {winList.length > 0 &&
-                winList.map((item, index) => {
-                  const {winDt, nickNm} = item
+            {winList ? (
+              <Swiper {...swiperParams}>
+                {winList.length > 0 &&
+                  winList.map((item, index) => {
+                    const {winDt, nickNm} = item
 
-                  return (
-                    <div className="gifticon-win-list" key={index}>
-                      <p className="time">{dateFormatter(winDt)}</p>
-                      <p className="nick-name">{nickNm}</p>
-                    </div>
-                  )
-                })}
-            </Swiper>
-          ) : (
-            <div className="gifticon-win-list">당첨자 곧 등장 예정! 행운의 주인공은?</div>
-          )}
+                    return (
+                      <div className="gifticon-win-list" key={index}>
+                        <p className="time">{dateFormatter(winDt)}</p>
+                        <p className="nick-name">{nickNm}</p>
+                      </div>
+                    )
+                  })}
+              </Swiper>
+            ) : (
+              <div className="gifticon-win-list">당첨자 곧 등장 예정! 행운의 주인공은?</div>
+            )}
+          </div>
         </div>
       </div>
 

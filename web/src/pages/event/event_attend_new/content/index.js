@@ -89,7 +89,7 @@ export default () => {
             type="button"
             onClick={() => eventAttendAction.setTab('attend')}
             className={`btnAttend ${tab === 'attend' ? 'active' : ''}`}>
-            출석 이벤트
+            <img src={`${IMG_SERVER}/event/attend/201019/tab_text_01@2x.png`} alt="출석 이벤트" />
           </button>
 
           {ios === 'Y' ? (
@@ -99,7 +99,7 @@ export default () => {
               type="button"
               onClick={() => eventAttendAction.setTab('roulette')}
               className={`btnRoul ${tab === 'roulette' ? 'active' : ''}`}>
-              룰렛 이벤트
+              <img src={`${IMG_SERVER}/event/attend/201019/tab_text_02@2x.png`} alt="룰렛 이벤트" />
             </button>
           )}
         </div>
