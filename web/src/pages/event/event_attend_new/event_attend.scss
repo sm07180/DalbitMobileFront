@@ -28,6 +28,8 @@
     padding-top: 2px;
     background-color: #fb7964;
     border-bottom: 2px solid #91313f;
+    overflow: hidden;
+    height: 40px;
 
     &.roulette {
       border-bottom: 2px solid #097b70;
@@ -37,6 +39,7 @@
       position: fixed;
       top: 0;
       z-index: 2;
+      overflow: hidden;
     }
 
     button {
@@ -46,12 +49,12 @@
       background-color: #d85a46;
 
       &.btnAttend {
-        border-radius: 50px 15px 0 0;
+        border-radius: 24px 12px 0 0;
         background-color: #91313f;
       }
 
       &.btnRoul {
-        border-radius: 15px 50px 0 0;
+        border-radius: 12px 24px 0 0;
         background-color: #097b70;
       }
     }

@@ -26,10 +26,16 @@
         bottom: 38%;
         right: 5%;
         width: 25%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         font-size: 12px;
+        line-height: 32px;
 
-        span {
+        &--num {
+          display: inline-block;
+          margin-right: 2px;
           font-size: 24px;
           font-weight: 800;
         }
@@ -45,19 +51,11 @@
   .giftWinnerBox {
     overflow: hidden;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 48px;
     letter-spacing: -1px;
     font-size: 14px;
     border-radius: 36px;
     border: 4px solid #1f645e;
     background-color: #fff;
-
-    .swiper-container-vertical {
-      width: 65%;
-      height: 40px;
-    }
 
     label {
       width: 35%;
@@ -68,11 +66,16 @@
       color: $white;
     }
 
+    .swiper-container-vertical {
+      width: 65%;
+      height: 40px;
+    }
     .gifticon-win-list {
       display: flex;
       align-items: center;
       width: 100%;
       height: 40px;
+      line-height: 40px;
       padding: 0 9px;
       box-sizing: border-box;
       font-size: 14px;

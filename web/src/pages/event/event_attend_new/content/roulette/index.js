@@ -104,7 +104,8 @@ export default function RouletteTab() {
         <div className="couponBox">
           <img src={`${IMG_SERVER}/event/attend/201019/event_ticket@2x.png`} alt="룰렛 응모 티켓수" />
           <p className="couponBox__cnt">
-            <span>{eventAttendState.couponCnt}</span>개
+            <span className="couponBox__cnt--num">{eventAttendState.couponCnt}</span>
+            <span>개</span>
           </p>
         </div>
       </div>

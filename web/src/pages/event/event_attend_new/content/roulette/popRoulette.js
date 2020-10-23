@@ -16,7 +16,7 @@ let timeout
 export default () => {
   const globalCtx = useContext(Context)
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
-  // const {itemNo} = eventAttendState
+  const {itemNo} = eventAttendState
 
   const rouletteRef = useRef(null)
 
