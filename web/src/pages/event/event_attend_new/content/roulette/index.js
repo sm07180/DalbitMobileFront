@@ -75,7 +75,7 @@ export default function RouletteTab() {
       if (globalCtx.selfAuth === false) {
         history.push('/selfauth?event=/event/attend_event/roulette')
       } else {
-        if (eventAttendState.couponCnt !== 0) {
+        if (eventAttendState.couponCnt === 0) {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)
         } else {
           globalCtx.action.alert({

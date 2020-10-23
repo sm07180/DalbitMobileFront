@@ -66,13 +66,13 @@ export default (props) => {
             이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
           </div>
           <div ref={noticeList} className={`noticeListBox ${rouletteView === true ? 'active' : ''}`}>
-            <p>이벤트 취지</p>
+            {/* <p>이벤트 취지</p>
             <ul>
               <li>
                 룰렛 이벤트는 출석체크 이벤트 외의 부가적인 이벤트로서 즐겁게 방송 또는 청취를 하시면서 소소한 이벤트 상품까지
                 받으실 수 있도록 하는 데에 취지가 있습니다.
               </li>
-            </ul>
+            </ul> */}
 
             <p>이벤트 유의 사항</p>
             <ul>
@@ -88,13 +88,13 @@ export default (props) => {
               <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
             </ul>
 
-            <p>이벤트 당첨 확률</p>
+            {/* <p>이벤트 당첨 확률</p>
             <ul>
               <li>
                 꽝(63%), 1달(20%), 3달(10%), 초코에몽(3.5%), 편의점 상품권(1.5%), 스타벅스 아아(1%), 문화상품권(0.7%),
                 교촌치킨(0.3%)
               </li>
-            </ul>
+            </ul> */}
           </div>
         </div>
       )}

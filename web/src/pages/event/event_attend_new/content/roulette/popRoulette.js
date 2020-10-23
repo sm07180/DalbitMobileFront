@@ -16,7 +16,7 @@ let timeout
 export default () => {
   const globalCtx = useContext(Context)
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
-  const {itemNo} = eventAttendState
+  // const {itemNo} = eventAttendState
 
   const rouletteRef = useRef(null)
 
@@ -97,21 +97,21 @@ export default () => {
       }, 300000)
     }, 4000)
 
-    if (itemNo === GIFT_ROTATION_TYPE.GIFT_VOUCHER) {
+    if (itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKS) {
       setRotation(22.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.THREE_DAL) {
-      setRotation(67.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CHICKEN) {
-      setRotation(112.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.FAILD) {
-      setRotation(157.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKS) {
-      setRotation(202.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.ONE_DAL) {
-      setRotation(247.5)
+      setRotation(67.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CONVENIENCE) {
-      setRotation(292.5)
+      setRotation(112.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CHOCO) {
+      setRotation(157.5)
+    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_VOUCHER) {
+      setRotation(202.5)
+    } else if (itemNo === GIFT_ROTATION_TYPE.THREE_DAL) {
+      setRotation(247.5)
+    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CHICKEN) {
+      setRotation(292.5)
+    } else if (itemNo === GIFT_ROTATION_TYPE.FAILD) {
       setRotation(337.5)
     }
 
