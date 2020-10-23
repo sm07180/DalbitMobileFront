@@ -64,6 +64,7 @@ export default () => {
       eventAttendAction.setInputEndDate(data.inputEndDate)
       eventAttendAction.setCouponCnt(data.couponCnt)
       eventAttendAction.setWinIdx(data.winIdx)
+      eventAttendAction.setWinPhone(data.phone)
     } else {
       // 실패
     }
