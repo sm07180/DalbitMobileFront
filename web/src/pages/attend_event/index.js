@@ -10,7 +10,7 @@ import Swiper from 'react-id-swiper'
 import Layout from 'pages/common/layout'
 import './attend_event.scss'
 import AttendList from './attend_list'
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useHistory, location, useLocation} from 'react-router-dom'
 import WinList from './attend_win_list'
 import qs from 'query-string'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -23,6 +23,11 @@ let intervalId = null
 
 export default (props) => {
   const history = useHistory()
+  let location = useLocation()
+
+  if (location.pathname == '/attend_event') {
+    history.push(`/event/attend_event`)
+  }
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const [phone, setPhone] = useState('')
