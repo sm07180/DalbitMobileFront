@@ -47,11 +47,11 @@ export default function AttendTab() {
         eventAttendAction.setDateList(dateList)
 
         // 성공
-        if (statusList.the_day === 0 || statusList.the_day === 2) {
+        if (statusList.the_day === '0' || statusList.the_day === '2') {
           globalCtx.action.alert({
             msg: `<div class="attendAlertBox"><div class="attendAlertBox__image"><img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" /></div><p class="attendAlertBox__title">출석체크 성공!<br /><span>1달+10EXP 지급!</span></p><p class="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p></div>`
           })
-        } else if (statusList.the_day === 1 || statusList.the_day === 3) {
+        } else if (statusList.the_day === '1' || statusList.the_day === '3') {
           globalCtx.action.alert({
             msg: `<div class="attendAlertBox"><div class="attendAlertBox__image"><img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" /></div><p class="attendAlertBox__title">출석체크 성공!<br /><span>2달+10EXP 지급!</span></p><p class="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p></div>`
           })

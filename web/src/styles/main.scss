@@ -98,6 +98,16 @@
   height: 48px;
   background-color: rgba(127, 127, 127, 0.3);
   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+
+  // &.rank {
+  //   position: absolute;
+  //   top: 24px;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+
+  //   background-color: transparent;
+  //   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  // }
   .icon-wrap {
     position: absolute;
     left: 50%;
@@ -307,6 +317,11 @@
           justify-content: space-between;
           padding: 8px 0 6px;
           border-bottom: 1px solid $lighterGray;
+
+          .rank-arrow {
+            width: 24px;
+            height: 24px;
+          }
           .btn {
             &__refresh {
               position: relative;
@@ -429,8 +444,9 @@
         }
       }
       .rank-arrow {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
       }
     }
 
@@ -918,23 +934,32 @@
       background-size: cover;
       background-position: center;
       background-color: $lighterGray;
+      .thumb-guest {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 32px;
+        height: 32px;
+        border: 1px solid #9a9a9a;
+        border-radius: 11px;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
     }
 
     .iconPc {
       display: flex;
       align-items: center;
-      position: absolute;
-      left: 48px;
-      bottom: 4px;
-      padding: 0 8px;
-
-      background: #f26d4a;
-      color: $white;
+      height: 16px;
+      padding: 0 4px;
+      margin-right: 4px;
       border-radius: 12px;
-      height: 14px;
-      font-size: 10px;
-      font-weight: normal;
+      font-size: 12px;
       font-style: normal;
+      border: 1px solid #f26d4a;
+      color: #f26d4a;
     }
     .newSpecialIcon {
       z-index: 1;

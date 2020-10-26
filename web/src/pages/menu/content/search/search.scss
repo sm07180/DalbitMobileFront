@@ -210,9 +210,11 @@
         padding-top: 10px;
       }
       &__thumb {
+        overflow: hidden;
         position: relative;
         margin-right: 12px;
         width: 72px;
+        border-radius: 12px;
         .newSpecialIcon {
           position: absolute;
           text-indent: -99999px;
@@ -225,7 +227,16 @@
         }
         img {
           width: 100%;
-          border-radius: 12px;
+        }
+        .thumb-guest {
+          position: absolute;
+          right: 0px;
+          bottom: 0px;
+          width: 32px;
+          height: 32px;
+          border: 1px solid #9a9a9a;
+          border-radius: 11px;
+          overflow: hidden;
         }
         &__playTime {
           display: inline-block;
@@ -339,6 +350,18 @@
               opacity: 0.8;
             }
           }
+        }
+        .iconPc {
+          display: flex;
+          align-items: center;
+          height: 16px;
+          padding: 0 4px;
+          margin-right: 4px;
+          border-radius: 12px;
+          font-size: 12px;
+          font-style: normal;
+          border: 1px solid #f26d4a;
+          color: #f26d4a;
         }
       }
     }
