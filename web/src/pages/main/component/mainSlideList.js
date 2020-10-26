@@ -32,10 +32,10 @@ export default (props) => {
         {list instanceof Array &&
           list.map((bannerData, index) => {
             const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title, liveBadgeList} = bannerData
-            let bgImgUrl = bannerUrl
-            if (nickNm !== 'banner' && !bgImgUrl.toLowerCase().endsWith(".gif")) {
-              bgImgUrl += "?700x700"
-            }
+            // let bgImgUrl = bannerUrl
+            // if (nickNm !== 'banner' && !bgImgUrl.toLowerCase().endsWith(".gif")) {
+            //   bgImgUrl += "?700x700"
+            // }
             return (
               <div
                 key={index}
