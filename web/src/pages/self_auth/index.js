@@ -80,8 +80,8 @@ export const authReq = async (code, formTagRef) => {
 export default (props) => {
   const location = useLocation()
 
-  const {type} = qs.parse(location.search)
-  console.log(type)
+  const {type, event} = qs.parse(location.search)
+  console.log(type, event)
 
   //---------------------------------------------------------------------
   //context
@@ -92,6 +92,11 @@ export default (props) => {
 
   //인증 요청 버튼
   function authClick() {
+    if (event) {
+      let url = event.split('/').join('DAL')
+      url = url.split('_').join('BIT')
+      return authReq(url, formTag)
+    }
     if (type === 'create') {
       authReq('6', formTag)
     } else {
@@ -119,6 +124,14 @@ export default (props) => {
             <>
               <h4>
                 <span>처음 방송개설 및 클립등록 시</span>
+                <br />
+                본인인증을 필수로 받으셔야 합니다.
+              </h4>
+            </>
+          ) : event ? (
+            <>
+              <h4>
+                <span>이벤트 참여 또는 경품 수령을 위해</span>
                 <br />
                 본인인증을 필수로 받으셔야 합니다.
               </h4>

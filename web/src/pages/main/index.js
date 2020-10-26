@@ -12,6 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
 //import Lottie from 'react-lottie'
+import LottiePlayer from "lottie-web";
 
 // components
 import Layout from 'pages/common/layout'
@@ -43,8 +44,8 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import CrownIcon from './static/ic_crown.png'
 import LiveIcon from './static/ic_newlive.png'
-//import CrownLottie from './static/crown_lottie.json'
-//import LiveLottie from './static/live_lottie.json'
+import CrownLottie from './static/crown_lottie.json'
+import LiveLottie from './static/live_lottie.json'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 
 import 'styles/main.scss'
@@ -329,6 +330,22 @@ export default (props) => {
       livePage <= totalLivePage
     ) {
       concatLiveList()
+    }
+  }
+
+  const playLottie = (lottieObj, elem) => {
+    if(lottieObj != null && elem != null){
+      const lottieAnimation = LottiePlayer.loadAnimation({
+        container: elem,
+        renderer: "svg",
+        loop: false,
+        autoplay: true,
+        animationData: lottieObj,
+      });
+      lottieAnimation.addEventListener('complete', ()=>{
+        lottieAnimation.destroy()
+        playLottie(lottieObj, elem)
+      })
     }
   }
 
