@@ -295,10 +295,10 @@ export default (props) => {
 
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
-      if (item.length === 0) return null
+      if (item.length < 3) return <React.Fragment key={idx}></React.Fragment>
       let subjectMap = item[0].subjectType
       return (
-        <div className="slideWrap" key={idx} style={{display: item.length !== 3 ? 'none' : 'block'}}>
+        <div className="slideWrap" key={idx}>
           {clipType.map((item, idx) => {
             const {cdNm, value} = item
             if (subjectMap === value) {
