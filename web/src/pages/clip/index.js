@@ -268,8 +268,8 @@ export default (props) => {
           {/* <i className="slideWrap__iconNew">
             <img src={newIcon} />
           </i> */}
-          {/* <p className="slideWrap__subject">{title}</p> */}
-          <p className="slideWrap__nicknName">{nickName}</p>
+          <p className="slideWrap__subject">{title}</p>
+          <p className="slideWrap__nickName">{nickName}</p>
         </div>
       )
     })
@@ -567,7 +567,9 @@ export default (props) => {
           <div className="rankClip__title">
             최신 클립
             {/* <button onClick={() => history.push(`/rank`)} /> */}
+            <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
           </div>
+
           {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
         </div>
 
