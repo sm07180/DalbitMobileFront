@@ -5,7 +5,6 @@ import {IMG_SERVER} from 'context/config'
 import {useHistory, useParams} from 'react-router-dom'
 
 // component
-import Layout from 'pages/common/layout'
 import AttendPage from './attend'
 import RoulettePage from './roulette'
 import qs from 'query-string'
