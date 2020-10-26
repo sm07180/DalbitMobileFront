@@ -24,9 +24,9 @@ let intervalId = null
 export default (props) => {
   const history = useHistory()
   let location = useLocation()
-
-  if (location.pathname == '/attend_event') {
-    history.push(`/event/attend_event`)
+  const {webview} = qs.parse(location.search)
+  if (location.pathname.startsWith('/attend_event')) {
+    history.push(webview ? `/event/attend_event?webview=${webview}` : `/event/attend_event`)
   }
   const globalCtx = useContext(Context)
   const {token} = globalCtx
@@ -44,7 +44,6 @@ export default (props) => {
   const [noticeView, setNoticeView] = useState(false)
 
   const phoneInput = useRef()
-  const {webview} = qs.parse(location.search)
 
   const clickCloseBtn = () => {
     if (isHybrid() && webview && webview === 'new') {
