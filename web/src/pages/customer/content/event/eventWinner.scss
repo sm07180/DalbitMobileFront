@@ -1,0 +1,176 @@
+#winnerList {
+  .resultWrap {
+    padding: 0 16px 16px 16px;
+
+    .resultBox {
+      border-radius: 12px;
+      border: solid 1px #632beb;
+      background-color: #ffffff;
+      text-align: center;
+      padding: 0 16px 0 16px;
+
+      .title {
+        font-size: 16px;
+        font-weight: bold;
+        padding: 16px;
+        line-height: 1.5;
+        color: #632beb;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .resultState{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // 당첨 결과가 없을 때
+        .noResult {
+          position: relative;
+          padding-left: 76px;
+          text-align: left;
+          font-weight: bold;
+          margin: 24px 0 28px;
+          &:before {
+            position: absolute;
+            top: -12px;
+            left: 0;
+            display: inline-block;
+            content: '';
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+            background: url('https://image.dalbitlive.com/images/api/img_rabbit.svg') no-repeat 0 0;
+          }
+        }
+
+        // 당첨 결과가 있을 때
+        .winResult {
+          width: 100%;
+          padding: 12px 0 12px 0;
+
+          img {
+            width: 128px;
+            height: 32px;
+            object-fit: contain;
+          }
+
+          .resultPrizeName {
+            font-size: 20px;
+            line-height: 1.3;
+            font-weight: bold;
+            text-align: center;
+            color: #ec455f;
+            margin-top: 8px;
+          }
+
+          .buttonArea {
+            display: flex;
+            padding-top: 20px;
+
+            .infoButton {
+              width: 50%;
+              border-radius: 12px;
+              border: solid 1px #632beb;
+              background-color: #ffffff;
+              padding: 10px;
+              margin-right: 2px;
+              font-size: 14px;
+              font-weight: bold;
+              line-height: 1.14;
+              text-align: center;
+              color: #632beb;
+            }
+
+            .dalButton {
+              width: 50%;
+              border-radius: 12px;
+              border: solid 1px #632beb;
+              background-color: #632beb;
+              padding: 10px;
+              margin-left: 2px;
+              font-size: 14px;
+              font-weight: bold;
+              line-height: 1.14;
+              text-align: center;
+              color: #ffffff;
+            }
+          }
+
+          .textAreaBold {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 1.43;
+            text-align: center;
+            color: #757575;
+          }
+
+          .textArea {
+            font-size: 14px;
+            line-height: 1.43;
+            text-align: center;
+            color: #757575;
+          }
+        }
+      }
+
+
+    }
+  }
+
+  .winnerWrap {
+    background: #fff;
+    .eventTitleBox {
+      padding: 10px 16px 0 16px;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.33;
+    }
+
+    .eventDateBox {
+      padding: 4px 0 9px 16px;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #757575;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .winner-list {
+      padding: 16px;
+      li {
+        margin-top: 20px;
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      .winnerTextArea {
+        margin-bottom: 8px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #000000;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .winnerUser-list {
+        .winnerUser-item {
+          background-color: #f5f5f5;
+          padding: 10px;
+          margin-top: 2px;
+          &:first-child {
+            margin-top: 0;
+          }
+          .winnerNick {
+            width: 198px;
+            height: 19px;
+            font-size: 14px;
+            line-height: 1.43;
+            color: #632beb;
+          }
+        }
+
+      }
+    }
+  }
+}
