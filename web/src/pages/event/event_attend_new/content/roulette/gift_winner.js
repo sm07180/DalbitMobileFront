@@ -1,6 +1,7 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 
 import API from 'context/api'
+import {Context} from 'context'
 
 //components
 import {useHistory} from 'react-router-dom'
@@ -8,9 +9,15 @@ import {useHistory} from 'react-router-dom'
 //staic
 import newIcon from '../../static/new_circle_m.svg'
 
+//flag
+let currentPage = 1
+let moreState = false
+let timer
 export default () => {
+  const context = useContext(Context)
   const history = useHistory()
-  const [winList, setWinList] = useState({})
+  const [winList, setWinList] = useState([])
+  const [nextList, setNextList] = useState([])
 
   const goBack = () => {
     return history.goBack()
@@ -27,18 +34,66 @@ export default () => {
     // return `${month}월 ${day}일 ${time}`
   }
 
-  async function fetchEventRouletteWin() {
-    const {result, data} = await API.getEventRouletteWin({
-      winType: 0
+  async function fetchEventRouletteWin(next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
+
+    const {result, data, message} = await API.getEventRouletteWin({
+      winType: 0,
+      records: 15,
+      page: currentPage
     })
-    if (result === 'success') {
-      setWinList(data.list)
+
+    if (result === 'success' && data.hasOwnProperty('list')) {
+      if (data.list.length === 0) {
+        if (!next) {
+          setWinList([])
+        }
+      } else {
+        if (next) {
+          moreState = true
+          setNextList(data.list)
+        } else {
+          setWinList(data.list)
+          fetchEventRouletteWin('next')
+        }
+      }
+    } else {
+      moreState = false
     }
   }
 
+  //scroll
+  const showMoreList = () => {
+    setWinList(winList.concat(nextList))
+    fetchEventRouletteWin('next')
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
   //-------------------
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
 
   useEffect(() => {
+    setWinList([])
     fetchEventRouletteWin()
   }, [])
 
