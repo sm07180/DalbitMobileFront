@@ -5,7 +5,6 @@ import {IMG_SERVER} from 'context/config'
 import {useHistory, useParams} from 'react-router-dom'
 
 // component
-import Layout from 'pages/common/layout'
 import AttendPage from './attend'
 import RoulettePage from './roulette'
 import qs from 'query-string'
@@ -76,36 +75,34 @@ export default () => {
 
   return (
     <div id="attendEventPage">
-      <Layout status="no_gnb">
-        <div className="commonTopWrap" ref={commonTopRef}>
-          <button className="btnBack" onClick={() => clickCloseBtn()}>
-            <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-          </button>
-          {ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
-        </div>
+      <div className="commonTopWrap" ref={commonTopRef}>
+        <button className="btnBack" onClick={() => clickCloseBtn()}>
+          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        </button>
+        {ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
+      </div>
 
-        <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>
+      <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>
+        <button
+          type="button"
+          onClick={() => eventAttendAction.setTab('attend')}
+          className={`btnAttend ${tab === 'attend' ? 'active' : ''}`}>
+          <img src={`${IMG_SERVER}/event/attend/201019/tab_text_01@2x.png`} alt="출석 이벤트" />
+        </button>
+
+        {ios === 'Y' ? (
+          ''
+        ) : (
           <button
             type="button"
-            onClick={() => eventAttendAction.setTab('attend')}
-            className={`btnAttend ${tab === 'attend' ? 'active' : ''}`}>
-            <img src={`${IMG_SERVER}/event/attend/201019/tab_text_01@2x.png`} alt="출석 이벤트" />
+            onClick={() => eventAttendAction.setTab('roulette')}
+            className={`btnRoul ${tab === 'roulette' ? 'active' : ''}`}>
+            <img src={`${IMG_SERVER}/event/attend/201019/tab_text_02@2x.png`} alt="룰렛 이벤트" />
           </button>
+        )}
+      </div>
 
-          {ios === 'Y' ? (
-            ''
-          ) : (
-            <button
-              type="button"
-              onClick={() => eventAttendAction.setTab('roulette')}
-              className={`btnRoul ${tab === 'roulette' ? 'active' : ''}`}>
-              <img src={`${IMG_SERVER}/event/attend/201019/tab_text_02@2x.png`} alt="룰렛 이벤트" />
-            </button>
-          )}
-        </div>
-
-        <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>
-      </Layout>
+      <div className={`tabContent ${tabFixed ? 'isTop' : ''}`}>{tab === 'attend' ? <AttendPage /> : <RoulettePage />}</div>
     </div>
   )
 }
