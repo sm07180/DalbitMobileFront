@@ -345,7 +345,16 @@ export default (props) => {
       setShowAdmin(false)
     }
   }, [profile.memNo])
-
+  //
+  const checkSpecialDj = () => {
+    console.log(profile)
+    // const {wasSpecial, isSpecial} = profile
+    if (profile.wasSpecial === false) {
+      return <span className="specialIcon">스페셜 DJ 였다</span>
+    } else if (profile.isSpecial === true) {
+      return <span className="specialIcon">스페셜 DJ </span>
+    }
+  }
   return (
     <div className="profile-detail">
       <div className="adminEditButton">
@@ -476,15 +485,15 @@ export default (props) => {
           </strong>
         </div>
         {/* {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>} */}
-        {profile.isSpecial === true ? (
-          <span className="specialIcon">스페셜 DJ</span>
-        ) : profile.isNew === true ? (
-          <span className="newIcon">신입 DJ</span>
-        ) : profile.isNewListener === true ? (
-          <span className="newIcon">신입청취자</span>
-        ) : (
-          <span className="blind">no badge</span>
-        )}
+        {checkSpecialDj()}
+        {/* // <span className="specialIcon">스페셜 DJ</span>
+        // profile.isNew === true ? (
+        //   <span className="newIcon">신입 DJ</span>
+        // ) : profile.isNewListener === true ? (
+        //   <span className="newIcon">신입청취자</span>
+        // ) : (
+        //   <span className="blind">no badge</span>
+        // )} */}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
         {((profile.fanBadgeList && profile.fanBadgeList.length > 0) ||
