@@ -567,9 +567,8 @@ export default (props) => {
           <div className="rankClip__title">
             최신 클립
             {/* <button onClick={() => history.push(`/rank`)} /> */}
-            <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
           </div>
-
+          <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
           {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
         </div>
 
