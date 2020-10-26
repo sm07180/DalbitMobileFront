@@ -94,24 +94,20 @@
 
 .refresh-wrap {
   display: block;
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  z-index: 12;
-  // height: 48px;
+  position: relative;
+  height: 48px;
   background-color: rgba(127, 127, 127, 0.3);
   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
 
-  &.rank {
-    position: absolute;
-    top: 24px;
-    left: 50%;
-    transform: translateX(-50%);
+  // &.rank {
+  //   position: absolute;
+  //   top: 24px;
+  //   left: 50%;
+  //   transform: translateX(-50%);
 
-    background-color: transparent;
-    transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
-  }
+  //   background-color: transparent;
+  //   transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  // }
   .icon-wrap {
     position: absolute;
     left: 50%;
@@ -321,6 +317,11 @@
           justify-content: space-between;
           padding: 8px 0 6px;
           border-bottom: 1px solid $lighterGray;
+
+          .rank-arrow {
+            width: 24px;
+            height: 24px;
+          }
           .btn {
             &__refresh {
               position: relative;
