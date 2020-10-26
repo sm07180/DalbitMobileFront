@@ -2,34 +2,51 @@ import React, {useContext, useEffect, useRef, useState} from 'react'
 
 import {AttendContext} from '../attend_ctx'
 
+import arrowIcon from './../static/ic_arrow_y_down.svg'
+
 export default (props) => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
 
   const [attendView, setAttendView] = useState(false)
   const [rouletteView, setRouletteView] = useState(false)
 
+  const noticeList = useRef()
+
   const buttonToogle = () => {
     if (attendView === false) {
       setAttendView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo(0, noticeListHeight)
+      }, 100)
     } else {
       setAttendView(false)
     }
 
     if (rouletteView === false) {
       setRouletteView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo(0, noticeListHeight)
+      }, 100)
     } else {
       setRouletteView(false)
     }
   }
 
   return (
-    <div className="noticeWrap">
+    <>
       {eventAttendState.tab === 'attend' ? (
-        <>
-          <div className="noticeWrap__title" onClick={buttonToogle}>
-            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'}
+        <div className="noticeWrap attend">
+          <div
+            className={`noticeWrap__title
+           ${attendView === true ? 'active' : ''}`}
+            onClick={buttonToogle}>
+            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
           </div>
-          <div className={`noticeListBox ${attendView === true ? 'active' : ''}`}>
+          <div ref={noticeList} className={`noticeListBox ${attendView === true ? 'active' : ''}`}>
             <ul>
               <li>
                 출석은 00시 기준 방송 또는 청취 시간의 합이 30분 이상일 때 완료할 수 있습니다. 예시) 23:40-00:10의 방송 또는 청취
@@ -42,45 +59,52 @@ export default (props) => {
               <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
             </ul>
           </div>
-        </>
+        </div>
       ) : (
-        <>
-          <div className="noticeWrap__title" onClick={buttonToogle}>
-            이벤트 유의사항 {rouletteView === true ? '닫기' : '확인하기'}
+        <div className="noticeWrap roulette">
+          <div className={`noticeWrap__title ${attendView === true ? 'active' : ''}`} onClick={buttonToogle}>
+            이벤트 유의사항 {attendView === true ? '닫기' : '확인하기'} <img src={arrowIcon} alt="arrow" />
           </div>
-          <div className={`noticeListBox ${rouletteView === true ? 'active' : ''}`}>
-            <p>이벤트 취지</p>
+          <div ref={noticeList} className={`noticeListBox ${rouletteView === true ? 'active' : ''}`}>
+            {/* <p>이벤트 취지</p>
             <ul>
               <li>
                 룰렛 이벤트는 출석체크 이벤트 외의 부가적인 이벤트로서 즐겁게 방송 또는 청취를 하시면서 소소한 이벤트 상품까지
                 받으실 수 있도록 하는 데에 취지가 있습니다.
               </li>
-            </ul>
+            </ul> */}
 
-            <p>이벤트 유의 사항</p>
+            {/* <p>이벤트 유의 사항</p> */}
             <ul>
-              <li>[마이페이지 &gt; 프로필 설정]에서 본인인증을 완료한 대상에 한하여 이벤트에 참여할 수 있습니다.</li>
               <li>
-                1일 기준 1시간 방송(청취)를 누적하여 완료(종료 기준)할 때마다 자동으로 응모 기회를 받을 수 있습니다. (1일 최대
-                3회)
+                방송(청취) 1시간마다 응모권 1개가 지급됩니다.
+                <br />
+                (단, 1일 최대 3개까지 지급되며, 종료 기준입니다.)
               </li>
               <li>
-                응모권의 유효기간은 발급 기준 72시간이며 기간 내 응모하지 않을 시 자동으로 차감됩니다. 예시) 1월 1일 15:00 응모권
-                1개 발급 → 유효기간: 1월 4일 14:59:59까지
+                응모권의 유효기간은 발급 기준 72시간(3일)이며 기간 내<br />
+                응모하지 않을 시 자동으로 소멸됩니다.
+                <br />
+                예시) 1월 1일 15:00 응모권 1개 발급 → 유효기간: 1월 4일 14:59:59까지
               </li>
+              <li>
+                본인인증을 해야만 참여할 수 있습니다.
+                <br />※ [마이페이지 &gt; 프로필설정]에서 본인인증을 진행할 수 있습니다.
+              </li>
+              <li>당첨된 기프티콘은 평일 기준 7일 이내 입력한 휴대폰 번호로 보내드립니다.</li>
               <li>본 이벤트는 사전 고지 없이 변경 및 종료될 수 있습니다.</li>
             </ul>
 
-            <p>이벤트 당첨 확률</p>
+            {/* <p>이벤트 당첨 확률</p>
             <ul>
               <li>
                 꽝(63%), 1달(20%), 3달(10%), 초코에몽(3.5%), 편의점 상품권(1.5%), 스타벅스 아아(1%), 문화상품권(0.7%),
                 교촌치킨(0.3%)
               </li>
-            </ul>
+            </ul> */}
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </>
   )
 }

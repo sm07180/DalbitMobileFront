@@ -426,8 +426,8 @@ export default (props) => {
           </button>
         )}
         <div className="profile-image">
-          <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.url})`}}>
-            <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} />
+          <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb700x700})`}}>
+            <img src={profile.profImg ? profile.profImg['thumb700x700'] : ''} alt={profile.nickNm} />
             {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
             {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
             <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
