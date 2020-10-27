@@ -1,10 +1,11 @@
 export const RANK_TYPE = {
   DJ: 1,
   FAN: 2,
-  LEVEL: 4,
   LIKE: 3,
-  SPECIAL: 5
+  SPECIAL: 4,
+  LEVEL: 5
 }
+
 export const DATE_TYPE = {
   DAY: 1,
   WEEK: 2,
@@ -19,4 +20,9 @@ export const DAY_TYPE = {
   THU: 4,
   FRI: 5,
   SAT: 6
+}
+
+export const PAGE_TYPE = {
+  RANKING: 'ranking',
+  FAME: 'fame'
 }
