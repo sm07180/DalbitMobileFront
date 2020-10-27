@@ -359,16 +359,28 @@
           letter-spacing: -0.5px;
           line-height: 1.2;
           font-weight: bold;
+          &__count {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+          }
           &::before {
             display: inline-block;
-            width: 24px;
-            height: 28px;
+            width: 54px;
+            height: 51px;
             position: absolute;
             top: 0;
             left: 10px;
             content: '';
-            background: url('../menu/static/ico-specialdj.png') no-repeat center;
+            background: url('./static/specialdj_on.png') no-repeat center;
             background-size: cover;
+          }
+
+          &.prev {
+            &::before {
+              background: url('./static/specialdj_off.png') no-repeat center;
+            }
           }
         }
         .badgeWrap {
