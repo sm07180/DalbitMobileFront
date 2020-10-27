@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext} from 'react'
 
 import API from 'context/api'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 
 //components
 import {useHistory} from 'react-router-dom'
@@ -116,9 +117,9 @@ export default () => {
 
           <table>
             <colgroup>
-              <col width="28%" />
-              <col width="28%" />
-              <col width="44%" />
+              <col width="34%" />
+              <col width="24%" />
+              <col width="40%" />
             </colgroup>
 
             <thead>
@@ -141,22 +142,36 @@ export default () => {
                   const gift_pair = () => {
                     let giftItem
 
-                    if (itemNo === 1) {
-                      giftItem = '꽝'
-                    } else if (itemNo === 2) {
-                      giftItem = '1달'
-                    } else if (itemNo === 3) {
-                      giftItem = '3달'
-                    } else if (itemNo === 4) {
+                    if (itemNo === 4) {
                       giftItem = '초코에몽'
                     } else if (itemNo === 5) {
-                      giftItem = '편의점 상품권'
+                      giftItem = '편의점상품권'
                     } else if (itemNo === 6) {
                       giftItem = '스타벅스 커피'
                     } else if (itemNo === 7) {
                       giftItem = '문화상품권'
                     } else if (itemNo === 8) {
-                      giftItem = '교촌치킨'
+                      giftItem = '교촌치킨 세트'
+                    }
+
+                    return giftItem
+                  }
+
+                  const gift_image = () => {
+                    let giftItem
+
+                    if (itemNo === 4) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_choco@2x.png" width="24px" />
+                    } else if (itemNo === 5) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_2000@2x.png" width="24px" />
+                    } else if (itemNo === 6) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_coffee@2x.png" width="24px" />
+                    } else if (itemNo === 7) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_10000@2x.png" width="24px" />
+                    } else if (itemNo === 8) {
+                      giftItem = (
+                        <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_chicken2@2x.png" width="24px" />
+                      )
                     }
 
                     return giftItem
@@ -164,7 +179,10 @@ export default () => {
 
                   return (
                     <tr key={index}>
-                      <td>{gift_pair()}</td>
+                      <td className="icon">
+                        {gift_image()}
+                        {gift_pair()}
+                      </td>
                       <td className="date">
                         <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
 
