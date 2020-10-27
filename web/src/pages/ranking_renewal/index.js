@@ -92,12 +92,13 @@ function Ranking() {
       touchEndY = e.touches[0].clientY
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 50
+      const heightDiffFixed = 80
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        iconWrapRef.current.style.display = 'block'
-        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${heightDiff}deg)`
+        if (heightDiff <= heightDiffFixed) {
+          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+        }
       }
     },
     [reloadInit, formState]
@@ -113,19 +114,19 @@ function Ranking() {
       const refreshIconNode = arrowRefreshRef.current
 
       const heightDiff = (touchEndY - touchStartY) / ratio
-
-      if (heightDiff >= 100) {
+      const heightDiffFixed = 80
+      if (heightDiff >= heightDiffFixed) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
+          let tail_slice = head_slice.slice(0, 3)
           return Number(tail_slice)
         })()
 
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
 
           const loadIntervalId = setInterval(() => {
             if (Math.abs(current_angle) === 360) {
@@ -159,7 +160,6 @@ function Ranking() {
 
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
-      iconWrapNode.style.display = 'none'
       refreshIconNode.style.transform = 'rotate(0)'
       touchStartY = null
       touchEndY = null

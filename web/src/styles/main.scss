@@ -104,7 +104,7 @@
   z-index: 12;
   &.rank {
     position: absolute;
-    top: 24px;
+    top: 0;
     transform: translateX(-50%);
     background-color: transparent;
     // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;

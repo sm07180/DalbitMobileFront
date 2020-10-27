@@ -5,17 +5,21 @@
   // min-height: 100vh;
   // background-color: $lighterGray;
   position: relative;
+  .header-wrap {
+    z-index: 11;
+  }
+  .refresh-wrap {
+    // display: none;
+    min-height: 48px;
+    max-height: 100px;
+    z-index: 10;
+  }
   .benefitSize {
     position: absolute;
     bottom: 10px;
     left: 16px;
     display: inline-block;
     vertical-align: top;
-  }
-
-  .refresh-wrap {
-    display: none;
-    max-height: 48px;
   }
 
   .testWrap {
