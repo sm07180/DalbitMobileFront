@@ -34,7 +34,7 @@ export default () => {
           <img src="https://image.dalbitlive.com/event/guest/20201027/img04.jpg" alt="게스트에게 선물하기, 게스트연결 종료" />
         </div>
 
-        <div className="notice">
+        <div className="notice" ref={noticeList}>
           <h2 onClick={buttonToogle}>
             <img className="notice__icon" src="https://image.dalbitlive.com/svg/ic_notice_red_radius.svg" alt="공지 아이콘" />
             PC에서 게스트 이용 시 주의사항
