@@ -4,19 +4,40 @@ import API from 'context/api'
 //components
 import {useHistory} from 'react-router-dom'
 
+//flag
+let currentPage = 1
+let moreState = false
+let timer
+
 export default () => {
   const history = useHistory()
-
-  const [applyList, setApplyList] = useState({})
+  const [applyList, setApplyList] = useState([])
+  const [nextList, setNextList] = useState([])
 
   const goBack = () => {
     return history.goBack()
   }
 
-  async function fetchEventRouletteApply() {
-    const {result, data} = await API.getEventRouletteApply()
-    if (result === 'success') {
-      setApplyList(data.list)
+  async function fetchEventRouletteApply(next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
+    const {result, data} = await API.getEventRouletteApply({records: 15, page: currentPage})
+    if (result === 'success' && data.hasOwnProperty('list')) {
+      if (data.list.length === 0) {
+        if (!next) {
+          setApplyList([])
+        }
+      } else {
+        if (next) {
+          moreState = true
+          setNextList(data.list)
+        } else {
+          setApplyList(data.list)
+          fetchEventRouletteApply('next')
+        }
+      }
+    } else {
+      moreState = false
     }
   }
 
@@ -31,8 +52,38 @@ export default () => {
     // return `${month}월 ${day}일 ${time}`
   }
 
+  //scroll
+  const showMoreList = () => {
+    setApplyList(applyList.concat(nextList))
+    fetchEventRouletteApply('next')
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      if (moreState && windowBottom >= docHeight - 200) {
+        showMoreList()
+      } else {
+      }
+    }, 10)
+  }
+
   //--------------------
+
   useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+
+  useEffect(() => {
+    setApplyList([])
     fetchEventRouletteApply()
   }, [])
 
