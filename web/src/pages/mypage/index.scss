@@ -583,7 +583,24 @@
           margin-top: 14px;
           display: flex;
           justify-content: center;
-
+          width: 328px;
+          background-color: #f5f5f5;
+          padding: 6px 0;
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+          &.cupidWrap {
+            margin-top: 2px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+          &__cupidImg {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 4px;
+          }
           &__cupidNick {
             max-width: calc(100% - 96px);
             text-overflow: ellipsis;
@@ -591,7 +608,7 @@
             white-space: nowrap;
             word-wrap: normal;
             display: block;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             line-height: 26px;
           }
@@ -864,7 +881,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 12px;
       transform: skew(-0.03deg);
       width: 72px;
       height: 28px;
@@ -873,10 +889,8 @@
       font-weight: bold;
       letter-spacing: -0.35px;
       line-height: 28px;
-      border-radius: 25px;
-      border: solid 1px #e0e0e0;
       color: $black;
-      background-color: $white;
+
       &::after {
         content: '';
         position: relative;
@@ -885,10 +899,8 @@
         height: 20px;
         background: url('../menu/static/ico_circle.svg') no-repeat center center / contain;
       }
-
       &.cupid {
         width: auto;
-        background-color: #eee;
       }
     }
     &__fanMore {
