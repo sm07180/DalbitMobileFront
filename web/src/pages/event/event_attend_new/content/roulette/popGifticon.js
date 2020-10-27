@@ -16,7 +16,7 @@ export default () => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {itemNo} = eventAttendState
 
-  const [phone, setPhone] = useState('')
+  const [phone, setPhone] = useState(eventAttendState.winPhone)
   const [timeText, setTimeText] = useState('')
 
   const phoneInput = useRef()

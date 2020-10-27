@@ -21,8 +21,8 @@ const EventAttendProvider = (props) => {
   })
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
-
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
+  const [winPhone, setWinPhone] = useState(0) //당첨된 아이템
 
   //---------------------------------------------------------------------
 
@@ -33,11 +33,11 @@ const EventAttendProvider = (props) => {
     summaryList,
     statusList,
     dateList,
-
     popGifticon,
     inputEndDate,
     winIdx,
-    itemNo
+    itemNo,
+    winPhone
   }
 
   const eventAttendAction = {
@@ -47,11 +47,11 @@ const EventAttendProvider = (props) => {
     setSummaryList,
     setStatusList,
     setDateList,
-
     setPopGifticon,
     setInputEndDate,
     setWinIdx,
-    setItemNo
+    setItemNo,
+    setWinPhone
   }
 
   const bundle = {
@@ -59,17 +59,8 @@ const EventAttendProvider = (props) => {
     eventAttendAction
   }
 
-  // const action = {
-  //   updateTab: (str) => {
-  //     setTab(str)
-  //   },
-
-  //   updatePopRoulette: (bool) => {
-  //     setPopRoulette(bool)
-  //   }
-  // }
   //---------------------------------------------------------------------
-  // const value = {tab, popRoulette, action}
+
   return <Provider value={bundle}>{props.children}</Provider>
 }
 export {AttendContext, EventAttendProvider}

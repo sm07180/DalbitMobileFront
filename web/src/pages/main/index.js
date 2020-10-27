@@ -12,7 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
 //import Lottie from 'react-lottie'
-import LottiePlayer from "lottie-web";
+import LottiePlayer from 'lottie-web'
 
 // components
 import Layout from 'pages/common/layout'
@@ -47,6 +47,9 @@ import LiveIcon from './static/ic_newlive.png'
 import CrownLottie from './static/crown_lottie.json'
 import LiveLottie from './static/live_lottie.json'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
+const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
+const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
 
 import 'styles/main.scss'
 
@@ -334,15 +337,15 @@ export default (props) => {
   }
 
   const playLottie = (lottieObj, elem) => {
-    if(lottieObj != null && elem != null){
+    if (lottieObj != null && elem != null) {
       const lottieAnimation = LottiePlayer.loadAnimation({
         container: elem,
-        renderer: "svg",
+        renderer: 'svg',
         loop: false,
         autoplay: true,
-        animationData: lottieObj,
-      });
-      lottieAnimation.addEventListener('complete', ()=>{
+        animationData: lottieObj
+      })
+      lottieAnimation.addEventListener('complete', () => {
         lottieAnimation.destroy()
         playLottie(lottieObj, elem)
       })
@@ -716,11 +719,11 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                <span className="ico-lottie">
+                {/* <span className="ico-lottie">
                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
-                </span>
+                </span> */}
+                <img className="rank-arrow" src={RankNew} alt="실시간 랭킹" />
                 <div className="txt">실시간 랭킹</div>
-                <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
                 <button
@@ -768,8 +771,8 @@ export default (props) => {
             ref={StarSectionRef}>
             <div className="title-wrap">
               <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
+                <img className="rank-arrow" src={starNew} alt="나의스타" />
                 <div className="txt">나의스타</div>
-                <img className="rank-arrow" src={RankArrow} />
               </div>
             </div>
             <div className="content-wrap my-star-list">
@@ -781,9 +784,8 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <span className="ico-lottie">
-                    <img src={LiveIcon} alt="실시간라이브" width={24} />
-                    {/* <Lottie
+                  <img className="rank-arrow" src={liveNew} alt="실시간라이브" />
+                  {/* <Lottie
                       options={{
                         loop: true,
                         autoPlay: true,
@@ -791,7 +793,8 @@ export default (props) => {
                       }}
                       width={24}
                     /> */}
-                  </span>
+                  {/* <span className="ico-lottie">
+                  </span> */}
                   실시간 LIVE
                 </span>
 

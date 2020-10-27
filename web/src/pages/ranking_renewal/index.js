@@ -496,7 +496,7 @@ function Ranking() {
             <img src={benefitIcon} width={60} alt="혜택" />
           </div>
         </Header>
-        <div className="refresh-wrap" ref={iconWrapRef}>
+        <div className="refresh-wrap rank" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
