@@ -6,7 +6,6 @@
 
   // 이름, 주민등록번호
   .infoBox-readonly {
-    width: 100%;
     align-items: center;
     padding: 16px;
     margin-bottom: 4px;
@@ -112,7 +111,6 @@
 
   // 우편번호, 신분증사본, 가족관계증명서 (텍스트-버튼)영역
   .infoBox-button-readonly {
-    width: 100%;
     align-items: center;
     padding: 10px 10px 10px 16px;
     display: flex;
@@ -188,7 +186,6 @@
 
   /*=================================*/
   .msgBox{
-    width: 100%;
     border-radius: 12px;
     padding:16px 23px 16px 23px;
     margin: 20px 0 20px 0;
@@ -196,7 +193,6 @@
     border: solid 1px #632beb;
 
     .msgText{
-      width: 100%;
       text-align: center;
       font-size: 12px;
       line-height: 1.33;
@@ -232,7 +228,6 @@
   }
 
   .checkArea {
-    width: 100%;
     display: flex;
     padding-top: 25px;
 
@@ -247,7 +242,6 @@
     }
 
     .checkText {
-      width: 100%;
       margin-left: 14px;
       font-size: 16px;
       font-weight: bold;
