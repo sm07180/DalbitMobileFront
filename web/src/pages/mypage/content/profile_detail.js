@@ -252,7 +252,7 @@ export default (props) => {
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
     const {text, icon, startColor, endColor} = item
-    console.log(item)
+
     //-----------------------------------------------------------------------
     return (
       <div className="badgeSlide" key={index}>
@@ -347,9 +347,9 @@ export default (props) => {
   }, [profile.memNo])
   // check special Dj
   const checkSpecialDj = () => {
-    if (profile.wasSpecial === false && profile.isSpecial === false) {
+    if (profile.wasSpecial === true && profile.isSpecial === false) {
       return (
-        <div className="checkBadge">
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
           <div className="specialIcon prev" />
         </div>
       )

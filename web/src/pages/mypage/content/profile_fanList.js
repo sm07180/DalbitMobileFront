@@ -190,6 +190,8 @@ export default (props) => {
       context.action.updateCloseStarCnt(false)
     } else if (name === '좋아요') {
       context.action.updateCloseGoodCnt(false)
+    } else if (name === '스디') {
+      context.action.updateCloseSpecial(false)
     }
   }
 
@@ -394,13 +396,45 @@ export default (props) => {
                           })}
                         {specialInfo !== '' && name === '스디' && (
                           <div className="historyWrap">
-                            <div className="historyWrap__header">
+                            <div className={`historyWrap__header ${profile.isSpecial ? 'isSpecial' : ''}`}>
                               {profile.isSpecial ? (
                                 <img src={SpecialBadgeOn} className="historyWrap__badge" />
                               ) : (
                                 <img src={SpecialBadgeOff} className="historyWrap__badge" />
                               )}
-                              <span>{specialInfo.nickNm}</span> 님은 스페셜 DJ 출신입니다. 총 4회 선정되셨습니다.
+                              <div className="historyWrap__info">
+                                <span className="historyWrap__info__nick">{specialInfo.nickNm}</span> 님은 <br />
+                                {profile.isSpecial ? '현재 스페셜 DJ입니다.' : '스페셜 DJ 출신입니다.'} <br />총
+                                {profile.specialDjCnt}회 선정되셨습니다.
+                              </div>
+                            </div>
+                            <h2 className="historyWrap__tableTitle">스페셜 DJ 약력</h2>
+                            <div className="historyWrap__tableWrap">
+                              <table>
+                                <colgroup>
+                                  <col width="50%" />
+                                  <col width="50%" />
+                                </colgroup>
+                                <thead>
+                                  <tr>
+                                    <th>선정 일자</th>
+                                    <th>선정 기수</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {specialInfo.list.map((item, index) => {
+                                    const {roundNo, selectionDate} = item
+                                    return (
+                                      <React.Fragment key={`idx` + index}>
+                                        <tr>
+                                          <td>{selectionDate}</td>
+                                          <td>{roundNo}</td>
+                                        </tr>
+                                      </React.Fragment>
+                                    )
+                                  })}
+                                </tbody>
+                              </table>
                             </div>
                           </div>
                         )}
