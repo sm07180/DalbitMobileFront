@@ -145,7 +145,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
     }
 
     useEffect(()=> {
-        if(!context.token.isLogin) history.pufh('/')
+        if(!context.token.isLogin) history.push('/')
     }, [context.token])
     useEffect(() => {
         winnerInfoSelect()

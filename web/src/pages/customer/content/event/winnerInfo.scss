@@ -7,13 +7,13 @@
   // 이름, 주민등록번호
   .infoBox-readonly {
     width: 100%;
-    border-radius: 12px;
-    border: solid 1px #e0e0e0;
-    background-color: #f5f5f5;
     align-items: center;
     padding: 16px;
-    display: flex;
     margin-bottom: 4px;
+    display: flex;
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    border: solid 1px #e0e0e0;
 
     .formText {
       width: 30%;
@@ -32,56 +32,55 @@
   }
 
   // 이메일, 상세주소 (input 테두리)
-
   .focusBox {
     .formText {
       width: 30%;
+      position: absolute;
+      padding: 16px;
       font-size: 12px;
       line-height: 2;
       color: #000000;
-      position: absolute;
-      padding: 16px;
     }
     .inputFocus {
       width: 100%;
       height: 100%;
       padding: 16px 16px 16px 31%;
-      border: solid 1px #e0e0e0;
-      border-radius: 12px;
       margin-bottom: 4px;
-
       flex: 1;
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 1.38;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
 
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 1.38;
+
+      border: solid 1px #e0e0e0;
+      border-radius: 12px;
     }
     & > input::placeholder {
-      color: #bdbdbd;
       font-size: 14px;
+      color: #bdbdbd;
     }
 
     :focus {
       padding-left: 31%;
-      border-radius: 12px;
-      border: solid 1px #000000;
       display: flex;
+      border: solid 1px #000000;
+      border-radius: 12px;
     }
 
   }
 
   // 주소
   .infoBox {
-    border-radius: 12px;
-    border: solid 1px #e0e0e0;
-    background-color: #ffffff;
-    align-items: center;
     padding: 16px;
     display: flex;
     margin-bottom: 4px;
+    align-items: center;
+    background-color: #ffffff;
+    border: solid 1px #e0e0e0;
+    border-radius: 12px;
 
     .formText {
       width: 29%;
@@ -91,17 +90,17 @@
     }
 
     input {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
       flex: 1;
       font-size: 16px;
       font-weight: bold;
       line-height: 1.38;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
 
       &::placeholder {
-        color: #bdbdbd;
         font-size: 14px;
+        color: #bdbdbd;
       }
 
       &:disabled {
@@ -114,13 +113,13 @@
   // 우편번호, 신분증사본, 가족관계증명서 (텍스트-버튼)영역
   .infoBox-button-readonly {
     width: 100%;
-    border-radius: 12px;
-    border: solid 1px #e0e0e0;
-    background-color: #f5f5f5;
     align-items: center;
     padding: 10px 10px 10px 16px;
     display: flex;
     margin-bottom: 4px;
+    background-color: #f5f5f5;
+    border: solid 1px #e0e0e0;
+    border-radius: 12px;
 
     .formText {
       width: 29%;
@@ -164,22 +163,22 @@
 
       // 우편번호
       & > input:disabled {
-        background-color: inherit;
         width: 70%;
+        background-color: inherit;
       }
 
       .searchBox {
         width: 75px;
         height: 100%;
-        border-radius: 9px;
-        background-color: #bdbdbd;
         padding: 7px;
         align-items: center;
         justify-content: center;
+        background-color: #bdbdbd;
+        border-radius: 9px;
 
         .searchText {
-          font-size: 14px;
           text-align: center;
+          font-size: 14px;
           color: #ffffff;
         }
       }
@@ -192,26 +191,26 @@
     width: 100%;
     border-radius: 12px;
     padding:16px 23px 16px 23px;
-    border: solid 1px #632beb;
-    background-color: #ffffff;
     margin: 20px 0 20px 0;
+    background-color: #ffffff;
+    border: solid 1px #632beb;
 
     .msgText{
       width: 100%;
+      text-align: center;
       font-size: 12px;
       line-height: 1.33;
-      text-align: center;
       color: #000000;
     }
   }
 
   .prizeBox {
-    border-radius: 12px;
-    border: solid 1px #e0e0e0;
-    background-color: #ffffff;
     display:flex;
     padding: 14px 16px 14px 16px;
     margin-bottom: 4px;
+    background-color: #ffffff;
+    border: solid 1px #e0e0e0;
+    border-radius: 12px;
 
     &:first-child {
       padding-top: 0
@@ -224,10 +223,10 @@
     }
     .prizeInfo {
       width: 70%;
+      text-align: right;
       font-size: 16px;
       font-weight: bold;
       line-height: 1.13;
-      text-align: right;
       color: #000000;
     }
   }
@@ -241,19 +240,19 @@
       img {
         width: 20px;
         height: 20px;
-        border-radius: 4px;
-        background-color: #632beb;
         margin-left: 2px;
+        background-color: #632beb;
+        border-radius: 4px;
       }
     }
 
     .checkText {
       width: 100%;
+      margin-left: 14px;
       font-size: 16px;
       font-weight: bold;
       line-height: 1.5;
       color: #000000;
-      margin-left: 14px;
     }
 
   }
@@ -262,14 +261,10 @@
     margin: 7px 0 32px 1px;
     .checkDescText{
       width: calc(100% - 34px);
-      font-size: 12px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
-      line-height: 1.33;
-      letter-spacing: normal;
-      color: #757575;
       margin-left: 34px;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #757575;
     }
   }
 
@@ -278,35 +273,29 @@
     margin-bottom: 10px;
 
     .descText {
-      width: calc(100%);
       font-size: 12px;
-      font-weight: normal;
-      font-stretch: normal;
-      font-style: normal;
       line-height: 1.33;
-      letter-spacing: normal;
       color: #757575;
     }
   }
 
   .saveButton {
     width: 100%;
-    border-radius: 12px;
-    background-color: #bdbdbd;
     padding: 12px 120px 12px 120px;
+    background-color: #bdbdbd;
+    border-radius: 12px;
 
     &-active {
       width: 100%;
-      border-radius: 12px;
       padding: 12px 120px 12px 120px;
       background-color: #632beb;
+      border-radius: 12px;
     }
   }
   .saveButtonText {
-    width: 100%;
+    text-align: center;
     font-size: 18px;
     line-height: 1.17;
-    text-align: center;
     color: #ffffff;
   }
 
@@ -316,12 +305,12 @@
     z-index: 3;
 
     &__close {
-      position: fixed;
       width: 20px;
-      color: white;
-      background-color: black;
+      position: fixed;
       z-index: 2;
+      color: white;
       font-size: 16px;
+      background-color: black;
     }
   }
 

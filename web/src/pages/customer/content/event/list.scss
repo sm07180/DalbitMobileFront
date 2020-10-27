@@ -55,12 +55,12 @@
         width: calc(100% - 100px);
       }
       .title {
-        font-size: 16px;
-        line-height: 1.2;
-        font-weight: bold;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.2;
         color: #000000;
       }
 
@@ -73,30 +73,30 @@
       .countIngBox {
         width: 74px;
         height: 32px;
-        border-radius: 8px;
-        background-color: #bdbdbd;
         margin-left: auto;
+        background-color: #bdbdbd;
+        border-radius: 8px;
         &-text {
           width: 42px;
           height: 16px;
+          text-align: center;
           font-size: 14px;
           line-height: 1.14;
-          text-align: center;
           color: #ffffff;
         }
       }
       .announceBox {
         width: 100px;
         height: 32px;
-        border-radius: 8px;
-        background-color: #632beb;
         right: 25px;
+        background-color: #632beb;
+        border-radius: 8px;
         &-text {
           width: 68px;
           height: 16px;
+          text-align: center;
           font-size: 14px;
           line-height: 1.14;
-          text-align: center;
           color: #ffffff;
         }
       }
