@@ -77,6 +77,10 @@
       text-align: center;
       border-bottom: 1px solid #e0e0e0;
       color: $black;
+      &.noBorder {
+        border: none;
+        height: 0;
+      }
       &--sub {
         height: auto;
         border-bottom: 0;
@@ -683,6 +687,27 @@
         .scroll-box {
           width: auto !important;
           overflow-x: hidden;
+        }
+      }
+      .historyWrap {
+        display: flex;
+        justify-content: center;
+
+        &__header {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          border: 1px solid #bdbdbd;
+          width: 296px;
+          height: 97px;
+          margin: 16px 0 20px 0;
+          border-radius: 16px;
+        }
+        &__badge {
+          top: 0;
+          left: 0;
+          position: absolute;
         }
       }
       .popup__inner {

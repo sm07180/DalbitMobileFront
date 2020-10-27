@@ -2706,6 +2706,15 @@ export default class API {
       data: data
     })
   }
+
+  static specialHistory = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/member/special/history',
+      method: 'GET',
+      params: params
+    })
+  }
 }
 
 API.customHeader = null

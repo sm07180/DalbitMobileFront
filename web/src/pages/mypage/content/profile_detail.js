@@ -347,13 +347,23 @@ export default (props) => {
   }, [profile.memNo])
   // check special Dj
   const checkSpecialDj = () => {
-    if (profile.wasSpecial === true) {
-      return <span className="specialIcon prev" />
-    } else if (profile.isSpecial === false) {
+    if (profile.wasSpecial === false && profile.isSpecial === false) {
       return (
-        <span className="specialIcon">
-          <em className="specialIcon__count">{profile.specialDjCnt}</em>
-        </span>
+        <div className="checkBadge">
+          <div className="specialIcon prev" />
+        </div>
+      )
+    } else if (profile.isSpecial === true) {
+      return (
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+          <div className="specialIcon">
+            {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
+              <em className="specialIcon__count">{profile.specialDjCnt}</em>
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
       )
     } else if (profile.isNew === true) {
       return <span className="newIcon">신입 DJ</span>
@@ -583,6 +593,7 @@ export default (props) => {
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
+      {context.closeSpeical === true && <ProfileFanList {...props} reportShow={reportShow} name="스디" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
       {context.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹" />}
       {context.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹" />}

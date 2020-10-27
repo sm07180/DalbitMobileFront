@@ -348,41 +348,66 @@
           color: $white;
           border-radius: 12px;
         }
-
-        .specialIcon {
+        .checkBadge {
           position: absolute;
           top: 0;
-          left: 16px;
-          width: 44px;
-          padding-top: 30px;
-          font-size: 14px;
-          letter-spacing: -0.5px;
-          line-height: 1.2;
-          font-weight: bold;
-          &__count {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-          }
-          &::before {
-            display: inline-block;
+          left: 12px;
+          .specialIcon {
+            display: flex;
+            justify-content: center;
+            position: relative;
             width: 54px;
             height: 51px;
-            position: absolute;
-            top: 0;
-            left: 10px;
-            content: '';
             background: url('./static/specialdj_on.png') no-repeat center;
             background-size: cover;
-          }
-
-          &.prev {
-            &::before {
+            &__count {
+              position: absolute;
+              top: 11px;
+              font-weight: 600;
+              font-style: normal;
+              color: #ec455f;
+              font-size: 11px;
+              letter-spacing: -0.28px;
+            }
+            &.prev {
               background: url('./static/specialdj_off.png') no-repeat center;
             }
           }
         }
+        // .specialIcon {
+        //   position: absolute;
+        //   top: 0;
+        //   left: 16px;
+        //   width: 44px;
+        //   padding-top: 30px;
+        //   font-size: 14px;
+        //   letter-spacing: -0.5px;
+        //   line-height: 1.2;
+        //   font-weight: bold;
+        //   &__count {
+        //     position: absolute;
+        //     top: 0;
+        //     left: 50%;
+        //     transform: translateX(-50%);
+        //   }
+        //   &::before {
+        //     display: inline-block;
+        //     width: 54px;
+        //     height: 51px;
+        //     position: absolute;
+        //     top: 0;
+        //     left: 10px;
+        //     content: '';
+        //     background: url('./static/specialdj_on.png') no-repeat center;
+        //     background-size: cover;
+        //   }
+
+        //   &.prev {
+        //     &::before {
+        //       background: url('./static/specialdj_off.png') no-repeat center;
+        //     }
+        //   }
+
         .badgeWrap {
           display: flex;
           margin: 5px auto 0;
