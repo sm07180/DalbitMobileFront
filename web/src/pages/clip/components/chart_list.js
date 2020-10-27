@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useContext} from 'react'
+import React, {useEffect, useRef, useState, useContext, useCallback} from 'react'
 //modules
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -70,13 +70,36 @@ export default (props) => {
       })
     }
   }
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, idx) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      //리스트같이 묶어 보내기
+      const currentPage = getPageFormIdx(idx)
+      const list = await Api.getClipList({
+        slctType: context.clipMainSort,
+        dateType: context.clipMainDate,
+        subjectType: clipTypeActive,
+        page: currentPage,
+        records: 100
+      })
+      if (list.result === 'success') {
+        sessionStorage.setItem('clipPlayList', JSON.stringify(list.data.list))
+        const playListClipNo = list.data.list.map((item) => {
+          return item.clipNo
+        })
+        console.log('playListClipNo', playListClipNo)
+        clipJoin(data, context, 'none', playListClipNo)
+      }
     } else {
       if (code === '-99') {
         context.action.alert({
@@ -115,20 +138,21 @@ export default (props) => {
           className="chartListDetailItem"
           key={idx + 'list'}
           onClick={() => {
-            if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
-                    history.push('/login')
-                  }
-                })
-              } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-              }
-            } else {
-              fetchDataPlay(clipNo)
-            }
+            fetchDataPlay(clipNo, idx)
+            // if (customHeader['os'] === OS_TYPE['Desktop']) {
+            //   if (globalCtx.token.isLogin === false) {
+            //     context.action.alert({
+            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+            //       callback: () => {
+            //         history.push('/login')
+            //       }
+            //     })
+            //   } else {
+            //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            //   }
+            // } else {
+            //   fetchDataPlay(clipNo, idx)
+            // }
           }}>
           <div className="chartListDetailItem__thumb">
             {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
@@ -241,20 +265,21 @@ export default (props) => {
                   style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
                   key={`simpleList` + idx}
                   onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (globalCtx.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(clipNo)
-                    }
+                    fetchDataPlay(clipNo, idx)
+                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    //   if (globalCtx.token.isLogin === false) {
+                    //     context.action.alert({
+                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    //       callback: () => {
+                    //         history.push('/login')
+                    //       }
+                    //     })
+                    //   } else {
+                    //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                    //   }
+                    // } else {
+                    //   fetchDataPlay(clipNo, idx)
+                    // }
                   }}>
                   <div className="topWrap">
                     <div className="topWrap__status">
