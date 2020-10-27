@@ -15,7 +15,7 @@ export default function SpecialHistoryHandle({fetching}) {
   const [dateTitle, setDateTitle] = useState('이번달')
 
   const handleDate = (type) => {
-    const handle = liveBoxchangeDate(type, 3, formState.currentDate)
+    const handle = liveBoxchangeDate(type, 3, formState[formState.pageType].currentDate)
 
     formDispatch({
       type: 'DATE',
@@ -24,9 +24,9 @@ export default function SpecialHistoryHandle({fetching}) {
   }
 
   const formatDate = useCallback(() => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
+    const yy = formState[formState.pageType].currentDate.getFullYear()
+    const mm = formState[formState.pageType].currentDate.getMonth() + 1
+    const dd = formState[formState.pageType].currentDate.getDate()
 
     const cdt = new Date()
     const cyy = cdt.getFullYear()
@@ -40,9 +40,9 @@ export default function SpecialHistoryHandle({fetching}) {
   }, [formState])
 
   const prevLast = () => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
+    const yy = formState[formState.pageType].currentDate.getFullYear()
+    const mm = formState[formState.pageType].currentDate.getMonth() + 1
+    const dd = formState[formState.pageType].currentDate.getDate()
 
     const cdt = new Date('2020-06-01')
     const cyy = cdt.getFullYear()
@@ -56,9 +56,9 @@ export default function SpecialHistoryHandle({fetching}) {
   }
 
   const nextLast = () => {
-    const yy = formState.currentDate.getFullYear()
-    const mm = formState.currentDate.getMonth() + 1
-    const dd = formState.currentDate.getDate()
+    const yy = formState[formState.pageType].currentDate.getFullYear()
+    const mm = formState[formState.pageType].currentDate.getMonth() + 1
+    const dd = formState[formState.pageType].currentDate.getDate()
 
     const cdt = new Date()
     const cyy = cdt.getFullYear()

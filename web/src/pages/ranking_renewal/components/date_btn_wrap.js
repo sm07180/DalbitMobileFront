@@ -24,7 +24,7 @@ function DateBtnWrap({fetching}) {
 
   return (
     <div className="todayList">
-      {formState.rankType === RANK_TYPE.LIKE ? (
+      {formState[formState.pageType].rankType === RANK_TYPE.LIKE ? (
         <>
           <div className="guideIconBox">
             <img
@@ -39,7 +39,7 @@ function DateBtnWrap({fetching}) {
               <button
                 key={idx}
                 className={
-                  formState.dateType === v.val
+                  formState[formState.pageType].dateType === v.val
                     ? 'todayList__btn todayList__btn--active'
                     : fetching === true
                     ? 'todayList__btn todayList__btn--blur'
@@ -47,7 +47,7 @@ function DateBtnWrap({fetching}) {
                 }
                 onClick={() => {
                   if (fetching === false) {
-                    if (formState.dateType !== v.val) {
+                    if (formState[formState.pageType].dateType !== v.val) {
                       window.scrollTo(0, 0)
                       const someDate = v.val === 2 ? convertMonday() : v.val === 3 ? convertMonth() : new Date()
 
@@ -73,7 +73,7 @@ function DateBtnWrap({fetching}) {
               <button
                 key={idx}
                 className={
-                  formState.dateType === v.val
+                  formState[formState.pageType].dateType === v.val
                     ? 'todayList__btn todayList__btn--active'
                     : fetching === true
                     ? 'todayList__btn todayList__btn--blur'
@@ -81,7 +81,7 @@ function DateBtnWrap({fetching}) {
                 }
                 onClick={() => {
                   if (fetching === false) {
-                    if (formState.dateType !== v.val) {
+                    if (formState[formState.pageType].dateType !== v.val) {
                       window.scrollTo(0, 0)
                       const someDate = v.val === 2 ? convertMonday() : v.val === 3 ? convertMonth() : new Date()
 

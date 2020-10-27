@@ -13,6 +13,13 @@
     vertical-align: top;
   }
 
+  .hallOfFame {
+    position: absolute;
+    bottom: 10px;
+    right: 16px;
+    vertical-align: top;
+  }
+
   .refresh-wrap {
     display: none;
     max-height: 48px;
@@ -135,21 +142,10 @@
   }
 
   .rankTab {
+    display: flex;
     width: 100%;
-
-    .swiper-container {
-      // display: inline-block;
-      // width: calc(100% - 100px);
-      .swiper-wrapper {
-        width: 100%;
-
-        .swiper-slide {
-          width: auto;
-        }
-      }
-    }
-
     &__btn {
+      flex: 1;
       width: max-content;
       height: 32px;
       margin-right: 2px;

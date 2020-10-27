@@ -48,8 +48,8 @@ export default function MyProfile() {
     async function feachRankingReward() {
       const {result, data} = await Api.get_ranking_reward({
         params: {
-          rankSlct: formState.rankType,
-          rankType: formState.dateType
+          rankSlct: formState[formState.pageType].rankType,
+          rankType: formState[formState.pageType].dateType
         }
       })
 
@@ -70,10 +70,11 @@ export default function MyProfile() {
     const {myUpDown} = myInfo
 
     if (
-      ((formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK) && myInfo.myRank > 1000) ||
-      (formState.dateType === DATE_TYPE.MONTH && myInfo.myRank > 2000) ||
-      (formState.dateType === DATE_TYPE.YEAR && myInfo.myRank > 3000) ||
-      (formState.rankType === RANK_TYPE.LIKE && myInfo.myRank > 201)
+      ((formState[formState.pageType].dateType === DATE_TYPE.DAY || formState[formState.pageType].dateType === DATE_TYPE.WEEK) &&
+        myInfo.myRank > 1000) ||
+      (formState[formState.pageType].dateType === DATE_TYPE.MONTH && myInfo.myRank > 2000) ||
+      (formState[formState.pageType].dateType === DATE_TYPE.YEAR && myInfo.myRank > 3000) ||
+      (formState[formState.pageType].rankType === RANK_TYPE.LIKE && myInfo.myRank > 201)
     ) {
       return (
         <>
@@ -126,7 +127,7 @@ export default function MyProfile() {
       }
     }
     createMyRank()
-  }, [formState.rankType])
+  }, [formState])
 
   return (
     <>
@@ -134,16 +135,20 @@ export default function MyProfile() {
         <>
           <div className="rewordBox">
             <p className="rewordBox__top">
-              {formState.dateType === DATE_TYPE.DAY ? '일간' : '주간'}{' '}
-              {formState.rankType === RANK_TYPE.DJ ? 'DJ' : formState.rankType === RANK_TYPE.FAN ? '팬' : '좋아요'} 랭킹{' '}
-              {myInfo.rewardRank}위 <span>축하합니다</span>
+              {formState[formState.pageType].dateType === DATE_TYPE.DAY ? '일간' : '주간'}{' '}
+              {formState[formState.pageType].rankType === RANK_TYPE.DJ
+                ? 'DJ'
+                : formState[formState.pageType].rankType === RANK_TYPE.FAN
+                ? '팬'
+                : '좋아요'}{' '}
+              랭킹 {myInfo.rewardRank}위 <span>축하합니다</span>
             </p>
 
             <div className="rewordBox__character1">
               <img src={trophyImg} width={84} alt="trophy" />
             </div>
 
-            <button onClick={() => rankingReward(2)} className="rewordBox__btnGet">
+            <button onClick={rankingReward} className="rewordBox__btnGet">
               보상
               <br />
               받기
@@ -177,7 +182,7 @@ export default function MyProfile() {
 
                 <div className="myRanking__content">
                   <div className="infoBox">
-                    {formState.rankType === RANK_TYPE.LIKE ? (
+                    {formState[formState.pageType].rankType === RANK_TYPE.LIKE ? (
                       <div className="likeDetailWrap">
                         <div className="likeListDetail">
                           <div className="fanGoodBox">
@@ -256,7 +261,7 @@ export default function MyProfile() {
                         </div>
 
                         <div className="countBox countBox--profile">
-                          {formState.rankType == RANK_TYPE.DJ && (
+                          {formState[formState.pageType].rankType == RANK_TYPE.DJ && (
                             <>
                               <div className="countBox__block">
                                 <span className="countBox__item">
@@ -279,7 +284,7 @@ export default function MyProfile() {
                               </div>
                             </>
                           )}
-                          {formState.rankType === RANK_TYPE.FAN && (
+                          {formState[formState.pageType].rankType === RANK_TYPE.FAN && (
                             <>
                               <div className="countBox__block">
                                 <span className="countBox__item">
