@@ -13,9 +13,8 @@ export default () => {
 
   const [playClipNo, setPlayClipNo] = useState(sessionStorage.getItem('play_clip_no'))
   const [totalList, setTotalList] = useState(0)
-  const [list, setList] = useState(JSON.parse(sessionStorage.getItem('clipPlayList')))
 
-  const {isEdit, clipType, sortType} = playListCtx
+  const {isEdit, list, clipType, sortType} = playListCtx
 
   const fetchDataClipType = async () => {
     const {result, data, message} = await Api.getClipType({})
@@ -46,7 +45,7 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, globalCtx, 'new')
+      clipJoin(data, globalCtx)
     } else {
       globalCtx.action.alert({msg: message})
     }
@@ -121,7 +120,7 @@ export default () => {
   useEffect(() => {
     if (!isEdit) {
       playListCtx.action.updateDeleteList('')
-      //fetchPlayList()
+      fetchPlayList()
     }
   }, [isEdit])
 
@@ -131,7 +130,7 @@ export default () => {
     <>
       <div className={`playListWrap ${isEdit ? 'off' : 'on'}`}>
         <p className="totalListItem">
-          총 목록 수 <span>{list.length}</span>
+          총 목록 수 <span>{totalList}</span>
         </p>
         <ul className="playListBox">{createList()}</ul>
       </div>

@@ -6,13 +6,30 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
-export const clipJoin = (data, context, webview, playList) => {
+export const clipJoin = (data, context, webview) => {
   // console.log('1' + sessionStorage.getItem('listening'))
 
-  let totalData = {playing: data}
+  let totalData = {playing: data.clipNo}
 
-  totalData = {...totalData, list: playList}
-  console.log('totalData', totalData)
+  const fetchPlayList = async () => {
+    const {result, data, message} = await Api.getPlayList({
+      params: {
+        sortType: 0,
+        records: 100
+      }
+    })
+    if (result === 'success') {
+      const playListClipNo = data.list.map((item) => {
+        return item.clipNo
+      })
+      totalData = {...totalData, list: playListClipNo}
+      console.log(totalData)
+    } else {
+      context.action.alert({msg: message})
+    }
+  }
+
+  fetchPlayList()
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {
@@ -22,10 +39,10 @@ export const clipJoin = (data, context, webview, playList) => {
         return Hybrid('CloseLayerPopup')
       } else {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
-          return Hybrid('ClipPlayerJoin', totalData)
+          return Hybrid('ClipPlayerJoin', data)
         } else {
-          // return NewHybrid('ClipPlay', webview, totalData)
-          return Hybrid('ClipPlayerJoin', totalData)
+          // return NewHybrid('ClipPlay', webview, data)
+          return Hybrid('ClipPlayerJoin', data)
         }
       }
     } else {
@@ -48,7 +65,7 @@ export const clipJoin = (data, context, webview, playList) => {
         // console.log('2' + sessionStorage.getItem('listening'))
       }
 
-      return Hybrid('ClipPlayerJoin', totalData)
+      return Hybrid('ClipPlayerJoin', data)
     }
   } else {
     if (webview === 'new') {
@@ -78,5 +95,5 @@ export const clipExit = (context) => {
 }
 
 export const updateClipInfo = (data) => {
-  Hybrid('ClipUpdateInfo', totalData)
+  Hybrid('ClipUpdateInfo', data)
 }

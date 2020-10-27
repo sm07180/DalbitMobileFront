@@ -174,70 +174,12 @@ export default (props) => {
     }
   }
   // 플레이가공
-  const fetchDataPlay = async (clipNum, type) => {
+  const fetchDataPlay = async (clipNum) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
-      console.log('type', type)
-      if (type === 'recommend') {
-        const recomd = await Api.getPopularList({
-          listCnt: 20
-        })
-        if (recomd.result === 'success') {
-          sessionStorage.setItem('clipPlayList', JSON.stringify(recomd.data.list))
-          const playListClipNo = recomd.data.list.map((item) => {
-            return item.clipNo
-          })
-          console.log('playListClipNo', playListClipNo)
-          clipJoin(data, context, 'none', playListClipNo)
-        }
-      } else if (type === 'new') {
-        const news = await Api.getClipList({
-          slctType: 1,
-          dateType: 0,
-          page: 1,
-          records: 100
-        })
-        if (news.result === 'success') {
-          sessionStorage.setItem('clipPlayList', JSON.stringify(news.data.list))
-          const playListClipNo = news.data.list.map((item) => {
-            return item.clipNo
-          })
-          console.log('playListClipNo', playListClipNo)
-          clipJoin(data, context, 'none', playListClipNo)
-        }
-      } else if (type === 'theme') {
-        console.log('data', data)
-        const theme = await Api.getClipList({
-          slctType: 2,
-          dateType: 2,
-          subjectType: data.subjectType
-        })
-        if (theme.result === 'success') {
-          sessionStorage.setItem('clipPlayList', JSON.stringify(theme.data.list))
-          const playListClipNo = theme.data.list.map((item) => {
-            return item.clipNo
-          })
-          console.log('playListClipNo', playListClipNo)
-          if (playListClipNo.length < 100) {
-            const allTheme = await Api.getClipList({
-              slctType: 2,
-              dateType: 2
-            })
-            if (allTheme.result === 'success') {
-              sessionStorage.setItem('clipPlayList', JSON.stringify(allTheme.data.list))
-              const playListClipNo = allTheme.data.list.map((item) => {
-                return item.clipNo
-              })
-              console.log('playListClipNo', playListClipNo)
-              clipJoin(data, context, 'none', playListClipNo)
-            }
-          } else {
-            clipJoin(data, context, 'none', playListClipNo)
-          }
-        }
-      }
+      clipJoin(data, context)
     } else {
       if (code === '-99') {
         context.action.alert({
@@ -264,21 +206,20 @@ export default (props) => {
           className="recomClipItem"
           key={`popular-` + idx}
           onClick={() => {
-            fetchDataPlay(clipNo, 'recommend')
-            // if (customHeader['os'] === OS_TYPE['Desktop']) {
-            //   if (context.token.isLogin === false) {
-            //     context.action.alert({
-            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-            //       callback: () => {
-            //         history.push('/login')
-            //       }
-            //     })
-            //   } else {
-            //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-            //   }
-            // } else {
-            //   fetchDataPlay(clipNo, 'recommend')
-            // }
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (context.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(clipNo)
+            }
           }}
           style={{cursor: 'pointer'}}>
           <span className="recomClipItem__subject">
@@ -304,21 +245,20 @@ export default (props) => {
         <div
           className="slideWrap"
           onClick={() => {
-            fetchDataPlay(clipNo, 'new')
-            // if (customHeader['os'] === OS_TYPE['Desktop']) {
-            //   if (globalCtx.token.isLogin === false) {
-            //     context.action.alert({
-            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-            //       callback: () => {
-            //         history.push('/login')
-            //       }
-            //     })
-            //   } else {
-            //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-            //   }
-            // } else {
-            //   fetchDataPlay(clipNo, 'new')
-            // }
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(clipNo)
+            }
           }}
           key={`latest-` + idx}
           style={{cursor: 'pointer'}}>
@@ -380,21 +320,20 @@ export default (props) => {
                 <li
                   className="categoryBestItem"
                   onClick={() => {
-                    fetchDataPlay(clipNo, 'theme')
-                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    //   if (globalCtx.token.isLogin === false) {
-                    //     context.action.alert({
-                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    //       callback: () => {
-                    //         history.push('/login')
-                    //       }
-                    //     })
-                    //   } else {
-                    //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                    //   }
-                    // } else {
-                    //   fetchDataPlay(clipNo, 'theme')
-                    // }
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (globalCtx.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
                   }}
                   key={idx + `toplist`}
                   style={{zIndex: 7, cursor: 'pointer'}}>
