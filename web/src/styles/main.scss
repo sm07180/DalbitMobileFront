@@ -937,12 +937,12 @@
       background-color: $lighterGray;
       .thumb-guest {
         position: absolute;
-        right: 0;
-        bottom: 0;
+        right: -3px;
+        bottom: -3px;
         width: 32px;
         height: 32px;
-        border: 1px solid #9a9a9a;
-        border-radius: 11px;
+        border: 1px solid $black;
+        border-radius: 50%;
         overflow: hidden;
         img {
           width: 100%;
@@ -953,14 +953,13 @@
     .iconPc {
       display: flex;
       align-items: center;
+      width: 26px;
       height: 16px;
       padding: 0 4px;
       margin-right: 4px;
-      border-radius: 12px;
-      font-size: 12px;
-      font-style: normal;
-      border: 1px solid #f26d4a;
-      color: #f26d4a;
+      text-indent: -9999px;
+      background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
+      background-size: contain;
     }
     .newSpecialIcon {
       z-index: 1;
