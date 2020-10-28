@@ -138,7 +138,7 @@ export default (props) => {
           {imgItem()}
         </div>
 
-        {global_ctx.isLogin === true ? (
+        {global_ctx.token.isLogin === true ? (
           <>
             <img src="https://image.dalbitlive.com/event/specialdj/20201019/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
@@ -272,7 +272,7 @@ export default (props) => {
             </div>
           </>
         )}
-        {global_ctx.isLogin === true ? (
+        {global_ctx.token.isLogin === true ? (
           <img
             src="https://image.dalbitlive.com/event/specialdj/20201019/bottom_img.jpg"
             className="imgResize"
