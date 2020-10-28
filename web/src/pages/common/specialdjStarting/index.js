@@ -54,8 +54,10 @@ export default (props) => {
             <button
               onClick={() => {
                 if (context.token.isLogin) {
+                  context.action.updatePopupVisible(false)
                   history.push('/customer/notice/176')
                 } else {
+                  context.action.updatePopupVisible(false)
                   history.push('/login')
                 }
               }}>
