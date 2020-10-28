@@ -39,10 +39,10 @@ export const clipJoin = (data, context, webview) => {
         return Hybrid('CloseLayerPopup')
       } else {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
-          return Hybrid('ClipPlayerJoin', data)
+          return Hybrid('ClipPlayerJoin', totalData)
         } else {
           // return NewHybrid('ClipPlay', webview, data)
-          return Hybrid('ClipPlayerJoin', data)
+          return Hybrid('ClipPlayerJoin', totalData)
         }
       }
     } else {
@@ -65,7 +65,7 @@ export const clipJoin = (data, context, webview) => {
         // console.log('2' + sessionStorage.getItem('listening'))
       }
 
-      return Hybrid('ClipPlayerJoin', data)
+      return Hybrid('ClipPlayerJoin', totalData)
     }
   } else {
     if (webview === 'new') {
