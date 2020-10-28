@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import {RankContext} from 'context/rank_ctx'
 
 import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
-import {RANK_TYPE} from '../constant'
+import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {
   const history = useHistory()
@@ -20,7 +20,7 @@ function RankHandleDateBtn({fetching}) {
   })
 
   const formatDate = () => {
-    const textObj = convertDateToText(formState.dateType, formState.currentDate, 1)
+    const textObj = convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 1)
 
     if (textObj instanceof Object) {
       if (textObj.date === 'time') {
@@ -38,7 +38,7 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const handleDate = (some) => {
-    const handle = liveBoxchangeDate(some, formState.dateType, formState.currentDate)
+    const handle = liveBoxchangeDate(some, formState[formState.pageType].dateType, formState[formState.pageType].currentDate)
     formDispatch({
       type: 'DATE',
       val: handle
@@ -50,12 +50,12 @@ function RankHandleDateBtn({fetching}) {
   }, [formState])
 
   const prevLast = () => {
-    let cy = formState.currentDate.getFullYear()
-    let cm = formState.currentDate.getMonth() + 1
-    let cd = formState.currentDate.getDate()
-    if (formState.dateType === 1) {
+    let cy = formState[formState.pageType].currentDate.getFullYear()
+    let cm = formState[formState.pageType].currentDate.getMonth() + 1
+    let cd = formState[formState.pageType].currentDate.getDate()
+    if (formState[formState.pageType].dateType === DATE_TYPE.DAY) {
       const cDt = (() => {
-        if (formState.rankType === RANK_TYPE.LIKE) {
+        if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
           return new Date('2020-10-08')
         } else {
           return new Date('2020-07-01')
@@ -71,9 +71,9 @@ function RankHandleDateBtn({fetching}) {
       } else {
         return true
       }
-    } else if (formState.dateType === 2) {
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.WEEK) {
       const cDt = (() => {
-        if (formState.rankType === RANK_TYPE.LIKE) {
+        if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
           return new Date('2020-10-05')
         } else {
           return new Date('2020-07-06')
@@ -89,7 +89,7 @@ function RankHandleDateBtn({fetching}) {
       } else {
         return true
       }
-    } else if (formState.dateType === 3) {
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.MONTH) {
       const cDt = new Date('2020-07-01')
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -106,10 +106,10 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const nextLast = () => {
-    let cy = formState.currentDate.getFullYear()
-    let cm = formState.currentDate.getMonth() + 1
-    let cd = formState.currentDate.getDate()
-    if (formState.dateType === 1) {
+    let cy = formState[formState.pageType].currentDate.getFullYear()
+    let cm = formState[formState.pageType].currentDate.getMonth() + 1
+    let cd = formState[formState.pageType].currentDate.getDate()
+    if (formState[formState.pageType].dateType === DATE_TYPE.DAY) {
       const cDt = new Date()
 
       let ye = cDt.getFullYear()
@@ -121,7 +121,7 @@ function RankHandleDateBtn({fetching}) {
       } else {
         return true
       }
-    } else if (formState.dateType === 2) {
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.WEEK) {
       const cDt = convertMonday()
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1
@@ -132,7 +132,7 @@ function RankHandleDateBtn({fetching}) {
       } else {
         return true
       }
-    } else if (formState.dateType === 3) {
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.MONTH) {
       const cDt = convertMonth()
       let ye = cDt.getFullYear()
       let yM = cDt.getMonth() + 1

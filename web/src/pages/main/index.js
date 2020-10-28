@@ -496,7 +496,7 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         if (heightDiff <= heightDiffFixed) {
           iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
         }
       }
     },
@@ -527,9 +527,10 @@ export default (props) => {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
+          let tail_slice = head_slice.slice(0, 3)
           return Number(tail_slice)
         })()
+
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -728,6 +729,7 @@ export default (props) => {
                 </span> */}
                 <img className="rank-arrow" src={RankNew} />
                 <div className="txt">실시간 랭킹</div>
+                <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
                 <button
@@ -777,6 +779,7 @@ export default (props) => {
               <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
                 <img className="rank-arrow" src={starNew} />
                 <div className="txt">나의스타</div>
+                <img className="rank-arrow" src={RankArrow} />
               </div>
             </div>
             <div className="content-wrap my-star-list">
