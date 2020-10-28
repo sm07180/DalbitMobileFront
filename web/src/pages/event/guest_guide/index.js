@@ -48,7 +48,7 @@ export default () => {
           <ul className={`notice__content ${noticeView === true ? 'active' : ''}`}>
             <li className="notice__hiddeText">
               <b>
-                <i>01</i>PC 방송에서 PC 방송에서 게스트 연결 중에는 음질이 떨어질 수 있습니다.
+                <i>01</i>PC 방송에서 게스트 연결 중에는 음질이 떨어질 수 있습니다.
                 <br />
               </b>
               DJ님이 PC로 방송하는 경우 스테레오 음질의 방송이 가능하나 게스트 연결 중에는 다소 음질이 떨어질 수 있습니다.
@@ -127,71 +127,11 @@ const Content = styled.div`
         display: inline-block;
 
         &.down {
-          &::after {
-            content: '';
-            position: absolute;
-            width: 40%;
-            height: 13%;
-            background-color: #e2475f;
-            top: 49%;
-            left: 15%;
-            -ms-transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-            -ms-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-            border-radius: 10px;
-          }
-
-          &::before {
-            content: '';
-            position: absolute;
-            width: 13%;
-            height: 50%;
-            top: 25%;
-            left: 61%;
-            background-color: #e2475f;
-            -ms-transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-            -webkit-transform: rotate(-45deg);
-            -ms-transform: rotate(-45deg);
-            transform: rotate(-45deg);
-            border-radius: 10px;
-          }
+          background: url('https://image.dalbitlive.com/svg/ic_arrow_up.svg') center no-repeat;
         }
 
         &.up {
-          &::after {
-            content: '';
-            position: absolute;
-            width: 40%;
-            height: 13%;
-            background-color: #e2475f;
-            top: 50%;
-            left: 17%;
-            -ms-transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-            border-radius: 10px;
-          }
-
-          &::before {
-            content: '';
-            position: absolute;
-            width: 13%;
-            height: 50%;
-            top: 25%;
-            left: 60%;
-            background-color: #e2475f;
-            -ms-transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-            border-radius: 10px;
-          }
+          background: url('https://image.dalbitlive.com/svg/ic_arrow_down.svg') center no-repeat;
         }
       }
       &__hiddeText {
