@@ -513,8 +513,18 @@ export default (props) => {
             <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
           </div>
         )}
-        {profile.fanRank.length > 0 && <div className="fanListWrap">{createFanList()}</div>}
-
+        {profile.fanRank.length > 0 ? (
+          <div className="fanListWrap">{createFanList()}</div>
+        ) : (
+          <div className="fanListWrap">
+            <div className="fanRankList">
+              <button className="btn__fanRank">팬랭킹</button>
+              <div className={`fanItem rank1 defalut`}></div>
+              <div className={`fanItem rank2 defalut`}></div>
+              <div className={`fanItem rank3 defalut`}></div>
+            </div>
+          </div>
+        )}
         <div className="fanListWrap cupidWrap">
           {myProfileNo === profile.memNo ? (
             <button

@@ -628,6 +628,13 @@
             background-position: center;
             background-repeat: no-repeat;
             cursor: pointer;
+            &.defalut {
+              background: url('https://image.dalbitlive.com/svg/ico_defalitprofile.svg');
+              margin-right: 6px;
+              &:last-child {
+                margin-right: 0;
+              }
+            }
             & > a {
               display: block;
               width: 100%;
