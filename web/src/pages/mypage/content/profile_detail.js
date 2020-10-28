@@ -549,7 +549,13 @@ export default (props) => {
           )}
           {profile.likeTotCnt > 0 ? (
             <>
-              <img src={profile.profImg.thumb62x62} className="fanListWrap__cupidImg" />
+              <img
+                src={profile.cupidProfImg.thumb62x62}
+                className="fanListWrap__cupidImg"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}
+              />
               <p
                 className="fanListWrap__cupidNick"
                 onClick={() => {
@@ -559,7 +565,10 @@ export default (props) => {
               </p>
             </>
           ) : (
-            <div>111</div>
+            <div className="fanRankList">
+              <div className={`fanItem defalut`}></div>
+              <span className="defalutTxt">(좋아요 보낸 회원없음)</span>
+            </div>
           )}
         </div>
 

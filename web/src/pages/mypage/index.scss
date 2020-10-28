@@ -65,6 +65,8 @@
       position: relative;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       min-height: 230px;
       margin: 0 auto;
       padding: 0;
@@ -74,6 +76,10 @@
       z-index: 4;
       padding: 0 24px 20px;
       .profile-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         .profile-image {
           display: block;
@@ -580,12 +586,12 @@
           }
         }
         .fanListWrap {
-          margin-top: 14px;
           display: flex;
           justify-content: center;
-          width: 328px;
           background-color: #f5f5f5;
           padding: 6px 0;
+          width: 328px;
+          margin-top: 14px;
           border-top-left-radius: 12px;
           border-top-right-radius: 12px;
           &.cupidWrap {
@@ -617,6 +623,10 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          .defalutTxt {
+            font-size: 14px;
+            color: #bdbdbd;
+          }
           .fanItem {
             display: inline-block;
             position: relative;
@@ -635,6 +645,7 @@
                 margin-right: 0;
               }
             }
+
             & > a {
               display: block;
               width: 100%;
