@@ -17,8 +17,7 @@ export default (props) => {
   const history = useHistory()
 
   const parameter = qs.parse(location.search)
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const global_ctx = useContext(Context)
 
   const [toggleCheck, setToggleCheck] = useState('')
   const [conditionData, setconditionData] = useState('')
@@ -124,7 +123,7 @@ export default (props) => {
           <button
             className="startingPopup"
             onClick={() => {
-              globalCtx.action.updatePopup('TERMS', 'specialdj-starting')
+              global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
             }}>
             선발 요건 확인하기
           </button>
@@ -132,14 +131,14 @@ export default (props) => {
           <button
             className="goodsPopup"
             onClick={() => {
-              globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
+              global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
             }}>
             굿즈 상품 미리보기
           </button>
           {imgItem()}
         </div>
 
-        {token.isLogin === true ? (
+        {global_ctx.isLogin === true ? (
           <>
             <img src="https://image.dalbitlive.com/event/specialdj/20201019/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
@@ -273,7 +272,7 @@ export default (props) => {
             </div>
           </>
         )}
-        {token.isLogin === true ? (
+        {global_ctx.isLogin === true ? (
           <img
             src="https://image.dalbitlive.com/event/specialdj/20201019/bottom_img.jpg"
             className="imgResize"
