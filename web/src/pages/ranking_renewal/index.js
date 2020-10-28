@@ -494,7 +494,7 @@ function Ranking() {
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
         <Header type="noBack">
-          <h2 className="header-title">랭킹</h2>
+          <h2 className="header-title">{formState.pageType === PAGE_TYPE.RANKING ? '랭킹' : '명예의 전당'}</h2>
           {formState.pageType === PAGE_TYPE.RANKING && (
             <div
               className="benefitSize"
