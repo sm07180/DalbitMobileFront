@@ -1,5 +1,6 @@
 import React from 'react'
 import {useParams} from 'react-router-dom'
+import {EventAttendProvider} from './event_attend_new/attend_ctx'
 
 //component
 import Layout from 'pages/common/layout'
@@ -9,8 +10,8 @@ import ClipGiftEvent from './clip_gift_event'
 import AttendEvent from './event_attend_new'
 import AttendGiftWinner from './event_attend_new/content/roulette/gift_winner'
 import AttendMyApply from './event_attend_new/content/roulette/my_apply'
-import {EventAttendProvider} from './event_attend_new/attend_ctx'
 import GuestGuide from './guest_guide'
+import ImageGuide from './image_guide'
 
 export default () => {
   const params = useParams()
@@ -32,6 +33,8 @@ export default () => {
         return <AttendMyApply />
       case 'guest_guide':
         return <GuestGuide />
+      case 'image_guide':
+        return <ImageGuide />
 
       default:
         return <></>
