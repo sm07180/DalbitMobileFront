@@ -32,7 +32,7 @@ export default () => {
     <Content>
       <div id="imageGuide">
         <Header type="noBack">
-          <h2 className="header-title">사진 업로드 가이드</h2>
+          <h2 className="header-title">사진 권한 설정 방법</h2>
           <button
             className="btnClose"
             onClick={() => {
