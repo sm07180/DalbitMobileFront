@@ -101,7 +101,7 @@ function RankList() {
                       }
                     }}>
                     <div className="thumbBox">
-                      {formState.rankType === 2 && index < 2 && (
+                      {formState[formState.pageType].rankType === 2 && index < 2 && (
                         <div className={`thumbBox__frame ${index === 0 ? 'thumbBox__frame--4rd' : 'thumbBox__frame--5rd'}`} />
                       )}
                       <img src={profImg.thumb120x120} className="thumbBox__pic" />
@@ -146,7 +146,7 @@ function RankList() {
                       </div>
 
                       <div className="countBox">
-                        {formState.rankType === 1 && (
+                        {formState[formState.pageType].rankType === 1 && (
                           <>
                             <span className="countBox__item">
                               <i className="icon icon--people">사람 아이콘</i>
@@ -165,7 +165,7 @@ function RankList() {
                           </>
                         )}
 
-                        {formState.rankType === 2 && (
+                        {formState[formState.pageType].rankType === 2 && (
                           <>
                             <span className="countBox__item">
                               <i className="icon icon--star">s 스타아이콘</i>
