@@ -46,8 +46,27 @@ export default () => {
           </button>
         </Header>
         <div className="event-content">
-          <img src="https://image.dalbitlive.com/event/guest/20201027/img01.jpg" alt="게스트를 통한 더욱 재미있는 방송" />
-          <img src="https://image.dalbitlive.com/event/guest/20201027/img02.jpg" alt="게스트 초대, 게스트 초대 수락" />
+          <img
+            src="https://image.dalbitlive.com/event/image_guide/20201028/img01.jpg"
+            alt="사진 선택을 클릭했을 때 보이는 팝업에서 사진선택,,또는 모든사진에 대한 접근 허용을 선택하세요"
+          />
+          <img
+            src="https://image.dalbitlive.com/event/image_guide/20201028/img02.jpg"
+            alt="사진 선택을 선택한 경우 휴대폰에 저장된 사진 중에서 방송방 배경 및 클립 배경으로 사용할 후보사진을 선택하세요."
+          />
+          <img
+            src="https://image.dalbitlive.com/event/image_guide/20201028/img03.jpg"
+            alt="모든 사진에 대한 접근 허용을 선탵ㄱ한 경우 휴대폰에 저장된 사진 중에서 현재 방송방 배경 또는 클립배경으로 사용할 사진을 선택 후 완료를 클릭하세요"
+          />
+          <img
+            src="https://image.dalbitlive.com/event/image_guide/20201028/img04.jpg"
+            alt="권한 변경을 하려는 경우 IOS 앱 '설정'클릭 후 페이지 하단의 달빛라이브를 클릭하세요"
+          />
+          <img src="https://image.dalbitlive.com/event/image_guide/20201028/img05.jpg" alt="사진을 클릭하세요" />
+          <img
+            src="https://image.dalbitlive.com/event/image_guide/20201028/img06.jpg"
+            alt="선택한 사진 또는 모든 사진을 선택하세요"
+          />
         </div>
       </div>
     </Content>
