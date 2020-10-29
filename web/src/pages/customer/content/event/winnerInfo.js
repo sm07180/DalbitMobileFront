@@ -169,6 +169,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
     useEffect(() => {
         winnerInfoSelectFn()
         winnerInfoFormatFn()
+        window.scrollTo(0,0)
     },[])
     return (
         <div id="winnerInfo">

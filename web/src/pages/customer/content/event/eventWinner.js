@@ -43,7 +43,8 @@ export default function eventWinner() {
                 receiveWayClick(prizeIdx, 2, state)
                 fnReceiveDal(receiveDal)
             },
-            msg : '바로 받으실 경우 추가 입력절차 없이 ' + receiveDal + ' 달이 즉시 지급됩니다. <br/>바로 받으시겠습니까?'
+            msg : '바로 받으실 경우 추가 입력절차 없이  <br/>' + receiveDal + '달이 즉시 지급됩니다. <br/>' +
+                '<p style="margin-top: 16px; font-size:22px; font-weight: bold; color: #632beb;">바로 받으시겠습니까?</p>'
         })
     }
 
@@ -64,13 +65,8 @@ export default function eventWinner() {
                 receiveWayClick(prizeIdx, 1, minorYn, state)
             } else {
                 setAuthState(false)
-                context.action.confirm({
-                    msg: '당첨자 정보 확인을 위해 본인인증을 하셔야 합니다. <br/> 본인인증을 받으시겠습니까?',
-                    // 본인인증 모듈로 가기
-                    callback: () => {
-                        history.push(`/selfauth?event=/customer/event/${eventIdx}`)
-                    }
-                })
+                history.push(`/selfauth?event=/customer/event/${eventIdx}`)
+
             }
         }
         fetchSelfAuth()
@@ -178,6 +174,7 @@ export default function eventWinner() {
         getResult()
         getWinner()
         getResultBoolean()
+        window.scrollTo(0,0)
     }, []);
 
 

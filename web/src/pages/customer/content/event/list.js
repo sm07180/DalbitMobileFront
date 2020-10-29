@@ -74,6 +74,10 @@ export default function eventList() {
         // 위에서 설정한 fetchData 선언하면서 data fetch해줌
     }, []);
 
+    useEffect(() => {
+        window.scrollTo(0,0)
+    }, [])
+
     return (
         <React.Fragment>
             <div id="eventList">
