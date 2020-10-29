@@ -228,21 +228,20 @@ export default (props) => {
           className="recomClipItem"
           key={`popular-` + idx}
           onClick={() => {
-            fetchDataPlay(clipNo, 'recommend')
-            // if (customHeader['os'] === OS_TYPE['Desktop']) {
-            //   if (context.token.isLogin === false) {
-            //     context.action.alert({
-            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-            //       callback: () => {
-            //         history.push('/login')
-            //       }
-            //     })
-            //   } else {
-            //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-            //   }
-            // } else {
-            //   fetchDataPlay(clipNo)
-            // }
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (context.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(clipNo, 'recommend')
+            }
           }}
           style={{cursor: 'pointer'}}>
           <span className="recomClipItem__subject">
@@ -268,21 +267,20 @@ export default (props) => {
         <div
           className="slideWrap"
           onClick={() => {
-            fetchDataPlay(clipNo, 'new')
-            // if (customHeader['os'] === OS_TYPE['Desktop']) {
-            //   if (globalCtx.token.isLogin === false) {
-            //     context.action.alert({
-            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-            //       callback: () => {
-            //         history.push('/login')
-            //       }
-            //     })
-            //   } else {
-            //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-            //   }
-            // } else {
-            //   fetchDataPlay(clipNo)
-            // }
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (globalCtx.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(clipNo, 'new')
+            }
           }}
           key={`latest-` + idx}
           style={{cursor: 'pointer'}}>
@@ -344,21 +342,20 @@ export default (props) => {
                 <li
                   className="categoryBestItem"
                   onClick={() => {
-                    fetchDataPlay(clipNo, 'theme')
-                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    //   if (globalCtx.token.isLogin === false) {
-                    //     context.action.alert({
-                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    //       callback: () => {
-                    //         history.push('/login')
-                    //       }
-                    //     })
-                    //   } else {
-                    //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                    //   }
-                    // } else {
-                    //   fetchDataPlay(clipNo)
-                    // }
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (globalCtx.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo, 'theme')
+                    }
                   }}
                   key={idx + `toplist`}
                   style={{zIndex: 7, cursor: 'pointer'}}>

@@ -271,21 +271,20 @@ function ClipUpload() {
                   <li
                     className="listSimpleItem"
                     onClick={() => {
-                      fetchDataPlay(clipNo, idx)
-                      // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      //   if (context.token.isLogin === false) {
-                      //     context.action.alert({
-                      //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                      //       callback: () => {
-                      //         history.push('/login')
-                      //       }
-                      //     })
-                      //   } else {
-                      //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      //   }
-                      // } else {
-                      //   fetchDataPlay(clipNo)
-                      // }
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        }
+                      } else {
+                        fetchDataPlay(clipNo, idx)
+                      }
                     }}
                     style={{
                       backgroundImage: `url('${bgImg[`thumb336x336`]}')`,

@@ -122,21 +122,20 @@ export default (props) => {
                   className="chartListDetailItem"
                   key={idx + 'list'}
                   onClick={() => {
-                    fetchDataPlay(clipNo)
-                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    //   if (context.token.isLogin === false) {
-                    //     context.action.alert({
-                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    //       callback: () => {
-                    //         history.push('/login')
-                    //       }
-                    //     })
-                    //   } else {
-                    //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                    //   }
-                    // } else {
-                    //   fetchDataPlay(clipNo)
-                    // }
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
                   }}>
                   <img className="clipBtnPlay" src={ClipPlayerIcon} />
                   <div className="chartListDetailItem__thumb">
@@ -145,21 +144,20 @@ export default (props) => {
                       src={bgImg[`thumb190x190`]}
                       alt={title}
                       onClick={() => {
-                        fetchDataPlay(clipNo)
-                        // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        //   if (context.token.isLogin === false) {
-                        //     context.action.alert({
-                        //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                        //       callback: () => {
-                        //         history.push('/login')
-                        //       }
-                        //     })
-                        //   } else {
-                        //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        //   }
-                        // } else {
-                        //   fetchDataPlay(clipNo)
-                        // }
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          fetchDataPlay(clipNo)
+                        }
                       }}
                     />
                     <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
