@@ -7,6 +7,7 @@ import Swiper from 'react-id-swiper'
 import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
+import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
 
 export default (props) => {
   const context = useContext(Context)
@@ -42,18 +43,35 @@ export default (props) => {
                 onClick={() => {
                   if (roomNo && roomNo !== undefined) {
                     if (nickNm === 'banner') {
+                      const clipUrl = /\/clip\/[0-9]*$/
                       if (roomType === 'link') {
                         context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
+                        } else if(clipUrl.test(roomNo)){
+                          if(isHybrid()){
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                            clipJoinApi(clip_no, context)
+                          }else{
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
                         } else {
                           history.push(`${roomNo}`)
                         }
                       } else {
                         if (isHybrid()) {
-                          Hybrid('openUrl', `${roomNo}`)
+                          if(clipUrl.test(roomNo)){
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                            clipJoinApi(clip_no, context)
+                          } else {
+                            Hybrid('openUrl', `${roomNo}`)
+                          }
                         } else {
-                          window.open(`${roomNo}`)
+                          if(clipUrl.test(roomNo)){
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          } else {
+                            window.open(`${roomNo}`)
+                          }
                         }
                       }
                     } else {

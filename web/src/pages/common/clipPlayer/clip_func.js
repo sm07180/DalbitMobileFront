@@ -4,6 +4,7 @@ import {Hybrid, NewHybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
+import Api from 'context/api'
 
 export const clipJoin = (data, context, webview) => {
   // console.log('1' + sessionStorage.getItem('listening'))
@@ -73,4 +74,26 @@ export const clipExit = (context) => {
 
 export const updateClipInfo = (data) => {
   Hybrid('ClipUpdateInfo', data)
+}
+
+export async function clipJoinApi(clipNum, context) {
+  const {result, data, message, code} = await Api.postClipPlay({
+    clipNo: clipNum
+  })
+  if (result === 'success') {
+    clipJoin(data, context)
+  } else {
+    if (code === '-99') {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          history.push('/login')
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
 }
