@@ -1,6 +1,6 @@
 import React, {useContext, useReducer} from 'react'
 import Api from 'context/api'
-import WinnerInfo from './winnerInfo'
+import Winner_info from './winner_info'
 import {winnerInspection} from './validation_fn'
 import {Context} from 'context'
 
@@ -78,7 +78,7 @@ const initData = {
     , check: false
 }
 
-export default function winnerInfoForm() {
+export default function winner_info_form() {
     const [formData, formDispatch] = useReducer(FormDataReducer, initData);
     // initData를 사용해서 FormDataReducer를 이용해, formDispatch 해서 formData로 셋팅한다
     const context = useContext(Context)
@@ -135,6 +135,6 @@ export default function winnerInfoForm() {
     }
 
     return (
-        <WinnerInfo state={formData} formDispatch={formDispatch} winnerInspection={checkInspection}/>
+        <Winner_info state={formData} formDispatch={formDispatch} winnerInspection={checkInspection}/>
     )
 }

@@ -25,8 +25,8 @@ import AppInfo from './app_info'
 import AppInfoRoute from './app_info/route'
 
 import Layout from 'pages/common/layout/new_layout'
-import EventWinner from "pages/customer/content/event/eventWinner";
-import WinnerInfoForm from "pages/customer/content/event/winnerInfoForm";
+import EventWinner from "pages/customer/content/event/event_winner.js";
+import WinnerInfoForm from "pages/customer/content/event/winner_info_form.js";
 //
 
 const Index = (props) => {

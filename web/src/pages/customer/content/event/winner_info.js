@@ -1,13 +1,13 @@
 import React, {useContext, useState, useEffect, useReducer} from 'react'
 import Api from 'context/api'
-import './winnerInfo.scss'
+import './winner_info.scss'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import DalbitCheckbox from "components/ui/dalbit_checkbox";
 import Utility, {addComma} from 'components/lib/utility'
 
 
-export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
+export default function Winner_info({ state, formDispatch, winnerInspection }) {
 
     const history = useHistory()
     const eventIdx = history.location.state.eventIdx
@@ -143,7 +143,10 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
             formDispatch({type: 'check', val: false})
         } else {
             context.action.alert({
-                msg : message
+                msg : message,
+                callback: async () => {
+                    window.history.back()
+                }
             })
         }
     }
@@ -158,7 +161,10 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
             formDispatch({type: 'winner_phone', val: data.mem_phone})
         } else {
             context.action.alert({
-                msg : message
+                msg : message,
+                callback: async () => {
+                    window.history.back()
+                }
             })
         }
     }

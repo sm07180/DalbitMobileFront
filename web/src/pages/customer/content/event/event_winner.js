@@ -2,11 +2,13 @@ import React, {useContext, useState, useEffect} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
-import './eventWinner.scss'
+import './event_winner.scss'
 import API from "context/api"
 import imgPrize from './img_prize.svg'
+import Utility, {addComma} from 'components/lib/utility'
+import utility from "components/lib/utility";
 
-export default function eventWinner() {
+export default function event_winner() {
 
     const [resultPrize, setResultPrize] = useState([])
     const [resultBoolean, setResultBoolean] = useState('')
@@ -43,16 +45,18 @@ export default function eventWinner() {
                 receiveWayClick(prizeIdx, 2, state)
                 fnReceiveDal(receiveDal)
             },
-            msg : '바로 받으실 경우 추가 입력절차 없이  <br/>' + receiveDal + '달이 즉시 지급됩니다. <br/>' +
+            msg : '바로 받으실 경우 추가 입력절차 없이  <br/>' + utility.addComma(receiveDal) + '달이 즉시 지급됩니다. <br/>' +
                 '<p style="margin-top: 16px; font-size:22px; font-weight: bold; color: #632beb;">바로 받으시겠습니까?</p>'
         })
     }
 
     function fnReceiveDal(receiveDal) {
         context.action.alert({
-            msg: receiveDal + ' 달 지급이 완료되었습니다.<br/>내 지갑에서 확인하실 수 있습니다.'
+            msg: utility.addComma(receiveDal) + ' 달 지급이 완료되었습니다.',
+            callback: async () => {
+                window.history.back()
+            }
         })
-        window.history.back()
     }
 
     const checkSelfAuth = (prizeIdx, minorYn, state) => {
@@ -97,7 +101,10 @@ export default function eventWinner() {
                 }
             } else {
                 context.action.alert({
-                    msg : message
+                    msg : message,
+                    callback: async () => {
+                        window.history.back()
+                    }
                 })
             }
         }
@@ -130,7 +137,7 @@ export default function eventWinner() {
         } else {
             context.action.alert({
                 msg : message,
-                callback: () => {history.push('/')}
+                callback: () => {window.history.back()}
             })
         }
     }
@@ -160,9 +167,11 @@ export default function eventWinner() {
 
         } else {
             context.action.alert({
-                msg: message
+                msg: message,
+                callback: async () => {
+                    window.history.back()
+                }
             })
-            console.log(data)
         }
     }
 
