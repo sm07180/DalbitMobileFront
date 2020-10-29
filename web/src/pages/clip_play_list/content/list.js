@@ -26,17 +26,56 @@ export default () => {
   }
 
   const fetchPlayList = async () => {
-    const {result, data, message} = await Api.getPlayList({
-      params: {
-        sortType: 1,
-        records: 100
+    // const {result, data, message} = await Api.getPlayList({
+    //   params: {
+    //     sortType: 1,
+    //     records: 100
+    //   }
+    // })
+    // if (result === 'success') {
+    //   playListCtx.action.updateList(data.list)
+    //   setTotalList(data.paging.total)
+    // } else {
+    //   globalCtx.action.alert({msg: message})
+    // }
+    const playListInfo = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
+    console.log('playListInfo', playListInfo)
+    if (playListInfo.hasOwnProperty('listCnt')) {
+      if (playListInfo.hasOwnProperty('subjectType')) {
+        //메인 top3
+        const {result, data, message} = await Api.getMainTop3List({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
+      } else {
+        //추천(인기)
+        const {result, data, message} = await Api.getPopularList({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
       }
-    })
-    if (result === 'success') {
-      playListCtx.action.updateList(data.list)
-      setTotalList(data.paging.total)
+    } else if (playListInfo.hasOwnProperty('memNo')) {
+      //마이페이지
+      if (playListInfo.hasOwnProperty('slctType')) {
+        //청취목록
+      } else {
+        //업로드목록
+      }
     } else {
-      globalCtx.action.alert({msg: message})
+      //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)
+      const {result, data, message} = await Api.getClipList({...playListInfo})
+      if (result === 'success') {
+        playListCtx.action.updateList(data.list)
+        setTotalList(data.list.length)
+      } else {
+        globalCtx.action.alert({msg: message})
+      }
     }
   }
 
@@ -64,6 +103,10 @@ export default () => {
       })
     }
   }, [])
+
+  useEffect(() => {
+    console.log('list', list)
+  }, [list])
 
   const createList = () => {
     if (list.length === 0) return null

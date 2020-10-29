@@ -142,7 +142,9 @@ export default (props) => {
     }
   }
   const fetchDataListLatest = async () => {
-    const {result, data, message} = await Api.getLatestList({})
+    const {result, data, message} = await Api.getLatestList({
+      listCnt: 10
+    })
     if (result === 'success') {
       setrankList(data.list)
     } else {
@@ -174,11 +176,31 @@ export default (props) => {
     }
   }
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, type) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      console.log(type)
+      let playListInfoData
+      if (type === 'recommend') {
+        playListInfoData = {
+          listCnt: 20
+        }
+      } else if (type === 'new') {
+        playListInfoData = {
+          slctType: 1,
+          dateType: 0,
+          page: 1,
+          records: 100
+        }
+      } else if (type === 'theme') {
+        playListInfoData = {
+          subjectType: data.subjectType,
+          listCnt: 100
+        }
+      }
+      sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -206,20 +228,21 @@ export default (props) => {
           className="recomClipItem"
           key={`popular-` + idx}
           onClick={() => {
-            if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (context.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
-                    history.push('/login')
-                  }
-                })
-              } else {
-                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-              }
-            } else {
-              fetchDataPlay(clipNo)
-            }
+            fetchDataPlay(clipNo, 'recommend')
+            // if (customHeader['os'] === OS_TYPE['Desktop']) {
+            //   if (context.token.isLogin === false) {
+            //     context.action.alert({
+            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+            //       callback: () => {
+            //         history.push('/login')
+            //       }
+            //     })
+            //   } else {
+            //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            //   }
+            // } else {
+            //   fetchDataPlay(clipNo)
+            // }
           }}
           style={{cursor: 'pointer'}}>
           <span className="recomClipItem__subject">
@@ -245,20 +268,21 @@ export default (props) => {
         <div
           className="slideWrap"
           onClick={() => {
-            if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
-                    history.push('/login')
-                  }
-                })
-              } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-              }
-            } else {
-              fetchDataPlay(clipNo)
-            }
+            fetchDataPlay(clipNo, 'new')
+            // if (customHeader['os'] === OS_TYPE['Desktop']) {
+            //   if (globalCtx.token.isLogin === false) {
+            //     context.action.alert({
+            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+            //       callback: () => {
+            //         history.push('/login')
+            //       }
+            //     })
+            //   } else {
+            //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            //   }
+            // } else {
+            //   fetchDataPlay(clipNo)
+            // }
           }}
           key={`latest-` + idx}
           style={{cursor: 'pointer'}}>
@@ -320,20 +344,21 @@ export default (props) => {
                 <li
                   className="categoryBestItem"
                   onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (globalCtx.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(clipNo)
-                    }
+                    fetchDataPlay(clipNo, 'theme')
+                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    //   if (globalCtx.token.isLogin === false) {
+                    //     context.action.alert({
+                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    //       callback: () => {
+                    //         history.push('/login')
+                    //       }
+                    //     })
+                    //   } else {
+                    //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                    //   }
+                    // } else {
+                    //   fetchDataPlay(clipNo)
+                    // }
                   }}
                   key={idx + `toplist`}
                   style={{zIndex: 7, cursor: 'pointer'}}>
