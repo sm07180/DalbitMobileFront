@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
 import {Context} from 'context/index.js'
@@ -22,7 +22,7 @@ import ArrowIcon from '../static/arrow.svg'
 
 export default (props) => {
   //props
-  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType} = props
+  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType, searchText} = props
   // ctx && path
   const context = useContext(Context)
   const customHeader = JSON.parse(API.customHeader)
@@ -42,11 +42,28 @@ export default (props) => {
       history.push(`/mypage/${memNo}`)
     }
   }
-  const fetchDataPlay = async (clipNum) => {
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
+  const fetchDataPlay = async (clipNum, idx) => {
+    console.log(idx)
     const {result, data, message, code} = await API.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      const nowPage = getPageFormIdx(idx)
+      const playListInfoData = {
+        slctType: 0,
+        dateType: 0,
+        page: nowPage,
+        records: 100,
+        search: searchText
+      }
+      sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -262,20 +279,21 @@ export default (props) => {
                       className="chartListDetailItem"
                       key={idx + 'list'}
                       onClick={() => {
-                        if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
-                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                              callback: () => {
-                                history.push('/login')
-                              }
-                            })
-                          } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                          }
-                        } else {
-                          fetchDataPlay(clipNo)
-                        }
+                        fetchDataPlay(clipNo, idx)
+                        // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        //   if (context.token.isLogin === false) {
+                        //     context.action.alert({
+                        //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                        //       callback: () => {
+                        //         history.push('/login')
+                        //       }
+                        //     })
+                        //   } else {
+                        //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                        //   }
+                        // } else {
+                        //   fetchDataPlay(clipNo)
+                        // }
                       }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
@@ -284,20 +302,21 @@ export default (props) => {
                           src={bgImg[`thumb190x190`]}
                           alt={title}
                           onClick={() => {
-                            if (customHeader['os'] === OS_TYPE['Desktop']) {
-                              if (context.token.isLogin === false) {
-                                context.action.alert({
-                                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                  callback: () => {
-                                    history.push('/login')
-                                  }
-                                })
-                              } else {
-                                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                              }
-                            } else {
-                              fetchDataPlay(clipNo)
-                            }
+                            fetchDataPlay(clipNo, idx)
+                            // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            //   if (context.token.isLogin === false) {
+                            //     context.action.alert({
+                            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            //       callback: () => {
+                            //         history.push('/login')
+                            //       }
+                            //     })
+                            //   } else {
+                            //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            //   }
+                            // } else {
+                            //   fetchDataPlay(clipNo)
+                            // }
                           }}
                         />
                         <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
