@@ -173,12 +173,9 @@
         justify-content: center;
         background-color: #bdbdbd;
         border-radius: 9px;
-
-        .searchText {
-          text-align: center;
-          font-size: 14px;
-          color: #ffffff;
-        }
+        text-align: center;
+        font-size: 14px;
+        color: #ffffff;
       }
     }
   }
@@ -192,12 +189,10 @@
     background-color: #ffffff;
     border: solid 1px #632beb;
 
-    .msgText{
-      text-align: center;
-      font-size: 12px;
-      line-height: 1.33;
-      color: #000000;
-    }
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.33;
+    color: #000000;
   }
 
   .prizeBox {
@@ -231,14 +226,12 @@
     display: flex;
     padding-top: 25px;
 
-    .checkbox {
-      img {
-        width: 20px;
-        height: 20px;
-        margin-left: 2px;
-        background-color: #632beb;
-        border-radius: 4px;
-      }
+    img {
+      width: 20px;
+      height: 20px;
+      margin-left: 2px;
+      background-color: #632beb;
+      border-radius: 4px;
     }
 
     .checkText {
@@ -252,25 +245,20 @@
   }
 
   .checkDescArea{
-    margin: 7px 0 32px 1px;
-    .checkDescText{
-      width: calc(100% - 34px);
-      margin-left: 34px;
-      font-size: 12px;
-      line-height: 1.33;
-      color: #757575;
-    }
+    margin: 7px 0 32px 34px;
+    width: calc(100% - 34px);
+    font-size: 12px;
+    line-height: 1.33;
+    color: #757575;
+
   }
 
   .descArea {
     padding: 4px;
     margin-bottom: 10px;
-
-    .descText {
-      font-size: 12px;
-      line-height: 1.33;
-      color: #757575;
-    }
+    font-size: 12px;
+    line-height: 1.33;
+    color: #757575;
   }
 
   .saveButton {
@@ -279,18 +267,22 @@
     background-color: #bdbdbd;
     border-radius: 12px;
 
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.17;
+    color: #ffffff;
+
     &-active {
       width: 100%;
       padding: 12px 120px 12px 120px;
       background-color: #632beb;
       border-radius: 12px;
+
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.17;
+      color: #ffffff;
     }
-  }
-  .saveButtonText {
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.17;
-    color: #ffffff;
   }
 
   #layer {

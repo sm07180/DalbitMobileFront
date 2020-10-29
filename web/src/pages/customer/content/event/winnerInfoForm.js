@@ -1,5 +1,4 @@
-import React, {useState, useContext, useEffect, useReducer} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useContext, useReducer} from 'react'
 import Api from 'context/api'
 import WinnerInfo from './winnerInfo'
 import {winnerInspection} from './validation_fn'
@@ -58,6 +57,9 @@ const FormDataReducer = (state, action) => {
                 ...state,
                 check: action.val
             }
+        case 'init':
+            return action.val;
+
         default:
             return state;
     }
@@ -94,14 +96,18 @@ export default function winnerInfoForm() {
                     , winner_address_1: formData.winner_address_1
                     , winner_address_2: formData.winner_address_2
                     , winner_add_file_1: formData.files[0].path
-                    , winner_add_file_2: formData.files[1].path !== false ? formData.files[1].path : ''
+                    , winner_add_file_1_name: formData.files[0].name
+                    , winner_add_file_2: formData.files[1].path !== undefined ? formData.files[1].path : ''
+                    , winner_add_file_2_name: formData.files[1].name !== undefined ? formData.files[1].name : ''
                 }
             })
             if(result === 'success') {
                 context.action.alert({
-                    msg: message
+                    msg: message,
+                    callback: () => {
+                        window.history.back()
+                    }
                 })
-                window.history.back()
             } else {
                 context.action.alert({
                     msg: message,

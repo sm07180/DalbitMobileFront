@@ -4,7 +4,6 @@ import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import './eventWinner.scss'
 import API from "context/api"
-import {IMG_SERVER} from 'context/config'
 import imgPrize from './img_prize.svg'
 
 export default function eventWinner() {
@@ -38,10 +37,10 @@ export default function eventWinner() {
         return formatNum
     }
 
-    const dalReceive = (receiveDal, prizeIdx) => {
+    const dalReceive = (receiveDal, prizeIdx, state) => {
         context.action.confirm ({
             callback: () => {
-                receiveWayClick(prizeIdx, 2)
+                receiveWayClick(prizeIdx, 2, state)
                 fnReceiveDal(receiveDal)
             },
             msg : '바로 받으실 경우 추가 입력절차 없이 ' + receiveDal + ' 달이 즉시 지급됩니다. <br/>바로 받으시겠습니까?'
@@ -55,25 +54,30 @@ export default function eventWinner() {
         window.history.back()
     }
 
-    const checkSelfAuth = (prizeIdx, minorYn) => {
+    const checkSelfAuth = (prizeIdx, minorYn, state) => {
         async function fetchSelfAuth() {
             const res = await Api.self_auth_check({})
             console.log(res)
             if(res.result === 'success') {
                 setAuthState(true)
                 setPhone(res.data.phoneNo)
-                receiveWayClick(prizeIdx, 1, minorYn)
+                receiveWayClick(prizeIdx, 1, minorYn, state)
             } else {
                 setAuthState(false)
-                // 본인인증 모듈로 가기
-                history.push(`/selfauth?event=/customer/event/${eventIdx}`)
+                context.action.confirm({
+                    msg: '당첨자 정보 확인을 위해 본인인증을 하셔야 합니다. <br/> 본인인증을 받으시겠습니까?',
+                    // 본인인증 모듈로 가기
+                    callback: () => {
+                        history.push(`/selfauth?event=/customer/event/${eventIdx}`)
+                    }
+                })
             }
         }
         fetchSelfAuth()
     }
 
 
-    const receiveWayClick = (prizeIdx, receiveWay_param, minorYn) => {
+    const receiveWayClick = (prizeIdx, receiveWay_param, minorYn, state) => {
         async function prizeReceiveWay() {
             const {result, data, message} = await API.prizeReceiveWay({
                 data: {
@@ -90,7 +94,8 @@ export default function eventWinner() {
                         state: {
                             eventIdx: eventIdx,
                             prizeIdx: prizeIdx,
-                            minorYn: minorYn
+                            minorYn: minorYn,
+                            state_: state
                         }
                     })
                 }
@@ -223,12 +228,12 @@ export default function eventWinner() {
                                                 <div className="buttonArea">
                                                     <button className="infoButton"
                                                             onClick={() => {
-                                                                checkSelfAuth(prizeIdx, minorYn)}}>
+                                                                checkSelfAuth(prizeIdx, minorYn, state)}}>
                                                         배송 정보 입력
                                                     </button>
                                                     <button className="dalButton"
                                                             onClick={() =>
-                                                                dalReceive(receiveDal, prizeIdx)
+                                                                dalReceive(receiveDal, prizeIdx, state)
                                                             }>달로 바로 받기
                                                     </button>
                                                 </div>
@@ -246,16 +251,16 @@ export default function eventWinner() {
                                             </>
                                             }
 
-                                            {/* (현물) 입금 확인 전, 추가 정보 입력 */}
+                                            {/* (현물) 입금 대기 중, 추가 정보 입력 */}
                                             {prizeSlct === 1 && state === 1 &&
                                                 <div className="buttonArea">
                                                     <button className="infoButton"
                                                             onClick={() => {
-                                                                receiveWayClick(prizeIdx, 1, minorYn)
+                                                                receiveWayClick(prizeIdx, 1, minorYn, state)
                                                             }}>배송 정보 변경
                                                     </button>
                                                     <button className="dalButton" onClick={() =>
-                                                        dalReceive(receiveDal, prizeIdx)
+                                                        dalReceive(receiveDal, prizeIdx, state)
                                                     }>달로 바로 받기
                                                     </button>
                                                 </div>

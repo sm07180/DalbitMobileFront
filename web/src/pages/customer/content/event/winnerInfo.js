@@ -4,6 +4,7 @@ import './winnerInfo.scss'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import DalbitCheckbox from "components/ui/dalbit_checkbox";
+import Utility, {addComma} from 'components/lib/utility'
 
 
 export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
@@ -12,6 +13,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
     const eventIdx = history.location.state.eventIdx
     const prizeIdx = history.location.state.prizeIdx
     const minorYn = history.location.state.minorYn
+    const state_ = history.location.state.state_
     const context = useContext(Context)
     const memNo = context.token.memNo
     const [winnerInfoObj, setWinnerInfoObj] = useState(false)
@@ -109,7 +111,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
         }
     }
 
-    async function winnerInfoSelect() {
+    async function winnerInfoSelectFn() {
         const {result, data, message} = await Api.winnerInfoSelect({
             data: {
                 memNo : memNo
@@ -118,10 +120,27 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
             }
         })
         if(result === 'success') {
-            setWinnerInfoObj(data)
-            console.log(data)
+            const files = [
+                {name: data["winner_add_file_1_name"], path: data["winner_add_file_1"]},
+                data["winner_add_file_2"] !== "" ? (
+                    {name: data["winner_add_file_2_name"], path: data["winner_add_file_2"]}
+                ) : false
+            ]
+            const valueAble = {
+                ...data,
+                eventIdx,
+                prizeIdx,
+                files
+            };
+
+            formDispatch({
+                type: 'init',
+                val: valueAble
+            })
+
             formDispatch({type: 'eventIdx', val: eventIdx})
             formDispatch({type: 'prizeIdx', val: prizeIdx})
+            formDispatch({type: 'check', val: false})
         } else {
             context.action.alert({
                 msg : message
@@ -129,7 +148,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
         }
     }
 
-    async function winnerInfoFormat() {
+    async function winnerInfoFormatFn() {
         const {result, data, message} = await Api.winnerInfoFormat({
 
         })
@@ -148,8 +167,8 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
         if(!context.token.isLogin) history.push('/')
     }, [context.token])
     useEffect(() => {
-        winnerInfoSelect()
-        winnerInfoFormat()
+        winnerInfoSelectFn()
+        winnerInfoFormatFn()
     },[])
     return (
         <div id="winnerInfo">
@@ -181,6 +200,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
                     className="inputFocus"
                     id="emailInput"
                     onChange={(e) => formDispatch({type: 'winner_email', val: e.target.value})}
+                    value={state.winner_email}
                     placeholder="이메일 주소를 입력해주세요."/>
             </div>
 
@@ -192,7 +212,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
                         disabled={true}
                         value={state.winner_post_code}/>
                     <button className="searchBox">
-                        <div className="searchText">주소검색</div>
+                        주소검색
                     </button>
                 </div>
             </div>
@@ -210,6 +230,7 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
                     type="text"
                     className="inputFocus"
                     id="addressInput"
+                    value={state.winner_address_2}
                     onChange={(e) => formDispatch({type: 'winner_address_2', val: e.target.value})}
                     placeholder="상세 주소를 입력해주세요."/>
             </div>
@@ -218,49 +239,47 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
                 <div className="textButton">
                     <label htmlFor="id-upload" className="textLabel">
                         <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요.'}</span>
-                        <span className="searchBox"><div className="searchText">찾아보기</div></span>
+                        <span className="searchBox">찾아보기</span>
                     </label>
-                    <input className="inputText"
-                           id="id-upload"
+                    <input id="id-upload"
                            type="file"
                            onChange={(e) => uploadSingleFile(e, 0)}
                     />
                 </div>
             </div>
             <div className="descArea">
-                <div className="descText"> ※ 주민등록증, 운전면허증, 여권, 주민등록등본, 가족관계증명서 등</div>
+                ※ 주민등록증, 운전면허증, 여권, 주민등록등본, 가족관계증명서 등
             </div>
             <div className="infoBox-button-readonly">
                 <div className="formText">가족관계증명서</div>
                 <div className="textButton">
                     <label htmlFor="certi-upload" className="textLabel">
                         <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요.'}</span>
-                        <span className="searchBox"><div className="searchText">찾아보기</div></span>
+                        <span className="searchBox">찾아보기</span>
                     </label>
-                    <input className="inputText"
-                           id="certi-upload"
+                    <input id="certi-upload"
                            type="file"
                            onChange={(e) => uploadSingleFile(e, 1)}
                     />
                 </div>
             </div>
             <div className="descArea">
-                <div className="descText">※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.</div>
+                ※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.
             </div>
 
 
             <div className="msgBox">
-                <div className="msgText">추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.</div>
+                추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.
             </div>
 
 
             <div className="prizeBox">
                 <div className="prizeText">경품명</div>
-                <div className="prizeInfo">{winnerInfoObj.prize_name}</div>
+                <div className="prizeInfo">{state.prize_name}</div>
             </div>
             <div className="prizeBox">
                 <div className="prizeText">제세공과금</div>
-                <div className="prizeInfo">{winnerInfoObj.tax_amount}</div>
+                <div className="prizeInfo">{Utility.addComma(state.tax_amount)}</div>
             </div>
             <div className="prizeBox">
                 <div className="prizeText">입금은행/예금주</div>
@@ -272,28 +291,26 @@ export default function WinnerInfo({ state, formDispatch, winnerInspection }) {
             </div>
 
             <div className="checkArea">
-                <div className="checkbox">
-                    <DalbitCheckbox status={state.check}
-                                    callback={() => formDispatch({type: 'check', val: !state.check})}/>
-                </div>
+                <DalbitCheckbox status={state.check} callback={() => formDispatch({type: 'check', val: !state.check})}/>
                 <div className="checkText">개인정보 수집 및 이용 동의</div>
             </div>
+
             <div className="checkDescArea">
-                <div className="checkDescText">회사는 이벤트 경품지급의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를
-                    수집할 수 있습니다.
-                </div>
+                회사는 이벤트 경품지급의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.
             </div>
 
             <div className="saveArea" onClick={() => winnerInspection({minorYn})}>
-                {state.check === false &&
-                <button className="saveButton">
-                    <div className="saveButtonText">저장하기</div>
-                </button>
+                {state.check === false && state_ === 0 &&
+                <button className="saveButton">저장하기</button>
                 }
-                {state.check === true &&
-                <button className="saveButton-active">
-                    <div className="saveButtonText">저장하기</div>
-                </button>
+                {state.check === true && state_ === 0 &&
+                <button className="saveButton-active">저장하기</button>
+                }
+                {state.check === false && state_ === 1 &&
+                <button className="saveButton">수정하기</button>
+                }
+                {state.check === true && state_ === 1 &&
+                <button className="saveButton-active">수정하기</button>
                 }
             </div>
         </div>
