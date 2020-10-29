@@ -123,7 +123,7 @@ export default (props) => {
           <button
             className="startingPopup"
             onClick={() => {
-              global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
+              global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
             }}>
             선발 요건 확인하기
           </button>
@@ -131,7 +131,7 @@ export default (props) => {
           <button
             className="goodsPopup"
             onClick={() => {
-              global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
+              global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
             }}>
             굿즈 상품 미리보기
           </button>

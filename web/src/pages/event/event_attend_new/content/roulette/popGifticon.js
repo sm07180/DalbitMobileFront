@@ -180,7 +180,7 @@ export default () => {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_gift4@2x.png`
       return <img src={giftImage} width="160px" className="con" alt="문화상품권" />
     } else if (itemNo === 8) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift5@2x.png`
+      giftImage = `${IMG_SERVER}/event/attend/201028/img_gift5@2x.png`
       return <img src={giftImage} width="160px" className="con" alt="교촌치킨" />
     } else {
       giftImage = ''

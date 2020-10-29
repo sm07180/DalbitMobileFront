@@ -141,7 +141,7 @@ export default function RouletteTab() {
       </div>
 
       <div className="rouletteBox">
-        <img src={`${IMG_SERVER}/event/attend/201019/roullete_img@2x.png`} alt="룰렛 돌림판" />
+        <img src={`${IMG_SERVER}/event/attend/201028/roullete_img@2x.png`} alt="룰렛 돌림판" />
         <button type="button" onClick={() => startIn()}>
           <img src={`${IMG_SERVER}/event/attend/201019/btn_roullete_start@2x.png`} alt="룰렛 스타트" />
         </button>
