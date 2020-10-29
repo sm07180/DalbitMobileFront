@@ -295,7 +295,7 @@ export default (props) => {
 
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
-      if (item.length < 3) return <React.Fragment key={idx}></React.Fragment>
+      if (item.length < 3) return <div key={idx}></div>
       let subjectMap = item[0].subjectType
       return (
         <div className="slideWrap" key={idx}>
