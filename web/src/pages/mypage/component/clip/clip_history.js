@@ -50,6 +50,7 @@ export default function ClipHistory() {
       clipNo: clipNum
     })
     if (result === 'success') {
+      sessionStorage.removeItem('clipPlayListInfo')
       clipJoin(data, context, webview)
     } else {
       if (code === '-99') {

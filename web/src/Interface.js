@@ -31,6 +31,7 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
+      sessionStorage.removeItem('clipPlayListInfo')
       clipJoin(data, context)
     } else {
       if (code === '-99') {
