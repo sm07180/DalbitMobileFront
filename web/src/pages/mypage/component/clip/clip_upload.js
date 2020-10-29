@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useReducer, useState} from 'react'
+import React, {useContext, useEffect, useReducer, useState, useCallback} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -63,12 +63,26 @@ function ClipUpload() {
       })
     }
   }
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, idx) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      const nowPage = getPageFormIdx(idx)
+      const playListInfoData = {
+        memNo: context.urlStr,
+        page: nowPage,
+        records: 100
+      }
+      sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context, webview)
     } else {
       if (code === '-99') {
@@ -187,20 +201,21 @@ function ClipUpload() {
                 <div
                   className="uploadList__container"
                   onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (context.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(clipNo)
-                    }
+                    fetchDataPlay(clipNo, idx)
+                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    //   if (context.token.isLogin === false) {
+                    //     context.action.alert({
+                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    //       callback: () => {
+                    //         history.push('/login')
+                    //       }
+                    //     })
+                    //   } else {
+                    //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                    //   }
+                    // } else {
+                    // fetchDataPlay(clipNo)
+                    // }
                   }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">
@@ -256,20 +271,21 @@ function ClipUpload() {
                   <li
                     className="listSimpleItem"
                     onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
-                      } else {
-                        fetchDataPlay(clipNo)
-                      }
+                      fetchDataPlay(clipNo, idx)
+                      // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      //   if (context.token.isLogin === false) {
+                      //     context.action.alert({
+                      //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      //       callback: () => {
+                      //         history.push('/login')
+                      //       }
+                      //     })
+                      //   } else {
+                      //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      //   }
+                      // } else {
+                      //   fetchDataPlay(clipNo)
+                      // }
                     }}
                     style={{
                       backgroundImage: `url('${bgImg[`thumb336x336`]}')`,
