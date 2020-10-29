@@ -160,28 +160,28 @@ export default () => {
 
     if (itemNo === 1) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_lose@2x.png`
-      return <img src={giftImage} alt="꽝" />
+      return <img src={giftImage} width="160px" alt="꽝" />
     } else if (itemNo === 2) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_moon1@2x.png`
-      return <img src={giftImage} alt="1달" />
+      return <img src={giftImage} width="80px" alt="1달" />
     } else if (itemNo === 3) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_moon3@2x.png`
-      return <img src={giftImage} alt="3달" />
+      return <img src={giftImage} width="88px" alt="3달" />
     } else if (itemNo === 4) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_gift1@2x.png`
-      return <img src={giftImage} alt="초코에몽" />
+      return <img src={giftImage} width="160px" className="con" alt="초코에몽" />
     } else if (itemNo === 5) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_gift2@2x.png`
-      return <img src={giftImage} alt="편의점 상품권" />
+      return <img src={giftImage} width="160px" className="con" alt="편의점 상품권" />
     } else if (itemNo === 6) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_gift3@2x.png`
-      return <img src={giftImage} alt="스타벅스 커피" />
+      return <img src={giftImage} width="160px" className="con" alt="스타벅스 커피" />
     } else if (itemNo === 7) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_gift4@2x.png`
-      return <img src={giftImage} alt="문화상품권" />
+      return <img src={giftImage} width="160px" className="con" alt="문화상품권" />
     } else if (itemNo === 8) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift5@2x.png`
-      return <img src={giftImage} alt="교촌치킨" />
+      giftImage = `${IMG_SERVER}/event/attend/201028/img_gift5@2x.png`
+      return <img src={giftImage} width="160px" className="con" alt="교촌치킨" />
     } else {
       giftImage = ''
     }

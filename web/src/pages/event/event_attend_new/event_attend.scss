@@ -176,7 +176,7 @@
         }
 
         .winInfo {
-          padding: 24px 0 20px;
+          padding: 24px 0;
 
           &__title {
             font-size: 22px;
@@ -186,16 +186,16 @@
           }
 
           &__image {
-            width: 160px;
             margin: 0 auto;
+            padding-bottom: 16px;
 
-            img {
-              width: 100%;
+            .con {
+              padding-top: 8px;
             }
           }
 
           &__content {
-            padding: 16px 0;
+            // padding: 16px 0;
             line-height: 22px;
           }
         }
@@ -331,6 +331,18 @@
           border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
 
+          &.icon {
+            text-align: left;
+            font-weight: 600;
+            padding-left: 10px;
+
+            img {
+              display: inline-block;
+              margin-top: -2px;
+              margin-right: 3px;
+            }
+          }
+
           &.date {
             color: #757575;
 
@@ -346,6 +358,8 @@
             align-items: center;
             padding-left: 10px;
             text-align: center;
+            font-weight: 600;
+            color: #424242;
 
             .thumb {
               overflow: hidden;

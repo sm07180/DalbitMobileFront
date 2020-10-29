@@ -50,7 +50,6 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
 const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
-
 import 'styles/main.scss'
 
 let concatenating = false
@@ -290,7 +289,7 @@ export default (props) => {
   }
 
   const windowScrollEvent = () => {
-    const GnbHeight = 48
+    const GnbHeight = 88
     const sectionMarginTop = 30
     const LiveTabDefaultHeight = 48
 
@@ -497,7 +496,7 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         if (heightDiff <= heightDiffFixed) {
           iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
         }
       }
     },
@@ -528,9 +527,10 @@ export default (props) => {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
+          let tail_slice = head_slice.slice(0, 3)
           return Number(tail_slice)
         })()
+
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -593,7 +593,10 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <div className="refresh-wrap" ref={iconWrapRef}>
+      <div
+        className="refresh-wrap"
+        ref={iconWrapRef}
+        style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
         <div className="icon-wrap">
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
@@ -603,7 +606,8 @@ export default (props) => {
         ref={MainRef}
         onTouchStart={mainTouchStart}
         onTouchMove={mainTouchMove}
-        onTouchEnd={mainTouchEnd}>
+        onTouchEnd={mainTouchEnd}
+        style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
         {customHeader['os'] === OS_TYPE['Desktop'] && (
           <div ref={SubMainRef} className="main-gnb">
             <div className="left-side">
@@ -705,7 +709,8 @@ export default (props) => {
         )}
 
         <div ref={RecommendRef} className="main-slide">
-          {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+          {/* {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />} */}
+          {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
@@ -722,8 +727,9 @@ export default (props) => {
                 {/* <span className="ico-lottie">
                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
                 </span> */}
-                <img className="rank-arrow" src={RankNew} alt="실시간 랭킹" />
+                <img className="rank-arrow" src={RankNew} />
                 <div className="txt">실시간 랭킹</div>
+                <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
                 <button
@@ -771,8 +777,9 @@ export default (props) => {
             ref={StarSectionRef}>
             <div className="title-wrap">
               <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
-                <img className="rank-arrow" src={starNew} alt="나의스타" />
+                <img className="rank-arrow" src={starNew} />
                 <div className="txt">나의스타</div>
+                <img className="rank-arrow" src={RankArrow} />
               </div>
             </div>
             <div className="content-wrap my-star-list">
@@ -784,7 +791,7 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <img className="rank-arrow" src={liveNew} alt="실시간라이브" />
+                  <img src={liveNew} alt="실시간라이브" width={28} style={{marginRight: '4px'}} />
                   {/* <Lottie
                       options={{
                         loop: true,

@@ -128,7 +128,7 @@ export default () => {
       <div className="popupContent">
         <RoulettePanelBlock className="roulettePanelBlock" rotation={rotation}>
           <img
-            src={`${IMG_SERVER}/event/attend/201019/roullete_img2@2x.png`}
+            src={`${IMG_SERVER}/event/attend/201028/roullete_img2@2x.png`}
             ref={rouletteRef}
             className={`roulettePanel ${roatting ? 'start' : ''}`}
             alt="룰렛 돌림판"
