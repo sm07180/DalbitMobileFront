@@ -12,6 +12,8 @@ import AttendGiftWinner from './event_attend_new/content/roulette/gift_winner'
 import AttendMyApply from './event_attend_new/content/roulette/my_apply'
 import GuestGuide from './guest_guide'
 import ImageGuide from './image_guide'
+import PaymentMrnoing from './payment_morning'
+import PaymentLunch from './payment_lunch'
 
 export default () => {
   const params = useParams()
@@ -35,6 +37,10 @@ export default () => {
         return <GuestGuide />
       case 'image_guide':
         return <ImageGuide />
+      case 'payment_morning':
+        return <PaymentMrnoing />
+      case 'payment_lunch':
+        return <PaymentLunch />
 
       default:
         return <></>
