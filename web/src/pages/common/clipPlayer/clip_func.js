@@ -96,3 +96,25 @@ export const clipExit = (context) => {
 export const updateClipInfo = (data) => {
   Hybrid('ClipUpdateInfo', data)
 }
+
+export async function clipJoinApi(clipNum, context) {
+  const {result, data, message, code} = await Api.postClipPlay({
+    clipNo: clipNum
+  })
+  if (result === 'success') {
+    clipJoin(data, context)
+  } else {
+    if (code === '-99') {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          history.push('/login')
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+}
