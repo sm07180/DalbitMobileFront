@@ -2,11 +2,16 @@ import React, {useState, useRef} from 'react'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header.js'
 import {useHistory} from 'react-router-dom'
+import {Hybrid} from 'context/hybrid'
+import qs from 'query-string'
+
+const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
 
 export default () => {
   const [noticeView, setNoticeView] = useState(false)
   const noticeList = useRef()
   const history = useHistory()
+  const {webview} = qs.parse(location.search)
 
   const buttonToogle = () => {
     if (noticeView === false) {
@@ -26,7 +31,20 @@ export default () => {
   return (
     <Content>
       <div id="moringEvent">
-        <Header title="굿모닝 결제 이벤트" />
+        <Header type="noBack">
+          <h2 className="header-title">굿모닝 결제 이벤트</h2>
+          <button
+            className="btnClose"
+            onClick={() => {
+              if (webview === 'new') {
+                Hybrid('CloseLayerPopup')
+              } else {
+                history.goBack()
+              }
+            }}>
+            <img src={btnClose} alt="닫기" />
+          </button>
+        </Header>
         <div className="content">
           <img src="https://image.dalbitlive.com/event/morning_event/morningEvent.jpg" alt="굿모닝 결제 이벤트" />
           <button onClick={() => history.push(`/pay/store`)} className="payLink">
@@ -99,6 +117,10 @@ const Content = styled.div`
     }
     .conent_padding {
       padding-bottom: 5%;
+    }
+    .btnClose {
+      position: absolute;
+      right: 4px;
     }
   }
 `
