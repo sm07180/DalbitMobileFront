@@ -26,18 +26,15 @@ export default () => {
   }
 
   const fetchPlayList = async () => {
-    // const {result, data, message} = await Api.getPlayList({
-    //   params: {
-    //     sortType: 1,
-    //     records: 100
-    //   }
-    // })
-    // if (result === 'success') {
-    //   playListCtx.action.updateList(data.list)
-    //   setTotalList(data.paging.total)
-    // } else {
-    //   globalCtx.action.alert({msg: message})
-    // }
+    //한곡만 재생할때 (푸쉬알람, 알람페이지, 클립 청취목록)
+    //한곡만 조회할 수 없으므로 플레이 시 데이터를 필요한 것만 담아서 사용
+    const oneClipPlayList = JSON.parse(sessionStorage.getItem('oneClipPlayList'))
+    if (oneClipPlayList) {
+      setTotalList(1)
+      return playListCtx.action.updateList([{...oneClipPlayList}])
+    }
+
+    //clipPlayListInfo에 파라미터 값 받아서 여러곡 재생목록 조회해야 할 때
     const playListInfo = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
     console.log('playListInfo', playListInfo)
     if (playListInfo.hasOwnProperty('listCnt')) {
