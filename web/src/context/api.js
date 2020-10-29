@@ -2429,6 +2429,23 @@ export default class API {
     return await ajax({url: '/event/roulette/start', method: 'GET', params})
   }
 
+  static getEventRouletteWin = async (params) => {
+    return await ajax({url: '/event/roulette/win', method: 'GET', params})
+  }
+
+  static getEventRouletteApply = async (params) => {
+    return await ajax({url: '/event/roulette/apply', method: 'GET', params})
+  }
+
+  static postEventRoulettePhone = async (data) => {
+    return await ajax({url: '/event/roulette/phone', method: 'POST', data})
+  }
+
+  //이벤트용 ios 심사여부 조회
+  static getIosJudge = async (params) => {
+    return await ajax({url: '/ios/judge', method: 'GET', params})
+  }
+
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }

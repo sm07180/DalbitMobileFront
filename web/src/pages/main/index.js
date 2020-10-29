@@ -12,6 +12,7 @@ import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
 //import Lottie from 'react-lottie'
+import LottiePlayer from 'lottie-web'
 
 // components
 import Layout from 'pages/common/layout'
@@ -43,10 +44,12 @@ import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
 import CrownIcon from './static/ic_crown.png'
 import LiveIcon from './static/ic_newlive.png'
-//import CrownLottie from './static/crown_lottie.json'
-//import LiveLottie from './static/live_lottie.json'
+import CrownLottie from './static/crown_lottie.json'
+import LiveLottie from './static/live_lottie.json'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
-
+const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
+const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
+const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
 import 'styles/main.scss'
 
 let concatenating = false
@@ -286,7 +289,7 @@ export default (props) => {
   }
 
   const windowScrollEvent = () => {
-    const GnbHeight = 48
+    const GnbHeight = 88
     const sectionMarginTop = 30
     const LiveTabDefaultHeight = 48
 
@@ -329,6 +332,22 @@ export default (props) => {
       livePage <= totalLivePage
     ) {
       concatLiveList()
+    }
+  }
+
+  const playLottie = (lottieObj, elem) => {
+    if (lottieObj != null && elem != null) {
+      const lottieAnimation = LottiePlayer.loadAnimation({
+        container: elem,
+        renderer: 'svg',
+        loop: false,
+        autoplay: true,
+        animationData: lottieObj
+      })
+      lottieAnimation.addEventListener('complete', () => {
+        lottieAnimation.destroy()
+        playLottie(lottieObj, elem)
+      })
     }
   }
 
@@ -477,7 +496,7 @@ export default (props) => {
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
         if (heightDiff <= heightDiffFixed) {
           iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${-(heightDiff * ratio)}deg)`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
         }
       }
     },
@@ -508,9 +527,10 @@ export default (props) => {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
+          let tail_slice = head_slice.slice(0, 3)
           return Number(tail_slice)
         })()
+
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
@@ -573,7 +593,10 @@ export default (props) => {
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
-      <div className="refresh-wrap" ref={iconWrapRef}>
+      <div
+        className="refresh-wrap"
+        ref={iconWrapRef}
+        style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
         <div className="icon-wrap">
           <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
         </div>
@@ -583,7 +606,8 @@ export default (props) => {
         ref={MainRef}
         onTouchStart={mainTouchStart}
         onTouchMove={mainTouchMove}
-        onTouchEnd={mainTouchEnd}>
+        onTouchEnd={mainTouchEnd}
+        style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
         {customHeader['os'] === OS_TYPE['Desktop'] && (
           <div ref={SubMainRef} className="main-gnb">
             <div className="left-side">
@@ -685,7 +709,8 @@ export default (props) => {
         )}
 
         <div ref={RecommendRef} className="main-slide">
-          {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+          {/* {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />} */}
+          {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
@@ -699,9 +724,10 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                <span className="ico-lottie">
+                {/* <span className="ico-lottie">
                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
-                </span>
+                </span> */}
+                <img className="rank-arrow" src={RankNew} />
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -751,6 +777,7 @@ export default (props) => {
             ref={StarSectionRef}>
             <div className="title-wrap">
               <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
+                <img className="rank-arrow" src={starNew} />
                 <div className="txt">나의스타</div>
                 <img className="rank-arrow" src={RankArrow} />
               </div>
@@ -764,9 +791,8 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <span className="ico-lottie">
-                    <img src={LiveIcon} alt="실시간라이브" width={24} />
-                    {/* <Lottie
+                  <img src={liveNew} alt="실시간라이브" width={28} style={{marginRight: '4px'}} />
+                  {/* <Lottie
                       options={{
                         loop: true,
                         autoPlay: true,
@@ -774,7 +800,8 @@ export default (props) => {
                       }}
                       width={24}
                     /> */}
-                  </span>
+                  {/* <span className="ico-lottie">
+                  </span> */}
                   실시간 LIVE
                 </span>
 

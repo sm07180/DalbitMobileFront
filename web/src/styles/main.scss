@@ -94,10 +94,21 @@
 
 .refresh-wrap {
   display: block;
-  position: relative;
+  position: absolute;
   height: 48px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: rgba(127, 127, 127, 0.3);
-  transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  z-index: 12;
+  &.rank {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: transparent;
+    // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  }
   .icon-wrap {
     position: absolute;
     left: 50%;
@@ -307,6 +318,11 @@
           justify-content: space-between;
           padding: 8px 0 6px;
           border-bottom: 1px solid $lighterGray;
+
+          .rank-arrow {
+            width: 24px;
+            height: 24px;
+          }
           .btn {
             &__refresh {
               position: relative;
@@ -429,8 +445,9 @@
         }
       }
       .rank-arrow {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
       }
     }
 
@@ -918,23 +935,30 @@
       background-size: cover;
       background-position: center;
       background-color: $lighterGray;
+      .thumb-guest {
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+        width: 32px;
+        height: 32px;
+        border: 2px solid $white;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
     }
 
     .iconPc {
       display: flex;
       align-items: center;
-      position: absolute;
-      left: 48px;
-      bottom: 4px;
-      padding: 0 8px;
-
-      background: #f26d4a;
-      color: $white;
-      border-radius: 12px;
-      height: 14px;
-      font-size: 10px;
-      font-weight: normal;
-      font-style: normal;
+      width: 26px;
+      height: 16px;
+      margin-right: 4px;
+      text-indent: -9999px;
+      background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
+      background-size: contain;
     }
     .newSpecialIcon {
       z-index: 1;
@@ -1114,6 +1138,9 @@
           }
           &--like {
             background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+          }
+          &--message {
+            background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
           }
         }
       }

@@ -268,8 +268,8 @@ export default (props) => {
           {/* <i className="slideWrap__iconNew">
             <img src={newIcon} />
           </i> */}
-          {/* <p className="slideWrap__subject">{title}</p> */}
-          <p className="slideWrap__nicknName">{nickName}</p>
+          <p className="slideWrap__subject">{title}</p>
+          <p className="slideWrap__nickName">{nickName}</p>
         </div>
       )
     })
@@ -295,10 +295,10 @@ export default (props) => {
 
   const makeTop3List = () => {
     return Object.values(listTop3).map((item, idx) => {
-      if (item.length === 0) return null
+      if (item.length < 3) return <div key={idx}></div>
       let subjectMap = item[0].subjectType
       return (
-        <div className="slideWrap" key={idx} style={{display: item.length !== 3 ? 'none' : 'block'}}>
+        <div className="slideWrap" key={idx}>
           {clipType.map((item, idx) => {
             const {cdNm, value} = item
             if (subjectMap === value) {
@@ -568,6 +568,7 @@ export default (props) => {
             최신 클립
             {/* <button onClick={() => history.push(`/rank`)} /> */}
           </div>
+          <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
           {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
         </div>
 

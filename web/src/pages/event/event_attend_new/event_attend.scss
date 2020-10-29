@@ -3,55 +3,135 @@
 
 #attendEventPage {
   max-width: 460px;
+  min-width: 360px;
   margin: 0 auto;
 
   .commonTopWrap {
-    height: 200px;
-    background: $blue;
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    .btnBack {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 32px;
+      height: 32px;
+    }
   }
 
   .tabWrap {
     width: 100%;
     max-width: 460px;
+    padding-top: 2px;
+    background-color: #fb7964;
+    border-bottom: 2px solid #91313f;
+    overflow: hidden;
+    height: 40px;
+
+    &.roulette {
+      border-bottom: 2px solid #097b70;
+    }
 
     &.fixed {
       position: fixed;
       top: 0;
-      background: $white;
+      z-index: 2;
+      overflow: hidden;
     }
-    button {
-      height: 50px;
-      width: 50%;
 
-      &.active {
-        background: $red;
+    button {
+      height: 40px;
+      width: 50%;
+      color: #fff;
+      background-color: #d85a46;
+
+      &.btnAttend {
+        border-radius: 24px 12px 0 0;
+        background-color: #91313f;
+      }
+
+      &.btnRoul {
+        border-radius: 12px 24px 0 0;
+        background-color: #097b70;
+      }
+
+      img {
+        width: 89px;
       }
     }
   }
 
   .tabContent {
     &.isTop {
-      margin-top: 50px;
-    }
-    height: 800px;
-    background: $gray;
-  }
-
-  .attendTab {
-    .topBanner {
-      font-size: 16px;
-      @include font-sm {
-        font-size: 12px;
-      }
+      margin-top: 42px;
     }
   }
 
   .noticeWrap {
+    padding: 5% 5% 10% 5%;
+    color: $white;
+
+    &__title {
+      padding-bottom: 10px;
+      color: #fff8df;
+      font-size: 16px;
+      font-weight: 600;
+
+      &.active {
+        img {
+          margin-top: 6px;
+          transform: rotate(180deg);
+        }
+      }
+    }
+
     .noticeListBox {
       display: none;
       &.active {
         display: block;
       }
+
+      p {
+        display: inline-block;
+        margin-bottom: 3px;
+        padding: 2px 5px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: -0.3px;
+        border-radius: 4px;
+        background-color: #1ab1a2;
+      }
+
+      li {
+        position: relative;
+        padding: 4px 0 6px 10px;
+        font-size: 12px;
+        line-height: 18px;
+        letter-spacing: -0.33px;
+        text-align: left;
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 11px;
+          left: 0;
+          width: 1px;
+          height: 1px;
+          background-color: #fff;
+          border-radius: 50%;
+        }
+      }
+    }
+
+    &.attend {
+      background-color: #91313f;
+    }
+
+    &.roulette {
+      background-color: #097b70;
     }
   }
 
@@ -69,6 +149,267 @@
     align-items: center;
 
     .popupContent {
+      .roulettePanelBlock {
+        position: relative;
+
+        .roulettePin {
+          position: absolute;
+          left: 45%;
+          width: 10%;
+        }
+      }
+
+      &.gifticon {
+        width: 100%;
+        max-width: 328px;
+        padding: 16px;
+        border-radius: 20px;
+        background-color: #fff;
+        box-sizing: border-box;
+
+        h1 {
+          padding-bottom: 16px;
+          border-bottom: 1px solid #e0e0e0;
+          text-align: center;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .winInfo {
+          padding: 24px 0;
+
+          &__title {
+            font-size: 22px;
+            color: #632beb;
+            font-weight: 800;
+            padding-bottom: 8px;
+          }
+
+          &__image {
+            margin: 0 auto;
+            padding-bottom: 16px;
+
+            .con {
+              padding-top: 8px;
+            }
+          }
+
+          &__content {
+            // padding: 16px 0;
+            line-height: 22px;
+          }
+        }
+
+        .btnConfirm {
+          width: 100%;
+          height: 44px;
+          border-radius: 12px;
+          background-color: #632beb;
+          color: #fff;
+          font-size: 18px;
+          font-weight: 800;
+        }
+
+        .gifticonPhoneWrap {
+          .gifticonPhoneBox {
+            position: relative;
+            padding: 16px;
+            border-radius: 12px;
+            background-color: #eee;
+            text-align: left;
+
+            &__title {
+              padding-bottom: 8px;
+              letter-spacing: -0.4px;
+              font-weight: 800;
+            }
+
+            &__time {
+              position: absolute;
+              top: 56px;
+              right: 23px;
+              font-size: 14px;
+              letter-spacing: -0.35px;
+              text-align: right;
+              color: #ec455f;
+            }
+
+            input {
+              width: 100%;
+              height: 44px;
+              padding: 0 16px;
+              border-radius: 12px;
+              border: solid 1px #e0e0e0;
+              color: #757575;
+              font-size: 12px;
+              letter-spacing: -0.35px;
+              box-sizing: border-box;
+            }
+          }
+
+          .note {
+            padding: 16px 0;
+            font-size: 14px;
+            line-height: 20px;
+            text-align: center;
+            color: #424242;
+          }
+
+          button {
+            width: 100%;
+            height: 44px;
+            border-radius: 12px;
+            background-color: #632beb;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 800;
+
+            &:disabled {
+              background-color: #bdbdbd;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .win-list-box {
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #d2d2d2;
+      padding: 14px 0;
+      box-sizing: border-box;
+      padding: 12px 16px;
+      position: relative;
+
+      &__title {
+        font-size: 18px;
+        letter-spacing: -0.45px;
+        font-weight: 800;
+      }
+
+      &__btnBack {
+        display: block;
+        width: 36px;
+        position: absolute;
+        top: 12px;
+        left: 2%;
+      }
+    }
+
+    .content {
+      padding: 24px 3%;
+
+      .note {
+        padding: 16px 21px;
+        font-size: 13px;
+        line-height: 20px;
+        letter-spacing: -0.33px;
+        text-align: center;
+        color: #757575;
+      }
+
+      .gift {
+        font-weight: 800;
+      }
+
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          color: #632beb;
+        }
+
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+
+          &.icon {
+            text-align: left;
+            font-weight: 600;
+            padding-left: 10px;
+
+            img {
+              display: inline-block;
+              margin-top: -2px;
+              margin-right: 3px;
+            }
+          }
+
+          &.date {
+            color: #757575;
+
+            .iconNew {
+              display: inline-block;
+              width: 20px;
+              line-height: 13px;
+            }
+          }
+
+          &.nick {
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: #424242;
+
+            .thumb {
+              overflow: hidden;
+              width: 28px;
+              height: 28px;
+              margin-right: 5px;
+              border-radius: 50%;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            .phone {
+              text-align: center;
+            }
+
+            p {
+              width: calc(100% - 33px);
+              text-align: left;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.msg {
+  .attendAlertBox {
+    &__image {
+      text-align: center;
+      img {
+        max-width: 140px;
+      }
+    }
+
+    &__title {
+      padding-bottom: 16px;
+      font-size: 20px;
+      line-height: 28px;
+      font-weight: 800;
+
+      span {
+        color: #632beb;
+      }
     }
   }
 }

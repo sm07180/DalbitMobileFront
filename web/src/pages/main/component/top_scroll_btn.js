@@ -54,7 +54,7 @@ export default (props) => {
                 fbq('track', 'attend_event')
                 firebase.analytics().logEvent('attend_event')
               } catch (e) {}
-              history.push('/attend_event')
+              history.push('/event/attend_event')
             }}
           />
         )
@@ -71,7 +71,7 @@ export default (props) => {
                 fbq('track', 'attend_event')
                 firebase.analytics().logEvent('attend_event')
               } catch (e) {}
-              history.push('/attend_event')
+              history.push('/event/attend_event')
             }}>
             <Lottie
               options={{

@@ -211,11 +211,10 @@
       }
       &__thumb {
         position: relative;
-        margin-right: 12px;
         width: 72px;
+        margin-right: 12px;
         .newSpecialIcon {
           position: absolute;
-          text-indent: -99999px;
           left: 0px;
           top: 0px;
           width: 51px;
@@ -223,9 +222,21 @@
           text-indent: -99999px;
           background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
         }
+        > img {
+          border-radius: 12px;
+        }
         img {
           width: 100%;
-          border-radius: 12px;
+        }
+        .thumb-guest {
+          position: absolute;
+          right: -3px;
+          bottom: -3px;
+          width: 32px;
+          height: 32px;
+          border: 2px solid $white;
+          border-radius: 50%;
+          overflow: hidden;
         }
         &__playTime {
           display: inline-block;
@@ -235,7 +246,7 @@
           padding: 0 4px;
           height: 14px;
           line-height: 14px;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba($black, 0.6);
           color: $white;
           border-radius: 12px;
           height: 14px;
@@ -339,6 +350,16 @@
               opacity: 0.8;
             }
           }
+        }
+        .iconPc {
+          display: flex;
+          align-items: center;
+          height: 16px;
+          padding: 0 4px;
+          margin-right: 4px;
+          text-indent: -9999px;
+          background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
+          background-size: contain;
         }
       }
     }
