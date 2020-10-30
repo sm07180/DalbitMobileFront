@@ -7,11 +7,17 @@ import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
 export const clipJoin = (data, context, webview) => {
-  // console.log('1' + sessionStorage.getItem('listening'))
-
   let totalData = {playing: data}
 
   let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
+  let url = ''
+  Object.keys(playListData).forEach((key, idx) => {
+    if (idx === 0) {
+      url = url + `${key}=${playListData[key]}`
+    } else {
+      url = url + `&${key}=${playListData[key]}`
+    }
+  })
   let currentTyep = ''
   if (playListData) {
     if (playListData.hasOwnProperty('listCnt')) {
@@ -25,7 +31,8 @@ export const clipJoin = (data, context, webview) => {
     } else {
       currentTyep = 'list'
     }
-    totalData = {...totalData, playListData: {type: currentTyep, ...playListData}}
+
+    totalData = {...totalData, playListData: {type: currentTyep, param: encodeURIComponent(url)}}
   }
   console.log('totalData', totalData)
   // alert(JSON.stringify(totalData))
