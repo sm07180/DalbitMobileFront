@@ -66,7 +66,6 @@ export default (props) => {
       el: '.swiper-pagination'
     }
   }
-  console.log(swiperParamsBest)
   const swiperParamsCategory = {
     slidesPerView: 'auto'
   }
