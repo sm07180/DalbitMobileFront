@@ -49,11 +49,11 @@ export default (props) => {
     slidesPerView: 'auto',
     spaceBetween: 20
   }
-  const swiperParamsBest = {
+  let swiperParamsBest = {
     slidesPerView: 'auto',
     centeredSlides: true,
     spaceBetween: 15,
-    loop: true,
+    loop: false,
     pagination: {
       el: '.swiper-pagination'
     }
@@ -103,12 +103,18 @@ export default (props) => {
       setScrollY(0)
     }
   }
+  //swiperParams...
+  let filterArrayTop3 = Object.keys(listTop3)
+    .filter((item) => {
+      if (listTop3[item].length >= 3) {
+        return item
+      }
+    })
+    .map((item) => {
+      return listTop3[item]
+    })
+  swiperParamsBest.loop = filterArrayTop3.length > 1 ? true : false
   function shuffle(a) {
-    // console.log(popularList.filter((item,idx)=>{
-    //   return(
-
-    //   )
-    // }))
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
       console.log(j)
@@ -294,13 +300,12 @@ export default (props) => {
   }, [listTop3])
 
   const makeTop3List = () => {
-    return Object.values(listTop3).map((item, idx) => {
-      if (item.length < 3) return <div key={idx}></div>
+    return filterArrayTop3.map((item, idx) => {
       let subjectMap = item[0].subjectType
       return (
         <div className="slideWrap" key={idx}>
-          {clipType.map((item, idx) => {
-            const {cdNm, value} = item
+          {clipType.map((categoryItem, idx) => {
+            const {cdNm, value} = categoryItem
             if (subjectMap === value) {
               return (
                 <div key={idx}>
@@ -314,8 +319,8 @@ export default (props) => {
           })}
           <p className="slideWrap__subTitle">주제별 인기 클립 Top 3</p>
           <ul>
-            {item.map((item, idx) => {
-              const {bgImg, title, nickName, rank, clipNo} = item
+            {item.map((listItem, idx) => {
+              const {bgImg, title, nickName, rank, clipNo} = listItem
               return (
                 <li
                   className="categoryBestItem"
