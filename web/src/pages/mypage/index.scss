@@ -54,11 +54,11 @@
     .reportIcon {
       position: absolute;
       top: -46px;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       left: 20px;
       z-index: 3;
-      background: url('../mypage/component/block_w_l.svg');
+      background: url('../mypage/component/block_w_l.svg') no-repeat 0 0;
       cursor: pointer;
     }
     .profile-detail {
@@ -156,13 +156,14 @@
         }
         .liveIcon {
           position: absolute;
+          top: 10px;
           right: 20px;
-          top: 20px;
           z-index: 3;
           span {
             display: block;
             color: #f54640;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: bold;
           }
         }
         .title {
@@ -364,7 +365,7 @@
             position: relative;
             width: 54px;
             height: 51px;
-            background: url('./static/specialdj_on.png') no-repeat center;
+            background: url('https://image.dalbitlive.com/svg/ico_specialdj_on.png') no-repeat center;
             background-size: cover;
             &__count {
               position: absolute;
@@ -376,7 +377,7 @@
               letter-spacing: -0.28px;
             }
             &.prev {
-              background: url('./static/specialdj_off.png') no-repeat center;
+              background: url('https://image.dalbitlive.com/svg/ico_specialdj_off.png') no-repeat center;
             }
           }
         }
