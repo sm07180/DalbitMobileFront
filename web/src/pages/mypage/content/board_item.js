@@ -143,7 +143,9 @@ export default (props) => {
       {modifyState === false && (
         <>
           <div className="list-item__header">
-            {urlrStr === context.token.memNo || props.data.writerMemNo === context.token.memNo ? (
+            {urlrStr === context.token.memNo ||
+            props.data.writerMemNo === context.token.memNo ||
+            props.data.clipMemNo === context.token.memNo ? (
               <>
                 <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
                 <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
