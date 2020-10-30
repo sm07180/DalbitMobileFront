@@ -6,18 +6,16 @@ import {Context} from 'context'
 
 import imgPrize from './static/img_prize.svg'
 
-export default function event_winner() {
+export default function EventWinner() {
   const history = useHistory()
   const context = useContext(Context)
-  const eventIdx = history.location.pathname.split('/')[3]
-  const memNo = context.token.memNo
-
   const [resultPrize, setResultPrize] = useState([])
+
   const [resultBoolean, setResultBoolean] = useState(false)
   const [winnerRankList, setWinnerRankList] = useState([])
-  const [winnerList, setWinnerList] = useState([])
-  const [authState, setAuthState] = useState(true)
-  const [phone, setPhone] = useState('')
+
+  const eventIdx = history.location.pathname.split('/')[3]
+  const memNo = context.token.memNo
   const eventTitle = history.location.state.title
   const announcementDate = history.location.state.announcementDate
 
@@ -52,7 +50,7 @@ export default function event_winner() {
 
   function fnReceiveDal(receiveDal) {
     context.action.alert({
-      msg: utility.addComma(receiveDal) + ' 달 지급이 완료되었습니다.',
+      msg: '지급이 완료되었습니다. <br/>마이페이지 > 내 지갑에서 확인하실 수 있습니다.',
       callback: async () => {
         window.history.back()
       }
@@ -148,21 +146,7 @@ export default function event_winner() {
       }
     })
     if (result === 'success') {
-      console.log(data)
       setWinnerRankList(data.rankList)
-      setWinnerList(data.resultList)
-      let preRank = 0
-      const winnerList = data.resultList.map((data, idx) => {
-        if (preRank !== data.prizeRank) {
-          preRank = data.prizeRank
-          return data
-        }
-      })
-      setWinnerRankList(
-        winnerList.filter((data) => {
-          return data !== undefined
-        })
-      )
     } else {
       context.action.alert({
         msg: message,
@@ -172,10 +156,6 @@ export default function event_winner() {
       })
     }
   }
-
-  useEffect(() => {
-    console.log('winnerRankList', winnerRankList)
-  }, [winnerRankList])
 
   useEffect(() => {
     getWinner()
@@ -188,7 +168,6 @@ export default function event_winner() {
   }, [context.token])
 
   return (
-    <React.Fragment>
       <div id="winnerList">
         <div className="resultWrap">
           <div className="resultBox">
@@ -209,8 +188,8 @@ export default function event_winner() {
                 if (!item) return null
                 const {certificationYn, minorYn, prizeIdx, prizeName, prizeSlct, prizeRank, receiveWay, state, receiveDal} = item
                 return (
-                  <div className="resultState">
-                    <div className="winResult" key={`resultPrize-${idx}`}>
+                  <div className="resultState" key={`resultPrize-${idx}`}>
+                    <div className="winResult">
                       <>
                         <img src={imgPrize} />
                         <div className="resultPrizeName">{prizeName}</div>
@@ -283,16 +262,14 @@ export default function event_winner() {
             {winnerRankList.map((rank, rankIdx) => {
               return (
                 <li key={`winner-${rankIdx}`}>
-                  <div className="winnerTextArea">{rank.prizeName}</div>
+                  <div className="winnerTextArea">{rank.rankName}</div>
                   <ul className="winnerUser-list">
-                    {winnerList.map((item, idx) => {
-                      if (rank.prizeRank == item.prizeRank) {
+                    {rank.winnerList.map((item, idx) => {
                         return (
                           <li className="winnerUser-item" key={`user-${idx}`}>
-                            <span className="winnerNick">{item.nickName}</span>
+                            {item.nickName}
                           </li>
                         )
-                      }
                     })}
                   </ul>
                 </li>
@@ -301,6 +278,5 @@ export default function event_winner() {
           </ul>
         </div>
       </div>
-    </React.Fragment>
   )
 }

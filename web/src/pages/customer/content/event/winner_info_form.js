@@ -6,7 +6,6 @@ import {Context} from 'context'
 
 const FormDataReducer = (state, action) => {
     switch (action.type) {
-
         case 'eventIdx':
             return {
                 ...state,
@@ -78,14 +77,15 @@ const initData = {
     , check: false
 }
 
-export default function winner_info_form() {
+export default function WinnerInfoForm() {
     const [formData, formDispatch] = useReducer(FormDataReducer, initData);
     // initData를 사용해서 FormDataReducer를 이용해, formDispatch 해서 formData로 셋팅한다
     const context = useContext(Context)
 
+    console.log(formData)
     const submitWinnerForm = () => {
         async function fetchData() {
-            const {result, data, message} = await Api.winnerInfoAddEdit({
+            const {result, message} = await Api.winnerInfoAddEdit({
                 data: {
                     eventIdx: formData.eventIdx
                     , prizeIdx: formData.prizeIdx
@@ -97,8 +97,8 @@ export default function winner_info_form() {
                     , winner_address_2: formData.winner_address_2
                     , winner_add_file_1: formData.files[0].path
                     , winner_add_file_1_name: formData.files[0].name
-                    , winner_add_file_2: formData.files[1].path !== undefined ? formData.files[1].path : ''
-                    , winner_add_file_2_name: formData.files[1].name !== undefined ? formData.files[1].name : ''
+                    , winner_add_file_2: formData.files[1].path !== false ? formData.files[1].path : ''
+                    , winner_add_file_2_name: formData.files[1].name !== false ? formData.files[1].name : ''
                 }
             })
             if(result === 'success') {
@@ -123,7 +123,6 @@ export default function winner_info_form() {
     }
 
     const checkInspection = (minorYn) => {
-        console.log(minorYn)
         const result = winnerInspection(minorYn, formData)
         if(result['status']) {
             submitWinnerForm()
@@ -135,6 +134,6 @@ export default function winner_info_form() {
     }
 
     return (
-        <Winner_info state={formData} formDispatch={formDispatch} winnerInspection={checkInspection}/>
+        <Winner_info state={formData} formDispatch={formDispatch} WinnerInspection ={checkInspection}/>
     )
 }

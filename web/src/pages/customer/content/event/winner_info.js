@@ -1,25 +1,28 @@
-import React, {useContext, useState, useEffect, useReducer} from 'react'
-import Api from 'context/api'
+import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
+import Api from 'context/api'
+import Utility, {addComma} from 'components/lib/utility'
 import {Context} from 'context'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
-import Utility, {addComma} from 'components/lib/utility'
 
-export default function Winner_info({state, formDispatch, winnerInspection}) {
+export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
   const history = useHistory()
+  const context = useContext(Context)
+  const [winnerCertifiInfo, setWinnerCertifiInfo] = useState({})
+  const [emailFocusState, setEmailFocusState] = useState(false)
+  const [addrFocusState, setAddrFocusState] = useState(false)
+
   const eventIdx = history.location.state.eventIdx
   const prizeIdx = history.location.state.prizeIdx
   const minorYn = history.location.state.minorYn
   const state_ = history.location.state.state_
-  const context = useContext(Context)
   const memNo = context.token.memNo
-  const [winnerInfoObj, setWinnerInfoObj] = useState(false)
-  const [winnerCertifiInfo, setWinnerCertifiInfo] = useState({})
 
   const closeDaumPostCode = () => {
     const element_layer = document.getElementById('layer')
     element_layer.style.display = 'none'
   }
+
   const searchAddr = (e) => {
     const element_layer = document.getElementById('layer')
 
@@ -65,7 +68,7 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
 
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop().toLowerCase()
-    //
+
     const extValidator = (ext) => {
       const list = ['jpg', 'jpeg', 'png', 'PNG']
       return list.includes(ext)
@@ -106,6 +109,19 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
     }
   }
 
+  const emailFocus = (e) => {
+    setEmailFocusState(true)
+  }
+  const emailFocusOut = (e) => {
+    setEmailFocusState(false)
+  }
+  const addrFocus = (e) => {
+    setAddrFocusState(true)
+  }
+  const addrFocusOut = (e) => {
+    setAddrFocusState(false)
+  }
+
   async function winnerInfoSelectFn() {
     const {result, data, message} = await Api.winnerInfoSelect({
       data: {
@@ -116,7 +132,7 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
     })
     if (result === 'success') {
       const files = [
-        {name: data['winner_add_file_1_name'], path: data['winner_add_file_1']},
+        data['winner_add_file_1'] !== '' ? {name: data['winner_add_file_1_name'], path: data['winner_add_file_1']} : false,
         data['winner_add_file_2'] !== '' ? {name: data['winner_add_file_2_name'], path: data['winner_add_file_2']} : false
       ]
       const valueAble = {
@@ -163,11 +179,13 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
   useEffect(() => {
     if (!context.token.isLogin) history.push('/')
   }, [context.token])
+
   useEffect(() => {
-    winnerInfoSelectFn()
     winnerInfoFormatFn()
+    winnerInfoSelectFn()
     window.scrollTo(0, 0)
   }, [])
+
   return (
     <div id="winnerInfo">
       <div id="layer">
@@ -176,120 +194,92 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
         </button>
       </div>
 
-      <div className="inputForm">
-        <div className="inputForm__box default">
-          <span className="formText">이름(실명)</span>
-          <span className="infoText">{winnerCertifiInfo.mem_name}</span>
-        </div>
-        <div className="inputForm__box input">
-          <span className="formText">휴대폰 번호</span>
-          <span className="infoText">
-            <input type="text" placeholder="번호를 입력하세요" />
-          </span>
-        </div>
-        <div className="inputForm__box input focus">
-          <span className="formText">휴대폰 번호</span>
-          <span className="infoText">
-            <input type="text" placeholder="번호를 입력하세요" />
-          </span>
-        </div>
-        <div className="inputForm__box default">
-          <span className="formText">휴대폰 번호</span>
-          <span className="infoText">
-            <input type="text" value={winnerCertifiInfo.mem_phone} readOnly />
-          </span>
-        </div>
-
-        <div className="inputForm__box">
-          <div className="formText">우편번호</div>
-          <div className="textButton">
-            <label className="textLabel" onClick={(e) => searchAddr(e)}>
-              <span>
-                <input type="text" disabled={true} value={state.winner_post_code} />
-              </span>
-              <button className="searchBox">주소검색</button>
-            </label>
-          </div>
-        </div>
-        <div className="inputForm__box">
-          <div className="formText">신분증 사본</div>
-          <div className="textButton">
-            <label htmlFor="id-upload" className="textLabel">
-              <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요.'}</span>
-              <button className="searchBox">찾아보기</button>
-              <input id="id-upload" type="file" onChange={(e) => uploadSingleFile(e, 0)} />
-            </label>
-          </div>
-        </div>
-      </div>
-
-      {/* tb_member_certification에서 불러온 정보 */}
-      <div className="inputForm__box">
+      <div className="inputForm__box default">
         <span className="formText">이름(실명)</span>
         <span className="infoText">{winnerCertifiInfo.mem_name}</span>
       </div>
-      <div className="inputForm__box">
+      <div className="inputForm__box default">
         <span className="formText">휴대폰 번호</span>
         <span className="infoText">{winnerCertifiInfo.mem_phone}</span>
       </div>
-      {/*=======================================*/}
 
-      <div className="focusBox">
-        <label className="formText" htmlFor="emailInput">
-          이메일
-        </label>
+      <div className={`inputForm__box input ${emailFocusState? ' focus' : ''}`}>
+        <label className="formText" htmlFor="emailInput">이메일</label>
         <input
-          type="email"
-          className="inputFocus"
-          id="emailInput"
-          onChange={(e) => formDispatch({type: 'winner_email', val: e.target.value})}
-          value={state.winner_email}
-          placeholder="이메일 주소를 입력해주세요."
-        />
+            type="email"
+            className="infoText"
+            id="emailInput"
+            onFocus={(e) => emailFocus(e)}
+            onBlur ={(e) => emailFocusOut(e)}
+            onChange={(e) => formDispatch({type: 'winner_email', val: e.target.value})}
+            value={state.winner_email}
+            placeholder="이메일 주소를 입력해주세요."/>
       </div>
 
-      <div className="infoBox">
-        <div className="formText">주소</div>
-        <input type="text" disabled={true} value={state.winner_address_1} placeholder="주소 검색 시 자동 입력됩니다." />
+      <div className="inputForm__box default">
+        <div className="formText">우편번호</div>
+          <label className="textLabel" onClick={(e) => searchAddr(e)}>
+            <span className="textSpan">
+              <input
+                      type="text"
+                      disabled={true}
+                      value={state.winner_post_code}
+                      placeholder="주소 검색을 해주세요."/>
+            </span>
+            <span className="searchBox">주소검색</span>
+          </label>
       </div>
-      <div className="focusBox">
-        <label className="formText" htmlFor="addressInput">
-          상세 주소
-        </label>
+
+      <div className="inputForm__box default">
+        <span className="formText">주소</span>
         <input
-          type="text"
-          className="inputFocus"
-          id="addressInput"
-          value={state.winner_address_2}
-          onChange={(e) => formDispatch({type: 'winner_address_2', val: e.target.value})}
-          placeholder="상세 주소를 입력해주세요."
-        />
+            type="text"
+            className="infoText"
+            disabled={true}
+            value={state.winner_address_1}
+            placeholder="주소 검색 시 자동 입력됩니다." />
       </div>
-      <div className="inputForm__box">
+
+      <div className={`inputForm__box input ${addrFocusState? ' focus' : ''}`}>
+        <label className="formText" htmlFor="addressInput">상세 주소</label>
+        <input
+            type="text"
+            className="infoText"
+            id="addressInput"
+            value={state.winner_address_2}
+            onFocus={(e) => addrFocus(e)}
+            onBlur={(e) => addrFocusOut(e)}
+            onChange={(e) => formDispatch({type: 'winner_address_2', val: e.target.value})}
+            placeholder="상세 주소를 입력해주세요."/>
+      </div>
+
+      <div className="inputForm__box default">
         <div className="formText">신분증 사본</div>
-        <div className="textButton">
           <label htmlFor="id-upload" className="textLabel">
             <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요.'}</span>
             <span className="searchBox">찾아보기</span>
           </label>
           <input id="id-upload" type="file" onChange={(e) => uploadSingleFile(e, 0)} />
-        </div>
       </div>
+
       <div className="descArea">※ 주민등록증, 운전면허증, 여권, 주민등록등본, 가족관계증명서 등</div>
-      <div className="inputForm__box">
-        <div className="formText">가족관계증명서</div>
-        <div className="textButton">
+
+      {minorYn === 1 &&
+      <>
+        <div className="inputForm__box default">
+          <div className="formText">가족관계증명서</div>
           <label htmlFor="certi-upload" className="textLabel">
             <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요.'}</span>
             <span className="searchBox">찾아보기</span>
           </label>
-          <input id="certi-upload" type="file" onChange={(e) => uploadSingleFile(e, 1)} />
+          <input id="certi-upload" type="file" onChange={(e) => uploadSingleFile(e, 1)}/>
         </div>
-      </div>
-      <div className="descArea">※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.</div>
+        <div className="descArea">※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.</div>
+      </>
+      }
 
       <div className="msgBox">
-        추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.
+        추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 <br/> SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.
       </div>
 
       <div className="inputForm__box prize">
@@ -310,16 +300,18 @@ export default function Winner_info({state, formDispatch, winnerInspection}) {
       </div>
 
       <div className="checkArea">
+        <div> {/* div 태그 없으면 체크박스 모양이 망가져요 */}
         <DalbitCheckbox status={state.check} callback={() => formDispatch({type: 'check', val: !state.check})} />
+        </div>
         <div className="checkText">
-          <strong></strong>개인정보 수집 및 이용 동의
+          <strong>개인정보 수집 및 이용 동의</strong>
           <p className="checkDescArea">
             회사는 이벤트 경품지급의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다.
           </p>
         </div>
       </div>
 
-      <div className="saveArea" onClick={() => winnerInspection({minorYn})}>
+      <div onClick={() => WinnerInspection({minorYn})}>
         {state.check === false && state_ === 0 && <button className="saveButton">저장하기</button>}
         {state.check === true && state_ === 0 && <button className="saveButton-active">저장하기</button>}
         {state.check === false && state_ === 1 && <button className="saveButton">수정하기</button>}

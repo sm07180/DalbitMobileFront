@@ -4,7 +4,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import NoResult from 'components/ui/new_noResult'
 
-export default function eventList() {
+export default function EventList() {
   const history = useHistory()
   const context = useContext(Context)
   const [eventList, setEventList] = useState([])
@@ -55,11 +55,8 @@ export default function eventList() {
   useEffect(() => {
     const fetchData = async () => {
       const {result, data, message} = await Api.getEventList({})
-      // console.log(data);
-      // const 변수 범위 잘 보고 사용
       if (result === 'success') {
         setEventList(data)
-        // setEventList사용해서 eventList의 데이터를 셋팅해야함
       } else {
         context.action.alert({
           msg: message
@@ -67,7 +64,6 @@ export default function eventList() {
       }
     }
     fetchData()
-    // 위에서 설정한 fetchData 선언하면서 data fetch해줌
   }, [])
 
   useEffect(() => {
