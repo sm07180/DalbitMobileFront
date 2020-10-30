@@ -252,7 +252,7 @@ export default (props) => {
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
     const {text, icon, startColor, endColor} = item
-    console.log(item)
+
     //-----------------------------------------------------------------------
     return (
       <div className="badgeSlide" key={index}>
@@ -302,6 +302,34 @@ export default (props) => {
       } else {
         history.goBack()
       }
+    }
+  }
+  // check special Dj
+  const checkSpecialDj = () => {
+    if (profile.wasSpecial === true && profile.isSpecial === false) {
+      return (
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+          <div className="specialIcon prev" />
+        </div>
+      )
+    } else if (profile.isSpecial === true) {
+      return (
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+          <div className="specialIcon">
+            {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
+              <em className="specialIcon__count">{profile.specialDjCnt}</em>
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
+      )
+    } else if (profile.isNew === true) {
+      return <span className="newIcon">신입 DJ</span>
+    } else if (profile.isNewListener === true) {
+      return <span className="newIcon">신입청취자</span>
+    } else {
+      return <span className="blind">no badge</span>
     }
   }
   //function모바일 레어어 실행
@@ -475,16 +503,8 @@ export default (props) => {
             </span>
           </strong>
         </div>
-        {/* {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>} */}
-        {profile.isSpecial === true ? (
-          <span className="specialIcon">스페셜 DJ</span>
-        ) : profile.isNew === true ? (
-          <span className="newIcon">신입 DJ</span>
-        ) : profile.isNewListener === true ? (
-          <span className="newIcon">신입청취자</span>
-        ) : (
-          <span className="blind">no badge</span>
-        )}
+        {/* 스디 check*/}
+        {checkSpecialDj()}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
         {((profile.fanBadgeList && profile.fanBadgeList.length > 0) ||
@@ -493,41 +513,64 @@ export default (props) => {
             <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
           </div>
         )}
-        {profile.fanRank.length > 0 && <div className="fanListWrap">{createFanList()}</div>}
-
-        {profile.likeTotCnt > 0 && (
+        {profile.fanRank.length > 0 ? (
+          <div className="fanListWrap">{createFanList()}</div>
+        ) : (
           <div className="fanListWrap">
-            {myProfileNo === profile.memNo ? (
-              <button
-                className="btn__fanRank cupid"
-                onClick={() => {
-                  {
-                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                    setRankTabType('tabGood')
-                  }
-                }}>
-                왕큐피트
-              </button>
-            ) : (
-              <button
-                className="btn__fanRank cupid"
-                onClick={() => {
-                  profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
-                  setRankTabType('tabGood')
-                }}>
-                왕큐피트
-              </button>
-            )}
-
-            <p
-              className="fanListWrap__cupidNick"
-              onClick={() => {
-                history.push(`/mypage/${profile.cupidMemNo}`)
-              }}>
-              {profile.cupidNickNm}
-            </p>
+            <div className="fanRankList">
+              <button className="btn__fanRank">팬랭킹</button>
+              <div className={`fanItem rank1 defalut`}></div>
+              <div className={`fanItem rank2 defalut`}></div>
+              <div className={`fanItem rank3 defalut`}></div>
+            </div>
           </div>
         )}
+        <div className="fanListWrap cupidWrap">
+          {myProfileNo === profile.memNo ? (
+            <button
+              className="btn__fanRank cupid"
+              onClick={() => {
+                {
+                  profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                  setRankTabType('tabGood')
+                }
+              }}>
+              왕큐피트
+            </button>
+          ) : (
+            <button
+              className="btn__fanRank cupid"
+              onClick={() => {
+                profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
+                setRankTabType('tabGood')
+              }}>
+              왕큐피트
+            </button>
+          )}
+          {profile.likeTotCnt > 0 ? (
+            <>
+              <img
+                src={profile.cupidProfImg.thumb62x62}
+                className="fanListWrap__cupidImg"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}
+              />
+              <p
+                className="fanListWrap__cupidNick"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}>
+                {profile.cupidNickNm}
+              </p>
+            </>
+          ) : (
+            <div className="fanRankList">
+              <div className={`fanItem defalut`}></div>
+              <span className="defalutTxt">(좋아요 보낸 회원없음)</span>
+            </div>
+          )}
+        </div>
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
@@ -574,6 +617,7 @@ export default (props) => {
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
+      {context.closeSpeical === true && <ProfileFanList {...props} reportShow={reportShow} name="스디" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
       {context.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹" />}
       {context.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹" />}

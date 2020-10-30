@@ -51,6 +51,7 @@ const GlobalProvider = (props) => {
   const [closeStarCnt, setCloseStarCnt] = useState(false)
   const [closeGoodCnt, setCloseGoodCnt] = useState(false)
   const [closePresent, setClosePresent] = useState(false)
+  const [closeSpeical, setCloseSpecial] = useState(false)
   const [closeRank, setCloseRank] = useState(false)
   const [closeFanRank, setCloseFanRank] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
@@ -301,6 +302,9 @@ const GlobalProvider = (props) => {
     updateClosePresent: (bool) => {
       setClosePresent(bool)
     },
+    updateCloseSpecial: (bool) => {
+      setCloseSpecial(bool)
+    },
     updateCloseRank: (bool) => {
       setCloseRank(bool)
     },
@@ -511,7 +515,8 @@ const GlobalProvider = (props) => {
     backState,
     backFunction,
     roomType,
-    selfAuth
+    selfAuth,
+    closeSpeical
   }
   return <Provider value={value}>{props.children}</Provider>
 }
