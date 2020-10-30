@@ -512,11 +512,13 @@ export default (props) => {
             current_angle += 10
             refreshIconNode.style.transform = `rotate(${current_angle}deg)`
           }, 17)
-
           fetchDataListLatest()
-          fetchDataListPopular()
           fetchDataListTop3()
-          if (context.token.isLogin) fetchMyData()
+
+          refreshCategory('popular')
+          if (context.token.isLogin) {
+            fetchMyData()
+          }
           context.action.updatClipRefresh(!context.clipRefresh)
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
