@@ -51,7 +51,8 @@ export default (props) => {
       return history.push('/login')
     }
     if (category === 'alarm') {
-      context.action.updateNews(false)
+      //context.action.updateNews(false)
+      setNewAlarm(false)
     }
     if (category === 'store') {
       if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
@@ -102,14 +103,15 @@ export default (props) => {
     if (!newAlarm) {
       alarmCheck()
       alarmCheckIntervalId = setInterval(alarmCheck, 5000)
-    }
-
-    return () => {
+    } else {
       if (alarmCheckIntervalId) {
         clearInterval(alarmCheckIntervalId)
       }
     }
-  }, [])
+
+    return () => {
+    }
+  }, [newAlarm])
 
   return (
     <>
