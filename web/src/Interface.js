@@ -39,7 +39,7 @@ export default () => {
         nickName: data.nickName,
         subjectType: data.subjectType,
         isNew: data.isNew,
-        filePlayTime: data.filePlayTime,
+        filePlayTime: data.filePlay,
         isSpecial: data.isSpecial,
         gender: data.gender,
         replyCnt: data.replyCnt,
