@@ -6,6 +6,7 @@
 
 //---------------------------------------------------------------------
 import {isHybrid, Hybrid} from 'context/hybrid'
+import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
 
 export default class Utility {
   /**
@@ -246,16 +247,26 @@ export default class Utility {
    * @param event
    * @returns {boolean}
    */
-  static contentClickEvent = (event) => {
-    if (event.target.closest('A') && isHybrid()) {
+  static contentClickEvent = (event, context) => {
+    if (event.target.closest('A')) {
       const link = event.target.closest('A')
-      if (link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))) {
-        window.location.href = link.href
-      } else {
-        Hybrid('openUrl', link.href)
+      const clipUrl = /\/clip\/[0-9]*$/
+      if(isHybrid()){
+        if (clipUrl.test(link.href)) {
+          const clip_no = link.href.substring(link.href.lastIndexOf("/") + 1)
+          clipJoinApi(clip_no, context)
+        } else if (link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))) {
+          window.location.href = link.href
+        } else {
+          Hybrid('openUrl', link.href)
+        }
+        event.preventDefault()
+        return false
+      }else if (clipUrl.test(link.href)) {
+        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+        event.preventDefault()
+        return false
       }
-      event.preventDefault()
-      return false
     }
   }
 

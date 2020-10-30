@@ -37,6 +37,7 @@ export default (props) => {
   const [showAdmin, setShowAdmin] = useState(false)
   const [mydal, setMydal] = useState('0')
   const [popupData, setPopupData] = useState([])
+  const [topbannerData, setTopbannerData] = useState([])
 
   //---------------------------------------------------------------------
   const fetchAdmin = async () => {
@@ -73,15 +74,21 @@ export default (props) => {
     const {result, data, message} = res
     if (result === 'success') {
       if (data) {
-        setPopupData(
-          data.filter((v) => {
-            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
-              return v
-            } else {
-              return false
-            }
-          })
-        )
+        if (arg === 12) {
+          // 딤 팝업
+          setPopupData(
+            data.filter((v) => {
+              if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+                return v
+              } else {
+                return false
+              }
+            })
+          )
+        } else {
+          // 상단 배너
+          setTopbannerData(data)
+        }
       }
     } else {
       context.action.alert({
@@ -173,36 +180,28 @@ export default (props) => {
     }
   }
 
-  const timeBanner = () => {
-    const day = new Date()
-    const getTime = day.getHours()
-    if (getTime === 9) {
-      return <img src="https://image.dalbitlive.com/event/morning_event/morning_banner.png" alt="굿모닝 결제 이벤트" />
-    }
-    if (getTime === 10) {
-      return <img src="https://image.dalbitlive.com/event/morning_event/morning_banner.png" alt="굿모닝 결제 이벤트" />
-    }
-
-    if (getTime === 12) {
-      return <img src="https://image.dalbitlive.com/event/lunch_event/lunch_banner.png" alt="런치 결제 이벤트" />
-    }
-    if (getTime === 13) {
-      return <img src="https://image.dalbitlive.com/event/lunch_event/lunch_banner.png" alt="런치 결제 이벤트" />
-    }
-  }
-
   //useEffect
   useEffect(() => {
     fetchAdmin()
     getStoreList()
-    fetchMainPopupData('12')
+    fetchMainPopupData(12)
+    fetchMainPopupData(4)
   }, [])
 
   return (
     <>
       <Header title="달 충전" />
       <Content>
-        <div className="store_banner">{timeBanner()}</div>
+        <div className="store_banner">
+          {topbannerData &&
+            topbannerData.map((v, idx) => {
+              return (
+                <span key={`topbn-${idx}`}>
+                  <img src={v.bannerUrl} alt="" />
+                </span>
+              )
+            })}
+        </div>
         <p className="mydal">
           보유 달 <span>{mydal.toLocaleString()}</span>
         </p>
@@ -219,10 +218,8 @@ const Content = styled.section`
   background: #eeeeee;
   padding-bottom: 16px;
   .store_banner {
-    max-width: 540px;
-    margin: auto;
+    padding-top: 16px;
     img {
-      display: block;
       width: 100%;
     }
   }

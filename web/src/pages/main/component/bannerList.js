@@ -6,27 +6,23 @@ import Swiper from 'react-id-swiper'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import {OS_TYPE} from '../../../context/config'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid} from 'context/hybrid'
+import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
   const history = useHistory()
   const [bannerView, setBannerView] = useState(false)
-  const customHeader = JSON.parse(Api.customHeader)
 
   const [list, setList] = useState(false)
 
   const goEvent = (linkUrl, linkType) => {
     if (linkType === 'popup') {
-      if (customHeader['os'] === OS_TYPE['Android']) {
-        try {
-          //Hybrid('openUrl', {"url": linkUrl})
-          window.android.openUrl(JSON.stringify({url: linkUrl}))
-        } catch (e) {
-          history.push(linkUrl)
+      if(isHybrid()){
+        if (linkUrl.startsWith('/')) {
+          linkUrl = 'https://' + location.host + linkUrl
         }
-      } else if (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 68 || customHeader['appBuild'] > 68)) {
+        linkUrl += '?webview=new'
         Hybrid('openUrl', linkUrl)
       } else {
         //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
@@ -36,7 +32,17 @@ export default React.forwardRef((props, ref) => {
       if (linkUrl.startsWith('http://') || linkUrl.startsWith('https://')) {
         location.href = linkUrl
       } else {
-        history.push(linkUrl)
+        const clipUrl = /\/clip\/[0-9]*$/
+        if(clipUrl.test(linkUrl)){
+          if(isHybrid()){
+            const clip_no = linkUrl.substring(linkUrl.lastIndexOf("/") + 1)
+            clipJoinApi(clip_no, globalCtx)
+          }else{
+            globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+          }
+        }else{
+          history.push(linkUrl)
+        }
       }
     }
   }

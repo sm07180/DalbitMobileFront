@@ -48,6 +48,18 @@ export default () => {
     }
   }
 
+  async function pushClick(pushIdx) {
+    const res = await Api.push_click({
+      data: {
+        pushIdx: pushIdx
+      }
+    })
+    if (res.result === 'success') {
+      // console.log('성공')
+    } else if (res.result === 'fail') {
+    }
+  }
+
   const [authState, setAuthState] = useState(false)
 
   //auth 상태체크
@@ -549,18 +561,6 @@ export default () => {
           alert(e)
         }
         return false
-      }
-    }
-
-    async function pushClick(pushIdx) {
-      const res = await Api.push_click({
-        data: {
-          pushIdx: pushIdx
-        }
-      })
-      if (res.result === 'success') {
-        // console.log('성공')
-      } else if (res.result === 'fail') {
       }
     }
 

@@ -1,12 +1,23 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
+import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
+import {Context} from 'context'
+import {OS_TYPE} from 'context/config.js'
+import qs from 'query-string'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header.js'
-import {useHistory} from 'react-router-dom'
+
+const btnClose = 'https://image.dalbitlive.com/svg/ic_close_black.svg'
 
 export default () => {
-  const [noticeView, setNoticeView] = useState(false)
   const noticeList = useRef()
   const history = useHistory()
+  const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
+  const {webview} = qs.parse(location.search)
+
+  const [noticeView, setNoticeView] = useState(false)
 
   const buttonToogle = () => {
     if (noticeView === false) {
@@ -24,12 +35,35 @@ export default () => {
   return (
     <Content>
       <div id="moringEvent">
-        <Header title="런치 결제 이벤트" />
+        <Header type="noBack">
+          <h2 className="header-title">런치 결제 이벤트</h2>
+          <button
+            className="btnClose"
+            onClick={() => {
+              if (webview === 'new') {
+                Hybrid('CloseLayerPopup')
+              } else {
+                history.goBack()
+              }
+            }}>
+            <img src={btnClose} alt="닫기" />
+          </button>
+        </Header>
         <div className="content">
           <img src="https://image.dalbitlive.com/event/lunch_event/lunchEvnet.jpg" alt="런치 결제 이벤트" />
-          <button onClick={() => history.push(`/pay/store`)} className="payLink">
-            충전하러 가기
-          </button>
+          {customHeader['os'] === OS_TYPE['IOS'] ? (
+            <button
+              className="payLink"
+              onClick={() => {
+                webkit.messageHandlers.openInApp.postMessage('')
+              }}>
+              충전
+            </button>
+          ) : (
+            <button onClick={() => history.push(`/pay/store`)} className="payLink">
+              충전하러 가기
+            </button>
+          )}
 
           <button onClick={() => buttonToogle()} className="contentOpen">
             컨텐츠 열고 닫기
@@ -97,6 +131,10 @@ const Content = styled.div`
     }
     .conent_padding {
       padding-bottom: 5%;
+    }
+    .btnClose {
+      position: absolute;
+      right: 4px;
     }
   }
 `
