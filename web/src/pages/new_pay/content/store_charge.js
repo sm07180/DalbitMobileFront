@@ -173,6 +173,24 @@ export default (props) => {
     }
   }
 
+  const timeBanner = () => {
+    const day = new Date()
+    const getTime = day.getHours()
+    if (getTime === 9) {
+      return <img src="https://image.dalbitlive.com/event/morning_event/morning_banner.png" alt="굿모닝 결제 이벤트" />
+    }
+    if (getTime === 10) {
+      return <img src="https://image.dalbitlive.com/event/morning_event/morning_banner.png" alt="굿모닝 결제 이벤트" />
+    }
+
+    if (getTime === 12) {
+      return <img src="https://image.dalbitlive.com/event/lunch_event/lunch_banner.png" alt="런치 결제 이벤트" />
+    }
+    if (getTime === 13) {
+      return <img src="https://image.dalbitlive.com/event/lunch_event/lunch_banner.png" alt="런치 결제 이벤트" />
+    }
+  }
+
   //useEffect
   useEffect(() => {
     fetchAdmin()
@@ -184,6 +202,7 @@ export default (props) => {
     <>
       <Header title="달 충전" />
       <Content>
+        <div className="store_banner">{timeBanner()}</div>
         <p className="mydal">
           보유 달 <span>{mydal.toLocaleString()}</span>
         </p>
@@ -199,6 +218,15 @@ const Content = styled.section`
   padding: 0 16px;
   background: #eeeeee;
   padding-bottom: 16px;
+  .store_banner {
+    max-width: 540px;
+    margin: auto;
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+
   .mydal {
     padding: 16px 0 8px 0;
     font-size: 16px;

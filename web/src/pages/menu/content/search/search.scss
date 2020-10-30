@@ -210,14 +210,11 @@
         padding-top: 10px;
       }
       &__thumb {
-        overflow: hidden;
         position: relative;
-        margin-right: 12px;
         width: 72px;
-        border-radius: 12px;
+        margin-right: 12px;
         .newSpecialIcon {
           position: absolute;
-          text-indent: -99999px;
           left: 0px;
           top: 0px;
           width: 51px;
@@ -225,17 +222,20 @@
           text-indent: -99999px;
           background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
         }
+        > img {
+          border-radius: 12px;
+        }
         img {
           width: 100%;
         }
         .thumb-guest {
           position: absolute;
-          right: 0px;
-          bottom: 0px;
+          right: -3px;
+          bottom: -3px;
           width: 32px;
           height: 32px;
-          border: 1px solid #9a9a9a;
-          border-radius: 11px;
+          border: 1px solid $black;
+          border-radius: 50%;
           overflow: hidden;
         }
         &__playTime {
@@ -246,7 +246,7 @@
           padding: 0 4px;
           height: 14px;
           line-height: 14px;
-          background: rgba(0, 0, 0, 0.6);
+          background: rgba($black, 0.6);
           color: $white;
           border-radius: 12px;
           height: 14px;
@@ -357,11 +357,9 @@
           height: 16px;
           padding: 0 4px;
           margin-right: 4px;
-          border-radius: 12px;
-          font-size: 12px;
-          font-style: normal;
-          border: 1px solid #f26d4a;
-          color: #f26d4a;
+          text-indent: -9999px;
+          background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
+          background-size: contain;
         }
       }
     }

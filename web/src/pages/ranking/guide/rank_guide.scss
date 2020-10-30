@@ -1,6 +1,8 @@
 #ranking-guide-page {
   min-height: 100vh;
   background-color: #fff;
+  letter-spacing: -0.3px;
+
   .header {
     display: flex;
     align-items: center;
@@ -38,6 +40,7 @@
     background-color: #632beb;
     color: #fff;
     letter-spacing: -0.35px;
+    font-size: 14px;
 
     &__title {
       margin-bottom: 6px;
@@ -93,7 +96,7 @@
         font-size: 12px;
         font-weight: normal;
         color: #632beb;
-        letter-spacing: -0.3px;
+        letter-spacing: -0.8px;
       }
 
       td {
@@ -122,11 +125,16 @@
           padding: 8px 0;
           background-color: #f5f5f5;
           line-height: 18px;
+
+          span {
+            font-weight: 400;
+          }
         }
 
         &.note {
           background-color: #f5f5f5;
           line-height: 22px;
+          font-weight: 400;
 
           i {
             font-weight: 700;

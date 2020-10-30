@@ -155,7 +155,7 @@ export default (props) => {
 
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <i className="icon icon--people">사람 아이콘</i>
+                <i className="icon icon--message">회색 메세지 아이콘</i>
                 {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
