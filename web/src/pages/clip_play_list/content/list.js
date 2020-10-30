@@ -11,7 +11,7 @@ export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
 
-  const [playClipNo, setPlayClipNo] = useState(sessionStorage.getItem('play_clip_no'))
+  const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
   const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx

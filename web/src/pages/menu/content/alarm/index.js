@@ -24,7 +24,7 @@ export default function Alert() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      sessionStorage.removeItem('clipPlayListInfo')
+      localStorage.removeItem('clipPlayListInfo')
       const oneClipPlayList = {
         clipNo: data.clipNo,
         bgImg: data.bgImg,
