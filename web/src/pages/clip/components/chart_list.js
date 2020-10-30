@@ -93,6 +93,8 @@ export default (props) => {
         records: 100
       }
       sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
+      const playListInfo = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
+      alert(playListInfo)
       clipJoin(data, context)
     } else {
       if (code === '-99') {
