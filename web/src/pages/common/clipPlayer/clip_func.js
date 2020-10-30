@@ -12,9 +12,20 @@ export const clipJoin = (data, context, webview) => {
   let totalData = {playing: data}
 
   let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
-
+  let currentTyep = ''
   if (playListData) {
-    totalData = {...totalData, playListData: {...playListData}}
+    if (playListData.hasOwnProperty('listCnt')) {
+      if (playListData.hasOwnProperty('subjectType')) {
+        currentTyep = 'top3'
+      } else {
+        currentTyep = 'pop'
+      }
+    } else if (playListData.hasOwnProperty('memNo')) {
+      currentTyep = 'upload'
+    } else {
+      currentTyep = 'list'
+    }
+    totalData = {...totalData, playListData: {type: currentTyep, ...playListData}}
   }
   console.log('totalData', totalData)
   // alert(JSON.stringify(totalData))
