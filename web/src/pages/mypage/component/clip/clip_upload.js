@@ -82,7 +82,7 @@ function ClipUpload() {
         page: nowPage,
         records: 100
       }
-      sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context, webview)
     } else {
       if (code === '-99') {

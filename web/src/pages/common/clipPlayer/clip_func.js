@@ -11,7 +11,7 @@ export const clipJoin = (data, context, webview) => {
 
   let totalData = {playing: data}
 
-  let playListData = JSON.parse(sessionStorage.getItem('clipPlayListInfo'))
+  let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
 
   if (playListData) {
     totalData = {...totalData, playListData: {...playListData}}

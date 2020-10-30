@@ -39,7 +39,7 @@ export default function Alert() {
         goodCnt: data.goodCnt,
         playCnt: data.playCnt
       }
-      sessionStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
       clipJoin(data, context)
     } else {
       if (code === '-99') {

@@ -92,8 +92,9 @@ export default (props) => {
         page: nowPage,
         records: 100
       }
-      sessionStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      alert(sessionStorage.getItem('clipPlayListInfo'))
+
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
+      alert(localStorage.getItem('clipPlayListInfo'))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
