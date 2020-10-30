@@ -1,5 +1,5 @@
 //
-import React, {useContext, useState, useEffect, useRef} from 'react'
+import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 //context
@@ -26,9 +26,14 @@ import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import filterIcon from './static/choose_circle_w.svg'
+const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+
 // header scroll flag
 let tempScrollEvent = null
 let randomData = Math.random() >= 0.5 ? 0 : 4
+let touchStartY = null
+let touchEndY = null
+const refreshDefaultHeight = 49
 export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
@@ -41,6 +46,9 @@ export default (props) => {
   const rankClipRef = useRef()
   const BannerSectionRef = useRef()
   const categoryBestClipRef = useRef()
+  const iconWrapRef = useRef()
+  const arrowRefreshRef = useRef()
+
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [scrollY, setScrollY] = useState(0)
   const [popupData, setPopupData] = useState([])
@@ -80,6 +88,8 @@ export default (props) => {
   const [randomList, setRandomList] = useState([])
   const [myData, setMyDate] = useState([])
   const [date, setDate] = useState('')
+  const [reloadInit, setReloadInit] = useState(false)
+
   // scroll fixed func
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 120
@@ -442,6 +452,89 @@ export default (props) => {
       }
     }
   }
+
+  const clipTouchStart = useCallback((e) => {
+    if (reloadInit === true || window.scrollY !== 0) return
+    touchStartY = e.touches[0].clientY
+  }, [])
+
+  const clipTouchMove = useCallback((e) => {
+    if (reloadInit === true || window.scrollY !== 0) return
+    const iconWrapNode = iconWrapRef.current
+    const refreshIconNode = arrowRefreshRef.current
+
+    touchEndY = e.touches[0].clientY
+    const ratio = 3
+    const heightDiff = (touchEndY - touchStartY) / ratio
+    const heightDiffFixed = 80
+
+    if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
+      if (heightDiff <= heightDiffFixed) {
+        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+        refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+      }
+    }
+  }, [])
+
+  const clipTouchEnd = useCallback(
+    async (e) => {
+      if (reloadInit === true) return
+
+      const ratio = 3
+      const transitionTime = 150
+      const iconWrapNode = iconWrapRef.current
+      const refreshIconNode = arrowRefreshRef.current
+
+      const heightDiff = (touchEndY - touchStartY) / ratio
+      const heightDiffFixed = 80
+      if (heightDiff >= heightDiffFixed) {
+        let current_angle = (() => {
+          const str_angle = refreshIconNode.style.transform
+          let head_slice = str_angle.slice(7)
+          let tail_slice = head_slice.slice(0, 3)
+          return Number(tail_slice)
+        })()
+
+        if (typeof current_angle === 'number') {
+          setReloadInit(true)
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
+
+          const loadIntervalId = setInterval(() => {
+            if (Math.abs(current_angle) === 360) {
+              current_angle = 0
+            }
+            current_angle += 10
+            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+          }, 17)
+
+          fetchDataListLatest()
+          fetchDataListPopular()
+          fetchDataListTop3()
+          if (context.token.isLogin) fetchMyData()
+          context.action.updatClipRefresh(!context.clipRefresh)
+
+          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+          clearInterval(loadIntervalId)
+          setReloadInit(false)
+        }
+      }
+      const promiseSync = () =>
+        new Promise((resolve, _) => {
+          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          setTimeout(() => resolve(), transitionTime)
+        })
+
+      await promiseSync()
+      iconWrapNode.style.transitionDuration = '0ms'
+      refreshIconNode.style.transform = 'rotate(0)'
+      touchStartY = null
+      touchEndY = null
+    },
+    [reloadInit, context.clipRefresh]
+  )
+
   // #layer pop
   useEffect(() => {
     if (detailPopup) {
@@ -486,21 +579,27 @@ export default (props) => {
 
   return (
     <Layout {...props} status="no_gnb">
-      <Header type="noBack">
-        <span
-          className="searchIcon"
-          onClick={() =>
-            history.push({
-              pathname: '/menu/search',
-              state: {
-                state: 'clip_search'
-              }
-            })
-          }></span>
-        <span className="clipIcon"></span>
-        <h2 className="header-title">클립</h2>
-      </Header>
-      <div id="clipPage">
+      <div id="clipPage" onTouchStart={clipTouchStart} onTouchMove={clipTouchMove} onTouchEnd={clipTouchEnd}>
+        <Header type="noBack">
+          <span
+            className="searchIcon"
+            onClick={() =>
+              history.push({
+                pathname: '/menu/search',
+                state: {
+                  state: 'clip_search'
+                }
+              })
+            }></span>
+          <span className="clipIcon"></span>
+          <h2 className="header-title">클립</h2>
+        </Header>
+
+        <div className="refresh-wrap rank" ref={iconWrapRef}>
+          <div className="icon-wrap">
+            <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
+          </div>
+        </div>
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>
             <h2
@@ -644,6 +743,7 @@ export default (props) => {
             clipTypeActive={clipTypeActive}
             clipType={clipType}
             clipCategoryFixed={clipCategoryFixed}
+            reloadInit={reloadInit}
           />
         </div>
       </div>
