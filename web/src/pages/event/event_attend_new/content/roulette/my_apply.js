@@ -91,7 +91,7 @@ export default () => {
     <div id="attendEventPage">
       <div className="win-list-box">
         <div className="header">
-          <h1 className="header__title">나의 참여 이력</h1>
+          <h1 className="header__title">나의 당첨 이력</h1>
           <button className="header__btnBack" onClick={goBack}>
             <img src="https://image.dalbitlive.com/svg/ic_back.svg" alt="뒤로가기" />
           </button>
@@ -123,7 +123,7 @@ export default () => {
               {!applyList.length ? (
                 <tr>
                   <td colSpan="3">
-                    룰렛 참여내역이 없습니다.
+                    당첨 내역이 없습니다.
                     <br />
                     응모권을 획득 후 이벤트에 참여해주세요!
                   </td>
