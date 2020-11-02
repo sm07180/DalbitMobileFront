@@ -133,20 +133,21 @@ export default (props) => {
           className="chartListDetailItem"
           key={idx + 'list'}
           onClick={() => {
-            if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (globalCtx.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
-                    history.push('/login')
-                  }
-                })
-              } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-              }
-            } else {
-              fetchDataPlay(clipNo, idx)
-            }
+            fetchDataPlay(clipNo, idx)
+            // if (customHeader['os'] === OS_TYPE['Desktop']) {
+            //   if (globalCtx.token.isLogin === false) {
+            //     context.action.alert({
+            //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+            //       callback: () => {
+            //         history.push('/login')
+            //       }
+            //     })
+            //   } else {
+            //     globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+            //   }
+            // } else {
+            //   fetchDataPlay(clipNo, idx)
+            // }
           }}>
           <div className="chartListDetailItem__thumb">
             {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
