@@ -458,18 +458,7 @@ export default () => {
       case 'clip-upload-end': //------------- 네이티브 클립 녹음, 업로드 후
         localStorage.removeItem('clipPlayListInfo')
         const oneClipPlayList = {
-          clipNo: event.detail.clipNo,
-          bgImg: event.detail.bgImg,
-          title: event.detail.title,
-          nickName: event.detail.nickName,
-          subjectType: event.detail.subjectType,
-          isNew: event.detail.isNew,
-          filePlayTime: event.detail.filePlay,
-          isSpecial: event.detail.isSpecial,
-          gender: event.detail.gender,
-          replyCnt: event.detail.replyCnt,
-          goodCnt: event.detail.goodCnt,
-          playCnt: event.detail.playCnt
+          clipNo: event.detail.clipNo
         }
         localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
         break
