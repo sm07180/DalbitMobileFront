@@ -42,7 +42,7 @@ export default function detailPopup(props) {
         </div>
         <div className="inner-wrap">
           <div className="each-line">
-            <div className="text">클립 정렬 조건</div>
+            <div className="text">정렬 조건</div>
             <div className="tab-wrap">
               <div>
                 <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
@@ -64,13 +64,16 @@ export default function detailPopup(props) {
           </div>
 
           <div className="each-line">
-            <div className="text">검색 기간</div>
+            <div className="text">
+              조회 기간
+              <span className="infoTxt">선택된 정렬의 데이터 조회기간</span>
+            </div>
             <div className="tab-wrap dj-type">
               <button type="button" className={sortDate === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(1)}>
-                24시간
+                1일
               </button>
               <button type="button" className={sortDate === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(2)}>
-                7일
+                1주일
               </button>
               <button type="button" className={sortDate === 0 ? 'tab-btn active' : 'tab-btn'} onClick={() => DateFunc(0)}>
                 전체
@@ -85,7 +88,7 @@ export default function detailPopup(props) {
           </div>
           <div className="btn-wrap">
             <button className="apply-btn" onClick={applyClick}>
-              조건 적용
+              적용 하기
             </button>
           </div>
         </div>
@@ -149,12 +152,20 @@ const PopupWrap = styled.div`
 
     .each-line {
       .text {
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 6px;
         color: #000;
       }
-
+      .infoTxt {
+        font-size: 14px;
+        color: #616161;
+        font-weight: normal;
+      }
       .tab-wrap {
         display: flex;
         flex-wrap: wrap;
