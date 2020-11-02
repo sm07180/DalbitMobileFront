@@ -14,7 +14,7 @@ export default () => {
   const customHeader = JSON.parse(Api.customHeader)
 
   const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
-  // const [playClipNo, setPlayClipNo] = useState('101604279899179')
+  // const [playClipNo, setPlayClipNo] = useState('101604033535194')
   const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx
@@ -120,7 +120,7 @@ export default () => {
           window.scrollTo(0, currentTop)
         } else {
           console.log('2')
-          window.scrollTo(0, currentTop)
+          window.scrollTo(0, currentTop + 22)
         }
       }
     }
