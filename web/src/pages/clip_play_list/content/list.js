@@ -117,7 +117,7 @@ export default () => {
       if (currentTop !== 30) {
         if (customHeader['os'] === OS_TYPE['IOS']) {
           console.log('1')
-          window.scrollTo(0, currentTop + 8)
+          window.scrollTo(0, currentTop + 24)
         } else {
           console.log('2')
           window.scrollTo(0, currentTop - 8)
