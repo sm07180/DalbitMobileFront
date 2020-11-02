@@ -13,8 +13,8 @@ export default () => {
   const playListCtx = useContext(PlayListStore)
   const customHeader = JSON.parse(Api.customHeader)
 
-  // const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
-  const [playClipNo, setPlayClipNo] = useState('101604279899179')
+  const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
+  // const [playClipNo, setPlayClipNo] = useState('101604279899179')
   const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx
