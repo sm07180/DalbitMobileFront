@@ -85,13 +85,17 @@ export default () => {
   }
 
   const clipPlay = async (clipNum) => {
+    const nextClipIdx = list.findIndex((item) => {
+      return item.clipNo === clipNum
+    })
     const {result, data, message} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
       clipJoin(data, globalCtx)
     } else {
-      globalCtx.action.alert({msg: message})
+      globalCtx.action.toast({msg: message})
+      clipPlay(list[nextClipIdx + 1].clipNo)
     }
   }
 
