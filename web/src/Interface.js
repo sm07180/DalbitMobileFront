@@ -798,7 +798,7 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
-    document.addEventListener('clip-upload-end', update)
+    // document.addEventListener('clip-upload-end', update)
     document.addEventListener('native-close-layer-popup', update)
 
     return () => {
@@ -823,7 +823,7 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
-      document.removeEventListener('clip-upload-end', update)
+      // document.removeEventListener('clip-upload-end', update)
       document.removeEventListener('native-close-layer-popup', update)
     }
   }, [])
