@@ -112,10 +112,7 @@ export async function clipJoinApi(clipNum, context) {
   } else {
     if (code === '-99') {
       context.action.alert({
-        msg: message,
-        callback: () => {
-          history.push('/login')
-        }
+        msg: message
       })
     } else {
       context.action.alert({
