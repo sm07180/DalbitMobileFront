@@ -12,6 +12,7 @@ export default () => {
   const playListCtx = useContext(PlayListStore)
 
   const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
+  // const [playClipNo, setPlayClipNo] = useState('101603957440364')
   const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx
@@ -40,7 +41,6 @@ export default () => {
       }
     }
 
-    console.log('playListInfo', playListInfo)
     if (playListInfo.hasOwnProperty('listCnt')) {
       if (playListInfo.hasOwnProperty('subjectType')) {
         //메인 top3
@@ -108,7 +108,10 @@ export default () => {
   }, [])
 
   useEffect(() => {
-    console.log('list', list)
+    if (list.length > 0 && document.getElementsByClassName('playing')[0]) {
+      const currentTop = document.getElementsByClassName('playing')[0].offsetTop
+      window.scrollTo(0, currentTop - 5)
+    }
   }, [list])
 
   const createList = () => {
