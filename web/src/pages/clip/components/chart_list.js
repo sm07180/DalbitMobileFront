@@ -94,7 +94,6 @@ export default (props) => {
       }
 
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      alert(localStorage.getItem('clipPlayListInfo'))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
