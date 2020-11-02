@@ -94,8 +94,12 @@ export default () => {
     if (result === 'success') {
       clipJoin(data, globalCtx)
     } else {
-      // globalCtx.action.toast({msg: message})
-      clipPlay(list[nextClipIdx + 1].clipNo)
+      globalCtx.action.alert({
+        msg: message,
+        callback: () => {
+          clipPlay(list[nextClipIdx + 1].clipNo)
+        }
+      })
     }
   }
 
