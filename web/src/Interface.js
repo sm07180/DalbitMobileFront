@@ -452,9 +452,26 @@ export default () => {
       case 'clip-player-start': //-----------------------클립 재생
         settingSessionInfo('playing')
         break
-
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
+        break
+      case 'clip-upload-end': //------------- 네이티브 클립 녹음, 업로드 후
+        localStorage.removeItem('clipPlayListInfo')
+        const oneClipPlayList = {
+          clipNo: event.detail.clipNo,
+          bgImg: event.detail.bgImg,
+          title: event.detail.title,
+          nickName: event.detail.nickName,
+          subjectType: event.detail.subjectType,
+          isNew: event.detail.isNew,
+          filePlayTime: event.detail.filePlay,
+          isSpecial: event.detail.isSpecial,
+          gender: event.detail.gender,
+          replyCnt: event.detail.replyCnt,
+          goodCnt: event.detail.goodCnt,
+          playCnt: event.detail.playCnt
+        }
+        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
@@ -792,6 +809,7 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
+    document.addEventListener('clip-upload-end', update)
     document.addEventListener('native-close-layer-popup', update)
 
     return () => {
@@ -816,6 +834,7 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+      document.removeEventListener('clip-upload-end', update)
       document.removeEventListener('native-close-layer-popup', update)
     }
   }, [])
