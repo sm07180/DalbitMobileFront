@@ -6,10 +6,12 @@ import {Hybrid} from 'context/hybrid'
 import {PlayListStore} from '../store'
 
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import {OS_TYPE} from 'context/config.js'
 
 export default () => {
   const globalCtx = useContext(Context)
   const playListCtx = useContext(PlayListStore)
+  const customHeader = JSON.parse(Api.customHeader)
 
   const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
   // const [playClipNo, setPlayClipNo] = useState('101604280674770')
@@ -113,7 +115,11 @@ export default () => {
       const currentTop = document.getElementsByClassName('playing')[0].offsetTop
       console.log('currentTop', currentTop)
       if (currentTop !== 30) {
-        window.scrollTo(0, currentTop - 5)
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+          window.scrollTo(0, currentTop)
+        } else {
+          window.scrollTo(0, currentTop - 5)
+        }
       }
     }
   }, [list])
