@@ -172,6 +172,7 @@ $bar-color: white;
   display: flex;
   align-items: center;
   padding: 10px 16px;
+  height: 92px;
   outline: none;
 
   &.edit {
@@ -234,6 +235,7 @@ $bar-color: white;
 
   .textBox {
     width: calc(100% - 132px);
+    height: 62px;
     &__iconBox {
       display: flex;
       align-items: center;

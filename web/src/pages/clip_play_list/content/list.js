@@ -12,7 +12,7 @@ export default () => {
   const playListCtx = useContext(PlayListStore)
 
   const [playClipNo, setPlayClipNo] = useState(localStorage.getItem('play_clip_no'))
-  // const [playClipNo, setPlayClipNo] = useState('101603957440364')
+  // const [playClipNo, setPlayClipNo] = useState('101604280674770')
   const [totalList, setTotalList] = useState(0)
 
   const {isEdit, list, clipType, sortType} = playListCtx
@@ -108,9 +108,13 @@ export default () => {
   }, [])
 
   useEffect(() => {
+    console.log('list', list)
     if (list.length > 0 && document.getElementsByClassName('playing')[0]) {
       const currentTop = document.getElementsByClassName('playing')[0].offsetTop
-      window.scrollTo(0, currentTop - 5)
+      console.log('currentTop', currentTop)
+      if (currentTop !== 30) {
+        window.scrollTo(0, currentTop - 5)
+      }
     }
   }, [list])
 
