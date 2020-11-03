@@ -75,8 +75,6 @@ export default (props) => {
 
       if (loginInfo.result === 'success') {
         const {memNo} = loginInfo.data
-
-        console.log('login success')
         //--##
         /**
          * @마이페이지 redirect
@@ -279,96 +277,97 @@ export default (props) => {
         <Layout status="no_gnb">
           <div id="login" className="newLogin">
             <section>
-              <div className="newLogin__title">
-                <button onClick={clickCloseBtn}>뒤로가기</button>{' '}
-                <h2
-                  onClick={() => {
-                    if (!webview) {
-                      window.location.href = '/'
+              <div className="newLogin__top">
+                <div className="newLogin__title">
+                  <button onClick={clickCloseBtn}>뒤로가기</button>
+                  <h2
+                    onClick={() => {
+                      if (!webview) {
+                        window.location.href = '/'
+                      }
+                    }}>
+                    로그인
+                  </h2>
+                </div>
+
+                <div className="newLogin__img">달빛 라이브 로그인 이미지</div>
+                <h3 className="newLogin__logo">달빛 라이브</h3>
+              </div>
+
+              <div className="newLogin__center">
+                <input
+                  className="newLogin__input"
+                  ref={inputPhoneRef}
+                  type="number"
+                  placeholder="전화번호"
+                  value={phoneNum}
+                  onChange={changePhoneNum}
+                  onKeyDown={(e) => {
+                    const {keyCode} = e
+                    if (
+                      keyCode === 9 ||
+                      keyCode === 8 ||
+                      keyCode === 46 ||
+                      (keyCode >= 48 && keyCode <= 57) ||
+                      (keyCode >= 96 && keyCode <= 105)
+                    ) {
+                      return
                     }
-                  }}>
+                    e.preventDefault()
+                  }}
+                />
+                <input
+                  ref={inputPasswordRef}
+                  type="password"
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={changePassword}
+                  className="newLogin__input newLogin__input--password"
+                />
+                <button className="newLogin__LoginButton" onClick={clickLoginBtn}>
                   로그인
-                </h2>
-              </div>
-              <div className="newLogin__img">달빛 라이브 로그인 이미지</div>
-              <h3 className="newLogin__logo">달빛 라이브</h3>
-
-              <input
-                className="newLogin__input"
-                ref={inputPhoneRef}
-                type="number"
-                // autoComplete="off"
-                placeholder="전화번호"
-                value={phoneNum}
-                onChange={changePhoneNum}
-                onKeyDown={(e) => {
-                  const {keyCode} = e
-                  // Number 96 - 105 , 48 - 57
-                  // Delete 8, 46
-                  // Tab 9
-                  if (
-                    keyCode === 9 ||
-                    keyCode === 8 ||
-                    keyCode === 46 ||
-                    (keyCode >= 48 && keyCode <= 57) ||
-                    (keyCode >= 96 && keyCode <= 105)
-                  ) {
-                    return
-                  }
-                  e.preventDefault()
-                }}
-              />
-              <input
-                ref={inputPasswordRef}
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={changePassword}
-                className="newLogin__input newLogin__input--password"
-              />
-              <button className="newLogin__LoginButton" onClick={clickLoginBtn}>
-                로그인
-              </button>
-
-              <div className="newLogin__text">
-                <button className="newLogin__text newLogin__text--white" onClick={() => history.push('/password')}>
-                  비밀번호 변경
                 </button>
-                <i></i>
-                <button className="newLogin__text newLogin__text--yellow" onClick={() => history.push('/service')}>
-                  고객센터
-                </button>
-              </div>
 
-              {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
-                <>
-                  <div className="newLogin__sns">
-                    {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
-                      <button className="newLogin__sns--apple" onClick={() => fetchSocialData('apple')}>
-                        애플 로그인
+                <div className="newLogin__text">
+                  <button className="newLogin__text newLogin__text--white" onClick={() => history.push('/password')}>
+                    비밀번호 변경
+                  </button>
+                  <i></i>
+                  <button className="newLogin__text newLogin__text--yellow" onClick={() => history.push('/service')}>
+                    고객센터
+                  </button>
+                </div>
+
+                {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
+                  <>
+                    <div className="newLogin__sns">
+                      {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
+                        <button className="newLogin__sns--apple" onClick={() => fetchSocialData('apple')}>
+                          애플 로그인
+                        </button>
+                      )}
+                      <button className="newLogin__sns--facebook" onClick={() => fetchSocialData('facebook')}>
+                        페이스북 로그인
                       </button>
-                    )}
-                    <button className="newLogin__sns--facebook" onClick={() => fetchSocialData('facebook')}>
-                      페이스북 로그인
-                    </button>
-                    <button className="newLogin__sns--naver" onClick={() => fetchSocialData('naver')}>
-                      네이버 로그인
-                    </button>
-                    <button className="newLogin__sns--kakaotalk" onClick={() => fetchSocialData('kakao')}>
-                      카카오톡 로그인
-                    </button>
-                    {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                      (customHeader['os'] === OS_TYPE['IOS'] &&
-                        (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                      customHeader['os'] === OS_TYPE['Desktop']) && (
-                      <button className="newLogin__sns--google" onClick={() => fetchSocialData('google')}>
-                        구글 로그인
+                      <button className="newLogin__sns--naver" onClick={() => fetchSocialData('naver')}>
+                        네이버 로그인
                       </button>
-                    )}
-                    {appleAlert && <div className="aple__alert">OS를 최신 버전으로 설치해주세요.</div>}
-                  </div>
-                </>
-              )}
+                      <button className="newLogin__sns--kakaotalk" onClick={() => fetchSocialData('kakao')}>
+                        카카오톡 로그인
+                      </button>
+                      {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
+                        (customHeader['os'] === OS_TYPE['IOS'] &&
+                          (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                        customHeader['os'] === OS_TYPE['Desktop']) && (
+                        <button className="newLogin__sns--google" onClick={() => fetchSocialData('google')}>
+                          구글 로그인
+                        </button>
+                      )}
+                      {appleAlert && <div className="aple__alert">OS를 최신 버전으로 설치해주세요.</div>}
+                    </div>
+                  </>
+                )}
+              </div>
 
               <button className="newLogin__button" onClick={() => history.push('/signup')}>
                 회원가입
