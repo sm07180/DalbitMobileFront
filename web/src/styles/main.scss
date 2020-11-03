@@ -1964,8 +1964,12 @@
   height: 100vh;
   min-height: 520px;
   margin: 0 auto;
-  background: url('../pages/login/static/login_bg.svg') no-repeat;
+  background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
+
+  .button {
+    border: solid 1px;
+  }
 
   .header {
     position: absolute;
@@ -2072,6 +2076,10 @@
     }
   }
 
+  .signupButton {
+    margin-top: 70px;
+  }
+
   .socialLogin {
     position: absolute;
     width: 100%;
@@ -2091,7 +2099,7 @@
       width: 48px;
       height: 48px;
       border-radius: 25px;
-      border: solid 1px #4064ad;
+
       background-color: $white;
       margin-right: 8px;
     }
