@@ -1,21 +1,26 @@
 // context
 import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
+import {COLOR_MAIN} from 'context/color'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
+import closeBtn from 'pages/menu/static/ic_close.svg'
 import qs from 'query-string'
 import React, {useContext, useEffect, useRef, useState} from 'react'
 import {Redirect, Switch} from 'react-router-dom'
-
-import './login.scss'
+import appleLogo from './static/apple_logo.svg'
+import facebookLogo from './static/facebook_logo.svg'
+import googleLogo from './static/google_logo.svg'
+import kakaoLogo from './static/kakao_logo.svg'
+import naverLogo from './static/naver_logo.svg'
+import logoW from './static/logo_w_no_symbol.svg'
+import backW from './static/back_w.svg'
 
 export default (props) => {
-  let history = useHistory()
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {webview, redirect} = qs.parse(location.search)
@@ -277,103 +282,111 @@ export default (props) => {
         <Redirect to={'/'} />
       ) : (
         <Layout status="no_gnb">
-          <div id="login" className="newLogin">
-            <section>
-              <div className="newLogin__title">
-                <button onClick={clickCloseBtn}>뒤로가기</button>{' '}
-                <h2
-                  onClick={() => {
-                    if (!webview) {
-                      window.location.href = '/'
-                    }
-                  }}>
-                  로그인
-                </h2>
+          <div className="login">
+            <div className="header">
+              <div className="inner">
+                <button className="close-btn" onClick={clickCloseBtn}>
+                  <img src={backW} alt="뒤로가기" />
+                </button>
+                <h1>로그인</h1>
               </div>
-              <div className="newLogin__img">달빛 라이브 로그인 이미지</div>
-              <h3 className="newLogin__logo">달빛 라이브</h3>
+            </div>
 
-              <input
-                className="newLogin__input"
-                ref={inputPhoneRef}
-                type="number"
-                // autoComplete="off"
-                placeholder="전화번호"
-                value={phoneNum}
-                onChange={changePhoneNum}
-                onKeyDown={(e) => {
-                  const {keyCode} = e
-                  // Number 96 - 105 , 48 - 57
-                  // Delete 8, 46
-                  // Tab 9
-                  if (
-                    keyCode === 9 ||
-                    keyCode === 8 ||
-                    keyCode === 46 ||
-                    (keyCode >= 48 && keyCode <= 57) ||
-                    (keyCode >= 96 && keyCode <= 105)
-                  ) {
-                    return
+            <div className="login-wrap">
+              <h2
+                onClick={() => {
+                  if (!webview) {
+                    window.location.href = '/'
                   }
-                  e.preventDefault()
-                }}
-              />
-              <input
-                ref={inputPasswordRef}
-                type="password"
-                placeholder="비밀번호"
-                value={password}
-                onChange={changePassword}
-                className="newLogin__input newLogin__input--password"
-              />
-              <button className="newLogin__LoginButton" onClick={clickLoginBtn}>
-                로그인
-              </button>
-
-              <div className="newLogin__text">
-                <button className="newLogin__text newLogin__text--white" onClick={() => history.push('/password')}>
-                  비밀번호 변경
-                </button>
-                <i></i>
-                <button className="newLogin__text newLogin__text--yellow" onClick={() => history.push('/service')}>
-                  고객센터
+                }}>
+                <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" />
+                <img className="logo" src={logoW} alt="달빛라이브" />
+              </h2>
+              <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+              <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+              <div className="input-wrap">
+                <input
+                  ref={inputPhoneRef}
+                  type="number"
+                  // autoComplete="off"
+                  placeholder="전화번호"
+                  value={phoneNum}
+                  onChange={changePhoneNum}
+                  onKeyDown={(e) => {
+                    const {keyCode} = e
+                    // Number 96 - 105 , 48 - 57
+                    // Delete 8, 46
+                    // Tab 9
+                    if (
+                      keyCode === 9 ||
+                      keyCode === 8 ||
+                      keyCode === 46 ||
+                      (keyCode >= 48 && keyCode <= 57) ||
+                      (keyCode >= 96 && keyCode <= 105)
+                    ) {
+                      return
+                    }
+                    e.preventDefault()
+                  }}
+                />
+                <input
+                  ref={inputPasswordRef}
+                  type="password"
+                  // autoComplete="new-password"
+                  placeholder="비밀번호"
+                  value={password}
+                  onChange={changePassword}
+                />
+                <button className="login-btn" onClick={clickLoginBtn}>
+                  로그인
                 </button>
               </div>
 
-              {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
-                <>
-                  <div className="newLogin__sns">
-                    {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
-                      <button className="newLogin__sns--apple" onClick={() => fetchSocialData('apple')}>
-                        애플 로그인
-                      </button>
-                    )}
-                    <button className="newLogin__sns--facebook" onClick={() => fetchSocialData('facebook')}>
-                      페이스북 로그인
-                    </button>
-                    <button className="newLogin__sns--naver" onClick={() => fetchSocialData('naver')}>
-                      네이버 로그인
-                    </button>
-                    <button className="newLogin__sns--kakaotalk" onClick={() => fetchSocialData('kakao')}>
-                      카카오톡 로그인
-                    </button>
-                    {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                      (customHeader['os'] === OS_TYPE['IOS'] &&
-                        (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                      customHeader['os'] === OS_TYPE['Desktop']) && (
-                      <button className="newLogin__sns--google" onClick={() => fetchSocialData('google')}>
-                        구글 로그인
-                      </button>
-                    )}
-                    {appleAlert && <div className="aple__alert">OS를 최신 버전으로 설치해주세요.</div>}
-                  </div>
-                </>
-              )}
+              <div className="link-wrap">
+                <a href="/password">
+                  <div className="link-text">비밀번호 변경</div>
+                </a>
+                <div className="bar" />
+                <a href="/service">
+                  <div className="link-text yello">고객센터</div>
+                </a>
+              </div>
+            </div>
 
-              <button className="newLogin__button" onClick={() => history.push('/signup')}>
-                회원가입
-              </button>
-            </section>
+            {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
+              <>
+                <div className="socialLogin">
+                  {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
+                    <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+                      <img className="icon" src={appleLogo} />
+                    </button>
+                  )}
+                  <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+                    <img className="icon" src={facebookLogo} />
+                  </button>
+                  <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
+                    <img className="icon" src={naverLogo} />
+                  </button>
+                  <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
+                    <img className="icon" src={kakaoLogo} />
+                  </button>
+                  {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
+                    (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                    customHeader['os'] === OS_TYPE['Desktop']) && (
+                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+                      <img className="icon" src={googleLogo} />
+                    </button>
+                  )}
+                  {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
+
+                  <div className="signupButton">
+                    <a href="/signup">
+                      <div className="link-text">회원가입</div>
+                    </a>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </Layout>
       )}

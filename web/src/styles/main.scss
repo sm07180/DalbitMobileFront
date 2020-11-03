@@ -1964,13 +1964,17 @@
   height: 100vh;
   min-height: 520px;
   margin: 0 auto;
-  background: url('../pages/login/static/login_bg.svg') no-repeat;
+  background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
+
+  .button {
+    border: solid 1px;
+  }
 
   .header {
     position: absolute;
     width: 100%;
-    top: 45px;
+    top: 20px;
     left: 0;
     .inner {
       display: flex;
@@ -1993,7 +1997,7 @@
 
   .login-wrap {
     width: 100%;
-    padding: 0 30px 50px;
+    padding: 20px 30px 240px 30px;
   }
 
   .logo {
@@ -2072,10 +2076,26 @@
     }
   }
 
+  .signupButton {
+    max-width: 260px;
+    margin: auto;
+    margin-top: 30px;
+
+    border-radius: 28px;
+    width: 100%;
+    height: 48px;
+
+    line-height: 48px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $white;
+    background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
+  }
+
   .socialLogin {
     position: absolute;
     width: 100%;
-    bottom: 50px;
+    bottom: 160px;
     text-align: center;
 
     .social-apple-btn {
@@ -2091,7 +2111,7 @@
       width: 48px;
       height: 48px;
       border-radius: 25px;
-      border: solid 1px #4064ad;
+
       background-color: $white;
       margin-right: 8px;
     }
