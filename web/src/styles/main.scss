@@ -1961,6 +1961,8 @@
   position: relative;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100vh;
   min-height: 520px;
   margin: 0 auto;
@@ -1997,7 +1999,7 @@
 
   .login-wrap {
     width: 100%;
-    padding: 20px 30px 240px 30px;
+    padding: 8% 30px 0;
   }
 
   .logo {
@@ -2077,25 +2079,21 @@
   }
 
   .signupButton {
-    max-width: 260px;
-    margin: auto;
-    margin-top: 30px;
-
-    border-radius: 28px;
-    width: 100%;
+    width: 260px;
     height: 48px;
-
+    margin: 10px 0 60px;
     line-height: 48px;
     font-size: 16px;
     font-weight: bold;
+    text-align: center;
+    border-radius: 28px;
     color: $white;
     background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
   }
 
   .socialLogin {
-    position: absolute;
     width: 100%;
-    bottom: 160px;
+    padding-top: 30px;
     text-align: center;
 
     .social-apple-btn {

@@ -351,42 +351,40 @@ export default (props) => {
                   <div className="link-text yello">고객센터</div>
                 </a>
               </div>
+              {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
+                <>
+                  <div className="socialLogin">
+                    {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
+                      <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+                        <img className="icon" src={appleLogo} />
+                      </button>
+                    )}
+                    <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+                      <img className="icon" src={facebookLogo} />
+                    </button>
+                    <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
+                      <img className="icon" src={naverLogo} />
+                    </button>
+                    <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
+                      <img className="icon" src={kakaoLogo} />
+                    </button>
+                    {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
+                      (customHeader['os'] === OS_TYPE['IOS'] &&
+                        (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
+                      customHeader['os'] === OS_TYPE['Desktop']) && (
+                      <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+                        <img className="icon" src={googleLogo} />
+                      </button>
+                    )}
+                    {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
+                  </div>
+                </>
+              )}
             </div>
 
-            {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
-              <>
-                <div className="socialLogin">
-                  {(customHeader['os'] !== OS_TYPE['Android'] || common.isAosCheck === false) && (
-                    <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                      <img className="icon" src={appleLogo} />
-                    </button>
-                  )}
-                  <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-                    <img className="icon" src={facebookLogo} />
-                  </button>
-                  <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-                    <img className="icon" src={naverLogo} />
-                  </button>
-                  <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                    <img className="icon" src={kakaoLogo} />
-                  </button>
-                  {((customHeader['os'] === OS_TYPE['Android'] && (__NODE_ENV === 'dev' || customHeader['appBuild'] > 3)) ||
-                    (customHeader['os'] === OS_TYPE['IOS'] && (customHeader['appBulid'] > 52 || customHeader['appBuild'] > 52)) ||
-                    customHeader['os'] === OS_TYPE['Desktop']) && (
-                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                      <img className="icon" src={googleLogo} />
-                    </button>
-                  )}
-                  {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
-
-                  <div className="signupButton">
-                    <a href="/signup">
-                      <div className="link-text">회원가입</div>
-                    </a>
-                  </div>
-                </div>
-              </>
-            )}
+            <div className="signupButton">
+              <a href="/signup">회원가입</a>
+            </div>
           </div>
         </Layout>
       )}
