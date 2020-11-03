@@ -280,18 +280,19 @@ export default (props) => {
               <div className="newLogin__top">
                 <div className="newLogin__title">
                   <button onClick={clickCloseBtn}>뒤로가기</button>
-                  <h2
-                    onClick={() => {
-                      if (!webview) {
-                        window.location.href = '/'
-                      }
-                    }}>
-                    로그인
-                  </h2>
+                  <h2>로그인</h2>
                 </div>
 
                 <div className="newLogin__img">달빛 라이브 로그인 이미지</div>
-                <h3 className="newLogin__logo">달빛 라이브</h3>
+                <h3
+                  className="newLogin__logo"
+                  onClick={() => {
+                    if (!webview) {
+                      window.location.href = '/'
+                    }
+                  }}>
+                  달빛 라이브
+                </h3>
               </div>
 
               <div className="newLogin__center">
