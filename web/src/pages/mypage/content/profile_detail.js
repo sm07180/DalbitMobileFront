@@ -547,7 +547,7 @@ export default (props) => {
               왕큐피트
             </button>
           )}
-          {profile.likeTotCnt > 0 ? (
+          {profile.likeTotCnt > 0 && cupidMemNo !== '' && cupidNickNm !== '' ? (
             <>
               <img
                 src={profile.cupidProfImg.thumb62x62}
