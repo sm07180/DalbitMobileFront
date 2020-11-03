@@ -7,6 +7,7 @@ import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
 export const clipJoin = (data, context, webview, isPush) => {
+  let timer
   let totalData = {
     playing: data,
     playListData: {
@@ -79,8 +80,16 @@ export const clipJoin = (data, context, webview, isPush) => {
         }
         // console.log('2' + sessionStorage.getItem('listening'))
       }
-
-      return Hybrid('ClipPlayerJoin', totalData)
+      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(function () {
+          return Hybrid('ClipPlayerJoin', totalData)
+        }, 400)
+      } else {
+        return Hybrid('ClipPlayerJoin', totalData)
+      }
     }
   } else {
     if (webview === 'new') {
