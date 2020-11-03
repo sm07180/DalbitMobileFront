@@ -37,7 +37,6 @@ export default (props) => {
           {djRank &&
             djRank.map((dj, idx) => {
               const {rank, nickNm, memNo, profImg, liveBadgeList} = dj
-              console.log(dj)
               return (
                 <div
                   className="rank-slide"
@@ -70,7 +69,6 @@ export default (props) => {
           {fanRank &&
             fanRank.map((fan, idx) => {
               const {rank, nickNm, memNo, profImg, liveBadgeList} = fan
-              console.log(fan)
               return (
                 <div
                   className="rank-slide"

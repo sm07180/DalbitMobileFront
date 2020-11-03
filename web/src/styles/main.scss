@@ -324,6 +324,7 @@
             height: 24px;
           }
           .btn {
+            &__moon,
             &__refresh {
               position: relative;
               display: flex;
@@ -351,6 +352,24 @@
                 img {
                   animation: anim 0.36s;
                 }
+              }
+            }
+            &__moon {
+              margin-right: 8px;
+              margin-left: 0;
+              &::before {
+                display: none;
+              }
+              &::after {
+                display: inline-block;
+                content: '';
+                width: 1px;
+                height: 12px;
+                background: $lightGray;
+                position: absolute;
+                right: -8px;
+                top: 50%;
+                margin-top: -6px;
               }
             }
           }
@@ -504,6 +523,7 @@
 
       .detail-list-icon {
         margin-right: 2px;
+        margin-left: 8px;
         // &::before {
         //   display: inline-block;
         //   content: '';

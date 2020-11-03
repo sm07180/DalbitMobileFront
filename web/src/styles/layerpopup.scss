@@ -931,3 +931,97 @@
     }
   }
 }
+
+#layerPopupCommon {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 60;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .popup {
+    position: relative;
+    width: 80%;
+    min-width: 300px;
+    max-width: 460px;
+    .btn-close {
+      position: absolute;
+      top: -40px;
+      right: 0px;
+      width: 32px;
+      height: 32px;
+      font-size: 0;
+      background: url('https://image.dalbitlive.com/images/api/close_w_l.svg') no-repeat 0 0;
+    }
+    .in {
+      position: relative;
+      padding: 12px 12px;
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: center;
+      color: $black;
+      background: $white;
+      border-radius: 20px;
+      box-sizing: border-box;
+      word-wrap: break-word;
+      .title {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        &--purple {
+          color: $primary;
+        }
+      }
+      .subTitle {
+        margin-top: 10px;
+        font-size: 16px;
+        line-height: 1.3;
+      }
+    }
+    .desc {
+      margin-top: 22px;
+      padding: 16px 0 18px;
+      background: $lighterGray;
+      border-radius: 20px;
+      strong {
+        font-size: 16px;
+      }
+      p {
+        font-size: 14px;
+        line-height: 1.2;
+      }
+    }
+    .img {
+      display: inline-block;
+      &-moon {
+        width: 155px;
+        height: 104px;
+        margin-left: 75px;
+        margin-top: 20px;
+      }
+      > img {
+        width: 100%;
+      }
+    }
+    .btnWrap {
+      margin-top: 12px;
+      .btn-ok {
+        display: block;
+        width: 100%;
+        height: 44px;
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 44px;
+        text-align: center;
+        background-color: $primary;
+        color: #fff;
+        border-radius: 12px;
+      }
+    }
+  }
+}

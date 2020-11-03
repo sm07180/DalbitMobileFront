@@ -46,7 +46,7 @@ export default (props) => {
       djType: 0,
       gender: '',
       page: currentPage,
-      records: 10
+      records: 50
     })
     if (res.result === 'success' && res.data.hasOwnProperty('list')) {
       // setList(res.data.list)
