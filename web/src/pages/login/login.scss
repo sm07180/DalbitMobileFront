@@ -1,0 +1,173 @@
+@import '../../styles/variables';
+
+#login {
+  width: 100%;
+  height: 100%;
+  background: url('https://image.dalbitlive.com/images/login/login_bg.png') center no-repeat;
+  background-size: cover;
+  overflow: hidden;
+
+  section {
+    width: 260px;
+    box-sizing: border-box;
+    margin: 0px 50px;
+    margin: auto;
+  }
+
+  .newLogin {
+    &__title {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+      margin-bottom: 36px;
+      button {
+        width: 40px;
+        height: 40px;
+        background: url('https://image.dalbitlive.com/svg/icon_back_white.svg') center no-repeat;
+        text-indent: -99999px;
+      }
+      h2 {
+        font-size: 16px;
+        height: 40px;
+        line-height: 40px;
+        padding: 20 0px;
+        color: $white;
+        font-weight: normal;
+      }
+    }
+
+    &__img {
+      width: 142px;
+      height: 142px;
+      margin: auto;
+      background: url('https://image.dalbitlive.com/images/login/login_img.png') center no-repeat;
+      text-indent: -99999px;
+    }
+
+    &__logo {
+      width: 90px;
+      height: 18px;
+      margin: auto;
+      margin-bottom: 46px;
+      background: url('https://image.dalbitlive.com/svg/login_logo.svg') center no-repeat;
+      text-indent: -99999px;
+    }
+
+    &__input {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border-radius: 25px;
+      margin-bottom: 8px;
+      padding: 11px 24px;
+      box-sizing: border-box;
+      color: $white;
+      font-size: 14px;
+      font-weight: bold;
+      font-size: 18px;
+      border: solid 1px rgba(255, 255, 255, 0.5);
+      background-color: rgba(255, 255, 255, 0);
+
+      &::placeholder {
+        color: #fff;
+        font-weight: normal;
+        font-size: 14px;
+      }
+
+      &:focus {
+        border: solid 1px rgba(255, 255, 255, 1);
+      }
+    }
+
+    &__LoginButton {
+      height: 48px;
+      width: 100%;
+      margin-bottom: 15px;
+      font-weight: bold;
+      font-size: 16px;
+      border-radius: 25px;
+      background: $white;
+      color: $primary;
+    }
+
+    &__text {
+      overflow: hidden;
+      height: 16px;
+      line-height: 16px;
+      display: flex;
+      justify-content: center;
+
+      margin-bottom: 34px;
+      font-size: 14px;
+      font-weight: bold;
+
+      &--white {
+        color: $white;
+      }
+      &--yellow {
+        color: #febd56;
+      }
+
+      i {
+        width: 1px;
+        height: 12px;
+        margin: 0px 10px;
+        background: rgba(255, 255, 255, 0.2);
+        margin-top: 2px;
+      }
+    }
+
+    &__sns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 90px;
+
+      button {
+        cursor: pointer;
+        margin: 0px 4px;
+        width: 40px;
+        height: 40px;
+        text-indent: -9999px;
+        border-radius: 50%;
+      }
+
+      &--apple {
+        background: url('https://image.dalbitlive.com/svg/icon_login_apple.svg') center no-repeat $black;
+      }
+      &--facebook {
+        background: url('https://image.dalbitlive.com/svg/icon_login_facebook.svg') center no-repeat $white;
+      }
+      &--naver {
+        background: url('https://image.dalbitlive.com/svg/icon_login_naver.svg') center no-repeat #2db400;
+      }
+      &--kakaotalk {
+        background: url('https://image.dalbitlive.com/svg/icon_login_kakao.svg') center no-repeat #f9e000;
+      }
+      &--google {
+        background: url('https://image.dalbitlive.com/svg/icon_login_google.svg') center no-repeat $white;
+      }
+
+      .aple__alert {
+        text-align: center;
+        font-size: 16px;
+        margin: 10px;
+        line-height: 21px;
+        font-weight: bold;
+        color: $white;
+      }
+    }
+
+    &__button {
+      border-radius: 28px;
+      width: 100%;
+      height: 48px;
+      margin-bottom: 34px;
+      line-height: 48px;
+      font-size: 16px;
+      font-weight: bold;
+      color: $white;
+      background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
+    }
+  }
+}
