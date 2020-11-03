@@ -47,7 +47,7 @@ export default () => {
         playCnt: data.playCnt
       }
       localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-      clipJoin(data, context)
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
         context.action.alert({

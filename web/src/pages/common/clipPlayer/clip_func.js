@@ -6,8 +6,15 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
-export const clipJoin = (data, context, webview) => {
-  let totalData = {playing: data}
+export const clipJoin = (data, context, webview, isPush) => {
+  let totalData = {
+    playing: data,
+    playListData: {
+      type: '',
+      param: '',
+      isPush: isPush === 'push' ? true : false
+    }
+  }
 
   let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
   let url = ''
@@ -31,10 +38,13 @@ export const clipJoin = (data, context, webview) => {
     } else {
       currentTyep = 'list'
     }
-    totalData = {...totalData, playListData: {type: currentTyep, param: encodeURIComponent(url)}}
+    totalData = {
+      ...totalData,
+      playListData: {type: currentTyep, param: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
+    }
   }
   console.log('totalData', totalData)
-  // alert(JSON.stringify(totalData))
+  alert(JSON.stringify(totalData))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {
