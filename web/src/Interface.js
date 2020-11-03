@@ -543,14 +543,18 @@ export default () => {
         } else if (onCall === false) {
           sessionStorage.removeItem('onCall')
         }
+        break
       case 'native-goto-fanboard': //----- 청취자요약정보 팬보드이동
-        const {mem_no} = event.detail
-        history.push(`/mypage/${mem_no}`)
+        const {memNo} = event.detail
+        history.push(`/mypage/${memNo}`)
+        break
       case 'native-join-room': //----- 청취자요양정보 방조인
-        const {room_no} = event.detail
-        RoomJoin({roomNo: room_no})
+        const {roomNo} = event.detail
+        RoomJoin({roomNo: roomNo})
+        break
       case 'native-goto-rank': //----- 청취자요약정보 랭킹이동
         history.push(`/rank`)
+        break
       default:
         break
     }
@@ -810,6 +814,10 @@ export default () => {
     // document.addEventListener('clip-upload-end', update)
     document.addEventListener('native-close-layer-popup', update)
 
+    /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+    document.addEventListener('native-goto-fanboard', update)
+    document.addEventListener('native-goto-rank', update)
+    document.addEventListener('native-join-room', update)
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -836,9 +844,9 @@ export default () => {
       document.removeEventListener('native-close-layer-popup', update)
 
       /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
-      document.addEventListener('native-goto-fanboard', update)
-      document.addEventListener('native-goto-rank', update)
-      document.addEventListener('native-join-room', update)
+      document.removeEventListener('native-goto-fanboard', update)
+      document.removeEventListener('native-goto-rank', update)
+      document.removeEventListener('native-join-room', update)
     }
   }, [])
 
