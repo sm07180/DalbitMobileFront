@@ -165,12 +165,19 @@
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center;
-          .medal-img {
+          .live-medal-img {
             position: absolute;
             bottom: 4px;
             right: 0px;
             width: 36px;
             height: 36px;
+          }
+          .medal-img {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 26px;
+            height: 30px;
           }
         }
         .nickname {
@@ -324,6 +331,7 @@
             height: 24px;
           }
           .btn {
+            &__moon,
             &__refresh {
               position: relative;
               display: flex;
@@ -351,6 +359,24 @@
                 img {
                   animation: anim 0.36s;
                 }
+              }
+            }
+            &__moon {
+              margin-right: 8px;
+              margin-left: 0;
+              &::before {
+                display: none;
+              }
+              &::after {
+                display: inline-block;
+                content: '';
+                width: 1px;
+                height: 12px;
+                background: $lightGray;
+                position: absolute;
+                right: -8px;
+                top: 50%;
+                margin-top: -6px;
               }
             }
           }
@@ -504,6 +530,7 @@
 
       .detail-list-icon {
         margin-right: 2px;
+        margin-left: 8px;
         // &::before {
         //   display: inline-block;
         //   content: '';

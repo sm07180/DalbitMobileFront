@@ -23,6 +23,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
+import LayerPopupCommon from './component/layer_popup_common.js'
 import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
@@ -105,8 +106,9 @@ export default (props) => {
   const eventPopupStartTime = new Date('2020-09-25T09:00:00')
   const eventPopupEndTime = new Date('2020-10-04T23:59:59')
   const nowTime = new Date()
+  const [popupMoonState, setPopupMoonState] = useState(false)
+  const [popupMoon, setPopupMoon] = useState(false)
   const [eventPop, setEventPop] = useState(false)
-
   const [payState, setPayState] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
@@ -253,6 +255,9 @@ export default (props) => {
         setLivePage(page)
         setTotalLivePage(totalPage)
       }
+      if (broadcastList.data.isGreenMoon) {
+        setPopupMoonState(true)
+      }
       setLiveList(list)
     }
   }
@@ -261,7 +266,6 @@ export default (props) => {
     concatenating = true
 
     const currentList = [...liveList]
-    console.debug()
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage + 1,
@@ -502,6 +506,9 @@ export default (props) => {
     },
     [reloadInit]
   )
+  const openPopupMoon = async () => {
+    setPopupMoon(true)
+  }
   const RefreshFunc = async () => {
     // setReloadInit(true)
     // await fetchMainInitData()
@@ -810,10 +817,15 @@ export default (props) => {
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
-                </span>
-                <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
-                  <img src={sortIcon} alt="검색 정렬하기" />
-                </button> */}
+                  </span>
+                  <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
+                    <img src={sortIcon} alt="검색 정렬하기" />
+                  </button> */}
+                  {popupMoonState && (
+                    <button className="btn__moon" onClick={openPopupMoon}>
+                      <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
+                    </button>
+                  )}
                   <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
                     <img
                       src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
@@ -884,6 +896,7 @@ export default (props) => {
         {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
           <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
         )}
+        {popupMoon && <LayerPopupCommon setPopupMoon={setPopupMoon} />}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>
     </Layout>
