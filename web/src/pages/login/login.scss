@@ -8,7 +8,8 @@
   overflow: hidden;
 
   section {
-    height: 82%;
+    width: 100%;
+    height: 88%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -21,7 +22,12 @@
   .newLogin {
     &__top {
       width: 100%;
+      margin-top: 10px;
       margin-bottom: auto;
+    }
+
+    &__center {
+      margin-top: 20px;
     }
 
     &__title {
@@ -130,7 +136,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 40px;
+      margin-bottom: 50px;
 
       button {
         cursor: pointer;
@@ -171,7 +177,7 @@
       border-radius: 28px;
       width: 100%;
       height: 48px;
-      margin-bottom: 34px;
+      margin-bottom: 60px;
       margin-top: auto;
       line-height: 48px;
       font-size: 16px;
