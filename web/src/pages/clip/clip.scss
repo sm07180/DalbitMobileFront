@@ -13,6 +13,18 @@
       align-items: center;
     }
   }
+
+  .header-wrap {
+    z-index: 2;
+  }
+
+  .refresh-wrap {
+    // display: none;
+    min-height: 48px;
+    max-height: 110px;
+    z-index: 1;
+  }
+
   .myClip {
     padding: 28px 3% 16px 3%;
     &__title {

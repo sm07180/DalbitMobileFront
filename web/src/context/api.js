@@ -2707,43 +2707,45 @@ export default class API {
     })
   }
 
-    /**
-     * @brief 이벤트 리스트 조회
-     * @method "GET"
-     * @create 강다인 2020.09.29
-     */
-    static getEventList = async(obj) => {
-      const{url, method, data} = obj || {}
-      return await ajax({
-        url : url || '/event/page/list',
-        method : method || 'GET',
-        data : data
-    })}
+  /**
+   * @brief 이벤트 리스트 조회
+   * @method "GET"
+   * @create 강다인 2020.09.29
+   */
+  static getEventList = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/list',
+      method: method || 'GET',
+      data: data
+    })
+  }
 
   /**
    * @brief 이벤트 당첨자/당첨결과 조회
    * @method "POST"
    * @create 강다인 2020.10.12
    */
-  static getEventResult = async(obj) => {
-    const{url, method, data} = obj || {}
+  static getEventResult = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/winResult',
-      method : method || 'POST',
-      data : data
-    })}
+      url: url || '/event/page/winResult',
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   /**
    * @brief 이벤트 당첨자 명단 조회
    * @method "POST"
    * @create 강다인 2020.10.13
    */
-  static getEventWinner = async(obj) => {
-    const{url, method, data} = obj || {}
+  static getEventWinner = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/winList',
-      method : method || 'POST',
-      data : data
+      url: url || '/event/page/winList',
+      method: method || 'POST',
+      data: data
     })
   }
 
@@ -2752,12 +2754,12 @@ export default class API {
    * @method "POST"
    * @create 강다인 2020.10.15
    */
-  static prizeReceiveWay = async(obj) => {
-    const{url, method, data} = obj || {}
+  static prizeReceiveWay = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/receiveWay',
-      method : method || 'POST',
-      data : data
+      url: url || '/event/page/receiveWay',
+      method: method || 'POST',
+      data: data
     })
   }
 
@@ -2766,12 +2768,12 @@ export default class API {
    * @method "POST"
    * @create 강다인 2020.10.15
    */
-  static winnerInfoSelect = async(obj) => {
-    const{url, method, data} = obj || {}
+  static winnerInfoSelect = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/winnerAddInfo/select',
-      method : method || 'POST',
-      data : data
+      url: url || '/event/page/winnerAddInfo/select',
+      method: method || 'POST',
+      data: data
     })
   }
 
@@ -2780,12 +2782,12 @@ export default class API {
    * @method "GET"
    * @create 강다인 2020.10.16
    */
-  static winnerInfoFormat = async(obj) => {
-    const{url, method, data} = obj || {}
+  static winnerInfoFormat = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/winnerAddInfo/infoFormat',
-      method : method || 'GET',
-      data : data
+      url: url || '/event/page/winnerAddInfo/infoFormat',
+      method: method || 'GET',
+      data: data
     })
   }
 
@@ -2794,15 +2796,23 @@ export default class API {
    * @method "POST"
    * @create 강다인 2020.10.19
    */
-  static winnerInfoAddEdit = async(obj) => {
-    const{url, method, data} = obj || {}
+  static winnerInfoAddEdit = async (obj) => {
+    const {url, method, data} = obj || {}
     return await ajax({
-      url : url || '/event/page/winnerAddInfo/edit',
-      method : method || 'POST',
-      data : data
+      url: url || '/event/page/winnerAddInfo/edit',
+      method: method || 'POST',
+      data: data
     })
   }
 
+  static specialHistory = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/member/special/history',
+      method: 'GET',
+      params: params
+    })
+  }
 }
 
 API.customHeader = null

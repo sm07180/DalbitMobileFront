@@ -33,11 +33,15 @@ export default (props) => {
   const [starInfo, setStarInfo] = useState('')
   const [fanInfo, setFanInfo] = useState('')
   const [goodInfo, setGoodInfo] = useState('')
+  const [specialInfo, setSpecialInfo] = useState('')
   const [select, setSelect] = useState('')
   const [allFalse, setAllFalse] = useState(false)
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
+  //img
+  const SpecialBadgeOff = 'https://image.dalbitlive.com/svg/specialdj_off_s.svg'
+  const SpecialBadgeOn = 'https://image.dalbitlive.com/svg/specialdj_on_s.svg'
   //api
   const fetchData = async () => {
     const res = await Api.mypage_fan_ranking({
@@ -99,6 +103,22 @@ export default (props) => {
     })
     if (res.result === 'success') {
       setGoodInfo(res.data.list)
+    } else {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+    return
+  }
+  const fetchDataSpecialList = async () => {
+    const res = await Api.specialHistory({
+      params: {
+        memNo: profile.memNo
+      }
+    })
+    if (res.result === 'success') {
+      setSpecialInfo(res.data)
     } else {
       context.action.alert({
         callback: () => {},
@@ -170,6 +190,8 @@ export default (props) => {
       context.action.updateCloseStarCnt(false)
     } else if (name === '좋아요') {
       context.action.updateCloseGoodCnt(false)
+    } else if (name === '스디') {
+      context.action.updateCloseSpecial(false)
     }
   }
 
@@ -183,6 +205,8 @@ export default (props) => {
       fetchDataHoleFan()
     } else if (name === '좋아요') {
       fetchDataGoodRank()
+    } else if (name === '스디') {
+      fetchDataSpecialList()
     }
   }, [select])
 
@@ -196,6 +220,8 @@ export default (props) => {
         context.action.updateCloseStarCnt(false)
       } else if (name === '좋아요') {
         context.action.updateCloseGoodCnt(false)
+      } else if (name === '스디') {
+        context.action.updateCloseSpecial(false)
       }
     }
   }, [])
@@ -211,6 +237,7 @@ export default (props) => {
     context.action.updateCloseFanCnt(false)
     context.action.updateCloseStarCnt(false)
     context.action.updateCloseGoodCnt(false)
+    context.action.updateCloseSpecial(false)
     history.push(link, {
       hash: window.location.hash
     })
@@ -230,8 +257,8 @@ export default (props) => {
           <div className="popbox active">
             <div className="popup__box popup__text">
               <div className="popup__inner" onClick={(e) => e.stopPropagation()}>
-                <div className="popup__title">
-                  <h3 className="h3-tit">{name}</h3>
+                <div className={`popup__title ${name === '스디' ? 'noBorder' : ''}`}>
+                  {name !== '스디' && <h3 className="h3-tit">{name}</h3>}
                   <button className="close-btn" onClick={() => closePopup()}>
                     <img src={CloseBtn} alt="닫기" />
                   </button>
@@ -337,7 +364,6 @@ export default (props) => {
                               </div>
                             )
                           })}
-
                         {goodInfo !== '' &&
                           name === '좋아요' &&
                           goodInfo.map((item, index) => {
@@ -368,6 +394,50 @@ export default (props) => {
                               </div>
                             )
                           })}
+                        {specialInfo !== '' && name === '스디' && (
+                          <div className="historyWrap">
+                            <div className={`historyWrap__header ${profile.isSpecial ? 'isSpecial' : ''}`}>
+                              {profile.isSpecial ? (
+                                <img src={SpecialBadgeOn} className="historyWrap__badge" />
+                              ) : (
+                                <img src={SpecialBadgeOff} className="historyWrap__badge" />
+                              )}
+                              <div className="historyWrap__info">
+                                <span className="historyWrap__info__nick">{specialInfo.nickNm}</span> 님은 <br />
+                                {profile.isSpecial ? '현재 스페셜 DJ입니다.' : '스페셜 DJ 출신입니다.'} <br />총
+                                {profile.specialDjCnt}회 선정되셨습니다.
+                              </div>
+                            </div>
+                            <h2 className="historyWrap__tableTitle">스페셜 DJ 약력</h2>
+                            <div className="historyWrap__tableWrap">
+                              <table>
+                                <colgroup>
+                                  <col width="50%" />
+                                  <col width="50%" />
+                                </colgroup>
+                                <thead>
+                                  <tr>
+                                    <th>선정 일자</th>
+                                    <th>선정 기수</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  {specialInfo.list.map((item, index) => {
+                                    const {roundNo, selectionDate} = item
+                                    return (
+                                      <React.Fragment key={`idx` + index}>
+                                        <tr>
+                                          <td>{selectionDate}</td>
+                                          <td>{roundNo}</td>
+                                        </tr>
+                                      </React.Fragment>
+                                    )
+                                  })}
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        )}
                       </Scrollbars>
                     </div>
                   </div>

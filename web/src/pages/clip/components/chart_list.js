@@ -27,7 +27,7 @@ export default (props) => {
   //ctx
   const context = useContext(Context)
   let history = useHistory()
-  const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType} = props
+  const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType, reloadInit} = props
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
@@ -46,7 +46,7 @@ export default (props) => {
       djType: 0,
       gender: '',
       page: currentPage,
-      records: 10
+      records: 50
     })
     if (res.result === 'success' && res.data.hasOwnProperty('list')) {
       // setList(res.data.list)

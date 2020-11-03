@@ -23,6 +23,7 @@ import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
+import LayerPopupCommon from './component/layer_popup_common.js'
 import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
@@ -105,8 +106,9 @@ export default (props) => {
   const eventPopupStartTime = new Date('2020-09-25T09:00:00')
   const eventPopupEndTime = new Date('2020-10-04T23:59:59')
   const nowTime = new Date()
+  const [popupMoonState, setPopupMoonState] = useState(false)
+  const [popupMoon, setPopupMoon] = useState(false)
   const [eventPop, setEventPop] = useState(false)
-
   const [payState, setPayState] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
@@ -253,6 +255,11 @@ export default (props) => {
         setLivePage(page)
         setTotalLivePage(totalPage)
       }
+      if (broadcastList.data.isGreenMoon === true) {
+        setPopupMoonState(true)
+      } else {
+        setPopupMoonState(false)
+      }
       setLiveList(list)
     }
   }
@@ -261,7 +268,6 @@ export default (props) => {
     concatenating = true
 
     const currentList = [...liveList]
-    console.debug()
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage + 1,
@@ -502,6 +508,9 @@ export default (props) => {
     },
     [reloadInit]
   )
+  const openPopupMoon = async () => {
+    setPopupMoon(true)
+  }
   const RefreshFunc = async () => {
     // setReloadInit(true)
     // await fetchMainInitData()
@@ -810,10 +819,15 @@ export default (props) => {
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
-                </span>
-                <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
-                  <img src={sortIcon} alt="검색 정렬하기" />
-                </button> */}
+                  </span>
+                  <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
+                    <img src={sortIcon} alt="검색 정렬하기" />
+                  </button> */}
+                  {popupMoonState && (
+                    <button className="btn__moon" onClick={openPopupMoon}>
+                      <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
+                    </button>
+                  )}
                   <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
                     <img
                       src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
@@ -883,6 +897,29 @@ export default (props) => {
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
         {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
           <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
+        )}
+        {popupMoon && (
+          <LayerPopupCommon setPopupMoon={setPopupMoon}>
+            <span className="img img-moon">
+              <img src="https://image.dalbitlive.com/main/common/img_moon_popup.png" alt="달이 된 병아리" />
+            </span>
+            <h3 className="title title--purple">달이 된 병아리가 나타났습니다!</h3>
+            <p className="subTitle">
+              DJ님, 조금만 노력하시면
+              <br />내 방송이 상단으로 올라갈 수 있어요.
+              <br />날 수 없었던 저처럼 말이죠!
+            </p>
+            <div className="desc">
+              <strong>P.S</strong>
+              <p>
+                저는 아무 때나 나타나지 않고,
+                <br />
+                DJ님이 실시간 LIVE 상단으로
+                <br />
+                쉽게 올라갈 수 있을 때 나타나요.
+              </p>
+            </div>
+          </LayerPopupCommon>
         )}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>

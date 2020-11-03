@@ -1,15 +1,14 @@
 export function winnerInspection(minorYn, state) {
+  const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
 
-  const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-
-  if(!state.winner_email.match(regExp)) {
+  if (!state.winner_email.match(regExp)) {
     return {
       state: false,
-      content: "이메일 형식을 확인 후 다시 입력해주세요."
+      content: '이메일 형식을 확인 후 다시 입력해주세요.'
     }
   }
 
-  if(state.winner_address_2 === '') {
+  if (state.winner_address_2 === '') {
     return {
       state: false,
       content: '수령 받으실 주소를 입력해주세요.'
@@ -23,8 +22,7 @@ export function winnerInspection(minorYn, state) {
     }
   }
 
-
-  if(minorYn === 1) {
+  if (minorYn === 1) {
     if (state.files[1] === false) {
       return {
         status: false,
@@ -32,7 +30,6 @@ export function winnerInspection(minorYn, state) {
       }
     }
   }
-
 
   if (!state.check) {
     return {
@@ -45,5 +42,4 @@ export function winnerInspection(minorYn, state) {
     status: true,
     content: ''
   }
-
 }

@@ -54,17 +54,19 @@
     .reportIcon {
       position: absolute;
       top: -46px;
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       left: 20px;
       z-index: 3;
-      background: url('../mypage/component/block_w_l.svg');
+      background: url('../mypage/component/block_w_l.svg') no-repeat 0 0;
       cursor: pointer;
     }
     .profile-detail {
       position: relative;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
       min-height: 230px;
       margin: 0 auto;
       padding: 0;
@@ -74,6 +76,10 @@
       z-index: 4;
       padding: 0 24px 20px;
       .profile-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         text-align: center;
         .profile-image {
           display: block;
@@ -150,13 +156,14 @@
         }
         .liveIcon {
           position: absolute;
+          top: 10px;
           right: 20px;
-          top: 20px;
           z-index: 3;
           span {
             display: block;
             color: #f54640;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: bold;
           }
         }
         .title {
@@ -348,29 +355,66 @@
           color: $white;
           border-radius: 12px;
         }
-
-        .specialIcon {
+        .checkBadge {
           position: absolute;
           top: 0;
-          left: 16px;
-          width: 44px;
-          padding-top: 30px;
-          font-size: 14px;
-          letter-spacing: -0.5px;
-          line-height: 1.2;
-          font-weight: bold;
-          &::before {
-            display: inline-block;
-            width: 24px;
-            height: 28px;
-            position: absolute;
-            top: 0;
-            left: 10px;
-            content: '';
-            background: url('../menu/static/ico-specialdj.png') no-repeat center;
+          left: 12px;
+          .specialIcon {
+            display: flex;
+            justify-content: center;
+            position: relative;
+            width: 54px;
+            height: 51px;
+            background: url('https://image.dalbitlive.com/svg/ico_specialdj_on.png') no-repeat center;
             background-size: cover;
+            &__count {
+              position: absolute;
+              top: 12px;
+              font-weight: 600;
+              font-style: normal;
+              color: #ec455f;
+              font-size: 11px;
+              letter-spacing: -0.28px;
+            }
+            &.prev {
+              background: url('https://image.dalbitlive.com/svg/ico_specialdj_off.png') no-repeat center;
+            }
           }
         }
+        // .specialIcon {
+        //   position: absolute;
+        //   top: 0;
+        //   left: 16px;
+        //   width: 44px;
+        //   padding-top: 30px;
+        //   font-size: 14px;
+        //   letter-spacing: -0.5px;
+        //   line-height: 1.2;
+        //   font-weight: bold;
+        //   &__count {
+        //     position: absolute;
+        //     top: 0;
+        //     left: 50%;
+        //     transform: translateX(-50%);
+        //   }
+        //   &::before {
+        //     display: inline-block;
+        //     width: 54px;
+        //     height: 51px;
+        //     position: absolute;
+        //     top: 0;
+        //     left: 10px;
+        //     content: '';
+        //     background: url('./static/specialdj_on.png') no-repeat center;
+        //     background-size: cover;
+        //   }
+
+        //   &.prev {
+        //     &::before {
+        //       background: url('./static/specialdj_off.png') no-repeat center;
+        //     }
+        //   }
+
         .badgeWrap {
           display: flex;
           margin: 5px auto 0;
@@ -543,10 +587,27 @@
           }
         }
         .fanListWrap {
-          margin-top: 14px;
           display: flex;
           justify-content: center;
-
+          background-color: #f5f5f5;
+          padding: 6px 0;
+          width: 328px;
+          margin-top: 14px;
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+          &.cupidWrap {
+            margin-top: 2px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+          }
+          &__cupidImg {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            margin-right: 4px;
+          }
           &__cupidNick {
             max-width: calc(100% - 96px);
             text-overflow: ellipsis;
@@ -554,7 +615,7 @@
             white-space: nowrap;
             word-wrap: normal;
             display: block;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 800;
             line-height: 26px;
           }
@@ -563,6 +624,10 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          .defalutTxt {
+            font-size: 14px;
+            color: #bdbdbd;
+          }
           .fanItem {
             display: inline-block;
             position: relative;
@@ -574,6 +639,14 @@
             background-position: center;
             background-repeat: no-repeat;
             cursor: pointer;
+            &.defalut {
+              background: url('https://image.dalbitlive.com/svg/ico_defalitprofile.svg');
+              margin-right: 6px;
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+
             & > a {
               display: block;
               width: 100%;
@@ -827,7 +900,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 12px;
       transform: skew(-0.03deg);
       width: 72px;
       height: 28px;
@@ -836,10 +908,8 @@
       font-weight: bold;
       letter-spacing: -0.35px;
       line-height: 28px;
-      border-radius: 25px;
-      border: solid 1px #e0e0e0;
       color: $black;
-      background-color: $white;
+
       &::after {
         content: '';
         position: relative;
@@ -848,10 +918,8 @@
         height: 20px;
         background: url('../menu/static/ico_circle.svg') no-repeat center center / contain;
       }
-
       &.cupid {
         width: auto;
-        background-color: #eee;
       }
     }
     &__fanMore {

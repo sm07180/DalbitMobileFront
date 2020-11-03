@@ -98,7 +98,7 @@ export default function RouletteTab() {
         <img src={`${IMG_SERVER}/event/attend/201019/event_img_02_1@2x.png`} alt="룰렛을 돌려보아요!" />
 
         <button type="button" className="" onClick={() => history.push('/event/attend_my_apply')}>
-          <img src={`${IMG_SERVER}/event/attend/201019/btn_roullete_history@2x.png`} alt="룰렛 참여내역 확인" />
+          <img src={`${IMG_SERVER}/event/attend/201028/btn_roullete_history@2x.png`} alt="룰렛 당첨이력 확인" />
         </button>
 
         <div className="couponBox">

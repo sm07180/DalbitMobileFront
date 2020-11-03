@@ -48,6 +48,18 @@ export default () => {
     }
   }
 
+  async function pushClick(pushIdx) {
+    const res = await Api.push_click({
+      data: {
+        pushIdx: pushIdx
+      }
+    })
+    if (res.result === 'success') {
+      // console.log('성공')
+    } else if (res.result === 'fail') {
+    }
+  }
+
   const [authState, setAuthState] = useState(false)
 
   //auth 상태체크
@@ -116,10 +128,10 @@ export default () => {
             window.location.href = '/'
             break
           case '31': //-----------------마이페이지>팬 보드
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '32': //-----------------마이페이지>내 지갑
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
             break
@@ -134,16 +146,16 @@ export default () => {
             context.action.updateSticker(true) //true,false
             break
           case '37': //------------------1:1 문의 답변
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '38': //------------------스타의 방송공지 등록
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '4': //------------------등록 된 캐스트(미정)
             //window.location.href = `/`
             break
           case '5': //------------------스페셜 DJ 선정 페이지(미정)
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
             break
@@ -549,18 +561,6 @@ export default () => {
           alert(e)
         }
         return false
-      }
-    }
-
-    async function pushClick(pushIdx) {
-      const res = await Api.push_click({
-        data: {
-          pushIdx: pushIdx
-        }
-      })
-      if (res.result === 'success') {
-        // console.log('성공')
-      } else if (res.result === 'fail') {
       }
     }
 

@@ -140,9 +140,19 @@ export default () => {
       }
     } else {
       if (returntype === 'room') {
-        Hybrid('ClosePayPopup')
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            Hybrid('ClosePayPopup')
+          }
+        })
       } else if (returntype === 'store') {
-        window.location.href = '/'
+        context.action.alert({
+          msg: message,
+          callback: () => {
+            window.location.href = '/'
+          }
+        })
       } else {
         Hybrid('ClosePayPopup')
         window.location.href = '/'

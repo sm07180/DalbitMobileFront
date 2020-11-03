@@ -5,7 +5,7 @@ import Utility, {addComma} from 'components/lib/utility'
 import {Context} from 'context'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
-export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
+export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
   const history = useHistory()
   const context = useContext(Context)
   const [winnerCertifiInfo, setWinnerCertifiInfo] = useState({})
@@ -145,8 +145,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
         files
       }
 
-      setSelectFetching(valueAble);
-
+      setSelectFetching(valueAble)
     } else {
       context.action.alert({
         msg: message,
@@ -181,11 +180,10 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
     if (!context.token.isLogin) history.push('/')
   }, [context.token])
 
-
   useEffect(() => {
-    if(formatFetching !== null && selectFetching !== null) {
+    if (formatFetching !== null && selectFetching !== null) {
       formDispatch({
-        type: "init",
+        type: 'init',
         val: {
           ...selectFetching,
           ...formatFetching
@@ -217,83 +215,88 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
         <span className="infoText">{winnerCertifiInfo.mem_phone}</span>
       </div>
 
-      <div className={`inputForm__box input ${emailFocusState? ' focus' : ''}`}>
-        <label className="formText" htmlFor="emailInput">이메일</label>
+      <div className={`inputForm__box input ${emailFocusState ? ' focus' : ''}`}>
+        <label className="formText" htmlFor="emailInput">
+          이메일
+        </label>
         <input
-            type="email"
-            className="infoText"
-            id="emailInput"
-            onFocus={(e) => emailFocus(e)}
-            onBlur ={(e) => emailFocusOut(e)}
-            onChange={(e) => formDispatch({type: 'winner_email', val: e.target.value})}
-            value={state.winner_email}
-            placeholder="이메일 주소를 입력해주세요."/>
+          type="email"
+          className="infoText"
+          id="emailInput"
+          onFocus={(e) => emailFocus(e)}
+          onBlur={(e) => emailFocusOut(e)}
+          onChange={(e) => formDispatch({type: 'winner_email', val: e.target.value})}
+          value={state.winner_email}
+          placeholder="이메일 주소를 입력해주세요."
+        />
       </div>
 
       <div className="inputForm__box default">
         <div className="formText">우편번호</div>
-          <label className="textLabel" onClick={(e) => searchAddr(e)}>
-            <span className="textSpan">
-              <input
-                      type="text"
-                      disabled={true}
-                      value={state.winner_post_code}
-                      placeholder="주소 검색을 해주세요."/>
-            </span>
-            <span className="searchBox">주소검색</span>
-          </label>
+        <label className="textLabel" onClick={(e) => searchAddr(e)}>
+          <span className="textSpan">
+            <input type="text" disabled={true} value={state.winner_post_code} placeholder="주소 검색을 해주세요." />
+          </span>
+          <span className="searchBox">주소검색</span>
+        </label>
       </div>
 
       <div className="inputForm__box default">
         <span className="formText">주소</span>
         <input
-            type="text"
-            className="infoText"
-            disabled={true}
-            value={state.winner_address_1}
-            placeholder="주소 검색 시 자동 입력됩니다." />
+          type="text"
+          className="infoText"
+          disabled={true}
+          value={state.winner_address_1}
+          placeholder="주소 검색 시 자동 입력됩니다."
+        />
       </div>
 
-      <div className={`inputForm__box input ${addrFocusState? ' focus' : ''}`}>
-        <label className="formText" htmlFor="addressInput">상세 주소</label>
+      <div className={`inputForm__box input ${addrFocusState ? ' focus' : ''}`}>
+        <label className="formText" htmlFor="addressInput">
+          상세 주소
+        </label>
         <input
-            type="text"
-            className="infoText"
-            id="addressInput"
-            value={state.winner_address_2}
-            onFocus={(e) => addrFocus(e)}
-            onBlur={(e) => addrFocusOut(e)}
-            onChange={(e) => formDispatch({type: 'winner_address_2', val: e.target.value})}
-            placeholder="상세 주소를 입력해주세요."/>
+          type="text"
+          className="infoText"
+          id="addressInput"
+          value={state.winner_address_2}
+          onFocus={(e) => addrFocus(e)}
+          onBlur={(e) => addrFocusOut(e)}
+          onChange={(e) => formDispatch({type: 'winner_address_2', val: e.target.value})}
+          placeholder="상세 주소를 입력해주세요."
+        />
       </div>
 
       <div className="inputForm__box default">
         <div className="formText">신분증 사본</div>
-          <label htmlFor="id-upload" className="textLabel">
-            <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요.'}</span>
-            <span className="searchBox">찾아보기</span>
-          </label>
-          <input id="id-upload" type="file" onChange={(e) => uploadSingleFile(e, 0)} />
+        <label htmlFor="id-upload" className="textLabel">
+          <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요.'}</span>
+          <span className="searchBox">찾아보기</span>
+        </label>
+        <input id="id-upload" type="file" onChange={(e) => uploadSingleFile(e, 0)} />
       </div>
 
       <div className="descArea">※ 주민등록증, 운전면허증, 여권, 주민등록등본, 가족관계증명서 등</div>
 
-      {minorYn === 1 &&
-      <>
-        <div className="inputForm__box default">
-          <div className="formText">가족관계증명서</div>
-          <label htmlFor="certi-upload" className="textLabel">
-            <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요.'}</span>
-            <span className="searchBox">찾아보기</span>
-          </label>
-          <input id="certi-upload" type="file" onChange={(e) => uploadSingleFile(e, 1)}/>
-        </div>
-        <div className="descArea">※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.</div>
-      </>
-      }
+      {minorYn === 1 && (
+        <>
+          <div className="inputForm__box default">
+            <div className="formText">가족관계증명서</div>
+            <label htmlFor="certi-upload" className="textLabel">
+              <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요.'}</span>
+              <span className="searchBox">찾아보기</span>
+            </label>
+            <input id="certi-upload" type="file" onChange={(e) => uploadSingleFile(e, 1)} />
+          </div>
+          <div className="descArea">
+            ※ 미성년자의 경우 인증받은 부모님의 실명이 기재된 가족관계증명서를 필수로 등록하셔야 합니다.
+          </div>
+        </>
+      )}
 
       <div className="msgBox">
-        추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 <br/> SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.
+        추가 정보를 입력하시면 제세공과금 및 입금계좌 안내 <br /> SMS가 발송됩니다. 입금 확인 후 경품 발송이 진행됩니다.
       </div>
 
       <div className="inputForm__box prize">
@@ -314,8 +317,10 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
       </div>
 
       <div className="checkArea">
-        <div> {/* div 태그 없으면 체크박스 모양이 망가져요 */}
-        <DalbitCheckbox status={state.check} callback={() => formDispatch({type: 'check', val: !state.check})} />
+        <div>
+          {' '}
+          {/* div 태그 없으면 체크박스 모양이 망가져요 */}
+          <DalbitCheckbox status={state.check} callback={() => formDispatch({type: 'check', val: !state.check})} />
         </div>
         <div className="checkText">
           <strong>개인정보 수집 및 이용 동의</strong>

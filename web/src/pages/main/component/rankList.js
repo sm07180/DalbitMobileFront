@@ -34,62 +34,66 @@ export default (props) => {
     <>
       {rankType === 'dj' ? (
         <Swiper {...swiperParams}>
-          {djRank.map((dj, idx) => {
-            const {rank, nickNm, memNo, profImg, liveBadgeList} = dj
-            return (
-              <div
-                className="rank-slide"
-                key={`dj-${idx}`}
-                onClick={() => {
-                  console.log(globalCtx.token.isLogin)
-                  if (globalCtx.token.isLogin) {
-                    history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
-                  } else {
-                    history.push('/login')
-                  }
-                }}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  {idx > 2 ? (
-                    // <div className="counting">{rank}</div>
-                    <></>
-                  ) : (
-                    // <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
-                    <img className="medal-img" src={liveBadgeList[0].icon} />
-                  )}
+          {djRank &&
+            djRank.map((dj, idx) => {
+              const {rank, nickNm, memNo, profImg, liveBadgeList} = dj
+              return (
+                <div
+                  className="rank-slide"
+                  key={`dj-${idx}`}
+                  onClick={() => {
+                    console.log(globalCtx.token.isLogin)
+                    if (globalCtx.token.isLogin) {
+                      history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                    } else {
+                      history.push('/login')
+                    }
+                  }}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    {idx > 2 ? (
+                      // <div className="counting">{rank}</div>
+                      <></>
+                    ) : liveBadgeList.length > 0 ? (
+                      <img className="live-medal-img" src={liveBadgeList[0].icon} />
+                    ) : (
+                      <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    )}
+                  </div>
+                  <div className="nickname">{nickNm}</div>
                 </div>
-                <div className="nickname">{nickNm}</div>
-              </div>
-            )
-          })}
+              )
+            })}
         </Swiper>
       ) : (
         <Swiper {...swiperParams}>
-          {fanRank.map((fan, idx) => {
-            const {rank, nickNm, memNo, profImg, liveBadgeList} = fan
-            return (
-              <div
-                className="rank-slide"
-                key={`fan-${idx}`}
-                onClick={() => {
-                  if (globalCtx.token.isLogin) {
-                    history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
-                  } else {
-                    history.push('/login')
-                  }
-                }}>
-                <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
-                  {idx > 2 ? (
-                    // <div className="counting">{rank}</div>
-                    <></>
-                  ) : (
-                    // <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
-                    <img className="medal-img" src={liveBadgeList[0].icon} />
-                  )}
+          {fanRank &&
+            fanRank.map((fan, idx) => {
+              const {rank, nickNm, memNo, profImg, liveBadgeList} = fan
+              return (
+                <div
+                  className="rank-slide"
+                  key={`fan-${idx}`}
+                  onClick={() => {
+                    if (globalCtx.token.isLogin) {
+                      history.push(MyMemNo === memNo ? `/menu/profile` : `/mypage/${memNo}`)
+                    } else {
+                      history.push('/login')
+                    }
+                  }}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                    {idx > 2 ? (
+                      // <div className="counting">{rank}</div>
+                      <></>
+                    ) : liveBadgeList.length > 0 ? (
+                      <img className="live-medal-img" src={liveBadgeList[0].icon} />
+                    ) : (
+                      <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    )}
+                  </div>
+                  <div className="nickname">{nickNm}</div>
                 </div>
-                <div className="nickname">{nickNm}</div>
-              </div>
-            )
-          })}
+              )
+            })}
         </Swiper>
       )}
     </>

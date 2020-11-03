@@ -51,6 +51,7 @@ const GlobalProvider = (props) => {
   const [closeStarCnt, setCloseStarCnt] = useState(false)
   const [closeGoodCnt, setCloseGoodCnt] = useState(false)
   const [closePresent, setClosePresent] = useState(false)
+  const [closeSpeical, setCloseSpecial] = useState(false)
   const [closeRank, setCloseRank] = useState(false)
   const [closeFanRank, setCloseFanRank] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
@@ -87,8 +88,8 @@ const GlobalProvider = (props) => {
   const [fanboardReply, setFanboardReply] = useState(false)
   const [fanboardReplyNum, setFanboardReplyNum] = useState(false)
   //clip
-  const [clipMainSort, setClipMainSort] = useState(1)
-  const [clipMainDate, setClipMainDate] = useState(0)
+  const [clipMainSort, setClipMainSort] = useState(2)
+  const [clipMainDate, setClipMainDate] = useState(1)
   const [clipRefresh, setClipRefresh] = useState(false)
   const [clipTab, setClipTab] = useState(0)
   const [clipType, setClipType] = useState([])
@@ -301,6 +302,9 @@ const GlobalProvider = (props) => {
     updateClosePresent: (bool) => {
       setClosePresent(bool)
     },
+    updateCloseSpecial: (bool) => {
+      setCloseSpecial(bool)
+    },
     updateCloseRank: (bool) => {
       setCloseRank(bool)
     },
@@ -511,7 +515,8 @@ const GlobalProvider = (props) => {
     backState,
     backFunction,
     roomType,
-    selfAuth
+    selfAuth,
+    closeSpeical
   }
   return <Provider value={value}>{props.children}</Provider>
 }

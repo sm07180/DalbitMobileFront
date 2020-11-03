@@ -168,115 +168,115 @@ export default function EventWinner() {
   }, [context.token])
 
   return (
-      <div id="winnerList">
-        <div className="resultWrap">
-          <div className="resultBox">
-            <h3 className="title">나의 당첨 결과</h3>
+    <div id="winnerList">
+      <div className="resultWrap">
+        <div className="resultBox">
+          <h3 className="title">나의 당첨 결과</h3>
 
-            {resultBoolean === false && (
-              <div className="resultState">
-                <div className="noResult">
-                  당첨된 경품이 없습니다.
-                  <br />
-                  다음엔 꼭 당첨되길 빌어요!
-                </div>
+          {resultBoolean === false && (
+            <div className="resultState">
+              <div className="noResult">
+                당첨된 경품이 없습니다.
+                <br />
+                다음엔 꼭 당첨되길 빌어요!
               </div>
-            )}
+            </div>
+          )}
 
-            {resultBoolean === true &&
-              resultPrize.map((item, idx) => {
-                if (!item) return null
-                const {certificationYn, minorYn, prizeIdx, prizeName, prizeSlct, prizeRank, receiveWay, state, receiveDal} = item
-                return (
-                  <div className="resultState" key={`resultPrize-${idx}`}>
-                    <div className="winResult">
-                      <>
-                        <img src={imgPrize} />
-                        <div className="resultPrizeName">{prizeName}</div>
-
-                        {/* 최초 당첨 - 현물 */}
-                        {prizeSlct === 1 && state === 0 && (
-                          <div className="buttonArea">
-                            <button
-                              className="infoButton"
-                              onClick={() => {
-                                checkSelfAuth(prizeIdx, minorYn, state)
-                              }}>
-                              배송 정보 입력
-                            </button>
-                            <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
-                              달로 바로 받기
-                            </button>
-                          </div>
-                        )}
-
-                        {/* 최초 당첨 - 달/별 */}
-                        {(prizeSlct === 2 || prizeSlct === 3) && state !== 3 && (
-                          <>
-                            <div className="textAreaBold">
-                              달/별은 추후 일괄 지급 예정입니다.
-                              <br />
-                            </div>
-                            <div className="textArea">조금만 기다려주세요.</div>
-                          </>
-                        )}
-
-                        {/* (현물) 입금 대기 중, 추가 정보 입력 */}
-                        {prizeSlct === 1 && state === 1 && (
-                          <div className="buttonArea">
-                            <button
-                              className="infoButton"
-                              onClick={() => {
-                                receiveWayClick(prizeIdx, 1, minorYn, state)
-                              }}>
-                              배송 정보 변경
-                            </button>
-                            <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
-                              달로 바로 받기
-                            </button>
-                          </div>
-                        )}
-
-                        {/* (현물) 입금 확인 후, 발송 완료 전 */}
-                        {prizeSlct === 1 && state === 2 && (
-                          <>
-                            <div className="textAreaBold">경품 발송 준비 중입니다.</div>
-                            <div className="textArea">궁금하신 사항은 고객센터로 문의 바랍니다.</div>
-                          </>
-                        )}
-
-                        {/* 발송 완료 - 현물, 달/별 */}
-                        {state === 3 && <div className="textAreaBold">경품 지급 완료.</div>}
-                      </>
-                    </div>
-                  </div>
-                )
-              })}
-          </div>
-        </div>
-
-        <div className="winnerWrap">
-          <div className="eventTitleBox">{eventTitle} 당첨자 명단</div>
-          <div className="eventDateBox">{dateFormat(announcementDate)}</div>
-          <ul className="winner-list">
-            {winnerRankList.map((rank, rankIdx) => {
+          {resultBoolean === true &&
+            resultPrize.map((item, idx) => {
+              if (!item) return null
+              const {certificationYn, minorYn, prizeIdx, prizeName, prizeSlct, prizeRank, receiveWay, state, receiveDal} = item
               return (
-                <li key={`winner-${rankIdx}`}>
-                  <div className="winnerTextArea">{rank.rankName}</div>
-                  <ul className="winnerUser-list">
-                    {rank.winnerList.map((item, idx) => {
-                        return (
-                          <li className="winnerUser-item" key={`user-${idx}`}>
-                            {item.nickName}
-                          </li>
-                        )
-                    })}
-                  </ul>
-                </li>
+                <div className="resultState" key={`resultPrize-${idx}`}>
+                  <div className="winResult">
+                    <>
+                      <img src={imgPrize} />
+                      <div className="resultPrizeName">{prizeName}</div>
+
+                      {/* 최초 당첨 - 현물 */}
+                      {prizeSlct === 1 && state === 0 && (
+                        <div className="buttonArea">
+                          <button
+                            className="infoButton"
+                            onClick={() => {
+                              checkSelfAuth(prizeIdx, minorYn, state)
+                            }}>
+                            배송 정보 입력
+                          </button>
+                          <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
+                            달로 바로 받기
+                          </button>
+                        </div>
+                      )}
+
+                      {/* 최초 당첨 - 달/별 */}
+                      {(prizeSlct === 2 || prizeSlct === 3) && state !== 3 && (
+                        <>
+                          <div className="textAreaBold">
+                            달/별은 추후 일괄 지급 예정입니다.
+                            <br />
+                          </div>
+                          <div className="textArea">조금만 기다려주세요.</div>
+                        </>
+                      )}
+
+                      {/* (현물) 입금 대기 중, 추가 정보 입력 */}
+                      {prizeSlct === 1 && state === 1 && (
+                        <div className="buttonArea">
+                          <button
+                            className="infoButton"
+                            onClick={() => {
+                              receiveWayClick(prizeIdx, 1, minorYn, state)
+                            }}>
+                            배송 정보 변경
+                          </button>
+                          <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
+                            달로 바로 받기
+                          </button>
+                        </div>
+                      )}
+
+                      {/* (현물) 입금 확인 후, 발송 완료 전 */}
+                      {prizeSlct === 1 && state === 2 && (
+                        <>
+                          <div className="textAreaBold">경품 발송 준비 중입니다.</div>
+                          <div className="textArea">궁금하신 사항은 고객센터로 문의 바랍니다.</div>
+                        </>
+                      )}
+
+                      {/* 발송 완료 - 현물, 달/별 */}
+                      {state === 3 && <div className="textAreaBold">경품 지급 완료.</div>}
+                    </>
+                  </div>
+                </div>
               )
             })}
-          </ul>
         </div>
       </div>
+
+      <div className="winnerWrap">
+        <div className="eventTitleBox">{eventTitle} 당첨자 명단</div>
+        <div className="eventDateBox">{dateFormat(announcementDate)}</div>
+        <ul className="winner-list">
+          {winnerRankList.map((rank, rankIdx) => {
+            return (
+              <li key={`winner-${rankIdx}`}>
+                <div className="winnerTextArea">{rank.rankName}</div>
+                <ul className="winnerUser-list">
+                  {rank.winnerList.map((item, idx) => {
+                    return (
+                      <li className="winnerUser-item" key={`user-${idx}`}>
+                        {item.nickName}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    </div>
   )
 }
