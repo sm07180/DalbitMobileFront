@@ -255,8 +255,10 @@ export default (props) => {
         setLivePage(page)
         setTotalLivePage(totalPage)
       }
-      if (broadcastList.data.isGreenMoon) {
+      if (broadcastList.data.isGreenMoon === true) {
         setPopupMoonState(true)
+      } else {
+        setPopupMoonState(false)
       }
       setLiveList(list)
     }
