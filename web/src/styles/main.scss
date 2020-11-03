@@ -1961,8 +1961,6 @@
   position: relative;
   display: flex;
   align-items: center;
-  flex-direction: column;
-  justify-content: space-between;
   height: 100vh;
   min-height: 520px;
   margin: 0 auto;
@@ -1997,12 +1995,21 @@
     }
   }
 
+  .appMargin {
+    height: 80px;
+  }
+
   .login-wrap {
     width: 100%;
-    padding: 8% 30px 0;
+    margin-bottom: 12%;
   }
 
   .logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo_text {
     display: block;
     margin: 0 auto 20px auto;
   }
@@ -2079,16 +2086,19 @@
   }
 
   .signupButton {
-    width: 260px;
-    height: 48px;
-    margin: 10px 0 60px;
-    line-height: 48px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 28px;
-    color: $white;
-    background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
+    a {
+      display: block;
+      margin: 30px auto 0px auto;
+      width: 260px;
+      height: 48px;
+      line-height: 48px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 28px;
+      color: $white;
+      background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
+    }
   }
 
   .socialLogin {

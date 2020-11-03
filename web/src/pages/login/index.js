@@ -293,6 +293,7 @@ export default (props) => {
             </div>
 
             <div className="login-wrap">
+              {customHeader['os'] !== OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
               <h2
                 onClick={() => {
                   if (!webview) {
@@ -300,7 +301,7 @@ export default (props) => {
                   }
                 }}>
                 <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" />
-                <img className="logo" src={logoW} alt="달빛라이브" />
+                <img className="logo_text" src={logoW} alt="달빛라이브" />
               </h2>
               <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
               <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
@@ -378,12 +379,12 @@ export default (props) => {
                     )}
                     {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
                   </div>
+
+                  <div className="signupButton">
+                    <a href="/signup">회원가입</a>
+                  </div>
                 </>
               )}
-            </div>
-
-            <div className="signupButton">
-              <a href="/signup">회원가입</a>
             </div>
           </div>
         </Layout>
