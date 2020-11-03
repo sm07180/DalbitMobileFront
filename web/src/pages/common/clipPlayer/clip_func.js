@@ -44,7 +44,7 @@ export const clipJoin = (data, context, webview, isPush) => {
     }
   }
   console.log('totalData', totalData)
-  alert(JSON.stringify(totalData))
+  // alert(JSON.stringify(totalData))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     if (webview === 'new') {
