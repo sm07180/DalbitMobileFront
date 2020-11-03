@@ -24,7 +24,11 @@ export default (props) => {
         <button className="btn-close">
           <span className="blind">닫기</span>
         </button>
-        <div className="in">
+        <div
+          className="in"
+          onClick={(e) => {
+            e.stopPropagation()
+          }}>
           {props.children}
           <div className="btnWrap">
             <button
