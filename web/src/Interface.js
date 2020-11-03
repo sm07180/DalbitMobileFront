@@ -123,7 +123,7 @@ export default () => {
 
         const {isLogin} = context.token
         const {push_type} = pushMsg
-        let room_no, mem_no, board_idx
+        //let room_no, mem_no, board_idx
 
         //개발쪽만 적용
         // if (__NODE_ENV === 'dev') {
@@ -543,6 +543,14 @@ export default () => {
         } else if (onCall === false) {
           sessionStorage.removeItem('onCall')
         }
+      case 'native-goto-fanboard': //----- 청취자요약정보 팬보드이동
+        const {mem_no} = event.detail
+        history.push(`/mypage/${mem_no}`)
+      case 'native-join-room': //----- 청취자요양정보 방조인
+        const {room_no} = event.detail
+        RoomJoin({roomNo: room_no})
+      case 'native-goto-rank': //----- 청취자요약정보 랭킹이동
+        history.push(`/rank`)
       default:
         break
     }
@@ -826,6 +834,11 @@ export default () => {
       document.removeEventListener('clip-player-pause', update)
       // document.removeEventListener('clip-upload-end', update)
       document.removeEventListener('native-close-layer-popup', update)
+
+      /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+      document.addEventListener('native-goto-fanboard', update)
+      document.addEventListener('native-goto-rank', update)
+      document.addEventListener('native-join-room', update)
     }
   }, [])
 
