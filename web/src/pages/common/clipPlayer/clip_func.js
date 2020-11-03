@@ -79,8 +79,17 @@ export const clipJoin = (data, context, webview, isPush) => {
         }
         // console.log('2' + sessionStorage.getItem('listening'))
       }
-
-      return Hybrid('ClipPlayerJoin', totalData)
+      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+        let timer
+        timer = setTimeout(() => {
+          if (!timer) {
+            timer = null
+            return Hybrid('ClipPlayerJoin', totalData)
+          }
+        }, 500)
+      } else {
+        return Hybrid('ClipPlayerJoin', totalData)
+      }
     }
   } else {
     if (webview === 'new') {
