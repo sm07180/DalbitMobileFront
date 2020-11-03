@@ -442,6 +442,7 @@ export default () => {
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         context.action.updatePlayer(false)
+        sessionStorage.setItem('listening', 'N')
         sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
