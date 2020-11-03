@@ -1,6 +1,7 @@
 import React, {useContext, useReducer} from 'react'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Winner_info from './winner_info'
+import WinnerInfo from './winner_info'
 import {winnerInspection} from './validation_fn'
 import {Context} from 'context'
 
@@ -78,11 +79,10 @@ const initData = {
 }
 
 export default function WinnerInfoForm() {
+    const history = useHistory()
     const [formData, formDispatch] = useReducer(FormDataReducer, initData);
-    // initData를 사용해서 FormDataReducer를 이용해, formDispatch 해서 formData로 셋팅한다
     const context = useContext(Context)
 
-    console.log(formData)
     const submitWinnerForm = () => {
         async function fetchData() {
             const {result, message} = await Api.winnerInfoAddEdit({
@@ -105,7 +105,7 @@ export default function WinnerInfoForm() {
                 context.action.alert({
                     msg: message,
                     callback: () => {
-                        window.history.back()
+                        return history.push('/customer/event')
                     }
                 })
             } else {
@@ -123,6 +123,7 @@ export default function WinnerInfoForm() {
     }
 
     const checkInspection = (minorYn) => {
+
         const result = winnerInspection(minorYn, formData)
         if(result['status']) {
             submitWinnerForm()
@@ -134,6 +135,6 @@ export default function WinnerInfoForm() {
     }
 
     return (
-        <Winner_info state={formData} formDispatch={formDispatch} WinnerInspection ={checkInspection}/>
+        <WinnerInfo state={formData} formDispatch={formDispatch} WinnerInspection={checkInspection}/>
     )
 }

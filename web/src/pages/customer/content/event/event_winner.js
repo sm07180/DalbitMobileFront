@@ -38,7 +38,7 @@ export default function EventWinner() {
     context.action.confirm({
       callback: () => {
         receiveWayClick(prizeIdx, 2, state)
-        fnReceiveDal(receiveDal)
+        fnReceiveDal()
       },
       msg:
         '바로 받으실 경우 추가 입력절차 없이  <br/>' +
@@ -48,7 +48,7 @@ export default function EventWinner() {
     })
   }
 
-  function fnReceiveDal(receiveDal) {
+  function fnReceiveDal() {
     context.action.alert({
       msg: '지급이 완료되었습니다. <br/>마이페이지 > 내 지갑에서 확인하실 수 있습니다.',
       callback: async () => {

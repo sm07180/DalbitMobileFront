@@ -12,6 +12,9 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
   const [emailFocusState, setEmailFocusState] = useState(false)
   const [addrFocusState, setAddrFocusState] = useState(false)
 
+  const [selectFetching, setSelectFetching] = useState(null)
+  const [formatFetching, setFormatFetching] = useState(null)
+
   const eventIdx = history.location.state.eventIdx
   const prizeIdx = history.location.state.prizeIdx
   const minorYn = history.location.state.minorYn
@@ -142,14 +145,8 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
         files
       }
 
-      formDispatch({
-        type: 'init',
-        val: valueAble
-      })
+      setSelectFetching(valueAble);
 
-      formDispatch({type: 'eventIdx', val: eventIdx})
-      formDispatch({type: 'prizeIdx', val: prizeIdx})
-      formDispatch({type: 'check', val: false})
     } else {
       context.action.alert({
         msg: message,
@@ -164,8 +161,12 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
     const {result, data, message} = await Api.winnerInfoFormat({})
     if (result === 'success') {
       setWinnerCertifiInfo(data)
-      formDispatch({type: 'winner_name', val: data.mem_name})
-      formDispatch({type: 'winner_phone', val: data.mem_phone})
+
+      setFormatFetching({
+        winner_name: data.mem_name,
+        winner_phone: data.mem_phone,
+        check: false
+      })
     } else {
       context.action.alert({
         msg: message,
@@ -179,6 +180,19 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection }) {
   useEffect(() => {
     if (!context.token.isLogin) history.push('/')
   }, [context.token])
+
+
+  useEffect(() => {
+    if(formatFetching !== null && selectFetching !== null) {
+      formDispatch({
+        type: "init",
+        val: {
+          ...selectFetching,
+          ...formatFetching
+        }
+      })
+    }
+  }, [formatFetching, selectFetching])
 
   useEffect(() => {
     winnerInfoFormatFn()
