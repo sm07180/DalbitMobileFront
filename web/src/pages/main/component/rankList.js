@@ -54,7 +54,7 @@ export default (props) => {
                       // <div className="counting">{rank}</div>
                       <></>
                     ) : liveBadgeList.length > 0 ? (
-                      <img className="medal-img" src={liveBadgeList[0].icon} />
+                      <img className="live-medal-img" src={liveBadgeList[0].icon} />
                     ) : (
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
                     )}
@@ -85,7 +85,7 @@ export default (props) => {
                       // <div className="counting">{rank}</div>
                       <></>
                     ) : liveBadgeList.length > 0 ? (
-                      <img className="medal-img" src={liveBadgeList[0].icon} />
+                      <img className="live-medal-img" src={liveBadgeList[0].icon} />
                     ) : (
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
                     )}

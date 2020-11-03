@@ -165,12 +165,19 @@
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center;
-          .medal-img {
+          .live-medal-img {
             position: absolute;
             bottom: 4px;
             right: 0px;
             width: 36px;
             height: 36px;
+          }
+          .medal-img {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 26px;
+            height: 30px;
           }
         }
         .nickname {
