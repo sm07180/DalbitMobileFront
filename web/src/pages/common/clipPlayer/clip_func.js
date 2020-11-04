@@ -86,7 +86,7 @@ export const clipJoin = (data, context, webview, isPush) => {
         }
         timer = setTimeout(function () {
           return Hybrid('ClipPlayerJoin', totalData)
-        }, 600)
+        }, 400)
       } else {
         return Hybrid('ClipPlayerJoin', totalData)
       }
