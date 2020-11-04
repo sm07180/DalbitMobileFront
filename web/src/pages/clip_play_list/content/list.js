@@ -97,7 +97,7 @@ export default () => {
       globalCtx.action.alert({
         msg: message,
         callback: () => {
-          if (list[nextClipIdx + 1].clipNo) {
+          if (list[nextClipIdx + 1] !== undefined) {
             clipPlay(list[nextClipIdx + 1].clipNo)
           } else {
             clipPlay(list[0].clipNo)
