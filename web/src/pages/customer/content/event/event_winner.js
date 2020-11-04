@@ -188,13 +188,13 @@ export default function EventWinner() {
                       {prizeSlct === 1 && state === 0 && (
                         <div className="buttonArea">
                           <button
-                            className="infoButton"
+                            className="btn info"
                             onClick={() => {
                               checkSelfAuth(prizeIdx, minorYn, state)
                             }}>
                             배송 정보 입력
                           </button>
-                          <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
+                          <button className="btn dal" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
                             달로 바로 받기
                           </button>
                         </div>
@@ -203,7 +203,7 @@ export default function EventWinner() {
                       {/* 최초 당첨 - 달/별 */}
                       {(prizeSlct === 2 || prizeSlct === 3) && state !== 3 && (
                         <>
-                          <div className="textAreaBold">
+                          <div className="textArea bold">
                             달/별은 추후 일괄 지급 예정입니다.
                             <br />
                           </div>
@@ -230,13 +230,13 @@ export default function EventWinner() {
                       {/* (현물) 입금 확인 후, 발송 완료 전 */}
                       {prizeSlct === 1 && state === 2 && (
                         <>
-                          <div className="textAreaBold">경품 발송 준비 중입니다.</div>
+                          <div className="textArea bold">경품 발송 준비 중입니다.</div>
                           <div className="textArea">궁금하신 사항은 고객센터로 문의 바랍니다.</div>
                         </>
                       )}
 
                       {/* 발송 완료 - 현물, 달/별 */}
-                      {state === 3 && <div className="textAreaBold">경품 지급 완료.</div>}
+                      {state === 3 && <div className="textArea bold">경품 지급 완료.</div>}
                     </>
                   </div>
                 </div>

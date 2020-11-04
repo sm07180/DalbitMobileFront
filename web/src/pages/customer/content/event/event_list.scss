@@ -174,42 +174,30 @@
             display: flex;
             padding-top: 20px;
 
-            .infoButton {
+            .btn {
               width: 50%;
-              padding: 10px;
               text-align: center;
-              margin-right: 2px;
               font-size: 14px;
               font-weight: bold;
               line-height: 1.14;
-              color: $primary;
-              background-color: $white;
-              border-radius: 12px;
-              border: solid 1px $primary;
-            }
-
-            .dalButton {
-              width: 50%;
-              text-align: center;
               padding: 10px;
-              margin-left: 2px;
-              font-size: 14px;
-              font-weight: bold;
-              line-height: 1.14;
-              color: $white;
-              background-color: $primary;
-              border-radius: 12px;
-              border: solid 1px $primary;
-            }
-          }
 
-          .textAreaBold {
-            margin-top: 10px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: bold;
-            line-height: 1.43;
-            color: #757575;
+              &.info {
+                margin-right: 2px;
+                color: $primary;
+                background-color: $white;
+                border-radius: 12px;
+                border: solid 1px $primary;
+              }
+
+              &.dal {
+                margin-left: 2px;
+                color: $white;
+                background-color: $primary;
+                border-radius: 12px;
+                border: solid 1px $primary;
+              }
+            }
           }
 
           .textArea {
@@ -217,6 +205,11 @@
             font-size: 14px;
             line-height: 1.43;
             color: #757575;
+
+            &.bold {
+              margin-top: 10px;
+              font-weight: bold;
+            }
           }
         }
       }
