@@ -84,10 +84,6 @@ export default () => {
     }
   }
 
-  useEffect(() => {
-    console.log()
-  }, [data.list])
-
   const clipPlay = async (clipNum) => {
     const nextClipIdx = list.findIndex((item) => {
       return item.clipNo === clipNum
