@@ -173,18 +173,7 @@ export default function EventWinner() {
       <div className="resultWrap">
         <div className="resultBox">
           <h3 className="title">나의 당첨 결과</h3>
-
-          {resultBoolean === false && (
-            <div className="resultState">
-              <div className="noResult">
-                당첨된 경품이 없습니다.
-                <br />
-                다음엔 꼭 당첨되길 빌어요!
-              </div>
-            </div>
-          )}
-
-          {resultBoolean === true &&
+          {resultBoolean === true ? (
             resultPrize.map((item, idx) => {
               if (!item) return null
               const {certificationYn, minorYn, prizeIdx, prizeName, prizeSlct, prizeRank, receiveWay, state, receiveDal} = item
@@ -252,7 +241,16 @@ export default function EventWinner() {
                   </div>
                 </div>
               )
-            })}
+            })
+          ) : (
+            <div className="resultState">
+              <div className="noResult">
+                당첨된 경품이 없습니다.
+                <br />
+                다음엔 꼭 당첨되길 빌어요!
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
