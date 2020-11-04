@@ -46,11 +46,7 @@
     .textWrap {
       position: relative;
       margin-top: 5px;
-      &.endEvent {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-      }
+
       .desc {
         width: calc(100% - 100px);
         padding-right: 5px;

@@ -98,25 +98,24 @@ export default function EventList() {
                     <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
                       <img src={listImageUrl} />
                     </div>
-                    <div className="textWrap endEvent">
-                      {alwaysYn === 0 &&
-                      /* 진행 중, 상시X */
-                      <div className="desc">
-                        <p className="title">{title}</p>
-                        <span className="date">{dateFormat(startDate)}~{dateFormat(endDate)}</span>
-                      </div>
-                      }
+                    {alwaysYn === 0 &&
+                    /* 진행 중, 상시X */
+                    <div className="textWrap">
+                      <p className="title">{title}</p>
+                      <span className="date">{dateFormat(startDate)}~{dateFormat(endDate)}</span>
+                    </div>
+                    }
                       {alwaysYn === 1 && (prizeWinner === 0 || winnerOpen === 0) &&
                       /* 진행 중, 상시O, 당첨자 발표X */
-                      <div className="desc">
+                      <div className="textWrap">
                         <p className="title">{title}</p>
                         <span className="date">상시</span>
                       </div>
                       }
                       {alwaysYn === 1 && prizeWinner === 1 && winnerOpen === 1 &&
                       /* 진행 중, 상시O, 당첨자 발표O */
-                      <>
-                        <div class="desc">
+                      <div className="textWrap">
+                        <div className="desc">
                           <p className="title">{title}</p>
                           <span className="date">상시</span>
                         </div>
@@ -125,9 +124,8 @@ export default function EventList() {
                             onClick={() => announcePage(eventIdx, title, announcementDate)}>
                           당첨자 발표
                         </button>
-                      </>
+                        </div>
                       }
-                    </div>
                   </>
                 )}
 
@@ -137,7 +135,7 @@ export default function EventList() {
                       <img src={listImageUrl} />
                       <div className="endEvent-text">종료된 이벤트</div>
                     </div>
-                    <div className="textWrap endEvent">
+                    <div className="textWrap">
                       <div className="desc">
                         <p className="title">{title}</p>
                         <span className="date">
