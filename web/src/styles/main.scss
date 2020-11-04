@@ -1997,11 +1997,12 @@
 
   .appMargin {
     height: 80px;
+    width: 100px;
+    border: solid 3px;
   }
 
   .login-wrap {
     width: 100%;
-    margin-bottom: 16%;
   }
 
   .logo {
@@ -2032,6 +2033,10 @@
       letter-spacing: -0.4px;
       background: none;
       border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    :focus {
+      border-color: rgba(255, 255, 255, 1);
     }
     input::placeholder {
       color: $white;
@@ -2065,7 +2070,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 0 0 0;
+    padding: 15px 0 0 0;
 
     .link-text {
       color: $white;
@@ -2089,7 +2094,7 @@
   .signupButton {
     a {
       display: block;
-      margin: 30px auto 0px auto;
+      margin: 20px auto 0px auto;
       width: 260px;
       height: 48px;
       line-height: 48px;
@@ -2108,44 +2113,41 @@
     text-align: center;
 
     .social-apple-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-      border: solid 1px $black;
       background-color: $black;
       margin-right: 8px;
     }
 
     .social-facebook-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-
       background-color: $white;
       margin-right: 8px;
     }
 
     .social-naver-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
       background-color: #2db400;
       margin-right: 8px;
     }
 
     .social-kakao-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
       background-color: #f9e000;
       margin-right: 8px;
     }
 
     .social-google-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-      border: solid 1px #4285f4;
       background-color: $white;
     }
   }

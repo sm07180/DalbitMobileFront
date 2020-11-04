@@ -293,13 +293,13 @@ export default (props) => {
             </div>
 
             <div className="login-wrap">
-              {customHeader['os'] !== OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
               <h2
                 onClick={() => {
                   if (!webview) {
                     window.location.href = '/'
                   }
                 }}>
+                {customHeader['os'] !== OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
                 <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" />
                 <img className="logo_text" src={logoW} alt="달빛라이브" />
               </h2>
