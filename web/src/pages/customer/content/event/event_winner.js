@@ -5,6 +5,7 @@ import utility from 'components/lib/utility'
 import {Context} from 'context'
 
 import imgPrize from './static/img_prize.svg'
+import NoResult from 'components/ui/new_noResult'
 
 export default function EventWinner() {
   const history = useHistory()
@@ -258,24 +259,28 @@ export default function EventWinner() {
       <div className="winnerWrap">
         <div className="eventTitleBox">{eventTitle} 당첨자 명단</div>
         <div className="eventDateBox">{dateFormat(announcementDate)}</div>
-        <ul className="winner-list">
-          {winnerRankList.map((rank, rankIdx) => {
-            return (
-              <li key={`winner-${rankIdx}`}>
-                <div className="winnerTextArea">{rank.rankName}</div>
-                <ul className="winnerUser-list">
-                  {rank.winnerList.map((item, idx) => {
-                    return (
-                      <li className="winnerUser-item" key={`user-${idx}`}>
-                        {item.nickName}
-                      </li>
-                    )
-                  })}
-                </ul>
-              </li>
-            )
-          })}
-        </ul>
+        {winnerRankList && winnerRankList.length > 0 ? (
+          <ul className="winner-list">
+            {winnerRankList.map((rank, rankIdx) => {
+              return (
+                <li key={`winner-${rankIdx}`}>
+                  <div className="winnerTextArea">{rank.rankName}</div>
+                  <ul className="winnerUser-list">
+                    {rank.winnerList.map((item, idx) => {
+                      return (
+                        <li className="winnerUser-item" key={`user-${idx}`}>
+                          {item.nickName}
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult text="해당 이벤트 당첨자가 없습니다." />
+        )}
       </div>
     </div>
   )
