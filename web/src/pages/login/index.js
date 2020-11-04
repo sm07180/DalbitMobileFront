@@ -293,7 +293,6 @@ export default (props) => {
             </div>
 
             <div className="login-wrap">
-              {customHeader['os'] !== OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
               <h2
                 onClick={() => {
                   if (!webview) {
@@ -383,6 +382,7 @@ export default (props) => {
                   <div className="signupButton">
                     <a href="/signup">회원가입</a>
                   </div>
+                  {customHeader['os'] === OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
                 </>
               )}
             </div>
