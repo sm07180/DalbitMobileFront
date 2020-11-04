@@ -209,7 +209,7 @@ export default (props) => {
     return (
       <div className="chartListDetail">
         <ul className={`chartListDetailBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
-          {list.length > 0 ? makeList() : <NoResult height={600} />}
+          {list.length > 0 ? makeList() : <NoResult height={600} text="등록된 실시간 클립이 없습니다." />}
         </ul>
       </div>
     )
@@ -291,7 +291,7 @@ export default (props) => {
               )
             })
           ) : (
-            <NoResult height={600} />
+            <NoResult height={600} text="등록된 실시간 클립이 없습니다." />
           )}
         </ul>
       </div>
