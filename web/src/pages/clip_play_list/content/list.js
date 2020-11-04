@@ -84,6 +84,10 @@ export default () => {
     }
   }
 
+  useEffect(() => {
+    console.log()
+  }, [data.list])
+
   const clipPlay = async (clipNum) => {
     const nextClipIdx = list.findIndex((item) => {
       return item.clipNo === clipNum
@@ -92,7 +96,7 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, globalCtx)
+      clipJoin(data, globalCtx, 'new')
     } else {
       globalCtx.action.alert({
         msg: message,
