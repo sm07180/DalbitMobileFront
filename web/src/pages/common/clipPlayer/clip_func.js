@@ -48,6 +48,7 @@ export const clipJoin = (data, context, webview, isPush) => {
   // alert(JSON.stringify(totalData))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    alert(webview)
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
