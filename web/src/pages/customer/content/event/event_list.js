@@ -128,13 +128,15 @@ export default function EventList() {
                         </span>
                       </div>
                       {(prizeWinner === 0 || winnerOpen === 0) && (
-                        <button className="countIngBox" onClick={() => countIngAlert()}>
-                          <span className="countIngBox-text">집계 중</span>
+                        <button className="btn__announce" onClick={() => countIngAlert()}>
+                          집계중
                         </button>
                       )}
                       {prizeWinner === 1 && winnerOpen === 1 && (
-                        <button className="announceBox" onClick={() => announcePage(eventIdx, title, announcementDate)}>
-                          <span className="announceBox-text">당첨자 발표</span>
+                        <button
+                          className="btn__announce btn__announce--isActive"
+                          onClick={() => announcePage(eventIdx, title, announcementDate)}>
+                          당첨자 발표
                         </button>
                       )}
                     </div>
