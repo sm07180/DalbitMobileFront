@@ -1961,8 +1961,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: 100vh;
-  min-height: 520px;
+  height: 100%;
+  overflow: hidden;
   margin: 0 auto;
   background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
@@ -1996,9 +1996,8 @@
   }
 
   .appMargin {
-    height: 80px;
+    height: 110px;
     width: 100px;
-    border: solid 3px;
   }
 
   .login-wrap {

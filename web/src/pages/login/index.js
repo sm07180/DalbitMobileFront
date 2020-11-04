@@ -299,7 +299,6 @@ export default (props) => {
                     window.location.href = '/'
                   }
                 }}>
-                {customHeader['os'] !== OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
                 <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" />
                 <img className="logo_text" src={logoW} alt="달빛라이브" />
               </h2>
@@ -383,6 +382,7 @@ export default (props) => {
                   <div className="signupButton">
                     <a href="/signup">회원가입</a>
                   </div>
+                  {customHeader['os'] === OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
                 </>
               )}
             </div>
