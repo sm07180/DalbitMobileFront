@@ -88,29 +88,50 @@ export default function EventList() {
               mobileLinkUrl,
               prizeWinner,
               winnerOpen,
-              announcementDate
+              announcementDate,
+              viewYn
             } = item
             return (
               <li key={`board-${idx}`} className="event-item">
-                {state === 1 && prizeWinner === 0 && (
+                {state === 1 && viewYn === 1 && (
                   <>
                     <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
                       <img src={listImageUrl} />
                     </div>
-                    <div className="textWrap">
-                      <p className="title">{title}</p>
-                      <span className="date">
-                        {alwaysYn === 1 && <>상시</>}
-                        {alwaysYn === 0 && (
-                          <>
-                            {dateFormat(startDate)}~{dateFormat(endDate)}
-                          </>
-                        )}
-                      </span>
+                    <div className="textWrap endEvent">
+                      {alwaysYn === 0 &&
+                      /* 진행 중, 상시X */
+                      <div className="desc">
+                        <p className="title">{title}</p>
+                        <span className="date">{dateFormat(startDate)}~{dateFormat(endDate)}</span>
+                      </div>
+                      }
+                      {alwaysYn === 1 && (prizeWinner === 0 || winnerOpen === 0) &&
+                      /* 진행 중, 상시O, 당첨자 발표X */
+                      <div className="desc">
+                        <p className="title">{title}</p>
+                        <span className="date">상시</span>
+                      </div>
+                      }
+                      {alwaysYn === 1 && prizeWinner === 1 && winnerOpen === 1 &&
+                      /* 진행 중, 상시O, 당첨자 발표O */
+                      <>
+                        <div class="desc">
+                          <p className="title">{title}</p>
+                          <span className="date">상시</span>
+                        </div>
+                        <button
+                            className="btn__announce btn__announce--isActive"
+                            onClick={() => announcePage(eventIdx, title, announcementDate)}>
+                          당첨자 발표
+                        </button>
+                      </>
+                      }
                     </div>
                   </>
                 )}
-                {state === 2 && (
+
+                {state === 2 && viewYn === 1 && (
                   <>
                     <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
                       <img src={listImageUrl} />
@@ -127,11 +148,13 @@ export default function EventList() {
                           )}
                         </span>
                       </div>
+                      {/* 종료, 당첨자 발표X */}
                       {(prizeWinner === 0 || winnerOpen === 0) && (
                         <button className="btn__announce" onClick={() => countIngAlert()}>
                           집계중
                         </button>
                       )}
+                      {/* 종료, 당첨자 발표O */}
                       {prizeWinner === 1 && winnerOpen === 1 && (
                         <button
                           className="btn__announce btn__announce--isActive"
