@@ -199,7 +199,8 @@ export default (props) => {
       let playListInfoData
       if (type === 'recommend') {
         playListInfoData = {
-          listCnt: 20
+          listCnt: 20,
+          playlist: true
         }
       } else if (type === 'new') {
         playListInfoData = {
