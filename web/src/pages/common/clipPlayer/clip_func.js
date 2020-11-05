@@ -56,10 +56,10 @@ export const clipJoin = (data, context, webview, isPush) => {
         return Hybrid('CloseLayerPopup')
       } else {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
-          return Hybrid('ClipPlayerJoin', totalData)
+          return Hybrid('ClipPlayerJoin', data)
         } else {
           // return NewHybrid('ClipPlay', webview, data)
-          return Hybrid('ClipPlayerJoin', totalData)
+          return Hybrid('ClipPlayerJoin', data)
         }
       }
     } else {
@@ -82,7 +82,7 @@ export const clipJoin = (data, context, webview, isPush) => {
         // console.log('2' + sessionStorage.getItem('listening'))
       }
       if (context.customHeader['os'] === OS_TYPE['IOS']) {
-        Hybrid('ClipPlayerJoin', totalData)
+        Hybrid('ClipPlayerJoin', data)
         // if (timer) {
         //   clearTimeout(timer)
         // }
@@ -90,7 +90,7 @@ export const clipJoin = (data, context, webview, isPush) => {
         //   return Hybrid('ClipPlayerJoin', totalData)
         // }, 400)
       } else {
-        return Hybrid('ClipPlayerJoin', totalData)
+        return Hybrid('ClipPlayerJoin', data)
       }
     }
   } else {
