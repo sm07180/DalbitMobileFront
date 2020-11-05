@@ -24,7 +24,23 @@ export default function Alert() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      localStorage.removeItem('clipPlayListInfo')
+      const oneClipPlayList = {
+        clipNo: data.clipNo,
+        bgImg: data.bgImg,
+        title: data.title,
+        nickName: data.nickName,
+        subjectType: data.subjectType,
+        isNew: data.isNew,
+        filePlayTime: data.filePlay,
+        isSpecial: data.isSpecial,
+        gender: data.gender,
+        replyCnt: data.replyCnt,
+        goodCnt: data.goodCnt,
+        playCnt: data.playCnt
+      }
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
         context.action.alert({

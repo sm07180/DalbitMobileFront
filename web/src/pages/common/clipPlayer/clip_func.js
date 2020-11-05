@@ -6,10 +6,49 @@ import Utility from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
-export const clipJoin = (data, context, webview) => {
-  // console.log('1' + sessionStorage.getItem('listening'))
+export const clipJoin = (data, context, webview, isPush) => {
+  let timer
+  let totalData = {
+    playing: data,
+    playListData: {
+      type: '',
+      param: '',
+      isPush: isPush === 'push' ? true : false
+    }
+  }
+
+  let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
+  let url = ''
+  let currentTyep = ''
+  if (playListData) {
+    Object.keys(playListData).forEach((key, idx) => {
+      if (idx === 0) {
+        url = url + `${key}=${playListData[key]}`
+      } else {
+        url = url + `&${key}=${playListData[key]}`
+      }
+    })
+    if (playListData.hasOwnProperty('listCnt')) {
+      if (playListData.hasOwnProperty('subjectType')) {
+        currentTyep = 'top3'
+      } else {
+        currentTyep = 'pop'
+      }
+    } else if (playListData.hasOwnProperty('memNo')) {
+      currentTyep = 'upload'
+    } else {
+      currentTyep = 'list'
+    }
+    totalData = {
+      ...totalData,
+      playListData: {type: currentTyep, param: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
+    }
+  }
+  console.log('totalData', totalData)
+  // alert(JSON.stringify(totalData))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    // alert(webview)
     if (webview === 'new') {
       let prevClipNo = JSON.parse(Utility.getCookie('clip-player-info'))
       prevClipNo = prevClipNo.clipNo
@@ -17,10 +56,10 @@ export const clipJoin = (data, context, webview) => {
         return Hybrid('CloseLayerPopup')
       } else {
         if (context.customHeader['os'] === OS_TYPE['IOS']) {
-          return Hybrid('ClipPlayerJoin', data)
+          return Hybrid('ClipPlayerJoin', totalData)
         } else {
           // return NewHybrid('ClipPlay', webview, data)
-          return Hybrid('ClipPlayerJoin', data)
+          return Hybrid('ClipPlayerJoin', totalData)
         }
       }
     } else {
@@ -42,8 +81,16 @@ export const clipJoin = (data, context, webview) => {
         }
         // console.log('2' + sessionStorage.getItem('listening'))
       }
-
-      return Hybrid('ClipPlayerJoin', data)
+      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        timer = setTimeout(function () {
+          return Hybrid('ClipPlayerJoin', totalData)
+        }, 400)
+      } else {
+        return Hybrid('ClipPlayerJoin', totalData)
+      }
     }
   } else {
     if (webview === 'new') {

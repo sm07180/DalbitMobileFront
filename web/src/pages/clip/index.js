@@ -158,7 +158,9 @@ export default (props) => {
     }
   }
   const fetchDataListLatest = async () => {
-    const {result, data, message} = await Api.getLatestList({})
+    const {result, data, message} = await Api.getLatestList({
+      listCnt: 10
+    })
     if (result === 'success') {
       setrankList(data.list)
     } else {
@@ -190,11 +192,31 @@ export default (props) => {
     }
   }
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, type) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      console.log(type)
+      let playListInfoData
+      if (type === 'recommend') {
+        playListInfoData = {
+          listCnt: 20
+        }
+      } else if (type === 'new') {
+        playListInfoData = {
+          slctType: 1,
+          dateType: 0,
+          page: 1,
+          records: 100
+        }
+      } else if (type === 'theme') {
+        playListInfoData = {
+          subjectType: data.subjectType,
+          listCnt: 100
+        }
+      }
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -234,7 +256,7 @@ export default (props) => {
                 context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'recommend')
             }
           }}
           style={{cursor: 'pointer'}}>
@@ -273,7 +295,7 @@ export default (props) => {
                 globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'new')
             }
           }}
           key={`latest-` + idx}
@@ -347,7 +369,7 @@ export default (props) => {
                         globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
                     } else {
-                      fetchDataPlay(clipNo)
+                      fetchDataPlay(clipNo, 'theme')
                     }
                   }}
                   key={idx + `toplist`}
