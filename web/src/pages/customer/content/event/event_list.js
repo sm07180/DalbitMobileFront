@@ -88,66 +88,87 @@ export default function EventList() {
               mobileLinkUrl,
               prizeWinner,
               winnerOpen,
-              announcementDate
+              announcementDate,
+              viewYn
             } = item
             return (
-              <li key={`board-${idx}`} className="event-item">
-                {state === 1 && prizeWinner === 0 && (
-                  <>
-                    <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
-                      <img src={listImageUrl} />
-                    </div>
-                    <div className="textWrap">
-                      <p className="title">{title}</p>
-                      <span className="date">
-                        {alwaysYn === 1 && <>상시</>}
-                        {alwaysYn === 0 && (
-                          <>
-                            {dateFormat(startDate)}~{dateFormat(endDate)}
-                          </>
-                        )}
-                      </span>
-                    </div>
-                  </>
-                )}
-                {state === 2 && (
-                  <>
-                    <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
-                      <img src={listImageUrl} />
-                      <div className="endEvent-text">종료된 이벤트</div>
-                    </div>
-                    <div className="textWrap endEvent">
-                      <div className="desc">
-                        <p className="title">{title}</p>
-                        <span className="date">
+                <li key={`board-${idx}`} className="event-item">
+                  {state === 1 && viewYn === 1 && (
+                      <>
+                        <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
+                          <img src={listImageUrl}/>
+                        </div>
+                        {alwaysYn === 0 &&
+                        /* 진행 중, 상시X */
+                        <div className="textWrap">
+                          <p className="title">{title}</p>
+                          <span className="date">{dateFormat(startDate)}~{dateFormat(endDate)}</span>
+                        </div>
+                        }
+                        {alwaysYn === 1 && (prizeWinner === 0 || winnerOpen === 0) &&
+                        /* 진행 중, 상시O, 당첨자 발표X */
+                        <div className="textWrap">
+                          <p className="title">{title}</p>
+                          <span className="date">상시</span>
+                        </div>
+                        }
+                        {alwaysYn === 1 && prizeWinner === 1 && winnerOpen === 1 &&
+                        /* 진행 중, 상시O, 당첨자 발표O */
+                        <div className="textWrap">
+                          <div className="desc">
+                            <p className="title">{title}</p>
+                            <span className="date">상시</span>
+                          </div>
+                          <button
+                              className="btn__announce btn__announce--isActive"
+                              onClick={() => announcePage(eventIdx, title, announcementDate)}>
+                            당첨자 발표
+                          </button>
+                        </div>
+                        }
+                      </>
+                  )}
+
+                  {state === 2 && viewYn === 1 && (
+                      <>
+                        <div className="banner" onClick={() => listImgClick(mobileLinkUrl)}>
+                          <img src={listImageUrl}/>
+                          <div className="endEvent-text">종료된 이벤트</div>
+                        </div>
+                        <div className="textWrap">
+                          <div className="desc">
+                            <p className="title">{title}</p>
+                            <span className="date">
                           {alwaysYn === 0 && (
-                            <>
-                              {dateFormat(startDate)}~{dateFormat(endDate)}
-                            </>
+                              <>
+                                {dateFormat(startDate)}~{dateFormat(endDate)}
+                              </>
                           )}
                         </span>
-                      </div>
-                      {(prizeWinner === 0 || winnerOpen === 0) && (
-                        <button className="btn__announce" onClick={() => countIngAlert()}>
-                          집계중
-                        </button>
-                      )}
-                      {prizeWinner === 1 && winnerOpen === 1 && (
-                        <button
-                          className="btn__announce btn__announce--isActive"
-                          onClick={() => announcePage(eventIdx, title, announcementDate)}>
-                          당첨자 발표
-                        </button>
-                      )}
-                    </div>
-                  </>
-                )}
-              </li>
+                          </div>
+                          {/* 종료, 당첨자 발표X */}
+                          {(prizeWinner === 0 || winnerOpen === 0) && (
+                              <button className="btn__announce" onClick={() => countIngAlert()}>
+                                집계 중
+                              </button>
+                          )}
+                          {/* 종료, 당첨자 발표O */}
+                          {prizeWinner === 1 && winnerOpen === 1 && (
+                              <button
+                                  className="btn__announce btn__announce--isActive"
+                                  onClick={() => announcePage(eventIdx, title, announcementDate)}>
+                                당첨자 발표
+                              </button>
+                          )}
+                        </div>
+                      </>
+                  )}
+                </li>
             )
           })}
         </ul>
       ) : (
-        <NoResult text="이벤트 내역이 없습니다." />
+          <NoResult text="이벤트 내역이 없습니다."/>
       )}
     </div>
   )

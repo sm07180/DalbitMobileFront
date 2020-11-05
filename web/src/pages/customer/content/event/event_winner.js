@@ -215,13 +215,13 @@ export default function EventWinner() {
                       {prizeSlct === 1 && state === 1 && (
                         <div className="buttonArea">
                           <button
-                            className="infoButton"
+                            className="btn info"
                             onClick={() => {
                               receiveWayClick(prizeIdx, 1, minorYn, state)
                             }}>
                             배송 정보 변경
                           </button>
-                          <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
+                          <button className="btn dal" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
                             달로 바로 받기
                           </button>
                         </div>
@@ -243,13 +243,13 @@ export default function EventWinner() {
               )
             })
           ) : (
-            <div className="resultState">
-              <div className="noResult">
-                당첨된 경품이 없습니다.
-                <br />
-                다음엔 꼭 당첨되길 빌어요!
-              </div>
-            </div>
+                <div className="resultState">
+                  <div className="noResult">
+                    당첨된 경품이 없습니다.
+                    <br />
+                    다음엔 꼭 당첨되길 빌어요!
+                  </div>
+                </div>
           )}
         </div>
       </div>
@@ -258,26 +258,26 @@ export default function EventWinner() {
         <div className="eventTitleBox">{eventTitle} 당첨자 명단</div>
         <div className="eventDateBox">{dateFormat(announcementDate)}</div>
         {winnerRankList && winnerRankList.length > 0 ? (
-          <ul className="winner-list">
-            {winnerRankList.map((rank, rankIdx) => {
-              return (
-                <li key={`winner-${rankIdx}`}>
-                  <div className="winnerTextArea">{rank.rankName}</div>
-                  <ul className="winnerUser-list">
-                    {rank.winnerList.map((item, idx) => {
-                      return (
-                        <li className="winnerUser-item" key={`user-${idx}`}>
-                          {item.nickName}
-                        </li>
-                      )
-                    })}
-                  </ul>
-                </li>
-              )
-            })}
-          </ul>
+            <ul className="winner-list">
+              {winnerRankList.map((rank, rankIdx) => {
+                return (
+                    <li key={`winner-${rankIdx}`}>
+                      <div className="winnerTextArea">{rank.rankName}</div>
+                      <ul className="winnerUser-list">
+                        {rank.winnerList.map((item, idx) => {
+                          return (
+                              <li className="winnerUser-item" key={`user-${idx}`}>
+                                {item.nickName}
+                              </li>
+                          )
+                        })}
+                      </ul>
+                    </li>
+                )
+              })}
+            </ul>
         ) : (
-          <NoResult text="해당 이벤트 당첨자가 없습니다." />
+            <NoResult text="해당 이벤트 당첨자가 없습니다."/>
         )}
       </div>
     </div>
