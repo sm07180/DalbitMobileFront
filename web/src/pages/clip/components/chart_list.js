@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useContext} from 'react'
+import React, {useEffect, useRef, useState, useContext, useCallback} from 'react'
 //modules
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -70,12 +70,29 @@ export default (props) => {
       })
     }
   }
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, idx) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      const nowPage = getPageFormIdx(idx)
+      const playListInfoData = {
+        slctType: context.clipMainSort,
+        dateType: context.clipMainDate,
+        subjectType: clipTypeActive,
+        page: nowPage,
+        records: 100
+      }
+
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -115,6 +132,7 @@ export default (props) => {
           className="chartListDetailItem"
           key={idx + 'list'}
           onClick={() => {
+            // fetchDataPlay(clipNo, idx)
             if (customHeader['os'] === OS_TYPE['Desktop']) {
               if (globalCtx.token.isLogin === false) {
                 context.action.alert({
@@ -127,7 +145,7 @@ export default (props) => {
                 globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, idx)
             }
           }}>
           <div className="chartListDetailItem__thumb">
@@ -253,7 +271,7 @@ export default (props) => {
                         globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
                     } else {
-                      fetchDataPlay(clipNo)
+                      fetchDataPlay(clipNo, idx)
                     }
                   }}>
                   <div className="topWrap">
