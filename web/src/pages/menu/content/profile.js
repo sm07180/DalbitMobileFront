@@ -70,7 +70,7 @@ export default (props) => {
 
   const walletList = [
     {type: 'store', txt: '달 충전', icon: DalIcon},
-    {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
+    // {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon}
   ]
