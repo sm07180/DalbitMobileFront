@@ -1966,11 +1966,6 @@
   margin: 0 auto;
   background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
-
-  .button {
-    border: solid 1px;
-  }
-
   .header {
     position: absolute;
     width: 100%;
@@ -1993,11 +1988,6 @@
       color: $white;
       line-height: 40px;
     }
-  }
-
-  .appMargin {
-    height: 110px;
-    width: 100px;
   }
 
   .login-wrap {

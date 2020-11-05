@@ -382,7 +382,6 @@ export default (props) => {
                   <div className="signupButton">
                     <a href="/signup">회원가입</a>
                   </div>
-                  {customHeader['os'] === OS_TYPE['Desktop'] ? <div className="appMargin"></div> : ''}
                 </>
               )}
             </div>
