@@ -46,8 +46,8 @@ export const clipJoin = (data, context, webview, isPush) => {
   }
 
   if (
-    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] <= 207) ||
-    (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] <= 39)
+    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] < 207) ||
+    (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] < 39)
   ) {
     totalData = {...data}
   }
