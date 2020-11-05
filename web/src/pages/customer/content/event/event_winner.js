@@ -215,13 +215,13 @@ export default function EventWinner() {
                       {prizeSlct === 1 && state === 1 && (
                         <div className="buttonArea">
                           <button
-                            className="infoButton"
+                            className="btn info"
                             onClick={() => {
                               receiveWayClick(prizeIdx, 1, minorYn, state)
                             }}>
                             배송 정보 변경
                           </button>
-                          <button className="dalButton" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
+                          <button className="btn dal" onClick={() => dalReceive(receiveDal, prizeIdx, state)}>
                             달로 바로 받기
                           </button>
                         </div>
