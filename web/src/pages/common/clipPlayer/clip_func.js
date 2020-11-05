@@ -82,12 +82,13 @@ export const clipJoin = (data, context, webview, isPush) => {
         // console.log('2' + sessionStorage.getItem('listening'))
       }
       if (context.customHeader['os'] === OS_TYPE['IOS']) {
-        if (timer) {
-          clearTimeout(timer)
-        }
-        timer = setTimeout(function () {
-          return Hybrid('ClipPlayerJoin', totalData)
-        }, 400)
+        Hybrid('ClipPlayerJoin', totalData)
+        // if (timer) {
+        //   clearTimeout(timer)
+        // }
+        // timer = setTimeout(function () {
+        //   return Hybrid('ClipPlayerJoin', totalData)
+        // }, 400)
       } else {
         return Hybrid('ClipPlayerJoin', totalData)
       }
