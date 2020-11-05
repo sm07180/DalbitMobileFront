@@ -555,6 +555,9 @@ export default () => {
       case 'native-goto-rank': //----- 청취자요약정보 랭킹이동
         history.push(`/rank`)
         break
+      case 'native-broad-summary': //요약정보에서 이동
+        history.push(`/`)
+        break
       default:
         break
     }
@@ -818,6 +821,7 @@ export default () => {
     document.addEventListener('native-goto-fanboard', update)
     document.addEventListener('native-goto-rank', update)
     document.addEventListener('native-join-room', update)
+    document.addEventListener('native-broad-summary', update)
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -847,6 +851,7 @@ export default () => {
       document.removeEventListener('native-goto-fanboard', update)
       document.removeEventListener('native-goto-rank', update)
       document.removeEventListener('native-join-room', update)
+      document.removeEventListener('native-broad-summary', update)
     }
   }, [])
 
