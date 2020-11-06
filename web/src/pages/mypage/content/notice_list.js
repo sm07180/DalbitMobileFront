@@ -1,6 +1,10 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
-const NoticeList = () => {
+import {Context} from 'context'
+
+const NoticeList = (props) => {
+  const {noticeList, detailIdx, setMoreToggle, setDetailIdx, memNo, moreToggle} = props
+  const globalCtx = useContext(Context)
   return (
     <ul className="noticeList">
       {noticeList !== null &&
@@ -20,11 +24,12 @@ const NoticeList = () => {
               <span className={item.isTop === true ? 'noticeItem__title noticeItem__title--active' : 'noticeItem__title'}>
                 {item.title}
               </span>
-              <span className="noticeItem__date">{dateTimeFormat(item.writeDt)}</span>
+              {/* <span className="noticeItem__date">{dateTimeFormat(item.writeDt)}</span> */}
             </div>
+
             {item.noticeIdx === detailIdx && (
               <div className="noticeSubject">
-                {memNo === globalState.baseData.memNo && (
+                {memNo === globalCtx.profile.memNo && (
                   <button
                     onClick={() => {
                       setMoreToggle(!moreToggle)
@@ -49,7 +54,7 @@ const NoticeList = () => {
                 <div className="noticeSubject__content">
                   <span className="noticeSubject__title">{item.title}</span>
                   <pre className="noticeSubject__innerTxt">{item.contents}</pre>
-                  <img src={`${PHOTO_SERVER}${item.imagePath}`} />
+                  {/* <img src={`${PHOTO_SERVER}${item.imagePath}`} /> */}
                 </div>
               </div>
             )}

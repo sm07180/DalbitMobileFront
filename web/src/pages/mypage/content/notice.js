@@ -4,6 +4,7 @@ import Api from 'context/api'
 // import {PHOTO_SERVER} from 'constant/define'
 import NoticeInsertCompnent from './notice_insert.js'
 import NoticeModifyCompnent from './notice_modify.js'
+import NoticeListCompnent from './notice_list.js'
 
 // import './notice.scss'
 
@@ -101,16 +102,44 @@ const Notice = (props) => {
   }, [currentPage])
 
   return (
-    <>
-      <Header>
-        <h2 className="header-title">방송공지</h2>
-        {urlrStr === memNo && createWriteBtn()}
-      </Header>
+    <div className="notice">
+      <div className="noticeInfo">
+        <h2 className="headtitle">방송공지</h2>
+        {globalCtx.profile.memNo === memNo && (
+          <button
+            onClick={() => {
+              setIsAdd(!isAdd)
+            }}
+            className={isAdd === true ? `noticeWriter noticeWriter--active` : `noticeWriter`}>
+            <span className="noticeButton">공지 작성하기</span>
+          </button>
+        )}
+      </div>
       {isAdd === true && <NoticeInsertCompnent setIsAdd={setIsAdd} memNo={memNo} getNotice={getNotice} />}
       {modifyItem !== null && (
         <NoticeModifyCompnent modifyItem={modifyItem} setModifyItem={setModifyItem} memNo={memNo} getNotice={getNotice} />
       )}
-    </>
+
+      <NoticeListCompnent
+        noticeList={noticeList}
+        detailIdx={detailIdx}
+        setMoreToggle={setMoreToggle}
+        setDetailIdx={setDetailIdx}
+        memNo={memNo}
+        moreToggle={moreToggle}
+      />
+
+      {/* {totalPage !== 0 && noticeList !== null && (
+        <Pagenation
+          setPage={(param) => {
+            setCurrentPage(param)
+          }}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          count={5}
+        />
+      )} */}
+    </div>
   )
 }
 export default Notice

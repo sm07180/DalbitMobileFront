@@ -41,16 +41,15 @@ function NoticeInsertCompnent(props) {
   }, [formState])
 
   const insettNorice = useCallback(async () => {
-    const {result, data} = await Api.mypage_notice_upload({
-      ...formState,
-      memNo: memNo,
-      imagePath: thumbNail !== null ? thumbNail.path : ''
+    const res = await Api.mypage_notice_upload({
+      data: {
+        ...formState,
+        memNo: memNo,
+        imagePath: thumbNail !== null ? thumbNail.path : ''
+      }
     })
 
-    console.log(result)
-    console.log(data)
-
-    if (result === 'success') {
+    if (res.result === 'success') {
       getNotice()
       setIsAdd(false)
     }
@@ -89,65 +88,62 @@ function NoticeInsertCompnent(props) {
     console.log(thumbNail)
   }, [thumbNail])
 
-  console.log(memNo)
+  console.log(`formState.title`, formState.title)
 
   return (
     <div className="writeWrapper">
-      <form className="writeWrapper__form">
+      <input
+        value={formState.title}
+        placeholder="공지사항 제목을 입력해주세요"
+        className="writeWrapper__titleInput"
+        name="title"
+        onChange={(e) => {
+          if (e.target.value.length > 20) return
+          else onChange(e)
+        }}
+      />
+      <textarea
+        value={formState.contents}
+        name="contents"
+        onChange={(e) => {
+          if (e.target.value.length > 500) return
+          else onChange(e)
+        }}
+        className="writeWrapper__contentTextarea"
+        placeholder="작성하고자 하는 글의 내용을 입력해주세요."
+      />
+      <div className="saveFileImg">
+        <label
+          htmlFor="save_fileImg"
+          className="fileBasic"
+          style={{
+            background: `url("${thumbNail !== null && thumbNail.url}") center no-repeat #333`
+            // backgroundColor: "#333",
+          }}></label>
+        {thumbNail !== null && (
+          <button
+            className="saveFileImgClose"
+            onClick={(e) => {
+              e.stopPropagation()
+              setImage(null)
+              setThumbNail(null)
+            }}>
+            첨부이미지 닫기
+          </button>
+        )}
+
         <input
-          value={formState.title}
-          placeholder="공지사항 제목을 입력해주세요"
-          className="writeWrapper__titleInput"
-          name="title"
+          type="file"
+          id="save_fileImg"
           onChange={(e) => {
-            if (e.target.value.length > 20) return
-            else onChange(e)
+            e.persist()
+            setEventObj(e)
+            setCropOpen(true)
           }}
         />
-        <textarea
-          // ref={TextAreaRef}
-          value={formState.content}
-          name="contents"
-          onChange={(e) => {
-            if (e.target.value.length > 500) return
-            else onChange(e)
-          }}
-          className="writeWrapper__contentTextarea"
-          placeholder="작성하고자 하는 글의 내용을 입력해주세요."
-        />
-        <div className="saveFileImg">
-          <label
-            htmlFor="save_fileImg"
-            className="fileBasic"
-            style={{
-              background: `url("${thumbNail !== null && thumbNail.url}") center no-repeat #333`
-              // backgroundColor: "#333",
-            }}></label>
-          {thumbNail !== null && (
-            <button
-              className="saveFileImgClose"
-              onClick={(e) => {
-                e.stopPropagation()
-                setImage(null)
-                setThumbNail(null)
-              }}>
-              첨부이미지 닫기
-            </button>
-          )}
+      </div>
 
-          <input
-            type="file"
-            id="save_fileImg"
-            onChange={(e) => {
-              e.persist()
-              setEventObj(e)
-              setCropOpen(true)
-            }}
-          />
-        </div>
-
-        {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
-      </form>
+      {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
       <div className="writeController">
         <label className="writeController__checkLabel">
           <DalbitCheckbox callback={changeCheckStatus} status={formState.isTop} />
