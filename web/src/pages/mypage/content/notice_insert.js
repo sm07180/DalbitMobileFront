@@ -1,12 +1,15 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback, useEffect, useContext} from 'react'
 
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 // import DalbitCropper from 'common/ui/dalbit_cropper'
 
 import Api from 'context/api'
+import {Context} from 'context'
 
 function NoticeInsertCompnent(props) {
   const {setIsAdd, memNo, getNotice} = props
+
+  const context = useContext(Context)
 
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
@@ -44,6 +47,9 @@ function NoticeInsertCompnent(props) {
       imagePath: thumbNail !== null ? thumbNail.path : ''
     })
 
+    console.log(result)
+    console.log(data)
+
     if (result === 'success') {
       getNotice()
       setIsAdd(false)
@@ -53,10 +59,9 @@ function NoticeInsertCompnent(props) {
   useEffect(() => {
     if (image !== null) {
       if (image.status === false) {
-        // globalAction.setAlertStatus!({
-        //   status: true,
-        //   content: image.content,
-        // });
+        context.action.alert({
+          msg: image.content
+        })
       } else {
         const imageUpload = async () => {
           const {result, data, message} = await Api.image_upload({
@@ -70,10 +75,9 @@ function NoticeInsertCompnent(props) {
             setImage(null)
             setThumbNail(data)
           } else {
-            // globalAction.setAlertStatus!({
-            //   status: true,
-            //   content: message,
-            // });
+            context.action.toast({
+              msg: message
+            })
           }
         }
         imageUpload()
