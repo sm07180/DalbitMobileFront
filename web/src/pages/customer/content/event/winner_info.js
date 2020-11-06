@@ -151,7 +151,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       context.action.alert({
         msg: message,
         callback: async () => {
-          history.push('/')
+          window.location.href='/'
         }
       })
     }
@@ -171,7 +171,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       context.action.alert({
         msg: message,
         callback: async () => {
-          history.push('/')
+          window.location.href='/'
         }
       })
     }

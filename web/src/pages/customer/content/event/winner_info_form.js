@@ -105,7 +105,7 @@ export default function WinnerInfoForm() {
         context.action.alert({
           msg: message,
           callback: () => {
-            return history.push('/')
+            return window.location.href='/'
           }
         })
       } else {
