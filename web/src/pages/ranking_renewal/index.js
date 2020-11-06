@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useCallback, useRef} from 'react'
+import React, {useState, useEffect, useContext, useCallback, useRef, useMemo} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth, convertDateToText} from './lib/common_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -156,6 +156,14 @@ function Ranking() {
   const promise = new Promise(function (resolve, reject) {
     return resolve()
   })
+
+  const realTimeCheck = useMemo(() => {
+    if (convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)) {
+      return true
+    } else {
+      return false
+    }
+  }, [formState])
 
   useEffect(() => {
     if (scrollY > 0) {
@@ -555,10 +563,11 @@ function Ranking() {
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className="rankTop3Box" ref={TopRef}>
+              <div className={`rankTop3Box ${realTimeCheck ? 'realTime' : ''}`} ref={TopRef}>
                 <MyProfile fetching={fetching} />
-
-                <RankListTop />
+                {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
+                  <RankListTop />
+                )}
               </div>
             )}
           </div>

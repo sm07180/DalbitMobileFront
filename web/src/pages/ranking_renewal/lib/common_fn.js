@@ -78,7 +78,9 @@ export function convertDateToText(dateType, currentDate, convertType) {
         return true
       }
     } else {
-      return false
+      if (year === formYear) {
+        return true
+      }
     }
     // return ''
     return false
