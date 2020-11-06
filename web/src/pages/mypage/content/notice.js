@@ -20,352 +20,63 @@ import pen from 'images/pen.svg'
 import WhitePen from '../component/images/WhitePen.svg'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
 import {IMG_SERVER, WIDTH_MOBILE} from 'context/config'
-import {DalbitTextArea} from '../content/textarea'
-// concat
-let currentPage = 1
-let timer
-let moreState = false
+
 const Notice = (props) => {
-  //context
-  const context = useContext(Context)
-  //memNo
-  let location = useLocation()
+  // 기본 State
+  const [noticeList, setNoticeList] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPage, setTotalPage] = useState(0)
+  //Component 호출
+  const [isAdd, setIsAdd] = useState(false)
+  const [modifyItem, setModifyItem] = useState(null)
+  Z
 
-  let urlrStr
-  if (props.location) {
-    urlrStr = props.location.pathname.split('/')[2]
-  } else {
-    urlrStr = location.pathname.split('/')[2]
-  }
-  //concat
-  const [listPage, setListPage] = useState(-1)
-  const [nextListPage, setNextListPage] = useState([])
+  const getNotice = useCallback(async () => {
+    setMoreToggle(false)
 
-  //체크상태
-  const initialState = {
-    click1: false
-  }
-  //---------------------------------------------------------------------
-  const reducer = (state, action) => ({...state, ...action})
-  const [state, setState] = useReducer(reducer, initialState)
-  const [coment, setComment] = useState('')
-  const [comentContent, setCommentContent] = useState('')
-  const [writeShow, setWriteShow] = useState(false)
-  const [writeBtnState, setWriteBtnState] = useState(false)
-  const [thisMemNo, setThisMemNo] = useState(false)
-
-  //공지제목 등록 온체인지
-  const textChange = (e) => {
-    const target = e.currentTarget
-    if (target.value.length > 20) return
-    setComment(target.value)
-  }
-  //공지컨텐트 등록 온체인지
-  const textChangeContent = (e) => {
-    const target = e.currentTarget
-    if (target.value.length > 200) return
-    setCommentContent(target.value)
-  }
-  //api
-  const NoticeUpload = () => {
-    async function fetcNoticeUpload() {
-      const res = await Api.mypage_notice_upload({
-        data: {
-          memNo: urlrStr,
-          title: coment,
-          contents: comentContent,
-          isTop: state.click1
-        }
-      })
-      if (res.result === 'success') {
-        setWriteShow(false)
-        setState({click1: false})
-        setTimeout(() => {
-          setComment('')
-          setCommentContent('')
-          context.action.updateNoticeState(true)
-        }, 10)
-      } else if (res.result === 'fail') {
-        if (coment.length === 0) {
-          context.action.alert({
-            cancelCallback: () => {},
-            msg: '공지사항 제목을 입력해주세요.'
-          })
-        }
-        if (comentContent.length === 0) {
-          context.action.alert({
-            cancelCallback: () => {},
-            msg: '공지사항 내용을 입력해주세요.'
-          })
-        }
+    const {result, data} = await getMypageNotice({
+      memNo: memNo,
+      page: currentPage,
+      records: 10
+    })
+    if (result === 'success') {
+      setNoticeList(data.list)
+      if (data.paging) {
+        setTotalPage(data.paging.totalPage)
       }
     }
-    if (writeBtnState === true) {
-      context.action.confirm({
-        callback: () => {
-          fetcNoticeUpload()
-        },
-        msg: '공지사항을 등록 하시겠습니까?'
-      })
-    }
-  }
-  const WriteToggle = () => {
-    setComment('')
-    setCommentContent('')
-    if (writeShow === false) {
-      setWriteShow(true)
-    } else {
-      setWriteShow(false)
-    }
-  }
-  const WritBtnActive = () => {
-    if (coment !== '' && comentContent !== '') {
-      setWriteBtnState(true)
-    } else {
-      setWriteBtnState(false)
-    }
-  }
-  //---------------------------------------------------------------------
-  useEffect(() => {
-    WritBtnActive()
-  }, [coment, comentContent])
-  //-----------------------------------------------------------------------
-  //리스트
-  async function fetchData(next) {
-    currentPage = next ? ++currentPage : currentPage
+  }, [memNo, currentPage])
 
-    const params = {
-      memNo: urlrStr,
-      page: 1,
-      records: 10000
-      // records: 20 * currentPage
-    }
-    const res = await Api.mypage_notice_inquire(params)
-    if (res.result === 'success') {
-      context.action.updateNoticeState(false)
-      if (res.data.paging && res.data.paging.totalPage === 1) {
-        if (next) {
-          moreState = false
-          setNextListPage(res.data.list)
-        } else {
-          setListPage(res.data.list)
-        }
-      } else {
-        if (next) {
-          moreState = true
-          setNextListPage(res.data.list)
-        } else {
-          setListPage(res.data.list)
+  const deleteNotice = useCallback(
+    (noticeIdx) => {
+      async function deleteNoiceContent() {
+        const {result, data} = await deleteMypageNotice({
+          memNo: memNo,
+          noticeIdx: noticeIdx
+        })
+        if (result === 'success') {
+          getNotice()
         }
       }
-    } else if (res.result === 'fail') {
-    }
-  }
+      deleteNoiceContent()
+    },
+    [memNo, currentPage]
+  )
+
   useEffect(() => {
-    currentPage = 1
-    fetchData()
-  }, [context.noticeState, urlrStr])
-
-  const showMoreList = () => {
-    if (moreState) {
-      setListPage(nextListPage)
-      fetchData('next')
-    } else {
-      // setListPage(nextListPage)
-    }
-  }
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      //스크롤이벤트체크
-      /*
-       * @가속처리
-       */
-      if (windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-  useEffect(() => {
-    //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextListPage])
-  ///
-  // useEffect(() => {
-  //   const settingProfileInfo = async (memNo) => {
-  //     const profileInfo = await Api.profile({
-  //       params: {memNo: context.token.memNo}
-  //     })
-  //     if (profileInfo.result === 'success') {
-  //       setThisMemNo(profileInfo.data.memNo)
-  //     }
-  //   }
-  //   settingProfileInfo()
-  // }, [])
-
-  const createWriteBtn = () => {
-    return (
-      <button onClick={() => WriteToggle()} className={[`write-btn ${urlrStr === context.profile.memNo ? 'on' : 'on'}`]}>
-        쓰기
-      </button>
-    )
-  }
-
-  //-----------------------------------------------------------------------
-  //토글
-  const [numbers, setNumbers] = useState('')
-
-  const toggler = (noticeIdx) => {
-    if (numbers === noticeIdx) {
-      setNumbers('')
-      setTimeout(() => {
-        setNumbers(noticeIdx)
-      }, 10)
-    } else {
-      setNumbers(noticeIdx)
-      setTimeout(() => {
-        const height = document.querySelector(`.idx${noticeIdx}`).offsetTop - 60
-        window.scrollTo(0, height)
-      }, 10)
-    }
-  }
+    getNotice()
+  }, [currentPage])
 
   return (
     <>
-      {!props.type ? (
-        <Header>
-          <h2 className="header-title">방송공지</h2>
-          {urlrStr === context.profile.memNo && createWriteBtn()}
-        </Header>
-      ) : (
-        <></>
-      )}
-      {listPage === -1 ? (
-        <NoResult type="default" text="방송공지가 없습니다." />
-      ) : (
-        <>
-          {listPage.length !== -1 && (
-            <>
-              <ListWrap className="noticeIsTop">
-                {Array.isArray(listPage) &&
-                  listPage.map((list, idx) => {
-                    const {isTop, title, contents, writeDt, noticeIdx, profImg, nickNm, writeTs} = list
-                    return (
-                      <div key={idx} className="listWrap">
-                        {isTop === true && (
-                          <a className={`idx${noticeIdx}`}>
-                            <List
-                              {...props}
-                              thisMemNo={thisMemNo}
-                              isTop={isTop}
-                              title={title}
-                              contents={contents}
-                              writeDt={writeDt}
-                              noticeIdx={noticeIdx}
-                              numbers={numbers}
-                              nickNm={nickNm}
-                              profImg={profImg}
-                              writeTs={writeTs}
-                              toggle={toggler}
-                            />
-                          </a>
-                        )}
-                      </div>
-                    )
-                  })}
-              </ListWrap>
-              <ListWrap>
-                {Array.isArray(listPage) ? (
-                  listPage.length > 0 ? (
-                    listPage.map((list, idx) => {
-                      const {isTop, title, contents, writeDt, noticeIdx, nickNm, profImg, writeTs} = list
-                      return (
-                        <div key={idx} className="listWrap">
-                          {isTop === false && (
-                            <a className={`idx${noticeIdx}`}>
-                              <List
-                                {...props}
-                                thisMemNo={thisMemNo}
-                                isTop={isTop}
-                                title={title}
-                                nickNm={nickNm}
-                                profImg={profImg}
-                                contents={contents}
-                                writeDt={writeDt}
-                                noticeIdx={noticeIdx}
-                                writeTs={writeTs}
-                                numbers={numbers}
-                                toggle={toggler}
-                              />
-                            </a>
-                          )}
-                        </div>
-                      )
-                    })
-                  ) : (
-                    <>
-                      <NoResult type="default" text="방송공지가 없습니다." />
-                      <br />
-                      <br />
-                      <br />
-                      <br />
-                      <br />
-                      <br />
-                    </>
-                  )
-                ) : (
-                  <div className="search" />
-                )}
-              </ListWrap>
-            </>
-          )}
-        </>
-      )}
-
-      <Write className={writeShow && 'on'}>
-        <Header click={WriteToggle}>
-          <h2 className="header-title">방송공지</h2>
-        </Header>
-        {/* <Header click={WriteToggle}>
-          <div className="category-text">방송공지</div>
-        </Header> */}
-        <section>
-          <div className="titleWrite">
-            <input placeholder="글의 제목을 입력하세요." maxLength="20" onChange={textChange} value={coment} />
-          </div>
-
-          <div className="contentWrite">
-            <DalbitTextArea
-              state={comentContent}
-              setState={setCommentContent}
-              rows={25}
-              maxLength={500}
-              className="MsgText"
-              placeholder="작성하고자 하는 글의 내용을 입력해주세요."
-            />
-          </div>
-          <div className="checkbox-wrap">
-            <Checkbox title="상단 고정" fnChange={(v) => setState({click1: v})} checked={state.click1} />
-          </div>
-
-          <WriteSubmit className={writeBtnState === true ? 'on' : ''} onClick={() => NoticeUpload()}>
-            등록
-          </WriteSubmit>
-        </section>
-      </Write>
+      <Header>
+        <h2 className="header-title">방송공지</h2>
+        {urlrStr === context.profile.memNo && createWriteBtn()}
+      </Header>
     </>
   )
 }
+
 const TopHistory = styled.div`
   position: fixed;
   top: 40px;
