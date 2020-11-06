@@ -53,7 +53,7 @@ export default function EventWinner() {
     context.action.alert({
       msg: '지급이 완료되었습니다. <br/>마이페이지 > 내 지갑에서 확인하실 수 있습니다.',
       callback: async () => {
-        window.history.back()
+        history.push('/')
       }
     })
   }
@@ -96,7 +96,7 @@ export default function EventWinner() {
         context.action.alert({
           msg: message,
           callback: async () => {
-            window.history.back()
+            history.push('/')
           }
         })
       }
@@ -133,7 +133,7 @@ export default function EventWinner() {
       context.action.alert({
         msg: message,
         callback: () => {
-          window.history.back()
+          history.push('/')
         }
       })
     }
@@ -152,7 +152,7 @@ export default function EventWinner() {
       context.action.alert({
         msg: message,
         callback: async () => {
-          window.history.back()
+          history.push('/')
         }
       })
     }

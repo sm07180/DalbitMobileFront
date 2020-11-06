@@ -133,6 +133,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
         prizeIdx: prizeIdx
       }
     })
+    console.log(data)
     if (result === 'success') {
       const files = [
         data['winner_add_file_1'] !== '' ? {name: data['winner_add_file_1_name'], path: data['winner_add_file_1']} : false,
@@ -150,7 +151,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       context.action.alert({
         msg: message,
         callback: async () => {
-          window.history.back()
+          history.push('/')
         }
       })
     }
@@ -170,7 +171,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       context.action.alert({
         msg: message,
         callback: async () => {
-          window.history.back()
+          history.push('/')
         }
       })
     }
