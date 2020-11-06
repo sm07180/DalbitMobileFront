@@ -31,7 +31,23 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      localStorage.removeItem('clipPlayListInfo')
+      const oneClipPlayList = {
+        clipNo: data.clipNo,
+        bgImg: data.bgImg,
+        title: data.title,
+        nickName: data.nickName,
+        subjectType: data.subjectType,
+        isNew: data.isNew,
+        filePlayTime: data.filePlay,
+        isSpecial: data.isSpecial,
+        gender: data.gender,
+        replyCnt: data.replyCnt,
+        goodCnt: data.goodCnt,
+        playCnt: data.playCnt
+      }
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
         context.action.alert({
@@ -107,7 +123,7 @@ export default () => {
 
         const {isLogin} = context.token
         const {push_type} = pushMsg
-        let room_no, mem_no, board_idx
+        //let room_no, mem_no, board_idx
 
         //개발쪽만 적용
         // if (__NODE_ENV === 'dev') {
@@ -411,7 +427,7 @@ export default () => {
         let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
-        sessionStorage.setItem('play_clip_no', event.detail.clipNo)
+        localStorage.setItem('play_clip_no', event.detail.clipNo)
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
         context.action.updatePlayer(true)
@@ -426,6 +442,7 @@ export default () => {
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         context.action.updatePlayer(false)
+        sessionStorage.setItem('listening', 'N')
         sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
@@ -436,9 +453,15 @@ export default () => {
       case 'clip-player-start': //-----------------------클립 재생
         settingSessionInfo('playing')
         break
-
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
+        break
+      case 'clip-upload-end': //------------- 네이티브 클립 녹음, 업로드 후
+        localStorage.removeItem('clipPlayListInfo')
+        const oneClipPlayList = {
+          clipNo: event.detail.clipNo
+        }
+        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
@@ -520,6 +543,21 @@ export default () => {
         } else if (onCall === false) {
           sessionStorage.removeItem('onCall')
         }
+        break
+      case 'native-goto-fanboard': //----- 청취자요약정보 팬보드이동
+        const {memNo} = event.detail
+        history.push(`/mypage/${memNo}`)
+        break
+      case 'native-join-room': //----- 청취자요양정보 방조인
+        const {roomNo} = event.detail
+        RoomJoin({roomNo: roomNo})
+        break
+      case 'native-goto-rank': //----- 청취자요약정보 랭킹이동
+        history.push(`/rank`)
+        break
+      case 'native-broad-summary': //요약정보에서 이동
+        history.push(`/`)
+        break
       default:
         break
     }
@@ -776,8 +814,14 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
+    // document.addEventListener('clip-upload-end', update)
     document.addEventListener('native-close-layer-popup', update)
 
+    /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+    document.addEventListener('native-goto-fanboard', update)
+    document.addEventListener('native-goto-rank', update)
+    document.addEventListener('native-join-room', update)
+    document.addEventListener('native-broad-summary', update)
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -800,7 +844,14 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+      // document.removeEventListener('clip-upload-end', update)
       document.removeEventListener('native-close-layer-popup', update)
+
+      /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+      document.removeEventListener('native-goto-fanboard', update)
+      document.removeEventListener('native-goto-rank', update)
+      document.removeEventListener('native-join-room', update)
+      document.removeEventListener('native-broad-summary', update)
     }
   }, [])
 

@@ -30,7 +30,6 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 
 // header scroll flag
 let tempScrollEvent = null
-let randomData = Math.random() >= 0.5 ? 0 : 4
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 49
@@ -137,9 +136,8 @@ export default (props) => {
   const fetchDataListPopular = async () => {
     const {result, data, message} = await Api.getPopularList({})
     if (result === 'success') {
-      setPopularList(data.list)
+      setPopularList(data.list.slice(0, 6))
       setDate(data.checkDate)
-      setRandomList(data.list.slice(0, 6))
       setPopularType(data.type)
     } else {
       context.action.alert({
@@ -158,7 +156,9 @@ export default (props) => {
     }
   }
   const fetchDataListLatest = async () => {
-    const {result, data, message} = await Api.getLatestList({})
+    const {result, data, message} = await Api.getLatestList({
+      listCnt: 10
+    })
     if (result === 'success') {
       setrankList(data.list)
     } else {
@@ -190,11 +190,32 @@ export default (props) => {
     }
   }
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, type) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      console.log(type)
+      let playListInfoData
+      if (type === 'recommend') {
+        playListInfoData = {
+          listCnt: 20,
+          playlist: true
+        }
+      } else if (type === 'new') {
+        playListInfoData = {
+          slctType: 1,
+          dateType: 0,
+          page: 1,
+          records: 100
+        }
+      } else if (type === 'theme') {
+        playListInfoData = {
+          subjectType: data.subjectType,
+          listCnt: 100
+        }
+      }
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -214,7 +235,7 @@ export default (props) => {
 
   // make contents
   const makePoupularList = () => {
-    return randomList.map((item, idx) => {
+    return popularList.map((item, idx) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
@@ -234,7 +255,7 @@ export default (props) => {
                 context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'recommend')
             }
           }}
           style={{cursor: 'pointer'}}>
@@ -273,7 +294,7 @@ export default (props) => {
                 globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'new')
             }
           }}
           key={`latest-` + idx}
@@ -347,7 +368,7 @@ export default (props) => {
                         globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
                     } else {
-                      fetchDataPlay(clipNo)
+                      fetchDataPlay(clipNo, 'theme')
                     }
                   }}
                   key={idx + `toplist`}
@@ -407,14 +428,7 @@ export default (props) => {
     if (context.clipRefresh && type === 'category') {
       context.action.updatClipRefresh(false)
     } else if (type === 'popular') {
-      if (popularList.length > 6) {
-        let newList = popularList.filter(function (x) {
-          return randomList.indexOf(x) < 0
-        })
-        setRandomList(shuffle(newList).slice(0, 6))
-      } else {
-        fetchDataListPopular()
-      }
+      fetchDataListPopular()
     } else {
       context.action.updatClipRefresh(true)
     }
