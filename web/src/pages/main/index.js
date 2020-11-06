@@ -255,11 +255,11 @@ export default (props) => {
         setLivePage(page)
         setTotalLivePage(totalPage)
       }
-      if (broadcastList.data.isGreenMoon === true) {
-        setPopupMoonState(true)
-      } else {
-        setPopupMoonState(false)
-      }
+      // if (broadcastList.data.isGreenMoon === true) {
+      //   setPopupMoonState(true)
+      // } else {
+      //   setPopupMoonState(false)
+      // }
       setLiveList(list)
     }
   }
@@ -823,11 +823,12 @@ export default (props) => {
                   <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
                     <img src={sortIcon} alt="검색 정렬하기" />
                   </button> */}
-                  {popupMoonState && (
+
+                  {/* {popupMoonState && (
                     <button className="btn__moon" onClick={openPopupMoon}>
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
-                  )}
+                  )} */}
                   <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
                     <img
                       src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
@@ -898,7 +899,7 @@ export default (props) => {
         {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
           <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
         )}
-        {popupMoon && (
+        {/* {popupMoon && (
           <LayerPopupCommon setPopupMoon={setPopupMoon}>
             <span className="img img-moon">
               <img src="https://image.dalbitlive.com/main/common/img_moon_popup.png" alt="달이 된 병아리" />
@@ -920,7 +921,7 @@ export default (props) => {
               </p>
             </div>
           </LayerPopupCommon>
-        )}
+        )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
       </div>
     </Layout>

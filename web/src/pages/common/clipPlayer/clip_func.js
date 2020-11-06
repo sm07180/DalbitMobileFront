@@ -44,8 +44,15 @@ export const clipJoin = (data, context, webview, isPush) => {
       playListData: {type: currentTyep, param: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
     }
   }
+
+  if (
+    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] < 207) ||
+    (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] < 39)
+  ) {
+    totalData = {...data}
+  }
+
   console.log('totalData', totalData)
-  // alert(JSON.stringify(totalData))
 
   if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
     // alert(webview)
@@ -82,12 +89,13 @@ export const clipJoin = (data, context, webview, isPush) => {
         // console.log('2' + sessionStorage.getItem('listening'))
       }
       if (context.customHeader['os'] === OS_TYPE['IOS']) {
-        if (timer) {
-          clearTimeout(timer)
-        }
-        timer = setTimeout(function () {
-          return Hybrid('ClipPlayerJoin', totalData)
-        }, 400)
+        Hybrid('ClipPlayerJoin', totalData)
+        // if (timer) {
+        //   clearTimeout(timer)
+        // }
+        // timer = setTimeout(function () {
+        //   return Hybrid('ClipPlayerJoin', totalData)
+        // }, 400)
       } else {
         return Hybrid('ClipPlayerJoin', totalData)
       }

@@ -33,8 +33,8 @@ export default (props) => {
     async function feachRandomReward() {
       const {result, data} = await Api.post_randombox_reward({
         data: {
-          rankSlct: formState.rankType,
-          rankType: Number(formState.dateType)
+          rankSlct: formState[formState.pageType].rankType,
+          rankType: Number(formState[formState.pageType].dateType)
         }
       })
 
