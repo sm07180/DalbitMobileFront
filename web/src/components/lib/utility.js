@@ -6,7 +6,7 @@
 
 //---------------------------------------------------------------------
 import {isHybrid, Hybrid} from 'context/hybrid'
-import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
+import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
 export default class Utility {
   /**
@@ -212,6 +212,14 @@ export default class Utility {
     }
   }
 
+  static timeFormat = (strFormatFromServer) => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
   /**
    * 숫자 K형으로 문자 변환
    * @param number
@@ -251,18 +259,21 @@ export default class Utility {
     if (event.target.closest('A')) {
       const link = event.target.closest('A')
       const clipUrl = /\/clip\/[0-9]*$/
-      if(isHybrid()){
+      if (isHybrid()) {
         if (clipUrl.test(link.href)) {
-          const clip_no = link.href.substring(link.href.lastIndexOf("/") + 1)
+          const clip_no = link.href.substring(link.href.lastIndexOf('/') + 1)
           clipJoinApi(clip_no, context)
-        } else if (link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))) {
+        } else if (
+          link.href.indexOf('dalbitlive.com') > -1 ||
+          (!link.href.startsWith('https://') && !link.href.startsWith('http://'))
+        ) {
           window.location.href = link.href
         } else {
           Hybrid('openUrl', link.href)
         }
         event.preventDefault()
         return false
-      }else if (clipUrl.test(link.href)) {
+      } else if (clipUrl.test(link.href)) {
         context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
         event.preventDefault()
         return false
