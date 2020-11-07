@@ -108,6 +108,12 @@ function NoticeInsertCompnent(props) {
         className="noticeWrite__content"
         placeholder="작성하고자 하는 글의 내용을 입력해주세요."
       />
+
+      <label className="noticeWrite__checkbox">
+        <DalbitCheckbox size={20} callback={changeCheckStatus} status={formState.isTop} />
+        상단 고정
+      </label>
+
       <div className="saveFileImg">
         <label
           htmlFor="save_fileImg"
@@ -137,15 +143,11 @@ function NoticeInsertCompnent(props) {
           }}
         />
       </div>
-
       {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
 
-      <label>
-        <DalbitCheckbox callback={changeCheckStatus} status={formState.isTop} />
-        고정 공지사항
-      </label>
-
-      <button onClick={insettNorice}>등록</button>
+      <button className="noticeWrite__button" onClick={insettNorice}>
+        등록
+      </button>
     </div>
   )
 }

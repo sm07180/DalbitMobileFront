@@ -198,5 +198,78 @@
         box-sizing: border-box;
       }
     }
+
+    &__checkbox {
+      cursor: pointer;
+      display: inline-block;
+      overflow: hidden;
+      height: 26px;
+      line-height: 26px;
+      margin-top: 12px;
+      font-size: 16px;
+      color: $black;
+      input[type='checkbox'] {
+        vertical-align: middle;
+        margin: -2px 8px 0px 0px;
+      }
+    }
+    &__button {
+      width: 100%;
+      // background: $primary;
+      background: $mediumGray;
+      color: $white;
+      font-size: 16px;
+      line-height: 44px;
+      text-align: center;
+      font-weight: 600;
+      border-radius: 12px;
+      margin-bottom: 50px;
+    }
+  }
+
+  #save_fileImg {
+    display: none;
+  }
+
+  .saveFileImg {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 25px;
+    width: 90px;
+    height: 90px;
+    border-radius: 16px;
+    background-size: cover;
+
+    .saveFileImgClose {
+      cursor: pointer;
+      z-index: 1;
+      position: absolute;
+      right: -6px;
+      top: -6px;
+      width: 24px;
+      height: 24px;
+      background: url('https://image.dalbitlive.com/svg/ic_close_round.svg') center no-repeat;
+      background-size: cover;
+      text-indent: -99999px;
+    }
+
+    .fileBasic {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      color: #fff;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      cursor: pointer;
+      background: url('https://image.dalbitlive.com/svg/gallery_w.svg') center 19px no-repeat #bdbdbd;
+      background-size: contain;
+      &::after {
+        display: block;
+        width: 100%;
+        margin-top: 51px;
+        text-align: center;
+        content: '사진첨부';
+      }
+    }
   }
 }
