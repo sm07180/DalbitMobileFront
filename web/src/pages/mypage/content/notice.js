@@ -7,7 +7,7 @@ import NoticeModifyCompnent from './notice_modify'
 import NoticeListCompnent from './notice_list.js'
 import NoticeDetailCompenet from './notice_detail'
 
-// import './notice.scss'
+import './notice.scss'
 
 // moible context
 import {useLocation} from 'react-router-dom'
@@ -82,25 +82,26 @@ const Notice = (props) => {
     )
   }
 
+  const titleText = () => {
+    if (isAdd === true) {
+      return '방송공지 글쓰기'
+    } else if (modifyItem !== null) {
+      return '방송공지 수정'
+    } else {
+      return '방송공지'
+    }
+  }
+
   useEffect(() => {
     getNotice()
   }, [currentPage])
 
   return (
     <div id="notice">
-      <div className="noticeInfo">
-        <h2 className="headtitle">방송공지</h2>
+      <Header>
+        <h2 className="header-title">{titleText()}</h2>
+      </Header>
 
-        {globalCtx.profile.memNo === memNo && (
-          <button
-            onClick={() => {
-              setIsAdd(!isAdd)
-            }}
-            className={isAdd === true ? `noticeWriter noticeWriter--active` : `noticeWriter`}>
-            <span className="noticeButton">공지 작성하기</span>
-          </button>
-        )}
-      </div>
       {isAdd === true && <NoticeInsertCompnent setIsAdd={setIsAdd} memNo={memNo} getNotice={getNotice} />}
       {modifyItem !== null && (
         <NoticeModifyCompnent modifyItem={modifyItem} setModifyItem={setModifyItem} memNo={memNo} getNotice={getNotice} />
@@ -141,6 +142,18 @@ const Notice = (props) => {
           count={5}
         />
       )} */}
+
+      {globalCtx.profile.memNo === memNo && (
+        <button
+          onClick={() => {
+            setIsAdd(!isAdd)
+          }}
+          className={isAdd === true ? `noticeWriter noticeWriter--active` : `noticeWriter`}>
+          <span className="noticeButton">공지 작성하기</span>
+        </button>
+      )}
+
+      {urlrStr === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
 }

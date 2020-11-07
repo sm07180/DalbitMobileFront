@@ -13,8 +13,8 @@ const NoticeList = (props) => {
       {noticeList !== null &&
         noticeList.map((item, index) => (
           <li
+            className={`noticeItme ${item.isTop === true && 'bookmark'}`}
             key={index}
-            className="noticeItem"
             onClick={() => {
               setIsList(false)
               if (item.noticeIdx === detailIdx) {
@@ -23,13 +23,16 @@ const NoticeList = (props) => {
                 setDetailIdx(item.noticeIdx)
               }
             }}>
-            <div className={item.noticeIdx === detailIdx ? 'noticeItem__Info noticeItem__Info--active' : 'noticeItem__Info'}>
-              {item.isTop === true && <span className="noticeItem__icon">필독</span>}
-              <span className={item.isTop === true ? 'noticeItem__title noticeItem__title--active' : 'noticeItem__title'}>
-                {item.title}
-              </span>
-              <span className="noticeItem__date">{Utility.timeFormat(item.writeDt)}</span>
+            <img
+              src="https://devphoto2.dalbitlive.com/profile_0/20858572800/20201105131409181232.png?700x700"
+              className="noticeItme__img"
+            />
+            <div className="noticeItme__textWrap">
+              <strong className="noticeItme__title">{item.title}</strong>
+              <p className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</p>
             </div>
+
+            {item.isTop === true && <i className="noticeItme__moreIcon">필독</i>}
           </li>
         ))}
     </ul>
