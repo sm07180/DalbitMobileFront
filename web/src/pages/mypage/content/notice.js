@@ -87,9 +87,10 @@ const Notice = (props) => {
   }, [currentPage])
 
   return (
-    <div className="notice">
+    <div id="notice">
       <div className="noticeInfo">
         <h2 className="headtitle">방송공지</h2>
+
         {globalCtx.profile.memNo === memNo && (
           <button
             onClick={() => {
