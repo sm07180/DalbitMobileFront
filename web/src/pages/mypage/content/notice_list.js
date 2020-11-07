@@ -8,6 +8,7 @@ import Utility from 'components/lib/utility'
 const NoticeList = (props) => {
   const {noticeList, detailIdx, setMoreToggle, setDetailIdx, setIsList, memNo} = props
   const globalCtx = useContext(Context)
+  const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 
   return (
@@ -33,7 +34,7 @@ const NoticeList = (props) => {
               <strong className="noticeItme__title">{item.title}</strong>
               <p className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</p>
             </div>
-            {(IntTime - writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">필독</i>}
+            {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">필독</i>}
           </li>
         ))}
     </ul>

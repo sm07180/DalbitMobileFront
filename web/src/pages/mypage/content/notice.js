@@ -143,16 +143,6 @@ const Notice = (props) => {
         />
       )} */}
 
-      {globalCtx.profile.memNo === memNo && (
-        <button
-          onClick={() => {
-            setIsAdd(!isAdd)
-          }}
-          className={isAdd === true ? `noticeWriter noticeWriter--active` : `noticeWriter`}>
-          <span className="noticeButton">공지 작성하기</span>
-        </button>
-      )}
-
       {urlrStr === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )

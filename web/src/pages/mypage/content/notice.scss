@@ -31,7 +31,7 @@
 
       &__textWrap {
         width: 100%;
-        padding-right: 24px;
+        padding-right: 26px;
         box-sizing: border-box;
         overflow: hidden;
       }
@@ -63,5 +63,11 @@
         background-size: 100%;
       }
     }
+  }
+
+  .noticeDetail {
+    overflow: hidden;
+    height: 100%;
+    margin-top: 12px;
   }
 }
