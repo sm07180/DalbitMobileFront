@@ -67,10 +67,8 @@ function NoticeInsertCompnent(props) {
             dataURL: image.content,
             uploadType: 'room'
           })
-
           if (result === 'success') {
             document.getElementById('save_fileImg').value = ''
-
             setImage(null)
             setThumbNail(data)
           } else {
@@ -89,11 +87,11 @@ function NoticeInsertCompnent(props) {
   }, [thumbNail])
 
   return (
-    <div className="writeWrapper">
+    <div className="noticeWrite">
       <input
         value={formState.title}
         placeholder="공지사항 제목을 입력해주세요"
-        className="writeWrapper__titleInput"
+        className="noticeWrite__title"
         name="title"
         onChange={(e) => {
           if (e.target.value.length > 20) return
@@ -107,7 +105,7 @@ function NoticeInsertCompnent(props) {
           if (e.target.value.length > 500) return
           else onChange(e)
         }}
-        className="writeWrapper__contentTextarea"
+        className="noticeWrite__content"
         placeholder="작성하고자 하는 글의 내용을 입력해주세요."
       />
       <div className="saveFileImg">
@@ -141,24 +139,13 @@ function NoticeInsertCompnent(props) {
       </div>
 
       {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
-      <div className="writeController">
-        <label className="writeController__checkLabel">
-          <DalbitCheckbox callback={changeCheckStatus} status={formState.isTop} />
-          <span className="writeController__labelTxt">고정 공지사항</span>
-        </label>
-        <div className="writeController__btnWrapper">
-          <button
-            onClick={() => {
-              setIsAdd(false)
-            }}
-            className="writeWrapper__btn writeWrapper__btn__cancel">
-            취소
-          </button>
-          <button onClick={insettNorice} className="writeWrapper__btn">
-            등록
-          </button>
-        </div>
-      </div>
+
+      <label>
+        <DalbitCheckbox callback={changeCheckStatus} status={formState.isTop} />
+        고정 공지사항
+      </label>
+
+      <button onClick={insettNorice}>등록</button>
     </div>
   )
 }

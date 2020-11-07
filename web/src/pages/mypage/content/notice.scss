@@ -69,5 +69,134 @@
     overflow: hidden;
     height: 100%;
     margin-top: 12px;
+
+    &__title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 56px;
+      padding: 0px 16px;
+      box-sizing: border-box;
+      background: $white;
+      color: $black;
+      border-bottom: 1px solid $lighterGray;
+      font-size: 18px;
+      p {
+        margin-top: 2px;
+        font-size: 12px;
+        color: $greishGray;
+        font-weight: normal;
+      }
+    }
+    &__profile {
+      display: flex;
+      align-items: center;
+      height: 56px;
+      padding: 0px 16px;
+      box-sizing: border-box;
+      font-size: 16px;
+      color: $black;
+      background: $white;
+      border-bottom: 1px solid $lighterGray;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+
+    &__content {
+      padding: 10px 16px;
+      box-sizing: border-box;
+      font-size: 14px;
+      line-height: 20px;
+      color: $black;
+      background: $white;
+      min-height: 350px;
+
+      img {
+        display: block;
+        width: 217px;
+        height: 217px;
+        border-radius: 16px;
+      }
+    }
+
+    &__button {
+      display: flex;
+      padding: 0px 16px;
+      margin-top: 32px;
+
+      button {
+        width: 50%;
+        height: 44px;
+        line-height: 44px;
+        background: $greishGray;
+        color: $white;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        border-radius: 12px;
+        &:first-child {
+          margin-right: 4px;
+        }
+      }
+    }
+  }
+
+  .noticeWrite {
+    overflow: hidden;
+    padding: 0px 16px;
+    box-sizing: border-box;
+
+    &__title {
+      width: 100%;
+      margin: 12px 0px 4px 0px;
+      padding: 13px 14px;
+      box-sizing: border-box;
+      background: $white;
+      font-size: 14px;
+      font-weight: bold;
+      color: $black;
+      border-radius: 12px;
+      border: 1px solid $lightestGray;
+
+      &::placeholder {
+        color: $gray;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: normal;
+      }
+
+      &:focus {
+        border: 1px solid $black;
+      }
+    }
+
+    &__content {
+      width: 100%;
+      min-height: 300px;
+      padding: 16px 17px;
+      box-sizing: border-box;
+      overflow: hidden;
+      border-radius: 12px;
+      background: $white;
+      font-size: 14px;
+      border: 1px solid $lightestGray;
+
+      &::placeholder {
+        color: $gray;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: normal;
+      }
+      &:focus {
+        border: 1px solid $black;
+        box-sizing: border-box;
+      }
+    }
   }
 }

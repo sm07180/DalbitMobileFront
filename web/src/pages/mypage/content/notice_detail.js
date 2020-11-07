@@ -1,6 +1,8 @@
 import React, {useContext, useCallback} from 'react'
 import {Context} from 'context'
 import Api from 'context/api'
+//date format
+import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
   const {noticeList, detailIdx, setMoreToggle, memNo, currentPage, setModifyItem, getNotice, setIsList} = props
@@ -32,45 +34,36 @@ const NoticeDetail = (props) => {
   )
 
   return (
-    <div className="noticeDetail"></div>
+    <>
+      {noticeList !== null &&
+        noticeList.map((item, index) => (
+          <div key={index} className="noticeDetail">
+            {item.noticeIdx === detailIdx && (
+              <>
+                <h2 className="noticeDetail__title">
+                  {item.title}
+                  <p>{Utility.timeFormat(item.writeDt)}</p>
+                </h2>
+                <strong className="noticeDetail__profile">
+                  <img src={item.profImg['thumb292x292']} />
+                  {item.nickNm}
+                </strong>
+                <div className="noticeDetail__content">{item.contents}</div>
 
-    // <>
-    //   {noticeList !== null &&
-    //     noticeList.map((item, index) => (
-    //       <div  key={index}>
-    //         {item.noticeIdx === detailIdx && (
-    //           <div key={index} className="noticeSubject">
-    //             {memNo === globalCtx.profile.memNo && (
-    //               <button
-    //                 onClick={() => {
-    //                   setMoreToggle(!moreToggle)
-    //                 }}
-    //                 className="moreBtn"
-    //               />
-    //             )}
-    //             <div className="moreBox">
-    //               <button
-    //                 onClick={() => {
-    //                   setModifyItem({...item})
-    //                 }}
-    //                 className="moreBox__list">
-    //                 수정하기
-    //               </button>
-    //               <button onClick={() => deleteNotice(item.noticeIdx)} className="moreBox__list">
-    //                 삭제하기
-    //               </button>
-    //             </div>
-
-    //             <div className="noticeSubject__content">
-    //               <span className="noticeSubject__title">{item.title}</span>
-    //               <pre className="noticeSubject__innerTxt">{item.contents}</pre>
-    //               {/* <img src={`${PHOTO_SERVER}${item.imagePath}`} /> */}
-    //             </div>
-    //           </div>
-    //         )}
-    //       </div>
-    //     ))}
-    // </>
+                <div className="noticeDetail__button">
+                  <button
+                    onClick={() => {
+                      setModifyItem({...item})
+                    }}>
+                    수정
+                  </button>
+                  <button onClick={() => deleteNotice(item.noticeIdx)}>삭제</button>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+    </>
   )
 }
 
