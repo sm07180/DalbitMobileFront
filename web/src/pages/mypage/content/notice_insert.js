@@ -88,8 +88,6 @@ function NoticeInsertCompnent(props) {
     console.log(thumbNail)
   }, [thumbNail])
 
-  console.log(`formState.title`, formState.title)
-
   return (
     <div className="writeWrapper">
       <input
@@ -118,7 +116,6 @@ function NoticeInsertCompnent(props) {
           className="fileBasic"
           style={{
             background: `url("${thumbNail !== null && thumbNail.url}") center no-repeat #333`
-            // backgroundColor: "#333",
           }}></label>
         {thumbNail !== null && (
           <button

@@ -1,15 +1,16 @@
 import React, {useCallback, useEffect, useState, useContext} from 'react'
-
 import Api from 'context/api'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import {Context} from 'context'
 
 function ModifyNoticeCompnent(props) {
   const {setModifyItem, modifyItem, memNo, getNotice} = props
-  console.log(modifyItem)
-
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
   const [thumbNail, setThumbNail] = useState(null)
+
+  const globalCtx = useContext(Context)
 
   const onChange = useCallback(
     (e) => {
@@ -48,10 +49,9 @@ function ModifyNoticeCompnent(props) {
   useEffect(() => {
     if (image !== null) {
       if (image.status === false) {
-        // globalAction.setAlertStatus!({
-        //   status: true,
-        //   content: image.content,
-        // });
+        globalCtx.action.alert({
+          msg: message
+        })
       } else {
         const imageUpload = async () => {
           const {result, data, message} = await Api.image_upload({
@@ -65,10 +65,9 @@ function ModifyNoticeCompnent(props) {
             setImage(null)
             setThumbNail(data)
           } else {
-            // globalAction.setAlertStatus!({
-            //   status: true,
-            //   content: message,
-            // });
+            globalCtx.action.alert({
+              msg: message
+            })
           }
         }
         imageUpload()
@@ -81,7 +80,6 @@ function ModifyNoticeCompnent(props) {
       {modifyItem !== null && (
         <div className="writeWrapper">
           <form className="writeWrapper__form">
-            <h2 className="writeTitle">공지사항 수정</h2>
             <input
               placeholder="공지사항 제목을 입력해주세요"
               onChange={(e) => {
@@ -107,11 +105,13 @@ function ModifyNoticeCompnent(props) {
               <label
                 htmlFor="save_fileImg"
                 className="fileBasic"
-                style={{
-                  background: `url("${modifyItem.imagePath === '' ? thumbNail !== null && thumbNail.url : PHOTO_SERVER}/${
-                    modifyItem.imagePath
-                  }") center no-repeat #333`
-                }}></label>
+
+                // style={{
+                //   background: `url("${modifyItem.imagePath === '' ? thumbNail !== null && thumbNail.url : PHOTO_SERVER}/${
+                //     modifyItem.imagePath
+                //   }") center no-repeat #333`
+                // }}
+              ></label>
               {(modifyItem.imagePath !== '' || thumbNail !== null) && (
                 <button
                   className="saveFileImgClose"
@@ -143,7 +143,7 @@ function ModifyNoticeCompnent(props) {
           </form>
           <div className="writeController">
             <label className="writeController__checkLabel">
-              <DalbitCheckbox callback={changeCheckStatus} status={modifyItem.isTop} />
+              <DalbitCheckbox size={20} callback={changeCheckStatus} status={modifyItem.isTop} />
               <span className="writeController__labelTxt">고정공지사항</span>
             </label>
 

@@ -2,9 +2,10 @@ import React, {useState, useCallback, useEffect, useContext, useReducer} from 'r
 // import {useParams} from 'react-router-dom'
 import Api from 'context/api'
 // import {PHOTO_SERVER} from 'constant/define'
-import NoticeInsertCompnent from './notice_insert.js'
-import NoticeModifyCompnent from './notice_modify.js'
+import NoticeInsertCompnent from './notice_insert'
+import NoticeModifyCompnent from './notice_modify'
 import NoticeListCompnent from './notice_list.js'
+import NoticeDetailCompenet from './notice_detail'
 
 // import './notice.scss'
 
@@ -45,6 +46,8 @@ const Notice = (props) => {
   const [totalPage, setTotalPage] = useState(0)
   //Component 호출
   const [isAdd, setIsAdd] = useState(false)
+  const [isList, setIsList] = useState(true)
+  const [isDetaile, setIsdetail] = useState(false)
   const [modifyItem, setModifyItem] = useState(null)
 
   //Not Component 호출
@@ -54,8 +57,6 @@ const Notice = (props) => {
   const memNo = globalCtx.profile.memNo
 
   const getNotice = useCallback(async () => {
-    setMoreToggle(false)
-
     const {result, data} = await Api.mypage_notice_inquire({
       memNo: urlrStr,
       page: currentPage,
@@ -68,22 +69,6 @@ const Notice = (props) => {
       }
     }
   }, [memNo, currentPage])
-
-  const deleteNotice = useCallback(
-    (noticeIdx) => {
-      async function deleteNoiceContent() {
-        const res = await Api.mypage_notice_delete({
-          memNo: context.profile.memNo,
-          noticeIdx: noticeIdx
-        })
-        if (res.result === 'success') {
-          getNotice()
-        }
-      }
-      deleteNoiceContent()
-    },
-    [memNo, currentPage]
-  )
 
   const createWriteBtn = () => {
     return (
@@ -119,15 +104,31 @@ const Notice = (props) => {
       {modifyItem !== null && (
         <NoticeModifyCompnent modifyItem={modifyItem} setModifyItem={setModifyItem} memNo={memNo} getNotice={getNotice} />
       )}
-
-      <NoticeListCompnent
-        noticeList={noticeList}
-        detailIdx={detailIdx}
-        setMoreToggle={setMoreToggle}
-        setDetailIdx={setDetailIdx}
-        memNo={memNo}
-        moreToggle={moreToggle}
-      />
+      {isList && (
+        <NoticeListCompnent
+          noticeList={noticeList}
+          detailIdx={detailIdx}
+          setMoreToggle={setMoreToggle}
+          setDetailIdx={setDetailIdx}
+          memNo={memNo}
+          moreToggle={moreToggle}
+          setIsList={setIsList}
+        />
+      )}
+      {!isList && (
+        <NoticeDetailCompenet
+          noticeList={noticeList}
+          detailIdx={detailIdx}
+          currentPage={currentPage}
+          setMoreToggle={setMoreToggle}
+          setDetailIdx={setDetailIdx}
+          setModifyItem={setModifyItem}
+          setIsList={setIsList}
+          memNo={memNo}
+          moreToggle={moreToggle}
+          getNotice={getNotice}
+        />
+      )}
 
       {/* {totalPage !== 0 && noticeList !== null && (
         <Pagenation
