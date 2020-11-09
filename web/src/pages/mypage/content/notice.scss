@@ -282,13 +282,20 @@
       margin-bottom: 25px;
       cursor: pointer;
       background: url('https://image.dalbitlive.com/svg/gallery_w.svg') center 19px no-repeat #bdbdbd;
-      background-size: contain;
+
       &::after {
         display: block;
         width: 100%;
         margin-top: 51px;
         text-align: center;
         content: '사진첨부';
+      }
+
+      &.fileOn {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: left top;
+        text-indent: -99999px;
       }
     }
   }

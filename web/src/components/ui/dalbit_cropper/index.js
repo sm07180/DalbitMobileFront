@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import Cropper from 'react-cropper'
-
-import 'cropperjs/dist/cropper.css'
 import './index.scss'
 
 function DalbitCropper(props) {
