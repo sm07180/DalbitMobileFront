@@ -2707,6 +2707,104 @@ export default class API {
     })
   }
 
+  /**
+   * @brief 이벤트 리스트 조회
+   * @method "GET"
+   * @create 강다인 2020.09.29
+   */
+  static getEventList = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/list',
+      method: method || 'GET',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자/당첨결과 조회
+   * @method "POST"
+   * @create 강다인 2020.10.12
+   */
+  static getEventResult = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winResult',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 명단 조회
+   * @method "POST"
+   * @create 강다인 2020.10.13
+   */
+  static getEventWinner = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winList',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 경품 수령 방법 선택
+   * @method "POST"
+   * @create 강다인 2020.10.15
+   */
+  static prizeReceiveWay = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/receiveWay',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 등록 정보 가져오기
+   * @method "POST"
+   * @create 강다인 2020.10.15
+   */
+  static winnerInfoSelect = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/select',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 본인인증 정보 가져오기 (이름, 핸드폰번호)
+   * @method "GET"
+   * @create 강다인 2020.10.16
+   */
+  static winnerInfoFormat = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/infoFormat',
+      method: method || 'GET',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 등록 정보 등록/수정
+   * @method "POST"
+   * @create 강다인 2020.10.19
+   */
+  static winnerInfoAddEdit = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/edit',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
   static specialHistory = async (obj) => {
     const {url, method, params} = obj || {}
     return await ajax({

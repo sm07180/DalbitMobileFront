@@ -1,0 +1,453 @@
+@import '../../../../styles/variables';
+#eventList {
+  .event-list {
+    padding: 0 16px;
+  }
+
+  .event-item {
+    margin-top: 14px;
+    &:first-child {
+      margin-top: 0;
+    }
+
+    .banner {
+      position: relative;
+      width: 100%;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        border-radius: 12px;
+      }
+      .endEvent-text {
+        /* 영역 */
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        /* 폰트 */
+        font-size: 14px;
+        font-weight: bold;
+        line-height: 1.14;
+        text-align: center;
+        /* 색상 */
+        color: $lightGray;
+        background-color: $black;
+        opacity: 0.5;
+        /* 기타 속성 */
+        border-radius: 12px;
+      }
+    }
+
+    .textWrap {
+      position: relative;
+      margin-top: 5px;
+
+      .desc {
+        width: calc(100% - 100px);
+        padding-right: 5px;
+      }
+      .title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.2;
+        color: $black;
+      }
+
+      .date {
+        display: inline-block;
+        font-size: 12px;
+        color: #757575;
+      }
+
+      .btn__announce {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 74px;
+        height: 32px;
+        font-size: 14px;
+        line-height: 1.14;
+        background: $mediumGray;
+        color: $white;
+        border-radius: 8px;
+        &--isActive {
+          width: 100px;
+          background-color: $primary;
+        }
+      }
+    }
+  }
+}
+
+#winnerList {
+  .resultWrap {
+    padding: 0 16px 16px 16px;
+
+    .resultBox {
+      padding: 0 16px 0 16px;
+      text-align: center;
+      background-color: $white;
+      border: solid 1px $primary;
+      border-radius: 12px;
+
+      .title {
+        padding: 16px;
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1.5;
+        color: $primary;
+        border-bottom: 1px solid $lightGray;
+      }
+
+      .resultState {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        // 당첨 결과가 없을 때
+        .noResult {
+          position: relative;
+          padding-left: 76px;
+          text-align: left;
+          margin: 24px 0 28px;
+          font-weight: bold;
+          &:before {
+            position: absolute;
+            top: -12px;
+            left: 0;
+            display: inline-block;
+            content: '';
+            width: 60px;
+            height: 60px;
+            margin-right: 10px;
+            background: url('https://image.dalbitlive.com/images/api/img_rabbit.svg') no-repeat 0 0;
+          }
+        }
+
+        // 당첨 결과가 있을 때
+        .winResult {
+          width: 100%;
+          padding: 12px 0 12px 0;
+
+          img {
+            width: 128px;
+            height: 32px;
+            object-fit: contain;
+          }
+
+          .resultPrizeName {
+            margin-top: 8px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            line-height: 1.3;
+            color: $red;
+          }
+
+          .buttonArea {
+            display: flex;
+            padding-top: 20px;
+
+            .btn {
+              width: 50%;
+              text-align: center;
+              font-size: 14px;
+              font-weight: bold;
+              line-height: 1.14;
+              padding: 10px;
+
+              &.info {
+                margin-right: 2px;
+                color: $primary;
+                background-color: $white;
+                border-radius: 12px;
+                border: solid 1px $primary;
+              }
+
+              &.dal {
+                margin-left: 2px;
+                color: $white;
+                background-color: $primary;
+                border-radius: 12px;
+                border: solid 1px $primary;
+              }
+            }
+          }
+
+          .textArea {
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.43;
+            color: #757575;
+
+            &.bold {
+              margin-top: 10px;
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .winnerWrap {
+    background: $white;
+    .eventTitleBox {
+      padding: 10px 16px 0 16px;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.33;
+    }
+
+    .eventDateBox {
+      padding: 4px 0 9px 16px;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #757575;
+      border-bottom: 1px solid $lightGray;
+    }
+
+    .winner-list {
+      padding: 16px;
+      li {
+        margin-top: 20px;
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      .winnerTextArea {
+        margin-bottom: 8px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 16px;
+        font-weight: bold;
+        color: $black;
+      }
+
+      .winnerUser-list {
+        .winnerUser-item {
+          padding: 10px;
+          margin-top: 2px;
+          font-size: 14px;
+          line-height: 1.43;
+          background-color: $whiteGray;
+          color: $primary;
+          &:first-child {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+#winnerInfo {
+  padding: 0 16px 20px 16px;
+
+  .inputForm__box {
+    height: 44px;
+    display: flex;
+    padding: 6px 6px 6px 16px;
+    flex-direction: row;
+    margin-top: 4px;
+    align-items: center;
+    background-color: $whiteGray;
+    border: solid 1px $lightGray;
+    border-radius: 12px;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    // 이름, 휴대폰번호, 주소
+    &.default {
+      background-color: $whiteGray;
+    }
+
+    // 이메일, 상세주소
+    &.input {
+      background-color: $white;
+      &.focus {
+        border: solid 1px $black;
+      }
+    }
+
+    // 상품
+    &.prize {
+      background-color: $white;
+      .formText {
+        font-weight: bold;
+        color: $primary;
+      }
+      .infoText {
+        text-align: right;
+        font-weight: bold;
+        color: $black;
+      }
+    }
+  }
+
+  .formText {
+    width: 30%;
+    font-size: 12px;
+    line-height: 1.33;
+    color: $black;
+  }
+
+  .infoText {
+    width: 70%;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.38;
+    color: $black;
+    &::placeholder {
+      text-align: left;
+      font-size: 14px;
+      font-weight: normal; // font-weight: bold -> normal
+      line-height: 1.43;
+      color: #9e9e9e;
+    }
+  }
+
+  .textLabel {
+    display: flex;
+    flex: 1;
+    align-items: center;
+
+    // 우편번호
+    .textSpan {
+      width: 70%;
+      & > input::placeholder {
+        text-align: left;
+        font-size: 14px;
+        font-weight: normal; // font-weight: bold -> normal
+        line-height: 1.43;
+        color: #9e9e9e;
+      }
+      & > input:disabled {
+        font-weight: bold;
+      }
+    }
+
+    .searchBox {
+      width: 75px;
+      height: 100%;
+      padding: 7px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      background-color: $mediumGray;
+      color: $white;
+      border-radius: 9px;
+    }
+
+    & > span:first-child {
+      width: 100px; // px로 주어야 ...이 적용이 돼요
+      display: inline;
+      flex: 1;
+      align-items: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      font-size: 14px;
+      line-height: 1.43;
+      text-align: left;
+      color: #9e9e9e;
+    }
+
+    & > span:last-child {
+      width: 70px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+    }
+  }
+
+  .descArea {
+    padding: 4px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    line-height: 1.33;
+    color: #757575;
+  }
+
+  .msgBox {
+    padding: 16px 23px 16px 23px;
+    margin: 20px 0 8px 0;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.33;
+    background-color: $white;
+    color: $black;
+    border: solid 1px $primary;
+    border-radius: 12px;
+  }
+
+  .checkArea {
+    display: flex;
+    padding-top: 25px;
+
+    .checkText {
+      margin: 0 0 30px 14px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: $black;
+    }
+    .checkDescArea {
+      margin-top: 7px;
+      font-size: 12px;
+      line-height: 1.33;
+      color: #757575;
+    }
+  }
+
+  .saveButton {
+    width: 100%;
+    padding: 12px 120px 12px 120px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.17;
+    background-color: $mediumGray;
+    color: $white;
+    border-radius: 12px;
+
+    &-active {
+      width: 100%;
+      padding: 12px 120px 12px 120px;
+      text-align: center;
+      font-size: 18px;
+      line-height: 1.17;
+      background-color: $primary;
+      color: $white;
+      border-radius: 12px;
+    }
+  }
+
+  #layer {
+    display: none;
+    position: fixed;
+    z-index: 3;
+
+    &__close {
+      width: 20px;
+      position: fixed;
+      z-index: 2;
+      font-size: 16px;
+      background-color: $black;
+      color: white;
+    }
+  }
+}

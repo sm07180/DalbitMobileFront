@@ -17,7 +17,6 @@ export default () => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {tab} = eventAttendState
   const {webview, type} = qs.parse(location.search)
-  const [ios, setIos] = useState('')
 
   const commonTopRef = useRef()
   const tabRef = useRef()
@@ -27,7 +26,7 @@ export default () => {
   async function fetchIosJudge() {
     const {result, data} = await API.getIosJudge()
     if (result === 'success') {
-      setIos(data.iosJudgeYn)
+      eventAttendAction.setIos(data.iosJudgeYn)
     }
   }
 
@@ -48,7 +47,6 @@ export default () => {
       setTabFixed(false)
     }
   }
-
   //-------------------
   useEffect(() => {
     // if (type === 'roulette') {
@@ -79,7 +77,7 @@ export default () => {
         <button className="btnBack" onClick={() => clickCloseBtn()}>
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
         </button>
-        {ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
+        {eventAttendState.ios === 'Y' ? '' : <img src={`${IMG_SERVER}/event/attend/201019/event_img_top@2x.png`} />}
       </div>
 
       <div className={`tabWrap ${tabFixed ? 'fixed' : ''} ${tab === 'attend' ? 'attend' : 'roulette'}`} ref={tabRef}>
@@ -90,7 +88,7 @@ export default () => {
           <img src={`${IMG_SERVER}/event/attend/201019/tab_text_01@2x.png`} alt="출석 이벤트" />
         </button>
 
-        {ios === 'Y' ? (
+        {eventAttendState.ios === 'Y' ? (
           ''
         ) : (
           <button
