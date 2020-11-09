@@ -95,7 +95,9 @@ function DalbitCropper(props) {
 
   return (
     <div className={customName || ''}>
+      {/* <Header type="cropperPopup" setEditorOpen={setEditorOpen} type="cropperPopup" /> */}
       <Cropper
+        style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
         initialAspectRatio={1}
         preview=".img-preview"
         src={state && state.status !== false ? state.content : undefined}
@@ -115,9 +117,7 @@ function DalbitCropper(props) {
       />
       <div className="btnBox">
         <button onClick={rotateImage}>회전</button>
-        <button className="btn__ok" onClick={cropImage}>
-          자르기
-        </button>
+        <button className="cropButton" onClick={cropImage}></button>
         <button className="btn__save" onClick={submit}>
           저장
         </button>
