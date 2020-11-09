@@ -22,7 +22,8 @@ const EventAttendProvider = (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
-  const [winPhone, setWinPhone] = useState(0) //당첨된 아이템
+  const [winPhone, setWinPhone] = useState(0)
+  const [ios, setIos] = useState('')
 
   //---------------------------------------------------------------------
 
@@ -37,7 +38,8 @@ const EventAttendProvider = (props) => {
     inputEndDate,
     winIdx,
     itemNo,
-    winPhone
+    winPhone,
+    ios
   }
 
   const eventAttendAction = {
@@ -51,7 +53,8 @@ const EventAttendProvider = (props) => {
     setInputEndDate,
     setWinIdx,
     setItemNo,
-    setWinPhone
+    setWinPhone,
+    setIos
   }
 
   const bundle = {
