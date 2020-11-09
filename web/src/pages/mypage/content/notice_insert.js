@@ -7,7 +7,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 
 function NoticeInsertCompnent(props) {
-  const {setIsAdd, memNo, getNotice, setIsList} = props
+  const {setIsAdd, memNo, getNotice, setIsList, customName} = props
 
   const context = useContext(Context)
 
@@ -175,7 +175,9 @@ function NoticeInsertCompnent(props) {
           }}
         />
       </div>
-      {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
+      {cropOpen && eventObj !== null && (
+        <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
+      )}
 
       <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
         등록

@@ -94,7 +94,7 @@ function DalbitCropper(props) {
   }, [state])
 
   return (
-    <div id="croperWrap" className={customName || ''}>
+    <div className={customName || ''}>
       <Cropper
         initialAspectRatio={1}
         preview=".img-preview"
@@ -104,10 +104,10 @@ function DalbitCropper(props) {
         minCropBoxWidth={100}
         minCropBoxHeight={100}
         background={false}
-        // autoCropArea={1}
-        // responsive={true}
-        // autoCropArea={1}
-        // checkOrientation={false}
+        autoCropArea={1}
+        responsive={true}
+        autoCropArea={1}
+        checkOrientation={false}
         onInitialized={(instance) => {
           setCropper(instance)
         }}
