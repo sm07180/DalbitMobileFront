@@ -1,0 +1,32 @@
+.btnBox {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 0 0 14px;
+  background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  button {
+    width: 50%;
+    height: 54px;
+    color: #fff;
+    &:first-child {
+      margin-left: 0;
+    }
+    img {
+      width: 32px;
+    }
+  }
+  .btn__save {
+    width: 94%;
+    height: 44px;
+    margin: 0 3%;
+    letter-spacing: -0.4px;
+    line-height: 44px;
+    font-size: 18px;
+    font-weight: bold;
+    background-color: #632beb;
+    color: #fff;
+    border-radius: 12px;
+  }
+}

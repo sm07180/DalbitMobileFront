@@ -3,7 +3,7 @@
  * @brief toast 기능
  * @use context.action.toast({msg: '메세지'})
  */
-import React, {useRef, useContext, useEffect, useState} from 'react'
+import React, {useRef, useContext, useEffect, useState, useMemo} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -11,7 +11,11 @@ import Utility from 'components/lib/utility'
 
 const lifeTime = 2500 // milisec
 
-// let timer
+let timer
+
+let msgArray = []
+
+let copyArray = []
 
 export default (props) => {
   //---------------------------------------------------------------------
@@ -19,109 +23,86 @@ export default (props) => {
   const context = useContext(Context)
   const {msg} = context.message
 
-  const [msgData, setMsgData] = useState([])
+  const [last, setLast] = useState(false)
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     context.action.toast({visible: false})
-  //   }, [lifeTime])
-  // }, [])
   useEffect(() => {
-    if (msgData.length === 0) {
-      setMsgData([{text: msg, state: true}])
-    } else {
-      setMsgData((previous) => {
+    if (msg && msg !== '') {
+      msgArray.push({
+        text: msg,
+        state: true
+      })
+      copyArray.push(msg)
+    }
+  }, [msg])
+
+  const msgData = useMemo(() => {
+    if (last === true) {
+      return []
+    }
+    if (msg && msg !== '') {
+      if (copyArray.length > 0) {
         return [
-          ...previous,
+          ...msgArray,
           {
             text: msg,
             state: true
           }
         ]
-      })
+      } else {
+        return [
+          {
+            text: msg,
+            state: true
+          }
+        ]
+      }
+    } else {
+      return []
     }
-  }, [msg])
+  }, [msg, last])
 
   useEffect(() => {
     if (msgData.length > 0) {
-      if (msgData.every((v) => !v.state)) {
-        context.action.toast({visible: false})
-
-        return
-      }
-
       setTimeout(() => {
-        setMsgData(
-          msgData.filter((v, i, self) => {
-            if (i === 0) {
-              return false
-            }
-            return v
-          })
-        )
-        // setMsgData(
-        //   msgData.map((v, i) => {
-        //     if (i === 0) {
-        //       v.state = false
-        //     }
-        //     return v
-        //   })
-        // )
+        copyArray.shift()
+        if (copyArray.length === 0) {
+          msgArray = []
+          setLast(true)
+        }
       }, lifeTime)
-
-      console.log(msgData)
     }
   }, [msgData])
 
   useEffect(() => {
-    if (context.message.visible === false) {
-      console.log('와주라')
-      setMsgData([])
+    if (last === true && msgData.length === 0) {
+      context.action.toast({
+        message: ''
+      })
+      setLast(false)
     }
-  }, [context.message.visible])
+  }, [last, msgData])
   //---------------------------------------------------------------------
   return (
     <>
-      {msgData.length > 0 &&
-        // msgData.map((v, i) => {
-        //   return (
-        //     <React.Fragment key={i}>
-        //       <Toast className={v.state === false && 'un'}>
-        //         <div dangerouslySetInnerHTML={{__html: Utility.nl2br(v.text)}}></div>
-        //       </Toast>
-        //     </React.Fragment>
-        //   )
-        // })
-        Memozized(msgData)}
+      {
+        msgData.length > 0 &&
+          msgData.map((v, i) => {
+            return (
+              <React.Fragment key={i}>
+                <Toast>
+                  <div dangerouslySetInnerHTML={{__html: Utility.nl2br(v.text)}}></div>
+                </Toast>
+              </React.Fragment>
+            )
+          })
+        // Memozized(msgData)
+      }
     </>
   )
 }
 
-function check(prev, cur) {
-  console.log('안녕...', prev)
-  console.log(cur)
-
-  return false
-}
-function CreateToast(arr) {
-  return (
-    <>
-      {arr.map((v, i) => {
-        return (
-          <React.Fragment key={i}>
-            <Toast className={v.state === false && 'un'}>
-              <div dangerouslySetInnerHTML={{__html: Utility.nl2br(v.text)}}></div>
-            </Toast>
-          </React.Fragment>
-        )
-      })}
-    </>
-  )
-}
-
-const Memozized = (arr) => React.memo(CreateToast(arr), check)
 //---------------------------------------------------------------------
-const Toast = styled.section`
+const Toast = styled.div`
   &.un {
     display: none;
   }

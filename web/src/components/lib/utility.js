@@ -6,7 +6,7 @@
 
 //---------------------------------------------------------------------
 import {isHybrid, Hybrid} from 'context/hybrid'
-import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
+import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
 export default class Utility {
   /**
@@ -22,7 +22,9 @@ export default class Utility {
    *
    */
   static nl2br = (text) => {
-    return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    if (text && text !== '') {
+      return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    }
   }
   /**
    * @brief 쿠키설정 path=/;domain=dalbitcast.com
@@ -251,18 +253,21 @@ export default class Utility {
     if (event.target.closest('A')) {
       const link = event.target.closest('A')
       const clipUrl = /\/clip\/[0-9]*$/
-      if(isHybrid()){
+      if (isHybrid()) {
         if (clipUrl.test(link.href)) {
-          const clip_no = link.href.substring(link.href.lastIndexOf("/") + 1)
+          const clip_no = link.href.substring(link.href.lastIndexOf('/') + 1)
           clipJoinApi(clip_no, context)
-        } else if (link.href.indexOf('dalbitlive.com') > -1 || (!link.href.startsWith('https://') && !link.href.startsWith('http://'))) {
+        } else if (
+          link.href.indexOf('dalbitlive.com') > -1 ||
+          (!link.href.startsWith('https://') && !link.href.startsWith('http://'))
+        ) {
           window.location.href = link.href
         } else {
           Hybrid('openUrl', link.href)
         }
         event.preventDefault()
         return false
-      }else if (clipUrl.test(link.href)) {
+      } else if (clipUrl.test(link.href)) {
         context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
         event.preventDefault()
         return false
