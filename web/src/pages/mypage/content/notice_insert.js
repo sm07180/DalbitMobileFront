@@ -175,9 +175,7 @@ function NoticeInsertCompnent(props) {
           }}
         />
       </div>
-      {cropOpen && eventObj !== null && (
-        <DalbitCropper customName={cropperWrap} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
-      )}
+      {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
 
       <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
         등록

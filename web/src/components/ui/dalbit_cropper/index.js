@@ -94,7 +94,7 @@ function DalbitCropper(props) {
   }, [state])
 
   return (
-    <div className={customName || ''}>
+    <div id="croperWrap" className={customName || ''}>
       <Cropper
         initialAspectRatio={1}
         preview=".img-preview"
