@@ -14,6 +14,7 @@ import alarmOn from '../ic_alarmtoggleon.svg'
 import alarmOff from '../ic_alarmtoggleoff.svg'
 import GuideIcon from '../../static/guide.svg'
 let first = true
+let isSelect = false
 
 const AlarmArray = [
   {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시'},
@@ -95,7 +96,7 @@ export default (props) => {
     let message
     if (res.result === 'success') {
       if (arg === undefined) {
-        if (isClickAll === true) {
+        if (isSelect === true) {
           if (allCheck === 1) {
             context.action.toast({
               msg: '모든 알림 푸시를 받습니다.'
@@ -144,7 +145,7 @@ export default (props) => {
   // select all
   const selectAll = () => {
     first = false
-    setIsClickAll(true)
+    isSelect = true
     if (allCheck === 0) {
       setAllCheck(1)
       setAlarmArray(
@@ -162,6 +163,7 @@ export default (props) => {
         })
       )
     }
+    postAlarmData()
   }
   const openPopup = (key) => {
     context.action.updatePopup('ALARM', key)
@@ -173,7 +175,7 @@ export default (props) => {
           <button
             onClick={() => {
               first = false
-              setIsClickAll(false)
+              isSelect = false
               setMyAlimType('n')
             }}
             className={myAlimType === 'n' ? 'active' : ''}>
@@ -183,7 +185,7 @@ export default (props) => {
             className="active"
             onClick={() => {
               first = false
-              setIsClickAll(false)
+              isSelect = false
               setMyAlimType('s')
             }}
             className={myAlimType === 's' ? 'active' : ''}>
@@ -192,7 +194,7 @@ export default (props) => {
           <button
             onClick={() => {
               first = false
-              setIsClickAll(false)
+              isSelect = false
               setMyAlimType('v')
             }}
             className={myAlimType === 'v' ? 'active' : ''}>
@@ -217,6 +219,7 @@ export default (props) => {
                 className={`btnAlarm ${v.value === 1 ? 'on' : ''}`}
                 onClick={() => {
                   first = false
+                  isSelect = false
                   postAlarmData(v)
                 }}>
                 <span className="blind">{v.text}</span>
