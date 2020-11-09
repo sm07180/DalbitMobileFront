@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useContext, useMemo} from 'react'
 
 import {Context} from 'context'
 
@@ -6,7 +6,7 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 
 const NoticeList = (props) => {
-  const {noticeList, detailIdx, setMoreToggle, setDetailIdx, setIsList, memNo} = props
+  const {noticeList, detailIdx, setMoreToggle, setDetailIdx, setIsList, memNo, setIsDetaile, isDetaile} = props
   const globalCtx = useContext(Context)
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
@@ -19,6 +19,7 @@ const NoticeList = (props) => {
             className={`noticeItme ${item.isTop === true && 'bookmark'}`}
             key={index}
             onClick={() => {
+              setIsDetaile(true)
               setIsList(false)
               if (item.noticeIdx === detailIdx) {
                 setDetailIdx(0)

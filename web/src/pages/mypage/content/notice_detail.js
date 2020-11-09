@@ -5,7 +5,7 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
-  const {noticeList, detailIdx, setMoreToggle, memNo, currentPage, setModifyItem, getNotice, setIsList} = props
+  const {noticeList, detailIdx, setMoreToggle, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetaile} = props
   const globalCtx = useContext(Context)
 
   const deleteNotice = useCallback(
@@ -37,9 +37,9 @@ const NoticeDetail = (props) => {
     <>
       {noticeList !== null &&
         noticeList.map((item, index) => (
-          <div key={index} className="noticeDetail">
+          <div key={index}>
             {item.noticeIdx === detailIdx && (
-              <>
+              <div key={index} className="noticeDetail">
                 <h2 className="noticeDetail__title">
                   {item.title}
                   <p>{Utility.timeFormat(item.writeDt)}</p>
@@ -54,12 +54,13 @@ const NoticeDetail = (props) => {
                   <button
                     onClick={() => {
                       setModifyItem({...item})
+                      setIsDetaile(false)
                     }}>
                     수정
                   </button>
                   <button onClick={() => deleteNotice(item.noticeIdx)}>삭제</button>
                 </div>
-              </>
+              </div>
             )}
           </div>
         ))}

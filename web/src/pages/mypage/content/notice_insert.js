@@ -7,13 +7,14 @@ import Api from 'context/api'
 import {Context} from 'context'
 
 function NoticeInsertCompnent(props) {
-  const {setIsAdd, memNo, getNotice} = props
+  const {setIsAdd, memNo, getNotice, setIsList} = props
 
   const context = useContext(Context)
 
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
+  const [activeState, setActiveState] = useState(false)
 
   const [formState, setFormState] = useState({
     title: '',
@@ -41,6 +42,22 @@ function NoticeInsertCompnent(props) {
   }, [formState])
 
   const insettNorice = useCallback(async () => {
+    if (formState.title === '') {
+      context.action.alert({
+        msg: '제목을 입력해주세요.',
+        callback: () => {
+          return
+        }
+      })
+    } else if (formState.contents === '') {
+      context.action.alert({
+        msg: '내용을 입력해주세요.',
+        callback: () => {
+          return
+        }
+      })
+    }
+
     const res = await Api.mypage_notice_upload({
       data: {
         ...formState,
@@ -52,7 +69,20 @@ function NoticeInsertCompnent(props) {
     if (res.result === 'success') {
       getNotice()
       setIsAdd(false)
+      setIsList(true)
     }
+  }, [formState])
+
+  const ButtonActive = () => {
+    if (formState.title !== '' && formState.contents !== '') {
+      setActiveState(true)
+    } else {
+      setActiveState(false)
+    }
+  }
+  //---------------------------------------------------------------------
+  useEffect(() => {
+    ButtonActive()
   }, [formState])
 
   useEffect(() => {
@@ -145,7 +175,7 @@ function NoticeInsertCompnent(props) {
       </div>
       {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
 
-      <button className="noticeWrite__button" onClick={insettNorice}>
+      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
         등록
       </button>
     </div>

@@ -5,15 +5,17 @@
   height: 100%;
 
   .noticeList {
+    margin-top: 12px;
     width: 100%;
     display: block;
+
     .noticeItme {
+      overflow: hidden;
       display: flex;
       align-items: center;
       padding: 0 16px;
       height: 66px;
       border-bottom: 1px solid $lighterGray;
-
       background: url('https://image.dalbitlive.com/svg/icon_more_right.svg') no-repeat center right 16px $white;
       cursor: pointer;
 
@@ -148,6 +150,7 @@
   }
 
   .noticeWrite {
+    //공지사항 작성, 수정 페이지 공용
     overflow: hidden;
     padding: 0px 16px;
     box-sizing: border-box;
@@ -215,7 +218,6 @@
     }
     &__button {
       width: 100%;
-      // background: $primary;
       background: $mediumGray;
       color: $white;
       font-size: 16px;
@@ -224,6 +226,24 @@
       font-weight: 600;
       border-radius: 12px;
       margin-bottom: 50px;
+      &.active {
+        background: $primary;
+      }
+    }
+
+    .modifyButton {
+      width: 100%;
+      background: $mediumGray;
+      color: $white;
+      font-size: 16px;
+      line-height: 44px;
+      text-align: center;
+      font-weight: 600;
+      border-radius: 12px;
+      margin-bottom: 50px;
+      &.active {
+        background: $primary;
+      }
     }
   }
 

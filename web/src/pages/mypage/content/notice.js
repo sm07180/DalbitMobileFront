@@ -12,6 +12,8 @@ import './notice.scss'
 // moible context
 import {useLocation} from 'react-router-dom'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
+
 import Header from '../component/header.js'
 import WhitePen from '../component/images/WhitePen.svg'
 import pen from 'images/pen.svg'
@@ -22,6 +24,7 @@ const Notice = (props) => {
   const globalCtx = useContext(Context)
   //memNo
   let location = useLocation()
+  let history = useHistory()
 
   let urlrStr
   if (props.location) {
@@ -47,7 +50,7 @@ const Notice = (props) => {
   //Component 호출
   const [isAdd, setIsAdd] = useState(false)
   const [isList, setIsList] = useState(true)
-  const [isDetaile, setIsdetail] = useState(false)
+  const [isDetaile, setIsDetaile] = useState(false)
   const [modifyItem, setModifyItem] = useState(null)
 
   //Not Component 호출
@@ -70,18 +73,6 @@ const Notice = (props) => {
     }
   }, [memNo, currentPage])
 
-  const createWriteBtn = () => {
-    return (
-      <button
-        onClick={() => {
-          setIsAdd(!isAdd)
-        }}
-        className={[`write-btn ${urlrStr === memNo ? 'on' : 'on'}`]}>
-        쓰기
-      </button>
-    )
-  }
-
   const titleText = () => {
     if (isAdd === true) {
       return '방송공지 글쓰기'
@@ -92,32 +83,80 @@ const Notice = (props) => {
     }
   }
 
+  const goBack = () => {
+    //링크 진행중
+    if (isList) {
+      history.push(`/mypage/${memNo}/notice`)
+    }
+    if (isAdd) {
+      setIsAdd(false)
+      setIsList(true)
+    }
+    if (modifyItem !== null) {
+      setModifyItem(null)
+      setIsDetaile(true)
+    }
+    if (isDetaile) {
+      setIsDetaile(false)
+      setIsList(true)
+      setDetailIdx(0)
+    }
+  }
+
+  const createWriteBtn = () => {
+    return (
+      <button
+        onClick={() => {
+          setIsAdd(!isAdd)
+          setIsList(false)
+        }}
+        className={[`write-btn ${urlrStr === memNo ? 'on' : 'on'}`]}>
+        쓰기
+      </button>
+    )
+  }
+
   useEffect(() => {
     getNotice()
   }, [currentPage])
 
+  console.log(`detailIdx`, detailIdx)
+
   return (
     <div id="notice">
-      <Header>
-        <h2 className="header-title">{titleText()}</h2>
-      </Header>
+      <div className="org header-wrap">
+        {titleText()}
+        <button className="close-btn" onClick={goBack}>
+          <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
+        </button>
+      </div>
 
-      {isAdd === true && <NoticeInsertCompnent setIsAdd={setIsAdd} memNo={memNo} getNotice={getNotice} />}
+      {isAdd === true && <NoticeInsertCompnent setIsAdd={setIsAdd} memNo={memNo} getNotice={getNotice} setIsList={setIsList} />}
       {modifyItem !== null && (
-        <NoticeModifyCompnent modifyItem={modifyItem} setModifyItem={setModifyItem} memNo={memNo} getNotice={getNotice} />
+        <NoticeModifyCompnent
+          modifyItem={modifyItem}
+          setModifyItem={setModifyItem}
+          memNo={memNo}
+          getNotice={getNotice}
+          setIsList={setIsList}
+          setIsDetaile={setIsDetaile}
+        />
       )}
-      {isList && (
+
+      {isList === true && (
         <NoticeListCompnent
           noticeList={noticeList}
           detailIdx={detailIdx}
-          setMoreToggle={setMoreToggle}
           setDetailIdx={setDetailIdx}
+          setMoreToggle={setMoreToggle}
           memNo={memNo}
           moreToggle={moreToggle}
           setIsList={setIsList}
+          isDetaile={isDetaile}
+          setIsDetaile={setIsDetaile}
         />
       )}
-      {!isList && (
+      {isDetaile === true && (
         <NoticeDetailCompenet
           noticeList={noticeList}
           detailIdx={detailIdx}
@@ -125,6 +164,7 @@ const Notice = (props) => {
           setMoreToggle={setMoreToggle}
           setDetailIdx={setDetailIdx}
           setModifyItem={setModifyItem}
+          setIsDetaile={setIsDetaile}
           setIsList={setIsList}
           memNo={memNo}
           moreToggle={moreToggle}
@@ -143,7 +183,7 @@ const Notice = (props) => {
         />
       )} */}
 
-      {urlrStr === globalCtx.profile.memNo && createWriteBtn()}
+      {isList === true && urlrStr === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
 }

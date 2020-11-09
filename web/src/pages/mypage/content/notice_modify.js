@@ -4,11 +4,12 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
 
 function ModifyNoticeCompnent(props) {
-  const {setModifyItem, modifyItem, memNo, getNotice} = props
+  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetaile} = props
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
   const [thumbNail, setThumbNail] = useState(null)
+  const [activeState, setActiveState] = useState(false)
 
   const globalCtx = useContext(Context)
 
@@ -24,15 +25,26 @@ function ModifyNoticeCompnent(props) {
     [modifyItem]
   )
 
+  const ButtonActive = () => {
+    if (modifyItem.title !== '' && modifyItem.contents !== '') {
+      setActiveState(true)
+    } else {
+      setActiveState(false)
+    }
+  }
+
   const ModionSubmit = useCallback(() => {
     async function ModiRegistNotice() {
-      const {result, data} = await Api.mypage_notice_edit({
-        memNo: memNo,
-        imagePath: thumbNail !== null ? thumbNail.path : '',
-        ...modifyItem
+      const res = await Api.mypage_notice_edit({
+        data: {
+          ...modifyItem,
+          memNo: memNo,
+          imagePath: thumbNail !== null ? thumbNail.path : ''
+        }
       })
-      if (result === 'success') {
+      if (res.result === 'success') {
         setModifyItem(null)
+        setIsDetaile(true)
         getNotice()
       }
     }
@@ -75,91 +87,84 @@ function ModifyNoticeCompnent(props) {
     }
   }, [image])
 
+  //---------------------------------------------------------------------
+  useEffect(() => {
+    ButtonActive()
+  }, [modifyItem])
+
   return (
     <>
       {modifyItem !== null && (
-        <div className="writeWrapper">
-          <form className="writeWrapper__form">
-            <input
-              placeholder="공지사항 제목을 입력해주세요"
-              onChange={(e) => {
-                if (e.target.value.length > 20) return
-                else onChange(e)
-              }}
-              value={modifyItem.title}
-              name="title"
-              className="writeWrapper__titleInput"
-            />
-            <textarea
-              value={modifyItem.contents}
-              placeholder="공지사항 내용을 입력해주세요"
-              onChange={(e) => {
-                if (e.target.value.length > 500) return
-                else onChange(e)
-              }}
-              name="contents"
-              className="writeWrapper__contentTextarea"
-            />
+        <div className="noticeWrite">
+          <input
+            placeholder="공지사항 제목을 입력해주세요"
+            onChange={(e) => {
+              if (e.target.value.length > 20) return
+              else onChange(e)
+            }}
+            value={modifyItem.title}
+            name="title"
+            className="noticeWrite__title"
+          />
+          <textarea
+            value={modifyItem.contents}
+            placeholder="공지사항 내용을 입력해주세요"
+            onChange={(e) => {
+              if (e.target.value.length > 500) return
+              else onChange(e)
+            }}
+            name="contents"
+            className="noticeWrite__content"
+          />
 
-            <div className="saveFileImg">
-              <label
-                htmlFor="save_fileImg"
-                className="fileBasic"
+          <label className="noticeWrite__checkbox">
+            <DalbitCheckbox size={20} callback={changeCheckStatus} status={modifyItem.isTop} />
+            상단 고정
+          </label>
 
-                // style={{
-                //   background: `url("${modifyItem.imagePath === '' ? thumbNail !== null && thumbNail.url : PHOTO_SERVER}/${
-                //     modifyItem.imagePath
-                //   }") center no-repeat #333`
-                // }}
-              ></label>
-              {(modifyItem.imagePath !== '' || thumbNail !== null) && (
-                <button
-                  className="saveFileImgClose"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setModifyItem({
-                      ...modifyItem,
-                      imagePath: ''
-                    })
-                    setImage(null)
-                    setThumbNail(null)
-                  }}>
-                  첨부이미지 닫기
-                </button>
-              )}
+          <div className="saveFileImg">
+            <label
+              htmlFor="save_fileImg"
+              className="fileBasic"
 
-              <input
-                type="file"
-                id="save_fileImg"
-                onChange={(e) => {
-                  e.persist()
-                  setEventObj(e)
-                  setCropOpen(true)
-                }}
-              />
-            </div>
-
-            {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
-          </form>
-          <div className="writeController">
-            <label className="writeController__checkLabel">
-              <DalbitCheckbox size={20} callback={changeCheckStatus} status={modifyItem.isTop} />
-              <span className="writeController__labelTxt">고정공지사항</span>
-            </label>
-
-            <div className="writeController__btnWrapper">
+              // style={{
+              //   background: `url("${modifyItem.imagePath === '' ? thumbNail !== null && thumbNail.url : PHOTO_SERVER}/${
+              //     modifyItem.imagePath
+              //   }") center no-repeat #333`
+              // }}
+            ></label>
+            {(modifyItem.imagePath !== '' || thumbNail !== null) && (
               <button
-                onClick={() => {
-                  setModifyItem(null)
-                }}
-                className="writeWrapper__btn writeWrapper__btn__cancel">
-                취소
+                className="saveFileImgClose"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setModifyItem({
+                    ...modifyItem,
+                    imagePath: ''
+                  })
+                  setImage(null)
+                  setThumbNail(null)
+                }}>
+                첨부이미지 닫기
               </button>
-              <button onClick={ModionSubmit} className="writeWrapper__btn">
-                수정
-              </button>
-            </div>
+            )}
+
+            <input
+              type="file"
+              id="save_fileImg"
+              onChange={(e) => {
+                e.persist()
+                setEventObj(e)
+                setCropOpen(true)
+              }}
+            />
           </div>
+
+          {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
+
+          <button className={`modifyButton ${activeState && 'active'}`} onClick={ModionSubmit}>
+            수정
+          </button>
         </div>
       )}
     </>
