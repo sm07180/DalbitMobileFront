@@ -1,23 +1,18 @@
 import React, {useState, useCallback, useEffect, useContext, useReducer} from 'react'
-// import {useParams} from 'react-router-dom'
+
 import Api from 'context/api'
-// import {PHOTO_SERVER} from 'constant/define'
+
 import NoticeInsertCompnent from './notice_insert'
 import NoticeModifyCompnent from './notice_modify'
 import NoticeListCompnent from './notice_list.js'
 import NoticeDetailCompenet from './notice_detail'
-
-import './notice.scss'
 
 // moible context
 import {useLocation} from 'react-router-dom'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 
-import Header from '../component/header.js'
-import WhitePen from '../component/images/WhitePen.svg'
-import pen from 'images/pen.svg'
-import {DalbitTextArea} from '../content/textarea'
+import './notice.scss'
 
 const Notice = (props) => {
   // moible 유저 정보
@@ -32,9 +27,6 @@ const Notice = (props) => {
   } else {
     urlrStr = location.pathname.split('/')[2]
   }
-
-  const [listPage, setListPage] = useState(-1)
-  const [nextListPage, setNextListPage] = useState([])
 
   //체크상태
   const initialState = {
@@ -156,11 +148,7 @@ const Notice = (props) => {
           noticeList={noticeList}
           detailIdx={detailIdx}
           setDetailIdx={setDetailIdx}
-          setMoreToggle={setMoreToggle}
-          memNo={memNo}
-          moreToggle={moreToggle}
           setIsList={setIsList}
-          isDetaile={isDetaile}
           setIsDetaile={setIsDetaile}
         />
       )}
@@ -187,17 +175,6 @@ const Notice = (props) => {
           </div>
         </div>
       )}
-
-      {/* {totalPage !== 0 && noticeList !== null && (
-        <Pagenation
-          setPage={(param) => {
-            setCurrentPage(param)
-          }}
-          currentPage={currentPage}
-          totalPage={totalPage}
-          count={5}
-        />
-      )} */}
 
       {isList === true && urlrStr === globalCtx.profile.memNo && createWriteBtn()}
     </div>

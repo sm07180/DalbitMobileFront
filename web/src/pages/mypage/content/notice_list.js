@@ -1,15 +1,15 @@
-import React, {useContext, useMemo} from 'react'
+import React, {useContext} from 'react'
 import {PHOTO_SERVER} from 'context/config'
 import {Context} from 'context'
-
-import styled from 'styled-components'
 
 //date format
 import Utility from 'components/lib/utility'
 
 const NoticeList = (props) => {
-  const {noticeList, detailIdx, setMoreToggle, setDetailIdx, setIsList, memNo, setIsDetaile, isDetaile} = props
+  const {noticeList, detailIdx, setDetailIdx, setIsList, setIsDetaile} = props
   const globalCtx = useContext(Context)
+
+  // 최신글 체크
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 

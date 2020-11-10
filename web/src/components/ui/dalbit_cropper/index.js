@@ -1,19 +1,20 @@
 import React, {useEffect, useState, useCallback} from 'react'
 import Cropper from 'react-cropper'
-import './index.scss'
-
 import Header from '../new_header'
-
+import './index.scss'
 import CropImg from './static/ico-crop.png'
 import CropRotation from './static/ico-rotation.png'
 
 function DalbitCropper(props) {
   const {event, setCropOpen, setImage, customName} = props
+
+  //state
   const [state, setState] = useState({
     status: true,
     fileName: '',
     content: ''
   })
+  //열고 닫기
   const [cropper, setCropper] = useState(false)
 
   const rotateImage = useCallback(() => {

@@ -6,22 +6,22 @@ import {Context} from 'context'
 
 function NoticeInsertCompnent(props) {
   const {setIsAdd, memNo, getNotice, setIsList, customName, setPhotoUploading} = props
-
   const context = useContext(Context)
 
+  //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
   const [activeState, setActiveState] = useState(false)
+  const [thumbNail, setThumbNail] = useState(null)
 
+  //state
   const [formState, setFormState] = useState({
     title: '',
     contents: '',
     isTop: false,
     imagePath: ''
   })
-
-  const [thumbNail, setThumbNail] = useState(null)
 
   const onChange = (e) => {
     const {value, name} = e.target

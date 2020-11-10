@@ -1,12 +1,12 @@
 import React, {useState, useContext, useCallback, useEffect} from 'react'
+import Api from 'context/api'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
-import Api from 'context/api'
-//date format
+
 import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
-  const {noticeList, detailIdx, setMoreToggle, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetaile} = props
+  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetaile} = props
   const globalCtx = useContext(Context)
   const [zoom, setZoom] = useState(false)
 

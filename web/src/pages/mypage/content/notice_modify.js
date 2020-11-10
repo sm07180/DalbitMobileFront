@@ -1,19 +1,22 @@
 import React, {useCallback, useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
+import {Context} from 'context'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
-import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
 
 function ModifyNoticeCompnent(props) {
+  const globalCtx = useContext(Context)
   const {setModifyItem, modifyItem, memNo, getNotice, setIsDetaile, setPhotoUploading} = props
+
+  //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
   const [thumbNail, setThumbNail] = useState(null)
-  const [activeState, setActiveState] = useState(false)
 
-  const globalCtx = useContext(Context)
+  //버튼 활성화
+  const [activeState, setActiveState] = useState(false)
 
   const onChange = useCallback(
     (e) => {
