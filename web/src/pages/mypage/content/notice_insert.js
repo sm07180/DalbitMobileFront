@@ -85,7 +85,6 @@ function NoticeInsertCompnent(props) {
 
   useEffect(() => {
     if (image !== null) {
-      console.log(image, image.status)
       if (image.status === false) {
         context.action.alert({
           msg: image.content

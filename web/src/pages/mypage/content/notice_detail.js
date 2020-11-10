@@ -22,12 +22,16 @@ const NoticeDetail = (props) => {
         if (res.result === 'success') {
           globalCtx.action.alert({
             msg: res.message,
-
             callback: () => {
               setIsList(true)
             }
           })
           getNotice()
+        } else {
+          context.action.alert({
+            msg: result.message,
+            callback: () => {}
+          })
         }
       }
       deleteNoiceContent()
@@ -39,17 +43,17 @@ const NoticeDetail = (props) => {
     <>
       {noticeList !== null &&
         noticeList.map((item, index) => (
-          <div key={index}>
+          <React.Fragment key={index}>
             {item.noticeIdx === detailIdx && (
               <div key={index} className="noticeDetail">
-                <h2 className="noticeDetail__title">
+                <strong className="noticeDetail__title">
                   {item.title}
                   <p>{Utility.timeFormat(item.writeDt)}</p>
-                </h2>
-                <strong className="noticeDetail__profile">
+                </strong>
+                <span className="noticeDetail__profile">
                   <img src={item.profImg['thumb292x292']} />
                   {item.nickNm}
-                </strong>
+                </span>
                 <div className="noticeDetail__content">
                   {item.contents}
 
@@ -89,7 +93,7 @@ const NoticeDetail = (props) => {
                 </div>
               </div>
             )}
-          </div>
+          </React.Fragment>
         ))}
     </>
   )

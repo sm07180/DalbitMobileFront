@@ -19,7 +19,7 @@ const NoticeList = (props) => {
         {noticeList !== null &&
           noticeList.map((item, index) => {
             return (
-              <div key={index}>
+              <React.Fragment key={index}>
                 {item.isTop === true && (
                   <div
                     className="noticeItme"
@@ -41,7 +41,7 @@ const NoticeList = (props) => {
                     {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
                   </div>
                 )}
-              </div>
+              </React.Fragment>
             )
           })}
       </div>
@@ -49,7 +49,7 @@ const NoticeList = (props) => {
         {noticeList !== null &&
           noticeList.map((item, index) => {
             return (
-              <div key={index}>
+              <React.Fragment key={index}>
                 {item.isTop === false && (
                   <div
                     className="noticeItme"
@@ -71,7 +71,7 @@ const NoticeList = (props) => {
                     {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
                   </div>
                 )}
-              </div>
+              </React.Fragment>
             )
           })}
       </div>

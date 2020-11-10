@@ -83,9 +83,14 @@ const Notice = (props) => {
   }
 
   const goBack = () => {
+    console.log('?', isList, isAdd, isDetail)
     //링크 진행중
     if (isList) {
-      history.push(`/mypage/${memNo}/notice`)
+      if (urlrStr === memNo) {
+        history.push(`/menu/profile`)
+      } else {
+        history.push(`/mypage/${memNo}`)
+      }
     }
     if (isAdd) {
       setIsAdd(false)
@@ -121,12 +126,16 @@ const Notice = (props) => {
 
   return (
     <div id="notice">
-      <Header type="noBack">
-        <h2 className="header-title">{titleText()}</h2>
-        <button className="close-btn" onClick={goBack}>
-          <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
-        </button>
-      </Header>
+      {!props.type ? (
+        <Header type="noBack">
+          <h2 className="header-title">{titleText()}</h2>
+          <button className="close-btn" onClick={goBack}>
+            <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
+          </button>
+        </Header>
+      ) : (
+        <></>
+      )}
 
       {isAdd === true && (
         <NoticeInsertCompnent
