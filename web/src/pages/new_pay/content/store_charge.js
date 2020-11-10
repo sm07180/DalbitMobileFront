@@ -280,7 +280,7 @@ const Content = styled.section`
           width: 80px;
           height: 80px;
         }
-      }
+      }img-wrap
       .price {
         font-size: 16px;
         font-weight: bold;

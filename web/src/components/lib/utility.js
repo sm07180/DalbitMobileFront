@@ -22,7 +22,9 @@ export default class Utility {
    *
    */
   static nl2br = (text) => {
-    return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    if (text && text !== '') {
+      return text.replace(/(?:\r\n|\r|\n)/g, '<br />')
+    }
   }
   /**
    * @brief 쿠키설정 path=/;domain=dalbitcast.com

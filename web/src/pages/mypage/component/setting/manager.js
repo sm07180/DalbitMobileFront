@@ -18,7 +18,7 @@ import Utility from 'components/lib/utility'
 
 //component
 import Paging from 'components/ui/paging.js'
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import SearchIconGray from '../../static/ic_search_g.svg'
@@ -37,8 +37,9 @@ export default (props) => {
   //state
   const [managerState, setManagerState] = useState(-1)
   const [userState, setUserState] = useState(-1)
-  const [userList, setUserList] = useState(false)
-  const [managerList, setManagerList] = useState(false)
+  const [userList, setUserList] = useState([])
+  const [userTotalCount, setUserTotalCount] = useState(0)
+  const [managerList, setManagerList] = useState([])
   const [totalPageNumber, setTotalPageNumber] = useState(null)
   const [page, setPage] = useState(1)
   const [tabState, setTabState] = useState(1)
@@ -50,18 +51,15 @@ export default (props) => {
     {value: 1, text: '닉네임'},
     {value: 2, text: 'ID'}
   ]
-
-  //-----------------------------------------------------------------------------
   //async
   async function getManagerList() {
     const res = await Api.mypage_manager_list({})
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-      if (res.data.list == false) {
-        setManagerState(0)
-        setManagerList(false)
-      } else {
+      if (res.data.list.length > 0) {
         setManagerState(1)
         setManagerList(res.data.list)
+      } else {
+        setManagerList([])
       }
     } else {
       context.action.alert({
@@ -69,7 +67,6 @@ export default (props) => {
       })
     }
   }
-
   async function addManager(memNum) {
     const res = await Api.mypage_manager_add({
       data: {
@@ -77,17 +74,16 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      context.action.alert({
+      context.action.toast({
         msg: res.message
       })
       getSearchList('search')
     } else {
-      context.action.alert({
+      context.action.toast({
         msg: res.message
       })
     }
   }
-
   async function deleteManager(memNum) {
     const res = await Api.mypage_manager_delete({
       data: {
@@ -96,13 +92,15 @@ export default (props) => {
     })
     if (res.result == 'success') {
       getManagerList()
+      context.action.toast({
+        msg: res.message
+      })
     } else {
-      context.action.alert({
+      context.action.toast({
         msg: res.message
       })
     }
   }
-
   async function getSearchList(type, typeDetail) {
     if (!_.hasIn(changes, 'search') || changes.search.length == 0)
       return context.action.alert({
@@ -117,21 +115,22 @@ export default (props) => {
       records: 100
     }
     const res = await Api.mypage_user_search({params})
-    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-      if (res.data.list == false) {
-        setUserState(0)
-        setUserList(false)
-      } else {
+    if (res.result == 'success') {
+      if (res.data.list.length > 0) {
         const {list, paging} = res.data
         if (paging) {
-          const {totalPage} = paging
+          const {totalPage, total} = paging
           setTotalPageNumber(totalPage)
+          setUserTotalCount(total)
           setUserState(1)
           setUserList(list)
         }
         if (type == 'search') {
           setPage(1)
         }
+      } else {
+        setUserState(0)
+        setUserList([])
       }
     } else {
       context.action.alert({
@@ -139,164 +138,148 @@ export default (props) => {
       })
     }
   }
-  //-----------------------------------------------------------------------------
-  //function
-
-  //
   const createUserList = () => {
-    if (userList == false) return null
-    return (
-      <>
-        <ul className="list-item search">
-          <p className="result_count">
-            검색 결과
-            <span>{userList.length}</span>
-          </p>
-          {userList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg} = item
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={() => history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `${nickNm} 님을 매니저로 등록 하시겠습니까?`,
-                      callback: () => {
-                        addManager(memNo)
-                      }
-                    })
-                  }}>
-                  등록
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </>
-    )
-  }
-
-  const createManagerList = () => {
-    if (managerList == false) return null
     return (
       <>
         <p className="titleCount">
-          등록 된 매니저 <em>{managerList.length}</em>
+          검색 결과<em>{userTotalCount}</em>
         </p>
-        <ul className="list-item search">
-          {managerList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg, regDt} = item
-            const date = Utility.dateFormatter(regDt)
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={() => history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `고정 매니저 권한을 해제하시겠습니까?`,
-                      callback: () => {
-                        deleteManager(memNo)
-                      }
-                    })
-                  }}
-                  className="grayBtn">
-                  해제
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        {userList.length > 0 ? (
+          <ul className="list-item search">
+            {userList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg} = item
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={() => history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `${nickNm} 님을 매니저로 등록 하시겠습니까?`,
+                        callback: () => {
+                          addManager(memNo)
+                        }
+                      })
+                    }}>
+                    등록
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="등록된 매니저가 없습니다." />
+        )}
       </>
     )
   }
-  ////////////////////////////////////////////////////////////////////////
-  const createSearchManagerList = () => {
-    if (manegerSearchList == false) return null
+  const createManagerList = () => {
+    return (
+      <>
+        <p className="titleCount">
+          등록된 매니저 <em>{managerList.length}</em>
+        </p>
+        {managerList.length > 0 ? (
+          <ul className="list-item search">
+            {managerList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg, regDt} = item
+              const date = Utility.dateFormatter(regDt)
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={() => history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `고정 매니저 권한을 해제하시겠습니까?`,
+                        callback: () => {
+                          deleteManager(memNo)
+                        }
+                      })
+                    }}
+                    className="grayBtn">
+                    해제
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="등록된 고정 매니저가 없습니다" />
+        )}
+      </>
+    )
+  }
+  const createSearchList = () => {
     return (
       <>
         <p className="titleCount">
           검색 결과 <em>{manegerSearchList.length}</em>
         </p>
-        <ul className="list-item search">
-          {manegerSearchList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg, regDt} = item
-            const date = Utility.dateFormatter(regDt)
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={() => history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `고정 매니저 권한을 해제하시겠습니까?`,
-                      callback: () => {
-                        deleteManager(memNo)
-                      }
-                    })
-                  }}
-                  className="grayBtn">
-                  해제
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        {manegerSearchList.length > 0 ? (
+          <ul className="list-item search">
+            {manegerSearchList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg, regDt} = item
+              const date = Utility.dateFormatter(regDt)
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={() => history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `고정 매니저 권한을 해제하시겠습니까?`,
+                        callback: () => {
+                          deleteManager(memNo)
+                        }
+                      })
+                    }}
+                    className="grayBtn">
+                    해제
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="검색 결과가 없습니다." />
+        )}
       </>
     )
   }
-
-  const createUserResult = () => {
-    if (userState === -1) {
-      return null
-    } else if (userState === 0) {
-      return <NoResult className="no-top" />
-    } else {
-      return createUserList()
-    }
-  }
-
-  //-----------------------------------------------------------------------------
-  //useEffect
-  useEffect(() => {
-    getManagerList()
-  }, [])
-
   const typeActive = (value) => {
     setChanges({...changes, searchType: value})
   }
   //매니저 필터
   const [manegerValue, setManegerValue] = useState('')
   const [manegerSearchList, setManegerSearchList] = useState(managerList)
-
   const SearchManeger = (manegerValue, selectBoxData) => {
     if (changes.searchType === 0) {
       setManegerSearchList(
@@ -309,15 +292,18 @@ export default (props) => {
     }
   }
   const tabChangeFunction = () => {
-    getManagerList()
+    console.log(changes.search)
     setManegerValue('')
     if (tabState === 0) {
+      getManagerList()
       setTabState(1)
     } else {
       setTabState(0)
     }
   }
-  const [searchResultName, setSearchResultName] = useState('등록 된 매니저')
+  useEffect(() => {
+    getManagerList()
+  }, [])
   //-----------------------------------------------------------------------------
   return (
     <Content>
@@ -363,7 +349,11 @@ export default (props) => {
               찾기
             </button>
           </SearchArea>
-          <div className="resulte-area">{createUserResult()}</div>
+          {userList && userList.length > 0 ? (
+            <div className="result-area">{createUserList()}</div>
+          ) : (
+            <NoResult height={400} type="default" text="등록된 고정 매니저가 없습니다." />
+          )}
         </>
       )}
       {tabState === 1 && (
@@ -400,9 +390,9 @@ export default (props) => {
               찾기
             </button>
           </SearchArea> */}
-          <div className="resulte-area">
+          <div className="result-area">
             {manegerValue === '' && createManagerList()}
-            {manegerValue !== '' && createSearchManagerList()}
+            {manegerValue !== '' && createSearchList()}
           </div>
         </>
       )}
@@ -691,7 +681,7 @@ const Content = styled.div`
       background: ${COLOR_MAIN};
     }
   }
-  .resulte-area {
+  .result-area {
     min-height: 100px;
     padding: 12px 0;
   }

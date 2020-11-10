@@ -80,7 +80,7 @@ export default (props) => {
     <>
       <div className="header-wrap">
         <h2 className="header-title">
-          {initialScreen && '방송설정'}
+          {initialScreen && '서비스 설정'}
 
           {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH && 'PUSH 알림 설정'}
           {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && (

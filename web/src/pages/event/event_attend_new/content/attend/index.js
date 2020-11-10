@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useEffect, useContext, useState} from 'react'
 import API from 'context/api'
 import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
@@ -8,6 +8,7 @@ import {IMG_SERVER} from 'context/config'
 import './attend.scss'
 import AttendList from './attend_list'
 import Notice from '../notice'
+import AttendPop from './popAttend'
 
 export default function AttendTab() {
   const history = useHistory()
@@ -15,6 +16,7 @@ export default function AttendTab() {
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
+  const [popup, setPopup] = useState(false)
 
   async function fetchEventAttendDate() {
     const {result, data} = await API.postEventAttend()
@@ -47,19 +49,7 @@ export default function AttendTab() {
         eventAttendAction.setDateList(dateList)
 
         // 성공
-        if (statusList.the_day === '0' || statusList.the_day === '2') {
-          globalCtx.action.alert({
-            msg: `<div class="attendAlertBox"><div class="attendAlertBox__image"><img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" /></div><p class="attendAlertBox__title">출석체크 성공!<br /><span>1달+10EXP 지급!</span></p><p class="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p></div>`
-          })
-        } else if (statusList.the_day === '1' || statusList.the_day === '3') {
-          globalCtx.action.alert({
-            msg: `<div class="attendAlertBox"><div class="attendAlertBox__image"><img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" /></div><p class="attendAlertBox__title">출석체크 성공!<br /><span>2달+10EXP 지급!</span></p><p class="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p></div>`
-          })
-        } else {
-          globalCtx.action.alert({
-            msg: `<div class="attendAlertBox"><div class="attendAlertBox__image"><img src="https://image.dalbitlive.com/event/attend/201019/exp_img@2x.png" alt="경험치" /></div><p class="attendAlertBox__title">출석체크 성공!<br /><span>3달+15EXP 지급!</span></p><p class="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p></div>`
-          })
-        }
+        setPopup(true)
       } else {
         // 실패
         if (!token.isLogin) {
@@ -125,6 +115,8 @@ export default function AttendTab() {
       <div>
         <Notice />
       </div>
+
+      {popup && <AttendPop setPopup={setPopup} />}
     </div>
   )
 }

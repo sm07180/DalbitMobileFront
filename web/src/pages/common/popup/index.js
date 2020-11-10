@@ -243,8 +243,8 @@ const Wrap = styled.div`
   background: #fff;
   &.round {
     max-width: 328px;
-    max-height: 446px;
-    background: #abc;
+    /* max-height: 446px; */
+    /* background: #abc; */
     max-height: auto;
     border-radius: 12px;
     height: 100%;

@@ -160,6 +160,10 @@ export default (props) => {
             setPhotoUploading(false)
             setActive(true)
             context.action.updateTempImage(editImage)
+          } else {
+            return context.action.alert({
+              msg: `${res2.message}`
+            })
           }
           // context.action.updateEditImage('')
         } else {

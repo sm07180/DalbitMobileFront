@@ -433,7 +433,7 @@ export default (props) => {
                     달교환
                   </CoinChargeBtn>
                 }
-                {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+                {context.customHeader['os'] !== OS_TYPE['IOS'] ? (
                   <CoinChargeBtn
                     className="exchange"
                     onClick={() => {
@@ -441,6 +441,17 @@ export default (props) => {
                     }}>
                     환전하기
                   </CoinChargeBtn>
+                ) : (
+                  context.customHeader['os'] === OS_TYPE['IOS'] &&
+                  totalCoin >= 570 && (
+                    <CoinChargeBtn
+                      className="exchange"
+                      onClick={() => {
+                        checkSelfAuth()
+                      }}>
+                      환전하기
+                    </CoinChargeBtn>
+                  )
                 )}
               </>
             )}

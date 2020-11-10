@@ -14,10 +14,16 @@ export default function List() {
   const history = useHistory()
 
   const [noticeList, setNoticeList] = useState([])
+    // useState : 컴포넌트의 동적인 값인 state를 관리할 수 있음
+    // noticeList, 동적인 값이므로 useState함수를 사용할 때에는 상태의 기본값을 파라미터로 넣어서 호출해줌
+    // const [noticeList, setNoticeList] 에서 첫번째 원소는 현재 상태, 두번째 원소는 setter함수
+    // setter함수는 파라미터로 전달 받은 값을 가장 최신 상태로 설정해줌
   const [listPage, setListPage] = useState([])
+    // listPage를 관리하기 위함
   const [nextListPage, setNextListPage] = useState([])
-
+    // nextListPage를 관리하기 위함
   const timestamp = String(new Date().getTime()).substr(0, 10)
+    // 현재 시간을 millisecond로 10자리까지 표현
   const IntTime = parseInt(timestamp)
 
   let mypageNewStg = localStorage.getItem('mypageNew')
@@ -34,9 +40,11 @@ export default function List() {
   }
 
   const fetchData = async function (next) {
+    // async - await을 쓸 수 있도록 하기 위해서
     currentPage = next ? ++currentPage : currentPage
 
     const res = await Api.notice_list({
+        // Api의 notice_list가 끝나기를 기다림, notice_list의 return value가 무엇이든 값을 res에 집어넣음
       params: {
         noticeType: 0,
         page: currentPage,
@@ -108,20 +116,21 @@ export default function List() {
   }
 
   useEffect(() => {
-    fetchData()
+    // effect hook
+        fetchData()
 
-    return () => {
-      currentPage = 1
-      moreState = false
-      noMore = false
-    }
-  }, [])
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextListPage])
+        return () => {
+            currentPage = 1
+            moreState = false
+            noMore = false
+        }
+    }, [])
+    useEffect(() => {
+        window.addEventListener('scroll', scrollEvtHdr)
+        return () => {
+            window.removeEventListener('scroll', scrollEvtHdr)
+        }
+    }, [nextListPage])
   return (
     <>
       {listPage && (
