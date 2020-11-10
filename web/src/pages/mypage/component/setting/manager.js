@@ -186,7 +186,7 @@ export default (props) => {
     return (
       <>
         <p className="titleCount">
-          등록 된 매니저 <em>{managerList.length}</em>
+          등록된 매니저 <em>{managerList.length}</em>
         </p>
         {managerList.length > 0 ? (
           <ul className="list-item search">
