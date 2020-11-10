@@ -4,11 +4,13 @@
   width: 100%;
   height: 100%;
 
+  h2 {
+    font-size: 18px;
+  }
   .noticeList {
     margin-top: 12px;
     width: 100%;
     display: block;
-
     .noticeItme {
       overflow: hidden;
       display: flex;
@@ -90,6 +92,15 @@
         font-weight: normal;
       }
     }
+    &__img {
+      display: block;
+      margin-top: 20px;
+      width: 217px;
+      height: 217px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
     &__profile {
       display: flex;
       align-items: center;
@@ -144,6 +155,40 @@
         border-radius: 12px;
         &:first-child {
           margin-right: 4px;
+        }
+      }
+    }
+
+    .zoom {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 3;
+      background-color: rgba(0, 0, 0, 0.3);
+      .zoomWrap {
+        position: absolute;
+        width: 96%;
+        height: 100%;
+        height: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .zoomImg {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .closeButton {
+          cursor: pointer;
+          margin-bottom: 6px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          margin-left: auto;
         }
       }
     }
@@ -281,7 +326,7 @@
       border-radius: 16px;
       margin-bottom: 25px;
       cursor: pointer;
-      background: url('https://image.dalbitlive.com/svg/gallery_w.svg') center 19px no-repeat #bdbdbd;
+      background: url('https://image.dalbitlive.com/svg/gallery_w.svg') 100% center 19px no-repeat #bdbdbd;
 
       &::after {
         display: block;
@@ -294,8 +339,37 @@
       &.fileOn {
         background-size: cover;
         background-repeat: no-repeat;
-        background-position: left top;
+        background-position: left top !important;
         text-indent: -99999px;
+      }
+    }
+
+    .modifyBasic {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      color: #fff;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      cursor: pointer;
+      background-position: left top;
+      background-repeat: no-repeat;
+      background-color: #bdbdbd;
+      background-size: cover;
+
+      &.modifyFileOn {
+        background-repeat: no-repeat;
+        background-position: center 19px;
+        background-color: #bdbdbd;
+        background-size: 32px;
+
+        &::after {
+          display: block;
+          width: 100%;
+          margin-top: 51px;
+          text-align: center;
+          content: '사진첨부';
+        }
       }
     }
   }

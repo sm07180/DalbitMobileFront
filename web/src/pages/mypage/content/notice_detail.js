@@ -1,5 +1,6 @@
-import React, {useContext, useCallback} from 'react'
+import React, {useState, useContext, useCallback, useEffect} from 'react'
 import {Context} from 'context'
+import {PHOTO_SERVER} from 'context/config'
 import Api from 'context/api'
 //date format
 import Utility from 'components/lib/utility'
@@ -7,6 +8,7 @@ import Utility from 'components/lib/utility'
 const NoticeDetail = (props) => {
   const {noticeList, detailIdx, setMoreToggle, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetaile} = props
   const globalCtx = useContext(Context)
+  const [zoom, setZoom] = useState(false)
 
   const deleteNotice = useCallback(
     (noticeIdx) => {
@@ -23,9 +25,9 @@ const NoticeDetail = (props) => {
 
             callback: () => {
               setIsList(true)
-              getNotice()
             }
           })
+          getNotice()
         }
       }
       deleteNoiceContent()
@@ -48,7 +50,32 @@ const NoticeDetail = (props) => {
                   <img src={item.profImg['thumb292x292']} />
                   {item.nickNm}
                 </strong>
-                <div className="noticeDetail__content">{item.contents}</div>
+                <div className="noticeDetail__content">
+                  {item.contents}
+
+                  {item.imagePath ? (
+                    <img
+                      src={`${PHOTO_SERVER}${item.imagePath}`}
+                      className="noticeDetail__img"
+                      onClick={() => setZoom(`${PHOTO_SERVER}${item.imagePath}`)}
+                    />
+                  ) : (
+                    ''
+                  )}
+
+                  {zoom && (
+                    <div
+                      className="zoom"
+                      onClick={() => {
+                        setZoom(false)
+                      }}>
+                      <div className="zoomWrap">
+                        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" className="closeButton" />
+                        <img src={zoom} className="zoomImg" />
+                      </div>
+                    </div>
+                  )}
+                </div>
 
                 <div className="noticeDetail__button">
                   <button

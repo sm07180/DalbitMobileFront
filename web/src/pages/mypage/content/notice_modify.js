@@ -1,10 +1,12 @@
 import React, {useCallback, useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+import DalbitCropper from 'components/ui/dalbit_cropper'
 import {Context} from 'context'
+import {PHOTO_SERVER} from 'context/config'
 
 function ModifyNoticeCompnent(props) {
-  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetaile} = props
+  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetaile, setPhotoUploading} = props
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
@@ -39,7 +41,7 @@ function ModifyNoticeCompnent(props) {
         data: {
           ...modifyItem,
           memNo: memNo,
-          imagePath: thumbNail !== null ? thumbNail.path : ''
+          imagePath: thumbNail !== null ? thumbNail.path : modifyItem.imagePath
         }
       })
       if (res.result === 'success') {
@@ -60,25 +62,34 @@ function ModifyNoticeCompnent(props) {
 
   useEffect(() => {
     if (image !== null) {
+      setPhotoUploading(true)
       if (image.status === false) {
         globalCtx.action.alert({
-          msg: message
+          msg: image.content
         })
       } else {
         const imageUpload = async () => {
-          const {result, data, message} = await Api.image_upload({
-            dataURL: image.content,
-            uploadType: 'room'
+          const res = await Api.image_upload({
+            data: {
+              dataURL: image.content,
+              uploadType: 'room'
+            }
           })
 
-          if (result === 'success') {
+          if (res.result === 'success') {
             document.getElementById('save_fileImg').value = ''
-
             setImage(null)
-            setThumbNail(data)
+            setThumbNail(res.data)
+
+            setModifyItem({
+              ...modifyItem,
+              imagePath: ''
+            })
+
+            setPhotoUploading(false)
           } else {
             globalCtx.action.alert({
-              msg: message
+              msg: res.message
             })
           }
         }
@@ -125,14 +136,19 @@ function ModifyNoticeCompnent(props) {
           <div className="saveFileImg">
             <label
               htmlFor="save_fileImg"
-              className="fileBasic"
+              className={`modifyBasic 
+              
+              ${modifyItem.imagePath === '' ? (thumbNail !== null ? '' : 'modifyFileOn') : ''}`}
+              style={{
+                backgroundImage: `url("${
+                  modifyItem.imagePath === ''
+                    ? thumbNail !== null
+                      ? thumbNail.url
+                      : 'https://image.dalbitlive.com/svg/gallery_w.svg'
+                    : `${PHOTO_SERVER}${modifyItem.imagePath}`
+                }")`
+              }}></label>
 
-              // style={{
-              //   background: `url("${modifyItem.imagePath === '' ? thumbNail !== null && thumbNail.url : PHOTO_SERVER}/${
-              //     modifyItem.imagePath
-              //   }") center no-repeat #333`
-              // }}
-            ></label>
             {(modifyItem.imagePath !== '' || thumbNail !== null) && (
               <button
                 className="saveFileImgClose"
@@ -160,7 +176,9 @@ function ModifyNoticeCompnent(props) {
             />
           </div>
 
-          {cropOpen && eventObj !== null && <DalbitCropper event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />}
+          {cropOpen && eventObj !== null && (
+            <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
+          )}
 
           <button className={`modifyButton ${activeState && 'active'}`} onClick={ModionSubmit}>
             수정

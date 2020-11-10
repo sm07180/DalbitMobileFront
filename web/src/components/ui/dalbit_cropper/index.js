@@ -2,6 +2,9 @@ import React, {useEffect, useState, useCallback} from 'react'
 import Cropper from 'react-cropper'
 import './index.scss'
 
+import CropImg from './static/ico-crop.png'
+import CropRotation from './static/ico-rotation.png'
+
 function DalbitCropper(props) {
   const {event, setCropOpen, setImage, customName} = props
   const [state, setState] = useState({
@@ -116,8 +119,12 @@ function DalbitCropper(props) {
         zoomable={false}
       />
       <div className="btnBox">
-        <button onClick={rotateImage}>회전</button>
-        <button className="cropButton" onClick={cropImage}></button>
+        <button onClick={rotateImage}>
+          <img src={CropRotation} alt="회전" />
+        </button>
+        <button className="cropButton" onClick={cropImage}>
+          <img src={CropImg} alt="자르기" />
+        </button>
         <button className="btn__save" onClick={submit}>
           저장
         </button>

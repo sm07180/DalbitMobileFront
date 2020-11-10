@@ -42,6 +42,7 @@ const Notice = (props) => {
   }
   const reducer = (state, action) => ({...state, ...action})
   const [state, setState] = useReducer(reducer, initialState)
+  const [photoUploading, setPhotoUploading] = useState(false)
 
   // 기본 State
   const [noticeList, setNoticeList] = useState(null)
@@ -63,7 +64,7 @@ const Notice = (props) => {
     const {result, data} = await Api.mypage_notice_inquire({
       memNo: urlrStr,
       page: currentPage,
-      records: 10
+      records: 9999
     })
     if (result === 'success') {
       setNoticeList(data.list)
@@ -120,18 +121,24 @@ const Notice = (props) => {
     getNotice()
   }, [currentPage])
 
-  console.log(`detailIdx`, detailIdx)
-
   return (
     <div id="notice">
-      <div className="org header-wrap">
+      <h2 className="org header-wrap">
         {titleText()}
         <button className="close-btn" onClick={goBack}>
           <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
         </button>
-      </div>
+      </h2>
 
-      {isAdd === true && <NoticeInsertCompnent setIsAdd={setIsAdd} memNo={memNo} getNotice={getNotice} setIsList={setIsList} />}
+      {isAdd === true && (
+        <NoticeInsertCompnent
+          setIsAdd={setIsAdd}
+          memNo={memNo}
+          getNotice={getNotice}
+          setIsList={setIsList}
+          setPhotoUploading={setPhotoUploading}
+        />
+      )}
       {modifyItem !== null && (
         <NoticeModifyCompnent
           modifyItem={modifyItem}
@@ -140,6 +147,7 @@ const Notice = (props) => {
           getNotice={getNotice}
           setIsList={setIsList}
           setIsDetaile={setIsDetaile}
+          setPhotoUploading={setPhotoUploading}
         />
       )}
 
@@ -170,6 +178,14 @@ const Notice = (props) => {
           moreToggle={moreToggle}
           getNotice={getNotice}
         />
+      )}
+
+      {photoUploading && (
+        <div className="loadingWrap">
+          <div className="loading">
+            <span></span>
+          </div>
+        </div>
       )}
 
       {/* {totalPage !== 0 && noticeList !== null && (

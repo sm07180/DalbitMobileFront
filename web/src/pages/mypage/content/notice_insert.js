@@ -1,13 +1,11 @@
 import React, {useState, useCallback, useEffect, useContext} from 'react'
-
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
-
 import Api from 'context/api'
 import {Context} from 'context'
 
 function NoticeInsertCompnent(props) {
-  const {setIsAdd, memNo, getNotice, setIsList, customName} = props
+  const {setIsAdd, memNo, getNotice, setIsList, customName, setPhotoUploading} = props
 
   const context = useContext(Context)
 
@@ -41,7 +39,7 @@ function NoticeInsertCompnent(props) {
     })
   }, [formState])
 
-  const insettNorice = useCallback(async () => {
+  const insetNotice = useCallback(async () => {
     if (formState.title === '') {
       context.action.alert({
         msg: '제목을 입력해주세요.',
@@ -71,7 +69,7 @@ function NoticeInsertCompnent(props) {
       setIsAdd(false)
       setIsList(true)
     }
-  }, [formState])
+  }, [formState, memNo, image])
 
   const ButtonActive = () => {
     if (formState.title !== '' && formState.contents !== '') {
@@ -87,6 +85,7 @@ function NoticeInsertCompnent(props) {
 
   useEffect(() => {
     if (image !== null) {
+      setPhotoUploading(true)
       if (image.status === false) {
         context.action.alert({
           msg: image.content
@@ -101,8 +100,9 @@ function NoticeInsertCompnent(props) {
           })
           if (res.result === 'success') {
             document.getElementById('save_fileImg').value = ''
-            setImage(null)
             setThumbNail(res.data)
+            setImage(null)
+            setPhotoUploading(false)
           } else {
             context.action.toast({
               msg: res.message
@@ -114,9 +114,8 @@ function NoticeInsertCompnent(props) {
     }
   }, [image])
 
-  useEffect(() => {
-    console.log(thumbNail)
-  }, [thumbNail])
+  // useEffect(() => {
+  // }, [thumbNail])
 
   return (
     <div className="noticeWrite">
@@ -149,10 +148,13 @@ function NoticeInsertCompnent(props) {
       <div className="saveFileImg">
         <label
           htmlFor="save_fileImg"
-          className={`fileBasic ${thumbNail !== null ? 'fileOn' : ''}`}
           style={{
-            backgroundImage: `url("${thumbNail !== null ? thumbNail.url : 'https://image.dalbitlive.com/svg/gallery_w.svg'}")`
-          }}></label>
+            background: `url("${
+              thumbNail !== null ? thumbNail.url : 'https://image.dalbitlive.com/svg/gallery_w.svg'
+            }") center 19px no-repeat #bdbdbd`
+          }}
+          className={`fileBasic ${thumbNail !== null ? 'fileOn' : ''}`}></label>
+
         {thumbNail !== null && (
           <button
             className="saveFileImgClose"
@@ -179,7 +181,7 @@ function NoticeInsertCompnent(props) {
         <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
       )}
 
-      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
+      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insetNotice}>
         등록
       </button>
     </div>
