@@ -169,7 +169,7 @@ export function convertMonday() {
   let calcNum = 0
 
   if (day === 0) {
-    calcNum = -6
+    calcNum = 0
   } else if (day === 1) {
     calcNum = 0
   } else {
