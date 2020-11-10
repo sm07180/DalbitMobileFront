@@ -10,16 +10,10 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 
 const lifeTime = 2500 // milisec
-
-let timer
-
 let msgArray = []
-
 let copyArray = []
 
-export default (props) => {
-  //---------------------------------------------------------------------
-  //context
+export default () => {
   const context = useContext(Context)
   const {msg} = context.message
 
@@ -81,7 +75,7 @@ export default (props) => {
       setLast(false)
     }
   }, [last, msgData])
-  //---------------------------------------------------------------------
+
   return (
     <>
       {
@@ -101,12 +95,7 @@ export default (props) => {
   )
 }
 
-//---------------------------------------------------------------------
 const Toast = styled.div`
-  &.un {
-    display: none;
-  }
-
   position: fixed;
   bottom: 32px;
   left: 16px;

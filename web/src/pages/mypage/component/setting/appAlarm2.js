@@ -97,7 +97,7 @@ export default (props) => {
     if (res.result === 'success') {
       if (arg === undefined) {
         if (isSelect === true) {
-          if (allCheck === 1) {
+          if (all === 1) {
             context.action.toast({
               msg: '모든 알림 푸시를 받습니다.'
             })
@@ -241,7 +241,7 @@ export default (props) => {
     if (!first) {
       postAlarmData()
     }
-  }, [myAlimType, allCheck])
+  }, [myAlimType])
 
   return <>{allBtnState !== null && makeContent()}</>
 }
