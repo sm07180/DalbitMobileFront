@@ -54,7 +54,7 @@ const NoticeDetail = (props) => {
                   <img src={item.profImg['thumb292x292']} />
                   {item.nickNm}
                 </span>
-                <div className="noticeDetail__content">
+                <pre className="noticeDetail__content">
                   {item.contents}
 
                   {item.imagePath ? (
@@ -79,7 +79,7 @@ const NoticeDetail = (props) => {
                       </div>
                     </div>
                   )}
-                </div>
+                </pre>
 
                 <div className="noticeDetail__button">
                   <button

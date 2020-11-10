@@ -5,7 +5,7 @@ import Api from 'context/api'
 
 import './detail.scss'
 import Utility from 'components/lib/utility'
-import {Context} from "context";
+import {Context} from 'context'
 export default function Detail() {
   const history = useHistory()
 
