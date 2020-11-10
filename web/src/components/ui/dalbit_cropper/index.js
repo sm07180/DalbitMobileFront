@@ -14,7 +14,7 @@ function DalbitCropper(props) {
     fileName: '',
     content: ''
   })
-  const [cropper, setCropper] = useState(null)
+  const [cropper, setCropper] = useState(false)
 
   const rotateImage = useCallback(() => {
     if (cropper) {
@@ -100,7 +100,7 @@ function DalbitCropper(props) {
 
   return (
     <div className={customName || ''}>
-      <Header type="cropperPopup" setCropper={setCropper} type="cropperPopup" />
+      <Header type="cropperPopup" setCropOpen={setCropOpen} type="cropperPopup" />
       <Cropper
         style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
         initialAspectRatio={1}

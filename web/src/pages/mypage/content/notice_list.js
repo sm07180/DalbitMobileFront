@@ -15,13 +15,13 @@ const NoticeList = (props) => {
 
   return (
     <>
-      <ul className="noticeList bookmark">
+      <div className="noticeList bookmark">
         {noticeList !== null &&
           noticeList.map((item, index) => {
             return (
-              <>
+              <div key={index}>
                 {item.isTop === true && (
-                  <li
+                  <div
                     className="noticeItme"
                     key={index}
                     onClick={() => {
@@ -39,19 +39,19 @@ const NoticeList = (props) => {
                       <p className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</p>
                     </div>
                     {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
-                  </li>
+                  </div>
                 )}
-              </>
+              </div>
             )
           })}
-      </ul>
-      <ul className="noticeList">
+      </div>
+      <div className="noticeList">
         {noticeList !== null &&
           noticeList.map((item, index) => {
             return (
-              <>
+              <div key={index}>
                 {item.isTop === false && (
-                  <li
+                  <div
                     className="noticeItme"
                     key={index}
                     onClick={() => {
@@ -69,12 +69,12 @@ const NoticeList = (props) => {
                       <p className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</p>
                     </div>
                     {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
-                  </li>
+                  </div>
                 )}
-              </>
+              </div>
             )
           })}
-      </ul>
+      </div>
     </>
   )
 }

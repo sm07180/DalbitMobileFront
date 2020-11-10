@@ -51,7 +51,7 @@ const dalbitCropper = (props) => {
   return (
     <Content>
       <div id="imageEditor">
-        <Header type="cropperPopup" setCropper={setCropper} type="cropperPopup" />
+        <Header type="cropperPopup" setEditorOpen={setEditorOpen} type="cropperPopup" />
         <Cropper
           style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
           initialAspectRatio={1}
