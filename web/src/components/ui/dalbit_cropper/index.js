@@ -100,7 +100,7 @@ function DalbitCropper(props) {
 
   return (
     <div className={customName || ''}>
-      <Header type="cropperPopup" setEditorOpen={setEditorOpen} type="cropperPopup" />
+      <Header type="cropperPopup" setCropper={setCropper} type="cropperPopup" />
       <Cropper
         style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
         initialAspectRatio={1}
