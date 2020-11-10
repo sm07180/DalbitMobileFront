@@ -6,7 +6,7 @@ import {PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
-  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetaile} = props
+  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetail} = props
   const globalCtx = useContext(Context)
   const [zoom, setZoom] = useState(false)
 
@@ -81,7 +81,7 @@ const NoticeDetail = (props) => {
                   <button
                     onClick={() => {
                       setModifyItem({...item})
-                      setIsDetaile(false)
+                      setIsDetail(false)
                     }}>
                     수정
                   </button>

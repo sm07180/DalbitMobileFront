@@ -6,6 +6,7 @@ import NoticeInsertCompnent from './notice_insert'
 import NoticeModifyCompnent from './notice_modify'
 import NoticeListCompnent from './notice_list.js'
 import NoticeDetailCompenet from './notice_detail'
+import Header from 'components/ui/new_header.js'
 
 // moible context
 import {useLocation} from 'react-router-dom'
@@ -43,7 +44,7 @@ const Notice = (props) => {
   //Component 호출
   const [isAdd, setIsAdd] = useState(false)
   const [isList, setIsList] = useState(true)
-  const [isDetaile, setIsDetaile] = useState(false)
+  const [isDetail, setIsDetail] = useState(false)
   const [modifyItem, setModifyItem] = useState(null)
 
   //Not Component 호출
@@ -63,12 +64,17 @@ const Notice = (props) => {
       if (data.paging) {
         setTotalPage(data.paging.totalPage)
       }
+    } else {
+      context.action.alert({
+        msg: result.message,
+        callback: () => {}
+      })
     }
   }, [memNo, currentPage])
 
   const titleText = () => {
     if (isAdd === true) {
-      return '방송공지 글쓰기'
+      return '방송공지 쓰기'
     } else if (modifyItem !== null) {
       return '방송공지 수정'
     } else {
@@ -87,10 +93,10 @@ const Notice = (props) => {
     }
     if (modifyItem !== null) {
       setModifyItem(null)
-      setIsDetaile(true)
+      setIsDetail(true)
     }
-    if (isDetaile) {
-      setIsDetaile(false)
+    if (isDetail) {
+      setIsDetail(false)
       setIsList(true)
       setDetailIdx(0)
     }
@@ -115,12 +121,12 @@ const Notice = (props) => {
 
   return (
     <div id="notice">
-      <h2 className="org header-wrap">
-        {titleText()}
+      <Header type="noBack">
+        <h2 className="header-title">{titleText()}</h2>
         <button className="close-btn" onClick={goBack}>
           <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
         </button>
-      </h2>
+      </Header>
 
       {isAdd === true && (
         <NoticeInsertCompnent
@@ -138,7 +144,7 @@ const Notice = (props) => {
           memNo={memNo}
           getNotice={getNotice}
           setIsList={setIsList}
-          setIsDetaile={setIsDetaile}
+          setIsDetail={setIsDetail}
           setPhotoUploading={setPhotoUploading}
         />
       )}
@@ -149,10 +155,10 @@ const Notice = (props) => {
           detailIdx={detailIdx}
           setDetailIdx={setDetailIdx}
           setIsList={setIsList}
-          setIsDetaile={setIsDetaile}
+          setIsDetail={setIsDetail}
         />
       )}
-      {isDetaile === true && (
+      {isDetail === true && (
         <NoticeDetailCompenet
           noticeList={noticeList}
           detailIdx={detailIdx}
@@ -160,7 +166,7 @@ const Notice = (props) => {
           setMoreToggle={setMoreToggle}
           setDetailIdx={setDetailIdx}
           setModifyItem={setModifyItem}
-          setIsDetaile={setIsDetaile}
+          setIsDetail={setIsDetail}
           setIsList={setIsList}
           memNo={memNo}
           moreToggle={moreToggle}

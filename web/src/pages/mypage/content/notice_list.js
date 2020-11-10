@@ -6,7 +6,7 @@ import {Context} from 'context'
 import Utility from 'components/lib/utility'
 
 const NoticeList = (props) => {
-  const {noticeList, detailIdx, setDetailIdx, setIsList, setIsDetaile} = props
+  const {noticeList, detailIdx, setDetailIdx, setIsList, setIsDetail} = props
   const globalCtx = useContext(Context)
 
   // 최신글 체크
@@ -25,7 +25,7 @@ const NoticeList = (props) => {
                     className="noticeItme"
                     key={index}
                     onClick={() => {
-                      setIsDetaile(true)
+                      setIsDetail(true)
                       setIsList(false)
                       if (item.noticeIdx === detailIdx) {
                         setDetailIdx(0)
@@ -55,7 +55,7 @@ const NoticeList = (props) => {
                     className="noticeItme"
                     key={index}
                     onClick={() => {
-                      setIsDetaile(true)
+                      setIsDetail(true)
                       setIsList(false)
                       if (item.noticeIdx === detailIdx) {
                         setDetailIdx(0)

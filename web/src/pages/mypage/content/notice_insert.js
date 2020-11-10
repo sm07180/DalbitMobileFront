@@ -39,7 +39,7 @@ function NoticeInsertCompnent(props) {
     })
   }, [formState])
 
-  const insetNotice = useCallback(async () => {
+  const insertNotice = useCallback(async () => {
     if (formState.title === '') {
       context.action.alert({
         msg: '제목을 입력해주세요.',
@@ -85,12 +85,13 @@ function NoticeInsertCompnent(props) {
 
   useEffect(() => {
     if (image !== null) {
-      setPhotoUploading(true)
+      console.log(image, image.status)
       if (image.status === false) {
         context.action.alert({
           msg: image.content
         })
       } else {
+        setPhotoUploading(true)
         const imageUpload = async () => {
           const res = await Api.image_upload({
             data: {
@@ -181,7 +182,7 @@ function NoticeInsertCompnent(props) {
         <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
       )}
 
-      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insetNotice}>
+      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insertNotice}>
         등록
       </button>
     </div>

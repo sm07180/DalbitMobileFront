@@ -7,7 +7,7 @@ import {PHOTO_SERVER} from 'context/config'
 
 function ModifyNoticeCompnent(props) {
   const globalCtx = useContext(Context)
-  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetaile, setPhotoUploading} = props
+  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetail, setPhotoUploading} = props
 
   //크롭퍼 state
   const [image, setImage] = useState(null)
@@ -49,7 +49,7 @@ function ModifyNoticeCompnent(props) {
       })
       if (res.result === 'success') {
         setModifyItem(null)
-        setIsDetaile(true)
+        setIsDetail(true)
         getNotice()
       }
     }
@@ -65,12 +65,12 @@ function ModifyNoticeCompnent(props) {
 
   useEffect(() => {
     if (image !== null) {
-      setPhotoUploading(true)
       if (image.status === false) {
         globalCtx.action.alert({
           msg: image.content
         })
       } else {
+        setPhotoUploading(true)
         const imageUpload = async () => {
           const res = await Api.image_upload({
             data: {
