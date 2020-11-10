@@ -8,6 +8,12 @@
     font-size: 18px;
   }
   .noticeList {
+    &.bookmark {
+      li {
+        background: url('https://image.dalbitlive.com/svg/icon_bookmark_red.svg') no-repeat center right 20px $white;
+      }
+    }
+
     margin-top: 12px;
     width: 100%;
     display: block;
@@ -20,10 +26,6 @@
       border-bottom: 1px solid $lighterGray;
       background: url('https://image.dalbitlive.com/svg/icon_more_right.svg') no-repeat center right 16px $white;
       cursor: pointer;
-
-      &.bookmark {
-        background: url('https://image.dalbitlive.com/svg/icon_bookmark_red.svg') no-repeat center right 20px $white;
-      }
 
       &__img {
         display: inline-block;
