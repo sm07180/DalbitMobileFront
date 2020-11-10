@@ -17,16 +17,16 @@ let first = true
 let isSelect = false
 
 const AlarmArray = [
-  {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시'},
-  {key: 'isStarClip', value: 0, text: '마이스타 클립 등록 알림', msg: '마이스타가 클립 업로드 시'},
-  {key: 'isGift', value: 0, text: '마이스타 방송공지 등록 알림', msg: '마이스타가 방송공지 등록 시'},
-  {key: 'isMyClip', value: 0, text: '내 클립 알림', msg: '내 클립에 댓글, 좋아요, 선물 등록 시'},
-  {key: 'isFan', value: 0, text: '신규 팬 추가 알림', msg: '신규 팬이 추가되면 알림'},
-  {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림', msg: '팬보드에 새로운 글이 등록되면 알림'},
-  {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림', msg: '팬보드 내 글에 댓글이 등록되면 알림'},
-  {key: 'isRadio', value: 0, text: '선물 도착 알림', msg: '달 선물 도착 시 알림'},
+  {key: 'isMyStar', value: 0, text: '마이스타 방송 시작 알림', msg: '마이스타가 방송 시작 시<br>'},
+  {key: 'isStarClip', value: 0, text: '마이스타 클립 등록 알림', msg: '마이스타가 클립 업로드 시<br>'},
+  {key: 'isGift', value: 0, text: '마이스타 방송공지 등록 알림', msg: '마이스타가 방송공지 등록 시<br>'},
+  {key: 'isMyClip', value: 0, text: '내 클립 알림', msg: '내 클립에 댓글, 좋아요, 선물 등록 시<br>'},
+  {key: 'isFan', value: 0, text: '신규 팬 추가 알림', msg: '신규 팬이 추가되면 알림<br>'},
+  {key: 'isComment', value: 0, text: '팬보드 신규 글 등록 알림', msg: '팬보드에 새로운 글이 등록되면 알림<br>'},
+  {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림', msg: '팬보드 내 글에 댓글이 등록되면 알림<br>'},
+  {key: 'isRadio', value: 0, text: '선물 도착 알림', msg: '달 선물 도착 시 알림<br>'},
   // {key: 'isLike', value: 0, text: '공지 및 이벤트 알림', msg: '공지 및 이벤트 알림 시'},
-  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림'}
+  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림<br>'}
 ]
 const msgOn = ' 푸시를 받습니다.'
 const msgOff = ' 푸시를 받지 않습니다.'
@@ -126,9 +126,9 @@ export default (props) => {
           return v.key === arg.key
         })
         if (arg.value === 1) {
-          message = resultData.text + msgOn
+          message = resultData.msg + msgOn
         } else {
-          message = resultData.text + msgOff
+          message = resultData.msg + msgOff
         }
 
         context.action.toast({

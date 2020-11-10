@@ -17,11 +17,11 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
         [type]: !settingData[type]
       })
       if (type === 'djListenerIn' || type === 'djListenerOut') {
-        message = `DJ로 방송 시 청취자 ${type === 'djListenerIn' ? `입장` : `퇴장`} 메시지${
+        message = `DJ로 방송 시 청취자 <br>${type === 'djListenerIn' ? `입장메시지` : `퇴장메시지`}${
           settingData[type] === false ? '가 보입니다' : '를 숨깁니다.'
         }`
       } else if (type === 'listenerIn' || type === 'listenerOut') {
-        message = `청취자로 방송 청취 시 다른 청취자 ${type === 'listenerIn' ? `입장` : `퇴장`} 메시지${
+        message = `청취자로 방송 청취 시 다른 청취자<br>${type === 'listenerIn' ? `입장메시지` : `퇴장메시지`}${
           settingData[type] === false ? '가 보입니다' : '를 숨깁니다.'
         }`
       }
