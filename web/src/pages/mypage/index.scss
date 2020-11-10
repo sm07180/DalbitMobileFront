@@ -871,6 +871,9 @@
         color: $black;
         letter-spacing: -0.35px;
         font-weight: 800;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .icon {
         display: block;
