@@ -125,13 +125,13 @@ export default () => {
     console.log('list', list)
     if (list.length > 0 && document.getElementsByClassName('playing')[0]) {
       const currentTop = document.getElementsByClassName('playing')[0].offsetTop
-      console.log('currentTop', currentTop)
+      // console.log('currentTop', currentTop)
       if (currentTop !== 0) {
         if (customHeader['os'] === OS_TYPE['IOS']) {
-          console.log('1')
+          // console.log('1')
           window.scrollTo(0, currentTop)
         } else {
-          console.log('2')
+          // console.log('2')
           window.scrollTo(0, currentTop + 22)
         }
       }
@@ -188,6 +188,7 @@ export default () => {
 
   useEffect(() => {
     fetchDataClipType()
+    document.body.style.height = 'auto'
   }, [])
 
   useEffect(() => {
