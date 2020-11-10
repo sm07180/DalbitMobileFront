@@ -33,7 +33,8 @@ export default (props) => {
     })
     if (result === 'success') {
       let playListInfoData = {
-        listCnt: 20
+        listCnt: 20,
+        playlist: true
       }
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
