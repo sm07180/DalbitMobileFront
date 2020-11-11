@@ -1,9 +1,12 @@
 import React, {useCallback, useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
+import {PHOTO_SERVER} from 'context/config'
+
+import Header from 'components/ui/new_header.js'
+
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
-import {PHOTO_SERVER} from 'context/config'
 
 function ModifyNoticeCompnent(props) {
   const globalCtx = useContext(Context)
@@ -17,6 +20,11 @@ function ModifyNoticeCompnent(props) {
 
   //버튼 활성화
   const [activeState, setActiveState] = useState(false)
+
+  const goBack = () => {
+    setModifyItem(null)
+    setIsDetail(true)
+  }
 
   const onChange = useCallback(
     (e) => {
@@ -107,7 +115,15 @@ function ModifyNoticeCompnent(props) {
   }, [modifyItem])
 
   return (
-    <>
+    <div className={` ${props.type && 'userProfileWrap'}`}>
+      {props.type && (
+        <Header type="noBack">
+          <h2 className="header-title">방송공지 쓰기</h2>
+          <button className="close-btn" onClick={goBack}>
+            <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
+          </button>
+        </Header>
+      )}
       {modifyItem !== null && (
         <div className="noticeWrite">
           <input
@@ -188,7 +204,7 @@ function ModifyNoticeCompnent(props) {
           </button>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

@@ -2,13 +2,27 @@ import React, {useState, useContext, useCallback, useEffect} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
+import Header from 'components/ui/new_header.js'
 
 import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
-  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetail} = props
+  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetail, setDetailIdx} = props
   const globalCtx = useContext(Context)
   const [zoom, setZoom] = useState(false)
+
+  const goBack = () => {
+    setIsDetail(false)
+    setIsList(true)
+    setDetailIdx(0)
+  }
+
+  let urlrStr
+  if (props.location) {
+    urlrStr = props.location.pathname.split('/')[2]
+  } else {
+    urlrStr = location.pathname.split('/')[2]
+  }
 
   const deleteNotice = useCallback(
     (noticeIdx) => {
@@ -40,7 +54,16 @@ const NoticeDetail = (props) => {
   )
 
   return (
-    <>
+    <div className={` ${props.type && 'userProfileWrap'}`}>
+      {props.type && (
+        <Header type="noBack">
+          <h2 className="header-title">방송공지</h2>
+          <button className="close-btn" onClick={goBack}>
+            <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
+          </button>
+        </Header>
+      )}
+
       {noticeList !== null &&
         noticeList.map((item, index) => (
           <React.Fragment key={index}>
@@ -81,21 +104,23 @@ const NoticeDetail = (props) => {
                   )}
                 </pre>
 
-                <div className="noticeDetail__button">
-                  <button
-                    onClick={() => {
-                      setModifyItem({...item})
-                      setIsDetail(false)
-                    }}>
-                    수정
-                  </button>
-                  <button onClick={() => deleteNotice(item.noticeIdx)}>삭제</button>
-                </div>
+                {urlrStr === globalCtx.profile.memNo && (
+                  <div className="noticeDetail__button">
+                    <button
+                      onClick={() => {
+                        setModifyItem({...item})
+                        setIsDetail(false)
+                      }}>
+                      수정
+                    </button>
+                    <button onClick={() => deleteNotice(item.noticeIdx)}>삭제</button>
+                  </div>
+                )}
               </div>
             )}
           </React.Fragment>
         ))}
-    </>
+    </div>
   )
 }
 

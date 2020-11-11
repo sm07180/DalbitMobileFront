@@ -75,6 +75,15 @@
     }
   }
 
+  .userProfileWrap {
+    position: absolute;
+    width: 100%;
+    top: 0px;
+    left: 0px;
+    z-index: 10;
+    background: $lighterGray;
+  }
+
   .noticeDetail {
     overflow: hidden;
     height: 100%;

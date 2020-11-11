@@ -83,7 +83,6 @@ const Notice = (props) => {
   }
 
   const goBack = () => {
-    console.log('?', isList, isAdd, isDetail)
     //링크 진행중
     if (isList) {
       if (urlrStr === memNo) {
@@ -147,19 +146,35 @@ const Notice = (props) => {
         />
       )}
       {modifyItem !== null && (
-        <NoticeModifyCompnent
-          modifyItem={modifyItem}
-          setModifyItem={setModifyItem}
-          memNo={memNo}
-          getNotice={getNotice}
-          setIsList={setIsList}
-          setIsDetail={setIsDetail}
-          setPhotoUploading={setPhotoUploading}
-        />
+        <>
+          {!props.type ? (
+            <NoticeModifyCompnent
+              modifyItem={modifyItem}
+              setModifyItem={setModifyItem}
+              memNo={memNo}
+              getNotice={getNotice}
+              setIsList={setIsList}
+              setIsDetail={setIsDetail}
+              setPhotoUploading={setPhotoUploading}
+            />
+          ) : (
+            <NoticeModifyCompnent
+              type="userprofile"
+              modifyItem={modifyItem}
+              setModifyItem={setModifyItem}
+              memNo={memNo}
+              getNotice={getNotice}
+              setIsList={setIsList}
+              setIsDetail={setIsDetail}
+              setPhotoUploading={setPhotoUploading}
+            />
+          )}
+        </>
       )}
 
       {isList === true && (
         <NoticeListCompnent
+          urlrStr={urlrStr}
           noticeList={noticeList}
           detailIdx={detailIdx}
           setDetailIdx={setDetailIdx}
@@ -167,20 +182,42 @@ const Notice = (props) => {
           setIsDetail={setIsDetail}
         />
       )}
+
       {isDetail === true && (
-        <NoticeDetailCompenet
-          noticeList={noticeList}
-          detailIdx={detailIdx}
-          currentPage={currentPage}
-          setMoreToggle={setMoreToggle}
-          setDetailIdx={setDetailIdx}
-          setModifyItem={setModifyItem}
-          setIsDetail={setIsDetail}
-          setIsList={setIsList}
-          memNo={memNo}
-          moreToggle={moreToggle}
-          getNotice={getNotice}
-        />
+        <>
+          {!props.type ? (
+            <NoticeDetailCompenet
+              urlrStr={urlrStr}
+              noticeList={noticeList}
+              detailIdx={detailIdx}
+              currentPage={currentPage}
+              setMoreToggle={setMoreToggle}
+              setDetailIdx={setDetailIdx}
+              setModifyItem={setModifyItem}
+              setIsDetail={setIsDetail}
+              setIsList={setIsList}
+              memNo={memNo}
+              moreToggle={moreToggle}
+              getNotice={getNotice}
+            />
+          ) : (
+            <NoticeDetailCompenet
+              type="userprofile"
+              urlrStr={urlrStr}
+              noticeList={noticeList}
+              detailIdx={detailIdx}
+              currentPage={currentPage}
+              setMoreToggle={setMoreToggle}
+              setDetailIdx={setDetailIdx}
+              setModifyItem={setModifyItem}
+              setIsDetail={setIsDetail}
+              setIsList={setIsList}
+              memNo={memNo}
+              moreToggle={moreToggle}
+              getNotice={getNotice}
+            />
+          )}
+        </>
       )}
 
       {photoUploading && (
