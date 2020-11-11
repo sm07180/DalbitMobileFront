@@ -70,12 +70,12 @@ export default () => {
   async function payFetch() {
     const {type, fetch, code} = selectedPay
 
-    if (type === '카카오페이' || type === '페이코') {
-      return context.action.alert({
-        msg: `결제대행사 장애가 발생하여 일시적으로 결제가 불가능합니다. 
-        잠시 다른 결제수단을 이용 부탁드립니다.`
-      })
-    }
+    // if (type === '카카오페이' || type === '페이코') {
+    //   return context.action.alert({
+    //     msg: `결제대행사 장애가 발생하여 일시적으로 결제가 불가능합니다.
+    //     잠시 다른 결제수단을 이용 부탁드립니다.`
+    //   })
+    // }
 
     if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
       return context.action.confirm({
