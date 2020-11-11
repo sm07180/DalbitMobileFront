@@ -637,13 +637,13 @@ export default (props) => {
         </div>
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>
-            <h2
-              className="myClip__title"
-              style={{paddingBottom: !myClipToggle ? '0' : '18px'}}
-              onClick={() => {
-                context.action.updatePopup('MYCLIP')
-              }}>
-              내 클립 현황
+            <h2 className="myClip__title" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
+              <em
+                onClick={() => {
+                  context.action.updatePopup('MYCLIP')
+                }}>
+                내 클립 현황
+              </em>
               <img
                 src={
                   myClipToggle

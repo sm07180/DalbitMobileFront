@@ -32,18 +32,24 @@
       align-items: center;
       position: relative;
       padding-bottom: 18px;
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1.17;
-      color: #000;
-      &::after {
-        display: block;
-        content: '';
-        margin-left: 4px;
-        width: 24px;
-        height: 24px;
-        background: url('./static/infomyclip.png') no-repeat center center;
-        background-size: 24px 24px;
+      em {
+        display: flex;
+        align-items: center;
+        font-style: normal;
+        cursor: pointer;
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.17;
+        color: #000;
+        &::after {
+          display: block;
+          content: '';
+          margin-left: 4px;
+          width: 24px;
+          height: 24px;
+          background: url('./static/infomyclip.png') no-repeat center center;
+          background-size: 24px 24px;
+        }
       }
     }
     &__arrow {
