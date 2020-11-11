@@ -71,6 +71,7 @@ export default (props) => {
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
   const [detailPopup, setDetailPopup] = useState(false)
+  const [myClipToggle, setMyClipToggle] = useState(false)
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
@@ -595,7 +596,21 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
-
+  const toggleMyClip = (e) => {
+    e.stopPropagation()
+    if (myClipToggle) {
+      setMyClipToggle(false)
+    } else {
+      setMyClipToggle(true)
+    }
+  }
+  useEffect(() => {
+    if (myData && myData.regCnt === 0 && myData.playCnt === 0 && myData.goodCnt === 0 && myData.byeolCnt === 0) {
+      setMyClipToggle(false)
+    } else {
+      setMyClipToggle(true)
+    }
+  }, [myData])
   return (
     <Layout {...props} status="no_gnb">
       <div id="clipPage" onTouchStart={clipTouchStart} onTouchMove={clipTouchMove} onTouchEnd={clipTouchEnd}>
@@ -623,30 +638,44 @@ export default (props) => {
           <div className="myClip" ref={myClipRef}>
             <h2
               className="myClip__title"
+              style={{paddingBottom: !myClipToggle ? '0' : '18px'}}
               onClick={() => {
                 context.action.updatePopup('MYCLIP')
               }}>
               내 클립 현황
+              <img
+                src={
+                  myClipToggle
+                    ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
+                    : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
+                }
+                alt="마이클립 화살표 버튼"
+                className="myClip__arrow"
+                onClick={(e) => toggleMyClip(e)}
+              />
             </h2>
-
-            <ul className="myClipWrap">
-              <li className="upload">
-                <em></em>
-                <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
-              </li>
-              <li className="listen">
-                <em></em>
-                <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
-              </li>
-              <li className="like">
-                <em></em>
-                <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
-              </li>
-              <li className="gift">
-                <em></em>
-                <span>{myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별</span>
-              </li>
-            </ul>
+            {myClipToggle && (
+              <ul className="myClipWrap">
+                <li className="upload">
+                  <em></em>
+                  <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
+                </li>
+                <li className="listen">
+                  <em></em>
+                  <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
+                </li>
+                <li className="like">
+                  <em></em>
+                  <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
+                </li>
+                <li className="gift">
+                  <em></em>
+                  <span>
+                    {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
+                  </span>
+                </li>
+              </ul>
+            )}
           </div>
         ) : (
           <div ref={myClipRef}></div>

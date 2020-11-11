@@ -46,6 +46,10 @@
         background-size: 24px 24px;
       }
     }
+    &__arrow {
+      position: absolute;
+      right: 6px;
+    }
   }
   .myClipWrap {
     display: flex;
