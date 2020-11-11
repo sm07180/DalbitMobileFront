@@ -2,14 +2,13 @@ import React, {useCallback, useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
-
 import Header from 'components/ui/new_header.js'
-
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 
 function ModifyNoticeCompnent(props) {
   const globalCtx = useContext(Context)
+  const context = useContext(Context)
   const {setModifyItem, modifyItem, memNo, getNotice, setIsDetail, setPhotoUploading} = props
 
   //크롭퍼 state
@@ -59,6 +58,9 @@ function ModifyNoticeCompnent(props) {
         setModifyItem(null)
         setIsDetail(true)
         getNotice()
+        globalCtx.action.toast({
+          msg: res.message
+        })
       }
     }
     ModiRegistNotice()

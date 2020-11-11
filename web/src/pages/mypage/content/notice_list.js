@@ -1,11 +1,8 @@
 import React, {useContext} from 'react'
 import {PHOTO_SERVER} from 'context/config'
 import {Context} from 'context'
-
 import Header from '../component/header.js'
 import NoResult from 'components/ui/new_noResult'
-
-//date format
 import Utility from 'components/lib/utility'
 
 const NoticeList = (props) => {

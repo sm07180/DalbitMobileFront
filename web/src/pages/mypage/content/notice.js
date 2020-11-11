@@ -1,7 +1,6 @@
 import React, {useState, useCallback, useEffect, useContext, useReducer} from 'react'
 
 import Api from 'context/api'
-
 import NoticeInsertCompnent from './notice_insert'
 import NoticeModifyCompnent from './notice_modify'
 import NoticeListCompnent from './notice_list.js'
@@ -228,7 +227,7 @@ const Notice = (props) => {
         </div>
       )}
 
-      {isList === true && urlrStr === globalCtx.profile.memNo && createWriteBtn()}
+      {!props.type && isList === true && urlrStr === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
 }

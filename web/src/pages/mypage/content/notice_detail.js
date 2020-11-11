@@ -3,7 +3,6 @@ import Api from 'context/api'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
 import Header from 'components/ui/new_header.js'
-
 import Utility from 'components/lib/utility'
 
 const NoticeDetail = (props) => {
@@ -34,13 +33,14 @@ const NoticeDetail = (props) => {
           }
         })
         if (res.result === 'success') {
-          globalCtx.action.alert({
-            msg: res.message,
+          globalCtx.action.confirm({
+            msg: `게시글을 삭제 하시겠습니까?`,
             callback: () => {
               setIsList(true)
+              setIsDetail(false)
+              getNotice()
             }
           })
-          getNotice()
         } else {
           context.action.alert({
             msg: result.message,

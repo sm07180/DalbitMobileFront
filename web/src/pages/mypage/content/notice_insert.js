@@ -68,6 +68,9 @@ function NoticeInsertCompnent(props) {
       getNotice()
       setIsAdd(false)
       setIsList(true)
+      context.action.toast({
+        msg: res.message
+      })
     }
   }, [formState, memNo, image])
 
