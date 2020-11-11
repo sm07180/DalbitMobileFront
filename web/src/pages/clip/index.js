@@ -554,6 +554,14 @@ export default (props) => {
     },
     [reloadInit, context.clipRefresh]
   )
+  const toggleMyClip = (e) => {
+    e.stopPropagation()
+    if (myClipToggle) {
+      setMyClipToggle(false)
+    } else {
+      setMyClipToggle(true)
+    }
+  }
 
   // #layer pop
   useEffect(() => {
@@ -596,14 +604,7 @@ export default (props) => {
     }
   }, [])
   //---------------------------------------------------------------------
-  const toggleMyClip = (e) => {
-    e.stopPropagation()
-    if (myClipToggle) {
-      setMyClipToggle(false)
-    } else {
-      setMyClipToggle(true)
-    }
-  }
+
   useEffect(() => {
     if (myData && myData.regCnt === 0 && myData.playCnt === 0 && myData.goodCnt === 0 && myData.byeolCnt === 0) {
       setMyClipToggle(false)
