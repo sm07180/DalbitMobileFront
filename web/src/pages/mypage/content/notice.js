@@ -112,7 +112,7 @@ const Notice = (props) => {
           setIsAdd(!isAdd)
           setIsList(false)
         }}
-        className={[`write-btn ${urlrStr === memNo ? 'on' : 'on'}`]}>
+        className={`write-btn ${urlrStr === memNo ? 'on' : 'on'}`}>
         쓰기
       </button>
     )
