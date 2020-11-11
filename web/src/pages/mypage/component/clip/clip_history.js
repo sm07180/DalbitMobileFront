@@ -44,28 +44,47 @@ export default function ClipHistory() {
       })
     }
   }
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, idx) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
-      localStorage.removeItem('clipPlayListInfo')
-      const oneClipPlayList = {
-        clipNo: data.clipNo,
-        bgImg: data.bgImg,
-        title: data.title,
-        nickName: data.nickName,
-        subjectType: data.subjectType,
-        isNew: data.isNew,
-        filePlayTime: data.filePlay,
-        isSpecial: data.isSpecial,
-        gender: data.gender,
-        replyCnt: data.replyCnt,
-        goodCnt: data.goodCnt,
-        playCnt: data.playCnt
+      if (historyTab === 0) {
+        localStorage.removeItem('clipPlayListInfo')
+        const oneClipPlayList = {
+          clipNo: data.clipNo,
+          bgImg: data.bgImg,
+          title: data.title,
+          nickName: data.nickName,
+          subjectType: data.subjectType,
+          isNew: data.isNew,
+          filePlayTime: data.filePlay,
+          isSpecial: data.isSpecial,
+          gender: data.gender,
+          replyCnt: data.replyCnt,
+          goodCnt: data.goodCnt,
+          playCnt: data.playCnt
+        }
+        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      } else {
+        const nowPage = getPageFormIdx(idx)
+        const playListInfoData = {
+          memNo: context.profile.memNo,
+          page: nowPage,
+          records: 100,
+          slctType: historyTab
+        }
+        localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       }
-      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+
       clipJoin(data, context, webview)
     } else {
       if (code === '-99') {
@@ -133,20 +152,21 @@ export default function ClipHistory() {
                 <div
                   className="uploadList__container"
                   onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (context.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(clipNo)
-                    }
+                    fetchDataPlay(clipNo, idx)
+                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
+                    //   if (context.token.isLogin === false) {
+                    //     context.action.alert({
+                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    //       callback: () => {
+                    //         history.push('/login')
+                    //       }
+                    //     })
+                    //   } else {
+                    //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                    //   }
+                    // } else {
+                    //   fetchDataPlay(clipNo)
+                    // }
                   }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">

@@ -64,13 +64,24 @@ export default () => {
         }
       }
     } else if (playListInfo.hasOwnProperty('memNo')) {
-      //마이페이지 업로드목록
-      const {result, data, message} = await Api.getUploadList({...playListInfo})
-      if (result === 'success') {
-        playListCtx.action.updateList(data.list)
-        setTotalList(data.list.length)
+      if (playListInfo.hasOwnProperty('slctType')) {
+        //마이페이지 청취내역(좋아요, 선물)
+        const {result, data, message} = await Api.getHistoryList({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
       } else {
-        globalCtx.action.alert({msg: message})
+        //마이페이지 업로드목록
+        const {result, data, message} = await Api.getUploadList({...playListInfo})
+        if (result === 'success') {
+          playListCtx.action.updateList(data.list)
+          setTotalList(data.list.length)
+        } else {
+          globalCtx.action.alert({msg: message})
+        }
       }
     } else {
       //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)
