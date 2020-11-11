@@ -644,16 +644,17 @@ export default (props) => {
                 }}>
                 내 클립 현황
               </em>
-              <img
-                src={
-                  myClipToggle
-                    ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
-                    : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
-                }
-                alt="마이클립 화살표 버튼"
-                className="myClip__arrow"
-                onClick={(e) => toggleMyClip(e)}
-              />
+              <div className="myClip__arrow" onClick={(e) => toggleMyClip(e)}>
+                {myClipToggle ? '접기' : '더보기'}
+                <img
+                  src={
+                    myClipToggle
+                      ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
+                      : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
+                  }
+                  alt="마이클립 화살표 버튼"
+                />
+              </div>
             </h2>
             {myClipToggle && (
               <ul className="myClipWrap">
