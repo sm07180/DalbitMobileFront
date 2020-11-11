@@ -16,11 +16,11 @@ const NoticeDetail = (props) => {
     setDetailIdx(0)
   }
 
-  let urlrStr
+  let yourMemNo
   if (props.location) {
-    urlrStr = props.location.pathname.split('/')[2]
+    yourMemNo = props.location.pathname.split('/')[2]
   } else {
-    urlrStr = location.pathname.split('/')[2]
+    yourMemNo = location.pathname.split('/')[2]
   }
 
   const deleteNotice = useCallback(
@@ -104,7 +104,7 @@ const NoticeDetail = (props) => {
                   )}
                 </pre>
 
-                {urlrStr === globalCtx.profile.memNo && (
+                {yourMemNo === globalCtx.profile.memNo && (
                   <div className="noticeDetail__button">
                     <button
                       onClick={() => {

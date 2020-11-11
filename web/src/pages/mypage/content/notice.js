@@ -21,11 +21,11 @@ const Notice = (props) => {
   let location = useLocation()
   let history = useHistory()
 
-  let urlrStr
+  let yourMemNo
   if (props.location) {
-    urlrStr = props.location.pathname.split('/')[2]
+    yourMemNo = props.location.pathname.split('/')[2]
   } else {
-    urlrStr = location.pathname.split('/')[2]
+    yourMemNo = location.pathname.split('/')[2]
   }
 
   //체크상태
@@ -54,7 +54,7 @@ const Notice = (props) => {
 
   const getNotice = useCallback(async () => {
     const {result, data} = await Api.mypage_notice_inquire({
-      memNo: urlrStr,
+      memNo: yourMemNo,
       page: currentPage,
       records: 9999
     })
@@ -84,7 +84,7 @@ const Notice = (props) => {
   const goBack = () => {
     //링크 진행중
     if (isList) {
-      if (urlrStr === memNo) {
+      if (yourMemNo === memNo) {
         history.push(`/menu/profile`)
       } else {
         history.push(`/mypage/${memNo}`)
@@ -112,7 +112,7 @@ const Notice = (props) => {
           setIsAdd(!isAdd)
           setIsList(false)
         }}
-        className={`write-btn ${urlrStr === memNo ? 'on' : 'on'}`}>
+        className={`write-btn ${yourMemNo === memNo ? 'on' : 'on'}`}>
         쓰기
       </button>
     )
@@ -173,7 +173,7 @@ const Notice = (props) => {
 
       {isList === true && (
         <NoticeListCompnent
-          urlrStr={urlrStr}
+          yourMemNo={yourMemNo}
           noticeList={noticeList}
           detailIdx={detailIdx}
           setDetailIdx={setDetailIdx}
@@ -186,7 +186,7 @@ const Notice = (props) => {
         <>
           {!props.type ? (
             <NoticeDetailCompenet
-              urlrStr={urlrStr}
+              yourMemNo={yourMemNo}
               noticeList={noticeList}
               detailIdx={detailIdx}
               currentPage={currentPage}
@@ -202,7 +202,7 @@ const Notice = (props) => {
           ) : (
             <NoticeDetailCompenet
               type="userprofile"
-              urlrStr={urlrStr}
+              yourMemNo={yourMemNo}
               noticeList={noticeList}
               detailIdx={detailIdx}
               currentPage={currentPage}
@@ -227,7 +227,7 @@ const Notice = (props) => {
         </div>
       )}
 
-      {!props.type && isList === true && urlrStr === globalCtx.profile.memNo && createWriteBtn()}
+      {!props.type && isList === true && yourMemNo === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
 }
