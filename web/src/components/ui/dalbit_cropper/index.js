@@ -33,9 +33,14 @@ function DalbitCropper(props) {
   }, [state, cropper])
 
   const submit = useCallback(() => {
+    setState({
+      ...state,
+      content: cropper.getCroppedCanvas().toDataURL()
+    })
+
     setImage({
       ...state,
-      content: cropper.setCropBoxData(cropper.getCanvasData()).getCroppedCanvas().toDataURL()
+      content: cropper.getCroppedCanvas().toDataURL()
     })
     setCropOpen(false)
   }, [state, cropper])
@@ -101,7 +106,7 @@ function DalbitCropper(props) {
 
   return (
     <div className={customName || ''}>
-      <Header type="cropperPopup" setCropOpen={setCropOpen} type="cropperPopup" />
+      <Header type="cropperPopup" setCropOpen={setCropOpen} />
       <Cropper
         style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
         initialAspectRatio={1}

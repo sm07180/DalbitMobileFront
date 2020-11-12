@@ -77,8 +77,8 @@ const NoticeDetail = (props) => {
                   <img src={item.profImg['thumb292x292']} />
                   {item.nickNm}
                 </span>
-                <pre className="noticeDetail__content">
-                  {item.contents}
+                <div className="noticeDetail__content">
+                  <pre>{item.contents}</pre>
 
                   {item.imagePath ? (
                     <img
@@ -102,7 +102,7 @@ const NoticeDetail = (props) => {
                       </div>
                     </div>
                   )}
-                </pre>
+                </div>
 
                 {yourMemNo === globalCtx.profile.memNo && (
                   <div className="noticeDetail__button">

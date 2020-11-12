@@ -146,6 +146,10 @@
       background: $white;
       min-height: 150px;
 
+      pre {
+        margin: 0px;
+      }
+
       img {
         display: block;
         width: 100%;
