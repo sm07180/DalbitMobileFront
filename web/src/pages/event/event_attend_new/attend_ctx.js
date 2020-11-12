@@ -11,7 +11,6 @@ const EventAttendProvider = (props) => {
   const [tab, setTab] = useState('attend') //attend, roulette
   const [popRoulette, setPopRoulette] = useState(false)
   const [popGifticon, setPopGifticon] = useState(false)
-  const [inputEndDate, setInputEndDate] = useState('00:00')
   const [winIdx, setWinIdx] = useState(-1)
   const [couponCnt, setCouponCnt] = useState(0)
   const [summaryList, setSummaryList] = useState({
@@ -22,8 +21,12 @@ const EventAttendProvider = (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
-  const [winPhone, setWinPhone] = useState(0)
+
   const [ios, setIos] = useState('')
+  const [rouletteInfo, setRouletteInfo] = useState('')
+  const [start, setStart] = useState({
+    inputEndDate: '00:00'
+  })
 
   //---------------------------------------------------------------------
 
@@ -35,11 +38,11 @@ const EventAttendProvider = (props) => {
     statusList,
     dateList,
     popGifticon,
-    inputEndDate,
     winIdx,
     itemNo,
-    winPhone,
-    ios
+    ios,
+    rouletteInfo,
+    start
   }
 
   const eventAttendAction = {
@@ -50,11 +53,11 @@ const EventAttendProvider = (props) => {
     setStatusList,
     setDateList,
     setPopGifticon,
-    setInputEndDate,
     setWinIdx,
     setItemNo,
-    setWinPhone,
-    setIos
+    setIos,
+    setRouletteInfo,
+    setStart
   }
 
   const bundle = {

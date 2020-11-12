@@ -7,7 +7,7 @@ import {IMG_SERVER} from 'context/config'
 import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
 
-import {GIFT_ROTATION_TYPE} from '../../constant'
+import {GIFT_CON_TYPE, GIFT_ROTATION_TYPE} from '../../constant'
 
 import PopGifticon from './popGifticon'
 
@@ -39,7 +39,6 @@ export default () => {
     overflow: hidden;
 
     img {
-      width: 90%;
       margin: 0 auto;
       -ms-user-select: none;
       -moz-user-select: -moz-none;
@@ -50,7 +49,7 @@ export default () => {
 
     img.start {
       animation-name: ${(props) => rouletteEffect(props)};
-      animation-duration: 3.5s;
+      animation-duration: 4.5s;
       animation-timing-function: ease;
       animation-direction: normal;
       animation-fill-mode: forwards;
@@ -60,11 +59,10 @@ export default () => {
   async function fetchEventRouletteStart() {
     const {result, data} = await API.getEventRouletteStart()
     if (result === 'success') {
+      eventAttendAction.setStart(data)
       eventAttendAction.setItemNo(data.itemNo)
-      eventAttendAction.setInputEndDate(data.inputEndDate)
       eventAttendAction.setCouponCnt(data.couponCnt)
       eventAttendAction.setWinIdx(data.winIdx)
-      eventAttendAction.setWinPhone(data.phone)
     } else {
       // 실패
     }
@@ -96,21 +94,41 @@ export default () => {
         eventAttendAction.setPopGifticon(false)
         eventAttendAction.setPopRoulette(false)
       }, 300000)
-    }, 4000)
+    }, 5000)
 
-    if (itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKS) {
+    if (
+      itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKS ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_EDIYA ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_BASKIN
+    ) {
       setRotation(22.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.ONE_DAL) {
       setRotation(67.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CONVENIENCE) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.GIFT_CONVENIENCE ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_PARIS ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_BARISTA
+    ) {
       setRotation(112.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CHOCO) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.GIFT_CHOCO ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_SNEAKERS ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_SONGE
+    ) {
       setRotation(157.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_VOUCHER) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.GIFT_VOUCHER ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_MOMS ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_BURGERKING
+    ) {
       setRotation(202.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.THREE_DAL) {
       setRotation(247.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.GIFT_CHICKEN) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.GIFT_CHICKEN ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_BASKINBOX ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_DOMINO
+    ) {
       setRotation(292.5)
     } else if (itemNo === GIFT_ROTATION_TYPE.FAILD) {
       setRotation(337.5)
@@ -128,13 +146,13 @@ export default () => {
       <div className="popupContent">
         <RoulettePanelBlock className="roulettePanelBlock" rotation={rotation}>
           <img
-            src={`${IMG_SERVER}/event/attend/201028/roullete_img2@2x.png`}
+            src={eventAttendState.rouletteInfo.image_url}
             ref={rouletteRef}
             className={`roulettePanel ${roatting ? 'start' : ''}`}
             alt="룰렛 돌림판"
           />
 
-          <img src={`${IMG_SERVER}/event/attend/201019/roullete_pointer@2x.png`} className="roulettePin" alt="룰렛 핀" />
+          <img src={eventAttendState.rouletteInfo.pin_image_url} className="roulettePin" alt="룰렛 핀" />
         </RoulettePanelBlock>
       </div>
 
