@@ -15,7 +15,7 @@ const NoticeList = (props) => {
 
   return (
     <>
-      {noticeList === -1 ? (
+      {noticeList !== null && noticeList.length === 0 ? (
         <NoResult type="default" text="방송공지가 없습니다." />
       ) : (
         <React.Fragment>
