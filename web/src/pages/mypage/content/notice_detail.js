@@ -38,6 +38,7 @@ const NoticeDetail = (props) => {
             callback: () => {
               setIsList(true)
               setIsDetail(false)
+              setDetailIdx(0)
               getNotice()
             }
           })
