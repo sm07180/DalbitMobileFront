@@ -11,7 +11,7 @@ export const VERSION = ''
  */
 export const API_SERVER = __API_SERVER_URL //API서버
 // export const API_SERVER = 'https://devm-hwlee.dalbitlive.com:4431' //형원님
-//export const API_SERVER = 'https://devm-leejaeho1144.dalbitlive.com:4431'
+// export const API_SERVER = 'https://devm-daink.dalbitlive.com:4431'
 export const IMG_SERVER = __STATIC_PHOTO_SERVER_URL //이미지 CDN
 export const PHOTO_SERVER = __USER_PHOTO_SERVER_URL //이미지서버 (사용자가 올리는서버)
 export const PAY_SERVER = __PAY_SERVER_URL

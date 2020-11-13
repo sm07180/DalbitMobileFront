@@ -30,7 +30,6 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 
 // header scroll flag
 let tempScrollEvent = null
-let randomData = Math.random() >= 0.5 ? 0 : 4
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 49
@@ -72,6 +71,7 @@ export default (props) => {
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
   const [detailPopup, setDetailPopup] = useState(false)
+  const [myClipToggle, setMyClipToggle] = useState(false)
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
@@ -137,9 +137,8 @@ export default (props) => {
   const fetchDataListPopular = async () => {
     const {result, data, message} = await Api.getPopularList({})
     if (result === 'success') {
-      setPopularList(data.list)
+      setPopularList(data.list.slice(0, 6))
       setDate(data.checkDate)
-      setRandomList(data.list.slice(0, 6))
       setPopularType(data.type)
     } else {
       context.action.alert({
@@ -158,7 +157,9 @@ export default (props) => {
     }
   }
   const fetchDataListLatest = async () => {
-    const {result, data, message} = await Api.getLatestList({})
+    const {result, data, message} = await Api.getLatestList({
+      listCnt: 10
+    })
     if (result === 'success') {
       setrankList(data.list)
     } else {
@@ -190,11 +191,32 @@ export default (props) => {
     }
   }
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, type) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      console.log(type)
+      let playListInfoData
+      if (type === 'recommend') {
+        playListInfoData = {
+          listCnt: 20,
+          playlist: true
+        }
+      } else if (type === 'new') {
+        playListInfoData = {
+          slctType: 1,
+          dateType: 0,
+          page: 1,
+          records: 100
+        }
+      } else if (type === 'theme') {
+        playListInfoData = {
+          subjectType: data.subjectType,
+          listCnt: 100
+        }
+      }
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -214,7 +236,7 @@ export default (props) => {
 
   // make contents
   const makePoupularList = () => {
-    return randomList.map((item, idx) => {
+    return popularList.map((item, idx) => {
       if (!item) return null
       const {bgImg, clipNo, type, nickName, subjectType} = item
       return (
@@ -234,7 +256,7 @@ export default (props) => {
                 context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'recommend')
             }
           }}
           style={{cursor: 'pointer'}}>
@@ -273,7 +295,7 @@ export default (props) => {
                 globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, 'new')
             }
           }}
           key={`latest-` + idx}
@@ -347,7 +369,7 @@ export default (props) => {
                         globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
                     } else {
-                      fetchDataPlay(clipNo)
+                      fetchDataPlay(clipNo, 'theme')
                     }
                   }}
                   key={idx + `toplist`}
@@ -407,14 +429,7 @@ export default (props) => {
     if (context.clipRefresh && type === 'category') {
       context.action.updatClipRefresh(false)
     } else if (type === 'popular') {
-      if (popularList.length > 6) {
-        let newList = popularList.filter(function (x) {
-          return randomList.indexOf(x) < 0
-        })
-        setRandomList(shuffle(newList).slice(0, 6))
-      } else {
-        fetchDataListPopular()
-      }
+      fetchDataListPopular()
     } else {
       context.action.updatClipRefresh(true)
     }
@@ -539,6 +554,14 @@ export default (props) => {
     },
     [reloadInit, context.clipRefresh]
   )
+  const toggleMyClip = (e) => {
+    e.stopPropagation()
+    if (myClipToggle) {
+      setMyClipToggle(false)
+    } else {
+      setMyClipToggle(true)
+    }
+  }
 
   // #layer pop
   useEffect(() => {
@@ -582,6 +605,13 @@ export default (props) => {
   }, [])
   //---------------------------------------------------------------------
 
+  useEffect(() => {
+    if (myData && myData.regCnt === 0 && myData.playCnt === 0 && myData.goodCnt === 0 && myData.byeolCnt === 0) {
+      setMyClipToggle(false)
+    } else {
+      setMyClipToggle(true)
+    }
+  }, [myData])
   return (
     <Layout {...props} status="no_gnb">
       <div id="clipPage" onTouchStart={clipTouchStart} onTouchMove={clipTouchMove} onTouchEnd={clipTouchEnd}>
@@ -607,32 +637,47 @@ export default (props) => {
         </div>
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>
-            <h2
-              className="myClip__title"
-              onClick={() => {
-                context.action.updatePopup('MYCLIP')
-              }}>
-              내 클립 현황
+            <h2 className="myClip__title" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
+              <em
+                onClick={() => {
+                  context.action.updatePopup('MYCLIP')
+                }}>
+                내 클립 현황
+              </em>
+              <div className="myClip__arrow" onClick={(e) => toggleMyClip(e)}>
+                {myClipToggle ? '접기' : '더보기'}
+                <img
+                  src={
+                    myClipToggle
+                      ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
+                      : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
+                  }
+                  alt="마이클립 화살표 버튼"
+                />
+              </div>
             </h2>
-
-            <ul className="myClipWrap">
-              <li className="upload">
-                <em></em>
-                <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
-              </li>
-              <li className="listen">
-                <em></em>
-                <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
-              </li>
-              <li className="like">
-                <em></em>
-                <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
-              </li>
-              <li className="gift">
-                <em></em>
-                <span>{myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별</span>
-              </li>
-            </ul>
+            {myClipToggle && (
+              <ul className="myClipWrap">
+                <li className="upload">
+                  <em></em>
+                  <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
+                </li>
+                <li className="listen">
+                  <em></em>
+                  <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
+                </li>
+                <li className="like">
+                  <em></em>
+                  <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
+                </li>
+                <li className="gift">
+                  <em></em>
+                  <span>
+                    {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
+                  </span>
+                </li>
+              </ul>
+            )}
           </div>
         ) : (
           <div ref={myClipRef}></div>

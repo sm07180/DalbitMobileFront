@@ -380,6 +380,7 @@ export default (props) => {
             clipType={clipType}
             CategoryType={CategoryType}
             setCategoryType={setCategoryType}
+            searchText={result}
           />
         </>
       )}

@@ -39,7 +39,8 @@ $bar-color: white;
       }
     }
     .playListBox {
-      padding-top: 30px;
+      // padding-top: 30px;
+      margin-top: 80px;
     }
   }
 
@@ -172,6 +173,7 @@ $bar-color: white;
   display: flex;
   align-items: center;
   padding: 10px 16px;
+  height: 92px;
   outline: none;
 
   &.edit {
@@ -234,6 +236,7 @@ $bar-color: white;
 
   .textBox {
     width: calc(100% - 132px);
+    height: 62px;
     &__iconBox {
       display: flex;
       align-items: center;
@@ -381,7 +384,7 @@ $bar-color: white;
       position: absolute;
       margin: 0 auto;
       top: calc(50% - 10px);
-      left: calc(50% - 10px);
+      left: calc(50% - 7px);
       width: $size;
       height: $size;
 

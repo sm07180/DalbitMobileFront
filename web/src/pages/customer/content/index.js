@@ -25,6 +25,8 @@ import AppInfo from './app_info'
 import AppInfoRoute from './app_info/route'
 
 import Layout from 'pages/common/layout/new_layout'
+import EventWinner from "pages/customer/content/event/event_winner.js";
+import WinnerInfoForm from "pages/customer/content/event/winner_info_form.js";
 //
 
 const Index = (props) => {
@@ -41,7 +43,13 @@ const Index = (props) => {
       header = '공지사항'
       break
     case 'event':
-      header = '이벤트'
+        if(num === undefined ){
+          header = '이벤트'
+        } else if(num === 'winnerInfo'){
+          header = '추가 정보 입력'
+        } else {
+          header = '당첨자 발표'
+        }
       break
     case 'faq':
       header = 'FAQ'
@@ -112,6 +120,8 @@ const Index = (props) => {
           <Route path="/customer/notice" exact component={Notice} />
           <Route path="/customer/notice/:number" exact component={NoticeDetail} />
           <Route path="/customer/event" exact component={Event} />
+          <Route path="/customer/event/winnerInfo" exact component={WinnerInfoForm}/>
+          <Route path="/customer/event/:number" exact component={EventWinner}/>
           <Route path="/customer/faq" exact component={Faq} />
           <Route path="/customer/faq/:number" exact component={FaqDetail} />
           <Route path="/customer/personal" exact component={Personal} />
