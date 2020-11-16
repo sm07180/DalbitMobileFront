@@ -35,7 +35,7 @@ export default (props) => {
   const context = useContext(Context)
   const {token, profile} = context
 
-  let {memNo, category} = useParams()
+  let {memNo, category, addpage} = useParams()
 
   if (webview && webview === 'new') {
     sessionStorage.setItem('webview', 'new')
@@ -301,10 +301,18 @@ export default (props) => {
           ) : (
             <div ref={mypageRef} style={{display: 'none'}}></div>
           )}
+
           <Switch>
             {navigationList.map((value) => {
               const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+              return (
+                <Route
+                  exact
+                  path={addpage !== undefined ? `/mypage/:memNo/:category/:addpage` : `/mypage/:memNo/${type}`}
+                  component={component}
+                  key={type}
+                />
+              )
             })}
           </Switch>
         </div>
