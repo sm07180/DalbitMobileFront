@@ -36,7 +36,7 @@ export const clipJoin = (data, context, webview, isPush) => {
       }
     } else if (playListData.hasOwnProperty('memNo')) {
       if (playListData.hasOwnProperty('slctType')) {
-        currentType = 'history'
+        currentType = 'listen'
       } else {
         currentType = 'upload'
       }
