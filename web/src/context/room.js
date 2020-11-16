@@ -408,10 +408,7 @@ export const RoomMake = async (context) => {
   //-----------------------------------------------------
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
-  let appBuild = customHeader['appBuild']
-  if (appBuild === undefined) {
-    appBuild = 1
-  }
+
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
@@ -432,19 +429,17 @@ export const RoomMake = async (context) => {
   let broadSetting = {}
   broadSetting['djListenerIn'] = false
   broadSetting['djListenerOut'] = false
+  broadSetting['isSpecial'] = false
 
-  if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 32) || (_os === 2 && appBuild > 141)) {
-    const apiSetting = await Api.getBroadcastSetting()
-    if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
-      broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
-      broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
-    }
+  const apiSetting = await Api.getBroadcastSetting()
+  if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
+    broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
+    broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
+    broadSetting['isSpecial'] = apiSetting.data['isSpecial']
   }
-  if (__NODE_ENV !== 'dev' && _os === 1 && appBuild < 32) {
-    Hybrid('RoomMake')
-  } else {
-    Hybrid('RoomMake', broadSetting)
-  }
+
+  Hybrid('RoomMake', broadSetting)
+
   //## 실행 리얼 주석 종료
   //Hybrid('RoomMake') //원소스
 }
