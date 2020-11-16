@@ -23,7 +23,9 @@ import NoResult from 'components/ui/new_noResult'
 import SelectBoxs from 'components/ui/selectBox.js'
 import SearchIconGray from '../../static/ic_search_g.svg'
 import ArrowIconGray from '../../static/ic_arrow_down_gray.svg'
-
+let currentPage = 1
+let timer
+let moreState = false
 export default (props) => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
@@ -35,13 +37,11 @@ export default (props) => {
   const {changes, setChanges, onChange} = useChange({onChange: -1})
 
   //state
-  const [managerState, setManagerState] = useState(-1)
-  const [userState, setUserState] = useState(-1)
+
   const [userList, setUserList] = useState([])
+  const [nextUserList, setNextUserList] = useState([])
   const [userTotalCount, setUserTotalCount] = useState(0)
   const [managerList, setManagerList] = useState([])
-  const [totalPageNumber, setTotalPageNumber] = useState(null)
-  const [page, setPage] = useState(1)
   const [tabState, setTabState] = useState(1)
   let userTypeSetting = 0
 
@@ -56,7 +56,6 @@ export default (props) => {
     const res = await Api.mypage_manager_list({})
     if (res.result == 'success' && _.hasIn(res, 'data.list')) {
       if (res.data.list.length > 0) {
-        setManagerState(1)
         setManagerList(res.data.list)
       } else {
         setManagerList([])
@@ -101,7 +100,9 @@ export default (props) => {
       })
     }
   }
-  async function getSearchList(type, typeDetail) {
+  async function getSearchList(type, next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
     if (!_.hasIn(changes, 'search') || changes.search.length == 0)
       return context.action.alert({
         msg: `검색어를 입력해주세요.`
@@ -111,26 +112,29 @@ export default (props) => {
       userType: userTypeSetting,
       search: changes.search,
       searchType: 'maneger',
-      page: type == 'page' ? typeDetail : 1,
-      records: 100
+      page: next === 'next' ? currentPage : 1,
+      records: 30
     }
     const res = await Api.mypage_user_search({params})
-    if (res.result == 'success') {
-      if (res.data.list.length > 0) {
-        const {list, paging} = res.data
-        if (paging) {
-          const {totalPage, total} = paging
-          setTotalPageNumber(totalPage)
-          setUserTotalCount(total)
-          setUserState(1)
-          setUserList(list)
+    if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+      const {list, paging} = res.data
+      if (paging) {
+        const {totalPage, total} = paging
+        setUserTotalCount(total)
+      }
+      if (res.data.list.length === 0) {
+        if (!next) {
+          setUserList([])
         }
-        if (type == 'search') {
-          setPage(1)
-        }
+        moreState = false
       } else {
-        setUserState(0)
-        setUserList([])
+        if (next) {
+          moreState = true
+          setNextUserList(res.data.list)
+        } else {
+          setUserList(res.data.list)
+          getSearchList('search', 'next')
+        }
       }
     } else {
       context.action.alert({
@@ -138,6 +142,7 @@ export default (props) => {
       })
     }
   }
+
   const createUserList = () => {
     return (
       <>
@@ -292,7 +297,8 @@ export default (props) => {
     }
   }
   const tabChangeFunction = () => {
-    console.log(changes.search)
+    moreState = false
+    currentPage = 1
     setManegerValue('')
     if (tabState === 0) {
       getManagerList()
@@ -301,8 +307,43 @@ export default (props) => {
       setTabState(0)
     }
   }
+  const showMoreList = () => {
+    if (moreState) {
+      getSearchList('search', 'next')
+      setUserList(userList.concat(nextUserList))
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 300 && nextUserList.length !== 0) {
+        showMoreList()
+      } else {
+      }
+    }, 140)
+  }
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextUserList])
   useEffect(() => {
     getManagerList()
+    return () => {
+      currentPage = 1
+    }
   }, [])
   //-----------------------------------------------------------------------------
   return (
