@@ -43,6 +43,10 @@ export default () => {
       if (result === 'success') {
         eventAttendAction.setPopGifticon(false)
         eventAttendAction.setPopRoulette(false)
+
+        globalCtx.action.alert({
+          msg: `다시 한 번 축하드립니다.\n기프티콘은 입력된 연락처로\n평일 기준 7일 이내 전송해드립니다.`
+        })
       } else {
         globalCtx.action.alert({
           msg: message
