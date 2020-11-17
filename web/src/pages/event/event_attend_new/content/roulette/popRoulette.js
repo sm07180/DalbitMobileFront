@@ -63,6 +63,7 @@ export default () => {
       eventAttendAction.setItemNo(data.itemNo)
       eventAttendAction.setCouponCnt(data.couponCnt)
       eventAttendAction.setWinIdx(data.winIdx)
+      eventAttendAction.setWinPhone(data.phone)
     } else {
       // 실패
     }
@@ -86,7 +87,7 @@ export default () => {
         eventAttendAction.setPopGifticon(true)
         eventAttendAction.setCouponCnt(eventAttendState.couponCnt - 1)
       } else {
-        //실패
+        console.log('실패')
       }
       setRoatting(false)
 

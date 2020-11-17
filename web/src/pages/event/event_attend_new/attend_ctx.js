@@ -21,7 +21,7 @@ const EventAttendProvider = (props) => {
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
-
+  const [winPhone, setWinPhone] = useState(0)
   const [ios, setIos] = useState('')
   const [rouletteInfo, setRouletteInfo] = useState('')
   const [start, setStart] = useState({
@@ -40,6 +40,7 @@ const EventAttendProvider = (props) => {
     popGifticon,
     winIdx,
     itemNo,
+    winPhone,
     ios,
     rouletteInfo,
     start
@@ -55,6 +56,7 @@ const EventAttendProvider = (props) => {
     setPopGifticon,
     setWinIdx,
     setItemNo,
+    setWinPhone,
     setIos,
     setRouletteInfo,
     setStart

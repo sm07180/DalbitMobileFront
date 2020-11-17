@@ -15,7 +15,6 @@ export default () => {
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {itemNo} = eventAttendState
-  // const {itemNo, setItemNo} = useState(4)
 
   const [phone, setPhone] = useState(eventAttendState.winPhone)
   const [timeText, setTimeText] = useState('')
@@ -56,6 +55,8 @@ export default () => {
     }
     fetchEventAttendPhone()
   }
+
+  console.log(eventAttendState.winPhone)
 
   const intervalFormatter = (date) => {
     if (!date) return null
