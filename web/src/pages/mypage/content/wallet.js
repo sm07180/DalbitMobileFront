@@ -409,7 +409,7 @@ export default (props) => {
               <>
                 {
                   <CoinChargeBtn
-                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? 'gray exchange ios' : 'gray exchange'}
+                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? ' exchange ios' : ' exchange'}
                     onClick={() => {
                       if (context.customHeader['os'] === OS_TYPE['IOS']) {
                         async function fetchTokenShort() {
