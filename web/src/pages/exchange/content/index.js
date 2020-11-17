@@ -160,7 +160,7 @@ export default (props) => {
       if (popState === 0) {
         setPopState(1)
       }
-    }, 5000)
+    }, 10000)
   }, [popState])
 
   //---------------------------------------------------------------------
@@ -251,6 +251,8 @@ const Content = styled.section`
     p {
       color: #fff;
       font-weight: normal;
+      font-size: 12px;
+      line-height: 18px;
     }
     button {
       position: absolute;
