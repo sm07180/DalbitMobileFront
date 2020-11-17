@@ -2,7 +2,7 @@
  * @file /exchange/index.js
  * @brief 달 교환 페이지
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import styled from 'styled-components'
 
 //context
@@ -14,8 +14,12 @@ import _ from 'lodash'
 import Utility from 'components/lib/utility'
 
 import NoResult from 'components/ui/noResult'
+import Popup from './auto_exchange_pop'
 
-import starIcon from '../static/ic_star_s.svg'
+import ic_guide from '../static/guide_s.svg'
+import ic_toggle_off from '../static/toggle_off_s.svg'
+import ic_toggle_on from '../static/toggle_on_s.svg'
+import ic_close from '../static/ic_close_round_g.svg'
 
 export default (props) => {
   //---------------------------------------------------------------------
@@ -27,6 +31,9 @@ export default (props) => {
   const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
   const [mydal, setMydal] = useState(0)
+  const [autoState, setAutoState] = useState(0)
+  const [popState, setPopState] = useState(1)
+  const [popup, setPopup] = useState(false)
 
   //---------------------------------------------------------------------
 
@@ -125,17 +132,70 @@ export default (props) => {
     }
   }
 
+  const toggleHandler = useCallback(async () => {
+    const {result, data} = await Api.postDalAutoExchange({
+      data: {autoChange: !autoState}
+    })
+    if (result === 'success') {
+      setAutoState(data.autoChange)
+    }
+  }, [autoState])
+
   //useEffect
   useEffect(() => {
     getStoreList()
+
+    const checkAutoState = async () => {
+      const {result, data} = await Api.getDalAutoExchange()
+      if (result === 'success') {
+        setAutoState(data.autoChange)
+        setPopState(data.autoChange)
+      }
+    }
+    checkAutoState()
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (popState === 0) {
+        setPopState(1)
+      }
+    }, 5000)
+  }, [popState])
+
   //---------------------------------------------------------------------
   return (
     <Content>
       <p className="mydal">
         보유 별 <span>{mydal.toLocaleString()}</span>
       </p>
+
+      <div className="auto-exchange">
+        <p>별 → 달 자동 교환</p>
+        <button className="guide" onClick={() => setPopup(true)}>
+          <img src={ic_guide} alt="가이드" />
+        </button>
+        <button className="toggle" onClick={toggleHandler}>
+          {autoState ? <img src={ic_toggle_on} alt="활성화" /> : <img src={ic_toggle_off} alt="비활성화" />}
+        </button>
+
+        <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
+          <p>
+            자동교환을 설정(ON)을 하시면 <br /> 편리하게 교환할 수 있어요!
+          </p>
+          <button
+            className="close"
+            onClick={() => {
+              setPopState(1)
+            }}>
+            <img src={ic_close} alt="닫기" />
+          </button>
+        </div>
+      </div>
+
       {creatResult()}
+
+      {popup && <Popup setPopup={setPopup} />}
     </Content>
   )
 }
@@ -147,6 +207,55 @@ const Content = styled.section`
   margin: 0 auto;
   width: 100%;
   padding: 10px 16px;
+
+  .auto-exchange {
+    display: flex;
+    position: relative;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    p {
+      padding-right: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      line-height: 24px;
+    }
+    button.toggle {
+      margin-left: auto;
+    }
+  }
+
+  .auto-exchange-pop {
+    position: absolute;
+    padding: 12px 50px 12px 12px;
+    right: 0;
+    top: 45px;
+    background: #757575;
+    border-radius: 12px;
+
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    &.on {
+      opacity: 1;
+      z-index: 1;
+    }
+    &.off {
+      opacity: 0;
+      z-index: 0;
+    }
+    p {
+      color: #fff;
+      font-weight: normal;
+    }
+    button {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+    }
+  }
 
   .btn-wrap {
     display: flex;
