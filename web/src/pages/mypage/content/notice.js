@@ -13,6 +13,7 @@ import {Context} from 'context'
 import './notice.scss'
 
 const Notice = (props) => {
+  console.log(111)
   // moible 유저 정보
   const globalCtx = useContext(Context)
   //memNo
@@ -77,7 +78,7 @@ const Notice = (props) => {
   const makeView = () => {
     if (addpage == undefined || addpage === '') {
       return <NoticeListCompnent noticeList={noticeList} />
-    } else if (addpage.indexOf('isDetile') !== -1) {
+    } else if (addpage.indexOf('isDetail') !== -1) {
       return (
         <NoticeDetailCompenet
           yourMemNo={yourMemNo}

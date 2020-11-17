@@ -32,7 +32,7 @@ const NoticeList = (props) => {
                         className="noticeItme"
                         key={index}
                         onClick={() => {
-                          history.push(`/mypage/${memNo}/notice/isDetile=${item.noticeIdx}`)
+                          history.push(`/mypage/${memNo}/notice/isDetail=${item.noticeIdx}`)
                         }}>
                         {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                         <div className="noticeItme__textWrap">
@@ -56,7 +56,7 @@ const NoticeList = (props) => {
                         className="noticeItme"
                         key={index}
                         onClick={() => {
-                          history.push(`/mypage/${memNo}/notice/isDetile=${item.noticeIdx}`)
+                          history.push(`/mypage/${memNo}/notice/isDetail=${item.noticeIdx}`)
                         }}>
                         {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                         <div className="noticeItme__textWrap">

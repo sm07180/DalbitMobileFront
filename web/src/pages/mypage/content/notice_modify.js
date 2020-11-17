@@ -61,7 +61,7 @@ function ModifyNoticeCompnent(props) {
 
         getNotice()
         setTimeout(() => {
-          history.push(`/mypage/${memNo}/notice/isDetile=${pramsNum}`)
+          history.push(`/mypage/${memNo}/notice/isDetail=${pramsNum}`)
         }, 100)
       }
     }

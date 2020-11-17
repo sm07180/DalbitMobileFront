@@ -137,6 +137,7 @@ export default (props) => {
       {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
     ]
   }
+
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
@@ -197,6 +198,7 @@ export default (props) => {
       settingProfileInfo(memNo)
     }
   }, [memNo, context.mypageFanCnt])
+
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [memNo])
@@ -213,11 +215,15 @@ export default (props) => {
   // }, [codes])
 
   // my MemNo vs Your check
+
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
   if (!profileInfo || !profile) {
-    return null
+    if (!token.isLogin) {
+      window.location.href = '/login'
+      return null
+    }
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -253,10 +259,6 @@ export default (props) => {
     }
   }
 
-  if (!token.isLogin) {
-    window.location.href = '/login'
-    return null
-  }
   // useEffect(() => {
   //   if (locationSearch && locationSearch.search === '?clip') {
   //     setTabSelected(2)
