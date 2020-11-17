@@ -637,23 +637,24 @@ export default (props) => {
         </div>
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>
-            <h2
-              className="myClip__title"
-              style={{paddingBottom: !myClipToggle ? '0' : '18px'}}
-              onClick={() => {
-                context.action.updatePopup('MYCLIP')
-              }}>
-              내 클립 현황
-              <img
-                src={
-                  myClipToggle
-                    ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
-                    : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
-                }
-                alt="마이클립 화살표 버튼"
-                className="myClip__arrow"
-                onClick={(e) => toggleMyClip(e)}
-              />
+            <h2 className="myClip__title" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
+              <em
+                onClick={() => {
+                  context.action.updatePopup('MYCLIP')
+                }}>
+                내 클립 현황
+              </em>
+              <div className="myClip__arrow" onClick={(e) => toggleMyClip(e)}>
+                {myClipToggle ? '접기' : '더보기'}
+                <img
+                  src={
+                    myClipToggle
+                      ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
+                      : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
+                  }
+                  alt="마이클립 화살표 버튼"
+                />
+              </div>
             </h2>
             {myClipToggle && (
               <ul className="myClipWrap">
