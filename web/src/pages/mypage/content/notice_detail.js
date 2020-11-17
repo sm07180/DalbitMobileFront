@@ -4,18 +4,14 @@ import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
 import Header from 'components/ui/new_header.js'
 import Utility from 'components/lib/utility'
+import {useHistory, useParams} from 'react-router-dom'
 
 const NoticeDetail = (props) => {
-  const {noticeList, detailIdx, memNo, currentPage, setModifyItem, getNotice, setIsList, setIsDetail, setDetailIdx} = props
+  const {noticeList, currentPage, getNotice, setModifyItem} = props
   const globalCtx = useContext(Context)
   const [zoom, setZoom] = useState(false)
-
-  const goBack = () => {
-    setIsDetail(false)
-    setIsList(true)
-    setDetailIdx(0)
-  }
-
+  let history = useHistory()
+  let {memNo, category, addpage} = useParams()
   let yourMemNo
   if (props.location) {
     yourMemNo = props.location.pathname.split('/')[2]
@@ -36,16 +32,15 @@ const NoticeDetail = (props) => {
           globalCtx.action.confirm({
             msg: `게시글을 삭제 하시겠습니까?`,
             callback: () => {
-              setIsList(true)
-              setIsDetail(false)
-              setDetailIdx(0)
               getNotice()
+              setTimeout(() => {
+                history.push(`/mypage/${memNo}/notice`)
+              }, 100)
             }
           })
         } else {
           context.action.alert({
-            msg: result.message,
-            callback: () => {}
+            msg: result.message
           })
         }
       }
@@ -53,6 +48,8 @@ const NoticeDetail = (props) => {
     },
     [memNo, currentPage]
   )
+
+  const pramsNum = Number(addpage.substring(9))
 
   return (
     <div className={` ${props.type && 'userProfileWrap'}`}>
@@ -68,7 +65,7 @@ const NoticeDetail = (props) => {
       {noticeList !== null &&
         noticeList.map((item, index) => (
           <React.Fragment key={index}>
-            {item.noticeIdx === detailIdx && (
+            {item.noticeIdx === pramsNum && (
               <div key={index} className="noticeDetail">
                 <strong className="noticeDetail__title">
                   {item.title}
@@ -109,8 +106,8 @@ const NoticeDetail = (props) => {
                   <div className="noticeDetail__button">
                     <button
                       onClick={() => {
+                        history.push(`/mypage/${memNo}/notice/isModify=${item.noticeIdx}`)
                         setModifyItem({...item})
-                        setIsDetail(false)
                       }}>
                       수정
                     </button>

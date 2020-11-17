@@ -7,10 +7,8 @@ import NoticeListCompnent from './notice_list.js'
 import NoticeDetailCompenet from './notice_detail'
 import Header from 'components/ui/new_header.js'
 
-// moible context
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
 
 import './notice.scss'
 
@@ -28,6 +26,8 @@ const Notice = (props) => {
     yourMemNo = location.pathname.split('/')[2]
   }
 
+  let {memNo, addpage} = useParams()
+
   //체크상태
   const initialState = {
     click1: false
@@ -40,17 +40,10 @@ const Notice = (props) => {
   const [noticeList, setNoticeList] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(0)
-  //Component 호출
-  const [isAdd, setIsAdd] = useState(false)
-  const [isList, setIsList] = useState(true)
-  const [isDetail, setIsDetail] = useState(false)
   const [modifyItem, setModifyItem] = useState(null)
 
   //Not Component 호출
   const [detailIdx, setDetailIdx] = useState(0)
-  const [moreToggle, setMoreToggle] = useState(false)
-
-  const memNo = globalCtx.profile.memNo
 
   const getNotice = useCallback(async () => {
     const {result, data} = await Api.mypage_notice_inquire({
@@ -72,36 +65,47 @@ const Notice = (props) => {
   }, [memNo, currentPage])
 
   const titleText = () => {
-    if (isAdd === true) {
+    if (addpage && addpage.indexOf('isWrite') === 0) {
       return '방송공지 쓰기'
-    } else if (modifyItem !== null) {
+    } else if (addpage && addpage.indexOf('isModify') === 0) {
       return '방송공지 수정'
     } else {
       return '방송공지'
     }
   }
 
-  const goBack = () => {
-    //링크 진행중
-    if (isList) {
-      if (yourMemNo === memNo) {
-        history.push(`/menu/profile`)
-      } else {
-        history.push(`/mypage/${memNo}`)
-      }
-    }
-    if (isAdd) {
-      setIsAdd(false)
-      setIsList(true)
-    }
-    if (modifyItem !== null) {
-      setModifyItem(null)
-      setIsDetail(true)
-    }
-    if (isDetail) {
-      setIsDetail(false)
-      setIsList(true)
-      setDetailIdx(0)
+  const makeView = () => {
+    if (addpage == undefined || addpage === '') {
+      return <NoticeListCompnent noticeList={noticeList} />
+    } else if (addpage.indexOf('isDetile') !== -1) {
+      return (
+        <NoticeDetailCompenet
+          yourMemNo={yourMemNo}
+          noticeList={noticeList}
+          detailIdx={detailIdx}
+          currentPage={currentPage}
+          setDetailIdx={setDetailIdx}
+          getNotice={getNotice}
+          setModifyItem={setModifyItem}
+        />
+      )
+    } else if (addpage.indexOf('isWrite') === 0) {
+      return <NoticeInsertCompnent memNo={memNo} getNotice={getNotice} setPhotoUploading={setPhotoUploading} />
+    } else if (addpage.indexOf('isModify') === 0) {
+      return (
+        <>
+          <NoticeModifyCompnent
+            type="userprofile"
+            modifyItem={modifyItem}
+            setModifyItem={setModifyItem}
+            memNo={memNo}
+            getNotice={getNotice}
+            setPhotoUploading={setPhotoUploading}
+          />
+        </>
+      )
+    } else {
+      ;<></>
     }
   }
 
@@ -109,8 +113,7 @@ const Notice = (props) => {
     return (
       <button
         onClick={() => {
-          setIsAdd(!isAdd)
-          setIsList(false)
+          history.push(`/mypage/${memNo}/notice/isWrite`)
         }}
         className={`write-btn ${yourMemNo === memNo ? 'on' : 'on'}`}>
         쓰기
@@ -124,100 +127,28 @@ const Notice = (props) => {
 
   return (
     <div id="notice">
-      {!props.type ? (
+      {!props.type && (
         <Header type="noBack">
           <h2 className="header-title">{titleText()}</h2>
-          <button className="close-btn" onClick={goBack}>
+          <button
+            className="btnClose"
+            onClick={() => {
+              if (props.tabSelected === 0 && addpage && addpage.indexOf('isDetil') === 0) {
+                history.goBack()
+              } else if (props.tabSelected === 1 && addpage && addpage.indexOf('isDetil') === 0) {
+                history.push(`/menu/profile`)
+              } else if (addpage === undefined) {
+                history.push(`/menu/profile`)
+              } else {
+                history.goBack()
+              }
+            }}>
             <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
           </button>
         </Header>
-      ) : (
-        <></>
       )}
 
-      {isAdd === true && (
-        <NoticeInsertCompnent
-          setIsAdd={setIsAdd}
-          memNo={memNo}
-          getNotice={getNotice}
-          setIsList={setIsList}
-          setPhotoUploading={setPhotoUploading}
-        />
-      )}
-      {modifyItem !== null && (
-        <>
-          {!props.type ? (
-            <NoticeModifyCompnent
-              modifyItem={modifyItem}
-              setModifyItem={setModifyItem}
-              memNo={memNo}
-              getNotice={getNotice}
-              setIsList={setIsList}
-              setIsDetail={setIsDetail}
-              setPhotoUploading={setPhotoUploading}
-            />
-          ) : (
-            <NoticeModifyCompnent
-              type="userprofile"
-              modifyItem={modifyItem}
-              setModifyItem={setModifyItem}
-              memNo={memNo}
-              getNotice={getNotice}
-              setIsList={setIsList}
-              setIsDetail={setIsDetail}
-              setPhotoUploading={setPhotoUploading}
-            />
-          )}
-        </>
-      )}
-
-      {isList === true && (
-        <NoticeListCompnent
-          yourMemNo={yourMemNo}
-          noticeList={noticeList}
-          detailIdx={detailIdx}
-          setDetailIdx={setDetailIdx}
-          setIsList={setIsList}
-          setIsDetail={setIsDetail}
-        />
-      )}
-
-      {isDetail === true && (
-        <>
-          {!props.type ? (
-            <NoticeDetailCompenet
-              yourMemNo={yourMemNo}
-              noticeList={noticeList}
-              detailIdx={detailIdx}
-              currentPage={currentPage}
-              setMoreToggle={setMoreToggle}
-              setDetailIdx={setDetailIdx}
-              setModifyItem={setModifyItem}
-              setIsDetail={setIsDetail}
-              setIsList={setIsList}
-              memNo={memNo}
-              moreToggle={moreToggle}
-              getNotice={getNotice}
-            />
-          ) : (
-            <NoticeDetailCompenet
-              type="userprofile"
-              yourMemNo={yourMemNo}
-              noticeList={noticeList}
-              detailIdx={detailIdx}
-              currentPage={currentPage}
-              setMoreToggle={setMoreToggle}
-              setDetailIdx={setDetailIdx}
-              setModifyItem={setModifyItem}
-              setIsDetail={setIsDetail}
-              setIsList={setIsList}
-              memNo={memNo}
-              moreToggle={moreToggle}
-              getNotice={getNotice}
-            />
-          )}
-        </>
-      )}
+      {makeView()}
 
       {photoUploading && (
         <div className="loadingWrap">
@@ -227,7 +158,7 @@ const Notice = (props) => {
         </div>
       )}
 
-      {!props.type && isList === true && yourMemNo === globalCtx.profile.memNo && createWriteBtn()}
+      {addpage === undefined && !props.type && yourMemNo === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
 }

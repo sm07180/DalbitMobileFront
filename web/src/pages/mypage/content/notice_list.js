@@ -1,12 +1,15 @@
 import React, {useContext} from 'react'
 import {PHOTO_SERVER} from 'context/config'
 import {Context} from 'context'
-import Header from '../component/header.js'
 import NoResult from 'components/ui/new_noResult'
 import Utility from 'components/lib/utility'
+import {useHistory, useParams} from 'react-router-dom'
 
 const NoticeList = (props) => {
-  const {noticeList, detailIdx, setDetailIdx, setIsList, setIsDetail} = props
+  let {memNo} = useParams()
+  const {noticeList} = props
+
+  let history = useHistory()
   const context = useContext(Context)
 
   // 최신글 체크
@@ -29,13 +32,7 @@ const NoticeList = (props) => {
                         className="noticeItme"
                         key={index}
                         onClick={() => {
-                          setIsDetail(true)
-                          setIsList(false)
-                          if (item.noticeIdx === detailIdx) {
-                            setDetailIdx(0)
-                          } else {
-                            setDetailIdx(item.noticeIdx)
-                          }
+                          history.push(`/mypage/${memNo}/notice/isDetile=${item.noticeIdx}`)
                         }}>
                         {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                         <div className="noticeItme__textWrap">
@@ -59,13 +56,7 @@ const NoticeList = (props) => {
                         className="noticeItme"
                         key={index}
                         onClick={() => {
-                          setIsDetail(true)
-                          setIsList(false)
-                          if (item.noticeIdx === detailIdx) {
-                            setDetailIdx(0)
-                          } else {
-                            setDetailIdx(item.noticeIdx)
-                          }
+                          history.push(`/mypage/${memNo}/notice/isDetile=${item.noticeIdx}`)
                         }}>
                         {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                         <div className="noticeItme__textWrap">

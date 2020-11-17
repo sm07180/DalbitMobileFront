@@ -4,10 +4,13 @@ import DalbitCropper from 'components/ui/dalbit_cropper'
 import Api from 'context/api'
 import {Context} from 'context'
 
-function NoticeInsertCompnent(props) {
-  const {setIsAdd, memNo, getNotice, setIsList, customName, setPhotoUploading} = props
-  const context = useContext(Context)
+import {useHistory, useParams} from 'react-router-dom'
 
+function NoticeInsertCompnent(props) {
+  const {getNotice, setPhotoUploading} = props
+  const context = useContext(Context)
+  let history = useHistory()
+  let {memNo} = useParams()
   //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
@@ -65,12 +68,11 @@ function NoticeInsertCompnent(props) {
     })
 
     if (res.result === 'success') {
-      getNotice()
-      setIsAdd(false)
-      setIsList(true)
       context.action.toast({
         msg: res.message
       })
+      getNotice()
+      history.push(`/mypage/${memNo}/notice`)
     }
   }, [formState, memNo, image])
 
@@ -116,9 +118,6 @@ function NoticeInsertCompnent(props) {
       }
     }
   }, [image])
-
-  // useEffect(() => {
-  // }, [thumbNail])
 
   return (
     <div className="noticeWrite">

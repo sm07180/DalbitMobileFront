@@ -2,28 +2,26 @@ import React, {useCallback, useEffect, useState, useContext} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
-import Header from 'components/ui/new_header.js'
+
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
+import {useHistory, useParams} from 'react-router-dom'
 
 function ModifyNoticeCompnent(props) {
   const globalCtx = useContext(Context)
   const context = useContext(Context)
-  const {setModifyItem, modifyItem, memNo, getNotice, setIsDetail, setPhotoUploading} = props
-
+  const {setModifyItem, modifyItem, getNotice, setPhotoUploading} = props
+  let {memNo, addpage} = useParams()
   //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
   const [eventObj, setEventObj] = useState(null)
   const [thumbNail, setThumbNail] = useState(null)
 
+  let history = useHistory()
+
   //버튼 활성화
   const [activeState, setActiveState] = useState(false)
-
-  const goBack = () => {
-    setModifyItem(null)
-    setIsDetail(true)
-  }
 
   const onChange = useCallback(
     (e) => {
@@ -38,12 +36,14 @@ function ModifyNoticeCompnent(props) {
   )
 
   const ButtonActive = () => {
-    if (modifyItem.title !== '' && modifyItem.contents !== '') {
+    if (modifyItem && modifyItem.title !== '' && modifyItem && modifyItem.contents !== '') {
       setActiveState(true)
     } else {
       setActiveState(false)
     }
   }
+
+  const pramsNum = Number(addpage.substring(9))
 
   const ModionSubmit = useCallback(() => {
     async function ModiRegistNotice() {
@@ -55,12 +55,14 @@ function ModifyNoticeCompnent(props) {
         }
       })
       if (res.result === 'success') {
-        setModifyItem(null)
-        setIsDetail(true)
-        getNotice()
         globalCtx.action.toast({
           msg: res.message
         })
+
+        getNotice()
+        setTimeout(() => {
+          history.push(`/mypage/${memNo}/notice/isDetile=${pramsNum}`)
+        }, 100)
       }
     }
     ModiRegistNotice()
@@ -117,15 +119,7 @@ function ModifyNoticeCompnent(props) {
   }, [modifyItem])
 
   return (
-    <div className={` ${props.type && 'userProfileWrap'}`}>
-      {props.type && (
-        <Header type="noBack">
-          <h2 className="header-title">방송공지 쓰기</h2>
-          <button className="close-btn" onClick={goBack}>
-            <img src="https://image.dalbitlive.com/svg/icon_back_gray.svg" alt="뒤로가기" />
-          </button>
-        </Header>
-      )}
+    <>
       {modifyItem !== null && (
         <div className="noticeWrite">
           <input
@@ -206,7 +200,7 @@ function ModifyNoticeCompnent(props) {
           </button>
         </div>
       )}
-    </div>
+    </>
   )
 }
 

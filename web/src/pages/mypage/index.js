@@ -264,6 +264,7 @@ export default (props) => {
   //     return null
   //   }
   // }, [])
+
   return (
     <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -291,7 +292,7 @@ export default (props) => {
                     })}
                   </ul>
                   <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '40px' : 0}}>
-                    {tabSelected === 0 && <Notice type="userprofile" />}
+                    {tabSelected === 0 && <Notice type="userprofile" tabSelected={tabSelected} />}
                     {tabSelected === 1 && <FanBoard isShowBtn={showWriteBtn} type="userprofile" />}
                     {tabSelected === 2 && <MyClip type="userprofile" />}
                   </div>
