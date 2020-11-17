@@ -150,7 +150,27 @@ export default () => {
                     } else if (itemNo === 7) {
                       giftItem = '문화상품권'
                     } else if (itemNo === 8) {
-                      giftItem = '교촌치킨'
+                      giftItem = '교촌치킨 세트'
+                    } else if (itemNo === 14) {
+                      giftItem = '초코송이'
+                    } else if (itemNo === 15) {
+                      giftItem = '바리스타 모카'
+                    } else if (itemNo === 16) {
+                      giftItem = '베라 싱글'
+                    } else if (itemNo === 17) {
+                      giftItem = '버거킹 세트'
+                    } else if (itemNo === 18) {
+                      giftItem = '도미노 피자'
+                    } else if (itemNo === 24) {
+                      giftItem = '스니커즈'
+                    } else if (itemNo === 25) {
+                      giftItem = '빠바상품권'
+                    } else if (itemNo === 26) {
+                      giftItem = '이디야 플랫치노'
+                    } else if (itemNo === 27) {
+                      giftItem = '맘스터치 세트'
+                    } else if (itemNo === 28) {
+                      giftItem = '베라 D-BOX'
                     }
 
                     return giftItem
