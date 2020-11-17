@@ -33,7 +33,7 @@ export default (props) => {
   const [mydal, setMydal] = useState(0)
   const [autoState, setAutoState] = useState(0)
   const [popState, setPopState] = useState(1)
-  const [popup, setPopup] = useState(false)
+  const [popup, setPopup] = useState(0)
 
   //---------------------------------------------------------------------
 
@@ -181,7 +181,7 @@ export default (props) => {
 
         <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
           <p>
-            자동교환을 설정(ON)을 하시면 <br /> 편리하게 교환할 수 있어요!
+            자동교환을 설정을 ON 하시면 <br /> 편리하게 교환할 수 있어요!
           </p>
           <button
             className="close"
@@ -235,6 +235,8 @@ const Content = styled.section`
     top: 45px;
     background: #757575;
     border-radius: 12px;
+    font-size: 12px;
+    line-height: 18px;
 
     opacity: 0;
     transition: opacity 0.2s ease-in-out;
