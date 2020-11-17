@@ -362,7 +362,7 @@
       }
 
       &.fileOn {
-        background-size: cover;
+        background-size: cover !important;
         background-repeat: no-repeat;
         background-position: left top !important;
         text-indent: -99999px;

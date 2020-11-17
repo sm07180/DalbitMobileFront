@@ -134,9 +134,9 @@ const Notice = (props) => {
           <button
             className="btnClose"
             onClick={() => {
-              if (props.tabSelected === 0 && addpage && addpage.indexOf('isDetil') === 0) {
+              if (props.tabSelected === 0 && addpage && addpage.indexOf('isDetail') === 0) {
                 history.goBack()
-              } else if (props.tabSelected === 1 && addpage && addpage.indexOf('isDetil') === 0) {
+              } else if (props.tabSelected === 1 && addpage && addpage.indexOf('isDetail') === 0) {
                 history.push(`/menu/profile`)
               } else if (addpage === undefined) {
                 history.push(`/menu/profile`)
