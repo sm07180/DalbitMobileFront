@@ -152,10 +152,16 @@
       .roulettePanelBlock {
         position: relative;
 
+        .roulettePanel {
+          width: 100%;
+          max-width: 328px;
+        }
+
         .roulettePin {
           position: absolute;
-          left: 45%;
-          width: 10%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 36px;
         }
       }
 
@@ -335,10 +341,11 @@
             text-align: left;
             font-weight: 600;
             padding-left: 10px;
+            letter-spacing: -1px;
 
             img {
               display: inline-block;
-              margin-top: -2px;
+              margin-top: -4px;
               margin-right: 3px;
             }
           }

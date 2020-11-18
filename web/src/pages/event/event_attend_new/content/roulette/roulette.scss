@@ -112,9 +112,10 @@
     background-repeat: no-repeat;
     background-size: 100%;
     text-align: center;
+    cursor: pointer;
 
     img {
-      width: 95%;
+      max-width: 328px;
     }
 
     button {

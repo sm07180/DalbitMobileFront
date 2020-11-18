@@ -27,6 +27,7 @@ function LikeList({empty}) {
   const {rankState} = useContext(RankContext)
   const history = useHistory()
   const {formState, likeList, rankList} = rankState
+
   return (
     <>
       {empty === true ? (

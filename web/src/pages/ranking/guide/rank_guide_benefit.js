@@ -4,6 +4,7 @@ import {IMG_SERVER} from 'context/config'
 
 //static
 import crownIcon from '../static/ic_crown_y.svg'
+import pointIcon from '../static/ico_point_red.svg'
 
 export default (props) => {
   return (
@@ -103,6 +104,52 @@ export default (props) => {
       </div>
 
       <div className="tableBox">
+        <p className="tableBox__title">
+          <img src={pointIcon} alt="포인트" />
+          스페셜DJ 신청 시 가산점 부여 <span>(SD Extra Points)</span>
+        </p>
+
+        <table>
+          <colgroup>
+            <col width="20%" />
+            <col width="20%" />
+            <col width="60%" />
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th>랭킹</th>
+              <th>DJ 일간</th>
+              <th>유의사항</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td className="rank">1</td>
+              <td>+ 2 점</td>
+              <td rowSpan="3" className="note">
+                스페셜DJ 총점 100점 기준
+                <br />
+                <i>월 누적 최대 10점</i>까지만 인정
+                <br />※ 가산점은 DJ 일간 랭킹만 반영
+              </td>
+            </tr>
+
+            <tr>
+              <td className="rank">2</td>
+              <td>+ 1 점</td>
+            </tr>
+
+            <tr>
+              <td className="rank">3</td>
+              <td>+ 0.5 점</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div className="tableBox">
         <p className="tableBox__title">달과 경험치 지급</p>
 
         <table>
@@ -179,49 +226,6 @@ export default (props) => {
                 <br />
                 <span>경험치 랜덤 박스 (EXP 50, 100, 200, 400, 500)</span>
               </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div className="tableBox">
-        <p className="tableBox__title">스페셜DJ 신청 시 가산점 부여</p>
-
-        <table>
-          <colgroup>
-            <col width="20%" />
-            <col width="20%" />
-            <col width="60%" />
-          </colgroup>
-
-          <thead>
-            <tr>
-              <th>랭킹</th>
-              <th>DJ 일간</th>
-              <th>유의사항</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <tr>
-              <td className="rank">1</td>
-              <td>+ 2 점</td>
-              <td rowSpan="3" className="note">
-                스페셜DJ 총점 100점 기준
-                <br />
-                <i>월 누적 최대 10점</i>까지만 인정
-                <br />※ 가산점은 DJ 일간 랭킹만 반영됩니다.
-              </td>
-            </tr>
-
-            <tr>
-              <td className="rank">2</td>
-              <td>+ 1 점</td>
-            </tr>
-
-            <tr>
-              <td className="rank">3</td>
-              <td>+ 0.5 점</td>
             </tr>
           </tbody>
         </table>
