@@ -11,7 +11,7 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
-import Utility from 'components/lib/utility'
+import {useHistory} from 'react-router-dom'
 
 import NoResult from 'components/ui/noResult'
 import Popup from './auto_exchange_pop'
@@ -26,6 +26,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
+  const history = useHistory()
 
   //useState
   const [list, setList] = useState(false)
@@ -122,11 +123,11 @@ export default (props) => {
           <List>{creatList()}</List>
           <div className="info-wrap">
         <h5>달 교환 안내</h5>
-        <p>별에서 달로 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
-        <p>별에서 달로 교환 및 교환달로 선물하기가 가능합니다.</p>
+        <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
+        <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
       </div>
           <div className="btn-wrap">
-            <button onClick={chargeClick} className="charge-btn cancel">
+            <button onClick={()=>{history.goBack()}} className="charge-btn cancel">
               취소
             </button>
             <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
@@ -175,7 +176,7 @@ export default (props) => {
       if (popState === 0) {
         setPopState(1)
       }
-    }, 5000)
+    }, 10000)
   }, [popState])
 
   //---------------------------------------------------------------------
@@ -196,7 +197,7 @@ export default (props) => {
 
         <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
           <p>
-            자동교환을 설정을 ON 하시면 <br /> 편리하게 교환할 수 있어요!
+            자동교환 설정을 ON 하시면 <br /> 편리하게 교환할 수 있어요!
           </p>
           <button
             className="close"
@@ -250,6 +251,9 @@ const Content = styled.section`
         height: 2px;
         background: #757575;
         content: '';
+      }
+      &.red{
+        color:#ec455f;
       }
     }
   }
