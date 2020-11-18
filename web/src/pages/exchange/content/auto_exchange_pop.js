@@ -51,6 +51,9 @@ export default (props) => {
             <img src={ic_toggle_off} />
             해제(OFF) 할 수 있습니다.
           </p>
+          <p className="line-text red">
+          설정(ON)하시면 다음날 00시부터 작동됩니다. 
+          </p>
         </div>
       </div>
     </PopupWrap>
@@ -98,6 +101,9 @@ const PopupWrap = styled.div`
         height: 1px;
         background: #000;
         content: '';
+      }
+      &.red{
+        color:#ec455f;
       }
     }
 

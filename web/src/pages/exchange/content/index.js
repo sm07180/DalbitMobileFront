@@ -20,7 +20,8 @@ import ic_guide from '../static/guide_s.svg'
 import ic_toggle_off from '../static/toggle_off_s.svg'
 import ic_toggle_on from '../static/toggle_on_s.svg'
 import ic_close from '../static/ic_close_round_g.svg'
-
+import ic_notice from '../static/ic_notice.svg'
+ 
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -119,6 +120,11 @@ export default (props) => {
       return (
         <>
           <List>{creatList()}</List>
+          <div className="info-wrap">
+        <h5>달 교환 안내</h5>
+        <p>별에서 달로 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
+        <p>별에서 달로 교환 및 교환달로 선물하기가 가능합니다.</p>
+      </div>
           <div className="btn-wrap">
             <button onClick={chargeClick} className="charge-btn cancel">
               취소
@@ -138,6 +144,15 @@ export default (props) => {
     })
     if (result === 'success') {
       setAutoState(data.autoChange)
+      if(data.autoChange === 0){
+        context.action.toast({
+          msg:'자동교환을 설정(OFF) 하였습니다'
+        })
+      }else{
+        context.action.toast({
+          msg:'자동교환을 설정(ON) 하였습니다'
+        })
+      }
     }
   }, [autoState])
 
@@ -160,7 +175,7 @@ export default (props) => {
       if (popState === 0) {
         setPopState(1)
       }
-    }, 10000)
+    }, 5000)
   }, [popState])
 
   //---------------------------------------------------------------------
@@ -172,7 +187,7 @@ export default (props) => {
 
       <div className="auto-exchange">
         <p>별 → 달 자동 교환</p>
-        <button className="guide" onClick={() => setPopup(true)}>
+        <button className="guide" onClick={() => setPopup(1)}>
           <img src={ic_guide} alt="가이드" />
         </button>
         <button className="toggle" onClick={toggleHandler}>
@@ -195,7 +210,9 @@ export default (props) => {
 
       {creatResult()}
 
-      {popup && <Popup setPopup={setPopup} />}
+      
+
+      {popup === 1 && <Popup setPopup={setPopup} />}
     </Content>
   )
 }
@@ -207,6 +224,35 @@ const Content = styled.section`
   margin: 0 auto;
   width: 100%;
   padding: 10px 16px;
+
+  .info-wrap {
+    margin-top: 5px;
+    h5 {
+      display: flex;
+      margin-bottom: 8px;
+      padding-left: 16px;
+      background: url(${ic_notice}) no-repeat left center;
+      color: #424242;
+      font-size: 12px;
+      font-weight: bold
+    }
+    p {
+      position: relative;
+      padding-left: 16px;
+      color: #757575;
+      font-size: 12px;
+      line-height: 20px;
+      &::before {
+        position: absolute;
+        left: 6px;
+        top: 9px;
+        width: 2px;
+        height: 2px;
+        background: #757575;
+        content: '';
+      }
+    }
+  }
 
   .auto-exchange {
     display: flex;
