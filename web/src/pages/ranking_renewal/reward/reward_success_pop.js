@@ -61,6 +61,13 @@ export default (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <PopupWrap>
       <div className="content-wrap">
@@ -163,12 +170,22 @@ export default (props) => {
           </button>
         )}
 
-        {formState[formState.pageType].rankType !== RANK_TYPE.LIKE && (
+        {formState[formState.pageType].rankType !== RANK_TYPE.LIKE ? (
           <ul className="notice-box">
-            <li>* Top 배지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다.</li>
+            <li>* 랭킹 배지는 자동 지급 받으셨습니다.</li>
             <li>* 경험치 랜덤 박스 보상은 데이터 업데이트 전까지 받아야합니다.</li>
-            <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li>
+            {/* <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li> */}
           </ul>
+        ) : (
+          <>
+            {formState[formState.pageType].dateType === 1 ? (
+              ''
+            ) : (
+              <ul className="notice-box">
+                <li>* 랭킹 배지는 자동 지급 받으셨습니다.</li>
+              </ul>
+            )}
+          </>
         )}
       </div>
       {randomPopup && <RandomBoxPop setRandomPopup={setRandomPopup} setPopup={setPopup} />}

@@ -2425,6 +2425,10 @@ export default class API {
     return await ajax({url: '/event/roulette/coupon', method: 'GET', params})
   }
 
+  static getEventRouletteInfo = async (params) => {
+    return await ajax({url: '/event/roulette/info', method: 'GET', params})
+  }
+
   static getEventRouletteStart = async (params) => {
     return await ajax({url: '/event/roulette/start', method: 'GET', params})
   }

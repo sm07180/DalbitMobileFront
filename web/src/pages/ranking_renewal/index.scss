@@ -120,6 +120,12 @@
   .rankTop3Box {
     padding: 0 16px;
     background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+
+    &.realTime {
+      padding-bottom: 18px;
+      background-color: #632beb;
+      background-image: none;
+    }
   }
 
   .likeTopBox {
@@ -293,7 +299,7 @@
     &.profileBox {
       background: $white;
       border-radius: 16px;
-      margin-bottom: 12px;
+      margin-bottom: 22px;
 
       .profileWrap {
         display: flex;
@@ -523,24 +529,24 @@
       margin-right: 6px;
       min-width: 60px;
 
-      &__frame {
-        position: absolute;
-        top: -21px;
-        left: 50%;
-        width: 62px;
-        height: 82px;
-        transform: translateX(-50%);
+      // &__frame {
+      //   position: absolute;
+      //   top: -21px;
+      //   left: 50%;
+      //   width: 62px;
+      //   height: 82px;
+      //   transform: translateX(-50%);
 
-        &--4rd {
-          background: url(https://image.dalbitlive.com/ranking/fanrf4_n@3x.png) no-repeat center center;
-          background-size: 100%;
-        }
+      //   &--4rd {
+      //     background: url(https://image.dalbitlive.com/ranking/fanrf4_n@3x.png) no-repeat center center;
+      //     background-size: 100%;
+      //   }
 
-        &--5rd {
-          background: url(https://image.dalbitlive.com/ranking/fanrf5_n@3x.png) no-repeat center center;
-          background-size: 100%;
-        }
-      }
+      //   &--5rd {
+      //     background: url(https://image.dalbitlive.com/ranking/fanrf5_n@3x.png) no-repeat center center;
+      //     background-size: 100%;
+      //   }
+      // }
     }
 
     .nickNameBox {
@@ -881,16 +887,14 @@
       &__item {
         position: relative;
 
-        .realLabelDj,
-        .realLabelFan {
+        .realLabelDj {
           position: relative;
           margin: 0 auto;
-          padding: 0 8px;
-          height: 32px;
+          padding: 0 24px;
+          height: 30px;
           width: fit-content;
-          line-height: 32px;
+          line-height: 30px;
           border-radius: 14px;
-          background-color: rgba(0, 0, 0, 0.4);
           text-align: center;
           color: #fff;
           font-size: 12px;
@@ -909,11 +913,6 @@
             background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
             background-repeat: no-repeat;
             background-size: 100%;
-          }
-
-          &::after {
-            display: inline-block;
-            padding-left: 22px;
           }
         }
 
@@ -978,18 +977,10 @@
           order: 2;
 
           .realLabelDj {
-            background-image: url(https://image.dalbitlive.com/ranking/djr1@3x.png);
+            background-color: rgba(0, 0, 0, 0.5);
 
             &::after {
-              content: '실시간1위';
-            }
-          }
-
-          .realLabelFan {
-            background-image: url(https://image.dalbitlive.com/ranking/fanr1@3x.png);
-
-            &::after {
-              content: '회장';
+              content: 'SP +2.0';
             }
           }
 
@@ -1047,19 +1038,10 @@
 
           .realLabelDj {
             margin-top: 50px;
-            background-image: url(https://image.dalbitlive.com/ranking/djr2@3x.png);
+            background-color: rgba(0, 0, 0, 0.4);
 
             &::after {
-              content: '실시간2위';
-            }
-          }
-
-          .realLabelFan {
-            margin-top: 50px;
-            background-image: url(https://image.dalbitlive.com/ranking/fanr2@3x.png);
-
-            &::after {
-              content: '부회장';
+              content: 'SP +1.0';
             }
           }
 
@@ -1123,18 +1105,10 @@
 
           .realLabelDj {
             margin-top: 78px;
-            background-image: url(https://image.dalbitlive.com/ranking/djr3@3x.png);
-            &::after {
-              content: '실시간3위';
-            }
-          }
-
-          .realLabelFan {
-            margin-top: 78px;
-            background-image: url(https://image.dalbitlive.com/ranking/fanr3@3x.png);
+            background-color: rgba(0, 0, 0, 0.3);
 
             &::after {
-              content: '사장';
+              content: 'SP +0.5';
             }
           }
 
@@ -1514,7 +1488,7 @@
   .rewordBox {
     overflow: hidden;
     position: relative;
-    margin-bottom: 12px;
+    margin-bottom: 18px;
     padding: 16px 0;
     border-radius: 16px;
     border: solid 2px #febd56;

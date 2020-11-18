@@ -25,13 +25,13 @@ export default () => {
       <div id="guestGuide">
         <Header title="게스트 가이드" />
         <div className="event-content">
-          <img src="https://image.dalbitlive.com/event/guest/20201027/img01.jpg" alt="게스트를 통한 더욱 재미있는 방송" />
-          <img src="https://image.dalbitlive.com/event/guest/20201027/img02.jpg" alt="게스트 초대, 게스트 초대 수락" />
+          <img src="https://image.dalbitlive.com/event/guest/20201111/img01.jpg" alt="게스트를 통한 더욱 재미있는 방송" />
+          <img src="https://image.dalbitlive.com/event/guest/20201111/img02.jpg" alt="게스트 초대, 게스트 초대 수락" />
           <img
-            src="https://image.dalbitlive.com/event/guest/20201027/img03.jpg"
+            src="https://image.dalbitlive.com/event/guest/20201111/img03.jpg"
             alt="게스트가 연결되면 DJ와 게스트 모두 반드시 이어폰으로 들어주세요!"
           />
-          <img src="https://image.dalbitlive.com/event/guest/20201027/img04.jpg" alt="게스트에게 선물하기, 게스트연결 종료" />
+          <img src="https://image.dalbitlive.com/event/guest/20201111/img04.jpg" alt="게스트에게 선물하기, 게스트연결 종료" />
         </div>
 
         <div className="notice" ref={noticeList}>
@@ -61,7 +61,7 @@ export default () => {
                 <i>02</i>PC에서 게스트 연결되었을 때 새로고침(F5) 하지 마세요.
                 <br />
               </b>
-              PC에서 게스트 연결되었을 때, 게스트가 새로고침을 하면 게스트 연결이 종료될 수도 있습니다.
+              PC에서 게스트 연결되었을 때, 게스트가 새로고침을 하면 게스트 연결이 자동으로 종료됩니다.
             </li>
           </ul>
 

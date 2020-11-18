@@ -42,6 +42,13 @@ export default function RouletteTab() {
     // return `${month}월 ${day}일 ${time}`
   }
 
+  async function fetchEventRouletteInfo() {
+    const {result, data} = await API.getEventRouletteInfo()
+    if (result === 'success') {
+      eventAttendAction.setRouletteInfo(data.info)
+    }
+  }
+
   async function fetchEventRouletteCoupon() {
     const {result, data} = await API.getEventRouletteCoupon()
     if (result === 'success') {
@@ -90,6 +97,7 @@ export default function RouletteTab() {
   useEffect(() => {
     fetchEventRouletteCoupon()
     fetchEventRouletteWin()
+    fetchEventRouletteInfo()
   }, [])
 
   return (
@@ -140,11 +148,11 @@ export default function RouletteTab() {
         </div>
       </div>
 
-      <div className="rouletteBox">
-        <img src={`${IMG_SERVER}/event/attend/201028/roullete_img@2x.png`} alt="룰렛 돌림판" />
-        <button type="button" onClick={() => startIn()}>
-          <img src={`${IMG_SERVER}/event/attend/201019/btn_roullete_start@2x.png`} alt="룰렛 스타트" />
-        </button>
+      <div className="rouletteBox" onClick={() => startIn()}>
+        <img src={eventAttendState.rouletteInfo.bg_image_url} alt="룰렛 돌림판" />
+        {/* <button type="button" onClick={() => startIn()}>
+          <img src={eventAttendState.rouletteInfo.start_image_url} alt="룰렛 스타트" />
+        </button> */}
       </div>
       <div>
         <Notice />
