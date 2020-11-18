@@ -63,7 +63,7 @@ export default () => {
     const {result, data, message} = await Api.mypage_black_list({
       params: {
         page: currentPage,
-        records: 100
+        records: 30
       }
     })
     if (result === 'success') {
