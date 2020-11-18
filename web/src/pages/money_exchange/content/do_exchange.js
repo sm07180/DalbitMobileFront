@@ -519,7 +519,7 @@ export default function DoExchange({state, dispatch}) {
       if (popState === 0) {
         setPopState(1)
       }
-    }, 10000)
+    }, 8000)
   }, [popState])
 
   useEffect(() => {
