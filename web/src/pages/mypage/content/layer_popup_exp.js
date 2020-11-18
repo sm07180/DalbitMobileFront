@@ -47,6 +47,7 @@ export default (props) => {
                   </button>
                 </div>
                 <div className="inner">
+                  <div className="scroll__wrap">
                   <ul>
                     {data.map((data, index) => {
                       return (
@@ -90,6 +91,8 @@ export default (props) => {
                       )
                     })}
                   </ul>
+                  </div>
+                  
                 </div>
               </div>
             </div>
