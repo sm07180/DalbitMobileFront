@@ -104,6 +104,7 @@ const PopupWrap = styled.div`
       }
       &.red{
         color:#ec455f;
+        font-weight:bold;
       }
     }
 
