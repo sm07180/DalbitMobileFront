@@ -152,21 +152,20 @@ export default function ClipHistory() {
                 <div
                   className="uploadList__container"
                   onClick={() => {
-                    fetchDataPlay(clipNo, idx)
-                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    //   if (context.token.isLogin === false) {
-                    //     context.action.alert({
-                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    //       callback: () => {
-                    //         history.push('/login')
-                    //       }
-                    //     })
-                    //   } else {
-                    //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                    //   }
-                    // } else {
-                    //   fetchDataPlay(clipNo)
-                    // }
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
                   }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
                   <div className="uploadList__details">

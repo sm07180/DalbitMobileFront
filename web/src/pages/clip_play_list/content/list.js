@@ -35,6 +35,7 @@ export default () => {
     if (!playListInfo) {
       //한곡만 재생할때 (푸쉬알람, 알람페이지, 클립 청취목록)
       //한곡만 조회할 수 없으므로 플레이 시 데이터를 필요한 것만 담아서 사용
+      
       const oneClipPlayList = JSON.parse(localStorage.getItem('oneClipPlayList'))
 
       if (oneClipPlayList) {
