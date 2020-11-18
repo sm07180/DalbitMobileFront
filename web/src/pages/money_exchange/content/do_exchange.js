@@ -19,6 +19,8 @@ import Popup from 'pages/common/popup'
 import AddPop from './subcontent/do_exchange_add_pop'
 import SettingPop from './subcontent/do_exchange_setting_pop'
 
+import ic_close from '../static/ic_close_round_g.svg'
+
 const FormDataReducer = (state, action) => {
   switch (action.type) {
     case 'byeol':
@@ -192,6 +194,7 @@ export default function DoExchange({state, dispatch}) {
   const [recentCheck, setRecentCheck] = useState(false)
   const [recentInfo, setRecentInfo] = useState('')
   const [deleteState, setDeleteState] = useState('')
+  const [popState, setPopState] = useState(1)
 
   const userProfile = context.profile || {}
 
@@ -502,7 +505,23 @@ export default function DoExchange({state, dispatch}) {
     //   -----------------------------------------------------------\n
     //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
     // })
+    const checkAutoState = async () => {
+      const {result, data} = await Api.getDalAutoExchange()
+      if (result === 'success') {
+        setPopState(data.autoChange)
+      }
+    }
+    checkAutoState()
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (popState === 0) {
+        setPopState(1)
+      }
+    }, 10000)
+  }, [popState])
+
   useEffect(() => {
     if (modiBool && deleteState.state === true && modiInfo === '') {
       fetchDeleteAccount()
@@ -567,13 +586,35 @@ export default function DoExchange({state, dispatch}) {
             <br />별 1개당 KRW 60으로 환전됩니다.
           </div>
         </div>
-        <button
-          className={`doExchangeWrap__star--button ${exchangeCalc.basicCash > 0 && 'active'}`}
-          onClick={() => {
-            fnExchangeCalc()
-          }}>
-          환전 계산하기
-        </button>
+        <div className="top__btn--wrap">
+          <button
+            className={`doExchangeWrap__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
+            onClick={() => {
+              fnExchangeCalc()
+            }}>
+            환전 계산하기
+          </button>
+          <button
+            className={`doExchangeWrap__star--button active`}
+            onClick={() => {
+              history.push('/exchange')
+            }}>
+            달 교환
+          </button>
+          <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
+            <p>
+              보유별을 “달”로 교환하시면<br></br> 아이템을 선물할 수 있습니다.
+            </p>
+            <button
+              className="close"
+              onClick={() => {
+                setPopState(1)
+              }}>
+              <img src={ic_close} alt="닫기" />
+            </button>
+          </div>
+        </div>
+
         {exchangeCalc.basicCash > 0 && <MakeCalcContents exchangeCalc={exchangeCalc} />}
         {exchangeHistory.exist && (
           <MakeRadioWrap
