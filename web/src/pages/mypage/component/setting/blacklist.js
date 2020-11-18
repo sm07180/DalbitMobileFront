@@ -40,17 +40,13 @@ export default () => {
   const {changes, setChanges, onChange} = useChange({onChange: -1})
 
   //state
-  const [blackState, setBlackState] = useState(-1)
-  const [userState, setUserState] = useState(-1)
+
   const [userList, setUserList] = useState([])
-  const [userTotalCount, setUserTotalCount] = useState(0)
   const [nextUserList, setNextUserList] = useState([])
+  const [userTotalCount, setUserTotalCount] = useState(0)
   const [blackList, setBlackList] = useState([])
   const [nextBlackList, setNextBlackList] = useState(false)
-  const [totalPageNumber, setTotalPageNumber] = useState(null)
-  const [page, setPage] = useState(1)
   const [tabState, setTabState] = useState(1)
-  const [totalBlackList, setTotalBlackList] = useState(0)
 
   let userTypeSetting = 0
 
@@ -67,7 +63,7 @@ export default () => {
     const {result, data, message} = await Api.mypage_black_list({
       params: {
         page: currentPage,
-        records: 100
+        records: 30
       }
     })
     if (result === 'success') {
@@ -84,7 +80,6 @@ export default () => {
         }
       } else {
         if (!next) {
-          setBlackState(0)
           setBlackList([])
         }
         moreState = false
@@ -130,7 +125,10 @@ export default () => {
       })
     }
   }
-  async function getSearchList(type, typeDetail) {
+
+  async function getSearchList(type, next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
     if (!_.hasIn(changes, 'search') || changes.search.length == 0)
       return context.action.alert({
         msg: `검색어를 입력해주세요.`
@@ -140,26 +138,29 @@ export default () => {
       userType: userTypeSetting,
       search: changes.search,
       searchType: 'blackList',
-      page: type == 'page' ? typeDetail : 1,
-      records: 100
+      page: next === 'next' ? currentPage : 1,
+      records: 30
     }
     const res = await Api.mypage_user_search({params})
-    if (res.result == 'success') {
-      if (res.data.list.length > 0) {
-        const {list, paging} = res.data
-        if (paging) {
-          const {totalPage, total} = paging
-          setUserTotalCount(total)
-          setTotalPageNumber(totalPage)
-          setUserState(1)
-          setUserList(list)
+    if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+      const {list, paging} = res.data
+      if (paging) {
+        const {totalPage, total} = paging
+        setUserTotalCount(total)
+      }
+      if (res.data.list.length === 0) {
+        if (!next) {
+          setUserList([])
         }
-        if (type == 'search') {
-          setPage(1)
-        }
+        moreState = false
       } else {
-        setUserState(0)
-        setUserList([])
+        if (next) {
+          moreState = true
+          setNextUserList(res.data.list)
+        } else {
+          setUserList(res.data.list)
+          getSearchList('search', 'next')
+        }
       }
     } else {
       context.action.alert({
@@ -323,6 +324,7 @@ export default () => {
     }
   }
   const tabChangeFunction = () => {
+    moreState = false
     currentPage = 1
     // getblackList()
     setblackValue('')
@@ -337,12 +339,12 @@ export default () => {
   }
   const showMoreList = () => {
     if (moreState) {
-      if (tabState === 0) {
-        setBlackList(blackList.concat(nextBlackList))
+      if (tabState === 1) {
         getblackList('next')
+        setBlackList(blackList.concat(nextBlackList))
       } else {
-        // setUserList(blackList.concat(setNextUserList));
-        // getSearchList("next");
+        getSearchList('search', 'next')
+        setUserList(userList.concat(nextUserList))
       }
     }
   }
@@ -359,11 +361,11 @@ export default () => {
       /*
        * @가속처리
        */
-      if (windowBottom >= docHeight - 200) {
+      if (windowBottom >= docHeight - 300 && (nextUserList.length !== 0 || nextBlackList.length !== 0)) {
         showMoreList()
       } else {
       }
-    }, 10)
+    }, 140)
   }
   useEffect(() => {
     //reload
@@ -371,7 +373,7 @@ export default () => {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [nextBlackList])
+  }, [nextBlackList, nextUserList])
   useEffect(() => {
     getblackList()
 

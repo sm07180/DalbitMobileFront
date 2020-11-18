@@ -66,10 +66,10 @@ export default (props) => {
               }
             }}>
             <div className="item-wrap">
-              <img src={item.itemThumbnail}></img>
               <p>달 {item.dalCnt}</p>
+              <img src={item.itemThumbnail}></img>
             </div>
-            <p className="item-name">{item.byeolCnt}</p>
+            <p className="item-name">{item.byeolCnt.toLocaleString()}별</p>
           </div>
         )
       })
@@ -112,9 +112,14 @@ export default (props) => {
       return (
         <>
           <List>{creatList()}</List>
-          <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            교환하기
-          </button>
+          <div className="btn-wrap">
+            <button onClick={chargeClick} className="charge-btn cancel">
+              취소
+            </button>
+            <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
+              교환하기
+            </button>
+          </div>
         </>
       )
     }
@@ -127,7 +132,9 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Content>
-      <p className="mydal">보유 별 {mydal.toLocaleString()}</p>
+      <p className="mydal">
+        보유 별 <span>{mydal.toLocaleString()}</span>
+      </p>
       {creatResult()}
     </Content>
   )
@@ -136,127 +143,81 @@ export default (props) => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
-  /* width: 1040px; */
   min-height: 300px;
   margin: 0 auto;
-  /* padding: 40px 0 120px 0; */
   width: 100%;
   padding: 10px 16px;
 
+  .btn-wrap {
+    display: flex;
+    margin-top: 16px;
+  }
   .charge-btn {
-    display: block;
-    width: 328px;
-    margin: 50px auto 0;
-    border-radius: 10px;
+    width: 49%;
+    margin: 0 auto;
+    border-radius: 12px;
     background: ${COLOR_MAIN};
     color: #fff;
-    line-height: 50px;
-    &:disabled {
-      background: #bdbdbd;
-      color: #fff;
+    line-height: 44px;
+    font-weight: bold;
+    &.cancel {
+      background: #757575;
     }
   }
 
   .mydal {
-    margin-bottom: 12px;
-    color: #424242;
-    font-size: 14px;
+    margin: 10px 0 8px 0;
+    color: #000;
+    font-size: 16px;
     font-weight: 600;
     line-height: 22px;
-    text-align: right;
     transform: skew(-0.03deg);
-    &:before {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: 2px;
-      padding-right: 5px;
-      vertical-align: top;
-      background: url(${starIcon}) no-repeat;
-      content: '';
-    }
-  }
-
-  .item-name {
-    &:before {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: -2px;
-      padding-right: 1px;
-      vertical-align: middle;
-      background: url(${starIcon}) no-repeat;
-      content: '';
-    }
-  }
-
-  @media (max-width: 1060px) {
-    /* width: 100%;
-    padding: 10px 0 0 0; */
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    h2 {
-      padding-bottom: 26px;
-      font-size: 24px;
-    }
-    .mydal {
-      font-size: 14px;
-      line-height: 24px;
-      transform: skew(-0.03deg);
-      &:before {
-        width: 24px;
-        height: 24px;
-        margin-top: -1px;
-        padding-right: 3px;
-        background-size: 24px;
-      }
-    }
-    .charge-btn {
-      width: 100%;
-      margin-top: 10px;
-      font-size: 14px;
-      line-height: 48px;
+    span {
+      color: #632beb;
+      font-weight: normal;
     }
   }
 `
 
 const List = styled.div`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
-  padding-top: 60px;
 
   .wrap {
-    width: 15%;
+    width: 32.4%;
+    margin-bottom: 13px;
     text-align: center;
     cursor: pointer;
+    background: #eeeeee;
+    &.on {
+      background: #632beb;
+      border-radius: 12px;
+    }
     & > p {
-      margin-top: 6px;
-      border-radius: 8px;
-      font-size: 18px;
-      color: #424242;
-      font-weight: 600;
-      line-height: 44px;
-      background: #fff;
+      padding: 6px 0 8px 0;
+      line-height: 18px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
     }
     &.on > p {
       color: #fff;
-      background: ${COLOR_POINT_Y};
     }
   }
   .item-wrap {
-    padding: 14px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #f5f5f5;
-    background: #f5f5f5;
+    background: #fff;
     img {
+      padding: 5px;
       width: 100%;
-      margin-bottom: 10px;
     }
     p {
-      color: #757575;
-      font-size: 14px;
+      padding-top: 8px;
+      line-height: 13px;
+      color: #000;
+      font-size: 12px;
       transform: skew(-0.03deg);
     }
     p + p {
@@ -265,37 +226,6 @@ const List = styled.div`
   }
 
   .on .item-wrap {
-    background: #fff;
-    border: 1px solid ${COLOR_POINT_Y};
-    p {
-      color: ${COLOR_POINT_Y};
-      font-weight: 600;
-    }
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-wrap: wrap;
-    padding-top: 0;
-    .wrap {
-      width: 32.4%;
-      margin-bottom: 16px;
-
-      & > p {
-        margin-top: 2px;
-        font-size: 14px;
-        line-height: 28px;
-        transform: skew(-0.03deg);
-      }
-    }
-    .item-wrap {
-      padding: 0 0 5px 0;
-      img {
-        width: calc(100% - 25px);
-        margin-bottom: 0px;
-      }
-      p {
-        font-size: 12px;
-      }
-    }
+    border: 1px solid #632beb;
   }
 `

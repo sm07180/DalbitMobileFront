@@ -56,6 +56,8 @@ export default () => {
     fetchEventAttendPhone()
   }
 
+  console.log(eventAttendState.winPhone)
+
   const intervalFormatter = (date) => {
     if (!date) return null
 
@@ -139,21 +141,11 @@ export default () => {
     if (itemNo === 1) {
       giftItem = '꽝'
     } else if (itemNo === 2) {
-      giftItem = '1달'
+      giftItem = '1달 당첨!'
     } else if (itemNo === 3) {
-      giftItem = '3달'
-    } else if (itemNo === 4) {
-      giftItem = '초코에몽'
-    } else if (itemNo === 5) {
-      giftItem = '편의점 상품권'
-    } else if (itemNo === 6) {
-      giftItem = '스타벅스 커피'
-    } else if (itemNo === 7) {
-      giftItem = '문화상품권'
-    } else if (itemNo === 8) {
-      giftItem = '교촌치킨'
+      giftItem = '3달 당첨!'
     } else {
-      giftItem = ''
+      giftItem = eventAttendState.start.itemWinMsg
     }
 
     return giftItem
@@ -171,23 +163,8 @@ export default () => {
     } else if (itemNo === 3) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_moon3@2x.png`
       return <img src={giftImage} width="88px" alt="3달" />
-    } else if (itemNo === 4) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift1@2x.png`
-      return <img src={giftImage} width="160px" className="con" alt="초코에몽" />
-    } else if (itemNo === 5) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift2@2x.png`
-      return <img src={giftImage} width="160px" className="con" alt="편의점 상품권" />
-    } else if (itemNo === 6) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift3@2x.png`
-      return <img src={giftImage} width="160px" className="con" alt="스타벅스 커피" />
-    } else if (itemNo === 7) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_gift4@2x.png`
-      return <img src={giftImage} width="160px" className="con" alt="문화상품권" />
-    } else if (itemNo === 8) {
-      giftImage = `${IMG_SERVER}/event/attend/201028/img_gift5@2x.png`
-      return <img src={giftImage} width="160px" className="con" alt="교촌치킨" />
     } else {
-      giftImage = ''
+      giftImage = <img src={eventAttendState.start.imageUrl} width="160px" alt={eventAttendState.start.itemName} />
     }
 
     return giftImage
@@ -196,7 +173,7 @@ export default () => {
   //----------------------------
 
   useEffect(() => {
-    intervalFormatter(eventAttendState.inputEndDate)
+    intervalFormatter(eventAttendState.start.inputEndDate)
   }, [])
 
   return (
@@ -208,7 +185,7 @@ export default () => {
           <>
             <div className="winInfo">
               <div className="winInfo__image">{gift_image()}</div>
-              {itemNo === 1 ? '' : <p className="winInfo__title">{gift_text()} 당첨!</p>}
+              {itemNo === 1 ? '' : <p className="winInfo__title">{gift_text()}</p>}
               {itemNo === 1 ? (
                 <p className="winInfo__content">
                   너무 미워하지 마세요.. <br /> 다음에는 꼭 당첨되기를!
@@ -231,7 +208,7 @@ export default () => {
         ) : (
           <>
             <div className="winInfo">
-              <p className="winInfo__title">{gift_text()} 당첨!</p>
+              <p className="winInfo__title">{gift_text()}</p>
               <div className="winInfo__image">{gift_image()}</div>
             </div>
 

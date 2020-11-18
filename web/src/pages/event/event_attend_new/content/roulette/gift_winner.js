@@ -117,9 +117,9 @@ export default () => {
 
           <table>
             <colgroup>
-              <col width="34%" />
+              <col width="35%" />
               <col width="24%" />
-              <col width="40%" />
+              <col width="39%" />
             </colgroup>
 
             <thead>
@@ -152,6 +152,26 @@ export default () => {
                       giftItem = '문화상품권'
                     } else if (itemNo === 8) {
                       giftItem = '교촌치킨 세트'
+                    } else if (itemNo === 14) {
+                      giftItem = '초코송이'
+                    } else if (itemNo === 15) {
+                      giftItem = '바리스타 모카'
+                    } else if (itemNo === 16) {
+                      giftItem = '베라 싱글'
+                    } else if (itemNo === 17) {
+                      giftItem = '버거킹 세트'
+                    } else if (itemNo === 18) {
+                      giftItem = '도미노 피자'
+                    } else if (itemNo === 24) {
+                      giftItem = '스니커즈'
+                    } else if (itemNo === 25) {
+                      giftItem = '빠바상품권'
+                    } else if (itemNo === 26) {
+                      giftItem = '이디야 플랫치노'
+                    } else if (itemNo === 27) {
+                      giftItem = '맘스터치 세트'
+                    } else if (itemNo === 28) {
+                      giftItem = '베라 D-BOX'
                     }
 
                     return giftItem
@@ -161,17 +181,35 @@ export default () => {
                     let giftItem
 
                     if (itemNo === 4) {
-                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_choco@2x.png" width="24px" />
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_1set_a@2x.png" width="24px" />
                     } else if (itemNo === 5) {
-                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_2000@2x.png" width="24px" />
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_1set_b@2x.png" width="24px" />
                     } else if (itemNo === 6) {
-                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_coffee@2x.png" width="24px" />
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_1set_c@2x.png" width="24px" />
                     } else if (itemNo === 7) {
-                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_10000@2x.png" width="24px" />
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_1set_d@2x.png" width="24px" />
                     } else if (itemNo === 8) {
-                      giftItem = (
-                        <img src="https://image.dalbitlive.com/event/attend/201019/ic_gift_chicken2@2x.png" width="24px" />
-                      )
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_1set_e@2x.png" width="24px" />
+                    } else if (itemNo === 14) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_2set_a@2x.png" width="24px" />
+                    } else if (itemNo === 15) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_2set_b@2x.png" width="24px" />
+                    } else if (itemNo === 16) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_2set_c@2x.png" width="24px" />
+                    } else if (itemNo === 17) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_2set_d@2x.png" width="24px" />
+                    } else if (itemNo === 18) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_2set_e@2x.png" width="24px" />
+                    } else if (itemNo === 24) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_3set_a@2x.png" width="24px" />
+                    } else if (itemNo === 25) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_3set_b@2x.png" width="24px" />
+                    } else if (itemNo === 26) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_3set_c@2x.png" width="24px" />
+                    } else if (itemNo === 27) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_3set_d@2x.png" width="24px" />
+                    } else if (itemNo === 28) {
+                      giftItem = <img src="https://image.dalbitlive.com/event/attend/201111/ic_gift_3set_e@2x.png" width="24px" />
                     }
 
                     return giftItem
