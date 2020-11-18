@@ -35,7 +35,6 @@ export default () => {
     if (!playListInfo) {
       //한곡만 재생할때 (푸쉬알람, 알람페이지, 클립 청취목록)
       //한곡만 조회할 수 없으므로 플레이 시 데이터를 필요한 것만 담아서 사용
-      
       const oneClipPlayList = JSON.parse(localStorage.getItem('oneClipPlayList'))
 
       if (oneClipPlayList) {
@@ -65,24 +64,13 @@ export default () => {
         }
       }
     } else if (playListInfo.hasOwnProperty('memNo')) {
-      if (playListInfo.hasOwnProperty('slctType')) {
-        //마이페이지 청취내역(좋아요, 선물)
-        const {result, data, message} = await Api.getHistoryList({...playListInfo})
-        if (result === 'success') {
-          playListCtx.action.updateList(data.list)
-          setTotalList(data.list.length)
-        } else {
-          globalCtx.action.alert({msg: message})
-        }
+      //마이페이지 업로드목록
+      const {result, data, message} = await Api.getUploadList({...playListInfo})
+      if (result === 'success') {
+        playListCtx.action.updateList(data.list)
+        setTotalList(data.list.length)
       } else {
-        //마이페이지 업로드목록
-        const {result, data, message} = await Api.getUploadList({...playListInfo})
-        if (result === 'success') {
-          playListCtx.action.updateList(data.list)
-          setTotalList(data.list.length)
-        } else {
-          globalCtx.action.alert({msg: message})
-        }
+        globalCtx.action.alert({msg: message})
       }
     } else {
       //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)

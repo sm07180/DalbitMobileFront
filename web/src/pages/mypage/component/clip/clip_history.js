@@ -44,47 +44,28 @@ export default function ClipHistory() {
       })
     }
   }
-
-  const getPageFormIdx = useCallback((idx) => {
-    if (idx < 100) return 1
-    idx = String(idx)
-    return Number(idx.substring(0, idx.length - 2)) + 1
-  }, [])
-
   // 플레이가공
-  const fetchDataPlay = async (clipNum, idx) => {
+  const fetchDataPlay = async (clipNum) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
-      if (historyTab === 0) {
-        localStorage.removeItem('clipPlayListInfo')
-        const oneClipPlayList = {
-          clipNo: data.clipNo,
-          bgImg: data.bgImg,
-          title: data.title,
-          nickName: data.nickName,
-          subjectType: data.subjectType,
-          isNew: data.isNew,
-          filePlayTime: data.filePlay,
-          isSpecial: data.isSpecial,
-          gender: data.gender,
-          replyCnt: data.replyCnt,
-          goodCnt: data.goodCnt,
-          playCnt: data.playCnt
-        }
-        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
-      } else {
-        const nowPage = getPageFormIdx(idx)
-        const playListInfoData = {
-          memNo: context.profile.memNo,
-          page: nowPage,
-          records: 100,
-          slctType: historyTab
-        }
-        localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
+      localStorage.removeItem('clipPlayListInfo')
+      const oneClipPlayList = {
+        clipNo: data.clipNo,
+        bgImg: data.bgImg,
+        title: data.title,
+        nickName: data.nickName,
+        subjectType: data.subjectType,
+        isNew: data.isNew,
+        filePlayTime: data.filePlay,
+        isSpecial: data.isSpecial,
+        gender: data.gender,
+        replyCnt: data.replyCnt,
+        goodCnt: data.goodCnt,
+        playCnt: data.playCnt
       }
-
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
       clipJoin(data, context, webview)
     } else {
       if (code === '-99') {
