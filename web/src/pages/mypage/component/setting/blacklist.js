@@ -47,7 +47,7 @@ export default () => {
   const [blackList, setBlackList] = useState([])
   const [nextBlackList, setNextBlackList] = useState(false)
   const [tabState, setTabState] = useState(1)
-
+  const [totalCnt, setTotalCnt] = useState(null)
   let userTypeSetting = 0
 
   const selectBoxData = [
@@ -70,6 +70,7 @@ export default () => {
       const {list, paging} = data
       if (data.list.length > 0) {
         if (paging) {
+          setTotalCnt(paging.total)
           if (next) {
             moreState = true
             setNextBlackList(list)
@@ -217,7 +218,7 @@ export default () => {
     return (
       <>
         <p className="titleCount">
-          차단회원<em>{blackList.length}</em>
+          차단회원<em>{totalCnt}</em>
         </p>
         {blackList.length > 0 ? (
           <ul className="list-item search">
