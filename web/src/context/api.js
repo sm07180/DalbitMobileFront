@@ -2817,6 +2817,23 @@ export default class API {
       params: params
     })
   }
+
+  static getDalAutoExchange = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/mypage/auto/change',
+      method: 'GET'
+    })
+  }
+
+  static postDalAutoExchange = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/mypage/auto/change',
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null
