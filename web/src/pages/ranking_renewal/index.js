@@ -507,7 +507,12 @@ function Ranking() {
             <div
               className="benefitSize"
               onClick={() => {
-                history.push('/rank/benefit')
+                history.push({
+                  pathname: `/rank/benefit`,
+                  state: {
+                    tabType: formState[PAGE_TYPE.RANKING].rankType
+                  }
+                })
               }}>
               <img src={benefitIcon} width={60} alt="혜택" />
             </div>
