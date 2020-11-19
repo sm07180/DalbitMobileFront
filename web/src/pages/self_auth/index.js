@@ -15,7 +15,7 @@ import Header from 'components/ui/new_header'
 
 let formTag
 
-export const openAuthPage = (formTagRef) => {
+export const openAuthPage = (formTagRef, context) => {
   var KMCIS_window
   var UserAgent = navigator.userAgent
   /* 모바일 접근 체크*/
@@ -47,7 +47,7 @@ export const openAuthPage = (formTagRef) => {
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef) => {
+export const authReq = async (code, formTagRef, context) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
@@ -68,7 +68,7 @@ export const authReq = async (code, formTagRef) => {
     Object.keys(res.data).forEach((key) => {
       authForm.append(makeHiddenInput(key, res.data[key]))
     })
-    openAuthPage(formTagRef)
+    openAuthPage(formTagRef, context)
   } else {
     context.action.alert({
       msg: res.message
@@ -81,7 +81,6 @@ export default (props) => {
   const location = useLocation()
 
   const {type, event} = qs.parse(location.search)
-  console.log(type, event)
 
   //---------------------------------------------------------------------
   //context
@@ -95,12 +94,12 @@ export default (props) => {
     if (event) {
       let url = event.split('/').join('DAL')
       url = url.split('_').join('BIT')
-      return authReq(url, formTag)
+      return authReq(url, formTag, context)
     }
     if (type === 'create') {
-      authReq('6', formTag)
+      authReq('6', formTag, context)
     } else {
-      authReq('4', formTag)
+      authReq('4', formTag, context)
     }
   }
 
