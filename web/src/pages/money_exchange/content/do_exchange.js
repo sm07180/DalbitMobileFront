@@ -586,7 +586,14 @@ export default function DoExchange({state, dispatch}) {
             <br />별 1개당 KRW 60으로 환전됩니다.
           </div>
         </div>
-        <div className="top__btn--wrap">
+        <button
+          className={`doExchangeWrap__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
+          onClick={() => {
+            fnExchangeCalc()
+          }}>
+          환전 계산하기
+        </button>
+        {/* <div className="top__btn--wrap">
           <button
             className={`doExchangeWrap__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
             onClick={() => {
@@ -613,7 +620,7 @@ export default function DoExchange({state, dispatch}) {
               <img src={ic_close} alt="닫기" />
             </button>
           </div>
-        </div>
+        </div> */}
 
         {exchangeCalc.basicCash > 0 && <MakeCalcContents exchangeCalc={exchangeCalc} />}
         {exchangeHistory.exist && (
