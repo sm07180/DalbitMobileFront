@@ -164,7 +164,7 @@ export default function ClipHistory() {
                         context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
                     } else {
-                      fetchDataPlay(clipNo)
+                      fetchDataPlay(clipNo, idx)
                     }
                   }}>
                   <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
