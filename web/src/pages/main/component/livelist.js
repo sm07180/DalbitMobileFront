@@ -66,7 +66,7 @@ const makeContents = (props) => {
           }
         }}>
         <div className="broadcast-img">
-          <img src={bjProfImg['thumb190x190']} className="thumb-dj" alt={bjNickNm} />
+          <img src={bjProfImg.thumb190x190} className="thumb-dj" alt={bjNickNm} />
           {gstProfImg.thumb190x190 && (
             <span className="thumb-guest">
               <img src={gstProfImg.thumb190x190} alt="게스트" />
