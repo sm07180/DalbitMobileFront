@@ -92,6 +92,7 @@ export default () => {
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
         <Route exact path="/mypage/:memNo" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
+        <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />

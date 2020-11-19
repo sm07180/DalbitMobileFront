@@ -5,7 +5,6 @@ import {useHistory} from 'react-router-dom'
 import closeBtn from './ic_back.svg'
 
 export default (props) => {
-  console.log(props)
   const history = useHistory()
 
   const goBack = () => {

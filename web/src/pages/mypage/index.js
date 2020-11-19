@@ -18,6 +18,7 @@ import Alert from './content/alert.js'
 import EditFan from './content/edit_fan'
 import EditStar from './content/edit_stars'
 import MyClip from './content/myclip'
+
 // static
 import MenuNoticeIcon from './static/menu_broadnotice.svg'
 import MenuFanBoardeIcon from './static/menu_fanboard.svg'
@@ -34,7 +35,7 @@ export default (props) => {
   const context = useContext(Context)
   const {token, profile} = context
 
-  let {memNo, category} = useParams()
+  let {memNo, category, addpage} = useParams()
 
   if (webview && webview === 'new') {
     sessionStorage.setItem('webview', 'new')
@@ -136,6 +137,7 @@ export default (props) => {
       {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
     ]
   }
+
   // memNo navi check
   if (profile && profile.memNo !== memNo) {
     navigationList = navigationList.slice(0, 3)
@@ -196,6 +198,7 @@ export default (props) => {
       settingProfileInfo(memNo)
     }
   }, [memNo, context.mypageFanCnt])
+
   useEffect(() => {
     context.action.updateUrlStr(memNo)
   }, [memNo])
@@ -212,11 +215,15 @@ export default (props) => {
   // }, [codes])
 
   // my MemNo vs Your check
+
   if (memNo === token.memNo && webview && webview !== 'new') {
     window.location.href = '/menu/profile?webview=' + webview
   }
   if (!profileInfo || !profile) {
-    return null
+    if (!token.isLogin) {
+      window.location.href = '/login'
+      return null
+    }
   }
   const profileCount = (idx) => {
     switch (idx) {
@@ -252,10 +259,6 @@ export default (props) => {
     }
   }
 
-  if (!token.isLogin) {
-    window.location.href = '/login'
-    return null
-  }
   // useEffect(() => {
   //   if (locationSearch && locationSearch.search === '?clip') {
   //     setTabSelected(2)
@@ -263,6 +266,7 @@ export default (props) => {
   //     return null
   //   }
   // }, [])
+
   return (
     <>
       {!token.isLogin && profile === null && <Redirect to={`/login`} />}
@@ -290,7 +294,7 @@ export default (props) => {
                     })}
                   </ul>
                   <div className="profile-tab__content" style={{paddingTop: mypageFixed ? '40px' : 0}}>
-                    {tabSelected === 0 && <Notice type="userprofile" />}
+                    {tabSelected === 0 && <Notice type="userprofile" tabSelected={tabSelected} />}
                     {tabSelected === 1 && <FanBoard isShowBtn={showWriteBtn} type="userprofile" />}
                     {tabSelected === 2 && <MyClip type="userprofile" />}
                   </div>
@@ -300,10 +304,18 @@ export default (props) => {
           ) : (
             <div ref={mypageRef} style={{display: 'none'}}></div>
           )}
+
           <Switch>
             {navigationList.map((value) => {
               const {type, component} = value
-              return <Route exact path={`/mypage/${memNo}/${type}`} component={component} key={type} />
+              return (
+                <Route
+                  exact
+                  path={addpage !== undefined ? `/mypage/:memNo/:category/:addpage` : `/mypage/:memNo/${type}`}
+                  component={component}
+                  key={type}
+                />
+              )
             })}
           </Switch>
         </div>
