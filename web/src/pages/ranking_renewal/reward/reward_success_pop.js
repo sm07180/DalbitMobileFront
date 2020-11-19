@@ -10,7 +10,7 @@ import RandomBoxPop from './reward_randombox_pop'
 
 //static
 import CloseBtn from '../static/ic_close.svg'
-import {RANK_TYPE} from '../constant'
+import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 export default (props) => {
   const {rankState, rankAction} = useContext(RankContext)
@@ -61,6 +61,13 @@ export default (props) => {
     }
   }, [])
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   return (
     <PopupWrap>
       <div className="content-wrap">
@@ -68,8 +75,10 @@ export default (props) => {
           <img src={CloseBtn} />
         </button>
         <div className="title-box">
-          {formState.rankType === RANK_TYPE.LIKE ? (
-            <p className="title">일간 좋아요 랭킹 {rewardPop.rank}위</p>
+          {formState[formState.pageType].rankType === RANK_TYPE.LIKE ? (
+            <p className="title">
+              {formState[formState.pageType].dateType === DATE_TYPE.DAY ? '일간' : '주간'} 좋아요 랭킹 {rewardPop.rank}위
+            </p>
           ) : (
             <p className="title">{rewardPop.text}가 되셨습니다.</p>
           )}
@@ -80,15 +89,36 @@ export default (props) => {
         </div>
 
         <div className="reward-content">
-          {formState.rankType === RANK_TYPE.LIKE ? (
+          {formState[formState.pageType].rankType === RANK_TYPE.LIKE ? (
             <>
               <div className="reward-like-box">
-                <div className="reward">
-                  <span>보상</span>
-                  <label className="badge-label right">
-                    <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
-                  </label>
-                </div>
+                {formState[formState.pageType].dateType === DATE_TYPE.DAY ? (
+                  <div className="reward">
+                    <span>보상</span>
+                    <label className="badge-label">
+                      <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 {rewardPop.rewardDal}
+                    </label>
+                  </div>
+                ) : (
+                  <div className="reward-badge">
+                    <label className="badge-label">
+                      {' '}
+                      <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={28} height={28} /> 달 {rewardPop.rewardDal}
+                    </label>{' '}
+                    <div className="top-badge-box">
+                      <span className="top-badge-title">TOP 배지</span>{' '}
+                      <label
+                        className="badge-label right"
+                        style={{
+                          background: `linear-gradient(to right, ${rewardPop.startColor}, ${rewardPop.endColor}`
+                        }}>
+                        <img src={rewardPop.icon} width={28} height={28} />
+                        <span>{rewardPop.text}</span>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
                 <p className="notice">
                   보상 내역은 <span>마이페이지 &gt; 내 지갑</span>에서
                   <br />
@@ -130,7 +160,7 @@ export default (props) => {
             </>
           )}
         </div>
-        {formState.rankType === RANK_TYPE.LIKE ? (
+        {formState[formState.pageType].rankType === RANK_TYPE.LIKE ? (
           <button onClick={() => closePopup()} className="btn-random-box">
             확인
           </button>
@@ -140,14 +170,22 @@ export default (props) => {
           </button>
         )}
 
-        {formState.rankType === RANK_TYPE.LIKE ? (
-          ''
-        ) : (
+        {formState[formState.pageType].rankType !== RANK_TYPE.LIKE ? (
           <ul className="notice-box">
-            <li>* Top 배지는 마이페이지, 프로필, 방송 채팅창에 표현됩니다.</li>
+            <li>* 랭킹 배지는 자동 지급 받으셨습니다.</li>
             <li>* 경험치 랜덤 박스 보상은 데이터 업데이트 전까지 받아야합니다.</li>
-            <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li>
+            {/* <li>* 경험치 랜덤 박스는 최하 50 EXP ~ 최대 500 EXP까지 보상을  받을 수 있습니다.</li> */}
           </ul>
+        ) : (
+          <>
+            {formState[formState.pageType].dateType === 1 ? (
+              ''
+            ) : (
+              <ul className="notice-box">
+                <li>* 랭킹 배지는 자동 지급 받으셨습니다.</li>
+              </ul>
+            )}
+          </>
         )}
       </div>
       {randomPopup && <RandomBoxPop setRandomPopup={setRandomPopup} setPopup={setPopup} />}
@@ -205,7 +243,7 @@ const PopupWrap = styled.div`
     .reward-content {
       position: relative;
       margin-bottom: 25px;
-      padding: 18px 25px 12px 25px;
+      padding: 18px 19px 12px 19px;
       border-radius: 20px;
       border: 1px solid #632beb;
 
@@ -310,6 +348,31 @@ const PopupWrap = styled.div`
             line-height: 34px;
             text-align: center;
             font-weight: 700;
+          }
+        }
+
+        .reward-badge {
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          justify-content: space-between;
+          height: 34px;
+          padding: 3px;
+
+          & > .badge-label {
+            display: flex;
+            align-items: center;
+            width: 34%;
+            padding: 3px;
+            margin-right: 4px;
+            background-color: #efefef;
+            border-radius: 20px;
+            font-size: 12px;
+            color: black;
+          }
+
+          & > .top-badge-box {
+            width: 73%;
           }
         }
 

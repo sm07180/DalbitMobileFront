@@ -1,16 +1,18 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 
 import './detail.scss'
 import Utility from 'components/lib/utility'
+import {Context} from "context";
 export default function Detail() {
   const history = useHistory()
 
   const noticeIdx = history.location.pathname.split('/')[3]
 
   const [noticeDetail, setNoticeDetail] = useState(false)
+  const context = useContext(Context)
 
   const fetchData = async function () {
     const res = await Api.notice_list_detail({
@@ -41,6 +43,10 @@ export default function Detail() {
     }
   }
 
+  const contentsClicked = (event) => {
+    Utility.contentClickEvent(event, context)
+  }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -69,7 +75,7 @@ export default function Detail() {
               <span>{noticeDetail.title}</span>
               <span>{detailDate()}</span>
             </div>
-            <div onClick={Utility.contentClickEvent} className="detail__content">
+            <div onClick={contentsClicked} className="detail__content">
               <p dangerouslySetInnerHTML={{__html: noticeDetail.contents}}></p>
             </div>
             {/* <button>목록보기</button> */}

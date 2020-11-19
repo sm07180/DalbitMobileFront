@@ -8,18 +8,42 @@ import Utility from 'components/lib/utility'
 import 'styles/layerpopup.scss'
 
 export default function LayerPopupAppDownLogin(props) {
+  const context = useContext(Context)
+
   const {appPopupState, setAppPopupState} = props
   const handleDimClick = () => {
     setAppPopupState(false)
-    Utility.setCookie('AppPopup')
+    Utility.setCookie('AppPopup', true, 9999)
   }
 
   const [osCheck, setOsCheck] = useState(-1)
   const customHeader = JSON.parse(Api.customHeader)
+  const AppDwonUrl = 'https://inforexseoul.page.link/Ws4t'
 
   useEffect(() => {
     setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
   }, [])
+
+  const appCheckDwon = () => {
+    window.location.href = 'https://inforexseoul.page.link/Ws4t'
+  }
+
+  const iosbutton = () => {
+    var userAgent = navigator.userAgent
+    var visitedAt = new Date().getTime()
+
+    if (userAgent.match(/iPhone|iPad|iPod/)) {
+      setTimeout(function () {
+        if (new Date().getTime() - visitedAt < 2000) {
+          location.href = 'https://itunes.apple.com/app/id1490208806'
+        }
+      }, 500)
+
+      setTimeout(function () {
+        location.href = 'https://inforexseoul.page.link/Ws4t'
+      }, 0)
+    }
+  }
 
   return (
     <>
@@ -48,8 +72,8 @@ export default function LayerPopupAppDownLogin(props) {
                 <button
                   className="androidIcon"
                   onClick={() => {
-                    ;(window.location.href = 'https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'),
-                      context.action.updatePopupVisible(false)
+                    appCheckDwon()
+                    context.action.updatePopupVisible(false)
                   }}>
                   달빛 라이브 어플 설치하기
                 </button>
@@ -57,9 +81,8 @@ export default function LayerPopupAppDownLogin(props) {
                 <button
                   className="iosIcon"
                   onClick={() => {
-                    ;(window.location.href =
-                      'https://apps.apple.com/kr/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806'),
-                      context.action.updatePopupVisible(false)
+                    iosbutton()
+                    context.action.updatePopupVisible(false)
                   }}>
                   달빛 라이브 어플 설치하기
                 </button>

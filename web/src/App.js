@@ -253,7 +253,9 @@ const App = () => {
     fetchSplash()
   }, [])
   function ErrorFallback({error, resetErrorBoundary}) {
-    if (error) {
+    if ('ChunkLoadError' === error.name) {
+      window.location.reload()
+    } else {
       Api.error_log({
         data: {
           os: 'mobile',
@@ -263,36 +265,36 @@ const App = () => {
           desc: error.name + '\n' + error.message + '\n' + error.stack
         }
       })
+
+      return (
+          <section id="error">
+            <button
+                className="closeButon"
+                onClick={() => {
+                  window.location.href = '/'
+                }}>
+              닫기
+            </button>
+
+            <div className="img"></div>
+
+            <p className="text">
+              해당 페이지 접속이 지연되고 있습니다.
+              <br/>
+              다시 시도해주세요
+            </p>
+
+            <div className="buttonWrap">
+              <button
+                  onClick={() => {
+                    window.location.href = '/'
+                  }}>
+                확인
+              </button>
+            </div>
+          </section>
+      )
     }
-
-    return (
-      <section id="error">
-        <button
-          className="closeButon"
-          onClick={() => {
-            window.location.href = '/'
-          }}>
-          닫기
-        </button>
-
-        <div className="img"></div>
-
-        <p className="text">
-          해당 페이지 접속이 지연되고 있습니다.
-          <br />
-          다시 시도해주세요
-        </p>
-
-        <div className="buttonWrap">
-          <button
-            onClick={() => {
-              window.location.href = '/'
-            }}>
-            확인
-          </button>
-        </div>
-      </section>
-    )
   }
 
   return (

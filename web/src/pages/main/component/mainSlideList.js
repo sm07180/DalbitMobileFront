@@ -1,15 +1,18 @@
 import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-
+import Api from 'context/api'
 import {Context} from 'context'
 import Swiper from 'react-id-swiper'
 
 import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
+import {OS_TYPE} from 'context/config.js'
+import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
 
 export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
+  const customHeader = JSON.parse(Api.customHeader)
   const {list} = props
 
   const swiperParams = {
@@ -30,36 +33,69 @@ export default (props) => {
         {list instanceof Array &&
           list.map((bannerData, index) => {
             const {bannerUrl, profImg, isAdmin, isNew, isSpecial, nickNm, roomNo, roomType, title, liveBadgeList} = bannerData
-
+            let bgImgUrl = bannerUrl
+            // if (nickNm !== 'banner' && !bgImgUrl.toLowerCase().endsWith(".gif")) {
+            //   bgImgUrl += "?700x700"
+            // }
             return (
               <div
                 key={index}
                 onClick={() => {
                   if (roomNo && roomNo !== undefined) {
                     if (nickNm === 'banner') {
+                      const clipUrl = /\/clip\/[0-9]*$/
                       if (roomType === 'link') {
                         context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
+                        } else if(clipUrl.test(roomNo)){
+                          if(isHybrid()){
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                            clipJoinApi(clip_no, context)
+                          }else{
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
                         } else {
                           history.push(`${roomNo}`)
                         }
                       } else {
                         if (isHybrid()) {
-                          Hybrid('openUrl', `${roomNo}`)
+                          if(clipUrl.test(roomNo)){
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                            clipJoinApi(clip_no, context)
+                          } else {
+                            Hybrid('openUrl', `${roomNo}`)
+                          }
                         } else {
-                          window.open(`${roomNo}`)
+                          if(clipUrl.test(roomNo)){
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          } else {
+                            window.open(`${roomNo}`)
+                          }
                         }
                       }
                     } else {
-                      RoomJoin({roomNo: roomNo})
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        if (context.token.isLogin === false) {
+                          context.action.alert({
+                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                            callback: () => {
+                              history.push('/login')
+                            }
+                          })
+                        } else {
+                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                        }
+                      } else {
+                        RoomJoin({roomNo: roomNo})
+                      }
                     }
                   }
                 }}>
                 <div
                   className={`topSlide__bg ${nickNm !== 'banner' && `broadcast`}`}
                   style={{
-                    backgroundImage: `url("${bannerUrl}")`
+                    backgroundImage: `url("${bgImgUrl}")`
                   }}>
                   <div className="topSlide__iconWrap">
                     <div className="iconWrapper">

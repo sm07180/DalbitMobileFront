@@ -26,8 +26,8 @@ export default (props) => {
   async function fetchEventAttendCheck() {
     const {result, data} = await API.getEventAttendCheck()
     if (result === 'success') {
-      const {attendanceCheck} = data
-      setAttendCheck(attendanceCheck)
+      const {userEventCheck} = data
+      setAttendCheck(userEventCheck)
     } else {
       //실패
     }
@@ -44,7 +44,7 @@ export default (props) => {
   }
 
   const attendStampState = () => {
-    if (token.isLogin && attendCheck === 1) {
+    if (token.isLogin && attendCheck === 0) {
       if (globalCtx.attendStamp === true) {
         return (
           <AttendStamp
@@ -54,14 +54,14 @@ export default (props) => {
                 fbq('track', 'attend_event')
                 firebase.analytics().logEvent('attend_event')
               } catch (e) {}
-              history.push('/attend_event')
+              history.push('/event/attend_event')
             }}
           />
         )
       } else {
         return null
       }
-    } else if (token.isLogin && attendCheck === 2) {
+    } else if (token.isLogin && attendCheck === 1) {
       if (globalCtx.attendStamp === true) {
         return (
           <AttendStampActive
@@ -71,7 +71,7 @@ export default (props) => {
                 fbq('track', 'attend_event')
                 firebase.analytics().logEvent('attend_event')
               } catch (e) {}
-              history.push('/attend_event')
+              history.push('/event/attend_event')
             }}>
             <Lottie
               options={{
@@ -81,6 +81,23 @@ export default (props) => {
               }}
             />
           </AttendStampActive>
+        )
+      } else {
+        return null
+      }
+    } else if (token.isLogin && attendCheck === 2) {
+      if (globalCtx.attendStamp === true) {
+        return (
+          <RouletteStampActive
+            logoChange={logoChange}
+            onClick={() => {
+              try {
+                fbq('track', 'attend_event')
+                firebase.analytics().logEvent('attend_event')
+              } catch (e) {}
+              history.push('/event/attend_event/roulette')
+            }}
+          />
         )
       } else {
         return null
@@ -126,6 +143,16 @@ const AttendStampActive = styled.button`
   display: ${(props) => (props.logoChange ? 'block' : 'none')};
   width: 48px;
   height: 48px;
+`
+
+const RouletteStampActive = styled.button`
+  display: ${(props) => (props.logoChange ? 'block' : 'none')};
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-image: url('https://image.dalbitlive.com/event/attend/201028/roulette.gif');
 `
 
 const TopScrollBtn = styled.button`

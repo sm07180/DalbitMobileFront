@@ -1,15 +1,17 @@
 import React, {useContext} from 'react'
 import {RankContext} from 'context/rank_ctx'
 
-import Swiper from 'react-id-swiper'
-import {RANK_TYPE} from '../constant'
+import {RANK_TYPE, PAGE_TYPE} from '../constant'
 
 const btnArray = [
   {val: RANK_TYPE.DJ, text: 'DJ'},
   {val: RANK_TYPE.FAN, text: '팬'},
-  {val: RANK_TYPE.LIKE, text: '좋아요'},
-  {val: RANK_TYPE.LEVEL, text: '레벨'},
-  {val: RANK_TYPE.SPECIAL, text: '스페셜DJ', isSpecial: true}
+  {val: RANK_TYPE.LIKE, text: '좋아요'}
+]
+
+const fameArray = [
+  {val: RANK_TYPE.SPECIAL, text: '스페셜DJ', isSpecial: true},
+  {val: RANK_TYPE.LEVEL, text: '레벨'}
 ]
 export default function RankBtnWrap({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)
@@ -18,84 +20,58 @@ export default function RankBtnWrap({fetching}) {
 
   const formDispatch = rankAction.formDispatch
 
-  const swiperParams = {
-    // loop: true,
-    // spaceBetween: 20,
-    slidesPerView: 'auto',
-    rebuildOnUpdate: true
-  }
-
   const syncScroll = () => {
     window.scrollTo(0, 0)
   }
 
   return (
     <div className="rankTab">
-      {/* {btnArray.map((v, idx) => {
-        return (
-          <button
-            key={idx}
-            className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-            onClick={async () => {
-              if (!fetching) {
-                if (formState.rankType !== v.val) {
-                  await syncScroll()
-                  formDispatch({
-                    type: 'RANK_TYPE',
-                    val: v.val
-                  })
-                }
-              }
-            }}>
-            {v.text}
-          </button>
-        )
-      })} */}
-      {btnArray.length > 0 && (
-        <Swiper {...swiperParams}>
+      {formState.pageType === PAGE_TYPE.RANKING ? (
+        <>
           {btnArray.map((v, idx) => {
             return (
-              <div key={idx}>
-                {v.isSpecial === true ? (
-                  <button
-                    className={
-                      formState.rankType === v.val ? 'rankTab__specialBtn rankTab__specialBtn--active' : 'rankTab__specialBtn'
+              <button
+                key={idx}
+                className={formState[PAGE_TYPE.RANKING].rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                onClick={async () => {
+                  if (!fetching) {
+                    if (formState[PAGE_TYPE.RANKING].rankType !== v.val) {
+                      await syncScroll()
+                      formDispatch({
+                        type: 'RANK_TYPE',
+                        val: v.val
+                      })
                     }
-                    onClick={async () => {
-                      if (!fetching) {
-                        if (formState.rankType !== v.val) {
-                          await syncScroll()
-                          formDispatch({
-                            type: 'RANK_TYPE',
-                            val: 5
-                          })
-                        }
-                      }
-                    }}>
-                    스페셜DJ
-                  </button>
-                ) : (
-                  <button
-                    key={idx}
-                    className={formState.rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
-                    onClick={async () => {
-                      if (!fetching) {
-                        if (formState.rankType !== v.val) {
-                          await syncScroll()
-                          formDispatch({
-                            type: 'RANK_TYPE',
-                            val: v.val
-                          })
-                        }
-                      }
-                    }}>
-                    {v.text}
-                  </button>
-                )}
-              </div>
+                  }
+                }}>
+                {v.text}
+              </button>
             )
           })}
-        </Swiper>
+        </>
+      ) : (
+        <>
+          {fameArray.map((v, idx) => {
+            return (
+              <button
+                key={idx}
+                className={formState[PAGE_TYPE.FAME].rankType === v.val ? 'rankTab__btn rankTab__btn--active' : 'rankTab__btn'}
+                onClick={async () => {
+                  if (!fetching) {
+                    if (formState[PAGE_TYPE.FAME].rankType !== v.val) {
+                      await syncScroll()
+                      formDispatch({
+                        type: 'RANK_TYPE',
+                        val: v.val
+                      })
+                    }
+                  }
+                }}>
+                {v.text}
+              </button>
+            )
+          })}
+        </>
       )}
     </div>
   )

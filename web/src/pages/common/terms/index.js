@@ -18,8 +18,6 @@ import Operating from './content/operating'
 import Maketing from './content/maketing'
 import EventDetail from './content/event_detail'
 import EventGiftDetail from './content/event_gift_detail'
-import SpecialDjGoodsDetail from './content/specialdj-goods-detail'
-import SpecialdjStarting from './content/specialdj-starting'
 
 import './index.scss'
 ////---------------------------------------------------------------------
@@ -47,12 +45,6 @@ export default (props) => {
       }
       case 'event-gift-detail': {
         return <EventGiftDetail {...props} />
-      }
-      case 'specialdj-goods-detail': {
-        return <SpecialDjGoodsDetail {...props} />
-      }
-      case 'specialdj-starting': {
-        return <SpecialdjStarting {...props} />
       }
 
       default:

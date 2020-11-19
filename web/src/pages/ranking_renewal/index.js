@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useCallback, useRef} from 'react'
+import React, {useState, useEffect, useContext, useCallback, useRef, useMemo} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertSetSpecialDate} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth, convertDateToText} from './lib/common_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -23,17 +23,20 @@ import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
 import NoResult from 'components/ui/new_noResult'
 //constant
-import {DATE_TYPE, RANK_TYPE} from './constant'
+import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
 
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 import './index.scss'
 import level from 'pages/level'
 
 import benefitIcon from './static/benefit@3x.png'
+import hallOfFameIcon from './static/ic_fame.svg'
+import rankingPageIcon from './static/ic_ranking_page.svg'
 
 let timer
 let touchStartY = null
 let touchEndY = null
+let initial = true
 const records = 50
 function Ranking() {
   const history = useHistory()
@@ -64,13 +67,7 @@ function Ranking() {
 
   const rankTouchStart = useCallback(
     (e) => {
-      if (
-        reloadInit === true ||
-        window.scrollY !== 0 ||
-        formState.rankType === RANK_TYPE.LEVEL ||
-        formState.rankType === RANK_TYPE.SPECIAL
-      )
-        return
+      if (reloadInit === true || window.scrollY !== 0 || formState.pageType === PAGE_TYPE.FAME) return
       touchStartY = e.touches[0].clientY
     },
     [reloadInit, formState]
@@ -78,25 +75,20 @@ function Ranking() {
 
   const rankTouchMove = useCallback(
     (e) => {
-      if (
-        reloadInit === true ||
-        window.scrollY !== 0 ||
-        formState.rankType === RANK_TYPE.LEVEL ||
-        formState.rankType === RANK_TYPE.SPECIAL
-      )
-        return
+      if (reloadInit === true || window.scrollY !== 0 || formState.pageType === PAGE_TYPE.FAME) return
       const iconWrapNode = iconWrapRef.current
       const refreshIconNode = arrowRefreshRef.current
 
       touchEndY = e.touches[0].clientY
       const ratio = 3
       const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 50
+      const heightDiffFixed = 80
 
       if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        iconWrapRef.current.style.display = 'block'
-        iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-        refreshIconNode.style.transform = `rotate(${heightDiff}deg)`
+        if (heightDiff <= heightDiffFixed) {
+          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+        }
       }
     },
     [reloadInit, formState]
@@ -104,7 +96,7 @@ function Ranking() {
 
   const rankTouchEnd = useCallback(
     async (e) => {
-      if (reloadInit === true || formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.SPECIAL) return
+      if (reloadInit === true || formState.pageType === PAGE_TYPE.FAME) return
 
       const ratio = 3
       const transitionTime = 150
@@ -112,19 +104,19 @@ function Ranking() {
       const refreshIconNode = arrowRefreshRef.current
 
       const heightDiff = (touchEndY - touchStartY) / ratio
-
-      if (heightDiff >= 100) {
+      const heightDiffFixed = 80
+      if (heightDiff >= heightDiffFixed) {
         let current_angle = (() => {
           const str_angle = refreshIconNode.style.transform
           let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 4)
+          let tail_slice = head_slice.slice(0, 3)
           return Number(tail_slice)
         })()
 
         if (typeof current_angle === 'number') {
           setReloadInit(true)
           iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight}px`
+          iconWrapNode.style.height = `${refreshDefaultHeight + 80}px`
 
           const loadIntervalId = setInterval(() => {
             if (Math.abs(current_angle) === 360) {
@@ -134,11 +126,7 @@ function Ranking() {
             refreshIconNode.style.transform = `rotate(${current_angle}deg)`
           }, 17)
 
-          if (
-            formState.rankType === RANK_TYPE.DJ ||
-            formState.rankType === RANK_TYPE.FAN ||
-            formState.rankType === RANK_TYPE.LIKE
-          ) {
+          if (formState.pageType === PAGE_TYPE.RANKING) {
             formDispatch({
               type: 'INIT'
             })
@@ -158,7 +146,6 @@ function Ranking() {
 
       await promiseSync()
       iconWrapNode.style.transitionDuration = '0ms'
-      iconWrapNode.style.display = 'none'
       refreshIconNode.style.transform = 'rotate(0)'
       touchStartY = null
       touchEndY = null
@@ -169,6 +156,14 @@ function Ranking() {
   const promise = new Promise(function (resolve, reject) {
     return resolve()
   })
+
+  const realTimeCheck = useMemo(() => {
+    if (convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)) {
+      return true
+    } else {
+      return false
+    }
+  }, [formState])
 
   useEffect(() => {
     if (scrollY > 0) {
@@ -185,7 +180,10 @@ function Ranking() {
         }
 
         if (listWrapRef.current) {
-          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+          if (
+            formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+            formState[formState.pageType].rankType === RANK_TYPE.FAN
+          ) {
             if (context.token.isLogin) {
               if (listWrapRef.current.classList.length === 1) {
                 listWrapRef.current.className = 'listFixed more'
@@ -195,7 +193,7 @@ function Ranking() {
                 listWrapRef.current.className = 'listFixed'
               }
             }
-          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+          } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
           } else {
             listWrapRef.current.className = 'listFixed other'
@@ -204,13 +202,16 @@ function Ranking() {
       } else {
         fixedWrapRef.current.className = ''
         if (listWrapRef.current) {
-          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+          if (
+            formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+            formState[formState.pageType].rankType === RANK_TYPE.FAN
+          ) {
             if (context.token.isLogin) {
               listWrapRef.current.className = 'more'
             } else {
               listWrapRef.current.className = ''
             }
-          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+          } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'special'
           } else {
             listWrapRef.current.className = 'other'
@@ -218,18 +219,49 @@ function Ranking() {
         }
       }
     }
+
+    return () => {
+      initial = true
+    }
   }, [])
 
   useEffect(() => {
     let didFetch = false
-    if (formState.rankType !== RANK_TYPE.SPECIAL) {
-      fetchData()
+    let search = location.search
+
+    if (initial && search) {
+      const searchRankType = parseInt(search.match(/[1-9]/g)[0])
+      const searchDateType = parseInt(search.match(/[1-9]/g)[1])
+      let searchCurrentDate = new Date()
+
+      if (searchDateType === DATE_TYPE.WEEK) {
+        searchCurrentDate = convertMonday()
+      } else if (searchDateType === DATE_TYPE.MONTH) {
+        searchCurrentDate = convertMonth()
+      }
+
+      // 초기화.
+      initial = false
+
+      formDispatch({
+        type: 'SEARCH',
+        val: {
+          rankType: searchRankType,
+          dateType: searchDateType,
+          currentDate: searchCurrentDate
+        }
+      })
     } else {
-      fetchSpecial()
+      if (formState[formState.pageType].rankType !== RANK_TYPE.SPECIAL) {
+        fetchData()
+      } else {
+        fetchSpecial()
+      }
     }
+
     async function fetchSpecial() {
       setFetching(true)
-      const dateObj = convertSetSpecialDate(formState.currentDate)
+      const dateObj = convertSetSpecialDate(formState[formState.pageType].currentDate)
       const res = await Api.getSpecialDjHistory({
         yy: dateObj.year,
         mm: dateObj.month
@@ -249,7 +281,7 @@ function Ranking() {
 
     async function fetchData() {
       if (!didFetch) {
-        if (formState.rankType === RANK_TYPE.LEVEL) {
+        if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
           if (levelList.length > 0) {
             if (formState.page > 1) {
               const length = (formState.page - 1) * records
@@ -258,7 +290,8 @@ function Ranking() {
               }
             }
           }
-        } else if (formState.rankType === RANK_TYPE.LIKE) {
+        }
+        if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
           if (likeList.length > 0) {
             if (formState.page > 1) {
               const length = (formState.page - 1) * records
@@ -277,20 +310,21 @@ function Ranking() {
             }
           }
         }
+
         setFetching(true)
-        const formatDate = convertDateFormat(formState.currentDate, '-')
+        const formatDate = convertDateFormat(formState[formState.pageType].currentDate, '-')
 
         const res = await Api.getRankList({
-          rankSlct: formState.rankType,
-          rankType: formState.dateType,
+          rankSlct: formState[formState.pageType].rankType,
+          rankType: formState[formState.pageType].dateType,
           page: formState.page,
           records: records,
           rankingDate: formatDate,
-          type: formState.rankType === RANK_TYPE.LEVEL ? 'level' : 'page'
+          type: formState[formState.pageType].rankType === RANK_TYPE.LEVEL ? 'level' : 'page'
         })
         if (res.result === 'success' && res.data.list instanceof Array) {
           if (res.data.list.length > 0) {
-            if (formState.rankType === RANK_TYPE.LEVEL) {
+            if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
               // level
               if (formState.page > 1) {
                 setLevelList(levelList.concat(res.data.list))
@@ -358,14 +392,13 @@ function Ranking() {
 
         if (bottomWrapRef.current) {
           // bottomWrapRef.current.className = 'bottom'
-          if (formState.rankType === RANK_TYPE.SPECIAL) {
+          if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             bottomWrapRef.current.style.marginTop = '104px'
           }
-
-          if (formState.rankType === RANK_TYPE.LIKE) {
+          if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
             bottomWrapRef.current.style.marginTop = '140px'
           }
-          if (formState.rankType === RANK_TYPE.LEVEL) {
+          if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
             bottomWrapRef.current.style.marginTop = '48px'
           } else {
             if (TopRef.current) {
@@ -374,7 +407,10 @@ function Ranking() {
           }
         }
         if (listWrapRef.current) {
-          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+          if (
+            formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+            formState[formState.pageType].rankType === RANK_TYPE.FAN
+          ) {
             if (context.token.isLogin) {
               listWrapRef.current.className = 'listFixed more'
             } else {
@@ -382,7 +418,7 @@ function Ranking() {
             }
             // if (TopRef.current) console.log()
             // listWrapRef.current.style.marginTop = 190 + TopRef.current.offsetHeight + 'px'
-          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+          } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'listFixed special'
           } else {
             listWrapRef.current.className = 'listFixed other'
@@ -393,13 +429,16 @@ function Ranking() {
         bottomWrapRef.current.className = ''
         bottomWrapRef.current.style.marginTop = '0'
         if (listWrapRef.current) {
-          if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+          if (
+            formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+            formState[formState.pageType].rankType === RANK_TYPE.FAN
+          ) {
             if (context.token.isLogin) {
               listWrapRef.current.className = 'more'
             } else {
               listWrapRef.current.className = ''
             }
-          } else if (formState.rankType === RANK_TYPE.SPECIAL) {
+          } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             listWrapRef.current.className = 'special'
           } else {
             listWrapRef.current.className = 'other'
@@ -416,17 +455,25 @@ function Ranking() {
           if (!fetching) {
             if (!didFetch) {
               if (totalPage > formState.page) {
-                if (formState.rankType === RANK_TYPE.DJ || formState.rankType === RANK_TYPE.FAN) {
+                if (
+                  formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+                  formState[formState.pageType].rankType === RANK_TYPE.FAN
+                ) {
                   if (
-                    (formState.page < 20 && (formState.dateType === DATE_TYPE.DAY || formState.dateType === DATE_TYPE.WEEK)) ||
-                    (formState.page < 40 && formState.dateType === DATE_TYPE.MONTH) ||
-                    (formState.page < 60 && formState.dateType === DATE_TYPE.YEAR)
+                    (formState.page < 20 &&
+                      (formState[formState.pageType].dateType === DATE_TYPE.DAY ||
+                        formState[formState.pageType].dateType === DATE_TYPE.WEEK)) ||
+                    (formState.page < 40 && formState[formState.pageType].dateType === DATE_TYPE.MONTH) ||
+                    (formState.page < 60 && formState[formState.pageType].dateType === DATE_TYPE.YEAR)
                   ) {
                     formDispatch({
                       type: 'PAGE'
                     })
                   }
-                } else if (formState.rankType === RANK_TYPE.LEVEL || formState.rankType === RANK_TYPE.LIKE) {
+                } else if (
+                  formState[formState.pageType].rankType === RANK_TYPE.LEVEL ||
+                  formState[formState.pageType].rankType === RANK_TYPE.LIKE
+                ) {
                   if (formState.page < 4) {
                     formDispatch({
                       type: 'PAGE'
@@ -455,16 +502,46 @@ function Ranking() {
     <Layout status={'no_gnb'}>
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
         <Header type="noBack">
-          <h2 className="header-title">랭킹</h2>
-          <div
-            className="benefitSize"
-            onClick={() => {
-              history.push('/rank/benefit')
-            }}>
-            <img src={benefitIcon} width={60} alt="혜택" />
-          </div>
+          <h2 className="header-title">{formState.pageType === PAGE_TYPE.RANKING ? '랭킹' : '명예의 전당'}</h2>
+          {formState.pageType === PAGE_TYPE.RANKING && (
+            <div
+              className="benefitSize"
+              onClick={() => {
+                history.push({
+                  pathname: `/rank/benefit`,
+                  state: {
+                    tabType: formState[PAGE_TYPE.RANKING].rankType
+                  }
+                })
+              }}>
+              <img src={benefitIcon} width={60} alt="혜택" />
+            </div>
+          )}
+          {formState.pageType === PAGE_TYPE.RANKING ? (
+            <div
+              className="hallOfFame"
+              onClick={() => {
+                formDispatch({
+                  type: 'PAGE_TYPE',
+                  val: PAGE_TYPE.FAME
+                })
+              }}>
+              <img src={hallOfFameIcon}></img>
+            </div>
+          ) : (
+            <div
+              className="hallOfFame"
+              onClick={() => {
+                formDispatch({
+                  type: 'PAGE_TYPE',
+                  val: PAGE_TYPE.RANKING
+                })
+              }}>
+              <img src={rankingPageIcon}></img>
+            </div>
+          )}
         </Header>
-        <div className="refresh-wrap" ref={iconWrapRef}>
+        <div className="refresh-wrap rank" ref={iconWrapRef}>
           <div className="icon-wrap">
             <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
@@ -472,39 +549,41 @@ function Ranking() {
         <div ref={fixedWrapRef}>
           <div className="rankTopBox">
             <RankBtnWrap fetching={fetching} />
-            {/* <div className="rankTopBox__update">{formState.rankType !== 3 && formState.rankType !== 4 && `${realTime()}`}</div> */}
+            {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
           </div>
-          {(formState.rankType === RANK_TYPE.DJ ||
-            formState.rankType === RANK_TYPE.FAN ||
-            formState.rankType === RANK_TYPE.LIKE) && (
+          {formState.pageType === PAGE_TYPE.RANKING && (
             <>
               <RankDateBtn fetching={fetching} />
               <RankHandleDateBtn fetching={fetching} />
             </>
           )}
-          {formState.rankType === RANK_TYPE.SPECIAL && <SpecialHistoryHandle fetching={fetching} />}
+          {formState.pageType === PAGE_TYPE.FAME && formState[formState.pageType].rankType === RANK_TYPE.SPECIAL && (
+            <SpecialHistoryHandle fetching={fetching} />
+          )}
         </div>
 
-        {(formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
+        {(formState[formState.pageType].rankType === RANK_TYPE.FAN ||
+          formState[formState.pageType].rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef}>
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className="rankTop3Box" ref={TopRef}>
+              <div className={`rankTop3Box ${realTimeCheck ? 'realTime' : ''}`} ref={TopRef}>
                 <MyProfile fetching={fetching} />
-
-                <RankListTop />
+                {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
+                  <RankListTop />
+                )}
               </div>
             )}
           </div>
         )}
 
-        {formState.rankType === RANK_TYPE.LEVEL && (
+        {formState[formState.pageType].rankType === RANK_TYPE.LEVEL && (
           <div ref={bottomWrapRef} className="other">
             <LevelListWrap empty={empty} />
           </div>
         )}
-        {formState.rankType === RANK_TYPE.LIKE && (
+        {formState[formState.pageType].rankType === RANK_TYPE.LIKE && (
           <div ref={bottomWrapRef} className="other">
             <LikeListWrap empty={empty} />
           </div>
@@ -512,13 +591,14 @@ function Ranking() {
 
         {empty === true
           ? ''
-          : (formState.rankType === RANK_TYPE.FAN || formState.rankType === RANK_TYPE.DJ) && (
+          : (formState[formState.pageType].rankType === RANK_TYPE.FAN ||
+              formState[formState.pageType].rankType === RANK_TYPE.DJ) && (
               <div ref={bottomWrapRef}>
                 <RankListWrap empty={empty} />
               </div>
             )}
 
-        {formState.rankType === RANK_TYPE.SPECIAL && (
+        {formState[formState.pageType].rankType === RANK_TYPE.SPECIAL && (
           <div ref={bottomWrapRef} className="special">
             <SpecialListWrap empty={empty} fetching={fetching} />
           </div>

@@ -268,6 +268,10 @@ export default function Detail(props) {
     })
   }
 
+  const contentsClicked = (event) => {
+    Utility.contentClickEvent(event, context)
+  }
+
   useEffect(() => {
     if (content !== '') {
       setDelicate(true)
@@ -338,7 +342,7 @@ export default function Detail(props) {
                   </div>
                   <p
                     dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}}
-                    onClick={Utility.contentClickEvent}></p>
+                    onClick={contentsClicked}></p>
                 </div>
               )}
             </div>

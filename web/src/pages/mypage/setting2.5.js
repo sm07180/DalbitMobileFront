@@ -24,7 +24,7 @@ export default (props) => {
   const [gender, setGender] = useState(null)
   const [profileMsg, setProfileMsg] = useState('')
   const [photoPath, setPhotoPath] = useState('')
-  const [tempPhoto, setTempPhoto] = useState(null)
+  const [tempPhoto, setTempPhoto] = useState(editImage)
   const [phone, setPhone] = useState('')
   const [authState, setAuthState] = useState(true)
   const [photoUploading, setPhotoUploading] = useState(false)
@@ -118,19 +118,21 @@ export default (props) => {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-          context.action.updateTempImage(originalCacheURL)
-          context.action.updateEditImage(originalCacheURL)
-          history.push('/ImageEditor')
+          // context.action.updateTempImage(originalCacheURL)
+          // context.action.updateEditImage(originalCacheURL)
+          history.push('/ImageEditor', {
+            src: originalCacheURL
+          })
         }
       }
     }
   }
   // 이미지 editor 후 upload
   const uploadImage = useCallback(() => {
-    if (editImage && tempImage !== editImage) {
+    if (editImage) {
+      console.log('upload')
       setPhotoUploading(true)
       setActive(false)
-      setTempPhoto(editImage)
       uploadImageToServer(editImage)
       async function uploadImageToServer(data) {
         const res = await Api.image_upload({
@@ -140,13 +142,30 @@ export default (props) => {
           }
         })
         if (res.result === 'success') {
-          context.action.toast({
-            msg: '업로드성공'
-          })
-          setPhotoPath(res.data.path)
-          setPhotoUploading(false)
-          setActive(true)
-          context.action.updateEditImage('')
+          const data = {
+            gender: gender || profile.gender,
+            nickNm: nickname || profile.nickNm,
+            birth: profile.birth,
+            profMsg: profileMsg || profile.profMsg,
+            profImg: res.data.path
+          }
+          console.log(data)
+          const res2 = await Api.profile_edit({data})
+
+          if (res2.result === 'success') {
+            context.action.toast({
+              msg: '프로필 이미지 업로드 성공'
+            })
+            setPhotoPath(res.data.path)
+            setPhotoUploading(false)
+            setActive(true)
+            context.action.updateTempImage(editImage)
+          } else {
+            return context.action.alert({
+              msg: `${res2.message}`
+            })
+          }
+          // context.action.updateEditImage('')
         } else {
           context.action.alert({
             msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
@@ -191,14 +210,14 @@ export default (props) => {
     saveUpload()
   }
   const saveUpload = async () => {
-    console.log(photoPath, profile.profImg.path)
     const data = {
       gender: gender,
       nickNm: nickname || profile.nickNm,
       birth: profile.birth,
-      profMsg: profileMsg,
+      profMsg: profileMsg || profile.profMsg,
       profImg: photoPath || profile.profImg.path
     }
+    console.log(data)
     const res = await Api.profile_edit({data})
     if (res && res.result === 'success') {
       context.action.updateProfile({...res.data, birth: profile.birth})
@@ -270,11 +289,22 @@ export default (props) => {
     }
     getMyPageNew()
     checkAuth()
+
+    return () => {
+      context.action.updateTempImage(null)
+      context.action.updateEditImage(null)
+    }
   }, [])
 
   useEffect(() => {
-    if (editImage !== null) uploadImage()
-  }, [])
+    if (editImage !== null && editImage !== tempImage) {
+      uploadImage()
+    }
+
+    return () => {
+      return
+    }
+  }, [editImage, tempImage])
   //------------------------------------------------------
   return (
     <Switch>
@@ -320,7 +350,7 @@ export default (props) => {
                 <button
                   className="btn__confirm"
                   onClick={() => {
-                    authReq('5', formTag)
+                    authReq('5', formTag, context)
                   }}>
                   본인인증
                 </button>

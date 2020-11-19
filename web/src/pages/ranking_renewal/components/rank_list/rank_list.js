@@ -1,14 +1,21 @@
-import React, {useContext} from 'react'
+import React, {useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 
+import Api from 'context/api'
 import {RoomJoin} from 'context/room'
-import {printNumber} from '../../lib/common_fn'
+import {OS_TYPE} from 'context/config.js'
+import {IMG_SERVER} from 'context/config'
+
+import {printNumber, convertDateToText} from '../../lib/common_fn'
 
 // context
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
 //static
+const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
+const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
+const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 import point from '../../static/ico-point.png'
 import point2x from '../../static/ico-point@2x.png'
 import like from '../../static/like_g_s.svg'
@@ -16,22 +23,39 @@ import live from '../../static/live_m.svg'
 import people from '../../static/people_g_s.svg'
 import time from '../../static/time_g_s.svg'
 import StarCountIcon from '../../static/circle_star_s_g.svg'
+import {DATE_TYPE} from 'pages/ranking_renewal/constant'
 
 function RankList() {
   //context
+  const history = useHistory()
   const context = useContext(Context)
   const {rankState} = useContext(RankContext)
+  const customHeader = JSON.parse(Api.customHeader)
 
   const {rankList, formState} = rankState
 
-  const history = useHistory()
+  const sliceStart = useMemo(() => {
+    if (convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)) {
+      return 0
+    } else {
+      return 3
+    }
+  }, [formState])
+
+  const realTimeCheck = useMemo(() => {
+    if (convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)) {
+      return true
+    } else {
+      return false
+    }
+  }, [formState])
 
   const creatList = () => {
     return (
       <>
         <div className="userRanking bottomList">
-          {rankList.length > 3 &&
-            rankList.slice(3).map((item, index) => {
+          {rankList.length > sliceStart &&
+            rankList.slice(sliceStart).map((item, index) => {
               const {
                 gender,
                 nickNm,
@@ -58,32 +82,57 @@ function RankList() {
 
               return (
                 <div className="myRanking rankingList" key={index}>
-                  <div
-                    className="myRanking__rank"
-                    onClick={() => {
-                      if (context.token.isLogin) {
-                        if (context.token.memNo === memNo) {
-                          history.push(`/menu/profile`)
-                        } else {
-                          history.push(`/mypage/${memNo}`)
-                        }
-                      } else {
-                        history.push(`/login`)
-                      }
-                    }}>
-                    <p className="myRanking__rank--ranking">{rank}</p>
-                    <p className="rankingChange">
-                      {upDown === 'new' ? (
-                        <span className="rankingChange__new">NEW</span>
-                      ) : upDown > 0 ? (
-                        <span className="rankingChange__up">{Math.abs(upDown)}</span>
-                      ) : upDown < 0 ? (
-                        <span className="rankingChange__down">{Math.abs(upDown)}</span>
+                  {realTimeCheck ? (
+                    <div className="myRanking__rank levelListBox__levelBox">
+                      {rank === 1 ? (
+                        <img src={goldMedalIcon} className="levelListBox__levelBox--top1" />
+                      ) : rank === 2 ? (
+                        <img src={silverMedalIcon} className="levelListBox__levelBox--top2" />
+                      ) : rank === 3 ? (
+                        <img src={bronzeMedalIcon} className="levelListBox__levelBox--top3" />
                       ) : (
-                        <></>
+                        <div className="myRanking__rank--ranking">{rank}</div>
                       )}
-                    </p>
-                  </div>
+                      <div className="levelListBox__levelBox--updown">
+                        {upDown === '-' ? (
+                          <span className="levelListBox__levelBox--updown__new"></span>
+                        ) : upDown === 'new' ? (
+                          <span className="levelListBox__levelBox--updown__new">NEW</span>
+                        ) : upDown[0] === '+' ? (
+                          <span className="levelListBox__levelBox--updown__up">{Math.abs(parseInt(upDown))}</span>
+                        ) : (
+                          <span className="levelListBox__levelBox--updown__down">{Math.abs(parseInt(upDown))}</span>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className="myRanking__rank"
+                      onClick={() => {
+                        if (context.token.isLogin) {
+                          if (context.token.memNo === memNo) {
+                            history.push(`/menu/profile`)
+                          } else {
+                            history.push(`/mypage/${memNo}`)
+                          }
+                        } else {
+                          history.push(`/login`)
+                        }
+                      }}>
+                      <p className="myRanking__rank--ranking">{rank}</p>
+                      <p className="rankingChange">
+                        {upDown === 'new' ? (
+                          <span className="rankingChange__new">NEW</span>
+                        ) : upDown > 0 ? (
+                          <span className="rankingChange__up">{Math.abs(upDown)}</span>
+                        ) : upDown < 0 ? (
+                          <span className="rankingChange__down">{Math.abs(upDown)}</span>
+                        ) : (
+                          <></>
+                        )}
+                      </p>
+                    </div>
+                  )}
 
                   <div
                     className="myRanking__content"
@@ -99,9 +148,7 @@ function RankList() {
                       }
                     }}>
                     <div className="thumbBox">
-                      {formState.rankType === 2 && index < 2 && (
-                        <div className={`thumbBox__frame ${index === 0 ? 'thumbBox__frame--4rd' : 'thumbBox__frame--5rd'}`} />
-                      )}
+                      {formState[formState.pageType].rankType === 2 && index < 2 && <div className="thumbBox__frame" />}
                       <img src={profImg.thumb120x120} className="thumbBox__pic" />
                     </div>
 
@@ -144,7 +191,7 @@ function RankList() {
                       </div>
 
                       <div className="countBox">
-                        {formState.rankType === 1 && (
+                        {formState[formState.pageType].rankType === 1 && (
                           <>
                             <span className="countBox__item">
                               <i className="icon icon--people">사람 아이콘</i>
@@ -163,7 +210,7 @@ function RankList() {
                           </>
                         )}
 
-                        {formState.rankType === 2 && (
+                        {formState[formState.pageType].rankType === 2 && (
                           <>
                             <span className="countBox__item">
                               <i className="icon icon--star">s 스타아이콘</i>
@@ -184,7 +231,20 @@ function RankList() {
                       <img
                         src={live}
                         onClick={() => {
-                          RoomJoin({roomNo: roomNo})
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                            }
+                          } else {
+                            RoomJoin({roomNo: roomNo})
+                          }
                         }}
                         className="liveBox__img"
                       />

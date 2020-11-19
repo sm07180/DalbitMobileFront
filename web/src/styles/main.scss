@@ -94,10 +94,21 @@
 
 .refresh-wrap {
   display: block;
-  position: relative;
+  position: absolute;
   height: 48px;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: rgba(127, 127, 127, 0.3);
-  transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  z-index: 12;
+  &.rank {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    background-color: transparent;
+    // transition: height 0ms cubic-bezier(0.26, 0.26, 0.69, 0.69) 0s;
+  }
   .icon-wrap {
     position: absolute;
     left: 50%;
@@ -154,12 +165,19 @@
           background-repeat: no-repeat;
           background-size: cover;
           background-position: center;
-          .medal-img {
+          .live-medal-img {
             position: absolute;
             bottom: 4px;
             right: 0px;
             width: 36px;
             height: 36px;
+          }
+          .medal-img {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 26px;
+            height: 30px;
           }
         }
         .nickname {
@@ -307,7 +325,13 @@
           justify-content: space-between;
           padding: 8px 0 6px;
           border-bottom: 1px solid $lighterGray;
+
+          .rank-arrow {
+            width: 24px;
+            height: 24px;
+          }
           .btn {
+            &__moon,
             &__refresh {
               position: relative;
               display: flex;
@@ -335,6 +359,24 @@
                 img {
                   animation: anim 0.36s;
                 }
+              }
+            }
+            &__moon {
+              margin-right: 8px;
+              margin-left: 0;
+              &::before {
+                display: none;
+              }
+              &::after {
+                display: inline-block;
+                content: '';
+                width: 1px;
+                height: 12px;
+                background: $lightGray;
+                position: absolute;
+                right: -8px;
+                top: 50%;
+                margin-top: -6px;
               }
             }
           }
@@ -429,8 +471,9 @@
         }
       }
       .rank-arrow {
-        width: 24px;
-        height: 24px;
+        width: 28px;
+        height: 28px;
+        margin-right: 4px;
       }
     }
 
@@ -487,6 +530,7 @@
 
       .detail-list-icon {
         margin-right: 2px;
+        margin-left: 8px;
         // &::before {
         //   display: inline-block;
         //   content: '';
@@ -913,28 +957,36 @@
       position: relative;
       width: 80px;
       height: 80px;
-      border-radius: 12px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      background-color: $lighterGray;
+      .thumb-dj {
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background-color: $lighterGray;
+      }
+      .thumb-guest {
+        position: absolute;
+        right: -3px;
+        bottom: -3px;
+        width: 32px;
+        height: 32px;
+        border: 2px solid $white;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
     }
 
     .iconPc {
       display: flex;
       align-items: center;
-      position: absolute;
-      left: 48px;
-      bottom: 4px;
-      padding: 0 8px;
-
-      background: #f26d4a;
-      color: $white;
-      border-radius: 12px;
-      height: 14px;
-      font-size: 10px;
-      font-weight: normal;
-      font-style: normal;
+      width: 26px;
+      height: 16px;
+      margin-right: 4px;
+      text-indent: -9999px;
+      background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
+      background-size: contain;
     }
     .newSpecialIcon {
       z-index: 1;
@@ -1115,6 +1167,9 @@
           &--like {
             background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
           }
+          &--message {
+            background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
+          }
         }
       }
     }
@@ -1122,13 +1177,8 @@
   &__flex {
     position: relative;
     width: calc(50% - 8px);
-    min-height: 156px;
     margin: 0 0 16px 16px;
     border-radius: 16px;
-    background-color: $lighterGray;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     overflow: hidden;
     border-radius: 16px;
     cursor: pointer;
@@ -1146,17 +1196,12 @@
     }
     .broadcast-img {
       position: relative;
-      width: calc(50% - 4px);
-      height: 100%;
-      border-radius: 16px;
-      background-color: $lighterGray;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      overflow: hidden;
-      border-radius: 16px;
-      width: 100%;
-      height: 100%;
+      .thumb-dj {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        background-color: $lighterGray;
+      }
     }
     .top-status {
       position: absolute;
@@ -1907,16 +1952,15 @@
   position: relative;
   display: flex;
   align-items: center;
-  height: 100vh;
-  min-height: 520px;
+  height: 100%;
+  overflow: hidden;
   margin: 0 auto;
-  background: url('../pages/login/static/login_bg.svg') no-repeat;
+  background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
-
   .header {
     position: absolute;
     width: 100%;
-    top: 45px;
+    top: 20px;
     left: 0;
     .inner {
       display: flex;
@@ -1939,10 +1983,15 @@
 
   .login-wrap {
     width: 100%;
-    padding: 0 30px 50px;
   }
 
   .logo {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .logo_text {
+    width: 130px;
     display: block;
     margin: 0 auto 20px auto;
   }
@@ -1964,6 +2013,10 @@
       letter-spacing: -0.4px;
       background: none;
       border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    :focus {
+      border-color: rgba(255, 255, 255, 1);
     }
     input::placeholder {
       color: $white;
@@ -1997,7 +2050,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 24px 0 0 0;
+    padding: 15px 0 0 0;
 
     .link-text {
       color: $white;
@@ -2018,6 +2071,22 @@
     }
   }
 
+  .signupButton {
+    a {
+      display: block;
+      margin: 20px auto 0px auto;
+      width: 260px;
+      height: 48px;
+      line-height: 48px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 28px;
+      color: $white;
+      background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
+    }
+  }
+
   .socialLogin {
     position: absolute;
     width: 100%;
@@ -2025,44 +2094,41 @@
     text-align: center;
 
     .social-apple-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-      border: solid 1px $black;
       background-color: $black;
       margin-right: 8px;
     }
 
     .social-facebook-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-      border: solid 1px #4064ad;
       background-color: $white;
       margin-right: 8px;
     }
 
     .social-naver-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
       background-color: #2db400;
       margin-right: 8px;
     }
 
     .social-kakao-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
       background-color: #f9e000;
       margin-right: 8px;
     }
 
     .social-google-btn {
-      width: 48px;
-      height: 48px;
+      width: 40px;
+      height: 40px;
       border-radius: 25px;
-      border: solid 1px #4285f4;
       background-color: $white;
     }
   }

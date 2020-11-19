@@ -48,6 +48,9 @@ export default (props) => {
   }
 
   const btnClose = () => {
+    if (context.message.btnCloseCallback !== undefined) {
+      context.message.btnCloseCallback()
+    }
     context.action.alert({visible: false})
   }
   //useEffect

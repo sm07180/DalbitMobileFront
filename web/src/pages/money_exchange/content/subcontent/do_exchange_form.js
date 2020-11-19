@@ -118,9 +118,13 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
       }
     }
   }
-
-  useEffect(() => {}, [])
-
+  const validateName = (e, obj) => {
+    if (e.target.value.length > 20) {
+      return false
+    } else {
+      dispatch(obj)
+    }
+  }
   useEffect(() => {
     if (state.fSocialNo.length === 6) {
       document.getElementById('bsocialNo').focus()
@@ -139,8 +143,9 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
           <div className="formData__input">
             <input
               type="text"
+              value={state.name}
               className="formData__input--text"
-              onChange={(e) => dispatch({type: 'name', val: e.target.value})}
+              onChange={(e) => validateName(e, {type: 'name', val: e.target.value})}
             />
           </div>
         </div>

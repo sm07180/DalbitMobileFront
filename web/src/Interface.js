@@ -31,7 +31,23 @@ export default () => {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      localStorage.removeItem('clipPlayListInfo')
+      const oneClipPlayList = {
+        clipNo: data.clipNo,
+        bgImg: data.bgImg,
+        title: data.title,
+        nickName: data.nickName,
+        subjectType: data.subjectType,
+        isNew: data.isNew,
+        filePlayTime: data.filePlay,
+        isSpecial: data.isSpecial,
+        gender: data.gender,
+        replyCnt: data.replyCnt,
+        goodCnt: data.goodCnt,
+        playCnt: data.playCnt
+      }
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
         context.action.alert({
@@ -48,6 +64,18 @@ export default () => {
     }
   }
 
+  async function pushClick(pushIdx) {
+    const res = await Api.push_click({
+      data: {
+        pushIdx: pushIdx
+      }
+    })
+    if (res.result === 'success') {
+      // console.log('성공')
+    } else if (res.result === 'fail') {
+    }
+  }
+
   const [authState, setAuthState] = useState(false)
 
   //auth 상태체크
@@ -55,8 +83,10 @@ export default () => {
     const selfAuth = await Api.self_auth_check({})
     if (selfAuth.result === 'fail') {
       setAuthState(false)
+      context.action.updateSelfAuth(false)
     } else {
       setAuthState(true)
+      context.action.updateSelfAuth(true)
     }
   }
 
@@ -93,7 +123,7 @@ export default () => {
 
         const {isLogin} = context.token
         const {push_type} = pushMsg
-        let room_no, mem_no, board_idx
+        //let room_no, mem_no, board_idx
 
         //개발쪽만 적용
         // if (__NODE_ENV === 'dev') {
@@ -114,10 +144,10 @@ export default () => {
             window.location.href = '/'
             break
           case '31': //-----------------마이페이지>팬 보드
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '32': //-----------------마이페이지>내 지갑
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '33': //-----------------마이페이지>캐스트>캐스트 정보 변경 페이지(미정)
             break
@@ -132,16 +162,16 @@ export default () => {
             context.action.updateSticker(true) //true,false
             break
           case '37': //------------------1:1 문의 답변
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '38': //------------------스타의 방송공지 등록
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '4': //------------------등록 된 캐스트(미정)
             //window.location.href = `/`
             break
           case '5': //------------------스페셜 DJ 선정 페이지(미정)
-            context.action.updateNews(true) //true,false
+            //context.action.updateNews(true) //true,false
             break
           case '6': //------------------이벤트 페이지>해당 이벤트 [board_idx](미정)
             break
@@ -397,7 +427,7 @@ export default () => {
         let dataString = JSON.stringify({...event.detail, ...{playerState: 'paused'}})
         Utility.setCookie('clip-player-info', dataString, 100)
         sessionStorage.setItem('clip_info', dataString)
-        sessionStorage.setItem('play_clip_no', event.detail.clipNo)
+        localStorage.setItem('play_clip_no', event.detail.clipNo)
         context.action.updateClipState(true)
         context.action.updateClipPlayerInfo(event.detail)
         context.action.updatePlayer(true)
@@ -412,6 +442,7 @@ export default () => {
         context.action.updateClipPlayerState(null)
         context.action.updateClipState(null)
         context.action.updatePlayer(false)
+        sessionStorage.setItem('listening', 'N')
         sessionStorage.removeItem('clip_active')
         break
       case 'clip-player-audio-end': //-----------------------클립플레이어 오디오 재생 종료
@@ -422,9 +453,15 @@ export default () => {
       case 'clip-player-start': //-----------------------클립 재생
         settingSessionInfo('playing')
         break
-
       case 'clip-player-pause': //-----------------------클립 멈춤
         settingSessionInfo('paused')
+        break
+      case 'clip-upload-end': //------------- 네이티브 클립 녹음, 업로드 후
+        localStorage.removeItem('clipPlayListInfo')
+        const oneClipPlayList = {
+          clipNo: event.detail.clipNo
+        }
+        localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
         break
       case 'native-clip-upload': //-----------------------네이티브 딤 메뉴에서 클립 업로드 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
@@ -506,6 +543,21 @@ export default () => {
         } else if (onCall === false) {
           sessionStorage.removeItem('onCall')
         }
+        break
+      case 'native-goto-fanboard': //----- 청취자요약정보 팬보드이동
+        const {memNo} = event.detail
+        history.push(`/mypage/${memNo}`)
+        break
+      case 'native-join-room': //----- 청취자요양정보 방조인
+        const {roomNo} = event.detail
+        RoomJoin({roomNo: roomNo})
+        break
+      case 'native-goto-rank': //----- 청취자요약정보 랭킹이동
+        history.push(`/rank`)
+        break
+      case 'native-broad-summary': //요약정보에서 이동
+        history.push(`/`)
+        break
       default:
         break
     }
@@ -547,18 +599,6 @@ export default () => {
           alert(e)
         }
         return false
-      }
-    }
-
-    async function pushClick(pushIdx) {
-      const res = await Api.push_click({
-        data: {
-          pushIdx: pushIdx
-        }
-      })
-      if (res.result === 'success') {
-        // console.log('성공')
-      } else if (res.result === 'fail') {
       }
     }
 
@@ -664,8 +704,11 @@ export default () => {
           if (isLogin) window.location.href = `/mypage/${mem_no}?tab=0`
         }
         break
-      case '40': //-----------------랭킹
-        if (isLogin) window.location.href = `/rank`
+      case '39': //-----------------좋아요
+        if (isLogin) window.location.href = `/rank?rankType=3&dateType=2`
+        break
+      case '40': //-----------------좋아요 랭킹 일간
+        if (isLogin) window.location.href = `/rank?rankType=3&dateType=1`
         break
       case '41': //-----------------랭킹 > DJ > 일간
         if (isLogin) window.location.href = `/rank?rankType=1&dateType=1`
@@ -771,8 +814,14 @@ export default () => {
     document.addEventListener('clip-player-audio-end', update)
     document.addEventListener('clip-player-start', update)
     document.addEventListener('clip-player-pause', update)
+    // document.addEventListener('clip-upload-end', update)
     document.addEventListener('native-close-layer-popup', update)
 
+    /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+    document.addEventListener('native-goto-fanboard', update)
+    document.addEventListener('native-goto-rank', update)
+    document.addEventListener('native-join-room', update)
+    document.addEventListener('native-broad-summary', update)
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -795,7 +844,14 @@ export default () => {
       document.removeEventListener('clip-player-audio-end', update)
       document.removeEventListener('clip-player-start', update)
       document.removeEventListener('clip-player-pause', update)
+      // document.removeEventListener('clip-upload-end', update)
       document.removeEventListener('native-close-layer-popup', update)
+
+      /* ------ 요약정보에서 요청 : 팬보드이동, 방조인 ----- */
+      document.removeEventListener('native-goto-fanboard', update)
+      document.removeEventListener('native-goto-rank', update)
+      document.removeEventListener('native-join-room', update)
+      document.removeEventListener('native-broad-summary', update)
     }
   }, [])
 

@@ -1,6 +1,9 @@
 @import '../../styles/variables';
 
 .specialdj {
+  max-width: 460px;
+  min-width: 320px;
+  margin: auto;
   .header {
     position: relative;
     display: flex;
@@ -52,6 +55,13 @@
     background: #eee;
     height: 100%;
     padding-bottom: 120px;
+
+    .selctNotice {
+      font-size: 12px;
+      display: block;
+      margin-top: 7px;
+      text-indent: 4px;
+    }
 
     .morePopup {
       background: rgba(000, 000, 000, 0.4);

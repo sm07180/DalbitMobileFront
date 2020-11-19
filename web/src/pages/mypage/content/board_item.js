@@ -104,26 +104,34 @@ export default (props) => {
   const setCancelModify = () => {
     modifyCancel()
   }
+
   const Link = () => {
-    if (props.type === 'clip_board') {
-      if (webview) {
-        context.token.memNo !== props.data.writerMemNo
-          ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
-          : history.push(`/menu/profile?webview=${webview}`)
-      } else {
-        context.token.memNo !== props.data.writerMemNo
-          ? history.push(`/mypage/${props.data.writerMemNo}`)
-          : history.push(`/menu/profile`)
-      }
+    if (props.data.memId === '') {
+      context.action.alert({
+        callback: () => {},
+        msg: '탈퇴한 회원입니다.'
+      })
     } else {
-      if (webview) {
-        context.token.memNo !== props.data.writerMemNo
-          ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
-          : history.push(`/menu/profile?webview=${webview}`)
+      if (props.type === 'clip_board') {
+        if (webview) {
+          context.token.memNo !== props.data.writerMemNo
+            ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
+            : history.push(`/menu/profile?webview=${webview}`)
+        } else {
+          context.token.memNo !== props.data.writerMemNo
+            ? history.push(`/mypage/${props.data.writerMemNo}`)
+            : history.push(`/menu/profile`)
+        }
       } else {
-        context.token.memNo !== props.data.writerMemNo
-          ? history.push(`/mypage/${props.data.writerMemNo}`)
-          : history.push(`/menu/profile`)
+        if (webview) {
+          context.token.memNo !== props.data.writerMemNo
+            ? history.push(`/mypage/${props.data.writerMemNo}?webview=${webview}`)
+            : history.push(`/menu/profile?webview=${webview}`)
+        } else {
+          context.token.memNo !== props.data.writerMemNo
+            ? history.push(`/mypage/${props.data.writerMemNo}`)
+            : history.push(`/menu/profile`)
+        }
       }
     }
   }
@@ -143,7 +151,9 @@ export default (props) => {
       {modifyState === false && (
         <>
           <div className="list-item__header">
-            {urlrStr === context.token.memNo || props.data.writerMemNo === context.token.memNo ? (
+            {urlrStr === context.token.memNo ||
+            props.data.writerMemNo === context.token.memNo ||
+            props.data.clipMemNo === context.token.memNo ? (
               <>
                 <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
                 <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>

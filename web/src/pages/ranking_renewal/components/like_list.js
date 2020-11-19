@@ -27,6 +27,7 @@ function LikeList({empty}) {
   const {rankState} = useContext(RankContext)
   const history = useHistory()
   const {formState, likeList, rankList} = rankState
+
   return (
     <>
       {empty === true ? (
@@ -43,7 +44,7 @@ function LikeList({empty}) {
 
           <div
             className={`userRanking bottomList ${
-              formState.rankType === RANK_TYPE.LIKE && !context.token.isLogin ? 'likeList' : ''
+              formState[formState.pageType].rankType === RANK_TYPE.LIKE && !context.token.isLogin ? 'likeList' : ''
             }`}>
             <ul>
               {rankList.map((list, index) => {

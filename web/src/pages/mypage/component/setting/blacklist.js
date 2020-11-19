@@ -18,7 +18,7 @@ import Utility from 'components/lib/utility'
 
 //component
 import Paging from 'components/ui/paging.js'
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 //ui
 import SelectBoxs from 'components/ui/selectBox.js'
 import blacklist from 'pages/mypage/component/setting/blacklist'
@@ -29,7 +29,7 @@ let currentPage = 1
 let timer
 let moreState = false
 
-export default (props) => {
+export default () => {
   //-----------------------------------------------------------------------------
   const {webview} = qs.parse(location.search)
   let history = useHistory()
@@ -40,16 +40,14 @@ export default (props) => {
   const {changes, setChanges, onChange} = useChange({onChange: -1})
 
   //state
-  const [blackState, setBlackState] = useState(-1)
-  const [userState, setUserState] = useState(-1)
-  const [userList, setUserList] = useState(false)
-  const [blackList, setBlackList] = useState(false)
-  const [nextBlackList, setNextBlackList] = useState(false)
-  const [totalPageNumber, setTotalPageNumber] = useState(null)
-  const [page, setPage] = useState(1)
-  const [tabState, setTabState] = useState(1)
-  const [totalBlackList, setTotalBlackList] = useState(0)
 
+  const [userList, setUserList] = useState([])
+  const [nextUserList, setNextUserList] = useState([])
+  const [userTotalCount, setUserTotalCount] = useState(0)
+  const [blackList, setBlackList] = useState([])
+  const [nextBlackList, setNextBlackList] = useState(false)
+  const [tabState, setTabState] = useState(1)
+  const [totalCnt, setTotalCnt] = useState(null)
   let userTypeSetting = 0
 
   const selectBoxData = [
@@ -59,8 +57,6 @@ export default (props) => {
     {value: 2, text: 'ID'}
   ]
 
-  //-----------------------------------------------------------------------------
-  //async
   async function getblackList(next) {
     currentPage = next ? ++currentPage : currentPage
 
@@ -70,62 +66,31 @@ export default (props) => {
         records: 30
       }
     })
-    if (result === 'success' && data.list.length) {
+    if (result === 'success') {
       const {list, paging} = data
-      setTotalBlackList(paging.total)
-      if (next) {
-        moreState = true
-        setNextBlackList(list)
+      if (data.list.length > 0) {
+        if (paging) {
+          setTotalCnt(paging.total)
+          if (next) {
+            moreState = true
+            setNextBlackList(list)
+          } else {
+            setBlackList(list)
+            getblackList('next')
+          }
+        }
       } else {
-        setBlackList(list)
-        getblackList('next')
+        if (!next) {
+          setBlackList([])
+        }
+        moreState = false
       }
-    } else if (result === 'success' && !data.list.length) {
-      if (!next) {
-        setBlackState(0)
-        setBlackList(false)
-      }
-      moreState = false
     } else {
       context.action.alert({
         msg: message
       })
     }
   }
-
-  const showMoreList = () => {
-    if (moreState) {
-      setBlackList(blackList.concat(nextBlackList))
-      getblackList('next')
-    }
-  }
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      //스크롤이벤트체크
-      /*
-       * @가속처리
-       */
-      if (windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
-      }
-    }, 10)
-  }
-  useEffect(() => {
-    //reload
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextBlackList])
-
   async function addManager(memNum) {
     const res = await Api.mypage_black_add({
       data: {
@@ -133,7 +98,7 @@ export default (props) => {
       }
     })
     if (res.result == 'success') {
-      context.action.alert({
+      context.action.toast({
         msg: res.message
       })
       getSearchList('search')
@@ -151,6 +116,9 @@ export default (props) => {
     })
     if (res.result == 'success') {
       currentPage = 1
+      context.action.toast({
+        msg: res.message
+      })
       getblackList()
     } else {
       context.action.alert({
@@ -159,7 +127,9 @@ export default (props) => {
     }
   }
 
-  async function getSearchList(type, typeDetail) {
+  async function getSearchList(type, next) {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
     if (!_.hasIn(changes, 'search') || changes.search.length == 0)
       return context.action.alert({
         msg: `검색어를 입력해주세요.`
@@ -169,24 +139,28 @@ export default (props) => {
       userType: userTypeSetting,
       search: changes.search,
       searchType: 'blackList',
-      page: type == 'page' ? typeDetail : 1,
-      records: 100
+      page: next === 'next' ? currentPage : 1,
+      records: 30
     }
     const res = await Api.mypage_user_search({params})
-    if (res.result == 'success' && _.hasIn(res, 'data.list')) {
-      if (res.data.list == false) {
-        setUserState(0)
-        setUserList(false)
-      } else {
-        const {list, paging} = res.data
-        if (paging) {
-          const {totalPage} = paging
-          setTotalPageNumber(totalPage)
-          setUserState(1)
-          setUserList(list)
+    if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+      const {list, paging} = res.data
+      if (paging) {
+        const {totalPage, total} = paging
+        setUserTotalCount(total)
+      }
+      if (res.data.list.length === 0) {
+        if (!next) {
+          setUserList([])
         }
-        if (type == 'search') {
-          setPage(1)
+        moreState = false
+      } else {
+        if (next) {
+          moreState = true
+          setNextUserList(res.data.list)
+        } else {
+          setUserList(res.data.list)
+          getSearchList('search', 'next')
         }
       }
     } else {
@@ -195,160 +169,143 @@ export default (props) => {
       })
     }
   }
-  //-----------------------------------------------------------------------------
-  //function
 
-  //
   const createUserList = () => {
-    if (userList == false) return null
-    return (
-      <>
-        <ul className="list-item search">
-          <p className="result_count">
-            검색 결과
-            <span>{userList.length}</span>
-          </p>
-          {userList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg} = item
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={() => history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `${nickNm} 님을 차단하시겠습니까?`,
-                      callback: () => {
-                        addManager(memNo)
-                      }
-                    })
-                  }}>
-                  등록
-                </button>
-              </li>
-            )
-          })}
-        </ul>
-      </>
-    )
-  }
-
-  const createblackList = () => {
-    if (blackList == false) return <NoResult />
     return (
       <>
         <p className="titleCount">
-          차단회원 <em>{totalBlackList}</em>
+          검색 결과<em>{userTotalCount}</em>
         </p>
-        <ul className="list-item search">
-          {blackList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg, regDt} = item
-            const date = Utility.dateFormatter(regDt)
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={() => history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
-                      callback: () => {
-                        deleteManager(memNo)
-                      }
-                    })
-                  }}
-                  className="grayBtn">
-                  해제
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        {userList.length > 0 ? (
+          <ul className="list-item search">
+            {userList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg} = item
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={() => history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `${nickNm} 님을 차단하시겠습니까?`,
+                        callback: () => {
+                          addManager(memNo)
+                        }
+                      })
+                    }}>
+                    등록
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="등록된 차단회원이 없습니다." />
+        )}
       </>
     )
   }
-  ////////////////////////////////////////////////////////////////////////
-  const createSearchblackList = () => {
-    if (manegerSearchList == false) return null
+  const createblackList = () => {
+    return (
+      <>
+        <p className="titleCount">
+          차단회원<em>{totalCnt}</em>
+        </p>
+        {blackList.length > 0 ? (
+          <ul className="list-item search">
+            {blackList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg, regDt} = item
+              const date = Utility.dateFormatter(regDt)
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={() => history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
+                        callback: () => {
+                          deleteManager(memNo)
+                        }
+                      })
+                    }}
+                    className="grayBtn">
+                    해제
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="등록된 차단회원이 없습니다" />
+        )}
+      </>
+    )
+  }
+  const createSearchList = () => {
     return (
       <>
         <p className="titleCount">
           검색 결과 <em>{manegerSearchList.length}</em>
         </p>
-        <ul className="list-item search">
-          {manegerSearchList.map((item, index) => {
-            const {memNo, nickNm, memId, profImg, regDt} = item
-            const date = Utility.dateFormatter(regDt)
-            const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
-            return (
-              <li key={index}>
-                <a onClick={history.push(link)}>
-                  <figure
-                    style={{
-                      background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
-                    }}></figure>
-                  <div>
-                    <span>{nickNm}</span>
-                    <span>@{memId}</span>
-                  </div>
-                </a>
-                <button
-                  onClick={() => {
-                    context.action.confirm({
-                      msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
-                      callback: () => {
-                        deleteManager(memNo)
-                      }
-                    })
-                  }}
-                  className="grayBtn">
-                  해제
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+        {manegerSearchList.length > 0 ? (
+          <ul className="list-item search">
+            {manegerSearchList.map((item, index) => {
+              const {memNo, nickNm, memId, profImg, regDt} = item
+              const date = Utility.dateFormatter(regDt)
+              const link = webview ? `/mypage/${memNo}?webview=${webview}` : `/mypage/${memNo}`
+              return (
+                <li key={index}>
+                  <a onClick={history.push(link)}>
+                    <figure
+                      style={{
+                        background: `url(${profImg.thumb80x80}) no-repeat center center/ cover`
+                      }}></figure>
+                    <div>
+                      <span>{nickNm}</span>
+                      <span>@{memId}</span>
+                    </div>
+                  </a>
+                  <button
+                    onClick={() => {
+                      context.action.confirm({
+                        msg: `${nickNm} 님을 차단 해제 하시겠습니까?`,
+                        callback: () => {
+                          deleteManager(memNo)
+                        }
+                      })
+                    }}
+                    className="grayBtn">
+                    해제
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        ) : (
+          <NoResult height={400} type="default" text="검색 결과가 없습니다." />
+        )}
       </>
     )
   }
-
-  const createUserResult = () => {
-    if (userState === -1) {
-      return null
-    } else if (userState === 0) {
-      return <NoResult className="no-top" />
-    } else {
-      return createUserList()
-    }
-  }
-
-  //-----------------------------------------------------------------------------
-  //useEffect
-  useEffect(() => {
-    getblackList()
-
-    return () => {
-      currentPage = 1
-    }
-  }, [])
 
   const typeActive = (value) => {
     setChanges({...changes, searchType: value})
@@ -356,7 +313,6 @@ export default (props) => {
   //매니저 필터
   const [blackValue, setblackValue] = useState('')
   const [manegerSearchList, setManegerSearchList] = useState(blackList)
-
   const SearchManeger = (blackValue, selectBoxData) => {
     if (changes.searchType === 0) {
       setManegerSearchList(
@@ -369,17 +325,64 @@ export default (props) => {
     }
   }
   const tabChangeFunction = () => {
+    moreState = false
     currentPage = 1
-    getblackList()
+    // getblackList()
     setblackValue('')
 
     if (tabState === 0) {
+      getblackList()
       setTabState(1)
     } else {
+      // getblackList()
       setTabState(0)
     }
   }
-  //-----------------------------------------------------------------------------
+  const showMoreList = () => {
+    if (moreState) {
+      if (tabState === 1) {
+        getblackList('next')
+        setBlackList(blackList.concat(nextBlackList))
+      } else {
+        getSearchList('search', 'next')
+        setUserList(userList.concat(nextUserList))
+      }
+    }
+  }
+  const scrollEvtHdr = (event) => {
+    if (timer) window.clearTimeout(timer)
+    timer = window.setTimeout(function () {
+      //스크롤
+      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+      const body = document.body
+      const html = document.documentElement
+      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+      const windowBottom = windowHeight + window.pageYOffset
+      //스크롤이벤트체크
+      /*
+       * @가속처리
+       */
+      if (windowBottom >= docHeight - 300 && (nextUserList.length !== 0 || nextBlackList.length !== 0)) {
+        showMoreList()
+      } else {
+      }
+    }, 140)
+  }
+  useEffect(() => {
+    //reload
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextBlackList, nextUserList])
+  useEffect(() => {
+    getblackList()
+
+    return () => {
+      currentPage = 1
+    }
+  }, [])
+
   return (
     <Content>
       <div className="tab">
@@ -424,7 +427,11 @@ export default (props) => {
               찾기
             </button>
           </SearchArea>
-          <div className="resulte-area">{createUserResult()}</div>
+          {userList && userList.length > 0 ? (
+            <div className="result-area">{createUserList()}</div>
+          ) : (
+            <NoResult height={400} type="default" text="등록된 차단회원이 없습니다." />
+          )}
         </>
       )}
       {tabState === 1 && (
@@ -461,9 +468,9 @@ export default (props) => {
               찾기
             </button>
           </SearchArea>*/}
-          <div className="resulte-area">
+          <div className="result-area">
             {blackValue === '' && createblackList()}
-            {blackValue !== '' && createSearchblackList()}
+            {blackValue !== '' && createSearchList()}
           </div>
         </>
       )}
@@ -752,7 +759,7 @@ const Content = styled.div`
       background: ${COLOR_MAIN};
     }
   }
-  .resulte-area {
+  .result-area {
     min-height: 100px;
     padding: 12px 0;
   }

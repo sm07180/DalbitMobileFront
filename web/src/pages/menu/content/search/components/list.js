@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useLocation} from 'react-router-dom'
 //context
 import {Context} from 'context/index.js'
@@ -7,6 +7,7 @@ import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 import API from 'context/api'
+import {OS_TYPE} from 'context/config.js'
 //static
 import FemaleIcon from '../static/female.svg'
 import MaleIcon from '../static/male.svg'
@@ -21,9 +22,10 @@ import ArrowIcon from '../static/arrow.svg'
 
 export default (props) => {
   //props
-  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType} = props
+  const {memberList, clipList, liveList, total, clipType, CategoryType, filterType, searchText} = props
   // ctx && path
   const context = useContext(Context)
+  const customHeader = JSON.parse(API.customHeader)
   const history = useHistory()
   // link & join & clip play
   const Link = (memNo) => {
@@ -40,11 +42,28 @@ export default (props) => {
       history.push(`/mypage/${memNo}`)
     }
   }
-  const fetchDataPlay = async (clipNum) => {
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
+  const fetchDataPlay = async (clipNum, idx) => {
+    console.log(idx)
     const {result, data, message, code} = await API.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      const nowPage = getPageFormIdx(idx)
+      const playListInfoData = {
+        slctType: 0,
+        dateType: 0,
+        page: nowPage,
+        records: 100,
+        search: searchText
+      }
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -63,85 +82,140 @@ export default (props) => {
   }
   //render ----------------------------------------------------
   return (
-    <div className="total">
-      {(CategoryType === 0 || CategoryType === 1) && (
-        <>
-          {filterType !== 0 && CategoryType !== 0 && memberList.length !== 0 && (
-            <h4 className="Title topPositon">
-              DJ <span className="Title__count">{total && total.memtotal}</span>
-              {CategoryType === 0 && memberList && total.memtotal > 2 && (
-                <img src={ArrowIcon} onClick={() => props.setCategoryType(1)} />
-              )}
-            </h4>
-          )}
-          <div className={`total__member ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && (
-              <h4 className="Title" onClick={() => props.setCategoryType(1)}>
-                DJ <span className="Title__count">{total && total.memtotal}</span>
-                {CategoryType === 0 && memberList && <img src={ArrowIcon} />}
-              </h4>
-            )}
-            {memberList && memberList.length !== 0 ? (
-              (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
-                const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
-                return (
-                  <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
-                    {roomNo !== '' && (
-                      <button onClick={() => Join(roomNo, memNo)} className="liveBtn">
-                        <img src={LiveIcon} />
-                        LIVE
-                      </button>
+      <div className="total">
+        {(CategoryType === 0 || CategoryType === 1) && (
+            <>
+              {filterType !== 0 && CategoryType !== 0 && memberList.length !== 0 && (
+                  <h4 className="Title topPositon">
+                    DJ <span className="Title__count">{total && total.memtotal}</span>
+                    {CategoryType === 0 && memberList && total.memtotal > 2 && (
+                        <img src={ArrowIcon} onClick={() => props.setCategoryType(1)} />
                     )}
-                    <img src={profImg.thumb190x190} className="memberItem__profImg" />
-                    <div className="memberItem__info">
-                      <span className="memberItem__info__nick">{nickNm}</span>
-                      <div className="memberItem__info__iconBox">
-                        {gender === 'f' ? <img src={FemaleIcon} /> : gender === 'm' ? <img src={MaleIcon} /> : ''}
-                        {isSpecial && <img src={SpecialLong} />}
-                      </div>
-                      <span className="memberItem__info__fanCnt">
-                        <img src={PersonIcon} />
-                        {fanCnt}
-                      </span>
-                    </div>
-                  </div>
-                )
-              })
-            ) : (
-              <NoResult text="DJ 검색결과가 없습니다." height={120} />
-            )}
-          </div>
-        </>
-      )}
-      {(CategoryType === 0 || CategoryType === 2) && (
-        <>
-          {filterType !== 0 && CategoryType !== 0 && liveList.length !== 0 && (
-            <h4 className="Title topPositon">
-              방송 <span className="Title__count">{total && total.livetotal}</span>
-              {CategoryType === 0 && liveList && total.livetotal > 2 && (
-                <img src={ArrowIcon} onClick={() => props.setCategoryType(2)} />
+                  </h4>
               )}
-            </h4>
-          )}
-          <div className={`total__live ${CategoryType !== 0 ? 'borderNone' : ''}`}>
-            {filterType === 0 && (
-              <h4 className="Title" onClick={() => props.setCategoryType(2)}>
-                방송 <span className="Title__count">{total && total.livetotal}</span>
-                {CategoryType === 0 && liveList && <img src={ArrowIcon} />}
-              </h4>
-            )}
-            <div className="chartListDetail pdl0">
-              {liveList && liveList.length !== 0 ? (
-                (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
-                  const {title, bgImg, isSpecial, gender, bjNickNm, roomType, entryCnt, totalCnt, likeCnt, roomNo, memNo} = item
-                  return (
-                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => Join(roomNo, memNo)}>
-                      <div className="chartListDetailItem__thumb">
-                        {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                        <img src={bgImg[`thumb190x190`]} alt={title} />
-                      </div>
-                      <div className="textBox">
-                        <p className="textBox__subject">
+              <div className={`total__member ${CategoryType !== 0 ? 'borderNone' : ''}`}>
+                {filterType === 0 && (
+                    <h4 className="Title" onClick={() => props.setCategoryType(1)}>
+                      DJ <span className="Title__count">{total && total.memtotal}</span>
+                      {CategoryType === 0 && memberList && <img src={ArrowIcon} />}
+                    </h4>
+                )}
+                {memberList && memberList.length !== 0 ? (
+                    (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
+                      const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
+                      return (
+                          <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
+                            {roomNo !== '' && (
+                                <button
+                                    onClick={() => {
+                                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                                        if (context.token.isLogin === false) {
+                                          context.action.alert({
+                                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                            callback: () => {
+                                              history.push('/login')
+                                            }
+                                          })
+                                        } else {
+                                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                                        }
+                                      } else {
+                                        Join(roomNo, memNo)
+                                      }
+                                    }}
+                                    className="liveBtn">
+                                  <img src={LiveIcon} />
+                                  LIVE
+                                </button>
+                            )}
+                            <img src={profImg.thumb190x190} className="memberItem__profImg" />
+                            <div className="memberItem__info">
+                              <span className="memberItem__info__nick">{nickNm}</span>
+                              <div className="memberItem__info__iconBox">
+                                {gender === 'f' ? <img src={FemaleIcon} /> : gender === 'm' ? <img src={MaleIcon} /> : ''}
+                                {isSpecial && <img src={SpecialLong} />}
+                              </div>
+                              <span className="memberItem__info__fanCnt">
+                        <img src={PersonIcon} />
+                                {fanCnt}
+                      </span>
+                            </div>
+                          </div>
+                      )
+                    })
+                ) : (
+                    <NoResult text="DJ 검색결과가 없습니다." height={120} />
+                )}
+              </div>
+            </>
+        )}
+        {(CategoryType === 0 || CategoryType === 2) && (
+            <>
+              {filterType !== 0 && CategoryType !== 0 && liveList.length !== 0 && (
+                  <h4 className="Title topPositon">
+                    방송 <span className="Title__count">{total && total.livetotal}</span>
+                    {CategoryType === 0 && liveList && total.livetotal > 2 && (
+                        <img src={ArrowIcon} onClick={() => props.setCategoryType(2)} />
+                    )}
+                  </h4>
+              )}
+              <div className={`total__live ${CategoryType !== 0 ? 'borderNone' : ''}`}>
+                {filterType === 0 && (
+                    <h4 className="Title" onClick={() => props.setCategoryType(2)}>
+                      방송 <span className="Title__count">{total && total.livetotal}</span>
+                      {CategoryType === 0 && liveList && <img src={ArrowIcon} />}
+                    </h4>
+                )}
+                <div className="chartListDetail pdl0">
+                  {liveList && liveList.length !== 0 ? (
+                      (CategoryType === 2 ? liveList : liveList.slice(0, 2)).map((item, idx) => {
+                        const {
+                          title,
+                          bgImg,
+                          bjProfImg,
+                          isSpecial,
+                          gender,
+                          bjNickNm,
+                          roomType,
+                          entryCnt,
+                          totalCnt,
+                          likeCnt,
+                          roomNo,
+                          memNo,
+                          os,
+                          gstProfImg
+                        } = item
+                        return (
+                            <li
+                                className="chartListDetailItem"
+                                key={idx + 'list'}
+                                onClick={() => {
+                                  if (customHeader['os'] === OS_TYPE['Desktop']) {
+                                    if (context.token.isLogin === false) {
+                                      context.action.alert({
+                                        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                        callback: () => {
+                                          history.push('/login')
+                                        }
+                                      })
+                                    } else {
+                                      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                                    }
+                                  } else {
+                                    Join(roomNo, memNo)
+                                  }
+                                }}>
+                              <div className="chartListDetailItem__thumb">
+                                {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
+                                <img src={bjProfImg[`thumb190x190`]} className="thumb-dj" alt={title} />
+                                {gstProfImg.thumb190x190 && (
+                                    <span className="thumb-guest">
+                            <img src={gstProfImg.thumb190x190} alt="게스트" />
+                          </span>
+                                )}
+                              </div>
+                              <div className="textBox">
+                                <p className="textBox__subject">
                           <span className="subject">
                             {context.roomType.map((item, index) => {
                               if (item.cd === roomType) {
@@ -149,67 +223,105 @@ export default (props) => {
                               }
                             })}
                           </span>
-                          <i className="line"></i>
-                          <span className="title">{title}</span>
-                        </p>
-                        <p className="textBox__nickName">
-                          {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                          {bjNickNm}
-                        </p>
-                        <div className="textBox__detail">
+                                  <i className="line"></i>
+                                  <span className="title">{title}</span>
+                                </p>
+                                <p className="textBox__nickName">
+                                  {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                                  {os === 3 && <i className="iconPc">PC</i>}
+                                  {bjNickNm}
+                                </p>
+                                <div className="textBox__detail">
                           <span className="textBox__detail--item">
                             <img src={TotalIcon} width={16} />
                             {totalCnt > 999 ? Utility.printNumber(totalCnt) : Utility.addComma(totalCnt)}
                           </span>
-                          <span className="textBox__detail--item">
+                                  <span className="textBox__detail--item">
                             <img src={PersonIcon} width={16} />
-                            {entryCnt > 999 ? Utility.printNumber(entryCnt) : Utility.addComma(entryCnt)}
+                                    {entryCnt > 999 ? Utility.printNumber(entryCnt) : Utility.addComma(entryCnt)}
                           </span>
-                          <span className="textBox__detail--item">
+                                  <span className="textBox__detail--item">
                             <img src={heartIcon} width={16} />
-                            {likeCnt > 999 ? Utility.printNumber(likeCnt) : Utility.addComma(likeCnt)}
+                                    {likeCnt > 999 ? Utility.printNumber(likeCnt) : Utility.addComma(likeCnt)}
                           </span>
-                        </div>
-                      </div>
-                    </li>
-                  )
-                })
-              ) : (
-                <NoResult text="라이브 검색결과가 없습니다." height={120} />
+                                </div>
+                              </div>
+                            </li>
+                        )
+                      })
+                  ) : (
+                      <NoResult text="라이브 검색결과가 없습니다." height={120} />
+                  )}
+                </div>
+              </div>
+            </>
+        )}
+        {(CategoryType === 0 || CategoryType === 3) && (
+            <>
+              {filterType !== 0 && CategoryType !== 0 && clipList.length !== 0 && (
+                  <h4 className="Title topPositon">
+                    클립 <span className="Title__count">{total && total.cliptotal}</span>
+                    {CategoryType === 0 && clipList && <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />}
+                  </h4>
               )}
-            </div>
-          </div>
-        </>
-      )}
-      {(CategoryType === 0 || CategoryType === 3) && (
-        <>
-          {filterType !== 0 && CategoryType !== 0 && clipList.length !== 0 && (
-            <h4 className="Title topPositon">
-              클립 <span className="Title__count">{total && total.cliptotal}</span>
-              {CategoryType === 0 && clipList && <img src={ArrowIcon} onClick={() => props.setCategoryType(3)} />}
-            </h4>
-          )}
-          <div className="total__clip borderNone">
-            {filterType === 0 && (
-              <h4 className="Title" onClick={() => props.setCategoryType(3)}>
-                클립 <span className="Title__count">{total && total.cliptotal}</span>
-                {CategoryType === 0 && clipList && <img src={ArrowIcon} />}
-              </h4>
-            )}
-            <div className="chartListDetail pdl0">
-              {clipList && clipList.length !== 0 ? (
-                (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
-                  const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
-                  return (
-                    <li className="chartListDetailItem" key={idx + 'list'} onClick={() => fetchDataPlay(clipNo)}>
-                      <img className="clipBtnPlay" src={ClipPlayerIcon} />
-                      <div className="chartListDetailItem__thumb">
-                        {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-                        <img src={bgImg[`thumb190x190`]} alt={title} onClick={() => fetchDataPlay(clipNo)} />
-                        <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
-                      </div>
-                      <div className="textBox">
-                        <p className="textBox__subject">
+              <div className="total__clip borderNone">
+                {filterType === 0 && (
+                    <h4 className="Title" onClick={() => props.setCategoryType(3)}>
+                      클립 <span className="Title__count">{total && total.cliptotal}</span>
+                      {CategoryType === 0 && clipList && total.cliptotal !== '' && <img src={ArrowIcon} />}
+                    </h4>
+                )}
+                <div className="chartListDetail pdl0">
+                  {clipList && clipList.length !== 0 ? (
+                      (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
+                        const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
+                        return (
+                            <li
+                                className="chartListDetailItem"
+                                key={idx + 'list'}
+                                onClick={() => {
+                                  if (customHeader['os'] === OS_TYPE['Desktop']) {
+                                    if (context.token.isLogin === false) {
+                                      context.action.alert({
+                                        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                        callback: () => {
+                                          history.push('/login')
+                                        }
+                                      })
+                                    } else {
+                                      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                                    }
+                                  } else {
+                                    fetchDataPlay(clipNo, idx)
+                                  }
+                                }}>
+                              <img className="clipBtnPlay" src={ClipPlayerIcon} />
+                              <div className="chartListDetailItem__thumb">
+                                {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
+                                <img
+                                    src={bgImg[`thumb190x190`]}
+                                    alt={title}
+                                    onClick={() => {
+                                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                                        if (context.token.isLogin === false) {
+                                          context.action.alert({
+                                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                            callback: () => {
+                                              history.push('/login')
+                                            }
+                                          })
+                                        } else {
+                                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                                        }
+                                      } else {
+                                        fetchDataPlay(clipNo, idx)
+                                      }
+                                    }}
+                                />
+                                <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
+                              </div>
+                              <div className="textBox">
+                                <p className="textBox__subject">
                           <span className="subject">
                             {clipType.map((ClipTypeItem, index) => {
                               if (ClipTypeItem.value === subjectType) {
@@ -217,34 +329,34 @@ export default (props) => {
                               }
                             })}
                           </span>
-                          <i className="line"></i>
-                          <span className="title">{title}</span>
-                        </p>
-                        <p className="textBox__nickName">
-                          {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                          {nickName}
-                        </p>
-                        <div className="textBox__detail">
+                                  <i className="line"></i>
+                                  <span className="title">{title}</span>
+                                </p>
+                                <p className="textBox__nickName">
+                                  {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                                  {nickName}
+                                </p>
+                                <div className="textBox__detail">
                           <span className="textBox__detail--item">
                             <img src={SimpleMessageIcon} width={16} />
                             {replyCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
                           </span>
-                          <span className="textBox__detail--item">
+                                  <span className="textBox__detail--item">
                             <img src={heartIcon} width={16} />
-                            {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
+                                    {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
                           </span>
-                        </div>
-                      </div>
-                    </li>
-                  )
-                })
-              ) : (
-                <NoResult text="클립 검색결과가 없습니다." height={120} />
-              )}
-            </div>
-          </div>
-        </>
-      )}
-    </div>
+                                </div>
+                              </div>
+                            </li>
+                        )
+                      })
+                  ) : (
+                      <NoResult text="클립 검색결과가 없습니다." height={120} />
+                  )}
+                </div>
+              </div>
+            </>
+        )}
+      </div>
   )
 }

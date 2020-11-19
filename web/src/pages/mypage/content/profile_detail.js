@@ -28,6 +28,7 @@ export default (props) => {
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
   const {profile, location, webview, locHash} = props
+  const customHeader = JSON.parse(Api.customHeader)
 
   const urlrStr = location.pathname.split('/')[2]
   // state
@@ -251,7 +252,7 @@ export default (props) => {
   const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
     if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
     const {text, icon, startColor, endColor} = item
-    console.log(item)
+
     //-----------------------------------------------------------------------
     return (
       <div className="badgeSlide" key={index}>
@@ -301,6 +302,34 @@ export default (props) => {
       } else {
         history.goBack()
       }
+    }
+  }
+  // check special Dj
+  const checkSpecialDj = () => {
+    if (profile.wasSpecial === true && profile.isSpecial === false) {
+      return (
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+          <div className="specialIcon prev" />
+        </div>
+      )
+    } else if (profile.isSpecial === true) {
+      return (
+        <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
+          <div className="specialIcon">
+            {profile.specialDjCnt && profile.specialDjCnt > 0 ? (
+              <em className="specialIcon__count">{profile.specialDjCnt}</em>
+            ) : (
+              ''
+            )}
+          </div>
+        </div>
+      )
+    } else if (profile.isNew === true) {
+      return <span className="newIcon">신입 DJ</span>
+    } else if (profile.isNewListener === true) {
+      return <span className="newIcon">신입청취자</span>
+    } else {
+      return <span className="blind">no badge</span>
     }
   }
   //function모바일 레어어 실행
@@ -379,31 +408,44 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
-              if (webview === 'new') {
-                if (
-                  context.customHeader['os'] === OS_TYPE['Android'] ||
-                  (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
-                ) {
-                  //IOS 웹뷰에서 같은 방 진입시
-                  if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
-                    return Hybrid('CloseLayerPopup')
-                  }
-                  //
-                  return RoomJoin({roomNo: profile.roomNo})
-                }
-              }
-
-              if (webview === 'new' && Utility.getCookie('listen_room_no')) {
-                return false
-              }
-
-              if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
-              } else {
-                if (webview === 'new' && Utility.getCookie('listen_room_no') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                  return false
+              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                if (context.token.isLogin === false) {
+                  context.action.alert({
+                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                    callback: () => {
+                      history.push('/login')
+                    }
+                  })
                 } else {
-                  RoomJoin({roomNo: profile.roomNo})
+                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                }
+              } else {
+                if (webview === 'new') {
+                  if (
+                    context.customHeader['os'] === OS_TYPE['Android'] ||
+                    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
+                  ) {
+                    //IOS 웹뷰에서 같은 방 진입시
+                    if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
+                      return Hybrid('CloseLayerPopup')
+                    }
+                    //
+                    return RoomJoin({roomNo: profile.roomNo})
+                  }
+                }
+
+                if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                  return false
+                }
+
+                if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
+                  return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                } else {
+                  if (webview === 'new' && Utility.getCookie('listen_room_no') && context.customHeader['os'] === OS_TYPE['IOS']) {
+                    return false
+                  } else {
+                    RoomJoin({roomNo: profile.roomNo})
+                  }
                 }
               }
             }}>
@@ -412,15 +454,15 @@ export default (props) => {
           </button>
         )}
         <div className="profile-image">
-          <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.url})`}}>
-            <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} />
+          <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
+            <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />
             {/* {profile.level > 100 && <div className="profileBg" style={{backgroundImage: `url(${profile.profileBg})`}}></div>} */}
             {profile.level > 50 && <div className="holderBg" style={{backgroundImage: `url(${profile.holderBg})`}}></div>}
             <div className="holder" style={{backgroundImage: `url(${profile.holder})`}}></div>
           </figure>
           {Zoom === true && (
             <div className="zoom" onClick={() => setZoom(false)}>
-              <img src={profile.profImg ? profile.profImg['url'] : ''} alt={profile.nickNm} className="zoomImg" />
+              <img src={profile.profImg ? profile.profImg['thumb700x700'] : ''} alt={profile.nickNm} className="zoomImg" />
             </div>
           )}
         </div>
@@ -461,58 +503,74 @@ export default (props) => {
             </span>
           </strong>
         </div>
-        {/* {profile.isSpecial === true && <span className="specialIcon">스페셜 DJ</span>} */}
-        {profile.isSpecial === true ? (
-          <span className="specialIcon">스페셜 DJ</span>
-        ) : profile.isNew === true ? (
-          <span className="newIcon">신입 DJ</span>
-        ) : profile.isNewListener === true ? (
-          <span className="newIcon">신입청취자</span>
-        ) : (
-          <span className="blind">no badge</span>
-        )}
+        {/* 스디 check*/}
+        {checkSpecialDj()}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
-        {profile.liveBadgeList && profile.liveBadgeList.length > 0 && (
+        {((profile.fanBadgeList && profile.fanBadgeList.length > 0) ||
+          (profile.liveBadgeList && profile.liveBadgeList.length > 0)) && (
           <div className="badgeWrap">
             <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
           </div>
         )}
-        {profile.fanRank.length > 0 && <div className="fanListWrap">{createFanList()}</div>}
-
-        {profile.likeTotCnt > 0 && (
+        {profile.fanRank.length > 0 ? (
+          <div className="fanListWrap">{createFanList()}</div>
+        ) : (
           <div className="fanListWrap">
-            {myProfileNo === profile.memNo ? (
-              <button
-                className="btn__fanRank cupid"
-                onClick={() => {
-                  {
-                    profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
-                    setRankTabType('tabGood')
-                  }
-                }}>
-                왕큐피트
-              </button>
-            ) : (
-              <button
-                className="btn__fanRank cupid"
-                onClick={() => {
-                  profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
-                  setRankTabType('tabGood')
-                }}>
-                왕큐피트
-              </button>
-            )}
-
-            <p
-              className="fanListWrap__cupidNick"
-              onClick={() => {
-                history.push(`/mypage/${profile.cupidMemNo}`)
-              }}>
-              {profile.cupidNickNm}
-            </p>
+            <div className="fanRankList">
+              <button className="btn__fanRank">팬랭킹</button>
+              <div className={`fanItem rank1 defalut`}></div>
+              <div className={`fanItem rank2 defalut`}></div>
+              <div className={`fanItem rank3 defalut`}></div>
+            </div>
           </div>
         )}
+        <div className="fanListWrap cupidWrap">
+          {myProfileNo === profile.memNo ? (
+            <button
+              className="btn__fanRank cupid"
+              onClick={() => {
+                {
+                  profile.likeTotCnt > 0 && context.action.updateCloseRank(true)
+                  setRankTabType('tabGood')
+                }
+              }}>
+              왕큐피트
+            </button>
+          ) : (
+            <button
+              className="btn__fanRank cupid"
+              onClick={() => {
+                profile.likeTotCnt > 0 && context.action.updateCloseFanRank(true)
+                setRankTabType('tabGood')
+              }}>
+              왕큐피트
+            </button>
+          )}
+          {profile.likeTotCnt > 0 && profile.cupidMemNo !== '' && profile.cupidNickNm !== '' ? (
+            <>
+              <img
+                src={profile.cupidProfImg.thumb62x62}
+                className="fanListWrap__cupidImg"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}
+              />
+              <p
+                className="fanListWrap__cupidNick"
+                onClick={() => {
+                  history.push(`/mypage/${profile.cupidMemNo}`)
+                }}>
+                {profile.cupidNickNm}
+              </p>
+            </>
+          ) : (
+            <div className="fanRankList">
+              <div className={`fanItem defalut`}></div>
+              <span className="defalutTxt">(좋아요 보낸 회원없음)</span>
+            </div>
+          )}
+        </div>
 
         <div className="categoryCntWrap">
           {createCountList('fan', profile.fanCnt)}
@@ -559,6 +617,7 @@ export default (props) => {
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}
       {context.closeGoodCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="좋아요" />}
+      {context.closeSpeical === true && <ProfileFanList {...props} reportShow={reportShow} name="스디" />}
       {context.closePresent === true && <ProfilePresent {...props} reportShow={reportShow} name="선물" />}
       {context.closeRank === true && <ProfileRank {...props} type={rankTabType} name="랭킹" />}
       {context.closeFanRank === true && <ProfileFanRank {...props} type={rankTabType} name="뉴팬랭킹" />}

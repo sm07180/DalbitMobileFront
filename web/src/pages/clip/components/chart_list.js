@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useContext} from 'react'
+import React, {useEffect, useRef, useState, useContext, useCallback} from 'react'
 //modules
 import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
@@ -27,7 +27,7 @@ export default (props) => {
   //ctx
   const context = useContext(Context)
   let history = useHistory()
-  const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType} = props
+  const {chartListType, clipTypeActive, clipType, clipCategoryFixed, selectType, reloadInit} = props
   //state
   const [list, setList] = useState([])
   const [nextList, setNextList] = useState([])
@@ -46,7 +46,7 @@ export default (props) => {
       djType: 0,
       gender: '',
       page: currentPage,
-      records: 10
+      records: 50
     })
     if (res.result === 'success' && res.data.hasOwnProperty('list')) {
       // setList(res.data.list)
@@ -70,12 +70,29 @@ export default (props) => {
       })
     }
   }
+
+  const getPageFormIdx = useCallback((idx) => {
+    if (idx < 100) return 1
+    idx = String(idx)
+    return Number(idx.substring(0, idx.length - 2)) + 1
+  }, [])
+
   // 플레이가공
-  const fetchDataPlay = async (clipNum) => {
+  const fetchDataPlay = async (clipNum, idx) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
     })
     if (result === 'success') {
+      const nowPage = getPageFormIdx(idx)
+      const playListInfoData = {
+        slctType: context.clipMainSort,
+        dateType: context.clipMainDate,
+        subjectType: clipTypeActive,
+        page: nowPage,
+        records: 100
+      }
+
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -115,6 +132,7 @@ export default (props) => {
           className="chartListDetailItem"
           key={idx + 'list'}
           onClick={() => {
+            // fetchDataPlay(clipNo, idx)
             if (customHeader['os'] === OS_TYPE['Desktop']) {
               if (globalCtx.token.isLogin === false) {
                 context.action.alert({
@@ -127,7 +145,7 @@ export default (props) => {
                 globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
-              fetchDataPlay(clipNo)
+              fetchDataPlay(clipNo, idx)
             }
           }}>
           <div className="chartListDetailItem__thumb">
@@ -155,7 +173,7 @@ export default (props) => {
 
             <div className="textBox__detail">
               <span className="textBox__detail--item">
-                <i className="icon icon--people">사람 아이콘</i>
+                <i className="icon icon--message">회색 메세지 아이콘</i>
                 {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
               </span>
               <span className="textBox__detail--item">
@@ -209,7 +227,7 @@ export default (props) => {
     return (
       <div className="chartListDetail">
         <ul className={`chartListDetailBox ${clipCategoryFixed ? 'fixedOn' : ''}`}>
-          {list.length > 0 ? makeList() : <NoResult height={600} />}
+          {list.length > 0 ? makeList() : <NoResult height={600} text="등록 된 클립이 없습니다." />}
         </ul>
       </div>
     )
@@ -240,7 +258,22 @@ export default (props) => {
                   className="chartListSimpleItem"
                   style={{backgroundImage: `url('${bgImg[`thumb336x336`]}')`, height: `${windowHalfWidth}px`, cursor: 'pointer'}}
                   key={`simpleList` + idx}
-                  onClick={() => fetchDataPlay(clipNo)}>
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (globalCtx.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
+                      } else {
+                        globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                      }
+                    } else {
+                      fetchDataPlay(clipNo, idx)
+                    }
+                  }}>
                   <div className="topWrap">
                     <div className="topWrap__status">
                       {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
@@ -276,7 +309,7 @@ export default (props) => {
               )
             })
           ) : (
-            <NoResult height={600} />
+            <NoResult height={600} text="등록 된 클립이 없습니다." />
           )}
         </ul>
       </div>

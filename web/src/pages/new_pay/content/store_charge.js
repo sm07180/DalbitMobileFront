@@ -37,6 +37,7 @@ export default (props) => {
   const [showAdmin, setShowAdmin] = useState(false)
   const [mydal, setMydal] = useState('0')
   const [popupData, setPopupData] = useState([])
+  const [topbannerData, setTopbannerData] = useState([])
 
   //---------------------------------------------------------------------
   const fetchAdmin = async () => {
@@ -73,15 +74,21 @@ export default (props) => {
     const {result, data, message} = res
     if (result === 'success') {
       if (data) {
-        setPopupData(
-          data.filter((v) => {
-            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
-              return v
-            } else {
-              return false
-            }
-          })
-        )
+        if (arg === 12) {
+          // 딤 팝업
+          setPopupData(
+            data.filter((v) => {
+              if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+                return v
+              } else {
+                return false
+              }
+            })
+          )
+        } else {
+          // 상단 배너
+          setTopbannerData(data)
+        }
       }
     } else {
       context.action.alert({
@@ -177,13 +184,24 @@ export default (props) => {
   useEffect(() => {
     fetchAdmin()
     getStoreList()
-    fetchMainPopupData('12')
+    fetchMainPopupData(12)
+    fetchMainPopupData(4)
   }, [])
 
   return (
     <>
       <Header title="달 충전" />
       <Content>
+        <div className="store_banner">
+          {topbannerData &&
+            topbannerData.map((v, idx) => {
+              return (
+                <span key={`topbn-${idx}`}>
+                  <img src={v.bannerUrl} alt="" />
+                </span>
+              )
+            })}
+        </div>
         <p className="mydal">
           보유 달 <span>{mydal.toLocaleString()}</span>
         </p>
@@ -199,6 +217,13 @@ const Content = styled.section`
   padding: 0 16px;
   background: #eeeeee;
   padding-bottom: 16px;
+  .store_banner {
+    padding-top: 16px;
+    img {
+      width: 100%;
+    }
+  }
+
   .mydal {
     padding: 16px 0 8px 0;
     font-size: 16px;
@@ -255,7 +280,7 @@ const Content = styled.section`
           width: 80px;
           height: 80px;
         }
-      }
+      }img-wrap
       .price {
         font-size: 16px;
         font-weight: bold;

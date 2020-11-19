@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 import './detail.scss'
+import {Context} from "context";
 export default function Detail() {
   const history = useHistory()
   if (history.action === 'POP') {
@@ -12,6 +13,7 @@ export default function Detail() {
   }
   const {faqIdx, question} = history.location.state
   const [faqDetail, setFaqDetail] = useState(false)
+  const context = useContext(Context)
 
   async function fetchData() {
     const res = await Api.faq_list_detail({
@@ -29,6 +31,10 @@ export default function Detail() {
     history.goBack()
   }
 
+  const contentsClicked = (event) => {
+    Utility.contentClickEvent(event, context)
+  }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -39,7 +45,7 @@ export default function Detail() {
         {faqDetail && faqDetail.answer && (
           <p
             dangerouslySetInnerHTML={{__html: faqDetail.answer.replace(/class/gi, 'className')}}
-            onClick={Utility.contentClickEvent}></p>
+            onClick={contentsClicked}></p>
         )}
       </div>
       <span className="faqDetail__buttonWrap">

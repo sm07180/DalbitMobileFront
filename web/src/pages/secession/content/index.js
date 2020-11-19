@@ -18,10 +18,20 @@ const Index = (props) => {
   const store = useContext(SecssionStore)
   Index.store = store
   //---------------------------------------------------------------------
+
+  useEffect(() => {
+    if (context.token.isLogin === false) {
+      location.href = '/'
+    }
+  }, [context.token.isLogin])
   return (
     <>
-      <Header title="회원탈퇴" />
-      <Exit />
+      {context.token.isLogin === true && (
+        <>
+          <Header title="회원탈퇴" />
+          <Exit />
+        </>
+      )}
     </>
   )
 }

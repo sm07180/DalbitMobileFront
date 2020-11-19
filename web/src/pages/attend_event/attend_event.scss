@@ -1,5 +1,5 @@
 #attend-event {
-  max-width: 640px;
+  max-width: 460px;
   margin: 0 auto;
 
   .event-main {
@@ -883,6 +883,7 @@
 
     .content {
       padding: 0 3%;
+
       .note {
         padding: 16px 21px;
         font-size: 13px;
@@ -945,33 +946,6 @@
             }
           }
         }
-      }
-    }
-  }
-}
-
-.msg {
-  .attend-alert-box {
-    .title {
-      padding-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .sub-title {
-      font-size: 12px;
-      line-height: 22px;
-
-      span {
-        color: #db1adb;
-      }
-    }
-
-    .gift-img {
-      height: 150px;
-      margin-bottom: 10px;
-
-      img {
-        height: 100%;
       }
     }
   }

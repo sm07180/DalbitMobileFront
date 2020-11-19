@@ -51,6 +51,7 @@ const GlobalProvider = (props) => {
   const [closeStarCnt, setCloseStarCnt] = useState(false)
   const [closeGoodCnt, setCloseGoodCnt] = useState(false)
   const [closePresent, setClosePresent] = useState(false)
+  const [closeSpeical, setCloseSpecial] = useState(false)
   const [closeRank, setCloseRank] = useState(false)
   const [closeFanRank, setCloseFanRank] = useState(false)
   const [boardNumber, setBoardNumber] = useState('')
@@ -105,6 +106,8 @@ const GlobalProvider = (props) => {
   //back
   const [backState, setBackState] = useState(null)
   const [backFunction, setBackFunction] = useState({name: ''})
+  //selfauth
+  const [selfAuth, setSelfAuth] = useState(false)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -299,6 +302,9 @@ const GlobalProvider = (props) => {
     updateClosePresent: (bool) => {
       setClosePresent(bool)
     },
+    updateCloseSpecial: (bool) => {
+      setCloseSpecial(bool)
+    },
     updateCloseRank: (bool) => {
       setCloseRank(bool)
     },
@@ -433,6 +439,9 @@ const GlobalProvider = (props) => {
     },
     updateRoomType: (string) => {
       setRoomType(string)
+    },
+    updateSelfAuth: (boolean) => {
+      setSelfAuth(boolean)
     }
   }
   //---------------------------------------------------------------------
@@ -505,7 +514,9 @@ const GlobalProvider = (props) => {
     boardModifyInfo,
     backState,
     backFunction,
-    roomType
+    roomType,
+    selfAuth,
+    closeSpeical
   }
   return <Provider value={value}>{props.children}</Provider>
 }

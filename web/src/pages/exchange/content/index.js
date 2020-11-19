@@ -2,7 +2,7 @@
  * @file /exchange/index.js
  * @brief 달 교환 페이지
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import styled from 'styled-components'
 
 //context
@@ -11,22 +11,31 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
-import Utility from 'components/lib/utility'
+import {useHistory} from 'react-router-dom'
 
 import NoResult from 'components/ui/noResult'
+import Popup from './auto_exchange_pop'
 
-import starIcon from '../static/ic_star_s.svg'
-
+import ic_guide from '../static/guide_s.svg'
+import ic_toggle_off from '../static/toggle_off_s.svg'
+import ic_toggle_on from '../static/toggle_on_s.svg'
+import ic_close from '../static/ic_close_round_g.svg'
+import ic_notice from '../static/ic_notice.svg'
+ 
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
+  const history = useHistory()
 
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
   const [listState, setListState] = useState(-1)
   const [mydal, setMydal] = useState(0)
+  const [autoState, setAutoState] = useState(0)
+  const [popState, setPopState] = useState(1)
+  const [popup, setPopup] = useState(0)
 
   //---------------------------------------------------------------------
 
@@ -66,10 +75,10 @@ export default (props) => {
               }
             }}>
             <div className="item-wrap">
-              <img src={item.itemThumbnail}></img>
               <p>달 {item.dalCnt}</p>
+              <img src={item.itemThumbnail}></img>
             </div>
-            <p className="item-name">{item.byeolCnt}</p>
+            <p className="item-name">{item.byeolCnt.toLocaleString()}별</p>
           </div>
         )
       })
@@ -112,23 +121,99 @@ export default (props) => {
       return (
         <>
           <List>{creatList()}</List>
-          <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
-            교환하기
-          </button>
+          <div className="info-wrap">
+        <h5>달 교환 안내</h5>
+        <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
+        <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
+      </div>
+          <div className="btn-wrap">
+            <button onClick={()=>{history.goBack()}} className="charge-btn cancel">
+              취소
+            </button>
+            <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
+              교환하기
+            </button>
+          </div>
         </>
       )
     }
   }
 
+  const toggleHandler = useCallback(async () => {
+    const {result, data} = await Api.postDalAutoExchange({
+      data: {autoChange: !autoState}
+    })
+    if (result === 'success') {
+      setAutoState(data.autoChange)
+      if(data.autoChange === 0){
+        context.action.toast({
+          msg:'자동교환을 설정(OFF) 하였습니다'
+        })
+      }else{
+        context.action.toast({
+          msg:'자동교환을 설정(ON) 하였습니다'
+        })
+      }
+    }
+  }, [autoState])
+
   //useEffect
   useEffect(() => {
     getStoreList()
+
+    const checkAutoState = async () => {
+      const {result, data} = await Api.getDalAutoExchange()
+      if (result === 'success') {
+        setAutoState(data.autoChange)
+        setPopState(data.autoChange)
+      }
+    }
+    checkAutoState()
   }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (popState === 0) {
+        setPopState(1)
+      }
+    }, 8000)
+  }, [popState])
+
   //---------------------------------------------------------------------
   return (
     <Content>
-      <p className="mydal">보유 별 {mydal.toLocaleString()}</p>
+      <p className="mydal">
+        보유 별 <span>{mydal.toLocaleString()}</span>
+      </p>
+
+      <div className="auto-exchange">
+        <p>별 → 달 자동 교환</p>
+        <button className="guide" onClick={() => setPopup(1)}>
+          <img src={ic_guide} alt="가이드" />
+        </button>
+        <button className="toggle" onClick={toggleHandler}>
+          {autoState ? <img src={ic_toggle_on} alt="활성화" /> : <img src={ic_toggle_off} alt="비활성화" />}
+        </button>
+
+        <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
+          <p>
+            자동교환 설정을 ON 하시면 <br /> 편리하게 교환할 수 있어요!
+          </p>
+          <button
+            className="close"
+            onClick={() => {
+              setPopState(1)
+            }}>
+            <img src={ic_close} alt="닫기" />
+          </button>
+        </div>
+      </div>
+
       {creatResult()}
+
+      
+
+      {popup === 1 && <Popup setPopup={setPopup} />}
     </Content>
   )
 }
@@ -136,127 +221,166 @@ export default (props) => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
-  /* width: 1040px; */
   min-height: 300px;
   margin: 0 auto;
-  /* padding: 40px 0 120px 0; */
   width: 100%;
   padding: 10px 16px;
 
+  .info-wrap {
+    margin-top: 5px;
+    h5 {
+      display: flex;
+      margin-bottom: 8px;
+      padding-left: 16px;
+      background: url(${ic_notice}) no-repeat left center;
+      color: #424242;
+      font-size: 12px;
+      font-weight: bold
+    }
+    p {
+      position: relative;
+      padding-left: 16px;
+      color: #757575;
+      font-size: 12px;
+      line-height: 20px;
+      &::before {
+        position: absolute;
+        left: 6px;
+        top: 9px;
+        width: 2px;
+        height: 2px;
+        background: #757575;
+        content: '';
+      }
+      &.red{
+        color:#ec455f;
+      }
+    }
+  }
+
+  .auto-exchange {
+    display: flex;
+    position: relative;
+    padding: 8px 12px;
+    margin-bottom: 8px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    background: #fff;
+    p {
+      padding-right: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      line-height: 24px;
+    }
+    button.toggle {
+      margin-left: auto;
+    }
+  }
+
+  .auto-exchange-pop {
+    position: absolute;
+    padding: 12px 50px 12px 12px;
+    right: 0;
+    top: 45px;
+    background: #757575;
+    border-radius: 12px;
+    font-size: 12px;
+    line-height: 18px;
+
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    &.on {
+      opacity: 1;
+      z-index: 1;
+    }
+    &.off {
+      opacity: 0;
+      z-index: 0;
+    }
+    p {
+      color: #fff;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 18px;
+    }
+    button {
+      position: absolute;
+      right: 4px;
+      top: 4px;
+    }
+  }
+
+  .btn-wrap {
+    display: flex;
+    margin-top: 16px;
+  }
   .charge-btn {
-    display: block;
-    width: 328px;
-    margin: 50px auto 0;
-    border-radius: 10px;
+    width: 49%;
+    margin: 0 auto;
+    border-radius: 12px;
     background: ${COLOR_MAIN};
     color: #fff;
-    line-height: 50px;
-    &:disabled {
-      background: #bdbdbd;
-      color: #fff;
+    line-height: 44px;
+    font-weight: bold;
+    &.cancel {
+      background: #757575;
     }
   }
 
   .mydal {
-    margin-bottom: 12px;
-    color: #424242;
-    font-size: 14px;
+    margin: 10px 0 8px 0;
+    color: #000;
+    font-size: 16px;
     font-weight: 600;
     line-height: 22px;
-    text-align: right;
     transform: skew(-0.03deg);
-    &:before {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: 2px;
-      padding-right: 5px;
-      vertical-align: top;
-      background: url(${starIcon}) no-repeat;
-      content: '';
-    }
-  }
-
-  .item-name {
-    &:before {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: -2px;
-      padding-right: 1px;
-      vertical-align: middle;
-      background: url(${starIcon}) no-repeat;
-      content: '';
-    }
-  }
-
-  @media (max-width: 1060px) {
-    /* width: 100%;
-    padding: 10px 0 0 0; */
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    h2 {
-      padding-bottom: 26px;
-      font-size: 24px;
-    }
-    .mydal {
-      font-size: 14px;
-      line-height: 24px;
-      transform: skew(-0.03deg);
-      &:before {
-        width: 24px;
-        height: 24px;
-        margin-top: -1px;
-        padding-right: 3px;
-        background-size: 24px;
-      }
-    }
-    .charge-btn {
-      width: 100%;
-      margin-top: 10px;
-      font-size: 14px;
-      line-height: 48px;
+    span {
+      color: #632beb;
+      font-weight: normal;
     }
   }
 `
 
 const List = styled.div`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: space-between;
-  padding-top: 60px;
 
   .wrap {
-    width: 15%;
+    width: 32.4%;
+    margin-bottom: 13px;
     text-align: center;
     cursor: pointer;
+    background: #eeeeee;
+    &.on {
+      background: #632beb;
+      border-radius: 12px;
+    }
     & > p {
-      margin-top: 6px;
-      border-radius: 8px;
-      font-size: 18px;
-      color: #424242;
-      font-weight: 600;
-      line-height: 44px;
-      background: #fff;
+      padding: 6px 0 8px 0;
+      line-height: 18px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #000;
     }
     &.on > p {
       color: #fff;
-      background: ${COLOR_POINT_Y};
     }
   }
   .item-wrap {
-    padding: 14px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: 1px solid #f5f5f5;
-    background: #f5f5f5;
+    background: #fff;
     img {
+      padding: 5px;
       width: 100%;
-      margin-bottom: 10px;
     }
     p {
-      color: #757575;
-      font-size: 14px;
+      padding-top: 8px;
+      line-height: 13px;
+      color: #000;
+      font-size: 12px;
       transform: skew(-0.03deg);
     }
     p + p {
@@ -265,37 +389,6 @@ const List = styled.div`
   }
 
   .on .item-wrap {
-    background: #fff;
-    border: 1px solid ${COLOR_POINT_Y};
-    p {
-      color: ${COLOR_POINT_Y};
-      font-weight: 600;
-    }
-  }
-
-  @media (max-width: ${WIDTH_TABLET_S}) {
-    flex-wrap: wrap;
-    padding-top: 0;
-    .wrap {
-      width: 32.4%;
-      margin-bottom: 16px;
-
-      & > p {
-        margin-top: 2px;
-        font-size: 14px;
-        line-height: 28px;
-        transform: skew(-0.03deg);
-      }
-    }
-    .item-wrap {
-      padding: 0 0 5px 0;
-      img {
-        width: calc(100% - 25px);
-        margin-bottom: 0px;
-      }
-      p {
-        font-size: 12px;
-      }
-    }
+    border: 1px solid #632beb;
   }
 `

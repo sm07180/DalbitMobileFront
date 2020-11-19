@@ -18,7 +18,7 @@ import goldDecoFan from '../../static/fanrf1_deco@3x.png'
 import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 import liveIcon from '../../static/live_white_l.svg'
-import {RANK_TYPE} from 'pages/ranking_renewal/constant'
+import {PAGE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 function RankListTop() {
   const history = useHistory()
@@ -33,32 +33,15 @@ function RankListTop() {
   const realTimeNow = useCallback(() => {
     let timeNow
 
-    const status = convertDateToText(formState.dateType, formState.currentDate, 0)
     if (TopBoxRef.current) {
-      if (status) {
-        if (formState.rankType === RANK_TYPE.DJ && formState.dateType === RANK_TYPE.DJ) {
-          TopBoxRef.current.className = 'TopBox isLabel'
-          timeNow = <div className="realLabelDj"></div>
-        } else if (formState.rankType === RANK_TYPE.FAN && formState.dateType === RANK_TYPE.DJ) {
-          TopBoxRef.current.className = 'TopBox isLabel'
-          timeNow = <div className="realLabelFan"></div>
-        } else {
-          TopBoxRef.current.className = 'TopBox'
-          timeNow = ''
-        }
+      if (formState[PAGE_TYPE.RANKING].rankType === 1 && formState[PAGE_TYPE.RANKING].dateType === 1) {
+        TopBoxRef.current.className = 'TopBox isLabel'
+        timeNow = <div className="realLabelDj"></div>
       } else {
         TopBoxRef.current.className = 'TopBox'
         timeNow = ''
       }
     }
-
-    // if (formState.rankType === 1) {
-    //   timeNow = <div className="realLabelDj"></div>
-    // } else if (formState.rankType === 2) {
-    //   timeNow = <div className="realLabelFan"></div>
-    // } else {
-    //   timeNow = ''
-    // }
     return timeNow
   }, [formState, TopBoxRef])
 
@@ -86,7 +69,7 @@ function RankListTop() {
                   {realTimeNow()}
 
                   <div
-                    className={`TopBoxThumb ${formState.rankType === 1 ? 'dj' : 'fan'}`}
+                    className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                     onClick={() => {
                       if (context.token.isLogin) {
                         if (context.token.memNo === memNo) {
@@ -100,7 +83,7 @@ function RankListTop() {
                     }}>
                     <img src={profImg.thumb120x120} className="TopBoxThumb__pic" />
 
-                    {formState.rankType === 1 ? (
+                    {formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? (
                       <img
                         className="TopBoxThumb__deco dj"
                         src={index === 0 ? goldDecoDj : index === 1 ? sliverDecoDj : bronzeDecoDj}

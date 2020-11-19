@@ -70,6 +70,13 @@ export default () => {
   async function payFetch() {
     const {type, fetch, code} = selectedPay
 
+    // if (type === '카카오페이' || type === '페이코') {
+    //   return context.action.alert({
+    //     msg: `결제대행사 장애가 발생하여 일시적으로 결제가 불가능합니다.
+    //     잠시 다른 결제수단을 이용 부탁드립니다.`
+    //   })
+    // }
+
     if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
       return context.action.confirm({
         msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
@@ -132,7 +139,6 @@ export default () => {
   }, [selectedPay])
 
   const makeDisabled = (type) => {
-    console.log(Number(totalPrice) * totalQuantity)
     switch (type) {
       case '페이코':
         if (Number(totalPrice) * totalQuantity > 100000) return true
@@ -157,7 +163,6 @@ export default () => {
     }
     return currentPayMethod.map((item, idx) => {
       const {type} = item
-      console.log('type', type)
       const disabledState = makeDisabled(type)
       return (
         <button
@@ -194,18 +199,20 @@ export default () => {
           <label>결제상품</label>
           <p>{name}</p>
         </div>
+
         <div className="field">
           <label>상품수량</label>
           <p className="quantity">
-            <button className="plus" onClick={() => quantityCalc('plus')}>
-              +
-            </button>
-            <span>{totalQuantity}</span>
             <button className="minus" onClick={() => quantityCalc('minus')}>
               -
             </button>
+            <span>{totalQuantity}</span>
+            <button className="plus" onClick={() => quantityCalc('plus')}>
+              +
+            </button>
           </p>
         </div>
+
         <div className="field">
           <label>결제금액</label>
           <p>
@@ -350,6 +357,10 @@ const Content = styled.div`
       &.on {
         border-color: ${COLOR_MAIN};
         color: ${COLOR_MAIN};
+      }
+      &:disabled {
+        color: #9e9e9e;
+        background: #f5f5f5;
       }
     }
     button:nth-child(1) {

@@ -32,6 +32,11 @@ export default (props) => {
       clipNo: clipNum
     })
     if (result === 'success') {
+      let playListInfoData = {
+        listCnt: 20,
+        playlist: true
+      }
+      localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -87,7 +92,6 @@ export default (props) => {
                 <div
                   className="simpleContainer"
                   key={`${idx}+broadRecomendList`}
-                  style={{backgroundImage: `url(${bgImg.thumb336x336})`}}
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
                       if (context.token.isLogin === false) {
@@ -99,12 +103,15 @@ export default (props) => {
                       RoomJoin({roomNo: roomNo})
                     }
                   }}>
-                  <div className="simpleContainer__info">
-                    <div className="simpleContainer__iconBox">
-                      <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
-                      {isSpecial && <img src={SpecialIcon} />}
+                  <div className="broadcast-img">
+                    <img src={bgImg.thumb700x700} className="thumb-dj" alt="dj이미지" />
+                    <div className="simpleContainer__info">
+                      <div className="simpleContainer__iconBox">
+                        <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
+                        {isSpecial && <img src={SpecialIcon} />}
+                      </div>
+                      <span className="simpleContainer__iconBox__entry">{entryCnt}</span>
                     </div>
-                    <span className="simpleContainer__iconBox__entry">{entryCnt}</span>
                   </div>
                   <strong className="simpleContainer__title">{title}</strong>
                   <div className="dim"></div>
@@ -114,27 +121,26 @@ export default (props) => {
           : recoListClip.map((item, idx) => {
               const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
               return (
-                <li className="chartListDetailItem" key={idx + 'list'}>
-                  <img
-                    onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
+                <li
+                  className="chartListDetailItem"
+                  key={idx + 'list'}
+                  onClick={() => {
+                    if (customHeader['os'] === OS_TYPE['Desktop']) {
+                      if (context.token.isLogin === false) {
+                        context.action.alert({
+                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                          callback: () => {
+                            history.push('/login')
+                          }
+                        })
                       } else {
-                        fetchDataPlay(clipNo)
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                       }
-                    }}
-                    className="clipBtnPlay"
-                    src={ClipPlayerIcon}
-                  />
+                    } else {
+                      fetchDataPlay(clipNo)
+                    }
+                  }}>
+                  <img className="clipBtnPlay" src={ClipPlayerIcon} />
                   <div className="chartListDetailItem__thumb">
                     {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
                     <img

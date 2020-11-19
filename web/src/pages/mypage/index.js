@@ -3,6 +3,7 @@ import {Switch, Route, useParams, Redirect, useLocation, useHistory} from 'react
 import {Context} from 'context'
 import Api from 'context/api'
 import {isHybrid, Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 import qs from 'query-string'
 // components
 import Layout2 from 'pages/common/layout2.5'
@@ -106,6 +107,28 @@ export default (props) => {
     ]
   }
 
+  // if (
+  //   __NODE_ENV === 'dev' &&
+  //   (Utility.getCookie('listen_room_no') ||
+  //     Utility.getCookie('listen_room_no') !== undefined ||
+  //     Utility.getCookie('listen_room_no') !== 'null')
+  // ) {
+  //   mypageNavList = [
+  //     {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+  //     {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon}
+  //   ]
+  // }
+  // if (
+  //   __NODE_ENV === 'dev' &&
+  //   (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null')
+  // ) {
+  //   mypageNavList = [
+  //     {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
+  //     {type: 'fanboard', txt: '팬보드', component: FanBoard, icon: MenuFanBoardeIcon},
+  //     {type: 'my_clip', txt: '클립', component: MyClip, icon: ClipIcon}
+  //   ]
+  // }
+
   if (__NODE_ENV === 'dev') {
     mypageNavList = [
       {type: 'notice', txt: '방송공지', component: Notice, icon: MenuNoticeIcon},
@@ -139,7 +162,7 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if (tab !== undefined && profile.memNo !== memNo) {
+    if (tab !== undefined) {
       setTabSelected(Number(tab))
     } else {
       setTabSelected(1)

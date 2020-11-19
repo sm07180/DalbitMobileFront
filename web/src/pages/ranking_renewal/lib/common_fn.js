@@ -78,7 +78,9 @@ export function convertDateToText(dateType, currentDate, convertType) {
         return true
       }
     } else {
-      return false
+      if (year === formYear) {
+        return true
+      }
     }
     // return ''
     return false
@@ -169,7 +171,7 @@ export function convertMonday() {
   let calcNum = 0
 
   if (day === 0) {
-    calcNum = 1
+    calcNum = -6
   } else if (day === 1) {
     calcNum = 0
   } else {

@@ -23,6 +23,25 @@ $bar-color: white;
     &.off {
       display: none;
     }
+    .totalListItem {
+      position: fixed;
+      top: 45px;
+      padding: 16px 0 8px 16px;
+      font-size: 16px;
+      line-height: 18px;
+      font-weight: bold;
+      color: #000;
+      z-index: 1;
+      background: #fff;
+      width: 100%;
+      span {
+        color: #632beb;
+      }
+    }
+    .playListBox {
+      // padding-top: 30px;
+      margin-top: 80px;
+    }
   }
 
   .playListSorter {
@@ -154,6 +173,7 @@ $bar-color: white;
   display: flex;
   align-items: center;
   padding: 10px 16px;
+  height: 92px;
   outline: none;
 
   &.edit {
@@ -216,6 +236,7 @@ $bar-color: white;
 
   .textBox {
     width: calc(100% - 132px);
+    height: 62px;
     &__iconBox {
       display: flex;
       align-items: center;
@@ -363,7 +384,7 @@ $bar-color: white;
       position: absolute;
       margin: 0 auto;
       top: calc(50% - 10px);
-      left: calc(50% - 10px);
+      left: calc(50% - 7px);
       width: $size;
       height: $size;
 

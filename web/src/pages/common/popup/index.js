@@ -16,11 +16,15 @@ import Guidance from 'pages/common/guidance'
 import AgreeDetail from 'pages/common/agree_detail'
 import RankPopup from 'pages/common/rank_popup'
 import ProofShot from 'pages/common/proofshot_popup'
+
 import AlarmPop from 'pages/common/alarm_pop'
 import ClipOpen from 'pages/common/clip_open'
 import ClipInfo from 'pages/common/myclip_info'
 import ClipEvent from 'pages/common/clip_event'
 import AppDownAlrt from 'pages/common/appDownAlrt'
+
+import SpecialdjGoodsDetail from 'pages/common/specialdjGoodsDetail'
+import SpecialdjStarting from 'pages/common/specialdjStarting'
 
 //
 export default (props) => {
@@ -105,6 +109,32 @@ export default (props) => {
           </>
         )
 
+      case 'SPECIAL_DJ_GOODS_DETAIL':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <SpecialdjGoodsDetail />
+          </>
+        )
+
+      case 'SPECIAL_DJ_STARTING':
+        return (
+          <>
+            <button
+              onClick={() => {
+                context.action.updatePopupVisible(false)
+              }}>
+              팝업닫기
+            </button>
+            <SpecialdjStarting />
+          </>
+        )
+
       case 'CLIP_EVENT':
         return (
           <>
@@ -158,6 +188,10 @@ export default (props) => {
       setLayout('rankPopup')
     } else if (context.popup_code[0] == 'PROOF_SHOT') {
       setLayout('clipOpen')
+    } else if (context.popup_code[0] == 'SPECIAL_DJ_GOODS_DETAIL') {
+      setLayout('clipOpen')
+    } else if (context.popup_code[0] == 'SPECIAL_DJ_STARTING') {
+      setLayout('clipOpen')
     } else if (context.popup_code[0] == 'CLIP_OPEN') {
       setLayout('clipOpen')
     } else {
@@ -209,7 +243,8 @@ const Wrap = styled.div`
   background: #fff;
   &.round {
     max-width: 328px;
-    max-height: 446px;
+    /* max-height: 446px; */
+    /* background: #abc; */
     max-height: auto;
     border-radius: 12px;
     height: 100%;

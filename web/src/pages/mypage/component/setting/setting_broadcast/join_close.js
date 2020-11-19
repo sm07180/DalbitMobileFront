@@ -1,17 +1,33 @@
-import React, {useState, useCallback, useEffect} from 'react'
+import React, {useState, useCallback, useEffect, useContext} from 'react'
 
 import Api from 'context/api'
-
+import {Context} from 'context'
 function BC_SettingJoinClose({settingData, setSettingData}) {
+  const context = useContext(Context)
   const modifyBroadcastSetting = async (type) => {
     const res = await Api.modifyBroadcastSetting({
       [type]: !settingData[type]
     })
-
+    console.log(settingData, settingData[type])
+    let message, djType, listenerType
+    djType = ''
     if (res.result === 'success') {
       setSettingData({
         ...settingData,
         [type]: !settingData[type]
+      })
+      if (type === 'djListenerIn' || type === 'djListenerOut') {
+        message = `DJ로 방송 시 청취자 <br>${type === 'djListenerIn' ? `입장메시지` : `퇴장메시지`}${
+          settingData[type] === false ? '가 보입니다' : '를 숨깁니다.'
+        }`
+      } else if (type === 'listenerIn' || type === 'listenerOut') {
+        message = `청취자로 방송 청취 시 다른 청취자<br>${type === 'listenerIn' ? `입장메시지` : `퇴장메시지`}${
+          settingData[type] === false ? '가 보입니다' : '를 숨깁니다.'
+        }`
+      }
+
+      context.action.toast({
+        msg: message
       })
     }
   }

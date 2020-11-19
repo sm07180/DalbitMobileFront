@@ -5,24 +5,39 @@ const {Provider} = RankContext
 
 const reducer = (state, action) => {
   switch (action.type) {
+    case 'PAGE_TYPE':
+      return {
+        ...state,
+        pageType: action.val,
+        page: 1
+      }
     case 'RANK_TYPE':
       return {
-        rankType: action.val,
-        dateType: 1,
-        currentDate: new Date(),
+        ...state,
+        [state.pageType]: {
+          rankType: action.val,
+          dateType: 1,
+          currentDate: new Date()
+        },
         page: 1
       }
     case 'DATE_TYPE':
       return {
         ...state,
-        dateType: action.val.dateType,
-        currentDate: action.val.date,
+        [state.pageType]: {
+          ...state[state.pageType],
+          dateType: action.val.dateType,
+          currentDate: action.val.date
+        },
         page: 1
       }
     case 'DATE':
       return {
         ...state,
-        currentDate: action.val,
+        [state.pageType]: {
+          ...state[state.pageType],
+          currentDate: action.val
+        },
         page: 1
       }
     case 'PAGE':
@@ -37,9 +52,32 @@ const reducer = (state, action) => {
       }
     case 'RESET':
       return {
-        rankType: 1,
-        dateType: 1,
-        currentDate: new Date(),
+        pageType: 'ranking',
+        ranking: {
+          rankType: 1,
+          dateType: 1,
+          currentDate: new Date()
+        },
+        fame: {
+          rankType: 4,
+          dateType: 1,
+          currentDate: new Date()
+        },
+        page: 1
+      }
+    case 'SEARCH':
+      return {
+        pageType: 'ranking',
+        ranking: {
+          rankType: action.val.rankType,
+          dateType: action.val.dateType,
+          currentDate: action.val.currentDate
+        },
+        fame: {
+          rankType: 4,
+          dateType: 1,
+          currentDate: new Date()
+        },
         page: 1
       }
     default:
@@ -50,10 +88,22 @@ const reducer = (state, action) => {
 }
 
 const formInitData = {
-  rankType: 1,
-  dateType: 1,
-  currentDate: new Date(),
+  pageType: 'ranking',
+  ranking: {
+    rankType: 1,
+    dateType: 1,
+    currentDate: new Date()
+  },
+  fame: {
+    rankType: 4,
+    dateType: 1,
+    currentDate: new Date()
+  },
   page: 1
+}
+
+const pageInitData = {
+  // rankType:
 }
 
 function RankProvider(props) {

@@ -24,7 +24,23 @@ export default function Alert() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      clipJoin(data, context)
+      localStorage.removeItem('clipPlayListInfo')
+      const oneClipPlayList = {
+        clipNo: data.clipNo,
+        bgImg: data.bgImg,
+        title: data.title,
+        nickName: data.nickName,
+        subjectType: data.subjectType,
+        isNew: data.isNew,
+        filePlayTime: data.filePlay,
+        isSpecial: data.isSpecial,
+        gender: data.gender,
+        replyCnt: data.replyCnt,
+        goodCnt: data.goodCnt,
+        playCnt: data.playCnt
+      }
+      localStorage.setItem('oneClipPlayList', JSON.stringify(oneClipPlayList))
+      clipJoin(data, context, 'none', 'push')
     } else {
       if (code === '-99') {
         context.action.alert({
@@ -103,8 +119,11 @@ export default function Alert() {
       case 38:
         history.push(`/mypage/${memNo}?tab=0`)
         break
+      case 39:
+        history.push(`/rank?rankType=3&dateType=2`)
+        break
       case 40:
-        history.push(`/rank`)
+        history.push(`/rank?rankType=3&dateType=1`)
         break
       case 41:
         history.push(`/rank?rankType=1&dateType=1`)

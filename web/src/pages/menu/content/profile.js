@@ -64,13 +64,13 @@ export default (props) => {
       {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
       {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
       {type: 'my_clip', txt: '클립', icon: ClipIcon},
-      {type: 'bcsetting', txt: '방송설정', icon: BroadNoticeIcon}
+      {type: 'bcsetting', txt: '서비스 설정(알림/방송/매니저/차단)', icon: BroadNoticeIcon}
     ]
   }
 
   const walletList = [
     {type: 'store', txt: '달 충전', icon: DalIcon},
-    {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
+    // {type: 'money_exchange', txt: '환전', icon: ExchangeIcon},
     {type: 'wallet', txt: '내 지갑', icon: WalletIcon},
     {type: 'report', txt: '리포트', icon: ReportIcon}
   ]

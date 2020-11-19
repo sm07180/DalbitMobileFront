@@ -15,15 +15,17 @@ import Header from 'components/ui/new_header'
 
 let formTag
 
-export const openAuthPage = (formTagRef) => {
+export const openAuthPage = (formTagRef, context) => {
   var KMCIS_window
   var UserAgent = navigator.userAgent
   /* 모바일 접근 체크*/
 
   // 모바일일 경우 (변동사항 있을경우 추가 필요)
+  // alert(navigator.maxTouchPoints)
+  // alert(UserAgent)
   if (
     UserAgent.match(
-      /iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
+      /iPhone|iPod|iPad|Android|Windows CE|Mac OS|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
     ) != null ||
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null
   ) {
@@ -43,11 +45,12 @@ export const openAuthPage = (formTagRef) => {
     }
     document.authForm.target = 'KMCISWindow'
   }
+  console.log(document.authForm)
   document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
   document.authForm.submit()
 }
 
-export const authReq = async (code, formTagRef) => {
+export const authReq = async (code, formTagRef, context) => {
   const res = await Api.self_auth_req({
     params: {
       pageCode: code,
@@ -68,7 +71,9 @@ export const authReq = async (code, formTagRef) => {
     Object.keys(res.data).forEach((key) => {
       authForm.append(makeHiddenInput(key, res.data[key]))
     })
-    openAuthPage(formTagRef)
+
+    console.log(authForm)
+    openAuthPage(formTagRef, context)
   } else {
     context.action.alert({
       msg: res.message
@@ -80,8 +85,7 @@ export const authReq = async (code, formTagRef) => {
 export default (props) => {
   const location = useLocation()
 
-  const {type} = qs.parse(location.search)
-  console.log(type)
+  const {type, event} = qs.parse(location.search)
 
   //---------------------------------------------------------------------
   //context
@@ -92,10 +96,15 @@ export default (props) => {
 
   //인증 요청 버튼
   function authClick() {
+    if (event) {
+      let url = event.split('/').join('DAL')
+      url = url.split('_').join('BIT')
+      return authReq(url, formTag, context)
+    }
     if (type === 'create') {
-      authReq('6', formTag)
+      authReq('6', formTag, context)
     } else {
-      authReq('4', formTag)
+      authReq('4', formTag, context)
     }
   }
 
@@ -119,6 +128,14 @@ export default (props) => {
             <>
               <h4>
                 <span>처음 방송개설 및 클립등록 시</span>
+                <br />
+                본인인증을 필수로 받으셔야 합니다.
+              </h4>
+            </>
+          ) : event ? (
+            <>
+              <h4>
+                <span>이벤트 참여 또는 경품 수령을 위해</span>
                 <br />
                 본인인증을 필수로 받으셔야 합니다.
               </h4>

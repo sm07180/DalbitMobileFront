@@ -17,13 +17,14 @@ export default (props) => {
   const history = useHistory()
 
   const parameter = qs.parse(location.search)
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
+  const global_ctx = useContext(Context)
 
   const [toggleCheck, setToggleCheck] = useState('')
   const [conditionData, setconditionData] = useState('')
   const [imageData, setImageData] = useState('')
   const [infoData, setInfoData] = useState('')
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
 
   async function specialdjCheck() {
     const res = await Api.event_specialdj({
@@ -49,29 +50,22 @@ export default (props) => {
     history.goBack()
   }
 
-  let eventStart = String(infoData.req_start_date)
-  const eventStartY = eventStart.slice(0, 4)
-  const eventStartM = eventStart.slice(4, 6)
-  const eventStartD = eventStart.slice(6, 8)
-
-  let endDayNum = String(infoData.condition_end_date)
-  const endY = endDayNum.slice(0, 4)
-  const endM = endDayNum.slice(5, 7)
-  const endD = endDayNum.slice(8, 10)
-  const endYNumber = endY + '-' + endM + '-' + endD
-
   function eventEnd() {
     // let a = new Date("2020-08-29").getTime();
-    let startTime = new Date().getTime()
-    let endTime = new Date(endYNumber).getTime()
-    let minusTime = endTime - startTime
-    let reckoning = Math.ceil(minusTime / 3600 / 24 / 1000)
+    if (endDate !== null) {
+      let startTime = new Date().getTime()
+      let endTime = new Date(endDate).getTime()
+      let minusTime = endTime - startTime
+      let reckoning = Math.ceil(minusTime / 3600 / 24 / 1000)
 
-    if (reckoning <= 1) {
-      return '금일 24:00 종료'
-    } else {
-      return `종료 ${reckoning} 일 전`
+      if (reckoning < 1) {
+        return '금일 23:59:59 종료'
+      } else {
+        return `종료 ${reckoning} 일 전`
+      }
     }
+
+    return ''
   }
 
   function imgItem() {
@@ -96,6 +90,25 @@ export default (props) => {
   }
 
   useEffect(() => {
+    if (infoData !== '') {
+      const endDayNum = String(infoData.req_end_date)
+      const endY = endDayNum.slice(0, 4)
+      const endM = endDayNum.slice(4, 6)
+      const endD = endDayNum.slice(6, 8)
+      const endYNumber = endY + '-' + endM + '-' + endD
+      setEndDate(endYNumber)
+
+      const startDay = infoData.req_start_date
+
+      const startY = startDay.slice(0, 4)
+      const startM = startDay.slice(4, 6)
+      const startD = startDay.slice(6, 8)
+
+      setStartDate(startY + '년 ' + startM + '월 ' + startD + '일')
+    }
+  }, [infoData])
+
+  useEffect(() => {
     specialdjCheck()
   }, [])
 
@@ -110,7 +123,7 @@ export default (props) => {
           <button
             className="startingPopup"
             onClick={() => {
-              globalCtx.action.updatePopup('TERMS', 'specialdj-starting')
+              global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
             }}>
             선발 요건 확인하기
           </button>
@@ -118,30 +131,31 @@ export default (props) => {
           <button
             className="goodsPopup"
             onClick={() => {
-              globalCtx.action.updatePopup('TERMS', 'specialdj-goods-detail')
+              global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
             }}>
             굿즈 상품 미리보기
           </button>
           {imgItem()}
         </div>
 
-        {token.isLogin === true ? (
+        {global_ctx.token.isLogin === true ? (
           <>
-            <img src="https://image.dalbitlive.com/event/specialdj/20200914/title.jpg" alt="선발 방식" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201019/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
-              {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}
+              {infoData !== '' && endDate !== null && `${startDate} ~ ${endDate.split('-')[1]}월 ${endDate.split('-')[2]}일`}
+              {/* {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}  */}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)
             </div>
-            <img src={titleImg} alt="지원 요건" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201019/title.jpg" alt="지원 요건" className="imgResize" />
 
             <div className="checkList">
               <div className="checkList__table">
                 <div className="checkList__list">
                   <div className="checkList__talbeLeft">
-                    {conditionData.conditionTitle1}
-                    <br />({conditionData.conditionValue1})
+                    {conditionData.conditionTitle2}
+                    <br />({conditionData.conditionValue2})
                   </div>
-                  {conditionData.condition1 !== 1 ? (
+                  {conditionData.condition2 !== 1 ? (
                     <div className="checkList__talbeRight checkList__talbeRight--red">
                       <p>
                         최소 신청 조건이
@@ -163,10 +177,12 @@ export default (props) => {
                 </div>
                 <div className="checkList__list">
                   <div className="checkList__talbeLeft">
-                    {conditionData.conditionTitle2}
-                    <br />({conditionData.conditionValue2})
+                    {conditionData.conditionTitle1}
+                    <br />({conditionData.conditionValue1})
+                    <br />
+                    ※부스터 좋아요 포함
                   </div>
-                  {conditionData.condition2 !== 1 ? (
+                  {conditionData.condition1 !== 1 ? (
                     <div className="checkList__talbeRight checkList__talbeRight--red">
                       <p>
                         최소 신청 조건이
@@ -216,7 +232,7 @@ export default (props) => {
                 <>
                   {conditionData.condition1 === 1 && conditionData.condition2 === 1 && conditionData.condition3 === 1 ? (
                     <button
-                      className="buttonOn"
+                      className="buttonOn buttonOn--purple"
                       onClick={() => {
                         history.push(
                           '/event_specialdj/write?select_year=' +
@@ -256,7 +272,15 @@ export default (props) => {
             </div>
           </>
         )}
-        {token.isLogin === true ? <img src={bottomImg} className="imgResize" alt="하단 배경 이미지" /> : <></>}
+        {global_ctx.token.isLogin === true ? (
+          <img
+            src="https://image.dalbitlive.com/event/specialdj/20201019/bottom_img.jpg"
+            className="imgResize"
+            alt="하단 배경 이미지"
+          />
+        ) : (
+          <></>
+        )}
       </div>
     </Layout>
   )

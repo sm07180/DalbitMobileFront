@@ -2421,6 +2421,35 @@ export default class API {
     return await ajax({url: '/event/lunar/date', method: 'GET', params})
   }
 
+  static getEventRouletteCoupon = async (params) => {
+    return await ajax({url: '/event/roulette/coupon', method: 'GET', params})
+  }
+
+  static getEventRouletteInfo = async (params) => {
+    return await ajax({url: '/event/roulette/info', method: 'GET', params})
+  }
+
+  static getEventRouletteStart = async (params) => {
+    return await ajax({url: '/event/roulette/start', method: 'GET', params})
+  }
+
+  static getEventRouletteWin = async (params) => {
+    return await ajax({url: '/event/roulette/win', method: 'GET', params})
+  }
+
+  static getEventRouletteApply = async (params) => {
+    return await ajax({url: '/event/roulette/apply', method: 'GET', params})
+  }
+
+  static postEventRoulettePhone = async (data) => {
+    return await ajax({url: '/event/roulette/phone', method: 'POST', data})
+  }
+
+  //이벤트용 ios 심사여부 조회
+  static getIosJudge = async (params) => {
+    return await ajax({url: '/ios/judge', method: 'GET', params})
+  }
+
   static getNewFanList = async (params) => {
     return await ajax({url: '/profile/fan/list/new', method: 'GET', params})
   }
@@ -2647,6 +2676,162 @@ export default class API {
     return await ajax({
       url: '/event/chooseok/purchase/bonus',
       method: 'GET'
+    })
+  }
+  // 환전하기 리뉴얼
+
+  static exchangeAddAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/add',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeSearchAccount = async () => {
+    return await ajax({
+      url: '/member/exchange/account/list',
+      method: 'GET'
+    })
+  }
+  static exchangeDeleteAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+  static exchangeEditAccount = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/member/exchange/account/edit',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 리스트 조회
+   * @method "GET"
+   * @create 강다인 2020.09.29
+   */
+  static getEventList = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/list',
+      method: method || 'GET',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자/당첨결과 조회
+   * @method "POST"
+   * @create 강다인 2020.10.12
+   */
+  static getEventResult = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winResult',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 명단 조회
+   * @method "POST"
+   * @create 강다인 2020.10.13
+   */
+  static getEventWinner = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winList',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 경품 수령 방법 선택
+   * @method "POST"
+   * @create 강다인 2020.10.15
+   */
+  static prizeReceiveWay = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/receiveWay',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 등록 정보 가져오기
+   * @method "POST"
+   * @create 강다인 2020.10.15
+   */
+  static winnerInfoSelect = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/select',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 본인인증 정보 가져오기 (이름, 핸드폰번호)
+   * @method "GET"
+   * @create 강다인 2020.10.16
+   */
+  static winnerInfoFormat = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/infoFormat',
+      method: method || 'GET',
+      data: data
+    })
+  }
+
+  /**
+   * @brief 이벤트 당첨자 등록 정보 등록/수정
+   * @method "POST"
+   * @create 강다인 2020.10.19
+   */
+  static winnerInfoAddEdit = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: url || '/event/page/winnerAddInfo/edit',
+      method: method || 'POST',
+      data: data
+    })
+  }
+
+  static specialHistory = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/member/special/history',
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static getDalAutoExchange = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      url: '/mypage/auto/change',
+      method: 'GET'
+    })
+  }
+
+  static postDalAutoExchange = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/mypage/auto/change',
+      method: 'POST',
+      data: data
     })
   }
 }
