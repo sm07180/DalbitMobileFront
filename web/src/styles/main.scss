@@ -1991,7 +1991,7 @@
   }
 
   .logo_text {
-    width: 90px;
+    width: 130px;
     display: block;
     margin: 0 auto 20px auto;
   }
@@ -2090,6 +2090,10 @@
   .socialLogin {
     width: 100%;
     padding-top: 36px;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    bottom: 50px;
     text-align: center;
 
     .social-apple-btn {

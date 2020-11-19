@@ -299,7 +299,7 @@ export default (props) => {
                     window.location.href = '/'
                   }
                 }}>
-                <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" />
+                {/* <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" /> */}
                 <img className="logo_text" src={logoW} alt="달빛라이브" />
               </h2>
               <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
@@ -347,6 +347,10 @@ export default (props) => {
                   <div className="link-text">비밀번호 변경</div>
                 </a>
                 <div className="bar" />
+                <a href="/signup">
+                  <div className="link-text">회원가입</div>
+                </a>
+                <div className="bar" />
                 <a href="/service">
                   <div className="link-text yello">고객센터</div>
                 </a>
@@ -372,9 +376,9 @@ export default (props) => {
                     {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
                   </div>
 
-                  <div className="signupButton">
+                  {/* <div className="signupButton">
                     <a href="/signup">회원가입</a>
-                  </div>
+                  </div> */}
                 </>
               )}
             </div>
