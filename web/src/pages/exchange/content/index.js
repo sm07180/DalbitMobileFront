@@ -3,6 +3,7 @@
  * @brief 달 교환 페이지
  */
 import React, {useEffect, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
@@ -21,7 +22,7 @@ export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
-
+  let history = useHistory()
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
@@ -113,7 +114,7 @@ export default (props) => {
         <>
           <List>{creatList()}</List>
           <div className="btn-wrap">
-            <button onClick={chargeClick} className="charge-btn cancel">
+            <button onClick={history.goBack()} className="charge-btn cancel">
               취소
             </button>
             <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
