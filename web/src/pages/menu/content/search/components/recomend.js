@@ -92,7 +92,6 @@ export default (props) => {
                 <div
                   className="simpleContainer"
                   key={`${idx}+broadRecomendList`}
-                  style={{backgroundImage: `url(${bgImg.thumb336x336})`}}
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
                       if (context.token.isLogin === false) {
@@ -104,12 +103,15 @@ export default (props) => {
                       RoomJoin({roomNo: roomNo})
                     }
                   }}>
-                  <div className="simpleContainer__info">
-                    <div className="simpleContainer__iconBox">
-                      <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
-                      {isSpecial && <img src={SpecialIcon} />}
+                  <div className="broadcast-img">
+                    <img src={bgImg.thumb700x700} className="thumb-dj" alt="dj이미지" />
+                    <div className="simpleContainer__info">
+                      <div className="simpleContainer__iconBox">
+                        <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
+                        {isSpecial && <img src={SpecialIcon} />}
+                      </div>
+                      <span className="simpleContainer__iconBox__entry">{entryCnt}</span>
                     </div>
-                    <span className="simpleContainer__iconBox__entry">{entryCnt}</span>
                   </div>
                   <strong className="simpleContainer__title">{title}</strong>
                   <div className="dim"></div>

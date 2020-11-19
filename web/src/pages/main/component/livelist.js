@@ -65,7 +65,8 @@ const makeContents = (props) => {
             alertCheck(roomNo)
           }
         }}>
-        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}}>
+        <div className="broadcast-img">
+          <img src={bjProfImg['thumb190x190']} className="thumb-dj" alt={bjNickNm} />
           {gstProfImg.thumb190x190 && (
             <span className="thumb-guest">
               <img src={gstProfImg.thumb190x190} alt="게스트" />

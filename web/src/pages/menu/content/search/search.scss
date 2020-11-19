@@ -80,16 +80,28 @@
       .simpleContainer {
         position: relative;
         width: calc(50% - 4px);
-        height: 160px;
+        // height: 160px;
         margin-bottom: 12px;
         border-radius: 16px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        &__info {
+        .broadcast-img {
           position: relative;
+          width: 100%;
+          height: 100%;
+          .thumb-dj {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background-color: $lighterGray;
+          }
+        }
+        &__info {
+          position: absolute;
+          top: 0;
+          left: 0;
           display: flex;
-          margin: 4px 8px;
           justify-content: space-between;
+          width: 100%;
+          padding: 4px 8px;
           z-index: 2;
         }
         &__iconBox {
@@ -354,9 +366,10 @@
         .iconPc {
           display: flex;
           align-items: center;
-          height: 16px;
           padding: 0 4px;
           margin-right: 4px;
+          width: 26px;
+          height: 16px;
           text-indent: -9999px;
           background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
           background-size: contain;

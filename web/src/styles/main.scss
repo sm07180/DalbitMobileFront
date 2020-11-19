@@ -957,11 +957,12 @@
       position: relative;
       width: 80px;
       height: 80px;
-      border-radius: 12px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      background-color: $lighterGray;
+      .thumb-dj {
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background-color: $lighterGray;
+      }
       .thumb-guest {
         position: absolute;
         right: -3px;
