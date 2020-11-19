@@ -2,7 +2,7 @@
  * @file /exchange/index.js
  * @brief 달 교환 페이지
  */
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -12,7 +12,6 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
-import {useHistory} from 'react-router-dom'
 
 import NoResult from 'components/ui/noResult'
 import Popup from './auto_exchange_pop'
