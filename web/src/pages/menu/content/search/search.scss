@@ -83,6 +83,7 @@
         // height: 160px;
         margin-bottom: 12px;
         border-radius: 16px;
+        cursor: pointer;
         .broadcast-img {
           position: relative;
           width: 100%;
@@ -103,6 +104,7 @@
           width: 100%;
           padding: 4px 8px;
           z-index: 2;
+          box-sizing: border-box;
         }
         &__iconBox {
           display: flex;
