@@ -350,7 +350,7 @@ export default (props) => {
                 <button
                   className="btn__confirm"
                   onClick={() => {
-                    authReq('5', formTag)
+                    authReq('5', formTag, context)
                   }}>
                   본인인증
                 </button>

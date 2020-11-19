@@ -11,7 +11,7 @@ import Navigator from './pages/navigator'
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const Ranking = React.lazy(() => import('pages/ranking_renewal'))
-const RankingGuide = React.lazy(() => import('pages/ranking/guide/rank_guide'))
+const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mypage/setting2.5.js'))
