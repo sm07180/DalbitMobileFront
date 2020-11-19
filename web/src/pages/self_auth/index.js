@@ -43,6 +43,7 @@ export const openAuthPage = (formTagRef, context) => {
     }
     document.authForm.target = 'KMCISWindow'
   }
+  console.log(document.authForm)
   document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
   document.authForm.submit()
 }
@@ -68,6 +69,8 @@ export const authReq = async (code, formTagRef, context) => {
     Object.keys(res.data).forEach((key) => {
       authForm.append(makeHiddenInput(key, res.data[key]))
     })
+
+    console.log(authForm)
     openAuthPage(formTagRef, context)
   } else {
     context.action.alert({
