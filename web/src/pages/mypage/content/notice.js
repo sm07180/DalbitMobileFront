@@ -13,7 +13,6 @@ import {Context} from 'context'
 import './notice.scss'
 
 const Notice = (props) => {
-  console.log(111)
   // moible 유저 정보
   const globalCtx = useContext(Context)
   //memNo
@@ -150,7 +149,6 @@ const Notice = (props) => {
       )}
 
       {makeView()}
-
       {photoUploading && (
         <div className="loadingWrap">
           <div className="loading">
@@ -158,7 +156,6 @@ const Notice = (props) => {
           </div>
         </div>
       )}
-
       {addpage === undefined && !props.type && yourMemNo === globalCtx.profile.memNo && createWriteBtn()}
     </div>
   )
