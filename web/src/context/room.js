@@ -397,19 +397,20 @@ export const RoomMake = async (context) => {
           }
         })
         return false
-      }else if(code === 'C100'){ //방송 이어하기 가능
+      } else if (code === 'C100') {
+        //방송 이어하기 가능
         context.action.confirm({
-          msg: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
-          subMsg: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
+          msg: '방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
+          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)가 유지됩니다.',
           callback: () => {
             goRoomMake()
           },
           cancelCallback: () => {
             ;(async function () {
               const continueRes = await Api.broad_continue({})
-              if(continueRes.result === 'success'){
+              if (continueRes.result === 'success') {
                 Hybrid('ReconnectRoom', continueRes.data)
-              }else{
+              } else {
                 context.action.alert({
                   msg: continueRes.message
                 })
