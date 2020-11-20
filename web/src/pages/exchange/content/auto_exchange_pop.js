@@ -55,9 +55,8 @@ export default (props) => {
                     10별 쌓일 때마다 6달로 자동교환됩니다.
                   </p>
                   <p className="line-text">
-                    별 → 달 자동 교환을 원치 않으시면 언제든지
-                    <br />
-                    <img src={ic_toggle_off} />
+                    별 → 달 자동 교환을 원치 않으시면 <br />
+                    언제든지 <img src={ic_toggle_off} />
                     해제(OFF) 할 수 있습니다.
                   </p>
                   <p className="line-text red">설정(ON)하시면 다음날 00시부터 작동됩니다.</p>
