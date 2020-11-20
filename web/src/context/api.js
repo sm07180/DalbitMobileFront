@@ -484,7 +484,7 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/broad/vw/continue`,
-      method: method || 'POST',
+      method: method || 'POST'
     })
   }
   //--------------------------------------------------------------------- 회원 관련
@@ -2840,6 +2840,14 @@ export default class API {
     return await ajax({
       url: '/mypage/auto/change',
       method: 'POST',
+      data: data
+    })
+  }
+
+  static getStoryList = async (data) => {
+    return await ajax({
+      url: '/mypage/story',
+      method: 'GET',
       data: data
     })
   }
