@@ -88,6 +88,9 @@ export default (props) => {
       <div className="wrap-message">
         {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
+        {context.message.subMsg && (
+            <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.subMsg)}}></div>
+        )}
 
         {context.message.remsg && (
           <b className="remsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.remsg)}}></b>
@@ -163,6 +166,22 @@ const Alert = styled.section`
       text-align: center;
       color: ${COLOR_MAIN};
     }
+  }
+
+  .subMsg {
+    font-size: 12px;
+    padding: 0 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    word-break: keep-all;
+    text-align: center;
+    transform: skew(-0.03deg);
+    color: #000;
   }
 
   .remsg {

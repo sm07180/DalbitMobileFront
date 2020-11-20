@@ -478,6 +478,15 @@ export default class API {
       params: params
     })
   }
+
+  static broad_continue = async (obj) => {
+    const {url, method} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/vw/continue`,
+      method: method || 'POST',
+    })
+  }
   //--------------------------------------------------------------------- 회원 관련
 
   /**
