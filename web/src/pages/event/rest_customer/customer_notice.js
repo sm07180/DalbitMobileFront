@@ -75,7 +75,7 @@ export default () => {
         <strong className="notice">자동 탈퇴를 원하지 않는 경우</strong>
 
         <div className="subNotice">
-          <strong className="color_red">{dueDate} 이전</strong>까지 달빛라이브 앱/웹에
+          <strong className="color_red">{dueDate} 00시 이전</strong>까지 달빛라이브 앱/웹에
           <strong> 1회 이상 로그인하시면 자동 탈퇴 회원 대상에서 제외</strong>됩니다.
         </div>
 
