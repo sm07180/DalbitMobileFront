@@ -51,7 +51,7 @@ export default (props) => {
       <button
         onClick={() => {
           if (context.token.isLogin) {
-            history.push('/customer/notice/176')
+            history.push('/customer/notice/200')
           } else {
             history.push('/login')
           }
