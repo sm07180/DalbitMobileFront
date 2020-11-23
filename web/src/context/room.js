@@ -397,6 +397,32 @@ export const RoomMake = async (context) => {
           }
         })
         return false
+      } else if (code === 'C100') {
+        //방송 이어하기 가능
+        context.action.confirm({
+          msg: '방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
+          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)가 유지됩니다.',
+          callback: () => {
+            goRoomMake()
+          },
+          cancelCallback: () => {
+            ;(async function () {
+              const continueRes = await Api.broad_continue({})
+              if (continueRes.result === 'success') {
+                Hybrid('ReconnectRoom', continueRes.data)
+              } else {
+                context.action.alert({
+                  msg: continueRes.message
+                })
+              }
+            })()
+          },
+          buttonText: {
+            left: '이어서 방송하기',
+            right: '새로 방송하기'
+          }
+        })
+        return false
       }
       return true
     } else if (res.result === 'fail') {
@@ -408,10 +434,7 @@ export const RoomMake = async (context) => {
   //-----------------------------------------------------
   const {customHeader, token} = context || Room.context
   const _os = customHeader['os']
-  let appBuild = customHeader['appBuild']
-  if (appBuild === undefined) {
-    appBuild = 1
-  }
+
   //#1 로그인체크
   if (!token.isLogin) {
     window.location.href = '/login'
@@ -428,23 +451,21 @@ export const RoomMake = async (context) => {
   //#3 방상태확인 ("진행중인 방송이 있습니다.")
   const result = await broadCheck()
   if (!result) return
-  //## 실행 리얼 주석 시작
+  goRoomMake()
+}
+
+async function goRoomMake(){
   let broadSetting = {}
   broadSetting['djListenerIn'] = false
   broadSetting['djListenerOut'] = false
+  broadSetting['isSpecial'] = false
 
-  if (__NODE_ENV === 'dev' || (_os === 1 && appBuild > 32) || (_os === 2 && appBuild > 141)) {
-    const apiSetting = await Api.getBroadcastSetting()
-    if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
-      broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
-      broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
-    }
+  const apiSetting = await Api.getBroadcastSetting()
+  if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
+    broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
+    broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
+    broadSetting['isSpecial'] = apiSetting.data['isSpecial']
   }
-  if (__NODE_ENV !== 'dev' && _os === 1 && appBuild < 32) {
-    Hybrid('RoomMake')
-  } else {
-    Hybrid('RoomMake', broadSetting)
-  }
-  //## 실행 리얼 주석 종료
-  //Hybrid('RoomMake') //원소스
+
+  Hybrid('RoomMake', broadSetting)
 }

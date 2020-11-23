@@ -478,6 +478,15 @@ export default class API {
       params: params
     })
   }
+
+  static broad_continue = async (obj) => {
+    const {url, method} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/broad/vw/continue`,
+      method: method || 'POST'
+    })
+  }
   //--------------------------------------------------------------------- 회원 관련
 
   /**
@@ -2832,6 +2841,29 @@ export default class API {
       url: '/mypage/auto/change',
       method: 'POST',
       data: data
+    })
+  }
+
+  static getStoryList = async (data) => {
+    return await ajax({
+      url: '/mypage/story',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getStory = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/broad/story',
+      params: data
+    })
+  }
+  static deleteStory = async (data) => {
+    return await ajax({
+      method: 'DELETE',
+      url: '/broad/story',
+      data
     })
   }
 }

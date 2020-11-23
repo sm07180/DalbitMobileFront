@@ -55,7 +55,7 @@ export default (props) => {
               onClick={() => {
                 if (context.token.isLogin) {
                   context.action.updatePopupVisible(false)
-                  history.push('/customer/notice/176')
+                  history.push('/customer/notice/200')
                 } else {
                   context.action.updatePopupVisible(false)
                   history.push('/login')

@@ -120,11 +120,11 @@ export default (props) => {
       return (
         <>
           <List>{creatList()}</List>
-          {/* <div className="info-wrap">
+          <div className="info-wrap">
             <h5>달 교환 안내</h5>
             <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
             <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
-          </div> */}
+          </div>
 
           <div className="btn-wrap">
             <button
@@ -190,7 +190,7 @@ export default (props) => {
         보유 별 <span>{mydal.toLocaleString()}</span>
       </p>
 
-      {/* <div className="auto-exchange">
+      <div className="auto-exchange">
         <p>별 → 달 자동 교환</p>
         <button className="guide" onClick={() => setPopup(1)}>
           <img src={ic_guide} alt="가이드" />
@@ -211,7 +211,7 @@ export default (props) => {
             <img src={ic_close} alt="닫기" />
           </button>
         </div>
-      </div> */}
+      </div>
 
       {creatResult()}
 

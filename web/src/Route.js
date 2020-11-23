@@ -57,6 +57,9 @@ const Service = React.lazy(() => import('pages/service'))
 const Clip = React.lazy(() => import('pages/clip'))
 const ClipReply = React.lazy(() => import('pages/clip_reply'))
 const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
+
+const Story = React.lazy(() => import('pages/story'))
+
 export default () => {
   return (
     <React.Suspense
@@ -121,6 +124,8 @@ export default () => {
         <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
         <Route exact path="/clip/play_list" component={ClipPlayList} />
         <Route exact path="/ImageEditor" component={ImageEditor} />
+        <Route exact path="/story" component={Story} />
+        <Route exact path="/story/:roomNo" component={Story} />
         <Redirect to="/error" />
       </Switch>
     </React.Suspense>
