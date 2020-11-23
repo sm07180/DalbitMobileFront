@@ -2866,6 +2866,14 @@ export default class API {
       data
     })
   }
+
+  static getLongTermUser = async (data) => {
+    return await ajax({
+      url: '/long/term',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null
