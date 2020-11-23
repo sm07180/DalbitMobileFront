@@ -1,6 +1,6 @@
-@import "../../../asset/scss/common/variables";
+@import '../../../asset/scss/common/variables';
 
-#customerOut {
+#customerNotice {
   box-sizing: border-box;
   padding: 0px 16px;
 
@@ -33,7 +33,7 @@
           width: 6px;
           height: 6px;
           background: $black;
-          content: "";
+          content: '';
         }
       }
 
