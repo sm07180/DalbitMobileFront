@@ -1,0 +1,49 @@
+@import "../../../asset/scss/common/variables";
+
+#customerOut {
+  box-sizing: border-box;
+  padding: 0px 16px;
+
+  .text {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .point {
+    box-sizing: border-box;
+    padding: 20px;
+    border-radius: 12px;
+    background: $whiteGray;
+    border: 1px solid $lightGray;
+    margin-bottom: 28px;
+
+    li {
+      display: flex;
+      font-size: 14px;
+      margin-bottom: 16px;
+      b {
+        width: 78px;
+        flex-shrink: 0;
+        position: relative;
+        padding-left: 10px;
+        &:after {
+          left: 0px;
+          top: 7px;
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          background: $black;
+          content: "";
+        }
+      }
+
+      .color_red {
+        color: #ec455f;
+      }
+      .color_purple {
+        color: $primary;
+      }
+      // https: //image.dalbitlive.com/svg/ic_notice_line_wh.svg
+    }
+  }
+}
