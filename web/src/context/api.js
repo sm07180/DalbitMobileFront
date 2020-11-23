@@ -2848,7 +2848,7 @@ export default class API {
     return await ajax({
       url: '/mypage/story',
       method: 'GET',
-      data: data
+      params: data
     })
   }
 }
