@@ -2851,6 +2851,19 @@ export default class API {
       params: data
     })
   }
+
+  static getStory = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/broad/story'
+    })
+  }
+  static deleteStory = async (data) => {
+    return await ajax({
+      method: 'DELETE',
+      url: '/broad/story'
+    })
+  }
 }
 
 API.customHeader = null
