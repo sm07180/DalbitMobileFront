@@ -2855,13 +2855,15 @@ export default class API {
   static getStory = async (data) => {
     return await ajax({
       method: 'GET',
-      url: '/broad/story'
+      url: '/broad/story',
+      params: data
     })
   }
   static deleteStory = async (data) => {
     return await ajax({
       method: 'DELETE',
-      url: '/broad/story'
+      url: '/broad/story',
+      data
     })
   }
 }

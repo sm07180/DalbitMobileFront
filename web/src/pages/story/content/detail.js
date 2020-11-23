@@ -22,7 +22,7 @@ export default () => {
     <div className="detail-wrap">
       <div className="main-txt">
         <span className="label">사연</span>
-        <span className="number">{storyList.length ? storyList.length : '0'}</span>
+        <span className="number">{storyList.length > 0 ? storyList.length : '0'}</span>
       </div>
 
       {storyList.map((story, idx) => {
