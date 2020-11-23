@@ -1,0 +1,50 @@
+@import '../../../styles/variables';
+.subTabList {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 16px 8px 16px;
+  background: $lighterGray;
+  &__item {
+    flex: 1;
+    width: max-content;
+    height: 32px;
+    margin-left: 2px;
+    border-radius: 12px;
+    border: solid 1px $lightGray;
+    background-color: $white;
+    &:first-child {
+      margin-left: 0;
+    }
+    span {
+      display: inline-block;
+      width: 22px;
+      height: 22px;
+      margin-left: 2px;
+      line-height: 22px;
+      font-weight: $bold;
+      background: $lightGray;
+      color: $primary;
+      border-radius: 50%;
+    }
+    &--active {
+      border-color: $primary;
+      background-color: $primary;
+      color: $white;
+      .subTabList__link {
+        color: $white;
+      }
+      span {
+        background: $white;
+      }
+    }
+  }
+  &__link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+}
