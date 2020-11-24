@@ -1204,10 +1204,9 @@
         background-color: $lighterGray;
       }
       .thumb-guest {
-        display: none;
         position: absolute;
-        right: -3px;
-        bottom: -3px;
+        right: 8px;
+        bottom: 8px;
         width: 32px;
         height: 32px;
         border: 2px solid $white;
