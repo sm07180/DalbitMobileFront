@@ -22,6 +22,8 @@ import qs from 'query-string'
 //layout
 import Header from 'components/ui/new_header'
 
+import BankTimePopup from './bank_time_pop'
+
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
@@ -40,6 +42,7 @@ export default () => {
   //state
   const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
   const [moreState, setMoreState] = useState(false)
+  const [bankPop, setBankPop] = useState(false)
 
   //ref
   const formTag = useRef(null)
@@ -49,6 +52,14 @@ export default () => {
 
   const [totalQuantity, setTotalQuantity] = useState(1)
   const [totalPrice, setTOtalPrice] = useState(price)
+  let bankFormData = {
+    prdtNm: name,
+    prdtPrice: totalPrice * totalQuantity,
+    itemNo: itemNo,
+    webview: webview,
+    event: event,
+    itemAmt: totalQuantity
+  }
 
   let pageCode = webview === 'new' ? '2' : '1'
   if (event === '3') pageCode = '3'
@@ -87,9 +98,23 @@ export default () => {
     }
 
     if (code === 'coocon') {
-      return history.push({
-        pathname: '/pay/bank',
-        state: {
+      let hour = new Date().getHours()
+      let min = new Date().getMinutes()
+      let sec = new Date().getSeconds()
+      if (hour < 10) {
+        hour = '0' + hour
+      }
+      if (min < 10) {
+        min = '0' + min
+      }
+      if (sec < 10) {
+        sec = '0' + sec
+      }
+
+      const time = String(hour) + String(min) + String(sec)
+
+      if ((time >= '000000' && time <= '180000') || (time >= '235000' && time <= '235959')) {
+        bankFormData = {
           prdtNm: name,
           prdtPrice: totalPrice * totalQuantity,
           itemNo: itemNo,
@@ -97,8 +122,22 @@ export default () => {
           event: event,
           itemAmt: totalQuantity
         }
-      })
+        return setBankPop(true)
+      } else {
+        return history.push({
+          pathname: '/pay/bank',
+          state: {
+            prdtNm: name,
+            prdtPrice: totalPrice * totalQuantity,
+            itemNo: itemNo,
+            webview: webview,
+            event: event,
+            itemAmt: totalQuantity
+          }
+        })
+      }
     }
+
     const {result, data, message} = await Api[fetch]({
       data: {
         Prdtnm: name,
@@ -249,6 +288,7 @@ export default () => {
         </div>
 
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
+        {bankPop && <BankTimePopup setBankPop={setBankPop} bankFormData={bankFormData} />}
       </Content>
     </>
   )
