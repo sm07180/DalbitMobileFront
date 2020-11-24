@@ -226,16 +226,18 @@ export default (props) => {
     }
   }
   const profileCount = (idx) => {
-    switch (idx) {
-      case 0:
-        return profileInfo.count.notice
-      case 1:
-        return profileInfo.count.fanboard
-      case 2:
-        return profileInfo.count.clip
+    if (profileInfo !== null) {
+      switch (idx) {
+        case 0:
+          return profileInfo.count.notice
+        case 1:
+          return profileInfo.count.fanboard
+        case 2:
+          return profileInfo.count.clip
 
-      default:
-        break
+        default:
+          break
+      }
     }
   }
   // const locationNav = (type) => {
