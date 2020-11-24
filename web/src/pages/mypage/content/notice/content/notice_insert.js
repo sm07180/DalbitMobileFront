@@ -2,15 +2,14 @@ import React, {useState, useCallback, useEffect, useContext} from 'react'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 import Api from 'context/api'
+import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
-import {useHistory, useParams} from 'react-router-dom'
-
 function NoticeInsertCompnent(props) {
-  const {getNotice, setPhotoUploading} = props
+  const {memNo, fetchData, setPhotoUploading} = props
   const context = useContext(Context)
-  let history = useHistory()
-  let {memNo} = useParams()
+  const history = useHistory()
+
   //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
@@ -42,24 +41,22 @@ function NoticeInsertCompnent(props) {
     })
   }, [formState])
 
-  const insertNotice = useCallback(async () => {
+  const insettNorice = useCallback(async () => {
     if (formState.title === '') {
       context.action.alert({
-        msg: '제목을 입력해주세요.',
-        callback: () => {
-          return
-        }
+        visible: true,
+        type: 'alert',
+        msg: `제목을 입력해주세요.`
       })
     } else if (formState.contents === '') {
       context.action.alert({
-        msg: '내용을 입력해주세요.',
-        callback: () => {
-          return
-        }
+        visible: true,
+        type: 'alert',
+        msg: `내용을 입력해주세요.`
       })
     }
 
-    const res = await Api.mypage_notice_upload({
+    const {result, data, message} = await Api.mypage_notice_upload({
       data: {
         ...formState,
         memNo: memNo,
@@ -67,12 +64,17 @@ function NoticeInsertCompnent(props) {
       }
     })
 
-    if (res.result === 'success') {
-      context.action.toast({
-        msg: res.message
+    if (result === 'success') {
+      context.action.alert({
+        visible: true,
+        type: 'alert',
+        msg: message,
+        callback: () => {
+          history.goBack()
+        }
       })
-      getNotice()
-      history.push(`/mypage/${memNo}/notice`)
+
+      fetchData()
     }
   }, [formState, memNo, image])
 
@@ -92,25 +94,32 @@ function NoticeInsertCompnent(props) {
     if (image !== null) {
       if (image.status === false) {
         context.action.alert({
-          msg: image.content
+          status: true,
+          type: 'alert',
+          content: image.content,
+          callback: () => {
+            return
+          }
         })
       } else {
         setPhotoUploading(true)
         const imageUpload = async () => {
-          const res = await Api.image_upload({
+          const {result, data, message} = await Api.image_upload({
             data: {
               dataURL: image.content,
               uploadType: 'room'
             }
           })
-          if (res.result === 'success') {
+          if (result === 'success') {
             document.getElementById('save_fileImg').value = ''
-            setThumbNail(res.data)
+            setThumbNail(data)
             setImage(null)
             setPhotoUploading(false)
           } else {
-            context.action.toast({
-              msg: res.message
+            context.action.alert({
+              visible: true,
+              type: 'alert',
+              msg: message
             })
           }
         }
@@ -141,12 +150,10 @@ function NoticeInsertCompnent(props) {
         className="noticeWrite__content"
         placeholder="작성하고자 하는 글의 내용을 입력해주세요."
       />
-
       <label className="noticeWrite__checkbox">
         <DalbitCheckbox size={20} callback={changeCheckStatus} status={formState.isTop} />
         상단 고정
       </label>
-
       <div className="saveFileImg">
         <label
           htmlFor="save_fileImg"
@@ -182,8 +189,7 @@ function NoticeInsertCompnent(props) {
       {cropOpen && eventObj !== null && (
         <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
       )}
-
-      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insertNotice}>
+      <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
         등록
       </button>
     </div>
