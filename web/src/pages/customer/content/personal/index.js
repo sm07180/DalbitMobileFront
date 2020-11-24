@@ -21,14 +21,14 @@ export default function Personal(props) {
 
   return (
     <>
-      {/* <NoticeTab />
+      <NoticeTab />
       {context.token.isLogin && (
         <button onClick={() => handleHistory('qnaList')} className={`btnMyList ${path.includes('qnaList') ? 'on' : ''}`}>
           내역보기
         </button>
-      )} */}
+      )}
       <div className="personalWrap">
-        <div className="personalWrap__headerButton">
+        {/* <div className="personalWrap__headerButton">
           <button onClick={() => handleHistory('personal')} className={path.includes('qnaList') ? '' : 'on'}>
             1:1 문의 작성
           </button>
@@ -37,7 +37,7 @@ export default function Personal(props) {
               나의 문의 내역
             </button>
           )}
-        </div>
+        </div> */}
         <Switch>
           <Route path="/customer/personal" exact component={Qna} />
           <Route path="/customer/qnaList" exact component={QnaList} />
