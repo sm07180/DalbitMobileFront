@@ -132,7 +132,7 @@ export default function List() {
   }, [nextListPage])
   return (
     <>
-      <NoticeTab />
+      {/* <NoticeTab /> */}
       {listPage && (
         <div className="noticeList">
           <dl>
