@@ -1204,10 +1204,16 @@
         background-color: $lighterGray;
       }
       .thumb-guest {
+<<<<<<< HEAD
         display: none;
         position: absolute;
         right: -3px;
         bottom: -3px;
+=======
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+>>>>>>> a771600584840050b508698c7bf90bffec104ae5
         width: 32px;
         height: 32px;
         border: 2px solid $white;
