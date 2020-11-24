@@ -8,7 +8,7 @@
   .text {
     font-size: 14px;
     color: $greishBrown;
-    strong {
+    b {
       color: $black;
     }
   }
@@ -71,7 +71,7 @@
     margin: 12px 0;
     border-bottom: 1px solid $lighterGray;
     color: $greishBrown;
-    strong {
+    b {
       color: $black;
       &.color_red {
         color: #ec455f;
