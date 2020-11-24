@@ -1,49 +1,179 @@
-@import '../../../asset/scss/common/variables';
+@import '../../../styles/variables';
 
 #customerNotice {
   box-sizing: border-box;
-  padding: 0px 16px;
+  padding: 24px 16px;
+  line-height: 1.43;
 
   .text {
-    margin-top: 24px;
-    margin-bottom: 24px;
+    font-size: 14px;
+    color: $greishBrown;
+    strong {
+      color: $black;
+    }
   }
 
   .point {
     box-sizing: border-box;
+    margin-top: 24px;
     padding: 20px;
     border-radius: 12px;
     background: $whiteGray;
     border: 1px solid $lightGray;
-    margin-bottom: 28px;
+    .tit {
+      position: relative;
+      width: 78px;
+      padding-right: 4px;
+      &::before {
+        display: inline-block;
+        vertical-align: middle;
+        width: 6px;
+        height: 6px;
+        background: $black;
+        margin: -4px 4px 0 0;
+        content: '';
+      }
+    }
 
     li {
       display: flex;
       font-size: 14px;
-      margin-bottom: 16px;
-      b {
-        width: 78px;
-        flex-shrink: 0;
-        position: relative;
-        padding-left: 10px;
-        &:after {
-          left: 0px;
-          top: 7px;
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          background: $black;
-          content: '';
-        }
-      }
+      margin-top: 16px;
 
-      .color_red {
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
+  }
+
+  .color_red {
+    color: #ec455f;
+  }
+  .color_purple {
+    color: $primary;
+  }
+
+  .notice {
+    display: inline-block;
+    border-radius: 14px;
+    box-sizing: border-box;
+    font-size: 14px;
+    margin-top: 28px;
+    color: $white;
+    padding: 6px 16px 6px 32px;
+    background: url('https://image.dalbitlive.com/svg/ic_notice_line_wh.svg') left 6px center no-repeat $greishBrown;
+    font-weight: $bold;
+  }
+
+  .subNotice {
+    font-size: 14px;
+    padding-bottom: 12px;
+    margin: 12px 0;
+    border-bottom: 1px solid $lighterGray;
+    color: $greishBrown;
+    strong {
+      color: $black;
+      &.color_red {
         color: #ec455f;
       }
-      .color_purple {
-        color: $primary;
-      }
-      // https: //image.dalbitlive.com/svg/ic_notice_line_wh.svg
     }
+  }
+
+  .checkText {
+    display: block;
+    margin-bottom: 34px;
+    font-size: 14px;
+    color: $greishGray;
+  }
+  .button {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    border-radius: 12px;
+    color: $white;
+    background: $primary;
+    font-size: 18px;
+    font-weight: $bold;
+  }
+}
+
+#customerClear {
+  box-sizing: border-box;
+  padding: 0px 16px;
+  line-height: 1.43;
+  .visual {
+    padding: 24px 0px;
+    height: 104px;
+    background: url('https://image.dalbitlive.com/images/api/img_dormant_member.png') no-repeat center;
+  }
+
+  .title {
+    display: block;
+    font-size: 18px;
+    font-weight: $bold;
+    color: $primary;
+    text-align: center;
+    border-bottom: solid 1px $lighterGray;
+    margin-bottom: 12px;
+    padding-bottom: 16px;
+  }
+
+  .text {
+    margin-top: 24px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: $greishBrown;
+    b {
+      color: $black;
+    }
+    padding-bottom: 12px;
+    border-bottom: 1px solid $lighterGray;
+  }
+
+  .point {
+    display: block;
+    padding: 17px 27px;
+    text-align: center;
+    line-height: 1.5;
+    font-size: 16px;
+    background: rgba(236, 69, 95, 0.1);
+    border: solid 1px rgba(236, 69, 95, 0.3);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    b {
+      text-decoration: underline;
+      color: #ec455f;
+    }
+  }
+
+  .subText {
+    display: block;
+    font-size: 13px;
+    color: $greishGray;
+    margin-bottom: 12px;
+
+    button {
+      font-weight: $bold;
+      color: $greishBrown;
+      text-decoration: underline;
+    }
+    strong {
+      color: #ec455f;
+      font-weight: normal;
+    }
+  }
+
+  .button {
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    text-align: center;
+    border-radius: 12px;
+    color: $white;
+    background: $primary;
+    font-size: 18px;
+    font-weight: $bold;
+    margin-top: 20px;
   }
 }
