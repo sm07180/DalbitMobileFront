@@ -259,7 +259,7 @@ export default function Alert() {
           </div>
         </div>
       </Header>
-      <NoticeTab />
+      {/* <NoticeTab /> */}
       <div className="contents">
         {alarmList.length > 0 &&
           alarmList.map((v, idx) => {
