@@ -311,7 +311,7 @@ const NoticeDetail = (props) => {
                 setReplyToggle(!replyToggle)
               }}>
               {replyPaging === null ? '답글쓰기' : '답글'}
-              <span>{replyPaging === null ? '' : replyPaging.total}</span>
+              <span className="cnt">{replyPaging === null ? '' : replyPaging.total}</span>
             </button>
 
             {replyToggle === true && replyList !== null && (
@@ -364,7 +364,7 @@ const NoticeDetail = (props) => {
                           <div className="headerBox">
                             <img src={v.profileImg.thumb62x62} className="headerBox__thumb" onClick={() => Link(v.writerMemNo)} />
                             <div className="infoBox">
-                              <p className="infoBox__name">{v.nickNm}</p>
+                              <p className="infoBox__name">{v.nickName}</p>
                               <span className="infoBox__date">{Utility.timeFormat(v.writeDt)}</span>
                             </div>
                             {(v.writerMemNo === context.token.memNo || yourMemNo === context.token.memNo) && (

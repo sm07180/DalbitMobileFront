@@ -37,7 +37,10 @@ const NoticeList = (props) => {
                             {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                             <div className="noticeItme__textWrap">
                               <strong className="noticeItme__title">{item.title}</strong>
-                              <p className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</p>
+                              <span className="noticeItme__reply">
+                                답글<span className="cnt">{item.replyCnt}</span>
+                              </span>
+                              <span className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</span>
                             </div>
                             {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
                           </div>
