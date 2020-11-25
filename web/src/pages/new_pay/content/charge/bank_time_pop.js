@@ -37,7 +37,7 @@ export default ({setBankPop, bankFormData}) => {
                 history.push({
                   pathname: '/pay/bank',
                   state: {
-                    prdtNm: bankFormData.name,
+                    prdtNm: bankFormData.prdtNm,
                     prdtPrice: bankFormData.prdtPrice,
                     itemNo: bankFormData.itemNo,
                     webview: bankFormData.webview,
