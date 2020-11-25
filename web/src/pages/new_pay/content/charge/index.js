@@ -113,7 +113,7 @@ export default () => {
 
       const time = String(hour) + String(min) + String(sec)
 
-      if ((time >= '000000' && time <= '001000') || (time >= '235000' && time <= '235959')) {
+      if ((time >= '000000' && time <= '161000') || (time >= '235000' && time <= '235959')) {
         bankFormData = {
           prdtNm: name,
           prdtPrice: totalPrice * totalQuantity,
