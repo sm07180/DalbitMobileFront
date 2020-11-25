@@ -4,11 +4,10 @@ import styled from 'styled-components'
 import {useHistory, useLocation} from 'react-router-dom'
 
 export default ({setBankPop, bankFormData}) => {
-  let location = useLocation()
   const history = useHistory()
 
   const closePopup = () => {
-    setBankPop(location.state)
+    setBankPop(false)
   }
 
   return (
