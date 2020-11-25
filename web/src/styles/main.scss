@@ -1177,6 +1177,7 @@
   &__flex {
     position: relative;
     width: calc(50% - 8px);
+    min-height: 136px;
     margin: 0 0 16px 16px;
     border-radius: 16px;
     overflow: hidden;
@@ -1201,6 +1202,19 @@
         height: 100%;
         border-radius: 16px;
         background-color: $lighterGray;
+      }
+      .thumb-guest {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        width: 32px;
+        height: 32px;
+        border: 2px solid $white;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
       }
     }
     .top-status {

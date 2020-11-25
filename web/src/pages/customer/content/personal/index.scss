@@ -31,6 +31,26 @@ input[type='file'] {
     display: none;
   }
 }
+.personalWrap {
+  &__headerButton {
+    display: flex;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    & button {
+      margin-right: 4px;
+      padding: 10px 20px;
+      color: black;
+      background-color: white;
+      border-radius: 12px;
+      font-size: 14px;
+    }
+
+    & button.on {
+      color: white;
+      background-color: #632beb;
+    }
+  }
+}
 
 .personalListWrap {
   background-color: white;

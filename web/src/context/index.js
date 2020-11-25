@@ -108,6 +108,8 @@ const GlobalProvider = (props) => {
   const [backFunction, setBackFunction] = useState({name: ''})
   //selfauth
   const [selfAuth, setSelfAuth] = useState(false)
+  //splash
+  const [splash, setSplash] = useState(null)
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -442,6 +444,9 @@ const GlobalProvider = (props) => {
     },
     updateSelfAuth: (boolean) => {
       setSelfAuth(boolean)
+    },
+    updateSplash: (obj) => {
+      setSplash(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -516,7 +521,8 @@ const GlobalProvider = (props) => {
     backFunction,
     roomType,
     selfAuth,
-    closeSpeical
+    closeSpeical,
+    splash
   }
   return <Provider value={value}>{props.children}</Provider>
 }

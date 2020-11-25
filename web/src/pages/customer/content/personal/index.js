@@ -37,7 +37,7 @@ export default function Personal(props) {
               나의 문의 내역
             </button>
           )}
-        </div>  */}
+        </div> */}
         <Switch>
           <Route path="/customer/personal" exact component={Qna} />
           <Route path="/customer/qnaList" exact component={QnaList} />
