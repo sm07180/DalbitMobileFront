@@ -3,6 +3,7 @@
  * @brief 달 교환 페이지
  */
 import React, {useEffect, useState, useContext, useCallback} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
@@ -11,7 +12,6 @@ import Api from 'context/api'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import _ from 'lodash'
-import {useHistory} from 'react-router-dom'
 
 import NoResult from 'components/ui/noResult'
 import Popup from './auto_exchange_pop'
@@ -21,13 +21,12 @@ import ic_toggle_off from '../static/toggle_off_s.svg'
 import ic_toggle_on from '../static/toggle_on_s.svg'
 import ic_close from '../static/ic_close_round_g.svg'
 import ic_notice from '../static/ic_notice.svg'
- 
+
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
   const {profile} = context
-  const history = useHistory()
-
+  let history = useHistory()
   //useState
   const [list, setList] = useState(false)
   const [selected, setSelected] = useState(-1)
@@ -122,12 +121,17 @@ export default (props) => {
         <>
           <List>{creatList()}</List>
           <div className="info-wrap">
-        <h5>달 교환 안내</h5>
-        <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
-        <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
-      </div>
+            <h5>달 교환 안내</h5>
+            <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
+            <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
+          </div>
+
           <div className="btn-wrap">
-            <button onClick={()=>{history.goBack()}} className="charge-btn cancel">
+            <button
+              onClick={() => {
+                history.goBack()
+              }}
+              className="charge-btn cancel">
               취소
             </button>
             <button onClick={chargeClick} className="charge-btn" disabled={selected == -1 ? true : false}>
@@ -145,13 +149,13 @@ export default (props) => {
     })
     if (result === 'success') {
       setAutoState(data.autoChange)
-      if(data.autoChange === 0){
+      if (data.autoChange === 0) {
         context.action.toast({
-          msg:'자동교환을 설정(OFF) 하였습니다'
+          msg: '자동교환을 설정(OFF) 하였습니다'
         })
-      }else{
+      } else {
         context.action.toast({
-          msg:'자동교환을 설정(ON) 하였습니다'
+          msg: '자동교환을 설정(ON) 하였습니다'
         })
       }
     }
@@ -211,8 +215,6 @@ export default (props) => {
 
       {creatResult()}
 
-      
-
       {popup === 1 && <Popup setPopup={setPopup} />}
     </Content>
   )
@@ -235,7 +237,7 @@ const Content = styled.section`
       background: url(${ic_notice}) no-repeat left center;
       color: #424242;
       font-size: 12px;
-      font-weight: bold
+      font-weight: bold;
     }
     p {
       position: relative;
@@ -252,8 +254,8 @@ const Content = styled.section`
         background: #757575;
         content: '';
       }
-      &.red{
-        color:#ec455f;
+      &.red {
+        color: #ec455f;
       }
     }
   }

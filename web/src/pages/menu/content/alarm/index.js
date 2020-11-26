@@ -4,9 +4,10 @@ import Api from 'context/api'
 import Room, {RoomJoin} from 'context/room'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import {Context} from 'context'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import NoResult from 'components/ui/noResult'
 import Header from 'components/ui/new_header'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import NoticeTab from 'pages/common/noticeTab'
 import './index.scss'
 
 const currentDate = new Date()
@@ -258,6 +259,7 @@ export default function Alert() {
           </div>
         </div>
       </Header>
+      <NoticeTab />
       <div className="contents">
         {alarmList.length > 0 &&
           alarmList.map((v, idx) => {

@@ -17,6 +17,7 @@ import RoomCharge from './content/room_charge'
 import StoreCharge from './content/store_charge'
 import BankDeposit from './content/charge/bank_deposit'
 import BankWait from './content/charge/bank_deposit_wait'
+import BankInfo from './content/charge/bank_info'
 
 ////---------------------------------------------------------------------
 export default () => {
@@ -56,6 +57,8 @@ export default () => {
         return <BankDeposit />
       case 'bank_wait':
         return <BankWait />
+      case 'bank_info':
+        return <BankInfo />
       default:
         return <></>
         break

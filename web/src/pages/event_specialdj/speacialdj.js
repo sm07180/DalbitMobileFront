@@ -140,13 +140,13 @@ export default (props) => {
 
         {global_ctx.token.isLogin === true ? (
           <>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201019/top_img.jpg" alt="선발 방식" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201120/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
               {infoData !== '' && endDate !== null && `${startDate} ~ ${endDate.split('-')[1]}월 ${endDate.split('-')[2]}일`}
               {/* {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}  */}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)
             </div>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201019/title.jpg" alt="지원 요건" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201120/title.jpg" alt="지원 요건" className="imgResize" />
 
             <div className="checkList">
               <div className="checkList__table">
@@ -274,7 +274,7 @@ export default (props) => {
         )}
         {global_ctx.token.isLogin === true ? (
           <img
-            src="https://image.dalbitlive.com/event/specialdj/20201019/bottom_img.jpg"
+            src="https://image.dalbitlive.com/event/specialdj/20201120/bottom_img.jpg"
             className="imgResize"
             alt="하단 배경 이미지"
           />

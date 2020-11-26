@@ -484,7 +484,7 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/broad/vw/continue`,
-      method: method || 'POST',
+      method: method || 'POST'
     })
   }
   //--------------------------------------------------------------------- 회원 관련
@@ -814,6 +814,39 @@ export default class API {
       data: data
     })
   }
+
+  static getMypageNoticeReply = async (data) => {
+    return await ajax({
+      url: '/mypage/notice/reply/list',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static insertMypageNoticeReply = async (data) => {
+    return await ajax({
+      url: '/mypage/notice/reply/add',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static modifyMypageNoticeReply = async (data) => {
+    return await ajax({
+      url: '/mypage/notice/reply/edit',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static deleteMypageNoticeReply = async (data) => {
+    return await ajax({
+      url: '/mypage/notice/reply/delete',
+      method: 'POST',
+      data: data
+    })
+  }
+
   /**
    * @brief 회원 달 선물하기 -> 마이페이지
    * @method "POST"
@@ -2841,6 +2874,36 @@ export default class API {
       url: '/mypage/auto/change',
       method: 'POST',
       data: data
+    })
+  }
+
+  static getStoryList = async (data) => {
+    return await ajax({
+      url: '/mypage/story',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getStory = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/broad/story',
+      params: data
+    })
+  }
+  static deleteStory = async (data) => {
+    return await ajax({
+      method: 'DELETE',
+      url: '/broad/story',
+      data
+    })
+  }
+  static getLongTermUser = async (data) => {
+    return await ajax({
+      url: '/long/term',
+      method: 'GET',
+      params: data
     })
   }
 }
