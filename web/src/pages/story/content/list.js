@@ -1,7 +1,7 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 import MailIcon from '../static/ic_mail_w.svg'
-
+import Utility from 'components/lib/utility'
 export default (props) => {
   const {storyList} = props
   const history = useHistory()
@@ -20,7 +20,7 @@ export default (props) => {
             </div>
             <div className="sub-text-wrap">
               <div className="title">{title}</div>
-              <div className="date">{startDt}</div>
+              <div className="date">{Utility.timeFormat(startDt)}</div>
             </div>
           </div>
         )

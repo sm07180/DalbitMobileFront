@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import Api from 'context/api'
-
+import Utility from 'components/lib/utility'
 export default () => {
   const {roomNo} = useParams()
   const [storyList, setStoryList] = useState([])
@@ -37,7 +37,7 @@ export default () => {
                 </div>
                 <div className="name-date">
                   <div className="name">{nickNm}</div>
-                  <div className="date">{writeDt}</div>
+                  <div className="date">{Utility.timeFormat(writeDt)}</div>
                 </div>
               </div>
               <button

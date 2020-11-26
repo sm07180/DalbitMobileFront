@@ -25,7 +25,7 @@ export default ({setBankPop, bankFormData}) => {
             <button onClick={() => history.push('/pay/bank_info')}>은행별 시스템 점검시간 확인 &gt; </button>
             <p>
               ※ <span>다른 결제수단</span>을 이용하시면 <br />
-              보다 안정적으로 결제를 완료할 수 있습니다.
+              보다 빠르게 달 충전을 할 수 있습니다.
             </p>
           </div>
 

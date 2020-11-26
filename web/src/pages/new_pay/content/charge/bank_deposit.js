@@ -214,15 +214,18 @@ export default () => {
 
         <div className="info-wrap">
           <h5>
-            달 충전 안내
-            <span>
-              <strong>결제 문의</strong>1522-0251
-            </span>
+            무통장 입금 안내
+            <button onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
           </h5>
-          <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-          <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-          <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-          <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          <p>
+            심야시간 무통장 입금이 지연될 경우{' '}
+            <strong onClick={() => history.push('/pay/bank_info')}>은행별 점검시간을 확인</strong>하세요.
+          </p>
+          <p>매월 말에서 1일 자정시간은 거래량이 급증하여 이체처리가 지연 될 수 있습니다.</p>
+          <p>
+            시스템 점검시간으로 이체가 지연되는 경우 다른 결제 수단을 이용 하시면 보다 신속하게 달 충전을 완료 할 수 있습니다.
+          </p>
+          <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
         </div>
       </Content>
     </>
@@ -399,6 +402,17 @@ const Content = styled.div`
           color: #000;
         }
       }
+
+      button {
+        display: inline-block;
+        height: 20px;
+        padding: 0 8px;
+        margin-left: auto;
+        color: #fff;
+        background-color: #000;
+        border-radius: 18px;
+        font-size: 11px;
+      }
     }
     p {
       position: relative;
@@ -406,6 +420,12 @@ const Content = styled.div`
       color: #757575;
       font-size: 12px;
       line-height: 20px;
+
+      strong {
+        color: #424242;
+        text-decoration: underline;
+        cursor: pointer;
+      }
       &::before {
         position: absolute;
         left: 6px;
