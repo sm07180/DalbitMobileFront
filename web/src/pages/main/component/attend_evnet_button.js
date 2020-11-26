@@ -5,14 +5,13 @@ import {useHistory} from 'react-router-dom'
 import Lottie from 'react-lottie'
 // static
 import stampActive from '../static/stamp_active.json'
-import './style/top_scroll.scss'
+import './style/attend_event_button.scss'
 
 export default (props) => {
   const history = useHistory()
   const context = useContext(Context)
   const globalCtx = useContext(Context)
-  const {token, logoChange} = globalCtx
-
+  const {token} = globalCtx
   const [attendCheck, setAttendCheck] = useState(0)
 
   //pathname
@@ -32,8 +31,6 @@ export default (props) => {
   useEffect(() => {
     fetchEventAttendCheck()
   }, [])
-
-  console.log(`attendCheck`, attendCheck)
 
   const attendStampState = () => {
     if (token.isLogin && attendCheck === 0) {
