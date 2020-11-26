@@ -32,6 +32,7 @@ import '../../mypage/index.scss'
 
 import {OS_TYPE} from 'context/config'
 //------------------------------------------------------------------------------
+const storyIcon = 'https://image.dalbitlive.com/svg/ico_mail_pink.svg'
 export default (props) => {
   let history = useHistory()
   // webview & ctx
@@ -62,6 +63,7 @@ export default (props) => {
   } else {
     subNavList = [
       {type: 'notice', txt: '방송공지', icon: BroadNoticeIcon},
+      {type: 'story', txt: '사연 모아보기', icon: storyIcon},
       {type: 'fanboard', txt: '팬보드', icon: BroadFanboardIcon},
       {type: 'my_clip', txt: '클립', icon: ClipIcon},
       {type: 'bcsetting', txt: '서비스 설정(알림/방송/매니저/차단)', icon: BroadNoticeIcon}
@@ -186,9 +188,17 @@ export default (props) => {
     context.action.updateFanboardReply(false)
     context.action.updateToggleAction(false)
     if (webview && webview === 'new') {
-      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+      if (type === 'story') {
+        history.push(`/${type}?webview=new`)
+      } else {
+        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}?webview=new`)
+      }
     } else {
-      history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+      if (type === 'story') {
+        history.push(`/${type}`)
+      } else {
+        history.push(type == 'customer' ? `/customer` : `/mypage/${profile.memNo}/${type}`)
+      }
     }
   }
 
