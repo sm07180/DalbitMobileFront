@@ -139,6 +139,8 @@ const NoticeDetail = (props) => {
           return v
         })
       )
+
+      setReplyToggle(true)
     } else {
       context.action.toast({
         msg: res.message
