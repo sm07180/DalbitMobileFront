@@ -1,0 +1,786 @@
+@import '../../../../styles/variables';
+
+#broadcastNotice {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .btnClose {
+    position: absolute;
+    left: 6px;
+  }
+
+  &.isTabContent {
+    min-height: auto;
+    padding: 12px 0;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .write-btn {
+    display: block;
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 64px;
+    height: 64px;
+
+    button {
+      // 글쓰기 버튼
+      justify-content: center;
+      align-items: center;
+      // position: fixed;
+      bottom: 15px;
+      color: $white;
+      font-weight: $bold;
+      font-size: 14px;
+      width: 64px;
+      height: 64px;
+      padding-top: 22px;
+      border-radius: 50%;
+      background-color: $primary;
+      z-index: 1;
+      &::before {
+        display: block;
+        background: url('https://image.dalbitlive.com/svg/ic_write.svg') no-repeat center center / cover;
+        content: '';
+        width: 24px;
+        height: 24px;
+        position: absolute;
+        top: 8px;
+        left: 50%;
+        margin-left: -12px;
+      }
+
+      &.on {
+        display: block;
+      }
+    }
+  }
+
+  .noticeListTop {
+    margin: 12px 0px;
+  }
+
+  // .noticeLBottom {
+  //   margin-top: 12px;
+  // }
+  .noticeList {
+    &.bookmark {
+      width: 100%;
+      display: block;
+      & > div {
+        background: url('https://image.dalbitlive.com/svg/icon_bookmark_red.svg') no-repeat center right 21px $white;
+      }
+    }
+
+    .noticeItme {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      height: 66px;
+      border-bottom: 1px solid $lighterGray;
+      background: url('https://image.dalbitlive.com/svg/icon_more_right.svg') no-repeat center right 17px $white;
+      cursor: pointer;
+
+      &__img {
+        display: inline-block;
+        width: 54px;
+        height: 54px;
+        margin-right: 12px;
+        border-radius: 8px;
+        flex-shrink: 0;
+      }
+
+      &__textWrap {
+        width: 100%;
+        padding-right: 26px;
+        overflow: hidden;
+        white-space: nowrap;
+        box-sizing: border-box;
+      }
+      &__title {
+        display: block;
+        width: 100%;
+        font-size: 16px;
+        font-weight: $bold;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &__reply {
+        margin-right: 14px;
+        font-size: 12px;
+        font-weight: $bold;
+        color: $greishGray;
+        .cnt {
+          margin-left: 4px;
+          font-size: 14px;
+          color: $black;
+        }
+        &::before {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+          background: url(../../static/reply_g.svg) no-repeat center;
+          vertical-align: text-bottom;
+          content: '';
+        }
+      }
+
+      &__date {
+        width: 100%;
+        margin-top: 4px;
+        font-size: 12px;
+        color: $greishGray;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &__moreIcon {
+        flex-basis: 24px;
+        flex-shrink: 0;
+        height: 24px;
+        display: inline-block;
+        margin: 0 32px 0 auto;
+        box-sizing: content-box;
+        text-indent: -9999px;
+        background: url('https://image.dalbitlive.com/svg/icon_new_circle_red.svg') no-repeat;
+        background-size: 100%;
+      }
+    }
+  }
+
+  .noticeDetail {
+    overflow: hidden;
+    height: 100%;
+    margin-top: 12px;
+
+    &__title {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 56px;
+      padding: 0px 16px;
+      box-sizing: border-box;
+      background: $white;
+      color: $black;
+      border-bottom: 1px solid $lighterGray;
+      font-size: 18px;
+      p {
+        margin-top: 2px;
+        font-size: 12px;
+        color: $greishGray;
+        font-weight: $regular;
+      }
+    }
+    &__img {
+      display: block;
+      margin-top: 20px;
+      width: 217px;
+      height: 217px;
+      border-radius: 16px;
+      cursor: pointer;
+    }
+
+    &__profile {
+      display: flex;
+      align-items: center;
+      height: 56px;
+      padding: 0px 16px;
+      box-sizing: border-box;
+      font-size: 16px;
+      color: $black;
+      background: $white;
+      border-bottom: 1px solid $lighterGray;
+
+      img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 10px;
+      }
+    }
+
+    &__content {
+      padding: 10px 16px 10px;
+      width: 100%;
+
+      display: block;
+      box-sizing: border-box;
+      font-size: 14px;
+      line-height: 20px;
+      color: $black;
+      background: $white;
+
+      pre {
+        word-break: break-all;
+        white-space: pre-wrap;
+        margin: 0px;
+      }
+
+      img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin-bottom: 29px;
+        border-radius: 16px;
+      }
+    }
+
+    &__reply {
+      background-color: #fff;
+      .replyToggle {
+        display: flex;
+        align-items: center;
+        padding: 0 16px 12px;
+        font-size: 12px;
+        font-weight: $bold;
+        color: $greishGray;
+        &::before {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin-right: 4px;
+          background: url(../../static/reply_g.svg) no-repeat center;
+          content: '';
+        }
+
+        &.on {
+          color: $primary;
+          &::before {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 4px;
+            background: url(../../static/ic_reply_purple.svg) no-repeat center;
+            content: '';
+          }
+        }
+
+        & > span {
+          margin-left: 4px;
+          font-size: 14px;
+          color: $black;
+        }
+      }
+
+      .replyBox {
+        background-color: #fbfbfb;
+        .headerBox {
+          position: relative;
+          display: flex;
+          align-items: center;
+          padding: 12px 16px 0 12px;
+
+          &__thumb {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+
+          .infoBox {
+            margin-left: 10px;
+
+            &__name {
+              font-weight: $bold;
+            }
+
+            &__date {
+              display: block;
+              margin-top: 2px;
+              font-size: 12px;
+              color: $gray;
+            }
+          }
+
+          .btnMore {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+          }
+
+          .moreList {
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 34px;
+            width: 80px;
+            border: 1px solid $lightGray;
+            background-color: $white;
+            padding: 8px 0;
+
+            z-index: 1;
+
+            button {
+              width: 100%;
+              height: 26px;
+              font-size: 14px;
+              line-height: 2.14;
+              letter-spacing: -0.35px;
+              text-align: center;
+              color: $greishGray;
+            }
+
+            &.active {
+              display: block;
+            }
+          }
+        }
+
+        .contentBox {
+          padding: 0 16px;
+
+          pre {
+            font-family: sans-serif;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+            font-size: 14px;
+            line-height: 22px;
+          }
+        }
+
+        .subToggle {
+          position: relative;
+          display: block;
+          width: calc(100% - 32px);
+          height: 44px;
+          margin: 0 16px 16px 16px;
+          background-color: $whiteGray;
+          border: 1px solid $lightGray;
+          border-radius: 12px;
+          font-size: 16px;
+        }
+        .replyItem {
+          position: relative;
+          padding-left: 24px;
+          padding-bottom: 1px;
+          border-top: 1px solid $lighterGray;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 16px;
+            width: 16px;
+            height: 16px;
+            background: url(https://image.dalbitlive.com/mypage/ico_reply.svg) no-repeat;
+          }
+        }
+      }
+    }
+
+    .writeWrap {
+      margin-top: 12px;
+      padding: 0 16px 16px;
+      &.modify {
+        background-color: #eee;
+      }
+      .writeBox {
+        padding: 6px 16px;
+        background-color: $white;
+        border-radius: 12px;
+        border: 1px solid $lightGray;
+
+        .writeHeader {
+          display: flex;
+          align-items: center;
+          position: relative;
+          cursor: pointer;
+
+          &__thumb {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+          }
+
+          p {
+            display: inline-block;
+            font-size: 14px;
+
+            .gray {
+              color: $mediumGray;
+            }
+          }
+
+          &__nick {
+            font-weight: $bold;
+          }
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            right: 0;
+            width: 24px;
+            height: 24px;
+            background: url(https://image.dalbitlive.com/mypage/ico_edit_g.svg) no-repeat;
+          }
+        }
+
+        .writeContent {
+          margin-top: 10px;
+
+          textarea {
+            width: 100%;
+            height: 116px;
+            font-size: 14px;
+            border: 0;
+            resize: none;
+          }
+        }
+
+        &.open {
+          .writeHeader {
+            &::after {
+              display: none;
+            }
+          }
+        }
+      }
+
+      .writeBottom {
+        .countBox {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 6px 0 2px;
+
+          &__secret {
+            display: flex;
+            align-items: center;
+
+            span {
+              display: inline-block;
+              margin-left: 10px;
+              font-weight: $bold;
+              font-size: 14px;
+            }
+          }
+
+          &__count {
+            margin-left: auto;
+            line-height: 24px;
+            font-size: 12px;
+            color: $gray;
+
+            span {
+              color: $black;
+              font-weight: $bold;
+            }
+          }
+        }
+
+        .btnAdd {
+          width: 100%;
+          height: 44px;
+          margin-top: 6px;
+          border-radius: 12px;
+          background-color: $primary;
+          font-size: 18px;
+          font-weight: $bold;
+          text-align: center;
+          color: $white;
+        }
+      }
+
+      .btnToggle {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 44px;
+        margin-top: 10px;
+        background-color: $whiteGray;
+        border: 1px solid $lightGray;
+        border-radius: 12px;
+        font-size: 16px;
+      }
+    }
+
+    &__button {
+      display: flex;
+      padding: 0px 16px;
+      margin: 23px 0 20px;
+
+      button {
+        width: 50%;
+        height: 44px;
+        line-height: 44px;
+        background: $greishGray;
+        color: $white;
+        font-size: 16px;
+        font-weight: $bold;
+        text-align: center;
+        border-radius: 12px;
+        &:first-child {
+          margin-right: 4px;
+        }
+      }
+    }
+
+    .zoom {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      background-color: rgba(0, 0, 0, 0.8);
+      .zoomWrap {
+        position: absolute;
+        min-width: 460px;
+        max-width: 600px;
+        height: auto;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        .zoomImg {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+
+        .closeButton {
+          cursor: pointer;
+          margin-bottom: 6px;
+          width: 32px;
+          height: 32px;
+          display: flex;
+          margin-left: auto;
+        }
+      }
+    }
+  }
+
+  .noticeWrite {
+    //공지사항 작성, 수정 페이지 공용
+    overflow: hidden;
+    padding: 0px 16px;
+    box-sizing: border-box;
+
+    &__title {
+      width: 100%;
+      margin: 12px 0px 4px 0px;
+      padding: 13px 14px;
+      box-sizing: border-box;
+      background: $white;
+      font-size: 14px;
+      font-weight: $bold;
+      color: $black;
+      border-radius: 12px;
+      border: 1px solid $lightestGray;
+
+      &::placeholder {
+        color: $gray;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: $regular;
+      }
+
+      &:focus {
+        border: 1px solid $black;
+      }
+    }
+
+    &__content {
+      width: 100%;
+      min-height: 300px;
+      padding: 16px 17px;
+      box-sizing: border-box;
+      overflow: hidden;
+      border-radius: 12px;
+      background: $white;
+      font-size: 14px;
+      border: 1px solid $lightestGray;
+
+      &::placeholder {
+        color: $gray;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        font-weight: $regular;
+      }
+      &:focus {
+        border: 1px solid $black;
+        box-sizing: border-box;
+      }
+    }
+
+    &__checkbox {
+      cursor: pointer;
+      display: inline-block;
+      overflow: hidden;
+      height: 26px;
+      line-height: 26px;
+      margin-top: 12px;
+      font-size: 16px;
+      color: $black;
+      input[type='checkbox'] {
+        vertical-align: middle;
+        margin: -2px 8px 0px 0px;
+      }
+    }
+    &__button {
+      width: 100%;
+      background: $mediumGray;
+      color: $white;
+      font-size: 16px;
+      line-height: 44px;
+      text-align: center;
+      font-weight: $bold;
+      border-radius: 12px;
+      margin-bottom: 50px;
+      &.active {
+        background: $primary;
+      }
+    }
+
+    .modifyButton {
+      width: 100%;
+      background: $mediumGray;
+      color: $white;
+      font-size: 16px;
+      line-height: 44px;
+      text-align: center;
+      font-weight: $bold;
+      border-radius: 12px;
+      margin-bottom: 50px;
+      &.active {
+        background: $primary;
+      }
+    }
+  }
+
+  #save_fileImg {
+    display: none;
+  }
+
+  .saveFileImg {
+    position: relative;
+    margin-top: 16px;
+    margin-bottom: 25px;
+    width: 90px;
+    height: 90px;
+    border-radius: 16px;
+    background-size: cover;
+
+    .saveFileImgClose {
+      cursor: pointer;
+      z-index: 1;
+      position: absolute;
+      right: -6px;
+      top: -6px;
+      width: 24px;
+      height: 24px;
+      background: url('https://image.dalbitlive.com/svg/ic_close_round.svg') center no-repeat;
+      background-size: cover;
+      text-indent: -99999px;
+    }
+
+    .fileBasic {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      color: #fff;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      cursor: pointer;
+      background: url('https://image.dalbitlive.com/svg/gallery_w.svg') 100% center 19px no-repeat #bdbdbd;
+
+      &::after {
+        display: block;
+        width: 100%;
+        margin-top: 51px;
+        text-align: center;
+        content: '사진첨부';
+      }
+
+      &.fileOn {
+        background-size: cover !important;
+        background-repeat: no-repeat;
+        background-position: left top !important;
+        text-indent: -99999px;
+      }
+    }
+
+    .modifyBasic {
+      display: inline-block;
+      width: 90px;
+      height: 90px;
+      color: #fff;
+      border-radius: 16px;
+      margin-bottom: 25px;
+      cursor: pointer;
+      background-position: left top;
+      background-repeat: no-repeat;
+      background-color: #bdbdbd;
+      background-size: cover;
+
+      &.modifyFileOn {
+        background-repeat: no-repeat;
+        background-position: center 19px;
+        background-color: #bdbdbd;
+        background-size: 32px;
+
+        &::after {
+          display: block;
+          width: 100%;
+          margin-top: 51px;
+          text-align: center;
+          content: '사진첨부';
+        }
+      }
+    }
+  }
+
+  //-----로딩바
+  .loadingWrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba($black, 0.4);
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    span {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 3px solid $lighterGray;
+      border-radius: 50%;
+      border-top-color: $primary;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s ease-in-out infinite;
+    }
+  }
+  @keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes spin {
+    to {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+}
