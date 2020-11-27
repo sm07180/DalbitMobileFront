@@ -145,7 +145,7 @@ const makeContents = (props) => {
                   )
                 })}
               {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
-              <span>{bjNickNm}</span>
+              <span className="nick">{bjNickNm}</span>
             </div>
             <div className="detail">
               <div className="value">
