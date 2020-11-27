@@ -68,7 +68,7 @@ export default (props) => {
     } else if (token.isLogin && attendCheck === 2) {
       return (
         <div
-          className="rouletteStampActive"
+          className="attendStampActive rouletteStampActive"
           onClick={() => {
             try {
               fbq('track', 'attend_event')
@@ -80,11 +80,5 @@ export default (props) => {
     }
   }
 
-  return (
-    <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>
-      {urlrStr !== '/rank' && attendStampState()}
-
-      {/* <div className="TopScrollBtn" onClick={scrollToTop} logoChange={logoChange} /></div> */}
-    </div>
-  )
+  return <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>{urlrStr !== '/rank' && attendStampState()}</div>
 }

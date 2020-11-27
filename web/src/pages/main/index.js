@@ -28,7 +28,7 @@ import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
-import AttendEvnetBtn from './component/attend_event_button'
+import AttendEventBtn from './component/attend_event_button'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -614,7 +614,7 @@ export default (props) => {
     return () => {
       document.removeEventListener('scroll', scrollMove)
     }
-  }, [window.scrollY])
+  }, [])
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -939,7 +939,7 @@ export default (props) => {
           </LayerPopupCommon>
         )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
-        {scrollOn && <AttendEvnetBtn />}
+        {scrollOn && <AttendEventBtn />}
       </div>
     </Layout>
   )
