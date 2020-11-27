@@ -28,7 +28,7 @@ import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
-import AttendEvnetBtn from './component/attend_evnet_button'
+import AttendEvnetBtn from './component/attend_event_button'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'

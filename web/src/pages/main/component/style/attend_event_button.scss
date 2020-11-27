@@ -69,4 +69,9 @@
 .attendStampActive {
   width: 48px;
   height: 48px;
+
+  &.basic {
+    background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png') center no-repeat;
+    background-size: 100%;
+  }
 }
