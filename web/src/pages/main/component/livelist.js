@@ -37,6 +37,7 @@ const makeContents = (props) => {
       isNew,
       totalCnt,
       gstProfImg
+      // isGoodMem
     } = list
 
     const alertCheck = (roomNo) => {
@@ -168,6 +169,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
+              {/* {isGoodMem && (
+                <div className="value">
+                  <i className="value--goodMem goodMember">사랑꾼</i>
+                  <span />
+                </div>
+              )} */}
               {/* {rank < 11 && (
                 <div className="value">
                   <img src={starIcon} />
