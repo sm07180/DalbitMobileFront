@@ -36,7 +36,8 @@ const makeContents = (props) => {
       liveBadgeList,
       isNew,
       totalCnt,
-      gstProfImg
+      gstProfImg,
+      isGoodMem
     } = list
 
     const alertCheck = (roomNo) => {
@@ -166,6 +167,12 @@ const makeContents = (props) => {
                 <div className="value">
                   <i className="value--like"></i>
                   <span>{Util.printNumber(likeCnt)}</span>
+                </div>
+              )}
+              {isGoodMem && (
+                <div className="value">
+                  <i className="value--goodMem goodMember">사랑꾼</i>
+                  <span />
                 </div>
               )}
               {/* {rank < 11 && (
