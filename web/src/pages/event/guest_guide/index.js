@@ -88,6 +88,7 @@ const Content = styled.div`
   margin: auto;
   padding-bottom: 60px;
   #guestGuide {
+    position: relative;
     .event-content {
       .topPoint {
         position: absolute;
