@@ -1108,6 +1108,14 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
+        > span {
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
       }
       .detail {
         display: flex;
@@ -1977,6 +1985,7 @@
   margin: 0 auto;
   background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
+  min-height: 480px;
   .header {
     position: absolute;
     width: 100%;
@@ -2003,6 +2012,7 @@
 
   .login-wrap {
     width: 100%;
+    min-height: 280px;
   }
 
   .logo {

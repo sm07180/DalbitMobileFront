@@ -14,4 +14,6 @@ export default function NoResult(props) {
   )
 }
 
-const ResultWrap = styled.div``
+const ResultWrap = styled.div`
+  width: 100%;
+`

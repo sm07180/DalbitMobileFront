@@ -163,20 +163,20 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
         <div className="formData__list">
           <div className="formData__title">은행</div>
           <div className={`${open && 'on'} formData__input formData__input--select`}>
-            {bank !== null && (
-              <select
-                onChange={(e) => {
-                  dispatch({type: 'bank', val: e.target.value})
-                }}>
-                {bank.map((v, idx) => {
-                  return (
-                    <option key={idx} value={v.cd}>
-                      {v.cdNm}
-                    </option>
-                  )
-                })}
-              </select>
-            )}
+            {/* {bank !== null && ( */}
+            <select
+              onChange={(e) => {
+                dispatch({type: 'bank', val: e.target.value})
+              }}>
+              {bankList.map((v, idx) => {
+                return (
+                  <option key={idx} value={v.value}>
+                    {v.text}
+                  </option>
+                )
+              })}
+            </select>
+            {/* )} */}
             {/* <DalbitSelectBox
               state={selectState}
               dispatch={selectDispatch}
