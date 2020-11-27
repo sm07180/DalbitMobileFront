@@ -67,7 +67,7 @@ export default (props) => {
     } else if (token.isLogin && attendCheck === 2) {
       return (
         <div
-          className="attendStampActive rouletteStampActive"
+          className="attendStampActive motion"
           onClick={() => {
             try {
               fbq('track', 'attend_event')

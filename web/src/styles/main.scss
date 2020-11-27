@@ -889,68 +889,66 @@
       }
     }
   }
-}
-
-// 출석체크 이벤트 버튼
-.fixedButton {
-  position: fixed;
-  bottom: 30px;
-  right: 10px;
-  z-index: 12;
-  > button {
-    margin: 5px auto 0;
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-  &.usePlayer {
-    bottom: 70px;
-  }
-
-  .attendStampActive {
+  //출석체크 버튼
+  .fixedButton {
+    position: fixed;
+    bottom: 23px;
+    position: fixed;
+    right: 50%;
+    margin-right: -200px;
+    z-index: 13;
     width: 48px;
     height: 48px;
-    cursor: pointer;
 
-    &.basic {
-      background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png') center no-repeat;
-      background-size: 100%;
+    &.usePlayer {
+      bottom: 130px;
     }
 
-    &.rouletteStampActive {
+    .attendStampActive {
       width: 48px;
       height: 48px;
-      position: relative;
+      cursor: pointer;
 
-      &::after {
-        position: absolute;
-        top: 0px;
-        left: 0px;
+      &.basic {
+        background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png') center no-repeat;
+        background-size: 100%;
+      }
+
+      &.motion {
         width: 48px;
         height: 48px;
-        border-radius: 50%;
-        overflow: hidden;
-        content: '';
-        background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png') center no-repeat;
-        background-size: 48px;
-        animation: rotate_image 1s linear infinite;
-        transform-origin: 50% 50%;
-        @keyframes rotate_image {
-          100% {
-            transform: rotate(360deg);
+        position: relative;
+
+        &::after {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          overflow: hidden;
+          content: '';
+          background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png') center no-repeat;
+          background-size: 48px;
+          animation: rotate_image 1s linear infinite;
+          transform-origin: 50% 50%;
+          @keyframes rotate_image {
+            100% {
+              transform: rotate(360deg);
+            }
           }
         }
-      }
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        width: 48px;
-        height: 48px;
-        z-index: 1;
-        background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png') center no-repeat;
-        background-size: 60px;
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png') center no-repeat;
+          background-size: 60px;
+        }
       }
     }
   }
