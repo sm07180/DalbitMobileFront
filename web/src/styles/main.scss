@@ -1156,6 +1156,9 @@
             background-position: center;
             opacity: 0.8;
             text-indent: -9999px;
+            &.goodMember {
+              width: 24px;
+            }
           }
 
           &--people {
@@ -1169,6 +1172,9 @@
           }
           &--message {
             background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
+          }
+          &--goodMem {
+            background-image: url(http://image.dalbitlive.com/svg/ico_love_p.svg);
           }
         }
       }

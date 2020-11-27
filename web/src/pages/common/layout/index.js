@@ -10,7 +10,7 @@ import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
-import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
+
 import React, {useContext, useMemo, useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
@@ -50,7 +50,6 @@ const Layout = (props) => {
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
-      <TopScrollBtn />
       <Article
         className={`content-article ${
           webview ? `webview ${playerCls} ${isMainPage ? 'main-page' : ''}` : `${playerCls} ${isMainPage ? 'main-page' : ''}`

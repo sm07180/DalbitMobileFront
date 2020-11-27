@@ -28,6 +28,7 @@ import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
+import AttendEvnetBtn from './component/attend_event_button'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -92,6 +93,7 @@ export default (props) => {
   const [popupData, setPopupData] = useState([])
   const [scrollY, setScrollY] = useState(0)
   const [liveRefresh, setLiveRefresh] = useState(false)
+  const [scrollOn, setScrollOn] = useState(false)
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -312,7 +314,7 @@ export default (props) => {
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
+    const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
     const LiveSectionHeight = LiveSectionNode.clientHeight
 
@@ -599,6 +601,20 @@ export default (props) => {
     },
     [reloadInit]
   )
+  const scrollMove = () => {
+    if (window.scrollY >= 1) {
+      setScrollOn(true)
+    } else {
+      setScrollOn(false)
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('scroll', scrollMove)
+    return () => {
+      document.removeEventListener('scroll', scrollMove)
+    }
+  }, [window.scrollY])
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -923,6 +939,7 @@ export default (props) => {
           </LayerPopupCommon>
         )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
+        {scrollOn && <AttendEvnetBtn />}
       </div>
     </Layout>
   )
