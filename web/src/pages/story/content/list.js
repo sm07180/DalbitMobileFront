@@ -5,7 +5,7 @@ import Utility from 'components/lib/utility'
 export default (props) => {
   const {storyList} = props
   const history = useHistory()
-
+  if (storyList.length === 0) return null
   return (
     <>
       {storyList.map((data, idx) => {
