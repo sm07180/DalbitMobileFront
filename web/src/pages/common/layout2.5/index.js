@@ -13,7 +13,7 @@ import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
-import TopScrollBtn from 'pages/main/component/top_scroll_btn.js'
+
 import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 //
@@ -32,7 +32,6 @@ const Layout = (props) => {
       {/* GNB */}
       {props.status !== 'no_gnb' && <Gnb webview={webview} />}
       {/* 탑버튼 */}
-      <TopScrollBtn />
       <Article className={webview ? `webview ${playerCls}` : `${playerCls}`} type={props.type === 'clipBack' ? 'clipBack' : ''}>
         {children}
       </Article>

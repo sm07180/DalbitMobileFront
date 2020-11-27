@@ -1,0 +1,72 @@
+.fixedButton {
+  position: fixed;
+  bottom: 30px;
+  right: 10px;
+  z-index: 12;
+  > button {
+    margin: 5px auto 0;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+  &.usePlayer {
+    bottom: 70px;
+  }
+}
+
+.rouletteStampActive {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  cursor: pointer;
+
+  &::after {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    overflow: hidden;
+    content: '';
+    background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png') center no-repeat;
+    background-size: 48px;
+    animation: rotate_image 1s linear infinite;
+    transform-origin: 50% 50%;
+    @keyframes rotate_image {
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 48px;
+    height: 48px;
+    z-index: 1;
+    background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png') center no-repeat;
+    background-size: 60px;
+  }
+}
+
+.attendStamp {
+  display: none;
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png');
+  background-size: 48px;
+  cursor: pointer;
+
+  &.on {
+    display: block;
+  }
+}
+.attendStampActive {
+  width: 48px;
+  height: 48px;
+}
