@@ -312,7 +312,7 @@ export default (props) => {
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
     const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode.clientHeight + sectionMarginTop
+    const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
     const LiveSectionHeight = LiveSectionNode.clientHeight
 
