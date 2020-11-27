@@ -5,7 +5,6 @@ import {useHistory} from 'react-router-dom'
 import Lottie from 'react-lottie'
 // static
 import stampActive from '../static/stamp_active.json'
-import './style/attend_event_button.scss'
 
 export default (props) => {
   const history = useHistory()
