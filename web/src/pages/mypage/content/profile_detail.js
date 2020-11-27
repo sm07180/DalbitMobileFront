@@ -487,7 +487,8 @@ export default (props) => {
                   <span className="blind">경험치</span>
                 </button>
                 EXP
-                <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
+                {/* <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span> */}
+                <span className="expTitle">{profile.exp}</span>
                 <span className="expTitle expTitle--rate">{profile.expRate}%</span>
               </div>
             </div>
