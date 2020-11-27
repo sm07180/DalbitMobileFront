@@ -32,18 +32,22 @@ export default (props) => {
     fetchEventAttendCheck()
   }, [])
 
+  console.log(attendCheck)
+
   const attendStampState = () => {
     if (token.isLogin && attendCheck === 0) {
       return (
         <div
-          className={`attendStampActive ${token.isLogin && attendCheck === 0 && 'on'}`}
+          className={`attendStampActive basic ${token.isLogin && attendCheck === 0 && 'on'}`}
           onClick={() => {
             try {
               fbq('track', 'attend_event')
               firebase.analytics().logEvent('attend_event')
             } catch (e) {}
             history.push('/event/attend_event')
-          }}></div>
+          }}>
+          12312
+        </div>
       )
     } else if (token.isLogin && attendCheck === 1) {
       return (
