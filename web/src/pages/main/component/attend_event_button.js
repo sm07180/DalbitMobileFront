@@ -32,8 +32,6 @@ export default (props) => {
     fetchEventAttendCheck()
   }, [])
 
-  console.log(attendCheck)
-
   const attendStampState = () => {
     if (token.isLogin && attendCheck === 0) {
       return (
@@ -45,9 +43,7 @@ export default (props) => {
               firebase.analytics().logEvent('attend_event')
             } catch (e) {}
             history.push('/event/attend_event')
-          }}>
-          12312
-        </div>
+          }}></div>
       )
     } else if (token.isLogin && attendCheck === 1) {
       return (
