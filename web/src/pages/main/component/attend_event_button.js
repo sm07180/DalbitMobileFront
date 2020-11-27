@@ -12,7 +12,7 @@ export default (props) => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const [attendCheck, setAttendCheck] = useState(0)
+  const [attendCheck, setAttendCheck] = useState(-1)
 
   //pathname
   const urlrStr = history.location.pathname
