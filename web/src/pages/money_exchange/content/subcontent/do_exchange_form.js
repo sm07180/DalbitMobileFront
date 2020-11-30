@@ -162,8 +162,8 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
                 }}>
                 {bank.map((v, idx) => {
                   return (
-                    <option key={idx} value={v.value}>
-                      {v.text}
+                    <option key={idx} value={v.cd}>
+                      {v.cdNm}
                     </option>
                   )
                 })}
