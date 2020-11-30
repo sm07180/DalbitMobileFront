@@ -185,7 +185,7 @@ const App = () => {
 
       //모든 처리 완료
       setReady(true)
-    } else if (result === 'fail') {
+    } else {
       const yesterDay = (() => {
         const date = new Date()
         date.setDate(date.getDate() - 1)

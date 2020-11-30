@@ -5,7 +5,7 @@ import CloseBtn from '../../static/close_w_l.svg'
 import {Context} from 'context'
 
 export default function detailPopup(props) {
-  const {setAddPopup} = props
+  const {setAddPopup, bank} = props
   const context = useContext(Context)
 
   const [addName, setAddName] = useState('')
@@ -83,10 +83,10 @@ export default function detailPopup(props) {
                 <div className="formData__title">은행</div>
                 <div className={`${open && 'on'} formData__input formData__input--select`}>
                   <select onChange={(e) => AddBankFunc(e.target.value)}>
-                    {bankList.map((v, idx) => {
+                    {bank.map((v, idx) => {
                       return (
-                        <option key={idx} value={[v.value, v.text]} text={v.text}>
-                          {v.text}
+                        <option key={idx} value={[v.cd, v.cdNm]} text={v.cdNm}>
+                          {v.cdNm}
                         </option>
                       )
                     })}
