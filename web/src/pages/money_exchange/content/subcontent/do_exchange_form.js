@@ -25,18 +25,10 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //   }
 // }
 
-export default function MakeFormWrap({state, dispatch, inspection}) {
+export default function MakeFormWrap({state, dispatch, inspection, bank}) {
   // const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
   const context = useContext(Context)
   const [open, setOpen] = useState(false)
-
-  const bank = useMemo(() => {
-    if (context.splash !== null) {
-      return [{cd: '0', cdNm: '은행선택'}, ...context.splash.exchangeBankCode]
-    } else {
-      return []
-    }
-  }, [context.splash])
 
   const closeDaumPostCode = () => {
     const element_layer = document.getElementById('layer')

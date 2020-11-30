@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useReducer} from 'react'
+import React, {useState, useContext, useEffect, useReducer, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
@@ -163,6 +163,14 @@ const formInit = {
 
 export default function DoExchange({state, dispatch}) {
   const context = useContext(Context)
+
+  const bank = useMemo(() => {
+    if (context.splash !== null) {
+      return [{cd: '0', cdNm: '은행선택'}, ...context.splash.exchangeBankCode]
+    } else {
+      return []
+    }
+  }, [context.splash])
 
   const history = useHistory()
   const [isSpecial, setIsSpecial] = useState(false)
@@ -641,7 +649,7 @@ export default function DoExchange({state, dispatch}) {
             </button>
           )}
         </div>
-        {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} />}
+        {radioCheck === 0 && <MakeFormWrap state={formData} dispatch={formDispatch} inspection={checkInspection} bank={bank} />}
         {radioCheck === 1 && (
           <MakeRepplyWrap
             state={exchangeHistory.value}
@@ -663,7 +671,7 @@ export default function DoExchange({state, dispatch}) {
       <Popup />
       {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       {/* 계좌추가 팝업 */}
-      {AddPopup && <AddPop setAddPopup={setAddPopup} setAddInfo={setAddInfo} setAddBool={setAddBool} />}
+      {AddPopup && <AddPop setAddPopup={setAddPopup} setAddInfo={setAddInfo} setAddBool={setAddBool} bank={bank} />}
       {/* 계좌수정 팝업 */}
       {SettingPopup && (
         <SettingPop
