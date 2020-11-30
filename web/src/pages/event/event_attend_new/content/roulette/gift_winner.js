@@ -141,7 +141,7 @@ export default () => {
                   return (
                     <tr key={index}>
                       <td className="icon">
-                        <img src={itemImageUrl} width={24} />
+                        <img src={itemImageUrl} width={24} alt={itemName} />
                         {itemName}
                       </td>
                       <td className="date">
