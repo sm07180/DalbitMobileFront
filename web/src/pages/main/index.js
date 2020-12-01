@@ -313,7 +313,7 @@ export default (props) => {
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
+    const StarSectionHeight = StarSectionNode ? StarSectionNode.clientHeight : 0
     // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
@@ -321,7 +321,7 @@ export default (props) => {
 
     let TopSectionHeight
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 28
     } else {
       TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
     }
