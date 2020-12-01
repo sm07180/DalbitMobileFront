@@ -8,10 +8,14 @@ export default () => {
 
   return (
     <Content>
-      <div id="heppyTime">
+      <div id="happyTime">
         <Header title="해피타임 이벤트" />
         <img src="https://image.dalbitlive.com/event/happy_time/happyTime.png" className="img" />
         <button onClick={() => history.push(`/pay/store`)} className="link_button">
+          지금 결제 하기
+        </button>
+
+        <button onClick={() => history.push(`/pay/store`)} className="test_button">
           지금 결제 하기
         </button>
       </div>
@@ -24,12 +28,22 @@ const Content = styled.div`
   margin: auto;
   padding-bottom: 60px;
 
-  #heppyTime {
+  #happyTime {
     position: relative;
     .img {
       display: block;
       width: 100%;
       height: auto;
+    }
+
+    .test_button {
+      position: absolute;
+      left: 11%;
+      top: 20.6%;
+      width: 77.9%;
+      height: 6.9%;
+      text-indent: -9999px;
+      border: solid 5px;
     }
 
     .link_button {
