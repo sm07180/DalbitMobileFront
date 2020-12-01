@@ -1173,7 +1173,7 @@
           white-space: nowrap;
         }
 
-        .nick {
+        > span {
           flex: 1;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -1191,7 +1191,10 @@
         }
         .value {
           display: flex;
-          margin-left: 8px;
+          justify-content: center;
+          align-items: center;
+          margin-left: 4px;
+          line-height: 16px;
           &:first-child {
             margin-left: 0;
           }
@@ -1199,6 +1202,7 @@
             background: $red;
             color: $white;
             padding: 0 6px 0 3px;
+            margin-left: 6px;
             border-radius: 10px;
             span {
               color: $white;
@@ -1208,6 +1212,13 @@
               opacity: 1;
               margin-right: 2px;
               background-image: url(https://image.dalbitlive.com/svg/like_w_s.svg);
+            }
+          }
+          &.isGoodMember {
+            margin-left: 2px;
+            i {
+              width: 24px;
+              margin: 0;
             }
           }
 
@@ -1223,14 +1234,10 @@
           i {
             width: 16px;
             height: 16px;
-            margin-right: 4px;
             display: inline-block;
             background-position: center;
             opacity: 0.8;
             text-indent: -9999px;
-            &.goodMember {
-              width: 24px;
-            }
           }
 
           &--people {

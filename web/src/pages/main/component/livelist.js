@@ -170,8 +170,8 @@ const makeContents = (props) => {
                 </div>
               )}
               {isGoodMem && (
-                <div className="value">
-                  <i className="value--goodMem goodMember">사랑꾼</i>
+                <div className="value isGoodMember">
+                  <i className="value--goodMem">사랑꾼</i>
                   <span />
                 </div>
               )}
