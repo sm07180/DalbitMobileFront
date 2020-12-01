@@ -17,6 +17,7 @@ import PaymentLunch from './payment_lunch'
 import RestChange from './rest_customer/customer_change'
 import RestClear from './rest_customer/customer_clear'
 import RestNotice from './rest_customer/customer_notice'
+import HappyTime from './happy_time'
 
 export default () => {
   const params = useParams()
@@ -50,7 +51,8 @@ export default () => {
         return <RestClear />
       case 'customer_notice':
         return <RestNotice />
-
+      case 'happy_time':
+        return <HappyTime />
       default:
         return <></>
         break

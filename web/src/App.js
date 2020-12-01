@@ -314,12 +314,12 @@ const App = () => {
           <div className="loading">
             <span></span>
           </div>
-          <button
+          {/* <button
             id="btn-home"
             onClick={() => {
               location.href = '/'
             }}
-          />
+          /> */}
         </>
       )}
     </ErrorBoundary>

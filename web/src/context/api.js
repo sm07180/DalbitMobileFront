@@ -2553,6 +2553,11 @@ export default class API {
   static postClipReplyEdit = async (data) => {
     return await ajax({url: '/clip/reply/edit', method: 'post', data})
   }
+
+  static eventTimeCheck = async (data) => {
+    return await ajax({url: '/event/timeEvent/info', method: 'post', data})
+  }
+
   static eventPackageJoinCheck = async (params) => {
     return await ajax({url: '/event/004/apply', method: 'GET', params})
   }
