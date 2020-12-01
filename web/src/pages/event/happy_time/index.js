@@ -1,17 +1,59 @@
-import React from 'react'
-import styled from 'styled-components'
-import Header from 'components/ui/new_header.js'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import API from 'context/api'
+import {OS_TYPE} from 'context/config'
+import styled from 'styled-components'
+import {Context} from 'context'
+import Header from 'components/ui/new_header.js'
+
+import {StoreLink} from 'context/link'
 
 export default () => {
   let history = useHistory()
+  const context = useContext(Context)
+  const [eventData, setEventData] = useState('')
+  const [osCheck, setOsCheck] = useState(-1)
+
+  async function fetchData() {
+    const res = await API.eventTimeCheck({})
+
+    if (res.result === 'success') {
+      setEventData(res.data)
+    } else if (res.result === 'fail') {
+      history.push(`/`)
+    }
+  }
+
+  useEffect(() => {
+    setOsCheck(navigator.userAgent.match(/Android/i) != null ? 1 : navigator.userAgent.match(/iPhone|iPad|iPod/i) != null ? 2 : 3)
+  }, [])
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const EventImg = () => {
+    if (eventData.rate === 5) {
+      return <img src="https://image.dalbitlive.com/event/happy_time/happyTime5.png" className="img" />
+    } else if (eventData.rate === 3) {
+      return <img src="https://image.dalbitlive.com/event/happy_time/happyTime3.png" className="img" />
+    }
+  }
+
+  const eventBtn = () => {
+    if (osCheck === OS_TYPE['IOS']) {
+      StoreLink(context, history)
+    } else if (eventData.rate === 5 || eventData.rate === 3) {
+      history.push(`/pay/store`)
+    }
+  }
 
   return (
     <Content>
       <Header title="해피타임 이벤트" />
       <div id="happyTime">
-        <img src="https://image.dalbitlive.com/event/happy_time/happyTime5.png" className="img" />
-        <button onClick={() => history.push(`/pay/store`)} className="link_button">
+        {EventImg()}
+        <button onClick={() => eventBtn()} className="link_button">
           지금 결제 하기
         </button>
       </div>
@@ -25,29 +67,21 @@ const Content = styled.div`
   padding-bottom: 60px;
 
   #happyTime {
+    min-height: 100vh;
     position: relative;
+    background: #000;
     .img {
       display: block;
       width: 100%;
       height: auto;
     }
 
-    .test_button {
-      position: absolute;
-      left: 11%;
-      top: 20.6%;
-      width: 77.9%;
-      height: 6.9%;
-      text-indent: -9999px;
-      border: solid 5px;
-    }
-
     .link_button {
       position: absolute;
       left: 11%;
-      top: 74.6%;
+      top: 69.6%;
       width: 77.9%;
-      height: 6.9%;
+      height: 10%;
       text-indent: -9999px;
     }
   }
