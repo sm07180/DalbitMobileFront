@@ -105,7 +105,7 @@ const PopupWrap = styled.div`
 
     .scrollBox {
       overflow-y: auto;
-      height: 400px;
+      height: auto;
     }
 
     .topBox {
