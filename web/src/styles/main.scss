@@ -1213,9 +1213,12 @@
               margin-right: 2px;
               background-image: url(https://image.dalbitlive.com/svg/like_w_s.svg);
             }
+            & + .isGoodMember {
+              margin-left: 2px;
+            }
           }
           &.isGoodMember {
-            margin-left: 2px;
+            margin-left: 6px;
             i {
               width: 24px;
               margin: 0;
