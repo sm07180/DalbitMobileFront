@@ -476,10 +476,10 @@ export default (props) => {
                 <span
                   className="expBarStatus"
                   style={{
-                    width: `${expCalc < 20 ? `calc(${expCalc}% + 20px)` : `${expCalc}%`}`
+                    width: `${profile.expRate}%`
                   }}></span>
-                <span className="expTitle expTitle--start">0</span>
-                <span className="expTitle expTitle--end">{profile.expNext - profile.expBegin}</span>
+                <span className="expTitle expTitle--start">{profile.expBegin}</span>
+                <span className="expTitle expTitle--end">{profile.expNext}</span>
               </div>
 
               <div className="levelInfo">
@@ -487,7 +487,7 @@ export default (props) => {
                   <span className="blind">경험치</span>
                 </button>
                 EXP
-                <span className="expTitle">{Math.floor(((profile.expNext - profile.expBegin) * expPercent) / 100)}</span>
+                <span className="expTitle">{profile.exp}</span>
                 <span className="expTitle expTitle--rate">{profile.expRate}%</span>
               </div>
             </div>

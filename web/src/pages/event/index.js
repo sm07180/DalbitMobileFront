@@ -14,6 +14,10 @@ import GuestGuide from './guest_guide'
 import ImageGuide from './image_guide'
 import PaymentMrnoing from './payment_morning'
 import PaymentLunch from './payment_lunch'
+import RestChange from './rest_customer/customer_change'
+import RestClear from './rest_customer/customer_clear'
+import RestNotice from './rest_customer/customer_notice'
+import HappyTime from './happy_time'
 
 export default () => {
   const params = useParams()
@@ -41,7 +45,14 @@ export default () => {
         return <PaymentMrnoing />
       case 'payment_lunch':
         return <PaymentLunch />
-
+      case 'customer_change':
+        return <RestChange />
+      case 'customer_clear':
+        return <RestClear />
+      case 'customer_notice':
+        return <RestNotice />
+      case 'happy_time':
+        return <HappyTime />
       default:
         return <></>
         break

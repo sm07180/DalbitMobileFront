@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useMemo} from 'react'
 import {Context} from 'context'
 
 // import {postImage} from 'common/api'
 import Api from 'context/api'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
+
 // import DalbitSelectBox from 'common/ui/dalbit_selectbox'
 
 // const selectReducer = (state, action) => {
@@ -24,10 +25,11 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 //   }
 // }
 
-export default function MakeFormWrap({state, dispatch, inspection}) {
+export default function MakeFormWrap({state, dispatch, inspection, bank}) {
   // const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
   const context = useContext(Context)
   const [open, setOpen] = useState(false)
+
   const closeDaumPostCode = () => {
     const element_layer = document.getElementById('layer')
     element_layer.style.display = 'none'
@@ -153,19 +155,20 @@ export default function MakeFormWrap({state, dispatch, inspection}) {
         <div className="formData__list">
           <div className="formData__title">은행</div>
           <div className={`${open && 'on'} formData__input formData__input--select`}>
-            <select
-              // onClick={() => setOpen(!open)}
-              onChange={(e) => {
-                dispatch({type: 'bank', val: e.target.value})
-              }}>
-              {bankList.map((v, idx) => {
-                return (
-                  <option key={idx} value={v.value}>
-                    {v.text}
-                  </option>
-                )
-              })}
-            </select>
+            {bank !== null && (
+              <select
+                onChange={(e) => {
+                  dispatch({type: 'bank', val: e.target.value})
+                }}>
+                {bank.map((v, idx) => {
+                  return (
+                    <option key={idx} value={v.cd}>
+                      {v.cdNm}
+                    </option>
+                  )
+                })}
+              </select>
+            )}
             {/* <DalbitSelectBox
               state={selectState}
               dispatch={selectDispatch}

@@ -37,6 +37,7 @@ const makeContents = (props) => {
       isNew,
       totalCnt,
       gstProfImg
+      // isGoodMem
     } = list
 
     const alertCheck = (roomNo) => {
@@ -65,7 +66,8 @@ const makeContents = (props) => {
             alertCheck(roomNo)
           }
         }}>
-        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}}>
+        <div className="broadcast-img">
+          <img src={bjProfImg.thumb190x190} className="thumb-dj" alt={bjNickNm} />
           {gstProfImg.thumb190x190 && (
             <span className="thumb-guest">
               <img src={gstProfImg.thumb190x190} alt="게스트" />
@@ -143,7 +145,7 @@ const makeContents = (props) => {
                   )
                 })}
               {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
-              <em>{bjNickNm}</em>
+              <span>{bjNickNm}</span>
             </div>
             <div className="detail">
               <div className="value">
@@ -167,6 +169,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
+              {/* {isGoodMem && (
+                <div className="value">
+                  <i className="value--goodMem goodMember">사랑꾼</i>
+                  <span />
+                </div>
+              )} */}
               {/* {rank < 11 && (
                 <div className="value">
                   <img src={starIcon} />

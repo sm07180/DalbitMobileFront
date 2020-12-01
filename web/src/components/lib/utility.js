@@ -214,6 +214,14 @@ export default class Utility {
     }
   }
 
+  static timeFormat = (strFormatFromServer) => {
+    let date = strFormatFromServer.slice(0, 8)
+    date = [date.slice(0, 4), date.slice(4, 6), date.slice(6)].join('.')
+    let time = strFormatFromServer.slice(8)
+    time = [time.slice(0, 2), time.slice(2, 4), time.slice(4)].join(':')
+    return `${date} ${time}`
+  }
+
   /**
    * 숫자 K형으로 문자 변환
    * @param number

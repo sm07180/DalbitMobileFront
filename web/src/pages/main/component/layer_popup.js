@@ -7,7 +7,7 @@ import CloseBtn from '../static/ic_close.svg'
 let prevAlign = null
 let prevGender = null
 
-export default props => {
+export default (props) => {
   const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, resetFetchList} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
@@ -35,14 +35,14 @@ export default props => {
     setLiveGender(prevGender)
   }
 
-  const wrapClick = e => {
+  const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
       closePopup()
     }
   }
 
-  const wrapTouch = e => {
+  const wrapTouch = (e) => {
     e.preventDefault()
   }
 
@@ -156,6 +156,7 @@ const PopupWrap = styled.div`
         position: absolute;
         top: 0;
         right: 0;
+        cursor: pointer;
       }
     }
 

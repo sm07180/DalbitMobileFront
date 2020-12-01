@@ -131,6 +131,7 @@
     box-sizing: border-box;
 
     &.rank {
+      height: 195px;
       padding: 26px 0 0;
       background-color: $white;
       color: $white;
@@ -229,10 +230,12 @@
       padding: 20px 16px 0 16px;
     }
     &.my-star {
-      display: none;
+      // display: none;
       padding-top: 20px;
+      height: 180px;
       &.visible {
         display: block;
+        height: 180px;
       }
       .title {
         color: $white;
@@ -889,6 +892,67 @@
       }
     }
   }
+  //출석체크 버튼
+  .fixedButton {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    z-index: 13;
+    width: 48px;
+    height: 48px;
+
+    &.usePlayer {
+      bottom: 70px;
+    }
+
+    .attendStampActive {
+      width: 48px;
+      height: 48px;
+      cursor: pointer;
+
+      &.basic {
+        background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png') center no-repeat;
+        background-size: 100%;
+      }
+
+      &.motion {
+        width: 48px;
+        height: 48px;
+        position: relative;
+
+        &::after {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 48px;
+          height: 48px;
+          border-radius: 50%;
+          overflow: hidden;
+          content: '';
+          background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_01.png') center no-repeat;
+          background-size: 48px;
+          animation: rotate_image 1s linear infinite;
+          transform-origin: 50% 50%;
+          @keyframes rotate_image {
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        }
+        &::before {
+          content: '';
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 48px;
+          height: 48px;
+          z-index: 1;
+          background: url('https://image.dalbitlive.com/event/attend/201126/new_icon_roulette_02.png') center no-repeat;
+          background-size: 60px;
+        }
+      }
+    }
+  }
 }
 
 // 실시간 라이브
@@ -957,11 +1021,12 @@
       position: relative;
       width: 80px;
       height: 80px;
-      border-radius: 12px;
-      background-repeat: no-repeat;
-      background-size: cover;
-      background-position: center;
-      background-color: $lighterGray;
+      .thumb-dj {
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        background-color: $lighterGray;
+      }
       .thumb-guest {
         position: absolute;
         right: -3px;
@@ -1107,6 +1172,14 @@
           text-overflow: ellipsis;
           white-space: nowrap;
         }
+
+        > span {
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
       }
       .detail {
         display: flex;
@@ -1155,6 +1228,9 @@
             background-position: center;
             opacity: 0.8;
             text-indent: -9999px;
+            &.goodMember {
+              width: 24px;
+            }
           }
 
           &--people {
@@ -1169,6 +1245,9 @@
           &--message {
             background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
           }
+          &--goodMem {
+            background-image: url(http://image.dalbitlive.com/svg/ico_love_p.svg);
+          }
         }
       }
     }
@@ -1176,13 +1255,9 @@
   &__flex {
     position: relative;
     width: calc(50% - 8px);
-    min-height: 156px;
+    min-height: 136px;
     margin: 0 0 16px 16px;
     border-radius: 16px;
-    background-color: $lighterGray;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
     overflow: hidden;
     border-radius: 16px;
     cursor: pointer;
@@ -1200,17 +1275,25 @@
     }
     .broadcast-img {
       position: relative;
-      width: calc(50% - 4px);
-      height: 100%;
-      border-radius: 16px;
-      background-color: $lighterGray;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      overflow: hidden;
-      border-radius: 16px;
-      width: 100%;
-      height: 100%;
+      .thumb-dj {
+        width: 100%;
+        height: 100%;
+        border-radius: 16px;
+        background-color: $lighterGray;
+      }
+      .thumb-guest {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        width: 32px;
+        height: 32px;
+        border: 2px solid $white;
+        border-radius: 50%;
+        overflow: hidden;
+        img {
+          width: 100%;
+        }
+      }
     }
     .top-status {
       position: absolute;
@@ -1966,6 +2049,7 @@
   margin: 0 auto;
   background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
   background-size: cover;
+  min-height: 480px;
   .header {
     position: absolute;
     width: 100%;
@@ -1992,6 +2076,7 @@
 
   .login-wrap {
     width: 100%;
+    min-height: 280px;
   }
 
   .logo {
@@ -2000,7 +2085,7 @@
   }
 
   .logo_text {
-    width: 90px;
+    width: 130px;
     display: block;
     margin: 0 auto 20px auto;
   }
@@ -2097,8 +2182,9 @@
   }
 
   .socialLogin {
+    position: absolute;
     width: 100%;
-    padding-top: 36px;
+    bottom: 50px;
     text-align: center;
 
     .social-apple-btn {

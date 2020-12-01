@@ -185,7 +185,7 @@ const App = () => {
 
       //모든 처리 완료
       setReady(true)
-    } else if (result === 'fail') {
+    } else {
       const yesterDay = (() => {
         const date = new Date()
         date.setDate(date.getDate() - 1)
@@ -232,6 +232,8 @@ const App = () => {
       if (roomType) {
         globalCtx.action.updateRoomType(roomType)
       }
+
+      globalCtx.action.updateSplash(data)
     }
   }
   //useEffect token
@@ -267,32 +269,32 @@ const App = () => {
       })
 
       return (
-          <section id="error">
+        <section id="error">
+          <button
+            className="closeButon"
+            onClick={() => {
+              window.location.href = '/'
+            }}>
+            닫기
+          </button>
+
+          <div className="img"></div>
+
+          <p className="text">
+            해당 페이지 접속이 지연되고 있습니다.
+            <br />
+            다시 시도해주세요
+          </p>
+
+          <div className="buttonWrap">
             <button
-                className="closeButon"
-                onClick={() => {
-                  window.location.href = '/'
-                }}>
-              닫기
+              onClick={() => {
+                window.location.href = '/'
+              }}>
+              확인
             </button>
-
-            <div className="img"></div>
-
-            <p className="text">
-              해당 페이지 접속이 지연되고 있습니다.
-              <br/>
-              다시 시도해주세요
-            </p>
-
-            <div className="buttonWrap">
-              <button
-                  onClick={() => {
-                    window.location.href = '/'
-                  }}>
-                확인
-              </button>
-            </div>
-          </section>
+          </div>
+        </section>
       )
     }
   }
@@ -312,12 +314,12 @@ const App = () => {
           <div className="loading">
             <span></span>
           </div>
-          <button
+          {/* <button
             id="btn-home"
             onClick={() => {
               location.href = '/'
             }}
-          />
+          /> */}
         </>
       )}
     </ErrorBoundary>

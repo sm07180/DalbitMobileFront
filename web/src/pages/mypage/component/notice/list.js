@@ -21,11 +21,11 @@ const List = (props) => {
   const ctx = useContext(Context)
   let history = useHistory()
   let location = useLocation()
-  let urlrStr
+  let yourMemNo
   if (props.location) {
-    urlrStr = props.location.pathname.split('/')[2]
+    yourMemNo = props.location.pathname.split('/')[2]
   } else {
-    urlrStr = location.pathname.split('/')[2]
+    yourMemNo = location.pathname.split('/')[2]
   }
   //props
   const {isTop, title, contents, writeDt, noticeIdx, numbers, nickNm, profImg, writeTs} = props
@@ -47,7 +47,7 @@ const List = (props) => {
     async function fetcNoticeUpload() {
       const res = await Api.mypage_notice_edit({
         data: {
-          memNo: urlrStr,
+          memNo: yourMemNo,
           noticeIdx: noticeIdx,
           title: coment,
           contents: comentContent,
@@ -89,7 +89,7 @@ const List = (props) => {
     async function fetcNoticeDelete() {
       const res = await Api.mypage_notice_delete({
         data: {
-          memNo: urlrStr,
+          memNo: yourMemNo,
           noticeIdx: noticeIdx
         }
       })
@@ -175,10 +175,10 @@ const List = (props) => {
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
   //transfer memNo
-  const historyMem = (urlrStr) => {
-    if (urlrStr !== context.profile.memNo) {
-      history.push(`/mypage/${urlrStr}`)
-    } else if (urlrStr !== context.profile.memNo) return false
+  const historyMem = (yourMemNo) => {
+    if (yourMemNo !== context.profile.memNo) {
+      history.push(`/mypage/${yourMemNo}`)
+    } else if (yourMemNo !== context.profile.memNo) return false
   }
   //-------------------------------------------------------------------------
   return (
@@ -212,14 +212,14 @@ const List = (props) => {
             </div>
             <div className="detail_header_writerinfo">
               <div className="detail_info">
-                {profImg && <img src={profImg.thumb80x80} onClick={() => historyMem(urlrStr)} />}
+                {profImg && <img src={profImg.thumb80x80} onClick={() => historyMem(yourMemNo)} />}
                 {nickNm && <span className="nick">{nickNm}</span>}
               </div>
             </div>
             <div className="detail_contents">
               <pre>{contents}</pre>
             </div>
-            <Buttons className={urlrStr === ctx.profile.memNo ? 'on' : ''}>
+            <Buttons className={yourMemNo === ctx.profile.memNo ? 'on' : ''}>
               <button onClick={WriteToggle}>
                 {/* <em></em> */}
                 수정

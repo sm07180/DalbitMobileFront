@@ -23,6 +23,7 @@ export default (props) => {
   }
 
   const data = [
+    {tit: '교환하기', exp: '1', msg: '별 → 달 교환 1달당 1exp 획득 (제한없음)'},
     {tit: '방송하기', exp: '5', msg: '방송 10분당 5exp 획득 (하루 최대 120exp)'},
     {tit: '방송청취', exp: '1', msg: '청취 10분당 1exp 획득 (하루 최대 24exp)'},
     {tit: '보낸 선물', exp: '1', msg: '달 1개당 1exp 획득 (방송방 내 / 제한 없음)'},
@@ -46,49 +47,51 @@ export default (props) => {
                   </button>
                 </div>
                 <div className="inner">
-                  <ul>
-                    {data.map((data, index) => {
-                      return (
-                        <li key={index}>
-                          <div className="ico-box">
-                            <span className="txt">
-                              <em>
-                                {data.tit.split('\n').map((line, index) => {
-                                  if (data.tit.match('\n')) {
-                                    return (
-                                      <React.Fragment key={index}>
-                                        {line}
-                                        <br />
-                                      </React.Fragment>
-                                    )
-                                  } else {
-                                    return <React.Fragment key={index}>{data.tit}</React.Fragment>
-                                  }
-                                })}
-                              </em>
-                            </span>
-                            <span className="num">
-                              <em>Exp {data.exp}</em>
-                            </span>
-                          </div>
-                          <em className="msg">
-                            {data.msg.split('\n').map((line, index) => {
-                              if (data.msg.match('\n')) {
-                                return (
-                                  <React.Fragment key={index}>
-                                    {line}
-                                    <br />
-                                  </React.Fragment>
-                                )
-                              } else {
-                                return <React.Fragment key={index}>{data.msg}</React.Fragment>
-                              }
-                            })}
-                          </em>
-                        </li>
-                      )
-                    })}
-                  </ul>
+                  <div className="scroll__wrap">
+                    <ul>
+                      {data.map((data, index) => {
+                        return (
+                          <li key={index}>
+                            <div className="ico-box">
+                              <span className="txt">
+                                <em>
+                                  {data.tit.split('\n').map((line, index) => {
+                                    if (data.tit.match('\n')) {
+                                      return (
+                                        <React.Fragment key={index}>
+                                          {line}
+                                          <br />
+                                        </React.Fragment>
+                                      )
+                                    } else {
+                                      return <React.Fragment key={index}>{data.tit}</React.Fragment>
+                                    }
+                                  })}
+                                </em>
+                              </span>
+                              <span className="num">
+                                <em>Exp {data.exp}</em>
+                              </span>
+                            </div>
+                            <em className="msg">
+                              {data.msg.split('\n').map((line, index) => {
+                                if (data.msg.match('\n')) {
+                                  return (
+                                    <React.Fragment key={index}>
+                                      {line}
+                                      <br />
+                                    </React.Fragment>
+                                  )
+                                } else {
+                                  return <React.Fragment key={index}>{data.msg}</React.Fragment>
+                                }
+                              })}
+                            </em>
+                          </li>
+                        )
+                      })}
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>

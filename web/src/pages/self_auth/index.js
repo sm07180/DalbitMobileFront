@@ -21,9 +21,11 @@ export const openAuthPage = (formTagRef, context) => {
   /* 모바일 접근 체크*/
 
   // 모바일일 경우 (변동사항 있을경우 추가 필요)
+  // alert(navigator.maxTouchPoints)
+  // alert(UserAgent)
   if (
     UserAgent.match(
-      /iPhone|iPod|Android|Windows CE|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
+      /iPhone|iPod|iPad|Android|Windows CE|Mac OS|BlackBerry|Symbian|Windows Phone|webOS|Opera Mini|Opera Mobi|POLARIS|IEMobile|lgtelecom|nokia|SonyEricsson/i
     ) != null ||
     UserAgent.match(/LG|SAMSUNG|Samsung/) != null
   ) {
@@ -43,6 +45,7 @@ export const openAuthPage = (formTagRef, context) => {
     }
     document.authForm.target = 'KMCISWindow'
   }
+  console.log(document.authForm)
   document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
   document.authForm.submit()
 }
@@ -68,6 +71,8 @@ export const authReq = async (code, formTagRef, context) => {
     Object.keys(res.data).forEach((key) => {
       authForm.append(makeHiddenInput(key, res.data[key]))
     })
+
+    console.log(authForm)
     openAuthPage(formTagRef, context)
   } else {
     context.action.alert({
