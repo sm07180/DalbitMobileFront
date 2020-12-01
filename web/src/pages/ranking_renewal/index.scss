@@ -881,7 +881,7 @@
       background-size: 100%;
 
       &.isLabel {
-        height: 322px;
+        height: 340px;
       }
 
       &__item {
@@ -890,17 +890,27 @@
         .realLabelDj {
           position: relative;
           margin: 0 auto;
-          padding: 0 24px;
-          height: 30px;
+          padding: 7px 28px 8px 13px;
+          height: 46px;
           width: fit-content;
-          line-height: 30px;
           border-radius: 14px;
-          text-align: center;
           color: #fff;
           font-size: 12px;
           background-position: 2px 2px;
           background-size: 28px;
           background-repeat: no-repeat;
+
+          .arrowIcon {
+            position: absolute;
+            top: 12px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+
+            img {
+              width: 100%;
+            }
+          }
 
           &::before {
             display: inline-block;
@@ -908,6 +918,7 @@
             position: absolute;
             bottom: -5px;
             left: 50%;
+            margin-left: -3px;
             width: 7px;
             height: 5px;
             background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
@@ -937,6 +948,7 @@
 
           &::after {
             content: '';
+            white-space: pre;
             display: block;
             position: absolute;
           }
@@ -980,7 +992,8 @@
             background-color: rgba(0, 0, 0, 0.5);
 
             &::after {
-              content: 'SP +2.0';
+              content: '스페셜 DJ\A가산점+2.0';
+              white-space: pre;
             }
           }
 
@@ -1041,7 +1054,8 @@
             background-color: rgba(0, 0, 0, 0.4);
 
             &::after {
-              content: 'SP +1.0';
+              content: '스페셜 DJ\A가산점+1.0';
+              white-space: pre;
             }
           }
 
@@ -1108,7 +1122,8 @@
             background-color: rgba(0, 0, 0, 0.3);
 
             &::after {
-              content: 'SP +0.5';
+              content: '스페셜 DJ\A가산점+0.5';
+              white-space: pre;
             }
           }
 

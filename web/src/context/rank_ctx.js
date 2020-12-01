@@ -126,6 +126,11 @@ function RankProvider(props) {
   })
   const [totalPage, setTotalPage] = useState(0)
   const [scrollY, setScrollY] = useState(0)
+  const [specialPoint, setSpecialPoint] = useState({
+    totalPoint: 0,
+    nickNm: ''
+  })
+  const [specialPointList, setSpecialPointList] = useState([])
 
   const rankState = {
     rankList,
@@ -135,7 +140,9 @@ function RankProvider(props) {
     specialList,
     myInfo,
     totalPage,
-    scrollY
+    scrollY,
+    specialPoint,
+    specialPointList
   }
 
   const rankAction = {
@@ -146,7 +153,9 @@ function RankProvider(props) {
     setMyInfo,
     setTotalPage,
     setSpecialList,
-    setScrollY
+    setScrollY,
+    setSpecialPoint,
+    setSpecialPointList
   }
 
   const bundle = {

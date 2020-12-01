@@ -1757,6 +1757,16 @@ export default class API {
     })
   }
 
+  static get_special_point = async (obj) => {
+    const {url, method, params} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/member/special/point/list`,
+      method: method || 'GET',
+      params: params
+    })
+  }
+
   //------------------------------------------------------------- 인증관련
   /**
    * @brief 휴대폰 인증번호요청

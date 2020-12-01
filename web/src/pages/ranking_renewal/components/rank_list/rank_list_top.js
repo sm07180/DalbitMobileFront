@@ -3,11 +3,14 @@ import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
+import Api from 'context/api'
 
 import {RoomJoin} from 'context/room'
 
 import {printNumber} from '../../lib/common_fn'
 import {convertMonday, convertMonth, convertDateToText} from '../../lib/common_fn'
+
+import SpecialPointPop from './special_point_pop'
 
 //static
 import benefitIcon from '../../static/benefit@2x.png'
@@ -22,28 +25,63 @@ import {PAGE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 function RankListTop() {
   const history = useHistory()
+
   //context
   const context = useContext(Context)
-
-  const {rankState} = useContext(RankContext)
+  const {rankState, rankAction} = useContext(RankContext)
   const {rankList, formState} = rankState
+
+  const [popState, setPopState] = useState(false)
 
   const TopBoxRef = useRef(null)
 
-  const realTimeNow = useCallback(() => {
-    let timeNow
-
-    if (TopBoxRef.current) {
-      if (formState[PAGE_TYPE.RANKING].rankType === 1 && formState[PAGE_TYPE.RANKING].dateType === 1) {
-        TopBoxRef.current.className = 'TopBox isLabel'
-        timeNow = <div className="realLabelDj"></div>
-      } else {
-        TopBoxRef.current.className = 'TopBox'
-        timeNow = ''
+  //api fetchdata
+  const fetchSpecialPoint = async (memNo) => {
+    const {data, result, message} = await Api.get_special_point({
+      params: {
+        memNo: memNo
       }
+    })
+
+    if (result === 'success') {
+      rankAction.setSpecialPoint(data)
+      rankAction.setSpecialPointList(data.list)
+    } else {
+      //실패
     }
-    return timeNow
-  }, [formState, TopBoxRef])
+  }
+
+  const specialPop = (memNo) => {
+    setPopState(true)
+    fetchSpecialPoint(memNo)
+  }
+
+  const realTimeNow = useCallback(
+    (memNo) => {
+      let timeNow
+      let dateNow = new Date()
+      let monthNow = dateNow.getMonth()
+      let monthRank = formState[formState.pageType].currentDate.getMonth()
+
+      if (TopBoxRef.current) {
+        if (monthNow !== monthRank) {
+          TopBoxRef.current.className = 'TopBox isLabel'
+          timeNow = (
+            <div className="realLabelDj" onClick={() => specialPop(memNo)}>
+              <span className="arrowIcon">
+                <img src="https://image.dalbitlive.com/svg/20200806/arrow_right_b.svg" alt="arrow"></img>
+              </span>
+            </div>
+          )
+        } else {
+          TopBoxRef.current.className = 'TopBox'
+          timeNow = ''
+        }
+      }
+      return timeNow
+    },
+    [formState, TopBoxRef]
+  )
 
   const creatList = () => {
     const rank = rankList
@@ -66,7 +104,7 @@ function RankListTop() {
 
               return (
                 <div className="TopBox__item" key={index}>
-                  {realTimeNow()}
+                  {realTimeNow(memNo)}
 
                   <div
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
@@ -115,6 +153,8 @@ function RankListTop() {
               )
             })}
           </div>
+
+          {popState && <SpecialPointPop setPopState={setPopState} />}
 
           {/* <div
             className="benefitSize"
