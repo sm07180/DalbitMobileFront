@@ -8,14 +8,10 @@ export default () => {
 
   return (
     <Content>
+      <Header title="해피타임 이벤트" />
       <div id="happyTime">
-        <Header title="해피타임 이벤트" />
-        <img src="https://image.dalbitlive.com/event/happy_time/happyTime.png" className="img" />
+        <img src="https://image.dalbitlive.com/event/happy_time/happyTime5.png" className="img" />
         <button onClick={() => history.push(`/pay/store`)} className="link_button">
-          지금 결제 하기
-        </button>
-
-        <button onClick={() => history.push(`/pay/store`)} className="test_button">
           지금 결제 하기
         </button>
       </div>
