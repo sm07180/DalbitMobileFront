@@ -79,8 +79,7 @@ const Content = styled.div`
     .link_button {
       position: absolute;
       left: 11%;
-      border: solid 1px;
-      top: 560px;
+            top: 560px;
       width: 77.9%;
       height: 10%;
       text-indent: -9999px;
