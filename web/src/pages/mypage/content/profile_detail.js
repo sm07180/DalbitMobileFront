@@ -332,6 +332,10 @@ export default (props) => {
       return <span className="blind">no badge</span>
     }
   }
+
+  //경험치바 퍼센트 정리
+  const exBar = profile.expRate - 100
+
   //function모바일 레어어 실행
   useEffect(() => {
     if (popup) {
@@ -476,7 +480,7 @@ export default (props) => {
                 <span
                   className="expBarStatus"
                   style={{
-                    width: `${profile.expRate}%`
+                    right: `${Math.abs(exBar)}%`
                   }}></span>
                 <span className="expTitle expTitle--start">{profile.expBegin}</span>
                 <span className="expTitle expTitle--end">{profile.expNext}</span>
