@@ -1,14 +1,14 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import Header from 'components/ui/new_header.js'
-import {useHistory} from 'react-router-dom'
 
 export default () => {
   let history = useHistory()
 
   return (
     <Content>
-      <div id="heppyTime">
+      <div id="happyTime">
         <Header title="해피타임 이벤트" />
         <img src="https://image.dalbitlive.com/event/happy_time/happyTime.png" className="img" />
         <button onClick={() => history.push(`/pay/store`)} className="link_button">
@@ -24,7 +24,7 @@ const Content = styled.div`
   margin: auto;
   padding-bottom: 60px;
 
-  #heppyTime {
+  #happyTime {
     position: relative;
     .img {
       display: block;
