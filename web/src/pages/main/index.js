@@ -313,7 +313,8 @@ export default (props) => {
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
+    const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
+    // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
     const LiveSectionHeight = LiveSectionNode.clientHeight
@@ -324,6 +325,7 @@ export default (props) => {
     } else {
       TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
     }
+
     if (window.scrollY >= TopSectionHeight) {
       setLiveCategoryFixed(true)
     } else {
@@ -791,26 +793,24 @@ export default (props) => {
             </div>
           </div>
 
-          <div className="section banner">
-            <BannerList ref={BannerSectionRef} bannerPosition="9" />
+          <div className="section banner" ref={BannerSectionRef}>
+            <BannerList bannerPosition="9" />
           </div>
 
-          <div
-            className={`section my-star ${
-              initData.myStar === undefined || (Array.isArray(initData.myStar) && initData.myStar.length === 0) ? '' : 'visible'
-            }`}
-            ref={StarSectionRef}>
-            <div className="title-wrap">
-              <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
-                <img className="rank-arrow" src={starNew} />
-                <div className="txt">나의스타</div>
-                <img className="rank-arrow" src={RankArrow} />
+          {Array.isArray(initData.myStar) && initData.myStar.length > 0 && (
+            <div className="section my-star" ref={StarSectionRef}>
+              <div className="title-wrap">
+                <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
+                  <img className="rank-arrow" src={starNew} />
+                  <div className="txt">나의스타</div>
+                  <img className="rank-arrow" src={RankArrow} />
+                </div>
+              </div>
+              <div className="content-wrap my-star-list">
+                <StarList list={initData.myStar} />
               </div>
             </div>
-            <div className="content-wrap my-star-list">
-              <StarList list={initData.myStar} />
-            </div>
-          </div>
+          )}
 
           <div className="section live-list" ref={LiveSectionRef}>
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>

@@ -131,6 +131,7 @@
     box-sizing: border-box;
 
     &.rank {
+      height: 195px;
       padding: 26px 0 0;
       background-color: $white;
       color: $white;
@@ -226,13 +227,16 @@
       }
     }
     &.banner {
+      height: 96px;
       padding: 20px 16px 0 16px;
     }
     &.my-star {
-      display: none;
+      // display: none;
       padding-top: 20px;
+      height: 180px;
       &.visible {
         display: block;
+        height: 180px;
       }
       .title {
         color: $white;
