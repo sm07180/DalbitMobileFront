@@ -64,12 +64,8 @@ export default () => {
 const Content = styled.div`
   max-width: 460px;
   margin: auto;
-  padding-bottom: 60px;
-
   #happyTime {
-    min-height: 100vh;
     position: relative;
-    background: #000;
     .img {
       display: block;
       width: 100%;
@@ -78,9 +74,15 @@ const Content = styled.div`
 
     .link_button {
       position: absolute;
+<<<<<<< HEAD
       left: 11%;
       top: 72%;
       width: 77.9%;
+=======
+      left: 0;
+      top: 72%;
+      width: 100%;
+>>>>>>> c030bdcfa3c31f758d40e2219d23a2f2fdea2a4a
       height: 10%;
       text-indent: -9999px;
     }
