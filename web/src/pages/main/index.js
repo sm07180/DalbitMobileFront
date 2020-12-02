@@ -299,7 +299,7 @@ export default (props) => {
   const windowScrollEvent = () => {
     const GnbHeight = 88
     const sectionMarginTop = 30
-    const LiveTabDefaultHeight = 48
+    const LiveTabDefaultHeight = 28
 
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
@@ -313,7 +313,7 @@ export default (props) => {
     // const SubMainHeight = SubMainNode.clientHeight
     const RecommendHeight = RecommendNode.clientHeight
     const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode ? StarSectionNode.clientHeight : 0
+    const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
     // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
     const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
@@ -321,9 +321,21 @@ export default (props) => {
 
     let TopSectionHeight
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 28
+      if (StarSectionNode) {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      } else {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      }
     } else {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+      if (globalCtx.token.isLogin === true) {
+        if (StarSectionNode) {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+        } else {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
+        }
+      } else {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+      }
     }
 
     if (window.scrollY >= TopSectionHeight) {
