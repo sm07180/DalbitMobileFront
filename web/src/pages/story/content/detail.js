@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {useParams} from 'react-router-dom'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import NoResult from 'components/ui/new_noResult'
 
 let timer
 let totalPage = 1
@@ -67,39 +68,43 @@ export default () => {
         <span className="number">{totalCnt}</span>
       </div>
 
-      {storyList.map((story, idx) => {
-        const {storyIdx, nickNm, profImg, contents, writeDt} = story
+      {storyList && storyList.length > 0 ? (
+        storyList.map((story, idx) => {
+          const {storyIdx, nickNm, profImg, contents, writeDt} = story
 
-        return (
-          <div key={`story-${idx}`} className="story-wrap">
-            <div className="user-info">
-              <div className="photo-name-wrap">
-                <div className="photo">
-                  <img src={profImg['thumb336x336']} alt={storyIdx} />
+          return (
+            <div key={`story-${idx}`} className="story-wrap">
+              <div className="user-info">
+                <div className="photo-name-wrap">
+                  <div className="photo">
+                    <img src={profImg['thumb336x336']} alt={storyIdx} />
+                  </div>
+                  <div className="name-date">
+                    <div className="name">{nickNm}</div>
+                    <div className="date">{Utility.timeFormat(writeDt)}</div>
+                  </div>
                 </div>
-                <div className="name-date">
-                  <div className="name">{nickNm}</div>
-                  <div className="date">{Utility.timeFormat(writeDt)}</div>
-                </div>
+                <button
+                  className="delete-btn"
+                  onClick={() => {
+                    Api.deleteStory({roomNo, storyIdx}).then((res) => {
+                      const {result} = res
+                      if (result === 'success') {
+                        const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
+                        setStoryList(filtered)
+                      }
+                    })
+                  }}>
+                  삭제
+                </button>
               </div>
-              <button
-                className="delete-btn"
-                onClick={() => {
-                  Api.deleteStory({roomNo, storyIdx}).then((res) => {
-                    const {result} = res
-                    if (result === 'success') {
-                      const filtered = storyList.filter((story) => story.storyIdx !== storyIdx)
-                      setStoryList(filtered)
-                    }
-                  })
-                }}>
-                삭제
-              </button>
+              <div className="story-content">{contents}</div>
             </div>
-            <div className="story-content">{contents}</div>
-          </div>
-        )
-      })}
+          )
+        })
+      ) : (
+        <NoResult type="default" text="사연이 없습니다" />
+      )}
     </div>
   )
 }

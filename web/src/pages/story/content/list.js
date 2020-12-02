@@ -27,7 +27,13 @@ export default (props) => {
           )
         })
       ) : (
-        <NoResult type="default" text="데이터가 없습니다" />
+        <NoResult
+          type="default"
+          text="방송 중 받은 사연이 없습니다. <br/>
+          [방송하기 > 실시간 방송]에서
+          청취자에게 사연을 받으면
+          해당 사연을 볼 수 있습니다."
+        />
       )}
     </>
   )
