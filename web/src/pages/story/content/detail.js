@@ -103,7 +103,7 @@ export default () => {
           )
         })
       ) : (
-        <NoResult type="default" text="사연이 없습니다" />
+        <NoResult type="default" text="사연이 없습니다." />
       )}
     </div>
   )
