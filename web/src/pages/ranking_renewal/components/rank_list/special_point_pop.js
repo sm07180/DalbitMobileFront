@@ -36,33 +36,33 @@ export default ({setPopState}) => {
           </p>
 
           <div className="tableBox">
-            <div className="tableBox__title">
+            <div className="tableBox__th">
               <span>일간 TOP3 일자</span>
               <span>순위</span>
               <span>가산점</span>
             </div>
 
             <ul>
-              <li>
+              {/* <li>
                 <span>2021년 02월</span>
                 <span>1위</span>
                 <span>2.0점</span>
-              </li>
+              </li> */}
               {rankState.specialPointList.map((item, index) => {
                 const {rankDate, rank, addPoint} = item
 
                 return (
                   <li key={index}>
-                    {/* <span>{rankDate}</span>
+                    <span>{rankDate}</span>
                     <span>{rank}</span>
-                    <span>{addPoint}</span> */}
+                    <span>{addPoint}</span>
                   </li>
                 )
               })}
             </ul>
           </div>
 
-          <p className="noticeBox">
+          <p className="noteBox">
             ※ 스페셜 DJ 선발 누적 가산점은 선발 총점 100점 기준
             <br />월 최대 10점까지만 인정되며 표기됩니다.
             <br />
@@ -125,7 +125,7 @@ const PopupWrap = styled.div`
     .tableBox {
       font-size: 12px;
 
-      &__title {
+      &__th {
         display: flex;
         justify-content: space-between;
         padding: 7px 0;
@@ -163,7 +163,7 @@ const PopupWrap = styled.div`
       }
     }
 
-    .noticeBox {
+    .noteBox {
       margin-top: 20px;
       padding-bottom: 20px;
       line-height: 18px;
