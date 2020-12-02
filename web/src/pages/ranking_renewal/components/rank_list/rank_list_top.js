@@ -64,7 +64,7 @@ function RankListTop() {
       let monthRank = formState[formState.pageType].currentDate.getMonth()
 
       if (TopBoxRef.current) {
-        if (monthNow === monthRank) {
+        if (formState[formState.pageType].rankType === RANK_TYPE.DJ && monthNow === monthRank) {
           TopBoxRef.current.className = 'TopBox isLabel'
           timeNow = (
             <div className="realLabelDj" onClick={() => specialPop(memNo)}>
