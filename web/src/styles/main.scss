@@ -867,12 +867,19 @@
           justify-content: center;
           font-weight: bold;
           line-height: 1.4;
+          overflow: hidden;
           .title {
             display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             color: $white;
           }
           .nickname {
             display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             color: rgb(255, 179, 0);
           }
         }
