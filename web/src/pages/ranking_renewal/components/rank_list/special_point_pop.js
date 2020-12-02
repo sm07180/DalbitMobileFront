@@ -170,6 +170,7 @@ const PopupWrap = styled.div`
       font-size: 12px;
       color: #424242;
       letter-spacing: -0.3px;
+      text-align: center;
     }
   }
 `
