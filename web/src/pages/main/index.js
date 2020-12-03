@@ -13,7 +13,7 @@ import {StoreLink} from 'context/link'
 import qs from 'query-string'
 //import Lottie from 'react-lottie'
 import LottiePlayer from 'lottie-web'
-
+import styled from 'styled-components'
 // components
 import Layout from 'pages/common/layout'
 import MainSlideList from './component/mainSlideList.js'
@@ -26,6 +26,7 @@ import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupCommon from './component/layer_popup_common.js'
 import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
+import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
@@ -61,7 +62,12 @@ const records = 50
 
 let touchStartY = null
 let touchEndY = null
+
+// updateLink
+let storeUrl = ''
+let updateState
 export default (props) => {
+  const customerHeader = JSON.parse(Api.customHeader)
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -112,6 +118,10 @@ export default (props) => {
   const [popupMoon, setPopupMoon] = useState(false)
   const [eventPop, setEventPop] = useState(false)
   const [payState, setPayState] = useState(false)
+  //update
+  const [isUpdate, setIsUpdate] = useState(false)
+  const [checker, setChecker] = useState(null)
+  const [inputState, setInputState] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
   const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
@@ -143,7 +153,16 @@ export default (props) => {
       })
 
     if (window.sessionStorage) {
-      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
+      const exceptionList = [
+        'room_active',
+        'room_no',
+        'room_info',
+        'push_type',
+        'popup_notice',
+        'pay_info',
+        'ranking_tab',
+        'checkUpdateApp'
+      ]
       Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
@@ -400,6 +419,9 @@ export default (props) => {
     setPayState(false)
     sessionStorage.removeItem('pay_info')
   }
+  const setInputPopup = () => {
+    setInputState(false)
+  }
 
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
@@ -536,6 +558,21 @@ export default (props) => {
     setLiveRefresh(false)
     // setReloadInit(false)
   }
+  //updatefunc
+  const updateApp = () => {
+    if (customerHeader.os === OS_TYPE['Android']) {
+      Hybrid('openUrl', storeUrl)
+    } else if (customerHeader.os === OS_TYPE['IOS']) {
+      Hybrid('openUrl', storeUrl)
+    }
+  }
+  const updateLink = () => {
+    updateApp()
+  }
+  const closeLink = () => {
+    setChecker(false)
+    sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+  }
 
   const mainTouchEnd = useCallback(
     async (e) => {
@@ -625,8 +662,41 @@ export default (props) => {
 
   useEffect(() => {
     document.addEventListener('scroll', scrollMove)
+
     return () => {
       document.removeEventListener('scroll', scrollMove)
+    }
+  }, [])
+  useEffect(() => {
+    if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
+      setInputState(true)
+    }
+  }, [globalCtx.profile])
+
+  useEffect(() => {
+    async function fetchVersionCheck() {
+      const res = await Api.verisionCheck()
+      updateState = res.data.isUpdate
+      storeUrl = res.data.storeUrl
+    }
+    fetchVersionCheck()
+    //메인에 첫번째 조인
+    setTimeout(() => {
+      if (sessionStorage.getItem('checkUpdateApp') !== 'otherJoin' || sessionStorage.getItem('checkUpdateApp') == null) {
+        sessionStorage.setItem('checkUpdateApp', 'FirstMainJoin')
+        if (updateState === true) {
+          if (customerHeader.os === OS_TYPE['Android'] || customerHeader.os === OS_TYPE['IOS']) {
+            setChecker(true)
+          }
+        }
+      } else {
+        sessionStorage.setItem('checkUpdateApp', 'otherJoin')
+        setChecker(false)
+      }
+    }, 300)
+
+    return () => {
+      sessionStorage.setItem('checkUpdateApp', 'otherJoin')
     }
   }, [])
 
@@ -951,8 +1021,89 @@ export default (props) => {
           </LayerPopupCommon>
         )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
+        {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
         {scrollOn && <AttendEventBtn />}
+        {checker && (
+          <UpdateWrap>
+            <div className="Wrapper">
+              <div className="topBox">
+                <button onClick={closeLink} className="closeBtn" />
+                <img
+                  alt="앱설치 유도 팝업 이미지"
+                  className="topBox__img"
+                  src={'https://image.dalbitlive.com/svg/img_app_update@2x.png'}
+                />
+                <div className="topBox__info">
+                  <h2>최신 버전이 출시되었습니다.</h2>
+                  <p>
+                    새로운 기능과 안정적인 서비스 이용을 위해 <br /> 최신 버전으로 업데이트 후 이용해주세요.
+                  </p>
+                </div>
+              </div>
+              <button onClick={updateLink} className="updateBtn">
+                최신 버전으로 업데이트
+              </button>
+            </div>
+          </UpdateWrap>
+        )}
       </div>
     </Layout>
   )
 }
+
+const UpdateWrap = styled.div`
+  position: fixed;
+  top: 48px;
+  left: 0;
+  width: 100%;
+  height: 128px;
+  background-color: #eee;
+  padding: 12px 12px 10px 12px;
+  z-index: 9999;
+  .Wrapper {
+    width: 91%;
+    margin: 0 auto;
+  }
+  .updateBtn {
+    width: 100%;
+    height: 32px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: #632beb;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .topBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .closeBtn {
+      position: absolute;
+      top: -8px;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      background: url('https://image.dalbitlive.com/svg/ico_close_g_m.svg');
+    }
+    &__img {
+      width: 64px;
+      height: 64px;
+    }
+    &__info {
+      margin-left: 8px;
+      h2 {
+        margin-bottom: 4px;
+        font-size: 16px;
+        letter-spacing: -0.4px;
+        color: #632beb;
+      }
+      p {
+        font-size: 13px;
+        letter-spacing: -0.33px;
+        color: #616161;
+      }
+    }
+  }
+`
