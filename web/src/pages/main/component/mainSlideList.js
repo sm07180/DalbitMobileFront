@@ -7,7 +7,7 @@ import Swiper from 'react-id-swiper'
 import Room, {RoomJoin} from 'context/room'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
-import {clipJoinApi} from "pages/common/clipPlayer/clip_func";
+import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
 export default (props) => {
   const context = useContext(Context)
@@ -48,11 +48,11 @@ export default (props) => {
                         context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
                           window.location.href = `${roomNo}`
-                        } else if(clipUrl.test(roomNo)){
-                          if(isHybrid()){
-                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                        } else if (clipUrl.test(roomNo)) {
+                          if (isHybrid()) {
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             clipJoinApi(clip_no, context)
-                          }else{
+                          } else {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
                         } else {
@@ -60,14 +60,14 @@ export default (props) => {
                         }
                       } else {
                         if (isHybrid()) {
-                          if(clipUrl.test(roomNo)){
-                            const clip_no = roomNo.substring(roomNo.lastIndexOf("/") + 1)
+                          if (clipUrl.test(roomNo)) {
+                            const clip_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             clipJoinApi(clip_no, context)
                           } else {
                             Hybrid('openUrl', `${roomNo}`)
                           }
                         } else {
-                          if(clipUrl.test(roomNo)){
+                          if (clipUrl.test(roomNo)) {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           } else {
                             window.open(`${roomNo}`)
@@ -99,8 +99,9 @@ export default (props) => {
                   }}>
                   <div className="topSlide__iconWrap">
                     <div className="iconWrapper">
-                      {isAdmin ? <em className="adminIcon">운영자</em> : ''}
+                      {/* {isAdmin ? <em className="adminIcon">운영자</em> : ''} */}
                       {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
+                      {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
                       {liveBadgeList &&
                         liveBadgeList.length !== 0 &&
                         liveBadgeList.map((item, idx) => {
@@ -126,7 +127,7 @@ export default (props) => {
                             </React.Fragment>
                           )
                         })}
-                      {!isAdmin && isSpecial ? <em className="specialIcon">스페셜DJ</em> : ''}
+
                       {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
                     </div>
 

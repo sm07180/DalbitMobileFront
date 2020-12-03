@@ -299,7 +299,7 @@ export default (props) => {
   const windowScrollEvent = () => {
     const GnbHeight = 88
     const sectionMarginTop = 30
-    const LiveTabDefaultHeight = 48
+    const LiveTabDefaultHeight = 28
 
     const MainNode = MainRef.current
     const SubMainNode = SubMainRef.current
@@ -321,9 +321,21 @@ export default (props) => {
 
     let TopSectionHeight
     if (customHeader['os'] === OS_TYPE['Desktop']) {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + 48
+      if (StarSectionNode) {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      } else {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      }
     } else {
-      TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight
+      if (globalCtx.token.isLogin === true) {
+        if (StarSectionNode) {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+        } else {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
+        }
+      } else {
+        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+      }
     }
 
     if (window.scrollY >= TopSectionHeight) {

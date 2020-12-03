@@ -36,8 +36,8 @@ const makeContents = (props) => {
       liveBadgeList,
       isNew,
       totalCnt,
-      gstProfImg
-      // isGoodMem
+      gstProfImg,
+      isGoodMem
     } = list
 
     const alertCheck = (roomNo) => {
@@ -145,7 +145,7 @@ const makeContents = (props) => {
                   )
                 })}
               {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
-              <span>{bjNickNm}</span>
+              <span className="nick">{bjNickNm}</span>
             </div>
             <div className="detail">
               <div className="value">
@@ -169,12 +169,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
-              {/* {isGoodMem && (
-                <div className="value">
-                  <i className="value--goodMem goodMember">사랑꾼</i>
+              {isGoodMem && (
+                <div className="value isGoodMember">
+                  <i className="value--goodMem">사랑꾼</i>
                   <span />
                 </div>
-              )} */}
+              )}
               {/* {rank < 11 && (
                 <div className="value">
                   <img src={starIcon} />
