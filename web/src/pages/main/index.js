@@ -26,7 +26,6 @@ import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupCommon from './component/layer_popup_common.js'
 import LayerPopupEvent from './component/layer_popup_event.js'
 import LayerPopupPay from './component/layer_popup_pay.js'
-import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
@@ -118,19 +117,17 @@ export default (props) => {
   const [popupMoon, setPopupMoon] = useState(false)
   const [eventPop, setEventPop] = useState(false)
   const [payState, setPayState] = useState(false)
-  //update
-  const [isUpdate, setIsUpdate] = useState(false)
+
   const [checker, setChecker] = useState(null)
-  const [inputState, setInputState] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
   const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
 
   useEffect(() => {
     rankAction.formDispatch &&
-      rankAction.formDispatch({
-        type: 'RESET'
-      })
+    rankAction.formDispatch({
+      type: 'RESET'
+    })
 
     rankAction.setLevelList && rankAction.setLevelList([])
 
@@ -139,30 +136,21 @@ export default (props) => {
     rankAction.setRankList && rankAction.setRankList([])
 
     rankAction.setMyInfo &&
-      rankAction.setMyInfo({
-        isReward: false,
-        myGiftPoint: 0,
-        myListenerPoint: 0,
-        myRank: 0,
-        myUpDown: '',
-        myBroadPoint: 0,
-        myLikePoint: 0,
-        myPoint: 0,
-        myListenPoint: 0,
-        time: ''
-      })
+    rankAction.setMyInfo({
+      isReward: false,
+      myGiftPoint: 0,
+      myListenerPoint: 0,
+      myRank: 0,
+      myUpDown: '',
+      myBroadPoint: 0,
+      myLikePoint: 0,
+      myPoint: 0,
+      myListenPoint: 0,
+      time: ''
+    })
 
     if (window.sessionStorage) {
-      const exceptionList = [
-        'room_active',
-        'room_no',
-        'room_info',
-        'push_type',
-        'popup_notice',
-        'pay_info',
-        'ranking_tab',
-        'checkUpdateApp'
-      ]
+      const exceptionList = ['room_active', 'room_no', 'room_info', 'push_type', 'popup_notice', 'pay_info', 'ranking_tab']
       Object.keys(window.sessionStorage).forEach((key) => {
         if (!exceptionList.includes(key)) {
           sessionStorage.removeItem(key)
@@ -174,18 +162,18 @@ export default (props) => {
       if (sessionStorage.getItem('ranking_tab') === 'dj') {
         setRankType('fan')
         rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 2
-          })
+        rankAction.formDispatch({
+          type: 'RANK_TYPE',
+          val: 2
+        })
         sessionStorage.setItem('ranking_tab', 'fan')
       } else {
         setRankType('dj')
         rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 1
-          })
+        rankAction.formDispatch({
+          type: 'RANK_TYPE',
+          val: 1
+        })
         sessionStorage.setItem('ranking_tab', 'dj')
       }
     } else {
@@ -193,16 +181,16 @@ export default (props) => {
       setRankType(randomData)
       if (randomData === 'dj') {
         rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 1
-          })
+        rankAction.formDispatch({
+          type: 'RANK_TYPE',
+          val: 1
+        })
       } else {
         rankAction.formDispatch &&
-          rankAction.formDispatch({
-            type: 'RANK_TYPE',
-            val: 2
-          })
+        rankAction.formDispatch({
+          type: 'RANK_TYPE',
+          val: 2
+        })
       }
       sessionStorage.setItem('ranking_tab', randomData)
     }
@@ -366,11 +354,11 @@ export default (props) => {
 
     const GAP = 100
     if (
-      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
-      !concatenating &&
-      Array.isArray(liveList) &&
-      liveList.length &&
-      livePage <= totalLivePage
+        window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+        !concatenating &&
+        Array.isArray(liveList) &&
+        liveList.length &&
+        livePage <= totalLivePage
     ) {
       concatLiveList()
     }
@@ -419,9 +407,6 @@ export default (props) => {
     setPayState(false)
     sessionStorage.removeItem('pay_info')
   }
-  const setInputPopup = () => {
-    setInputState(false)
-  }
 
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
@@ -433,13 +418,13 @@ export default (props) => {
     if (res.result === 'success') {
       if (res.hasOwnProperty('data')) {
         setPopupData(
-          res.data.filter((v) => {
-            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
-              return v
-            } else {
-              return false
-            }
-          })
+            res.data.filter((v) => {
+              if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+                return v
+              } else {
+                return false
+              }
+            })
         )
       }
     }
@@ -517,34 +502,34 @@ export default (props) => {
   const refreshDefaultHeight = 48
 
   const mainTouchStart = useCallback(
-    (e) => {
-      if (reloadInit === true || window.scrollY !== 0) return
+      (e) => {
+        if (reloadInit === true || window.scrollY !== 0) return
 
-      touchStartY = e.touches[0].clientY
-    },
-    [reloadInit]
+        touchStartY = e.touches[0].clientY
+      },
+      [reloadInit]
   )
 
   const mainTouchMove = useCallback(
-    (e) => {
-      if (reloadInit === true || window.scrollY !== 0) return
+      (e) => {
+        if (reloadInit === true || window.scrollY !== 0) return
 
-      const iconWrapNode = iconWrapRef.current
-      const refreshIconNode = arrowRefreshRef.current
+        const iconWrapNode = iconWrapRef.current
+        const refreshIconNode = arrowRefreshRef.current
 
-      touchEndY = e.touches[0].clientY
-      const ratio = 3
-      const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 50
+        touchEndY = e.touches[0].clientY
+        const ratio = 3
+        const heightDiff = (touchEndY - touchStartY) / ratio
+        const heightDiffFixed = 50
 
-      if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
-        if (heightDiff <= heightDiffFixed) {
-          iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
-          refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+        if (window.scrollY === 0 && typeof heightDiff === 'number' && heightDiff > 10) {
+          if (heightDiff <= heightDiffFixed) {
+            iconWrapNode.style.height = `${refreshDefaultHeight + heightDiff}px`
+            refreshIconNode.style.transform = `rotate(${heightDiff * ratio}deg)`
+          }
         }
-      }
-    },
-    [reloadInit]
+      },
+      [reloadInit]
   )
   const openPopupMoon = async () => {
     setPopupMoon(true)
@@ -575,82 +560,82 @@ export default (props) => {
   }
 
   const mainTouchEnd = useCallback(
-    async (e) => {
-      if (reloadInit === true) return
+      async (e) => {
+        if (reloadInit === true) return
 
-      const ratio = 3
-      const transitionTime = 150
-      const iconWrapNode = iconWrapRef.current
-      const refreshIconNode = arrowRefreshRef.current
+        const ratio = 3
+        const transitionTime = 150
+        const iconWrapNode = iconWrapRef.current
+        const refreshIconNode = arrowRefreshRef.current
 
-      const heightDiff = (touchEndY - touchStartY) / ratio
-      const heightDiffFixed = 48
-      if (heightDiff >= heightDiffFixed) {
-        let current_angle = (() => {
-          const str_angle = refreshIconNode.style.transform
-          let head_slice = str_angle.slice(7)
-          let tail_slice = head_slice.slice(0, 3)
-          return Number(tail_slice)
-        })()
+        const heightDiff = (touchEndY - touchStartY) / ratio
+        const heightDiffFixed = 48
+        if (heightDiff >= heightDiffFixed) {
+          let current_angle = (() => {
+            const str_angle = refreshIconNode.style.transform
+            let head_slice = str_angle.slice(7)
+            let tail_slice = head_slice.slice(0, 3)
+            return Number(tail_slice)
+          })()
 
-        if (typeof current_angle === 'number') {
-          setReloadInit(true)
-          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
+          if (typeof current_angle === 'number') {
+            setReloadInit(true)
+            iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+            iconWrapNode.style.height = `${refreshDefaultHeight + 50}px`
 
-          const loadIntervalId = setInterval(() => {
-            if (Math.abs(current_angle) === 360) {
-              current_angle = 0
-            }
-            current_angle += 10
-            refreshIconNode.style.transform = `rotate(${current_angle}deg)`
-          }, 17)
+            const loadIntervalId = setInterval(() => {
+              if (Math.abs(current_angle) === 360) {
+                current_angle = 0
+              }
+              current_angle += 10
+              refreshIconNode.style.transform = `rotate(${current_angle}deg)`
+            }, 17)
 
-          await fetchMainInitData()
-          await fetchLiveListAsInit()
+            await fetchMainInitData()
+            await fetchLiveListAsInit()
 
-          await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-          clearInterval(loadIntervalId)
+            await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+            clearInterval(loadIntervalId)
 
-          setLiveAlign(1)
-          setLiveGender('')
-          if (sessionStorage.getItem('ranking_tab') === 'dj') {
-            setRankType('fan')
-            rankAction.formDispatch &&
+            setLiveAlign(1)
+            setLiveGender('')
+            if (sessionStorage.getItem('ranking_tab') === 'dj') {
+              setRankType('fan')
+              rankAction.formDispatch &&
               rankAction.formDispatch({
                 type: 'RANK_TYPE',
                 val: 2
               })
-            sessionStorage.setItem('ranking_tab', 'fan')
-          } else {
-            setRankType('dj')
-            rankAction.formDispatch &&
+              sessionStorage.setItem('ranking_tab', 'fan')
+            } else {
+              setRankType('dj')
+              rankAction.formDispatch &&
               rankAction.formDispatch({
                 type: 'RANK_TYPE',
                 val: 1
               })
-            sessionStorage.setItem('ranking_tab', 'dj')
+              sessionStorage.setItem('ranking_tab', 'dj')
+            }
+            setLiveListType('detail')
+            setSelectedLiveRoomType('')
+            setReloadInit(false)
           }
-          setLiveListType('detail')
-          setSelectedLiveRoomType('')
-          setReloadInit(false)
         }
-      }
 
-      const promiseSync = () =>
-        new Promise((resolve, _) => {
-          iconWrapNode.style.transitionDuration = `${transitionTime}ms`
-          iconWrapNode.style.height = `${refreshDefaultHeight}px`
-          setTimeout(() => resolve(), transitionTime)
-        })
+        const promiseSync = () =>
+            new Promise((resolve, _) => {
+              iconWrapNode.style.transitionDuration = `${transitionTime}ms`
+              iconWrapNode.style.height = `${refreshDefaultHeight}px`
+              setTimeout(() => resolve(), transitionTime)
+            })
 
-      await promiseSync()
-      iconWrapNode.style.transitionDuration = '0ms'
-      refreshIconNode.style.transform = 'rotate(0)'
-      touchStartY = null
-      touchEndY = null
-    },
-    [reloadInit]
+        await promiseSync()
+        iconWrapNode.style.transitionDuration = '0ms'
+        refreshIconNode.style.transform = 'rotate(0)'
+        touchStartY = null
+        touchEndY = null
+      },
+      [reloadInit]
   )
   const scrollMove = () => {
     if (window.scrollY >= 1) {
@@ -662,16 +647,10 @@ export default (props) => {
 
   useEffect(() => {
     document.addEventListener('scroll', scrollMove)
-
     return () => {
       document.removeEventListener('scroll', scrollMove)
     }
   }, [])
-  useEffect(() => {
-    if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
-      setInputState(true)
-    }
-  }, [globalCtx.profile])
 
   useEffect(() => {
     async function fetchVersionCheck() {
@@ -701,131 +680,131 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout {...props} sticker={globalCtx.sticker}>
-      <div
-        className="refresh-wrap"
-        ref={iconWrapRef}
-        style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
-        <div className="icon-wrap">
-          <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
-        </div>
-      </div>
-      <div
-        className="main-wrap"
-        ref={MainRef}
-        onTouchStart={mainTouchStart}
-        onTouchMove={mainTouchMove}
-        onTouchEnd={mainTouchEnd}
-        style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
-        {customHeader['os'] === OS_TYPE['Desktop'] && (
-          <div ref={SubMainRef} className="main-gnb">
-            <div className="left-side">
-              <div className="tab">
-                <NavLink
-                  className="tab__item"
-                  activeClassName={'tab__item--active'}
-                  onClick={(event) => {
-                    event.preventDefault()
-                  }}
-                  to={'/'}>
-                  라이브
-                </NavLink>
-              </div>
-              <div className="tab">
-                <NavLink
-                  className="tab__item newIcon"
-                  activeClassName={'tab__item--active'}
-                  to={'/clip'}
-                  onClick={(event) => {
-                    history.push('/clip')
-                  }}>
-                  클립 <i>N</i>
-                </NavLink>
-              </div>
-              <button
-                className="broadBtn"
-                onClick={() => {
-                  if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    if (globalCtx.token.isLogin === false) {
-                      globalCtx.action.alert({
-                        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                        callback: () => {
-                          history.push('/login')
-                        }
-                      })
-                    } else {
-                      globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
-                    }
-                  } else {
-                    if (!broadcastBtnActive) {
-                      if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                        if (Utility.getCookie('clip-player-info')) {
-                          globalCtx.action.confirm({
-                            msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
-                            callback: () => {
-                              clipExit(globalCtx)
-                              RoomMake(globalCtx)
-                            }
-                          })
-                        } else {
-                          RoomMake(globalCtx)
-                        }
-                      } else {
-                        globalCtx.action.confirm({
-                          msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
-                          callback: () => {
-                            sessionStorage.removeItem('room_no')
-                            Utility.setCookie('listen_room_no', null)
-                            Hybrid('ExitRoom', '')
-                            globalCtx.action.updatePlayer(false)
-                            RoomMake(globalCtx)
-                          }
-                        })
-                      }
-                      setBroadcastBtnActive(true)
-                      setTimeout(() => setBroadcastBtnActive(false), 3000)
-                    }
-                  }
-                }}></button>
-
-              <div className="tab">
-                <NavLink
-                  className="tab__item"
-                  activeClassName={'tab__item--active'}
-                  to={'/rank'}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    history.push('/rank')
-                  }}>
-                  랭킹
-                </NavLink>
-              </div>
-
-              <div className="tab">
-                <NavLink
-                  className="tab__item"
-                  activeClassName={'tab__item--active'}
-                  to={'/rank'}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    history.push('/menu/profile')
-                  }}>
-                  마이
-                </NavLink>
-              </div>
-            </div>
+      <Layout {...props} sticker={globalCtx.sticker}>
+        <div
+            className="refresh-wrap"
+            ref={iconWrapRef}
+            style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
+          <div className="icon-wrap">
+            <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} />
           </div>
-        )}
-
-        <div ref={RecommendRef} className="main-slide">
-          {/* {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />} */}
-          {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
-        <div className="main-content">
-          <div className="section rank" ref={RankSectionRef}>
-            <div className="title-wrap">
-              <button className="title" onClick={() => goRank()}>
-                {/* <Lottie
+        <div
+            className="main-wrap"
+            ref={MainRef}
+            onTouchStart={mainTouchStart}
+            onTouchMove={mainTouchMove}
+            onTouchEnd={mainTouchEnd}
+            style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
+          {customHeader['os'] === OS_TYPE['Desktop'] && (
+              <div ref={SubMainRef} className="main-gnb">
+                <div className="left-side">
+                  <div className="tab">
+                    <NavLink
+                        className="tab__item"
+                        activeClassName={'tab__item--active'}
+                        onClick={(event) => {
+                          event.preventDefault()
+                        }}
+                        to={'/'}>
+                      라이브
+                    </NavLink>
+                  </div>
+                  <div className="tab">
+                    <NavLink
+                        className="tab__item newIcon"
+                        activeClassName={'tab__item--active'}
+                        to={'/clip'}
+                        onClick={(event) => {
+                          history.push('/clip')
+                        }}>
+                      클립 <i>N</i>
+                    </NavLink>
+                  </div>
+                  <button
+                      className="broadBtn"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (globalCtx.token.isLogin === false) {
+                            globalCtx.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                          }
+                        } else {
+                          if (!broadcastBtnActive) {
+                            if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+                              if (Utility.getCookie('clip-player-info')) {
+                                globalCtx.action.confirm({
+                                  msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                                  callback: () => {
+                                    clipExit(globalCtx)
+                                    RoomMake(globalCtx)
+                                  }
+                                })
+                              } else {
+                                RoomMake(globalCtx)
+                              }
+                            } else {
+                              globalCtx.action.confirm({
+                                msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                                callback: () => {
+                                  sessionStorage.removeItem('room_no')
+                                  Utility.setCookie('listen_room_no', null)
+                                  Hybrid('ExitRoom', '')
+                                  globalCtx.action.updatePlayer(false)
+                                  RoomMake(globalCtx)
+                                }
+                              })
+                            }
+                            setBroadcastBtnActive(true)
+                            setTimeout(() => setBroadcastBtnActive(false), 3000)
+                          }
+                        }
+                      }}></button>
+
+                  <div className="tab">
+                    <NavLink
+                        className="tab__item"
+                        activeClassName={'tab__item--active'}
+                        to={'/rank'}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          history.push('/rank')
+                        }}>
+                      랭킹
+                    </NavLink>
+                  </div>
+
+                  <div className="tab">
+                    <NavLink
+                        className="tab__item"
+                        activeClassName={'tab__item--active'}
+                        to={'/rank'}
+                        onClick={(event) => {
+                          event.preventDefault()
+                          history.push('/menu/profile')
+                        }}>
+                      마이
+                    </NavLink>
+                  </div>
+                </div>
+              </div>
+          )}
+
+          <div ref={RecommendRef} className="main-slide">
+            {/* {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />} */}
+            {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
+          </div>
+          <div className="main-content">
+            <div className="section rank" ref={RankSectionRef}>
+              <div className="title-wrap">
+                <button className="title" onClick={() => goRank()}>
+                  {/* <Lottie
                   options={{
                     loop: true,
                     autoPlay: true,
@@ -833,73 +812,73 @@ export default (props) => {
                   }}
                   width={40}
                 /> */}
-                {/* <span className="ico-lottie">
+                  {/* <span className="ico-lottie">
                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
                 </span> */}
-                <img className="rank-arrow" src={RankNew} />
-                <div className="txt">실시간 랭킹</div>
-                <img className="rank-arrow" src={RankArrow} />
-              </button>
-              <div className="right-side">
-                <button
-                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
-                  onClick={() => {
-                    setRankType('dj')
-                    rankAction.formDispatch &&
-                      rankAction.formDispatch({
-                        type: 'RANK_TYPE',
-                        val: 1
-                      })
-                  }}>
-                  DJ
-                </button>
-
-                <button
-                  style={{marginLeft: '2px'}}
-                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
-                  onClick={() => {
-                    setRankType('fan')
-                    rankAction.formDispatch &&
-                      rankAction.formDispatch({
-                        type: 'RANK_TYPE',
-                        val: 2
-                      })
-                  }}>
-                  팬
-                </button>
-              </div>
-            </div>
-
-            <div className="content-wrap ranking">
-              <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
-            </div>
-          </div>
-
-          <div className="section banner" ref={BannerSectionRef}>
-            <BannerList bannerPosition="9" />
-          </div>
-
-          {Array.isArray(initData.myStar) && initData.myStar.length > 0 && (
-            <div className="section my-star" ref={StarSectionRef}>
-              <div className="title-wrap">
-                <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
-                  <img className="rank-arrow" src={starNew} />
-                  <div className="txt">나의스타</div>
+                  <img className="rank-arrow" src={RankNew} />
+                  <div className="txt">실시간 랭킹</div>
                   <img className="rank-arrow" src={RankArrow} />
+                </button>
+                <div className="right-side">
+                  <button
+                      className={`text ${rankType === 'dj' ? 'active' : ''}`}
+                      onClick={() => {
+                        setRankType('dj')
+                        rankAction.formDispatch &&
+                        rankAction.formDispatch({
+                          type: 'RANK_TYPE',
+                          val: 1
+                        })
+                      }}>
+                    DJ
+                  </button>
+
+                  <button
+                      style={{marginLeft: '2px'}}
+                      className={`text ${rankType === 'fan' ? 'active' : ''}`}
+                      onClick={() => {
+                        setRankType('fan')
+                        rankAction.formDispatch &&
+                        rankAction.formDispatch({
+                          type: 'RANK_TYPE',
+                          val: 2
+                        })
+                      }}>
+                    팬
+                  </button>
                 </div>
               </div>
-              <div className="content-wrap my-star-list">
-                <StarList list={initData.myStar} />
+
+              <div className="content-wrap ranking">
+                <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
               </div>
             </div>
-          )}
 
-          <div className="section live-list" ref={LiveSectionRef}>
-            <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
-              <div className="title">
-                <span className="txt" onClick={RefreshFunc}>
-                  <img src={liveNew} alt="실시간라이브" width={28} style={{marginRight: '4px'}} />
-                  {/* <Lottie
+            <div className="section banner" ref={BannerSectionRef}>
+              <BannerList bannerPosition="9" />
+            </div>
+
+            {Array.isArray(initData.myStar) && initData.myStar.length > 0 && (
+                <div className="section my-star" ref={StarSectionRef}>
+                  <div className="title-wrap">
+                    <div className="title" onClick={() => (window.location.href = `/mypage/${globalCtx.token.memNo}/edit_star`)}>
+                      <img className="rank-arrow" src={starNew} />
+                      <div className="txt">나의스타</div>
+                      <img className="rank-arrow" src={RankArrow} />
+                    </div>
+                  </div>
+                  <div className="content-wrap my-star-list">
+                    <StarList list={initData.myStar} />
+                  </div>
+                </div>
+            )}
+
+            <div className="section live-list" ref={LiveSectionRef}>
+              <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
+                <div className="title">
+                  <span className="txt" onClick={RefreshFunc}>
+                    <img src={liveNew} alt="실시간라이브" width={28} style={{marginRight: '4px'}} />
+                    {/* <Lottie
                       options={{
                         loop: true,
                         autoPlay: true,
@@ -907,13 +886,13 @@ export default (props) => {
                       }}
                       width={24}
                     /> */}
-                  {/* <span className="ico-lottie">
+                    {/* <span className="ico-lottie">
                   </span> */}
-                  실시간 LIVE
-                </span>
+                    실시간 LIVE
+                  </span>
 
-                <div className="sequence-wrap">
-                  {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
+                  <div className="sequence-wrap">
+                    {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
                   })()}
@@ -922,82 +901,82 @@ export default (props) => {
                     <img src={sortIcon} alt="검색 정렬하기" />
                   </button> */}
 
-                  {/* {popupMoonState && (
+                    {/* {popupMoonState && (
                     <button className="btn__moon" onClick={openPopupMoon}>
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
                   )} */}
-                  <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
-                    <img
-                      src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
-                      alt="리스트 형식으로 리스트 보여주기"
-                    />
-                  </button>
-                  <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
-                    <img
-                      src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
-                      alt="리스트 형식으로 리스트 보여주기"
-                    />
-                  </button>
-                  <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`} onClick={RefreshFunc}>
-                    <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.png" alt="새로고침" />
-                  </button>
-                </div>
-              </div>
-
-              <div className="live-list-category">
-                <div className="inner-wrapper">
-                  {Array.isArray(categoryList) && categoryList.length > 1 && (
-                    <Swiper {...swiperParams}>
-                      {categoryList
-                        .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
-                        .map((key, idx) => {
-                          return (
-                            <div
-                              className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
-                              key={`list-${idx}`}
-                              onClick={() => setSelectedLiveRoomType(key.cd)}>
-                              {key.cdNm}
-                            </div>
-                          )
-                        })}
-                    </Swiper>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
-              {Array.isArray(liveList) ? (
-                liveList.length > 0 && categoryList.length > 1 ? (
-                  <div className="liveList">
-                    <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                    <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
+                      <img
+                          src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
+                          alt="리스트 형식으로 리스트 보여주기"
+                      />
+                    </button>
+                    <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
+                      <img
+                          src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
+                          alt="리스트 형식으로 리스트 보여주기"
+                      />
+                    </button>
+                    <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`} onClick={RefreshFunc}>
+                      <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.png" alt="새로고침" />
+                    </button>
                   </div>
+                </div>
+
+                <div className="live-list-category">
+                  <div className="inner-wrapper">
+                    {Array.isArray(categoryList) && categoryList.length > 1 && (
+                        <Swiper {...swiperParams}>
+                          {categoryList
+                              .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
+                              .map((key, idx) => {
+                                return (
+                                    <div
+                                        className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                                        key={`list-${idx}`}
+                                        onClick={() => setSelectedLiveRoomType(key.cd)}>
+                                      {key.cdNm}
+                                    </div>
+                                )
+                              })}
+                        </Swiper>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
+                {Array.isArray(liveList) ? (
+                    liveList.length > 0 && categoryList.length > 1 ? (
+                        <div className="liveList">
+                          <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                        </div>
+                    ) : (
+                        <NoResult />
+                    )
                 ) : (
-                  <NoResult />
-                )
-              ) : (
-                <div style={{height: '600px'}}></div>
-              )}
+                    <div style={{height: '600px'}}></div>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        {popup && (
-          <LayerPopup
-            alignSet={alignSet}
-            setPopup={setPopup}
-            liveAlign={liveAlign}
-            setLiveAlign={setLiveAlign}
-            liveGender={liveGender}
-            setLiveGender={setLiveGender}
-            resetFetchList={resetFetchList}
-          />
-        )}
-        {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
-        {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
-          <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
-        )}
-        {/* {popupMoon && (
+          {popup && (
+              <LayerPopup
+                  alignSet={alignSet}
+                  setPopup={setPopup}
+                  liveAlign={liveAlign}
+                  setLiveAlign={setLiveAlign}
+                  liveGender={liveGender}
+                  setLiveGender={setLiveGender}
+                  resetFetchList={resetFetchList}
+              />
+          )}
+          {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
+          {eventPop && nowTime >= eventPopupStartTime && nowTime < eventPopupEndTime && (
+              <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
+          )}
+          {/* {popupMoon && (
           <LayerPopupCommon setPopupMoon={setPopupMoon}>
             <span className="img img-moon">
               <img src="https://image.dalbitlive.com/main/common/img_moon_popup.png" alt="달이 된 병아리" />
@@ -1020,34 +999,33 @@ export default (props) => {
             </div>
           </LayerPopupCommon>
         )} */}
-        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
-        {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
-        {scrollOn && <AttendEventBtn />}
-        {checker && (
-          <UpdateWrap>
-            <div className="Wrapper">
-              <div className="topBox">
-                <button onClick={closeLink} className="closeBtn" />
-                <img
-                  alt="앱설치 유도 팝업 이미지"
-                  className="topBox__img"
-                  src={'https://image.dalbitlive.com/svg/img_app_update@2x.png'}
-                />
-                <div className="topBox__info">
-                  <h2>최신 버전이 출시되었습니다.</h2>
-                  <p>
-                    새로운 기능과 안정적인 서비스 이용을 위해 <br /> 최신 버전으로 업데이트 후 이용해주세요.
-                  </p>
+          {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
+          {scrollOn && <AttendEventBtn />}
+          {checker && (
+              <UpdateWrap>
+                <div className="Wrapper">
+                  <div className="topBox">
+                    <button onClick={closeLink} className="closeBtn" />
+                    <img
+                        alt="앱설치 유도 팝업 이미지"
+                        className="topBox__img"
+                        src={'https://image.dalbitlive.com/svg/img_app_update@2x.png'}
+                    />
+                    <div className="topBox__info">
+                      <h2>최신 버전이 출시되었습니다.</h2>
+                      <p>
+                        새로운 기능과 안정적인 서비스 이용을 위해 <br /> 최신 버전으로 업데이트 후 이용해주세요.
+                      </p>
+                    </div>
+                  </div>
+                  <button onClick={updateLink} className="updateBtn">
+                    최신 버전으로 업데이트
+                  </button>
                 </div>
-              </div>
-              <button onClick={updateLink} className="updateBtn">
-                최신 버전으로 업데이트
-              </button>
-            </div>
-          </UpdateWrap>
-        )}
-      </div>
-    </Layout>
+              </UpdateWrap>
+          )}
+        </div>
+      </Layout>
   )
 }
 
