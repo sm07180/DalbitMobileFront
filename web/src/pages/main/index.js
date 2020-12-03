@@ -1014,7 +1014,7 @@ export default (props) => {
                     <div className="topBox__info">
                       <h2>최신 버전이 출시되었습니다.</h2>
                       <p>
-                        새로운 기능과 안정적인 서비스 이용을 위해 <br /> 최신 버전으로 업데이트 후 이용해주세요.
+                        새로운 기능과 안정적인 서비스 이용을 위해 최신 버전으로 업데이트 후 이용해주세요.
                       </p>
                     </div>
                   </div>
@@ -1034,13 +1034,12 @@ const UpdateWrap = styled.div`
   top: 48px;
   left: 0;
   width: 100%;
-  height: 128px;
+
   background-color: #eee;
-  padding: 12px 12px 10px 12px;
-  z-index: 9999;
+  padding: 12px 16px 10px 16px;
+  z-index: 9;
   .Wrapper {
-    width: 91%;
-    margin: 0 auto;
+    width: 100%;
   }
   .updateBtn {
     width: 100%;
@@ -1070,6 +1069,7 @@ const UpdateWrap = styled.div`
       height: 64px;
     }
     &__info {
+      width: calc(100% - 72px - 28px);
       margin-left: 8px;
       h2 {
         margin-bottom: 4px;
