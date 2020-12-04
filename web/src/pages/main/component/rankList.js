@@ -49,7 +49,7 @@ export default (props) => {
                       history.push('/login')
                     }
                   }}>
-                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb120x120']})`}}>
                     {idx > 2 ? (
                       // <div className="counting">{rank}</div>
                       <></>
@@ -80,7 +80,7 @@ export default (props) => {
                       history.push('/login')
                     }
                   }}>
-                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb190x190']})`}}>
+                  <div className="main-img" style={{backgroundImage: `url(${profImg['thumb120x120']})`}}>
                     {idx > 2 ? (
                       // <div className="counting">{rank}</div>
                       <></>

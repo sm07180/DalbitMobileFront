@@ -150,7 +150,7 @@ export default (props) => {
           }}>
           <div className="chartListDetailItem__thumb">
             {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
-            <img src={bgImg[`thumb190x190`]} alt={title} />
+            <img src={bgImg[`thumb120x120`]} alt={title} />
             <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
           <div className="textBox">

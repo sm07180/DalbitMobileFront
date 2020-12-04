@@ -36,7 +36,7 @@ export default (props) => {
               onClick={() => {
                 history.push(`/mypage/${memNo}`)
               }}>
-              <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb150x150']})`} : {}}>
+              <div className="image" style={star['profImg'] ? {backgroundImage: `url(${star['profImg']['thumb62x62']})`} : {}}>
                 {roomNo !== undefined && roomNo !== '' && (
                   <span className="liveIcon">
                     <img src={LiveIcon} alt="라이브중" />

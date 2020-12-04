@@ -63,7 +63,11 @@ const NoticeList = (props) => {
                           onClick={() => {
                             history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
                           }}>
-                          {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
+                          {item.imagePath ? (
+                            <img src={`${PHOTO_SERVER}${item.imagePath}?120x120`} className="noticeItme__img" />
+                          ) : (
+                            ''
+                          )}
                           <div className="noticeItme__textWrap">
                             <strong className="noticeItme__title">{item.title}</strong>
                             <span className="noticeItme__reply">

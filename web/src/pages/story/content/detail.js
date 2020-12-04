@@ -77,7 +77,7 @@ export default () => {
               <div className="user-info">
                 <div className="photo-name-wrap">
                   <div className="photo">
-                    <img src={profImg['thumb336x336']} alt={storyIdx} />
+                    <img src={profImg['thumb62x62']} alt={storyIdx} />
                   </div>
                   <div className="name-date">
                     <div className="name">{nickNm}</div>

@@ -268,7 +268,7 @@ export default (props) => {
             })}
           </span>
           <div className="recomClipItem__thumb">
-            <img src={bgImg['thumb336x336']} alt="thumb" />
+            <img src={bgImg['thumb190x190']} alt="thumb" />
           </div>
           <p className="recomClipItem__nickName">{nickName}</p>
         </li>
@@ -301,7 +301,7 @@ export default (props) => {
           key={`latest-` + idx}
           style={{cursor: 'pointer'}}>
           <div className="slideWrap__thumb">
-            <img src={bgImg['thumb336x336']} alt={title} />
+            <img src={bgImg['thumb190x190']} alt={title} />
           </div>
           {/* <i className="slideWrap__iconNew">
             <img src={newIcon} />
@@ -376,7 +376,7 @@ export default (props) => {
                   style={{zIndex: 7, cursor: 'pointer'}}>
                   <span className="categoryBestItem__num">{rank}</span>
                   <div className="categoryBestItem__thumb">
-                    <img src={bgImg['thumb336x336']} alt="thumb" />
+                    <img src={bgImg['thumb120x120']} alt="thumb" />
                   </div>
                   <div className="categoryBestItem__text">
                     <p className="categoryBestItem__text--subject">{title}</p>
