@@ -20,35 +20,33 @@ const NoticeList = (props) => {
         <NoResult type="default" text="방송공지가 없습니다." />
       ) : (
         <>
-          <div className="noticeListWrap">
-            <div className="noticeListTop">
-              <div className="noticeList bookmark">
-                {noticeList !== null &&
-                  noticeList.map((item, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        {item.isTop === true && (
-                          <div
-                            className="noticeItme"
-                            key={index}
-                            onClick={() => {
-                              history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
-                            }}>
-                            {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
-                            <div className="noticeItme__textWrap">
-                              <strong className="noticeItme__title">{item.title}</strong>
-                              <span className="noticeItme__reply">
-                                답글<span className="cnt">{item.replyCnt}</span>
-                              </span>
-                              <span className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</span>
-                            </div>
-                            {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
+          <div className="noticeListTop">
+            <div className="noticeList bookmark">
+              {noticeList !== null &&
+                noticeList.map((item, index) => {
+                  return (
+                    <React.Fragment key={index}>
+                      {item.isTop === true && (
+                        <div
+                          className="noticeItme"
+                          key={index}
+                          onClick={() => {
+                            history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
+                          }}>
+                          {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
+                          <div className="noticeItme__textWrap">
+                            <strong className="noticeItme__title">{item.title}</strong>
+                            <span className="noticeItme__reply">
+                              답글<span className="cnt">{item.replyCnt}</span>
+                            </span>
+                            <span className="noticeItme__date">{Utility.timeFormat(item.writeDt)}</span>
                           </div>
-                        )}
-                      </React.Fragment>
-                    )
-                  })}
-              </div>
+                          {(IntTime - item.writeTs) / 3600 < 7 && <i className="noticeItme__moreIcon">새글</i>}
+                        </div>
+                      )}
+                    </React.Fragment>
+                  )
+                })}
             </div>
           </div>
 
