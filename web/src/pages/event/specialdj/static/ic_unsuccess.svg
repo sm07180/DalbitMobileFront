@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-3{stroke:#ec455f;stroke-width:2px}.cls-3,.cls-5{fill:none}.cls-3{stroke-linecap:round;stroke-miterlimit:10}.cls-4{stroke:none}
+        </style>
+    </defs>
+    <g id="ic_unsuccess" transform="translate(-306 -1754)">
+        <g id="prefix__ic_close_w" transform="translate(101.364 1694.364)">
+            <g id="타원_1" fill="#fff" stroke="#ec455f" stroke-width="2px" transform="translate(206.636 61.636)">
+                <circle cx="14" cy="14" r="14" class="cls-4"/>
+                <circle cx="14" cy="14" r="13" class="cls-5"/>
+            </g>
+            <g id="prefix__ic_close" transform="translate(214.755 69.641)">
+                <g id="그룹_139">
+                    <path id="선_52" d="M0 0l11.767 11.624" class="cls-3"/>
+                    <path id="선_53" d="M0 11.624L11.767 0" class="cls-3"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

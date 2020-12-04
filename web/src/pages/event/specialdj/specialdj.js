@@ -5,15 +5,11 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import qs from 'query-string'
 
-import Layout from 'pages/common/layout'
-import CloseBtn from './static/ic_close.svg'
 import speacialOn from './static/ic_success.svg'
 import speacialOff from './static/ic_unsuccess.svg'
-import titleImg from './static/title_img.jpg'
-import bottomImg from './static/bottom_img.jpg'
-import './speacialdj.scss'
+import './specialdj.scss'
 
-export default (props) => {
+export default () => {
   const history = useHistory()
 
   const parameter = qs.parse(location.search)
@@ -99,7 +95,6 @@ export default (props) => {
       setEndDate(endYNumber)
 
       const startDay = infoData.req_start_date
-
       const startY = startDay.slice(0, 4)
       const startM = startDay.slice(4, 6)
       const startD = startDay.slice(6, 8)
@@ -113,8 +108,8 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout {...props} status="no_gnb">
-      <div className="speacialdj">
+    <>
+      <div className="specialdj">
         <div className="title">
           <h2>{infoData.title}</h2>
           <button onClick={goBack}>닫기 버튼</button>
@@ -235,7 +230,7 @@ export default (props) => {
                       className="buttonOn buttonOn--purple"
                       onClick={() => {
                         history.push(
-                          '/event_specialdj/write?select_year=' +
+                          '/event/specialdj/write?select_year=' +
                             parameter.select_year +
                             '&select_month=' +
                             parameter.select_month
@@ -263,7 +258,7 @@ export default (props) => {
                   history.push({
                     pathname: '/login',
                     state: {
-                      state: 'event_specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
+                      state: 'specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
                     }
                   })
                 }}>
@@ -282,6 +277,6 @@ export default (props) => {
           <></>
         )}
       </div>
-    </Layout>
+    </>
   )
 }

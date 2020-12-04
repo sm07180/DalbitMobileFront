@@ -8,10 +8,14 @@ export default ({setPopState}) => {
 
   const closePopup = () => {
     setPopState(false)
-    // rank.action('')
   }
 
-  // console.log(rankState.specialPoint)
+  const closePopupDim = (e) => {
+    const target = e.target
+    if (target.id === 'layer-popup') {
+      closePopup()
+    }
+  }
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -21,7 +25,7 @@ export default ({setPopState}) => {
   }, [])
 
   return (
-    <PopupWrap>
+    <PopupWrap id="layer-popup" onClick={closePopupDim}>
       <div className="content-wrap">
         <button className="close-btn">
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" onClick={() => closePopup()} />

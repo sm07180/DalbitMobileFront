@@ -480,7 +480,7 @@ export default (props) => {
                 <span
                   className="expBarStatus"
                   style={{
-                    right: `${Math.abs(exBar)}%`
+                    right: `${profile && profile.expRate >= 101 ? 0 : Math.abs(exBar)}%`
                   }}></span>
                 <span className="expTitle expTitle--start">{profile.expBegin}</span>
                 <span className="expTitle expTitle--end">{profile.expNext}</span>

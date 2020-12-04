@@ -12,7 +12,7 @@ export default () => {
     <Switch>
       {Event_page.map((item, index) => {
         const {path, component, exact} = item
-        return <Route key={index} path={`/event_specialdj/${path}`} component={component} exact={exact} />
+        return <Route key={index} path={`/event/specialdj/${path}`} component={component} exact={exact} />
       })}
     </Switch>
   )

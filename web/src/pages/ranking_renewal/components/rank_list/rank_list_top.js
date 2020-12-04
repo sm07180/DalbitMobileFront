@@ -10,8 +10,6 @@ import {RoomJoin} from 'context/room'
 import {printNumber} from '../../lib/common_fn'
 import {convertMonday, convertMonth, convertDateToText} from '../../lib/common_fn'
 
-import SpecialPointPop from './special_point_pop'
-
 //static
 import benefitIcon from '../../static/benefit@2x.png'
 import goldDecoDj from '../../static/djrf1_deco@3x.png'
@@ -23,15 +21,13 @@ import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 import liveIcon from '../../static/live_white_l.svg'
 import {PAGE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
-function RankListTop() {
+function RankListTop({specialPop}) {
   const history = useHistory()
 
   //context
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
   const {rankList, formState} = rankState
-
-  const [popState, setPopState] = useState(false)
 
   const TopBoxRef = useRef(null)
 
@@ -51,10 +47,10 @@ function RankListTop() {
     }
   }
 
-  const specialPop = (memNo) => {
-    setPopState(true)
-    fetchSpecialPoint(memNo)
-  }
+  // const specialPop = (memNo) => {
+  //   setPopState(true)
+  //   fetchSpecialPoint(memNo)
+  // }
 
   const realTimeNow = useCallback(
     (memNo) => {
@@ -153,8 +149,6 @@ function RankListTop() {
               )
             })}
           </div>
-
-          {popState && <SpecialPointPop setPopState={setPopState} />}
 
           {/* <div
             className="benefitSize"

@@ -4,6 +4,8 @@ import API from 'context/api'
 import {OS_TYPE} from 'context/config'
 import styled from 'styled-components'
 import {Context} from 'context'
+//layout
+import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header.js'
 
 import {StoreLink} from 'context/link'
@@ -20,7 +22,12 @@ export default () => {
     if (res.result === 'success') {
       setEventData(res.data)
     } else if (res.result === 'fail') {
-      history.push(`/`)
+      context.action.alert({
+        msg: '이벤트 참여 기간이 아닙니다.',
+        callback: () => {
+          history.push(`/`)
+        }
+      })
     }
   }
 
@@ -34,9 +41,9 @@ export default () => {
 
   const EventImg = () => {
     if (eventData.rate === 5) {
-      return <img src="https://image.dalbitlive.com/event/happy_time/happyTime5.png" className="img" />
+      return <img src="https://image.dalbitlive.com/event/happy_time/20201203/happyTime5.png" />
     } else if (eventData.rate === 3) {
-      return <img src="https://image.dalbitlive.com/event/happy_time/happyTime3.png" className="img" />
+      return <img src="https://image.dalbitlive.com/event/happy_time/20201203/happyTime3.png" />
     }
   }
 
@@ -50,13 +57,19 @@ export default () => {
 
   return (
     <Content>
-      <Header title="해피타임 이벤트" />
-      <div id="happyTime">
-        {EventImg()}
-        <button onClick={() => eventBtn()} className="link_button">
-          지금 결제 하기
-        </button>
-      </div>
+      <Layout status="no_gnb">
+        <Header title="해피타임 이벤트" />
+        <div id="happyTime">
+          <div className="happyTime_bg">
+            <div className="happyTime_content">
+              {EventImg()}
+              <button onClick={() => eventBtn()} className="link_button">
+                지금 결제 하기
+              </button>
+            </div>
+          </div>
+        </div>
+      </Layout>
     </Content>
   )
 }
@@ -65,20 +78,25 @@ const Content = styled.div`
   max-width: 460px;
   margin: auto;
   #happyTime {
-    position: relative;
-    .img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-
-    .link_button {
-      position: absolute;
-      left: 0;
-      top: 72%;
-      width: 100%;
-      height: 10%;
-      text-indent: -9999px;
+    .happyTime_bg {
+      background: #ef4440;
+      min-height: calc(100vh - 50px);
+      .happyTime_content {
+        position: relative;
+        img {
+          display: block;
+          width: 100%;
+          height: auto;
+        }
+        .link_button {
+          position: absolute;
+          left: 0;
+          top: 65.2%;
+          width: 100%;
+          height: 10%;
+          text-indent: -9999px;
+        }
+      }
     }
   }
 `
