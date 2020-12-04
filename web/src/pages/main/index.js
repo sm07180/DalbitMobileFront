@@ -1037,7 +1037,7 @@ const UpdateWrap = styled.div`
 
   background-color: #eee;
   padding: 12px 16px 10px 16px;
-  z-index: 9;
+  z-index: 999;
   .Wrapper {
     width: 100%;
   }
