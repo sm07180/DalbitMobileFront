@@ -18,7 +18,7 @@ export default React.forwardRef((props, ref) => {
 
   const goEvent = (linkUrl, linkType) => {
     if (linkType === 'popup') {
-      if(isHybrid()){
+      if (isHybrid()) {
         if (linkUrl.startsWith('/')) {
           linkUrl = 'https://' + location.host + linkUrl
         }
@@ -33,14 +33,14 @@ export default React.forwardRef((props, ref) => {
         location.href = linkUrl
       } else {
         const clipUrl = /\/clip\/[0-9]*$/
-        if(clipUrl.test(linkUrl)){
-          if(isHybrid()){
-            const clip_no = linkUrl.substring(linkUrl.lastIndexOf("/") + 1)
+        if (clipUrl.test(linkUrl)) {
+          if (isHybrid()) {
+            const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
             clipJoinApi(clip_no, globalCtx)
-          }else{
+          } else {
             globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
           }
-        }else{
+        } else {
           history.push(linkUrl)
         }
       }
@@ -115,7 +115,7 @@ export default React.forwardRef((props, ref) => {
   const params = {
     slidesPerColumnFill: 'row',
     resistanceRatio: 0,
-    loop: true,
+    loop: list.length > 1 ? true : false,
     autoplay: {
       delay: 3000
     },
@@ -139,17 +139,13 @@ export default React.forwardRef((props, ref) => {
       {list && list.length > 0 && (
         <div ref={ref} className="bannerWrap">
           <div className={`slideWrap ${bannerView === false ? '' : 'active'}`}>
-            {list.length > 1 ? (
-              <>
-                <div className="bannerNumber"></div>
-                <button
-                  className={`moreButton moreButtonT ${bannerView === true ? 'active' : ''}`}
-                  onClick={() => buttonToogle()}></button>
-                <Swiper {...params}>{createSliderList()}</Swiper>
-              </>
-            ) : (
-              <>{createSliderList()}</>
-            )}
+            <>
+              <div className="bannerNumber"></div>
+              <button
+                className={`moreButton moreButtonT ${bannerView === true ? 'active' : ''}`}
+                onClick={() => buttonToogle()}></button>
+              <Swiper {...params}>{createSliderList()}</Swiper>
+            </>
           </div>
           <div className={`bannerView ${bannerView === true ? 'active' : ''}`}>{list && basicSliderList()}</div>
         </div>
