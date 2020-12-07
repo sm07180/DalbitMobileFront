@@ -13,16 +13,21 @@ export default ({setBankPop, bankFormData}) => {
   return (
     <PopupWrap>
       <div className="content-wrap">
-        <h3>은행 시스템 점검 안내</h3>
+        <h3>무통장 입금이 지연되는 경우</h3>
         <div className="bankInfoBox">
           <p className="bankInfoBox__time">
             23시 50분 ~ 00시 10분은
             <br />
-            <span>금융기관의 시스템 점검시간</span> 입니다.
+            <span>금융기관 시스템을 주로 점검하는 시간</span>입니다.
+          </p>
+          <p className="bankInfoBox__desc">
+            무통장 입금이 지연되는 경우
+            <br />
+            해당 은행의 시스템 점검시간을 확인하세요.
           </p>
 
           <div className="bankTime">
-            <button onClick={() => history.push('/pay/bank_info')}>은행별 시스템 점검시간 확인 &gt; </button>
+            <button onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인 &gt; </button>
             <p>
               ※ <span>다른 결제수단</span>을 이용하시면 <br />
               보다 빠르게 달 충전을 할 수 있습니다.
@@ -68,9 +73,11 @@ const PopupWrap = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
   z-index: 60;
   text-align: center;
+  letter-spacing: -1px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -94,16 +101,23 @@ const PopupWrap = styled.div`
       border-radius: 0 0 12px 12px;
 
       &__time {
-        padding: 20px 0 16px;
+        padding: 4px 0 10px;
         font-size: 16px;
         line-height: 24px;
         letter-spacing: -0.4px;
-        text-align: center;
         font-weight: 600;
-
+        text-align: center;
         span {
           color: #632beb;
+          letter-spacing: -1.8px;
         }
+      }
+      &__desc {
+        padding-bottom: 20px;
+        font-size: 13px;
+        color: #757575;
+        text-align: center;
+        line-height: 1.4;
       }
 
       .bankTime {
