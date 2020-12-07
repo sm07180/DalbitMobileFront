@@ -22,7 +22,6 @@ import RankListTop from './components/rank_list/rank_list_top'
 import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
 import NoResult from 'components/ui/new_noResult'
-import SpecialPointPop from './components/rank_list/special_point_pop'
 //constant
 import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
 
@@ -57,7 +56,6 @@ function Ranking() {
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
   const [fetching, setFetching] = useState(false)
-  const [popState, setPopState] = useState(false)
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
@@ -166,27 +164,6 @@ function Ranking() {
       return false
     }
   }, [formState])
-
-  //api fetchdata
-  const fetchSpecialPoint = async (memNo) => {
-    const {data, result, message} = await Api.get_special_point({
-      params: {
-        memNo: memNo
-      }
-    })
-
-    if (result === 'success') {
-      rankAction.setSpecialPoint(data)
-      rankAction.setSpecialPointList(data.list)
-    } else {
-      //실패
-    }
-  }
-
-  const specialPop = (memNo) => {
-    setPopState(true)
-    fetchSpecialPoint(memNo)
-  }
 
   useEffect(() => {
     if (scrollY > 0) {
@@ -570,10 +547,12 @@ function Ranking() {
           </div>
         </div>
         <div ref={fixedWrapRef}>
-          <div className="rankTopBox">
-            <RankBtnWrap fetching={fetching} />
-            {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
-          </div>
+          {formState.pageType === PAGE_TYPE.RANKING && (
+            <div className="rankTopBox">
+              <RankBtnWrap fetching={fetching} />
+              {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
+            </div>
+          )}
           {formState.pageType === PAGE_TYPE.RANKING && (
             <>
               <RankDateBtn fetching={fetching} />
@@ -585,8 +564,6 @@ function Ranking() {
           )}
         </div>
 
-        {popState && <SpecialPointPop setPopState={setPopState} />}
-
         {(formState[formState.pageType].rankType === RANK_TYPE.FAN ||
           formState[formState.pageType].rankType === RANK_TYPE.DJ) && (
           <div ref={listWrapRef}>
@@ -596,7 +573,7 @@ function Ranking() {
               <div className={`rankTop3Box ${realTimeCheck ? 'realTime' : ''}`} ref={TopRef}>
                 <MyProfile fetching={fetching} />
                 {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
-                  <RankListTop specialPop={specialPop} />
+                  <RankListTop />
                 )}
               </div>
             )}
