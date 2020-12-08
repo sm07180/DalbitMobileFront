@@ -17,9 +17,11 @@ export default () => {
   return (
     <Content>
       <Layout status="no_gnb">
-        <Header title="샤이닝 DJ 이벤트" />
         <div id="shiningDJ">
           <div className="content">
+            <button className="btnBack" onClick={() => history.goBack()}>
+              <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+            </button>
             <img src="https://image.dalbitlive.com/event/shiningdj/shining_visual.jpg" alt="또 하나의 별 샤이닝DJ" />
             <img src="https://image.dalbitlive.com/event/shiningdj/shining_cont01.png" alt="선발방식" />
             <div className="notice">
@@ -47,6 +49,7 @@ const Content = styled.div`
   max-width: 460px;
   margin: auto;
   #shiningDJ {
+    position: relative;
     min-height: calc(100vh - 50px);
     .content {
       position: relative;
@@ -94,6 +97,13 @@ const Content = styled.div`
           }
         }
       }
+    }
+    .btnBack {
+      position: absolute;
+      top: 4px;
+      right: 4px;
+      width: 40px;
+      height: 40px;
     }
   }
   @media (max-width: 460px) {
