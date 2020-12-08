@@ -22,9 +22,8 @@ export default () => {
           <div className="content">
             <img src="https://image.dalbitlive.com/event/shiningdj/shining_visual.jpg" alt="또 하나의 별 샤이닝DJ" />
             <img src="https://image.dalbitlive.com/event/shiningdj/shining_cont01.png" alt="선발방식" />
-            <img src="https://image.dalbitlive.com/event/shiningdj/shining_cont02.png" alt="샤이닝DJ혜택" />
             <div className="notice">
-              <img src="https://image.dalbitlive.com/event/shiningdj/shining_cont03.png" alt="기억해주세요" />
+              <img src="https://image.dalbitlive.com/event/shiningdj/shining_cont04.png" alt="기억해주세요" />
               <ul className="text">
                 <li>샤이닝 DJ는 매월 15일 00시(자정) 공개됩니다. </li>
                 <li>샤이닝 DJ 자격은 1개월 (당월 15일 ~ 익월 14일) 동안 유지됩니다. </li>
@@ -70,6 +69,7 @@ const Content = styled.div`
         background-color: #4b418e;
       }
       .text {
+        display: none;
         position: absolute;
         top: 15%;
         left: 0;
