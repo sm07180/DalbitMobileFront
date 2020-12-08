@@ -16,6 +16,8 @@ import {RankContext} from 'context/rank_ctx'
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
+const liveIcon = `${IMG_SERVER}/svg/ico_ranking_live.svg`
+const listenIcon = `${IMG_SERVER}/svg/ico_ranking_listen.svg`
 import point from '../../static/ico-point.png'
 import point2x from '../../static/ico-point@2x.png'
 import like from '../../static/like_g_s.svg'
@@ -68,6 +70,7 @@ function RankList() {
                 broadcastPoint,
                 isSpecial,
                 roomNo,
+                listenRoomNo,
                 memNo,
                 starCnt,
                 liveBadgeList
@@ -226,30 +229,38 @@ function RankList() {
                     </div>
                   </div>
 
-                  {roomNo !== '' && (
-                    <div className="liveBox">
-                      <img
-                        src={live}
-                        onClick={() => {
-                          if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
-                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                callback: () => {
-                                  history.push('/login')
-                                }
-                              })
-                            } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
-                            }
+                  <div className="liveBox">
+                    <button
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
                           } else {
-                            RoomJoin({roomNo: roomNo})
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                           }
-                        }}
-                        className="liveBox__img"
-                      />
-                    </div>
-                  )}
+                        } else {
+                          if (roomNo !== '') {
+                            RoomJoin({roomNo: roomNo})
+                          } else {
+                            context.action.confirm({
+                              msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
+                              callback: () => {
+                                return RoomJoin({roomNo: listenRoomNo})
+                              }
+                            })
+                          }
+                        }
+                      }}
+                      className="liveBox__img">
+                      {roomNo !== '' && <img src={liveIcon} alt="라이브중" />}
+                      {roomNo === '' && listenRoomNo !== '' && <img src={listenIcon} alt="청취중" />}
+                    </button>
+                  </div>
                 </div>
               )
             })}

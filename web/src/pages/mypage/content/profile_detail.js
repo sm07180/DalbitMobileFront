@@ -10,7 +10,6 @@ import Room, {RoomJoin} from 'context/room'
 // utility
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {Hybrid, isHybrid} from 'context/hybrid'
-import LiveIcon from '../component/ic_live.svg'
 import Swiper from 'react-id-swiper'
 //component
 import ProfileReport from './profile_report'
@@ -21,6 +20,10 @@ import ProfileFanRank from './profile_fanRank'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
 import EditIcon from '../static/edit_g_l.svg'
+
+const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
+const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
+const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_g.svg'
 
 export default (props) => {
   //context & webview
@@ -408,55 +411,136 @@ export default (props) => {
             </div>
           </>
         )}
-        {profile.roomNo !== '' && (
-          <button
-            className="liveIcon"
-            onClick={() => {
-              if (customHeader['os'] === OS_TYPE['Desktop']) {
-                if (context.token.isLogin === false) {
-                  context.action.alert({
-                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    callback: () => {
-                      history.push('/login')
-                    }
-                  })
-                } else {
-                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
-                }
-              } else {
-                if (webview === 'new') {
-                  if (
-                    context.customHeader['os'] === OS_TYPE['Android'] ||
-                    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
-                  ) {
-                    //IOS 웹뷰에서 같은 방 진입시
-                    if (context.customHeader['os'] === OS_TYPE['IOS'] && Utility.getCookie('listen_room_no') == profile.roomNo) {
-                      return Hybrid('CloseLayerPopup')
-                    }
-                    //
-                    return RoomJoin({roomNo: profile.roomNo})
-                  }
-                }
-
-                if (webview === 'new' && Utility.getCookie('listen_room_no')) {
-                  return false
-                }
-
-                if (webview === 'new' && Utility.getCookie('clip-player-info') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                  return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
-                } else {
-                  if (webview === 'new' && Utility.getCookie('listen_room_no') && context.customHeader['os'] === OS_TYPE['IOS']) {
-                    return false
+        <div className="rightButton">
+          {profile.roomNo !== '' && (
+            <button
+              className="liveIcon"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
                   } else {
-                    RoomJoin({roomNo: profile.roomNo})
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                  }
+                } else {
+                  if (webview === 'new') {
+                    if (
+                      context.customHeader['os'] === OS_TYPE['Android'] ||
+                      (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 178)
+                    ) {
+                      //IOS 웹뷰에서 같은 방 진입시
+                      if (
+                        context.customHeader['os'] === OS_TYPE['IOS'] &&
+                        Utility.getCookie('listen_room_no') == profile.roomNo
+                      ) {
+                        return Hybrid('CloseLayerPopup')
+                      }
+                      //
+                      return RoomJoin({roomNo: profile.roomNo})
+                    }
+                  }
+
+                  if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                    return false
+                  }
+
+                  if (
+                    webview === 'new' &&
+                    Utility.getCookie('clip-player-info') &&
+                    context.customHeader['os'] === OS_TYPE['IOS']
+                  ) {
+                    return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                  } else {
+                    if (
+                      webview === 'new' &&
+                      Utility.getCookie('listen_room_no') &&
+                      context.customHeader['os'] === OS_TYPE['IOS']
+                    ) {
+                      return false
+                    } else {
+                      RoomJoin({roomNo: profile.roomNo})
+                    }
                   }
                 }
-              }
-            }}>
-            <img src={LiveIcon} className="ico-live" />
-            <span>Live</span>
-          </button>
-        )}
+              }}>
+              <img src={LiveIcon} className="ico-live" />
+            </button>
+          )}
+          {profile.roomNo === '' && profile.listenRoomNo !== '' && (
+            <button
+              className="liveIcon"
+              onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
+                  } else {
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                  }
+                } else {
+                  if (webview === 'new') {
+                    if (context.customHeader['os'] === OS_TYPE['Android'] || context.customHeader['os'] === OS_TYPE['IOS']) {
+                      //IOS 웹뷰에서 같은 방 진입시
+                      if (
+                        context.customHeader['os'] === OS_TYPE['IOS'] &&
+                        Utility.getCookie('listen_room_no') == profile.listenRoomNo
+                      ) {
+                        return Hybrid('CloseLayerPopup')
+                      }
+                      context.action.confirm({
+                        msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
+                        callback: () => {
+                          return RoomJoin({roomNo: profile.listenRoomNo})
+                        }
+                      })
+                    }
+                  }
+
+                  if (webview === 'new' && Utility.getCookie('listen_room_no')) {
+                    return false
+                  }
+
+                  if (
+                    webview === 'new' &&
+                    Utility.getCookie('clip-player-info') &&
+                    context.customHeader['os'] === OS_TYPE['IOS']
+                  ) {
+                    return context.action.alert({msg: `클립 종료 후 청취 가능합니다.\n다시 시도해주세요.`})
+                  } else {
+                    if (
+                      webview === 'new' &&
+                      Utility.getCookie('listen_room_no') &&
+                      context.customHeader['os'] === OS_TYPE['IOS']
+                    ) {
+                      return false
+                    } else {
+                      context.action.confirm({
+                        msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
+                        callback: () => {
+                          return RoomJoin({roomNo: profile.listenRoomNo})
+                        }
+                      })
+                    }
+                  }
+                }
+              }}>
+              <img src={ListenIcon} alt="청취중" className="ico-listen" />
+            </button>
+          )}
+
+          {/* <button className="postBoxIcon">
+            <img src={PostBoxIcon} alt="우체통" />
+          </button> */}
+        </div>
         <div className="profile-image">
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
             <img src={profile.profImg ? profile.profImg['thumb190x190'] : ''} alt={profile.nickNm} />

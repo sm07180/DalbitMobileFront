@@ -376,13 +376,15 @@ table {
     }
 
     .banner {
+      overflow: hidden;
+      border-radius: 12px;
       img {
         width: 100%;
-        // height: 65px;
-        border-radius: 16px;
       }
     }
     .swiper-container {
+      overflow: hidden;
+      border-radius: 12px;
       height: auto;
       .swiper-pagination-fraction {
         display: flex;

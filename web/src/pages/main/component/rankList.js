@@ -12,6 +12,8 @@ import Swiper from 'react-id-swiper'
 const GoldMedal = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const SilverMedal = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const BronzeMedal = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
+const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
+const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
 
 export default (props) => {
   const history = useHistory()
@@ -36,7 +38,7 @@ export default (props) => {
         <Swiper {...swiperParams}>
           {djRank &&
             djRank.map((dj, idx) => {
-              const {rank, nickNm, memNo, profImg, liveBadgeList} = dj
+              const {rank, nickNm, memNo, profImg, liveBadgeList, roomNo} = dj
               return (
                 <div
                   className="rank-slide"
@@ -58,6 +60,11 @@ export default (props) => {
                     ) : (
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
                     )}
+                    {roomNo !== undefined && roomNo !== '' && (
+                      <span className="liveIcon">
+                        <img src={LiveIcon} alt="라이브중" />
+                      </span>
+                    )}
                   </div>
                   <div className="nickname">{nickNm}</div>
                 </div>
@@ -68,7 +75,7 @@ export default (props) => {
         <Swiper {...swiperParams}>
           {fanRank &&
             fanRank.map((fan, idx) => {
-              const {rank, nickNm, memNo, profImg, liveBadgeList} = fan
+              const {rank, nickNm, memNo, profImg, liveBadgeList, listenRoomNo} = fan
               return (
                 <div
                   className="rank-slide"
@@ -88,6 +95,11 @@ export default (props) => {
                       <img className="live-medal-img" src={liveBadgeList[0].icon} />
                     ) : (
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
+                    )}
+                    {listenRoomNo !== undefined && listenRoomNo !== '' && (
+                      <span className="listenIcon">
+                        <img src={ListenIcon} alt="청취중" />
+                      </span>
                     )}
                   </div>
                   <div className="nickname">{nickNm}</div>
