@@ -412,7 +412,7 @@ export default (props) => {
           </>
         )}
         <div className="rightButton">
-          {profile.roomNo !== '' && (
+          {myProfileNo !== profile.memNo && profile.roomNo !== '' && (
             <button
               className="liveIcon"
               onClick={() => {
@@ -471,7 +471,7 @@ export default (props) => {
               <img src={LiveIcon} className="ico-live" />
             </button>
           )}
-          {profile.roomNo === '' && profile.listenRoomNo !== '' && (
+          {myProfileNo !== profile.memNo && profile.roomNo === '' && profile.listenRoomNo !== '' && (
             <button
               className="liveIcon"
               onClick={() => {
