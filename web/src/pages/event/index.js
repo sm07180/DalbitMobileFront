@@ -19,6 +19,7 @@ import RestClear from './rest_customer/customer_clear'
 import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
+import ShiningDj from './shiningdj'
 
 export default () => {
   const params = useParams()
@@ -56,6 +57,8 @@ export default () => {
         return <HappyTime />
       case 'specialdj':
         return <Specialdj />
+      case 'shiningdj':
+        return <ShiningDj />
 
       default:
         return <></>
