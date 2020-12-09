@@ -2,7 +2,7 @@ import React, {useContext} from 'react'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
-import {convertMonday, convertMonth} from '../lib/common_fn'
+import {convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 
 import {DATE_TYPE, RANK_TYPE} from '../constant'
 

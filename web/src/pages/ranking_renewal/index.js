@@ -6,7 +6,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth, convertDateToText} from './lib/common_fn'
+import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth, convertDateToText} from 'pages/common/rank/rank_fn'
 
 //components
 import Layout from 'pages/common/layout'

@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 import {RankContext} from 'context/rank_ctx'
 
-import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from '../lib/common_fn'
+import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
 import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {

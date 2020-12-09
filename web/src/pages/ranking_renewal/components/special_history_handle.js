@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useState, useCallback} from 'react'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 
-import {liveBoxchangeDate} from '../lib/common_fn'
+import {liveBoxchangeDate} from 'pages/common/rank/rank_fn'
 
 export default function SpecialHistoryHandle({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)

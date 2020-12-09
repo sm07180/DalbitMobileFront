@@ -7,9 +7,6 @@ import Api from 'context/api'
 
 import {RoomJoin} from 'context/room'
 
-import {printNumber} from '../../lib/common_fn'
-import {convertMonday, convertMonth, convertDateToText} from '../../lib/common_fn'
-
 //static
 import benefitIcon from '../../static/benefit@2x.png'
 import goldDecoDj from '../../static/djrf1_deco@3x.png'

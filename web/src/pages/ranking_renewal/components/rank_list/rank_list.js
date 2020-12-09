@@ -6,7 +6,7 @@ import {RoomJoin} from 'context/room'
 import {OS_TYPE} from 'context/config.js'
 import {IMG_SERVER} from 'context/config'
 
-import {printNumber, convertDateToText} from '../../lib/common_fn'
+import {printNumber, convertDateToText} from 'pages/common/rank/rank_fn'
 
 // context
 import {Context} from 'context'
