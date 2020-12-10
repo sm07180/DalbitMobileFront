@@ -1706,13 +1706,8 @@
     }
     .list {
       .item {
-        margin-top: 4px;
-        &:first-child {
-          margin-top: 0;
-        }
-      }
-      .item {
         max-height: 108px;
+        margin-top: 4px;
         padding: 12px 0px;
         display: flex;
         align-items: center;
@@ -1721,6 +1716,9 @@
         overflow: hidden;
         background: $white;
         border-radius: 16px;
+        &:first-child {
+          margin-top: 0;
+        }
       }
       .btnMore {
         width: 20%;
