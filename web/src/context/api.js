@@ -2921,6 +2921,27 @@ export default class API {
       params: data
     })
   }
+  static getWeeklyList = async (data) => {
+    return await ajax({
+      url: '/marketing/weekly',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getSecondList = async (data) => {
+    return await ajax({
+      url: '/marketing/second',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getMarketingDetail = async (data) => {
+    return await ajax({
+      url: '/marketing/detail',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

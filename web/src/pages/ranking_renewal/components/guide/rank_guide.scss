@@ -2,8 +2,11 @@
 
 #ranking-guide-page {
   min-height: 100vh;
-  background-color: #fff;
+  background-color: $lighterGray;
   letter-spacing: -0.3px;
+  .guide-content-wrap {
+    min-height: calc(100vh - 50px);
+  }
 
   .header {
     display: flex;
@@ -13,7 +16,7 @@
     padding: 14px 0;
     box-sizing: border-box;
     padding: 12px 16px;
-    background-color: #fff;
+    background-color: $white;
 
     &__title {
       font-size: 18px;
@@ -30,6 +33,7 @@
     }
   }
   .rankGuideWrap {
+    background: $white;
     padding-bottom: 18px;
   }
 
@@ -37,7 +41,7 @@
     display: flex;
     justify-content: space-between;
     padding: 12px 16px;
-    background-color: #eee;
+    background-color: $lighterGray;
 
     &__btn {
       width: 33%;
@@ -45,14 +49,14 @@
       padding: 0 12px;
       border-radius: 12px;
       border: solid 1px #e0e0e0;
-      background-color: #fff;
+      background-color: $white;
       font-size: 16px;
       box-sizing: border-box;
 
       &.active {
         border-color: $primary;
         background-color: $primary;
-        color: #fff;
+        color: $white;
       }
     }
   }
@@ -63,8 +67,8 @@
   .benefitTop {
     padding: 16px 0;
     text-align: center;
-    background-color: #632beb;
-    color: #fff;
+    background-color: $primary;
+    color: $white;
     letter-spacing: -0.35px;
     font-size: 14px;
 
@@ -132,11 +136,11 @@
     table {
       th {
         padding: 6px 0;
-        border-top: 1px solid #632beb;
-        border-bottom: 1px solid #632beb;
+        border-top: 1px solid$primary;
+        border-bottom: 1px solid$primary;
         font-size: 12px;
         font-weight: normal;
-        color: #632beb;
+        color: $primary;
         letter-spacing: -0.8px;
       }
 
@@ -166,7 +170,7 @@
           border-radius: 20px;
           background-color: #22b5b0;
           font-size: 11px;
-          color: #fff;
+          color: $white;
 
           &.djWeek {
             background-color: #00869b;
@@ -204,7 +208,7 @@
           p {
             background-color: #666;
             border-radius: 10px;
-            color: #fff;
+            color: $white;
             font-weight: 400;
             text-align: left;
             line-height: 18px;
@@ -244,7 +248,7 @@
       .conditionItem {
         overflow: hidden;
         width: 30%;
-        border: 1px solid #632beb;
+        border: 1px solid$primary;
         text-align: center;
         border-radius: 12px;
 
@@ -254,7 +258,7 @@
           line-height: 28px;
           letter-spacing: -0.3px;
           color: #ffffff;
-          background-color: #632beb;
+          background-color: $primary;
         }
         &__content {
           width: 50%;

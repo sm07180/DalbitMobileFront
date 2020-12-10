@@ -111,6 +111,8 @@ function RankProvider(props) {
   const [levelList, setLevelList] = useState([])
   const [likeList, setLikeList] = useState([])
   const [specialList, setSpecialList] = useState([])
+  const [weeklyList, setWeeklyList] = useState([])
+  const [secondList, setSecondList] = useState([])
   const [formState, formDispatch] = useReducer(reducer, formInitData)
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -138,6 +140,8 @@ function RankProvider(props) {
     levelList,
     likeList,
     specialList,
+    weeklyList,
+    secondList,
     myInfo,
     totalPage,
     scrollY,
@@ -153,6 +157,8 @@ function RankProvider(props) {
     setMyInfo,
     setTotalPage,
     setSpecialList,
+    setWeeklyList,
+    setSecondList,
     setScrollY,
     setSpecialPoint,
     setSpecialPointList

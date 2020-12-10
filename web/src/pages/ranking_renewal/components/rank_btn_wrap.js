@@ -11,7 +11,9 @@ const btnArray = [
 
 const fameArray = [
   {val: RANK_TYPE.SPECIAL, text: '스페셜DJ', isSpecial: true},
-  {val: RANK_TYPE.LEVEL, text: '레벨'}
+  // {val: RANK_TYPE.LEVEL, text: '레벨'},
+  {val: RANK_TYPE.WEEKLYPICK, text: '위클리픽'},
+  {val: RANK_TYPE.SECOND, text: '15초'}
 ]
 export default function RankBtnWrap({fetching}) {
   const {rankState, rankAction} = useContext(RankContext)

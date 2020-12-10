@@ -3,7 +3,9 @@ export const RANK_TYPE = {
   FAN: 2,
   LIKE: 3,
   SPECIAL: 4,
-  LEVEL: 5
+  LEVEL: 5,
+  WEEKLYPICK: 6,
+  SECOND: 7
 }
 
 export const DATE_TYPE = {

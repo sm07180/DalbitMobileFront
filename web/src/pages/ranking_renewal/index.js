@@ -23,6 +23,8 @@ import LikeListWrap from './components/like_list'
 import SpecialListWrap from './components/special_list'
 import NoResult from 'components/ui/new_noResult'
 import SpecialPointPop from './components/rank_list/special_point_pop'
+import WeeklyPickWrap from './components/weekly_pick'
+import SecondWrap from './components/second'
 //constant
 import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
 
@@ -44,7 +46,7 @@ function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage, scrollY} = rankState
+  const {formState, myInfo, rankList, levelList, likeList, totalPage, scrollY, weeklyList, secondList} = rankState
 
   const formDispatch = rankAction.formDispatch
   const setMyInfo = rankAction.setMyInfo
@@ -53,6 +55,8 @@ function Ranking() {
   const setLikeList = rankAction.setLikeList
   const setTotalPage = rankAction.setTotalPage
   const setSpecialList = rankAction.setSpecialList
+  const setWeeklyList = rankAction.setWeeklyList
+  const setSecondList = rankAction.setSecondList
   const setScrollY = rankAction.setScrollY
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
@@ -275,10 +279,14 @@ function Ranking() {
         }
       })
     } else {
-      if (formState[formState.pageType].rankType !== RANK_TYPE.SPECIAL) {
-        fetchData()
-      } else {
+      if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
         fetchSpecial()
+      } else if (formState[formState.pageType].rankType === RANK_TYPE.WEEKLYPICK) {
+        fetchWeekly()
+      } else if (formState[formState.pageType].rankType === RANK_TYPE.SECOND) {
+        fetchSecond()
+      } else {
+        fetchData()
       }
     }
 
@@ -299,6 +307,48 @@ function Ranking() {
         }
       }
 
+      setFetching(false)
+    }
+
+    async function fetchWeekly() {
+      setFetching(true)
+      const res = await Api.getWeeklyList({
+        pageNo: formState.page,
+        pageCnt: records
+      })
+      if (res.result === 'success') {
+        if (formState.page > 1) {
+          setWeeklyList(weeklyList.concat(res.data.list))
+        } else {
+          setWeeklyList(res.data.list)
+        }
+        setTotalPage(res.data.paging.totalPage)
+        setEmpty(false)
+      } else {
+        setWeeklyList([])
+        setEmpty(true)
+      }
+      setFetching(false)
+    }
+
+    async function fetchSecond() {
+      setFetching(true)
+      const res = await Api.getSecondList({
+        pageNo: formState.page,
+        pageCnt: records
+      })
+      if (res.result === 'success') {
+        if (formState.page > 1) {
+          setSecondList(secondList.concat(res.data.list))
+        } else {
+          setSecondList(res.data.list)
+        }
+        setTotalPage(res.data.paging.totalPage)
+        setEmpty(false)
+      } else {
+        setSecondList([])
+        setEmpty(true)
+      }
       setFetching(false)
     }
 
@@ -613,6 +663,18 @@ function Ranking() {
         {formState[formState.pageType].rankType === RANK_TYPE.LIKE && (
           <div ref={bottomWrapRef} className="other">
             <LikeListWrap empty={empty} />
+          </div>
+        )}
+
+        {formState[formState.pageType].rankType === RANK_TYPE.WEEKLYPICK && (
+          <div ref={bottomWrapRef} className="other">
+            <WeeklyPickWrap empty={empty} />
+          </div>
+        )}
+
+        {formState[formState.pageType].rankType === RANK_TYPE.SECOND && (
+          <div ref={bottomWrapRef} className="other">
+            <SecondWrap empty={empty} />
           </div>
         )}
 

@@ -1,9 +1,11 @@
-import React, {useState} from 'react'
+import React, {useState, useMemo} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 //components
 import Layout from 'pages/common/layout'
 import Benefit from './rank_guide_benefit'
 import HowUse from './rank_guide_howUse'
+import MarketingPick from './marketing_pick'
+import MarketingAdv from './marketing_adv'
 import Header from 'components/ui/new_header'
 //static
 import './rank_guide.scss'
@@ -12,15 +14,26 @@ export default (props) => {
   //const [guideType, setGuideType] = useState('benefit')
   // const [guideType, setGuideType] = useState('howUse')
   const params = useParams()
-
   const guideType = params.type
+
+  const subTitle = useMemo(() => {
+    if (guideType === 'pick') {
+      return '위클리픽'
+    } else if (guideType === 'marketing') {
+      return '15초 광고'
+    } else {
+      return '랭킹 혜택'
+    }
+  })
 
   return (
     <Layout {...props} status="no_gnb">
       <div id="ranking-guide-page">
-        <Header title="랭킹 혜택" />
+        <Header title={subTitle} />
         <div className="guide-content-wrap">
           {guideType === 'benefit' && <Benefit></Benefit>}
+          {guideType === 'pick' && <MarketingPick />}
+          {guideType === 'marketing' && <MarketingAdv />}
           {/* {guideType === 'howUse' && <HowUse></HowUse>} */}
         </div>
       </div>

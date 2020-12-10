@@ -1686,4 +1686,171 @@
       right: 12px;
     }
   }
+
+  .weeklyPick {
+    min-height: calc(100vh - 100px);
+    padding: 0px 16px 20px;
+    background: $lighterGray;
+    .notice {
+      margin-bottom: 4px;
+      padding: 9px 0px;
+      line-height: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border: 1px solid $primary;
+      background: $white;
+      color: $primary;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
+    .list {
+      .item {
+        margin-top: 4px;
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+      .item {
+        max-height: 108px;
+        padding: 12px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        box-sizing: border-box;
+        overflow: hidden;
+        background: $white;
+        border-radius: 16px;
+      }
+      .btnMore {
+        width: 20%;
+        text-align: right;
+      }
+      .djBox {
+        width: 25%;
+        padding: 0 4px;
+        text-align: center;
+        cursor: pointer;
+        &__img {
+          display: inline-block;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+        }
+        &__nick {
+          display: block;
+          overflow: hidden;
+          width: 100%;
+          margin-top: 8px;
+          font-size: 14px;
+          text-align: center;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          color: #242424;
+        }
+
+        &.number {
+          display: flex;
+          flex: none;
+          width: 22%;
+          cursor: auto;
+          > p {
+            width: 60px;
+            height: 20px;
+            margin-left: 8px;
+            line-height: 20px;
+            letter-spacing: -1px;
+            font-size: 14px;
+            font-weight: $bold;
+            background: $lighterGray;
+            color: $black;
+            border-radius: 12px;
+            box-sizing: border-box;
+            &.on {
+              background: $primary;
+              color: $white;
+            }
+          }
+        }
+
+        &.img {
+          position: relative;
+          width: 70px;
+          height: 70px;
+          .thumb {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+          }
+          .frame {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            left: -10px;
+            top: -14px;
+          }
+        }
+        &.text {
+          flex: 1;
+          overflow: hidden;
+          margin-left: 14px;
+          .title {
+            overflow: hidden;
+            margin-bottom: 6px;
+            font-size: 14px;
+            text-align: left;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+          .level {
+            display: flex;
+            margin-bottom: 6px;
+            .ico {
+              margin-left: 2px;
+              &:first-child {
+                margin-left: 0;
+              }
+              &_level {
+                padding: 0 7px;
+                font-size: 12px;
+                font-weight: $bold;
+                color: $white;
+                background: #db1811;
+                border-radius: 14px;
+              }
+            }
+          }
+
+          .pointList {
+            display: flex;
+            li {
+              display: flex;
+              align-items: center;
+              margin-right: 4px;
+              font-size: 12px;
+              letter-spacing: -0.3px;
+              color: $greishBrown;
+              img {
+                opacity: 0.8;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    &--dj {
+      .list {
+        .item {
+          padding: 19px 0px;
+        }
+        .djBox {
+          flex: none;
+          &.number {
+            width: 18%;
+          }
+        }
+      }
+    }
+  }
 }
