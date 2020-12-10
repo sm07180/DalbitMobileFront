@@ -620,12 +620,10 @@ function Ranking() {
           </div>
         </div>
         <div ref={fixedWrapRef}>
-          {formState.pageType === PAGE_TYPE.RANKING && (
-            <div className="rankTopBox">
-              <RankBtnWrap fetching={fetching} />
-              {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
-            </div>
-          )}
+          <div className="rankTopBox">
+            <RankBtnWrap fetching={fetching} />
+            {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
+          </div>
           {formState.pageType === PAGE_TYPE.RANKING && (
             <>
               <RankDateBtn fetching={fetching} />
