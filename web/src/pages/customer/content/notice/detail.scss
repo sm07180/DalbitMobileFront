@@ -48,3 +48,47 @@ $WIDTH_MOBILE: 600px;
     }
   }
 }
+
+.noticeDetailWrap {
+  min-height: 700px;
+  margin-top: 12px;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    font-size: 14px;
+    padding: 0 20px;
+    background-color: #fff;
+
+    &--date {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      font-size: 12px;
+      color: #bdbdbd;
+    }
+  }
+  &__contents {
+    padding: 40px 20px 60px;
+    border-bottom: 1px solid #e0e0e0;
+    background-color: #fff;
+    border-top: 1px solid #f5f5f5;
+    img {
+      width: 100% !important; // 모바일화로 인한 공지사항 이미지 강제 100% 적용
+    }
+  }
+
+  &__button {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 16px;
+    & > button {
+      padding: 16px 44px;
+      margin: auto;
+      background-color: #632beb;
+      border-radius: 8px;
+      color: white;
+    }
+  }
+}
