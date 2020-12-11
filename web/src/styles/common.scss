@@ -440,6 +440,15 @@ table {
     }
   }
 }
+.subContent {
+  min-height: calc(100vh - 50px);
+  box-sizing: border-box;
+
+  &.gray {
+    background: $lighterGray;
+  }
+}
+
 div.MuiToolbar-root,
 .MuiToolbar-regular,
 .MuiPickersToolbar-toolbar,

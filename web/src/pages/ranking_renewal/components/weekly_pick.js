@@ -34,7 +34,7 @@ function WeeklyPick({empty}) {
                 </div>
 
                 {memNo2 && memNick2 && imageInfo2 && (
-                  <div className="djBox" onClick={() => history.push(`/mypage/${memNo2}`)}>
+                  <div className="djBox last" onClick={() => history.push(`/mypage/${memNo2}`)}>
                     <img src={imageInfo2.thumb120x120} className="djBox__img" alt={memNick2} />
                     <strong className="djBox__nick">{memNick2}</strong>
                   </div>

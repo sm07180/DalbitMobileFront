@@ -52,7 +52,7 @@ function Second({empty}) {
                   <img src={imageInfo1.thumb120x120} className="thumb" />
                 </div>
                 <div className="djBox text" onClick={() => history.push(`/rank/marketing?idx=${idx}`)}>
-                  <div className="title">{title}</div>
+                  <div className="title">{memNick1}</div>
                   <span className="level">
                     <LevelBox levelColor={levelColor}>Lv{level}</LevelBox>
                     {memSex1 === 'w' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico" />}
@@ -73,6 +73,9 @@ function Second({empty}) {
                     </li>
                   </ul>
                 </div>
+                <button className="btnMore" onClick={() => history.push(`/rank/marketing?idx=${idx}`)}>
+                  <img src="https://image.dalbitlive.com/svg/icon_more_right.svg" alt="상세페이지이동" />
+                </button>
               </li>
             )
           })}

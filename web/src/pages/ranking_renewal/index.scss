@@ -1706,6 +1706,7 @@
     }
     .list {
       .item {
+        position: relative;
         max-height: 108px;
         margin-top: 4px;
         padding: 12px 0px;
@@ -1721,14 +1722,20 @@
         }
       }
       .btnMore {
+        position: absolute;
+        right: 4px;
         width: 20%;
+        height: 100%;
         text-align: right;
       }
       .djBox {
-        width: 25%;
+        width: 24%;
         padding: 0 4px;
         text-align: center;
         cursor: pointer;
+        &.last {
+          margin-right: 95px;
+        }
         &__img {
           display: inline-block;
           width: 60px;
@@ -1750,12 +1757,12 @@
         &.number {
           display: flex;
           flex: none;
-          width: 22%;
+          width: 16%;
+          margin-right: 0;
           cursor: auto;
           > p {
             width: 60px;
             height: 20px;
-            margin-left: 8px;
             line-height: 20px;
             letter-spacing: -1px;
             font-size: 14px;
@@ -1789,9 +1796,9 @@
           }
         }
         &.text {
-          flex: 1;
           overflow: hidden;
-          margin-left: 14px;
+          width: 42%;
+          margin: 0 50px 0 4px;
           .title {
             overflow: hidden;
             margin-bottom: 6px;
@@ -1841,12 +1848,6 @@
       .list {
         .item {
           padding: 19px 0px;
-        }
-        .djBox {
-          flex: none;
-          &.number {
-            width: 18%;
-          }
         }
       }
     }
