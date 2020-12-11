@@ -512,6 +512,23 @@
       width: 100%;
     }
   }
+  .profileImage {
+    position: relative;
+  }
+  .infoBox {
+    padding: 0 10px 0 6px;
+    width: 100%;
+    &-weekly {
+      justify-content: center;
+      .profileBox {
+        width: 50%;
+        flex-direction: column;
+      }
+      .nickNameBox {
+        text-align: center;
+      }
+    }
+  }
 
   .rankingList {
     display: flex;
@@ -1207,33 +1224,46 @@
       height: 22px;
       background-color: $lighterGray;
       border-radius: 14px;
-      font-weight: bold;
+      font-weight: $bold;
       font-size: 14px;
       text-align: center;
       letter-spacing: -0.3px;
       line-height: 22px;
       &.new {
         background-color: #febd56;
-        color: #fff;
+        color: $white;
         font-size: 11px;
+      }
+      &.on {
+        background-color: $primary;
+        color: $white;
+      }
+    }
+    &-pick {
+      span {
+        width: 56px;
       }
     }
   }
 
-  .levelListWrap {
-    min-height: calc(100vh - 104px - 28px);
-    padding: 0 16px 16px 16px;
-    background-color: $lighterGray;
-  }
+  // .levelListWrap {
+  //   min-height: calc(100vh - 104px - 28px);
+  //   padding: 0 16px 16px 16px;
+  //   background-color: $lighterGray;
+  // }
 
   .levelListBox {
     display: flex;
     align-items: center;
     position: relative;
+    height: 108px;
     padding: 4px 12px;
-    background-color: #fff;
+    background-color: $white;
     margin-bottom: 4px;
     border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 
     .thumbBox {
       width: 100px;
@@ -1281,7 +1311,7 @@
     .nickNameBox {
       width: 100%;
       margin-top: 4px;
-      padding-left: 5px;
+      padding-left: 0;
       font-size: 14px;
       white-space: nowrap;
       overflow: hidden;
@@ -1290,7 +1320,7 @@
 
     .genderBox {
       display: inline-flex;
-      padding-left: 5px;
+      padding-left: 0;
       background-size: 100%;
       vertical-align: middle;
       &.korea-m {
@@ -1357,7 +1387,7 @@
     .countBox {
       height: 18px;
       margin-top: 4px;
-      padding-left: 5px;
+      padding-left: 0;
       font-size: 12px;
 
       i.icon {
@@ -1551,19 +1581,37 @@
   }
 
   .specialPage {
-    min-height: calc(100vh - 104px - 50px);
-    padding: 0 16px;
-    background-color: $lighterGray;
-
+    min-height: calc(100vh - 100px);
+    padding: 0px 16px 20px;
+    background: $lighterGray;
+    .notice {
+      margin-bottom: 4px;
+      padding: 9px 0px;
+      line-height: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border: 1px solid $primary;
+      background: $white;
+      color: $primary;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
     .specialText {
       margin-bottom: 4px;
       padding: 11px 0;
       background-color: $primary;
-      color: #fff;
+      color: $white;
       font-size: 14px;
       text-align: center;
       border-radius: 16px;
     }
+  }
+  .btnMore {
+    position: absolute;
+    right: 4px;
+    height: 100%;
+    text-align: right;
   }
 
   .likeDetailWrap {
@@ -1684,172 +1732,6 @@
     .liveBox {
       top: 12px;
       right: 12px;
-    }
-  }
-
-  .weeklyPick {
-    min-height: calc(100vh - 100px);
-    padding: 0px 16px 20px;
-    background: $lighterGray;
-    .notice {
-      margin-bottom: 4px;
-      padding: 9px 0px;
-      line-height: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      text-align: center;
-      border: 1px solid $primary;
-      background: $white;
-      color: $primary;
-      border-radius: 16px;
-      box-sizing: border-box;
-    }
-    .list {
-      .item {
-        position: relative;
-        max-height: 108px;
-        margin-top: 4px;
-        padding: 12px 0px;
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        box-sizing: border-box;
-        overflow: hidden;
-        background: $white;
-        border-radius: 16px;
-        &:first-child {
-          margin-top: 0;
-        }
-      }
-      .btnMore {
-        position: absolute;
-        right: 4px;
-        width: 20%;
-        height: 100%;
-        text-align: right;
-      }
-      .djBox {
-        width: 24%;
-        padding: 0 4px;
-        text-align: center;
-        cursor: pointer;
-        &.last {
-          margin-right: 95px;
-        }
-        &__img {
-          display: inline-block;
-          width: 60px;
-          height: 60px;
-          border-radius: 50%;
-        }
-        &__nick {
-          display: block;
-          overflow: hidden;
-          width: 100%;
-          margin-top: 8px;
-          font-size: 14px;
-          text-align: center;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-          color: #242424;
-        }
-
-        &.number {
-          display: flex;
-          flex: none;
-          width: 16%;
-          margin-right: 0;
-          cursor: auto;
-          > p {
-            width: 60px;
-            height: 20px;
-            line-height: 20px;
-            letter-spacing: -1px;
-            font-size: 14px;
-            font-weight: $bold;
-            background: $lighterGray;
-            color: $black;
-            border-radius: 12px;
-            box-sizing: border-box;
-            &.on {
-              background: $primary;
-              color: $white;
-            }
-          }
-        }
-
-        &.img {
-          position: relative;
-          width: 70px;
-          height: 70px;
-          .thumb {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-          }
-          .frame {
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            left: -10px;
-            top: -14px;
-          }
-        }
-        &.text {
-          overflow: hidden;
-          width: 42%;
-          margin: 0 50px 0 4px;
-          .title {
-            overflow: hidden;
-            margin-bottom: 6px;
-            font-size: 14px;
-            text-align: left;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-          }
-          .level {
-            display: flex;
-            margin-bottom: 6px;
-            .ico {
-              margin-left: 2px;
-              &:first-child {
-                margin-left: 0;
-              }
-              &_level {
-                padding: 0 7px;
-                font-size: 12px;
-                font-weight: $bold;
-                color: $white;
-                background: #db1811;
-                border-radius: 14px;
-              }
-            }
-          }
-
-          .pointList {
-            display: flex;
-            li {
-              display: flex;
-              align-items: center;
-              margin-right: 4px;
-              font-size: 12px;
-              letter-spacing: -0.3px;
-              color: $greishBrown;
-              img {
-                opacity: 0.8;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    &--dj {
-      .list {
-        .item {
-          padding: 19px 0px;
-        }
-      }
     }
   }
 }

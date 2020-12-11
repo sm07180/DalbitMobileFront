@@ -3,6 +3,7 @@
 @import './variables.scss';
 // animation
 @import './animation.scss';
+@import './_mixins.scss';
 
 /*기본 컬러 및 브레이크 포인트, config와 동일.*/
 $WIDTH_PC: 1920px;
@@ -447,6 +448,66 @@ table {
   &.gray {
     background: $lighterGray;
   }
+}
+.profileImage {
+  position: relative;
+  text-align: center;
+  cursor: pointer;
+  .thumb {
+    position: relative;
+    margin: 0 auto 0;
+    border-radius: 50%;
+  }
+  .holder {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    & + .thumb {
+      margin-top: 13px;
+    }
+  }
+  .holderBg {
+    display: block;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .profileBg {
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: -40px;
+    width: 180px;
+    height: 140px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .zoom {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: 22;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .zoomImg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 95%;
+    height: auto;
+  }
+}
+.flexBox {
+  @include flexbox();
+}
+.ellipsis {
+  @include multi-ellipsis(1);
 }
 
 div.MuiToolbar-root,

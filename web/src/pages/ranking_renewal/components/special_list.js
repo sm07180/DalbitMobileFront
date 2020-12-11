@@ -4,9 +4,10 @@ import {useHistory} from 'react-router-dom'
 
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
+import {RoomJoin} from 'context/room'
 
 import NoResult from 'components/ui/noResult'
-import {RoomJoin} from 'context/room'
+import ProfileImage from 'components/ui/profileImage'
 
 import like from '../static/like_g_s.svg'
 import people from '../static/people_g_s.svg'
@@ -24,44 +25,31 @@ function SpecialList({empty}) {
     <>
       <div className="specialPage">
         <p className="specialText">달빛라이브의 스타 스페셜 DJ를 소개합니다.</p>
-        <ul>
+        <ul className="levelListWrap">
           {empty === true ? (
             <NoResult />
           ) : (
             <>
               {specialList.map((v, idx) => {
                 let genderName
-
                 if (v.gender == 'm' || v.gender == 'f') {
                   genderName = `genderBox gender-${v.gender}`
                 } else {
                   genderName = `genderBox`
                 }
-
+                const imageData = {
+                  profImg: v.profImg.thumb120x120,
+                  holder: v.holder,
+                  level: v.level
+                }
                 return (
                   <li key={idx} className="levelListBox">
                     <div className="specialBox">
                       {v.isNew === true ? <span className="new">NEW</span> : <span>{v.specialCnt}회</span>}
                     </div>
-                    <div
-                      className="thumbBox"
-                      onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === v.memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${v.memNo}`)
-                          }
-                        } else {
-                          history.push('/login')
-                        }
-                      }}>
-                      <img src={v.holder} className="thumbBox__frame" />
-                      <img src={v.profImg.thumb120x120} className="thumbBox__pic" />
-                    </div>
-                    <div className="test">
+                    <div className="infoBox flexBox">
                       <div
-                        className="nickNameBox"
+                        className="profileBox"
                         onClick={() => {
                           if (context.token.isLogin) {
                             if (context.token.memNo === v.memNo) {
@@ -73,44 +61,61 @@ function SpecialList({empty}) {
                             history.push('/login')
                           }
                         }}>
-                        {v.nickNm}
+                        <ProfileImage imageData={imageData} imageSize={74} />
                       </div>
-                      <div className="genderBox">
-                        <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
-                        <span className={genderName} />
-                      </div>
-                      <div className="countBox">
-                        <span>
-                          <i className="icon icon--like">회색 하트 아이콘</i> {v.goodCnt}
-                        </span>
-                        <span>
-                          <i className="icon icon--people">사람 아이콘</i> {v.listenerCnt}
-                        </span>
-                        <span>
-                          <i className="icon icon--time">시계 아이콘</i> {v.broadMin}
-                        </span>
-                      </div>
-                    </div>
-
-                    {v.roomNo !== '' && (
-                      <div className="liveBox">
-                        <img
-                          src={live}
+                      <div>
+                        <div
+                          className="nickNameBox"
                           onClick={() => {
-                            if (customHeader['os'] === OS_TYPE['Desktop']) {
-                              if (context.token.isLogin === false) {
-                                history.push('/login')
+                            if (context.token.isLogin) {
+                              if (context.token.memNo === v.memNo) {
+                                history.push(`/menu/profile`)
                               } else {
-                                context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                                history.push(`/mypage/${v.memNo}`)
                               }
                             } else {
-                              RoomJoin({roomNo: v.roomNo})
+                              history.push('/login')
                             }
-                          }}
-                          className="liveBox__img"
-                        />
+                          }}>
+                          {v.nickNm}
+                        </div>
+                        <div className="genderBox">
+                          <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
+                          <span className={genderName} />
+                        </div>
+                        <div className="countBox">
+                          <span>
+                            <i className="icon icon--like">회색 하트 아이콘</i> {v.goodCnt}
+                          </span>
+                          <span>
+                            <i className="icon icon--people">사람 아이콘</i> {v.listenerCnt}
+                          </span>
+                          <span>
+                            <i className="icon icon--time">시계 아이콘</i> {v.broadMin}
+                          </span>
+                        </div>
                       </div>
-                    )}
+
+                      {v.roomNo !== '' && (
+                        <div className="liveBox">
+                          <img
+                            src={live}
+                            onClick={() => {
+                              if (customHeader['os'] === OS_TYPE['Desktop']) {
+                                if (context.token.isLogin === false) {
+                                  history.push('/login')
+                                } else {
+                                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
+                                }
+                              } else {
+                                RoomJoin({roomNo: v.roomNo})
+                              }
+                            }}
+                            className="liveBox__img"
+                          />
+                        </div>
+                      )}
+                    </div>
                   </li>
                 )
               })}

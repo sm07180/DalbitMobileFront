@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {RankContext} from 'context/rank_ctx'
 import styled, {css} from 'styled-components'
 import NoResult from 'components/ui/new_noResult'
+import ProfileImage from 'components/ui/profileImage'
 import '../index.scss'
 
 function Second({empty}) {
@@ -11,7 +12,7 @@ function Second({empty}) {
   const {secondList} = rankState
 
   return (
-    <div className="weeklyPick weeklyPick--dj">
+    <div className="specialPage">
       <div className="notice">
         나를 표현하는 시간 15초 <br />
         달빛라이브 광고모델을 소개합니다.
@@ -20,60 +21,62 @@ function Second({empty}) {
       {empty === true ? (
         <NoResult type="default" text="조회 된 결과가 없습니다." />
       ) : (
-        <ul className="list">
+        <ul className="levelListWrap">
           {secondList.map((v, i) => {
             if (!v) return null
-            const {
-              idx,
-              memNo1,
-              title,
-              round,
-              memSex1,
-              memNick1,
-              imageInfo1,
-              regDate,
-              level,
-              levelColor,
-              holder,
-              holderBg,
-              likeCnt,
-              listenCnt,
-              airTime
-            } = v
+            const {idx, memberList, title, round, regDate, level, levelColor, likeCnt, listenCnt, airTime} = v
             return (
-              <li key={`list-${i}`} className="item">
-                <div className="djBox number">
-                  <p className={i === 0 ? `on` : ``}>{round}회차</p>
+              <li key={`list-${i}`} className="levelListBox" onClick={() => history.push(`/rank/marketing?idx=${idx}`)}>
+                <div className="specialBox specialBox-pick">
+                  <span className={i === 0 ? `on` : ``}>{round}회차</span>
                 </div>
-
-                <div className="djBox img" onClick={() => history.push(`/mypage/${memNo1}`)}>
-                  {holder && <img src={holder} className="frame" />}
-                  {holderBg && <img src={holderBg} className="frame" />}
-                  <img src={imageInfo1.thumb120x120} className="thumb" />
-                </div>
-                <div className="djBox text" onClick={() => history.push(`/rank/marketing?idx=${idx}`)}>
-                  <div className="title">{memNick1}</div>
-                  <span className="level">
-                    <LevelBox levelColor={levelColor}>Lv{level}</LevelBox>
-                    {memSex1 === 'w' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico" />}
-                    {memSex1 === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="ico" />}
-                  </span>
-                  <ul className="pointList">
-                    <li>
-                      <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg" />
-                      {likeCnt}
-                    </li>
-                    <li>
-                      <img src="https://image.dalbitlive.com/svg/people_g_s.svg" />
-                      {listenCnt}
-                    </li>
-                    <li>
-                      <img src="https://image.dalbitlive.com/svg/time_g_s.svg" />
-                      {airTime}
-                    </li>
-                  </ul>
-                </div>
-                <button className="btnMore" onClick={() => history.push(`/rank/marketing?idx=${idx}`)}>
+                {memberList &&
+                  memberList.map((v1, i1) => {
+                    const imageData = {
+                      originImg: v1.imageInfo,
+                      profImg: v1.imageInfo.thumb120x120,
+                      holder: v1.holder,
+                      level: v1.level
+                    }
+                    return (
+                      <>
+                        <React.Fragment key={`memberList-${i1}`}>
+                          <div className="infoBox flexBox">
+                            <div className="profileBox">
+                              <ProfileImage imageData={imageData} imageSize={74} />
+                            </div>
+                            <div>
+                              <div className="nickNameBox ellipsis">{v1.memNick}</div>
+                              <span className="genderBox">
+                                <LevelBox levelColor={v1.levelColor}>Lv{v1.level}</LevelBox>
+                                {v1.memSex1 === 'w' && (
+                                  <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico" />
+                                )}
+                                {v1.memSex1 === 'm' && (
+                                  <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="ico" />
+                                )}
+                              </span>
+                              <ul className="countBox">
+                                <span>
+                                  <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg" />
+                                  {likeCnt}
+                                </span>
+                                <span>
+                                  <img src="https://image.dalbitlive.com/svg/people_g_s.svg" />
+                                  {listenCnt}
+                                </span>
+                                <span>
+                                  <img src="https://image.dalbitlive.com/svg/time_g_s.svg" />
+                                  {airTime}
+                                </span>
+                              </ul>
+                            </div>
+                          </div>
+                        </React.Fragment>
+                      </>
+                    )
+                  })}
+                <button className="btnMore">
                   <img src="https://image.dalbitlive.com/svg/icon_more_right.svg" alt="상세페이지이동" />
                 </button>
               </li>
