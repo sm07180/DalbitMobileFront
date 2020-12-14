@@ -56,8 +56,6 @@ export default () => {
     fetchEventAttendPhone()
   }
 
-  console.log(eventAttendState.winPhone)
-
   const intervalFormatter = (date) => {
     if (!date) return null
 

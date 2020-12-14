@@ -13,6 +13,7 @@ const EventAttendProvider = (props) => {
   const [popGifticon, setPopGifticon] = useState(false)
   const [winIdx, setWinIdx] = useState(-1)
   const [couponCnt, setCouponCnt] = useState(0)
+  const [eventCouponCnt, setEventCouponCnt] = useState(0)
   const [summaryList, setSummaryList] = useState({
     attendanceDays: 0,
     totalExp: 0,
@@ -34,6 +35,7 @@ const EventAttendProvider = (props) => {
     tab,
     popRoulette,
     couponCnt,
+    eventCouponCnt,
     summaryList,
     statusList,
     dateList,
@@ -50,6 +52,7 @@ const EventAttendProvider = (props) => {
     setTab,
     setPopRoulette,
     setCouponCnt,
+    setEventCouponCnt,
     setSummaryList,
     setStatusList,
     setDateList,

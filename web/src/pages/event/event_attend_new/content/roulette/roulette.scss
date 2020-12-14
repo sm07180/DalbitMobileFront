@@ -10,34 +10,38 @@
 
     button {
       position: absolute;
-      bottom: 5%;
-      left: 2%;
+      bottom: 1.6%;
+      left: 29%;
       width: 40%;
     }
 
     .couponBox {
-      position: absolute;
-      bottom: 5%;
-      right: 2%;
-      width: 50%;
-
       &__cnt {
+        width: 21%;
         position: absolute;
-        bottom: 33%;
-        right: 5%;
-        width: 25%;
-        display: flex;
+        left: 17%;
+        top: 70.2%;
         justify-content: center;
         align-items: center;
         text-align: center;
         font-size: 12px;
-        line-height: 32px;
+        line-height: 36px;
 
         &--num {
           display: inline-block;
           margin-right: 2px;
-          font-size: 24px;
-          font-weight: 800;
+          font-size: 28px;
+          font-weight: $bold;
+        }
+
+        & > span {
+          display: inline-block;
+          margin-top: 6px;
+        }
+
+        &.event_cnt {
+          left: 62.5%;
+          top: 70.2%;
         }
       }
     }

@@ -62,6 +62,7 @@ export default () => {
       eventAttendAction.setStart(data)
       eventAttendAction.setItemNo(data.itemNo)
       eventAttendAction.setCouponCnt(data.couponCnt)
+      eventAttendAction.setEventCouponCnt(data.eventCouponCnt)
       eventAttendAction.setWinIdx(data.winIdx)
       eventAttendAction.setWinPhone(data.phone)
     } else {
@@ -85,7 +86,8 @@ export default () => {
     timeout = setTimeout(() => {
       if (itemNo !== 0) {
         eventAttendAction.setPopGifticon(true)
-        eventAttendAction.setCouponCnt(eventAttendState.couponCnt - 1)
+        eventAttendAction.setCouponCnt(eventAttendState.couponCnt)
+        eventAttendAction.setEventCouponCnt(eventAttendState.eventCouponCnt)
       } else {
         console.log('실패')
       }

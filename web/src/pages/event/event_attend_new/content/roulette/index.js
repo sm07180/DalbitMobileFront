@@ -53,6 +53,7 @@ export default function RouletteTab() {
     const {result, data} = await API.getEventRouletteCoupon()
     if (result === 'success') {
       eventAttendAction.setCouponCnt(data.couponCnt)
+      eventAttendAction.setEventCouponCnt(data.eventCouponCnt)
     }
   }
 
@@ -82,9 +83,9 @@ export default function RouletteTab() {
       if (globalCtx.selfAuth === false) {
         history.push('/selfauth?event=/event/attend_event/roulette')
       } else {
-        if (eventAttendState.couponCnt !== 0) {
+        if (eventAttendState.couponCnt !== 0 || eventAttendState.eventCouponCnt !== 0) {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)
-        } else {
+        } else if (eventAttendState.couponCnt === 0 && eventAttendState.eventCouponCnt === 0) {
           globalCtx.action.alert({
             msg: '응모권을 획득 후 참여해주세요!'
           })
@@ -98,24 +99,32 @@ export default function RouletteTab() {
     fetchEventRouletteCoupon()
     fetchEventRouletteWin()
     fetchEventRouletteInfo()
-  }, [])
+  }, [popRoulette])
 
   return (
     <div className="rouletteTab">
       <div className="topBanner">
-        <img src={`${IMG_SERVER}/event/attend/201019/event_img_02_1@2x.png`} alt="룰렛을 돌려보아요!" />
-
-        <button type="button" className="" onClick={() => history.push('/event/attend_my_apply')}>
-          <img src={`${IMG_SERVER}/event/attend/201028/btn_roullete_history@2x.png`} alt="룰렛 당첨이력 확인" />
-        </button>
+        <img src={`${IMG_SERVER}/event/attend/201209/event_img_02_1_1@2x.png`} alt="룰렛을 돌려보아요!" />
 
         <div className="couponBox">
-          <img src={`${IMG_SERVER}/event/attend/201019/event_ticket@2x.png`} alt="룰렛 응모 티켓수" />
+          <img src="https://image.dalbitlive.com/event/attend/201209/event_img_02_1_2@2x.png" alt="룰렛 응모 티켓수" />
           <p className="couponBox__cnt">
             <span className="couponBox__cnt--num">{eventAttendState.couponCnt}</span>
             <span>개</span>
           </p>
+
+          <p className="couponBox__cnt event_cnt">
+            <span className="couponBox__cnt--num">{eventAttendState.eventCouponCnt}</span>
+            <span>개</span>
+          </p>
         </div>
+
+        <button type="button" onClick={() => history.push('/event/attend_my_apply')}>
+          <img
+            src="https://image.dalbitlive.com/event/attend/201028/btn_roullete_history@2x.png"
+            alt="룰렛 룰렛 당첨이력 확인 확인"
+          />
+        </button>
       </div>
 
       <div className="giftWinner">
