@@ -814,15 +814,16 @@
           // display: flex;
           // justify-content: center;
           // align-items: center;
-          width: 52px;
+          width: 56px;
           height: 18px;
           margin-right: 4px;
           color: $white;
           font-style: normal;
-          font-size: 11px;
+          font-size: 12px;
           line-height: 18px;
           border-radius: 20px;
           text-align: center;
+          letter-spacing: -0.6px;
         }
         .eventIcon {
           background: $yellow;
@@ -830,6 +831,9 @@
 
         .specialIcon {
           background: $red;
+        }
+        .shiningIcon {
+          background: #e648e1;
         }
         .newIcon {
           background: $blue;
@@ -1005,17 +1009,6 @@
       letter-spacing: -0.2px;
     }
 
-    .pc-icon {
-      color: $white;
-      font-size: 11px;
-      border-radius: 10px;
-      background-color: #f26d4a;
-      height: 16px;
-      padding: 0 6px;
-      line-height: 16px;
-      margin-right: 4px;
-    }
-
     .specialIcon {
       display: inline-block;
       width: 62px;
@@ -1070,7 +1063,7 @@
       background: url('https://image.dalbitlive.com/main/common/ico_pc.png') no-repeat 0 0;
       background-size: contain;
     }
-    .newSpecialIcon {
+    .icon {
       z-index: 1;
       position: absolute;
       margin: 0px;
@@ -1080,7 +1073,12 @@
       width: 51px;
       height: 16px;
       text-indent: -999999px;
-      background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+      &-special {
+        background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+      }
+      &-shining {
+        background: url(https://image.dalbitlive.com/svg/ico_shiningdj.svg);
+      }
     }
 
     .broadcast-content {
@@ -1353,17 +1351,6 @@
         margin-right: 3px;
       }
 
-      .pc-icon {
-        color: $white;
-        font-size: 11px;
-        border-radius: 10px;
-        background-color: #f26d4a;
-        height: 16px;
-        width: 26px;
-        line-height: 16px;
-        margin-right: 4px;
-      }
-
       .twenty-icon {
         width: 24px;
         height: 16px;
@@ -1378,13 +1365,14 @@
       .special-icon {
         width: 16px;
         height: 16px;
-        background: url('../pages/menu/static/new_s.svg');
-        // border-radius: 50%;
-        // line-height: 16px;
-        // font-size: 7px;
-        // text-align: center;
-        // color: $white;
-        // background-color: $red;
+        text-indent: -9999px;
+        background: url('https://image.dalbitlive.com/svg/ico_special_s.svg');
+      }
+      .shining-icon {
+        width: 16px;
+        height: 16px;
+        text-indent: -9999px;
+        background: url('https://image.dalbitlive.com/svg/ico_shiningdj_s.svg');
       }
       .all-icon {
         width: 24px;
@@ -1456,18 +1444,6 @@
         white-space: nowrap;
         text-overflow: ellipsis;
       }
-      .pc-icon {
-        color: $white;
-        font-size: 11px;
-        border-radius: 10px;
-        background-color: #f26d4a;
-        text-align: center;
-        width: 26px;
-        height: 16px;
-
-        line-height: 16px;
-        margin-right: 4px;
-      }
 
       .type-icon-wrap {
         width: 26px;
@@ -1535,17 +1511,6 @@
 
         span {
           margin-right: 3px;
-        }
-
-        .pc-icon {
-          color: $white;
-          font-size: 11px;
-          border-radius: 10px;
-          background-color: #f26d4a;
-          height: 16px;
-          width: 26px;
-          line-height: 16px;
-          margin-right: 4px;
         }
 
         .twenty-icon {
@@ -1617,19 +1582,6 @@
         display: flex;
         align-items: center;
         z-index: 1;
-
-        .pc-icon {
-          color: $white;
-          font-size: 11px;
-          border-radius: 10px;
-          background-color: #f26d4a;
-          text-align: center;
-          width: 26px;
-          height: 16px;
-
-          line-height: 16px;
-          margin-right: 4px;
-        }
 
         .type-icon-wrap {
           width: 26px;

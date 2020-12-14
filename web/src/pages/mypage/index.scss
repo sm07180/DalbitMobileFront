@@ -462,17 +462,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            min-width: 60px;
             height: 28px;
-            border-radius: 20px;
+            padding: 0 10px 0 8px;
+            margin-left: 4px;
             font-size: 14px;
-            font-weight: 800;
             font-stretch: normal;
             font-style: normal;
             line-height: 1;
             letter-spacing: -0.35px;
-            padding: 0 10px 0 3px;
             text-align: left;
             color: $white;
+            border-radius: 20px;
+            box-sizing: border-box;
+
+            &:first-child {
+              margin-left: 0;
+            }
           }
           .fan-badge:last-child {
             margin-right: 0;

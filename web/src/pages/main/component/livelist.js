@@ -30,6 +30,8 @@ const makeContents = (props) => {
       entryType,
       giftCnt,
       isSpecial,
+      isShining,
+      isAdmin,
       boostCnt,
       rank,
       os,
@@ -144,7 +146,15 @@ const makeContents = (props) => {
                     </React.Fragment>
                   )
                 })}
-              {isSpecial === true && <em className="newSpecialIcon">스페셜dj</em>}
+              {isSpecial === true && isShining === false ? (
+                <em className="icon icon-special">스페셜DJ</em>
+              ) : isSpecial === false && isShining === true ? (
+                <em className="icon icon-shining">샤이닝DJ</em>
+              ) : isSpecial === true && isShining === true ? (
+                <em className="icon icon-special">스페셜DJ</em>
+              ) : (
+                <></>
+              )}
               <span className="nick">{bjNickNm}</span>
             </div>
             <div className="detail">
@@ -186,7 +196,15 @@ const makeContents = (props) => {
         ) : (
           <div className="broadcast-content">
             <div className="top-status">
-              {isSpecial && <span className="special-icon"></span>}
+              {isSpecial === true && isShining === false ? (
+                <span className="special-icon">S</span>
+              ) : isSpecial === false && isShining === true ? (
+                <span className="shining-icon">S</span>
+              ) : isSpecial === true && isShining === true ? (
+                <span className="special-icon">S</span>
+              ) : (
+                <></>
+              )}
               {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
             </div>
             <div className="entry-count">

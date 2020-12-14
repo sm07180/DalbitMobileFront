@@ -264,7 +264,7 @@ export default (props) => {
           style={{
             background: `linear-gradient(to right, ${startColor}, ${endColor}`
           }}>
-          <img src={icon} alt={text} />
+          {icon !== '' && <img src={icon} alt="뱃지아이콘" className="icon-badge" />}
           <span>{text}</span>
         </span>
       </div>
