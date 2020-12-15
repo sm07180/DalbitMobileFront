@@ -86,14 +86,14 @@ export default (props) => {
           {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && (
             <>
               {subContents === SETTING_TYPE.TITLE
-                ? '방송 제목 설정'
+                ? '방송 제목'
                 : subContents === SETTING_TYPE.WELCOME
-                ? 'DJ 인사말 설정'
+                ? 'DJ 인사말'
                 : subContents === SETTING_TYPE.SHORT_MSG
-                ? '퀵 메시지 설정'
+                ? '퀵 메시지'
                 : subContents === SETTING_TYPE.JOIN_CLOSE
-                ? '입장 / 퇴장 메시지 설정'
-                : '방송 / 청취 설정'}
+                ? '배지 / 입퇴장 메시지'
+                : '방송 / 청취'}
             </>
           )}
           {initialScreen === false && changeContents === BC_SETTING_TYPE.BANWORD && '금지어 관리'}

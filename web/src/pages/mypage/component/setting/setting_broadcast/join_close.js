@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react'
+import React, {useContext} from 'react'
 
 import Api from 'context/api'
 import {Context} from 'context'
@@ -9,8 +9,7 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
       [type]: !settingData[type]
     })
     console.log(settingData, settingData[type])
-    let message, djType, listenerType
-    djType = ''
+    let message
     if (res.result === 'success') {
       setSettingData({
         ...settingData,
@@ -35,6 +34,20 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
   return (
     <div id="bc_setting_join_close">
       <div className="contentsWrap">
+        <p className="contentsWrap__title">배지 설정</p>
+        <span>
+          실시간 팬 배지
+          <button
+            className={`${settingData.liveBadgeView === true && 'on'}`}
+            onClick={() => {
+              modifyBroadcastSetting('liveBadgeView')
+            }}
+          />
+        </span>
+        <p className="contentsWrap__sub">방송방 내 채팅 시 본인의 보유 배지 노출 여부를 제어할 수 있습니다.</p>
+      </div>
+
+      <div className="contentsWrap">
         <p className="contentsWrap__title">청취자 입장/ 퇴장 메시지 설정(DJ)</p>
         <span>
           입장 메시지
@@ -54,9 +67,7 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
             }}
           />
         </span>
-        <p className="contentsWrap__sub">
-          DJ가 되었을 시 방송방의 손님, 팬, 일반 청취자의 입장 퇴장 메시지를 ON / OFF로 설정할 수 있습니다.
-        </p>
+        <p className="contentsWrap__sub">방송 진행 시 청취자들의 입퇴장 메시지 노출 여부를 제어할 수 있습니다.</p>
       </div>
 
       <div className="contentsWrap">
@@ -79,9 +90,7 @@ function BC_SettingJoinClose({settingData, setSettingData}) {
             }}
           />
         </span>
-        <p className="contentsWrap__sub">
-          방송방에 입장하여 청취자 입장일 시 손님, 팬, 일반 청취자의 입장 퇴장 메시지를 ON / OFF로 설정할 수 있습니다.
-        </p>
+        <p className="contentsWrap__sub">방송 청취 시 청취자들의 입퇴장 메시지 노출 여부를 제어할 수 있습니다</p>
       </div>
     </div>
   )
