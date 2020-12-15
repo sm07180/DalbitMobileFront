@@ -321,7 +321,10 @@ export default function Detail(props) {
             </div>
             <div className="personalDetailWrap__contents">
               <div className="personalDetailWrap__qna">
-                <div className="personalDetailWrap__qna--content">{contents}</div>
+                {/* <div className="personalDetailWrap__qna--content">{contents}</div> */}
+                <div
+                  className="personalDetailWrap__qna--content"
+                  dangerouslySetInnerHTML={{__html: Utility.nl2br(contents)}}></div>
               </div>
               <div className="personalDetailWrap__addFile">
                 {addFile1.url !== '' && <img src={addFile1.thumb88x88} onClick={() => setZoom(addFile1.url)} />}
@@ -340,9 +343,7 @@ export default function Detail(props) {
                     <span className="personalDetailWrap__answer--icon"></span>
                     <span>답변</span>
                   </div>
-                  <p
-                    dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}}
-                    onClick={contentsClicked}></p>
+                  <p dangerouslySetInnerHTML={{__html: answer.replace(/class/gi, 'className')}} onClick={contentsClicked}></p>
                 </div>
               )}
             </div>
