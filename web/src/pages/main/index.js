@@ -228,8 +228,6 @@ export default (props) => {
     }
   }
 
-  console.log(`viewLevel`, viewLevel)
-
   const fetchLiveListAsInit = async () => {
     // setLiveList(null)
     const broadcastList = await Api.broad_list({
@@ -556,7 +554,7 @@ export default (props) => {
   //updatefunc
   const updateApp = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
-      if(__NODE_ENV === 'dev' || customHeader.appBuild >= 48){
+      if (__NODE_ENV === 'dev' || customHeader.appBuild >= 48) {
         Hybrid('goToPlayStore')
       } else {
         Hybrid('openUrl', storeUrl)
