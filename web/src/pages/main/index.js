@@ -217,7 +217,8 @@ export default (props) => {
   const fetchMainInitData = async () => {
     const initData = await Api.main_init_data()
     if (initData.result === 'success') {
-      const {djRank, fanRank, recommend, myStar} = initData.data
+      const {djRank, fanRank, recommend, myStar, popupLevel} = initData.data
+      setViewLevel(popupLevel)
       setInitData({
         recommend,
         djRank,
@@ -227,12 +228,7 @@ export default (props) => {
     }
   }
 
-  async function levelEventBanner() {
-    const {result, code, message} = await Api.eventJoinlevelPopup({})
-    if (result === 'success') {
-      setViewLevel(code)
-    }
-  }
+  console.log(`viewLevel`, viewLevel)
 
   const fetchLiveListAsInit = async () => {
     // setLiveList(null)
@@ -511,10 +507,6 @@ export default (props) => {
       globalCtx.action.updateAttendStamp(false)
     }
   }, [])
-
-  useEffect(() => {
-    levelEventBanner()
-  }, [viewLevel])
 
   const [reloadInit, setReloadInit] = useState(false)
   const refreshDefaultHeight = 48
@@ -824,17 +816,24 @@ export default (props) => {
           {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
 
-        {viewLevel === '5' ? (
+        {viewLevel === 5 ? (
           <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-            <img src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_five.jpg" />
+            <img
+              src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_five.jpg"
+              alt="5레벨 보상이벤트"
+            />
           </button>
-        ) : viewLevel === '10' ? (
+        ) : viewLevel === 10 ? (
           <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-            <img src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_ten.jpg" />
+            <img
+              src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_ten.jpg"
+              alt="10레벨 보상이벤트"
+            />
           </button>
         ) : (
           <></>
         )}
+
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">

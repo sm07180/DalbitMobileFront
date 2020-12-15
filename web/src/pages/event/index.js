@@ -60,6 +60,8 @@ export default () => {
         return <Specialdj />
       case 'shiningdj':
         return <ShiningDj />
+      case 'level_achieve':
+        return <LevelAchieve />
 
       default:
         return <></>
