@@ -20,6 +20,7 @@ import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
 import ShiningDj from './shiningdj'
+import LevelAchieve from './level_achieve'
 
 export default () => {
   const params = useParams()
