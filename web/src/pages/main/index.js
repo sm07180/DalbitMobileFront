@@ -814,7 +814,7 @@ export default (props) => {
           {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
 
-        {viewLevel === 5 ? (
+        {/* {viewLevel === 5 ? (
           <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
             <img
               src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_five.jpg"
@@ -830,7 +830,7 @@ export default (props) => {
           </button>
         ) : (
           <></>
-        )}
+        )} */}
 
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
