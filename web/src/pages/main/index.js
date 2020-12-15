@@ -551,7 +551,11 @@ export default (props) => {
   //updatefunc
   const updateApp = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
-      Hybrid('openUrl', storeUrl)
+      if(__NODE_ENV === 'dev' || customHeader.appBuild >= 48){
+        Hybrid('goToPlayStore')
+      } else {
+        Hybrid('openUrl', storeUrl)
+      }
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       Hybrid('openUrl', storeUrl)
     }

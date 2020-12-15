@@ -61,11 +61,11 @@ export default function Service() {
 
   const updateApp = () => {
     if (customerHeader.os === OS_TYPE['Android']) {
-      Hybrid(
-        'openUrl',
-        storeUrl
-        // 'https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject'
-      )
+      if(__NODE_ENV === 'dev' || customHeader.appBuild >= 48){
+        Hybrid('goToPlayStore')
+      } else {
+        Hybrid('openUrl', storeUrl)
+      }
     } else if (customerHeader.os === OS_TYPE['IOS']) {
       Hybrid(
         'openUrl',
