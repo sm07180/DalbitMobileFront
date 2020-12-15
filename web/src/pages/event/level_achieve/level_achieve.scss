@@ -23,14 +23,14 @@
 
     .joinDay {
       position: absolute;
-      top: 3.5%;
+      top: 5%;
       left: 38.8%;
       width: 42.5%;
       text-align: center;
       font-weight: $bold;
 
       &.ten {
-        top: 4%;
+        top: 5%;
         left: 38.8%;
         width: 48.5%;
       }
@@ -93,18 +93,6 @@
 
           &:nth-child(3) {
             right: 0px;
-          }
-
-          @keyframes ani {
-            0% {
-              top: -100px;
-              opacity: 0;
-            }
-
-            100% {
-              bottom: 0px;
-              opacity: 1;
-            }
           }
         }
       }
