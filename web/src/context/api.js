@@ -2473,6 +2473,20 @@ export default class API {
     return await ajax({url: '/event/lunar/date', method: 'GET', params})
   }
 
+  // 레벨,5 10 이벤트
+
+  static eventJoinlevelPopup = async (params) => {
+    return await ajax({url: '/event/join/check', method: 'GET', params})
+  }
+
+  static eventJoinlevelDetail = async (params) => {
+    return await ajax({url: '/event/join/detail', method: 'GET', params})
+  }
+
+  static eventJoinlevelReward = async (params) => {
+    return await ajax({url: '/event/join/reward', method: 'POST', params})
+  }
+
   static getEventRouletteCoupon = async (params) => {
     return await ajax({url: '/event/roulette/coupon', method: 'GET', params})
   }

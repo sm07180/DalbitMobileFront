@@ -56,7 +56,6 @@ export const RoomJoin = async (obj) => {
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
-
   if (sessionStorage.getItem('room_active') === 'N') {
     Room.context.action.alert({
       msg: '방에 입장중입니다.\n 잠시만 기다려주세요.'
@@ -204,6 +203,10 @@ export const RoomJoin = async (obj) => {
           callback: () => {
             sessionStorage.removeItem('room_active')
             window.location.href = '/login'
+            // history.push({
+            //   pathname: '/login',
+            //   state: `/broadcast/${roomNo}`
+            // })
           }
         })
       } else if (res.code === '-4' || res.code === '-10') {
@@ -458,12 +461,14 @@ async function goRoomMake() {
   let broadSetting = {}
   broadSetting['djListenerIn'] = false
   broadSetting['djListenerOut'] = false
+  broadSetting['liveBadgeView'] = true
   broadSetting['isSpecial'] = false
 
   const apiSetting = await Api.getBroadcastSetting()
   if (apiSetting && apiSetting.result === 'success' && apiSetting.data) {
     broadSetting['djListenerIn'] = apiSetting.data['djListenerIn']
     broadSetting['djListenerOut'] = apiSetting.data['djListenerOut']
+    broadSetting['liveBadgeView'] = apiSetting.data['liveBadgeView']
     broadSetting['isSpecial'] = apiSetting.data['isSpecial']
   }
 

@@ -223,6 +223,17 @@ const GlobalProvider = (props) => {
     alert: (obj) => {
       setMessage({type: 'alert', visible: true, ...obj})
     },
+
+    /**
+     * 시스템팝업(레이어구성)
+     * @param {msg} 메시지영역
+     */
+
+    alert_no_Close: (obj) => {
+      const {msg} = obj
+      setMessage({type: 'alert_no_Close', visible: true, ...obj})
+    },
+
     /**
      * 시스템팝업(토스트)
      * @param {msg} 메시지영역
