@@ -100,6 +100,7 @@ export default (props) => {
   const [scrollY, setScrollY] = useState(0)
   const [liveRefresh, setLiveRefresh] = useState(false)
   const [scrollOn, setScrollOn] = useState(false)
+  const [viewLevel, setViewLevel] = useState()
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
@@ -223,6 +224,13 @@ export default (props) => {
         fanRank,
         myStar
       })
+    }
+  }
+
+  async function levelEventBanner() {
+    const {result, code, message} = await Api.eventJoinlevelPopup({})
+    if (result === 'success') {
+      setViewLevel(code)
     }
   }
 
@@ -498,10 +506,15 @@ export default (props) => {
   useEffect(() => {
     fetchMainPopupData('6')
     fetchThxgivingCheck()
+
     return () => {
       globalCtx.action.updateAttendStamp(false)
     }
   }, [])
+
+  useEffect(() => {
+    levelEventBanner()
+  }, [viewLevel])
 
   const [reloadInit, setReloadInit] = useState(false)
   const refreshDefaultHeight = 48
@@ -810,6 +823,18 @@ export default (props) => {
           {/* {reloadInit === false && Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />} */}
           {Array.isArray(initData.recommend) && <MainSlideList list={initData.recommend} />}
         </div>
+
+        {viewLevel === '5' ? (
+          <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
+            <img src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_five.jpg" />
+          </button>
+        ) : viewLevel === '10' ? (
+          <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
+            <img src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_ten.jpg" />
+          </button>
+        ) : (
+          <></>
+        )}
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
             <div className="title-wrap">

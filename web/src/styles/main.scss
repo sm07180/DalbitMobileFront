@@ -914,6 +914,15 @@
       }
     }
   }
+
+  .levelEventBanner {
+    width: 100%;
+    img {
+      width: 100%;
+      display: block;
+    }
+  }
+
   //출석체크 버튼
   .fixedButton {
     position: fixed;
