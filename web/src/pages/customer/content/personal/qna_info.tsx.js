@@ -22,7 +22,7 @@ export default function QnaInfo() {
         </p>
 
         <div className="giftBox">
-          <p className="giftBox__title">매월 5분을 선정하여 소정의 선물을 드립니다.</p>
+          <p className="giftBox__title">매월 5명을 선정하여 소정의 선물을 드립니다.</p>
 
           <div className="giftBox__content">
             <div className="image">
