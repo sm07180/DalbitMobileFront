@@ -143,7 +143,7 @@ export default () => {
         context.action.alert_no_Close({
           msg: '본인인증 후 선물을 받을 수 있습니다.',
           callback: () => {
-            history.push('/self_auth/self?event=/event/attend_event/roulette')
+            history.push('/self_auth/self?event=/event/level_achieve')
           }
         })
       } else if (code === '-6') {
