@@ -21,12 +21,13 @@ import Faq from './faq/list'
 import FaqDetail from './faq/detail'
 import Personal from './personal/index'
 import QnaDetail from './personal/qna-detail'
+import QanInfo from '../content/personal/qna_info.tsx'
 import AppInfo from './app_info'
 import AppInfoRoute from './app_info/route'
 
 import Layout from 'pages/common/layout/new_layout'
-import EventWinner from "pages/customer/content/event/event_winner.js";
-import WinnerInfoForm from "pages/customer/content/event/winner_info_form.js";
+import EventWinner from 'pages/customer/content/event/event_winner.js'
+import WinnerInfoForm from 'pages/customer/content/event/winner_info_form.js'
 //
 
 const Index = (props) => {
@@ -43,13 +44,13 @@ const Index = (props) => {
       header = '공지사항'
       break
     case 'event':
-        if(num === undefined ){
-          header = '이벤트'
-        } else if(num === 'winnerInfo'){
-          header = '추가 정보 입력'
-        } else {
-          header = '당첨자 발표'
-        }
+      if (num === undefined) {
+        header = '이벤트'
+      } else if (num === 'winnerInfo') {
+        header = '추가 정보 입력'
+      } else {
+        header = '당첨자 발표'
+      }
       break
     case 'faq':
       header = 'FAQ'
@@ -59,6 +60,9 @@ const Index = (props) => {
       break
     case 'qnaList':
       header = '1:1 문의'
+      break
+    case 'qna_info':
+      header = '소중한 의견을 기다립니다'
       break
     case 'appInfo':
       header = '운영 정책 / 회원 탈퇴'
@@ -120,8 +124,8 @@ const Index = (props) => {
           <Route path="/customer/notice" exact component={Notice} />
           <Route path="/customer/notice/:number" exact component={NoticeDetail} />
           <Route path="/customer/event" exact component={Event} />
-          <Route path="/customer/event/winnerInfo" exact component={WinnerInfoForm}/>
-          <Route path="/customer/event/:number" exact component={EventWinner}/>
+          <Route path="/customer/event/winnerInfo" exact component={WinnerInfoForm} />
+          <Route path="/customer/event/:number" exact component={EventWinner} />
           <Route path="/customer/faq" exact component={Faq} />
           <Route path="/customer/faq/:number" exact component={FaqDetail} />
           <Route path="/customer/personal" exact component={Personal} />
@@ -129,6 +133,7 @@ const Index = (props) => {
           <Route path="/customer/qnaList/:number" exact component={QnaDetail} />
           <Route path="/customer/appInfo" exact component={AppInfo} />
           <Route path="/customer/appInfo/:title" exact component={AppInfoRoute} />
+          <Route path="/customer/qna_info" exact component={QanInfo} />
         </Switch>
       </Container>
     </Layout>

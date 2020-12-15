@@ -220,6 +220,17 @@ input[type='file'] {
 .personalAddWrap {
   padding: 0 16px;
 
+  .qnaInfoBanner {
+    overflow: hidden;
+    margin-bottom: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+
+    img {
+      width: 100%;
+    }
+  }
+
   &__select {
     position: absolute;
     width: calc(100% - 32px);
@@ -416,5 +427,122 @@ input[type='file'] {
     font-size: 12px;
     color: #757575;
     text-align: center;
+  }
+}
+
+#qnaInfoWrap {
+  background-color: $white;
+
+  h3 {
+    padding: 4px 0 12px;
+    background-color: $lighterGray;
+    font-size: 18px;
+    font-weight: $bold;
+    color: $primary;
+    text-align: center;
+
+    img {
+      vertical-align: middle;
+    }
+  }
+  .InfoInnerBox {
+    padding: 0 16px 32px 16px;
+
+    .introBox {
+      padding: 12px 0;
+      font-size: 14px;
+      line-height: 22px;
+      color: $greishBrown;
+      text-align: center;
+
+      span {
+        color: $black;
+        font-weight: $bold;
+      }
+    }
+
+    .giftBox {
+      width: 100%;
+      padding: 20px 25px;
+      background-color: $whiteGray;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      box-sizing: border-box;
+
+      &__title {
+        margin-bottom: 16px;
+        font-size: 14px;
+        color: $red;
+        text-align: center;
+        font-weight: $bold;
+      }
+
+      &__content {
+        display: flex;
+        justify-content: center;
+
+        .image {
+          width: 70px;
+          margin-right: 20px;
+          padding-top: 12px;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        dl {
+          font-size: 14px;
+          dt {
+            color: $primary;
+          }
+
+          dd {
+            font-weight: $bold;
+
+            img {
+              display: inline-block;
+              margin: 0 4px;
+            }
+          }
+          dt + dd,
+          dd + dt {
+            margin-top: 8px;
+          }
+        }
+      }
+    }
+
+    .noticeBox {
+      margin-top: 20px;
+      font-size: 14px;
+
+      &__title {
+        display: inline-block;
+        margin-bottom: 12px;
+        padding: 5px 8px 6px 30px;
+        border-radius: 14px;
+        background: $greishBrown url(https://image.dalbitlive.com/svg/ic_notice_line_wh.svg) no-repeat 7px;
+        color: $white;
+      }
+
+      li {
+        position: relative;
+        padding-left: 12px;
+        line-height: 22px;
+        color: $greishGray;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 50%;
+          margin-top: -1px;
+          left: 0;
+          width: 4px;
+          height: 1px;
+          background-color: $greishGray;
+        }
+      }
+    }
   }
 }

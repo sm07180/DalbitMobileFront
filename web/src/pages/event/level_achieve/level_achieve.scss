@@ -1,0 +1,126 @@
+@import '../../../styles/variables';
+
+#levelAchieve {
+  position: relative;
+  min-height: 100vh;
+  background: #51e2df;
+
+  img {
+    width: 100%;
+  }
+
+  .noticeImg {
+    display: block;
+    padding: 6% 0;
+    width: 90%;
+    margin: auto;
+  }
+
+  .timeWrap {
+    position: relative;
+
+    .joinDay {
+      position: absolute;
+      top: 3.5%;
+      left: 38.8%;
+      width: 42.5%;
+      text-align: center;
+      font-weight: $bold;
+
+      &.ten {
+        top: 4%;
+        left: 38.8%;
+        width: 48.5%;
+      }
+    }
+
+    .countBox {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 12%;
+      width: 80%;
+      height: 32.6%;
+      overflow: hidden;
+
+      &.ten {
+        top: 53%;
+      }
+      & > div {
+        display: flex;
+      }
+
+      .times {
+        position: relative;
+        width: 100%;
+        margin-right: 4%;
+        span {
+          width: 50%;
+          img {
+            display: block;
+            width: 92%;
+          }
+        }
+
+        .images {
+          display: block;
+          position: absolute;
+          top: 0px;
+
+          &.active {
+            top: 0px;
+            opacity: 1;
+            animation: ani 1s normal ease-out;
+          }
+
+          &.always {
+            top: 0px;
+            opacity: 1;
+            animation: ani 1s normal ease-out infinite;
+          }
+
+          &.false {
+            animation: none;
+          }
+
+          &:nth-child(1) {
+            width: 18%;
+            left: -21%;
+            top: 2%;
+          }
+
+          &:nth-child(3) {
+            right: 0px;
+          }
+
+          @keyframes ani {
+            0% {
+              top: -100px;
+              opacity: 0;
+            }
+
+            100% {
+              bottom: 0px;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .eventButton {
+    img {
+      display: inline-block;
+      width: 90%;
+    }
+  }
+
+  .btnBack {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 40px;
+    height: 40px;
+  }
+}

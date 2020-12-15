@@ -8,6 +8,7 @@ import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
 import Alert from './content/alert'
+import AlertNoClose from './content/alert_no_close'
 import Confirm from './content/confirm'
 import ConfirmAdmin from './content/confirm_admin'
 import Toast from './content/toast'
@@ -47,6 +48,13 @@ export default (props) => {
             </Message>
           )
         if (type === 'toast') return <Toast />
+
+        if (type === 'alert_no_Close')
+          return (
+            <Message>
+              <AlertNoClose />
+            </Message>
+          )
         break
       case false:
         break

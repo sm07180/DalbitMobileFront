@@ -30,7 +30,9 @@ export default function Qna() {
   const [faqNum, setFaqNum] = useState(0)
   const [email, setEmail] = useState('')
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState(
+    '아래 내용을 함께 보내주시면 더욱 빨리 처리가 가능합니다.\n\n폰 기종 :\n폰 버전 (ex-Android 버전10) : \n문제발생 일시 :\n문의내용 :'
+  )
   const [phone, setPhone] = useState('')
 
   const [delicate, setDelicate] = useState(false)
@@ -38,6 +40,8 @@ export default function Qna() {
 
   const [checks, setChecks] = useState([false, true])
   const [agree, setAgree] = useState(false)
+  const [isBanner, setIsBanner] = useState([])
+
   async function fetchData() {
     context.action.confirm({
       msg: '1:1 문의를 등록하시겠습니까?',
@@ -327,6 +331,37 @@ export default function Qna() {
     return regExp.test(email)
   }
 
+  async function fetchBannerData() {
+    const res = await Api.getBanner({
+      params: {
+        position: 15
+      }
+    })
+
+    if (res.result === 'success') {
+      if (res.hasOwnProperty('data')) setIsBanner(res.data)
+    } else {
+      console.log(res.result, res.message)
+    }
+  }
+
+  const createSliderList = () => {
+    if (!isBanner) return null
+    return isBanner.map((banner, idx) => {
+      const {bannerUrl, linkUrl, title, linkType} = banner
+
+      return (
+        <div className="qnaInfoBanner" key={`banner-${idx}`} onClick={() => history.push('/customer/qna_info')}>
+          <img src={bannerUrl} alt={title} />
+        </div>
+      )
+    })
+  }
+
+  useEffect(() => {
+    fetchBannerData()
+  }, [])
+
   useEffect(() => {
     if (
       faqNum !== 0 &&
@@ -370,6 +405,11 @@ export default function Qna() {
 
   return (
     <div className="personalAddWrap">
+      {createSliderList()}
+      {/* <div className="qnaInfoBanner" onClick={() => history.push('/customer/qna_info')}>
+
+        <img src={getBanner} />
+      </div> */}
       <input
         type="text"
         className="personalAddWrap__input"
@@ -404,8 +444,9 @@ export default function Qna() {
           autoComplete="off"
           maxLength={2000}
           placeholder="작성하고자 하는 문의내용을 입력해주세요."
-          onChange={(e) => setContent(e.target.value)}
-        />
+          onChange={(e) => setContent(e.target.value)}>
+          {content}
+        </textarea>
         {questionFile.map((v, index, self) => {
           return (
             <React.Fragment key={index}>
