@@ -916,10 +916,42 @@
   }
 
   .levelEventBanner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
     width: 100%;
-    img {
-      width: 100%;
-      display: block;
+    height: 48px;
+    border-radius: 0px 0px 12px 12px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.16);
+    background: #00bac1;
+    color: $white;
+    font-size: 16px;
+    font-weight: $bold;
+
+    &.isRed {
+      background: #e84d70;
+    }
+
+    .evnetText {
+      margin-right: 5px;
+      color: #fff951;
+      &.isWhite {
+        color: $white;
+      }
+    }
+    .giftIcon {
+      margin-left: 8px;
+      padding: 10px 10px 10px 36px;
+      background: url('https://image.dalbitlive.com/svg/ic_gift.svg') no-repeat left 4px center $white;
+      color: #00a1a7;
+      font-size: 13px;
+      font-weight: $bold;
+      border-radius: 30px;
+
+      &.isRed {
+        color: #e84d70;
+      }
     }
   }
 

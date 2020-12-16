@@ -72,13 +72,11 @@
           &.active {
             top: 0px;
             opacity: 1;
-            animation: ani 1s normal ease-out;
           }
 
           &.always {
             top: 0px;
             opacity: 1;
-            animation: ani 1s normal ease-out infinite;
           }
 
           &.false {

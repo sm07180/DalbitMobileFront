@@ -815,19 +815,13 @@ export default (props) => {
         </div>
 
         {viewLevel === 5 ? (
-          <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_five.jpg"
-              alt="5레벨 보상이벤트"
-            />
-          </button>
+        <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
+          <span className="evnetText">💛이벤트💛</span> 5레벨이 되면 달 20개 <p className="giftIcon">선물받기</p>
+        </button>
         ) : viewLevel === 10 ? (
-          <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/20201215/level_event_banner_ten.jpg"
-              alt="10레벨 보상이벤트"
-            />
-          </button>
+        <button className="levelEventBanner isRed" onClick={() => history.push('/event/level_achieve')}>
+          <span className="evnetText isWhite">💛이벤트💛</span> 10레벨이 되면 달 50개 <p className="giftIcon isRed">선물받기</p>
+        </button>
         ) : (
           <></>
         )}
