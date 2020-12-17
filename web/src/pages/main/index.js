@@ -977,6 +977,7 @@ export default (props) => {
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+
                     {loading === true ? (
                       <div className="liveList__item">
                         <Lottie
@@ -985,7 +986,7 @@ export default (props) => {
                             autoPlay: true,
                             animationData: LoadingLottieIcon
                           }}
-                          width={40}
+                          width={80}
                         />
                       </div>
                     ) : (
