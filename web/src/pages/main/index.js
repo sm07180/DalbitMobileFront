@@ -53,15 +53,20 @@ const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.p
 const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
 const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
+
+import LoadingLottieIcon from './static/listloading.json'
+
+import Lottie from 'react-lottie'
 import 'styles/main.scss'
 
 let concatenating = false
-let tempScrollEvent = null
 
 const records = 50
 
 let touchStartY = null
 let touchEndY = null
+
+let totalLivePage = 1
 
 // updateLink
 let storeUrl = ''
@@ -106,7 +111,6 @@ export default (props) => {
   const [liveGender, setLiveGender] = useState('')
 
   const [livePage, setLivePage] = useState(1)
-  const [totalLivePage, setTotalLivePage] = useState(null)
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
@@ -122,6 +126,9 @@ export default (props) => {
   //update
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
+
+  //loading
+  const [loading, setLoading] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
   const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
@@ -244,7 +251,7 @@ export default (props) => {
       if (paging) {
         const {totalPage, page} = paging
         setLivePage(page)
-        setTotalLivePage(totalPage)
+        totalLivePage = totalPage
       }
       setLiveList(list)
     }
@@ -266,7 +273,7 @@ export default (props) => {
       if (paging) {
         const {totalPage, page} = paging
         setLivePage(page)
-        setTotalLivePage(totalPage)
+        totalLivePage = totalPage
       }
       // if (broadcastList.data.isGreenMoon === true) {
       //   setPopupMoonState(true)
@@ -296,7 +303,9 @@ export default (props) => {
       if (paging) {
         const {totalPage, page} = paging
         setLivePage(page)
-        setTotalLivePage(totalPage)
+        totalLivePage = totalPage
+
+        setLoading(false)
       }
 
       if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
@@ -364,6 +373,7 @@ export default (props) => {
       liveList.length &&
       livePage <= totalLivePage
     ) {
+      setLoading(true)
       concatLiveList()
     }
   }
@@ -468,8 +478,6 @@ export default (props) => {
 
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
-    window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
 
     if (sessionStorage.getItem('pay_info') !== null) {
       const payInfo = JSON.parse(sessionStorage.getItem('pay_info'))
@@ -479,23 +487,21 @@ export default (props) => {
     return () => {
       sessionStorage.removeItem('pay_info')
       window.removeEventListener('popstate', popStateEvent)
-      window.removeEventListener('scroll', windowScrollEvent)
-      window.removeEventListener('scroll', tempScrollEvent)
-      tempScrollEvent = null
-      concatenating = false
     }
   }, [])
 
   useEffect(() => {
-    resetFetchList()
-  }, [selectedLiveRoomType])
+    window.addEventListener('scroll', windowScrollEvent)
+
+    return () => {
+      window.removeEventListener('scroll', windowScrollEvent)
+      concatenating = false
+    }
+  }, [liveList, livePage])
 
   useEffect(() => {
-    window.removeEventListener('scroll', tempScrollEvent)
-    window.addEventListener('scroll', windowScrollEvent)
-    tempScrollEvent = windowScrollEvent
-    concatenating = false
-  }, [liveList])
+    resetFetchList()
+  }, [selectedLiveRoomType])
 
   useEffect(() => {
     fetchMainPopupData('6')
@@ -655,14 +661,6 @@ export default (props) => {
       setScrollOn(false)
     }
   }
-
-  useEffect(() => {
-    document.addEventListener('scroll', scrollMove)
-
-    return () => {
-      document.removeEventListener('scroll', scrollMove)
-    }
-  }, [])
   useEffect(() => {
     if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
       setInputState(true)
@@ -815,13 +813,13 @@ export default (props) => {
         </div>
 
         {viewLevel === 5 ? (
-        <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-          <span className="evnetText">💛이벤트💛</span> 5레벨이 되면 달 20개 <p className="giftIcon">선물받기</p>
-        </button>
+          <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
+            <span className="evnetText">💛이벤트💛</span> 5레벨이 되면 달 20개 <p className="giftIcon">선물받기</p>
+          </button>
         ) : viewLevel === 10 ? (
-        <button className="levelEventBanner isRed" onClick={() => history.push('/event/level_achieve')}>
-          <span className="evnetText isWhite">💛이벤트💛</span> 10레벨이 되면 달 50개 <p className="giftIcon isRed">선물받기</p>
-        </button>
+          <button className="levelEventBanner isRed" onClick={() => history.push('/event/level_achieve')}>
+            <span className="evnetText isWhite">💛이벤트💛</span> 10레벨이 되면 달 50개 <p className="giftIcon isRed">선물받기</p>
+          </button>
         ) : (
           <></>
         )}
@@ -977,6 +975,18 @@ export default (props) => {
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                    {loading === true && (
+                      <div className="liveList__item">
+                        <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            animationData: LoadingLottieIcon
+                          }}
+                          width={40}
+                        />
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <NoResult />
