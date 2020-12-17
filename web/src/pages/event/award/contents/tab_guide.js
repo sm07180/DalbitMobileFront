@@ -9,12 +9,16 @@ export default function awardEventGuide() {
   const noticeList = useRef()
 
   const buttonToogle = () => {
-    setNoticeView(!noticeView)
-    setTimeout(() => {
-      const noticeListNode = noticeList.current
-      const noticeListHeight = noticeListNode.offsetTop
-      window.scrollTo({top: noticeListHeight, behavior: 'smooth'})
-    }, 100)
+    if (noticeView === false) {
+      setNoticeView(true)
+      setTimeout(() => {
+        const noticeListNode = noticeList.current
+        const noticeListHeight = noticeListNode.offsetTop
+        window.scrollTo({top: noticeListHeight, behavior: 'smooth'})
+      }, 100)
+    } else {
+      setNoticeView(false)
+    }
   }
 
   return (
