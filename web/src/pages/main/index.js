@@ -312,6 +312,8 @@ export default (props) => {
         //const concatenated = currentList.concat(list)
         const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
         setLiveList(concatenated)
+      } else {
+        setLoading(false)
       }
     }
   }
