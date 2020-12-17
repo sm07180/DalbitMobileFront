@@ -373,10 +373,11 @@ export default (props) => {
       !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
-      livePage <= totalLivePage
+      livePage + 1 <= totalLivePage
     ) {
       setLoading(true)
       concatLiveList()
+      setLivePage
     }
   }
 
