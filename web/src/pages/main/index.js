@@ -975,7 +975,7 @@ export default (props) => {
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
-                    {loading === true && (
+                    {loading === true ? (
                       <div className="liveList__item">
                         <Lottie
                           options={{
@@ -986,6 +986,8 @@ export default (props) => {
                           width={40}
                         />
                       </div>
+                    ) : (
+                      <></>
                     )}
                   </div>
                 ) : (
