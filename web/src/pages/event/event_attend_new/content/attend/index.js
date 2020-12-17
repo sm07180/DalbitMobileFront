@@ -83,7 +83,7 @@ export default function AttendTab() {
   return (
     <div className="attendTab">
       <div className="topBanner">
-        <img src={`${IMG_SERVER}/event/attend/201019/event_img_01_1@2x.png`} />
+        <img src={`${IMG_SERVER}/event/attend/201217/event_img_01_1@2x.png`} />
 
         {statusList.check_gift === '1' ? (
           <button type="button" className="attend" onClick={() => attendDateIn()}>

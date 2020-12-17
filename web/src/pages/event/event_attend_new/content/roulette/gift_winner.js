@@ -102,7 +102,7 @@ export default () => {
     <div id="attendEventPage">
       <div className="win-list-box">
         <div className="header">
-          <h1 className="header__title">기프티콘 당첨자</h1>
+          <h1 className="header__title">상품 당첨자</h1>
           <button className="header__btnBack" onClick={goBack}>
             <img src="https://image.dalbitlive.com/svg/ic_back.svg" alt="뒤로가기" />
           </button>
@@ -124,7 +124,7 @@ export default () => {
 
             <thead>
               <tr>
-                <th>기프티콘</th>
+                <th>상품</th>
                 <th>당첨 일시</th>
                 <th>당첨자</th>
               </tr>

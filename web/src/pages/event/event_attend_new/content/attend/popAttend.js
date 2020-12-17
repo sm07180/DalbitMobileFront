@@ -29,7 +29,7 @@ export default (props) => {
     } else if (statusList.the_day === '1' || statusList.the_day === '3') {
       gift = '2달+10EXP'
     } else {
-      gift = '3달+15EXP'
+      gift = '2달+15EXP'
     }
 
     return gift

@@ -139,8 +139,6 @@ export default () => {
                       giftItem = '꽝'
                     } else if (itemNo === 2) {
                       giftItem = '1달'
-                    } else if (itemNo === 3) {
-                      giftItem = '3달'
                     } else if (itemNo === 4) {
                       giftItem = '초코에몽'
                     } else if (itemNo === 5) {
@@ -151,6 +149,8 @@ export default () => {
                       giftItem = '문화상품권'
                     } else if (itemNo === 8) {
                       giftItem = '교촌치킨 세트'
+                    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29) {
+                      giftItem = '100달'
                     } else if (itemNo === 14) {
                       giftItem = '초코송이'
                     } else if (itemNo === 15) {

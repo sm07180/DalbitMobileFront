@@ -96,10 +96,10 @@ export default function RouletteTab() {
 
   //----------------------------------
   useEffect(() => {
-    fetchEventRouletteCoupon()
-    fetchEventRouletteWin()
     fetchEventRouletteInfo()
-  }, [popRoulette])
+    fetchEventRouletteWin()
+    fetchEventRouletteCoupon()
+  }, [eventAttendState.popGifticon])
 
   return (
     <div className="rouletteTab">
@@ -126,7 +126,6 @@ export default function RouletteTab() {
           />
         </button>
       </div>
-
       <div className="giftWinner">
         <div className="giftWinnerWrap">
           <div
@@ -134,7 +133,7 @@ export default function RouletteTab() {
             onClick={() => {
               history.push('/event/attend_event_gift')
             }}>
-            <label>기프티콘 당첨</label>
+            <label>상품 당첨자</label>
 
             {winList ? (
               <Swiper {...swiperParams}>
@@ -156,7 +155,6 @@ export default function RouletteTab() {
           </div>
         </div>
       </div>
-
       <div className="rouletteBox" onClick={() => startIn()}>
         <img src={eventAttendState.rouletteInfo.bg_image_url} alt="룰렛 돌림판" />
         {/* <button type="button" onClick={() => startIn()}>
@@ -166,7 +164,6 @@ export default function RouletteTab() {
       <div>
         <Notice />
       </div>
-
       {popRoulette && <PopRoulette />}
     </div>
   )

@@ -125,7 +125,11 @@ export default () => {
       itemNo === GIFT_ROTATION_TYPE.GIFT_BURGERKING
     ) {
       setRotation(202.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.THREE_DAL) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.HUNDRED_DAL ||
+      itemNo === GIFT_ROTATION_TYPE.HUNDRED_DAL_2 ||
+      itemNo === GIFT_ROTATION_TYPE.HUNDRED_DAL_3
+    ) {
       setRotation(247.5)
     } else if (
       itemNo === GIFT_ROTATION_TYPE.GIFT_CHICKEN ||
