@@ -2956,6 +2956,28 @@ export default class API {
       params: data
     })
   }
+  static getMarketingClipList = async (data) => {
+    return await ajax({
+      url: '/clip/recommend/list',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getAwardList = async (data) => {
+    return await ajax({
+      url: '/award/list',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static postAwardVote = async (data) => {
+    return await ajax({
+      url: '/award/vote',
+      method: 'POST',
+      data: data
+    })
+  }
 }
 
 API.customHeader = null

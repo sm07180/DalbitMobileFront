@@ -21,6 +21,7 @@ import HappyTime from './happy_time'
 import Specialdj from './specialdj'
 import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
+import Award from './award'
 
 export default () => {
   const params = useParams()
@@ -62,6 +63,8 @@ export default () => {
         return <ShiningDj />
       case 'level_achieve':
         return <LevelAchieve />
+      case 'award':
+        return <Award />
 
       default:
         return <></>

@@ -1,0 +1,406 @@
+@import '../../../styles/variables';
+
+#awardEventPage {
+  .topBox {
+    position: relative;
+    text-align: center;
+
+    &__mainImg {
+      width: 100%;
+    }
+
+    .btnBack {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .tabBox {
+    position: relative;
+    display: flex;
+    background-color: #efefef;
+    padding: 0 5%;
+
+    .btn {
+      width: 33.33333333333333%;
+      height: 50px;
+      background-color: #acacac;
+      color: $white;
+      font-size: 18px;
+      border-radius: 15px 15px 0 0;
+      box-sizing: border-box;
+      border: 3px solid #acacac;
+
+      &.active {
+        position: relative;
+        font-weight: $bold;
+        border-bottom: 0;
+      }
+
+      &:nth-of-type(1) {
+        &.active {
+          background-color: #ec6382;
+          border-color: #e84d70;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #ec6382;
+          }
+        }
+      }
+
+      &:nth-of-type(2) {
+        &.active {
+          background-color: #6442df;
+          border-color: #4f2ccf;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #6442df;
+          }
+        }
+      }
+
+      &:nth-of-type(3) {
+        &.active {
+          background-color: #30bdca;
+          border-color: #148f9a;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #30bdca;
+          }
+        }
+      }
+    }
+  }
+
+  .countBoxWrap {
+    position: absolute;
+    width: 100%;
+    bottom: 3.2%;
+    margin: 20px 0;
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    &__title {
+      padding-bottom: 5px;
+      font-weight: $bold;
+    }
+
+    &__subTxt {
+      color: #5e5e5e;
+    }
+
+    .countBox {
+      & > div {
+        display: flex;
+        justify-content: center;
+        max-width: 80%;
+        margin: 10px auto;
+      }
+
+      .times {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+
+        &:nth-of-type(1) {
+          padding-right: 10%;
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 3%;
+            width: 30%;
+            height: 100%;
+            background: url(https://image.dalbitlive.com/event/award/201214/ico_day_text.png) no-repeat;
+            background-size: 100%;
+          }
+        }
+
+        &:nth-of-type(2),
+        &:nth-of-type(3) {
+          padding-right: 5%;
+
+          &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 3%;
+            width: 12%;
+            height: 100%;
+            background: url(https://image.dalbitlive.com/event/award/201214/ico_time_dot.png) no-repeat;
+            background-size: 100%;
+          }
+        }
+
+        .images {
+          display: block;
+          width: 49%;
+
+          img {
+            width: 100%;
+          }
+
+          &.active {
+            top: 0;
+            opacity: 1;
+            // animation: ani 1s normal ease-out;
+          }
+
+          &.always {
+            top: 0;
+            opacity: 1;
+            // animation: ani 1s normal ease-out infinite;
+          }
+
+          &.false {
+            animation: none;
+          }
+
+          // @keyframes ani {
+          //   0% {
+          //     top: -20px;
+          //     opacity: 0;
+          //   }
+
+          //   100% {
+          //     top: 0px;
+          //     opacity: 1;
+          //   }
+          // }
+        }
+      }
+    }
+  }
+
+  .tabGuideWrap {
+    .topImage {
+      position: relative;
+
+      img {
+        width: 100%;
+      }
+
+      .goodsBtn {
+        position: absolute;
+        bottom: 4%;
+        right: 13%;
+        width: 15%;
+      }
+    }
+    .noticeWrap {
+      padding: 5% 5% 10% 5%;
+
+      &__title {
+        padding-bottom: 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &.active {
+          img {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      .noticeListBox {
+        display: none;
+        &.active {
+          display: block;
+        }
+
+        p {
+          display: inline-block;
+          margin-bottom: 3px;
+          padding: 2px 5px;
+          font-size: 12px;
+          font-weight: 500;
+          letter-spacing: -0.3px;
+          border-radius: 4px;
+          background-color: #1ab1a2;
+        }
+
+        li {
+          position: relative;
+          padding: 4px 0 6px 10px;
+          font-size: 12px;
+          line-height: 18px;
+          letter-spacing: -0.33px;
+          text-align: left;
+
+          &::before {
+            content: '';
+            position: absolute;
+            top: 11px;
+            left: 0;
+            width: 1px;
+            height: 1px;
+            background-color: $black;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+  .tabVoteWrap {
+    border-top: 3px solid #4f2ccf;
+    padding: 0 0 24px 0;
+    background: url(https://image.dalbitlive.com/event/award/201214/vote-img.png) no-repeat top;
+    background-size: 100%;
+
+    .btnBox {
+      padding: 0 5%;
+
+      .voteBtn {
+        height: 54px;
+        width: 100%;
+        background-color: $primary;
+        color: $white;
+        font-size: 16px;
+        border-radius: 12px;
+        font-weight: $bold;
+
+        &:disabled {
+          background-color: #bdbdbd;
+        }
+      }
+    }
+
+    .voteListBox {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding: 80% 5% 0 5%;
+
+      .voteListItem {
+        width: 45%;
+        margin-bottom: 32px;
+
+        .thumb {
+          position: relative;
+          overflow: hidden;
+          margin-bottom: 8px;
+          border-radius: 14px;
+          cursor: pointer;
+          img {
+            width: 100%;
+          }
+
+          .nickName {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            padding: 10px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: $white;
+            text-align: center;
+            font-size: 12px;
+          }
+        }
+
+        .checkBtn {
+          width: 100%;
+          height: 40px;
+          font-size: 14px;
+          border: 2px solid #c9c9c9;
+          border-radius: 14px;
+        }
+
+        .checkedBtn {
+          width: 100%;
+          height: 40px;
+          font-size: 14px;
+          border: 2px solid #e84d70;
+          background-color: #e84d70;
+          border-radius: 14px;
+          color: $white;
+
+          img {
+            width: 20px;
+          }
+        }
+      }
+    }
+  }
+
+  .tabCommentWrap {
+    border-top: 3px solid #148f9a;
+    &__topImg {
+      width: 100%;
+    }
+  }
+
+  .awardVoteThxPop {
+    text-align: center;
+
+    p {
+      margin-top: 16px;
+      font-size: 14px;
+      line-height: 22px;
+    }
+
+    .title {
+      padding-bottom: 8px;
+      color: $primary;
+      font-size: 18px;
+      font-weight: $bold;
+    }
+  }
+
+  .awardGoodsPop {
+    .scrollBox {
+      overflow-y: scroll;
+      max-height: 350px;
+      img {
+        width: 100%;
+      }
+    }
+
+    p {
+      padding-top: 14px;
+      font-size: 14px;
+      line-height: 18px;
+      text-align: center;
+    }
+  }
+
+  .btnWrap {
+    margin-top: 20px;
+    .btn {
+      width: 100%;
+      height: 44px;
+      font-size: 16px;
+      border-radius: 12px;
+      color: $white;
+      font-weight: $bold;
+      text-align: center;
+      background-color: $primary;
+    }
+  }
+}
