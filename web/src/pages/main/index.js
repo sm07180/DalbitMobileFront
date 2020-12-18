@@ -377,7 +377,6 @@ export default (props) => {
     ) {
       setLoading(true)
       concatLiveList()
-      setLivePage
     }
   }
 
