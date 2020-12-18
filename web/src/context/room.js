@@ -126,7 +126,9 @@ export const RoomJoin = async (obj) => {
             sessionStorage.removeItem('room_active')
             return RoomJoin({roomNo: roomNo, shadow: 0})
           },
-          cancelCallback: () => {},
+          cancelCallback: () => {
+            sessionStorage.removeItem('room_active')
+          },
           msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
         })
       }
