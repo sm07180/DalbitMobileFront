@@ -7,6 +7,7 @@ import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
+import {convertDateFormat, calcDate} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
 
 // components
@@ -26,9 +27,6 @@ import filterIcon from './static/choose_circle_w.svg'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 //scss
 import './clip.scss'
-
-//임시
-import moment from 'moment'
 
 let tempScrollEvent = null
 let touchStartY = null
@@ -77,7 +75,6 @@ export default (props) => {
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
   const [clipRankingList, setClipRankingList] = useState([])
-  const [marketingClipList, setMarketingClipList] = useState([])
 
   const [myData, setMyDate] = useState([])
   const [date, setDate] = useState('')
@@ -96,7 +93,7 @@ export default (props) => {
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [marketingClip, setMarketingClip] = useState([])
 
-  const [recDate, setRecDate] = useState(moment(new Date()).format('YYYYMMDD'))
+  const [recDate, setRecDate] = useState(convertDateFormat(new Date(), ''))
 
   const clipRankTab = [
     {title: '일간', type: 0},
@@ -501,13 +498,13 @@ export default (props) => {
     const rankingClipNode = clipRankingRef.current
     const marketingClipNode = marketingClipRef.current
     const categoryBestClipNode = categoryBestClipRef.current
-    const myClipHeight = myClipNode.clientHeight
-    const RecomendHeight = recomendClipNode.clientHeight
-    const categoryBestHeight = categoryBestClipNode.clientHeight
-    const rankClipHeight = rankClipNode.clientHeight
-    const rankingClipHeight = rankingClipNode?.clientHeight
-    const marketingClipHeight = marketingClipNode?.clientHeight
-    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const myClipHeight = myClipNode && myClipNode.clientHeight
+    const RecomendHeight = recomendClipNode && recomendClipNode.clientHeight
+    const categoryBestHeight = categoryBestClipNode && categoryBestClipNode.clientHeight
+    const rankClipHeight = rankClipNode && rankClipNode.clientHeight
+    const rankingClipHeight = rankingClipNode ? rankingClipNode.clientHeight : 0
+    const marketingClipHeight = marketingClipNode ? marketingClipNode.clientHeight : 0
+    const BannerSectionHeight = BannerSectionNode && BannerSectionNode.clientHeight
     const TopSectionHeight =
       ClipHeaderHeight +
       myClipHeight +
@@ -518,6 +515,7 @@ export default (props) => {
       rankClipHeight +
       BannerSectionHeight -
       20
+    console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
@@ -797,14 +795,20 @@ export default (props) => {
         {marketingClip && marketingClip.length > 0 && (
           <div className="rankClip" ref={marketingClipRef}>
             <div className="titleBox">
-              <h3 className="clipTitle">달대리 추천 클립</h3>
+              <h3
+                className="clipTitle"
+                onClick={() => {
+                  geRecommend()
+                }}>
+                달대리 추천 클립
+              </h3>
               <div className="dateBox">
                 <button
                   className={`btnPrev ${marketingClip.isPrev ? ' isActive' : ''}`}
                   disabled={marketingClip.isPrev === false}
                   onClick={() => {
-                    const date = moment(recDate).subtract(7, 'days')
-                    setRecDate(moment(date).format('YYYYMMDD'))
+                    const date = calcDate(new Date(recDate), -7)
+                    setRecDate(convertDateFormat(date, ''))
                   }}>
                   &lt;
                 </button>
@@ -815,8 +819,8 @@ export default (props) => {
                   className={`btnNext ${marketingClip.isNext ? ' isActive' : ''}`}
                   disabled={marketingClip.isNext === false}
                   onClick={() => {
-                    const date = moment(recDate).add(7, 'days')
-                    setRecDate(moment(date).format('YYYYMMDD'))
+                    const date = calcDate(new Date(recDate), 7)
+                    setRecDate(convertDateFormat(date, ''))
                   }}>
                   &gt;
                 </button>
