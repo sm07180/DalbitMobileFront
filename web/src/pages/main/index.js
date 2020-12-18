@@ -312,6 +312,8 @@ export default (props) => {
         //const concatenated = currentList.concat(list)
         const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
         setLiveList(concatenated)
+      } else {
+        setLoading(false)
       }
     }
   }
@@ -371,7 +373,7 @@ export default (props) => {
       !concatenating &&
       Array.isArray(liveList) &&
       liveList.length &&
-      livePage <= totalLivePage
+      livePage + 1 <= totalLivePage
     ) {
       setLoading(true)
       concatLiveList()
@@ -975,7 +977,8 @@ export default (props) => {
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
-                    {loading === true && (
+
+                    {loading === true ? (
                       <div className="liveList__item">
                         <Lottie
                           options={{
@@ -983,9 +986,11 @@ export default (props) => {
                             autoPlay: true,
                             animationData: LoadingLottieIcon
                           }}
-                          width={40}
+                          width={80}
                         />
                       </div>
+                    ) : (
+                      <></>
                     )}
                   </div>
                 ) : (
