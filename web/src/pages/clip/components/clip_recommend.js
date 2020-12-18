@@ -1,30 +1,34 @@
 import React, {useState, useEffect, useContext, useRef} from 'react'
 import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
+import {convertDateFormat, calcDate} from 'pages/common/rank/rank_fn'
+import {OS_TYPE} from 'context/config'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
+
 import Header from 'components/ui/new_header.js'
 import Layout from 'pages/common/layout'
-import '../clip.scss'
-import { useHistory } from "react-router-dom";
-import { convertDateFormat, calcDate } from 'pages/common/rank/rank_fn'
-
-import RankPopup from "./clip_recommend_rank_list";
-import {OS_TYPE} from "context/config";
-import {clipJoin} from "pages/common/clipPlayer/clip_func";
+import RankPopup from './clip_recommend_rank_list'
 import NoResult from 'components/ui/new_noResult'
+import '../clip.scss'
 
-export default function clipRecommend(props) {
+//임시
+import moment from 'moment'
+
+export default function clipRecommend() {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
-  const history = useHistory();
+  const history = useHistory()
   const dateState = history.location.state
 
   const [textView, setTextView] = useState(false)
-  const [marketingClipObj, setMarketingClipObj] = useState([]);
-  const [marketingClipList, setMarketingClipList] = useState([]);
-  const [recDate, setRecDate] = useState(dateState);
-  const [topRankList, setTopRankList] = useState([]);
-  const [popupState, setPopupState] = useState(false);
-  const [clip, setClip] = useState("");
+  const [marketingClipObj, setMarketingClipObj] = useState([])
+  const [marketingClipList, setMarketingClipList] = useState([])
+  const [recDate, setRecDate] = useState(dateState)
+  const [topRankList, setTopRankList] = useState([])
+  const [popupState, setPopupState] = useState(false)
+  const [clip, setClip] = useState('')
 
   const viewToggle = () => {
     if (textView === false) {
@@ -34,69 +38,68 @@ export default function clipRecommend(props) {
     }
   }
   const fetchMarketingClipList = async () => {
-    const { result, data, message } = await Api.getMarketingClipList({
-      recDate: recDate
-      , isLogin: context.token.isLogin
-      , isClick: true
-    });
-    if (result === "success") {
+    const {result, data, message} = await Api.getMarketingClipList({
+      recDate: recDate,
+      isLogin: context.token.isLogin,
+      isClick: true
+    })
+    if (result === 'success') {
       setMarketingClipObj(data.recommendInfo)
-      setMarketingClipList(data.list);
-      setClip(data.recommendInfo.clipNo);
+      setMarketingClipList(data.list)
+      setClip(data.recommendInfo.clipNo)
 
-      fetchRankTop(data.recommendInfo.clipNo);
+      fetchRankTop(data.recommendInfo.clipNo)
     } else {
       context.action.alert({msg: message})
     }
-  };
+  }
 
   const AddFan = (memNo) => {
     async function AddFanFunc(memNo) {
-      const { result, data, message } = await Api.fan_change({
-        data : {
+      const {result, data, message} = await Api.fan_change({
+        data: {
           memNo: memNo
-        },
-      });
-      if (result === "success") {
+        }
+      })
+      if (result === 'success') {
         context.action.alert({msg: message})
-        fetchMarketingClipList();
+        fetchMarketingClipList()
       } else {
         context.action.alert({msg: message})
       }
     }
-    AddFanFunc(memNo);
-  };
+    AddFanFunc(memNo)
+  }
 
   const DeleteFan = (memNo) => {
     async function DeleteFanFunc() {
-      const { result, data, message } = await Api.mypage_fan_cancel({
-        data : {
-          memNo: memNo,
-        },
-      });
-      if (result === "success") {
+      const {result, data, message} = await Api.mypage_fan_cancel({
+        data: {
+          memNo: memNo
+        }
+      })
+      if (result === 'success') {
         context.action.alert({msg: message})
-        fetchMarketingClipList();
+        fetchMarketingClipList()
       } else {
         context.action.alert({msg: message})
       }
     }
-    DeleteFanFunc(memNo);
-  };
+    DeleteFanFunc(memNo)
+  }
 
-  const fetchRankTop = async(clipNo) => {
+  const fetchRankTop = async (clipNo) => {
     async function getGiftRankTopFunc() {
-      const { result, data, message } = await Api.getGiftRankTop({
-        clipNo: clipNo,
-      });
-      if (result === "success") {
-        setTopRankList(data.list);
-      }
-      else {
-        setTopRankList([]);
+      const {result, data, message} = await Api.getGiftRankTop({
+        clipNo: clipNo
+      })
+      if (result === 'success') {
+        setTopRankList(data.list)
+      } else {
+        setTopRankList([])
       }
     }
-    getGiftRankTopFunc();
+    getGiftRankTopFunc()
   }
 
   const fetchDataPlay = async (clipNum, type) => {
@@ -104,7 +107,7 @@ export default function clipRecommend(props) {
       clipNo: clipNum
     })
     if (result === 'success') {
-      if(type === 'dal') {
+      if (type === 'dal') {
         localStorage.removeItem('clipPlayListInfo')
       }
       clipJoin(data, context)
@@ -125,15 +128,14 @@ export default function clipRecommend(props) {
   }
 
   useEffect(() => {
-    fetchMarketingClipList();
-  },[recDate]);
+    fetchMarketingClipList()
+  }, [recDate])
 
   useEffect(() => {
     if (context.token.isLogin === false) {
-      history.push("/");
+      history.push('/')
     }
-  }, [context.token.isLogin]);
-
+  }, [context.token.isLogin])
 
   return (
     <Layout status="no_gnb">
@@ -143,26 +145,33 @@ export default function clipRecommend(props) {
           <>
             <div className="topBox">
               <button
-                className={`prev ${marketingClipObj.isPrev === false ? " noHover" : "on"}`}
+                className={`prev ${marketingClipObj.isPrev === false ? ' noHover' : 'on'}`}
                 disabled={marketingClipObj.isPrev === false}
                 onClick={() => {
-                  const date = calcDate(new Date(recDate), -7);
-                  setRecDate(convertDateFormat(date, ""));
-                }}>이전</button>
-              <strong className="day">{marketingClipObj.month}월 {marketingClipObj.weekNo}주차</strong>
+                  const date = moment(recDate).subtract(7, 'days')
+                  setRecDate(moment(date).format('YYYYMMDD'))
+                  // const date = calcDate(new Date(Utility.dateFormatter(recDate)), -7)
+                  // setRecDate(convertDateFormat(date, ''))
+                }}>
+                이전
+              </button>
+              <strong className="day">
+                {marketingClipObj.month}월 {marketingClipObj.weekNo}주차
+              </strong>
               <button
-                className={`next ${marketingClipObj.isNext === false ? " noHover" : "on"}`}
+                className={`next ${marketingClipObj.isNext === false ? ' noHover' : 'on'}`}
                 disabled={marketingClipObj.isNext === false}
                 onClick={() => {
-                  const date = calcDate(new Date(recDate), 7);
-                  setRecDate(convertDateFormat(date, ""));
-                }}
-              >다음</button>
+                  const date = moment(recDate).add(7, 'days')
+                  setRecDate(moment(date).format('YYYYMMDD'))
+                  // const date = calcDate(new Date(Utility.dateFormatter(recDate)), 7)
+                  // setRecDate(convertDateFormat(date, ''))
+                }}>
+                다음
+              </button>
             </div>
             <div className="play">
-              <div className="titleMsgBox">
-                {marketingClipObj.titleMsg}
-              </div>
+              <div className="titleMsgBox">{marketingClipObj.titleMsg}</div>
 
               <div className="video">
                 {marketingClipObj.videoUrl ? (
@@ -171,37 +180,42 @@ export default function clipRecommend(props) {
                     width="360"
                     height="208"
                     data={`https://www.youtube.com/embed/${marketingClipObj.videoUrl}`}></object>
-                ):<></>}
+                ) : (
+                  <></>
+                )}
               </div>
 
               <div className="fanBox">
-                {marketingClipObj.isFan === true && <button className="fanButton isActive" onClick={() => DeleteFan(marketingClipObj.memNo)}>팬</button>}
-                {marketingClipObj.isFan === false && <button className="fanButton" onClick={() => AddFan(marketingClipObj.memNo)}> + 팬등록</button>}
-                <button
-                  className="fanButton file"
-                  onClick={() => history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)}>{marketingClipObj.regCnt}</button>
-                <ul className="userProfile">
-                  {(topRankList && topRankList.length > 0) &&
-                  topRankList.map((v, index) => {
-                    return (
-                      <li
-                        className="userProfile__list"
-                        key={index}
-                        onClick={() => history.push(`/mypage/${v.memNo}`)}>
-                        <img
-                          src={v.profImg.thumb62x62}/>
-                      </li>
-                    )
-                  })
-                  }
-                </ul>
-                {topRankList.length > 0 &&
-                <button
-                  className="fanMore"
-                  onClick={() => setPopupState(popupState ? false : true)}>
-                  <span className="blind">팬랭킹 더보기</span>
+                {marketingClipObj.isFan === true && (
+                  <button className="fanButton isActive" onClick={() => DeleteFan(marketingClipObj.memNo)}>
+                    팬
+                  </button>
+                )}
+                {marketingClipObj.isFan === false && (
+                  <button className="fanButton" onClick={() => AddFan(marketingClipObj.memNo)}>
+                    {' '}
+                    + 팬등록
+                  </button>
+                )}
+                <button className="fanButton file" onClick={() => history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)}>
+                  {marketingClipObj.regCnt}
                 </button>
-                }
+                <ul className="userProfile">
+                  {topRankList &&
+                    topRankList.length > 0 &&
+                    topRankList.map((v, index) => {
+                      return (
+                        <li className="userProfile__list" key={index} onClick={() => history.push(`/mypage/${v.memNo}`)}>
+                          <img src={v.profImg.thumb62x62} />
+                        </li>
+                      )
+                    })}
+                </ul>
+                {topRankList.length > 0 && (
+                  <button className="fanMore" onClick={() => setPopupState(popupState ? false : true)}>
+                    <span className="blind">팬랭킹 더보기</span>
+                  </button>
+                )}
               </div>
 
               <div className="titleBox">
@@ -214,10 +228,10 @@ export default function clipRecommend(props) {
 
               <div className="text">
                 <div className={`playInfo ${textView ? `isActive` : ``}`}>
-                  <div className="text">
-                    {marketingClipObj.descMsg}
+                  <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(marketingClipObj.descMsg)}}>
+                    {/* {marketingClipObj.descMsg} */}
                   </div>
-                  <button className={`more ${textView && "on"}`} onClick={() => viewToggle()}>
+                  <button className={`more ${textView && 'on'}`} onClick={() => viewToggle()}>
                     더보기
                   </button>
                 </div>
@@ -227,8 +241,8 @@ export default function clipRecommend(props) {
         )}
 
         <h3 className="listTitle">
-        추천 클립 목록
-        {/*<button className="allPlay">전체듣기</button>*/}
+          추천 클립 목록
+          {/*<button className="allPlay">전체듣기</button>*/}
         </h3>
         {marketingClipList.length > 0 ? (
           <ul className="itemBox">
@@ -254,7 +268,7 @@ export default function clipRecommend(props) {
                     }
                   }}>
                   <div className="item__thumb">
-                    <img src={v.bgImg.thumb62x62} alt="이미지"/>
+                    <img src={v.bgImg.thumb62x62} alt="이미지" />
                     <span className="item__thumb__playTime">{v.filePlay}</span>
                   </div>
                   <div className="textBox">
@@ -264,10 +278,8 @@ export default function clipRecommend(props) {
                       <span className="title">{v.title}</span>
                     </p>
                     <p className="textBox__nickName">
-                      {v.gender === "f" &&
-                      <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon"/>}
-                      {v.gender === "m" &&
-                      <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon"/>}
+                      {v.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" />}
+                      {v.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" />}
                       {v.nickNm}
                     </p>
                   </div>
@@ -276,11 +288,10 @@ export default function clipRecommend(props) {
             })}
           </ul>
         ) : (
-          <NoResult text="등록된 클립이 없습니다."/>
-        )
-        }
+          <NoResult text="등록된 클립이 없습니다." />
+        )}
       </div>
-      {popupState && <RankPopup setPopupState={setPopupState} clip={clip}/>}
+      {popupState && <RankPopup setPopupState={setPopupState} clip={clip} />}
     </Layout>
-  );
+  )
 }
