@@ -123,6 +123,7 @@ export default () => {
         <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
         <Route exact path="/clip/play_list" component={ClipPlayList} />
+        <Route exact path="/clip_recommend" component={ClipRecommend} />
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
