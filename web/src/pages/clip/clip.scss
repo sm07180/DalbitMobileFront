@@ -484,24 +484,6 @@
               border-radius: 16px;
             }
           }
-          .swiper-pagination-fraction {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            bottom: 7px;
-            right: 46px;
-            left: auto;
-            width: 45px;
-            height: 24px;
-            font-size: 12px;
-            letter-spacing: 3px;
-            background-color: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            border-radius: 24px;
-            .swiper-pagination-total {
-              font-weight: $regular;
-            }
-          }
         }
       }
 
@@ -566,6 +548,21 @@
 
     .swiper-wrapper {
       align-items: center;
+    }
+    .swiper-pagination-bullets {
+      bottom: 20px;
+    }
+    .swiper-pagination-bullet {
+      margin: 0 1.4px;
+      width: 6px;
+      height: 6px;
+    }
+    .swiper-pagination-bullet-active {
+      background: $primary;
+      width: 14px;
+      height: 6px;
+      border-radius: 10px;
+      transition: opacity 0.5s ease-in-out;
     }
 
     .slideWrap {
