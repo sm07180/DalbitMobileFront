@@ -157,30 +157,30 @@ export default (props) => {
       })
     }
   }
-  const fetchClipRankingList = async () => {
-    const {result, data, message} = await getClipRankingList({})
-    if (result === 'success') {
-      setClipRankingList(data.list)
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
-  }
-  const fetchMarketingClip = async () => {
-    const {result, data, message} = await Api.getMarketingClipList({
-      recDate: recDate,
-      isLogin: context.token.isLogin,
-      isClick: false
-    })
-    if (result === 'success') {
-      setMarketingClip(data.recommendInfo)
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
-  }
+  // const fetchClipRankingList = async () => {
+  //   const {result, data, message} = await getClipRankingList({})
+  //   if (result === 'success') {
+  //     setClipRankingList(data.list)
+  //   } else {
+  //     context.action.alert({
+  //       msg: message
+  //     })
+  //   }
+  // }
+  // const fetchMarketingClip = async () => {
+  //   const {result, data, message} = await Api.getMarketingClipList({
+  //     recDate: recDate,
+  //     isLogin: context.token.isLogin,
+  //     isClick: false
+  //   })
+  //   if (result === 'success') {
+  //     setMarketingClip(data.recommendInfo)
+  //   } else {
+  //     context.action.alert({
+  //       msg: message
+  //     })
+  //   }
+  // }
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -665,9 +665,9 @@ export default (props) => {
     }
   }, [])
 
-  useEffect(() => {
-    fetchMarketingClip()
-  }, [recDate])
+  // useEffect(() => {
+  //   fetchMarketingClip()
+  // }, [recDate])
 
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
@@ -777,7 +777,7 @@ export default (props) => {
           <div ref={recomendRef}></div>
         )}
 
-        {clipRankingList.length > 0 ? (
+        {clipRankingList && clipRankingList.length > 0 ? (
           <div className="rankClip" ref={clipRankingRef}>
             <div className="titleBox">
               <h3 className="clipTitle isArrow">클립 랭킹</h3>
@@ -794,7 +794,7 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
-        {marketingClip && (
+        {marketingClip && marketingClip.length > 0 && (
           <div className="rankClip" ref={marketingClipRef}>
             <div className="titleBox">
               <h3 className="clipTitle">달대리 추천 클립</h3>
