@@ -24,7 +24,7 @@ export default function awardEventGuide() {
   return (
     <div className="tabGuideWrap">
       <div className="topImage">
-        <img src="https://image.dalbitlive.com/event/award/201214/guide-img-v2.png" alt="guide" />
+        <img src="https://image.dalbitlive.com/event/award/201214/guide-img-v3.png" alt="guide" />
         <button className="goodsBtn" onClick={() => setVoteNoticePop(true)}>
           <img src="https://image.dalbitlive.com/event/award/201214/btn-goods.png" alt="goods" />
         </button>
