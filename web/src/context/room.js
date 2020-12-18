@@ -79,7 +79,7 @@ export const RoomJoin = async (obj) => {
       callback: () => {
         clipExit(Room.context)
         sessionStorage.removeItem('room_active')
-        return RoomJoin(obj)
+        return RoomJoin({roomNo: roomNo, callbackFunc: callbackFunc, shadow: shadow, listener: 'clip'})
       },
       cancelCallback: () => {
         sessionStorage.removeItem('room_active')
@@ -117,7 +117,7 @@ export const RoomJoin = async (obj) => {
     } else if (Room.context.adminChecker === true && roomNo === Utility.getCookie('listen_room_no')) {
       return Hybrid('EnterRoom', '')
     } else if (Room.context.adminChecker === false) {
-      if (listener === 'listener') {
+      if (listener === 'listener' || listener === 'clip') {
         sessionStorage.removeItem('room_active')
         return RoomJoin({roomNo: roomNo, shadow: 0})
       } else {
