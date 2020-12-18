@@ -44,7 +44,7 @@ const makeContents = (props) => {
         <LiveList
           key={`live-${idx}`}
           onClick={() => {
-            RoomJoin({roomNo: roomNo, shadow: 0})
+            RoomJoin({roomNo: roomNo, nickNm: bjNickNm})
           }}>
           <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}} />
           <div className="broadcast-content">
@@ -97,7 +97,7 @@ const makeContents = (props) => {
                 className="half-live"
                 style={{backgroundImage: `url(${firstList.bjProfImg['thumb190x190']})`}}
                 onClick={() => {
-                  RoomJoin(firstList.roomNo + '')
+                  RoomJoin({roomNo: firstList.roomNo + '', nickNm: bjNickNm})
                 }}>
                 <div className="top-status">
                   {firstList.entryType === 2 ? (
@@ -125,7 +125,7 @@ const makeContents = (props) => {
                   className="half-live"
                   style={{backgroundImage: `url(${lastList.bjProfImg['thumb190x190']})`}}
                   onClick={() => {
-                    RoomJoin({roomNo: lastList.roomNo})
+                    RoomJoin({roomNo: lastList.roomNo, nickNm: bjNickNm})
                   }}>
                   <div className="top-status">
                     {lastList.entryType === 2 ? (

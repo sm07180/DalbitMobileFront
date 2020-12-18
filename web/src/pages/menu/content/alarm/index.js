@@ -81,6 +81,7 @@ export default function Alert() {
 
   const handleClick = (something) => {
     const {notiType, contents, memNo, roomNo, regDt, regTs, profImg, link} = something
+
     switch (notiType) {
       case 1:
         RoomJoin({roomNo: roomNo})

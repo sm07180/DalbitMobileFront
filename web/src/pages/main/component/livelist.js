@@ -44,7 +44,8 @@ const makeContents = (props) => {
 
     const alertCheck = (roomNo) => {
       RoomJoin({
-        roomNo: roomNo
+        roomNo: roomNo,
+        nickNm: bjNickNm
       })
     }
 

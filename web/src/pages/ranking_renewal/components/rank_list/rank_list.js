@@ -245,12 +245,12 @@ function RankList() {
                           }
                         } else {
                           if (roomNo !== '') {
-                            RoomJoin({roomNo: roomNo})
+                            RoomJoin({roomNo: roomNo, nickNm: nickNm})
                           } else {
                             context.action.confirm({
                               msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
                               callback: () => {
-                                return RoomJoin({roomNo: listenRoomNo})
+                                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
                               }
                             })
                           }

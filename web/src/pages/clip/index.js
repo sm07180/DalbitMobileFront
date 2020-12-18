@@ -1,24 +1,21 @@
-//
 import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
-import Api from 'context/api'
 import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
+import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
-//layout
-import Layout from 'pages/common/layout'
+
 // components
 import ChartList from './components/chart_list'
 import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
 import BannerList from '../main/component/bannerList'
 import LayerPopupWrap from '../main/component/layer_popup_wrap'
-//scss
-import './clip.scss'
+import Layout from 'pages/common/layout'
 //static
 import newIcon from './static/new_circle_m.svg'
 import detailListIcon from './static/detaillist_circle_w.svg'
@@ -27,8 +24,12 @@ import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import filterIcon from './static/choose_circle_w.svg'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
+//scss
+import './clip.scss'
 
-// header scroll flag
+//임시
+import moment from 'moment'
+
 let tempScrollEvent = null
 let touchStartY = null
 let touchEndY = null
@@ -37,20 +38,7 @@ export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const globalCtx = useContext(Context)
-
   let history = useHistory()
-  //fixed category
-  const recomendRef = useRef()
-  const myClipRef = useRef()
-  const rankClipRef = useRef()
-  const BannerSectionRef = useRef()
-  const categoryBestClipRef = useRef()
-  const iconWrapRef = useRef()
-  const arrowRefreshRef = useRef()
-
-  const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
-  const [popupData, setPopupData] = useState([])
   //swiper
   const swiperParamsRecent = {
     slidesPerView: 'auto',
@@ -68,51 +56,52 @@ export default (props) => {
   const swiperParamsCategory = {
     slidesPerView: 'auto'
   }
+  //fixed category
+  const recomendRef = useRef()
+  const myClipRef = useRef()
+  const rankClipRef = useRef()
+  const BannerSectionRef = useRef()
+  const categoryBestClipRef = useRef()
+  const clipRankingRef = useRef()
+  const marketingClipRef = useRef()
+  const iconWrapRef = useRef()
+  const arrowRefreshRef = useRef()
+
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
   const [detailPopup, setDetailPopup] = useState(false)
-  const [myClipToggle, setMyClipToggle] = useState(false)
+  const [refreshAni, setRefreshAni] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
-  const [rankList, setrankList] = useState([])
-  const [selectType, setSelectType] = useState(4)
-  // const [selectType, setSelectType] = useState(randomData)
+  const [latestList, setLatestList] = useState([])
+  const [clipRankingList, setClipRankingList] = useState([])
+  const [marketingClipList, setMarketingClipList] = useState([])
+
+  const [myData, setMyDate] = useState([])
+  const [date, setDate] = useState('')
+  const [randomList, setRandomList] = useState([])
+  const [myClipToggle, setMyClipToggle] = useState(false)
   // top3 list
   const [listTop3, setListTop3] = useState({})
   const [top3On, setTop3On] = useState(false)
-  // common state
   const [clipType, setClipType] = useState([])
   const [clipTypeActive, setClipTypeActive] = useState('')
-  const [refreshAni, setRefreshAni] = useState(false)
-  const [randomList, setRandomList] = useState([])
-  const [myData, setMyDate] = useState([])
-  const [date, setDate] = useState('')
+  const [selectType, setSelectType] = useState(4)
+  // const [selectType, setSelectType] = useState(randomData)
+  const [clipRankType, setClipRankType] = useState(0)
+  const [popupData, setPopupData] = useState([])
   const [reloadInit, setReloadInit] = useState(false)
+  const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
+  const [marketingClip, setMarketingClip] = useState([])
 
-  // scroll fixed func
-  const windowScrollEvent = () => {
-    const ClipHeaderHeight = 120
-    const myClipNode = myClipRef.current
-    const recomendClipNode = recomendRef.current
-    const BannerSectionNode = BannerSectionRef.current
-    const rankClipNode = rankClipRef.current
-    const categoryBestClipNode = categoryBestClipRef.current
-    const myClipHeight = myClipNode.clientHeight
-    const RecomendHeight = recomendClipNode.clientHeight
-    const categoryBestHeight = categoryBestClipNode.clientHeight
-    const rankClipHeight = rankClipNode.clientHeight
-    const BannerSectionHeight = BannerSectionNode.clientHeight
-    const TopSectionHeight =
-      ClipHeaderHeight + myClipHeight + RecomendHeight + categoryBestHeight + rankClipHeight + BannerSectionHeight
-    if (window.scrollY >= TopSectionHeight) {
-      setClipCategoryFixed(true)
-      setScrollY(TopSectionHeight)
-    } else {
-      setClipCategoryFixed(false)
-      setScrollY(0)
-    }
-  }
+  const [recDate, setRecDate] = useState(moment(new Date()).format('YYYYMMDD'))
+
+  const clipRankTab = [
+    {title: '일간', type: 0},
+    {title: '주간', type: 1}
+  ]
   //swiperParams...
   let filterArrayTop3 = Object.keys(listTop3)
     .filter((item) => {
@@ -161,7 +150,31 @@ export default (props) => {
       listCnt: 10
     })
     if (result === 'success') {
-      setrankList(data.list)
+      setLatestList(data.list)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+  const fetchClipRankingList = async () => {
+    const {result, data, message} = await getClipRankingList({})
+    if (result === 'success') {
+      setClipRankingList(data.list)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+  const fetchMarketingClip = async () => {
+    const {result, data, message} = await Api.getMarketingClipList({
+      recDate: recDate,
+      isLogin: context.token.isLogin,
+      isClick: false
+    })
+    if (result === 'success') {
+      setMarketingClip(data.recommendInfo)
     } else {
       context.action.alert({
         msg: message
@@ -190,7 +203,6 @@ export default (props) => {
       })
     }
   }
-  // 플레이가공
   const fetchDataPlay = async (clipNum, type) => {
     const {result, data, message, code} = await Api.postClipPlay({
       clipNo: clipNum
@@ -217,6 +229,10 @@ export default (props) => {
         }
       }
       localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
+
+      if (type === 'dal') {
+        localStorage.removeItem('clipPlayListInfo')
+      }
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -233,7 +249,6 @@ export default (props) => {
       }
     }
   }
-
   // make contents
   const makePoupularList = () => {
     return popularList.map((item, idx) => {
@@ -275,8 +290,8 @@ export default (props) => {
       )
     })
   }
-  const makeRankList = () => {
-    return rankList.map((item, idx) => {
+  const makeRankList = (data) => {
+    return data.map((item, idx) => {
       const {bgImg, clipNo, nickName, title} = item
       if (!item) return null
       return (
@@ -312,25 +327,6 @@ export default (props) => {
       )
     })
   }
-
-  const HandleClick = (e) => {
-    setClipTypeActive(e.target.value)
-
-    setTimeout(() => {
-      window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
-      context.action.updateClipSort(2)
-    }, 150)
-  }
-  useEffect(() => {
-    //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
-    if (Object.values(listTop3).length > 0) {
-      const btnElem = document.getElementsByClassName('slideWrap__btn')
-      for (let i = 0; i < btnElem.length; i++) {
-        btnElem[i].addEventListener('click', HandleClick, false)
-      }
-    }
-  }, [listTop3])
-
   const makeTop3List = () => {
     return filterArrayTop3.map((item, idx) => {
       let subjectMap = item[0].subjectType
@@ -390,6 +386,42 @@ export default (props) => {
       )
     })
   }
+  const makeRankTabList = () => {
+    return clipRankTab.map((item, idx) => {
+      const {title, type} = item
+      return (
+        <li className={clipRankType === type ? 'tabItem isActive' : 'tabItem'} key={idx + `categoryTab`}>
+          <button onClick={() => setClipRankType(type)}>{title}</button>
+        </li>
+      )
+    })
+  }
+  const makeCategoryList = () => {
+    return clipType.map((item, idx) => {
+      const {cdNm, value} = item
+      return (
+        <div
+          className={clipTypeActive === value ? 'slideWrap active' : 'slideWrap'}
+          onClick={() => changeActiveCategory(value)}
+          key={idx + `categoryTab`}>
+          {cdNm}
+        </div>
+      )
+    })
+  }
+  const HandleClick = (e) => {
+    setClipTypeActive(e.target.value)
+
+    setTimeout(() => {
+      window.scrollTo(0, document.getElementsByClassName('liveChart')[0].offsetTop)
+      context.action.updateClipSort(2)
+    }, 150)
+  }
+  const handleScroll = (e) => {
+    const item = document.getElementsByClassName('liveChart')[0]
+    window.scrollTo({top: item.offsetTop, behavior: 'smooth'})
+    setTimeout(() => {}, 150)
+  }
   const changeActiveCategory = (value) => {
     setClipTypeActive(value)
     if (scrollY !== 0) {
@@ -405,19 +437,6 @@ export default (props) => {
     if (scrollY !== 0) {
       window.scrollTo(0, scrollY)
     }
-  }
-  const makeCategoryList = () => {
-    return clipType.map((item, idx) => {
-      const {cdNm, value} = item
-      return (
-        <div
-          className={clipTypeActive === value ? 'slideWrap active' : 'slideWrap'}
-          onClick={() => changeActiveCategory(value)}
-          key={idx + `categoryTab`}>
-          {cdNm}
-        </div>
-      )
-    })
   }
   // initial category
   const refreshCategory = (type) => {
@@ -470,6 +489,41 @@ export default (props) => {
           })
         )
       }
+    }
+  }
+  // scroll fixed func
+  const windowScrollEvent = () => {
+    const ClipHeaderHeight = 120
+    const myClipNode = myClipRef.current
+    const recomendClipNode = recomendRef.current
+    const BannerSectionNode = BannerSectionRef.current
+    const rankClipNode = rankClipRef.current
+    const rankingClipNode = clipRankingRef.current
+    const marketingClipNode = marketingClipRef.current
+    const categoryBestClipNode = categoryBestClipRef.current
+    const myClipHeight = myClipNode.clientHeight
+    const RecomendHeight = recomendClipNode.clientHeight
+    const categoryBestHeight = categoryBestClipNode.clientHeight
+    const rankClipHeight = rankClipNode.clientHeight
+    const rankingClipHeight = rankingClipNode?.clientHeight
+    const marketingClipHeight = marketingClipNode?.clientHeight
+    const BannerSectionHeight = BannerSectionNode.clientHeight
+    const TopSectionHeight =
+      ClipHeaderHeight +
+      myClipHeight +
+      RecomendHeight +
+      rankingClipHeight +
+      marketingClipHeight +
+      categoryBestHeight +
+      rankClipHeight +
+      BannerSectionHeight -
+      20
+    if (window.scrollY >= TopSectionHeight) {
+      setClipCategoryFixed(true)
+      setScrollY(TopSectionHeight)
+    } else {
+      setClipCategoryFixed(false)
+      setScrollY(0)
     }
   }
 
@@ -563,7 +617,26 @@ export default (props) => {
     }
   }
 
-  // #layer pop
+  const geRecommend = () => {
+    if (!context.token.isLogin) {
+      history.push('/login?redirect=/clip')
+    } else {
+      history.push({
+        pathname: `/clip_recommend`,
+        state: recDate
+      })
+    }
+  }
+
+  useEffect(() => {
+    //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
+    if (Object.values(listTop3).length > 0) {
+      const btnElem = document.getElementsByClassName('slideWrap__btn')
+      for (let i = 0; i < btnElem.length; i++) {
+        btnElem[i].addEventListener('click', HandleClick, false)
+      }
+    }
+  }, [listTop3])
   useEffect(() => {
     if (detailPopup) {
       if (window.location.hash === '') {
@@ -575,14 +648,12 @@ export default (props) => {
       }
     }
   }, [detailPopup])
-  //---------------------------------------------------------
   useEffect(() => {
     window.addEventListener('popstate', popStateEvent)
     return () => {
       window.removeEventListener('popstate', popStateEvent)
     }
   }, [])
-  //------------------------------------------------------
   useEffect(() => {
     fetchDataListTop3()
     fetchDataListPopular()
@@ -593,7 +664,11 @@ export default (props) => {
       fetchMyData()
     }
   }, [])
-  //---------------------------------------
+
+  useEffect(() => {
+    fetchMarketingClip()
+  }, [recDate])
+
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
@@ -603,8 +678,6 @@ export default (props) => {
       window.removeEventListener('scroll', tempScrollEvent)
     }
   }, [])
-  //---------------------------------------------------------------------
-
   useEffect(() => {
     if (myData && myData.regCnt === 0 && myData.playCnt === 0 && myData.goodCnt === 0 && myData.byeolCnt === 0) {
       setMyClipToggle(false)
@@ -626,7 +699,6 @@ export default (props) => {
                 }
               })
             }></span>
-          <span className="clipIcon"></span>
           <h2 className="header-title">클립</h2>
         </Header>
 
@@ -637,7 +709,7 @@ export default (props) => {
         </div>
         {context.token.isLogin === true ? (
           <div className="myClip" ref={myClipRef}>
-            <h2 className="myClip__title" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
+            <h3 className="clipTitle" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
               <em
                 onClick={() => {
                   context.action.updatePopup('MYCLIP')
@@ -655,7 +727,7 @@ export default (props) => {
                   alt="마이클립 화살표 버튼"
                 />
               </div>
-            </h2>
+            </h3>
             {myClipToggle && (
               <ul className="myClipWrap">
                 <li className="upload">
@@ -686,7 +758,7 @@ export default (props) => {
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef}>
             <div className="recomClip__title">
-              {popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}
+              <h3 className="clipTitle">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h3>
               <div className="recomClip__title__rightSide">
                 <span className="recomClip__title__date">매일 00시, 12시 갱신</span>
                 <button
@@ -705,20 +777,99 @@ export default (props) => {
           <div ref={recomendRef}></div>
         )}
 
+        {clipRankingList.length > 0 ? (
+          <div className="rankClip" ref={clipRankingRef}>
+            <div className="titleBox">
+              <h3 className="clipTitle isArrow">클립 랭킹</h3>
+              <ul className="tabList">{makeRankTabList()}</ul>
+            </div>
+
+            <Swiper {...swiperParamsRecent}>{makeRankList(clipRankingList)}</Swiper>
+          </div>
+        ) : (
+          <></>
+        )}
+
         <div className="clipBanner">
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
-        <div className="rankClip" ref={rankClipRef}>
-          {/* <div className="rankClip__title">
-            클립 랭킹
-            <button onClick={() => history.push(`/rank`)} />
-          </div> */}
-          <div className="rankClip__title">
-            최신 클립
-            {/* <button onClick={() => history.push(`/rank`)} /> */}
+
+        {marketingClip && (
+          <div className="rankClip" ref={marketingClipRef}>
+            <div className="titleBox">
+              <h3 className="clipTitle">달대리 추천 클립</h3>
+              <div className="dateBox">
+                <button
+                  className={`btnPrev ${marketingClip.isPrev ? ' isActive' : ''}`}
+                  disabled={marketingClip.isPrev === false}
+                  onClick={() => {
+                    const date = moment(recDate).subtract(7, 'days')
+                    setRecDate(moment(date).format('YYYYMMDD'))
+                  }}>
+                  &lt;
+                </button>
+                <span>
+                  {marketingClip.month}월 {marketingClip.weekNo}주차
+                </span>
+                <button
+                  className={`btnNext ${marketingClip.isNext ? ' isActive' : ''}`}
+                  disabled={marketingClip.isNext === false}
+                  onClick={() => {
+                    const date = moment(recDate).add(7, 'days')
+                    setRecDate(moment(date).format('YYYYMMDD'))
+                  }}>
+                  &gt;
+                </button>
+              </div>
+              <div className="clipBox">
+                <div className="clipList">
+                  <span
+                    className="thumb"
+                    onClick={() => {
+                      geRecommend()
+                    }}>
+                    {marketingClip.thumbUrl && <img src={marketingClip.thumbUrl} alt="썸네일" />}
+                  </span>
+                  <div className="text">
+                    <div
+                      className="title"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (globalCtx.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          fetchDataPlay(marketingClip.clipNo, 'dal')
+                        }
+                      }}>
+                      {marketingClip.title}
+                    </div>
+                    <p className="subTitle">{marketingClip.titleMsg}</p>
+                    <span className="nick" onClick={() => history.push(`/mypage/${marketingClip.memNo}`)}>
+                      {marketingClip.nickNm}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
-          {rankList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList()}</Swiper> : <></>}
+        )}
+
+        <div className="rankClip" ref={rankClipRef}>
+          <div className="titleBox">
+            <h3 className="clipTitle isArrow" onClick={handleScroll}>
+              최신 클립
+            </h3>
+            <p className="warn">음원, MR 등 직접 제작하지 않은 클립은 삭제됩니다.</p>
+          </div>
+          {latestList.length > 0 ? <Swiper {...swiperParamsRecent}>{makeRankList(latestList)}</Swiper> : <></>}
         </div>
 
         {top3On && Object.keys(listTop3).length !== 0 ? (
@@ -728,20 +879,13 @@ export default (props) => {
         ) : (
           <div ref={categoryBestClipRef}></div>
         )}
+
         <div className="liveChart">
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
-            <div className="liveChart__titleBox">
-              <h2 onClick={() => refreshCategory('category')}>실시간 클립</h2>
-              {/* <h2 onClick={() => refreshCategory()}>최신 클립</h2> */}
-
-              {/* <div className="sortTypeWrap">
-                <button onClick={() => changeActiveSort(4)} className={selectType === 4 ? 'sortBtn active' : 'sortBtn'}>
-                  최신순
-                </button>
-                <button onClick={() => changeActiveSort(0)} className={selectType === 0 ? 'sortBtn active' : 'sortBtn'}>
-                  인기순
-                </button>
-              </div> */}
+            <div className="titleBox">
+              <h3 onClick={() => refreshCategory('category')} className="clipTitle">
+                실시간 클립
+              </h3>
               <button type="button" onClick={() => setDetailPopup(true)} className="sortCate">
                 {context.clipMainSort === 1 && <span>최신순</span>}
                 {context.clipMainSort === 3 && <span>선물순</span>}
@@ -751,24 +895,24 @@ export default (props) => {
               </button>
               <div className="sequenceBox">
                 <div className="sequenceItem">
-                  <button type="button" onClick={() => setChartListType('detail')}>
+                  <button type="button" className="btnSequence" onClick={() => setChartListType('detail')}>
                     <img
                       src={chartListType === 'detail' ? detailListIconActive : detailListIcon}
                       alt="카테고리 디테일 버튼 이미지"
                     />
                   </button>
-                  <button type="button" onClick={() => setChartListType('simple')}>
+                  <button type="button" className="btnSequence" onClick={() => setChartListType('simple')}>
                     <img
                       src={chartListType === 'simple' ? simpleListIconActive : simpleListIcon}
                       alt="카테고리 심플 버튼 이미지"
                     />
                   </button>
-                  <button
-                    className={`btn__refresh ${refreshAni ? ' btn__refresh--active' : ''}`}
-                    onClick={() => refreshCategory('category')}>
+                  <button className="btnRefresh" onClick={() => refreshCategory(`category`)}>
                     <img
                       src={'https://image.dalbitlive.com/main/200714/ico-refresh-gray.png'}
-                      alt="카테고리 리프래시 아이콘 이미지"
+                      className={refreshAni ? 'refresh-icon refresh-icon--active' : 'refresh-icon'}
+                      style={{cursor: 'pointer'}}
+                      alt="클립 카테고리 Refresh 아이콘"
                     />
                   </button>
                 </div>
@@ -787,14 +931,14 @@ export default (props) => {
               <></>
             )}
           </div>
-          <ChartList
-            selectType={selectType}
-            chartListType={chartListType}
-            clipTypeActive={clipTypeActive}
-            clipType={clipType}
-            clipCategoryFixed={clipCategoryFixed}
-            reloadInit={reloadInit}
-          />
+          <div style={clipCategoryFixed ? {paddingTop: `106px`} : {}}>
+            <ChartList
+              chartListType={chartListType}
+              clipTypeActive={clipTypeActive}
+              clipType={clipType}
+              selectType={selectType}
+            />
+          </div>
         </div>
       </div>
       {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
@@ -802,4 +946,3 @@ export default (props) => {
     </Layout>
   )
 }
-//---------------------------------------------------------------------

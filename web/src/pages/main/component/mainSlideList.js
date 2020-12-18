@@ -99,7 +99,7 @@ export default (props) => {
                           context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                         }
                       } else {
-                        RoomJoin({roomNo: roomNo})
+                        RoomJoin({roomNo: roomNo, nickNm: nickNm})
                       }
                     }
                   }

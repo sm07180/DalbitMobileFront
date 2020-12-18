@@ -108,7 +108,7 @@ function SpecialList({empty}) {
                                   context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                                 }
                               } else {
-                                RoomJoin({roomNo: v.roomNo})
+                                RoomJoin({roomNo: v.roomNo, nickNm: v.nickNm})
                               }
                             }}
                             className="liveBox__img"

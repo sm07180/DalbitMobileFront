@@ -263,3 +263,11 @@ export function printNumber(value) {
     return value.toLocaleString()
   }
 }
+
+export function calcDate(sDate, diff) {
+  if(sDate === null || diff === null) return "";
+
+  sDate.setDate(sDate.getDate() + diff);
+
+  return sDate;
+}

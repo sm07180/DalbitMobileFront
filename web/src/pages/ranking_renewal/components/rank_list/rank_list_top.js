@@ -130,7 +130,7 @@ function RankListTop({specialPop}) {
                     <div
                       className="nickNameBox"
                       onClick={() => {
-                        RoomJoin({roomNo: roomNo})
+                        RoomJoin({roomNo: roomNo, nickNm: nickNm})
                       }}>
                       <p className="nickNameBox__nick">{nickNm}</p>
                       <i className="nickNameBox__live">

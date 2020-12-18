@@ -2562,6 +2562,9 @@ export default class API {
   static getHistoryList = async (params) => {
     return await ajax({url: '/clip/listen/list', method: 'GET', params})
   }
+  static getGiftRankTop = async (params) => {
+    return await ajax({url: '/clip/gift/rank/top3', method: 'GET', params})
+  }
   static postClipPlay = async (data) => {
     return await ajax({url: '/clip/play', method: 'post', data})
   }
@@ -2592,6 +2595,11 @@ export default class API {
   static getMyClipData = async (params) => {
     return await ajax({url: '/clip/myclip', method: 'GET', params})
   }
+
+  static getClipGiftRank = async (params) => {
+    return await ajax({url: '/clip/gift/rank/list', method: 'GET', params})
+  }
+
   static getSearchRecomend = async (params) => {
     return await ajax({url: '/search/room/recommand/list', method: 'GET', params})
   }

@@ -52,7 +52,7 @@ export default Room
  * @param {callbackFunc} function   //여러번 클릭을막기위해 필요시 flag설정
  */
 export const RoomJoin = async (obj) => {
-  const {roomNo, callbackFunc, shadow, mode} = obj
+  const {roomNo, callbackFunc, shadow, mode, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
@@ -89,19 +89,47 @@ export const RoomJoin = async (obj) => {
 
   if (shadow === undefined) {
     if (Room.context.adminChecker === true && roomNo !== Utility.getCookie('listen_room_no')) {
-      return Room.context.action.confirm_admin({
-        callback: () => {
-          sessionStorage.removeItem('room_active')
-          return RoomJoin({roomNo: roomNo, shadow: 1})
-        },
-        cancelCallback: () => {
-          sessionStorage.removeItem('room_active')
-          return RoomJoin({roomNo: roomNo, shadow: 0})
-        },
-        msg: '관리자로 입장하시겠습니까?'
-      })
+      if (listener === 'listener') {
+        return Room.context.action.confirm_admin({
+          callback: () => {
+            sessionStorage.removeItem('room_active')
+            return RoomJoin({roomNo: roomNo, shadow: 1})
+          },
+          cancelCallback: () => {
+            sessionStorage.removeItem('room_active')
+            return RoomJoin({roomNo: roomNo, shadow: 0})
+          },
+          msg: `관리자로 입장하시겠습니까?`
+        })
+      } else {
+        return Room.context.action.confirm_admin({
+          callback: () => {
+            sessionStorage.removeItem('room_active')
+            return RoomJoin({roomNo: roomNo, shadow: 1})
+          },
+          cancelCallback: () => {
+            sessionStorage.removeItem('room_active')
+            return RoomJoin({roomNo: roomNo, shadow: 0})
+          },
+          msg: nickNm === undefined ? `관리자로 입장하시겠습니까?` : `${nickNm} 님의 방송방에 <br /> 입장하시겠습니까?`
+        })
+      }
     } else if (Room.context.adminChecker === true && roomNo === Utility.getCookie('listen_room_no')) {
       return Hybrid('EnterRoom', '')
+    } else if (Room.context.adminChecker === false) {
+      if (listener === 'listener') {
+        sessionStorage.removeItem('room_active')
+        return RoomJoin({roomNo: roomNo, shadow: 0})
+      } else {
+        return Room.context.action.confirm({
+          callback: () => {
+            sessionStorage.removeItem('room_active')
+            return RoomJoin({roomNo: roomNo, shadow: 0})
+          },
+          cancelCallback: () => {},
+          msg: nickNm === undefined ? `방송방에 입장하시겠습니까?` : `${nickNm} 님의 <br /> 방송방에 입장하시겠습니까?`
+        })
+      }
     }
   }
 

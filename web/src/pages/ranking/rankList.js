@@ -166,7 +166,7 @@ export default (props) => {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
                           }
                         } else {
-                          RoomJoin({roomNo: roomNo})
+                          RoomJoin({roomNo: roomNo, nickNm: nickNm})
                         }
                       }}
                       className="liveBox__img"

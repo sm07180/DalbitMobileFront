@@ -463,7 +463,7 @@ export default (props) => {
                     ) {
                       return false
                     } else {
-                      RoomJoin({roomNo: profile.roomNo})
+                      RoomJoin({roomNo: profile.roomNo, nickNm: profile.nickNm})
                     }
                   }
                 }
@@ -471,6 +471,7 @@ export default (props) => {
               <img src={LiveIcon} className="ico-live" />
             </button>
           )}
+
           {myProfileNo !== profile.memNo && profile.roomNo === '' && profile.listenRoomNo !== '' && (
             <button
               className="liveIcon"
@@ -499,7 +500,7 @@ export default (props) => {
                       context.action.confirm({
                         msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
                         callback: () => {
-                          return RoomJoin({roomNo: profile.listenRoomNo})
+                          return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
                         }
                       })
                     }
@@ -526,7 +527,7 @@ export default (props) => {
                       context.action.confirm({
                         msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
                         callback: () => {
-                          return RoomJoin({roomNo: profile.listenRoomNo})
+                          return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
                         }
                       })
                     }

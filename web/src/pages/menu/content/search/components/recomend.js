@@ -87,7 +87,8 @@ export default (props) => {
       <div className={changeTab === 0 ? 'simpleWrap' : 'chartListDetail'}>
         {recoList.length !== 0 && changeTab === 0
           ? recoList.map((item, idx) => {
-              const {bgImg, entryCnt, isSpecial, roomNo, title, entryType} = item
+              const {bgImg, entryCnt, isSpecial, roomNo, title, entryType, nickNm} = item
+
               return (
                 <div
                   className="simpleContainer"
@@ -100,7 +101,7 @@ export default (props) => {
                         context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
                       }
                     } else {
-                      RoomJoin({roomNo: roomNo})
+                      RoomJoin({roomNo: roomNo, nickNm: nickNm})
                     }
                   }}>
                   <div className="broadcast-img">

@@ -191,7 +191,7 @@ export default (props) => {
                       <img
                         src={live}
                         onClick={() => {
-                          RoomJoin({roomNo: roomNo})
+                          RoomJoin({roomNo: roomNo, nickNm: nickNm})
                         }}
                         className="liveBox__img"
                       />

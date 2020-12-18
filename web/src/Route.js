@@ -34,7 +34,7 @@ const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
 const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
-
+const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/new_signup'))

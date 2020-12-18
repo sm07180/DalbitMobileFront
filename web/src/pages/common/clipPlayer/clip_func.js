@@ -20,7 +20,7 @@ export const clipJoin = (data, context, webview, isPush) => {
   let playListData = JSON.parse(localStorage.getItem('clipPlayListInfo'))
   let url = ''
   let currentType = ''
-  
+
   if (playListData) {
     Object.keys(playListData).forEach((key, idx) => {
       if (idx === 0) {
