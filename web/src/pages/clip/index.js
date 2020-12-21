@@ -683,9 +683,9 @@ export default (props) => {
     }
   }, [])
 
-  useEffect(() => {
-    fetchMarketingClip()
-  }, [recDate])
+  // useEffect(() => {
+  //   fetchMarketingClip()
+  // }, [recDate])
 
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
@@ -812,7 +812,7 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
-        {marketingClip && (
+        {marketingClip && marketingClip.length > 0 && (
           <div className="rankClip" ref={marketingClipRef}>
             <div className="titleBox">
               <h3
