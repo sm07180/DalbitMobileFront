@@ -90,7 +90,7 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {rankAction} = useContext(RankContext)
   const history = useHistory()
-
+  console.log('rendering')
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
@@ -657,12 +657,20 @@ export default (props) => {
     [reloadInit]
   )
   const scrollMove = () => {
+    console.log(window.scrollY)
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
       setScrollOn(false)
     }
   }
+  useEffect(() => {
+    window.addEventListener('scroll', scrollMove)
+
+    return () => {
+      window.removeEventListener('scroll', scrollMove)
+    }
+  }, [])
   useEffect(() => {
     if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
       setInputState(true)

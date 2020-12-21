@@ -23,8 +23,8 @@
       margin-left: 2px;
       line-height: 22px;
       font-weight: $bold;
-      background: $lightGray;
-      color: $primary;
+      background: $red;
+      color: $white;
       border-radius: 50%;
     }
     &--active {
@@ -36,6 +36,7 @@
       }
       span {
         background: $white;
+        color: $primary;
       }
     }
   }
