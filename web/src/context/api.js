@@ -2957,20 +2957,20 @@ export default class API {
       params: data
     })
   }
-  // static getMarketingDetail = async (data) => {
-  //   return await ajax({
-  //     url: '/marketing/detail',
-  //     method: 'GET',
-  //     params: data
-  //   })
-  // }
-  // static getMarketingClipList = async (data) => {
-  //   return await ajax({
-  //     url: '/clip/recommend/list',
-  //     method: 'GET',
-  //     params: data
-  //   })
-  // }
+  static getMarketingDetail = async (data) => {
+    return await ajax({
+      url: '/marketing/detail',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getMarketingClipList = async (data) => {
+    return await ajax({
+      url: '/clip/recommend/list',
+      method: 'GET',
+      params: data
+    })
+  }
   static getAwardList = async (data) => {
     return await ajax({
       url: '/award/list',

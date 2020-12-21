@@ -392,17 +392,21 @@
       margin-top: 12px;
       .clipList {
         position: relative;
-        height: 104px;
-        border-radius: 52px;
+        height: 102px;
         background: $whiteGray;
         display: flex;
         align-items: center;
+        justify-content: center;
+        border-radius: 52px;
         cursor: pointer;
         .thumb {
           overflow: hidden;
           position: relative;
-          width: 97px;
-          height: 97px;
+          display: flex;
+          align-items: center;
+          width: 108px;
+          height: 108px;
+          background: url(https://image.dalbitlive.com/svg/bg_clip_player.svg) no-repeat center;
           border-radius: 50%;
 
           &::after {
@@ -419,7 +423,9 @@
           }
 
           img {
-            width: 100%;
+            width: 98px;
+            height: 98px;
+            border-radius: 50%;
           }
         }
         .text {
@@ -1331,7 +1337,7 @@
       color: $greishGray;
       border-top: 1px solid $lighterGray;
       .text {
-        max-height: 120px;
+        max-height: 100px;
         transition: max-height ease-in-out 0.4s;
         overflow: hidden;
         word-break: break-word;
