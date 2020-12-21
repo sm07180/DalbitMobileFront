@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect, useRef, useCallback} from 'react'
+import React, {useContext, useState, useEffect, useRef, useCallback, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 //context
 import {Context} from 'context'
@@ -7,7 +7,7 @@ import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
-import {convertDateFormat, calcDate} from 'pages/common/rank/rank_fn'
+import {convertDateFormat, calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
 
 // components
@@ -93,7 +93,27 @@ export default (props) => {
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [marketingClip, setMarketingClip] = useState([])
 
-  const [recDate, setRecDate] = useState(convertDateFormat(new Date(), ''))
+  const [recDate, setRecDate] = useState(convertDateFormat(convertMonday(), '-'))
+
+  const isLast = useMemo(() => {
+    const currentDate = convertDateFormat(convertMonday(), '-')
+
+    if (recDate === currentDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [recDate])
+
+  const isLastPrev = useMemo(() => {
+    const currentDate = convertDateFormat(new Date('2020-10-19'), '-')
+
+    if (recDate === currentDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [recDate])
 
   const clipRankTab = [
     {title: '일간', type: 0},
@@ -154,30 +174,30 @@ export default (props) => {
       })
     }
   }
-  // const fetchClipRankingList = async () => {
-  //   const {result, data, message} = await getClipRankingList({})
-  //   if (result === 'success') {
-  //     setClipRankingList(data.list)
-  //   } else {
-  //     context.action.alert({
-  //       msg: message
-  //     })
-  //   }
-  // }
-  // const fetchMarketingClip = async () => {
-  //   const {result, data, message} = await Api.getMarketingClipList({
-  //     recDate: recDate,
-  //     isLogin: context.token.isLogin,
-  //     isClick: false
-  //   })
-  //   if (result === 'success') {
-  //     setMarketingClip(data.recommendInfo)
-  //   } else {
-  //     context.action.alert({
-  //       msg: message
-  //     })
-  //   }
-  // }
+  const fetchClipRankingList = async () => {
+    const {result, data, message} = await getClipRankingList({})
+    if (result === 'success') {
+      setClipRankingList(data.list)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+  const fetchMarketingClip = async () => {
+    const {result, data, message} = await Api.getMarketingClipList({
+      recDate: recDate,
+      isLogin: context.token.isLogin,
+      isClick: false
+    })
+    if (result === 'success') {
+      setMarketingClip(data.recommendInfo)
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -615,7 +635,7 @@ export default (props) => {
     }
   }
 
-  const geRecommend = () => {
+  const goRecommend = () => {
     if (!context.token.isLogin) {
       history.push('/login?redirect=/clip')
     } else {
@@ -663,9 +683,9 @@ export default (props) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   fetchMarketingClip()
-  // }, [recDate])
+  useEffect(() => {
+    fetchMarketingClip()
+  }, [recDate])
 
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
@@ -792,35 +812,36 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
-        {marketingClip && marketingClip.length > 0 && (
+        {marketingClip && (
           <div className="rankClip" ref={marketingClipRef}>
             <div className="titleBox">
               <h3
                 className="clipTitle"
                 onClick={() => {
-                  geRecommend()
+                  goRecommend()
                 }}>
                 달대리 추천 클립
               </h3>
               <div className="dateBox">
                 <button
-                  className={`btnPrev ${marketingClip.isPrev ? ' isActive' : ''}`}
-                  disabled={marketingClip.isPrev === false}
+                  className={`btnPrev ${isLastPrev === false ? ' isActive' : ''}`}
                   onClick={() => {
-                    const date = calcDate(new Date(recDate), -7)
-                    setRecDate(convertDateFormat(date, ''))
+                    if (isLastPrev === false) {
+                      const date = calcDate(new Date(recDate), -7)
+
+                      setRecDate(convertDateFormat(date, '-'))
+                    }
                   }}>
                   &lt;
                 </button>
-                <span>
-                  {marketingClip.month}월 {marketingClip.weekNo}주차
-                </span>
+                <span>{marketingClip.time}</span>
                 <button
-                  className={`btnNext ${marketingClip.isNext ? ' isActive' : ''}`}
-                  disabled={marketingClip.isNext === false}
+                  className={`btnNext ${isLast === false ? ' isActive' : ''}`}
                   onClick={() => {
-                    const date = calcDate(new Date(recDate), 7)
-                    setRecDate(convertDateFormat(date, ''))
+                    if (isLast === false) {
+                      const date = calcDate(new Date(recDate), 7)
+                      setRecDate(convertDateFormat(date, '-'))
+                    }
                   }}>
                   &gt;
                 </button>
@@ -830,7 +851,7 @@ export default (props) => {
                   <span
                     className="thumb"
                     onClick={() => {
-                      geRecommend()
+                      goRecommend()
                     }}>
                     {marketingClip.thumbUrl && <img src={marketingClip.thumbUrl} alt="썸네일" />}
                   </span>

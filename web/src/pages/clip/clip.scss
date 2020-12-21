@@ -484,6 +484,24 @@
               border-radius: 16px;
             }
           }
+          .swiper-pagination-fraction {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            bottom: 7px;
+            right: 46px;
+            left: auto;
+            width: 45px;
+            height: 24px;
+            font-size: 12px;
+            letter-spacing: 3px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border-radius: 24px;
+            .swiper-pagination-total {
+              font-weight: $regular;
+            }
+          }
         }
       }
 

@@ -196,7 +196,6 @@ export default () => {
 
       function showRemaining() {
         let now = new Date()
-
         let distance = end.getTime() - now.getTime()
         if (distance < 0) {
           clearInterval(timer)

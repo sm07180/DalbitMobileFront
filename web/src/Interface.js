@@ -71,7 +71,6 @@ export default () => {
       }
     })
     if (res.result === 'success') {
-      // console.log('성공')
     } else if (res.result === 'fail') {
     }
   }
@@ -201,7 +200,6 @@ export default () => {
                 desc: `[_cookie] ${_cookie} [event.detail.authToken] ${event.detail.authToken} `
               }
             })
-            console.log(result)
           })()
           async function logout() {
             const res = await Api.member_logout()
@@ -434,7 +432,6 @@ export default () => {
         sessionStorage.removeItem('clip_active')
         context.action.alert({visible: false})
         sessionStorage.setItem('listening', 'N')
-        console.log(sessionStorage.getItem('listening'))
         break
       case 'clip-player-end': //------------------------클립플레이어 end(플로팅 바 삭제)
         Utility.setCookie('clip-player-info', '', -1)

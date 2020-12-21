@@ -1,5 +1,5 @@
-import React, {useState, useContext, useEffect, useRef} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useState, useContext, useEffect, useRef} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
@@ -11,18 +11,17 @@ import {Context} from 'context'
 import 'styles/layerpopup.scss'
 
 import NoResult from 'components/ui/noResult'
-import {Scrollbars} from "react-custom-scrollbars";
-
+import {Scrollbars} from 'react-custom-scrollbars'
 
 export default function RankPopup(props) {
-  const { setPopupState } = props;
+  const {setPopupState} = props
 
-  const history = useHistory();
-  const context = useContext(Context);
+  const history = useHistory()
+  const context = useContext(Context)
 
-  const [rankList, setRankList] = useState([]);
+  const [rankList, setRankList] = useState([])
 
-  const clipNo = props.clip;
+  const clipNo = props.clip
   // reference
   const scrollbars = useRef(null) // 스크롤 영역 선택자
   //scroll function
@@ -34,55 +33,53 @@ export default function RankPopup(props) {
   async function feachCilpGiftRankList() {
     const res = await Api.getClipGiftRank({
       clipNo: clipNo
-    });
-    if (res.result === "success") {
-      setRankList(res.data.list);
+    })
+    if (res.result === 'success') {
+      setRankList(res.data.list)
     }
   }
 
   const closePopup = () => {
-    setPopupState(false);
-  };
-
+    setPopupState(false)
+  }
 
   const AddFan = (memNo) => {
     async function AddFanFunc(memNo) {
-      const { result, data, message } = await Api.fan_change({
-        data : {
+      const {result, data, message} = await Api.fan_change({
+        data: {
           memNo: memNo
-        },
-      });
-      if (result === "success") {
+        }
+      })
+      if (result === 'success') {
         context.action.alert({msg: message})
-        feachCilpGiftRankList();
+        feachCilpGiftRankList()
       } else {
         context.action.alert({msg: message})
       }
     }
-    AddFanFunc(memNo);
-  };
+    AddFanFunc(memNo)
+  }
 
   const DeleteFan = (memNo) => {
     async function DeleteFanFunc() {
-      const { result, data, message } = await Api.mypage_fan_cancel({
-        data : {
-          memNo: memNo,
-        },
-      });
-      if (result === "success") {
+      const {result, data, message} = await Api.mypage_fan_cancel({
+        data: {
+          memNo: memNo
+        }
+      })
+      if (result === 'success') {
         context.action.alert({msg: message})
-        feachCilpGiftRankList();
+        feachCilpGiftRankList()
       } else {
         context.action.alert({msg: message})
       }
     }
-    DeleteFanFunc(memNo);
-  };
-
+    DeleteFanFunc(memNo)
+  }
 
   useEffect(() => {
-    feachCilpGiftRankList();
-  },[]);
+    feachCilpGiftRankList()
+  }, [])
 
   useEffect(() => {
     /* popup떳을시 scroll 막는 코드 */
@@ -116,29 +113,27 @@ export default function RankPopup(props) {
                         onUpdate={scrollOnUpdate}
                         autoHide>
                         <ul>
-                        {rankList.length > 0 ? (
-                          rankList.map((item, index) => {
-                          return (
-                            <li key={index} className="fan-list">
-                              <div onClick={() => history.push(`/mypage/${item.memNo}`)}>
-                                  <span
-                                    className="thumb"
-                                    style={{backgroundImage: `url(${item.profImg.thumb62x62})`}}
-                                    ></span>
-                                <span className="nickNm">{item.nickName}</span>
-                              </div>
-                              {item.isFan === false && item.memNo !== context.token.memNo && (
-                                <button onClick={() => AddFan(item.memNo)} className="plusFan">
-                                  +팬등록
-                                </button>
-                              )}
-                              {item.isFan === true && item.memNo !== context.token.memNo && (
-                                <button onClick={() => DeleteFan(item.memNo)}>팬</button>
-                              )}
-                            </li>
-                          )
-                        })) : (
-                          <NoResult text="이벤트 내역이 없습니다."/>
+                          {rankList.length > 0 ? (
+                            rankList.map((item, index) => {
+                              return (
+                                <li key={index} className="fan-list">
+                                  <div onClick={() => history.push(`/mypage/${item.memNo}`)}>
+                                    <span className="thumb" style={{backgroundImage: `url(${item.profImg.thumb62x62})`}}></span>
+                                    <span className="nickNm">{item.nickName}</span>
+                                  </div>
+                                  {item.isFan === false && item.memNo !== context.token.memNo && (
+                                    <button onClick={() => AddFan(item.memNo)} className="plusFan">
+                                      +팬등록
+                                    </button>
+                                  )}
+                                  {item.isFan === true && item.memNo !== context.token.memNo && (
+                                    <button onClick={() => DeleteFan(item.memNo)}>팬</button>
+                                  )}
+                                </li>
+                              )
+                            })
+                          ) : (
+                            <NoResult text="이벤트 내역이 없습니다." />
                           )}
                         </ul>
                       </Scrollbars>
@@ -151,5 +146,5 @@ export default function RankPopup(props) {
         </div>
       </div>
     </div>
-  );
+  )
 }

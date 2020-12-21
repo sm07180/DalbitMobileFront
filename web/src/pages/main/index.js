@@ -90,7 +90,6 @@ export default (props) => {
   const globalCtx = useContext(Context)
   const {rankAction} = useContext(RankContext)
   const history = useHistory()
-  console.log('rendering')
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)

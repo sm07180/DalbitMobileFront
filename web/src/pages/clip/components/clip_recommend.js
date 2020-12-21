@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext, useMemo} from 'react'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
-import {convertDateFormat, calcDate} from 'pages/common/rank/rank_fn'
+import {convertDateFormat, calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
@@ -12,9 +12,6 @@ import Layout from 'pages/common/layout'
 import RankPopup from './clip_recommend_rank_list'
 import NoResult from 'components/ui/new_noResult'
 import '../clip.scss'
-
-//임시
-import moment from 'moment'
 
 export default function clipRecommend() {
   const context = useContext(Context)
@@ -29,6 +26,26 @@ export default function clipRecommend() {
   const [topRankList, setTopRankList] = useState([])
   const [popupState, setPopupState] = useState(false)
   const [clip, setClip] = useState('')
+
+  const isLast = useMemo(() => {
+    const currentDate = convertDateFormat(convertMonday(), '-')
+
+    if (recDate === currentDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [recDate])
+
+  const isLastPrev = useMemo(() => {
+    const currentDate = convertDateFormat(new Date('2020-10-19'), '-')
+
+    if (recDate === currentDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [recDate])
 
   const viewToggle = () => {
     if (textView === false) {
@@ -145,27 +162,21 @@ export default function clipRecommend() {
           <>
             <div className="topBox">
               <button
-                className={`prev ${marketingClipObj.isPrev === false ? ' noHover' : 'on'}`}
-                disabled={marketingClipObj.isPrev === false}
+                className={`prev ${isLastPrev === true ? ' noHover' : 'on'}`}
+                disabled={isLastPrev === true}
                 onClick={() => {
-                  const date = moment(recDate).subtract(7, 'days')
-                  setRecDate(moment(date).format('YYYYMMDD'))
-                  // const date = calcDate(new Date(Utility.dateFormatter(recDate)), -7)
-                  // setRecDate(convertDateFormat(date, ''))
+                  const date = calcDate(new Date(recDate), -7)
+                  setRecDate(convertDateFormat(date, '-'))
                 }}>
                 이전
               </button>
-              <strong className="day">
-                {marketingClipObj.month}월 {marketingClipObj.weekNo}주차
-              </strong>
+              <strong className="day">{marketingClipObj.time}</strong>
               <button
-                className={`next ${marketingClipObj.isNext === false ? ' noHover' : 'on'}`}
-                disabled={marketingClipObj.isNext === false}
+                className={`next ${isLast === true ? ' noHover' : 'on'}`}
+                disabled={isLast === true}
                 onClick={() => {
-                  const date = moment(recDate).add(7, 'days')
-                  setRecDate(moment(date).format('YYYYMMDD'))
-                  // const date = calcDate(new Date(Utility.dateFormatter(recDate)), 7)
-                  // setRecDate(convertDateFormat(date, ''))
+                  const date = calcDate(new Date(recDate), 7)
+                  setRecDate(convertDateFormat(date, '-'))
                 }}>
                 다음
               </button>
@@ -193,7 +204,6 @@ export default function clipRecommend() {
                 )}
                 {marketingClipObj.isFan === false && (
                   <button className="fanButton" onClick={() => AddFan(marketingClipObj.memNo)}>
-                    {' '}
                     + 팬등록
                   </button>
                 )}
@@ -228,9 +238,7 @@ export default function clipRecommend() {
 
               <div className="text">
                 <div className={`playInfo ${textView ? `isActive` : ``}`}>
-                  <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(marketingClipObj.descMsg)}}>
-                    {/* {marketingClipObj.descMsg} */}
-                  </div>
+                  <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(marketingClipObj.descMsg)}}></div>
                   <button className={`more ${textView && 'on'}`} onClick={() => viewToggle()}>
                     더보기
                   </button>
@@ -268,7 +276,7 @@ export default function clipRecommend() {
                     }
                   }}>
                   <div className="item__thumb">
-                    <img src={v.bgImg.thumb62x62} alt="이미지" />
+                    <img src={v.bgImg.thumb62x62} alt="클립썸네일" />
                     <span className="item__thumb__playTime">{v.filePlay}</span>
                   </div>
                   <div className="textBox">
@@ -278,8 +286,12 @@ export default function clipRecommend() {
                       <span className="title">{v.title}</span>
                     </p>
                     <p className="textBox__nickName">
-                      {v.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" />}
-                      {v.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" />}
+                      {v.gender === 'f' && (
+                        <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" alt="여자" />
+                      )}
+                      {v.gender === 'm' && (
+                        <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" alt="남자" />
+                      )}
                       {v.nickNm}
                     </p>
                   </div>
