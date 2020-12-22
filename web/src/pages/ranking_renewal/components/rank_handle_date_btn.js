@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 import {RankContext} from 'context/rank_ctx'
 
-import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth} from 'pages/common/rank/rank_fn'
+import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth, dateTimeConvert} from 'pages/common/rank/rank_fn'
 import {DATE_TYPE, RANK_TYPE} from '../constant'
 
 function RankHandleDateBtn({fetching}) {
@@ -177,14 +177,14 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const prevLastTime = () => {
-    const typeTime = new Date(formState[formState.pageType].currentDate)
+    const typeTime = dateTimeConvert(new Date(formState[formState.pageType].currentDate))
     let cy = typeTime.getFullYear()
     let cm = typeTime.getMonth() + 1
     let cd = typeTime.getDate()
     let ch = typeTime.getHours()
 
     const cDt = (() => {
-      return new Date('2020-12-22T00:00:00')
+      return new Date('2020-12-22T10:00:00')
     })()
 
     let ye = cDt.getFullYear()

@@ -306,10 +306,16 @@ export function printNumber(value) {
   }
 }
 
-export function calcDate(sDate, diff) {
-  if (sDate === null || diff === null) return ''
+export const dateTimeConvert = (currentDate) => {
+  const hours = currentDate.getHours()
 
-  sDate.setDate(sDate.getDate() + diff)
+  if (hours < 10) {
+    currentDate.setHours(0, 0, 0)
+  } else if (hours >= 10 && hours < 19) {
+    currentDate.setHours(10, 0, 0)
+  } else {
+    currentDate.setHours(19, 0, 0)
+  }
 
-  return sDate
+  return currentDate
 }
