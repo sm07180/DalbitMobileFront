@@ -1,9 +1,8 @@
-import React from 'react';
+import React from 'react'
 
 export default function YouthProtect() {
   return (
     <div className="termsWrap">
-      <h2>청소년 보호정책</h2>
       <p>
         (주)인포렉스(이하 “회사”라 함)는 청소년이 안전한 인격체로 성장할 수 있도록 하기 위하여 정보통신망이용촉진 및 정보보호에
         관한법률 및 청소년보호법에 근거하여 청소년보호정책을 수립, 시행하고 있습니다. <br />

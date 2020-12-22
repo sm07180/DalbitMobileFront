@@ -3,8 +3,6 @@ import React from 'react'
 export default function Operating() {
   return (
     <div className="termsWrap operating">
-      <h2>운영정책</h2>
-
       <h3>운영정책의 목적</h3>
       <p>
         본 운영 정책은 ㈜인포렉스(이하 회사라 함)가 제공하는 실시간 라이브 방송 서비스에 적용되며, 이용자와 회사가 준수하여야 할
