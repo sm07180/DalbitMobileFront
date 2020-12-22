@@ -1733,6 +1733,14 @@ export default class API {
     })
   }
 
+  static getRankTimeList = async (data) => {
+    return await ajax({
+      method: 'GET',
+      url: '/time/rank',
+      params: data
+    })
+  }
+
   static getSpecialDjHistory = async (data) => {
     return await ajax({
       method: 'GET',

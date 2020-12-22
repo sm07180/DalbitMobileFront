@@ -1,4 +1,5 @@
 export function convertDateFormat(value, Separator) {
+  value = new Date(value)
   const year = value.getFullYear()
   let month = value.getMonth() + 1
   let day = value.getDate()
@@ -10,6 +11,27 @@ export function convertDateFormat(value, Separator) {
   }
   Separator = Separator || '.'
   return year + Separator + month + Separator + day
+}
+
+export function convertDateTimeForamt(value, Separator) {
+  value = new Date(value)
+
+  const year = value.getFullYear()
+  let month = value.getMonth() + 1
+  let day = value.getDate()
+  if (month < 10) {
+    month = '0' + month
+  }
+  if (day < 10) {
+    day = '0' + day
+  }
+  Separator = Separator || '.'
+
+  let hours = value.getHours()
+
+  if (hours === 0) hours = '00'
+
+  return year + Separator + month + Separator + day + ' ' + hours + ':00:00'
 }
 
 export function convertSetSpecialDate(value) {
@@ -26,6 +48,10 @@ export function convertSetSpecialDate(value) {
 }
 
 export function convertDateToText(dateType, currentDate, convertType) {
+  // if (typeof currentDate === 'string') {
+  currentDate = new Date(currentDate)
+  // }
+
   const formDt = currentDate
   let formYear = formDt.getFullYear()
   let formMonth = formDt.getMonth() + 1
@@ -92,18 +118,18 @@ export function convertDateToText(dateType, currentDate, convertType) {
     if (dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '실시간',
-          date: '실시간 집계 중입니다.'
+          header: '실시간'
+          // date: '실시간 집계 중입니다.'
         }
       } else if (agoyear === formYear && agomonth === formMonth && formDate === agoday) {
         return {
-          header: '어제',
-          date: ''
+          header: '어제'
+          // date: ''
         }
       } else {
         return {
-          header: `${formYear}.${formMonth}.${formDate}`,
-          date: `${formYear}.${formMonth}.${formDate}`
+          header: `${formYear}.${formMonth}.${formDate}`
+          // date: `${formYear}.${formMonth}.${formDate}`
         }
       }
     } else if (dateType === 2) {
@@ -120,13 +146,13 @@ export function convertDateToText(dateType, currentDate, convertType) {
 
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '이번주 실시간',
-          date: '실시간 집계 중입니다.'
+          header: '이번주 실시간'
+          // date: '실시간 집계 중입니다.'
         }
       } else if (formYear === wYear && formMonth === wMonth && formDate === wDate) {
         return {
-          header: '지난주',
-          date: ''
+          header: '지난주'
+          // date: ''
         }
       } else {
         const a = new Date(formDt.getTime())
@@ -134,31 +160,26 @@ export function convertDateToText(dateType, currentDate, convertType) {
         const rangeMonth = b.getMonth() + 1
         const rangeDate = b.getDate()
         return {
-          header: `${formYear}.${formMonth}. ${Math.ceil(formDate / 7)}주`,
-          date: 'time'
+          header: `${formYear}.${formMonth}. ${Math.ceil(formDate / 7)}주`
+          // date: 'time'
         }
       }
     } else if (dateType === 3) {
       if (year === formYear && month === formMonth) {
         return {
-          header: '이번달 실시간',
-          date: '실시간 집계 중입니다.'
+          header: '이번달 실시간'
+          // date: '실시간 집계 중입니다.'
         }
       } else if (year === formYear && month - 1 === formMonth) {
         return {
-          header: '지난달',
-          date: ''
+          header: '지난달'
+          // date: ''
         }
       } else {
         return {
-          header: `${formYear}.${formMonth}`,
-          date: `${formYear}.${formMonth}`
+          header: `${formYear}.${formMonth}`
+          // date: `${formYear}.${formMonth}`
         }
-      }
-    } else {
-      return {
-        header: `${formYear}년 실시간`,
-        date: '실시간 집계 중입니다.'
       }
     }
   }
@@ -197,11 +218,12 @@ export function convertMonth() {
 }
 
 export function liveBoxchangeDate(some, dateType, currentDate) {
-  let day1 = currentDate
+  let day1 = new Date(currentDate)
   let year = day1.getFullYear()
   let month = day1.getMonth() + 1
   let date = day1.getDate()
 
+  let hours = day1.getHours()
   let handle
   if (some === 'back') {
     switch (dateType) {
@@ -224,6 +246,16 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
         break
       case 4:
         break
+      case 5:
+        if (hours < 10) {
+          handle = new Date(day1.setDate(day1.getDate() - 1))
+          handle = new Date(`${handle.getFullYear()}-${handle.getMonth() + 1}-${handle.getDate()}T19:00:00`)
+        } else if (hours >= 10 && hours < 19) {
+          handle = new Date(`${year}-${month}-${date}T00:00:00`)
+        } else if (hours >= 19) {
+          handle = new Date(`${year}-${month}-${date}T10:00:00`)
+        }
+        break
     }
   } else {
     switch (dateType) {
@@ -245,6 +277,16 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
         }
         break
       case 4:
+        break
+      case 5:
+        if (hours >= 0 && hours < 10) {
+          handle = new Date(`${year}-${month}-${date}T10:00:00`)
+        } else if (hours >= 10 && hours < 19) {
+          handle = new Date(`${year}-${month}-${date}T19:00:00`)
+        } else if (hours >= 19) {
+          handle = new Date(day1.setDate(day1.getDate() + 1))
+          handle = new Date(`${handle.getFullYear()}-${handle.getMonth() + 1}-${handle.getDate()}T00:00:00`)
+        }
         break
     }
   }

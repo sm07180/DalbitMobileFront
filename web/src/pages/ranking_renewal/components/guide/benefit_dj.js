@@ -6,7 +6,12 @@ import {IMG_SERVER} from 'context/config'
 import crownIcon from '../../static/ic_crown_y.svg'
 import pointIcon from '../../static/ico_point_red.svg'
 
+import EffectPop from './effect_pop'
+
+let wepbSrc
 export default () => {
+  const [effectPop, setEffectPop] = useState(false)
+
   return (
     <>
       <div className="benefitTop">
@@ -18,10 +23,68 @@ export default () => {
 
       <div className="tableBox">
         <p className="tableBox__title">
+          타임 DJ 랭킹 TOP3
+          <span className="tableBox__title--sub">
+            달 보상, 차기 스페셜 DJ 신청 시 <br />
+            가산점(월 최대 10점까지 가능) 지급
+          </span>
+        </p>
+
+        <table>
+          <colgroup>
+            <col width="*" />
+            <col width="27%" />
+            <col width="27%" />
+            <col width="27%" />
+          </colgroup>
+
+          <thead>
+            <tr>
+              <th>타임</th>
+              <th>1위</th>
+              <th>2위</th>
+              <th>3위</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td className="rank">달</td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 50
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 30
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 20
+              </td>
+            </tr>
+            <tr className="special">
+              <td className="rank">
+                스페셜DJ
+                <br />
+                가산점
+              </td>
+              <td>
+                <img src={pointIcon} alt="포인트" /> +1.5점
+              </td>
+              <td>
+                <img src={pointIcon} alt="포인트" /> +0.5점
+              </td>
+              <td>
+                <img src={pointIcon} alt="포인트" /> +0.3점
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div className="tableBox">
+        <p className="tableBox__title">
           일간 DJ 랭킹 TOP3
           <span className="tableBox__title--sub">
-            일간 랭킹배지, 스페셜DJ 신청 시 가산점, 달 보상,
-            <br />
+            일간 랭킹배지, 입장효과, 애니메이션 프레임, 달 보상, <br />
             경험치 랜덤박스, 인사말 효과지급
           </span>
         </p>
@@ -66,20 +129,45 @@ export default () => {
               </td>
             </tr>
 
-            <tr className="special">
+            <tr>
+              <td className="rank">입장효과</td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day1.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djd1@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day2.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djd2@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day3.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djd3@2x.png`} width={87} alt="입장효과" />
+              </td>
+            </tr>
+
+            <tr className="frame">
               <td className="rank">
-                스페셜DJ
+                애니메이션
                 <br />
-                가산점
+                프레임
               </td>
               <td>
-                <img src={pointIcon} alt="포인트" /> +2점
+                <img src={`${IMG_SERVER}/ranking/ic_ddj01@2x.png`} width={40} height={51.7} />
               </td>
               <td>
-                <img src={pointIcon} alt="포인트" /> +1점
+                <img src={`${IMG_SERVER}/ranking/ic_ddj02@2x.png`} width={40} height={51.7} />
               </td>
               <td>
-                <img src={pointIcon} alt="포인트" /> +0.5점
+                <img src={`${IMG_SERVER}/ranking/ic_ddj03@2x.png`} width={40} height={51.7} />
               </td>
             </tr>
 
@@ -124,21 +212,14 @@ export default () => {
             </tr>
           </tbody>
         </table>
-
-        <p className="tableBox__notice">
-          ※ 스페셜DJ 가산점은 선발 총점 100점 기준 월 누적 최대
-          <br />
-          10점까지만 인정
-        </p>
       </div>
 
       <div className="tableBox">
         <p className="tableBox__title">
           주간 DJ 랭킹 TOP3
           <span className="tableBox__title--sub">
-            주간 랭킹배지, 애니메이션 프레임, 달 보상, 경험치 랜덤박스,
-            <br />
-            인사말 효과 지급
+            주간 랭킹배지, 입장효과, 애니메이션 프레임, 달 보상, <br />
+            경험치 랜덤박스, 인사말 효과지급
           </span>
         </p>
 
@@ -179,6 +260,31 @@ export default () => {
                   <img src={`${IMG_SERVER}/ranking/ic_topwd03_l@2x.png`} width={20.4} height={19.7} />
                   주간 DJ 3
                 </span>
+              </td>
+            </tr>
+
+            <tr>
+              <td className="rank">입장효과</td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week1.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djw1@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week2.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djw2@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+                onClick={() => {
+                  setEffectPop(true)
+                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week3.webp'
+                }}>
+                <img src={`${IMG_SERVER}/ranking/djw3@2x.png`} width={87} alt="입장효과" />
               </td>
             </tr>
 
@@ -241,6 +347,7 @@ export default () => {
           </tbody>
         </table>
       </div>
+      {effectPop && <EffectPop setEffectPop={setEffectPop} webpImg={wepbSrc} />}
     </>
   )
 }

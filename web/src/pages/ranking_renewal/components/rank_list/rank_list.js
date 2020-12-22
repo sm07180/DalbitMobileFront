@@ -11,6 +11,7 @@ import {printNumber, convertDateToText} from 'pages/common/rank/rank_fn'
 // context
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
+import {DATE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 //static
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
@@ -18,14 +19,6 @@ const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
 const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
 const liveIcon = `${IMG_SERVER}/svg/ico_ranking_live.svg`
 const listenIcon = `${IMG_SERVER}/svg/ico_ranking_listen.svg`
-import point from '../../static/ico-point.png'
-import point2x from '../../static/ico-point@2x.png'
-import like from '../../static/like_g_s.svg'
-import live from '../../static/live_m.svg'
-import people from '../../static/people_g_s.svg'
-import time from '../../static/time_g_s.svg'
-import StarCountIcon from '../../static/circle_star_s_g.svg'
-import {DATE_TYPE} from 'pages/ranking_renewal/constant'
 
 function RankList() {
   //context
@@ -37,10 +30,10 @@ function RankList() {
   const {rankList, formState} = rankState
 
   const sliceStart = useMemo(() => {
-    if (convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)) {
-      return 0
-    } else {
+    if (formState[formState.pageType].rankType === RANK_TYPE.DJ || formState[formState.pageType].rankType === RANK_TYPE.FAN) {
       return 3
+    } else {
+      return 0
     }
   }, [formState])
 
@@ -85,7 +78,7 @@ function RankList() {
 
               return (
                 <div className="myRanking rankingList" key={index}>
-                  {realTimeCheck ? (
+                  {/* {realTimeCheck ? (
                     <div className="myRanking__rank levelListBox__levelBox">
                       {rank === 1 ? (
                         <img src={goldMedalIcon} className="levelListBox__levelBox--top1" />
@@ -108,34 +101,34 @@ function RankList() {
                         )}
                       </div>
                     </div>
-                  ) : (
-                    <div
-                      className="myRanking__rank"
-                      onClick={() => {
-                        if (context.token.isLogin) {
-                          if (context.token.memNo === memNo) {
-                            history.push(`/menu/profile`)
-                          } else {
-                            history.push(`/mypage/${memNo}`)
-                          }
+                  ) : ( */}
+                  <div
+                    className="myRanking__rank"
+                    onClick={() => {
+                      if (context.token.isLogin) {
+                        if (context.token.memNo === memNo) {
+                          history.push(`/menu/profile`)
                         } else {
-                          history.push(`/login`)
+                          history.push(`/mypage/${memNo}`)
                         }
-                      }}>
-                      <p className="myRanking__rank--ranking">{rank}</p>
-                      <p className="rankingChange">
-                        {upDown === 'new' ? (
-                          <span className="rankingChange__new">NEW</span>
-                        ) : upDown > 0 ? (
-                          <span className="rankingChange__up">{Math.abs(upDown)}</span>
-                        ) : upDown < 0 ? (
-                          <span className="rankingChange__down">{Math.abs(upDown)}</span>
-                        ) : (
-                          <></>
-                        )}
-                      </p>
-                    </div>
-                  )}
+                      } else {
+                        history.push(`/login`)
+                      }
+                    }}>
+                    <p className="myRanking__rank--ranking">{rank}</p>
+                    <p className="rankingChange">
+                      {upDown === 'new' ? (
+                        <span className="rankingChange__new">NEW</span>
+                      ) : upDown > 0 ? (
+                        <span className="rankingChange__up">{Math.abs(upDown)}</span>
+                      ) : upDown < 0 ? (
+                        <span className="rankingChange__down">{Math.abs(upDown)}</span>
+                      ) : (
+                        <></>
+                      )}
+                    </p>
+                  </div>
+                  {/* )} */}
 
                   <div
                     className="myRanking__content"
@@ -161,34 +154,39 @@ function RankList() {
                         <div className="nickNameImg">
                           {gender !== '' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
 
-                          {liveBadgeList &&
-                            liveBadgeList.length !== 0 &&
-                            liveBadgeList.map((item, idx) => {
-                              return (
-                                <React.Fragment key={idx + `badge`}>
-                                  {item.icon !== '' ? (
-                                    <div
-                                      className="badgeIcon topImg"
-                                      style={{
-                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                        marginLeft: '4px'
-                                      }}>
-                                      <img src={item.icon} style={{height: '16px'}} />
-                                      {item.text}
-                                    </div>
-                                  ) : (
-                                    <div
-                                      style={{
-                                        background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                        marginLeft: '4px'
-                                      }}
-                                      className="badgeIcon text">
-                                      {item.text}
-                                    </div>
-                                  )}
-                                </React.Fragment>
-                              )
-                            })}
+                          {formState[formState.pageType].dateType === DATE_TYPE.TIME && (
+                            <>
+                              {liveBadgeList &&
+                                liveBadgeList.length !== 0 &&
+                                liveBadgeList.map((item, idx) => {
+                                  return (
+                                    <React.Fragment key={idx + `badge`}>
+                                      {item.icon !== '' ? (
+                                        <div
+                                          className="badgeIcon topImg"
+                                          style={{
+                                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                            marginLeft: '4px'
+                                          }}>
+                                          <img src={item.icon} style={{height: '16px'}} />
+                                          {item.text}
+                                        </div>
+                                      ) : (
+                                        <div
+                                          style={{
+                                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                            marginLeft: '4px'
+                                          }}
+                                          className="badgeIcon text">
+                                          {item.text}
+                                        </div>
+                                      )}
+                                    </React.Fragment>
+                                  )
+                                })}
+                            </>
+                          )}
+
                           {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
                         </div>
                       </div>

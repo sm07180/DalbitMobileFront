@@ -7,7 +7,6 @@ export default (props) => {
   const holderSize = imageSize * 1.36
   const holderBgSize = imageSize * 2
 
-  console.log(imageData)
   const profileImg = useMemo(() => {
     if (profImg && profImg !== null) {
       return profImg

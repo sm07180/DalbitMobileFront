@@ -6,7 +6,14 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import Api from 'context/api'
 
-import {convertDateFormat, convertSetSpecialDate, convertMonday, convertMonth, convertDateToText} from 'pages/common/rank/rank_fn'
+import {
+  convertDateFormat,
+  convertSetSpecialDate,
+  convertMonday,
+  convertMonth,
+  convertDateToText,
+  convertDateTimeForamt
+} from 'pages/common/rank/rank_fn'
 
 //components
 import Layout from 'pages/common/layout'
@@ -46,7 +53,19 @@ function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {formState, myInfo, rankList, levelList, likeList, totalPage, scrollY, weeklyList, secondList} = rankState
+  const {
+    formState,
+    myInfo,
+    rankList,
+    levelList,
+    likeList,
+    totalPage,
+    scrollY,
+    weeklyList,
+    secondList,
+
+    rankTimeData
+  } = rankState
 
   const formDispatch = rankAction.formDispatch
   const setMyInfo = rankAction.setMyInfo
@@ -57,6 +76,8 @@ function Ranking() {
   const setSpecialList = rankAction.setSpecialList
   const setWeeklyList = rankAction.setWeeklyList
   const setSecondList = rankAction.setSecondList
+  const setRankTimeData = rankAction.setRankTimeData
+
   const setScrollY = rankAction.setScrollY
   const [empty, setEmpty] = useState(false)
   const [reloadInit, setReloadInit] = useState(false)
@@ -255,7 +276,6 @@ function Ranking() {
   useEffect(() => {
     let didFetch = false
     let search = location.search
-
     if (initial && search) {
       const searchRankType = parseInt(search.match(/[1-9]/g)[0])
       const searchDateType = parseInt(search.match(/[1-9]/g)[1])
@@ -285,8 +305,19 @@ function Ranking() {
         fetchWeekly()
       } else if (formState[formState.pageType].rankType === RANK_TYPE.SECOND) {
         fetchSecond()
+      } else if (formState[formState.pageType].dateType === DATE_TYPE.TIME) {
+        fetchRankTime()
       } else {
         fetchData()
+      }
+
+      if (formState[formState.pageType].dateType !== DATE_TYPE.TIME) {
+        setRankTimeData({
+          prevDate: '',
+          nextDate: '',
+          rankRound: 0,
+          titleText: ''
+        })
       }
     }
 
@@ -347,6 +378,52 @@ function Ranking() {
         setEmpty(false)
       } else {
         setSecondList([])
+        setEmpty(true)
+      }
+      setFetching(false)
+    }
+
+    //////타임랭킹
+    async function fetchRankTime() {
+      setFetching(true)
+
+      const res = await Api.getRankTimeList({
+        rankSlct: formState[formState.pageType].rankType,
+        page: formState.page,
+        records: records,
+        rankingDate: convertDateTimeForamt(formState[formState.pageType].currentDate, '-')
+      })
+
+      if (res.result === 'success') {
+        setRankTimeData({
+          ...rankTimeData,
+          ...res.data
+        })
+        if (formState.page > 1) {
+          setRankList(rankList.concat(res.data.list))
+        } else {
+          // dj, fan, like
+          if (formState.page > 1) {
+            setRankList(rankList.concat(res.data.list))
+            setEmpty(false)
+          } else {
+            if (res.data.list.length < 6) {
+              setEmpty(true)
+            } else {
+              setEmpty(false)
+              setRankList(res.data.list)
+            }
+          }
+          setLevelList([])
+          setLikeList([])
+          setTotalPage(res.data.paging.totalPage)
+          setMyInfo({
+            myInfo,
+            ...res.data
+          })
+        }
+      } else {
+        setRankList([])
         setEmpty(true)
       }
       setFetching(false)
@@ -498,24 +575,28 @@ function Ranking() {
           }
         }
       } else {
-        fixedWrapRef.current.className = ''
-        bottomWrapRef.current.className = ''
-        bottomWrapRef.current.style.marginTop = '0'
-        if (listWrapRef.current) {
-          if (
-            formState[formState.pageType].rankType === RANK_TYPE.DJ ||
-            formState[formState.pageType].rankType === RANK_TYPE.FAN
-          ) {
-            if (context.token.isLogin) {
-              listWrapRef.current.className = 'more'
+        if (bottomWrapRef.current) {
+          fixedWrapRef.current.className = ''
+          bottomWrapRef.current.className = ''
+          bottomWrapRef.current.style.marginTop = '0'
+          if (listWrapRef.current) {
+            if (
+              formState[formState.pageType].rankType === RANK_TYPE.DJ ||
+              formState[formState.pageType].rankType === RANK_TYPE.FAN
+            ) {
+              if (context.token.isLogin) {
+                listWrapRef.current.className = 'more'
+              } else {
+                listWrapRef.current.className = ''
+              }
+            } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
+              listWrapRef.current.className = 'special'
             } else {
-              listWrapRef.current.className = ''
+              listWrapRef.current.className = 'other'
             }
-          } else if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
-            listWrapRef.current.className = 'special'
-          } else {
-            listWrapRef.current.className = 'other'
           }
+        } else {
+          return null
         }
       }
       if (timer) window.clearTimeout(timer)
@@ -580,6 +661,12 @@ function Ranking() {
             <div
               className="benefitSize"
               onClick={() => {
+                setRankTimeData({
+                  prevDate: '',
+                  nextDate: '',
+                  rankRound: 0,
+                  titleText: ''
+                })
                 history.push({
                   pathname: `/rank/benefit`,
                   state: {
@@ -594,6 +681,12 @@ function Ranking() {
             <div
               className="hallOfFame"
               onClick={() => {
+                setRankTimeData({
+                  prevDate: '',
+                  nextDate: '',
+                  rankRound: 0,
+                  titleText: ''
+                })
                 formDispatch({
                   type: 'PAGE_TYPE',
                   val: PAGE_TYPE.FAME
@@ -605,6 +698,12 @@ function Ranking() {
             <div
               className="hallOfFame"
               onClick={() => {
+                setRankTimeData({
+                  prevDate: '',
+                  nextDate: '',
+                  rankRound: 0,
+                  titleText: ''
+                })
                 formDispatch({
                   type: 'PAGE_TYPE',
                   val: PAGE_TYPE.RANKING
@@ -643,11 +742,12 @@ function Ranking() {
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className={`rankTop3Box ${realTimeCheck ? 'realTime' : ''}`} ref={TopRef}>
+              <div className={`rankTop3Box`} ref={TopRef}>
                 <MyProfile fetching={fetching} />
-                {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
+                <RankListTop specialPop={specialPop} />
+                {/* {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
                   <RankListTop specialPop={specialPop} />
-                )}
+                )} */}
               </div>
             )}
           </div>

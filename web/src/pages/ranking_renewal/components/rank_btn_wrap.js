@@ -21,6 +21,7 @@ export default function RankBtnWrap({fetching}) {
   const {formState} = rankState
 
   const formDispatch = rankAction.formDispatch
+  const setRankTimeData = rankAction.setRankTimeData
 
   const syncScroll = () => {
     window.scrollTo(0, 0)
@@ -39,6 +40,7 @@ export default function RankBtnWrap({fetching}) {
                   if (!fetching) {
                     if (formState[PAGE_TYPE.RANKING].rankType !== v.val) {
                       await syncScroll()
+
                       formDispatch({
                         type: 'RANK_TYPE',
                         val: v.val

@@ -1,5 +1,7 @@
 import React, {useState, useReducer, createContext} from 'react'
 
+import {RANK_TYPE} from 'pages/ranking_renewal/constant'
+
 const RankContext = createContext()
 const {Provider} = RankContext
 
@@ -16,7 +18,7 @@ const reducer = (state, action) => {
         ...state,
         [state.pageType]: {
           rankType: action.val,
-          dateType: 1,
+          dateType: action.val === RANK_TYPE.LIKE ? 1 : 5,
           currentDate: new Date()
         },
         page: 1
@@ -31,6 +33,7 @@ const reducer = (state, action) => {
         },
         page: 1
       }
+
     case 'DATE':
       return {
         ...state,
@@ -40,6 +43,16 @@ const reducer = (state, action) => {
         },
         page: 1
       }
+
+    // case 'TIME':
+    //   return {
+    //     ...state,
+    //     [state.pageType]: {
+    //       ...state[state.pageType],
+    //       currentDate: action.val
+    //     },
+    //     page: 1
+    //   }
     case 'PAGE':
       return {
         ...state,
@@ -58,6 +71,7 @@ const reducer = (state, action) => {
           dateType: 1,
           currentDate: new Date()
         },
+
         fame: {
           rankType: 4,
           dateType: 1,
@@ -91,7 +105,7 @@ const formInitData = {
   pageType: 'ranking',
   ranking: {
     rankType: 1,
-    dateType: 1,
+    dateType: 5,
     currentDate: new Date()
   },
   fame: {
@@ -113,6 +127,13 @@ function RankProvider(props) {
   const [specialList, setSpecialList] = useState([])
   const [weeklyList, setWeeklyList] = useState([])
   const [secondList, setSecondList] = useState([])
+  const [rankTimeList, setRankTimeList] = useState([])
+  const [rankTimeData, setRankTimeData] = useState({
+    prevDate: '',
+    nextDate: '',
+    rankRound: 0,
+    titleText: ''
+  })
   const [formState, formDispatch] = useReducer(reducer, formInitData)
   const [myInfo, setMyInfo] = useState({
     isReward: false,
@@ -146,7 +167,9 @@ function RankProvider(props) {
     totalPage,
     scrollY,
     specialPoint,
-    specialPointList
+    specialPointList,
+    rankTimeList,
+    rankTimeData
   }
 
   const rankAction = {
@@ -161,7 +184,9 @@ function RankProvider(props) {
     setSecondList,
     setScrollY,
     setSpecialPoint,
-    setSpecialPointList
+    setSpecialPointList,
+    setRankTimeList,
+    setRankTimeData
   }
 
   const bundle = {

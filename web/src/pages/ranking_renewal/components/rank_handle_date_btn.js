@@ -12,7 +12,7 @@ function RankHandleDateBtn({fetching}) {
 
   const formDispatch = rankAction.formDispatch
 
-  const {formState, myInfo} = rankState
+  const {formState, myInfo, rankTimeData} = rankState
 
   const [dateTitle, setDateTitle] = useState({
     header: '오늘',
@@ -38,11 +38,39 @@ function RankHandleDateBtn({fetching}) {
   }
 
   const handleDate = (some) => {
-    const handle = liveBoxchangeDate(some, formState[formState.pageType].dateType, formState[formState.pageType].currentDate)
-    formDispatch({
-      type: 'DATE',
-      val: handle
-    })
+    if (formState[formState.pageType].dateType === DATE_TYPE.TIME) {
+      if (some === 'back') {
+        const dateCode = liveBoxchangeDate(
+          some,
+          formState[formState.pageType].dateType,
+          formState[formState.pageType].currentDate
+        )
+
+        formDispatch({
+          type: 'DATE',
+          val: dateCode
+        })
+      } else {
+        const dateCode = liveBoxchangeDate(
+          some,
+          formState[formState.pageType].dateType,
+          formState[formState.pageType].currentDate
+        )
+
+        formDispatch({
+          type: 'DATE',
+          val: dateCode
+        })
+
+        // return handle
+      }
+    } else {
+      const handle = liveBoxchangeDate(some, formState[formState.pageType].dateType, formState[formState.pageType].currentDate)
+      formDispatch({
+        type: 'DATE',
+        val: handle
+      })
+    }
   }
 
   useEffect(() => {
@@ -148,41 +176,106 @@ function RankHandleDateBtn({fetching}) {
     }
   }
 
+  const prevLastTime = () => {
+    const typeTime = new Date(formState[formState.pageType].currentDate)
+    let cy = typeTime.getFullYear()
+    let cm = typeTime.getMonth() + 1
+    let cd = typeTime.getDate()
+    let ch = typeTime.getHours()
+
+    const cDt = (() => {
+      return new Date('2020-12-22T00:00:00')
+    })()
+
+    let ye = cDt.getFullYear()
+    let yM = cDt.getMonth() + 1
+    let yd = cDt.getDate()
+    let yh = cDt.getHours()
+
+    if (cy === ye && cm === yM && cd === yd && ch === yh) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  const nextLastTime = () => {
+    const typeTime = rankTimeData.nextDate
+
+    if (typeTime) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const timeRound = () => {
+    if (rankTimeData.rankRound === 1) {
+      return <>AM 00시 ~ AM 10시</>
+    } else if (rankTimeData.rankRound === 2) {
+      return <>AM 10시 ~ PM 19시</>
+    } else {
+      return <>PM 19시 ~ AM 00시</>
+    }
+  }
+
   return (
     <div className={`detailView `}>
-      <button
-        className={`prevButton ${prevLast() && fetching === false && 'active'}`}
-        onClick={() => {
-          if (prevLast() && fetching === false) {
-            handleDate('back')
-          }
-        }}>
-        이전
-      </button>
-
-      <div className="title">
-        <div className="titleWrap">
-          {dateTitle.header}
-          {/* <img
-            src={benefitIcon}
-            className="benefitSize"
+      {formState[formState.pageType].dateType === DATE_TYPE.TIME ? (
+        <>
+          <button
+            className={`prevButton ${prevLastTime() && fetching === false && 'active'}`}
             onClick={() => {
-              history.push('/rank/benefit')
-            }}
-          /> */}
-        </div>
-        {/* <span>{dateTitle.date}</span> */}
-      </div>
+              if (prevLastTime() && fetching === false) {
+                handleDate('back')
+              }
+            }}>
+            이전
+          </button>
 
-      <button
-        className={`nextButton ${nextLast() && fetching === false && 'active'}`}
-        onClick={() => {
-          if (nextLast() && fetching === false) {
-            handleDate('front')
-          }
-        }}>
-        다음
-      </button>
+          <div className="title">
+            <div className="titleWrap">{rankTimeData.titleText}</div>
+            <span>{timeRound()}</span>
+          </div>
+
+          <button
+            className={`nextButton ${nextLastTime() && fetching === false && 'active'}`}
+            onClick={() => {
+              if (nextLastTime() && fetching === false) {
+                handleDate('front')
+              }
+            }}>
+            다음
+          </button>
+        </>
+      ) : (
+        <>
+          <button
+            className={`prevButton ${prevLast() && fetching === false && 'active'}`}
+            onClick={() => {
+              if (prevLast() && fetching === false) {
+                handleDate('back')
+              }
+            }}>
+            이전
+          </button>
+
+          <div className="title">
+            <div className="titleWrap">{dateTitle.header}</div>
+            <span>{dateTitle.date && dateTitle.date}</span>
+          </div>
+
+          <button
+            className={`nextButton ${nextLast() && fetching === false && 'active'}`}
+            onClick={() => {
+              if (nextLast() && fetching === false) {
+                handleDate('front')
+              }
+            }}>
+            다음
+          </button>
+        </>
+      )}
     </div>
   )
 }

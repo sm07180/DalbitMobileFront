@@ -17,6 +17,7 @@ export default ({setPopState}) => {
     }
   }
 
+  //--------------------------
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => {
@@ -31,50 +32,60 @@ export default ({setPopState}) => {
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" onClick={() => closePopup()} />
         </button>
 
-        <div className="scrollBox">
-          <p className="topBox">
-            <span>{rankState.specialPoint.nickNm} 님</span>은<br />
-            스페셜 DJ 선발 누적 가산점
-            <br />
-            <span>{rankState.specialPoint.totalPoint}점</span>을 획득했습니다
-          </p>
+        <p className="topBox">
+          <span>{rankState.specialPoint.nickNm} 님</span>은<br />
+          스페셜 DJ 선발 누적 가산점
+          <br />
+          <span>{rankState.specialPoint.totalPoint}점</span>을 획득했습니다
+        </p>
 
-          <div className="tableBox">
-            <div className="tableBox__th">
-              <span>일간 TOP3 일자</span>
-              <span>순위</span>
-              <span>가산점</span>
-            </div>
+        <div className="tableBox">
+          <div className="tableBox__th">
+            <span>구분</span>
+            <span>일자</span>
+            <span>가산점</span>
+          </div>
 
-            <ul>
-              {/* <li>
+          <ul>
+            {/* <li>
                 <span>2021년 02월</span>
                 <span>1위</span>
                 <span>2.0점</span>
               </li> */}
-              {rankState.specialPointList.map((item, index) => {
-                const {rankDate, rank, addPoint} = item
+            {rankState.specialPointList.map((item, index) => {
+              const {rankDate, rank, addPoint, timeRound} = item
 
-                return (
-                  <li key={index}>
-                    <span>{rankDate}</span>
-                    <span>{rank}</span>
-                    <span>{addPoint}</span>
-                  </li>
-                )
-              })}
-            </ul>
-          </div>
+              const roundChage = () => {
+                if (timeRound === 0) {
+                  return <>일간</>
+                } else {
+                  return <>타임</>
+                }
+              }
 
-          <p className="noteBox">
-            ※ 스페셜 DJ 선발 누적 가산점은 선발 총점 100점 기준
-            <br />월 최대 10점까지만 인정되며 표기됩니다.
-            <br />
-            단, 매월 스페셜 DJ 선발 데이터 수집 기간 변동에 따라
-            <br />
-            내부 검토 시 수집 기간 외 점수는 이월되어 집계됩니다.
-          </p>
+              return (
+                <li key={index}>
+                  <span>
+                    {roundChage()} {rank}위
+                  </span>
+                  <span>
+                    {rankDate} {timeRound !== 0 && <>({timeRound}회차)</>}
+                  </span>
+                  <span>{addPoint}</span>
+                </li>
+              )
+            })}
+          </ul>
         </div>
+
+        <p className="noteBox">
+          ※ 스페셜 DJ 선발 누적 가산점은 선발 총점 100점 기준
+          <br />월 최대 10점까지만 인정되며 표기됩니다.
+          <br />
+          단, 매월 스페셜 DJ 선발 데이터 수집 기간 변동에 따라
+          <br />
+          내부 검토 시 수집 기간 외 점수는 이월되어 집계됩니다.
+        </p>
       </div>
     </PopupWrap>
   )
@@ -107,11 +118,6 @@ const PopupWrap = styled.div`
       right: 0;
     }
 
-    .scrollBox {
-      overflow-y: auto;
-      height: auto;
-    }
-
     .topBox {
       margin-bottom: 20px;
       border: 1px solid #bdbdbd;
@@ -142,10 +148,15 @@ const PopupWrap = styled.div`
           width: 30%;
           text-align: center;
 
-          &:first-child {
+          &:nth-of-type(2) {
             width: 40%;
           }
         }
+      }
+
+      ul {
+        overflow-y: auto;
+        max-height: 200px;
       }
 
       li {
@@ -160,7 +171,7 @@ const PopupWrap = styled.div`
           width: 30%;
           text-align: center;
 
-          &:first-child {
+          &:nth-of-type(2) {
             width: 40%;
           }
         }

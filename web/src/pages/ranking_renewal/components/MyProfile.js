@@ -227,34 +227,38 @@ export default function MyProfile() {
                           <div className="nickNameImg">
                             <span className="nickNameImg__level">Lv {myProfile.level}</span>
 
-                            {myInfo.myLiveBadgeList &&
-                              myInfo.myLiveBadgeList.length !== 0 &&
-                              myInfo.myLiveBadgeList.map((item, idx) => {
-                                return (
-                                  <React.Fragment key={idx + `badge`}>
-                                    {item.icon !== '' ? (
-                                      <div
-                                        className="badgeIcon topImg"
-                                        style={{
-                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                          marginLeft: '4px'
-                                        }}>
-                                        <img src={item.icon} style={{height: '16px'}} />
-                                        {item.text}
-                                      </div>
-                                    ) : (
-                                      <div
-                                        style={{
-                                          background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                          marginLeft: '4px'
-                                        }}
-                                        className="badgeIcon text">
-                                        {item.text}
-                                      </div>
-                                    )}
-                                  </React.Fragment>
-                                )
-                              })}
+                            {formState[formState.pageType].dateType === DATE_TYPE.TIME && (
+                              <>
+                                {myInfo.myLiveBadgeList &&
+                                  myInfo.myLiveBadgeList.length !== 0 &&
+                                  myInfo.myLiveBadgeList.map((item, idx) => {
+                                    return (
+                                      <React.Fragment key={idx + `badge`}>
+                                        {item.icon !== '' ? (
+                                          <div
+                                            className="badgeIcon topImg"
+                                            style={{
+                                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                              marginLeft: '4px'
+                                            }}>
+                                            <img src={item.icon} style={{height: '16px'}} />
+                                            {item.text}
+                                          </div>
+                                        ) : (
+                                          <div
+                                            style={{
+                                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
+                                              marginLeft: '4px'
+                                            }}
+                                            className="badgeIcon text">
+                                            {item.text}
+                                          </div>
+                                        )}
+                                      </React.Fragment>
+                                    )
+                                  })}
+                              </>
+                            )}
 
                             {myProfile.isSpecial && <span className="specialDj">스페셜DJ</span>}
                           </div>

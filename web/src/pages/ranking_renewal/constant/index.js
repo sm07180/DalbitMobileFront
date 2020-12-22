@@ -12,7 +12,8 @@ export const DATE_TYPE = {
   DAY: 1,
   WEEK: 2,
   MONTH: 3,
-  YEAR: 4
+  YEAR: 4,
+  TIME: 5
 }
 export const DAY_TYPE = {
   SUN: 0,
@@ -22,6 +23,12 @@ export const DAY_TYPE = {
   THU: 4,
   FRI: 5,
   SAT: 6
+}
+
+export const TIME_TYPE = {
+  MORNING: 1,
+  AFTERNOON: 2,
+  NIGHT: 3
 }
 
 export const PAGE_TYPE = {

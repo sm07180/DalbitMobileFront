@@ -9,10 +9,11 @@ import {DATE_TYPE, RANK_TYPE} from '../constant'
 import guideIcon from '../static/guide_s.png'
 
 const btnArray = [
+  {val: DATE_TYPE.TIME, text: '타임'},
   {val: DATE_TYPE.DAY, text: '일간'},
   {val: DATE_TYPE.WEEK, text: '주간'},
-  {val: DATE_TYPE.MONTH, text: '월간'},
-  {val: DATE_TYPE.YEAR, text: '연간'}
+  {val: DATE_TYPE.MONTH, text: '월간'}
+  // {val: DATE_TYPE.YEAR, text: '연간'}
 ]
 
 function DateBtnWrap({fetching}) {
@@ -34,7 +35,7 @@ function DateBtnWrap({fetching}) {
               }}
             />
           </div>
-          {btnArray.slice(0, 2).map((v, idx) => {
+          {btnArray.slice(1, 3).map((v, idx) => {
             return (
               <button
                 key={idx}

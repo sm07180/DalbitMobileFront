@@ -11,8 +11,6 @@ import Header from 'components/ui/new_header'
 import './rank_guide.scss'
 
 export default (props) => {
-  //const [guideType, setGuideType] = useState('benefit')
-  // const [guideType, setGuideType] = useState('howUse')
   const params = useParams()
   const guideType = params.type
 
@@ -31,7 +29,7 @@ export default (props) => {
       <div id="ranking-guide-page">
         <Header title={subTitle} />
         <div className="guide-content-wrap">
-          {guideType === 'benefit' && <Benefit></Benefit>}
+          {guideType === 'benefit' && <Benefit />}
           {guideType === 'pick' && <MarketingPick />}
           {guideType === 'marketing' && <MarketingAdv />}
           {/* {guideType === 'howUse' && <HowUse></HowUse>} */}

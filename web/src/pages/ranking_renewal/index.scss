@@ -247,9 +247,11 @@
 
       span {
         display: block;
-        font-size: 12px;
+        font-size: 13px;
         text-align: center;
-        color: #616161;
+        color: $white;
+        opacity: 0.7;
+        font-weight: $regular;
       }
     }
 
@@ -901,14 +903,18 @@
       background-repeat: no-repeat;
       background-size: 100%;
 
-      &.isLabel {
+      &.isSpPoint {
         height: 340px;
+      }
+
+      &.isLabel {
+        height: 330px;
       }
 
       &__item {
         position: relative;
 
-        .realLabelDj {
+        .spPoint {
           position: relative;
           margin: 0 auto;
           padding: 7px 28px 8px 13px;
@@ -932,6 +938,37 @@
               width: 100%;
             }
           }
+
+          &::before {
+            display: inline-block;
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            margin-left: -2px;
+            width: 7px;
+            height: 5px;
+            background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+          }
+        }
+
+        .labelDj,
+        .labelFan {
+          position: relative;
+          margin: 0 auto;
+          padding: 0 6px 0 30px;
+          height: 34px;
+          line-height: 34px;
+          width: fit-content;
+          border-radius: 14px;
+          color: #fff;
+          font-size: 12px;
+          background-position: 2px 2px;
+          background-size: 28px;
+          background-repeat: no-repeat;
+          box-sizing: border-box;
 
           &::before {
             display: inline-block;
@@ -1009,12 +1046,27 @@
           width: 112px;
           order: 2;
 
-          .realLabelDj {
+          .spPoint {
             background-color: rgba(0, 0, 0, 0.5);
 
             &::after {
               content: '스페셜 DJ\A가산점+2.0';
               white-space: pre;
+            }
+          }
+
+          .labelDj {
+            background-color: rgba(0, 0, 0, 0.5);
+            background-image: url(https://image.dalbitlive.com/ranking/djr1@2x.png);
+            &::after {
+              content: '실시간 1위';
+            }
+          }
+          .labelFan {
+            background-color: rgba(0, 0, 0, 0.5);
+            background-image: url(https://image.dalbitlive.com/ranking/fanr1@2x.png);
+            &::after {
+              content: '회장님';
             }
           }
 
@@ -1070,13 +1122,30 @@
           width: 108px;
           order: 1;
 
-          .realLabelDj {
+          .spPoint {
             margin-top: 50px;
             background-color: rgba(0, 0, 0, 0.4);
 
             &::after {
               content: '스페셜 DJ\A가산점+1.0';
               white-space: pre;
+            }
+          }
+
+          .labelDj {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.4);
+            background-image: url(https://image.dalbitlive.com/ranking/djr2@2x.png);
+            &::after {
+              content: '실시간 2위';
+            }
+          }
+          .labelFan {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.4);
+            background-image: url(https://image.dalbitlive.com/ranking/fanr2@2x.png);
+            &::after {
+              content: '부회장';
             }
           }
 
@@ -1138,13 +1207,30 @@
           width: 108px;
           order: 3;
 
-          .realLabelDj {
+          .spPoint {
             margin-top: 78px;
             background-color: rgba(0, 0, 0, 0.3);
 
             &::after {
               content: '스페셜 DJ\A가산점+0.5';
               white-space: pre;
+            }
+          }
+
+          .labelDj {
+            margin-top: 78px;
+            background-color: rgba(0, 0, 0, 0.3);
+            background-image: url(https://image.dalbitlive.com/ranking/djr3@2x.png);
+            &::after {
+              content: '실시간 3위';
+            }
+          }
+          .labelFan {
+            margin-top: 78px;
+            background-color: rgba(0, 0, 0, 0.3);
+            background-image: url(https://image.dalbitlive.com/ranking/fanr3@2x.png);
+            &::after {
+              content: '사장';
             }
           }
 

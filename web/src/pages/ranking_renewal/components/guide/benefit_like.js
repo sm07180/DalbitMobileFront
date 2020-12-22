@@ -58,7 +58,7 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           주간 좋아요 랭킹 TOP3
-          <span className="tableBox__title--sub">주간 랭킹배지, 달 보상 지급</span>
+          <span className="tableBox__title--sub">주간 랭킹 배지, 달 보상, 사랑꾼 효과 지급</span>
         </p>
 
         <table>
@@ -111,6 +111,37 @@ export default () => {
               </td>
               <td>
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 50
+              </td>
+            </tr>
+
+            <tr>
+              <td className="effect">
+                방송 청취중
+                <br />
+                좋아요 효과
+              </td>
+              <td>
+                좋아요 시<br />
+                +10 효과
+              </td>
+              <td>
+                좋아요 시<br />
+                +5 효과
+              </td>
+              <td>
+                좋아요 시<br />
+                +3 효과
+              </td>
+            </tr>
+
+            <tr>
+              <td className="effect">
+                방송 청취중
+                <br />
+                메인 효과
+              </td>
+              <td colSpan={3}>
+                <img src="https://image.dalbitlive.com/ranking/effect_like_info.png" alt="like_info" className="likeInfo" />
               </td>
             </tr>
           </tbody>
