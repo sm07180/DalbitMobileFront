@@ -118,7 +118,7 @@ export function convertDateToText(dateType, currentDate, convertType) {
     if (dateType === 1) {
       if (year === formYear && month === formMonth && formDate === date) {
         return {
-          header: '실시간'
+          header: '오늘 실시간'
           // date: '실시간 집계 중입니다.'
         }
       } else if (agoyear === formYear && agomonth === formMonth && formDate === agoday) {
@@ -307,9 +307,9 @@ export function printNumber(value) {
 }
 
 export function calcDate(sDate, diff) {
-  if(sDate === null || diff === null) return "";
+  if (sDate === null || diff === null) return ''
 
-  sDate.setDate(sDate.getDate() + diff);
+  sDate.setDate(sDate.getDate() + diff)
 
-  return sDate;
+  return sDate
 }

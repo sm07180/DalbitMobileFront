@@ -35,7 +35,7 @@ export default () => {
 
           <thead>
             <tr>
-              <th>일간</th>
+              <th>타임</th>
               <th>1위</th>
               <th>2위</th>
               <th>3위</th>
