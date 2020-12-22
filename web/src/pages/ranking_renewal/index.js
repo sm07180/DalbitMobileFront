@@ -616,7 +616,8 @@ function Ranking() {
                   if (
                     (formState.page < 20 &&
                       (formState[formState.pageType].dateType === DATE_TYPE.DAY ||
-                        formState[formState.pageType].dateType === DATE_TYPE.WEEK)) ||
+                        formState[formState.pageType].dateType === DATE_TYPE.WEEK ||
+                        formState[formState.pageType].dateType === DATE_TYPE.TIME)) ||
                     (formState.page < 40 && formState[formState.pageType].dateType === DATE_TYPE.MONTH) ||
                     (formState.page < 60 && formState[formState.pageType].dateType === DATE_TYPE.YEAR)
                   ) {
