@@ -70,8 +70,6 @@
 }
 
 .termsWrap {
-  margin: 0px 16px;
-  border-radius: 20px;
   background-color: white;
   font-size: 14px;
   line-height: 1.56;
@@ -188,6 +186,7 @@
 }
 
 .privacy {
+  padding: 16px;
   ol {
     li {
       position: relative;
@@ -251,6 +250,7 @@
 }
 
 .service {
+  padding: 16px;
   ol {
     li {
       position: relative;
