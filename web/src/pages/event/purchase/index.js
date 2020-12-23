@@ -146,13 +146,14 @@ const Content = styled.div`
 
         .text {
           display: inline-block;
-          width: calc(100% - 40%);
+          width: calc(100% - 35%);
           height: 32px;
           padding-left: 25px;
           background: url('https://image.dalbitlive.com/event/thxgiving/ic_moon.png') no-repeat left center;
           background-size: 20px;
           font-size: 14px;
           line-height: 32px;
+          letter-spacing: -1px;
           color: #fff;
           span {
             display: block;

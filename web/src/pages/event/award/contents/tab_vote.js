@@ -79,7 +79,7 @@ export default function awardEventVote() {
       if (globalCtx.selfAuth === false) {
         history.push('/selfauth?event=/event/award/vote')
       } else {
-        const items = awardList?.filter((v) => {
+        const items = awardList.filter((v) => {
           return v.checked
         })
 

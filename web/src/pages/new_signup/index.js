@@ -669,7 +669,7 @@ export default (props) => {
       try {
         fbq('track', 'CompleteRegistration')
         firebase.analytics().logEvent('CompleteRegistration')
-        kakaoPixel('114527450721661229').completeRegistration();
+        kakaoPixel('114527450721661229').completeRegistration()
       } catch (e) {}
 
       context.action.alert({
@@ -683,7 +683,7 @@ export default (props) => {
           }
           loginFetch()
         },
-        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
+        msg: '회원가입 기념으로 달 2개를 선물로 드립니다.\n달빛라이브 즐겁게 사용하세요.'
       })
     } else {
       context.action.alert({
