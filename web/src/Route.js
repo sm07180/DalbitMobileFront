@@ -27,7 +27,6 @@ const EventPage = React.lazy(() => import('pages/event_page'))
 const EventPcService = React.lazy(() => import('pages/event_pc_service'))
 const AttendEvent = React.lazy(() => import('pages/attend_event'))
 const EventRising = React.lazy(() => import('pages/event_rising'))
-const Specialdj = React.lazy(() => import('pages/event_specialdj'))
 const Proofshot = React.lazy(() => import('pages/event_proofshot'))
 const Package = React.lazy(() => import('pages/event_package'))
 const EventKnowHow = React.lazy(() => import('pages/event_know_how'))
@@ -35,6 +34,8 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
+const ClipRank = React.lazy(() => import('pages/clip/content/rank'))
+const ClipRankGuide = React.lazy(() => import('pages/clip/content/rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/new_signup'))
@@ -78,8 +79,6 @@ export default () => {
         <Route exact path="/event/:title/:type" component={Event} />
         <Route exact path="/event_proofshot" component={Proofshot} />
         <Route exact path="/event_package" component={Package} />
-        <Route exact path="/event_specialdj" component={Specialdj} />
-        <Route exact path="/event_specialdj/:title" component={Specialdj} />
         <Route exact path="/event_knowHow" component={EventKnowHow} />
         <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
         <Route exact path="/event_knowHow/:title/:num" component={EventKnowHow} />
@@ -119,11 +118,14 @@ export default () => {
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
         <Route exact path="/clip" component={Clip} />
+        <Route exact path="/clip_rank" component={ClipRank} />
+        <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
+        <Route exact path="/clip_recommend" component={ClipRecommend} />
+        <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/tip" component={ClipTip} />
         <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
         <Route exact path="/clip/play_list" component={ClipPlayList} />
-        <Route exact path="/clip_recommend" component={ClipRecommend} />
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
