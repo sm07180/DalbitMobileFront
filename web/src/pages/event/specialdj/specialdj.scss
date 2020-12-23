@@ -8,11 +8,16 @@
   .imgResize {
     display: inline-block;
     width: 100%;
+
+    &.buttonSize {
+      padding: 0px 5%;
+      box-sizing: border-box;
+    }
   }
 
   .loginBox {
-    padding: 32px 24px;
-    background: #95cfe1;
+    padding: 32px 0px;
+    background: #ebf3fe;
   }
 
   .title {
@@ -45,19 +50,19 @@
 
     .startingPopup {
       position: absolute;
-      width: 38.5%;
+      width: 65.5%;
       height: 2.9%;
-      left: 30.9%;
-      top: 24.9%;
+      left: 17.9%;
+      top: 28.9%;
       text-indent: -999999px;
     }
 
     .goodsPopup {
       position: absolute;
-      width: 22.7%;
+      width: 17.7%;
       height: 2.2%;
-      left: 71.7%;
-      bottom: 52.8%;
+      left: 74.7%;
+      bottom: 59.2%;
       text-indent: -999999px;
     }
 
@@ -75,7 +80,7 @@
     letter-spacing: -0.35px;
     color: $black;
     line-height: 30px;
-    background: url('https://image.dalbitlive.com/event/specialdj/20201120/bg.jpg');
+    background: url('https://image.dalbitlive.com/event/specialdj/20201223/bg.jpg');
     background-size: 100%;
     p {
       color: #ff5a00;
@@ -99,7 +104,7 @@
     width: 100%;
     margin: auto;
     box-sizing: border-box;
-    background: url('https://image.dalbitlive.com/event/specialdj/20201120/bg.jpg');
+    background: url('https://image.dalbitlive.com/event/specialdj/20201223/bg.jpg');
     background-size: 100%;
     margin: auto;
     overflow: hidden;
@@ -127,8 +132,8 @@
       align-items: center;
       flex-basis: 140px;
       padding: 8px 12px;
-      border-right: 1px solid $lightGray;
-      border-bottom: 1px solid $lightGray;
+      border-right: 1px solid $white;
+      border-bottom: 1px solid $white;
       background: #d1d1d1;
     }
     &__talbeRight {
@@ -137,7 +142,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 8px 12px;
-      border-bottom: 1px solid $lightGray;
+      border-bottom: 1px solid $white;
       font-weight: 700;
       background: $lighterGray;
 
@@ -159,16 +164,14 @@
     margin: auto;
     align-items: center;
     justify-content: center;
-    height: 44px;
     font-size: 18px;
     font-weight: 700;
     color: #fff;
     border-radius: 22px;
-    background: #b36d45;
 
-    &--purple {
-      background: $primary;
-    }
+    // &--purple {
+    //   background: $primary;
+    // }
   }
 
   .buttonOff {
@@ -177,11 +180,9 @@
     margin: auto;
     align-items: center;
     justify-content: center;
-    height: 40px;
     font-size: 16px;
     color: #fff;
     border-radius: 30px;
-    background: #bdbdbd;
   }
 
   .buttonBox {

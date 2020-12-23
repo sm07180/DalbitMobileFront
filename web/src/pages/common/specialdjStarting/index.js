@@ -52,14 +52,10 @@ export default (props) => {
             </ul>
             <p className="subText">※ 자세한 내용은 공지사항을 통해 확인 바랍니다.</p>
             <button
+              className="button"
               onClick={() => {
-                if (context.token.isLogin) {
-                  context.action.updatePopupVisible(false)
-                  history.push('/customer/notice/200')
-                } else {
-                  context.action.updatePopupVisible(false)
-                  history.push('/login')
-                }
+                context.action.updatePopupVisible(false)
+                history.push('/customer/notice/277')
               }}>
               공지사항 보러가기
             </button>

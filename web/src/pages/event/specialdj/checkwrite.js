@@ -93,11 +93,14 @@ export default (props) => {
 
   async function specialdjCheck() {
     const res = await Api.event_specialdj({})
-    const {result, data} = res
+    const {result, data, message} = res
     if (result === 'success') {
       setToggleCheck(res.data)
       setalready(data.already)
     } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
 

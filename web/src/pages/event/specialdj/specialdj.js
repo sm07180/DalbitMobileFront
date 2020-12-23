@@ -30,7 +30,7 @@ export default () => {
       }
     })
 
-    const {result, data} = res
+    const {result, data, message} = res
     if (result === 'success') {
       setToggleCheck(res.data)
 
@@ -39,6 +39,10 @@ export default () => {
       }
       setInfoData(res.data.eventInfo)
       setImageData(res.data.eventInfo.contentList)
+    } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
 
@@ -120,7 +124,7 @@ export default () => {
             onClick={() => {
               global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
             }}>
-            선발 요건 확인하기
+            <img src="https://image.dalbitlive.com/event/specialdj/20201223/selection_button.png" alt="선발 방식" />
           </button>
 
           <button
@@ -128,20 +132,20 @@ export default () => {
             onClick={() => {
               global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
             }}>
-            굿즈 상품 미리보기
+            <img src="https://image.dalbitlive.com/event/specialdj/20201223/goobs_button.png" alt="굿즈 더보기" />
           </button>
           {imgItem()}
         </div>
 
         {global_ctx.token.isLogin === true ? (
           <>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201120/top_img.jpg" alt="선발 방식" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201223/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
               {infoData !== '' && endDate !== null && `${startDate} ~ ${endDate.split('-')[1]}월 ${endDate.split('-')[2]}일`}
               {/* {`${eventStartY}년 ${eventStartM}월 ${eventStartD}일 ~ ${endM}월 ${endD}일`}  */}
               <br />(<p>{infoData.condition_end_date && eventEnd()}</p>)
             </div>
-            <img src="https://image.dalbitlive.com/event/specialdj/20201120/title.jpg" alt="지원 요건" className="imgResize" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20201223/title.jpg" alt="지원 요건" className="imgResize" />
 
             <div className="checkList">
               <div className="checkList__table">
@@ -236,15 +240,34 @@ export default () => {
                             parameter.select_month
                         )
                       }}>
-                      스페셜DJ 신청서 작성
+                      <img
+                        src="https://image.dalbitlive.com/event/specialdj/20201223/write_button.png"
+                        className="imgResize"
+                        alt="스페셜 Dj 신청서 작성"
+                      />
+                      {/* 스페셜DJ 신청서 작성 */}
                     </button>
                   ) : (
-                    <div className="buttonOff"> 다음에 지원해주세요</div>
+                    <div className="buttonOff">
+                      <img
+                        src="https://image.dalbitlive.com/event/specialdj/20201223/next_button.png"
+                        className="imgResize "
+                        alt="다음에 지원해주세요"
+                      />
+                      {/* 다음에 지원해주세요 */}
+                    </div>
                   )}
                 </>
               ) : (
                 <>
-                  <div className="buttonOn">이미 지원하셨습니다.</div>
+                  <div className="buttonOn">
+                    <img
+                      src="https://image.dalbitlive.com/event/specialdj/20201223/clear_button.png"
+                      className="imgResize"
+                      alt="이미 지원하셨습니다."
+                    />
+                    {/* 이미 지원하셨습니다. */}
+                  </div>
                 </>
               )}
             </div>
@@ -258,18 +281,23 @@ export default () => {
                   history.push({
                     pathname: '/login',
                     state: {
-                      state: 'specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
+                      state: 'event/specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
                     }
                   })
                 }}>
-                로그인
+                <img
+                  src="https://image.dalbitlive.com/event/specialdj/20201223/login_button.png"
+                  className="imgResize"
+                  alt="로그인 버튼"
+                />
+                {/* 로그인 */}
               </button>
             </div>
           </>
         )}
         {global_ctx.token.isLogin === true ? (
           <img
-            src="https://image.dalbitlive.com/event/specialdj/20201120/bottom_img.jpg"
+            src="https://image.dalbitlive.com/event/specialdj/20201223/new_bottom_img.jpg"
             className="imgResize"
             alt="하단 배경 이미지"
           />

@@ -75,20 +75,16 @@
   }
 
   .button {
-    padding: 16px 14px 0 0;
-
-    button {
-      display: block;
-      width: 100%;
-      background: $primary;
-      color: #fff;
-      font-size: 18px;
-      font-weight: 700;
-      text-align: center;
-      height: 44px;
-      line-height: 44px;
-      border-radius: 12px;
-      color: $white;
-    }
+    display: block;
+    width: 100%;
+    background: $primary;
+    color: #fff;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    height: 44px;
+    line-height: 44px;
+    border-radius: 12px;
+    color: $white;
   }
 }
