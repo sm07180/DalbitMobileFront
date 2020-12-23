@@ -22,6 +22,7 @@ import Specialdj from './specialdj'
 import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
 import Award from './award'
+import Purchase from './purchase'
 
 export default () => {
   const params = useParams()
@@ -65,6 +66,8 @@ export default () => {
         return <LevelAchieve />
       case 'award':
         return <Award />
+      case 'purchase':
+        return <Purchase />
 
       default:
         return <></>

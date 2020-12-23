@@ -23,7 +23,7 @@ export default function awardEventVote() {
 
       setAwardList(
         data.list.map((v) => {
-          v.checked = false
+          v.checked = Object.values(data).includes(v.djMemNo)
           return v
         })
       )
@@ -34,6 +34,7 @@ export default function awardEventVote() {
     const [items1, items2, items3] = items
 
     const {result, message} = await API.postAwardVote({
+      isRevote: voteState,
       year: '2020',
       djIdx_1: items1.djIdx,
       djIdx_2: items2.djIdx,
@@ -43,8 +44,16 @@ export default function awardEventVote() {
       djMemNo_3: items3.djMemNo
     })
     if (result === 'success') {
-      setVoteThxPop(true)
-      setVoteState(1)
+      if (voteState === 0) {
+        setVoteThxPop(true)
+        setVoteState(1)
+      } else if (voteState === 1) {
+        setVoteState(3)
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
     } else {
       globalCtx.action.alert({
         msg: message
@@ -76,17 +85,38 @@ export default function awardEventVote() {
 
         if (items) {
           const [items1, items2, items3] = items
+
           if (items1 && items2 && items3) {
-            globalCtx.action.alert({
-              title: '투표하기',
-              type: 'confirm',
-              msg: `선택하신 DJ에게 투표하시겠습니까?
-            투표 완료 후 취소 및 변경할 수 없습니다.
-            `,
-              callback: () => {
-                fetchAwardVote(items)
-              }
-            })
+            if (voteState === 0) {
+              globalCtx.action.alert({
+                title: '투표하기',
+                type: 'confirm',
+                msg: `선택하신 DJ에게 투표하시겠습니까?<br />인증된 번호는 다시 사용할 수 없습니다.
+              `,
+                callback: () => {
+                  fetchAwardVote(items)
+                }
+              })
+            } else if (voteState === 1) {
+              globalCtx.action.alert({
+                title: '투표하기',
+                type: 'confirm',
+                msg: `이전 투표를 취소하고 다시 투표하겠습니까?<br/>투표는 1회에 한해서만 수정되며<br/>수정된 내용은 다시 변경 할 수 없습니다.
+              `,
+                callback: () => {
+                  fetchAwardVote(items)
+
+                  globalCtx.action.alert({
+                    title: '투표하기',
+                    msg: `투표가 수정되었습니다.<br />투표에 참여해주셔서 감사합니다.
+              `,
+                    callback: () => {
+                      setVoteState(3)
+                    }
+                  })
+                }
+              })
+            }
           } else {
             globalCtx.action.alert({
               msg: `3명의 DJ를 선택해주세요.`
@@ -182,8 +212,14 @@ export default function awardEventVote() {
       </ul>
 
       <div className="btnBox">
-        <button className="voteBtn" onClick={validation} disabled={voteState === 1 || voteState === 2 ? true : false}>
-          {voteState === 1 ? '이미 투표하셨습니다' : voteState === 2 ? '투표 기간이 종료되었습니다' : '투표하기'}
+        <button className="voteBtn" onClick={validation} disabled={voteState === 2 || voteState === 3 ? true : false}>
+          {voteState === 1
+            ? '투표수정하기'
+            : voteState === 2
+            ? '투표 기간이 종료되었습니다'
+            : voteState === 3
+            ? '이미 참여하였습니다'
+            : '투표하기'}
         </button>
       </div>
 

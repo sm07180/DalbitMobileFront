@@ -16,7 +16,7 @@ import NoticeDetailCompenet from './content/notice_detail'
 
 import './notice.scss'
 
-const records = 15
+const records = 9999
 
 let timer
 
