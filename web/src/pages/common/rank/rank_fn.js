@@ -222,8 +222,8 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
   let year = day1.getFullYear()
   let month = day1.getMonth() + 1
   let date = day1.getDate()
-
   let hours = day1.getHours()
+
   let handle
   if (some === 'back') {
     switch (dateType) {
@@ -249,11 +249,18 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
       case 5:
         if (hours < 10) {
           handle = new Date(day1.setDate(day1.getDate() - 1))
-          handle = new Date(`${handle.getFullYear()}-${handle.getMonth() + 1}-${handle.getDate()}T19:00:00`)
+
+          handle = new Date(handle.getFullYear(), handle.getMonth(), handle.getDate(), 19, 0, 0)
+          // handle = new Date(`${handle2.getFullYear()}-${handle2.getMonth() + 1}-${handle2.getDate()}T19:00:00`)
+
+          // alert(handle)
         } else if (hours >= 10 && hours < 19) {
-          handle = new Date(`${year}-${month}-${date}T00:00:00`)
+          handle = new Date(year, month - 1, date, 0, 0, 0)
+
+          // handle = new Date(`${year}-${month}-${date}T00:00:00`)
         } else if (hours >= 19) {
-          handle = new Date(`${year}-${month}-${date}T10:00:00`)
+          handle = new Date(year, month - 1, date, 10, 0, 0)
+          // handle = new Date(`${year}-${month}-${date}T10:00:00`)
         }
         break
     }
@@ -280,12 +287,15 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
         break
       case 5:
         if (hours >= 0 && hours < 10) {
-          handle = new Date(`${year}-${month}-${date}T10:00:00`)
+          handle = new Date(year, month - 1, date, 10, 0, 0)
+          // handle = new Date(`${year}-${month}-${date}T10:00:00`)
         } else if (hours >= 10 && hours < 19) {
-          handle = new Date(`${year}-${month}-${date}T19:00:00`)
+          handle = new Date(year, month - 1, date, 19, 0, 0)
+          // handle = new Date(`${year}-${month}-${date}T19:00:00`)
         } else if (hours >= 19) {
           handle = new Date(day1.setDate(day1.getDate() + 1))
-          handle = new Date(`${handle.getFullYear()}-${handle.getMonth() + 1}-${handle.getDate()}T00:00:00`)
+          handle = new Date(handle.getFullYear(), handle.getMonth(), handle.getDate(), 0, 0, 0)
+          // handle = new Date(`${handle.getFullYear()}-${handle.getMonth() + 1}-${handle.getDate()}T00:00:00`)
         }
         break
     }
@@ -306,6 +316,13 @@ export function printNumber(value) {
   }
 }
 
+export function calcDate(sDate, diff) {
+  if (sDate === null || diff === null) return ''
+
+  sDate.setDate(sDate.getDate() + diff)
+
+  return sDate
+}
 export const dateTimeConvert = (currentDate) => {
   const hours = currentDate.getHours()
 

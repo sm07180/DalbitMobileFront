@@ -402,7 +402,6 @@ function Ranking() {
         if (formState.page > 1) {
           setRankList(rankList.concat(res.data.list))
         } else {
-          // dj, fan, like
           if (formState.page > 1) {
             setRankList(rankList.concat(res.data.list))
             setEmpty(false)
@@ -421,6 +420,7 @@ function Ranking() {
             myInfo,
             ...res.data
           })
+          console.log(setTotalPage)
         }
       } else {
         setRankList([])

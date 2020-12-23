@@ -18,7 +18,7 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           일간 좋아요 랭킹 TOP3
-          <span className="tableBox__title--sub">달 보상 지급</span>
+          {/* <span className="tableBox__title--sub">달 보상 지급</span> */}
         </p>
 
         <table>
@@ -58,7 +58,7 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           주간 좋아요 랭킹 TOP3
-          <span className="tableBox__title--sub">주간 랭킹 배지, 달 보상, 사랑꾼 효과 지급</span>
+          {/* <span className="tableBox__title--sub">주간 랭킹 배지, 달 보상, 사랑꾼 효과 지급</span> */}
         </p>
 
         <table>

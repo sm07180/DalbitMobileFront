@@ -198,6 +198,7 @@
       left: 0;
     }
   }
+
   ol.depth1 {
     margin-top: 20px;
     counter-reset: depth1;
@@ -237,10 +238,6 @@
       color: #616161;
       text-align: left !important;
     }
-    li:before {
-      left: 4px;
-      content: '-';
-    }
     &.depth-info {
       margin-left: 0;
     }
@@ -251,7 +248,6 @@
 }
 
 .service {
-  padding: 16px;
   ol {
     li {
       position: relative;

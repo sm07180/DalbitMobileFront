@@ -45,7 +45,6 @@ function RankHandleDateBtn({fetching}) {
           formState[formState.pageType].dateType,
           formState[formState.pageType].currentDate
         )
-
         formDispatch({
           type: 'DATE',
           val: dateCode
@@ -184,7 +183,8 @@ function RankHandleDateBtn({fetching}) {
     let ch = typeTime.getHours()
 
     const cDt = (() => {
-      return new Date('2020-12-22T10:00:00')
+      // return new Date('2020-12-22T10:00:00')
+      return new Date(2020, 11, 22, 10, 0, 0)
     })()
 
     let ye = cDt.getFullYear()

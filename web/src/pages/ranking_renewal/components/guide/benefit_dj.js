@@ -24,10 +24,10 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           타임 DJ 랭킹 TOP3
-          <span className="tableBox__title--sub">
+          {/* <span className="tableBox__title--sub">
             달 보상, 차기 스페셜 DJ 신청 시 <br />
             가산점(월 최대 10점까지 가능) 지급
-          </span>
+          </span> */}
         </p>
 
         <table>
@@ -83,10 +83,10 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           일간 DJ 랭킹 TOP3
-          <span className="tableBox__title--sub">
+          {/* <span className="tableBox__title--sub">
             일간 랭킹배지, 입장효과, 애니메이션 프레임, 달 보상, <br />
             경험치 랜덤박스, 인사말 효과지급
-          </span>
+          </span> */}
         </p>
 
         <table>
@@ -132,24 +132,27 @@ export default () => {
             <tr>
               <td className="rank">입장효과</td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day1.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day1.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djd1@2x.png`} width={87} alt="입장효과" />
               </td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day2.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day2.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djd2@2x.png`} width={87} alt="입장효과" />
               </td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day3.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_day3.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djd3@2x.png`} width={87} alt="입장효과" />
               </td>
             </tr>
@@ -217,10 +220,10 @@ export default () => {
       <div className="tableBox">
         <p className="tableBox__title">
           주간 DJ 랭킹 TOP3
-          <span className="tableBox__title--sub">
+          {/* <span className="tableBox__title--sub">
             주간 랭킹배지, 입장효과, 애니메이션 프레임, 달 보상, <br />
             경험치 랜덤박스, 인사말 효과지급
-          </span>
+          </span> */}
         </p>
 
         <table>
@@ -266,24 +269,27 @@ export default () => {
             <tr>
               <td className="rank">입장효과</td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week1.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week1.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djw1@2x.png`} width={87} alt="입장효과" />
               </td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week2.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week2.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djw2@2x.png`} width={87} alt="입장효과" />
               </td>
               <td
-                onClick={() => {
-                  setEffectPop(true)
-                  wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week3.webp'
-                }}>
+              // onClick={() => {
+              //   setEffectPop(true)
+              //   wepbSrc = 'https://image.dalbitlive.com/ranking/webp/dj_week3.webp'
+              // }}
+              >
                 <img src={`${IMG_SERVER}/ranking/djw3@2x.png`} width={87} alt="입장효과" />
               </td>
             </tr>

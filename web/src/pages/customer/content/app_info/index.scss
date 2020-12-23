@@ -156,6 +156,20 @@
   }
 }
 
+ol.depthTitle {
+  margin-top: 20px;
+  & > li {
+    margin-top: 20px;
+    padding-left: 26px;
+  }
+
+  &.no-space {
+    li {
+      margin-top: 0;
+    }
+  }
+}
+
 .privacy {
   ol {
     li {
@@ -167,6 +181,31 @@
       left: 0;
     }
   }
+
+  ol.depthTitle {
+    margin-top: 20px;
+    & > li {
+      h3 {
+        margin-left: -20px;
+        margin-bottom: 10px;
+        letter-spacing: -1px;
+      }
+      margin-top: 20px;
+      padding-left: 26px;
+    }
+    & > li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
+    }
+
+    &.no-space {
+      li {
+        margin-top: 0;
+      }
+    }
+  }
+
   ol.depth1 {
     margin-top: 20px;
     counter-reset: depth1;

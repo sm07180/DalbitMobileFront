@@ -150,11 +150,11 @@ export default (props) => {
                   <label className="badge-label right">
                     <img src={`${IMG_SERVER}/images/api/ic_gift@2x.png`} width={28} height={28} /> 경험치 랜덤 박스
                   </label>
-                  {myInfo.rewardPoint !== '' ? (
+                  {/* {myInfo.rewardPoint !== '' ? (
                     <label className="badge-label center">차기 스페셜DJ 선정 시 가산점 {myInfo.rewardPoint}점 지급</label>
                   ) : (
                     ''
-                  )}
+                  )} */}
                 </div>
               </div>
             </>
