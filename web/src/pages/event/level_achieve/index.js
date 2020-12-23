@@ -14,6 +14,7 @@ export default () => {
   const history = useHistory()
   const [viewLevel, setViewLevel] = useState('')
   const [detailData, setDetailData] = useState(null)
+  const [startDt, setStartDt] = useState(null)
 
   function countTimerMotion(dt, previousDt) {
     return Object.keys(dt).map((v, idx) => {
@@ -85,6 +86,7 @@ export default () => {
         joinTH: String(data.endDt).substr(8, 2),
         joinTM: String(data.endDt).substr(10, 2)
       })
+      setStartDt(data.startDt)
     } else {
       context.action.alert({
         msg: message,
@@ -239,9 +241,12 @@ export default () => {
             <div className="timeWrap">
               <img src="https://image.dalbitlive.com/event/level_achieve/bg_img_five02_1.jpg" alt="이벤트 남은시간" />
               <div className="joinDay">
-                {detailData !== null && (
+                {startDt !== null && (
                   <>
-                    {detailData.joinY}.{detailData.joinM}.{detailData.joinD} {detailData.joinTH}:{detailData.joinTM}
+                    {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
+                      8,
+                      2
+                    )}:${startDt.substr(10, 2)} `}
                   </>
                 )}
               </div>
@@ -267,9 +272,12 @@ export default () => {
               <img src="https://image.dalbitlive.com/event/level_achieve/20201214/new_bg_img_ten02_1.jpg" alt="이벤트 남은시간" />
 
               <div className="joinDay ten">
-                {detailData !== null && (
+                {startDt !== null && (
                   <>
-                    {detailData.joinY}.{detailData.joinM}.{detailData.joinD} {detailData.joinTH}:{detailData.joinTM}
+                    {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
+                      8,
+                      2
+                    )}:${startDt.substr(10, 2)} `}
                   </>
                 )}
               </div>
