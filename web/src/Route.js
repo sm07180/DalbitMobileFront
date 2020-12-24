@@ -34,8 +34,8 @@ const PcOpen = React.lazy(() => import('pages/pc_open'))
 const ClipOpen = React.lazy(() => import('pages/clip_open'))
 const ClipPlayList = React.lazy(() => import('pages/clip_play_list'))
 const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recommend'))
-const ClipRank = React.lazy(() => import('pages/clip/content/rank'))
-const ClipRankGuide = React.lazy(() => import('pages/clip/content/rank/components'))
+// const ClipRank = React.lazy(() => import('pages/clip/content/rank'))
+// const ClipRankGuide = React.lazy(() => import('pages/clip/content/rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 const Login = React.lazy(() => import('pages/login'))
 const SignUp = React.lazy(() => import('pages/new_signup'))
@@ -118,8 +118,8 @@ export default () => {
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
         <Route exact path="/clip" component={Clip} />
-        <Route exact path="/clip_rank" component={ClipRank} />
-        <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
+        {/* <Route exact path="/clip_rank" component={ClipRank} />
+        <Route exact path="/clip_rank/:type" component={ClipRankGuide} /> */}
         <Route exact path="/clip_recommend" component={ClipRecommend} />
         <Route exact path="/redirect" component={TempLogin} />
         <Route exact path="/clip/tip" component={ClipTip} />
