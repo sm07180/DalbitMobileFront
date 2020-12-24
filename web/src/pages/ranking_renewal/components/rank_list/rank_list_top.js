@@ -111,11 +111,7 @@ function RankListTop({specialPop}) {
                     liveBadgeList.map((item, idx) => {
                       return <div key={idx}> {realTimeNow(memNo, item.text, item.icon)}</div>
                     })}
-                  {
-                    formState[formState.pageType].dateType === DATE_TYPE.TIME
-                    && rankTimeData.nextDate !== ''
-                    && formState[formState.pageType].rankType === RANK_TYPE.DJ
-                    && new Date(formState[formState.pageType].currentDate).getMonth() == new Date().getMonth()
+                  { (liveBadgeList === null || liveBadgeList === undefined || liveBadgeList.length === 0)
                     && realTimeNow(memNo, '', '')
                   }
                   <div
