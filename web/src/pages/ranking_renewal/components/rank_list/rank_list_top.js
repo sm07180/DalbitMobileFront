@@ -28,7 +28,7 @@ function RankListTop({specialPop}) {
   const TopBoxRef = useRef(null)
 
   const realTimeNow = useCallback(
-    (memNo) => {
+    (memNo, text, icon) => {
       let timeNow
       const dateNow = new Date()
       const monthNow = dateNow.getMonth()
@@ -59,10 +59,20 @@ function RankListTop({specialPop}) {
             //회장님
             if (formState[formState.pageType].rankType === RANK_TYPE.DJ) {
               TopBoxRef.current.className = 'TopBox isLabel'
-              timeNow = <div className="labelDj"></div>
+              timeNow = (
+                <div className="labelDj">
+                  <img src={icon} alt="icon" />
+                  {text}
+                </div>
+              )
             } else {
               TopBoxRef.current.className = 'TopBox isLabel'
-              timeNow = <div className="labelFan"></div>
+              timeNow = (
+                <div className="labelFan">
+                  <img src={icon} alt="icon" />
+                  {text}
+                </div>
+              )
             }
           }
         } else {
@@ -92,11 +102,15 @@ function RankListTop({specialPop}) {
           <div className="TopBox" ref={TopBoxRef}>
             {rankResult.slice(0, 3).map((item, index) => {
               if (item === null) return <div className="TopBox__item" key={index}></div>
-              const {nickNm, profImg, memNo, roomNo} = item
+              const {nickNm, profImg, memNo, roomNo, liveBadgeList} = item
 
               return (
                 <div className="TopBox__item" key={index}>
-                  {realTimeNow(memNo)}
+                  {liveBadgeList &&
+                    liveBadgeList.length !== 0 &&
+                    liveBadgeList.map((item, idx) => {
+                      return <div key={idx}> {realTimeNow(memNo, item.text, item.icon)}</div>
+                    })}
 
                   <div
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}

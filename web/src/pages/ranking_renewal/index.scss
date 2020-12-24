@@ -958,17 +958,20 @@
         .labelFan {
           position: relative;
           margin: 0 auto;
-          padding: 0 6px 0 30px;
+          padding: 0 6px 0 2px;
           height: 34px;
           line-height: 34px;
           width: fit-content;
           border-radius: 14px;
           color: #fff;
           font-size: 12px;
-          background-position: 2px 2px;
-          background-size: 28px;
-          background-repeat: no-repeat;
           box-sizing: border-box;
+
+          img {
+            display: inline-block;
+            margin-top: -2px;
+            width: 28px;
+          }
 
           &::before {
             display: inline-block;
@@ -1050,24 +1053,16 @@
             background-color: rgba(0, 0, 0, 0.5);
 
             &::after {
-              content: '스페셜 DJ\A가산점+1.5';
+              content: '스페셜 DJ\A가산점+2.0';
               white-space: pre;
             }
           }
 
           .labelDj {
             background-color: rgba(0, 0, 0, 0.5);
-            background-image: url(https://image.dalbitlive.com/ranking/djr1@2x.png);
-            &::after {
-              content: '실시간 1위';
-            }
           }
           .labelFan {
             background-color: rgba(0, 0, 0, 0.5);
-            background-image: url(https://image.dalbitlive.com/ranking/fanr1@2x.png);
-            &::after {
-              content: '회장';
-            }
           }
 
           .TopBoxThumb {
@@ -1127,7 +1122,7 @@
             background-color: rgba(0, 0, 0, 0.4);
 
             &::after {
-              content: '스페셜 DJ\A가산점+0.5';
+              content: '스페셜 DJ\A가산점+1.0';
               white-space: pre;
             }
           }
@@ -1135,18 +1130,10 @@
           .labelDj {
             margin-top: 50px;
             background-color: rgba(0, 0, 0, 0.4);
-            background-image: url(https://image.dalbitlive.com/ranking/djr2@2x.png);
-            &::after {
-              content: '실시간 2위';
-            }
           }
           .labelFan {
             margin-top: 50px;
             background-color: rgba(0, 0, 0, 0.4);
-            background-image: url(https://image.dalbitlive.com/ranking/fanr2@2x.png);
-            &::after {
-              content: '부회장';
-            }
           }
 
           .TopBoxThumb {
@@ -1212,7 +1199,7 @@
             background-color: rgba(0, 0, 0, 0.3);
 
             &::after {
-              content: '스페셜 DJ\A가산점+0.3';
+              content: '스페셜 DJ\A가산점+0.5';
               white-space: pre;
             }
           }
@@ -1220,18 +1207,10 @@
           .labelDj {
             margin-top: 78px;
             background-color: rgba(0, 0, 0, 0.3);
-            background-image: url(https://image.dalbitlive.com/ranking/djr3@2x.png);
-            &::after {
-              content: '실시간 3위';
-            }
           }
           .labelFan {
             margin-top: 78px;
             background-color: rgba(0, 0, 0, 0.3);
-            background-image: url(https://image.dalbitlive.com/ranking/fanr3@2x.png);
-            &::after {
-              content: '사장';
-            }
           }
 
           .TopBoxThumb {
