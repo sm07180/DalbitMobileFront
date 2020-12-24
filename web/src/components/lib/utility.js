@@ -299,6 +299,7 @@ export default class Utility {
       let retArray = original
       let isContains = false
       newArray.forEach((item1) => {
+        isContains = false
         original.forEach((item2) => {
           if (item1[keyName] == item2[keyName]) {
             isContains = true

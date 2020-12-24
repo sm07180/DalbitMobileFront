@@ -54,9 +54,8 @@ const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
 const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
 
-import LoadingLottieIcon from './static/listloading.json'
-
-import Lottie from 'react-lottie'
+// import LoadingLottieIcon from './static/listloading.json'
+// import Lottie from 'react-lottie'
 import 'styles/main.scss'
 
 let concatenating = false
@@ -127,7 +126,7 @@ export default (props) => {
   const [inputState, setInputState] = useState(false)
 
   //loading
-  const [loading, setLoading] = useState(false)
+  // const [loading, setLoading] = useState(false)
 
   const CrownWebp = 'https://image.dalbitlive.com/assets/webp/crown_webp.webp'
   const LiveWebp = 'https://image.dalbitlive.com/assets/webp/live_webp.webp'
@@ -304,7 +303,7 @@ export default (props) => {
         setLivePage(page)
         totalLivePage = totalPage
 
-        setLoading(false)
+        // setLoading(false)
       }
 
       if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
@@ -312,7 +311,7 @@ export default (props) => {
         const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
         setLiveList(concatenated)
       } else {
-        setLoading(false)
+        // setLoading(false)
       }
     }
   }
@@ -374,7 +373,7 @@ export default (props) => {
       liveList.length &&
       livePage + 1 <= totalLivePage
     ) {
-      setLoading(true)
+      // setLoading(true)
       concatLiveList()
     }
   }
@@ -656,7 +655,6 @@ export default (props) => {
     [reloadInit]
   )
   const scrollMove = () => {
-    console.log(window.scrollY)
     if (window.scrollY >= 1) {
       setScrollOn(true)
     } else {
@@ -984,21 +982,6 @@ export default (props) => {
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
-
-                    {loading === true ? (
-                      <div className="liveList__item">
-                        <Lottie
-                          options={{
-                            loop: true,
-                            autoPlay: true,
-                            animationData: LoadingLottieIcon
-                          }}
-                          width={80}
-                        />
-                      </div>
-                    ) : (
-                      <></>
-                    )}
                   </div>
                 ) : (
                   <NoResult />
