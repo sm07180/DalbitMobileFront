@@ -65,36 +65,22 @@ export default () => {
   if (event === '3') pageCode = '3'
   let payMethod
 
-  if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
-    payMethod = [
-      {type: '무통장 입금(계좌이체)', code: 'coocon'},
-      {type: '카드 결제', fetch: 'pay_card'},
-      {type: '휴대폰 결제', fetch: 'pay_phone'},
-      {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
-      {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
-      {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-      {type: '문화상품권', fetch: 'pay_gm'},
-      {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
-      {type: '해피머니상품권', fetch: 'pay_hm'}
-      // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
-      // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
-      // { type: "도서문화상품권", fetch: 'pay_gc' },
-    ]
-  } else {
-    payMethod = [
-      {type: '무통장 입금(계좌이체)', code: 'coocon'},
-      {type: '카드 결제', fetch: 'pay_card'},
-      {type: '휴대폰 결제', fetch: 'pay_phone'},
-      {type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'},
-      {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-      {type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
-      {type: '문화상품권', fetch: 'pay_gm'},
-      {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
-      {type: '해피머니상품권', fetch: 'pay_hm'}
-      // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
-      // { type: "도서문화상품권", fetch: 'pay_gc' },
-    ]
-  }
+  // if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
+  payMethod = [
+    {type: '무통장 입금(계좌이체)', code: 'coocon'},
+    {type: '카드 결제', fetch: 'pay_card'},
+    {type: '휴대폰 결제', fetch: 'pay_phone'},
+    {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
+    {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
+    {type: '페이코', fetch: 'pay_letter', code: 'payco'},
+    {type: '문화상품권', fetch: 'pay_gm'},
+    {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
+    {type: '해피머니상품권', fetch: 'pay_hm'}
+    // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+    // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
+    // { type: "도서문화상품권", fetch: 'pay_gc' },
+  ]
+  // }
 
   async function payFetch() {
     const {type, fetch, code} = selectedPay
