@@ -65,7 +65,7 @@ export default () => {
   if (event === '3') pageCode = '3'
   let payMethod
 
-  if (__NODE_ENV !== 'real' || context.token.memNo === '51594275686446') {
+  if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
     payMethod = [
       {type: '무통장 입금(계좌이체)', code: 'coocon'},
       {type: '카드 결제', fetch: 'pay_card'},
