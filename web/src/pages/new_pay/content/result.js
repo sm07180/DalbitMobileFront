@@ -77,7 +77,7 @@ export default () => {
         case 'toss':
           payType = '토스'
           break
-        case 'kakaomoney':
+        case 'kakaoMoney':
           payType = '카카오페이(머니)'
           break
         default:
