@@ -10,7 +10,7 @@ export default () => {
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
   const context = useContext(Context)
-
+  console.log(location)
   if (location.state === undefined) {
     location.state = {
       result: 'fail',
@@ -69,13 +69,16 @@ export default () => {
           payType = '캐시비'
           break
         case 'kakaopay':
-          payType = '카카오페이'
+          payType = '카카오페이(카드)'
           break
         case 'payco':
           payType = '페이코'
           break
         case 'toss':
           payType = '토스'
+          break
+        case 'kakaomoney':
+          payType = '카카오페이(머니)'
           break
         default:
           payType = 'PayLetter'
@@ -135,7 +138,7 @@ export default () => {
         if (returntype === 'store') {
           window.location.href = '/'
         } else if (returntype === 'chooseok') {
-          window.location.href = '/event/thanksgiving'
+          window.location.href = '/event/purchase'
         }
       }
     } else {

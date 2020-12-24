@@ -27,7 +27,7 @@ export default () => {
       Hybrid('ClosePayPopup')
     } else {
       if (event === '3') {
-        history.push('/event/thanksgiving')
+        history.push('/event/purchase')
       } else {
         history.push('/')
       }

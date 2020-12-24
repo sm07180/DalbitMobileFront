@@ -2145,6 +2145,16 @@ export default class API {
       data: data
     })
   }
+  // 카카오페이(머니)
+  static pay_km = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/rest/pay/kakao/ready`,
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   //인증샷 이벤트
   static event_proofshot_list = async (obj) => {

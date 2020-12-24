@@ -68,12 +68,13 @@ export default () => {
     {type: '무통장 입금(계좌이체)', code: 'coocon'},
     {type: '카드 결제', fetch: 'pay_card'},
     {type: '휴대폰 결제', fetch: 'pay_phone'},
-    {type: '카카오페이', fetch: 'pay_letter', code: 'kakaopay'},
+    {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
+    {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
     {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-    {type: '티머니', fetch: 'pay_letter', code: 'tmoney'},
     {type: '문화상품권', fetch: 'pay_gm'},
-    {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
+    {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
     {type: '해피머니상품권', fetch: 'pay_hm'}
+    // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
     // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
     // { type: "도서문화상품권", fetch: 'pay_gc' },
   ]
@@ -148,9 +149,15 @@ export default () => {
         itemAmt: totalQuantity
       }
     })
+    console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
-      if (data.hasOwnProperty('mobileUrl')) return (window.location.href = data.mobileUrl)
+      console.log(data)
+      if (data.hasOwnProperty('mobileUrl')) {
+        return (window.location.href = data.mobileUrl)
+      } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
+        return (window.location.href = data.next_redirect_mobile_url)
+      }
 
       let payForm = formTag.current
       const makeHiddenInput = (key, value) => {
