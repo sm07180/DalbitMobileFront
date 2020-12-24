@@ -93,6 +93,9 @@ export default (props) => {
                 <div
                   className="simpleContainer"
                   key={`${idx}+broadRecomendList`}
+                  style={{
+                    backgroundImage: `url(${bgImg.thumb700x700})`
+                  }}
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
                       if (context.token.isLogin === false) {
@@ -105,7 +108,7 @@ export default (props) => {
                     }
                   }}>
                   <div className="broadcast-img">
-                    <img src={bgImg.thumb700x700} className="thumb-dj" alt="dj이미지" />
+                    {/* <img src={bgImg.thumb700x700} className="thumb-dj" alt="dj이미지" /> */}
                     <div className="simpleContainer__info">
                       <div className="simpleContainer__iconBox">
                         <img src={entryType === 2 ? Restrict20 : entryType === 1 ? FanIcon : AllIcon} />
