@@ -229,9 +229,9 @@ const GlobalProvider = (props) => {
      * @param {msg} 메시지영역
      */
 
-    alert_no_Close: (obj) => {
+    alert_no_close: (obj) => {
       const {msg} = obj
-      setMessage({type: 'alert_no_Close', visible: true, ...obj})
+      setMessage({type: 'alert_no_close', visible: true, ...obj})
     },
 
     /**

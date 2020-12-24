@@ -13,15 +13,31 @@ export default () => {
   const history = useHistory()
 
   const parameter = qs.parse(location.search)
-  const global_ctx = useContext(Context)
-
-  const [toggleCheck, setToggleCheck] = useState('')
+  const context = useContext(Context)
   const [conditionData, setconditionData] = useState('')
   const [imageData, setImageData] = useState('')
   const [infoData, setInfoData] = useState('')
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
 
+  const goBack = () => {
+    history.goBack()
+  }
+
+  const eventCheck = () => {
+    let today = new Date()
+    let eventYear = today.getFullYear()
+    let eventMonth = today.getMonth() + 1
+
+    if (parameter.select_year + parameter.select_month !== eventYear.toString() + eventMonth.toString()) {
+      context.action.alert_no_close({
+        msg: `이벤트 기간이 아닙니다.`,
+        callback: () => {
+          goBack()
+        }
+      })
+    }
+  }
   async function specialdjCheck() {
     const res = await Api.event_specialdj({
       data: {
@@ -32,22 +48,19 @@ export default () => {
 
     const {result, data, message} = res
     if (result === 'success') {
-      setToggleCheck(res.data)
-
-      if (res.data.specialDjCondition !== null) {
-        setconditionData(res.data.specialDjCondition) // 로그인해야 보이는부분
+      if (res.data.specialDjCondition !== undefined) {
+        setconditionData(data.specialDjCondition) // 로그인해야 보이는부분
       }
-      setInfoData(res.data.eventInfo)
-      setImageData(res.data.eventInfo.contentList)
+      setInfoData(data.eventInfo)
+      setImageData(data.eventInfo.contentList)
     } else {
-      context.action.alert({
-        msg: message
+      context.action.alert_no_close({
+        msg: `이벤트 기간이 아닙니다.`,
+        callback: () => {
+          goBack()
+        }
       })
     }
-  }
-
-  const goBack = () => {
-    history.goBack()
   }
 
   function eventEnd() {
@@ -108,7 +121,12 @@ export default () => {
   }, [infoData])
 
   useEffect(() => {
+    eventCheck()
     specialdjCheck()
+  }, [context.token.isLogin])
+
+  useEffect(() => {
+    console.log('rendering')
   }, [])
 
   return (
@@ -122,7 +140,7 @@ export default () => {
           <button
             className="startingPopup"
             onClick={() => {
-              global_ctx.action.updatePopup('SPECIAL_DJ_STARTING')
+              context.action.updatePopup('SPECIAL_DJ_STARTING')
             }}>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/selection_button.png" alt="선발 방식" />
           </button>
@@ -130,14 +148,14 @@ export default () => {
           <button
             className="goodsPopup"
             onClick={() => {
-              global_ctx.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
+              context.action.updatePopup('SPECIAL_DJ_GOODS_DETAIL')
             }}>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/goobs_button.png" alt="굿즈 더보기" />
           </button>
           {imgItem()}
         </div>
 
-        {global_ctx.token.isLogin === true ? (
+        {context.token.isLogin === true ? (
           <>
             <img src="https://image.dalbitlive.com/event/specialdj/20201223/top_img.jpg" alt="선발 방식" className="imgResize" />
             <div className="dayTitle">
@@ -295,7 +313,7 @@ export default () => {
             </div>
           </>
         )}
-        {global_ctx.token.isLogin === true ? (
+        {context.token.isLogin === true ? (
           <img
             src="https://image.dalbitlive.com/event/specialdj/20201223/new_bottom_img.jpg"
             className="imgResize"

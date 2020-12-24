@@ -823,11 +823,11 @@ export default (props) => {
 
         {viewLevel === 5 ? (
           <button className="levelEventBanner" onClick={() => history.push('/event/level_achieve')}>
-            <span className="evnetText">💛이벤트💛</span> 5레벨이 되면 달 20개 <p className="giftIcon">선물받기</p>
+            <span className="eventText">💛이벤트💛</span> 5레벨이 되면 달 20개 <p className="giftIcon">선물받기</p>
           </button>
         ) : viewLevel === 10 ? (
           <button className="levelEventBanner isRed" onClick={() => history.push('/event/level_achieve')}>
-            <span className="evnetText isWhite">💛이벤트💛</span> 10레벨이 되면 달 50개 <p className="giftIcon isRed">선물받기</p>
+            <span className="eventText isWhite">💛이벤트💛</span> 10레벨이 되면 달 50개 <p className="giftIcon isRed">선물받기</p>
           </button>
         ) : (
           <></>

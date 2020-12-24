@@ -35,6 +35,12 @@ export default (props) => {
               <Alert />
             </Message>
           )
+        if (type === 'alert_no_close')
+          return (
+            <Message>
+              <AlertNoClose />
+            </Message>
+          )
         if (type === 'confirm')
           return (
             <Message>
@@ -49,13 +55,6 @@ export default (props) => {
           )
         if (type === 'toast') return <Toast />
 
-        if (type === 'alert_no_Close')
-          return (
-            <Message>
-              <AlertNoClose />
-            </Message>
-          )
-        break
       case false:
         break
     }

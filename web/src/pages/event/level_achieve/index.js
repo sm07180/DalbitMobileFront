@@ -104,7 +104,7 @@ export default () => {
     })
 
     if (result === 'success') {
-      context.action.alert_no_Close({
+      context.action.alert_no_close({
         msg: `${
           viewLevel === '5' ? `선물로 달 20개가 지급되었습니다.` : viewLevel === '10' ? `선물로 달 50개가 지급되었습니다.` : ''
         }`,
@@ -114,11 +114,11 @@ export default () => {
       })
     } else {
       if (code === '-1') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: '보상받는 대상이 아닙니다.'
         })
       } else if (code === '-2') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: `${
             viewLevel === '5'
               ? `5레벨을 달성 후 선물받기를 눌러주세요.`
@@ -128,11 +128,11 @@ export default () => {
           }`
         })
       } else if (code === '-3') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: '이벤트 기간이 종료되어 선물을 받을 수 없습니다.'
         })
       } else if (code === '-4') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: `${
             viewLevel === '5'
               ? `이미 선물을 받은 계정입니다. 5레벨 달성 선물은 1인1번만 지급하고 있습니다. `
@@ -142,14 +142,14 @@ export default () => {
           }`
         })
       } else if (code === '-5') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: '본인인증 후 선물을 받을 수 있습니다.',
           callback: () => {
             history.push('/self_auth/self?event=/event/level_achieve')
           }
         })
       } else if (code === '-6') {
-        context.action.alert_no_Close({
+        context.action.alert_no_close({
           msg: `${
             viewLevel === '5'
               ? `이미 선물을 받은 계정입니다. 5레벨 달성선물은 1인1번만 지급하고 있습니다. `
