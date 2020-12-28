@@ -2,7 +2,6 @@ import React, {useState, useEffect, useContext, useCallback, useRef} from 'react
 import Api from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
-import Layout from 'pages/common/layout'
 import './level_achieve.scss'
 
 let timer
@@ -227,76 +226,74 @@ export default () => {
   }, [])
 
   return (
-    <Layout status="no_gnb">
-      <div id="levelAchieve">
-        <button className="btnBack" onClick={() => history.goBack()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-        </button>
-        {viewLevel === '5' ? (
-          <>
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/img_five01.jpg"
-              alt="가입후 주 이내 5레벨을 달성하시면 달 20개를 선물로 드립니다."
-            />
-            <div className="timeWrap">
-              <img src="https://image.dalbitlive.com/event/level_achieve/bg_img_five02_1.jpg" alt="이벤트 남은시간" />
-              <div className="joinDay">
-                {startDt !== null && (
-                  <>
-                    {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
-                      8,
-                      2
-                    )}:${startDt.substr(10, 2)} `}
-                  </>
-                )}
-              </div>
-              <div className="countBox">{count !== null && CountWrapComponent()}</div>
+    <div id="levelAchieve">
+      <button className="btnBack" onClick={() => history.goBack()}>
+        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+      </button>
+      {viewLevel === '5' ? (
+        <>
+          <img
+            src="https://image.dalbitlive.com/event/level_achieve/img_five01.jpg"
+            alt="가입후 주 이내 5레벨을 달성하시면 달 20개를 선물로 드립니다."
+          />
+          <div className="timeWrap">
+            <img src="https://image.dalbitlive.com/event/level_achieve/bg_img_five02_1.jpg" alt="이벤트 남은시간" />
+            <div className="joinDay">
+              {startDt !== null && (
+                <>
+                  {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
+                    8,
+                    2
+                  )}:${startDt.substr(10, 2)} `}
+                </>
+              )}
             </div>
-            <button onClick={() => rewardButton()} className="eventButton">
-              <img src="https://image.dalbitlive.com/event/level_achieve/btn_five.png" alt="선물받기" />
-            </button>
+            <div className="countBox">{count !== null && CountWrapComponent()}</div>
+          </div>
+          <button onClick={() => rewardButton()} className="eventButton">
+            <img src="https://image.dalbitlive.com/event/level_achieve/btn_five.png" alt="선물받기" />
+          </button>
 
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/20201214/img_five03.jpg"
-              alt="이벤트 유의사항 5레벨 달성 선물은 가입후 2주일 이내에만 유효합니다."
-              className="noticeImg"
-            />
-          </>
-        ) : viewLevel === '10' ? (
-          <>
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/img_ten01.jpg"
-              alt="5레벨 달성후 2주일 내 10레벨을 달성하시면 달 50개를 선물로 드립니다."
-            />
-            <div className="timeWrap">
-              <img src="https://image.dalbitlive.com/event/level_achieve/20201214/new_bg_img_ten02_1.jpg" alt="이벤트 남은시간" />
+          <img
+            src="https://image.dalbitlive.com/event/level_achieve/20201214/img_five03.jpg"
+            alt="이벤트 유의사항 5레벨 달성 선물은 가입후 2주일 이내에만 유효합니다."
+            className="noticeImg"
+          />
+        </>
+      ) : viewLevel === '10' ? (
+        <>
+          <img
+            src="https://image.dalbitlive.com/event/level_achieve/img_ten01.jpg"
+            alt="5레벨 달성후 2주일 내 10레벨을 달성하시면 달 50개를 선물로 드립니다."
+          />
+          <div className="timeWrap">
+            <img src="https://image.dalbitlive.com/event/level_achieve/20201214/new_bg_img_ten02_1.jpg" alt="이벤트 남은시간" />
 
-              <div className="joinDay ten">
-                {startDt !== null && (
-                  <>
-                    {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
-                      8,
-                      2
-                    )}:${startDt.substr(10, 2)} `}
-                  </>
-                )}
-              </div>
-              <div className="countBox">{count !== null && CountWrapComponent()}</div>
+            <div className="joinDay ten">
+              {startDt !== null && (
+                <>
+                  {`${startDt.substr(0, 4)}.${startDt.substr(4, 2)}.${startDt.substr(6, 2)} ${startDt.substr(
+                    8,
+                    2
+                  )}:${startDt.substr(10, 2)} `}
+                </>
+              )}
             </div>
-            <button onClick={() => rewardButton()} className="eventButton">
-              <img src="https://image.dalbitlive.com/event/level_achieve/btn_ten.png" alt="선물받기" />
-            </button>
+            <div className="countBox">{count !== null && CountWrapComponent()}</div>
+          </div>
+          <button onClick={() => rewardButton()} className="eventButton">
+            <img src="https://image.dalbitlive.com/event/level_achieve/btn_ten.png" alt="선물받기" />
+          </button>
 
-            <img
-              src="https://image.dalbitlive.com/event/level_achieve/20201214/img_ten03.jpg"
-              alt="10레벨 달성 선물은 5레벨 달성 후 2주일 이내에만 유효합니다."
-              className="noticeImg"
-            />
-          </>
-        ) : (
-          <></>
-        )}
-      </div>
-    </Layout>
+          <img
+            src="https://image.dalbitlive.com/event/level_achieve/20201214/img_ten03.jpg"
+            alt="10레벨 달성 선물은 5레벨 달성 후 2주일 이내에만 유효합니다."
+            className="noticeImg"
+          />
+        </>
+      ) : (
+        <></>
+      )}
+    </div>
   )
 }
