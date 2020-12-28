@@ -25,18 +25,24 @@
   }
 
   .content-wrap {
-    display: flex;
-    flex-wrap: wrap;
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
     padding: 16px;
     box-sizing: border-box;
 
     .story-wrap {
       position: relative;
+      float: left;
       width: calc(50% - 4px);
       margin-bottom: 8px;
+      padding-bottom: calc(50% - 4px);
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 16px;
       cursor: pointer;
-      z-index: 2;
       &::after {
         content: '';
         position: absolute;
@@ -48,9 +54,9 @@
         border-radius: 16px;
         z-index: 1;
       }
-      &:nth-child(2n + 1) {
-        margin-right: 8px;
-      }
+      // &:nth-child(2n + 1) {
+      //   margin-right: 8px;
+      // }
       .thumb {
         width: 100%;
         height: 100%;

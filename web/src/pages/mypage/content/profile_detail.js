@@ -595,6 +595,7 @@ export default (props) => {
         {/* 스디 check*/}
         {checkSpecialDj()}
         {/* <ProfileMsg dangerouslySetInnerHTML={{__html: profile.profMsg.split('\n').join('<br />')}}></ProfileMsg> */}
+        {profile.memId && <span className="profileMemId">{profile.memId}</span>}
         {profile.profMsg && <div className="profileMsgWrap">{profile.profMsg}</div>}
         {((profile.fanBadgeList && profile.fanBadgeList.length > 0) ||
           (profile.liveBadgeList && profile.liveBadgeList.length > 0)) && (

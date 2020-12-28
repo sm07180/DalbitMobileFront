@@ -13,8 +13,14 @@ export default (props) => {
         storyList.map((data, idx) => {
           const {roomNo, bgImg, title, storyCnt, startDt} = data
           return (
-            <div key={`story-${idx}`} className="story-wrap" onClick={() => history.push(`/story/${roomNo}`)}>
-              <img src={bgImg['thumb336x336']} className="thumb" alt={roomNo} />
+            <div
+              key={`story-${idx}`}
+              className="story-wrap"
+              onClick={() => history.push(`/story/${roomNo}`)}
+              style={{
+                backgroundImage: `url(${bgImg['thumb336x336']})`
+              }}>
+              {/* <img src={} className="thumb" alt={roomNo} /> */}
               <div className="icon-wrap">
                 <img src={MailIcon} />
                 <span className="text">{storyCnt}</span>

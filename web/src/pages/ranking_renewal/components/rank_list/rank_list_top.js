@@ -28,7 +28,7 @@ function RankListTop({specialPop}) {
   const TopBoxRef = useRef(null)
 
   const realTimeNow = useCallback(
-    (memNo, text, icon) => {
+    (memNo, liveBadgeList) => {
       let timeNow
       const dateNow = new Date()
       const monthNow = dateNow.getMonth()
@@ -60,18 +60,34 @@ function RankListTop({specialPop}) {
             if (formState[formState.pageType].rankType === RANK_TYPE.DJ) {
               TopBoxRef.current.className = 'TopBox isLabel'
               timeNow = (
-                <div className="labelDj">
-                  <img src={icon} alt="icon" />
-                  {text}
-                </div>
+                <>
+                  {liveBadgeList &&
+                    liveBadgeList.length !== 0 &&
+                    liveBadgeList.map((item, idx) => {
+                      return (
+                        <div key={idx} className="labelDj">
+                          <img src={item.icon} alt="icon" />
+                          {item.text}
+                        </div>
+                      )
+                    })}
+                </>
               )
             } else {
               TopBoxRef.current.className = 'TopBox isLabel'
               timeNow = (
-                <div className="labelFan">
-                  <img src={icon} alt="icon" />
-                  {text}
-                </div>
+                <>
+                  {liveBadgeList &&
+                    liveBadgeList.length !== 0 &&
+                    liveBadgeList.map((item, idx) => {
+                      return (
+                        <div key={idx} className="labelFan">
+                          <img src={item.icon} alt="icon" />
+                          {item.text}
+                        </div>
+                      )
+                    })}
+                </>
               )
             }
           }
@@ -106,14 +122,7 @@ function RankListTop({specialPop}) {
 
               return (
                 <div className="TopBox__item" key={index}>
-                  {liveBadgeList &&
-                    liveBadgeList.length !== 0 &&
-                    liveBadgeList.map((item, idx) => {
-                      return <div key={idx}> {realTimeNow(memNo, item.text, item.icon)}</div>
-                    })}
-                  { (liveBadgeList === null || liveBadgeList === undefined || liveBadgeList.length === 0)
-                    && realTimeNow(memNo, '', '')
-                  }
+                  {realTimeNow(memNo, liveBadgeList)}
                   <div
                     className={`TopBoxThumb ${formState[PAGE_TYPE.RANKING].rankType === RANK_TYPE.DJ ? 'dj' : 'fan'}`}
                     onClick={() => {
