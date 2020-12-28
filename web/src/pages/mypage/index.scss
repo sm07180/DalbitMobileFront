@@ -317,8 +317,9 @@
           }
         }
         .profileMemId {
+          display: block;
           font-size: 14px;
-          color: $mediumGray;
+          color: $greishGray;
         }
         .profileMsgWrap {
           padding: 0px 5px;
