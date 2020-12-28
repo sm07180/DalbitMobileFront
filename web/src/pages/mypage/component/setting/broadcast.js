@@ -17,7 +17,8 @@ const BroadSettingArray = [
   {value: SETTING_TYPE.TITLE, text: '방송 제목', subText: '최대 3개'},
   {value: SETTING_TYPE.WELCOME, text: 'DJ 인사말', subText: '최대 3개'},
   {value: SETTING_TYPE.SHORT_MSG, text: '퀵 메시지', subText: '최대 6개'},
-  {value: false, text: '선물 시 자동 친구추가', isButton: true},
+  {value: false, text: '방송 청취 정보 공개', isButton: true},
+  {value: false, text: '선물 시 자동 스타추가', isButton: true},
   {value: SETTING_TYPE.JOIN_CLOSE, text: '배지 / 입퇴장 메시지'}
 ]
 
@@ -48,15 +49,29 @@ function BroadCastSetting(props) {
     })
 
     if (res.result === 'success') {
-      if (value === false) {
-        context.action.toast({
-          msg: '선물 시 자동 친구 설정이 활성화 되었습니다.'
+      context.action.toast({
+        msg: res.message
+      })
+
+      setList(
+        list.map((v, index) => {
+          if (index === idx) {
+            v.value = !value
+          }
+          return v
         })
-      } else {
-        context.action.toast({
-          msg: '선물 시 자동 친구 설정이 비 활성화 되었습니다.'
-        })
-      }
+      )
+    }
+  }
+  const modifyListenOpen = async (value, idx) => {
+    const res = await Api.modifyBroadcastSetting({
+      listenOpen: !value
+    })
+
+    if (res.result === 'success') {
+      context.action.toast({
+        msg: res.message
+      })
 
       setList(
         list.map((v, index) => {
@@ -74,10 +89,14 @@ function BroadCastSetting(props) {
       const res = await Api.getBroadcastSetting()
 
       if (res.result === 'success') {
+        console.log(list)
         setList(
-          list.map((v) => {
-            if (typeof v.value === 'boolean') {
+          list.map((v, idx) => {
+            console.log(idx)
+            if (idx === 4) {
               v.value = res.data.giftFanReg
+            } else if (idx === 3) {
+              v.value = res.data.listenOpen
             }
             return v
           })
@@ -98,7 +117,9 @@ function BroadCastSetting(props) {
             <span
               key={idx}
               onClick={() => {
-                if (typeof v.value === 'boolean') {
+                if (idx === 3) {
+                  modifyListenOpen(v.value, idx)
+                } else if (idx === 4) {
                   modifyGiftFanReg(v.value, idx)
                 } else {
                   setSubContents(v.value)

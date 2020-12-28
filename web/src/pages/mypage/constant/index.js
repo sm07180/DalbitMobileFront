@@ -10,5 +10,6 @@ export const SETTING_TYPE = {
   TITLE: 0,
   WELCOME: 1,
   SHORT_MSG: 2,
-  JOIN_CLOSE: 3
+  JOIN_CLOSE: 3,
+  LISTEN: 4
 }

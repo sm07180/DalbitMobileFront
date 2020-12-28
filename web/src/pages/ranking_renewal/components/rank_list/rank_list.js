@@ -245,12 +245,23 @@ function RankList() {
                           if (roomNo !== '') {
                             RoomJoin({roomNo: roomNo, nickNm: nickNm})
                           } else {
-                            context.action.confirm({
-                              msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
-                              callback: () => {
-                                return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
-                              }
-                            })
+                            let alertMsg
+                            if (isNaN(listenRoomNo)) {
+                              alertMsg = `${nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+                              context.action.alert({
+                                type: 'alert',
+                                msg: alertMsg
+                              })
+                            } else {
+                              alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+                              context.action.confirm({
+                                type: 'confirm',
+                                msg: alertMsg,
+                                callback: () => {
+                                  return RoomJoin({roomNo: listenRoomNo, listener: 'listener'})
+                                }
+                              })
+                            }
                           }
                         }
                       }}

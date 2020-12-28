@@ -508,6 +508,16 @@
           .icoWrap {
             display: flex;
             align-items: center;
+            &.isArrow {
+              &::after {
+                display: inline-block;
+                vertical-align: middle;
+                content: '';
+                width: 24px;
+                height: 24px;
+                background: url(https://image.dalbitlive.com/svg/ico_arrow2_right_b.svg) no-repeat right center;
+              }
+            }
           }
           .count-box {
             display: flex;
@@ -517,6 +527,7 @@
             position: relative;
             width: 88px;
             height: 50px;
+            cursor: pointer;
             &::before {
               content: '';
               position: absolute;

@@ -146,7 +146,7 @@ export default (props) => {
       <>
         {type !== 'like' && count > 0 ? (
           <div className="count-box" onClick={() => viewLayer(type)}>
-            <span className="icoWrap">
+            <span className="icoWrap isArrow">
               <span className={`icoImg ${ico}`}></span>
               <em className={`icotitle ${showEdit ? 'icotitle--active' : ''}`}>{text}</em>
             </span>
@@ -497,12 +497,23 @@ export default (props) => {
                       ) {
                         return Hybrid('CloseLayerPopup')
                       }
-                      context.action.confirm({
-                        msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
-                        callback: () => {
-                          return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
-                        }
-                      })
+                      let alertMsg
+                      if (isNaN(profile.listenRoomNo)) {
+                        alertMsg = `${profile.nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+                        context.action.alert({
+                          type: 'alert',
+                          msg: alertMsg
+                        })
+                      } else {
+                        alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+                        context.action.confirm({
+                          type: 'confirm',
+                          msg: alertMsg,
+                          callback: () => {
+                            return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
+                          }
+                        })
+                      }
                     }
                   }
 
@@ -524,12 +535,23 @@ export default (props) => {
                     ) {
                       return false
                     } else {
-                      context.action.confirm({
-                        msg: '해당 청취자가 있는 방송으로 입장하시겠습니까?',
-                        callback: () => {
-                          return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
-                        }
-                      })
+                      let alertMsg
+                      if (isNaN(profile.listenRoomNo)) {
+                        alertMsg = `${profile.nickNm} 님이 어딘가에서 청취중입니다. 위치 공개를 원치 않아 해당방에 입장할 수 없습니다`
+                        context.action.alert({
+                          type: 'alert',
+                          msg: alertMsg
+                        })
+                      } else {
+                        alertMsg = `해당 청취자가 있는 방송으로 입장하시겠습니까?`
+                        context.action.confirm({
+                          type: 'confirm',
+                          msg: alertMsg,
+                          callback: () => {
+                            return RoomJoin({roomNo: profile.listenRoomNo, listener: 'listener'})
+                          }
+                        })
+                      }
                     }
                   }
                 }
