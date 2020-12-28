@@ -430,6 +430,7 @@ const Wrap = styled.div`
     &__infoBox {
       display: flex;
       flex-direction: column;
+      flex: 1;
       cursor: pointer;
     }
     &__nick {
