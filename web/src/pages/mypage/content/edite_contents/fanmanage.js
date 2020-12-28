@@ -290,7 +290,7 @@ export default (props) => {
                   <div className="list__imgBox" onClick={() => Link(memNo)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
-                  <div className="list__infoBox">
+                  <div className="list__infoBox" onClick={() => Link(memNo)}>
                     <span className="list__nick">{nickNm}</span>
                     <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
                       등록일 - {Utility.dateFormatterKor(regDt)}
@@ -409,6 +409,7 @@ const Wrap = styled.div`
     &__infoBox {
       display: flex;
       flex-direction: column;
+      cursor: pointer;
     }
     &__nick {
       margin-bottom: 4px;
