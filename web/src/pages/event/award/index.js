@@ -3,7 +3,7 @@ import {useParams} from 'react-router-dom'
 
 import Layout from 'pages/common/layout'
 import AwardMain from './contents'
-import AwardResult from './contents/result'
+import AwardResult from './contents/result/result'
 import './award.scss'
 
 export default function awardEvent() {

@@ -91,6 +91,34 @@
         }
       }
     }
+
+    &.result {
+      padding-top: 5px;
+      .btn {
+        width: 50%;
+
+        img {
+          width: 60%;
+        }
+
+        &:nth-of-type(2) {
+          &.active {
+            background-color: #ffd05f;
+            border-color: #ea9c00;
+
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: -3px;
+              left: 0;
+              width: 100%;
+              height: 3px;
+              background-color: #ffd05f;
+            }
+          }
+        }
+      }
+    }
   }
 
   .countBoxWrap {
@@ -402,6 +430,188 @@
       font-weight: $bold;
       text-align: center;
       background-color: $primary;
+    }
+  }
+
+  .tabDjWrap {
+    border-top: 3px solid#e84d70;
+    padding: 30% 0 20% 0;
+    background: url(https://image.dalbitlive.com/event/award/201214/bg-result01.png),
+      url(https://image.dalbitlive.com/event/award/201214/bg-result02.png);
+    background-repeat: no-repeat, no-repeat;
+    background-size: 100%;
+    background-position: center top, center bottom;
+
+    .awardDjList {
+      padding: 0 3%;
+
+      .awardDjItem {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border: 4px solid #ffd71b;
+        background-color: $white;
+        border-radius: 20px;
+        box-sizing: border-box;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: -12%;
+          left: 0;
+          width: 12%;
+          height: 35%;
+          background: url('https://image.dalbitlive.com/event/award/201214/ico-2020-trophy.png') no-repeat;
+          background-size: 100%;
+        }
+
+        .djThumbBox {
+          position: relative;
+          overflow: hidden;
+          width: 38%;
+
+          border-radius: 14px;
+          cursor: pointer;
+          img {
+            width: 100%;
+          }
+
+          .nickName {
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            padding: 10px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: $white;
+            text-align: center;
+            font-size: 14px;
+          }
+        }
+
+        .bestFanList {
+          width: 59%;
+
+          .bestFanItem {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            .thumb {
+              position: relative;
+              width: 18%;
+              margin-right: 8px;
+
+              &__image {
+                width: 100%;
+                border-radius: 50%;
+              }
+
+              &__medal {
+                position: absolute;
+                bottom: -10%;
+                right: 0;
+                width: 40%;
+                height: 47%;
+              }
+            }
+
+            span {
+              display: block;
+              flex: 1;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-wrap: normal;
+              font-size: 14px;
+            }
+
+            & + .bestFanItem {
+              margin-top: 8px;
+            }
+          }
+        }
+
+        & + .awardDjItem {
+          margin-top: 34px;
+        }
+      }
+    }
+
+    .notice {
+      padding-top: 32px;
+      line-height: 25px;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
+    }
+  }
+
+  .tabFanWrap {
+    border-top: 3px solid#ea9c00;
+    padding: 30% 0 20% 0;
+    background: url(https://image.dalbitlive.com/event/award/201214/bg-result04.png),
+      url(https://image.dalbitlive.com/event/award/201214/bg-result03.png);
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center top, center bottom;
+
+    .awardFanList {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 0 5%;
+
+      .awardFanItem {
+        width: 30%;
+        margin-right: 5%;
+        padding-bottom: 20px;
+        cursor: pointer;
+
+        .thumb {
+          position: relative;
+
+          &__image {
+            width: 100%;
+            border-radius: 50%;
+          }
+
+          &__medal {
+            position: absolute;
+            bottom: 4%;
+            right: 2%;
+            width: 30%;
+            height: 40%;
+          }
+        }
+
+        .nickName {
+          overflow: hidden;
+          padding-top: 10px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          word-wrap: normal;
+          text-align: center;
+          color: #333;
+        }
+
+        &:nth-child(3n) {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .notice {
+      padding-top: 32px;
+      line-height: 25px;
+      text-align: center;
+      font-size: 14px;
+      color: #333;
     }
   }
 }
