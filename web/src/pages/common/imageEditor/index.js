@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import styled from 'styled-components'
@@ -13,7 +13,9 @@ export default () => {
   const {location} = history
   const context = useContext(Context)
   const defaultSrc = location.state['src'] || ''
-
+  const mimeType = location.state.mimeType || 'jpeg'
+  const isQualityDown = location.state.isQualityDown || false
+  const convertType = mimeType === 'jpg' ? 'jpeg' : mimeType
   const [image, setImage] = useState(defaultSrc)
   const [cropData, setCropData] = useState('#')
   const [cropper, setCropper] = useState(null)
@@ -29,7 +31,11 @@ export default () => {
   const cropImage = () => {
     if (typeof cropper !== 'undefined') {
       setIsCrop(true)
-      setCropData(cropper.getCroppedCanvas().toDataURL())
+      if (isQualityDown) {
+        setCropData(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`, 20 / 100))
+      } else {
+        setCropData(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`))
+      }
     }
   }
   const rotateImage = () => {
@@ -40,7 +46,14 @@ export default () => {
   }
   const submit = () => {
     if (typeof cropper !== 'undefined') {
-      context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL())
+      // console.log('size', cropper.getCroppedCanvas().toDataURL())
+      // console.log('len', cropper.getCroppedCanvas().toDataURL().length)
+      if (isQualityDown) {
+        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`, 20 / 100))
+      } else {
+        context.action.updateEditImage(cropper.getCroppedCanvas().toDataURL(`image/${convertType}`))
+      }
+
       history.goBack()
     }
   }

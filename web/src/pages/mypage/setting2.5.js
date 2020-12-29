@@ -39,6 +39,7 @@ export default (props) => {
     let reader = new FileReader()
     const target = e.currentTarget
     const file = target.files[0]
+    const isQualityDown = file.size > 10000000
     const fileName = file.name
     const fileSplited = fileName.split('.')
     const fileExtension = fileSplited.pop()
@@ -121,7 +122,9 @@ export default (props) => {
           // context.action.updateTempImage(originalCacheURL)
           // context.action.updateEditImage(originalCacheURL)
           history.push('/ImageEditor', {
-            src: originalCacheURL
+            src: originalCacheURL,
+            mimeType: fileExtension,
+            isQualityDown: isQualityDown
           })
         }
       }
@@ -130,7 +133,6 @@ export default (props) => {
   // 이미지 editor 후 upload
   const uploadImage = useCallback(() => {
     if (editImage) {
-      console.log('upload')
       setPhotoUploading(true)
       setActive(false)
       uploadImageToServer(editImage)
