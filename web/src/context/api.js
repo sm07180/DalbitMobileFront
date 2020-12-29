@@ -3004,6 +3004,13 @@ export default class API {
       data: data
     })
   }
+  static getAwardResult = async (data) => {
+    return await ajax({
+      url: '/award/result',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null
