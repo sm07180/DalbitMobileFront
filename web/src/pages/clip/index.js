@@ -112,7 +112,6 @@ export default (props) => {
   const [detailPopup, setDetailPopup] = useState(false)
   const [refreshAni, setRefreshAni] = useState(false)
   const [scrollY, setScrollY] = useState(0)
-  const [moreType, setMoreType] = useState('day')
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
@@ -156,9 +155,8 @@ export default (props) => {
     })
   swiperParamsBest.loop = filterArrayTop3.length > 1 ? true : false
   function shuffle(a) {
-    weekClip__moreButton
     for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(MaweekClip__moreButtonth.random() * (i + 1))
+      const j = Math.floor(Math.random() * (i + 1))
       console.log(j)
       ;[a[i], a[j]] = [a[j], a[i]]
     }
@@ -845,7 +843,7 @@ export default (props) => {
           <></>
         )}
         {popularList.length > 0 ? (
-          <div className="recomClip" ref={recomendRef} style={{minHeight: popularList.length > 3 ? '282px' : '172px'}}>
+          <div className="recomClip" ref={recomendRef}>
             <div className="recomClip__title">
               <h3 className="clipTitle">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h3>
               <div className="recomClip__title__rightSide">
@@ -863,71 +861,23 @@ export default (props) => {
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <div ref={recomendRef} style={{minHeight: '282px'}}></div>
+          <div ref={recomendRef}></div>
         )}
 
-        {/* {clipRankingList.length > 0 ? ( */}
-        <div className="rankClip" ref={clipRankingRef}>
-          <div className="rankClip__titleBox">
-            <h3 className="rankClip__title" onClick={() => history.push('/clip_rank')}>
-              클립 랭킹
-            </h3>
-            <div className="rankClip__moreButton">
-              <button
-                className={moreType === 'day' ? 'isActive' : ''}
-                onClick={() => {
-                  setMoreType('day')
-                }}>
-                일간
-              </button>
-              <button
-                className={moreType === 'week' ? 'isActive' : ''}
-                onClick={() => {
-                  setMoreType('week')
-                }}>
-                주간
-              </button>
+        {clipRankingList && clipRankingList.length > 0 ? (
+          <div className="rankClip" ref={clipRankingRef}>
+            <div className="titleBox">
+              <h3 className="clipTitle isArrow">클립 랭킹</h3>
+              <ul className="tabList">{makeRankTabList()}</ul>
             </div>
+
+            <Swiper {...swiperParamsRecent}>{makeRankList(clipRankingList)}</Swiper>
           </div>
-          <ul className="rankClipList">
-            <li className="rankClipListItem">
-              <div className="rankClipListItem__thumb">
-                <img
-                  src="https://devphoto2.dalbitlive.com/clip_0/21328070400/20211228102323300722.jpeg?336x336"
-                  alt="클립 랭킹 이미지"
-                />
-              </div>
-              <p className="rankClipListItem__nickName">하나 하나하나 하나하나 하나</p>
-              <p className="rankClipListItem__title">둘둘둘둘둘둘둘둘둘둘둘둘둘둘둘둘둘둘</p>
-            </li>
-
-            <li className="rankClipListItem">
-              <div className="rankClipListItem__thumb">
-                <img
-                  src="https://devphoto2.dalbitlive.com/clip_0/20911316400/20201222081059410201.jpeg?190x190"
-                  alt="클립 랭킹 이미지"
-                />
-              </div>
-              <p className="rankClipListItem__nickName">닉네임입니다.닉네임입니다.</p>
-              <p className="rankClipListItem__title">내용입니다.내용입니다.내용입니다.</p>
-            </li>
-            <li className="rankClipListItem">
-              <div className="rankClipListItem__thumb">
-                <img
-                  src="https://devphoto2.dalbitlive.com/clip_0/20911316400/20201222082314008799.jpeg?190x190"
-                  alt="클립 랭킹 이미지"
-                />
-              </div>
-              <p className="rankClipListItem__nickName">안녕하세요</p>
-              <p className="rankClipListItem__title">반갑습니다</p>
-            </li>
-          </ul>
-        </div>
-        {/* ) : (
+        ) : (
           <></>
-        )} */}
+        )}
 
-        <div className="clipBanner" style={{minHeight: '95px'}}>
+        <div className="clipBanner">
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
