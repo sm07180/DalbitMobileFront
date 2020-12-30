@@ -542,7 +542,8 @@ const GlobalProvider = (props) => {
     roomType,
     selfAuth,
     closeSpeical,
-    splash
+    splash,
+    dateState
   }
   return <Provider value={value}>{props.children}</Provider>
 }
