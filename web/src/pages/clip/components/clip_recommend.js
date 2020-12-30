@@ -20,7 +20,7 @@ export default function clipRecommend() {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
-  const dateState = context.dateState
+  const dateState = convertDateFormat(context.dateState, 'YYYY-MM-DD')
 
   const [textView, setTextView] = useState(false)
   const [marketingClipObj, setMarketingClipObj] = useState([])
@@ -32,8 +32,8 @@ export default function clipRecommend() {
 
   const isLast = useMemo(() => {
     const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
-
-    if (dateState === currentDate) {
+    console.log(dateState, currentDate)
+    if (dateState >= currentDate) {
       return true
     } else {
       return false
@@ -43,7 +43,7 @@ export default function clipRecommend() {
   const isLastPrev = useMemo(() => {
     const currentDate = convertDateFormat(new Date('2020-10-26'), 'YYYY-MM-DD')
 
-    if (dateState === currentDate) {
+    if (dateState <= currentDate) {
       return true
     } else {
       return false
@@ -72,7 +72,6 @@ export default function clipRecommend() {
       } else {
         setButtonToggle(false)
       }
-      console.log(data.recommendInfo)
       setMarketingClipObj(data.recommendInfo)
       setMarketingClipList(data.list)
       setClip(data.recommendInfo.clipNo)
