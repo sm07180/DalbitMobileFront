@@ -645,9 +645,9 @@
           content: '';
         }
         &:disabled {
-          opacity: 0.2;
+          opacity: 0.4;
           &::before {
-            opacity: 0.2;
+            opacity: 0.4;
           }
         }
       }
@@ -661,9 +661,9 @@
           content: '';
         }
         &:disabled {
-          opacity: 0.2;
+          opacity: 0.4;
           &::after {
-            opacity: 0.2;
+            opacity: 0.4;
           }
         }
       }
