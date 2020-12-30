@@ -39,7 +39,8 @@ const makeContents = (props) => {
       isNew,
       totalCnt,
       gstProfImg,
-      isGoodMem
+      isGoodMem,
+      goodMem
     } = list
 
     const alertCheck = (roomNo) => {
@@ -180,10 +181,15 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
-              {isGoodMem && (
+              {goodMem && goodMem.length > 0 && (
                 <div className="value isGoodMember">
-                  <i className="value--goodMem">사랑꾼</i>
-                  <span />
+                  {goodMem.map((idx) => {
+                    return (
+                      <i className={`value--goodMem${idx}`} key={idx}>
+                        사랑꾼{idx}
+                      </i>
+                    )
+                  })}
                 </div>
               )}
               {/* {rank < 11 && (
