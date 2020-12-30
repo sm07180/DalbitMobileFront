@@ -44,22 +44,24 @@ export default function detailPopup(props) {
           <div className="each-line">
             <div className="text">정렬 조건</div>
             <div className="tab-wrap">
-              <div>
-                <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
-                  최신순
-                </button>
-                <button type="button" className={sortState === 3 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(3)}>
-                  선물순
-                </button>
-              </div>
-              <div>
-                <button type="button" className={sortState === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(2)}>
-                  인기순
-                </button>
-                <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
-                  재생순
-                </button>
-              </div>
+              <button type="button" className={sortState === 6 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(6)}>
+                랜덤
+              </button>
+              <button type="button" className={sortState === 1 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(1)}>
+                최신순
+              </button>
+              <button type="button" className={sortState === 5 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(5)}>
+                오래된순
+              </button>
+              <button type="button" className={sortState === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(2)}>
+                인기순
+              </button>
+              <button type="button" className={sortState === 3 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(3)}>
+                선물순
+              </button>
+              <button type="button" className={sortState === 4 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(4)}>
+                재생순
+              </button>
             </div>
           </div>
 
@@ -155,33 +157,30 @@ const PopupWrap = styled.div`
         display: flex;
         align-items: center;
         flex-direction: row;
-        justify-content: space-between;
+
         font-size: 16px;
         font-weight: 600;
         margin-bottom: 6px;
         color: #000;
       }
       .infoTxt {
-        font-size: 14px;
-        color: #616161;
+        margin-left: 4px;
+        font-size: 12px;
+        color: #000;
         font-weight: normal;
       }
       .tab-wrap {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        > div {
-          display: flex;
-          flex-direction: column;
-          width: 49.3%;
-        }
+
         .tab-btn {
           border: 1px solid #e0e0e0;
           border-radius: 12px;
           font-size: 14px;
           color: #000;
           background: #fff;
-          width: 100%;
+          width: 33%;
           line-height: 42px;
           height: 42px;
           align-content: space-between;

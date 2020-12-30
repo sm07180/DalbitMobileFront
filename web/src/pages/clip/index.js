@@ -916,6 +916,8 @@ export default (props) => {
                 {context.clipMainSort === 3 && <span>선물순</span>}
                 {context.clipMainSort === 4 && <span>재생순</span>}
                 {context.clipMainSort === 2 && <span>인기순</span>}
+                {context.clipMainSort === 6 && <span>랜덤</span>}
+                {context.clipMainSort === 5 && <span>오래된순</span>}
                 <img src={filterIcon} alt="카테고리 필터 이미지" />
               </button>
               <div className="sequenceBox">

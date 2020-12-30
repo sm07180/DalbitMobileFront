@@ -27,8 +27,9 @@ import BankTimePopup from './bank_time_pop'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
-import icoPlus from '../../static/add.svg'
-import icoMinus from '../../static/minus.svg'
+
+const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
+const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
@@ -377,14 +378,13 @@ const Content = styled.div`
       button {
         width: 24px;
         height: 24px;
-        background: rgb(238 238 238);
         text-indent: -9999px;
         border-radius: 3px;
         &.plus {
-          background: #eeeeee url(${icoPlus}) no-repeat center;
+          background: #632beb url(${icoPlus}) no-repeat center;
         }
         &.minus {
-          background: #eeeeee url(${icoMinus}) no-repeat center;
+          background: #632beb url(${icoMinus}) no-repeat center;
         }
       }
     }
