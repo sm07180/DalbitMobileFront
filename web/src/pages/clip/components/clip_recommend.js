@@ -1,122 +1,84 @@
-import React, {useState, useEffect, useContext, useMemo} from 'react'
+import React, {useState, useEffect, useContext, useMemo, useRef} from 'react'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
-import {convertDateFormat, calcDate, convertMonday} from 'pages/common/rank/rank_fn'
+import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
+import {convertDateFormat} from 'components/lib/dalbit_moment'
 import {OS_TYPE} from 'context/config'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 import Header from 'components/ui/new_header.js'
 import Layout from 'pages/common/layout'
 import RankPopup from './clip_recommend_rank_list'
 import NoResult from 'components/ui/new_noResult'
 import '../clip.scss'
+import set from "@babel/runtime/helpers/esm/set";
 
 export default function clipRecommend() {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
-  const dateState = history.location.state
+  const dateState = context.dateState
 
   const [textView, setTextView] = useState(false)
   const [marketingClipObj, setMarketingClipObj] = useState([])
   const [marketingClipList, setMarketingClipList] = useState([])
-  const [recDate, setRecDate] = useState(dateState)
-  const [topRankList, setTopRankList] = useState([])
-  const [popupState, setPopupState] = useState(false)
+  // const [popupState, setPopupState] = useState(false)
   const [clip, setClip] = useState('')
+  const contentText = useRef(null)
+  const [buttonToggle, setButtonToggle] = useState(false)
 
   const isLast = useMemo(() => {
-    const currentDate = convertDateFormat(convertMonday(), '-')
+    const currentDate = convertDateFormat(convertMonday(), "YYYY-MM-DD")
 
-    if (recDate === currentDate) {
+    if (dateState === currentDate) {
       return true
     } else {
       return false
     }
-  }, [recDate])
+  }, [dateState])
 
   const isLastPrev = useMemo(() => {
-    const currentDate = convertDateFormat(new Date('2020-10-19'), '-')
+    const currentDate = convertDateFormat(new Date('2020-10-26'), "YYYY-MM-DD")
 
-    if (recDate === currentDate) {
+    if (dateState === currentDate) {
       return true
     } else {
       return false
     }
-  }, [recDate])
+  }, [dateState])
 
   const viewToggle = () => {
     if (textView === false) {
       setTextView(true)
+      contentText.current.style.height = 'auto'
     } else {
       setTextView(false)
+      contentText.current.style.height = '58px'
     }
   }
   const fetchMarketingClipList = async () => {
     const {result, data, message} = await Api.getMarketingClipList({
-      recDate: recDate,
+      recDate: dateState,
       isLogin: context.token.isLogin,
       isClick: true
     })
     if (result === 'success') {
+      let length = data.recommendInfo.descMsg.split('\n').length
+      if(length > 2) {
+        setButtonToggle(true)
+      } else {
+        setButtonToggle(false)
+      }
+      console.log(data.recommendInfo)
       setMarketingClipObj(data.recommendInfo)
       setMarketingClipList(data.list)
       setClip(data.recommendInfo.clipNo)
-
-      fetchRankTop(data.recommendInfo.clipNo)
     } else {
       context.action.alert({msg: message})
     }
-  }
-
-  const AddFan = (memNo) => {
-    async function AddFanFunc(memNo) {
-      const {result, data, message} = await Api.fan_change({
-        data: {
-          memNo: memNo
-        }
-      })
-      if (result === 'success') {
-        context.action.alert({msg: message})
-        fetchMarketingClipList()
-      } else {
-        context.action.alert({msg: message})
-      }
-    }
-    AddFanFunc(memNo)
-  }
-
-  const DeleteFan = (memNo) => {
-    async function DeleteFanFunc() {
-      const {result, data, message} = await Api.mypage_fan_cancel({
-        data: {
-          memNo: memNo
-        }
-      })
-      if (result === 'success') {
-        context.action.alert({msg: message})
-        fetchMarketingClipList()
-      } else {
-        context.action.alert({msg: message})
-      }
-    }
-    DeleteFanFunc(memNo)
-  }
-
-  const fetchRankTop = async (clipNo) => {
-    async function getGiftRankTopFunc() {
-      const {result, data, message} = await Api.getGiftRankTop({
-        clipNo: clipNo
-      })
-      if (result === 'success') {
-        setTopRankList(data.list)
-      } else {
-        setTopRankList([])
-      }
-    }
-    getGiftRankTopFunc()
   }
 
   const fetchDataPlay = async (clipNum, type) => {
@@ -144,9 +106,18 @@ export default function clipRecommend() {
     }
   }
 
+  const goUrl = (url) => {
+    if(isHybrid()) {
+      url += '?webview=new'
+      Hybrid('openUrl', url)
+    } else {
+      window.open(url, '_blank')
+    }
+  }
+
   useEffect(() => {
     fetchMarketingClipList()
-  }, [recDate])
+  }, [dateState])
 
   useEffect(() => {
     if (context.token.isLogin === false) {
@@ -156,7 +127,7 @@ export default function clipRecommend() {
 
   return (
     <Layout status="no_gnb">
-      <Header title="달대리 추천 클립" />
+      <Header title="주간 클립테이블" />
       <div id="clipRecommend" className="subContent gray">
         {marketingClipObj && (
           <>
@@ -165,145 +136,264 @@ export default function clipRecommend() {
                 className={`prev ${isLastPrev === true ? ' noHover' : 'on'}`}
                 disabled={isLastPrev === true}
                 onClick={() => {
-                  const date = calcDate(new Date(recDate), -7)
-                  setRecDate(convertDateFormat(date, '-'))
+                  const date = calcDate(new Date(dateState), -7)
+                  context.action.updateDateState(convertDateFormat(date, "YYYY-MM-DD"))
                 }}>
                 이전
               </button>
-              <strong className="day">{marketingClipObj.time}</strong>
+              <h3 className="day">{marketingClipObj.time}</h3>
               <button
                 className={`next ${isLast === true ? ' noHover' : 'on'}`}
                 disabled={isLast === true}
                 onClick={() => {
-                  const date = calcDate(new Date(recDate), 7)
-                  setRecDate(convertDateFormat(date, '-'))
+                  const date = calcDate(new Date(dateState), 7)
+                  context.action.updateDateState(convertDateFormat(date, "YYYY-MM-DD"))
                 }}>
                 다음
               </button>
             </div>
             <div className="play">
-              <div className="titleMsgBox">{marketingClipObj.titleMsg}</div>
-
-              <div className="video">
-                {marketingClipObj.videoUrl ? (
-                  <object
-                    type="text/html"
-                    width="360"
-                    height="208"
-                    data={`https://www.youtube.com/embed/${marketingClipObj.videoUrl}`}></object>
+              <div className="titleMsgBox">
+                {marketingClipObj.titleMsg}
+              </div>
+              <div
+                className="video"
+                onClick={() => {
+                if (customHeader['os'] === OS_TYPE['Desktop']) {
+                  if (context.token.isLogin === false) {
+                    context.action.alert({
+                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                      callback: () => {
+                        history.push('/login')
+                      }
+                    })
+                  } else {
+                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                  }
+                } else {
+                  fetchDataPlay(marketingClipObj.clipNo, 'dal')
+                }
+                context.action.updateDateState(marketingClipObj.recDate)
+              }}>
+                {marketingClipObj.bannerUrl ? (
+                  <img src={marketingClipObj.bannerUrl} alt="클립썸네일이미지" width="360" height="208"
+                    />
                 ) : (
                   <></>
                 )}
               </div>
 
-              <div className="fanBox">
-                {marketingClipObj.isFan === true && (
-                  <button className="fanButton isActive" onClick={() => DeleteFan(marketingClipObj.memNo)}>
-                    팬
-                  </button>
-                )}
-                {marketingClipObj.isFan === false && (
-                  <button className="fanButton" onClick={() => AddFan(marketingClipObj.memNo)}>
-                    + 팬등록
-                  </button>
-                )}
-                <button className="fanButton file" onClick={() => history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)}>
-                  {marketingClipObj.regCnt}
-                </button>
-                <ul className="userProfile">
-                  {topRankList &&
-                    topRankList.length > 0 &&
-                    topRankList.map((v, index) => {
-                      return (
-                        <li className="userProfile__list" key={index} onClick={() => history.push(`/mypage/${v.memNo}`)}>
-                          <img src={v.profImg.thumb62x62} />
-                        </li>
-                      )
-                    })}
+              <div className="videoItem">
+                <ul className="scoreBox" onClick={() => {
+                  history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)
+                  context.action.updateDateState(marketingClipObj.recDate)
+                }}>
+                  <li className="scoreList">
+                    <button className="scoreButton">
+                      <img src="https://image.dalbitlive.com/svg/ic_gift.svg" alt="별" />
+                    </button>
+                    <span className="scoreNumber">{Utility.addComma(marketingClipObj.byeolCnt)}</span>
+                  </li>
+                  <li className="scoreList">
+                    <button className="scoreButton">
+                      <img src="https://image.dalbitlive.com/svg/ic_heart_g.svg" alt="좋아요" />
+                    </button>
+                    <span className="scoreNumber">{Utility.addComma(marketingClipObj.goodCnt)}</span>
+                  </li>
+                  <li className="scoreList">
+                    <button className="scoreButton">
+                      <img src="https://image.dalbitlive.com/svg/ic_message_g.svg" alt="조회수" />
+                    </button>
+                    <span className="scoreNumber">{Utility.addComma(marketingClipObj.replyCnt)}</span>
+                  </li>
                 </ul>
-                {topRankList.length > 0 && (
-                  <button className="fanMore" onClick={() => setPopupState(popupState ? false : true)}>
-                    <span className="blind">팬랭킹 더보기</span>
-                  </button>
-                )}
+                <div className="snsBox">
+                  <h4 className="snsTitle">바로가기</h4>
+                  <ul className="snsList">
+                    <li>
+                      <button onClick={() => {goUrl(marketingClipObj.fbookUrl)}}>
+                        <img src="https://image.dalbitlive.com/svg/ic_facebook.svg" alt="페이스북 바로가기" />
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => {goUrl(marketingClipObj.instaUrl)}}>
+                        <img src="https://image.dalbitlive.com/svg/ic_instagram.svg" alt="인스타 그램 바로가기" />
+                      </button>
+                    </li>
+                    <li>
+                      <button onClick={() => {goUrl(marketingClipObj.ytubeUrl)}}>
+                        <img src="https://image.dalbitlive.com/svg/ic_youtube.svg" alt="유튜브 바로가기" />
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               </div>
 
               <div className="titleBox">
-                <span className="category">{marketingClipObj.subjectName}</span>
-                <i className="line">구분선</i>
-                <span className="playName">{marketingClipObj.title}</span>
-              </div>
+                <h4
+                  className="playName"
+                  onClick={() => {
+                    sessionStorage.setItem('clipPlayListInfo', JSON.stringify({type: 'one'}))
+                    ClipPlayerJoin(marketingClipObj.clipNo, gtx, history)
+                    context.action.updateDateState(marketingClipObj.recDate);
+                  }}>
+                  {marketingClipObj.title}
+                </h4>
 
-              <p className="nickName">{marketingClipObj.nickNm}</p>
+                <div className="userItem">
+                  {/* <span className="category">{marketingClipObj.subjectName}</span> */}
+                  <p className="nickName" onClick={() => {
+                    history.push(`/mypage/${marketingClipObj.clipMemNo}`)
+                    context.action.updateDateState(marketingClipObj.recDate);
+                  }}>
+                    {marketingClipObj.nickNm}
+                  </p>
+                  <button className="fileNumber" onClick={() => {
+                    history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)
+                    context.action.updateDateState(marketingClipObj.recDate);
+                  }}>
+                    {Utility.addComma(marketingClipObj.regCnt)}
+                  </button>
+                </div>
+              </div>
 
               <div className="text">
                 <div className={`playInfo ${textView ? `isActive` : ``}`}>
-                  <div className="text" dangerouslySetInnerHTML={{__html: Utility.nl2br(marketingClipObj.descMsg)}}></div>
+                  <div className="playText" ref={contentText} dangerouslySetInnerHTML={{ __html: marketingClipObj.descMsg }}></div>
+                  {buttonToggle &&
                   <button className={`more ${textView && 'on'}`} onClick={() => viewToggle()}>
-                    더보기
+                    <span>더보기</span>
                   </button>
+                  }{buttonToggle}
                 </div>
               </div>
             </div>
           </>
         )}
 
-        <h3 className="listTitle">
-          추천 클립 목록
-          {/*<button className="allPlay">전체듣기</button>*/}
-        </h3>
         {marketingClipList.length > 0 ? (
-          <ul className="itemBox">
-            {marketingClipList.map((v, i) => {
-              return (
-                <li
-                  key={`list-${i}`}
-                  className="item"
-                  onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (context.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
+          <>
+            <div className="listTitleBox">
+              <h3 className="listTitle">
+                함께 듣기 좋은 클립
+                <span className="subText">클립 듣고 좋아요 &#38; 댓글 남겨주시는 센스 😊</span>
+              </h3>
+              {/*<button className="allPlay" onClick={() => {}}>전체듣기</button>*/}
+            </div>
+
+            <ul className="playBox">
+              {marketingClipList.map((v, i) => {
+                return (
+                  <li className="playBox__list" key={`list-${i}`}>
+                    <div
+                      className="thumbnail"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
-                        })
-                      } else {
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(v.clipNo, 'dal')
-                    }
-                  }}>
-                  <div className="item__thumb">
-                    <img src={v.bgImg.thumb62x62} alt="클립썸네일" />
-                    <span className="item__thumb__playTime">{v.filePlay}</span>
-                  </div>
-                  <div className="textBox">
-                    <p className="textBox__subject">
-                      <span className="subject">{v.subjectName}</span>
-                      <i className="line"></i>
-                      <span className="title">{v.title}</span>
-                    </p>
-                    <p className="textBox__nickName">
-                      {v.gender === 'f' && (
-                        <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" alt="여자" />
-                      )}
-                      {v.gender === 'm' && (
-                        <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" alt="남자" />
-                      )}
-                      {v.nickNm}
-                    </p>
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
+                        } else {
+                          fetchDataPlay(v.clipNo, 'dal')
+                        }
+                        context.action.updateDateState(marketingClipObj.recDate);
+                      }}>
+                      <img
+                        src={v.bgImg.thumb62x62}
+                        alt="썸네일"
+                        className="thumbnail__img"
+                      />
+
+                      {/*<span className="thumbnail__specialDj">스페셜Dj</span>*/}
+                      <span className="thumbnail__playTime">{v.filePlay}</span>
+                    </div>
+                    <div
+                      className="textItem"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
+                          } else {
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
+                        } else {
+                          fetchDataPlay(v.clipNo, 'dal')
+                        }
+                        context.action.updateDateState(marketingClipObj.recDate);
+                      }}>
+                      <div className="textItem__titleBox">
+                        <div className="textItem__category">{v.subjectName}</div>
+                        <h4 className="textItem__title">{v.title}</h4>
+                      </div>
+                      <div className="textItem__nickName">
+                        {v.gender === "f" && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" alt="남성" />}
+                        {v.gender === "m" && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" alt="여성" />}
+                        {v.nickNm}
+                      </div>
+                      <ul className="textItem__scoreBox">
+                        <li className="textItem__scoreList">
+                          <span className="textItem__scoreList--message">{Utility.addComma(v.replyCnt)}</span>
+                        </li>
+                        <li className="textItem__scoreList">
+                          <span className="textItem__scoreList--like">{Utility.addComma(v.goodCnt)}</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="textItem__buttonBox">
+                      <button className="textItem__moreButton">
+                      <span
+                        className="textItem__moreButton--play"
+                        onClick={() => {
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            }
+                          } else {
+                            fetchDataPlay(v.clipNo, 'dal')
+                          }
+                          context.action.updateDateState(marketingClipObj.recDate);
+                        }}>
+                        플레이 아이콘</span>
+                      </button>
+                      <button className="textItem__moreButton">
+                      <span
+                        className="textItem__moreButton--people"
+                        onClick={() => {
+                          history.push(`/mypage/${v.memNo}`)
+                          context.action.updateDateState(marketingClipObj.recDate);
+                        }}>
+                        사람 아이콘
+                      </span>
+                      </button>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          </>
         ) : (
-          <NoResult text="등록된 클립이 없습니다." />
+          <NoResult type="default" text="등록된 클립이 없습니다."/>
         )}
       </div>
-      {popupState && <RankPopup setPopupState={setPopupState} clip={clip} />}
+      {/*{popupState && <RankPopup setPopupState={setPopupState} clip={clip} />}*/}
     </Layout>
   )
 }

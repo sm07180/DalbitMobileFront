@@ -27,7 +27,7 @@ function DalbitCropper(props) {
     if (cropper) {
       setState({
         ...state,
-        content: cropper.getCroppedCanvas().toDataURL()
+        content: cropper.getCroppedCanvas().toDataURL('image/jpeg', 20 / 100)
       })
     }
   }, [state, cropper])
@@ -35,7 +35,7 @@ function DalbitCropper(props) {
   const submit = useCallback(() => {
     setState({
       ...state,
-      content: cropper.getCroppedCanvas().toDataURL()
+      content: cropper.getCroppedCanvas().toDataURL('image/jpeg', 20 / 100)
     })
 
     setImage({

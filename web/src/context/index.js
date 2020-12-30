@@ -16,6 +16,9 @@ const Context = createContext()
 const {Provider} = Context
 
 //
+import {convertDateFormat} from 'components/lib/dalbit_moment'
+import {convertMonday} from 'pages/common/rank/rank_fn'
+
 const GlobalProvider = (props) => {
   //initalize
   const DAY_COOKIE_PERIOD = 100
@@ -110,6 +113,8 @@ const GlobalProvider = (props) => {
   const [selfAuth, setSelfAuth] = useState(false)
   //splash
   const [splash, setSplash] = useState(null)
+  // 주간 클립 테이블
+  const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
   const action = {
     updateState: (obj) => {
@@ -459,6 +464,9 @@ const GlobalProvider = (props) => {
     },
     updateSplash: (obj) => {
       setSplash(obj)
+    },
+    updateDateState: (string) => {
+      setDateState(string)
     }
   }
   //---------------------------------------------------------------------

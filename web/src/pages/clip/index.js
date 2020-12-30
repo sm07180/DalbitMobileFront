@@ -7,8 +7,9 @@ import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
-import {convertDateFormat, calcDate, convertMonday} from 'pages/common/rank/rank_fn'
+import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
+import {convertDateFormat} from 'components/lib/dalbit_moment'
 
 // components
 import ChartList from './components/chart_list'
@@ -17,6 +18,7 @@ import Header from 'components/ui/new_header'
 import BannerList from '../main/component/bannerList'
 import LayerPopupWrap from '../main/component/layer_popup_wrap'
 import Layout from 'pages/common/layout'
+import NoResult from 'components/ui/noResult'
 //static
 import newIcon from './static/new_circle_m.svg'
 import detailListIcon from './static/detaillist_circle_w.svg'
@@ -42,6 +44,46 @@ export default (props) => {
     slidesPerView: 'auto',
     spaceBetween: 20
   }
+  const swiperParamsDal = {
+    // loop: true, //무제한 롤링
+    slidesPerView: 'auto',
+    centeredSlides: true, //중앙정렬
+    spaceBetween: 15, //사이여백
+
+    navigation: {
+      nextEl: '.btnNext',
+      prevEl: '.btnPrev'
+    },
+    on: {
+      init: function () {
+        setSwiper(this);
+      },
+      slideChange: function () {
+        setTableSwiperIndex(this['realIndex'])
+      }
+    }
+  }
+
+  const goNext = (e) => {
+    swiper.slideNext()
+    nextCalcDate()
+  }
+
+  const nextCalcDate = useCallback(() => {
+    const date = calcDate(new Date(context.dateState), 7)
+    context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+  }, [context.dateState])
+
+  const goPrev = (e) => {
+    swiper.slidePrev()
+    prevCalcDate()
+  }
+
+  const prevCalcDate = useCallback(() => {
+    const date = calcDate(new Date(context.dateState), -7)
+    context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+  }, [context.dateState])
+
   let swiperParamsBest = {
     slidesPerView: 'auto',
     centeredSlides: true,
@@ -91,29 +133,11 @@ export default (props) => {
   const [popupData, setPopupData] = useState([])
   const [reloadInit, setReloadInit] = useState(false)
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
-  const [marketingClip, setMarketingClip] = useState([])
+  const [marketingClipList, setMarketingClipList] = useState([])
 
-  const [recDate, setRecDate] = useState(convertDateFormat(convertMonday(), '-'))
-
-  const isLast = useMemo(() => {
-    const currentDate = convertDateFormat(convertMonday(), '-')
-
-    if (recDate === currentDate) {
-      return true
-    } else {
-      return false
-    }
-  }, [recDate])
-
-  const isLastPrev = useMemo(() => {
-    const currentDate = convertDateFormat(new Date('2020-10-19'), '-')
-
-    if (recDate === currentDate) {
-      return true
-    } else {
-      return false
-    }
-  }, [recDate])
+  const [minRecDate, setMinRecDate] = useState('')
+  const [swiper, setSwiper] = useState(null)
+  const [tableSwiperIndex, setTableSwiperIndex] = useState(0)
 
   const clipRankTab = [
     {title: '일간', type: 0},
@@ -174,30 +198,41 @@ export default (props) => {
       })
     }
   }
-  const fetchClipRankingList = async () => {
-    const {result, data, message} = await getClipRankingList({})
-    if (result === 'success') {
-      setClipRankingList(data.list)
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
-  }
+
   const fetchMarketingClip = async () => {
     const {result, data, message} = await Api.getMarketingClipList({
-      recDate: recDate,
+      recDate: convertDateFormat(convertMonday(), 'YYYY-MM-DD'),
       isLogin: context.token.isLogin,
       isClick: false
     })
     if (result === 'success') {
-      setMarketingClip(data.recommendInfo)
+      setMarketingClipList(data.leaderList)
+      setTableSwiperIndex(data.leaderList.length - 1)
+      setMinRecDate(data.minRecDate)
     } else {
       context.action.alert({
         msg: message
       })
     }
   }
+  const isLast = useMemo(() => {
+    const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
+
+    if (context.dateState === currentDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [context.dateState])
+
+  const isLastPrev = useMemo(() => {
+    if (context.dateState <= minRecDate) {
+      return true
+    } else {
+      return false
+    }
+  }, [context.dateState])
+
   const fetchDataListTop3 = async () => {
     const {result, data, message} = await Api.getMainTop3List({})
     if (result === 'success') {
@@ -304,6 +339,29 @@ export default (props) => {
           </div>
           <p className="recomClipItem__nickName">{nickName}</p>
         </li>
+      )
+    })
+  }
+  const makeWeekClipList = (data) => {
+    return data.map((v, i) => {
+      return (
+        <div
+          className="weekClip__item"
+          key={i}
+          onClick={() => {
+            goRecommend()
+          }}>
+          <div className="weekClip__thumb">{v.thumbUrl && <img src={v.thumbUrl} alt="썸네일" />}</div>
+          <div className="textBox">
+            {/* 기획이랑 디자인이 다르게 나와서 디자인을 주석해놓겠습니다 */}
+            {/*<div className="textBox__title">{v.titleMsg}</div>*/}
+            {/*<p className="textBox__nickName">{v.title}</p>*/}
+            <p className="textBox__title">{v.titleMsg}</p>
+            <div className="textBox__nickName">{v.nickNm}</div>
+            <span className="textBox__subject">{v.title}</span>
+          </div>
+          <button className="playButton">재생 버튼</button>
+        </div>
       )
     })
   }
@@ -535,7 +593,7 @@ export default (props) => {
       rankClipHeight +
       BannerSectionHeight -
       20
-    console.log(TopSectionHeight)
+    // console.log(TopSectionHeight)
     if (window.scrollY >= TopSectionHeight) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
@@ -639,10 +697,8 @@ export default (props) => {
     if (!context.token.isLogin) {
       history.push('/login?redirect=/clip')
     } else {
-      history.push({
-        pathname: `/clip_recommend`,
-        state: recDate
-      })
+      history.push('/clip_recommend')
+      context.action.updateDateState(context.dateState)
     }
   }
 
@@ -681,11 +737,9 @@ export default (props) => {
     if (context.token.isLogin === true) {
       fetchMyData()
     }
+    context.action.updateDateState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
+    fetchMarketingClip()
   }, [])
-
-  // useEffect(() => {
-  //   fetchMarketingClip()
-  // }, [recDate])
 
   useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
@@ -703,6 +757,22 @@ export default (props) => {
       setMyClipToggle(true)
     }
   }, [myData])
+
+
+  useEffect(() => {
+    if (swiper !== null && tableSwiperIndex !== 0) {
+      swiper.activeIndex = tableSwiperIndex
+    }
+  }, [swiper, tableSwiperIndex])
+
+  useEffect(() => {
+    if (marketingClipList.length > 0 && tableSwiperIndex !== 0) {
+
+      const date = marketingClipList[tableSwiperIndex].recDate
+      context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
+    }
+  }, [tableSwiperIndex, marketingClipList])
+
   return (
     <Layout {...props} status="no_gnb">
       <div id="clipPage" onTouchStart={clipTouchStart} onTouchMove={clipTouchMove} onTouchEnd={clipTouchEnd}>
@@ -769,10 +839,11 @@ export default (props) => {
               </ul>
             )}
           </div>
+        ) : context.token.isLogin === true ? (
+          <div ref={myClipRef} style={{minHeight: '127px'}}></div>
         ) : (
-          <div ref={myClipRef}></div>
+          <></>
         )}
-
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef}>
             <div className="recomClip__title">
@@ -812,81 +883,50 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
-        {marketingClip && marketingClip.length > 0 && (
-          <div className="rankClip" ref={marketingClipRef}>
-            <div className="titleBox">
+        {marketingClipList.length > 0 && (
+          <div className="weekClip" ref={marketingClipRef}>
+            <div className="weekClip__titleBox">
               <h3
-                className="clipTitle"
+                className="weekClip__title"
                 onClick={() => {
                   goRecommend()
+                  context.action.updateDateState(context.dateState)
                 }}>
-                달대리 추천 클립
+                주간 클립테이블
               </h3>
-              <div className="dateBox">
-                <button
-                  className={`btnPrev ${isLastPrev === false ? ' isActive' : ''}`}
-                  onClick={() => {
-                    if (isLastPrev === false) {
-                      const date = calcDate(new Date(recDate), -7)
-
-                      setRecDate(convertDateFormat(date, '-'))
-                    }
-                  }}>
-                  &lt;
-                </button>
-                <span>{marketingClip.time}</span>
-                <button
-                  className={`btnNext ${isLast === false ? ' isActive' : ''}`}
-                  onClick={() => {
-                    if (isLast === false) {
-                      const date = calcDate(new Date(recDate), 7)
-                      setRecDate(convertDateFormat(date, '-'))
-                    }
-                  }}>
-                  &gt;
-                </button>
-              </div>
-              <div className="clipBox">
-                <div className="clipList">
-                  <span
-                    className="thumb"
-                    onClick={() => {
-                      goRecommend()
-                    }}>
-                    {marketingClip.thumbUrl && <img src={marketingClip.thumbUrl} alt="썸네일" />}
-                  </span>
-                  <div className="text">
-                    <div
-                      className="title"
-                      onClick={() => {
-                        if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (globalCtx.token.isLogin === false) {
-                            context.action.alert({
-                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                              callback: () => {
-                                history.push('/login')
-                              }
-                            })
-                          } else {
-                            globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                          }
-                        } else {
-                          fetchDataPlay(marketingClip.clipNo, 'dal')
-                        }
+              {marketingClipList.map((v, i) => {
+                return (
+                  <div className="weekClip__moreButton" key={i}>
+                    <button
+                      className={`btnPrev`}
+                      disabled={isLastPrev === true}
+                      onClick={(e) => {
+                        goPrev(e)
                       }}>
-                      {marketingClip.title}
-                    </div>
-                    <p className="subTitle">{marketingClip.titleMsg}</p>
-                    <span className="nick" onClick={() => history.push(`/mypage/${marketingClip.memNo}`)}>
-                      {marketingClip.nickNm}
-                    </span>
+                      이전
+                    </button>
+                    <button
+                      className={`btnNext`}
+                      disabled={isLast === true}
+                      onClick={(e) => {
+                        goNext(e)
+                      }}>
+                      다음
+                    </button>
                   </div>
-                </div>
-              </div>
+                )
+              })}
+            </div>
+
+            <div className="weekClip__list">
+              {marketingClipList.length > 0 ? (
+                <Swiper {...swiperParamsDal} activeSlideKey={`${tableSwiperIndex}`}>{makeWeekClipList(marketingClipList)}</Swiper>
+              ) : (
+                <NoResult text="주간 클립 테이블이 없습니다." />
+              )}
             </div>
           </div>
         )}
-
         <div className="rankClip" ref={rankClipRef}>
           <div className="titleBox">
             <h3 className="clipTitle isArrow" onClick={handleScroll}>
