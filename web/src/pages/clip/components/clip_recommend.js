@@ -60,8 +60,10 @@ export default function clipRecommend() {
     }
   }
   const fetchMarketingClipList = async () => {
+    // alert(dateState)
+    // alert(context.dateState)
     const {result, data, message} = await Api.getMarketingClipList({
-      recDate: dateState,
+      recDate: convertDateFormat(context.dateState, 'YYYY-MM-DD'),
       isLogin: context.token.isLogin,
       isClick: true
     })
@@ -76,6 +78,7 @@ export default function clipRecommend() {
       setMarketingClipList(data.list)
       setClip(data.recommendInfo.clipNo)
     } else {
+      alert('error')
       context.action.alert({msg: message})
     }
   }
@@ -115,7 +118,10 @@ export default function clipRecommend() {
   }
 
   useEffect(() => {
-    fetchMarketingClipList()
+    // alert(convertDateFormat(context.dateState, 'YYYY-MM-DD'))
+    if (dateState && dateState !== null) {
+      fetchMarketingClipList()
+    }
   }, [dateState])
 
   useEffect(() => {
@@ -170,7 +176,7 @@ export default function clipRecommend() {
                   } else {
                     fetchDataPlay(marketingClipObj.clipNo, 'dal')
                   }
-                  context.action.updateDateState(marketingClipObj.recDate)
+                  // context.action.updateDateState(marketingClipObj.recDate)
                 }}>
                 {marketingClipObj.bannerUrl ? (
                   <img src={marketingClipObj.bannerUrl} alt="클립썸네일이미지" width="360" height="208" />
@@ -197,7 +203,7 @@ export default function clipRecommend() {
                     } else {
                       fetchDataPlay(marketingClipObj.clipNo, 'dal')
                     }
-                    context.action.updateDateState(marketingClipObj.recDate)
+                    // context.action.updateDateState(marketingClipObj.recDate)
                   }}>
                   <li className="scoreList">
                     <button className="scoreButton">
@@ -267,7 +273,7 @@ export default function clipRecommend() {
                     } else {
                       fetchDataPlay(marketingClipObj.clipNo, 'dal')
                     }
-                    context.action.updateDateState(marketingClipObj.recDate)
+                    // context.action.updateDateState(marketingClipObj.recDate)
                   }}>
                   {marketingClipObj.title}
                 </h4>
@@ -278,7 +284,7 @@ export default function clipRecommend() {
                     className="nickName"
                     onClick={() => {
                       history.push(`/mypage/${marketingClipObj.clipMemNo}`)
-                      context.action.updateDateState(marketingClipObj.recDate)
+                      // context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     {marketingClipObj.nickNm}
                   </p>
@@ -286,7 +292,7 @@ export default function clipRecommend() {
                     className="fileNumber"
                     onClick={() => {
                       history.push(`/mypage/${marketingClipObj.clipMemNo}?tab=2`)
-                      context.action.updateDateState(marketingClipObj.recDate)
+                      // context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     {Utility.addComma(marketingClipObj.regCnt)}
                   </button>
@@ -339,7 +345,7 @@ export default function clipRecommend() {
                         } else {
                           fetchDataPlay(v.clipNo, 'dal')
                         }
-                        context.action.updateDateState(marketingClipObj.recDate)
+                        // context.action.updateDateState(marketingClipObj.recDate)
                       }}>
                       <img src={v.bgImg.thumb62x62} alt="썸네일" className="thumbnail__img" />
 
@@ -363,7 +369,7 @@ export default function clipRecommend() {
                         } else {
                           fetchDataPlay(v.clipNo, 'dal')
                         }
-                        context.action.updateDateState(marketingClipObj.recDate)
+                        // context.action.updateDateState(marketingClipObj.recDate)
                       }}>
                       <div className="textItem__titleBox">
                         <div className="textItem__category">{v.subjectName}</div>
@@ -406,7 +412,7 @@ export default function clipRecommend() {
                             } else {
                               fetchDataPlay(v.clipNo, 'dal')
                             }
-                            context.action.updateDateState(marketingClipObj.recDate)
+                            // context.action.updateDateState(marketingClipObj.recDate)
                           }}>
                           플레이 아이콘
                         </span>
@@ -416,7 +422,7 @@ export default function clipRecommend() {
                           className="textItem__moreButton--people"
                           onClick={() => {
                             history.push(`/mypage/${v.memNo}`)
-                            context.action.updateDateState(marketingClipObj.recDate)
+                            // context.action.updateDateState(marketingClipObj.recDate)
                           }}>
                           사람 아이콘
                         </span>
