@@ -17,9 +17,6 @@ export default function detailPopup(props) {
     context.action.updateClipSort(sortState)
     context.action.updateClipDate(sortDate)
     setDetailPopup(false)
-    // resetFetchList()
-
-    //context.action.setClipMainGender(sortGender)
   }
   const sortFunc = (type) => {
     setSortState(type)
@@ -27,10 +24,7 @@ export default function detailPopup(props) {
   const DateFunc = (type) => {
     setSortDate(type)
   }
-  useEffect(() => {
-    // setSortState(context.clipMainSort)
-    // setSortGender(context.clipMainGender)
-  }, [])
+
   return (
     <PopupWrap>
       <div className="content-wrap">

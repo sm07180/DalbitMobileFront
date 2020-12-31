@@ -44,25 +44,6 @@ export default (props) => {
     slidesPerView: 'auto',
     spaceBetween: 20
   }
-  const swiperParamsDal = {
-    // loop: true, //무제한 롤링
-    slidesPerView: 'auto',
-    centeredSlides: true, //중앙정렬
-    spaceBetween: 15, //사이여백
-
-    navigation: {
-      nextEl: '.btnNext',
-      prevEl: '.btnPrev'
-    },
-    on: {
-      init: function () {
-        setSwiper(this)
-      },
-      slideChange: function () {
-        setTableSwiperIndex(this['realIndex'])
-      }
-    }
-  }
 
   const goNext = (e) => {
     swiper.slideNext()
@@ -112,6 +93,7 @@ export default (props) => {
   const [detailPopup, setDetailPopup] = useState(false)
   const [refreshAni, setRefreshAni] = useState(false)
   const [scrollY, setScrollY] = useState(0)
+  const [moreType, setMoreType] = useState('day')
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
@@ -138,7 +120,25 @@ export default (props) => {
   const [minRecDate, setMinRecDate] = useState('')
   const [swiper, setSwiper] = useState(null)
   const [tableSwiperIndex, setTableSwiperIndex] = useState(0)
-
+  const swiperParamsDal = {
+    // loop: true, //무제한 롤링
+    slidesPerView: 'auto',
+    centeredSlides: true, //중앙정렬
+    spaceBetween: 15, //사이여백
+    initialSlide: marketingClipList.length,
+    navigation: {
+      nextEl: '.btnNext',
+      prevEl: '.btnPrev'
+    },
+    on: {
+      init: function () {
+        setSwiper(this)
+      },
+      slideChange: function () {
+        setTableSwiperIndex(this['realIndex'])
+      }
+    }
+  }
   const clipRankTab = [
     {title: '일간', type: 0},
     {title: '주간', type: 1}
@@ -758,11 +758,11 @@ export default (props) => {
     }
   }, [myData])
 
-  useEffect(() => {
-    if (swiper !== null && tableSwiperIndex !== 0) {
-      swiper.activeIndex = tableSwiperIndex
-    }
-  }, [swiper, tableSwiperIndex])
+  // useEffect(() => {
+  //   if (swiper !== null && tableSwiperIndex !== 0) {
+  //     swiper.activeIndex = tableSwiperIndex
+  //   }
+  // }, [swiper, tableSwiperIndex])
 
   useEffect(() => {
     if (marketingClipList.length > 0 && tableSwiperIndex !== 0) {
@@ -843,7 +843,7 @@ export default (props) => {
           <></>
         )}
         {popularList.length > 0 ? (
-          <div className="recomClip" ref={recomendRef}>
+          <div className="recomClip" ref={recomendRef} style={{minHeight: popularList.length > 3 ? '282px' : '172px'}}>
             <div className="recomClip__title">
               <h3 className="clipTitle">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h3>
               <div className="recomClip__title__rightSide">
@@ -861,7 +861,7 @@ export default (props) => {
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <div ref={recomendRef}></div>
+          <div ref={recomendRef} style={{minHeight: '282px'}}></div>
         )}
 
         {clipRankingList && clipRankingList.length > 0 ? (
@@ -877,7 +877,7 @@ export default (props) => {
           <></>
         )}
 
-        <div className="clipBanner">
+        <div className="clipBanner" style={{minHeight: '95px'}}>
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
@@ -914,9 +914,7 @@ export default (props) => {
 
             <div className="weekClip__list">
               {marketingClipList.length > 0 ? (
-                <Swiper {...swiperParamsDal} activeSlideKey={`${tableSwiperIndex}`}>
-                  {makeWeekClipList(marketingClipList)}
-                </Swiper>
+                <Swiper {...swiperParamsDal}>{makeWeekClipList(marketingClipList)}</Swiper>
               ) : (
                 <NoResult text="주간 클립 테이블이 없습니다." />
               )}
