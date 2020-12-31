@@ -2,7 +2,8 @@ import React, {useState, useEffect, useContext} from 'react'
 
 import API from 'context/api'
 import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
+import Layout from 'pages/common/layout'
+import Header from 'components/ui/new_header'
 
 //components
 import {useHistory} from 'react-router-dom'
@@ -99,74 +100,71 @@ export default () => {
   }, [])
 
   return (
-    <div id="attendEventPage">
-      <div className="win-list-box">
-        <div className="header">
-          <h1 className="header__title">상품 당첨자</h1>
-          <button className="header__btnBack" onClick={goBack}>
-            <img src="https://image.dalbitlive.com/svg/ic_back.svg" alt="뒤로가기" />
-          </button>
-        </div>
+    <Layout status="no_gnb">
+      <div id="attendEventPage">
+        <div className="win-list-box">
+          <Header title="상품 당첨자" />
 
-        <div className="content">
-          {/* <p className="note">
+          <div className="content">
+            {/* <p className="note">
               기프티콘 당첨 시 출석체크 페이지 중간에 생성된
               <br />
               휴대폰 번호란을 입력하고 저장해야 명단에 추가됩니다.
             </p> */}
 
-          <table>
-            <colgroup>
-              <col width="35%" />
-              <col width="24%" />
-              <col width="39%" />
-            </colgroup>
+            <table>
+              <colgroup>
+                <col width="35%" />
+                <col width="24%" />
+                <col width="39%" />
+              </colgroup>
 
-            <thead>
-              <tr>
-                <th>상품</th>
-                <th>당첨 일시</th>
-                <th>당첨자</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {!winList.length ? (
+              <thead>
                 <tr>
-                  <td colSpan="3">당첨자 곧 등장 예정! 행운의 주인공은?</td>
+                  <th>상품</th>
+                  <th>당첨 일시</th>
+                  <th>당첨자</th>
                 </tr>
-              ) : (
-                winList.map((item, index) => {
-                  const {winDt, nickNm, profImg, isNew, memNo, itemImageUrl, itemName} = item
-                  return (
-                    <tr key={index}>
-                      <td className="icon">
-                        <img src={itemImageUrl} width={24} alt={itemName} />
-                        {itemName}
-                      </td>
-                      <td className="date">
-                        <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
+              </thead>
 
-                        {dateFormatter(winDt)}
-                      </td>
-                      <td
-                        className="nick"
-                        onClick={() => {
-                          history.push(`/mypage/${memNo}`)
-                        }}>
-                        <div className="thumb">
-                          <img src={profImg.thumb120x120} />
-                        </div>
-                        <p>{nickNm}</p>
-                      </td>
-                    </tr>
-                  )
-                })
-              )}
-            </tbody>
-          </table>
+              <tbody>
+                {!winList.length ? (
+                  <tr>
+                    <td colSpan="3">당첨자 곧 등장 예정! 행운의 주인공은?</td>
+                  </tr>
+                ) : (
+                  winList.map((item, index) => {
+                    const {winDt, nickNm, profImg, isNew, memNo, itemImageUrl, itemName} = item
+                    return (
+                      <tr key={index}>
+                        <td className="icon">
+                          <img src={itemImageUrl} width={24} alt={itemName} />
+                          {itemName}
+                        </td>
+                        <td className="date">
+                          <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
+
+                          {dateFormatter(winDt)}
+                        </td>
+                        <td
+                          className="nick"
+                          onClick={() => {
+                            history.push(`/mypage/${memNo}`)
+                          }}>
+                          <div className="thumb">
+                            <img src={profImg.thumb120x120} />
+                          </div>
+                          <p>{nickNm}</p>
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    </Layout>
   )
 }

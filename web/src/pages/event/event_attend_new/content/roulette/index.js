@@ -104,27 +104,30 @@ export default function RouletteTab() {
   return (
     <div className="rouletteTab">
       <div className="topBanner">
-        <img src={`${IMG_SERVER}/event/attend/201209/event_img_02_1_1@2x.png`} alt="룰렛을 돌려보아요!" />
+        <img src="https://image.dalbitlive.com/event/attend/201230/event_img_02_1_1@2x.png" alt="룰렛을 돌려보아요!" />
 
         <div className="couponBox">
           <img src="https://image.dalbitlive.com/event/attend/201209/event_img_02_1_2@2x.png" alt="룰렛 응모 티켓수" />
-          <p className="couponBox__cnt">
-            <span className="couponBox__cnt--num">{eventAttendState.couponCnt}</span>
-            <span>개</span>
-          </p>
+          <div className="basicItem">
+            <p className="couponBox__count">
+              <span className="couponBox__count--number">{eventAttendState.couponCnt}</span>
+              <span>개</span>
+            </p>
+            <button type="button" className="couponHistory" onClick={() => history.push('/event/my_coupon')}>
+              <img src="https://image.dalbitlive.com/event/attend/201229/btn_coupon_history@2x.png" alt="응모권 지급 내역" />
+            </button>
+          </div>
+          <div className="eventItem">
+            <p className="couponBox__count eventCount">
+              <span className="couponBox__count--number">{eventAttendState.eventCouponCnt}</span>
+              <span>개</span>
+            </p>
 
-          <p className="couponBox__cnt event_cnt">
-            <span className="couponBox__cnt--num">{eventAttendState.eventCouponCnt}</span>
-            <span>개</span>
-          </p>
+            <button type="button" className="roulleteHistory" onClick={() => history.push('/event/my_history')}>
+              <img src="https://image.dalbitlive.com/event/attend/201229/btn_roullete_history@2x.png" alt="나의 당첨이력 확인" />
+            </button>
+          </div>
         </div>
-
-        <button type="button" onClick={() => history.push('/event/attend_my_apply')}>
-          <img
-            src="https://image.dalbitlive.com/event/attend/201028/btn_roullete_history@2x.png"
-            alt="룰렛 룰렛 당첨이력 확인 확인"
-          />
-        </button>
       </div>
       <div className="giftWinner">
         <div className="giftWinnerWrap">

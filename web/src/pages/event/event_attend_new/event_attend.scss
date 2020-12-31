@@ -280,31 +280,6 @@
   }
 
   .win-list-box {
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid #d2d2d2;
-      padding: 14px 0;
-      box-sizing: border-box;
-      padding: 12px 16px;
-      position: relative;
-
-      &__title {
-        font-size: 18px;
-        letter-spacing: -0.45px;
-        font-weight: 800;
-      }
-
-      &__btnBack {
-        display: block;
-        width: 36px;
-        position: absolute;
-        top: 12px;
-        left: 2%;
-      }
-    }
-
     .content {
       padding: 24px 3%;
 
@@ -315,6 +290,9 @@
         letter-spacing: -0.33px;
         text-align: center;
         color: #757575;
+        &.coupon {
+          padding: 0 0 24px 0;
+        }
       }
 
       .gift {
@@ -358,6 +336,14 @@
               width: 20px;
               line-height: 13px;
             }
+          }
+          &.category {
+            font-size: 13px;
+            color: $greishBrown;
+          }
+
+          &.state {
+            color: $greishGray;
           }
 
           &.nick {
