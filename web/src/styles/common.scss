@@ -533,3 +533,36 @@ div.MuiToolbar-root,
   background: url(/src/pages/menu/static/ic_home.svg) no-repeat;
   background-size: contain;
 }
+
+// 버튼 공통
+.btnWrap {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 16px;
+
+  .btn {
+    width: 100%;
+    height: 44px;
+
+    font-size: 16px;
+    border-radius: 12px;
+    color: $white;
+    font-weight: $bold;
+    text-align: center;
+    background-color: $primary;
+    &.isDisable {
+      background: $mediumGray;
+    }
+    &.btn_cancel {
+      width: 49%;
+      background-color: $greishGray;
+    }
+    &.btn_ok {
+      width: 49%;
+      &.isDisable {
+        background: $mediumGray;
+      }
+    }
+  }
+}

@@ -180,27 +180,24 @@ const NoticeDetail = (props) => {
     [yourMemNo, noticeList]
   )
 
-  const modifyReply = useCallback(
-    async (memNo) => {
-      const res = await Api.modifyMypageNoticeReply({
-        memNo: memNo,
-        replyIdx: replyModifyIdx,
-        contents: replyModifyText
-      })
+  const modifyReply = useCallback(async () => {
+    const res = await Api.modifyMypageNoticeReply({
+      memNo: yourMemNo,
+      replyIdx: replyModifyIdx,
+      contents: replyModifyText
+    })
 
-      if (res.result === 'success') {
-        context.action.toast({
-          msg: res.message
-        })
-        fetchReply()
-      } else {
-        context.action.toast({
-          msg: res.message
-        })
-      }
-    },
-    [replyModifyText, replyModifyIdx]
-  )
+    if (res.result === 'success') {
+      context.action.toast({
+        msg: res.message
+      })
+      fetchReply()
+    } else {
+      context.action.toast({
+        msg: res.message
+      })
+    }
+  }, [replyModifyText, replyModifyIdx, yourMemNo])
 
   const Link = useCallback((linkMemNo) => {
     history.push(`/mypage/${linkMemNo}`)
@@ -352,7 +349,7 @@ const NoticeDetail = (props) => {
                             <button
                               className="btnAdd"
                               onClick={() => {
-                                modifyReply(v.writerMemNo)
+                                modifyReply()
                               }}>
                               수정
                             </button>

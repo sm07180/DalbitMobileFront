@@ -15,10 +15,10 @@ export default () => {
   const [couponList, setCouponList] = useState([])
   const [nextList, setNextList] = useState([])
 
-  async function fetchEventRouletteApply(next) {
+  async function fetchEventRouletteCoupon(next) {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
-    const {result, data} = await API.getEventRouletteCouponHistory({pageNo: 0, pageCnt: currentPage})
+    const {result, data} = await API.getEventRouletteCouponHistory({pageNo: currentPage, pageCnt: 30})
     if (result === 'success' && data.hasOwnProperty('list')) {
       if (data.list.length === 0) {
         if (!next) {
@@ -30,7 +30,7 @@ export default () => {
           setNextList(data.list)
         } else {
           setCouponList(data.list)
-          fetchEventRouletteApply('next')
+          fetchEventRouletteCoupon('next')
         }
       }
     } else {
@@ -49,7 +49,7 @@ export default () => {
   //scroll
   const showMoreList = () => {
     setCouponList(couponList.concat(nextList))
-    fetchEventRouletteApply('next')
+    fetchEventRouletteCoupon('next')
   }
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -77,7 +77,7 @@ export default () => {
   }, [nextList])
 
   useEffect(() => {
-    fetchEventRouletteApply()
+    fetchEventRouletteCoupon()
   }, [])
 
   return (
