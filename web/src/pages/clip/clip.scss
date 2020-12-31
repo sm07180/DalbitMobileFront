@@ -1277,7 +1277,11 @@
 }
 
 #clipRecommend {
-  padding: 0px 16px 16px;
+  background: #eee;
+
+  .subContent {
+    padding: 0px 16px;
+  }
   .topBox {
     display: flex;
     justify-content: space-between;
