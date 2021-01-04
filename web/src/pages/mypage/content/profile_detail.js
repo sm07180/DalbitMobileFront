@@ -709,12 +709,12 @@ export default (props) => {
                   </button>
                 )}
                 {profile.isFan === true && (
-                  <button className="fanRegist" onClick={() => Cancel(myProfileNo)}>
+                  <button className="fanRegist" onClick={() => Cancel(myProfileNo, profile.nickNm)}>
                     팬
                   </button>
                 )}
                 {profile.isFan === false && (
-                  <button className="isNotFan" onClick={() => fanRegist(myProfileNo)}>
+                  <button className="isNotFan" onClick={() => fanRegist(myProfileNo, profile.nickNm)}>
                     팬
                   </button>
                 )}
