@@ -81,64 +81,60 @@ export default () => {
   }, [])
 
   return (
-    <Layout status="no_gnb">
-      <Header title="응모권 지급내역" />
-      <div id="attendEventPage">
-        <div className="win-list-box">
-          <div className="content">
-            <div className="note coupon">응모권 지급 내역은 최근 획득 일시 기준 7일 간 저장됩니다.</div>
-            <table>
-              <colgroup>
-                <col width="20%" />
-                <col width="30%" />
-                <col width="*" />
-                <col width="20%" />
-              </colgroup>
-              <thead>
+    <div id="attendEventPage">
+      <div className="win-list-box">
+        <Header title="응모권 지급내역" />
+        <div className="content">
+          <div className="note coupon">응모권 지급 내역은 최근 획득 일시 기준 7일 간 저장됩니다.</div>
+          <table>
+            <colgroup>
+              <col width="20%" />
+              <col width="30%" />
+              <col width="*" />
+              <col width="20%" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>구분</th>
+                <th>획득 일시</th>
+                <th>출처</th>
+                <th>상태</th>
+              </tr>
+            </thead>
+            <tbody>
+              {!couponList.length ? (
                 <tr>
-                  <th>구분</th>
-                  <th>획득 일시</th>
-                  <th>출처</th>
-                  <th>상태</th>
+                  <td colSpan={4}>최근 7일 간 응모권 지급 내역이 없습니다.</td>
                 </tr>
-              </thead>
-              <tbody>
-                {!couponList.length ? (
-                  <tr>
-                    <td colSpan={4}>최근 7일 간 응모권 지급 내역이 없습니다.</td>
-                  </tr>
-                ) : (
-                  couponList.map((item, index) => {
-                    const {type, issue_date, profile_image_info, mem_nick, status, mem_no} = item
+              ) : (
+                couponList.map((item, index) => {
+                  const {type, issue_date, profile_image_info, mem_nick, status, mem_no} = item
 
-                    return (
-                      <tr key={index}>
-                        <td className="category">{type === 1 ? '기본' : type === 2 ? '이벤트' : <></>} 1개</td>
-                        <td className="date">{dateFormatter(issue_date)}</td>
-                        <td
-                          className="nick"
-                          onClick={() => {
-                            history.push(`/mypage/${mem_no}`)
-                          }}>
-                          {profile_image_info && profile_image_info['thumb62x62'] && (
-                            <div className="thumb">
-                              <img src={profile_image_info['thumb62x62']} alt={mem_nick} />
-                            </div>
-                          )}
-                          <p>{mem_nick}</p>
-                        </td>
-                        <td className="state">
-                          {status === 0 ? '미사용' : status === 1 ? '사용' : status === 2 ? '만료' : <></>}
-                        </td>
-                      </tr>
-                    )
-                  })
-                )}
-              </tbody>
-            </table>
-          </div>
+                  return (
+                    <tr key={index}>
+                      <td className="category">{type === 1 ? '기본' : type === 2 ? '이벤트' : <></>} 1개</td>
+                      <td className="date">{dateFormatter(issue_date)}</td>
+                      <td
+                        className="nick"
+                        onClick={() => {
+                          history.push(`/mypage/${mem_no}`)
+                        }}>
+                        {profile_image_info && profile_image_info['thumb62x62'] && (
+                          <div className="thumb">
+                            <img src={profile_image_info['thumb62x62']} alt={mem_nick} />
+                          </div>
+                        )}
+                        <p>{mem_nick}</p>
+                      </td>
+                      <td className="state">{status === 0 ? '미사용' : status === 1 ? '사용' : status === 2 ? '만료' : <></>}</td>
+                    </tr>
+                  )
+                })
+              )}
+            </tbody>
+          </table>
         </div>
       </div>
-    </Layout>
+    </div>
   )
 }

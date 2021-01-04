@@ -20,7 +20,6 @@ export default function clipRecommend() {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
-  const dateState = convertDateFormat(context.dateState, 'YYYY-MM-DD')
 
   const [textView, setTextView] = useState(false)
   const [marketingClipObj, setMarketingClipObj] = useState([])
@@ -32,23 +31,22 @@ export default function clipRecommend() {
 
   const isLast = useMemo(() => {
     const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
-    console.log(dateState, currentDate)
-    if (dateState >= currentDate) {
+    if (context.dateState >= currentDate) {
       return true
     } else {
       return false
     }
-  }, [dateState])
+  }, [context.dateState])
 
   const isLastPrev = useMemo(() => {
     const currentDate = convertDateFormat(new Date('2020-10-26'), 'YYYY-MM-DD')
 
-    if (dateState <= currentDate) {
+    if (context.dateState <= currentDate) {
       return true
     } else {
       return false
     }
-  }, [dateState])
+  }, [context.dateState])
 
   const viewToggle = () => {
     if (textView === false) {
@@ -60,10 +58,8 @@ export default function clipRecommend() {
     }
   }
   const fetchMarketingClipList = async () => {
-    // alert(dateState)
-    // alert(context.dateState)
     const {result, data, message} = await Api.getMarketingClipList({
-      recDate: convertDateFormat(context.dateState, 'YYYY-MM-DD'),
+      recDate: context.dateState,
       isLogin: context.token.isLogin,
       isClick: true
     })
@@ -78,7 +74,6 @@ export default function clipRecommend() {
       setMarketingClipList(data.list)
       setClip(data.recommendInfo.clipNo)
     } else {
-      alert('error')
       context.action.alert({msg: message})
     }
   }
@@ -119,7 +114,7 @@ export default function clipRecommend() {
 
   useEffect(() => {
     fetchMarketingClipList()
-  }, [dateState])
+  }, [context.dateState])
 
   useEffect(() => {
     if (context.token.isLogin === false) {
@@ -139,7 +134,7 @@ export default function clipRecommend() {
                   className={`prev ${isLastPrev === true ? ' noHover' : 'on'}`}
                   disabled={isLastPrev === true}
                   onClick={() => {
-                    const date = calcDate(new Date(dateState), -7)
+                    const date = calcDate(new Date(context.dateState), -7)
                     context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
                   }}>
                   이전
@@ -149,7 +144,7 @@ export default function clipRecommend() {
                   className={`next ${isLast === true ? ' noHover' : 'on'}`}
                   disabled={isLast === true}
                   onClick={() => {
-                    const date = calcDate(new Date(dateState), 7)
+                    const date = calcDate(new Date(context.dateState), 7)
                     context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
                   }}>
                   다음

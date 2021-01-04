@@ -98,7 +98,7 @@ export default (props) => {
     }
   }
   //등록,해제
-  const Regist = (memNo) => {
+  const Regist = (memNo, nickNm) => {
     async function fetchDataFanRegist(memNo) {
       const res = await Api.fan_change({
         data: {
@@ -106,9 +106,8 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
+        ctx.action.toast({
+          msg: `${nickNm}님의 팬이 되었습니다`
         })
       } else if (res.result === 'fail') {
         ctx.action.alert({
@@ -138,11 +137,11 @@ export default (props) => {
     }
   }
   // 팬등록 버튼 토글
-  const registToggle = (isFan, memNo) => {
+  const registToggle = (isFan, memNo, nickNm) => {
     if (isFan === false) {
-      Regist(memNo)
+      Regist(memNo, nickNm)
     } else if (isFan === true) {
-      DeleteItem(memNo)
+      DeleteItem(memNo, nickNm)
     }
   }
   // 메모 활성화/비활성화 조회
@@ -270,8 +269,7 @@ export default (props) => {
           return item
         })
         setList(test)
-        ctx.action.alert({
-          callback: () => {},
+        ctx.action.toast({
           msg: '스타 해제에 성공하였습니다.'
         })
       } else if (res.result === 'fail') {
@@ -286,10 +284,10 @@ export default (props) => {
   // 삭제하기 클릭
   const DeleteItem = (memNo) => {
     ctx.action.confirm({
+      msg: '스타 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>',
       callback: () => {
         CancelStar(memNo)
-      },
-      msg: '스타 삭제 시 메모도 삭제되며 <br/> 복구가 불가능합니다. <br/> <strong>정말 삭제하시겠습니까?<strong>'
+      }
     })
   }
   const Link = (memNo) => {

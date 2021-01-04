@@ -172,19 +172,17 @@ export default (props) => {
   }
 
   //팬등록
-  async function fetchDataFanRegist(myProfileNo) {
+  async function fetchDataFanRegist(myProfileNo, nickNm) {
     const res = await Api.fan_change({
       data: {
         memNo: urlrStr
       }
     })
     if (res.result === 'success') {
-      context.action.alert({
-        callback: () => {
-          context.action.updateMypageFanCnt(myProfileNo)
-        },
-        msg: '팬등록에 성공하였습니다.'
+      context.action.toast({
+        msg: `${nickNm}님의 팬이 되었습니다`
       })
+      context.action.updateMypageFanCnt(myProfileNo)
     } else if (res.result === 'fail') {
       context.action.alert({
         callback: () => {},
@@ -193,32 +191,35 @@ export default (props) => {
     }
   }
   //function:팬해제
-  const Cancel = (myProfileNo) => {
-    async function fetchDataFanCancel(myProfileNo) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: urlrStr
-        }
-      })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
+  const Cancel = (myProfileNo, nickNm) => {
+    context.action.confirm({
+      msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function fetchDataFanCancel(myProfileNo) {
+          const res = await Api.mypage_fan_cancel({
+            data: {
+              memNo: urlrStr
+            }
+          })
+          if (res.result === 'success') {
+            context.action.toast({
+              msg: res.message
+            })
             context.action.updateMypageFanCnt(myProfileNo + 1)
-          },
-          msg: '팬등록을 해제하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
+          } else if (res.result === 'fail') {
+            context.action.alert({
+              callback: () => {},
+              msg: res.message
+            })
+          }
+        }
+        fetchDataFanCancel(myProfileNo)
       }
-    }
-    fetchDataFanCancel(myProfileNo)
+    })
   }
   //function:팬등록
-  const fanRegist = (myProfileNo) => {
-    fetchDataFanRegist(myProfileNo)
+  const fanRegist = (myProfileNo, nickNm) => {
+    fetchDataFanRegist(myProfileNo, nickNm)
   }
   //func star count
   const viewStarList = () => {

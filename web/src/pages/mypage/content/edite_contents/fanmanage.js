@@ -99,7 +99,7 @@ export default (props) => {
     }
   }
   //등록,해제
-  const Regist = (memNo) => {
+  const Regist = (memNo, nickNm) => {
     async function fetchDataFanRegist(memNo) {
       const res = await Api.fan_change({
         data: {
@@ -107,9 +107,8 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
+        ctx.action.toast({
+          msg: `${nickNm}님의 팬이 되었습니다`
         })
       } else if (res.result === 'fail') {
         ctx.action.alert({
@@ -120,29 +119,33 @@ export default (props) => {
     }
     fetchDataFanRegist(memNo)
   }
-  const Cancel = (memNo, isFan) => {
-    async function fetchDataFanCancel(memNo, isFan) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: memNo
+  const Cancel = (memNo, nickNm) => {
+    ctx.action.confirm({
+      msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function fetchDataFanCancel(memNo) {
+          const res = await Api.mypage_fan_cancel({
+            data: {
+              memNo: memNo
+            }
+          })
+          if (res.result === 'success') {
+            ctx.action.toast({
+              msg: res.message
+            })
+          } else if (res.result === 'fail') {
+            ctx.action.alert({
+              callback: () => {},
+              msg: res.message
+            })
+          }
         }
-      })
-      if (res.result === 'success') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
-      } else if (res.result === 'fail') {
-        ctx.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
+        fetchDataFanCancel(memNo)
       }
-    }
-    fetchDataFanCancel(memNo)
+    })
   }
   // 팬등록 버튼 토글
-  const registToggle = (isFan, memNo) => {
+  const registToggle = (isFan, memNo, nickNm) => {
     const test = list.map((item, index) => {
       if (item.memNo === memNo) {
         item.isFan = !item.isFan
@@ -151,9 +154,9 @@ export default (props) => {
     })
     setList(test)
     if (isFan === false) {
-      Regist(memNo)
+      Regist(memNo, nickNm)
     } else if (isFan === true) {
-      Cancel(memNo)
+      Cancel(memNo, nickNm)
     }
   }
   // 메모 활성화/비활성화 조회
@@ -290,7 +293,7 @@ export default (props) => {
                   <div className="list__imgBox" onClick={() => Link(memNo)}>
                     <img src={profImg.thumb120x120} alt="팬 프로필 이미지" />
                   </div>
-                  <div className="list__infoBox" onClick={() => Link(memNo)}>
+                  <div className="list__infoBox">
                     <span className="list__nick">{nickNm}</span>
                     <span className={sortNum === 0 ? 'list__registDt list__registDt--active' : 'list__registDt'}>
                       등록일 - {Utility.dateFormatterKor(regDt)}
@@ -315,7 +318,7 @@ export default (props) => {
                   <div className="list__btnBox">
                     <button
                       className={isFan ? 'list__btnBox__fanBtn list__btnBox__fanBtn--active' : 'list__btnBox__fanBtn'}
-                      onClick={() => registToggle(isFan, memNo)}>
+                      onClick={() => registToggle(isFan, memNo, nickNm)}>
                       {isFan ? '팬' : '+팬등록'}
                     </button>
                     {fanMemo === '' ? (
@@ -409,8 +412,6 @@ const Wrap = styled.div`
     &__infoBox {
       display: flex;
       flex-direction: column;
-      flex: 1;
-      cursor: pointer;
     }
     &__nick {
       margin-bottom: 4px;

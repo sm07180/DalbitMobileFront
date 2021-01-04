@@ -15,31 +15,41 @@
       width: 40%;
     }
 
-    .couponHistory {
+    .historyButton {
       position: absolute;
-      bottom: 2%;
-      left: 6.5%;
-      width: 42%;
+      bottom: 5%;
+      left: 13.5%;
+      width: 84%;
     }
 
-    .roulleteHistory {
+    .roulleteButton {
       position: absolute;
-      bottom: 2%;
-      left: 51.7%;
-      width: 42%;
+      bottom: 5%;
+      left: 3%;
+      width: 84%;
     }
 
     .couponBox {
+      display: flex;
+
+      .basicItem {
+        flex: 1;
+        position: relative;
+      }
+      .eventItem {
+        flex: 1;
+        position: relative;
+      }
       &__count {
-        width: 21%;
+        width: 64%;
         position: absolute;
-        left: 17%;
-        top: 70.2%;
+        left: 22%;
+        top: 33%;
         justify-content: center;
         align-items: center;
         text-align: center;
         font-size: 12px;
-        line-height: 36px;
+        line-height: 26px;
 
         &--number {
           display: inline-block;
@@ -54,8 +64,8 @@
         }
 
         &.eventCount {
-          left: 62.5%;
-          top: 70.2%;
+          left: 14%;
+          top: 33%;
         }
       }
     }

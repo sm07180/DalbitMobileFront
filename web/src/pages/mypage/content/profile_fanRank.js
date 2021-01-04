@@ -73,7 +73,7 @@ export default (props) => {
   }
 
   //등록,해제
-  const Regist = (memNo) => {
+  const Regist = (memNo, nickNm) => {
     async function fetchDataFanRegist(memNo) {
       const res = await Api.fan_change({
         data: {
@@ -81,12 +81,15 @@ export default (props) => {
         }
       })
       if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
-            setSelect(memNo)
-          },
-          msg: '팬등록에 성공하였습니다.'
+        context.action.toast({
+          msg: `${nickNm}님의 팬이 되었습니다`
         })
+        setSelect(memNo)
+        if (tabType === 'good') {
+          fetchDataGoodRank()
+        } else {
+          fetchData()
+        }
       } else if (res.result === 'fail') {
         context.action.alert({
           callback: () => {},
@@ -97,28 +100,36 @@ export default (props) => {
     fetchDataFanRegist(memNo)
   }
 
-  const Cancel = (memNo, isFan) => {
-    async function fetchDataFanCancel(memNo, isFan) {
-      const res = await Api.mypage_fan_cancel({
-        data: {
-          memNo: memNo
-        }
-      })
-      if (res.result === 'success') {
-        context.action.alert({
-          callback: () => {
+  const Cancel = (memNo, nickNm) => {
+    context.action.confirm({
+      msg: `${nickNm} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        async function fetchDataFanCancel(memNo) {
+          const res = await Api.mypage_fan_cancel({
+            data: {
+              memNo: memNo
+            }
+          })
+          if (res.result === 'success') {
+            context.action.toast({
+              msg: res.message
+            })
             setSelect(memNo + 1)
-          },
-          msg: '팬등록을 해제하였습니다.'
-        })
-      } else if (res.result === 'fail') {
-        context.action.alert({
-          callback: () => {},
-          msg: res.message
-        })
+            if (tabType === 'good') {
+              fetchDataGoodRank()
+            } else {
+              fetchData()
+            }
+          } else if (res.result === 'fail') {
+            context.action.alert({
+              callback: () => {},
+              msg: res.message
+            })
+          }
+        }
+        fetchDataFanCancel(memNo)
       }
-    }
-    fetchDataFanCancel(memNo)
+    })
   }
 
   const Link = (memNo) => {
@@ -239,11 +250,13 @@ export default (props) => {
                         </div>
 
                         {isFan === false && memNo !== context.token.memNo && (
-                          <button onClick={() => Regist(memNo)} className="plusFan">
+                          <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                             +팬등록
                           </button>
                         )}
-                        {isFan === true && memNo !== context.token.memNo && <button onClick={() => Cancel(memNo)}>팬</button>}
+                        {isFan === true && memNo !== context.token.memNo && (
+                          <button onClick={() => Cancel(memNo, nickNm)}>팬</button>
+                        )}
                       </li>
                     )
                   })}
@@ -293,11 +306,13 @@ export default (props) => {
                         </div>
 
                         {isFan === false && memNo !== context.token.memNo && (
-                          <button onClick={() => Regist(memNo)} className="plusFan">
+                          <button onClick={() => Regist(memNo, nickNm)} className="plusFan">
                             +팬등록
                           </button>
                         )}
-                        {isFan === true && memNo !== context.token.memNo && <button onClick={() => Cancel(memNo)}>팬</button>}
+                        {isFan === true && memNo !== context.token.memNo && (
+                          <button onClick={() => Cancel(memNo, nickNm)}>팬</button>
+                        )}
                       </li>
                     )
                   })}
