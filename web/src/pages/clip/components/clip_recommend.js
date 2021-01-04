@@ -124,8 +124,8 @@ export default function clipRecommend() {
 
   return (
     <Layout status="no_gnb">
-      <Header title="주간 클립테이블" />
       <div id="clipRecommend">
+        <Header title="주간 클립테이블" />
         <div className="subContent gray">
           {marketingClipObj && (
             <>
