@@ -2,7 +2,7 @@ import React, {useCallback} from 'react'
 
 import {DATE_TYPE} from '../constant'
 
-export default function RankgDateBtn(props) {
+export default function RankDateBtn(props) {
   const {dateType, setDateType, fetching} = props
   const createDateButton = useCallback(() => {
     const DATE_TYPE_LIST = Object.keys(DATE_TYPE).map((type) => DATE_TYPE[type])

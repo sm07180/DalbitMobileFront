@@ -3008,11 +3008,19 @@ export default class API {
       data: data
     })
   }
+
   static getAwardResult = async (data) => {
     return await ajax({
       url: '/award/result',
       method: 'GET',
       params: data
+    })
+  }
+  static postRankSetting = async (data) => {
+    return await ajax({
+      url: `/member/rank/setting`,
+      method: 'POST',
+      data: data
     })
   }
 }

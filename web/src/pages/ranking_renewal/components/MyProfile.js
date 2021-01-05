@@ -6,6 +6,7 @@ import Util from 'components/lib/utility.js'
 
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
+import {liveBoxchangeDate, convertDateToText, convertMonday, convertMonth, dateTimeConvert} from 'pages/common/rank/rank_fn'
 
 import {RANK_TYPE, DATE_TYPE} from '../constant'
 
@@ -20,7 +21,7 @@ import trophyImg from '../static/rankingtop_back@2x.png'
 import likeIcon from '../static/like_g_s.svg'
 import likeRedIcon from '../static/like_red_m.svg'
 
-export default function MyProfile() {
+export default function MyProfile({rankSettingBtn, setRankSetting, setResetPointPop}) {
   const history = useHistory()
   const global_ctx = useContext(Context)
   const context = useContext(Context)
@@ -29,7 +30,7 @@ export default function MyProfile() {
 
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {formState, myInfo} = rankState
+  const {formState, myInfo, rankTimeData, rankData} = rankState
   const setMyInfo = rankAction.setMyInfo
 
   const [isFixed, setIsFixed] = useState(false)
@@ -117,6 +118,76 @@ export default function MyProfile() {
       </>
     )
   }, [myInfo])
+
+  const rankPointWrap = useCallback(() => {
+    return (
+      <div className="resetPointBox">
+        <p>
+          <img src="https://image.dalbitlive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
+          실시간 팬 랭킹 점수 <span>미 반영 중</span>
+        </p>
+        <button
+          onClick={() => {
+            context.action.alert({
+              type: 'confirm',
+              msg: `지금부터 실시간 팬 랭킹 점수를<br /><span style="display: block; padding-top: 12px; font-size: 22px;  color: #632beb;">반영하시겠습니까?</span>`,
+              callback: () => {
+                context.action.alert({
+                  msg: `지금부터 팬 랭킹 점수가<br />반영됩니다.`,
+                  callback: () => {
+                    rankSettingBtn(true)
+                    setRankSetting(true)
+                    rankAction.setRankData &&
+                      rankAction.setRankData({
+                        ...rankState.rankData,
+                        isRankData: true
+                      })
+                  }
+                })
+              }
+            })
+          }}>
+          <img src="https://image.dalbitlive.com/ranking/ico_circle_x_g@2x.png" alt="icon" /> 반영하기
+        </button>
+      </div>
+    )
+  }, [])
+
+  const rankPointWrapActive = useCallback(() => {
+    return (
+      <div className="resetPointBox apply">
+        <p>
+          <img src="https://image.dalbitlive.com/ranking/ico_timer_wh@2x.png" alt="icon" />
+          실시간 팬 랭킹 점수 <span>반영 중</span>
+        </p>
+        <button onClick={() => setResetPointPop(true)}>반영하지 않기</button>
+      </div>
+    )
+  }, [])
+
+  const realTimeNow = useCallback(() => {
+    const status = convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)
+
+    if (token.isLogin) {
+      if (formState[formState.pageType].rankType === RANK_TYPE.FAN) {
+        if (
+          (formState[formState.pageType].dateType === DATE_TYPE.TIME && rankTimeData.nextDate === '') ||
+          (formState[formState.pageType].dateType === DATE_TYPE.DAY && status) ||
+          (formState[formState.pageType].dateType === DATE_TYPE.WEEK && status) ||
+          (formState[formState.pageType].dateType === DATE_TYPE.MONTH && status)
+        ) {
+          if (rankTimeData.isRankData || rankData.isRankData) {
+            return rankPointWrapActive()
+          } else {
+            return rankPointWrap()
+          }
+        }
+      }
+    }
+    return <></>
+  }, [formState, rankTimeData, rankData])
+
+  //------------------------------------------------
 
   useEffect(() => {
     const createMyRank = () => {
@@ -313,6 +384,10 @@ export default function MyProfile() {
           )}
         </>
       )}
+      {realTimeNow()}
+      {/* {resetPointPop && (
+        <ResetPointPop setResetPointPop={setResetPointPop} rankSettingBtn={rankSettingBtn} setRankSetting={setRankSetting} />
+      )} */}
     </>
   )
 }

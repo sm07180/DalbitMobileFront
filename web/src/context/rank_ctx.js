@@ -122,6 +122,9 @@ const pageInitData = {
 
 function RankProvider(props) {
   const [rankList, setRankList] = useState([])
+  const [rankData, setRankData] = useState({
+    isRankData: false
+  })
   const [levelList, setLevelList] = useState([])
   const [likeList, setLikeList] = useState([])
   const [specialList, setSpecialList] = useState([])
@@ -157,6 +160,7 @@ function RankProvider(props) {
 
   const rankState = {
     rankList,
+    rankData,
     formState,
     levelList,
     likeList,
@@ -174,6 +178,7 @@ function RankProvider(props) {
 
   const rankAction = {
     setRankList,
+    setRankData,
     formDispatch,
     setLevelList,
     setLikeList,

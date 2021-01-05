@@ -32,6 +32,7 @@ import NoResult from 'components/ui/new_noResult'
 import SpecialPointPop from './components/rank_list/special_point_pop'
 import WeeklyPickWrap from './components/weekly_pick'
 import SecondWrap from './components/second'
+import ResetPointPop from './components/reset_point_pop'
 //constant
 import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
 
@@ -53,23 +54,12 @@ function Ranking() {
   const context = useContext(Context)
   const {rankState, rankAction} = useContext(RankContext)
 
-  const {
-    formState,
-    myInfo,
-    rankList,
-    levelList,
-    likeList,
-    totalPage,
-    scrollY,
-    weeklyList,
-    secondList,
-
-    rankTimeData
-  } = rankState
+  const {formState, myInfo, rankList, levelList, likeList, totalPage, rankTimeData, rankData, weeklyList, secondList} = rankState
 
   const formDispatch = rankAction.formDispatch
   const setMyInfo = rankAction.setMyInfo
   const setRankList = rankAction.setRankList
+  const setRankData = rankAction.setRankData
   const setLevelList = rankAction.setLevelList
   const setLikeList = rankAction.setLikeList
   const setTotalPage = rankAction.setTotalPage
@@ -83,6 +73,8 @@ function Ranking() {
   const [reloadInit, setReloadInit] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [popState, setPopState] = useState(false)
+  const [resetPointPop, setResetPointPop] = useState(false)
+  const [rankSetting, setRankSetting] = useState(false)
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
@@ -91,6 +83,21 @@ function Ranking() {
   const bottomWrapRef = useRef()
   const TopRef = useRef()
   const refreshDefaultHeight = 49
+
+  const rankSettingBtn = (rankSetting) => {
+    async function fetchRankSetting() {
+      const res = await Api.postRankSetting({
+        isRankData: rankSetting
+      })
+
+      if (res.result === 'success') {
+        setRankSetting(rankSetting)
+      } else {
+        //실패
+      }
+    }
+    fetchRankSetting()
+  }
 
   const rankTouchStart = useCallback(
     (e) => {
@@ -394,6 +401,8 @@ function Ranking() {
         rankingDate: convertDateTimeForamt(formState[formState.pageType].currentDate, '-')
       })
 
+      const {data} = res
+      const {isRankData} = data
       if (res.result === 'success') {
         setRankTimeData({
           ...rankTimeData,
@@ -401,6 +410,9 @@ function Ranking() {
         })
         if (formState.page > 1) {
           setRankList(rankList.concat(res.data.list))
+          setRankData({
+            isRankData
+          })
         } else {
           if (formState.page > 1) {
             setRankList(rankList.concat(res.data.list))
@@ -411,6 +423,9 @@ function Ranking() {
             } else {
               setEmpty(false)
               setRankList(res.data.list)
+              setRankData({
+                isRankData
+              })
             }
           }
           setLevelList([])
@@ -487,8 +502,13 @@ function Ranking() {
               setEmpty(false)
             } else {
               // dj, fan, like
+              const {data} = res
+              const {isRankData} = data
               if (formState.page > 1) {
                 setRankList(rankList.concat(res.data.list))
+                setRankData({
+                  isRankData
+                })
                 setEmpty(false)
               } else {
                 if (res.data.list.length < 6) {
@@ -497,6 +517,10 @@ function Ranking() {
                   setEmpty(false)
                   setRankList(res.data.list)
                 }
+
+                setRankData({
+                  isRankData
+                })
               }
               setLevelList([])
               setLikeList([])
@@ -666,7 +690,8 @@ function Ranking() {
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
-                  titleText: ''
+                  titleText: '',
+                  isRankData: false
                 })
                 history.push({
                   pathname: `/rank/benefit`,
@@ -736,6 +761,9 @@ function Ranking() {
         </div>
 
         {popState && <SpecialPointPop setPopState={setPopState} />}
+        {resetPointPop && (
+          <ResetPointPop setResetPointPop={setResetPointPop} rankSettingBtn={rankSettingBtn} setRankSetting={setRankSetting} />
+        )}
 
         {(formState[formState.pageType].rankType === RANK_TYPE.FAN ||
           formState[formState.pageType].rankType === RANK_TYPE.DJ) && (
@@ -744,7 +772,12 @@ function Ranking() {
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
               <div className={`rankTop3Box`} ref={TopRef}>
-                <MyProfile fetching={fetching} />
+                <MyProfile
+                  fetching={fetching}
+                  setResetPointPop={setResetPointPop}
+                  setRankSetting={setRankSetting}
+                  rankSettingBtn={rankSettingBtn}
+                />
                 <RankListTop specialPop={specialPop} />
                 {/* {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
                   <RankListTop specialPop={specialPop} />
