@@ -19,7 +19,6 @@ export default function RouletteTab() {
   const {popRoulette} = eventAttendState
 
   const [winList, setWinList] = useState()
-  const [authState, setAuthState] = useState()
 
   const swiperParams = {
     loop: true,

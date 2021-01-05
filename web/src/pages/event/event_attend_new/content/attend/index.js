@@ -35,45 +35,50 @@ export default function AttendTab() {
   let isAttendClick = false
   const attendDateIn = () => {
     // 부정클릭 방지
-    if (isAttendClick) {
+    if (isAttendClick === true) {
+      //true
       return false
     }
     isAttendClick = true
 
-    async function fetchEventAttendDateIn() {
-      const {result, data, message} = await API.postEventAttendIn()
-      if (result === 'success') {
-        const {status, dateList, summary} = data
-        eventAttendAction.setSummaryList(summary)
-        eventAttendAction.setStatusList(status)
-        eventAttendAction.setDateList(dateList)
-
-        // 성공
-        setPopup(true)
+    if (!token.isLogin) {
+      globalCtx.action.alert({
+        callback: () => {
+          history.push({
+            pathname: '/login',
+            state: {
+              state: 'event/attend_event'
+            }
+          })
+        },
+        msg: `로그인을 하신 후 참여해주세요!`
+      })
+    } else {
+      if (globalCtx.selfAuth === false) {
+        history.push('/selfauth?event=/event/attend_event')
       } else {
-        // 실패
-        if (!token.isLogin) {
-          globalCtx.action.alert({
-            callback: () => {
-              history.push({
-                pathname: '/login',
-                state: {
-                  state: 'event/attend_event'
-                }
-              })
-            },
+        const fetchEventAttendDateIn = async () => {
+          const {result, data, message} = await API.postEventAttendIn()
+          if (result === 'success') {
+            const {status, dateList, summary} = data
+            eventAttendAction.setSummaryList(summary)
+            eventAttendAction.setStatusList(status)
+            eventAttendAction.setDateList(dateList)
 
-            msg: message
-          })
-        } else {
-          globalCtx.action.alert({
-            msg: message
-          })
+            // 성공
+            setPopup(true)
+          } else {
+            globalCtx.action.alert({
+              msg: message
+            })
+          }
         }
+        fetchEventAttendDateIn()
       }
     }
-    fetchEventAttendDateIn()
   }
+
+  console.log(isAttendClick)
 
   //------------------
   useEffect(() => {
