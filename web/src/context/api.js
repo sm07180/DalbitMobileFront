@@ -3023,7 +3023,15 @@ export default class API {
       data: data
     })
   }
+  static postExchangeCancel = async (data) => {
+    return await ajax({
+      url: '/mypage/exchange/cancel',
+      method: 'POST',
+      params: data
+    })
+  }
 }
+
 
 API.customHeader = null
 API.authToken = null

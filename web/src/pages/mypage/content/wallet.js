@@ -80,7 +80,7 @@ export default (props) => {
   const [showFilter, setShowFilter] = useState(false)
   const [isFiltering, setIsFiltering] = useState(false)
   const [totalCnt, setTotalCnt] = useState(0)
-
+  const [cancelExchange, setCancelExchange] = useState(null)
   const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
 
   const changeCoinTypeClick = (type) => {
@@ -139,7 +139,30 @@ export default (props) => {
   //   fetchData()
   // }, [coinType, walletType, page])
   //스크롤 콘켓
-
+  // 환전취소
+  async function cancelExchangeFetch() {
+    const {result, data, message} = await Api.postExchangeCancel({
+      exchangeIdx: cancelExchange
+    })
+    if (result === 'success') {
+      context.action.alert({
+        title: '환전 취소가 완료되었습니다.',
+        msg: message,
+        callback: () => {
+          fetchData()
+          setCancelExchange(null)
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          fetchData()
+          setCancelExchange(null)
+        }
+      })
+    }
+  }
   const checkSelfAuth = async () => {
     //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
     let myBirth
@@ -317,7 +340,11 @@ export default (props) => {
   useEffect(() => {
     getMyPageNewWallet()
   }, [])
-
+  useEffect(() => {
+    if (cancelExchange !== null) {
+      cancelExchangeFetch()
+    }
+  }, [cancelExchange])
   useEffect(() => {
     if (formState.filterList instanceof Array && formState.filterList.length > 0) {
       let cnt = 0
@@ -464,6 +491,7 @@ export default (props) => {
           setShowFilter={setShowFilter}
           totalCnt={totalCnt}
           formState={formState}
+          setCancelExchange={setCancelExchange}
         />
       </Wrap>
     </div>

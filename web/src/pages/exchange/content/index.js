@@ -93,7 +93,7 @@ export default (props) => {
       })
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMydal(res.data.byeolCnt)
-        context.action.alert({
+        context.action.toast({
           msg: res.message
         })
       } else {

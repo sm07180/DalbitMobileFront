@@ -1,11 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import styled from 'styled-components'
 
 import {WIDTH_MOBILE} from 'context/config'
 
 import NoResult from 'components/ui/noResult'
 // svg
-
+// context
+import {Context} from 'context'
 import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
 import GiftPinkIcon from '../../static/ic_gift_pink.svg'
 import ExchangeIcon from '../../static/ic_exchange_purple.svg'
@@ -13,12 +14,22 @@ import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
 import MoneyIcon from '../../static/money_blue.svg'
 
 export default (props) => {
-  const {formState, walletData, returnCoinText, totalCnt, isFiltering, setShowFilter} = props
+  const context = useContext(Context)
+  const {formState, walletData, returnCoinText, totalCnt, isFiltering, setShowFilter, setCancelExchange} = props
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
     date = [date.slice(4, 6), date.slice(6)].join('.')
     return `${date}`
+  }
+
+  const exchangeCancel = (exchangeIdx) => {
+    context.action.confirm({
+      msg: '환전신청을 취소하시겠습니까?',
+      callback: () => {
+        setCancelExchange(exchangeIdx)
+      }
+    })
   }
   return (
     <ListContainer>
@@ -40,11 +51,20 @@ export default (props) => {
       <ListWrap>
         {Array.isArray(walletData) ? (
           walletData.map((data, index) => {
-            const {contents, type, dalCnt, byeolCnt, updateDt} = data
+            const {contents, type, dalCnt, byeolCnt, updateDt, exchangeIdx} = data
             return (
               <div className="list" key={index}>
                 <span className={`how-to-get type-${type}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
-                <span className="detail">{contents}</span>
+                <span className="detail">
+                  {contents}
+                  {exchangeIdx > 0 ? (
+                    <button className="exchangeCancelBtn" onClick={() => exchangeCancel(exchangeIdx)}>
+                      취소
+                    </button>
+                  ) : (
+                    ''
+                  )}
+                </span>
                 <span className="type">
                   {formState.coinType === 'dal' ? dalCnt : byeolCnt}
                   <em>{returnCoinText(formState.coinType)}</em>
@@ -119,6 +139,18 @@ const ListWrap = styled.div`
       font-weight: 600;
       text-align: left;
       color: #000000;
+      .exchangeCancelBtn {
+        width: 36px;
+        height: 20px;
+        margin-left: 4px;
+        border-radius: 18px;
+        background-color: #000;
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 20px;
+        text-align: center;
+        color: #fff;
+      }
     }
     .type {
       line-height: 18px;
