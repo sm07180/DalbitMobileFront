@@ -147,6 +147,7 @@ export default (props) => {
     if (result === 'success') {
       context.action.alert({
         title: '환전 취소가 완료되었습니다.',
+        className: 'mobile',
         msg: message,
         callback: () => {
           fetchData()
