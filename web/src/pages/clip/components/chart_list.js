@@ -274,37 +274,23 @@ export default (props) => {
                       fetchDataPlay(clipNo, idx)
                     }
                   }}>
-                  <div className="topWrap">
-                    <div className="topWrap__status">
-                      {/* <span className={entryType === 3 ? 'twentyIcon' : entryType === 1 ? 'fanIcon' : 'allIcon'} /> */}
-                      {isSpecial && <span className="specialIcon">S</span>}
-                      {/* <span className="categoryIcon">
-            {clipType.map((v, index) => {
-              if (v.value === subjectType) {
-                return <React.Fragment key={index + 'typeList'}>{v.cdNm}</React.Fragment>
-              }
-            })}
-          </span> */}
-                    </div>
-                    <div className="topWrap__count">
-                      <i className="icon icon--lineMessage">흰색 라인 메세지 아이콘</i>
-                      <span className="topWrap__count--num">
+                  <div className="itemBox">
+                    <div className="itemBox__status">{isSpecial && <span className="specialIcon">S</span>}</div>
+
+                    <div className="itemBox__score">
+                      <span className="message">
                         {playCnt > 999 ? Utility.printNumber(replyCnt) : Utility.addComma(replyCnt)}
                       </span>
-                      <i className="icon icon--lineHeart">흰색 라인 하트 아이콘</i>
-                      <span className="topWrap__count--num">
-                        {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
-                      </span>
+                      <span className="heart">{goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}</span>
                     </div>
                   </div>
-                  <div className="bottomWrap">
-                    <p className="bottomWrap__title">{title}</p>
-                    <div className="bottomWrap__nick">
+                  <div className="textBox">
+                    <p className="textBox__title">{title}</p>
+                    <div className="textBox__nickNameBox">
                       {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                      {nickName}
+                      <span className="nickNam">{nickName}</span>
                     </div>
                   </div>
-                  <div className="dim"></div>
                 </li>
               )
             })
