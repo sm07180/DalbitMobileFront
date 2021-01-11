@@ -327,7 +327,7 @@ export default (props) => {
             }
           }}
           style={{cursor: 'pointer'}}>
-          <span className="recomClipItem__subject">
+          <span className="clipListCategory">
             {clipType.map((ClipTypeItem, index) => {
               if (ClipTypeItem.value === subjectType) {
                 return <React.Fragment key={idx + 'typeList'}>{ClipTypeItem.cdNm}</React.Fragment>
@@ -367,7 +367,7 @@ export default (props) => {
   }
   const makeRankList = (data) => {
     return data.map((item, idx) => {
-      const {bgImg, clipNo, nickName, title} = item
+      const {bgImg, clipNo, nickName, title, subjectType} = item
       if (!item) return null
       return (
         <div
@@ -391,13 +391,19 @@ export default (props) => {
           key={`latest-` + idx}
           style={{cursor: 'pointer'}}>
           <div className="slideWrap__thumb">
+            <span className="clipListCategory">
+              {clipType.map((ClipTypeItem, index) => {
+                const {value, cdNm} = ClipTypeItem
+                if (value === subjectType) {
+                  return <React.Fragment key={idx + 'typeList'}>{cdNm}</React.Fragment>
+                }
+              })}
+            </span>
+
             <img src={bgImg['thumb190x190']} alt={title} />
           </div>
-          {/* <i className="slideWrap__iconNew">
-            <img src={newIcon} />
-          </i> */}
           <p className="slideWrap__subject">{title}</p>
-          <p className="slideWrap__nickName">{nickName}</p>
+          <span className="slideWrap__nickName">{nickName}</span>
         </div>
       )
     })
@@ -840,7 +846,7 @@ export default (props) => {
         ) : context.token.isLogin === true ? (
           <div ref={myClipRef} style={{minHeight: '127px'}}></div>
         ) : (
-          <div ref={myClipRef}></div>
+          <></>
         )}
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef} style={{minHeight: popularList.length > 3 ? '282px' : '172px'}}>
@@ -861,7 +867,7 @@ export default (props) => {
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <div ref={recomendRef}></div>
+          <div ref={recomendRef} style={{minHeight: '282px'}}></div>
         )}
 
         {clipRankingList && clipRankingList.length > 0 ? (
