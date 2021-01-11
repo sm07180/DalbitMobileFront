@@ -46,7 +46,7 @@ export default function noticeTab() {
         })
       }
     }
-    if (profile.memNo !== null) fetchData()
+    if (profile && profile.memNo !== null) fetchData()
 
     if (urlStr === 'alarm') {
       setAlarmActive(true)
