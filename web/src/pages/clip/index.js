@@ -846,7 +846,7 @@ export default (props) => {
         ) : context.token.isLogin === true ? (
           <div ref={myClipRef} style={{minHeight: '127px'}}></div>
         ) : (
-          <></>
+          <div ref={myClipRef}></div>
         )}
         {popularList.length > 0 ? (
           <div className="recomClip" ref={recomendRef} style={{minHeight: popularList.length > 3 ? '282px' : '172px'}}>
