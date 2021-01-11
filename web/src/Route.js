@@ -87,6 +87,7 @@ export default () => {
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
+        <Route exact path="/login/:type" component={Login} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
