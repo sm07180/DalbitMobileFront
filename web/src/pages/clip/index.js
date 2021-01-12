@@ -771,7 +771,7 @@ export default (props) => {
   // }, [swiper, tableSwiperIndex])
 
   useEffect(() => {
-    if (marketingClipList.length > 0 && tableSwiperIndex !== 0) {
+    if (marketingClipList.length > 0) {
       const date = marketingClipList[tableSwiperIndex].recDate
       context.action.updateDateState(convertDateFormat(date, 'YYYY-MM-DD'))
     }
