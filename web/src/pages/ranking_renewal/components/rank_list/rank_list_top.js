@@ -30,6 +30,7 @@ function RankListTop({specialPop}) {
   const realTimeNow = useCallback(
     (memNo, liveBadgeList) => {
       let timeNow
+      const status = convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0)
       const dateNow = new Date()
       const monthNow = dateNow.getMonth()
       const monthRank = new Date(formState[formState.pageType].currentDate).getMonth()
@@ -56,7 +57,6 @@ function RankListTop({specialPop}) {
               timeNow = ''
             }
           } else {
-            //회장님
             if (formState[formState.pageType].rankType === RANK_TYPE.DJ) {
               TopBoxRef.current.className = 'TopBox isLabel'
               timeNow = (
@@ -74,6 +74,11 @@ function RankListTop({specialPop}) {
                 </>
               )
             } else {
+            }
+          }
+        } else if (formState[formState.pageType].dateType === DATE_TYPE.DAY) {
+          if (formState[formState.pageType].rankType === RANK_TYPE.FAN) {
+            if (status) {
               TopBoxRef.current.className = 'TopBox isLabel'
               timeNow = (
                 <>
@@ -89,7 +94,13 @@ function RankListTop({specialPop}) {
                     })}
                 </>
               )
+            } else {
+              TopBoxRef.current.className = 'TopBox'
+              timeNow = ''
             }
+          } else {
+            TopBoxRef.current.className = 'TopBox'
+            timeNow = ''
           }
         } else {
           TopBoxRef.current.className = 'TopBox'
