@@ -154,7 +154,7 @@ function RankList() {
                         <div className="nickNameImg">
                           {gender !== '' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
 
-                          {formState[formState.pageType].dateType === DATE_TYPE.TIME && (
+                          {formState[formState.pageType].dateType === DATE_TYPE.DAY && (
                             <>
                               {liveBadgeList &&
                                 liveBadgeList.length !== 0 &&
