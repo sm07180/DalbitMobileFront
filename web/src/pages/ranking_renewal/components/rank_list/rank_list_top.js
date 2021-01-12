@@ -16,6 +16,7 @@ import sliverDecoFan from '../../static/fanrf2_deco@3x.png'
 import bronzeDecoFan from '../../static/fanrf3_deco@3x.png'
 import liveIcon from '../../static/live_white_l.svg'
 import {DATE_TYPE, PAGE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
+import {convertDateToText} from 'pages/common/rank/rank_fn'
 
 function RankListTop({specialPop}) {
   const history = useHistory()
