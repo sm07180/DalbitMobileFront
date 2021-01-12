@@ -19,10 +19,10 @@ export default () => {
         <p>DJ들이 주목하는 청취자가 될 수 있습니다.</p>
       </div>
 
-      <div className="tableBox">
+      {/* <div className="tableBox">
         <p className="tableBox__title">
           타임 FAN 랭킹 TOP3
-          {/* <span className="tableBox__title--sub">달 보상 지급</span> */}
+          <span className="tableBox__title--sub">달 보상 지급</span>
         </p>
 
         <table>
@@ -57,7 +57,7 @@ export default () => {
             </tr>
           </tbody>
         </table>
-      </div>
+      </div> */}
 
       <div className="tableBox">
         <p className="tableBox__title">

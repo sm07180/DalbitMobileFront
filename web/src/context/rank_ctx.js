@@ -18,7 +18,7 @@ const reducer = (state, action) => {
         ...state,
         [state.pageType]: {
           rankType: action.val,
-          dateType: action.val === RANK_TYPE.LIKE ? 1 : 5,
+          dateType: action.val === RANK_TYPE.DJ ? 5 : 1,
           currentDate: new Date()
         },
         page: 1

@@ -1,6 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {RankContext} from 'context/rank_ctx'
+import React, { useContext, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
+import Utility, { addComma } from "components/lib/utility";
+import { RankContext } from 'context/rank_ctx'
 import styled, {css} from 'styled-components'
 import NoResult from 'components/ui/new_noResult'
 import ProfileImage from 'components/ui/profileImage'
@@ -8,8 +9,8 @@ import '../index.scss'
 
 function Second({empty}) {
   const history = useHistory()
-  const {rankState} = useContext(RankContext)
-  const {secondList} = rankState
+  const { rankState } = useContext(RankContext)
+  const { secondList } = rankState
 
   return (
     <div className="specialPage">
@@ -39,41 +40,37 @@ function Second({empty}) {
                       level: v1.level
                     }
                     return (
-                      <>
-                        <React.Fragment key={`memberList-${i1}`}>
-                          <div className="infoBox flexBox">
-                            <div className="profileBox">
-                              <ProfileImage imageData={imageData} imageSize={74} />
-                            </div>
-                            <div>
-                              <div className="nickNameBox ellipsis">{v1.memNick}</div>
-                              <span className="genderBox">
-                                <LevelBox levelColor={v1.levelColor}>Lv{v1.level}</LevelBox>
-                                {v1.memSex1 === 'w' && (
-                                  <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico" />
-                                )}
-                                {v1.memSex1 === 'm' && (
-                                  <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="ico" />
-                                )}
-                              </span>
-                              <ul className="countBox">
-                                <span>
-                                  <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg" />
-                                  {likeCnt}
-                                </span>
-                                <span>
-                                  <img src="https://image.dalbitlive.com/svg/people_g_s.svg" />
-                                  {listenCnt}
-                                </span>
-                                <span>
-                                  <img src="https://image.dalbitlive.com/svg/time_g_s.svg" />
-                                  {airTime}
-                                </span>
-                              </ul>
-                            </div>
+                      <div className="infoBox flexBox" key={`memberList-${i1}`}>
+                        <div className="profileBox">
+                          <ProfileImage imageData={imageData} imageSize={74}/>
+                        </div>
+                        <div>
+                          <div className="nickNameBox ellipsis">{v1.memNick}</div>
+                          <span className="genderBox">
+                            <LevelBox levelColor={v1.levelColor}>Lv{v1.level}</LevelBox>
+                            {v1.memSex1 === 'w' && (
+                              <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico"/>
+                            )}
+                            {v1.memSex1 === 'm' && (
+                              <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="ico"/>
+                            )}
+                          </span>
+                          <div className="countBox">
+                            <span>
+                              <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg"/>
+                              {Utility.addComma(likeCnt)}
+                            </span>
+                            <span>
+                              <img src="https://image.dalbitlive.com/svg/people_g_s.svg"/>
+                              {Utility.addComma(listenCnt)}
+                            </span>
+                            <span>
+                              <img src="https://image.dalbitlive.com/svg/time_g_s.svg"/>
+                              {Utility.addComma(airTime)}
+                            </span>
                           </div>
-                        </React.Fragment>
-                      </>
+                        </div>
+                      </div>
                     )
                   })}
                 <button className="btnMore">

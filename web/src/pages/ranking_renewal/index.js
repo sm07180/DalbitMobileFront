@@ -410,8 +410,9 @@ function Ranking() {
         })
         if (formState.page > 1) {
           setRankList(rankList.concat(res.data.list))
-          setRankData({
-            isRankData
+          setRankTimeData({
+            ...rankTimeData,
+            ...res.data
           })
         } else {
           if (formState.page > 1) {

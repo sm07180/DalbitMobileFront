@@ -1,7 +1,7 @@
-import React, {useContext} from 'react'
-import styled, {css} from 'styled-components'
-import {useHistory} from 'react-router-dom'
-
+import React, { useContext } from 'react'
+import styled, { css } from 'styled-components'
+import { useHistory } from 'react-router-dom'
+import Utility, { addComma } from "components/lib/utility";
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {RoomJoin} from 'context/room'
@@ -85,13 +85,13 @@ function SpecialList({empty}) {
                         </div>
                         <div className="countBox">
                           <span>
-                            <i className="icon icon--like">회색 하트 아이콘</i> {v.goodCnt}
+                            <i className="icon icon--like">회색 하트 아이콘</i> {Utility.addComma(v.goodCnt)}
                           </span>
                           <span>
-                            <i className="icon icon--people">사람 아이콘</i> {v.listenerCnt}
+                            <i className="icon icon--people">사람 아이콘</i> {Utility.addComma(v.listenerCnt)}
                           </span>
                           <span>
-                            <i className="icon icon--time">시계 아이콘</i> {v.broadMin}
+                            <i className="icon icon--time">시계 아이콘</i> {Utility.addComma(v.broadMin)}
                           </span>
                         </div>
                       </div>

@@ -36,7 +36,7 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
             <br />
             실시간 팬 랭킹 점수가 반영되지 않습니다.
             <br />
-            (타임/일간/주간/월간 공통 적용)
+            (일간/주간/월간 공통 적용)
           </p>
           <p className="warning">
             지금부터 실시간 팬 랭킹 점수를
@@ -59,12 +59,6 @@ export default ({setResetPointPop, rankSettingBtn, setRankSetting}) => {
                     rankAction.setRankData &&
                       rankAction.setRankData({
                         ...rankState.rankData,
-                        isRankData: false
-                      })
-
-                    rankAction.setRankTimeData &&
-                      rankAction.setRankTimeData({
-                        ...rankState.rankTimeData,
                         isRankData: false
                       })
                   }

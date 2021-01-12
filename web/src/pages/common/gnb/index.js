@@ -25,6 +25,8 @@ let alarmCheckIntervalId = null
 export default (props) => {
   //context
   const context = useContext(Context)
+  const globalCtx = useContext(Context)
+  const {logoChange, token} = globalCtx
   const {webview} = props
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
@@ -32,9 +34,6 @@ export default (props) => {
   if (webview && webview === 'new') {
     return null
   }
-
-  const globalCtx = useContext(Context)
-  const {logoChange, token} = globalCtx
 
   // static
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
@@ -56,13 +55,13 @@ export default (props) => {
     }
     if (category === 'store') {
       if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
-        if(globalCtx.customHeader['appBuild'] && parseInt(globalCtx.customHeader['appBuild']) > 196){
+        if (globalCtx.customHeader['appBuild'] && parseInt(globalCtx.customHeader['appBuild']) > 196) {
           return webkit.messageHandlers.openInApp.postMessage('')
-        }else{
+        } else {
           globalCtx.action.alert({
             msg: '현재 앱 내 결제에 문제가 있어 작업중입니다.\n도움이 필요하시면 1:1문의를 이용해 주세요.'
           })
-          return;
+          return
         }
       } else {
         return history.push(`/pay/${category}`)
@@ -91,25 +90,25 @@ export default (props) => {
 
   useEffect(() => {
     async function alarmCheck() {
-      const {result, data} = await Api.mypage_alarm_check()
+      let memNoParams = token.memNo ? token.memNo : ''
+      const {result, data, message} = await Api.getMyPageNew(memNoParams)
       if (result === 'success') {
-        const {newCnt} = data
-        if (newCnt > 0) {
-          setNewAlarm(true)
+        if (data) {
+          if (data.newCnt > 0) {
+            setNewAlarm(true)
+          } else {
+            setNewAlarm(false)
+          }
         }
       }
     }
-
-    if (!newAlarm) {
+    if (token.isLogin && !newAlarm) {
       alarmCheck()
       alarmCheckIntervalId = setInterval(alarmCheck, 5000)
     } else {
       if (alarmCheckIntervalId) {
         clearInterval(alarmCheckIntervalId)
       }
-    }
-
-    return () => {
     }
   }, [newAlarm])
 

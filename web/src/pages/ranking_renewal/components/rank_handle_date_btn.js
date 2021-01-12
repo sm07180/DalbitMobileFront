@@ -127,6 +127,15 @@ function RankHandleDateBtn({fetching}) {
       } else {
         return true
       }
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.YEAR) {
+      const cDt = new Date('2020-07-01')
+      let ye = cDt.getFullYear()
+
+      if (cy === ye) {
+        return false
+      } else {
+        return true
+      }
     } else {
       return false
     }
@@ -169,6 +178,15 @@ function RankHandleDateBtn({fetching}) {
         return false
       } else {
         return true
+      }
+    } else if (formState[formState.pageType].dateType === DATE_TYPE.YEAR) {
+      const cDt = new Date('2020-07-01')
+      let ye = cDt.getFullYear()
+
+      if (cy === ye) {
+        return true
+      } else {
+        return false
       }
     } else {
       return false

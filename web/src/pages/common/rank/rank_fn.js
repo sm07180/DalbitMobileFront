@@ -181,6 +181,18 @@ export function convertDateToText(dateType, currentDate, convertType) {
           // date: `${formYear}.${formMonth}`
         }
       }
+    } else {
+      if (year === formYear) {
+        return {
+          header: `${formYear}년 실시간`,
+          date: ''
+        }
+      } else {
+        return {
+          header: `${formYear}년`,
+          date: ''
+        }
+      }
     }
   }
 }
@@ -245,6 +257,7 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
         }
         break
       case 4:
+        handle = new Date(`${year - 1}-01-01`)
         break
       case 5:
         if (hours < 10) {
@@ -284,6 +297,7 @@ export function liveBoxchangeDate(some, dateType, currentDate) {
         }
         break
       case 4:
+        handle = new Date(`${year + 1}-01-01`)
         break
       case 5:
         if (hours >= 0 && hours < 10) {
