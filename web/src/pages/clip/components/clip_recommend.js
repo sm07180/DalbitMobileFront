@@ -16,7 +16,7 @@ import NoResult from 'components/ui/new_noResult'
 import '../clip.scss'
 import set from '@babel/runtime/helpers/esm/set'
 
-export default function clipRecommend() {
+export default function ClipRecommend() {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const history = useHistory()
@@ -343,7 +343,7 @@ export default function clipRecommend() {
                           }
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
-                        <img src={v.bgImg.thumb62x62} alt="썸네일" className="thumbnail__img" />
+                        <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
 
                         {/*<span className="thumbnail__specialDj">스페셜Dj</span>*/}
                         <span className="thumbnail__playTime">{v.filePlay}</span>
