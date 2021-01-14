@@ -12,15 +12,15 @@ import './index.scss'
 export default function Service() {
   const context = useContext(Context)
   const hisotry = useHistory()
-  const customerHeader = JSON.parse(Api.customHeader)
+  const customHeader = JSON.parse(Api.customHeader)
   const [versionShow, setVersionShow] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
   const [currentVersion, setCurrentVersion] = useState(false)
   const [storeUrl, setStoreUrl] = useState('')
   const osTypeConvertToText = () => {
-    if (customerHeader.os === OS_TYPE['Android']) {
+    if (customHeader.os === OS_TYPE['Android']) {
       return <span className="serviceWrap__user--point">구글Play스토어</span>
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       return <span className="serviceWrap__user--point">애플App스토어</span>
     } else {
       return <span className="serviceWrap__user--point">모바일웹</span>
@@ -28,7 +28,7 @@ export default function Service() {
   }
 
   const makeCallBtn = (callNum) => {
-    if (customerHeader.os === OS_TYPE['Android']) {
+    if (customHeader.os === OS_TYPE['Android']) {
       return (
         // <></>
         <button
@@ -38,7 +38,7 @@ export default function Service() {
           전화걸기
         </button>
       )
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       return (
         <button
           onClick={() => {
@@ -60,13 +60,13 @@ export default function Service() {
   }
 
   const updateApp = () => {
-    if (customerHeader.os === OS_TYPE['Android']) {
-      if(__NODE_ENV === 'dev' || customHeader.appBuild >= 48){
+    if (customHeader.os === OS_TYPE['Android']) {
+      if (__NODE_ENV === 'dev' || customHeader.appBuild >= 48) {
         Hybrid('goToPlayStore')
       } else {
         Hybrid('openUrl', storeUrl)
       }
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       Hybrid(
         'openUrl',
         storeUrl
@@ -83,9 +83,9 @@ export default function Service() {
       setCurrentVersion(data.nowVersion)
       setStoreUrl(data.storeUrl)
     }
-    if (customerHeader.os === OS_TYPE['Android']) {
+    if (customHeader.os === OS_TYPE['Android']) {
       setVersionShow(true)
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       setVersionShow(true)
     } else {
       setVersionShow(false)

@@ -207,9 +207,9 @@ export default (props) => {
     if (context.mailboxExist) {
       if (
         __NODE_ENV === 'dev' ||
-        customerHeader.os === OS_TYPE['Desktop'] ||
-        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
-        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+        customHeader.os === OS_TYPE['Desktop'] ||
+        (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
         return (
           <button

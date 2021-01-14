@@ -71,7 +71,6 @@ let totalLivePage = 1
 let storeUrl = ''
 let updateState
 export default (props) => {
-  const customerHeader = JSON.parse(Api.customHeader)
   // reference
   const MainRef = useRef()
   const SubMainRef = useRef()
@@ -559,13 +558,13 @@ export default (props) => {
   }
   //updatefunc
   const updateApp = () => {
-    if (customerHeader.os === OS_TYPE['Android']) {
+    if (customHeader.os === OS_TYPE['Android']) {
       if (__NODE_ENV === 'dev' || customHeader.appBuild >= 48) {
         Hybrid('goToPlayStore')
       } else {
         Hybrid('openUrl', storeUrl)
       }
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       Hybrid('openUrl', storeUrl)
     }
   }
@@ -683,7 +682,7 @@ export default (props) => {
       updateState = res.data.isUpdate
       storeUrl = res.data.storeUrl
     }
-    if (customerHeader.os === OS_TYPE['Android'] || customerHeader.os === OS_TYPE['IOS']) {
+    if (customHeader.os === OS_TYPE['Android'] || customHeader.os === OS_TYPE['IOS']) {
       fetchVersionCheck()
     }
     //메인에 첫번째 조인

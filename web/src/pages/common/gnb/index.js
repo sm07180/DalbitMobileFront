@@ -62,8 +62,8 @@ export default (props) => {
       return false
     }
     if (category === 'store') {
-      if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
-        if (globalCtx.customHeader['appBuild'] && parseInt(globalCtx.customHeader['appBuild']) > 196) {
+      if (customHeader.os === OS_TYPE['IOS']) {
+        if (customHeader.appBuild && parseInt(customHeader.appBuild) > 196) {
           return webkit.messageHandlers.openInApp.postMessage('')
         } else {
           globalCtx.action.alert({

@@ -25,7 +25,7 @@ export default function Qna() {
   ]
 
   const context = useContext(Context)
-  const customerHeader = JSON.parse(Api.customHeader)
+  const customHeader = JSON.parse(Api.customHeader)
   const [name, setName] = useState('')
   const [faqNum, setFaqNum] = useState(0)
   const [email, setEmail] = useState('')
@@ -279,7 +279,7 @@ export default function Qna() {
   }
 
   const phoneCallWrap = () => {
-    if (customerHeader.os === OS_TYPE['Android']) {
+    if (customHeader.os === OS_TYPE['Android']) {
       return (
         <div
           className="personalAddWrap__callWrap--call"
@@ -291,7 +291,7 @@ export default function Qna() {
         </div>
         // <></>
       )
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       return (
         <div
           className="personalAddWrap__callWrap--call"
@@ -317,8 +317,8 @@ export default function Qna() {
   }
 
   const phoneCall = () => {
-    if (customerHeader.os === OS_TYPE['Android']) {
-    } else if (customerHeader.os === OS_TYPE['IOS']) {
+    if (customHeader.os === OS_TYPE['Android']) {
+    } else if (customHeader.os === OS_TYPE['IOS']) {
       Hybrid('openUrl', `tel:1522-0251`)
     } else {
       window.location.href = `tel:1522-0251`
