@@ -16,34 +16,13 @@ import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 export default function ClipHistory() {
   let history = useHistory()
   const context = useContext(Context)
-  const {webview} = qs.parse(location.search)
+  const {webview, subTab} = qs.parse(location.search)
   // state
-  const [currentPage, setCurrentPage] = useState(1)
   const [historyList, setHistoryList] = useState([])
-  const [totalPage, setTotalPage] = useState(0)
-  const [historyLoding, setHistoryLoading] = useState('')
-  const [historyTab, setHistoryTab] = useState(0)
+
+  const [historyLoding, setHistoryLoading] = useState(false)
+  const [historyTab, setHistoryTab] = useState(Number(subTab) || 0)
   const customHeader = JSON.parse(Api.customHeader)
-  // fetch data
-  const fetchDataList = async () => {
-    const {result, data, message} = await Api.getHistoryList({
-      memNo: context.profile.memNo,
-      records: 100,
-      slctType: historyTab
-    })
-    if (result === 'success') {
-      setHistoryLoading(true)
-      setHistoryList(data.list)
-      if (data.paging) {
-        setTotalPage(data.paging.totalPage)
-      }
-    } else {
-      setHistoryLoading(false)
-      context.action.alert({
-        msg: message
-      })
-    }
-  }
 
   const getPageFormIdx = useCallback((idx) => {
     if (idx < 100) return 1
@@ -214,12 +193,31 @@ export default function ClipHistory() {
     }
   }
   useEffect(() => {
+    // fetch data
+    const fetchDataList = async () => {
+      const {result, data, message} = await Api.getHistoryList({
+        memNo: context.profile.memNo,
+        records: 100,
+        slctType: historyTab
+      })
+      if (result === 'success') {
+        setHistoryLoading(true)
+        setHistoryList(data.list)
+      } else {
+        setHistoryLoading(false)
+        context.action.alert({
+          msg: message
+        })
+      }
+    }
+
     fetchDataList()
-  }, [currentPage, historyTab])
+  }, [historyTab])
+
   return (
     <div className="uploadWrap">
       {historyLoding && (
-        <React.Fragment>
+        <>
           <div className="historyBtnWrap">
             <button
               onClick={() => setHistoryTab(0)}
@@ -238,7 +236,7 @@ export default function ClipHistory() {
             </button>
           </div>
           {createContents()}
-        </React.Fragment>
+        </>
       )}
       {/* {historyList.length !== 0 && <button className="uploadBtn">업로드</button>} */}
     </div>

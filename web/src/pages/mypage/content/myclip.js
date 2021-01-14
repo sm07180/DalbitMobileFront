@@ -4,18 +4,23 @@ import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {Context} from 'context'
 import Api from 'context/api'
 // router
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation} from 'react-router-dom'
 // scss
 import '../myclip.scss'
 // components
 import ClipUpload from '../component/clip/clip_upload'
 import ClipHistory from '../component/clip/clip_history'
 import Header from '../component/header.js'
+import qs from 'query-string'
 // ----------------------------------------------------------------------
 export default function Clip(props) {
-  //history
+  // history
   let history = useHistory()
   const context = useContext(Context)
+  // location
+  const location = useLocation()
+  const { tab } = qs.parse(location.search)
+
   // divide components
   const createContents = () => {
     if (context.clipTab === 0) {
@@ -32,11 +37,9 @@ export default function Clip(props) {
       context.action.updateClipTab(1)
     }
   }
+
   //----------------------------------------------------------------
   useEffect(() => {
-    if (context.profile.memNo !== context.urlStr) {
-      context.action.updateClipTab(0)
-    }
     //클립타입 조회
     const fetchDataClipType = async () => {
       const {result, data} = await Api.getClipType({})
@@ -50,6 +53,7 @@ export default function Clip(props) {
       context.action.updateClipTab(0)
     }
   }, [])
+
   // render---------------------------------------------------------
   return (
     <div id="mypageClip">

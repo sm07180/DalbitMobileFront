@@ -710,6 +710,16 @@ export default (props) => {
     }
   }
 
+  const goClip = (tabParam, subTabParam) => {
+    if (tabParam === 0) {
+      context.action.updateClipTab(0)
+    } else if (tabParam === 1) {
+      context.action.updateClipTab(1)
+    }
+    history.push(`/mypage/${context.token.memNo}/my_clip?tab=${tabParam}&subTab=${subTabParam}`)
+  }
+
+
   useEffect(() => {
     //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
     if (Object.values(listTop3).length > 0) {
@@ -824,19 +834,19 @@ export default (props) => {
             </h3>
             {myClipToggle && (
               <ul className="myClipWrap">
-                <li className="upload">
+                <li className="upload" onClick={() => goClip(0,0)}>
                   <em></em>
                   <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
                 </li>
-                <li className="listen">
+                <li className="listen" onClick={() => goClip(1,0)}>
                   <em></em>
                   <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
                 </li>
-                <li className="like">
+                <li className="like" onClick={() => goClip(1,1)}>
                   <em></em>
                   <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
                 </li>
-                <li className="gift">
+                <li className="gift" onClick={() => goClip(1,2)}>
                   <em></em>
                   <span>
                     {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
