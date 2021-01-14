@@ -92,7 +92,7 @@ export default function login_sns({props}) {
           </button>
 
           <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-            <img className="icon" src={appleLogo} /> <span>애플로 계속하기</span>
+            <img className="icon" src={appleLogo} /> <span>Apple로 계속하기</span>
           </button>
 
           {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
