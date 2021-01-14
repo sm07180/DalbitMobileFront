@@ -165,7 +165,6 @@ const App = () => {
         }
 
         const appIsFirst = Utility.getCookie('appIsFirst')
-
         if (appIsFirst !== 'N') {
           Utility.setCookie('appIsFirst', 'N')
           if (tokenInfo.data.isLogin === false) {
@@ -181,11 +180,12 @@ const App = () => {
         })
         if (myProfile.result === 'success') {
           globalCtx.action.updateProfile(myProfile.data)
+        } else {
+          globalCtx.action.updateProfile(false)
         }
       }
 
       //모든 처리 완료
-      setReady(true)
     } else {
       const yesterDay = (() => {
         const date = new Date()
@@ -229,14 +229,21 @@ const App = () => {
     const res = await Api.splash({})
     if (res.result === 'success') {
       const {data} = res
-      const {roomType, useMailBox} = data
+      const {roomType} = data
       if (roomType) {
         globalCtx.action.updateRoomType(roomType)
       }
+
       globalCtx.action.updateSplash(data)
-      globalCtx.action.updateMailboxExist(useMailBox)
     }
   }
+
+  useEffect(() => {
+    if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
+      setReady(true)
+    }
+  }, [globalCtx.splash, globalCtx.token, globalCtx.profile])
+
   //useEffect token
   useEffect(() => {
     // set header (custom-header, authToken)
