@@ -16,6 +16,8 @@ import BroadCastSetting from '../component/setting/broadcast'
 import BanWord from '../component/setting/banWord'
 import Manager from '../component/setting/manager'
 import Blacklist from '../component/setting/blacklist'
+import PushMembers from '../component/setting/push_members'
+
 //constant
 import {BC_SETTING_TYPE} from '../constant'
 import {SETTING_TYPE} from '../constant'
@@ -27,7 +29,8 @@ const selectBoxData = [
   {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
   {value: BC_SETTING_TYPE.BANWORD, text: '금지어 관리'},
   {value: BC_SETTING_TYPE.MANAGER, text: '매니저 관리'},
-  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'}
+  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'},
+  {value: BC_SETTING_TYPE.PUSH_MEMBERS, text: '알림받기 설정 회원 관리'}
 ]
 
 export default (props) => {
@@ -45,7 +48,7 @@ export default (props) => {
   const createContent = () => {
     switch (changeContents) {
       case BC_SETTING_TYPE.PUSH:
-        return <AppAlarm />
+        return <AppAlarm setChangeContents={setChangeContents} setInitialScreen={setInitialScreen} />
       case BC_SETTING_TYPE.BROADCAST:
         return <BroadCastSetting subContents={subContents} setSubContents={setSubContents} />
       case BC_SETTING_TYPE.BANWORD:
@@ -54,6 +57,8 @@ export default (props) => {
         return <Manager />
       case BC_SETTING_TYPE.BLACKLIST:
         return <Blacklist />
+      case BC_SETTING_TYPE.PUSH_MEMBERS:
+        return <PushMembers />
       default:
         break
     }
@@ -80,10 +85,11 @@ export default (props) => {
     <>
       <div className="header-wrap">
         <h2 className="header-title">
-          {initialScreen && '서비스 설정'}
-
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH && 'PUSH 알림 설정'}
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.BROADCAST && (
+          {initialScreen ? (
+            '서비스 설정'
+          ) : changeContents === BC_SETTING_TYPE.PUSH ? (
+            'PUSH 알림 설정'
+          ) : changeContents === BC_SETTING_TYPE.BROADCAST ? (
             <>
               {subContents === SETTING_TYPE.TITLE
                 ? '방송 제목'
@@ -95,10 +101,21 @@ export default (props) => {
                 ? '배지 / 입퇴장 메시지'
                 : '방송 / 청취'}
             </>
+          ) : changeContents === BC_SETTING_TYPE.BANWORD ? (
+            '금지어 관리'
+          ) : changeContents === BC_SETTING_TYPE.MANAGER ? (
+            '매니저 관리'
+          ) : changeContents === BC_SETTING_TYPE.BLACKLIST ? (
+            '차단회원 관리'
+          ) : (
+            '알림받기 설정 회원 관리'
           )}
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.BANWORD && '금지어 관리'}
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.MANAGER && '매니저 관리'}
-          {initialScreen === false && changeContents === BC_SETTING_TYPE.BLACKLIST && '차단회원 관리'}
+
+          {/* {initialScreen === false && } */}
+          {/* {initialScreen === false && } */}
+          {/* {initialScreen === false && } */}
+          {/* {initialScreen === false && } */}
+          {/* {initialScreen === false && changeContents === BC_SETTING_TYPE.PUSH_MEMBERS && } */}
         </h2>
         <button className="close-btn" onClick={BackFunction}>
           <img src={closeBtn} alt="뒤로가기" />
