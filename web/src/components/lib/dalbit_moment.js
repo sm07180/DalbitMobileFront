@@ -2,7 +2,6 @@ const formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D
 
 export function convertDateFormat(date, format) {
   const pretreatmentDate = propsDatePretreatment(date)
-
   const formatArray = format.match(formattingTokens)
 
   let returnValue = ''
@@ -27,6 +26,13 @@ function propsDatePretreatment(props) {
   } else {
     if (props.length === 8) {
       return new Date([props.substr(0, 4), props.substr(4, 2), props.substr(6, 2)].join('-'))
+    } else if (props.length === 14) {
+      return new Date(
+        [
+          [props.substr(0, 4), props.substr(4, 2), props.substr(6, 2)].join('-'),
+          [props.substr(8, 2), props.substr(10, 2), props.substr(12, 2)].join(':')
+        ].join('T')
+      )
     } else if (props.includes('-')) {
       return new Date(props)
     } else if (props.includes('.')) {
@@ -106,4 +112,13 @@ function hourTypeSetting(date) {
   } else {
     return '12'
   }
+}
+
+export function calcDateFormat(sDate, diff) {
+  if (sDate === null || diff === null) return ''
+
+  const calcDate = new Date(sDate)
+  calcDate.setDate(calcDate.getDate() + diff)
+
+  return convertDateFormat(calcDate, 'YYYY-MM-DD')
 }
