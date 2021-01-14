@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
-
+import {Hybrid} from 'context/hybrid'
 import LoginForm from './login_form'
 import appleLogo from './static/apple_logo.svg'
 import facebookLogo from './static/facebook_logo.svg'

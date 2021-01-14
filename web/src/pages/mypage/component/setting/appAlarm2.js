@@ -28,15 +28,15 @@ const AlarmArray = [
   {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림', msg: '팬보드 내 글에 댓글이 등록되면 알림<br>'},
   {key: 'isRadio', value: 0, text: '선물 도착 알림', msg: '달 선물 도착 시 알림<br>'},
   // {key: 'isLike', value: 0, text: '공지 및 이벤트 알림', msg: '공지 및 이벤트 알림 시'},
-  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림<br>'},
-  {
-    key: 'isReceive',
-    value: 0,
-    text: '알림받기 방송시작 알림',
-    msg: '알림받기를 통한 방송시작<br>',
-    callback: function () {},
-    buttonText: '회원관리 바로가기'
-  }
+  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림<br>'}
+  // {
+  //   key: 'isReceive',
+  //   value: 0,
+  //   text: '알림받기 방송시작 알림',
+  //   msg: '알림받기를 통한 방송시작<br>',
+  //   callback: function () {},
+  //   buttonText: '회원관리 바로가기'
+  // }
 ]
 const msgOn = ' 푸시를 받습니다.'
 const msgOff = ' 푸시를 받지 않습니다.'

@@ -736,7 +736,7 @@
           }
           .btnFan {
             &--isOff {
-              min-width: 34%;
+              // min-width: 34%;
               color: $white;
               background: $primary;
               &::after {

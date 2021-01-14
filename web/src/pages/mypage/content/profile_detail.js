@@ -808,7 +808,7 @@ export default (props) => {
                 팬등록
               </button>
             )}
-            {profile.isFan === false && (
+            {/* {profile.isFan === false && (
               <>
                 {profile.isReceive === false && (
                   <button className="btnAlarm btnAlarm--isOff">
@@ -821,7 +821,7 @@ export default (props) => {
                   </button>
                 )}
               </>
-            )}
+            )} */}
           </div>
         )}
       </div>
