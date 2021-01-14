@@ -553,6 +553,8 @@ const GlobalProvider = (props) => {
     selfAuth,
     closeSpeical,
     splash,
+    mailboxNew,
+    mailboxExist,
     dateState
   }
   return <Provider value={value}>{props.children}</Provider>
