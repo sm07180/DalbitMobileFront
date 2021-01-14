@@ -147,7 +147,14 @@ export default () => {
                       giftItem = '문화상품권'
                     } else if (itemNo === 8) {
                       giftItem = '교촌치킨 세트'
-                    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29) {
+                    } else if (
+                      itemNo === 9 ||
+                      itemNo === 19 ||
+                      itemNo === 29 ||
+                      itemNo === 39 ||
+                      itemNo === 49 ||
+                      itemNo === 59
+                    ) {
                       giftItem = '100달'
                     } else if (itemNo === 14) {
                       giftItem = '초코송이'
@@ -169,6 +176,36 @@ export default () => {
                       giftItem = '맘스터치 세트'
                     } else if (itemNo === 28) {
                       giftItem = '베라 D-BOX'
+                    } else if (itemNo === 34) {
+                      giftItem = '에너지바'
+                    } else if (itemNo === 35) {
+                      giftItem = '미닛메이드'
+                    } else if (itemNo === 36) {
+                      giftItem = '던킨 먼치킨'
+                    } else if (itemNo === 37) {
+                      giftItem = '버거킹 몬스터X'
+                    } else if (itemNo === 38) {
+                      giftItem = '빠바 케이크'
+                    } else if (itemNo === 44) {
+                      giftItem = '바나나우유'
+                    } else if (itemNo === 45) {
+                      giftItem = '빈츠'
+                    } else if (itemNo === 46) {
+                      giftItem = '던킨 아메&도너츠'
+                    } else if (itemNo === 47) {
+                      giftItem = '베라 파인트'
+                    } else if (itemNo === 48) {
+                      giftItem = '도미노 피자'
+                    } else if (itemNo === 54) {
+                      giftItem = '비타 500'
+                    } else if (itemNo === 55) {
+                      giftItem = '허쉬 아이스바'
+                    } else if (itemNo === 56) {
+                      giftItem = '스타벅스 커피'
+                    } else if (itemNo === 57) {
+                      giftItem = '맘스터치 치파오'
+                    } else if (itemNo === 58) {
+                      giftItem = '굽네치킨 보름달'
                     }
 
                     return giftItem

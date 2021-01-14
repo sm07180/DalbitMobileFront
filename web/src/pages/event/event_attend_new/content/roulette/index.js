@@ -159,16 +159,19 @@ export default function RouletteTab() {
           </div>
         </div>
       </div>
-      <div className="rouletteBox" onClick={() => startIn()}>
-        <img src={eventAttendState.rouletteInfo.bg_image_url} alt="룰렛 돌림판" />
-        {/* <button type="button" onClick={() => startIn()}>
-          <img src={eventAttendState.rouletteInfo.start_image_url} alt="룰렛 스타트" />
-        </button> */}
+      <div className="rouletteBox">
+        {popRoulette ? (
+          <PopRoulette />
+        ) : (
+          <>
+            <img src={`${eventAttendState.rouletteInfo.pin_image_url}`} className="rouletPin" alt="룰렛 핀" />
+            <button onClick={() => startIn()}>
+              <img src={`${eventAttendState.rouletteInfo.image_url}`} alt="룰렛 판" />
+            </button>
+          </>
+        )}
       </div>
-      <div>
-        <Notice />
-      </div>
-      {popRoulette && <PopRoulette />}
+      <Notice />
     </div>
   )
 }

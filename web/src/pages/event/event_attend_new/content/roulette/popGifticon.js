@@ -140,7 +140,7 @@ export default () => {
       giftItem = '꽝'
     } else if (itemNo === 2) {
       giftItem = '1달 당첨!'
-    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29) {
+    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59) {
       giftItem = '100달 당첨!'
     } else {
       giftItem = eventAttendState.start.itemWinMsg
@@ -161,7 +161,7 @@ export default () => {
     } else if (itemNo === 3) {
       giftImage = `${IMG_SERVER}/event/attend/201019/img_moon3@2x.png`
       return <img src={giftImage} width="88px" alt="3달" />
-    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29) {
+    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59) {
       giftImage = `${IMG_SERVER}/event/attend/201217/img_moon100@2x.png`
       return <img src={giftImage} width="100px" alt="100달" />
     } else {
@@ -181,7 +181,7 @@ export default () => {
     <div className="popupWrap">
       <div className="popupContent gifticon">
         <h1>{itemNo === 1 ? '꽝! 다음 기회에~' : '축하합니다!'}</h1>
-        {itemNo <= 2 || itemNo === 9 || itemNo === 19 || itemNo === 29 ? (
+        {itemNo <= 2 || itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59 ? (
           <>
             <div className="winInfo">
               <div className="winInfo__image">{gift_image()}</div>

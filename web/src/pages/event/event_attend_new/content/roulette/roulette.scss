@@ -140,17 +140,18 @@
     background-repeat: no-repeat;
     background-size: 100%;
     text-align: center;
-    cursor: pointer;
+
+    .rouletPin {
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      width: 36px;
+      height: 62px;
+    }
 
     img {
       max-width: 328px;
-    }
-
-    button {
-      position: absolute;
-      top: 38.5%;
-      left: 39.5%;
-      width: 22%;
     }
   }
 }
