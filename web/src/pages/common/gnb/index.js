@@ -110,7 +110,7 @@ export default (props) => {
     }
     if (token.isLogin && !newAlarm) {
       alarmCheck()
-      alarmCheckIntervalId = setInterval(alarmCheck, 5000)
+      alarmCheckIntervalId = setInterval(alarmCheck, 60000)
     } else {
       if (alarmCheckIntervalId) {
         clearInterval(alarmCheckIntervalId)
