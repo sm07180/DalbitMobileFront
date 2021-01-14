@@ -20,17 +20,19 @@ import ProfileFanRank from './profile_fanRank'
 import LayerPopupExp from './layer_popup_exp.js'
 import AdminIcon from '../../menu/static/ic_home_admin.svg'
 import EditIcon from '../static/edit_g_l.svg'
+import AlarmOffIcon from '../static/alarm_off_p.svg'
+import AlarmOnIcon from '../static/alarm_on_w.svg'
 
 const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
 const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
-const PostBoxIcon = 'https://image.dalbitlive.com/svg/postbox_g.svg'
+const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_p.svg'
 
 export default (props) => {
   //context & webview
   let history = useHistory()
   const context = useContext(Context)
   const {mypageReport, close, closeFanCnt, closeStarCnt, token} = context
-  const {profile, location, webview, locHash} = props
+  const {profile, location, webview, locHash, setProfileInfo} = props
   const customHeader = JSON.parse(Api.customHeader)
 
   const urlrStr = location.pathname.split('/')[2]
@@ -337,6 +339,75 @@ export default (props) => {
     }
   }
 
+  const editAlarm = useCallback(
+    async (bool) => {
+      const res = await Api.editPushMembers({
+        memNo: profile.memNo,
+        isReceive: bool
+      })
+      return res
+    },
+    [profile]
+  )
+
+  const callAlarmReceiveConfirm = useCallback(() => {
+    context.action.confirm({
+      title: '알림받기 설정',
+      msg: `팬으로 등록하지 않아도
+      🔔알림받기를 설정하면
+     선택한 회원의 방송시작에 대한
+     알림 메시지를 받을 수 있습니다.`,
+      buttonText: {
+        right: '설정하기'
+      },
+      callback: async () => {
+        const {result, data, message} = await editAlarm(true)
+        if (result === 'success') {
+          console.log(data)
+
+          setProfileInfo({
+            ...profile,
+            isReceive: data.isReceive
+          })
+
+          context.action.alert({
+            title: '방송 알림 설정을 완료하였습니다',
+            msg: `마이페이지 > 서비스 설정 ><br/> [알림설정 관리]에서
+              설정한 회원을<br/> 확인하고 삭제 할 수 있습니다.
+            `
+          })
+        } else {
+          context.action.alert({
+            msg: message
+          })
+        }
+      }
+    })
+  }, [profile])
+
+  const callAlarmCancelConfirm = useCallback(() => {
+    context.action.confirm({
+      msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
+      callback: async () => {
+        const {result, data, message} = await editAlarm(false)
+
+        if (result === 'success') {
+          setProfileInfo({
+            ...profile,
+            isReceive: data.isReceive
+          })
+          context.action.alert({
+            msg: '설정해제가 완료되었습니다.'
+          })
+        } else {
+          context.action.alert({
+            msg: message
+          })
+        }
+      }
+    })
+  }, [profile])
+
   //경험치바 퍼센트 정리
   const exBar = profile.expRate - 100
 
@@ -386,9 +457,9 @@ export default (props) => {
     if (context.mailboxExist && myProfileNo !== profile.memNo) {
       if (
         __NODE_ENV === 'dev' ||
-        customerHeader.os === OS_TYPE['Desktop'] ||
-        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
-        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+        customHeader.os === OS_TYPE['Desktop'] ||
+        (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
         return (
           <button
@@ -715,37 +786,43 @@ export default (props) => {
         </div>
 
         {/* 선물하기 */}
-        {showPresent ? (
+        {showPresent && (
           <div className="buttonWrap">
-            <div className="buttonWrapInner">
-              <div className="notBjWrap">
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                  <></>
-                ) : (
-                  <button
-                    onClick={() => {
-                      context.action.updateClosePresent(true)
-                    }}
-                    className="giftbutton">
-                    {/* <span></span> */}
-                    <em>선물하기</em>
+            {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+              <button
+                onClick={() => {
+                  context.action.updateClosePresent(true)
+                }}
+                className="btnGift">
+                {/* <span></span> */}
+                <em>선물하기</em>
+              </button>
+            )}
+            {profile.isFan === true && (
+              <button className="btnFan" onClick={() => Cancel(myProfileNo, profile.nickNm)}>
+                팬
+              </button>
+            )}
+            {profile.isFan === false && (
+              <button className="btnFan btnFan--isOff" onClick={() => fanRegist(myProfileNo, profile.nickNm)}>
+                팬등록
+              </button>
+            )}
+            {profile.isFan === false && (
+              <>
+                {profile.isReceive === false && (
+                  <button className="btnAlarm btnAlarm--isOff">
+                    <img src={AlarmOffIcon} alt="알람 off" onClick={callAlarmReceiveConfirm} />
                   </button>
                 )}
-                {profile.isFan === true && (
-                  <button className="fanRegist" onClick={() => Cancel(myProfileNo, profile.nickNm)}>
-                    팬
+                {profile.isReceive === true && (
+                  <button className="btnAlarm">
+                    <img src={AlarmOnIcon} alt="알람 on" onClick={callAlarmCancelConfirm} />
                   </button>
                 )}
-                {profile.isFan === false && (
-                  <button className="isNotFan" onClick={() => fanRegist(myProfileNo, profile.nickNm)}>
-                    팬
-                  </button>
-                )}
-              </div>
-            </div>
+              </>
+            )}
           </div>
-        ) : (
-          <></>
         )}
       </div>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}

@@ -24,8 +24,6 @@ import 'styles/main.scss'
 let alarmCheckIntervalId = null
 
 export default (props) => {
-  const customerHeader = JSON.parse(Api.customHeader)
-
   //context
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -143,9 +141,9 @@ export default (props) => {
     if (context.mailboxExist) {
       if (
         __NODE_ENV === 'dev' ||
-        customerHeader.os === OS_TYPE['Desktop'] ||
-        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
-        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+        customHeader.os === OS_TYPE['Desktop'] ||
+        (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
         if (context.mailboxNew) {
           return (
@@ -239,7 +237,7 @@ export default (props) => {
             </button>
           )}
 
-          {globalCtx.news && <span className="news">&nbsp;</span>}
+          {context.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
           {/* <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} /> */}
           {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
