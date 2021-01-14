@@ -1,10 +1,11 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
 
 import {Context} from 'context'
 import {RoomMake} from 'context/room'
+import {Hybrid, isHybrid} from 'context/hybrid'
 
 // static image
 //import Logo from './static/logo@2x.png'
@@ -23,6 +24,8 @@ import 'styles/main.scss'
 let alarmCheckIntervalId = null
 
 export default (props) => {
+  const customerHeader = JSON.parse(Api.customHeader)
+
   //context
   const context = useContext(Context)
   const globalCtx = useContext(Context)
@@ -52,6 +55,11 @@ export default (props) => {
     if (category === 'alarm') {
       //context.action.updateNews(false)
       setNewAlarm(false)
+    }
+    if (category === 'mailbox') {
+      console.log('우체통리스트 진입')
+      Hybrid('OpenMailBoxList')
+      return false
     }
     if (category === 'store') {
       if (globalCtx.customHeader['os'] === OS_TYPE['IOS']) {
@@ -112,6 +120,66 @@ export default (props) => {
     }
   }, [newAlarm])
 
+  useEffect(() => {
+    console.log(context.mailboxNew)
+    const mailboxNewCheck = async () => {
+      const {result, data} = await Api.getMailboxList()
+      if (result === 'success') {
+        console.log(
+          'data',
+          data.list.filter((item) => item.unReadCnt !== 0)
+        )
+        if (data.list.filter((item) => item.unReadCnt !== 0).length === 0) {
+          context.action.updateMailboxNew(false)
+        } else {
+          context.action.updateMailboxNew(true)
+        }
+      }
+    }
+    if (context.token.isLogin) mailboxNewCheck()
+  }, [])
+
+  const createMailboxIcon = () => {
+    if (context.mailboxExist) {
+      if (
+        __NODE_ENV === 'dev' ||
+        customerHeader.os === OS_TYPE['Desktop'] ||
+        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+      ) {
+        if (context.mailboxNew) {
+          return (
+            <div
+              className="alarmSize"
+              onClick={() => {
+                if (isHybrid()) {
+                  moveToLogin('mailbox')
+                } else {
+                  globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+                }
+              }}>
+              <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
+            </div>
+          )
+        } else {
+          return (
+            <div
+              className="alarmSize"
+              onClick={() => {
+                if (isHybrid()) {
+                  moveToLogin('mailbox')
+                } else {
+                  globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+                }
+              }}>
+              <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />
+            </div>
+          )
+        }
+      }
+    }
+  }
+
   return (
     <>
       <div className="hiddenBg"></div>
@@ -153,6 +221,8 @@ export default (props) => {
           <img src={Logo} alt="달빛라이브" />
         </h1>
         <div className="icon-wrap">
+          {createMailboxIcon()}
+
           {newAlarm === true ? (
             <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
               <Lottie
@@ -169,7 +239,7 @@ export default (props) => {
             </button>
           )}
 
-          {context.news && <span className="news">&nbsp;</span>}
+          {globalCtx.news && <span className="news">&nbsp;</span>}
           {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
           {/* <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} /> */}
           {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}

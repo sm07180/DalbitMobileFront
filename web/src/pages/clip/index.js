@@ -360,7 +360,9 @@ export default (props) => {
             <div className="textBox__nickName">{v.nickNm}</div>
             <span className="textBox__subject">{v.title}</span>
           </div>
-          <button className="playButton">재생 버튼</button>
+          <button className="playButton">
+            <span className="blind">재생 버튼</span>
+          </button>
         </div>
       )
     })

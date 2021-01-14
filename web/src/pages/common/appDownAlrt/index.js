@@ -53,6 +53,8 @@ export default (props) => {
             '클립 등록을 '
           ) : pageName == 4 ? (
             '클립 청취를 '
+          ) : pageName == 5 ? (
+            '우체통 이용을 '
           ) : (
             <></>
           )}

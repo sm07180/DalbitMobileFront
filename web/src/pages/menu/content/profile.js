@@ -14,6 +14,7 @@ import HeadphoneIcon from '../static/profile/ic_headphones_m_p.svg'
 import HeartIcon from '../static/profile/ic_headphones_m_p.svg'
 import ByeolIcon from '../static/profile/ic_star_m_p.svg'
 import ProfileIcon from '../static/menu_profile.svg'
+import MailboxIcon from '../static/postbox_icon.svg'
 import AppSettingIcon from '../static/menu_appsetting.svg'
 import BroadNoticeIcon from '../static/menu_broadnotice.svg'
 import BroadFanboardIcon from '../static/menu_fanboard.svg'
@@ -202,6 +203,33 @@ export default (props) => {
     }
   }
 
+  const createMailboxMenu = () => {
+    if (context.mailboxExist) {
+      if (
+        __NODE_ENV === 'dev' ||
+        customerHeader.os === OS_TYPE['Desktop'] ||
+        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+      ) {
+        return (
+          <button
+            className="list"
+            onClick={() => {
+              if (isHybrid()) {
+                Hybrid('OpenMailBoxList')
+              } else {
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              }
+            }}>
+            <img className="icon" src={MailboxIcon} alt="우체통" />
+            <span className="text">우체통</span>
+            <span className="arrow"></span>
+          </button>
+        )
+      }
+    }
+  }
+
   return (
     <>
       <div id="mypage">
@@ -282,6 +310,7 @@ export default (props) => {
                     <span className="text">프로필 수정</span>
                     <span className="arrow"></span>
                   </button>
+                  {createMailboxMenu()}
                   {/* <button className="list" onClick={() => history.push(`/mypage/${profile.memNo}/appAlarm2`)}>
                     <img className="icon" src={AppSettingIcon} alt="Push 알림 설정" />
                     <span className="text">Push 알림 설정</span>

@@ -288,7 +288,7 @@ export default (props) => {
                     <p className="textBox__title">{title}</p>
                     <div className="textBox__nickNameBox">
                       {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                      <span className="nickNam">{nickName}</span>
+                      <span className="nickName">{nickName}</span>
                     </div>
                   </div>
                 </li>

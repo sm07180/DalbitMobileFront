@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 // context
 import Api from 'context/api'
@@ -23,7 +23,7 @@ import EditIcon from '../static/edit_g_l.svg'
 
 const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
 const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
-const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_g.svg'
+const PostBoxIcon = 'https://image.dalbitlive.com/svg/postbox_g.svg'
 
 export default (props) => {
   //context & webview
@@ -381,6 +381,31 @@ export default (props) => {
       setShowAdmin(false)
     }
   }, [profile.memNo])
+
+  const createMailboxIcon = () => {
+    if (context.mailboxExist && myProfileNo !== profile.memNo) {
+      if (
+        __NODE_ENV === 'dev' ||
+        customerHeader.os === OS_TYPE['Desktop'] ||
+        (customerHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
+        (customerHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
+      ) {
+        return (
+          <button
+            className="liveIcon"
+            onClick={() => {
+              if (isHybrid()) {
+                Hybrid('JoinMailBox', profile.memNo)
+              } else {
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+              }
+            }}>
+            <img src={PostBoxIcon} className="ico-live" />
+          </button>
+        )
+      }
+    }
+  }
 
   return (
     <div className="profile-detail">

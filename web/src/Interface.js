@@ -555,6 +555,18 @@ export default () => {
       case 'native-broad-summary': //요약정보에서 이동
         history.push(`/`)
         break
+      case 'mailbox-state':
+        console.log(event.detail)
+        // if (__NODE_ENV === 'dev') {
+        //   alert('mailbox-state')
+        //   alert(JSON.stringify(event.detail))
+        // }
+        if (event.detail.new) {
+          context.action.updateMailboxNew(true)
+        } else {
+          context.action.updateMailboxNew(false)
+        }
+        break
       default:
         break
     }
@@ -742,6 +754,16 @@ export default () => {
           if (isLogin) window.location.href = redirect_url
         }
         break
+      case '52': //------------------우체통알람
+        const memNo = pushMsg.mem_no
+        if (memNo !== undefined) {
+          // if (__NODE_ENV === 'dev') {
+          //   alert('JoinMailBox ' + memNo)
+          //   alert('useMailbox ' + context.mailboxExist)
+          // }
+          if (context.mailboxExist) Hybrid('JoinMailBox', memNo)
+        }
+        break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break
@@ -761,6 +783,7 @@ export default () => {
           window.location.href = `/customer/notice/${board_idx}`
         }
         break
+
       default:
         //------------------기본값
         //window.location.href = `/`
@@ -819,6 +842,10 @@ export default () => {
     document.addEventListener('native-goto-rank', update)
     document.addEventListener('native-join-room', update)
     document.addEventListener('native-broad-summary', update)
+
+    /*----mailbox----*/
+    document.addEventListener('mailbox-state', update)
+
     return () => {
       /*----native----*/
       document.addEventListener('native-push-foreground', update) //완료
@@ -849,6 +876,9 @@ export default () => {
       document.removeEventListener('native-goto-rank', update)
       document.removeEventListener('native-join-room', update)
       document.removeEventListener('native-broad-summary', update)
+
+      /*----mailbox----*/
+      document.removeEventListener('mailbox-state', update)
     }
   }, [])
 

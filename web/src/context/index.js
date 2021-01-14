@@ -113,6 +113,9 @@ const GlobalProvider = (props) => {
   const [selfAuth, setSelfAuth] = useState(false)
   //splash
   const [splash, setSplash] = useState(null)
+  //mailboxNew
+  const [mailboxNew, setMailboxNew] = useState(false)
+  const [mailboxExist, setMailboxExist] = useState(false)
   // 주간 클립 테이블
   const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
@@ -464,6 +467,13 @@ const GlobalProvider = (props) => {
     },
     updateSplash: (obj) => {
       setSplash(obj)
+    },
+    //malibox
+    updateMailboxNew: (boolean) => {
+      setMailboxNew(boolean)
+    },
+    updateMailboxExist: (boolean) => {
+      setMailboxExist(boolean)
     },
     updateDateState: (string) => {
       setDateState(string)

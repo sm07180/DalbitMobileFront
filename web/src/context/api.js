@@ -2986,9 +2986,24 @@ export default class API {
       params: data
     })
   }
+  static getMailboxList = async (data) => {
+    return await ajax({
+      url: '/mailbox/chat/list',
+      method: 'GET',
+      params: data
+    })
+  }
+
   static getMarketingClipList = async (data) => {
     return await ajax({
       url: '/clip/recommend/list',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getMailboxList = async (data) => {
+    return await ajax({
+      url: '/mailbox/chat/list',
       method: 'GET',
       params: data
     })
