@@ -586,9 +586,7 @@ export default (props) => {
             </button>
           )}
 
-          {/* <button className="postBoxIcon">
-            <img src={PostBoxIcon} alt="우체통" />
-          </button> */}
+          {createMailboxIcon()}
         </div>
         <div className="profile-image">
           <figure onClick={() => figureZoom()} style={{backgroundImage: `url(${profile.profImg.thumb190x190})`}}>
