@@ -5,8 +5,8 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
-import {Hybrid} from 'context/hybrid'
 
+import LoginForm from './login_form'
 import appleLogo from './static/apple_logo.svg'
 import facebookLogo from './static/facebook_logo.svg'
 import googleLogo from './static/google_logo.svg'
@@ -14,11 +14,12 @@ import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
 import logoW from './static/logo_w_no_symbol.svg'
 
-export default function login_sns() {
+export default function login_sns({props}) {
   const history = useHistory()
   const globalCtx = useContext(Context)
 
   const {webview, redirect} = qs.parse(location.search)
+  const [loginPop, setLoginPop] = useState(false)
 
   const [appleAlert, setAppleAlert] = useState(false)
   const customHeader = JSON.parse(Api.customHeader)
@@ -103,14 +104,16 @@ export default function login_sns() {
       )}
 
       <div className="link-wrap">
-        <a href="/login/phone">
+        <span onClick={() => setLoginPop(true)}>
           <div className="link-text">전화번호 로그인</div>
-        </a>
+        </span>
         <div className="bar" />
         <a href="/service">
           <div className="link-text yellow">고객센터</div>
         </a>
       </div>
+
+      {loginPop && <LoginForm setLoginPop={setLoginPop} props={props} />}
     </div>
   )
 }

@@ -14,19 +14,18 @@ import {Redirect, Switch} from 'react-router-dom'
 
 export default function login(props) {
   const params = useParams()
-
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
-  const createContent = () => {
-    const category = params instanceof Object ? params['type'] : ''
-    // url dividing
-    if (category === 'phone') {
-      return <LoginForm props={props} />
-    } else {
-      return <LoginSns />
-    }
-  }
+  // const createContent = () => {
+  //   const category = params instanceof Object ? params['type'] : ''
+  //   // url dividing
+  //   if (category === 'phone') {
+  //     return <LoginForm props={props} />
+  //   } else {
+  //     return <LoginSns />
+  //   }
+  // }
 
   return (
     <Switch>
@@ -34,7 +33,10 @@ export default function login(props) {
         <Redirect to={'/'} />
       ) : (
         <Layout status="no_gnb">
-          <div id="loginPage">{createContent()}</div>
+          <div id="loginPage">
+            <LoginSns props={props} />
+            {/* {createContent()} */}
+          </div>
         </Layout>
       )}
     </Switch>

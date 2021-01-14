@@ -2,6 +2,7 @@
 
 #loginPage {
   height: 100%;
+
   .loginForm {
     position: relative;
     display: flex;
@@ -80,58 +81,6 @@
       width: 126px;
       display: block;
       margin: 0 auto;
-    }
-
-    .input-wrap {
-      width: 260px;
-      margin: 0 auto;
-      padding-bottom: 16px;
-
-      input {
-        display: block;
-        border: 1px solid $white;
-        width: 100%;
-        height: 24px;
-        padding: 23px 24px;
-        line-height: 24px;
-        border-radius: 25px;
-        color: $white;
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: -0.4px;
-        background: none;
-        border-color: rgba(255, 255, 255, 0.5);
-      }
-
-      :focus {
-        border-color: rgba(255, 255, 255, 1);
-      }
-      input::placeholder {
-        color: $white;
-        font-size: 14px;
-        font-weight: 400;
-      }
-      input[type='password'] {
-        margin-top: 8px;
-        &::placeholder {
-          color: $white;
-          font-size: 14px;
-          font-weight: 400;
-        }
-      }
-      .login-btn {
-        display: block;
-        margin-top: 8px;
-        width: 100%;
-        height: 48px;
-        line-height: 48px;
-        background-color: $white;
-        color: $primary;
-        font-size: 16px;
-        font-weight: bold;
-        letter-spacing: -0.5px;
-        border-radius: 25px;
-      }
     }
 
     .link-wrap {
@@ -237,6 +186,110 @@
       color: #ffd500;
       line-height: 34px;
       font-size: 14px;
+    }
+  }
+
+  #layerPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btnClose {
+      position: absolute;
+      top: -40px;
+      right: 0px;
+      width: 32px;
+      height: 32px;
+      text-indent: -9999px;
+      background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+    }
+
+    .layerContainer {
+      position: relative;
+      // width: 100%;
+      min-width: 320px;
+      max-width: 360px;
+      border-radius: 16px;
+      box-sizing: border-box;
+
+      .loginPopup {
+        position: relative;
+        padding: 20% 10%;
+        text-align: center;
+        color: $white;
+        background: url('https://image.dalbitlive.com/main/common/bg_login.svg') no-repeat;
+        background-size: cover;
+        border-radius: 16px;
+
+        &__logoBox {
+          padding-bottom: 28px;
+          text-align: center;
+
+          img {
+            display: block;
+            width: 130px;
+            margin: 0 auto;
+          }
+        }
+
+        .input-wrap {
+          margin: 0 auto;
+          padding-bottom: 16px;
+
+          input {
+            display: block;
+            border: 1px solid $white;
+            width: 100%;
+            height: 24px;
+            padding: 23px 24px;
+            line-height: 24px;
+            border-radius: 25px;
+            color: $white;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: -0.4px;
+            background: none;
+            border-color: rgba(255, 255, 255, 0.5);
+          }
+
+          :focus {
+            border-color: rgba(255, 255, 255, 1);
+          }
+          input::placeholder {
+            color: $white;
+            font-size: 14px;
+            font-weight: 400;
+          }
+          input[type='password'] {
+            margin-top: 8px;
+            &::placeholder {
+              color: $white;
+              font-size: 14px;
+              font-weight: 400;
+            }
+          }
+          .login-btn {
+            display: block;
+            margin-top: 8px;
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            background-color: rgba(255, 255, 255, 0.8);
+            color: $primary;
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: -0.5px;
+            border-radius: 25px;
+          }
+        }
+      }
     }
   }
 
