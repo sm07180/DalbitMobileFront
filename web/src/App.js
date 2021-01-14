@@ -165,6 +165,7 @@ const App = () => {
         }
 
         const appIsFirst = Utility.getCookie('appIsFirst')
+
         if (appIsFirst !== 'N') {
           Utility.setCookie('appIsFirst', 'N')
           if (tokenInfo.data.isLogin === false) {
@@ -229,12 +230,12 @@ const App = () => {
     const res = await Api.splash({})
     if (res.result === 'success') {
       const {data} = res
-      const {roomType} = data
+      const {roomType, useMailBox} = data
       if (roomType) {
         globalCtx.action.updateRoomType(roomType)
       }
-
       globalCtx.action.updateSplash(data)
+      globalCtx.action.updateMailboxExist(useMailBox)
     }
   }
 
