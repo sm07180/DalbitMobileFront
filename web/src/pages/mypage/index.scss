@@ -719,10 +719,59 @@
         }
         .buttonWrap {
           display: flex;
-          flex-direction: column;
           justify-content: center;
           align-items: center;
-          padding-top: 0;
+          width: 100%;
+          padding: 10px 0;
+          > button {
+            min-width: 45%;
+            height: 36px;
+            margin: 0 2px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.35px;
+            border: 1px solid $primary;
+            color: $primary;
+            border-radius: 12px;
+          }
+          .btnFan {
+            &--isOff {
+              min-width: 34%;
+              color: $white;
+              background: $primary;
+              &::after {
+                display: inline-block;
+                position: relative;
+                top: -2px;
+                content: '';
+                vertical-align: middle;
+                width: 13px;
+                height: 13px;
+                margin-left: 3px;
+                background: url('./static/ic_plus.svg') no-repeat 0 0;
+              }
+            }
+          }
+          .btnAlarm {
+            background: $yellow;
+            border: 0;
+            min-width: 36px;
+            > img {
+              width: 24px;
+            }
+
+            &--isOff {
+              background: $white;
+              border: 1px solid $primary;
+            }
+          }
+        }
+        .buttonWrap {
+          // display: flex;
+          // flex-direction: column;
+          // justify-content: center;
+          // align-items: center;
+          // padding-top: 0;
           .buttonWrapInner {
             display: flex;
             align-items: center;

@@ -3,7 +3,8 @@ export const BC_SETTING_TYPE = {
   BROADCAST: 1,
   BABWORD: 2,
   MANAGER: 3,
-  BLACKLIST: 4
+  BLACKLIST: 4,
+  PUSH_MEMBERS: 5
 }
 
 export const SETTING_TYPE = {

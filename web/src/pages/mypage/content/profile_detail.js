@@ -786,37 +786,43 @@ export default (props) => {
         </div>
 
         {/* 선물하기 */}
-        {showPresent ? (
+        {showPresent && (
           <div className="buttonWrap">
-            <div className="buttonWrapInner">
-              <div className="notBjWrap">
-                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
-                  <></>
-                ) : (
-                  <button
-                    onClick={() => {
-                      context.action.updateClosePresent(true)
-                    }}
-                    className="giftbutton">
-                    {/* <span></span> */}
-                    <em>선물하기</em>
+            {context.customHeader['os'] !== OS_TYPE['IOS'] && (
+              <button
+                onClick={() => {
+                  context.action.updateClosePresent(true)
+                }}
+                className="btnGift">
+                {/* <span></span> */}
+                <em>선물하기</em>
+              </button>
+            )}
+            {profile.isFan === true && (
+              <button className="btnFan" onClick={() => Cancel(myProfileNo, profile.nickNm)}>
+                팬
+              </button>
+            )}
+            {profile.isFan === false && (
+              <button className="btnFan btnFan--isOff" onClick={() => fanRegist(myProfileNo, profile.nickNm)}>
+                팬등록
+              </button>
+            )}
+            {profile.isFan === false && (
+              <>
+                {profile.isReceive === false && (
+                  <button className="btnAlarm btnAlarm--isOff">
+                    <img src={AlarmOffIcon} alt="알람 off" onClick={callAlarmReceiveConfirm} />
                   </button>
                 )}
-                {profile.isFan === true && (
-                  <button className="fanRegist" onClick={() => Cancel(myProfileNo, profile.nickNm)}>
-                    팬
+                {profile.isReceive === true && (
+                  <button className="btnAlarm">
+                    <img src={AlarmOnIcon} alt="알람 on" onClick={callAlarmCancelConfirm} />
                   </button>
                 )}
-                {profile.isFan === false && (
-                  <button className="isNotFan" onClick={() => fanRegist(myProfileNo, profile.nickNm)}>
-                    팬
-                  </button>
-                )}
-              </div>
-            </div>
+              </>
+            )}
           </div>
-        ) : (
-          <></>
         )}
       </div>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}

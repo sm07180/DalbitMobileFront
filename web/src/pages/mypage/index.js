@@ -290,7 +290,13 @@ export default (props) => {
             {!category ? (
               <>
                 <div ref={mypageRef}>
-                  <MyProfile profile={profileInfo} {...props} webview={webview} locHash={props.location} />
+                  <MyProfile
+                    profile={profileInfo}
+                    {...props}
+                    webview={webview}
+                    locHash={props.location}
+                    setProfileInfo={setProfileInfo}
+                  />
                 </div>
                 {mypageNavList && (
                   <React.Fragment>

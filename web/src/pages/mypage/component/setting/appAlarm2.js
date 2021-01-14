@@ -2,13 +2,15 @@
  * @file /mypage/context/appAlarm.js
  * @brief 마이페이지 어플알람 2.5v
  **/
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext, useRef, useCallback} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
 import Api from 'context/api'
 
-import Header from '../header.js'
+// constant
+import {BC_SETTING_TYPE} from '../../constant'
+
 //icon
 import alarmOn from '../ic_alarmtoggleon.svg'
 import alarmOff from '../ic_alarmtoggleoff.svg'
@@ -26,12 +28,22 @@ const AlarmArray = [
   {key: 'isReply', value: 0, text: '팬보드 댓글 등록 알림', msg: '팬보드 내 글에 댓글이 등록되면 알림<br>'},
   {key: 'isRadio', value: 0, text: '선물 도착 알림', msg: '달 선물 도착 시 알림<br>'},
   // {key: 'isLike', value: 0, text: '공지 및 이벤트 알림', msg: '공지 및 이벤트 알림 시'},
-  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림<br>'}
+  {key: 'isPush', value: 0, text: '1:1 문의 답변 도착 알림', msg: '1:1 문의에 답변 도착 시 알림<br>'},
+  {
+    key: 'isReceive',
+    value: 0,
+    text: '알림받기 방송시작 알림',
+    msg: '알림받기를 통한 방송시작<br>',
+    callback: function () {},
+    buttonText: '회원관리 바로가기'
+  }
 ]
 const msgOn = ' 푸시를 받습니다.'
 const msgOff = ' 푸시를 받지 않습니다.'
 
 export default (props) => {
+  const {setChangeContents, setInitialScreen} = props
+
   //contenxt
   const context = useContext(Context)
   //state
@@ -49,6 +61,13 @@ export default (props) => {
       setAlarmArray(
         alarmArray.map((v) => {
           v.value = res.data[v.key]
+          if (v.key === 'isReceive') {
+            v.callback = function () {
+              setChangeContents(BC_SETTING_TYPE.PUSH_MEMBERS)
+              setInitialScreen(false)
+            }
+          }
+
           return v
         })
       )
@@ -168,6 +187,15 @@ export default (props) => {
   const openPopup = (key) => {
     context.action.updatePopup('ALARM', key)
   }
+
+  const openCallbackPopup = useCallback((key, callback, buttonText) => {
+    context.action.updatePopup('ALARM', {
+      key,
+      callback,
+      buttonText
+    })
+  }, [])
+
   const makeContent = () => {
     return (
       <Content>
@@ -211,7 +239,11 @@ export default (props) => {
               <span
                 className="guide"
                 onClick={() => {
-                  openPopup(v.key)
+                  if (v.callback) {
+                    openCallbackPopup(v.key, v.callback, v.buttonText)
+                  } else {
+                    openPopup(v.key)
+                  }
                 }}
               />
               <span className="title">{v.text}</span>
