@@ -2944,6 +2944,14 @@ export default class API {
     })
   }
 
+  static getSentStoryList = async (data) => {
+    return await ajax({
+      url: '/mypage/story/send',
+      method: 'GET',
+      params: data
+    })
+  }
+
   static getStory = async (data) => {
     return await ajax({
       method: 'GET',
@@ -2986,7 +2994,7 @@ export default class API {
       params: data
     })
   }
-  static getMailboxList = async (data) => {
+  static getMailboxChatList = async (data) => {
     return await ajax({
       url: '/mailbox/chat/list',
       method: 'GET',
@@ -2997,13 +3005,6 @@ export default class API {
   static getMarketingClipList = async (data) => {
     return await ajax({
       url: '/clip/recommend/list',
-      method: 'GET',
-      params: data
-    })
-  }
-  static getMailboxList = async (data) => {
-    return await ajax({
-      url: '/mailbox/chat/list',
       method: 'GET',
       params: data
     })
@@ -3031,11 +3032,33 @@ export default class API {
       params: data
     })
   }
-  static postRankSetting = async (data) => {
+
+  static getClipRankingList = async (data) => {
     return await ajax({
-      url: `/member/rank/setting`,
+      url: '/clip/rank',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getClipRankingDayPop = async (data) => {
+    return await ajax({
+      url: '/clip/day/pop',
+      method: 'GET',
+      params: data
+    })
+  }
+  static getClipRankingWeekPop = async (data) => {
+    return await ajax({
+      url: '/clip/week/pop',
+      method: 'GET',
+      params: data
+    })
+  }
+  static postClipWinMsg = async (data) => {
+    return await ajax({
+      url: '/clip/win/msg',
       method: 'POST',
-      data: data
+      params: data
     })
   }
   static postExchangeCancel = async (data) => {
@@ -3045,8 +3068,38 @@ export default class API {
       params: data
     })
   }
-}
 
+  static postRankSetting = async (data) => {
+    return await ajax({
+      url: `/member/rank/setting`,
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static editPushMembers = async (data) => {
+    return await ajax({
+      url: '/member/recv',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  static getPushMembers = async () => {
+    return await ajax({
+      url: `/member/recv`,
+      method: 'GET'
+    })
+  }
+
+  static deletePushMembers = async (data) => {
+    return await ajax({
+      url: `/member/recv/delete`,
+      method: 'POST',
+      data: data
+    })
+  }
+}
 
 API.customHeader = null
 API.authToken = null

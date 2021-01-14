@@ -118,24 +118,24 @@ export default (props) => {
     }
   }, [newAlarm])
 
-  useEffect(() => {
-    console.log(context.mailboxNew)
-    const mailboxNewCheck = async () => {
-      const {result, data} = await Api.getMailboxList()
-      if (result === 'success') {
-        console.log(
-          'data',
-          data.list.filter((item) => item.unReadCnt !== 0)
-        )
-        if (data.list.filter((item) => item.unReadCnt !== 0).length === 0) {
-          context.action.updateMailboxNew(false)
-        } else {
-          context.action.updateMailboxNew(true)
-        }
-      }
-    }
-    if (context.token.isLogin) mailboxNewCheck()
-  }, [])
+  // useEffect(() => {
+  //   console.log(context.mailboxNew)
+  //   const mailboxNewCheck = async () => {
+  //     const {result, data} = await Api.getMailboxChatList()
+  //     if (result === 'success') {
+  //       console.log(
+  //         'data',
+  //         data.list.filter((item) => item.unReadCnt !== 0)
+  //       )
+  //       if (data.list.filter((item) => item.unReadCnt !== 0).length === 0) {
+  //         context.action.updateMailboxNew(false)
+  //       } else {
+  //         context.action.updateMailboxNew(true)
+  //       }
+  //     }
+  //   }
+  //   if (context.token.isLogin) mailboxNewCheck()
+  // }, [])
 
   const createMailboxIcon = () => {
     if (context.mailboxExist) {
