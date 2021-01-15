@@ -118,24 +118,20 @@ export default (props) => {
     }
   }, [newAlarm])
 
-  // useEffect(() => {
-  //   console.log(context.mailboxNew)
-  //   const mailboxNewCheck = async () => {
-  //     const {result, data} = await Api.getMailboxChatList()
-  //     if (result === 'success') {
-  //       console.log(
-  //         'data',
-  //         data.list.filter((item) => item.unReadCnt !== 0)
-  //       )
-  //       if (data.list.filter((item) => item.unReadCnt !== 0).length === 0) {
-  //         context.action.updateMailboxNew(false)
-  //       } else {
-  //         context.action.updateMailboxNew(true)
-  //       }
-  //     }
-  //   }
-  //   if (context.token.isLogin) mailboxNewCheck()
-  // }, [])
+  useEffect(() => {
+    console.log(context.mailboxNew)
+    const mailboxNewCheck = async () => {
+      const {result, data, message} = await Api.checkIsMailboxNew()
+      if (result === 'success') {
+        globalCtx.action.updateMailboxNew(data.isNew)
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
+    }
+    if (context.token.isLogin) mailboxNewCheck()
+  }, [])
 
   const createMailboxIcon = () => {
     if (context.mailboxExist) {
@@ -145,7 +141,7 @@ export default (props) => {
         (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
         (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
-        if (context.mailboxNew) {
+        if (globalCtx.mailboxNew) {
           return (
             <div
               className="alarmSize"

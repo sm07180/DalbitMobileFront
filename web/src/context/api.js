@@ -3099,6 +3099,14 @@ export default class API {
       data: data
     })
   }
+
+  static checkIsMailboxNew = async (data) => {
+    return await ajax({
+      url: `/mailbox/chat/new`,
+      method: 'get',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

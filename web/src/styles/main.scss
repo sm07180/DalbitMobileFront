@@ -17,15 +17,6 @@
   .alarmSize {
     width: 44px;
     height: 44px;
-
-    .mailbox {
-      padding: 2px 0 0 0;
-      margin-left: 4px;
-      text-align: center;
-      img {
-        display: inline-block;
-      }
-    }
   }
   .icon-wrap {
     position: relative;
@@ -36,6 +27,9 @@
       position: relative;
       display: block;
       width: 40px;
+    }
+    .mailbox {
+      padding-top: 2px;
     }
     .alarm-new {
       position: absolute;
