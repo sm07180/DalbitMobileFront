@@ -355,16 +355,14 @@ export default (props) => {
       title: '알림받기 설정',
       msg: `팬으로 등록하지 않아도
       🔔알림받기를 설정하면
-     선택한 회원의 방송시작에 대한
-     알림 메시지를 받을 수 있습니다.`,
+     방송시작에 대한 알림 메시지를 
+     받을 수 있습니다.`,
       buttonText: {
         right: '설정하기'
       },
       callback: async () => {
         const {result, data, message} = await editAlarm(true)
         if (result === 'success') {
-          console.log(data)
-
           setProfileInfo({
             ...profile,
             isReceive: data.isReceive
