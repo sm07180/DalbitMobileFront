@@ -203,9 +203,9 @@ export default () => {
           return
         }
         const days = ('0' + Math.floor(distance / _day)).slice(-2)
-        const hours = ('0' + (Math.floor((distance % _day) / _hour) + 1)).slice(-2)
-        const minutes = ('0' + (Math.floor((distance % _hour) / _minute) + 1)).slice(-2)
-        const seconds = ('0' + (Math.floor((distance % _minute) / _second) + 1)).slice(-2)
+        const hours = ('0' + Math.floor((distance % _day) / _hour)).slice(-2)
+        const minutes = ('0' + Math.floor((distance % _hour) / _minute)).slice(-2)
+        const seconds = ('0' + Math.floor((distance % _minute) / _second)).slice(-2)
 
         setCount({days, hours, minutes, seconds})
       }
