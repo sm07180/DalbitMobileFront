@@ -29,8 +29,8 @@ const selectBoxData = [
   {value: BC_SETTING_TYPE.BROADCAST, text: '방송 / 청취 설정'},
   {value: BC_SETTING_TYPE.BANWORD, text: '금지어 관리'},
   {value: BC_SETTING_TYPE.MANAGER, text: '매니저 관리'},
-  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'}
-  // {value: BC_SETTING_TYPE.PUSH_MEMBERS, text: '알림받기 설정 회원 관리'}
+  {value: BC_SETTING_TYPE.BLACKLIST, text: '차단회원 관리'},
+  {value: BC_SETTING_TYPE.PUSH_MEMBERS, text: '알림받기 설정 회원 관리'}
 ]
 
 export default (props) => {
