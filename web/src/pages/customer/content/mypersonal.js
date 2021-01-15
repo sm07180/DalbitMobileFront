@@ -114,6 +114,7 @@ function Faq(props) {
                     {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>}
                     {state === 0 && <span className="state">처리중</span>}
                     {state === 1 && <span className="stateComplete">처리완료</span>}
+                    {state === 3 && <span className="stateWait">임시답변</span>}
                     {qnaType === 1 && <span className="type">[ 회원정보 ]</span>}
                     {qnaType === 2 && <span className="type">[ 방송 ]</span>}
                     {qnaType === 3 && <span className="type">[ 청취 ]</span>}
@@ -340,6 +341,20 @@ const TableWrap = styled.div`
     font-size: 12px;
     line-height: 24px;
     color: #616161;
+    text-align: center;
+    letter-spacing: normal;
+    transform: skew(-0.03deg);
+  }
+  & .stateWait {
+    display: block;
+    width: 60px;
+    height: 24px;
+    margin-right: 6px;
+    border-radius: 12px;
+    border: solid 1px #ec455f;
+    font-size: 12px;
+    line-height: 24px;
+    color: #ec455f;
     text-align: center;
     letter-spacing: normal;
     transform: skew(-0.03deg);

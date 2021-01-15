@@ -84,6 +84,7 @@ export default function QnaList() {
                   {/* {(IntTime - opTs) / 3600 < 3 && state === 1 && <span className="newIcon"></span>} */}
                   {state === 0 && <span className="state">답변대기</span>}
                   {state === 1 && <span className="stateComplete">답변완료</span>}
+                  {state === 3 && <span className="stateWait">임시답변</span>}
                 </div>
                 <div className="personalListWrap__title">
                   {qnaType === 1 && <span className="type">[회원정보]</span>}

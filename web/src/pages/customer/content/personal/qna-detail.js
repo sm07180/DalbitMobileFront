@@ -280,7 +280,7 @@ export default function Detail(props) {
     }
   }, [content])
 
-  if (state === 1 && new Date().getMilliseconds() / 1000 - opTs < 7 * 24 * 3600) {
+  if ((state === 1 || state === 3) && new Date().getMilliseconds() / 1000 - opTs < 7 * 24 * 3600) {
     let mypageNewStg = localStorage.getItem('mypageNew')
     if (mypageNewStg === undefined || mypageNewStg === null || mypageNewStg === '') {
       mypageNewStg = {}
@@ -305,6 +305,7 @@ export default function Detail(props) {
               <div className="personalDetailWrap__label">
                 {state === 0 && <span className="state">답변대기</span>}
                 {state === 1 && <span className="stateComplete">답변완료</span>}
+                {state === 3 && <span className="stateWait">임시답변</span>}
               </div>
               <div className="personalDetailWrap__title">
                 {qnaType === 1 && <span className="type">[회원정보]</span>}
@@ -337,7 +338,7 @@ export default function Detail(props) {
                 </div>
               )}
 
-              {state === 1 && (
+              {(state === 1 || state === 3) && (
                 <div className="personalDetailWrap__answer">
                   <div className="personalDetailWrap__answer--header">
                     <span className="personalDetailWrap__answer--icon"></span>
