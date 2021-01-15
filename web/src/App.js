@@ -17,7 +17,7 @@ import Interface from './Interface'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
-
+/*Real Instance1 에서 잘못된 JS로딩되는 문제 있어 고의로 추가*/
 const App = () => {
   const globalCtx = useContext(Context)
   App.context = () => context
