@@ -173,17 +173,40 @@ const App = () => {
           }
         }
       }
-      if (tokenInfo.data && tokenInfo.data.memNo) {
-        const myProfile = await Api.profile({
-          params: {
-            memNo: tokenInfo.data.memNo
+      if (tokenInfo.data && tokenInfo.data.isLogin) {
+        const fetchProfile = async () => {
+          const myProfile = await Api.profile({
+            params: {
+              memNo: tokenInfo.data.memNo
+            }
+          })
+          if (myProfile.result === 'success') {
+            globalCtx.action.updateProfile(myProfile.data)
+          } else {
+            globalCtx.action.updateProfile(false)
           }
-        })
-        if (myProfile.result === 'success') {
-          globalCtx.action.updateProfile(myProfile.data)
-        } else {
-          globalCtx.action.updateProfile(false)
         }
+        const myInfoRes = async () => {
+          const res = await Api.mypage()
+          if (res.result === 'success') {
+            globalCtx.action.updateMyInfo(res.data)
+          }
+        }
+        const fetchAdmin = async () => {
+          const adminFunc = await Api.getAdmin()
+          if (adminFunc.result === 'success') {
+            globalCtx.action.updateAdminChecker(true)
+          } else if (adminFunc.result === 'fail') {
+            globalCtx.action.updateAdminChecker(false)
+          }
+        }
+        fetchProfile()
+        myInfoRes()
+        fetchAdmin()
+      } else {
+        globalCtx.action.updateProfile(false)
+        globalCtx.action.updateMyInfo(false)
+        globalCtx.action.updateAdminChecker(false)
       }
 
       //모든 처리 완료
@@ -210,21 +233,7 @@ const App = () => {
       })
     }
   }
-  const myInfoRes = async () => {
-    const res = await Api.mypage()
-    if (res.result === 'success') {
-      globalCtx.action.updateMyInfo(res.data)
-    }
-  }
-  //admincheck
-  const fetchAdmin = async () => {
-    const adminFunc = await Api.getAdmin()
-    if (adminFunc.result === 'success') {
-      globalCtx.action.updateAdminChecker(true)
-    } else if (adminFunc.result === 'fail') {
-      globalCtx.action.updateAdminChecker(false)
-    }
-  }
+
   //SPLASH Room
   async function fetchSplash() {
     const res = await Api.splash({})
@@ -245,8 +254,8 @@ const App = () => {
     }
   }, [globalCtx.splash, globalCtx.token, globalCtx.profile])
 
-  //useEffect token
   useEffect(() => {
+    fetchSplash()
     // set header (custom-header, authToken)
     if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
       customHeader['isHybrid'] = 'Y'
@@ -258,11 +267,7 @@ const App = () => {
     // Renew all initial data
     fetchData()
   }, [])
-  useEffect(() => {
-    fetchAdmin()
-    myInfoRes()
-    fetchSplash()
-  }, [])
+
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {
       window.location.reload()

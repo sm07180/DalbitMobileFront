@@ -203,19 +203,11 @@ export default (props) => {
     }
 
     fetchMainInitData()
-
-    Api.splash().then((res) => {
-      const {result} = res
-      if (result === 'success') {
-        const {data} = res
-        const {roomType} = data
-        if (roomType) {
-          const concatenated = categoryList.concat(roomType)
-          globalCtx.action.updateRoomType(concatenated)
-          setCategoryList(concatenated)
-        }
-      }
-    })
+    if (globalCtx.roomType && globalCtx.roomType.length > 0) {
+      const concatenated = categoryList.concat(globalCtx.roomType)
+      globalCtx.action.updateRoomType(concatenated)
+      setCategoryList(concatenated)
+    }
   }, [])
 
   const fetchMainInitData = async () => {

@@ -13,6 +13,7 @@ import {common} from '@material-ui/core/colors'
 // 선택 한 유저에게 선물하기 청취자or게스트 화면과 연동 필요함
 export default (props) => {
   const history = useHistory()
+  const globalCtx = useContext(Context)
   //-------------------------------------------------------- declare start
   const [splashData, setSplashData] = useState()
   const [point, setPoint] = useState()
@@ -26,7 +27,6 @@ export default (props) => {
   //scroll
   const scrollbars = useRef(null)
   const area = useRef()
-  console.log(context.myInfo)
   let myDalCnt = context.myInfo.dalCnt
   myDalCnt = myDalCnt.toLocaleString()
   //-------------------------------------------------------- func start
@@ -53,20 +53,11 @@ export default (props) => {
     } else {
       setPoint(param)
       setActive(false)
-      setDirectDalCnt(splashData.giftDal[param])
+      setDirectDalCnt(globalCtx.splash.giftDal[param])
       setText('')
     }
     setSend(true)
   }
-
-  // 공통
-  async function commonData() {
-    const res = await Api.splash({})
-    if (res.result === 'success') {
-      setSplashData(res.data)
-    }
-  }
-
   // 선물하기
   async function giftSend() {
     let dalcount
@@ -76,7 +67,7 @@ export default (props) => {
       dalcount = parseInt(text)
     }
 
-    if (dalcount >= splashData.giftDalMin) {
+    if (dalcount >= globalCtx.splash.giftDalMin) {
       const res = await Api.member_gift_dal({
         data: {
           memNo: props.profile.memNo,
@@ -122,7 +113,7 @@ export default (props) => {
         callback: () => {
           return
         },
-        msg: `직접입력 선물은 최소 ${splashData.giftDalMin}달 부터 선물이 가능합니다.`
+        msg: `직접입력 선물은 최소 ${globalCtx.splash.giftDalMin}달 부터 선물이 가능합니다.`
       })
       return
     }
@@ -141,10 +132,6 @@ export default (props) => {
       price: osType === 2 ? iosPrice : totalPrice
     })
   }
-
-  useEffect(() => {
-    commonData()
-  }, [])
 
   useEffect(() => {
     context.action.updatePopup('CHARGE')
@@ -192,8 +179,8 @@ export default (props) => {
                   </MyPoint>
 
                   <div className="pointList">
-                    {splashData &&
-                      splashData.giftDal.map((data, idx) => {
+                    {globalCtx.splash &&
+                      globalCtx.splash.giftDal.map((data, idx) => {
                         return (
                           <PointButton key={idx} onClick={() => _active(idx)} active={point == idx ? 'active' : ''}>
                             {Number(data).toLocaleString()}

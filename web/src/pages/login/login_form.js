@@ -22,7 +22,6 @@ export default function login_form({props, setLoginPop}) {
   const [fetching, setFetching] = useState(false)
   const [phoneNum, setPhoneNum] = useState('')
   const [password, setPassword] = useState('')
-  const [common, setCommon] = useState({})
 
   const closePopup = () => {
     setLoginPop(false)
@@ -232,15 +231,6 @@ export default function login_form({props, setLoginPop}) {
       }
     }
   }, [globalCtx.nativeTid])
-
-  async function commonData() {
-    const res = await Api.splash({})
-    if (res.result === 'success') setCommon(res.data)
-  }
-
-  useEffect(() => {
-    commonData()
-  }, [])
 
   //admincheck
   const fetchAdmin = async () => {
