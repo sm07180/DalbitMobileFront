@@ -14,7 +14,7 @@ export default (props) => {
   const customHeader = JSON.parse(Api.customHeader)
   const {webview} = qs.parse(location.search)
 
-  let {goBack, type, setCropOpen} = props
+  let {goBack, type} = props
   if (goBack === undefined) {
     goBack = () => {
       if (webview === 'new') {
@@ -26,26 +26,11 @@ export default (props) => {
   }
 
   const imgClose = () => {
-    if (type === 'blackBg' || type === 'cropperPopup') {
+    if (type === 'blackBg') {
       return closeBtnWhite
     } else {
       return closeBtn
     }
-  }
-
-  const BackType = () => {
-    if (props.type === 'cropperPopup') {
-      return (
-        <button className="close-btn" onClick={() => setCropOpen(false)}>
-          <img src={imgClose()} alt="뒤로가기1" />
-        </button>
-      )
-    } else if (props.type !== 'noBack')
-      return (
-        <button className="close-btn" onClick={goBack}>
-          <img src={imgClose()} alt="뒤로가기2" />
-        </button>
-      )
   }
 
   return (
@@ -55,7 +40,11 @@ export default (props) => {
       ) : (
         props.children
       )}
-      {BackType()}
+      {props.type !== 'noBack' && (
+        <button className="close-btn" onClick={goBack}>
+          <img src={imgClose()} alt="뒤로가기" />
+        </button>
+      )}
     </div>
   )
 }

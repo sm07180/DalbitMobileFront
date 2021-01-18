@@ -106,7 +106,11 @@ function DalbitCropper(props) {
 
   return (
     <div className={customName || ''}>
-      <Header type="cropperPopup" setCropOpen={setCropOpen} />
+      <Header>
+        <button className="croperClose" onClick={() => setCropOpen(false)}>
+          크롭퍼 닫기
+        </button>
+      </Header>
       <Cropper
         style={{height: 'calc(100vh - 163px)', width: '100%', display: 'flex', alignItems: 'center'}}
         initialAspectRatio={1}

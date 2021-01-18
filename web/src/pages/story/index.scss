@@ -1,41 +1,39 @@
-#story-container {
-  .header {
-    position: relative;
-    height: 48px;
-    padding: 14px 0;
-    box-sizing: border-box;
-    color: #000;
-    font-size: 18px;
-    text-align: center;
-    background-color: #fff;
-    border-bottom: 1px solid #e0e0e0;
-    font-size: 18px;
+@import '../../styles/variables';
 
-    .back-btn {
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 6px;
-      margin-top: -20px;
-      width: 36px;
-      height: 36px;
-      text-indent: -9999px;
-      background: url(https://image.dalbitlive.com/svg/icon_back_gray.svg) no-repeat 0 0;
-    }
-  }
-
-  .content-wrap {
-    position: relative;
+#storyPage {
+  .tab {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    line-height: 1.13;
+    text-align: center;
+    .subTab {
+      width: 50%;
+      height: 36px;
+      padding: 9px 10px;
+      color: $black;
+      font-weight: $bold;
+    }
+    .subTab.active {
+      color: $primary;
+      border-bottom: 1px solid $primary;
+    }
+  }
+  .contentWrap {
+    position: relative;
+    display: flex;
+    min-height: calc(100vh - 86px);
+    justify-content: space-between;
+    flex-wrap: wrap;
     padding: 16px;
+    background-color: $lighterGray;
     box-sizing: border-box;
 
-    .story-wrap {
+    .storyWrap {
       position: relative;
       float: left;
       width: calc(50% - 4px);
+      height: 160px;
       margin-bottom: 8px;
       padding-bottom: calc(50% - 4px);
       background-position: center center;
@@ -63,7 +61,7 @@
         border-radius: 16px;
       }
 
-      .icon-wrap {
+      .iconWrap {
         position: absolute;
         padding: 3px 8px;
         right: 8px;
@@ -76,15 +74,14 @@
         align-items: center;
         z-index: 2;
         .text {
-          color: #fff;
+          color: $white;
           font-size: 14px;
-          height: 20px;
           letter-spacing: -0.35px;
           margin-left: 6px;
         }
       }
 
-      .sub-text-wrap {
+      .subtextWrap {
         position: absolute;
         bottom: 8px;
         left: 0;
@@ -92,17 +89,17 @@
         box-sizing: border-box;
         padding: 0 8px;
         z-index: 2;
-        .title {
+        &__title {
           width: 100%;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
           font-size: 14px;
-          color: #fff;
+          color: $white;
           margin-bottom: 4px;
         }
-        .date {
-          color: #e0e0e0;
+        &__date {
+          color: $lightGray;
           letter-spacing: -0.28px;
           font-size: 11px;
         }
@@ -110,77 +107,150 @@
     }
   }
 
-  .detail-wrap {
-    background-color: #eee;
+  .detailWrap {
+    background-color: $lighterGray;
     min-height: calc(100vh - 50px);
-
-    .main-txt {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      font-size: 16px;
-      padding: 16px;
-
-      .number {
-        color: #632beb;
-        margin-left: 6px;
-        // font-weight: $bold;
-      }
+    &-sm {
+      min-height: calc(100vh - 86px);
     }
 
-    .story-wrap {
-      margin-bottom: 8px;
-      background-color: #fff;
-
-      .user-info {
+    .title {
+      padding: 16px 16px 8px 16px;
+      .mainTxt {
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding: 8px 16px;
+        font-size: 16px;
+        line-height: 1.38;
+        .label {
+          font-weight: $bold;
+        }
+        .number {
+          color: $primary;
+          margin-left: 6px;
+          letter-spacing: -0.4px;
+        }
+      }
+    }
+    .storyWrap {
+      border-bottom: 1px solid $lighterGray;
+      background-color: $white;
+
+      .userInfo {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px 10px 10px 16px;
         box-sizing: border-box;
         justify-content: space-between;
 
-        .photo-name-wrap {
+        .photoWrap {
+          overflow: hidden;
           display: flex;
           flex-direction: row;
-          border-radius: 50%;
-          .photo {
-            width: 40px;
-            height: 40px;
+          margin-right: 6px;
+          cursor: pointer;
+          &__img {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
             > img {
               width: 100%;
               height: 100%;
               border-radius: 50%;
+              object-fit: contain;
+            }
+            &--lg {
+              width: 40px;
+              height: 40px;
+              min-width: 40px;
             }
           }
-          .name-date {
-            margin-left: 10px;
-            .name {
-              color: #000;
-              font-size: 16px;
+          .listTitle {
+            overflow: hidden;
+            margin-left: 6px;
+            &__name {
+              overflow: hidden;
+              position: relative;
+              top: 50%;
+              margin-top: -12px;
+              font-weight: $bold;
+              line-height: 1.5;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             }
-            .date {
-              color: #9e9e9e;
-              font-size: 12px;
+
+            &__title {
+              overflow: hidden;
+              margin-top: 2px;
+              margin-bottom: 4px;
+              font-weight: $bold;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+
+            &__nameWrap {
+              display: flex;
+              flex-wrap: wrap;
+              flex-direction: row;
+              font-size: 13px;
+              line-height: 1.38;
+              &__icon {
+                width: 23px;
+                height: 16px;
+                background-color: $primary;
+                color: $white;
+                font-size: 10px;
+                letter-spacing: -0.2px;
+                line-height: 1.2;
+                text-align: center;
+                border-radius: 12px;
+                span {
+                  position: relative;
+                  top: 2px;
+                }
+              }
+              &__name {
+                margin-left: 4px;
+                color: $darkGray;
+              }
             }
           }
         }
 
-        .delete-btn {
-          border-radius: 16px;
-          border: 1px solid #5f29e2;
-          width: 64px;
+        .deleteBtn {
+          width: 46px;
+          min-width: 46px;
           height: 32px;
-          color: #632beb;
           font-size: 14px;
+          line-height: 1.14;
+          border: 1px solid $greishGray;
+          border-radius: 8px;
         }
       }
-      .story-content {
-        padding: 16px;
-        padding-top: 0;
+      .storyContent {
+        padding: 4px 16px 12px 16px;
         font-size: 14px;
-        line-height: 1.57;
+        line-height: 1.43;
+        text-align: left;
+        &__detail {
+          white-space: break-spaces;
+          word-break: break-all;
+        }
+        &__time {
+          margin-top: 12px;
+          font-size: 12px;
+          line-height: 1.08;
+          color: $gray;
+        }
       }
     }
   }
+}
+
+.deleteConfWrap_emph {
+  margin-top: 16px;
+  color: $primary;
+  font-size: 22px;
+  font-weight: $bold;
 }

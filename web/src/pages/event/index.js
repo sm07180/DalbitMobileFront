@@ -24,6 +24,7 @@ import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
 import Award from './award'
 import Purchase from './purchase'
+import PostGuide from './post_guide'
 
 export default () => {
   const params = useParams()
@@ -71,6 +72,8 @@ export default () => {
         return <Award />
       case 'purchase':
         return <Purchase />
+      case 'post_guide':
+        return <PostGuide />
 
       default:
         return <></>

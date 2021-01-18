@@ -1,84 +1,55 @@
-import React, {useState, useEffect, useReducer} from 'react'
-import {useParams} from 'react-router-dom'
-import {useHistory} from 'react-router-dom'
-import Api from 'context/api'
-
-import List from './content/list'
-import Detail from './content/detail'
+import React, {useState, useContext, useEffect} from 'react'
+import {useParams, useHistory} from 'react-router-dom'
+import {TAB} from './constant/tab'
+import Layout from 'pages/common/layout'
+import Header from 'components/ui/new_header.js'
+import Sent from './component/sent'
+import Received from './component/received'
+import Detail from './component/detail'
+import {Context} from 'context'
 import './index.scss'
 
-let timer
-
 export default () => {
-  const history = useHistory()
-  const [currentPage, setCurrentPage] = useState(1)
-  const [storyList, setStoryList] = useState([])
-  const [totalPage, setTotalPage] = useState(1)
-
   const {roomNo} = useParams()
+  const history = useHistory()
+  const globalCtx = useContext(Context)
+  const [tab, setTab] = useState(TAB.sent)
 
-  const fetchStoryList = async () => {
-    const {result, data} = await Api.getStoryList({page: currentPage, records: 20})
-    if (result === 'success') {
-      if (currentPage > 1) {
-        setStoryList(storyList.concat(data.data))
+  const renderContent = () => {
+    if (roomNo) {
+      return <Detail />
+    } else {
+      if (tab === TAB.sent) {
+        return <Sent />
       } else {
-        setStoryList(data.data)
-      }
-
-      if (data.paging) {
-        setTotalPage(data.paging.totalPage)
-      } else {
-        setTotalPage(1)
+        return <Received />
       }
     }
   }
 
   useEffect(() => {
-    let fetching = false
-
-    const scrollEvtHdr = (event) => {
-      if (timer) window.clearTimeout(timer)
-      timer = window.setTimeout(function () {
-        //스크롤
-        const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-        const body = document.body
-        const html = document.documentElement
-        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-        const windowBottom = windowHeight + window.pageYOffset
-        const diff = docHeight / 3
-        if (totalPage > currentPage && windowBottom >= docHeight - diff) {
-          if (!fetching) {
-            setCurrentPage(currentPage + 1)
-          }
-        }
-      }, 50)
+    if (!globalCtx.token.isLogin) {
+      history.push('/login')
     }
-
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-      fetching = true
-    }
-  }, [totalPage, currentPage])
-
-  useEffect(() => {
-    fetchStoryList()
-  }, [currentPage])
+  }, [globalCtx.token.isLogin])
 
   return (
-    <div id="story-container">
-      <header className="header">
-        사연 모아보기
-        <button className="back-btn" onClick={() => history.goBack()}></button>
-      </header>
-      {roomNo === undefined ? (
-        <div className="content-wrap">
-          <List storyList={storyList} />
-        </div>
-      ) : (
-        <Detail />
-      )}
-    </div>
+    <Layout status={'no_gnb'}>
+      <div id="storyPage">
+        <Header title="사연 모아보기" />
+        {!roomNo && (
+          <ul className="tab">
+            <li className={`subTab ${tab === TAB.sent && 'active'}`} onClick={() => setTab(TAB.sent)}>
+              보낸 사연
+            </li>
+            <li className={`subTab ${tab === TAB.received && 'active'}`} onClick={() => setTab(TAB.received)}>
+              받은 사연
+            </li>
+          </ul>
+        )}
+
+        {globalCtx.token.isLogin && renderContent()}
+      </div>
+    </Layout>
   )
 }

@@ -1097,6 +1097,19 @@
       }
     }
 
+    .iconRoomType {
+      display: flex;
+      align-items: center;
+      width: 26px;
+      height: 16px;
+      margin-right: 4px;
+      text-indent: -9999px;
+      background: url('https://image.dalbitlive.com/svg/ico_live_audio.svg') no-repeat 0 0;
+      background-size: contain;
+      &.isVideo {
+        background: url('https://image.dalbitlive.com/svg/ico_live_video.svg') no-repeat 0 0;
+      }
+    }
     .iconPc {
       display: flex;
       align-items: center;

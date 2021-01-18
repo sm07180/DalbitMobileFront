@@ -60,7 +60,7 @@ import 'styles/main.scss'
 
 let concatenating = false
 
-const records = 50
+const records = 10
 
 let touchStartY = null
 let touchEndY = null
