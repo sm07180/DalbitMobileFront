@@ -213,6 +213,10 @@
               &__name {
                 margin-left: 4px;
                 color: $darkGray;
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
               }
             }
           }
