@@ -307,6 +307,21 @@ export default (props) => {
     }
   }
 
+  const isScrolledToBtm = (diff = 400) => {
+    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
+    const fullScrollHeight = Math.max(
+      document.body.scrollHeight,
+      document.documentElement.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.offsetHeight,
+      document.body.clientHeight,
+      document.documentElement.clientHeight
+    )
+    const scrollFromTop = window.pageYOffset
+
+    return scrollFromTop + windowHeight >= fullScrollHeight - diff
+  }
+
   const windowScrollEvent = () => {
     const GnbHeight = 88
     const sectionMarginTop = 30
@@ -356,14 +371,8 @@ export default (props) => {
       if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
     }
 
-    const GAP = 100
-    if (
-      window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
-      !concatenating &&
-      Array.isArray(liveList) &&
-      liveList.length &&
-      livePage + 1 <= totalLivePage
-    ) {
+    const GAP = 400
+    if (isScrolledToBtm() && !concatenating && Array.isArray(liveList) && liveList.length && livePage + 1 <= totalLivePage) {
       // setLoading(true)
       concatLiveList()
     }
