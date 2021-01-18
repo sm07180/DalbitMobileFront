@@ -127,7 +127,7 @@ export default () => {
       itemNo === GIFT_ROTATION_TYPE.GIFT_BURGERKING ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_BURGERKINGMONSTER ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_BASKINROBBINSPINT ||
-      itemNo === GIFT_ROTATION_TYPE.GIFT_MOMSTOUCHQIPAOHALF
+      itemNo === GIFT_ROTATION_TYPE.GIFT_MOMSTOUCHUNBELIEVABLE
     ) {
       setRotation(202.5)
     } else if (

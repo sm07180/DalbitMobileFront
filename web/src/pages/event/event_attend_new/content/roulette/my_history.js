@@ -203,7 +203,7 @@ export default () => {
                     } else if (itemNo === 56) {
                       giftItem = '스타벅스 커피'
                     } else if (itemNo === 57) {
-                      giftItem = '맘스터치 치파오'
+                      giftItem = '맘스터치 언빌리버블'
                     } else if (itemNo === 58) {
                       giftItem = '굽네치킨 보름달'
                     }
