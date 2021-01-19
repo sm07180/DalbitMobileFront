@@ -119,7 +119,6 @@ export default (props) => {
   }, [newAlarm])
 
   useEffect(() => {
-    console.log(context.mailboxNew)
     const mailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
@@ -143,7 +142,7 @@ export default (props) => {
       ) {
         if (globalCtx.mailboxNew && globalCtx.token.isLogin) {
           return (
-            <div
+            <button
               className="alarmSize"
               onClick={() => {
                 if (isHybrid()) {
@@ -152,12 +151,12 @@ export default (props) => {
                   globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
                 }
               }}>
-              <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
-            </div>
+              <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
+            </button>
           )
         } else {
           return (
-            <div
+            <button
               className="alarmSize"
               onClick={() => {
                 if (isHybrid()) {
@@ -167,7 +166,7 @@ export default (props) => {
                 }
               }}>
               <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />
-            </div>
+            </button>
           )
         }
       }
@@ -177,66 +176,36 @@ export default (props) => {
   return (
     <>
       <div className="hiddenBg"></div>
-      <div className="gnbWrap">
+
+      <div className="headerWrap">
         <div className="icon-wrap">
           <button onClick={() => moveToMenu('search')}>
-            <img className="icon" src={Search} alt="검색버튼" />
+            <img className="iconSearch" src="https://image.dalbitlive.com/svg/ico_search_w.svg" alt="검색버튼" />
           </button>
-          <div className="icon-wrap">
-            <button onClick={() => moveToLogin('store')}>
-              <img className="icon" src={Store} alt="스토어버튼" />
-            </button>
-          </div>
+          <button onClick={() => moveToLogin('store')}>
+            <img className="iconStore" src="https://image.dalbitlive.com/svg/ico_store_w.svg" alt="스토어버튼" />
+          </button>
         </div>
-        {/* {customHeader['os'] === OS_TYPE['IOS'] && logoChange ? (
-          <div className="micWrap">
-            <div
-              className="mic-btn"
-              onClick={() => {
-                if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  window.location.href = 'https://inforexseoul.page.link/Ws4t'
-                } else {
-                  if (!broadcastBtnActive) {
-                    RoomMake(globalCtx)
-                    setBroadcastBtnActive(true)
-                    setTimeout(() => setBroadcastBtnActive(false), 3000)
-                  }
-                }
-              }}>
-              <img src={Mic} />
-            </div>
-          </div>
-        ) : (
-          <h1 className="gnb-logo" onClick={reLoad}>
-            <img src={Logo} alt="달빛라이브" />
-          </h1>
-        )} */}
         <h1 className="gnb-logo" onClick={reLoad}>
           <img src={Logo} alt="달빛라이브" />
         </h1>
         <div className="icon-wrap">
           {createMailboxIcon()}
-
           {newAlarm === true ? (
-            <div className="alarmSize" onClick={() => moveToLogin('alarm')}>
+            <button onClick={() => moveToLogin('alarm')} className="alarIconSize">
               <Lottie
                 options={{
                   loop: true,
-                  autoPlay: true,
+                  autoplay: true,
                   path: `https://image.dalbitlive.com/event/200805/alarmdot_w.json`
                 }}
               />
-            </div>
+            </button>
           ) : (
             <button onClick={() => moveToLogin('alarm')}>
-              <img className="icon" src={Alarm} alt="알람버튼" />
+              <img src={Alarm} alt="알람버튼" />
             </button>
           )}
-
-          {context.news && <span className="news">&nbsp;</span>}
-          {/* <span className="icon" style={{display: 'inline-block', width: '36px', height: '36px'}} /> */}
-          {/* <img className="icon" src={My} onClick={() => moveToLogin('profile')} style={{marginLeft: '36px'}} /> */}
-          {/* <img className="icon" src={Menu} onClick={() => moveToMenu('nav')} /> */}
         </div>
       </div>
     </>

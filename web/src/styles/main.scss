@@ -1,72 +1,47 @@
 @import '../styles/variables';
 
-.gnbWrap {
-  position: relative;
+.headerWrap {
+  position: fixed;
+  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
+  padding: 0 6px;
   width: 100%;
   height: 48px;
   background-color: $primary;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
   z-index: 20;
-  padding: 0 6px;
-  .alarmSize {
-    width: 44px;
-    height: 44px;
-  }
-  .icon-wrap {
-    position: relative;
+
+  h1 {
     display: flex;
-    flex-direction: row;
-    // width: 80px;
-    .icon {
-      position: relative;
-      display: block;
-      width: 40px;
-    }
-    .mailbox {
-      padding-top: 2px;
-    }
-    .alarm-new {
-      position: absolute;
-      border-radius: 50%;
-      top: 1px;
-      right: 1px;
-      width: 10px;
-      height: 10px;
-      background-color: $red;
-    }
-    .news {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      width: 5px;
-      height: 5px;
-      background: #ff0000;
-      z-index: 11;
-      border-radius: 50%;
-      content: '1';
-    }
-  }
-  .gnb-logo {
+    position: absolute;
+    margin-left: -47px;
+    left: 50%;
     width: 103px;
-    font-size: 0;
+    cursor: pointer;
 
     img {
       width: 100%;
     }
   }
-  .mic-btn {
+  .icon-wrap {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    height: 50px;
-    border-radius: 27px;
+    height: 40px;
+    .alarIconSize {
+      width: 40px;
+      height: 40px;
+    }
+
+    .iconSearch,
+    .iconStore {
+      display: flex;
+      width: 40px;
+      height: 40px;
+    }
+    .mailbox {
+      cursor: pointer;
+    }
   }
 }
 

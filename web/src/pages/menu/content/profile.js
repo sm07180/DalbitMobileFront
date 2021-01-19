@@ -204,6 +204,11 @@ export default (props) => {
   }
 
   const createMailboxMenu = () => {
+    let settingClassName = 'arrow'
+    if (context.mailboxNew && context.token.isLogin) {
+      settingClassName = 'arrow arrow--active'
+    }
+
     if (context.mailboxExist) {
       if (
         __NODE_ENV === 'dev' ||
@@ -223,12 +228,26 @@ export default (props) => {
             }}>
             <img className="icon" src={MailboxIcon} alt="우체통" />
             <span className="text">우체통</span>
-            <span className="arrow"></span>
+            <span className={settingClassName}></span>
           </button>
         )
       }
     }
   }
+
+  useEffect(() => {
+    const mailboxNewCheck = async () => {
+      const {result, data, message} = await Api.checkIsMailboxNew()
+      if (result === 'success') {
+        globalCtx.action.updateMailboxNew(data.isNew)
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
+    }
+    if (context.token.isLogin) mailboxNewCheck()
+  }, [])
 
   return (
     <>
