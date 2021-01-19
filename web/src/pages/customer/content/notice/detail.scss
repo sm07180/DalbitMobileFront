@@ -32,7 +32,7 @@ $WIDTH_MOBILE: 600px;
       font-size: 14px;
       color: $greishBrown;
       & img {
-        width: 100% !important;
+        max-width: 100%;
       }
     }
     > button {

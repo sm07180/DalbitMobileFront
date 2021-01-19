@@ -162,6 +162,9 @@ export default class Utility {
       if (num.length == 8) {
         if (type == 'dot') {
           formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1.$2.$3')
+        } else if (type === 'slash') {
+          // yy/mm/dd
+          formatNum = num.slice(2).replace(/(\d{2})(\d{2})(\d{2})/, '$1/$2/$3')
         } else {
           formatNum = num.replace(/(\d{4})(\d{2})(\d{2})/, '$1-$2-$3')
         }

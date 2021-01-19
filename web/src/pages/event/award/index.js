@@ -4,6 +4,7 @@ import {useParams} from 'react-router-dom'
 import Layout from 'pages/common/layout'
 import AwardMain from './contents'
 import AwardResult from './contents/result/result'
+import Award2020 from './contents/honor/2020'
 import './award.scss'
 
 export default function awardEvent() {
@@ -14,6 +15,8 @@ export default function awardEvent() {
     // url dividing
     if (category === 'result') {
       return <AwardResult />
+    } else if (category === '2020') {
+      return <Award2020 />
     } else {
       return <AwardMain />
     }

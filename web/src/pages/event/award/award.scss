@@ -614,4 +614,445 @@
       color: #333;
     }
   }
+
+  .awardRankPage {
+    position: relative;
+    margin: auto;
+    max-width: 460px;
+    padding-bottom: 28px;
+    background: #33106b;
+
+    .btnBack {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 32px;
+      height: 32px;
+    }
+
+    img {
+      width: 100%;
+    }
+
+    .awradTab {
+      padding: 0px 16px;
+      box-sizing: border-box;
+      display: flex;
+      background: #e8e8f9;
+    }
+
+    .djBox {
+      .winnerList {
+        position: relative;
+        .swiper-container {
+          position: absolute;
+          left: 0px;
+          top: 48%;
+          margin-left: 10%;
+          width: 83%;
+          overflow: hidden;
+          box-sizing: border-box;
+
+          .slideWrap {
+            margin-right: 12px;
+            width: calc(25% - 4%);
+            flex-shrink: 0;
+            cursor: pointer;
+
+            &.active {
+              .slideWrap__thumb {
+                img {
+                  padding: 3px;
+                  background-image: linear-gradient(to top, #ffdb7f, #ffcb23);
+                }
+              }
+
+              .slideWrap__nickName {
+                color: #ffdb7f;
+              }
+            }
+
+            &__thumb {
+              border-radius: 20px;
+
+              img {
+                width: 100%;
+                padding: 3px;
+                border-radius: 20px;
+                background: #333;
+              }
+            }
+
+            &__nickName {
+              display: block;
+              margin: 8px auto 0 auto;
+              font-size: 12px;
+              text-align: center;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              font-weight: $bold;
+              letter-spacing: normal;
+              color: $white;
+            }
+          }
+        }
+      }
+
+      .detailView {
+        position: relative;
+        margin-top: 5%;
+
+        .userItem {
+          display: flex;
+          padding: 0px 16px;
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+
+          &__userInfo {
+            padding: 8px 16px;
+            width: 45%;
+            box-sizing: border-box;
+            .infoThumbnail {
+              position: relative;
+
+              .userThumbnail {
+                flex-shrink: 0;
+                margin: 28% auto 0 auto;
+                width: 56%;
+                border-radius: 50%;
+                display: block;
+              }
+              .userFrame {
+                left: 0px;
+                top: -34%;
+                position: absolute;
+              }
+            }
+
+            .infoText {
+              margin-top: 20%;
+              text-align: center;
+              .userNickName {
+                display: block;
+                font-weight: $bold;
+                color: $white;
+                font-size: 16px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              .userTitle {
+                margin-top: 4px;
+                color: #ffcb23;
+                overflow: hidden;
+                line-height: 16px;
+                font-size: 11px;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                white-space: pre-wrap;
+              }
+            }
+          }
+
+          &__textBox {
+            padding: 30px 12px 12px 0;
+            box-sizing: border-box;
+            flex: 1;
+
+            .impression {
+              padding: 20px 2px 8px 12px;
+              line-height: 1.4;
+              border-radius: 24px;
+              background: $white;
+              color: $black;
+              font-size: 13px;
+              height: 100%;
+              word-break: break-word;
+              white-space: pre-wrap;
+            }
+
+            .impressionPoint {
+              width: 88px;
+              margin: -34px auto 4px auto;
+              display: block;
+            }
+            .textScroll {
+              height: 100%;
+              overflow-y: scroll;
+              &::-webkit-scrollbar {
+                width: 10px;
+              }
+              &::-webkit-scrollbar-thumb {
+                border-radius: 6px;
+                background: rgba(0, 0, 0, 0.4);
+              }
+            }
+          }
+        }
+      }
+
+      .scoreTotal {
+        margin-top: 5%;
+        position: relative;
+
+        &__item {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          width: 100%;
+          height: 100%;
+        }
+        &__title {
+          position: relative;
+          width: 78%;
+          margin: 7% auto 0 auto;
+          padding-bottom: 5%;
+          text-align: center;
+          font-size: 17px;
+          color: #fece84;
+          font-weight: $bold;
+          background: url(https://image.dalbitlive.com/event/award_rank/dot.jpg) repeat-x bottom center / 1.8%;
+
+          @media screen and (max-width: 420px) {
+            font-size: 15px;
+          }
+          &::after {
+            display: block;
+            position: absolute;
+            left: 5%;
+            bottom: 50%;
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: url(https://image.dalbitlive.com/event/award_rank/moon_icon_left.jpg) no-repeat center / cover;
+          }
+
+          &::before {
+            display: block;
+            position: absolute;
+            right: 5%;
+            bottom: 50%;
+            content: '';
+            width: 16px;
+            height: 16px;
+            background: url(https://image.dalbitlive.com/event/award_rank/moon_icon_right.jpg) no-repeat center / cover;
+          }
+          span {
+            display: inline-block;
+            color: $white;
+            max-width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: top;
+          }
+        }
+
+        &__infoBox {
+          padding: 0px 7%;
+          display: flex;
+          justify-content: space-evenly;
+          margin-top: 4%;
+          overflow: hidden;
+          li {
+            width: 27%;
+            text-align: center;
+            font-weight: $bold;
+            color: $white;
+            font-size: 13px;
+            span {
+              margin: 10% auto 91% auto;
+              letter-spacing: -1px;
+            }
+
+            div {
+              padding: 56% 0;
+              position: relative;
+              p {
+                position: absolute;
+                padding: 0px 10px;
+                box-sizing: border-box;
+                display: block;
+                bottom: 7%;
+                width: 100%;
+                text-align: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
+
+            .people {
+              background: url(https://image.dalbitlive.com/event/award_rank/img_dj_info_1.png) no-repeat bottom / 100%;
+            }
+
+            .heart {
+              background: url(https://image.dalbitlive.com/event/award_rank/img_dj_info_2.png) no-repeat bottom / 100%;
+            }
+            .days {
+              background: url(https://image.dalbitlive.com/event/award_rank/img_dj_info_3.png) no-repeat bottom / 100%;
+            }
+          }
+        }
+
+        .dayText {
+          margin-top: 3%;
+          font-size: 14px;
+          font-weight: $bold;
+          color: #fece84;
+          text-align: center;
+          @media screen and (min-width: 460px) {
+            font-size: 16px;
+          }
+
+          p {
+            display: inline-block;
+            color: $white;
+            max-width: 150px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            vertical-align: top;
+          }
+          span {
+            color: $red;
+          }
+        }
+      }
+
+      .buttonBox {
+        padding: 0px 16px;
+        margin-top: 5%;
+        display: flex;
+
+        button {
+          width: 50%;
+          &:first-child {
+            margin-right: 2%;
+          }
+        }
+      }
+    }
+
+    .fanBox {
+      &__item {
+        margin-top: 7%;
+        display: flex;
+        padding: 0px 16px;
+        box-sizing: border-box;
+
+        .thumbnailBox {
+          width: 42%;
+          position: relative;
+          overflow: hidden;
+          border-radius: 28px;
+
+          img {
+            min-width: 100px;
+          }
+
+          &::after {
+            position: absolute;
+            width: 40px;
+            height: 54px;
+            background: url(https://image.dalbitlive.com/event/award_rank/medal@2x.png) no-repeat center / 100%;
+            text-indent: -9999px;
+            left: 8%;
+            top: -1px;
+            content: '메달';
+          }
+
+          .nickName {
+            min-height: 48px;
+            line-height: 48px;
+            text-align: center;
+            align-items: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background: $white;
+            color: $black;
+            border-radius: 0 0 28px 28px;
+            font-size: 16px;
+          }
+        }
+        .textBox {
+          width: 58%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          color: $white;
+          padding-left: 4%;
+          box-sizing: border-box;
+
+          &__list {
+            padding-top: 3%;
+            width: 100%;
+            font-size: 14px;
+            overflow: hidden;
+            li {
+              display: block;
+              display: flex;
+              line-height: 26px;
+              align-items: center;
+              margin-bottom: 3px;
+              letter-spacing: -0.5px;
+              color: $lightGray;
+
+              &::before {
+                content: '';
+                flex-shrink: 0;
+                width: 22px;
+                height: 22px;
+                margin-right: 9px;
+              }
+
+              &:nth-child(odd) {
+                &::before {
+                  content: '';
+                  background: url(https://image.dalbitlive.com/event/award_rank/djr_1@2x.png) no-repeat center / 22px;
+                }
+              }
+
+              &:nth-child(2n) {
+                &::before {
+                  content: '';
+                  background: url(https://image.dalbitlive.com/event/award_rank/djr_2@2x.png) no-repeat center / 22px;
+                }
+              }
+            }
+          }
+        }
+        .introduce {
+          display: flex;
+          align-items: center;
+          position: relative;
+          width: 100%;
+          overflow: hidden;
+          white-space: pre-wrap;
+          span {
+            position: absolute;
+            left: 50%;
+            transform: translate(-50%, -6%);
+            width: 80%;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+          }
+          img {
+            min-width: 120px;
+          }
+        }
+      }
+    }
+  }
 }

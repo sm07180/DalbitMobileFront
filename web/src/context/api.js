@@ -3033,6 +3033,14 @@ export default class API {
     })
   }
 
+  static getAwardHonor = async (data) => {
+    return await ajax({
+      url: '/award/honor',
+      method: 'GET',
+      params: data
+    })
+  }
+
   static getClipRankingList = async (data) => {
     return await ajax({
       url: '/clip/rank',
