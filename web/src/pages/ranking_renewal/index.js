@@ -33,6 +33,8 @@ import SpecialPointPop from './components/rank_list/special_point_pop'
 import WeeklyPickWrap from './components/weekly_pick'
 import SecondWrap from './components/second'
 import ResetPointPop from './components/reset_point_pop'
+import LikeListTop from './components/like_list_top'
+
 //constant
 import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
 
@@ -43,6 +45,7 @@ import level from 'pages/level'
 import benefitIcon from './static/benefit@3x.png'
 import hallOfFameIcon from './static/ic_fame.svg'
 import rankingPageIcon from './static/ic_ranking_page.svg'
+import awardIcon from './static/ic_award.png'
 
 let timer
 let touchStartY = null
@@ -237,7 +240,8 @@ function Ranking() {
         if (listWrapRef.current) {
           if (
             formState[formState.pageType].rankType === RANK_TYPE.DJ ||
-            formState[formState.pageType].rankType === RANK_TYPE.FAN
+            formState[formState.pageType].rankType === RANK_TYPE.FAN ||
+            formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
             if (context.token.isLogin) {
               if (listWrapRef.current.classList.length === 1) {
@@ -570,9 +574,9 @@ function Ranking() {
           if (formState[formState.pageType].rankType === RANK_TYPE.SPECIAL) {
             bottomWrapRef.current.style.marginTop = '104px'
           }
-          if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
-            bottomWrapRef.current.style.marginTop = '140px'
-          }
+          // if (formState[formState.pageType].rankType === RANK_TYPE.LIKE) {
+          //   bottomWrapRef.current.style.marginTop = '140px'
+          // }
           if (formState[formState.pageType].rankType === RANK_TYPE.LEVEL) {
             bottomWrapRef.current.style.marginTop = '48px'
           } else {
@@ -584,7 +588,8 @@ function Ranking() {
         if (listWrapRef.current) {
           if (
             formState[formState.pageType].rankType === RANK_TYPE.DJ ||
-            formState[formState.pageType].rankType === RANK_TYPE.FAN
+            formState[formState.pageType].rankType === RANK_TYPE.FAN ||
+            formState[formState.pageType].rankType === RANK_TYPE.LIKE
           ) {
             if (context.token.isLogin) {
               listWrapRef.current.className = 'listFixed more'
@@ -607,7 +612,8 @@ function Ranking() {
           if (listWrapRef.current) {
             if (
               formState[formState.pageType].rankType === RANK_TYPE.DJ ||
-              formState[formState.pageType].rankType === RANK_TYPE.FAN
+              formState[formState.pageType].rankType === RANK_TYPE.FAN ||
+              formState[formState.pageType].rankType === RANK_TYPE.LIKE
             ) {
               if (context.token.isLogin) {
                 listWrapRef.current.className = 'more'
@@ -683,8 +689,8 @@ function Ranking() {
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
         <Header type="noBack">
           <h2 className="header-title">{formState.pageType === PAGE_TYPE.RANKING ? '랭킹' : '명예의 전당'}</h2>
-          {formState.pageType === PAGE_TYPE.RANKING && (
-            <div
+          {formState.pageType === PAGE_TYPE.RANKING ? (
+            <button
               className="benefitSize"
               onClick={() => {
                 setRankTimeData({
@@ -702,10 +708,27 @@ function Ranking() {
                 })
               }}>
               <img src={benefitIcon} width={60} alt="혜택" />
-            </div>
+            </button>
+          ) : (
+            <button
+              className="benefitSize"
+              onClick={() => {
+                setRankTimeData({
+                  prevDate: '',
+                  nextDate: '',
+                  rankRound: 0,
+                  titleText: ''
+                })
+                formDispatch({
+                  type: 'PAGE_TYPE',
+                  val: PAGE_TYPE.RANKING
+                })
+              }}>
+              <img src={rankingPageIcon} alt="랭킹" />
+            </button>
           )}
           {formState.pageType === PAGE_TYPE.RANKING ? (
-            <div
+            <button
               className="hallOfFame"
               onClick={() => {
                 setRankTimeData({
@@ -719,25 +742,28 @@ function Ranking() {
                   val: PAGE_TYPE.FAME
                 })
               }}>
-              <img src={hallOfFameIcon}></img>
-            </div>
+              <img src={hallOfFameIcon} alt="명예의 전당" />
+            </button>
           ) : (
-            <div
+            <button
               className="hallOfFame"
               onClick={() => {
                 setRankTimeData({
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
-                  titleText: ''
+                  titleText: '',
+                  isRankData: false
                 })
-                formDispatch({
-                  type: 'PAGE_TYPE',
-                  val: PAGE_TYPE.RANKING
+                history.push({
+                  pathname: `/event/award/2020`,
+                  state: {
+                    tabType: formState[PAGE_TYPE.RANKING].rankType
+                  }
                 })
               }}>
-              <img src={rankingPageIcon}></img>
-            </div>
+              <img src={awardIcon} width={78} alt="어워즈" />
+            </button>
           )}
         </Header>
         <div className="refresh-wrap rank" ref={iconWrapRef}>
@@ -772,14 +798,16 @@ function Ranking() {
             {empty === true ? (
               <NoResult type="default" text="조회 된 결과가 없습니다." />
             ) : (
-              <div className={`rankTop3Box`} ref={TopRef}>
+              <div className="rankTop3Box" ref={TopRef}>
                 <MyProfile
                   fetching={fetching}
                   setResetPointPop={setResetPointPop}
                   setRankSetting={setRankSetting}
                   rankSettingBtn={rankSettingBtn}
                 />
+
                 <RankListTop specialPop={specialPop} />
+
                 {/* {!convertDateToText(formState[formState.pageType].dateType, formState[formState.pageType].currentDate, 0) && (
                   <RankListTop specialPop={specialPop} />
                 )} */}
@@ -794,9 +822,27 @@ function Ranking() {
           </div>
         )}
         {formState[formState.pageType].rankType === RANK_TYPE.LIKE && (
-          <div ref={bottomWrapRef} className="other">
-            <LikeListWrap empty={empty} />
+          <div ref={listWrapRef}>
+            {empty === true ? (
+              <NoResult type="default" text="조회 된 결과가 없습니다." />
+            ) : (
+              <div className="likeTopBox" ref={TopRef}>
+                <MyProfile
+                  fetching={fetching}
+                  setResetPointPop={setResetPointPop}
+                  setRankSetting={setRankSetting}
+                  rankSettingBtn={rankSettingBtn}
+                />
+                <LikeListTop />
+
+                {/* <LikeListWrap empty={empty} /> */}
+              </div>
+            )}
           </div>
+
+          // <div ref={listWrapRef}>
+          //   <LikeListWrap empty={empty} />
+          // </div>
         )}
 
         {formState[formState.pageType].rankType === RANK_TYPE.WEEKLYPICK && (
@@ -817,6 +863,14 @@ function Ranking() {
               formState[formState.pageType].rankType === RANK_TYPE.DJ) && (
               <div ref={bottomWrapRef}>
                 <RankListWrap empty={empty} />
+              </div>
+            )}
+
+        {empty === true
+          ? ''
+          : formState[formState.pageType].rankType === RANK_TYPE.LIKE && (
+              <div ref={bottomWrapRef}>
+                <LikeListWrap empty={empty} />
               </div>
             )}
 

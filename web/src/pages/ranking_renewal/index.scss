@@ -36,8 +36,8 @@
   .fixed {
     position: fixed;
     width: 100%;
-    top: 0px;
-    z-index: 3;
+    top: 0;
+    z-index: 100;
   }
 
   .listFixed {
@@ -130,8 +130,8 @@
 
   .likeTopBox {
     position: relative;
-    padding: 0 16px 16px 16px;
-    background-color: $primary;
+    padding: 0 16px;
+    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
   }
 
   .rankTopBox {
@@ -311,10 +311,10 @@
         position: relative;
 
         .infoBox {
-          width: 94%;
+          width: 100%;
 
           .likeDetailWrap {
-            width: 100%;
+            width: calc(100% - 10px);
           }
         }
       }
@@ -1328,6 +1328,188 @@
         }
       }
     }
+
+    .TopBoxLike {
+      display: flex;
+      width: 328px;
+      height: 290px;
+      margin: 0 auto;
+
+      &__item {
+        position: relative;
+
+        .TopBoxThumb {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          z-index: 1;
+
+          &__pic {
+            position: relative;
+            border-radius: 50%;
+            width: 100%;
+          }
+
+          &::after {
+            content: '';
+            white-space: pre;
+            display: block;
+            position: absolute;
+          }
+        }
+
+        .nickNameBox {
+          position: absolute;
+          bottom: 147px;
+          width: 100%;
+          padding: 0 5%;
+          z-index: 0;
+
+          &__nick {
+            overflow: hidden;
+            width: 100%;
+            padding: 0 5%;
+            height: 26px;
+            border-radius: 20px;
+            background-color: #fff;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+            line-height: 26px;
+            text-align: center;
+            font-size: 12px;
+
+            // &--noLive {
+            //   overflow: hidden;
+            //   display: -webkit-box;
+            //   -webkit-line-clamp: 2;
+            //   -webkit-box-orient: vertical;
+            //   line-height: 15px;
+            // }
+          }
+
+          &__live {
+            display: block;
+            margin-top: 4px;
+          }
+        }
+
+        .cupidBox {
+          position: absolute;
+          bottom: 40px;
+          width: 100%;
+          height: 86px;
+          padding: 0 3%;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 76px;
+            left: 42%;
+            width: 20px;
+            height: 20px;
+            background: url(https://image.dalbitlive.com/ranking/ico_like_red_m.svg);
+          }
+
+          .cupidItem {
+            height: 100%;
+            padding: 20px 7px 7px 7px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 11px;
+
+            .thumbBox {
+              width: 100%;
+              height: 36px;
+              text-align: center;
+
+              img {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+              }
+            }
+
+            .nickName {
+              overflow: hidden;
+              width: 100%;
+              margin-top: 6px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
+
+        &:nth-of-type(1) {
+          width: 112px;
+          order: 2;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -29px;
+              left: 11px;
+              width: 94px;
+              height: 122px;
+              background: url(https://image.dalbitlive.com/ranking/likewf1@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 88px;
+            }
+          }
+        }
+
+        &:nth-of-type(2) {
+          width: 108px;
+          order: 1;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -24px;
+              left: 16px;
+              width: 76px;
+              height: 99px;
+              background: url(https://image.dalbitlive.com/ranking/likewf2@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 72px;
+            }
+          }
+        }
+
+        &:nth-of-type(3) {
+          width: 108px;
+          order: 3;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -23px;
+              left: 21px;
+              width: 66px;
+              height: 86px;
+              background: url(https://image.dalbitlive.com/ranking/likewf3@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 60px;
+            }
+          }
+        }
+      }
+    }
   }
 
   .specialDj {
@@ -1741,16 +1923,16 @@
   }
 
   .likeDetailWrap {
-    width: calc(100% - 110px);
+    width: calc(100% - 140px);
     .likeListDetail {
       display: flex;
       align-items: center;
       width: 100%;
 
       .nickNameBox {
+        flex: 1;
         margin-top: 0;
         margin-bottom: 0;
-        width: calc(100% - 80px);
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -1761,7 +1943,6 @@
     .fanGoodBox {
       color: #ec455f;
       font-size: 14px;
-      width: 60px;
 
       & img {
         width: 22px;
