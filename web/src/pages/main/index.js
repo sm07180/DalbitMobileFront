@@ -203,9 +203,9 @@ export default (props) => {
     }
 
     fetchMainInitData()
+
     if (globalCtx.roomType && globalCtx.roomType.length > 0) {
       const concatenated = categoryList.concat(globalCtx.roomType)
-      globalCtx.action.updateRoomType(concatenated)
       setCategoryList(concatenated)
     }
   }, [])
