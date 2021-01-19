@@ -1889,7 +1889,7 @@
   }
 
   .specialPage {
-    min-height: calc(100vh - 100px);
+    min-height: calc(100vh - 154px);
     padding: 0px 16px 20px;
     background: $lighterGray;
     .notice {
@@ -1913,6 +1913,13 @@
       font-size: 14px;
       text-align: center;
       border-radius: 16px;
+    }
+    .textBox {
+      width: calc(100% - 80px);
+    }
+    .infoBox {
+      width: calc(100% - 50px);
+      box-sizing: border-box;
     }
   }
   .btnMore {

@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
-import styled, { css } from 'styled-components'
-import { useHistory } from 'react-router-dom'
-import Utility, { addComma } from "components/lib/utility";
+import React, {useContext} from 'react'
+import styled, {css} from 'styled-components'
+import {useHistory} from 'react-router-dom'
+import Utility, {addComma} from 'components/lib/utility'
 import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {RoomJoin} from 'context/room'
@@ -63,7 +63,7 @@ function SpecialList({empty}) {
                         }}>
                         <ProfileImage imageData={imageData} imageSize={74} />
                       </div>
-                      <div>
+                      <div className="textBox">
                         <div
                           className="nickNameBox"
                           onClick={() => {
