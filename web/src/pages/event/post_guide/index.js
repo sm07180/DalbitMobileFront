@@ -9,13 +9,13 @@ export default function postGuide() {
       <Content id="postGuideWrap">
         <div className="postGuideNotice">
           <div className="text">
-            우체통 우수회원 이벤트:우체통을 이용한 회원들 중에서 우수회원 20명을 선발하여 50달을 드립니다. ※ 우체통 관련하여
-            1:1문의로 좋은 의견을 남겨주시면 당첨 확률이 높아집니다😎
+            우체통을 이용한 분들 중 무작위로 20명을 추첨하여 50달을 드립니다. 당첨자는 1월 26일 공지사항에서 발표합니다. ※ 우체통
+            관련하여 1:1문의로 좋은 의견을 남겨주시면 당첨 확률이 높아집니다😎
           </div>
-          <img src="https://image.dalbitlive.com/event/post_guide/210115/postguide_01.png" alt="우체통 우수회원 이벤트" />
+          <img src="https://image.dalbitlive.com/event/post_guide/210119/postguide_01.png" alt="우체통 우수회원 이벤트" />
           <div className="text">
-            우체통 대화 리스트 이동 메인화면 우측 상단, PC의 경우 좌측 메뉴 하단의 우체통 아이콘, 마이페이지에서 프로필 설정
-            하단의 우체통 메뉴를 클릭하면 대화 리스트 화면으로 이동합니다.
+            메인화면 우측 상단, PC의 경우 좌측 메뉴 하단의 우체통 아이콘, 마이페이지에서 프로필 설정 하단의 우체통 메뉴를 클릭하면
+            대화 리스트 화면으로 이동합니다.
           </div>
         </div>
 
