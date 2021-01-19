@@ -141,7 +141,7 @@ export default (props) => {
         (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
         (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
-        if (globalCtx.mailboxNew) {
+        if (globalCtx.mailboxNew && globalCtx.token.isLogin) {
           return (
             <div
               className="alarmSize"
