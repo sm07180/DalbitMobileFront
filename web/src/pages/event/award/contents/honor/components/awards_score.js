@@ -18,7 +18,7 @@ export default function AwardsScore(props) {
       value: Utility.printNumber(goodPoint)
     },
     {
-      title: '만난 청취자',
+      title: '함께한 날',
       className: 'days',
       value: `${day}days`
     }
