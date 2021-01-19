@@ -689,8 +689,8 @@ function Ranking() {
       <div id="ranking-page" onTouchStart={rankTouchStart} onTouchMove={rankTouchMove} onTouchEnd={rankTouchEnd}>
         <Header type="noBack">
           <h2 className="header-title">{formState.pageType === PAGE_TYPE.RANKING ? '랭킹' : '명예의 전당'}</h2>
-          {formState.pageType === PAGE_TYPE.RANKING ? (
-            <button
+          {formState.pageType === PAGE_TYPE.RANKING && (
+            <div
               className="benefitSize"
               onClick={() => {
                 setRankTimeData({
@@ -708,27 +708,10 @@ function Ranking() {
                 })
               }}>
               <img src={benefitIcon} width={60} alt="혜택" />
-            </button>
-          ) : (
-            <button
-              className="benefitSize"
-              onClick={() => {
-                setRankTimeData({
-                  prevDate: '',
-                  nextDate: '',
-                  rankRound: 0,
-                  titleText: ''
-                })
-                formDispatch({
-                  type: 'PAGE_TYPE',
-                  val: PAGE_TYPE.RANKING
-                })
-              }}>
-              <img src={rankingPageIcon} alt="랭킹" />
-            </button>
+            </div>
           )}
           {formState.pageType === PAGE_TYPE.RANKING ? (
-            <button
+            <div
               className="hallOfFame"
               onClick={() => {
                 setRankTimeData({
@@ -742,28 +725,25 @@ function Ranking() {
                   val: PAGE_TYPE.FAME
                 })
               }}>
-              <img src={hallOfFameIcon} alt="명예의 전당" />
-            </button>
+              <img src={hallOfFameIcon}></img>
+            </div>
           ) : (
-            <button
+            <div
               className="hallOfFame"
               onClick={() => {
                 setRankTimeData({
                   prevDate: '',
                   nextDate: '',
                   rankRound: 0,
-                  titleText: '',
-                  isRankData: false
+                  titleText: ''
                 })
-                history.push({
-                  pathname: `/event/award/2020`,
-                  state: {
-                    tabType: formState[PAGE_TYPE.RANKING].rankType
-                  }
+                formDispatch({
+                  type: 'PAGE_TYPE',
+                  val: PAGE_TYPE.RANKING
                 })
               }}>
-              <img src={awardIcon} width={78} alt="어워즈" />
-            </button>
+              <img src={rankingPageIcon}></img>
+            </div>
           )}
         </Header>
         <div className="refresh-wrap rank" ref={iconWrapRef}>
