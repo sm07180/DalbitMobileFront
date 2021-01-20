@@ -174,7 +174,7 @@ export default (props) => {
                     bgImg,
                     bjProfImg,
                     isSpecial,
-                    gender,
+                    bjGender,
                     bjNickNm,
                     roomType,
                     entryCnt,
@@ -227,7 +227,7 @@ export default (props) => {
                           <span className="title">{title}</span>
                         </p>
                         <p className="textBox__nickName">
-                          {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                          {bjGender !== '' ? <span className={bjGender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
                           {os === 3 && <i className="iconPc">PC</i>}
                           {bjNickNm}
                         </p>
