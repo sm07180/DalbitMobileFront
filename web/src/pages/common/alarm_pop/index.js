@@ -45,6 +45,12 @@ export default function AlarmPop() {
               <br /> 스타가 방송공지를 올리면
               <br /> 메시지로 알려드립니다.
             </p>
+          ) : context.popup_code[1] === 'isMailbox' ? (
+            <p>
+              내 우체통에
+              <br /> 새로운 대화가 등록되면
+              <br /> 메시지로 알려드립니다.
+            </p>
           ) : context.popup_code[1] === 'isFan' ? (
             <p>
               누군가
