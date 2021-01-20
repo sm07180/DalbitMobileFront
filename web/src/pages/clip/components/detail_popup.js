@@ -45,7 +45,7 @@ export default function detailPopup(props) {
                 최신순
               </button>
               <button type="button" className={sortState === 5 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(5)}>
-                오래된순
+                스페셜DJ
               </button>
               <button type="button" className={sortState === 2 ? 'tab-btn active' : 'tab-btn'} onClick={() => sortFunc(2)}>
                 인기순
