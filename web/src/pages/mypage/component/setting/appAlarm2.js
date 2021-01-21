@@ -2,7 +2,7 @@
  * @file /mypage/context/appAlarm.js
  * @brief 마이페이지 어플알람 2.5v
  **/
-import React, {useState, useEffect, useContext, useRef, useCallback} from 'react'
+import React, {useState, useEffect, useContext, useRef, useCallback, useLayoutEffect} from 'react'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -270,6 +270,11 @@ export default (props) => {
       first = true
     }
   }, [])
+  useLayoutEffect(() => {
+    if (Object.keys(alarmArray).every((k) => alarmArray[k].value === 1)) {
+      setAllCheck(1)
+    }
+  }, [alarmArray])
   useEffect(() => {
     if (!first) {
       postAlarmData()
