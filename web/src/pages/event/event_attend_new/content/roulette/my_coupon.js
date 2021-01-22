@@ -136,7 +136,7 @@ export default () => {
                         }}>
                         {mem_nick ? `${mem_nick}` : '-'}
                       </td>
-                      <td className={`state ${status === 0 && 'point'}`}>
+                      <td className={`state ${status === 0 ? 'point' : ''}`}>
                         {status === 0 ? '미사용' : status === 1 ? '사용' : status === 2 ? '만료' : <></>}
                       </td>
                     </tr>
