@@ -1,0 +1,144 @@
+@import '../../../styles/variables';
+
+#recommendDj {
+  .subContent {
+    padding: 0px 16px;
+    padding: 0px 16px 50px 16px;
+    box-sizing: border-box;
+  }
+
+  .btnBox {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0 8px 0;
+    box-sizing: border-box;
+
+    button + button {
+      margin-left: 2px;
+    }
+
+    button {
+      padding: 7px 8px;
+      box-sizing: border-box;
+      color: $black;
+      font-size: 12px;
+      letter-spacing: -0.35px;
+      border: 1px solid $lightGray;
+      background: $white;
+      border-radius: 12px;
+      font-weight: $bold;
+
+      &.active {
+        background: $primary;
+        color: $white;
+      }
+    }
+  }
+
+  .notice {
+    padding: 12px 14px;
+    box-sizing: border-box;
+    font-family: $bold;
+    font-size: 14px;
+    text-align: center;
+    border: 1px solid $primary;
+    color: $primary;
+    line-height: 1.43;
+    background: $white;
+    border-radius: 16px;
+    margin-bottom: 4px;
+  }
+
+  .listBox {
+    li + li {
+      margin-top: 5px;
+    }
+    .userItem {
+      position: relative;
+      display: flex;
+      background: $white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      box-sizing: border-box;
+
+      .fanBox {
+        padding-right: 12px;
+        &__thumbnail {
+          img {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+          }
+        }
+
+        .fanPlus {
+          border-radius: 16px;
+          border: 1px solid $primary;
+          box-sizing: border-box;
+          color: $primary;
+          width: 100%;
+          font-size: 14px;
+          text-align: center;
+          line-height: 32px;
+
+          &.active {
+            background: $primary;
+            color: $white;
+          }
+        }
+      }
+
+      .userText {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        &__nickName {
+          padding-right: 30px;
+          font-size: 16px;
+          font-weight: $bold;
+          margin-bottom: 2px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        &__genderBox {
+          display: flex;
+          align-items: center;
+          font-size: 12px;
+          color: $greishBrown;
+
+          img {
+            margin-right: 6px;
+            line-height: 24px;
+          }
+          margin-bottom: 4px;
+        }
+
+        &__liveTime {
+          margin-bottom: 8px;
+          font-size: 14px;
+          line-height: 1.29;
+          color: $primary;
+        }
+        &__subject {
+          font-size: 14px;
+          color: $greishBrown;
+          word-break: break-all;
+          white-space: pre-wrap;
+        }
+      }
+    }
+  }
+
+  .liveLink {
+    position: absolute;
+    right: 8px;
+    top: 14px;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    background: url(https://image.dalbitlive.com/svg/live_m.svg) no-repeat center/ 100%;
+    text-indent: -9999px;
+  }
+}

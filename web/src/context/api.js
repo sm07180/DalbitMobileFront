@@ -3115,6 +3115,15 @@ export default class API {
       params: data
     })
   }
+
+  static getRecommendedDJ = async (data) => {
+    // const {url, method, data} = obj || {}
+    return await ajax({
+      url: '/dj/recommend',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

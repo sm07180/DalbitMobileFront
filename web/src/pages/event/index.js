@@ -25,6 +25,7 @@ import LevelAchieve from './level_achieve'
 import Award from './award'
 import Purchase from './purchase'
 import PostGuide from './post_guide'
+import RecommendDj from './recommend_dj'
 
 export default () => {
   const params = useParams()
@@ -74,6 +75,8 @@ export default () => {
         return <Purchase />
       case 'post_guide':
         return <PostGuide />
+      case 'recommend_dj':
+        return <RecommendDj />
 
       default:
         return <></>
