@@ -27,7 +27,8 @@ export default () => {
   const eventCheck = () => {
     let today = new Date()
     let eventYear = today.getFullYear()
-    let eventMonth = today.getMonth() + 1
+    // let eventMonth = today.getMonth() + 1
+    let eventMonth = today.getMonth() + 1 < 10 ? `0${today.getMonth() + 1}` : today.getMonth() + 1;
 
     if (parameter.select_year + parameter.select_month !== eventYear.toString() + eventMonth.toString()) {
       context.action.alert_no_close({

@@ -53,10 +53,6 @@ export default (props) => {
                 <br />
                 산정합니다.
                 <br />
-                ※기존 일간 랭킹 가산점이 있을 경우도
-                <br />
-                누적 포함됩니다.
-                <br />
               </li>
             </ul>
             <p className="subText">※ 자세한 내용은 공지사항을 통해 확인 바랍니다.</p>
@@ -64,7 +60,7 @@ export default (props) => {
               className="button"
               onClick={() => {
                 context.action.updatePopupVisible(false)
-                history.push('/customer/notice/277')
+                history.push('/customer/notice/330')
               }}>
               공지사항 보러가기
             </button>

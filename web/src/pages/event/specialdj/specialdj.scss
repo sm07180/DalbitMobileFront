@@ -1,8 +1,7 @@
 @import '../../../styles/variables';
 
 .specialdj {
-  max-width: 460px;
-  min-width: 320px;
+  width: 100%;
   margin: auto;
   height: calc(100% - 50px);
   .imgResize {
@@ -102,7 +101,6 @@
 
   .checkList {
     width: 100%;
-    margin: auto;
     box-sizing: border-box;
     background: url('https://image.dalbitlive.com/event/specialdj/20201223/bg.jpg');
     background-size: 100%;
