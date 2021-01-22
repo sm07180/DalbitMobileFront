@@ -244,7 +244,7 @@ const App = () => {
         globalCtx.action.updateRoomType(roomType)
       }
       globalCtx.action.updateSplash(data)
-      globalCtx.action.updateMailboxExist(useMailBox)
+      globalCtx.action.updateUseMailbox(useMailBox)
     }
   }
 

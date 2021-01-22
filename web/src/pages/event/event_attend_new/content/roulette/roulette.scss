@@ -136,10 +136,22 @@
 
   .rouletteBox {
     position: relative;
+    padding: 0px 20px;
+    box-sizing: border-box;
     background-image: url('https://image.dalbitlive.com/event/attend/201019/event_img_02_2@2x.png');
     background-repeat: no-repeat;
     background-size: 100%;
     text-align: center;
+
+    .rouletteMoive {
+      position: absolute;
+      padding: 0px 20px;
+      box-sizing: border-box;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+    }
 
     .rouletPin {
       position: absolute;
@@ -150,8 +162,8 @@
       height: 62px;
     }
 
-    img {
-      max-width: 328px;
+    .roulettePanel {
+      width: 100%;
     }
   }
 }

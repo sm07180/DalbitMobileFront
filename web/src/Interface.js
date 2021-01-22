@@ -562,9 +562,9 @@ export default () => {
         //   alert(JSON.stringify(event.detail))
         // }
         if (event.detail.new) {
-          context.action.updateMailboxNew(true)
+          context.action.updateIsisMailboxNew(true)
         } else {
-          context.action.updateMailboxNew(false)
+          context.action.updateIsisMailboxNew(false)
         }
         break
       default:
@@ -759,9 +759,9 @@ export default () => {
         if (memNo !== undefined) {
           // if (__NODE_ENV === 'dev') {
           //   alert('JoinMailBox ' + memNo)
-          //   alert('useMailbox ' + context.mailboxExist)
+          //   alert('useMailbox ' + context.useMailbox)
           // }
-          if (context.mailboxExist) Hybrid('JoinMailBox', memNo)
+          if (context.useMailbox) Hybrid('JoinMailBox', memNo)
         }
         break
       case '4': //------------------등록 된 캐스트(미정)

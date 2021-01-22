@@ -51,11 +51,16 @@ export default function AttendTab() {
             }
           })
         },
-        msg: `로그인을 하신 후 참여해주세요!`
+        msg: `로그인 후 참여해주세요.`
       })
     } else {
       if (globalCtx.selfAuth === false) {
-        history.push('/selfauth?event=/event/attend_event')
+        globalCtx.action.alert({
+          msg: `본인인증 후 참여해주세요.`,
+          callback: () => {
+            history.push('/selfauth?event=/event/attend_event')
+          }
+        })
       } else {
         const fetchEventAttendDateIn = async () => {
           const {result, data, message} = await API.postEventAttendIn()
@@ -77,8 +82,6 @@ export default function AttendTab() {
       }
     }
   }
-
-  console.log(isAttendClick)
 
   //------------------
   useEffect(() => {

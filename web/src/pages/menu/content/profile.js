@@ -205,11 +205,11 @@ export default (props) => {
 
   const createMailboxMenu = () => {
     let settingClassName = 'arrow'
-    if (context.mailboxNew && context.token.isLogin) {
+    if (context.isMailboxNew && context.token.isLogin) {
       settingClassName = 'arrow arrow--active'
     }
 
-    if (context.mailboxExist) {
+    if (context.useMailbox) {
       if (
         __NODE_ENV === 'dev' ||
         customHeader.os === OS_TYPE['Desktop'] ||
@@ -236,17 +236,17 @@ export default (props) => {
   }
 
   useEffect(() => {
-    const mailboxNewCheck = async () => {
+    const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        globalCtx.action.updateMailboxNew(data.isNew)
+        globalCtx.action.updateIsisMailboxNew(data.isNew)
       } else {
         globalCtx.action.alert({
           msg: message
         })
       }
     }
-    if (context.token.isLogin) mailboxNewCheck()
+    if (context.token.isLogin) isMailboxNewCheck()
   }, [])
 
   return (

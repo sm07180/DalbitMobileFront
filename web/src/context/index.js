@@ -113,9 +113,9 @@ const GlobalProvider = (props) => {
   const [selfAuth, setSelfAuth] = useState(false)
   //splash
   const [splash, setSplash] = useState(null)
-  //mailboxNew
-  const [mailboxNew, setMailboxNew] = useState(false)
-  const [mailboxExist, setMailboxExist] = useState(false)
+  //isMailboxNew
+  const [isMailboxNew, setIsMailboxNew] = useState(false)
+  const [useMailbox, setUseMailbox] = useState(false)
   // 주간 클립 테이블
   const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
@@ -469,11 +469,11 @@ const GlobalProvider = (props) => {
       setSplash(obj)
     },
     //malibox
-    updateMailboxNew: (boolean) => {
-      setMailboxNew(boolean)
+    updateIsisMailboxNew: (boolean) => {
+      setIsMailboxNew(boolean)
     },
-    updateMailboxExist: (boolean) => {
-      setMailboxExist(boolean)
+    updateUseMailbox: (boolean) => {
+      setUseMailbox(boolean)
     },
     updateDateState: (string) => {
       setDateState(string)
@@ -553,8 +553,8 @@ const GlobalProvider = (props) => {
     selfAuth,
     closeSpeical,
     splash,
-    mailboxNew,
-    mailboxExist,
+    isMailboxNew,
+    useMailbox,
     dateState
   }
   return <Provider value={value}>{props.children}</Provider>

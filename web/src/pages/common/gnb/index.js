@@ -119,28 +119,28 @@ export default (props) => {
   }, [newAlarm])
 
   useEffect(() => {
-    const mailboxNewCheck = async () => {
+    const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        globalCtx.action.updateMailboxNew(data.isNew)
+        globalCtx.action.updateIsisMailboxNew(data.isNew)
       } else {
         globalCtx.action.alert({
           msg: message
         })
       }
     }
-    if (context.token.isLogin) mailboxNewCheck()
+    if (context.token.isLogin) isMailboxNewCheck()
   }, [])
 
   const createMailboxIcon = () => {
-    if (context.mailboxExist) {
+    if (context.useMailbox) {
       if (
         __NODE_ENV === 'dev' ||
         customHeader.os === OS_TYPE['Desktop'] ||
         (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
         (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
       ) {
-        if (globalCtx.mailboxNew && globalCtx.token.isLogin) {
+        if (globalCtx.isMailboxNew && globalCtx.token.isLogin) {
           return (
             <button
               className="alarmSize"

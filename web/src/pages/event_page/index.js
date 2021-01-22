@@ -17,7 +17,7 @@ import BronzeMedal from './static/medal_bronze@2x.png'
 import GoldMedal from './static/medal_gold@2x.png'
 import SivelMedal from './static/medal_silver@2x.png'
 
-export default props => {
+export default (props) => {
   const [eventType, setEventType] = useState('event') // event, comment
   // const [eventType, setEventType] = useState('comment')
 
@@ -43,7 +43,7 @@ export default props => {
       const {result, data} = await API.getEventTerm()
       if (result === 'success') {
         const {nowRound, terms} = data
-        const selectedTerm = terms.find(t => t.round === nowRound)
+        const selectedTerm = terms.find((t) => t.round === nowRound)
         setTermList(terms)
         setRankingTerm(selectedTerm)
       }

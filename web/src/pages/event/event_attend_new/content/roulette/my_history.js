@@ -102,9 +102,9 @@ export default () => {
 
           <table>
             <colgroup>
-              <col width="28%" />
-              <col width="28%" />
-              <col width="44%" />
+              <col width="33%" />
+              <col width="33%" />
+              <col width="*" />
             </colgroup>
 
             <thead>

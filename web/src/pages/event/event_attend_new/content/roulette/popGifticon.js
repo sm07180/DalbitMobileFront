@@ -165,7 +165,7 @@ export default () => {
       giftImage = `${IMG_SERVER}/event/attend/201217/img_moon100@2x.png`
       return <img src={giftImage} width="100px" alt="100달" />
     } else {
-      giftImage = <img src={eventAttendState.start.imageUrl} width="160px" alt={eventAttendState.start.itemName} />
+      giftImage = <img src={eventAttendState.start.imageUrl} width="140px" alt={eventAttendState.start.itemName} />
     }
 
     return giftImage

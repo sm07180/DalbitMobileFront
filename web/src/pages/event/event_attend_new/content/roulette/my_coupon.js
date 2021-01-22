@@ -43,7 +43,7 @@ export default () => {
     let month = date.substring(5, 7)
     let day = date.substring(8, 10)
     let time = date.substring(11, 16)
-    return `${month}월 ${day}일 ${time}`
+    return `${month}/${day} ${time}`
   }
 
   //scroll
@@ -83,19 +83,21 @@ export default () => {
   return (
     <div id="attendEventPage">
       <div className="win-list-box">
-        <Header title="응모권 지급내역" />
+        <Header title="응모권 지급 내역" />
         <div className="content">
           <div className="note coupon">응모권 지급 내역은 최근 획득 일시 기준 7일 간 저장됩니다.</div>
           <table>
             <colgroup>
+              <col width="15%" />
               <col width="20%" />
-              <col width="30%" />
+              <col width="20%" />
               <col width="*" />
               <col width="20%" />
             </colgroup>
             <thead>
               <tr>
                 <th>구분</th>
+                <th>내용</th>
                 <th>획득 일시</th>
                 <th>출처</th>
                 <th>상태</th>
@@ -104,29 +106,39 @@ export default () => {
             <tbody>
               {!couponList.length ? (
                 <tr>
-                  <td colSpan={4}>최근 7일 간 응모권 지급 내역이 없습니다.</td>
+                  <td colSpan={5}>최근 7일 간 응모권 지급 내역이 없습니다.</td>
                 </tr>
               ) : (
                 couponList.map((item, index) => {
-                  const {type, issue_date, profile_image_info, mem_nick, status, mem_no} = item
+                  const {type, issue_date, profile_image_info, mem_nick, status, mem_no, coupon_type} = item
 
                   return (
                     <tr key={index}>
-                      <td className="category">{type === 1 ? '기본' : type === 2 ? '이벤트' : <></>} 1개</td>
-                      <td className="date">{dateFormatter(issue_date)}</td>
-                      <td
-                        className="nick"
-                        onClick={() => {
-                          history.push(`/mypage/${mem_no}`)
-                        }}>
-                        {profile_image_info && profile_image_info['thumb62x62'] && (
-                          <div className="thumb">
-                            <img src={profile_image_info['thumb62x62']} alt={mem_nick} />
-                          </div>
+                      <td className="category">{type === 1 ? '기본' : type === 2 ? '이벤트' : <></>}</td>
+                      <td>
+                        {coupon_type === 1 ? (
+                          '방송/청취'
+                        ) : coupon_type === 2 ? (
+                          '보름달'
+                        ) : coupon_type === 3 ? (
+                          '구매/결제'
+                        ) : coupon_type === 4 ? (
+                          '스페셜DJ'
+                        ) : (
+                          <></>
                         )}
-                        <p>{mem_nick}</p>
                       </td>
-                      <td className="state">{status === 0 ? '미사용' : status === 1 ? '사용' : status === 2 ? '만료' : <></>}</td>
+                      <td>{dateFormatter(issue_date)}</td>
+                      <td
+                        className="nick coupon"
+                        onClick={() => {
+                          mem_nick && history.push(`/mypage/${mem_no}`)
+                        }}>
+                        {mem_nick ? `${mem_nick}` : '-'}
+                      </td>
+                      <td className={`state ${status === 0 && 'point'}`}>
+                        {status === 0 ? '미사용' : status === 1 ? '사용' : status === 2 ? '만료' : <></>}
+                      </td>
                     </tr>
                   )
                 })

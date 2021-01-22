@@ -452,7 +452,7 @@ export default (props) => {
   }, [profile.memNo])
 
   const createMailboxIcon = () => {
-    if (context.mailboxExist && myProfileNo !== profile.memNo) {
+    if (context.useMailbox && myProfileNo !== profile.memNo) {
       if (
         __NODE_ENV === 'dev' ||
         customHeader.os === OS_TYPE['Desktop'] ||

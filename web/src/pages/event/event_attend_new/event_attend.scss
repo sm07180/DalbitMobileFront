@@ -153,7 +153,6 @@
       overflow: hidden;
       border-radius: 50%;
       width: 100%;
-      max-width: 328px;
     }
 
     .roulettePin {
@@ -194,7 +193,7 @@
       }
 
       .winInfo {
-        padding: 24px 0;
+        padding: 20px;
 
         &__title {
           font-size: 22px;
@@ -205,7 +204,6 @@
 
         &__image {
           margin: 0 auto;
-          padding-bottom: 16px;
 
           .con {
             padding-top: 8px;
@@ -257,12 +255,20 @@
             height: 44px;
             padding: 0 16px;
             border-radius: 12px;
-            border: solid 1px #e0e0e0;
+            border: 1px solid #e0e0e0;
             color: #757575;
             background: $white;
-            font-size: 12px;
+            font-size: 14px;
             letter-spacing: -0.35px;
             box-sizing: border-box;
+
+            &:focus {
+              color: $black;
+              font-weight: $bold;
+              font-size: 16px;
+              border-radius: 12px;
+              border: 1px solid $black;
+            }
           }
         }
 
@@ -271,7 +277,7 @@
           font-size: 14px;
           line-height: 20px;
           text-align: center;
-          color: #424242;
+          color: $greishBrown;
         }
 
         button {
@@ -326,6 +332,17 @@
           font-size: 13px;
           border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
+          color: $darkGray;
+          overflow: hidden;
+
+          &.gift {
+            font-weight: $bold;
+            color: $black;
+          }
+
+          &.phone {
+            color: $greishBrown;
+          }
 
           &.icon {
             text-align: left;
@@ -341,8 +358,7 @@
           }
 
           &.date {
-            color: #757575;
-
+            color: $greishGray;
             .iconNew {
               display: inline-block;
               width: 20px;
@@ -351,20 +367,34 @@
           }
           &.category {
             font-size: 13px;
-            color: $greishBrown;
           }
 
           &.state {
-            color: $greishGray;
+            color: $mediumGray;
+
+            &.point {
+              color: $black;
+            }
           }
 
           &.nick {
             display: flex;
             align-items: center;
-            padding-left: 10px;
+            color: $greishBrown;
+            font-weight: $bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             text-align: center;
-            font-weight: 600;
-            color: #424242;
+            padding: 10px 8px;
+
+            &.coupon {
+              display: block;
+              font-weight: $regular;
+              color: $darkGray;
+              text-align: center;
+              padding-left: 8px;
+            }
 
             .thumb {
               overflow: hidden;
