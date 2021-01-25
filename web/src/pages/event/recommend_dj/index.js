@@ -111,7 +111,7 @@ export default function RecommendDj() {
 
   return (
     <div id="recommendDj">
-      <Header title="DJ를 추천합니다" goBack={() => history.push('/')} />
+      <Header title="달빛 대표 DJ를 추천합니다" goBack={() => history.push('/')} />
       <div className="subContent gray">
         <div className="btnBox">
           <div className="btnBox__genderBtn">
