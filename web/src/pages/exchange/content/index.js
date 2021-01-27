@@ -43,6 +43,12 @@ export default (props) => {
     if (res.result === 'success' && _.hasIn(res, 'data')) {
       setList(res.data.list)
       setListState(1)
+      setSelected({
+        num: 1,
+        dal: res.data.list[1].dalCnt,
+        byeol: res.data.list[1].byeolCnt,
+        itemCode: res.data.list[1].itemCode
+      })
       if (_.hasIn(res.data, 'byeolCnt')) setMydal(res.data.byeolCnt)
     } else {
       setListState(0)
@@ -62,16 +68,12 @@ export default (props) => {
             className={[`wrap ${selected.num == index ? 'on' : 'off'}`]}
             key={index}
             onClick={() => {
-              if (selected.num == index) {
-                setSelected(-1)
-              } else {
-                setSelected({
-                  num: index,
-                  dal: item.dalCnt,
-                  byeol: item.byeolCnt,
-                  itemCode: item.itemCode
-                })
-              }
+              setSelected({
+                num: index,
+                dal: item.dalCnt,
+                byeol: item.byeolCnt,
+                itemCode: item.itemCode
+              })
             }}>
             <div className="item-wrap">
               <p>달 {item.dalCnt}</p>
@@ -103,6 +105,12 @@ export default (props) => {
       }
     }
 
+    if (selected.byeol > mydal) {
+      return context.action.confirm({
+        msg: `달 교환은 200별부터 가능합니다.`
+      })
+    }
+
     context.action.confirm({
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
@@ -122,8 +130,11 @@ export default (props) => {
           <List>{creatList()}</List>
           <div className="info-wrap">
             <h5>달 교환 안내</h5>
-            <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
-            <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p>
+            {/* <p className="red">별 → 달 교환 시 1달당 1exp를 획득할 수 있습니다.</p>
+            <p>별 → 달 교환 및 교환 달로 선물하기가 가능합니다.</p> */}
+            <p>달교환은 최소 200별 이상부터 가능합니다.</p>
+            <p>별을 달로 교환할 경우 교환달로 아이템 선물이 가능합니다.</p>
+            <p>별을 달로 교환할 경우 1exp를 획득할 수 있습니다.</p>
           </div>
 
           <div className="btn-wrap">
@@ -190,7 +201,7 @@ export default (props) => {
         보유 별 <span>{mydal.toLocaleString()}</span>
       </p>
 
-      <div className="auto-exchange">
+      {/* <div className="auto-exchange">
         <p>별 → 달 자동 교환</p>
         <button className="guide" onClick={() => setPopup(1)}>
           <img src={ic_guide} alt="가이드" />
@@ -211,7 +222,7 @@ export default (props) => {
             <img src={ic_close} alt="닫기" />
           </button>
         </div>
-      </div>
+      </div> */}
 
       {creatResult()}
 
@@ -350,7 +361,7 @@ const List = styled.div`
   justify-content: space-between;
 
   .wrap {
-    width: 32.4%;
+    width: 48.4%;
     margin-bottom: 13px;
     text-align: center;
     cursor: pointer;
@@ -376,7 +387,7 @@ const List = styled.div`
     background: #fff;
     img {
       padding: 5px;
-      width: 100%;
+      width: 70%;
     }
     p {
       padding-top: 8px;

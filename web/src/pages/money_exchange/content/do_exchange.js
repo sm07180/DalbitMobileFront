@@ -616,7 +616,7 @@ export default function DoExchange({state, dispatch}) {
             }}>
             달 교환
           </button>
-          <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
+          {/* <div className={`auto-exchange-pop ${popState === 0 ? 'on' : 'off'}`}>
             <p>
               보유별을 “달”로 교환하시면<br></br> 아이템을 선물할 수 있습니다.
             </p>
@@ -627,7 +627,7 @@ export default function DoExchange({state, dispatch}) {
               }}>
               <img src={ic_close} alt="닫기" />
             </button>
-          </div>
+          </div> */}
         </div>
 
         {exchangeCalc.basicCash > 0 && <MakeCalcContents exchangeCalc={exchangeCalc} />}
