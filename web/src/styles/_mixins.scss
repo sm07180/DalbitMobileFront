@@ -495,7 +495,7 @@
   white-space: nowrap;
 }
 
-@mixin multi-ellipsis($line) {
+@mixin multi-ellipsis($line: initial) {
   display: block;
   display: -webkit-box;
   overflow: hidden;

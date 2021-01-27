@@ -98,7 +98,11 @@ export default function Alert() {
         history.push(`/customer/notice/${roomNo}`)
         break
       case 31:
-        history.push(`/mypage/${context.profile.memNo}/fanboard`)
+        if (context.profile.memNo === roomNo) {
+          history.push(`/mypage/${roomNo}/fanboard`)
+        } else {
+          history.push(`/mypage/${memNo}?tab=1`)
+        }
         break
       case 32:
         history.push(`/mypage/${context.profile.memNo}/wallet`)

@@ -2,15 +2,53 @@ import React, {useContext, useState, useEffect, useCallback} from 'react'
 import {useHistory, Link} from 'react-router-dom'
 import _ from 'lodash'
 
+import {GENDER_TYPE, AGE_TYPE} from './constant'
+
+import NoResult from 'components/ui/noResult'
+import Header from 'components/ui/new_header.js'
+
 import {Context} from 'context'
 import {RoomJoin} from 'context/room'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
-import {GENDER_TYPE, AGE_TYPE} from './constant'
-import NoResult from 'components/ui/noResult'
-import Header from 'components/ui/new_header.js'
+import {IMG_SERVER} from 'context/config'
 
 import './recommend_dj.scss'
+
+const genderList = [
+  {
+    text: '남성',
+    name: 'male',
+    value: GENDER_TYPE.male
+  },
+  {
+    text: '여성',
+    name: 'female',
+    value: GENDER_TYPE.female
+  }
+]
+const ageList = [
+  {
+    text: '10대',
+    name: 'ageTen',
+    value: AGE_TYPE.ten
+  },
+  {
+    text: '20대',
+    name: 'ageTwenty',
+    value: AGE_TYPE.twenty
+  },
+  {
+    text: '30대',
+    name: 'ageThirty',
+    value: AGE_TYPE.thirty
+  },
+  {
+    text: '40대이상',
+    name: 'ageForty',
+    value: AGE_TYPE.forty
+  }
+]
 
 export default function RecommendDj() {
   const history = useHistory()
@@ -22,6 +60,8 @@ export default function RecommendDj() {
   const [selectedAgeArr, setSelectedAgeArr] = useState([])
   const [fetchedList, setFetchedList] = useState([])
   const [fetched, setFetched] = useState(true)
+  const [slctBoxToOpen, setSlctboxToOpen] = useState('')
+  const [refresh, setRefresh] = useState(false)
 
   const fetchRecommendedDJList = useCallback(async () => {
     const ageList = joinChar(selectedAgeArr)
@@ -43,16 +83,20 @@ export default function RecommendDj() {
         msg: message
       })
     }
+
+    setTimeout(() => {
+      setRefresh(false)
+    }, 360)
   }, [selectedGenderArr, selectedAgeArr])
 
   const addFanHandler = useCallback(
-    async (memNo, nickNm) => {
+    async (memNo, nickNm, listIdx) => {
       const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
       if (result === 'success') {
         context.action.toast({
           msg: `${nickNm} 님의 팬이 되셨습니다.`
         })
-        fetchRecommendedDJList()
+        toggleFan(listIdx)
       } else {
         context.action.alert({
           msg: message
@@ -62,10 +106,41 @@ export default function RecommendDj() {
     [fetchedList]
   )
 
+  const cancelFanHandler = useCallback(
+    async (memNo, listIdx) => {
+      const {result, message} = await Api.mypage_fan_cancel({data: {memNo}})
+      if (result === 'success') {
+        context.action.toast({
+          msg: '팬을 취소하였습니다'
+        })
+        toggleFan(listIdx)
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
+    },
+    [fetchedList]
+  )
+
+  const confirmCancelFan = (memNo, nickNm, listIdx) => {
+    context.action.confirm({
+      msg: `${nickNm} 님의 팬을 취소하시겠습니까?`,
+      callback: () => cancelFanHandler(memNo, listIdx)
+    })
+  }
+
   const joinChar = (state) => state.join('|')
 
-  const toggleButtonHandler = (e, stateArr, setStateArr) => {
+  const toggleFan = (listIdx) => {
+    const deepClonedList = _.cloneDeep(fetchedList)
+    deepClonedList[listIdx].isFan = !deepClonedList[listIdx].isFan
+    setFetchedList(deepClonedList)
+  }
+
+  const toggleTabButton = (e, stateArr, setStateArr) => {
     const {value} = e.target
+
     if (stateArr.includes(value)) {
       if (stateArr.length > 1) {
         setStateArr(stateArr.filter((val) => val !== value))
@@ -73,6 +148,23 @@ export default function RecommendDj() {
     } else {
       setStateArr(stateArr.concat([value]))
     }
+  }
+
+  const toggleItemBoxArrow = (memNo, idx) => {
+    const lbLength = getLineBreakLength(idx)
+    if (lbLength > 2) {
+      slctBoxToOpen === memNo ? setSlctboxToOpen('') : setSlctboxToOpen(memNo)
+    }
+  }
+  console.log(slctBoxToOpen)
+
+  const getLineBreakLength = (idx) => fetchedList[idx].desc.split('\n').length
+
+  const onRefresh = () => {
+    fetchRecommendedDJList()
+    setRefresh(true)
+    setSlctboxToOpen('')
+    window.scrollTo(0, 0)
   }
 
   useEffect(() => {
@@ -111,110 +203,106 @@ export default function RecommendDj() {
 
   return (
     <div id="recommendDj">
-      <Header title="DJ를 추천합니다" goBack={() => history.push('/')} />
+      <Header goBack={() => history.push('/')}>
+        <h2>달빛 대표 DJ를 추천합니다</h2>
+        <button className="btn__refresh" onClick={onRefresh}>
+          <img
+            src={`${IMG_SERVER}/main/200714/ico-refresh-gray.png`}
+            alt="새로고침"
+            className={`refresh-img${refresh ? ' active' : ''}`}
+          />
+        </button>
+      </Header>
       <div className="subContent gray">
         <div className="btnBox">
           <div className="btnBox__genderBtn">
-            <button
-              className={selectedGenderArr.includes(GENDER_TYPE.male) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedGenderArr, setSelectedGenderArr)}
-              name="male"
-              value={GENDER_TYPE.male}
-              type="button">
-              남성
-            </button>
-            <button
-              className={selectedGenderArr.includes(GENDER_TYPE.female) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedGenderArr, setSelectedGenderArr)}
-              name="female"
-              value={GENDER_TYPE.female}
-              type="button">
-              여성
-            </button>
+            {genderList.map((eachGender, idx) => (
+              <button
+                key={`${eachGender.value}-${idx}`}
+                className={selectedGenderArr.includes(eachGender.value) ? 'active' : ''}
+                onClick={(event) => toggleTabButton(event, selectedGenderArr, setSelectedGenderArr)}
+                name={eachGender.name}
+                value={eachGender.value}
+                type="button">
+                {eachGender.text}
+              </button>
+            ))}
           </div>
+
           <div className="btnBox__ageBtn">
-            <button
-              className={selectedAgeArr.includes(AGE_TYPE.ten) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedAgeArr, setSelectedAgeArr)}
-              name="ageTen"
-              value={AGE_TYPE.ten}
-              type="button">
-              10대
-            </button>
-            <button
-              className={selectedAgeArr.includes(AGE_TYPE.twenty) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedAgeArr, setSelectedAgeArr)}
-              name="ageTwenty"
-              value={AGE_TYPE.twenty}
-              type="button">
-              20대
-            </button>
-            <button
-              className={selectedAgeArr.includes(AGE_TYPE.thirty) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedAgeArr, setSelectedAgeArr)}
-              name="ageThirty"
-              value={AGE_TYPE.thirty}
-              type="button">
-              30대
-            </button>
-            <button
-              className={selectedAgeArr.includes(AGE_TYPE.forty) ? 'active' : ''}
-              onClick={(event) => toggleButtonHandler(event, selectedAgeArr, setSelectedAgeArr)}
-              name="ageForty"
-              value={AGE_TYPE.forty}
-              type="button">
-              40대
-            </button>
+            {ageList.map((eachAge, idx) => (
+              <button
+                key={`${eachAge.value}-${idx}`}
+                className={selectedAgeArr.includes(eachAge.value) ? 'active' : ''}
+                onClick={(event) => toggleTabButton(event, selectedAgeArr, setSelectedAgeArr)}
+                name={eachAge.name}
+                value={eachAge.value}
+                type="button">
+                {eachAge.text}
+              </button>
+            ))}
           </div>
         </div>
+
         <div className="notice">
-          실력과 재미가 보장된 DJ를 추천합니다!
-          <br />
-          팬이 되면 DJ가 방송 시작 시 메시지로 알려드립니다.
+          <img
+            src={`${IMG_SERVER}/banner/2101/26/banner_recommend_dj-2x.png`}
+            alt="실력과 재미가 보장된 DJ를 추천합니다! 팬이 되면 DJ가 방송 시작 시 메시지로 알려드립니다"
+          />
         </div>
         {fetchedList.length === 0 && <NoResult text="추천DJ가 없습니다.<br />다른 조건으로 검색해주세요." />}
 
         <ul className="listBox">
           {fetchedList.map((list, idx) => (
             <li className="userItem" key={`${list.memNo}-${idx}`}>
-              <div className="fanBox">
-                <div className="fanBox__thumbnail">
-                  <Link to={`/mypage/${list.memNo}`}>
-                    <img src={list.profImg['thumb120x120']} alt={list.nickNm} />
-                  </Link>
+              <div className="fanBoxWrap">
+                <div className="fanBox">
+                  <div className="fanBox__thumbnail">
+                    <Link to={`/mypage/${list.memNo}`}>
+                      <img src={list.profImg['thumb120x120']} alt={list.nickNm} />
+                    </Link>
+                  </div>
+                  {list.isFan && (
+                    <button className="fanPlus" type="button" onClick={() => confirmCancelFan(list.memNo, list.nickNm, idx)}>
+                      팬
+                    </button>
+                  )}
+                  {!list.isFan && (
+                    <button className="fanPlus active" type="button" onClick={() => addFanHandler(list.memNo, list.nickNm, idx)}>
+                      +팬등록
+                    </button>
+                  )}
                 </div>
-                {list.isFan && (
-                  <button className="fanPlus" type="button">
-                    팬
-                  </button>
-                )}
-                {!list.isFan && (
-                  <button className="fanPlus active" type="button" onClick={() => addFanHandler(list.memNo, list.nickNm)}>
-                    +팬등록
-                  </button>
+
+                <div className="userText">
+                  <div className="userText__nickName">{list.nickNm}</div>
+                  <span className="userText__genderBox">
+                    {list.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" alt="여성" />}
+                    {list.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" alt="남성" />}
+                    {list.ageDesc}
+                  </span>
+                  <span className="userText__liveTime">{list.title}</span>
+                  <p className={`userText__subject${slctBoxToOpen === list.memNo ? ' open' : ''}`}>{list.desc}</p>
+                </div>
+                {list.roomNo && (
+                  <button
+                    className="liveLink"
+                    onClick={() => {
+                      if (customHeader['os'] === OS_TYPE['Desktop']) {
+                        console.log('hello')
+                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                      } else {
+                        RoomJoin({roomNo: list.roomNo, nickNm: list.nickNm})
+                      }
+                    }}></button>
                 )}
               </div>
-              <div className="userText">
-                <div className="userText__nickName">{list.nickNm}</div>
-                <span className="userText__genderBox">
-                  {list.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" alt="여성" />}
-                  {list.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" alt="남성" />}
-                  {list.ageDesc}
-                </span>
-                <span className="userText__liveTime">{list.title}</span>
-                <p className="userText__subject">{list.desc}</p>
-              </div>
-              {list.roomNo && (
-                <button
-                  className="liveLink"
-                  onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      console.log('hello')
-                      context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
-                    } else {
-                      RoomJoin({roomNo: list.roomNo, nickNm: list.nickNm})
-                    }
-                  }}></button>
+              {getLineBreakLength(idx) > 2 && (
+                <div
+                  className={`arrowBox${slctBoxToOpen === list.memNo ? ' open' : ''}`}
+                  onClick={() => toggleItemBoxArrow(list.memNo, idx)}>
+                  <img src={`${IMG_SERVER}/svg/arrow_down_g.svg`} alt="arrow-down" />
+                </div>
               )}
             </li>
           ))}
