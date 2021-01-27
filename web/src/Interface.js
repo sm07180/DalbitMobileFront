@@ -761,7 +761,16 @@ export default () => {
           //   alert('JoinMailBox ' + memNo)
           //   alert('useMailbox ' + context.useMailbox)
           // }
-          if (context.useMailbox) Hybrid('JoinMailBox', memNo)
+          if (context.useMailbox) {
+            if (
+              (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 284) ||
+              (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] >= 52)
+            ) {
+              Hybrid('PushMailboxJoin', memNo)
+            } else {
+              Hybrid('JoinMailBox', memNo)
+            }
+          }
         }
         break
       case '4': //------------------등록 된 캐스트(미정)

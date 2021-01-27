@@ -85,7 +85,15 @@ export default function ClipRecommend() {
     if (result === 'success') {
       if (type === 'dal') {
         localStorage.removeItem('clipPlayListInfo')
+      } else {
+        const playListInfoData = {
+          recDate: context.dateState,
+          isLogin: true,
+          isClick: true
+        }
+        localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
       }
+
       clipJoin(data, context)
     } else {
       if (code === '-99') {
@@ -109,6 +117,37 @@ export default function ClipRecommend() {
       Hybrid('openUrl', url)
     } else {
       window.open(url, '_blank')
+    }
+  }
+
+  const createListenAllBtn = () => {
+    if (
+      context.customHeader['os'] === OS_TYPE['Desktop'] ||
+      (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 284) ||
+      (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] >= 52)
+    ) {
+      return (
+        <button
+          className="allPlay"
+          onClick={() => {
+            if (customHeader['os'] === OS_TYPE['Desktop']) {
+              if (context.token.isLogin === false) {
+                context.action.alert({
+                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                  callback: () => {
+                    history.push('/login')
+                  }
+                })
+              } else {
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+              }
+            } else {
+              fetchDataPlay(marketingClipList[0].clipNo, 'all')
+            }
+          }}>
+          전체듣기
+        </button>
+      )
     }
   }
 
@@ -317,7 +356,8 @@ export default function ClipRecommend() {
                   함께 듣기 좋은 클립
                   <span className="subText">클립 듣고 좋아요 &#38; 댓글 남겨주시는 센스 😊</span>
                 </h3>
-                {/*<button className="allPlay" onClick={() => {}}>전체듣기</button>*/}
+
+                {createListenAllBtn()}
               </div>
 
               <ul className="playBox">

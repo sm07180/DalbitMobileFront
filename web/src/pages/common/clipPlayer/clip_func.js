@@ -7,13 +7,30 @@ import {OS_TYPE} from 'context/config.js'
 import Api from 'context/api'
 
 export const clipJoin = (data, context, webview, isPush) => {
-  let timer
-  let totalData = {
-    playing: data,
-    playListData: {
-      type: '',
-      param: '',
-      isPush: isPush === 'push' ? true : false
+  let passAppbuild = false
+  if (
+    (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] >= 284) ||
+    (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] >= 52)
+  ) {
+    passAppbuild = true
+  }
+  let totalData = null
+  if (passAppbuild) {
+    totalData = {
+      playing: data,
+      playListData: {
+        url: '',
+        isPush: isPush === 'push' ? true : false
+      }
+    }
+  } else {
+    totalData = {
+      playing: data,
+      playListData: {
+        param: '',
+        type: '',
+        isPush: isPush === 'push' ? true : false
+      }
     }
   }
 
@@ -31,23 +48,36 @@ export const clipJoin = (data, context, webview, isPush) => {
     })
     if (playListData.hasOwnProperty('listCnt')) {
       if (playListData.hasOwnProperty('subjectType')) {
-        currentType = 'top3'
+        currentType = passAppbuild ? 'clip/main/top3/list?' : 'top3'
       } else {
-        currentType = 'pop'
+        currentType = passAppbuild ? 'clip/main/pop/list?' : 'pop'
       }
     } else if (playListData.hasOwnProperty('memNo')) {
       if (playListData.hasOwnProperty('slctType')) {
-        currentType = 'listen'
+        currentType = passAppbuild ? 'clip/listen/list?' : 'listen'
       } else {
-        currentType = 'upload'
+        currentType = passAppbuild ? 'clip/upload/list?' : 'upload'
+      }
+    } else if (playListData.hasOwnProperty('recDate')) {
+      currentType = 'clip/recommend/list?'
+    } else {
+      currentType = passAppbuild ? 'clip/list?' : 'list'
+    }
+
+    if (passAppbuild) {
+      url = currentType + url
+      totalData = {
+        ...totalData,
+        playListData: {url: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
       }
     } else {
-      currentType = 'list'
+      totalData = {
+        ...totalData,
+        playListData: {type: currentType, param: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
+      }
     }
-    totalData = {
-      ...totalData,
-      playListData: {type: currentType, param: encodeURIComponent(url), isPush: isPush === 'push' ? true : false}
-    }
+
+    console.log(totalData)
   }
 
   if (
