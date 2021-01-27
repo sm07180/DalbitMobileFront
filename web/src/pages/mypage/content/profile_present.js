@@ -190,7 +190,7 @@ export default (props) => {
                   </div>
 
                   <TextArea>
-                    <PointInput
+                    {/* <PointInput
                       placeholder="달은 10개부터 선물할 수 있습니다."
                       type="number"
                       maxLength="10"
@@ -198,7 +198,7 @@ export default (props) => {
                       onChange={handleChangeInput}
                       onClick={() => _active('input')}
                       active={active ? 'active' : ''}
-                    />
+                    /> */}
                     <p>※ 달 선물하기는 100% 전달됩니다.</p>
                   </TextArea>
                   <ButtonArea>
@@ -281,7 +281,7 @@ const Container = styled.div`
   overflow: hidden;
 
   .contentPadding {
-    min-height: 358px;
+    /* min-height: 358px; */
     padding: 0px 16px 16px 16px;
   }
 
