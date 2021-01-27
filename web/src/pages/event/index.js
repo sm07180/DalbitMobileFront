@@ -26,6 +26,7 @@ import Award from './award'
 import Purchase from './purchase'
 import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
+import NewYear from './new_year'
 
 export default () => {
   const params = useParams()
@@ -77,6 +78,8 @@ export default () => {
         return <PostGuide />
       case 'recommend_dj':
         return <RecommendDj />
+      case 'new_year':
+        return <NewYear />
 
       default:
         return <></>
