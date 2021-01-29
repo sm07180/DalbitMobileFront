@@ -86,3 +86,15 @@
     transform: rotateY(360deg);
   }
 }
+
+@mixin rotate_animation($angle: 360deg, $duration: 0.36s) {
+  @keyframes rotate_360_animation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate($angle);
+    }
+  }
+  animation: rotate_360_animation $duration;
+}
