@@ -60,7 +60,6 @@ export default function RecommendDj() {
   const [selectedAgeArr, setSelectedAgeArr] = useState([])
   const [fetchedList, setFetchedList] = useState([])
   const [fetched, setFetched] = useState(true)
-  const [slctBoxToOpen, setSlctboxToOpen] = useState('')
   const [refresh, setRefresh] = useState(false)
 
   const fetchRecommendedDJList = useCallback(async () => {
@@ -150,20 +149,9 @@ export default function RecommendDj() {
     }
   }
 
-  const toggleItemBoxArrow = (memNo, idx) => {
-    const lbLength = getLineBreakLength(idx)
-    if (lbLength > 2) {
-      slctBoxToOpen === memNo ? setSlctboxToOpen('') : setSlctboxToOpen(memNo)
-    }
-  }
-  console.log(slctBoxToOpen)
-
-  const getLineBreakLength = (idx) => fetchedList[idx].desc.split('\n').length
-
   const onRefresh = () => {
     fetchRecommendedDJList()
     setRefresh(true)
-    setSlctboxToOpen('')
     window.scrollTo(0, 0)
   }
 
@@ -282,7 +270,7 @@ export default function RecommendDj() {
                     {list.ageDesc}
                   </span>
                   <span className="userText__liveTime">{list.title}</span>
-                  <p className={`userText__subject${slctBoxToOpen === list.memNo ? ' open' : ''}`}>{list.desc}</p>
+                  <p className="userText__subject">{list.desc}</p>
                 </div>
                 {list.roomNo && (
                   <button
@@ -297,13 +285,6 @@ export default function RecommendDj() {
                     }}></button>
                 )}
               </div>
-              {getLineBreakLength(idx) > 2 && (
-                <div
-                  className={`arrowBox${slctBoxToOpen === list.memNo ? ' open' : ''}`}
-                  onClick={() => toggleItemBoxArrow(list.memNo, idx)}>
-                  <img src={`${IMG_SERVER}/svg/arrow_down_g.svg`} alt="arrow-down" />
-                </div>
-              )}
             </li>
           ))}
         </ul>

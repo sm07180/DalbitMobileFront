@@ -27,7 +27,7 @@ import Purchase from './purchase'
 import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
 import NewYear from './new_year'
-import Package from './package/index'
+import Package from './package'
 
 export default () => {
   const params = useParams()

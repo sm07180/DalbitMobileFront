@@ -22,7 +22,7 @@
         width: 100%;
         max-width: 32px;
         &.active {
-          animation: anim 0.36s;
+          @include rotate_animation();
         }
       }
     }
@@ -153,10 +153,6 @@
           color: $greishBrown;
           word-break: break-all;
           white-space: pre-wrap;
-          @include multi-ellipsis(2);
-          &.open {
-            @include multi-ellipsis(initial);
-          }
         }
       }
 
@@ -192,14 +188,5 @@
     height: 28px;
     background: url(https://image.dalbitlive.com/svg/live_m.svg) no-repeat center/ 100%;
     text-indent: -9999px;
-  }
-
-  @keyframes anim {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
   }
 }

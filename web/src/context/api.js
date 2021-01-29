@@ -2773,6 +2773,21 @@ export default class API {
     })
   }
 
+  static getPackageEventStateCheck = async () => {
+    return await ajax({
+      url: '/cam/check',
+      method: 'POST'
+    })
+  }
+
+  static getPackageEventWrite = async (data) => {
+    return await ajax({
+      url: '/cam/apply',
+      method: 'POST',
+      data
+    })
+  }
+
   static getChooseokBonus = async () => {
     return await ajax({
       url: '/event/chooseok/purchase/bonus',
