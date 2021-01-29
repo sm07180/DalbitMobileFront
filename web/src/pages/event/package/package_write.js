@@ -22,6 +22,15 @@ const packageEventWrite = () => {
   async function stateCheck() {
     const res = await Api.getPackageEventStateCheck({})
     if (res.result === 'success') {
+      if (res.data.isOk === 0) {
+        //참여불가능
+        context.action.alert({
+          msg: `<div class="packageEventAlertColor">지원신청을 위해서는 방송시간이<br/>10시간 이상이어야 합니다.<br/><span >누적 방송 시간 : ${res.data.airTimeStr}</span></div>`,
+          callback: () => {
+            history.push('/')
+          }
+        })
+      }
     } else {
       if (!context.token.isLogin) {
         context.action.alert({
