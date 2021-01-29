@@ -1,22 +1,23 @@
-$WIDTH_MOBILE: 600px;
-$COLOR_MAIN: #632beb;
+@import '../../../../styles/variables';
 .faqWrap {
   .searchWrap {
-    padding: 0 16px;
+    padding: 0 16px 12px 16px;
 
     & > input {
       width: 100%;
       padding: 0 16px;
       height: 50px;
-      border: 2px solid #632beb;
+      border: 2px solid $primary;
       border-radius: 28px;
       font-size: 14px;
+      font-weight: $bold;
+      background: $white;
     }
 
     & > input::placeholder {
-      color: #757575;
+      color: $greishGray;
       font-size: 14px;
-      font-weight: 600;
+      font-weight:  $bold;
       text-align: left;
     }
 
@@ -49,72 +50,27 @@ $COLOR_MAIN: #632beb;
       line-height: 1.13;
       letter-spacing: normal;
       text-align: left;
-      color: #000000;
+      color: $black;
     }
   }
-
   .tableWrap {
     display: flex;
-    border-bottom: 1px solid #e0e0e0;
-    background-color: white;
-    padding: 10px 16px;
+    border-bottom: 1px solid $lightGray;
+    background-color: $white;
+    padding: 12px 0 14px 16px;
     font-size: 14px;
+    font-weight: $bold;
     cursor: pointer;
-    @media (max-width: $WIDTH_MOBILE) {
-      position: relative;
-      flex-wrap: wrap;
+    .txt_strong {
+      color: $primary;
+      font-weight: bold;
     }
-    & dt {
-      width: 120px;
-      color: $COLOR_MAIN;
-      font-size: 12px;
-      transform: skew(-0.03deg);
-      @media (max-width: $WIDTH_MOBILE) {
-        width: 100%;
-      }
-    }
-    & dd {
-      display: flex;
-      position: relative;
-      width: calc(100% - 144px);
-      //font-size: 16px;
-      color: #000;
-      font-weight: 600;
-      transform: skew(-0.03deg);
-
-      @media (max-width: $WIDTH_MOBILE) {
-        width: 92%;
-        margin: 4px 0 2px 0;
-        line-height: 1.4;
-      }
-
-      & span {
-        display: contents;
-        color: #632beb;
-      }
-    }
-    & dd:last-child {
-      width: 24px;
-      height: 24px;
-      // background: url(${IMG_SERVER}/images/api/ico-prevmy.png) no-repeat center center/cover;
-      //  &.on {
-      //  // background: url(${IMG_SERVER}/images/api/ico-selectup-g.png) no-repeat center center / 17px 9px;
-      // }
-
-      @media (max-width: $WIDTH_MOBILE) {
-        position: absolute;
-        right: 0;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-    }
-
     & em {
       position: absolute;
       left: 20px;
       top: 0;
       margin-right: 3px;
-      color: $COLOR_MAIN;
+      color: $primary;
       font-style: normal;
     }
     &.on {

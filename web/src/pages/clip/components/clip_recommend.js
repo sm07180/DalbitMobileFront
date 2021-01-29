@@ -11,10 +11,9 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 
 import Header from 'components/ui/new_header.js'
 import Layout from 'pages/common/layout/new_layout'
-import RankPopup from './clip_recommend_rank_list'
 import NoResult from 'components/ui/new_noResult'
 import '../clip.scss'
-import set from '@babel/runtime/helpers/esm/set'
+import { ClipPlayFn } from "pages/clip/components/clip_play_fn";
 
 export default function ClipRecommend() {
   const context = useContext(Context)
@@ -78,39 +77,6 @@ export default function ClipRecommend() {
     }
   }
 
-  const fetchDataPlay = async (clipNum, type) => {
-    const {result, data, message, code} = await Api.postClipPlay({
-      clipNo: clipNum
-    })
-    if (result === 'success') {
-      if (type === 'dal') {
-        localStorage.removeItem('clipPlayListInfo')
-      } else {
-        const playListInfoData = {
-          recDate: context.dateState,
-          isLogin: true,
-          isClick: true
-        }
-        localStorage.setItem('clipPlayListInfo', JSON.stringify(playListInfoData))
-      }
-
-      clipJoin(data, context)
-    } else {
-      if (code === '-99') {
-        context.action.alert({
-          msg: message,
-          callback: () => {
-            history.push('/login')
-          }
-        })
-      } else {
-        context.action.alert({
-          msg: message
-        })
-      }
-    }
-  }
-
   const goUrl = (url) => {
     if (isHybrid()) {
       url += '?webview=new'
@@ -130,20 +96,8 @@ export default function ClipRecommend() {
         <button
           className="allPlay"
           onClick={() => {
-            if (customHeader['os'] === OS_TYPE['Desktop']) {
-              if (context.token.isLogin === false) {
-                context.action.alert({
-                  msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                  callback: () => {
-                    history.push('/login')
-                  }
-                })
-              } else {
-                context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-              }
-            } else {
-              fetchDataPlay(marketingClipList[0].clipNo, 'all')
-            }
+            ClipPlayFn(marketingClipList[0].clipNo, 'all', context, history);
+            context.action.updateDateState(marketingClipObj.recDate)
           }}>
           전체듣기
         </button>
@@ -154,12 +108,6 @@ export default function ClipRecommend() {
   useEffect(() => {
     fetchMarketingClipList()
   }, [context.dateState])
-
-  useEffect(() => {
-    if (context.token.isLogin === false) {
-      history.push('/')
-    }
-  }, [context.token.isLogin])
 
   return (
     <Layout status="no_gnb">
@@ -194,20 +142,7 @@ export default function ClipRecommend() {
                 <div
                   className="video"
                   onClick={() => {
-                    if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (context.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
-                    } else {
-                      fetchDataPlay(marketingClipObj.clipNo, 'dal')
-                    }
+                    ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
                     context.action.updateDateState(marketingClipObj.recDate)
                   }}>
                   {marketingClipObj.bannerUrl ? (
@@ -221,20 +156,7 @@ export default function ClipRecommend() {
                   <ul
                     className="scoreBox"
                     onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
-                      } else {
-                        fetchDataPlay(marketingClipObj.clipNo, 'dal')
-                      }
+                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
                       context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     <li className="scoreList">
@@ -291,20 +213,7 @@ export default function ClipRecommend() {
                   <h4
                     className="playName"
                     onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
-                      } else {
-                        fetchDataPlay(marketingClipObj.clipNo, 'dal')
-                      }
+                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
                       context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     {marketingClipObj.title}
@@ -367,20 +276,7 @@ export default function ClipRecommend() {
                       <div
                         className="thumbnail"
                         onClick={() => {
-                          if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
-                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                callback: () => {
-                                  history.push('/login')
-                                }
-                              })
-                            } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                            }
-                          } else {
-                            fetchDataPlay(v.clipNo, 'dal')
-                          }
+                          ClipPlayFn(v.clipNo, 'dal', context, history);
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
@@ -391,20 +287,7 @@ export default function ClipRecommend() {
                       <div
                         className="textItem"
                         onClick={() => {
-                          if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
-                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                callback: () => {
-                                  history.push('/login')
-                                }
-                              })
-                            } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                            }
-                          } else {
-                            fetchDataPlay(v.clipNo, 'dal')
-                          }
+                          ClipPlayFn(v.clipNo, 'dal', context, history);
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         <div className="textItem__titleBox">
@@ -434,20 +317,7 @@ export default function ClipRecommend() {
                           <span
                             className="textItem__moreButton--play"
                             onClick={() => {
-                              if (customHeader['os'] === OS_TYPE['Desktop']) {
-                                if (context.token.isLogin === false) {
-                                  context.action.alert({
-                                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                    callback: () => {
-                                      history.push('/login')
-                                    }
-                                  })
-                                } else {
-                                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                                }
-                              } else {
-                                fetchDataPlay(v.clipNo, 'dal')
-                              }
+                              ClipPlayFn(v.clipNo, 'dal', context, history);
                               context.action.updateDateState(marketingClipObj.recDate)
                             }}>
                             플레이 아이콘

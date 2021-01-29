@@ -3,9 +3,9 @@ import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-
+import {Context} from 'context'
 import './detail.scss'
-import {Context} from "context";
+
 export default function Detail() {
   const history = useHistory()
   if (history.action === 'POP') {
@@ -41,16 +41,16 @@ export default function Detail() {
   return (
     <div className="faqDetail">
       <div className="faqDetail__title">{question}</div>
-      <div>
+      <div className="faqDetail__contents">
         {faqDetail && faqDetail.answer && (
-          <p
-            dangerouslySetInnerHTML={{__html: faqDetail.answer.replace(/class/gi, 'className')}}
-            onClick={contentsClicked}></p>
+          <p dangerouslySetInnerHTML={{__html: faqDetail.answer.replace(/class/gi, 'className')}} onClick={contentsClicked}></p>
         )}
       </div>
-      <span className="faqDetail__buttonWrap">
-        <button onClick={routeingBack}>목록보기</button>
-      </span>
+      <div className="btnWrap">
+        <button className="btn" onClick={routeingBack}>
+          목록보기
+        </button>
+      </div>
     </div>
   )
 }

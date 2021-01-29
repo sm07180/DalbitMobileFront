@@ -9,6 +9,8 @@ import SelectBoxs from 'components/ui/selectBox.js'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
 import headsetIcon from '../static/ic_headset.svg'
+let msgTitle
+let msgContents
 export default function Qna() {
   const history = useHistory()
 
@@ -63,12 +65,18 @@ export default function Qna() {
             nickName: name
           }
         })
+        msgTitle = res.data.title
+        msgContents = res.data.contents
         if (res.result === 'success') {
           setTimeout(() => {
             context.action.alert({
-              msg: '1:1 문의 등록을 완료하였습니다.',
+              msg: `<div><span style='display:block;margin-bottom:10px;font-size:20px;font-weight:bold;'>${msgTitle}</span><p>${msgContents}</p></div>`,
               callback: () => {
-                history.push('/')
+                if(!context.token.isLogin) {
+                  history.push('/')
+                } else {
+                  history.push('/customer/qnaList')
+                }
               }
             })
           }, 0)
@@ -281,37 +289,36 @@ export default function Qna() {
   const phoneCallWrap = () => {
     if (customHeader.os === OS_TYPE['Android']) {
       return (
-        <div
-          className="personalAddWrap__callWrap--call"
+        <button
+          className="btn btn_call"
           onClick={() => {
             Hybrid('openCall', `tel:1522-0251`)
           }}>
-          <img src={headsetIcon} />
+          {/* <img src={headsetIcon} /> */}
           <span>전화걸기</span>
-        </div>
-        // <></>
+        </button>
       )
     } else if (customHeader.os === OS_TYPE['IOS']) {
       return (
-        <div
-          className="personalAddWrap__callWrap--call"
+        <button
+          className="btn btn_call"
           onClick={() => {
             Hybrid('openUrl', `tel:1522-0251`)
           }}>
-          <img src={headsetIcon} />
+          {/* <img src={headsetIcon} /> */}
           <span>전화걸기</span>
-        </div>
+        </button>
       )
     } else {
       return (
-        <div
-          className="personalAddWrap__callWrap--call"
+        <button
+          className="btn btn_call"
           onClick={() => {
             window.location.href = `tel:1522-0251`
           }}>
-          <img src={headsetIcon} />
+          {/* <img src={headsetIcon} /> */}
           <span>전화걸기</span>
-        </div>
+        </button>
       )
     }
   }
@@ -562,15 +569,30 @@ export default function Qna() {
             자세히
           </span>
         </div>
-        <div className="personalAddWrap__callWrap">
-          <div className="personalAddWrap__callWrap--box">
-            <div>
-              고객센터 (국내) <span className="bold">1522-0251</span>
+
+        <div className="callBoxWrap">
+          <div className="callBox">
+            <div className="callBox_title">
+              · 1:1 문의 전 궁금하신 사항은 FAQ에서 확인하시면
+              <br /> 신속한 답변을 제공받을 수 있습니다.
             </div>
-            <div className="personalAddWrap__callWrap--box--s">(상담시간 : 평일 09:30~17:30 토/일/공휴일 제외)</div>
+            <button className="btn btn_faq" onClick={() => history.push('/customer/faq')}>
+              <span>FAQ 보기</span>
+            </button>
           </div>
-          {phoneCallWrap()}
+          <div className="callBox">
+            <div className="callBox_title">
+              · 신속하고, 상세한 답변을 원하시면 고객센터로 문의해보세요.
+              <br />
+              <strong className="callBox_title__custom">
+                고객센터 (국내)<span>1522-0251</span>
+              </strong>
+              <span className="callBox_desc">(상담시간 : 평일 09:30~17:30 토/일/공휴일 제외)</span>
+            </div>
+            {phoneCallWrap()}
+          </div>
         </div>
+
         <button onClick={checkDelicate} className={`personalAddWrap__submit ${delicate ? 'on' : ''}`}>
           1:1 문의 완료
         </button>

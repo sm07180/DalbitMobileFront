@@ -1,70 +1,76 @@
-import React, {useState, useEffect, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-
+import React, {useState, useEffect} from 'react'
+import {useHistory, useLocation} from 'react-router-dom'
 import Api from 'context/api'
-import {Store} from '../index'
-import './list.scss'
+import qs from 'query-string'
 
 import searchBtn from '../../../../images/search_purple.png'
+import NoResult from 'components/ui/noResult'
+import './list.scss'
 
-export default function List(props) {
+export default function List() {
   const history = useHistory()
-
-  // const [faqList, setFaqList] = useState([]);
-  // const [filteredList, setFilteredList] = useState([]);
-  // let normalList = [], broadcastList = [], paymentList = [], otherList = [];
-
+  const location = useLocation()
+  const {search} = qs.parse(location.search)
   const [normalList, setNormalList] = useState([]) // faqType = 1
   const [broadcastList, setBroadcastList] = useState([]) // faqType = 2
   const [paymentList, setPaymentList] = useState([]) // faqType = 3
-  const [otherList, setOtherList] = useState([]) // faqType = 4
   const [accountList, setAccountList] = useState([]) // faqType = 5
-  // const [search, setSearch] = useState("");
-  // const [currentSearch, setCurrentSearch] = useState("");
-  // const [searching, setSearching] = useState(false);
-  const fetchData = async function () {
+  const [otherList, setOtherList] = useState([]) // faqType = 98
+  const [searchText, setSearchText] = useState(search || '')
+  const [currentSearch, setCurrentSearch] = useState('')
+  const [empty, setEmpty] = useState(false)
+
+  const fetchData = async () => {
     const res = await Api.faq_list({
       params: {
-        faqType: 0,
+        faqType: 0, // 0 - 전체
         page: 1,
-        records: 100000,
-        searchType: 0,
-        searchText: Store().search
+        records: 100,
+        searchType: 1,
+        searchText: search || ''
       }
     })
-
-    const {result, data} = res
-
-    console.log(res)
-    if (result === 'success') {
-      if (data.list.length > 0) {
-        setNormalList(filterList(data.list, 1))
-        setBroadcastList(filterList(data.list, 2))
-        setPaymentList(filterList(data.list, 3))
-        setOtherList(filterList(data.list, 98))
-        setAccountList(filterList(data.list, 5))
+    if (res.result === 'success') {
+      if (res.data.list.length > 0) {
+        setNormalList(filterListFn(res.data.list, 1))
+        setBroadcastList(filterListFn(res.data.list, 2))
+        setPaymentList(filterListFn(res.data.list, 3))
+        setOtherList(filterListFn(res.data.list, 98))
+        setAccountList(filterListFn(res.data.list, 5))
+        setEmpty(false)
+      } else {
+        setNormalList([])
+        setBroadcastList([])
+        setPaymentList([])
+        setAccountList([])
+        setOtherList([])
+        setEmpty(true)
       }
-    } else if (result === 'fail') {
+    } else {
+      console.log('실패')
     }
   }
 
-  const filterList = function (arr, type) {
+  const fnSearch = function (value) {
+    if (value !== currentSearch) {
+      history.push(`/customer/faq?search=${value}`)
+      setCurrentSearch(value)
+    } else {
+      return
+    }
+  }
+
+  const enterSearch = (e) => {
+    if (e.keyCode === 13) {
+      fnSearch(e.target.value)
+    }
+  }
+
+  const filterListFn = function (arr, type) {
     const filterList = arr.filter((v) => {
       return v.faqType === type
     })
-
     return filterList
-  }
-
-  const fnSearch = function () {
-    if (Store().search === '') {
-      Store().action.updateSearching(false)
-    } else {
-      Store().action.updateSearching(true)
-    }
-    Store().action.updateCurrentSearch(Store().search)
-    // setCurrentSearch(search);
-    fetchData()
   }
 
   const routeHistory = (item) => {
@@ -78,70 +84,79 @@ export default function List(props) {
     })
   }
 
-  const maketableWrap = (array) => {
+  const makeTableWrap = (array) => {
     return array.map((item, index) => {
       const {question} = item
-      const test = question.split(Store().currentSearch).join('<span>' + Store().currentSearch + '</span>')
+      let letter = ''
+      if (currentSearch !== '') {
+        letter = question.split(currentSearch).join('<span class="txt_strong">' + currentSearch + '</span>')
+      } else {
+        letter = question
+      }
       return (
         <div className="tableWrap" key={index} onClick={() => routeHistory(item)}>
-          {Store().searching === false || test.length === 1 ? (
-            <dd>{question}</dd>
-          ) : (
-            <dd dangerouslySetInnerHTML={{__html: test}}></dd>
-          )}
-          <dd></dd>
+          {letter.length === 1 ? <>{question}</> : <span dangerouslySetInnerHTML={{__html: letter}}></span>}
         </div>
       )
     })
   }
 
   useEffect(() => {
+    if (!search) {
+      setSearchText('')
+      setCurrentSearch('')
+    } else {
+      setSearchText(search)
+      setCurrentSearch(search)
+    }
+
     fetchData()
-  }, [])
+  }, [search])
 
   return (
     <div className="faqWrap">
       <div className="searchWrap">
         <input
           type="text"
-          id="search"
-          value={Store().search}
           placeholder="검색어를 입력해 보세요"
-          onChange={(e) => Store().action.updateSearch(e.target.value)}
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onKeyDown={enterSearch}
         />
-        <button className="searchBtn" onClick={fnSearch} style={{backgroundImage: `url(${searchBtn})`}} />
+        <button className="searchBtn" onClick={() => fnSearch(searchText)} style={{backgroundImage: `url(${searchBtn})`}} />
       </div>
-      {Store().searching && <span className="searchResult">'{Store().currentSearch}'으로 검색된 결과입니다.</span>}
+      {currentSearch != '' && <span className="searchResult">'{currentSearch}'으로 검색된 결과입니다.</span>}
       {normalList.length > 0 && (
         <div className="listWrap">
           <span className="listWrap__category">일반</span>
-          {maketableWrap(normalList)}
+          {makeTableWrap(normalList)}
         </div>
       )}
       {broadcastList.length > 0 && (
         <div className="listWrap">
           <span className="listWrap__category">방송</span>
-          {maketableWrap(broadcastList)}
+          {makeTableWrap(broadcastList)}
         </div>
       )}
       {paymentList.length > 0 && (
         <div className="listWrap">
           <span className="listWrap__category">결제</span>
-          {maketableWrap(paymentList)}
+          {makeTableWrap(paymentList)}
         </div>
       )}
       {accountList.length > 0 && (
         <div className="listWrap">
           <span className="listWrap__category">계정</span>
-          {maketableWrap(accountList)}
+          {makeTableWrap(accountList)}
         </div>
       )}
       {otherList.length > 0 && (
         <div className="listWrap">
           <span className="listWrap__category">기타</span>
-          {maketableWrap(otherList)}
+          {makeTableWrap(otherList)}
         </div>
       )}
+      {empty === true && <NoResult type="default" text="검색 결과가 없습니다." />}
     </div>
   )
 }

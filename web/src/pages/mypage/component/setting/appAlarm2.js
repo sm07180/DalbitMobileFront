@@ -54,6 +54,7 @@ export default (props) => {
   const [myAlimType, setMyAlimType] = useState(-1)
   const [alarmArray, setAlarmArray] = useState(AlarmArray)
   // api
+
   async function fetchData() {
     const res = await Api.appNotify_list({
       params: {}
