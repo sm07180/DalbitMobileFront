@@ -152,7 +152,7 @@ export default () => {
           window.scrollTo(0, currentTop)
         } else {
           // console.log('2')
-          window.scrollTo(0, currentTop + 22)
+          window.scrollTo(0, currentTop)
         }
       }
     }
@@ -209,6 +209,7 @@ export default () => {
   useEffect(() => {
     fetchDataClipType()
     document.body.style.height = 'auto'
+    document.body.style.minHeight = 'auto'
   }, [])
 
   useEffect(() => {
