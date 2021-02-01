@@ -702,12 +702,8 @@ export default (props) => {
   }
 
   const goRecommend = () => {
-    if (!context.token.isLogin) {
-      history.push('/login?redirect=/clip')
-    } else {
-      history.push('/clip_recommend')
-      context.action.updateDateState(context.dateState)
-    }
+    history.push('/clip_recommend')
+    context.action.updateDateState(context.dateState)
   }
 
   const goClip = (tabParam, subTabParam) => {
@@ -718,7 +714,6 @@ export default (props) => {
     }
     history.push(`/mypage/${context.token.memNo}/my_clip?tab=${tabParam}&subTab=${subTabParam}`)
   }
-
 
   useEffect(() => {
     //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
