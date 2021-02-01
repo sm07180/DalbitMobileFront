@@ -34,30 +34,24 @@ export default function fileloadTip(props) {
             <h2>파일 가져오는 방법</h2>
           </div>
         </TipHeader>
-        <div id="clipPage">
-          <div className="fileTopBox">
-            <div className="tipTabBox">
-              <button
-                className={`tipTabBox__btn ${tabState === 1 ? 'tipTabBox__btn--active' : ''}`}
-                onClick={() => setTabState(1)}>
-                iTunes
-              </button>
-              <button
-                className={`tipTabBox__btn ${tabState === 2 ? 'tipTabBox__btn--active' : ''}`}
-                onClick={() => setTabState(2)}>
-                음성메모
-              </button>
-            </div>
-
-            <div className="tipContentBox">
-              {tabState === 1 ? (
-                <img src="https://image.dalbitlive.com/app/clip_tip_itunes.png" alt="itunes" />
-              ) : (
-                <img src="https://image.dalbitlive.com/app/clip_tip_memo.png" alt="memo" />
-              )}
-            </div>
+        <Content className="fileTopBox">
+          <div className="tipTabBox">
+            <button className={`tipTabBox__btn ${tabState === 1 ? 'tipTabBox__btn--active' : ''}`} onClick={() => setTabState(1)}>
+              iTunes
+            </button>
+            <button className={`tipTabBox__btn ${tabState === 2 ? 'tipTabBox__btn--active' : ''}`} onClick={() => setTabState(2)}>
+              음성메모
+            </button>
           </div>
-        </div>
+
+          <div className="tipContentBox">
+            {tabState === 1 ? (
+              <img src="https://image.dalbitlive.com/app/clip_tip_itunes.png" alt="itunes" />
+            ) : (
+              <img src="https://image.dalbitlive.com/app/clip_tip_memo.png" alt="memo" />
+            )}
+          </div>
+        </Content>
       </Layout>
     </>
   )
@@ -89,5 +83,42 @@ const TipHeader = styled.div`
     left: 6px;
     width: 36px;
     cursor: pointer;
+  }
+`
+const Content = styled.div`
+  &.fileTopBox {
+    padding: 0 16px;
+
+    .tipTabBox {
+      margin: 12px 0 28px;
+
+      &__btn {
+        width: 50%;
+        height: 40px;
+        font-size: 14px;
+        border: solid 1px #e0e0e0;
+        background-color: #f5f5f5;
+        color: #bdbdbd;
+
+        &:first-child {
+          border-radius: 12px 0 0 12px;
+        }
+        &:last-child {
+          border-radius: 0 12px 12px 0;
+        }
+
+        &--active {
+          background-color: #fff;
+          color: #632beb;
+          border-color: #632beb;
+        }
+      }
+    }
+
+    .tipContentBox {
+      img {
+        width: 100%;
+      }
+    }
   }
 `
