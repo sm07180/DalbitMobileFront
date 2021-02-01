@@ -102,6 +102,69 @@ export default () => {
             </tr>
 
             <tr>
+              <td className="rank">입장효과</td>
+              <td
+              // onClick={() => {
+              //   setEffectPop(true);
+              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day1.webp";
+              // }}
+              >
+                <img src={`${IMG_SERVER}/ranking/liked1@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+              // onClick={() => {
+              //   setEffectPop(true);
+              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day2.webp";
+              // }}
+              >
+                <img src={`${IMG_SERVER}/ranking/liked2@2x.png`} width={87} alt="입장효과" />
+              </td>
+              <td
+              // onClick={() => {
+              //   setEffectPop(true);
+              //   wepbSrc = "https://image.dalbitlive.com/ranking/webp/fan_day3.webp";
+              // }}
+              >
+                <img src={`${IMG_SERVER}/ranking/likew3@2x.png`} width={87} alt="입장효과" />
+              </td>
+            </tr>
+
+            <tr className="frame">
+              <td className="rank">
+                애니메이션
+                <br />
+                프레임
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/likewf1@2x.png`} width={40} height={51.7} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/likewf2@2x.png`} width={40} height={51.7} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/likewf3@2x.png`} width={40} height={51.7} />
+              </td>
+            </tr>
+            <tr className="signature">
+              <td>
+                시그니쳐
+                <br />
+                좋아요
+                <br />
+                애니메이션
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_signature1@2x.png`} width={54} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_signature2@2x.png`} width={56} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_signature3@2x.png`} width={63} />
+              </td>
+            </tr>
+
+            <tr>
               <td className="rank">달</td>
               <td>
                 <img src={`${IMG_SERVER}/images/api/ic_moon_s@2x.png`} width={20} height={20} /> 달 200
@@ -135,17 +198,24 @@ export default () => {
             </tr>
 
             <tr>
-              <td className="effect">
-                방송 청취중
-                <br />
-                메인 효과
+              <td>
+                방송 청취중 <br />
+                메인 리스트 <br />
+                효과
               </td>
-              <td colSpan={3}>
-                <img src="https://image.dalbitlive.com/ranking/effect_like_info.png" alt="like_info" className="likeInfo" />
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_gold@2x.png`} width={40} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_silver@2x.png`} width={40} />
+              </td>
+              <td>
+                <img src={`${IMG_SERVER}/ranking/like_bronze@2x.png`} width={40} />
               </td>
             </tr>
           </tbody>
         </table>
+        <p className="memo">※ 방송 청취 중 좋아요 및 메인 리스트 효과는 해당 방송방 퇴장 시 사라집니다.</p>
       </div>
     </>
   )

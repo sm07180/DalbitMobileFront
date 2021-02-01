@@ -34,7 +34,7 @@
   }
   .rankGuideWrap {
     background: $white;
-    padding-bottom: 18px;
+    padding-bottom: 40px;
   }
 
   .rankGuideTab {
@@ -241,6 +241,14 @@
         }
       }
 
+      tr.signature {
+        td {
+          img {
+            vertical-align: bottom;
+          }
+        }
+      }
+
       tr.frame {
         td {
           padding: 20px 0;
@@ -298,5 +306,11 @@
       color: #757575;
       padding-left: 12px;
     }
+  }
+
+  .memo {
+    margin-top: 16px;
+    color: $greishGray;
+    font-size: 12px;
   }
 }
