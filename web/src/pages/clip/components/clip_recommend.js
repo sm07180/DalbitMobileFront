@@ -301,7 +301,7 @@ export default function ClipRecommend() {
                           {v.gender === 'm' && (
                             <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" alt="여성" />
                           )}
-                          {v.nickNm}
+                          {v.nickName}
                         </div>
                         <ul className="textItem__scoreBox">
                           <li className="textItem__scoreList">
