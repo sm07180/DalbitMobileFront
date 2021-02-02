@@ -720,6 +720,14 @@ export default (props) => {
     context.action.updateDateState(context.dateState)
   }
 
+  function loginCheck(memNo) {
+    if (!context.token.isLogin) {
+      history.push(`/login?redirect=/mypage/${memNo}`)
+    } else {
+      history.push(`/mypage/${memNo}`)
+    }
+  }
+
   const goClip = (tabParam, subTabParam) => {
     if (tabParam === 0) {
       context.action.updateClipTab(0)
@@ -948,14 +956,14 @@ export default (props) => {
                           <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
                         </div>
                         <p className="rankClipListItem__title">{v.title}</p>
-                        <p className="rankClipListItem__nickName">{v.nickNm}</p>
+                        <p className="rankClipListItem__nickName">{v.nickName}</p>
                       </li>
                     ) : (
-                      <li className="rankClipListItem week" onClick={() => history.push(`/mypage/${v.memNo}`)}>
+                      <li className="rankClipListItem week" onClick={() => loginCheck(v.memNo)}>
                         <div className="rankClipListItem__thumb">
                           <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
                         </div>
-                        <p className="rankClipListItem__title">{v.nickNm}</p>
+                        <p className="rankClipListItem__title">{v.nickName}</p>
                       </li>
                     )}
                   </React.Fragment>

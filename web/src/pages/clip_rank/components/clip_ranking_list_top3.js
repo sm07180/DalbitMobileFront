@@ -61,7 +61,7 @@ export default function ClipRankingListTop3() {
                 >
                   <img src={v.profImg.thumb190x190} alt="유저이미지" />
 
-                  <p>{v.nickNm}</p>
+                  <p>{v.nickName}</p>
                 </div>
 
                 <div
@@ -81,7 +81,7 @@ export default function ClipRankingListTop3() {
               {/* 주간일 때 subjectName, title */}
               <span className="category" onClick={() => {ClipPlay(v.clipNo, context, history)}}>{v.subjectName}</span>
               <span className="subject" onClick={() => {ClipPlay(v.clipNo, context, history)}}>{v.title}</span>
-              <strong className="nickName" onClick={() => {loginCheck(v.memNo);}}>{v.nickNm}</strong>
+              <strong className="nickName" onClick={() => {loginCheck(v.memNo);}}>{v.nickName}</strong>
               {/* 추후에 소감보기 생긴다고 하셔서 주석처리 해놓겠습니다. */}
               {/*{(formState.dateType === DATE_TYPE.WEEK && formState.rankingDate != convertDateFormat(convertMonday(), "YYYY-MM-DD")) ? (*/}
               {/*  <button*/}
