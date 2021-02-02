@@ -1150,7 +1150,7 @@
             &.dj {
               &::after {
                 top: -30px;
-                left: 11px;
+                left: 9px;
                 width: 94px;
                 height: 122px;
                 background: url(https://image.dalbitlive.com/ranking/djrf1@3x.png) no-repeat;
@@ -1161,7 +1161,7 @@
             &.fan {
               &::after {
                 top: -30px;
-                left: 11px;
+                left: 9px;
                 width: 94px;
                 height: 122px;
                 background: url(https://image.dalbitlive.com/ranking/fanrf1@3x.png) no-repeat;
@@ -1189,11 +1189,11 @@
           }
 
           .labelDj {
-            margin-top: 50px;
+            margin-top: 52px;
             background-color: rgba(0, 0, 0, 0.4);
           }
           .labelFan {
-            margin-top: 50px;
+            margin-top: 53px;
             background-color: rgba(0, 0, 0, 0.4);
           }
 
@@ -1473,10 +1473,10 @@
             bottom: 170px;
 
             &::after {
-              top: -24px;
+              top: -30px;
               left: 16px;
               width: 76px;
-              height: 99px;
+              height: 104px;
               background: url(https://image.dalbitlive.com/ranking/likewf2@2x.png) no-repeat;
               background-size: 100%;
             }

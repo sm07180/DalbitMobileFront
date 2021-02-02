@@ -59,7 +59,7 @@ export default function ClipRankingList() {
                   {v.nickNm}
                 </strong>
                 <div className="textBox__detail" onClick={() => ClipPlay(v.clipNo, context, history)}>
-                  <span className="textBox__detail--item headsetIcon">{Utility.addComma(v.listenPoint)}</span>
+                  {/* <span className="textBox__detail--item headsetIcon">{Utility.addComma(v.listenPoint)}</span> */}
                   <span className="textBox__detail--item giftIcon">{Utility.addComma(v.giftPoint)}</span>
                   <span className="textBox__detail--item heartIcon">{Utility.addComma(v.goodPoint)}</span>
                 </div>
