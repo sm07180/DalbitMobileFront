@@ -210,14 +210,30 @@
     .recomClipBox {
       display: flex;
       flex-wrap: wrap;
-      margin-top: -10px;
+
+      li {
+        margin-top: 3%;
+      }
+
+      li + li {
+        margin-left: 3%;
+      }
+
+      li:nth-child(4n) {
+        margin-left: 0px;
+      }
+
+      li:nth-child(-n + 3) {
+        margin-top: 0px;
+      }
 
       .recomClipItem {
         overflow: hidden;
         position: relative;
-        width: 31.2%;
-        margin: 10px 3% 0 0;
+        width: 31.3%;
         border-radius: 16px;
+        padding-bottom: 31.3%;
+        background-size: cover;
 
         &:nth-child(3n) {
           margin-right: 0;
@@ -342,9 +358,17 @@
 
       .rankClipListItem {
         overflow: hidden;
-        width: 31.2%;
+        width: 31.3%;
         text-align: center;
         cursor: pointer;
+
+        &.week {
+          .rankClipListItem__thumb {
+            &::after {
+              background: none;
+            }
+          }
+        }
 
         &__thumb {
           position: relative;
@@ -1000,13 +1024,13 @@
           width: 72px;
           .newSpecialIcon {
             position: absolute;
-            text-indent: -99999px;
             left: 0px;
             top: 0px;
             width: 51px;
             height: 16px;
             text-indent: -99999px;
-            background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+            background-image: url('https://image.dalbitlive.com/main/200714/ico_speciladj_thumbnail@2x.png');
+            background-size: 100%;
           }
 
           img {
@@ -1078,6 +1102,7 @@
 
             .maleIcon,
             .femaleIcon {
+              flex-shrink: 0;
               display: inline-block;
               margin-right: 4px;
               width: 24px;
@@ -1249,6 +1274,7 @@
               margin-top: 4px;
               .maleIcon,
               .femaleIcon {
+                flex-shrink: 0;
                 width: 24px;
                 height: 16px;
                 background: url('https://image.dalbitlive.com/svg/gender_m_w.svg');

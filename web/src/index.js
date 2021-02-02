@@ -7,6 +7,7 @@ import App from 'App'
 //context
 import {GlobalProvider} from 'context'
 import {RankProvider} from 'context/rank_ctx'
+import {ClipRankProvider} from "context/clip_rank_ctx";
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -16,11 +17,14 @@ import 'styles/reset.scss'
 import 'styles/common.scss'
 import 'styles/swiper.scss'
 
+
 ReactDOM.render(
   <BrowserRouter>
     <GlobalProvider>
       <RankProvider>
-        <App />
+        <ClipRankProvider>
+          <App />
+        </ClipRankProvider>
       </RankProvider>
     </GlobalProvider>
   </BrowserRouter>,

@@ -10,6 +10,7 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
+import {DATE_TYPE} from 'pages/clip_rank/constant'
 
 // components
 import ChartList from './components/chart_list'
@@ -26,18 +27,28 @@ import detailListIconActive from './static/detaillist_circle_purple.svg'
 import simpleListIcon from './static/simplylist_circle_w.svg'
 import simpleListIconActive from './static/simplylist_circle_purple.svg'
 import filterIcon from './static/choose_circle_w.svg'
+
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
 //scss
 import './clip.scss'
+import {ClipRankContext} from 'context/clip_rank_ctx'
 
 let tempScrollEvent = null
 let touchStartY = null
 let touchEndY = null
 const refreshDefaultHeight = 49
+const clipRankingRecords = 100
+const clipRankingCheckIdx = 3
 export default (props) => {
   const context = useContext(Context)
   const customHeader = JSON.parse(Api.customHeader)
   const globalCtx = useContext(Context)
+  const {clipRankState, clipRankAction} = useContext(ClipRankContext)
+
+  const {formState, clipRankList} = clipRankState
+  const formDispatch = clipRankAction.formDispatch
+  const setClipRankList = clipRankAction.setClipRankList
+
   let history = useHistory()
   //swiper
   const swiperParamsRecent = {
@@ -93,12 +104,10 @@ export default (props) => {
   const [detailPopup, setDetailPopup] = useState(false)
   const [refreshAni, setRefreshAni] = useState(false)
   const [scrollY, setScrollY] = useState(0)
-  const [moreType, setMoreType] = useState('day')
   //list
   const [popularList, setPopularList] = useState([])
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
-  const [clipRankingList, setClipRankingList] = useState([])
 
   const [myData, setMyDate] = useState([])
   const [date, setDate] = useState('')
@@ -111,7 +120,6 @@ export default (props) => {
   const [clipTypeActive, setClipTypeActive] = useState('')
   const [selectType, setSelectType] = useState(4)
   // const [selectType, setSelectType] = useState(randomData)
-  const [clipRankType, setClipRankType] = useState(0)
   const [popupData, setPopupData] = useState([])
   const [reloadInit, setReloadInit] = useState(false)
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
@@ -139,10 +147,7 @@ export default (props) => {
       }
     }
   }
-  const clipRankTab = [
-    {title: '일간', type: 0},
-    {title: '주간', type: 1}
-  ]
+
   //swiperParams...
   let filterArrayTop3 = Object.keys(listTop3)
     .filter((item) => {
@@ -154,6 +159,7 @@ export default (props) => {
       return listTop3[item]
     })
   swiperParamsBest.loop = filterArrayTop3.length > 1 ? true : false
+
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1))
@@ -163,6 +169,7 @@ export default (props) => {
     // setRandomList(a)
     return a
   }
+
   //api func
   const fetchDataListPopular = async () => {
     const {result, data, message} = await Api.getPopularList({})
@@ -193,6 +200,23 @@ export default (props) => {
     if (result === 'success') {
       setLatestList(data.list)
     } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  const fetchClipRankingList = async () => {
+    const {result, data, message} = await Api.getClipRankingList({
+      rankType: formState.dateType,
+      rankingDate: formState.dateType === DATE_TYPE.DAY ? convertDateFormat(new Date(), "YYYY-MM-DD") : convertDateFormat(convertMonday(), "YYYY-MM-DD"),
+      page: 1,
+      records: clipRankingRecords
+    })
+    if (result === 'success') {
+      setClipRankList(data.list.slice(0, clipRankingCheckIdx))
+    } else {
+      setClipRankList([])
       context.action.alert({
         msg: message
       })
@@ -326,7 +350,7 @@ export default (props) => {
               fetchDataPlay(clipNo, 'recommend')
             }
           }}
-          style={{cursor: 'pointer'}}>
+          style={{backgroundImage: `url(${bgImg['thumb336x336']})`}}>
           <span className="clipListCategory">
             {clipType.map((ClipTypeItem, index) => {
               if (ClipTypeItem.value === subjectType) {
@@ -334,9 +358,6 @@ export default (props) => {
               }
             })}
           </span>
-          <div className="recomClipItem__thumb">
-            <img src={bgImg['thumb190x190']} alt="thumb" />
-          </div>
           <p className="recomClipItem__nickName">{nickName}</p>
         </li>
       )
@@ -469,16 +490,7 @@ export default (props) => {
       )
     })
   }
-  const makeRankTabList = () => {
-    return clipRankTab.map((item, idx) => {
-      const {title, type} = item
-      return (
-        <li className={clipRankType === type ? 'tabItem isActive' : 'tabItem'} key={idx + `categoryTab`}>
-          <button onClick={() => setClipRankType(type)}>{title}</button>
-        </li>
-      )
-    })
-  }
+
   const makeCategoryList = () => {
     return clipType.map((item, idx) => {
       const {cdNm, value} = item
@@ -553,6 +565,7 @@ export default (props) => {
       setDetailPopup(true)
     }
   }
+
   async function fetchMainPopupData(arg) {
     const res = await Api.getBanner({
       params: {
@@ -574,6 +587,7 @@ export default (props) => {
       }
     }
   }
+
   // scroll fixed func
   const windowScrollEvent = () => {
     const ClipHeaderHeight = 120
@@ -755,6 +769,10 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
+    fetchClipRankingList()
+  }, [formState.dateType])
+
+  useEffect(() => {
     window.removeEventListener('scroll', tempScrollEvent)
     window.addEventListener('scroll', windowScrollEvent)
     tempScrollEvent = windowScrollEvent
@@ -770,12 +788,6 @@ export default (props) => {
       setMyClipToggle(true)
     }
   }, [myData])
-
-  // useEffect(() => {
-  //   if (swiper !== null && tableSwiperIndex !== 0) {
-  //     swiper.activeIndex = tableSwiperIndex
-  //   }
-  // }, [swiper, tableSwiperIndex])
 
   useEffect(() => {
     if (marketingClipList.length > 0) {
@@ -829,19 +841,19 @@ export default (props) => {
             </h3>
             {myClipToggle && (
               <ul className="myClipWrap">
-                <li className="upload" onClick={() => goClip(0,0)}>
+                <li className="upload" onClick={() => goClip(0, 0)}>
                   <em></em>
                   <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
                 </li>
-                <li className="listen" onClick={() => goClip(1,0)}>
+                <li className="listen" onClick={() => goClip(1, 0)}>
                   <em></em>
                   <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
                 </li>
-                <li className="like" onClick={() => goClip(1,1)}>
+                <li className="like" onClick={() => goClip(1, 1)}>
                   <em></em>
                   <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
                 </li>
-                <li className="gift" onClick={() => goClip(1,2)}>
+                <li className="gift" onClick={() => goClip(1, 2)}>
                   <em></em>
                   <span>
                     {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
@@ -877,14 +889,79 @@ export default (props) => {
           <div ref={recomendRef} style={{minHeight: '282px'}}></div>
         )}
 
-        {clipRankingList && clipRankingList.length > 0 ? (
+        {clipRankList.length > 0 ? (
           <div className="rankClip" ref={clipRankingRef}>
-            <div className="titleBox">
-              <h3 className="clipTitle isArrow">클립 랭킹</h3>
-              <ul className="tabList">{makeRankTabList()}</ul>
+            <div className="rankClip__titleBox">
+              <h3 className="rankClip__title"
+                  onClick={() => {history.push('/clip_rank');
+                                  formDispatch({type: 'DATE_TYPE', val: formState.dateType});
+                  }}>
+                클립 랭킹
+              </h3>
+              <div className="rankClip__moreButton">
+                <button
+                  className={`${formState.dateType === DATE_TYPE.DAY ? 'isActive' : ''}`}
+                  onClick={() => {
+                    formDispatch({
+                      type: 'DATE_TYPE',
+                      val: DATE_TYPE.DAY
+                    })
+                  }}>
+                  일간
+                </button>
+                <button
+                  className={`${formState.dateType === DATE_TYPE.WEEK ? 'isActive' : ''}`}
+                  onClick={() => {
+                    formDispatch({
+                      type: 'DATE_TYPE',
+                      val: DATE_TYPE.WEEK
+                    })
+                  }}>
+                  주간
+                </button>
+              </div>
             </div>
-
-            <Swiper {...swiperParamsRecent}>{makeRankList(clipRankingList)}</Swiper>
+            <ul className="rankClipList">
+              {clipRankList.map((v, i) => {
+                return (
+                  <React.Fragment key={i}>
+                    {formState.dateType === DATE_TYPE.DAY ? (
+                      <li
+                        className="rankClipListItem"
+                        onClick={() => {
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            }
+                          } else {
+                            fetchDataPlay(v.clipNo, 'dal')
+                          }
+                        }}>
+                        <div className="rankClipListItem__thumb">
+                          <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
+                        </div>
+                        <p className="rankClipListItem__title">{v.title}</p>
+                        <p className="rankClipListItem__nickName">{v.nickNm}</p>
+                      </li>
+                    ) : (
+                      <li className="rankClipListItem week" onClick={() => history.push(`/mypage/${v.memNo}`)}>
+                        <div className="rankClipListItem__thumb">
+                          <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
+                        </div>
+                        <p className="rankClipListItem__title">{v.nickNm}</p>
+                      </li>
+                    )}
+                  </React.Fragment>
+                )
+              })}
+            </ul>
           </div>
         ) : (
           <></>
