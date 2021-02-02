@@ -8,7 +8,7 @@ import API from 'context/api'
 import Header from 'components/ui/new_header.js'
 import InitialRecomend from './components/recomend'
 import List from './components/list'
-import qs from 'query-string'
+
 //static
 import SearchIco from './static/ic_search.svg'
 //scss
@@ -18,6 +18,9 @@ import './search.scss'
 let currentPage = 1
 let timer
 let moreState = false
+
+let btnAccess = false
+
 export default (props) => {
   // ctx && path
   const context = useContext(Context)
@@ -223,15 +226,24 @@ export default (props) => {
   }
   const handleSubmit = (e) => {
     e.preventDefault()
+
+    btnAccess = true
+
     if (result.length < 2) {
       context.action.alert({
-        msg: `두 글자 이상 입력해 주세요.`
+        msg: `두 글자 이상 입력해 주세요.`,
+        callback: () => {
+          btnAccess = false
+        }
       })
     } else {
       currentPage = 1
       setSearchState(true)
       setCategoryType(filterType)
       holeSearch()
+      setTimeout(() => {
+        btnAccess = false
+      }, 1000)
       setFocus(false)
     }
   }
@@ -325,7 +337,7 @@ export default (props) => {
               className="controller__submitInput"
               ref={IputEl}
             />
-            <button type="submit" className="controller__submitBtn" />
+            <button type="submit" className="controller__submitBtn" disabled={btnAccess} />
           </form>
         </div>
       </div>
