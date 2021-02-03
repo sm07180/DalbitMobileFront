@@ -39,6 +39,7 @@ export default (props) => {
   // static
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [newAlarm, setNewAlarm] = useState(false)
+  const [alarmMoveUrl, setAlarmMoveUrl] = useState(false)
 
   const reLoad = () => {
     window.location.href = '/'
@@ -53,9 +54,18 @@ export default (props) => {
     if (category === 'alarm') {
       //context.action.updateNews(false)
       setNewAlarm(false)
+      if (alarmMoveUrl === '') {
+        return history.push(`/menu/${category}`)
+      } else {
+        return history.push(`${alarmMoveUrl}`)
+      }
     }
     if (category === 'mailbox') {
-      console.log('우체통리스트 진입')
+      if (!context.myInfo.level) {
+        return globalCtx.action.alert({
+          msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+        })
+      }
       Hybrid('OpenMailBoxList')
       return false
     }
@@ -102,8 +112,10 @@ export default (props) => {
         if (data) {
           if (data.newCnt > 0) {
             setNewAlarm(true)
+            setAlarmMoveUrl(data.moveUrl)
           } else {
             setNewAlarm(false)
+            setAlarmMoveUrl('')
           }
         }
       }
