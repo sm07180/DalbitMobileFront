@@ -229,11 +229,13 @@ export default () => {
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
         }
-        const _ios = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', _ios, 100)
-        context.action.updatePlayer(true)
-        context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(event.detail)
+        if (event.detail.mediaType !== 'v') {
+          const _ios = JSON.stringify(event.detail)
+          Utility.setCookie('native-player-info', _ios, 100)
+          context.action.updatePlayer(true)
+          context.action.updateMediaPlayerStatus(true)
+          context.action.updateNativePlayer(event.detail)
+        }
         break
       case 'native-start': //---------------------------Native player-show (Android & IOS)
         //시작
@@ -243,12 +245,14 @@ export default () => {
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
           context.action.updateCastState(event.detail.roomNo)
         }
-        //
-        const _android = JSON.stringify(event.detail)
-        Utility.setCookie('native-player-info', _android, 100)
-        context.action.updatePlayer(true)
-        context.action.updateMediaPlayerStatus(true)
-        context.action.updateNativePlayer(event.detail)
+
+        if (event.detail.mediaType !== 'v') {
+          const _android = JSON.stringify(event.detail)
+          Utility.setCookie('native-player-info', _android, 100)
+          context.action.updatePlayer(true)
+          context.action.updateMediaPlayerStatus(true)
+          context.action.updateNativePlayer(event.detail)
+        }
         break
       case 'native-end': //-----------------------------Native End (Android&iOS)
         //쿠키삭제
@@ -595,9 +599,6 @@ export default () => {
   //푸쉬서버에서 받는형태
   function pushBack(event) {
     let pushMsg = event.detail
-    if (__NODE_ENV === 'dev') {
-      alert('back pushMsg :' + pushMsg)
-    }
 
     const isJsonString = (str) => {
       try {
@@ -653,7 +654,7 @@ export default () => {
       pushClick(pushMsg.push_idx)
     }
 
-    switch (push_type + '') {
+    switch ((push_type + '').trim()) {
       case '1': //-----------------방송방 [room_no]
         room_no = pushMsg.room_no
         RoomJoin({roomNo: room_no})
