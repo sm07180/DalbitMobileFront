@@ -206,6 +206,12 @@ export default (props) => {
           보유 달 <span>{mydal.toLocaleString()}</span>
         </p>
         {creatResult()}
+        <div className="desc_wrap">
+          <strong className="title">환급 안내</strong>
+          <p className="list">
+            DJ에게 달을 선물하면 별로 전환되어 <span className="emp">60~63%</span>가 환급됩니다.
+          </p>
+        </div>
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
@@ -285,6 +291,32 @@ const Content = styled.section`
         font-size: 16px;
         font-weight: bold;
         line-height: 32px;
+      }
+    }
+  }
+  .desc_wrap {
+    padding-top: 25px;
+    font-size: 12px;
+    .title {
+      display: block;
+      padding-left: 16px;
+      margin-bottom: 8px;
+      color: #424242;
+    }
+    .list {
+      position: relative;
+      color: #757575;
+      padding-left: 16px;
+      line-height: 1.6;
+      &::before {
+        content: '∙';
+        position: absolute;
+        left: 1px;
+        top: 0;
+      }
+      .emp {
+        font-weight: bold;
+        color: #632beb;
       }
     }
   }
