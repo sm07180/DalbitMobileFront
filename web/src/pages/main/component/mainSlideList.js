@@ -56,6 +56,7 @@ export default (props) => {
                   if (roomNo && roomNo !== undefined) {
                     if (nickNm === 'banner') {
                       const clipUrl = /\/clip\/[0-9]*$/
+                      const broadUrl = /\/broadcast\/[0-9]*$/
                       if (roomType === 'link') {
                         context.action.updatenoticeIndexNum(roomNo)
                         if (roomNo.startsWith('http://') || roomNo.startsWith('https://')) {
@@ -67,16 +68,30 @@ export default (props) => {
                           } else {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
+                        } else if (broadUrl.test(roomNo)) {
+                          if (isHybrid()) {
+                            const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
+                            RoomJoin({roomNo: room_no})
+                          }else{
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                          }
                         } else {
                           history.push(`${roomNo}`)
                         }
                       } else {
-                        if (isHybrid()) {
-                          if (clipUrl.test(roomNo)) {
+                        if (clipUrl.test(roomNo)) {
+                          if (isHybrid()) {
                             const clip_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             clipJoinApi(clip_no, context)
                           } else {
                             Hybrid('openUrl', `${roomNo}`)
+                          }
+                        } else if (broadUrl.test(roomNo)) {
+                          if (isHybrid()) {
+                            const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
+                            RoomJoin({roomNo: room_no})
+                          }else{
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
                         } else {
                           if (clipUrl.test(roomNo)) {

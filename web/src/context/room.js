@@ -394,16 +394,32 @@ export const RoomMake = async (context) => {
     //-----------------------------------
     if (res.result === 'success') {
       const {code} = res
-      //비정상된 방이 있음
+      //비정상된 방이 있음 => 이어하기와 동일하게 수정
       if (code === '2') {
         const {roomNo} = res.data
         context.action.confirm({
-          msg: res.message,
-          //방송하기_클릭
+          //msg: res.message,
+          msg: '2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?',
+          subMsg: '※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.',
+          //새로 방송하기_클릭
           callback: () => {
             ;(async function () {
+              const exit = await Api.broad_exit({data: {roomNo: roomNo}})
+              //success,fail노출
+              if (exit.result === 'success') {
+                goRoomMake()
+              }else{
+                context.action.alert({
+                  msg: exit.message
+                })
+              }
+            })()
+          },
+          //이어서 방송하기_클릭
+          cancelCallback: () => {
+            ;(async function () {
               let reToken = {}
-              reToken = await Api.broadcast_info({data: {roomNo: roomNo}})
+              reToken = await Api.broadcast_normalize({data: {roomNo: roomNo}})
               console.log(reToken)
               if (reToken.result === 'success') {
                 Hybrid('ReconnectRoom', reToken.data)
@@ -414,19 +430,9 @@ export const RoomMake = async (context) => {
               }
             })()
           },
-          //방송종료_클릭
-          cancelCallback: () => {
-            ;(async function () {
-              const exit = await Api.broad_exit({data: {roomNo: roomNo}})
-              //success,fail노출
-              context.action.alert({
-                msg: exit.message
-              })
-            })()
-          },
           buttonText: {
-            left: '방송종료',
-            right: '방송하기'
+            left: '이어서 방송하기',
+            right: '새로 방송하기'
           }
         })
         return false

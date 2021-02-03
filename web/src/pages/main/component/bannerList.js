@@ -8,6 +8,7 @@ import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
+import {RoomJoin} from "context/room";
 
 export default React.forwardRef((props, ref) => {
   const globalCtx = useContext(Context)
@@ -17,28 +18,53 @@ export default React.forwardRef((props, ref) => {
   const [list, setList] = useState(false)
 
   const goEvent = (linkUrl, linkType) => {
+    const clipUrl = /\/clip\/[0-9]*$/
+    const broadUrl = /\/broadcast\/[0-9]*$/
+
     if (linkType === 'popup') {
-      if (isHybrid()) {
-        if (linkUrl.startsWith('/')) {
-          linkUrl = 'https://' + location.host + linkUrl
+      if (clipUrl.test(linkUrl)) {
+        if (isHybrid()) {
+          const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
+          clipJoinApi(clip_no, globalCtx)
+        } else {
+          globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
         }
-        linkUrl += '?webview=new'
-        Hybrid('openUrl', linkUrl)
+      } else if (broadUrl.test(linkUrl)) {
+        if (isHybrid()) {
+          const room_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
+          RoomJoin({roomNo: room_no})
+        }else{
+          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+        }
       } else {
-        //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
-        history.push(linkUrl)
+        if (isHybrid()) {
+          if (linkUrl.startsWith('/')) {
+            linkUrl = 'https://' + location.host + linkUrl
+          }
+          linkUrl += '?webview=new'
+          Hybrid('openUrl', linkUrl)
+        } else {
+          //window.open(linkUrl, '', 'height=' + screen.height + ',width=' + screen.width + 'fullscreen=yes')
+          history.push(linkUrl)
+        }
       }
     } else {
       if (linkUrl.startsWith('http://') || linkUrl.startsWith('https://')) {
         location.href = linkUrl
       } else {
-        const clipUrl = /\/clip\/[0-9]*$/
         if (clipUrl.test(linkUrl)) {
           if (isHybrid()) {
             const clip_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
             clipJoinApi(clip_no, globalCtx)
           } else {
             globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+          }
+        } else if (broadUrl.test(linkUrl)) {
+          if (isHybrid()) {
+            const room_no = linkUrl.substring(linkUrl.lastIndexOf('/') + 1)
+            RoomJoin({roomNo: room_no})
+          }else{
+            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
           }
         } else {
           history.push(linkUrl)
