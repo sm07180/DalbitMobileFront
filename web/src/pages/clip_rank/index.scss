@@ -489,6 +489,24 @@
     border-radius: 20px;
     margin-top: -20px;
     box-sizing: border-box;
+    .allPlay {
+      display: flex;
+      margin: -5px 0 8px auto;
+      align-items: center;
+      color: $greishBrown;
+      font-weight: $bold;
+      font-size: 12px;
+      &::after {
+        content: '';
+        display: inline-block;
+        margin-left: 8px;
+        width: 24px;
+        height: 24px;
+        background: url('https://image.dalbitlive.com/svg/play_purple_s_w.svg') center no-repeat $primary;
+        background-size: 12px;
+        border-radius: 50%;
+      }
+    }
   }
 
   // 상단 마이랭킹 리스트 디자인, 하단 바텀 리스트 공통 css

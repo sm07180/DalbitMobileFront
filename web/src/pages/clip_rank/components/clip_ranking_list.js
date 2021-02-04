@@ -23,6 +23,13 @@ export default function ClipRankingList() {
 
   return (
     <ul className="userRanking bottomList">
+      <button
+        className="allPlay"
+        onClick={() => {
+          ClipPlay(clipRankList[0].clipNo, context, history)
+        }}>
+        전체듣기
+      </button>
       {clipRankList.slice(liveDateCheckIdx).map((v, i) => {
         return (
           <li className="rankingList" key={i}>

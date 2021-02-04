@@ -463,6 +463,17 @@ export default (props) => {
           <button
             className="liveIcon"
             onClick={() => {
+              if (!context.myInfo.level) {
+                return context.action.alert({
+                  msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+                })
+              }
+              if (!profile.level) {
+                return context.action.alert({
+                  msg: '0레벨 회원에게는 우체통 메시지를 \n 보낼 수 없습니다.'
+                })
+              }
+
               if (isHybrid()) {
                 Hybrid('JoinMailBox', profile.memNo)
               } else {

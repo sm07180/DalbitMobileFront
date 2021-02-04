@@ -66,7 +66,12 @@ export default (props) => {
           msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
         })
       }
-      Hybrid('OpenMailBoxList')
+
+      if (isHybrid()) {
+        Hybrid('OpenMailBoxList')
+      } else {
+        context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+      }
       return false
     }
     if (category === 'store') {
