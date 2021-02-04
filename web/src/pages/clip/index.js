@@ -128,6 +128,9 @@ export default (props) => {
   const [minRecDate, setMinRecDate] = useState('')
   const [swiper, setSwiper] = useState(null)
   const [tableSwiperIndex, setTableSwiperIndex] = useState(0)
+  const [clipRankDayList, setClipRankDayList] = useState([]);
+  const [clipRankWeekList, setClipRankWeekList] = useState([]);
+
   const swiperParamsDal = {
     // loop: true, //무제한 롤링
     slidesPerView: 'auto',
@@ -206,17 +209,34 @@ export default (props) => {
     }
   }
 
-  const fetchClipRankingList = async () => {
+  const fetchClipRankingDayList = async () => {
     const {result, data, message} = await Api.getClipRankingList({
-      rankType: formState.dateType,
-      rankingDate: formState.dateType === DATE_TYPE.DAY ? convertDateFormat(new Date(), "YYYY-MM-DD") : convertDateFormat(convertMonday(), "YYYY-MM-DD"),
+      rankType: DATE_TYPE.DAY,
+      rankingDate: convertDateFormat(new Date(), "YYYY-MM-DD"),
       page: 1,
       records: clipRankingRecords
     })
     if (result === 'success') {
-      setClipRankList(data.list.slice(0, clipRankingCheckIdx))
+      setClipRankDayList(data.list.slice(0, clipRankingCheckIdx));
     } else {
-      setClipRankList([])
+      setClipRankDayList([])
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  const fetchClipRankingWeekList = async () => {
+    const {result, data, message} = await Api.getClipRankingList({
+      rankType: DATE_TYPE.WEEK,
+      rankingDate: convertDateFormat(convertMonday(), "YYYY-MM-DD"),
+      page: 1,
+      records: clipRankingRecords
+    })
+    if (result === 'success') {
+      setClipRankWeekList(data.list.slice(0, clipRankingCheckIdx));
+    } else {
+      setClipRankWeekList([])
       context.action.alert({
         msg: message
       })
@@ -374,9 +394,6 @@ export default (props) => {
           }}>
           <div className="weekClip__thumb">{v.thumbUrl && <img src={v.thumbUrl} alt="썸네일" />}</div>
           <div className="textBox">
-            {/* 기획이랑 디자인이 다르게 나와서 디자인을 주석해놓겠습니다 */}
-            {/*<div className="textBox__title">{v.titleMsg}</div>*/}
-            {/*<p className="textBox__nickName">{v.title}</p>*/}
             <p className="textBox__title">{v.titleMsg}</p>
             <div className="textBox__nickName">{v.nickNm}</div>
             <span className="textBox__subject">{v.title}</span>
@@ -777,7 +794,11 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    fetchClipRankingList()
+    if(formState.dateType === DATE_TYPE.DAY) {
+      fetchClipRankingDayList();
+    } else {
+      fetchClipRankingWeekList();
+    }
   }, [formState.dateType])
 
   useEffect(() => {
@@ -876,7 +897,7 @@ export default (props) => {
           <div ref={myClipRef}></div>
         )}
         {popularList.length > 0 ? (
-          <div className="recomClip" ref={recomendRef} style={{minHeight: popularList.length > 3 ? '282px' : '172px'}}>
+          <div className="recomClip" ref={recomendRef}>
             <div className="recomClip__title">
               <h3 className="clipTitle">{popularType === 0 ? '인기 클립' : '당신을 위한 추천 클립'}</h3>
               <div className="recomClip__title__rightSide">
@@ -894,15 +915,16 @@ export default (props) => {
             <ul className="recomClipBox">{makePoupularList()}</ul>
           </div>
         ) : (
-          <div ref={recomendRef} style={{minHeight: '282px'}}></div>
+          <div ref={recomendRef}></div>
         )}
 
-        {clipRankList.length > 0 ? (
+        {clipRankDayList.length > 0  || clipRankWeekList.length > 0 ? (
           <div className="rankClip" ref={clipRankingRef}>
             <div className="rankClip__titleBox">
               <h3 className="rankClip__title"
-                  onClick={() => {history.push('/clip_rank');
-                                  formDispatch({type: 'DATE_TYPE', val: formState.dateType});
+                  onClick={() => {
+                    history.push('/clip_rank');
+                    formDispatch({type: 'DATE_TYPE', val: formState.dateType});
                   }}>
                 클립 랭킹
               </h3>
@@ -930,45 +952,51 @@ export default (props) => {
               </div>
             </div>
             <ul className="rankClipList">
-              {clipRankList.map((v, i) => {
-                return (
-                  <React.Fragment key={i}>
-                    {formState.dateType === DATE_TYPE.DAY ? (
-                      <li
-                        className="rankClipListItem"
-                        onClick={() => {
-                          if (customHeader['os'] === OS_TYPE['Desktop']) {
-                            if (context.token.isLogin === false) {
-                              context.action.alert({
-                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                                callback: () => {
-                                  history.push('/login')
-                                }
-                              })
-                            } else {
-                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                            }
+              {formState.dateType === DATE_TYPE.DAY ? (
+                clipRankDayList.map((v,i) => {
+                  return (
+                    <li
+                      key={`day-${i}`}
+                      className="rankClipListItem"
+                      onClick={() => {
+                        if (customHeader['os'] === OS_TYPE['Desktop']) {
+                          if (context.token.isLogin === false) {
+                            context.action.alert({
+                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                              callback: () => {
+                                history.push('/login')
+                              }
+                            })
                           } else {
-                            fetchDataPlay(v.clipNo, 'dal')
+                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
-                        }}>
-                        <div className="rankClipListItem__thumb">
-                          <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
-                        </div>
-                        <p className="rankClipListItem__title">{v.title}</p>
-                        <p className="rankClipListItem__nickName">{v.nickName}</p>
-                      </li>
-                    ) : (
-                      <li className="rankClipListItem week" onClick={() => loginCheck(v.memNo)}>
-                        <div className="rankClipListItem__thumb">
-                          <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
-                        </div>
-                        <p className="rankClipListItem__title">{v.nickName}</p>
-                      </li>
-                    )}
-                  </React.Fragment>
-                )
-              })}
+                        } else {
+                          fetchDataPlay(v.clipNo, 'dal')
+                        }
+                      }}>
+                      <div className="rankClipListItem__thumb">
+                        <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
+                      </div>
+                      <p className="rankClipListItem__title">{v.title}</p>
+                      <p className="rankClipListItem__nickName">{v.nickName}</p>
+                    </li>
+                  )
+                })
+              ) : (
+                clipRankWeekList.map((v,i) => {
+                  return (
+                    <li
+                      key={`week-${i}`}
+                      className="rankClipListItem week"
+                      onClick={() => loginCheck(v.memNo)}>
+                      <div className="rankClipListItem__thumb">
+                        <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
+                      </div>
+                      <p className="rankClipListItem__title">{v.nickName}</p>
+                    </li>
+                  )
+                })
+              )}
             </ul>
           </div>
         ) : (

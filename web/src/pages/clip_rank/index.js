@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, {useContext, useRef, useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import { ClipRankContext } from 'context/clip_rank_ctx'
+import {ClipRankContext} from 'context/clip_rank_ctx'
 
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
@@ -19,8 +19,8 @@ let topBoxHeight
 
 function CilpRank() {
   const history = useHistory()
-  const { clipRankState, clipRankAction } = useContext(ClipRankContext)
-  const { formState, clipRankList } = clipRankState
+  const {clipRankState, clipRankAction} = useContext(ClipRankContext)
+  const {formState, clipRankList} = clipRankState
   const setClipRankList = clipRankAction.setClipRankList
   const setMyInfo = clipRankAction.setMyInfo
 
@@ -31,12 +31,14 @@ function CilpRank() {
   const TopItemHeight = useRef()
 
   async function fetchData() {
-    const res = await Api.getClipRankingList({
+    const resParams = {
       rankType: formState.dateType,
       rankingDate: formState.rankingDate,
       page: 1,
       records: records
-    })
+    }
+    localStorage.setItem('clipPlayListInfo', JSON.stringify(resParams))
+    const res = await Api.getClipRankingList({...resParams})
     if (res.result === 'success') {
       if (res.data.list.length > 5) {
         setClipRankList(res.data.list)
@@ -49,7 +51,6 @@ function CilpRank() {
       setClipRankList([])
     }
   }
-
 
   useEffect(() => {
     fetchData()

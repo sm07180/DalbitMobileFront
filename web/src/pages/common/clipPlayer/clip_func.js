@@ -60,6 +60,8 @@ export const clipJoin = (data, context, webview, isPush) => {
       }
     } else if (playListData.hasOwnProperty('recDate')) {
       currentType = 'clip/recommend/list?'
+    } else if (playListData.hasOwnProperty('rankType')) {
+      currentType = 'clip/rank?'
     } else {
       currentType = passAppbuild ? 'clip/list?' : 'list'
     }

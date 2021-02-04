@@ -92,6 +92,14 @@ export default () => {
       } else {
         globalCtx.action.alert({msg: message})
       }
+    } else if (playListInfo.hasOwnProperty('rankType')) {
+      const {result, data, message} = await Api.getClipRankingList({...playListInfo})
+      if (result === 'success') {
+        playListCtx.action.updateList(data.list)
+        setTotalList(data.list.length)
+      } else {
+        globalCtx.action.alert({msg: message})
+      }
     } else {
       //나머지 기본 '/clip/list' 조회(최신, 테마슬라이더, 각 주제별, 서치)
       const {result, data, message} = await Api.getClipList({...playListInfo})
