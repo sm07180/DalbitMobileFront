@@ -55,9 +55,7 @@ export default function ClipRankingListTop3() {
               <>
                 <div
                   className="TopBoxThumb__user"
-                  onClick={() => {
-                    history.push(`/mypage/${v.memNo}`);
-                  }}
+                  onClick={() => loginCheck(v.memNo)}
                 >
                   <img src={v.profImg.thumb190x190} alt="유저이미지" />
 
