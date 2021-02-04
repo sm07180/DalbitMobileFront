@@ -1,7 +1,7 @@
 import React from 'react'
-import Api from "context/api";
-import { OS_TYPE } from "context/config";
-import { clipJoin } from "pages/common/clipPlayer/clip_func";
+import Api from 'context/api'
+import {OS_TYPE} from 'context/config'
+import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 
 export async function ClipPlay(clipNum, context, history) {
   if (JSON.parse(Api.customHeader)['os'] === OS_TYPE['Desktop']) {
@@ -20,7 +20,12 @@ export async function ClipPlay(clipNum, context, history) {
       clipNo: clipNum
     })
     if (result === 'success') {
-      localStorage.removeItem('clipPlayListInfo')
+      if (
+        (context.customHeader['os'] === OS_TYPE['IOS'] && context.customHeader['appBuild'] < 284) ||
+        (context.customHeader['os'] === OS_TYPE['Android'] && context.customHeader['appBuild'] < 52)
+      ) {
+        localStorage.removeItem('clipPlayListInfo')
+      }
       clipJoin(data, context)
     } else {
       if (code === '-99') {
