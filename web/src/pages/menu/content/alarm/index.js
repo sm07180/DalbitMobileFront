@@ -101,7 +101,7 @@ export default function Alert() {
         if (context.profile.memNo === roomNo) {
           history.push(`/mypage/${roomNo}/fanboard`)
         } else {
-          history.push(`/mypage/${memNo}?tab=1`)
+          history.push(`/mypage/${roomNo}?tab=1`)
         }
         break
       case 32:
