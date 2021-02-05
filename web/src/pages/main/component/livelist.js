@@ -156,18 +156,16 @@ const makeContents = (props) => {
           <div className="broadcast-content">
             <div className="top-status">
               {isSpecial === true && isShining === false ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_circle">스페셜DJ</em>
               ) : isSpecial === false && isShining === true ? (
-                <em className="icon_wrap icon_shinigdj">샤이닝DJ</em>
+                <em className="icon_wrap icon_shinigdj_circle">샤이닝DJ</em>
               ) : isSpecial === true && isShining === true ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_circle">스페셜DJ</em>
               ) : (
                 <></>
               )}
-              {bjGender !== '' && (
-                <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>
-              )}
-              {os === 3 && <em className="icon_wrap icon_pc_circle">PC</em>}
+              {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
+              {/* {os === 3 && <em className="icon_wrap icon_pc_circle">PC</em>} */}
             </div>
             <div className="entry-count">
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
