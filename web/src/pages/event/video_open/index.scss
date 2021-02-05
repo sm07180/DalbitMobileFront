@@ -1,0 +1,304 @@
+@import '../../../styles/global';
+
+#event_page {
+  .event_main_wrap {
+    position: relative;
+
+    img {
+      width: 100%;
+    }
+
+    .btnBack {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      width: 40px;
+      height: 40px;
+    }
+  }
+
+  .tab_box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1db0db;
+
+    .tab {
+      width: 47%;
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: -0.5px;
+      font-weight: $bold;
+
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .event_content_wrap {
+    .stage_wrap {
+      img {
+        width: 100%;
+      }
+
+      .notice_box {
+        padding: 12px;
+        font-size: 13px;
+        line-height: 26px;
+        letter-spacing: -1px;
+        color: $white;
+        background: url(https://image.dalbitlive.com/event/video_open/event_notice_bg@3x.png);
+        background-size: 100%;
+
+        p {
+          position: relative;
+          padding-left: 16px;
+          padding-bottom: 5px;
+          line-height: 20px;
+
+          &::before {
+            content: '※';
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+
+          span {
+            font-size: 12px;
+          }
+        }
+
+        button {
+          margin-left: 3px;
+          padding: 0 5px;
+          height: 22px;
+          line-height: 18px;
+          border-radius: 10px;
+          background-color: $white;
+          border: solid 1px #1e296b;
+          color: #1e296b;
+          font-size: 13px;
+          letter-spacing: -0.35px;
+
+          &:last-of-type {
+            background-color: #fdff58;
+          }
+        }
+      }
+
+      .my_info_box {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 8px 20px;
+        background-color: #1d2b38;
+        color: #fff;
+
+        .my_rank_box {
+          position: relative;
+
+          &:first-child {
+            padding-right: 37px;
+            &::after {
+              content: '';
+              position: absolute;
+              top: 10px;
+              right: 16px;
+              width: 1px;
+              height: 14px;
+              background-color: $darkGray;
+            }
+          }
+
+          img {
+            width: 24px;
+            margin-top: -2px;
+            vertical-align: middle;
+          }
+
+          .rank {
+            display: inline-block;
+            margin: 0 2px 0 8px;
+            padding: 0 12px;
+            height: 28px;
+            border-radius: 14px;
+            background: $white;
+            font-size: 22px;
+            letter-spacing: -0.55px;
+            text-align: center;
+            color: $black;
+            font-weight: 500;
+            line-height: 28px;
+          }
+
+          .point {
+            margin-left: 8px;
+            font-size: 18px;
+            font-weight: $bold;
+            letter-spacing: -0.45px;
+            color: #fd942b;
+          }
+        }
+
+        .my_point {
+          position: relative;
+          width: 100%;
+          margin-top: 9px;
+
+          span {
+            color: #fcff1c;
+          }
+
+          button {
+            position: absolute;
+            bottom: -2px;
+            right: -5px;
+
+            .refresh-img {
+              width: 100%;
+              margin-top: -2px;
+              margin-left: 8px;
+              max-width: 28px;
+              vertical-align: middle;
+              &.active {
+                @include rotate_animation(-360deg);
+              }
+            }
+          }
+        }
+      }
+
+      .event_item {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid #f2f2f2;
+        box-sizing: border-box;
+
+        .rank {
+          width: 64px;
+          text-align: center;
+
+          .medal_icon {
+            padding-top: 8px;
+            width: 32px;
+          }
+
+          .num {
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            margin-top: 24px;
+            line-height: 20px;
+            border-radius: 12px;
+            background-color: $lighterGray;
+            font-size: 12px;
+            font-weight: $white;
+            text-align: center;
+          }
+        }
+
+        &:first-child {
+          .medal_icon {
+            width: 40px;
+          }
+        }
+
+        .dj_info {
+          display: flex;
+          align-items: center;
+          width: calc(100% - 64px);
+          padding: 10px 0;
+          box-sizing: border-box;
+
+          .thumb {
+            overflow: hidden;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
+            margin-right: 7px;
+            border-radius: 50%;
+
+            img {
+              width: 100%;
+            }
+          }
+
+          .nick_box {
+            width: calc(100% - 46px);
+            font-size: 14px;
+            letter-spacing: -0.35px;
+
+            .nick {
+              max-width: 95%;
+              font-weight: $bold;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              vertical-align: middle;
+            }
+
+            .level {
+              font-size: 14px;
+              font-weight: $bold;
+              letter-spacing: -0.35px;
+              vertical-align: middle;
+
+              .icon_wrap {
+                vertical-align: middle;
+              }
+            }
+          }
+
+          .exp {
+            margin-top: 3px;
+            font-size: 12px;
+            letter-spacing: -0.3px;
+            color: #919191;
+            font-weight: 500;
+
+            img {
+              width: 16px;
+            }
+
+            span {
+              color: $primary;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #layerPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 60;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .btnClose {
+      position: absolute;
+      top: -40px;
+      right: 0px;
+      width: 32px;
+      height: 32px;
+      text-indent: -9999px;
+      background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+    }
+
+    .layerContainer {
+      position: relative;
+      // width: 100%;
+      min-width: 320px;
+      max-width: 360px;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
+  }
+}

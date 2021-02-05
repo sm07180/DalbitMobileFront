@@ -3149,6 +3149,14 @@ export default class API {
       params: data
     })
   }
+
+  static getVideoOpenEvent = async (data) => {
+    return await ajax({
+      url: '/event',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

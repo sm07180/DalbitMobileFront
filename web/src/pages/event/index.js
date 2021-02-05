@@ -29,6 +29,7 @@ import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
 import NewYear from './new_year'
 import Package from './package'
+import VideoOpen from './video_open'
 
 export default () => {
   const params = useParams()
@@ -86,6 +87,8 @@ export default () => {
         return <NewYear />
       case 'package':
         return <Package />
+      case 'video_open':
+        return <VideoOpen />
       default:
         return <></>
         break
