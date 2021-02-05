@@ -24,6 +24,7 @@ import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
 import Award from './award'
 import Purchase from './purchase'
+import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
 import NewYear from './new_year'
@@ -75,6 +76,8 @@ export default () => {
         return <Award />
       case 'purchase':
         return <Purchase />
+      case 'purchaseBenefit':
+        return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
       case 'recommend_dj':
