@@ -60,11 +60,7 @@ export default (props) => {
                     ) : (
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
                     )}
-                    {roomNo !== undefined && roomNo !== '' && (
-                      <span className="liveIcon">
-                        <img src={LiveIcon} alt="라이브중" />
-                      </span>
-                    )}
+                    {roomNo !== undefined && roomNo !== '' && <em className="icon_wrap icon_live icon_live_ranking">라이브중</em>}
                   </div>
                   <div className="nickname">{nickNm}</div>
                 </div>
@@ -97,9 +93,7 @@ export default (props) => {
                       <img className="medal-img" src={idx === 0 ? GoldMedal : idx === 1 ? SilverMedal : BronzeMedal} />
                     )}
                     {listenRoomNo !== undefined && listenRoomNo !== '' && (
-                      <span className="listenIcon">
-                        <img src={ListenIcon} alt="청취중" />
-                      </span>
+                      <em className="icon_wrap icon_listen icon_listen_ranking">청취중</em>
                     )}
                   </div>
                   <div className="nickname">{nickNm}</div>

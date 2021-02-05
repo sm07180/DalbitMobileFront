@@ -11,6 +11,8 @@ import Room, {RoomJoin} from 'context/room'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Swiper from 'react-id-swiper'
+
+import BadgeList from 'common/badge_list'
 //component
 import ProfileReport from './profile_report'
 import ProfileFanList from './profile_fanList'
@@ -250,29 +252,8 @@ export default (props) => {
 
   //스와이퍼
   const swiperParams = {
-    spaceBetween: 2,
-    slidesPerView: 'auto',
-    resistanceRatio: 0
+    slidesPerView: 'auto'
   }
-  //뱃지
-  const BadgeSlide = profile.liveBadgeList.concat(profile.fanBadgeList).map((item, index) => {
-    if (!profile.hasOwnProperty('liveBadgeList') && !profile.hasOwnProperty('fanBadgeList')) return null
-    const {text, icon, startColor, endColor} = item
-
-    //-----------------------------------------------------------------------
-    return (
-      <div className="badgeSlide" key={index}>
-        <span
-          className="fan-badge"
-          style={{
-            background: `linear-gradient(to right, ${startColor}, ${endColor}`
-          }}>
-          {icon !== '' && <img src={icon} alt="뱃지아이콘" className="icon-badge" />}
-          <span>{text}</span>
-        </span>
-      </div>
-    )
-  })
 
   //팝업실행
   const popStateEvent = (e) => {
@@ -574,7 +555,7 @@ export default (props) => {
                   }
                 }
               }}>
-              <img src={LiveIcon} className="ico-live" />
+              <em className="icon_wrap icon_live icon_live_28">라이브중</em>
             </button>
           )}
 
@@ -662,7 +643,7 @@ export default (props) => {
                   }
                 }
               }}>
-              <img src={ListenIcon} alt="청취중" className="ico-listen" />
+              <em className="icon_wrap icon_listen">청취중</em>
             </button>
           )}
 
@@ -712,9 +693,11 @@ export default (props) => {
           <strong>
             {profile.nickNm}
             <span className="subIconWrap">
-              {/* {<span className="nationIcon"></span>} */}
-              {profile.gender === 'f' && <span className="femaleIcon"></span>}
-              {profile.gender === 'm' && <span className="maleIcon"></span>}
+              {profile.gender !== '' && (
+                <em className={`icon_wrap ${profile.gender === 'm' ? 'icon_male' : 'icon_female'}`}>
+                  <span className="blind">성별</span>
+                </em>
+              )}
             </span>
           </strong>
         </div>
@@ -726,7 +709,13 @@ export default (props) => {
         {((profile.fanBadgeList && profile.fanBadgeList.length > 0) ||
           (profile.liveBadgeList && profile.liveBadgeList.length > 0)) && (
           <div className="badgeWrap">
-            <Swiper {...swiperParams}>{BadgeSlide}</Swiper>
+            {profile.liveBadgeList && profile.liveBadgeList.length !== 0 && profile.liveBadgeList.length > 1 ? (
+              <Swiper {...swiperParams}>
+                <BadgeList list={profile.liveBadgeList} />
+              </Swiper>
+            ) : (
+              <BadgeList list={profile.liveBadgeList} />
+            )}
           </div>
         )}
         {profile.fanRank.length > 0 ? (

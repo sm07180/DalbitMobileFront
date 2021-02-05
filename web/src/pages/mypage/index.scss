@@ -347,18 +347,6 @@
               margin-left: 0;
             }
           }
-          .nationIcon {
-            width: 24px;
-            background: url('../menu/static/ico_korea.svg') no-repeat center center / cover;
-          }
-          .femaleIcon {
-            width: 24px;
-            background: url('../menu/static/ico_female.svg') no-repeat center center / cover;
-          }
-          .maleIcon {
-            width: 24px;
-            background: url('../menu/static/ico_male.svg') no-repeat center center / cover;
-          }
         }
         .newIcon {
           position: absolute;
@@ -439,7 +427,6 @@
           justify-content: center;
           align-items: center;
           .swiper-slide {
-            display: block;
             width: auto;
             min-width: 72px;
             height: auto;
@@ -463,41 +450,17 @@
             opacity: 1;
           }
 
-          .fan-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+          .icon_badge {
             min-width: 60px;
             height: 28px;
-            padding: 0 10px 0 8px;
-            margin-left: 4px;
+            margin-top: 12px;
+            padding: 0 12px 0 8px;
             font-size: 14px;
-            font-stretch: normal;
-            font-style: normal;
-            line-height: 1;
-            letter-spacing: -0.35px;
-            text-align: left;
-            color: $white;
             border-radius: 20px;
-            box-sizing: border-box;
-
-            &:first-child {
-              margin-left: 0;
+            .img {
+              margin-left: -4px;
+              height: 26px;
             }
-          }
-          .fan-badge:last-child {
-            margin-right: 0;
-          }
-
-          .fan-badge img {
-            width: auto;
-            height: 26px;
-          }
-          .fan-badge span {
-            display: inline-block;
-            vertical-align: middle;
-            line-height: 2.2;
-            color: $white;
           }
         }
         .categoryCntWrap {

@@ -31,12 +31,6 @@ function SpecialList({empty}) {
           ) : (
             <>
               {specialList.map((v, idx) => {
-                let genderName
-                if (v.gender == 'm' || v.gender == 'f') {
-                  genderName = `genderBox gender-${v.gender}`
-                } else {
-                  genderName = `genderBox`
-                }
                 const imageData = {
                   profImg: v.profImg.thumb120x120,
                   holder: v.holder,
@@ -81,7 +75,9 @@ function SpecialList({empty}) {
                         </div>
                         <div className="genderBox">
                           <LevelBox levelColor={v.levelColor}>Lv{v.level}</LevelBox>
-                          <span className={genderName} />
+                          <em className={`icon_wrap ${v.gender === 'm' ? 'icon_male' : 'icon_female'}`}>
+                            <span className="blind">성별</span>
+                          </em>
                         </div>
                         <div className="countBox">
                           <span>
@@ -143,6 +139,7 @@ const LevelBox = styled.div`
   }};
   width: 44px;
   height: 16px;
+  line-height: 16px;
   border-radius: 14px;
   font-weight: bold;
   font-size: 12px;

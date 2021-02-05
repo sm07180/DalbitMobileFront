@@ -42,33 +42,30 @@ function Second({empty}) {
                     return (
                       <div className="infoBox flexBox" key={`memberList-${i1}`}>
                         <div className="profileBox">
-                          <ProfileImage imageData={imageData} imageSize={74}/>
+                          <ProfileImage imageData={imageData} imageSize={74} />
                         </div>
                         <div>
                           <div className="nickNameBox ellipsis">{v1.memNick}</div>
                           <span className="genderBox">
                             <LevelBox levelColor={v1.levelColor}>Lv{v1.level}</LevelBox>
-                            {v1.memSex1 === 'w' && (
-                              <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="ico"/>
-                            )}
-                            {v1.memSex1 === 'm' && (
-                              <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="ico"/>
-                            )}
+                            <em className={`icon_wrap ${v1.memSex1 === 'm' ? 'icon_male' : 'icon_female'}`}>
+                              <span className="blind">성별</span>
+                            </em>
                           </span>
-                          <div className="countBox">
+                          <ul className="countBox">
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg"/>
+                              <img src="https://image.dalbitlive.com/svg/ico_like_g_s.svg" />
                               {Utility.addComma(likeCnt)}
                             </span>
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/people_g_s.svg"/>
+                              <img src="https://image.dalbitlive.com/svg/people_g_s.svg" />
                               {Utility.addComma(listenCnt)}
                             </span>
                             <span>
-                              <img src="https://image.dalbitlive.com/svg/time_g_s.svg"/>
+                              <img src="https://image.dalbitlive.com/svg/time_g_s.svg" />
                               {Utility.addComma(airTime)}
                             </span>
-                          </div>
+                          </ul>
                         </div>
                       </div>
                     )
@@ -101,6 +98,7 @@ const LevelBox = styled.div`
   }};
   width: 44px;
   height: 16px;
+  line-height: 16px;
   border-radius: 14px;
   font-weight: 500;
   font-size: 12px;

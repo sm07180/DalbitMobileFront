@@ -132,8 +132,8 @@ export default (props) => {
                     <div className="memberItem__info">
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
-                        {gender === 'f' ? <img src={FemaleIcon} /> : gender === 'm' ? <img src={MaleIcon} /> : ''}
-                        {isSpecial && <img src={SpecialLong} />}
+                        {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
+                        {isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                       </div>
                       <span className="memberItem__info__fanCnt">
                         <img src={PersonIcon} />
@@ -227,9 +227,11 @@ export default (props) => {
                           <span className="title">{title}</span>
                         </p>
                         <p className="textBox__nickName">
-                          {bjGender !== '' ? <span className={bjGender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                          {os === 3 && <i className="iconPc">PC</i>}
-                          {bjNickNm}
+                          {bjGender !== '' && (
+                            <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>
+                          )}
+                          {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
+                          <span className="nickname">{bjNickNm}</span>
                         </p>
                         <div className="textBox__detail">
                           <span className="textBox__detail--item">
@@ -297,7 +299,7 @@ export default (props) => {
                       }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
-                        {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
+                        {isSpecial && <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>}
                         <img
                           src={bgImg[`thumb190x190`]}
                           alt={title}
@@ -333,8 +335,8 @@ export default (props) => {
                           <span className="title">{title}</span>
                         </p>
                         <p className="textBox__nickName">
-                          {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-                          {nickName}
+                          {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
+                          <span className="nickname">{nickName}</span>
                         </p>
                         <div className="textBox__detail">
                           <span className="textBox__detail--item">

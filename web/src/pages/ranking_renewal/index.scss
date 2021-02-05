@@ -700,16 +700,14 @@
       i.icon {
         width: 16px;
         height: 16px;
-        margin-right: 4px;
         display: inline-block;
         background-position: center center;
         background-repeat: no-repeat;
         opacity: 0.8;
         text-indent: -9999px;
-        vertical-align: middle;
 
         &--point {
-          background-image: url(https://image.dalbitlive.com/svg/.svg);
+          background-image: url(https://image.dalbitlive.com/svg/ico_point.svg);
         }
 
         &--people {
@@ -760,13 +758,11 @@
       i.icon {
         width: 16px;
         height: 16px;
-        margin-right: 4px;
         display: inline-block;
         background-position: center center;
         background-repeat: no-repeat;
         opacity: 0.8;
         text-indent: -9999px;
-        vertical-align: middle;
 
         &--point {
           background-image: url(https://image.dalbitlive.com/svg/.svg);
@@ -1599,12 +1595,10 @@
       i.icon {
         width: 16px;
         height: 16px;
-        margin-right: 4px;
         display: inline-block;
         background-position: center center;
         background-repeat: no-repeat;
         text-indent: -9999px;
-        vertical-align: middle;
 
         &--people {
           background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
@@ -1634,20 +1628,6 @@
       &.korea-m {
         margin-left: 2px;
         border: 1px solid;
-      }
-
-      &.gender-m {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-male@2x.png);
-        margin-left: 2px;
-      }
-
-      &.gender-f {
-        width: 24px;
-        height: 16px;
-        background-image: url(./static/ico-female@2x.png);
-        margin-left: 2px;
       }
     }
 
@@ -1701,13 +1681,11 @@
       i.icon {
         width: 16px;
         height: 16px;
-        margin-right: 4px;
         display: inline-block;
         background-position: center center;
         background-repeat: no-repeat;
         opacity: 0.8;
         text-indent: -9999px;
-        vertical-align: middle;
 
         &--point {
           background-image: url(https://image.dalbitlive.com/svg/.svg);
@@ -1733,10 +1711,13 @@
         }
       }
       & > span {
-        margin-right: 6px;
+        margin-left: 6px;
         font-size: 12px;
         letter-spacing: -0.3px;
         word-spacing: -3px;
+        &:first-child {
+          margin-left: 0;
+        }
         & > img {
           width: 16px;
           height: 16px;
@@ -1975,22 +1956,6 @@
       &.korea-m {
         margin-left: 2px;
         border: 1px solid;
-      }
-
-      &.gender-m {
-        width: 24px;
-        height: 16px;
-        background: url(./static/ico-male@2x.png) no-repeat;
-        background-size: contain;
-        margin-left: 2px;
-      }
-
-      &.gender-f {
-        width: 24px;
-        height: 16px;
-        background: url(./static/ico-male@2x.png) no-repeat;
-        background-size: contain;
-        margin-left: 2px;
       }
     }
 

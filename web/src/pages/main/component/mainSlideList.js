@@ -9,6 +9,8 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 
+import BadgeList from 'common/badge_list'
+
 export default (props) => {
   const context = useContext(Context)
   const history = useHistory()
@@ -72,7 +74,7 @@ export default (props) => {
                           if (isHybrid()) {
                             const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             RoomJoin({roomNo: room_no})
-                          }else{
+                          } else {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
                         } else {
@@ -90,7 +92,7 @@ export default (props) => {
                           if (isHybrid()) {
                             const room_no = roomNo.substring(roomNo.lastIndexOf('/') + 1)
                             RoomJoin({roomNo: room_no})
-                          }else{
+                          } else {
                             context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                           }
                         } else {
@@ -127,56 +129,32 @@ export default (props) => {
                   <div className="topSlide__iconWrap">
                     <div className="iconWrapper">
                       {isAdmin ? <em className="adminIcon">운영자</em> : ''}
-                      {nickNm !== 'banner' && isNew === true ? <em className="newIcon">신입DJ</em> : ''}
+                      {nickNm !== 'banner' && isNew === true && <em className="icon_wrap icon_newdj">신입DJ</em>}
                       {isSpecial === true && isShining === false ? (
-                        <em className="specialIcon">스페셜DJ</em>
+                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                       ) : isSpecial === false && isShining === true ? (
-                        <em className="shiningIcon">샤이닝DJ</em>
+                        <em className="icon_wrap icon_shinigdj">샤이닝DJ</em>
                       ) : isSpecial === true && isShining === true ? (
-                        <em className="specialIcon">스페셜DJ</em>
+                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                       ) : (
                         <></>
                       )}
-                      {liveBadgeList &&
-                        liveBadgeList.length !== 0 &&
-                        liveBadgeList.map((item, idx) => {
-                          return (
-                            <React.Fragment key={idx + `badge`}>
-                              {item.icon !== '' ? (
-                                <div
-                                  className="badgeIcon topImg"
-                                  style={{
-                                    background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                    marginRight: '4px'
-                                  }}>
-                                  <img src={item.icon} style={{height: '16px'}} />
-                                  {item.text}
-                                </div>
-                              ) : (
-                                <div
-                                  style={{background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`}}
-                                  className="badgeIcon text">
-                                  {item.text}
-                                </div>
-                              )}
-                            </React.Fragment>
-                          )
-                        })}
-
-                      {nickNm === 'banner' ? <em className="eventIcon">EVENT</em> : ''}
+                      {liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}
+                      {nickNm === 'banner' && <em className="icon_wrap icon_event">EVENT</em>}
                     </div>
-
-                    {nickNm !== 'banner' ? <span className="liveIcon">live</span> : ''}
                   </div>
 
                   {nickNm !== 'banner' && (
-                    <div className="topSlide__infoWrap">
-                      <img className="thumb" src={profImg.thumb62x62} />
-                      <div className="text">
-                        <span className="title">{title}</span>
-                        <span className="nickname">{nickNm}</span>
+                    <>
+                      <span className="icon_wrap icon_live_text">live</span>
+                      <div className="topSlide__infoWrap">
+                        <img className="thumb" src={profImg.thumb62x62} />
+                        <div className="text">
+                          <span className="title">{title}</span>
+                          <span className="nickname">{nickNm}</span>
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               </div>

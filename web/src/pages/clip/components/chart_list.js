@@ -149,7 +149,7 @@ export default (props) => {
             }
           }}>
           <div className="chartListDetailItem__thumb">
-            {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
+            {isSpecial && <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>}
             <img src={bgImg[`thumb120x120`]} alt={title} />
             <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
@@ -167,8 +167,12 @@ export default (props) => {
               <span className="title">{title}</span>
             </p>
             <p className="textBox__nickName">
-              {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
-              {nickName}
+              {gender !== '' && (
+                <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>
+                  <span className="blind">성별</span>
+                </em>
+              )}
+              <span className="nickname">{nickName}</span>
             </p>
 
             <div className="textBox__detail">
@@ -275,7 +279,7 @@ export default (props) => {
                     }
                   }}>
                   <div className="itemBox">
-                    <div className="itemBox__status">{isSpecial && <span className="specialIcon">S</span>}</div>
+                    <div className="itemBox__status">{isSpecial && <em className="icon_wrap icon_specialdj_label">S</em>}</div>
 
                     <div className="itemBox__score">
                       <span className="message">
@@ -287,7 +291,7 @@ export default (props) => {
                   <div className="textBox">
                     <p className="textBox__title">{title}</p>
                     <div className="textBox__nickNameBox">
-                      {gender !== '' ? <span className={gender === 'm' ? 'maleIcon' : 'femaleIcon'} /> : <></>}
+                      {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
                       <span className="nickName">{nickName}</span>
                     </div>
                   </div>

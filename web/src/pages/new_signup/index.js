@@ -557,7 +557,7 @@ export default (props) => {
           {/* <button className={`checkbox state-${changes[termsName]}`} name={termsName} onClick={termsBtnHandle}>
             {item}
           </button> */}
-          <label for={`term${index}`} onClick={termsBtnHandle}>
+          <label htmlFor={`term${index}`} onClick={termsBtnHandle}>
             <input id={`term${index}`} name={termsName} className={`checkbox ${changes[termsName]}`} type="checkbox" />
             {item}
           </label>

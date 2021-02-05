@@ -10,6 +10,8 @@ import {OS_TYPE} from 'context/config.js'
 
 import Util from 'components/lib/utility.js'
 
+import BadgeList from 'common/badge_list'
+
 const makeContents = (props) => {
   let history = useHistory()
   const customHeader = JSON.parse(Api.customHeader)
@@ -97,66 +99,22 @@ const makeContents = (props) => {
               <i className="line"></i>
               <span>{title}</span>
             </div>
-            {/* <div className="title">
-              <p className="category">
-                {liveListType === 'detail' ? (
-                  <>
-                    {(() => {
-                      const target = categoryList.find((category) => category['cd'] === roomType)
-                      if (target && target['cdNm']) {
-                        return target['cdNm']
-                      }
-                    })()}
-                  </>
-                ) : (
-                  ''
-                )}
-              </p>
-
-              <i className="line"></i>
-              <span>{title}</span>
-            </div> */}
             <div className="nickname">
-              {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
-              {os === 3 && <i className="iconPc">PC</i>}
-              {isNew === true && <span className="new-dj-icon">신입DJ</span>}
-              {liveBadgeList &&
-                liveBadgeList.length !== 0 &&
-                liveBadgeList.map((item, idx) => {
-                  return (
-                    <React.Fragment key={idx + `badge`}>
-                      {item.icon !== '' ? (
-                        <div
-                          className="badgeIcon topImg"
-                          style={{
-                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                            marginRight: '4px'
-                          }}>
-                          <img src={item.icon} style={{height: '16px'}} />
-                          {item.text}
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                            marginRight: '4px'
-                          }}
-                          className="badgeIcon text">
-                          {item.text}
-                        </div>
-                      )}
-                    </React.Fragment>
-                  )
-                })}
+              {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
+              {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
+
               {isSpecial === true && isShining === false ? (
-                <em className="icon icon-special">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
               ) : isSpecial === false && isShining === true ? (
-                <em className="icon icon-shining">샤이닝DJ</em>
+                <em className="icon_wrap icon_shinigdj_half">샤이닝DJ</em>
               ) : isSpecial === true && isShining === true ? (
-                <em className="icon icon-special">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
               ) : (
                 <></>
               )}
+              {isNew === true && <em className="icon_wrap icon_newdj">신입DJ</em>}
+              {liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}
+
               <span className="nick">{bjNickNm}</span>
             </div>
             <div className="detail">
@@ -192,27 +150,24 @@ const makeContents = (props) => {
                   })}
                 </div>
               )}
-              {/* {rank < 11 && (
-                <div className="value">
-                  <img src={starIcon} />
-                  <span>{Util.printNumber(giftCnt)}</span>
-                </div>
-              )} */}
             </div>
           </div>
         ) : (
           <div className="broadcast-content">
             <div className="top-status">
               {isSpecial === true && isShining === false ? (
-                <span className="special-icon">S</span>
+                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
               ) : isSpecial === false && isShining === true ? (
-                <span className="shining-icon">S</span>
+                <em className="icon_wrap icon_shinigdj">샤이닝DJ</em>
               ) : isSpecial === true && isShining === true ? (
-                <span className="special-icon">S</span>
+                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
               ) : (
                 <></>
               )}
-              {bjGender !== '' && <div className={`gender-icon ${bjGender === 'm' ? 'male' : 'female'}`}>성별</div>}
+              {bjGender !== '' && (
+                <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>
+              )}
+              {os === 3 && <em className="icon_wrap icon_pc_circle">PC</em>}
             </div>
             <div className="entry-count">
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>

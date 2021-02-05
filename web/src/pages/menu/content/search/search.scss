@@ -1,4 +1,4 @@
-@import '../../../../styles/variables';
+@import '../../../../styles/global.scss';
 #search {
   //서치 컨트롤러
   .controllerWrap {
@@ -119,7 +119,7 @@
               display: block;
               width: 16px;
               height: 16px;
-              margin-right: 4px;
+              margin-right: 2px;
               background: url(./static/entry.svg);
             }
           }
@@ -202,7 +202,7 @@
     }
   }
   .chartListDetail {
-    padding: 0px 16px 0px 16px;
+    padding: 16px 16px;
     &.pdl0 {
       padding-left: 0;
     }
@@ -217,7 +217,7 @@
       align-items: center;
       padding-top: 20px;
       &:first-child {
-        padding-top: 10px;
+        padding-top: 0;
       }
       &__thumb {
         position: relative;
@@ -231,7 +231,8 @@
           width: 51px;
           height: 16px;
           text-indent: -99999px;
-          background: url(https://image.dalbitlive.com/svg/ico_speciladj.svg);
+          background-image: url('https://image.dalbitlive.com/main/200714/ico_speciladj_thumbnail@2x.png');
+          background-size: 100%;
         }
         > img {
           border-radius: 12px;
@@ -312,21 +313,8 @@
           color: $darkGray;
           line-height: 1.3;
           letter-spacing: -0.5px;
-          .maleIcon,
-          .femaleIcon {
-            display: inline-block;
-            margin-right: 4px;
-            width: 24px;
-            height: 16px;
-            background: url('./static/male.svg');
-            background-color: $white;
-            border-radius: 10px;
-            margin-left: 1px;
-          }
-          .femaleIcon {
-            background: url('./static/female.svg');
-            background-color: $white;
-            border-radius: 10px;
+          .nickname {
+            margin-left: 4px;
           }
         }
         &__subject {

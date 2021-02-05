@@ -12,6 +12,8 @@ import {RANK_TYPE, DATE_TYPE} from '../constant'
 
 import PopupSuccess from '../reward/reward_success_pop'
 
+import BadgeList from 'common/badge_list'
+
 import point from '../static/ico-point.png'
 import point2x from '../static/ico-point@2x.png'
 import likeWhite from '../static/like_g_s.svg'
@@ -300,38 +302,12 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
 
                             {formState[formState.pageType].dateType === DATE_TYPE.TIME && (
                               <>
-                                {myInfo.myLiveBadgeList &&
-                                  myInfo.myLiveBadgeList.length !== 0 &&
-                                  myInfo.myLiveBadgeList.map((item, idx) => {
-                                    return (
-                                      <React.Fragment key={idx + `badge`}>
-                                        {item.icon !== '' ? (
-                                          <div
-                                            className="badgeIcon topImg"
-                                            style={{
-                                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                              marginLeft: '4px'
-                                            }}>
-                                            <img src={item.icon} style={{height: '16px'}} />
-                                            {item.text}
-                                          </div>
-                                        ) : (
-                                          <div
-                                            style={{
-                                              background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                              marginLeft: '4px'
-                                            }}
-                                            className="badgeIcon text">
-                                            {item.text}
-                                          </div>
-                                        )}
-                                      </React.Fragment>
-                                    )
-                                  })}
+                                {myInfo.myLiveBadgeList && myInfo.myLiveBadgeList.length !== 0 && (
+                                  <BadgeList list={myInfo.myLiveBadgeList} />
+                                )}
                               </>
                             )}
-
-                            {myProfile.isSpecial && <span className="specialDj">스페셜DJ</span>}
+                            {myProfile.isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                           </div>
                         </div>
 

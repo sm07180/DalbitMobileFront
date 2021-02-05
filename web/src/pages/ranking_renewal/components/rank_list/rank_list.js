@@ -13,6 +13,8 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {DATE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
+import BadgeList from 'common/badge_list'
+
 //static
 const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
 const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
@@ -68,14 +70,6 @@ function RankList() {
                 starCnt,
                 liveBadgeList
               } = item
-              let genderName
-
-              if (gender == 'm' || gender == 'f') {
-                genderName = `genderBox gender-${gender}`
-              } else {
-                genderName = `genderBox`
-              }
-
               return (
                 <div className="myRanking rankingList" key={index}>
                   {/* {realTimeCheck ? (
@@ -152,42 +146,15 @@ function RankList() {
                       <div className="nickNameBox">
                         {nickNm}
                         <div className="nickNameImg">
-                          {gender !== '' && <div className={`gender-icon ${gender === 'm' ? 'male' : 'female'}`}>성별</div>}
-
-                          {formState[formState.pageType].dateType === DATE_TYPE.DAY && (
-                            <>
-                              {liveBadgeList &&
-                                liveBadgeList.length !== 0 &&
-                                liveBadgeList.map((item, idx) => {
-                                  return (
-                                    <React.Fragment key={idx + `badge`}>
-                                      {item.icon !== '' ? (
-                                        <div
-                                          className="badgeIcon topImg"
-                                          style={{
-                                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                            marginLeft: '4px'
-                                          }}>
-                                          <img src={item.icon} style={{height: '16px'}} />
-                                          {item.text}
-                                        </div>
-                                      ) : (
-                                        <div
-                                          style={{
-                                            background: `linear-gradient(to right, ${item.startColor}, ${item.endColor}`,
-                                            marginLeft: '4px'
-                                          }}
-                                          className="badgeIcon text">
-                                          {item.text}
-                                        </div>
-                                      )}
-                                    </React.Fragment>
-                                  )
-                                })}
-                            </>
+                          {gender !== '' && (
+                            <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별 아이콘</em>
                           )}
 
-                          {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                          {formState[formState.pageType].dateType === DATE_TYPE.DAY && (
+                            <>{liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}</>
+                          )}
+
+                          {isSpecial === true && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                         </div>
                       </div>
 
@@ -266,8 +233,8 @@ function RankList() {
                         }
                       }}
                       className="liveBox__img">
-                      {roomNo !== '' && <img src={liveIcon} alt="라이브중" />}
-                      {roomNo === '' && listenRoomNo !== '' && <img src={listenIcon} alt="청취중" />}
+                      {roomNo !== '' && <em className="icon_wrap icon_live_text_ranking">라이브중</em>}
+                      {roomNo === '' && listenRoomNo !== '' && <em className="icon_wrap icon_listen_text_ranking">청취중</em>}
                     </button>
                   </div>
                 </div>
