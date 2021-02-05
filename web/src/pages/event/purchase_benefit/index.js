@@ -9,7 +9,7 @@ export default () => {
   const context = useContext(Context)
 
   useEffect(() => {
-    if (!context.token.isLogin) history.push('/login?redirect=/event/purchase')
+    if (!context.token.isLogin) history.push('/login?redirect=/event/purchaseBenefit')
   }, [context.token.isLogin])
 
   return (
