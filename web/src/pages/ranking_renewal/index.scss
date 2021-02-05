@@ -1452,7 +1452,7 @@
 
             &::after {
               top: -29px;
-              left: 11px;
+              left: 9px;
               width: 94px;
               height: 122px;
               background: url(https://image.dalbitlive.com/ranking/likewf1@2x.png) no-repeat;
@@ -1470,19 +1470,19 @@
           order: 1;
 
           .TopBoxThumb {
-            bottom: 170px;
+            bottom: 168px;
 
             &::after {
-              top: -30px;
+              top: -25px;
               left: 16px;
               width: 76px;
-              height: 104px;
+              height: 96px;
               background: url(https://image.dalbitlive.com/ranking/likewf2@2x.png) no-repeat;
-              background-size: 100%;
+              background-size: 76px 96px;
             }
 
             &__pic {
-              width: 72px;
+              width: 70px;
             }
           }
         }
