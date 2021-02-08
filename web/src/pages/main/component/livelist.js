@@ -42,7 +42,8 @@ const makeContents = (props) => {
       totalCnt,
       gstProfImg,
       isGoodMem,
-      goodMem
+      goodMem,
+      mediaType
     } = list
 
     const alertCheck = (roomNo) => {
@@ -54,7 +55,7 @@ const makeContents = (props) => {
 
     return (
       <div
-        className={`${liveListType === 'detail' ? 'liveList__item' : 'liveList__flex'}`}
+        className={`${liveListType === 'v' ? 'liveList__flex' : 'liveList__item'}`}
         key={`live-${idx}`}
         onClick={() => {
           if (customHeader['os'] === OS_TYPE['Desktop']) {
@@ -72,8 +73,7 @@ const makeContents = (props) => {
             alertCheck(roomNo)
           }
         }}>
-        <div className="broadcast-img">
-          <img src={bjProfImg.thumb190x190} className="thumb-dj" alt={bjNickNm} />
+        <div className="broadcast-img" style={{backgroundImage: `url(${bjProfImg['thumb190x190']})`}}>
           {gstProfImg.thumb62x62 && (
             <span className="thumb-guest">
               <img src={gstProfImg.thumb62x62} alt="게스트" />
@@ -81,7 +81,7 @@ const makeContents = (props) => {
           )}
         </div>
 
-        {liveListType === 'detail' ? (
+        {liveListType !== 'v' ? (
           <div className="broadcast-content">
             <div className="title">
               <p className="category">
@@ -100,6 +100,11 @@ const makeContents = (props) => {
               <span>{title}</span>
             </div>
             <div className="nickname">
+              {mediaType === 'a' ? (
+                <em className="icon_wrap icon_roomtype">오디오</em>
+              ) : (
+                <em className="icon_wrap icon_roomtype icon_roomtype_video">영상</em>
+              )}
               {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
               {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
 
@@ -153,19 +158,21 @@ const makeContents = (props) => {
             </div>
           </div>
         ) : (
-          <div className="broadcast-content">
+          <>
             <div className="top-status">
               {isSpecial === true && isShining === false ? (
-                <em className="icon_wrap icon_specialdj_label">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
               ) : isSpecial === false && isShining === true ? (
-                <em className="icon_wrap icon_shinigdj_label">샤이닝DJ</em>
+                <em className="icon_wrap icon_shinigdj">샤이닝DJ</em>
               ) : isSpecial === true && isShining === true ? (
-                <em className="icon_wrap icon_specialdj_label">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
               ) : (
                 <></>
               )}
-              {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
-              {/* {os === 3 && <em className="icon_wrap icon_pc_circle">PC</em>} */}
+              {bjGender !== '' && (
+                <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male_circle' : 'icon_female_circle'}`}>성별</em>
+              )}
+              {os === 3 && <em className="icon_wrap icon_pc_circle">PC</em>}
             </div>
             <div className="entry-count">
               <span className="count-txt">{Util.printNumber(entryCnt)}</span>
@@ -175,14 +182,14 @@ const makeContents = (props) => {
               <div className="dj-nickname">{bjNickNm}</div>
               <span className="roomTitle">{title}</span>
             </div>
-          </div>
+          </>
         )}
       </div>
     )
   })
 }
 
-export default (props) => {
+function RealTimeLive(props) {
   return (
     <React.Fragment>
       <Room />
@@ -190,3 +197,10 @@ export default (props) => {
     </React.Fragment>
   )
 }
+const diffType = (prev, cur) => {
+  if (prev.liveListType === cur.liveListType) {
+    return false
+  }
+  return true
+}
+export default React.memo(RealTimeLive, diffType)

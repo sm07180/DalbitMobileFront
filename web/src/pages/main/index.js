@@ -92,7 +92,7 @@ export default (props) => {
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
   const [rankType, setRankType] = useState('') // type: dj, fan
-  const [liveListType, setLiveListType] = useState('detail') // type: detail, simple
+  const [liveListType, setLiveListType] = useState('all') // type: // type: all, v, a
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
   const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -203,9 +203,9 @@ export default (props) => {
     }
 
     fetchMainInitData()
-
     if (globalCtx.roomType && globalCtx.roomType.length > 0) {
       const concatenated = categoryList.concat(globalCtx.roomType)
+      globalCtx.action.updateRoomType(concatenated)
       setCategoryList(concatenated)
     }
   }, [])
@@ -230,6 +230,7 @@ export default (props) => {
       params: {
         page: 1,
         records: records,
+        mediaType: liveListType !== 'all' ? liveListType : '',
         roomType: '',
         searchType: 1,
         gender: ''
@@ -251,6 +252,7 @@ export default (props) => {
     const broadcastList = await Api.broad_list({
       params: {
         page: reset === true ? 1 : livePage,
+        mediaType: liveListType !== 'all' ? liveListType : '',
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -280,6 +282,7 @@ export default (props) => {
     const broadcastList = await Api.broad_list({
       params: {
         page: livePage + 1,
+        mediaType: liveListType !== 'all' ? liveListType : '',
         records: records,
         roomType: selectedLiveRoomType,
         searchType: liveAlign,
@@ -300,7 +303,7 @@ export default (props) => {
       if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
         //const concatenated = currentList.concat(list)
         const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
-        setLiveList(concatenated)
+        setLiveList([...concatenated])
       } else {
         // setLoading(false)
       }
@@ -501,7 +504,7 @@ export default (props) => {
 
   useEffect(() => {
     resetFetchList()
-  }, [selectedLiveRoomType])
+  }, [selectedLiveRoomType, liveListType])
 
   useEffect(() => {
     fetchMainPopupData('6')
@@ -633,7 +636,7 @@ export default (props) => {
               })
             sessionStorage.setItem('ranking_tab', 'dj')
           }
-          setLiveListType('detail')
+          setLiveListType('v')
           setSelectedLiveRoomType('')
           setReloadInit(false)
         }
@@ -908,21 +911,11 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <img src={liveNew} alt="실시간라이브" width={28} style={{marginRight: '4px'}} />
-                  {/* <Lottie
-                      options={{
-                        loop: true,
-                        autoPlay: true,
-                        animationData: LiveLottie
-                      }}
-                      width={24}
-                    /> */}
-                  {/* <span className="ico-lottie">
-                  </span> */}
+                  <img src="https://image.dalbitlive.com/svg/icon_live_title.svg" className="title_img" alt="실시간 Live" />
                   실시간 LIVE
                 </span>
 
-                <div className="sequence-wrap">
+                <div className="live_btn_box">
                   {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
                   {(() => {
                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
@@ -937,19 +930,18 @@ export default (props) => {
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
                   )} */}
-                  <button className="detail-list-icon" onClick={() => setLiveListType('detail')}>
-                    <img
-                      src={liveListType === 'detail' ? detailListIconActive : detailListIcon}
-                      alt="리스트 형식으로 리스트 보여주기"
-                    />
+                  <button className={`tab_all_btn ${liveListType === 'all' ? 'on' : ''}`} onClick={() => setLiveListType('all')}>
+                    전체선택
                   </button>
-                  <button className="simple-list-icon" onClick={() => setLiveListType('simple')}>
-                    <img
-                      src={liveListType === 'simple' ? simpleListIconActive : simpleListIcon}
-                      alt="리스트 형식으로 리스트 보여주기"
-                    />
+
+                  <button className={`tab_video_btn ${liveListType === 'v' ? 'on' : ''}`} onClick={() => setLiveListType('v')}>
+                    비디오 타입
                   </button>
-                  <button className={`btn__refresh ${liveRefresh ? 'btn__refresh--active' : ''}`} onClick={RefreshFunc}>
+
+                  <button className={`tab_radio_btn ${liveListType === 'a' ? 'on' : ''}`} onClick={() => setLiveListType('a')}>
+                    라디오 타입
+                  </button>
+                  <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
                     <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.png" alt="새로고침" />
                   </button>
                 </div>
