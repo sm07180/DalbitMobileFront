@@ -161,11 +161,11 @@ const makeContents = (props) => {
           <>
             <div className="top-status">
               {isSpecial === true && isShining === false ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_label">스페셜DJ</em>
               ) : isSpecial === false && isShining === true ? (
-                <em className="icon_wrap icon_shinigdj">샤이닝DJ</em>
+                <em className="icon_wrap icon_shiningdj_label">샤이닝DJ</em>
               ) : isSpecial === true && isShining === true ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                <em className="icon_wrap icon_specialdj_label">스페셜DJ</em>
               ) : (
                 <></>
               )}
