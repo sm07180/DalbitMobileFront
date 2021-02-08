@@ -206,6 +206,9 @@ export default (props) => {
     if (globalCtx.roomType && globalCtx.roomType.length > 0) {
       const concatenated = categoryList.concat(globalCtx.roomType)
       globalCtx.action.updateRoomType(concatenated)
+      concatenated.forEach((v, idx) => {
+        if (idx > 0 && v.sorNo === 0) concatenated.splice(1, idx)
+      })
       setCategoryList(concatenated)
     }
   }, [])
