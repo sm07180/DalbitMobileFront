@@ -295,6 +295,11 @@ ol.depthTitle {
       content: counter(depth2) ')';
     }
   }
+  ol.depth2.before-bold {
+    li:before {
+      font-weight: bold;
+    }
+  }
   ol.depth3 {
     margin-top: 6px;
     margin-left: -15px;
