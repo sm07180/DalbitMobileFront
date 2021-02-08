@@ -15,16 +15,17 @@ export default function AttendTab() {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
-  const {summaryList, statusList, dateList} = eventAttendState
+  const {summaryList, statusList, authCheckYn} = eventAttendState
   const [popup, setPopup] = useState(false)
 
   async function fetchEventAttendDate() {
     const {result, data} = await API.postEventAttend()
     if (result === 'success') {
-      const {status, dateList, summary} = data
+      const {status, dateList, summary, authCheckYn} = data
       eventAttendAction.setSummaryList(summary)
       eventAttendAction.setStatusList(status)
       eventAttendAction.setDateList(dateList)
+      eventAttendAction.setAuthCheckYn(authCheckYn)
     } else {
       //실패
       eventAttendAction.setStatusList({bonus: '0'})
@@ -54,7 +55,7 @@ export default function AttendTab() {
         msg: `로그인 후 참여해주세요.`
       })
     } else {
-      if (globalCtx.selfAuth === false) {
+      if (authCheckYn === 'Y' && globalCtx.selfAuth === false) {
         globalCtx.action.alert({
           msg: `본인인증 후 참여해주세요.`,
           callback: () => {
@@ -69,7 +70,6 @@ export default function AttendTab() {
             eventAttendAction.setSummaryList(summary)
             eventAttendAction.setStatusList(status)
             eventAttendAction.setDateList(dateList)
-
             // 성공
             setPopup(true)
           } else {

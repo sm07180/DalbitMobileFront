@@ -21,6 +21,8 @@ const EventAttendProvider = (props) => {
   })
   const [statusList, setStatusList] = useState([])
   const [dateList, setDateList] = useState({})
+  const [authCheckYn, setAuthCheckYn] = useState('') //본인인증 할지말지 체크여부
+
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
   const [winPhone, setWinPhone] = useState(0)
   const [ios, setIos] = useState('')
@@ -39,6 +41,7 @@ const EventAttendProvider = (props) => {
     summaryList,
     statusList,
     dateList,
+    authCheckYn,
     popGifticon,
     winIdx,
     itemNo,
@@ -56,6 +59,7 @@ const EventAttendProvider = (props) => {
     setSummaryList,
     setStatusList,
     setDateList,
+    setAuthCheckYn,
     setPopGifticon,
     setWinIdx,
     setItemNo,
