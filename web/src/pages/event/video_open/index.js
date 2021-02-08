@@ -139,10 +139,18 @@ export default function VideoOpenEvent() {
                 </div>
 
                 <div className="my_point">
-                  <span>별 {videoRankInfo.diffPoint}개</span>를 받으면 <span>{videoRankInfo.opRank}등</span>이 될 수 있습니다.
+                  {videoRankInfo.diffPoint <= 0 ? (
+                    <>
+                      받은 <span>별</span>이 없습니다.
+                    </>
+                  ) : (
+                    <>
+                      <span>별 {videoRankInfo.diffPoint}개</span>를 받으면 <span>{videoRankInfo.opRank}등</span>이 될 수 있습니다.
+                    </>
+                  )}
                   <button onClick={refreshList}>
                     <img
-                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh.svg'}
+                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
                       alt="새로고침"
                       className={`refresh-img${refresh ? ' active' : ''}`}
                     />
@@ -193,10 +201,19 @@ export default function VideoOpenEvent() {
                 </div>
 
                 <div className="my_point">
-                  <span>달 {videoRankInfo.diffPoint}개</span>를 선물하면 <span>{videoRankInfo.opRank}등</span>이 될 수 있습니다.
+                  {videoRankInfo.diffPoint <= 0 ? (
+                    <>
+                      선물한 <span>달</span>이 없습니다.
+                    </>
+                  ) : (
+                    <>
+                      <span>별 {videoRankInfo.diffPoint}개</span>를 선물하면 <span>{videoRankInfo.opRank}등</span>이 될 수
+                      있습니다.
+                    </>
+                  )}
                   <button onClick={refreshList}>
                     <img
-                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh.svg'}
+                      src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
                       alt="새로고침"
                       className={`refresh-img${refresh ? ' active' : ''}`}
                     />
