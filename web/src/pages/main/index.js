@@ -636,7 +636,7 @@ export default (props) => {
               })
             sessionStorage.setItem('ranking_tab', 'dj')
           }
-          setLiveListType('v')
+          // setLiveListType('v')
           setSelectedLiveRoomType('')
           setReloadInit(false)
         }
