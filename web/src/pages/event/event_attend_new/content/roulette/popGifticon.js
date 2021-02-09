@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState, useRef, useCallback} from 'react
 import API from 'context/api'
 import Utility from 'components/lib/utility'
 import {IMG_SERVER} from 'context/config'
+import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
 //ctx
 import {Context} from 'context'
@@ -15,6 +16,7 @@ export default () => {
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {itemNo} = eventAttendState
+  const [checks, setChecks] = useState([false, false])
 
   const [phone, setPhone] = useState(eventAttendState.winPhone)
   const [timeText, setTimeText] = useState('')
@@ -94,14 +96,52 @@ export default () => {
           />
         </div>
 
-        <p className="note">
-          기프티콘은 입력된 연락처로 전송해드립니다.
-          <br />
-          (영업장 평일 기준 7일 이내)
-        </p>
+        <div className="sns_detail">
+          <img src="https://image.dalbitlive.com/event/attend/210205/sns_img.jpg" />
+        </div>
 
-        <button disabled={phone.length < 11 ? true : false} onClick={clickSaveButton}>
-          저장
+        <div className="check_box">
+          <label>
+            <DalbitCheckbox
+              status={checks[1]}
+              callback={() => {
+                setChecks(
+                  checks.map((v, i) => {
+                    if (i === 1) {
+                      v = !v
+                    }
+                    return v
+                  })
+                )
+              }}
+            />
+            기프티콘은 입력된 연락처로 평일 기준 7일 이내 <br />
+            문자로 전송해드립니다.
+          </label>
+
+          <label>
+            <DalbitCheckbox
+              status={checks[0]}
+              callback={() => {
+                setChecks(
+                  checks.map((v, i) => {
+                    if (i === 0) {
+                      v = !v
+                    }
+                    return v
+                  })
+                )
+              }}
+            />
+            7일 이내 문자 수신이 안 된 경우 스팸 문자함, <br />
+            수신 거부 번호 등을 확인해주세요.
+          </label>
+        </div>
+
+        <button
+          disabled={checks[0] === false || checks[1] === false || phone.length < 11 ? true : false}
+          onClick={clickSaveButton}>
+          저장 및 확인
         </button>
       </div>
     )
@@ -122,8 +162,6 @@ export default () => {
     switch (name) {
       case 'phone':
         if (value.toString().length < 12) setPhone(nmValue)
-        break
-      default:
         break
     }
 

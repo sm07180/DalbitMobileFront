@@ -1,5 +1,4 @@
-@import '../../../styles/variables';
-@import '../../../styles/mixins';
+@import '../../../styles/global';
 
 #attendEventPage {
   max-width: 460px;
@@ -181,7 +180,7 @@
       max-width: 328px;
       padding: 16px;
       border-radius: 20px;
-      background-color: #fff;
+      background-color: $white;
       box-sizing: border-box;
 
       h1 {
@@ -189,17 +188,17 @@
         border-bottom: 1px solid #e0e0e0;
         text-align: center;
         font-size: 18px;
-        font-weight: 800;
+        font-weight: $bold;
       }
 
       .winInfo {
         padding: 20px;
-
         &__title {
-          font-size: 22px;
-          color: #632beb;
-          font-weight: 800;
+          font-size: 20px;
+          color: $primary;
+          font-weight: $bold;
           padding-bottom: 8px;
+          letter-spacing: -1px;
         }
 
         &__image {
@@ -227,6 +226,30 @@
       }
 
       .gifticonPhoneWrap {
+        .sns_detail {
+          display: block;
+          margin: 12px 0 13px 0;
+          width: 100%;
+          img {
+            width: 100%;
+          }
+        }
+
+        .check_box {
+          label {
+            display: flex;
+            font-size: 12px;
+            color: $greishBrown;
+            text-align: left;
+            & + label {
+              margin-top: 12px;
+            }
+            input[type='checkbox'] {
+              margin-right: 8px;
+            }
+          }
+        }
+
         .gifticonPhoneBox {
           position: relative;
           padding: 16px;
@@ -236,8 +259,8 @@
 
           &__title {
             padding-bottom: 8px;
-            letter-spacing: -0.4px;
-            font-weight: 800;
+            letter-spacing: -0.6px;
+            font-weight: $bold;
           }
 
           &__time {
@@ -283,11 +306,12 @@
         button {
           width: 100%;
           height: 44px;
+          margin-top: 16px;
           border-radius: 12px;
-          background-color: #632beb;
+          background-color: $primary;
           color: #fff;
           font-size: 18px;
-          font-weight: 800;
+          font-weight: $bold;
 
           &:disabled {
             background-color: #bdbdbd;
