@@ -18,11 +18,11 @@ import {OS_TYPE} from 'context/config.js'
 import {COLOR_MAIN} from 'context/color'
 import Api from 'context/api'
 import qs from 'query-string'
-
+import Utility from 'components/lib/utility'
 //layout
 import Header from 'components/ui/new_header'
-
 import BankTimePopup from './bank_time_pop'
+import LayerPopupWrap from '../../../main/component/layer_popup_wrap.js'
 
 //static
 import icoNotice from '../../static/ic_notice.svg'
@@ -44,7 +44,7 @@ export default () => {
   const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
   const [moreState, setMoreState] = useState(false)
   const [bankPop, setBankPop] = useState(false)
-
+  const [popupData, setPopupData] = useState([])
   //ref
   const formTag = useRef(null)
 
@@ -184,9 +184,42 @@ export default () => {
     }
   }
 
+  async function fetchMainPopupData(arg) {
+    const res = await Api.getBanner({
+      params: {
+        position: arg
+      }
+    })
+    const {result, data, message} = res
+    if (result === 'success') {
+      if (data) {
+        // 딤 팝업
+        setPopupData(
+          data.filter((v) => {
+            if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
+              return v
+            } else {
+              return false
+            }
+          })
+        )
+      }
+    } else {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          context.action.alert({visible: false})
+        }
+      })
+    }
+  }
   useEffect(() => {
     if (selectedPay.type) payFetch()
   }, [selectedPay])
+
+  useEffect(() => {
+    fetchMainPopupData(12)
+  }, [])
 
   const makeDisabled = (type) => {
     switch (type) {
@@ -300,6 +333,7 @@ export default () => {
 
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
         {bankPop && <BankTimePopup setBankPop={setBankPop} bankFormData={bankFormData} />}
+        {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
   )

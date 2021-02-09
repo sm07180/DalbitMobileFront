@@ -74,21 +74,8 @@ export default (props) => {
     const {result, data, message} = res
     if (result === 'success') {
       if (data) {
-        if (arg === 12) {
-          // 딤 팝업
-          setPopupData(
-            data.filter((v) => {
-              if (Utility.getCookie('popup_notice_' + `${v.idx}`) === undefined) {
-                return v
-              } else {
-                return false
-              }
-            })
-          )
-        } else {
-          // 상단 배너
-          setTopbannerData(data)
-        }
+        // 상단 배너
+        setTopbannerData(data)
       }
     } else {
       context.action.alert({
@@ -184,7 +171,7 @@ export default (props) => {
   useEffect(() => {
     fetchAdmin()
     getStoreList()
-    fetchMainPopupData(12)
+    // fetchMainPopupData(12)
     fetchMainPopupData(4)
   }, [])
 
