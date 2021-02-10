@@ -492,6 +492,7 @@ const PointInput = styled.input`
   font-weight: 700;
   line-height: 1.14;
   letter-spacing: -0.35px;
+  background: #fff;
   border-color: ${(props) => (props.active === 'active' ? '#000' : '#e0e0e0')};
 
   &::placeholder {
