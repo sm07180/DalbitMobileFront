@@ -234,6 +234,7 @@ export default (props) => {
 //---------------------------------------------------------------------
 
 const Content = styled.section`
+  height: 100vh;
   min-height: 300px;
   margin: 0 auto;
   width: 100%;
