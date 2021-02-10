@@ -192,7 +192,7 @@ export default (props) => {
                   <TextArea>
                     {globalCtx.splash.giftDalDirect === true && (
                       <PointInput
-                        placeholder="달은 10개부터 선물할 수 있습니다."
+                        placeholder={`달은 ${globalCtx.splash.giftDalMin}개부터 선물할 수 있습니다.`}
                         type="number"
                         maxLength="10"
                         value={text}
