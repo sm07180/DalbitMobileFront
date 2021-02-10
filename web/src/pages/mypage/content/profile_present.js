@@ -190,15 +190,17 @@ export default (props) => {
                   </div>
 
                   <TextArea>
-                    {/* <PointInput
-                      placeholder="달은 10개부터 선물할 수 있습니다."
-                      type="number"
-                      maxLength="10"
-                      value={text}
-                      onChange={handleChangeInput}
-                      onClick={() => _active('input')}
-                      active={active ? 'active' : ''}
-                    /> */}
+                    {globalCtx.splash.giftDalDirect === true && (
+                      <PointInput
+                        placeholder="달은 10개부터 선물할 수 있습니다."
+                        type="number"
+                        maxLength="10"
+                        value={text}
+                        onChange={handleChangeInput}
+                        onClick={() => _active('input')}
+                        active={active ? 'active' : ''}
+                      />
+                    )}
                     <p>※ 달 선물하기는 100% 전달됩니다.</p>
                   </TextArea>
                   <ButtonArea>
