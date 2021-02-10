@@ -16,7 +16,7 @@ export default function RouletteTab() {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
-  const {popRoulette} = eventAttendState
+  const {popRoulette, authCheckYn} = eventAttendState
 
   const [winList, setWinList] = useState()
 
@@ -79,7 +79,7 @@ export default function RouletteTab() {
         msg: '로그인 후 참여해주세요.'
       })
     } else {
-      if (globalCtx.selfAuth === false) {
+      if (authCheckYn === 'Y' && globalCtx.selfAuth === false) {
         history.push('/selfauth?event=/event/attend_event/roulette')
       } else {
         if (eventAttendState.couponCnt !== 0 || eventAttendState.eventCouponCnt !== 0) {
@@ -103,7 +103,7 @@ export default function RouletteTab() {
   return (
     <div className="rouletteTab">
       <div className="topBanner">
-        <img src="https://image.dalbitlive.com/event/attend/201230/event_img_02_1_1@2x.png" alt="룰렛을 돌려보아요!" />
+        <img src="https://image.dalbitlive.com/event/attend/210205/event_img_02_1_1@3x.png" alt="룰렛을 돌려보아요!" />
 
         <div className="couponBox">
           <div className="basicItem">
