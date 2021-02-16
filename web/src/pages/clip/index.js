@@ -128,8 +128,8 @@ export default (props) => {
   const [minRecDate, setMinRecDate] = useState('')
   const [swiper, setSwiper] = useState(null)
   const [tableSwiperIndex, setTableSwiperIndex] = useState(0)
-  const [clipRankDayList, setClipRankDayList] = useState([]);
-  const [clipRankWeekList, setClipRankWeekList] = useState([]);
+  const [clipRankDayList, setClipRankDayList] = useState([])
+  const [clipRankWeekList, setClipRankWeekList] = useState([])
 
   const swiperParamsDal = {
     // loop: true, //무제한 롤링
@@ -212,12 +212,12 @@ export default (props) => {
   const fetchClipRankingDayList = async () => {
     const {result, data, message} = await Api.getClipRankingList({
       rankType: DATE_TYPE.DAY,
-      rankingDate: convertDateFormat(new Date(), "YYYY-MM-DD"),
+      rankingDate: convertDateFormat(new Date(), 'YYYY-MM-DD'),
       page: 1,
       records: clipRankingRecords
     })
     if (result === 'success') {
-      setClipRankDayList(data.list.slice(0, clipRankingCheckIdx));
+      setClipRankDayList(data.list.slice(0, clipRankingCheckIdx))
     } else {
       setClipRankDayList([])
       context.action.alert({
@@ -229,12 +229,12 @@ export default (props) => {
   const fetchClipRankingWeekList = async () => {
     const {result, data, message} = await Api.getClipRankingList({
       rankType: DATE_TYPE.WEEK,
-      rankingDate: convertDateFormat(convertMonday(), "YYYY-MM-DD"),
+      rankingDate: convertDateFormat(convertMonday(), 'YYYY-MM-DD'),
       page: 1,
       records: clipRankingRecords
     })
     if (result === 'success') {
-      setClipRankWeekList(data.list.slice(0, clipRankingCheckIdx));
+      setClipRankWeekList(data.list.slice(0, clipRankingCheckIdx))
     } else {
       setClipRankWeekList([])
       context.action.alert({
@@ -794,10 +794,10 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if(formState.dateType === DATE_TYPE.DAY) {
-      fetchClipRankingDayList();
+    if (formState.dateType === DATE_TYPE.DAY) {
+      fetchClipRankingDayList()
     } else {
-      fetchClipRankingWeekList();
+      fetchClipRankingWeekList()
     }
   }, [formState.dateType])
 
@@ -918,14 +918,15 @@ export default (props) => {
           <div ref={recomendRef}></div>
         )}
 
-        {clipRankDayList.length > 0  || clipRankWeekList.length > 0 ? (
+        {clipRankDayList.length > 0 || clipRankWeekList.length > 0 ? (
           <div className="rankClip" ref={clipRankingRef}>
             <div className="rankClip__titleBox">
-              <h3 className="rankClip__title"
-                  onClick={() => {
-                    history.push('/clip_rank');
-                    formDispatch({type: 'DATE_TYPE', val: formState.dateType});
-                  }}>
+              <h3
+                className="rankClip__title"
+                onClick={() => {
+                  history.push('/clip_rank')
+                  formDispatch({type: 'DATE_TYPE', val: formState.dateType})
+                }}>
                 클립 랭킹
               </h3>
               <div className="rankClip__moreButton">
@@ -952,51 +953,46 @@ export default (props) => {
               </div>
             </div>
             <ul className="rankClipList">
-              {formState.dateType === DATE_TYPE.DAY ? (
-                clipRankDayList.map((v,i) => {
-                  return (
-                    <li
-                      key={`day-${i}`}
-                      className="rankClipListItem"
-                      onClick={() => {
-                        if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          if (context.token.isLogin === false) {
-                            context.action.alert({
-                              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                              callback: () => {
-                                history.push('/login')
-                              }
-                            })
+              {formState.dateType === DATE_TYPE.DAY
+                ? clipRankDayList.map((v, i) => {
+                    return (
+                      <li
+                        key={`day-${i}`}
+                        className="rankClipListItem"
+                        onClick={() => {
+                          if (customHeader['os'] === OS_TYPE['Desktop']) {
+                            if (context.token.isLogin === false) {
+                              context.action.alert({
+                                msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+                                callback: () => {
+                                  history.push('/login')
+                                }
+                              })
+                            } else {
+                              context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            }
                           } else {
-                            context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                            fetchDataPlay(v.clipNo, 'dal')
                           }
-                        } else {
-                          fetchDataPlay(v.clipNo, 'dal')
-                        }
-                      }}>
-                      <div className="rankClipListItem__thumb">
-                        <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
-                      </div>
-                      <p className="rankClipListItem__title">{v.title}</p>
-                      <p className="rankClipListItem__nickName">{v.nickName}</p>
-                    </li>
-                  )
-                })
-              ) : (
-                clipRankWeekList.map((v,i) => {
-                  return (
-                    <li
-                      key={`week-${i}`}
-                      className="rankClipListItem week"
-                      onClick={() => loginCheck(v.memNo)}>
-                      <div className="rankClipListItem__thumb">
-                        <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
-                      </div>
-                      <p className="rankClipListItem__title">{v.nickName}</p>
-                    </li>
-                  )
-                })
-              )}
+                        }}>
+                        <div className="rankClipListItem__thumb">
+                          <img src={v.bgImg.thumb336x336} alt="클립 랭킹 이미지" />
+                        </div>
+                        <p className="rankClipListItem__title">{v.title}</p>
+                        <p className="rankClipListItem__nickName">{v.nickName}</p>
+                      </li>
+                    )
+                  })
+                : clipRankWeekList.map((v, i) => {
+                    return (
+                      <li key={`week-${i}`} className="rankClipListItem week" onClick={() => loginCheck(v.memNo)}>
+                        <div className="rankClipListItem__thumb">
+                          <img src={v.profImg.thumb336x336} alt="클립 랭킹 이미지" />
+                        </div>
+                        <p className="rankClipListItem__title">{v.nickName}</p>
+                      </li>
+                    )
+                  })}
             </ul>
           </div>
         ) : (
@@ -1118,7 +1114,7 @@ export default (props) => {
               <></>
             )}
           </div>
-          <div style={clipCategoryFixed ? {paddingTop: `49px`} : {}}>
+          <div style={clipCategoryFixed ? {paddingTop: `74px`} : {}}>
             <ChartList
               chartListType={chartListType}
               clipTypeActive={clipTypeActive}
