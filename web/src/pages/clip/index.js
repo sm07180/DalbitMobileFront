@@ -1118,7 +1118,7 @@ export default (props) => {
               <></>
             )}
           </div>
-          <div style={clipCategoryFixed ? {paddingTop: `106px`} : {}}>
+          <div style={clipCategoryFixed ? {paddingTop: `49px`} : {}}>
             <ChartList
               chartListType={chartListType}
               clipTypeActive={clipTypeActive}
