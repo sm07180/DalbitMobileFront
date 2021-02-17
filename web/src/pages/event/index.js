@@ -30,6 +30,7 @@ import RecommendDj from './recommend_dj'
 import NewYear from './new_year'
 import Package from './package'
 import VideoOpen from './video_open'
+import VideoOpen2 from './video_open2'
 
 export default () => {
   const params = useParams()
@@ -89,6 +90,8 @@ export default () => {
         return <Package />
       case 'video_open':
         return <VideoOpen />
+      case 'video_open2':
+        return <VideoOpen2 />
       default:
         return <></>
         break

@@ -3157,6 +3157,14 @@ export default class API {
       params: data
     })
   }
+
+  static getVideoOpenBest = async (data) => {
+    return await ajax({
+      url: '/event/best',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

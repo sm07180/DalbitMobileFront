@@ -1,9 +1,9 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
-export default function LayerDetail({setLayerGift, content}) {
+export default function LayerDetail({setLayerDetail, content}) {
   const closePopup = () => {
-    setLayerGift(false)
+    setLayerDetail(false)
   }
 
   const closePopupDim = (e) => {
@@ -23,7 +23,7 @@ export default function LayerDetail({setLayerGift, content}) {
   return (
     <PopupWrap id="layerPopup" onClick={closePopupDim}>
       <div className="layerContainer">
-        <h3>경품 상세소개</h3>
+        <h3>이벤트 유의사항</h3>
         <div className="layerContent" dangerouslySetInnerHTML={{__html: content}}></div>
         <button className="btnClose" onClick={closePopup}></button>
       </div>

@@ -1,8 +1,9 @@
 @import '../../../styles/global';
 
-#event_page {
+#event_page_2nd {
   .event_main_wrap {
     position: relative;
+    background-color: #ffe6e1;
 
     img {
       width: 100%;
@@ -21,7 +22,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #1db0db;
+    background-color: #ffe6e1;
 
     .tab {
       width: 47%;
@@ -42,13 +43,41 @@
         width: 100%;
       }
 
+      .btn_wrap {
+        padding: 5% 5% 0;
+        background-color: #000177;
+        .btnWrap {
+          display: flex;
+          flex-direction: column;
+          margin-top: 0;
+          padding: 7% 5%;
+          text-align: center;
+          background-color: $white;
+          border-radius: 20px;
+
+          h3 {
+            > span {
+              color: #df6c82;
+            }
+            margin-bottom: 3%;
+          }
+
+          p {
+            > span {
+              color: $primary;
+            }
+            margin-bottom: 3%;
+          }
+        }
+      }
+
       .notice_box {
         padding: 12px;
         font-size: 13px;
         line-height: 26px;
         letter-spacing: -1px;
         color: $white;
-        background: url(https://image.dalbitlive.com/event/video_open/event_notice_bg@3x.png);
+        background: url(https://image.dalbitlive.com/event/video_open/20210217/event_notice_bg@3x.png);
         background-size: 100%;
 
         p {
@@ -82,7 +111,7 @@
           letter-spacing: -0.35px;
 
           &:last-of-type {
-            background-color: #fdff58;
+            background-color: #df6c82;
           }
         }
       }
