@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 import styled, {css} from 'styled-components'
 
+import NoResult from 'components/ui/new_noResult'
+
 export default function LayerWinner({setLayerWinner, list, type}) {
   const closePopup = () => {
     setLayerWinner(false)
@@ -28,40 +30,49 @@ export default function LayerWinner({setLayerWinner, list, type}) {
     let result = [...data].concat(Array(baseCount - data.length).fill({}))
     return (
       <>
-        {result.map((item, index) => {
-          const {theDt, level, levelColor, memNo, nickNm, profImg, gender, grade, isSpecial, holder} = item
-          if (Object.keys(item).length !== 0) {
-            return (
-              <li className="winner_item" key={index}>
-                <span className="date">{`2월 ${18 + index}일`}</span>
-                <img className="thumbnail_img" src={profImg[`thumb120x120`]} alt="썸네일" />
+        {result.length !== 0 ? (
+          <NoResult text="집계 중입니다." type="default" />
+        ) : (
+          <>
+            {result.map((item, index) => {
+              const {theDt, level, levelColor, memNo, nickNm, profImg, gender, grade, isSpecial, holder} = item
+              if (Object.keys(item).length !== 0) {
+                return (
+                  <li className="winner_item" key={index}>
+                    <span className="date">{`2월 ${18 + index}일`}</span>
+                    <img className="thumbnail_img" src={profImg[`thumb120x120`]} alt="썸네일" />
 
-                <div className="info_wrap">
-                  <div className="info_box">
-                    <LevelBox levelColor={levelColor}>
-                      <span className="level">{level}</span>
-                    </LevelBox>
-                    <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별 아이콘</em>
-                    {isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
-                  </div>
-                  <span className="nickname">{nickNm}</span>
-                </div>
-              </li>
-            )
-          } else {
-            return (
-              <li className="winner_item" key={index}>
-                <span className="date">{`2월 ${18 + index}일`}</span>
-                <div className="thumbnail_box">
-                  <img src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon@3x.png" alt="물음표 아이콘" />
-                </div>
-                <span className="text_img">
-                  <img src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon_text@3x.png" alt="coming soon" />
-                </span>
-              </li>
-            )
-          }
-        })}
+                    <div className="info_wrap">
+                      <div className="info_box">
+                        <LevelBox levelColor={levelColor}>
+                          <span className="level">{level}</span>
+                        </LevelBox>
+                        <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별 아이콘</em>
+                        {isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
+                      </div>
+                      <span className="nickname">{nickNm}</span>
+                    </div>
+                  </li>
+                )
+              } else {
+                return (
+                  <li className="winner_item" key={index}>
+                    <span className="date">{`2월 ${18 + index}일`}</span>
+                    <div className="thumbnail_box">
+                      <img src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon@3x.png" alt="물음표 아이콘" />
+                    </div>
+                    <span className="text_img">
+                      <img
+                        src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon_text@3x.png"
+                        alt="coming soon"
+                      />
+                    </span>
+                  </li>
+                )
+              }
+            })}
+          </>
+        )}
       </>
     )
   }
