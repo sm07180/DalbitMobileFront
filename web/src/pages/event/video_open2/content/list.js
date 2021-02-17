@@ -2,7 +2,7 @@ import React, {useContext, useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import {Context} from 'context'
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 
 // static
 const GoldMedal = 'https://image.dalbitlive.com/svg/medal_gold_b.svg'
@@ -69,7 +69,7 @@ export default function VideoEventList({videoRankList}) {
           )
         })
       ) : (
-        <NoResult text="리스트가 없습니다." />
+        <NoResult text="리스트가 없습니다." type="default" />
       )}
     </div>
   )

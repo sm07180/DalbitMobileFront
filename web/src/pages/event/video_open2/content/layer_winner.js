@@ -30,7 +30,7 @@ export default function LayerWinner({setLayerWinner, list, type}) {
     let result = [...data].concat(Array(baseCount - data.length).fill({}))
     return (
       <>
-        {result.length !== 0 ? (
+        {result.length === 0 ? (
           <NoResult text="집계 중입니다." type="default" />
         ) : (
           <>
