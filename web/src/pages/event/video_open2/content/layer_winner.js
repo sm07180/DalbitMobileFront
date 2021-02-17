@@ -22,12 +22,10 @@ export default function LayerWinner({setLayerWinner, list, type}) {
   }, [])
 
   const creatList = () => {
-    if (!list.length) return null
-
     const data = list
     const baseCount = 8
 
-    let result = [...data].concat(Array(baseCount - data.length).fill({}))
+    let result = list.length !== 0 ? [...data].concat(Array(baseCount - data.length).fill({})) : []
     return (
       <>
         {result.length === 0 ? (
