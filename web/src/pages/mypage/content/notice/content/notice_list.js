@@ -1,22 +1,32 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
+import {useParams, useHistory} from 'react-router-dom'
 import {PHOTO_SERVER} from 'context/config'
-
+import Api from 'context/api'
 import NoResult from 'components/ui/new_noResult'
 import Utility from 'components/lib/utility'
-import {useParams, useHistory} from 'react-router-dom'
 
 const NoticeList = (props) => {
   const history = useHistory()
   const {memNo} = useParams()
-  const {noticeList, setReadIdx, readIdx} = props
+  const {noticeList} = props
+
+  const [readCnt, setReadCnt] = useState(0)
+  const [readIdx, setReadIdx] = useState(0)
 
   // 최신글 체크
   const timestamp = String(new Date().getTime()).substr(0, 10)
   const IntTime = parseInt(timestamp)
 
-  useEffect(() => {
-    if (readIdx !== 0) history.push(`/mypage/${memNo}/notice/isDetail?idx=${readIdx}`)
-  }, [readIdx])
+  const postNoticeReadCnt = (idx) => {
+    Api.postMypageNoticeReadCnt({noticeIdx: idx}).then((res) => {
+      const {result, data, message} = res
+      if (result === 'success') {
+        setReadCnt(data)
+      } else {
+        console.log(message)
+      }
+    })
+  }
 
   return (
     <>
@@ -35,8 +45,8 @@ const NoticeList = (props) => {
                           className="noticeItme"
                           key={index}
                           onClick={() => {
-                            setReadIdx(item.noticeIdx)
-                            //history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
+                            postNoticeReadCnt(item.noticeIdx)
+                            history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
                           }}>
                           {item.imagePath ? <img src={`${PHOTO_SERVER}${item.imagePath}`} className="noticeItme__img" /> : ''}
                           <div className="noticeItme__textWrap">
@@ -72,8 +82,8 @@ const NoticeList = (props) => {
                           className="noticeItme"
                           key={index}
                           onClick={() => {
-                            setReadIdx(item.noticeIdx)
-                            // history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
+                            postNoticeReadCnt(item.noticeIdx)
+                            history.push(`/mypage/${memNo}/notice/isDetail?idx=${item.noticeIdx}`)
                           }}>
                           {item.imagePath ? (
                             <img src={`${PHOTO_SERVER}${item.imagePath}?120x120`} className="noticeItme__img" />
