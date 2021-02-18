@@ -27,15 +27,14 @@ function NoticeComponent(props) {
   const context = useContext(Context)
 
   //체크상태
-
   const [photoUploading, setPhotoUploading] = useState(false)
 
   // 기본 State
   const [noticeList, setNoticeList] = useState([])
-
   const [totalPage, setTotalPage] = useState(0)
-
   const [currentPage, setCurrentPage] = useState(1)
+  const [readCnt, setReadCnt] = useState(0)
+  const [readIdx, setReadIdx] = useState(0)
 
   const detailItem = useMemo(() => {
     if (noticeList.length > 0 && history.location.search) {
@@ -100,6 +99,17 @@ function NoticeComponent(props) {
     }
   }
 
+  const postNoticeReadCnt = (idx) => {
+    Api.postMypageNoticeReadCnt({noticeIdx: idx}).then((res) => {
+      const {result, data, message} = res
+      if (result === 'success') {
+        setReadCnt(data)
+      } else {
+        console.log(message)
+      }
+    })
+  }
+
   const titleText = useMemo(() => {
     if (addpage && addpage.indexOf('isWrite') === 0) {
       return '방송공지 쓰기'
@@ -112,7 +122,7 @@ function NoticeComponent(props) {
 
   const makeView = () => {
     if (addpage == undefined || addpage === '') {
-      return <NoticeListCompnent noticeList={noticeList} />
+      return <NoticeListCompnent noticeList={noticeList} setReadIdx={setReadIdx} readIdx={readIdx} />
     } else if (addpage.indexOf('isDetail') !== -1 && detailItem !== null) {
       return (
         <NoticeDetailCompenet
@@ -164,6 +174,12 @@ function NoticeComponent(props) {
   useEffect(() => {
     fetchData()
   }, [])
+
+  useEffect(() => {
+    if (readIdx > 0) {
+      postNoticeReadCnt(readIdx)
+    }
+  }, [readIdx])
 
   useEffect(() => {
     let didFetch = false

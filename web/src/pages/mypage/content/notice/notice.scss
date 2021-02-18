@@ -1,4 +1,4 @@
-@import '../../../../styles/variables';
+@import '../../../../styles/global';
 
 #broadcastNotice {
   width: 100%;
@@ -91,6 +91,8 @@
       }
 
       &__textWrap {
+        display: flex;
+        flex-direction: column;
         width: 100%;
         padding-right: 26px;
         overflow: hidden;
@@ -99,6 +101,7 @@
       }
       &__title {
         display: block;
+        margin-bottom: 4px;
         width: 100%;
         font-size: 16px;
         font-weight: $bold;
@@ -107,30 +110,42 @@
         text-overflow: ellipsis;
       }
 
+      &__count {
+        display: flex;
+        align-items: center;
+      }
       &__reply {
-        margin-right: 14px;
+        margin-right: 6px;
         font-size: 12px;
         font-weight: $bold;
         color: $greishGray;
         .cnt {
-          margin-left: 4px;
+          margin-left: 2px;
           font-size: 14px;
+          font-weight: $bold;
           color: $black;
         }
         &::before {
           display: inline-block;
           width: 16px;
           height: 16px;
-          margin-right: 4px;
+          margin-right: 2px;
           background: url(../../static/reply_g.svg) no-repeat center;
           vertical-align: text-bottom;
           content: '';
         }
+
+        &.view_number {
+          &::before {
+            background: url(https://image.dalbitlive.com/svg/view_g_s.svg) no-repeat center;
+          }
+        }
       }
 
       &__date {
+        display: block;
         width: 100%;
-        margin-top: 4px;
+        margin-top: 2px;
         font-size: 12px;
         color: $greishGray;
         overflow: hidden;
@@ -231,14 +246,31 @@
     }
 
     &__reply {
-      background-color: #fff;
-      .replyToggle {
+      .count_box {
         display: flex;
         align-items: center;
         padding: 0 16px 12px;
+        background-color: $white;
+      }
+
+      .count {
+        font-size: 14px;
+        font-weight: $bold;
+        margin-left: 2px;
+        color: $black;
+      }
+
+      .replyToggle {
+        display: flex;
+        align-items: center;
         font-size: 12px;
         font-weight: $bold;
         color: $greishGray;
+
+        & + .replyToggle {
+          margin-left: 6px;
+        }
+
         &::before {
           display: inline-block;
           width: 16px;
@@ -246,6 +278,12 @@
           margin-right: 4px;
           background: url(../../static/reply_g.svg) no-repeat center;
           content: '';
+        }
+
+        &.view_number {
+          &::before {
+            background: url(https://image.dalbitlive.com/svg/view_g_s.svg) no-repeat center;
+          }
         }
 
         &.on {
@@ -258,12 +296,6 @@
             background: url(../../static/ic_reply_purple.svg) no-repeat center;
             content: '';
           }
-        }
-
-        & > span {
-          margin-left: 4px;
-          font-size: 14px;
-          color: $black;
         }
       }
 
