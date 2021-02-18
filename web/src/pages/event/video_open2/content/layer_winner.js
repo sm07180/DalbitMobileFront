@@ -1,9 +1,14 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useContext} from 'react'
+import {Context} from 'context'
+import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 
 import NoResult from 'components/ui/new_noResult'
 
-export default function LayerWinner({setLayerWinner, list, type}) {
+export default function LayerWinner({setLayerWinner, list, popupType, setPopupType}) {
+  const context = useContext(Context)
+  const history = useHistory()
+
   const closePopup = () => {
     setLayerWinner(false)
   }
@@ -38,7 +43,21 @@ export default function LayerWinner({setLayerWinner, list, type}) {
                 return (
                   <li className="winner_item" key={index}>
                     <span className="date">{`2월 ${18 + index}일`}</span>
-                    <img className="thumbnail_img" src={profImg[`thumb120x120`]} alt="썸네일" />
+                    <div
+                      className="thumbnail_box"
+                      onClick={() => {
+                        if (context.token.isLogin) {
+                          if (context.token.memNo === memNo) {
+                            history.push(`/menu/profile`)
+                          } else {
+                            history.push(`/mypage/${memNo}`)
+                          }
+                        } else {
+                          history.push(`/login`)
+                        }
+                      }}>
+                      <img src={profImg[`thumb120x120`]} alt={nickNm} />
+                    </div>
 
                     <div className="info_wrap">
                       <div className="info_box">
@@ -48,7 +67,21 @@ export default function LayerWinner({setLayerWinner, list, type}) {
                         <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별 아이콘</em>
                         {isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                       </div>
-                      <span className="nickname">{nickNm}</span>
+                      <span
+                        className="nickname"
+                        onClick={() => {
+                          if (context.token.isLogin) {
+                            if (context.token.memNo === memNo) {
+                              history.push(`/menu/profile`)
+                            } else {
+                              history.push(`/mypage/${memNo}`)
+                            }
+                          } else {
+                            history.push(`/login`)
+                          }
+                        }}>
+                        {nickNm}
+                      </span>
                     </div>
                   </li>
                 )
@@ -56,15 +89,10 @@ export default function LayerWinner({setLayerWinner, list, type}) {
                 return (
                   <li className="winner_item" key={index}>
                     <span className="date">{`2월 ${18 + index}일`}</span>
-                    <div className="thumbnail_box">
+                    <div className="thumbnail_box null">
                       <img src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon@3x.png" alt="물음표 아이콘" />
                     </div>
-                    <span className="text_img">
-                      <img
-                        src="https://image.dalbitlive.com/event/video_open/20210217/comingsoon_text@3x.png"
-                        alt="coming soon"
-                      />
-                    </span>
+                    <p className="null_text">COMING SOON</p>
                   </li>
                 )
               }
@@ -78,7 +106,15 @@ export default function LayerWinner({setLayerWinner, list, type}) {
   return (
     <PopupWrap id="layerPopup" onClick={closePopupDim}>
       <div className="layerContainer">
-        <h3>{`일간 최고 ${type === 1 ? 'DJ' : '팬'} 당첨자`}</h3>
+        <h3>일간 최고 스타 &amp; 팬</h3>
+        <div className="tab_box">
+          <button onClick={() => setPopupType(1)} className={popupType === 1 ? 'active' : ''}>
+            스타
+          </button>
+          <button onClick={() => setPopupType(2)} className={popupType === 2 ? 'active' : ''}>
+            팬
+          </button>
+        </div>
         <ul className="winner_list">{creatList()}</ul>
         <button className="btnClose" onClick={closePopup}></button>
       </div>
@@ -102,7 +138,7 @@ const LevelBox = styled.div`
   height: 16px;
   line-height: 16px;
   border-radius: 14px;
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
   color: #fff;
   text-align: center;
@@ -133,10 +169,9 @@ const PopupWrap = styled.div`
   .layerContainer {
     position: relative;
     // width: 100%;
-    min-width: 320px;
+    width: calc(100% - 32px);
     max-width: 360px;
     min-height: 450px;
-    padding: 0 16px;
     border-radius: 16px;
     background-color: #fff;
     box-sizing: border-box;
@@ -145,17 +180,47 @@ const PopupWrap = styled.div`
       padding: 16px 0;
       font-size: 18px;
       text-align: center;
-      font-weight: $bold;
+      font-weight: 600;
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
       border-bottom: 1px solid #e0e0e0;
     }
 
+    .tab_box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5f5f5;
+
+      button {
+        width: 60px;
+        height: 40px;
+        font-size: 16px;
+        color: #424242;
+
+        &.active {
+          position: relative;
+          color: #632beb;
+          font-weight: 600;
+
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: #632beb;
+          }
+        }
+      }
+    }
+
     .winner_list {
       overflow-y: auto;
       max-height: 400px;
-      padding-bottom: 12px;
+      padding: 0 16px 12px;
       .winner_item {
         display: flex;
         align-items: center;
@@ -172,28 +237,37 @@ const PopupWrap = styled.div`
           border-radius: 12px;
           background-color: #eee;
           font-size: 12px;
-          text-align: center;
+          font-weight: 600;
           line-height: 20px;
-        }
-
-        .thumbnail_img {
-          width: 48px;
-          height: 48px;
-          margin-right: 8px;
-          border-radius: 50%;
+          text-align: center;
         }
 
         .thumbnail_box {
           flex-shrink: 0;
+          overflow: hidden;
           width: 48px;
           height: 48px;
           margin-right: 8px;
-          background-color: #eee;
           border-radius: 50%;
+          cursor: pointer;
+
+          &.null {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #eee;
+            cursor: auto;
+
+            img {
+              width: 36px;
+              height: 36px;
+            }
+          }
         }
 
-        .text_img {
-          width: 118px;
+        .null_text {
+          font-size: 18px;
+          font-weight: 600;
         }
         /* .thumbnail_box {
           flex-shrink: 0;
@@ -226,10 +300,14 @@ const PopupWrap = styled.div`
             -webkit-box-orient: vertical;
             text-overflow: ellipsis;
             font-size: 14px;
+            font-weight: 600;
           }
           .info_box {
             display: flex;
             align-items: center;
+          }
+          .info_box + .nickname {
+            margin-top: 5px;
           }
         }
       }

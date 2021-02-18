@@ -56,7 +56,7 @@ const PopupWrap = styled.div`
   .layerContainer {
     position: relative;
     // width: 100%;
-    min-width: 320px;
+    width: calc(100% - 32px);
     max-width: 360px;
     padding: 0 16px;
     border-radius: 16px;
