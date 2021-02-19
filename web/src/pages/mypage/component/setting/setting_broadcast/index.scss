@@ -200,6 +200,61 @@
   }
 }
 
+#bc_seeting_listen {
+  padding: 4px 16px;
+
+  .radio_btn_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 8px 10px 16px;
+    border-radius: 12px;
+    background-color: $white;
+    color: $black;
+    font-size: 14px;
+    font-weight: $regular;
+    line-height: 1.14;
+    letter-spacing: -0.35px;
+
+    & ~ .radio_btn_container {
+      margin: 4px 0;
+    }
+
+    .radio_btn {
+      &.active {
+        & ~ .check_circle {
+          background-color: $primary;
+          border-color: $primary;
+          &::after {
+            transform: scale(1);
+            transition: all 0.1s ease;
+          }
+        }
+      }
+    }
+
+    .check_circle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #bdbdbd;
+      background-color: transparent;
+      &::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background-color: $white;
+        transform: scale(0);
+        transition: all 0.1s ease;
+      }
+    }
+  }
+}
+
 #bc_setting_join_close {
   padding: 0 16px;
   .contentsWrap {
