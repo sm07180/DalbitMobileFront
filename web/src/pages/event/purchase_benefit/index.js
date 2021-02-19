@@ -10,16 +10,17 @@ export default () => {
   let history = useHistory()
   const context = useContext(Context)
 
-  useEffect(() => {
-    if (!context.token.isLogin) history.push('/login?redirect=/event/purchaseBenefit')
-  }, [context.token.isLogin])
-
   const customHeader = JSON.parse(Api.customHeader)
-  const eventBtn = () => {
-    if (customHeader['os'] === OS_TYPE['IOS']) {
-      StoreLink(context, history)
+
+  const linkMove = () => {
+    if (!context.token.isLogin) {
+      history.push('/login?redirect=/event/purchaseBenefit')
     } else {
-      history.push(`/pay/store`)
+      if (customHeader['os'] === OS_TYPE['IOS']) {
+        StoreLink(context, history)
+      } else {
+        history.push(`/pay/store`)
+      }
     }
   }
 
@@ -29,7 +30,7 @@ export default () => {
         <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <img src="https://image.dalbitlive.com/event/purchase_benefit/210219/radio_view_open.png" alt="별, 달 추가 이벤트" />
-      <button className="buy_btn" onClick={() => eventBtn()}>
+      <button className="buy_btn" onClick={() => linkMove()}>
         <img src="https://image.dalbitlive.com/event/purchase_benefit/210210/buy_button.png" alt="스토어 가기" />
       </button>
       <div className="notice">
