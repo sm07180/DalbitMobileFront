@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import {Context} from 'context'
 import Utility from 'components/lib/utility'
 
-const lifeTime = 2500 // milisec
+const lifeTime = 3400 // milisec
 let msgArray = []
 let copyArray = []
 
@@ -102,7 +102,7 @@ const Toast = styled.div`
   opacity: 0;
 
   animation-name: toastFadeInOut;
-  animation-duration: 2.4s;
+  animation-duration: 3.2s;
   animation-timing-function: ease-in-out;
 
   width: calc(100% - 32px);

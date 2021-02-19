@@ -8,6 +8,8 @@ import React from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
+import Message from 'pages/common/message'
+
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const Ranking = React.lazy(() => import('pages/ranking_renewal'))
@@ -70,6 +72,7 @@ export default () => {
         </div>
       }>
       <ScrollToTop />
+      <Message />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />

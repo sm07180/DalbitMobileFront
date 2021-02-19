@@ -42,7 +42,7 @@ const Layout = (props) => {
       {/* 레이어팝업 */}
       <Popup {...props} />
       {/* 메시지팝업 */}
-      <Message {...props} />
+
       {/* IP노출 */}
       <Ip {...props} />
     </React.Fragment>
