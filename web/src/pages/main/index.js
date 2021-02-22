@@ -615,7 +615,9 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          await fetchLiveListAsInit()
+          setLiveListType('all')
+          await fetchLiveList(true)
+          // await fetchLiveListAsInit()
 
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
