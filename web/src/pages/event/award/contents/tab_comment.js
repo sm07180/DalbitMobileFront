@@ -42,7 +42,7 @@ export default function awardEventComment() {
       }
     } else {
       globalCtx.action.alert({
-        msg: '로그인 후 이용해 주세요.',
+        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push(`/login?redirect=/event/award`)
         }
