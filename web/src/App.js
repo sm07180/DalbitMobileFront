@@ -182,6 +182,7 @@ const App = () => {
           })
           if (myProfile.result === 'success') {
             globalCtx.action.updateProfile(myProfile.data)
+            globalCtx.action.updateIsMailboxOn(myProfile.data.isMailboxOn)
           } else {
             globalCtx.action.updateProfile(false)
           }

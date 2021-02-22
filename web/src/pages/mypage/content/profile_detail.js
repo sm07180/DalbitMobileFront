@@ -28,6 +28,7 @@ import AlarmOnIcon from '../static/alarm_on_w.svg'
 const LiveIcon = 'https://image.dalbitlive.com/svg/ic_live.svg'
 const ListenIcon = 'https://image.dalbitlive.com/svg/ico_listen.svg'
 const PostBoxIcon = 'https://image.dalbitlive.com/svg/ico_postbox_p.svg'
+const PostBoxOffIcon = 'https://image.dalbitlive.com/svg/postbox_g_off.svg'
 
 export default (props) => {
   //context & webview
@@ -467,38 +468,35 @@ export default (props) => {
   }, [profile.memNo])
 
   const createMailboxIcon = () => {
-    if (context.useMailbox && myProfileNo !== profile.memNo) {
-      if (
-        __NODE_ENV === 'dev' ||
-        customHeader.os === OS_TYPE['Desktop'] ||
-        (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
-        (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
-      ) {
-        return (
-          <button
-            className="liveIcon"
-            onClick={() => {
-              if (!context.myInfo.level) {
-                return context.action.alert({
-                  msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-                })
-              }
-              if (!profile.level) {
-                return context.action.alert({
-                  msg: '0레벨 회원에게는 우체통 메시지를 \n 보낼 수 없습니다.'
-                })
-              }
+    if (myProfileNo !== profile.memNo) {
+      return (
+        <button
+          className="liveIcon"
+          onClick={() => {
+            if (!context.myInfo.level) {
+              return context.action.alert({
+                msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+              })
+            }
+            if (!profile.level) {
+              return context.action.alert({
+                msg: '0레벨 회원에게는 우체통 메시지를 \n 보낼 수 없습니다.'
+              })
+            }
 
-              if (isHybrid()) {
-                Hybrid('JoinMailBox', profile.memNo)
-              } else {
-                context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
-              }
-            }}>
+            if (isHybrid()) {
+              Hybrid('JoinMailBox', profile.memNo)
+            } else {
+              context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+            }
+          }}>
+          {profile.isMailboxOn ? (
             <img src={PostBoxIcon} className="ico-live" />
-          </button>
-        )
-      }
+          ) : (
+            <img src={PostBoxOffIcon} className="ico-live" />
+          )}
+        </button>
+      )
     }
   }
 

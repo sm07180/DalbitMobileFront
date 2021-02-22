@@ -120,6 +120,7 @@ export default function login_form({props, setLoginPop}) {
 
           globalCtx.action.updateProfile(profileInfo.data) // 타인/내정보 update
           globalCtx.action.updateMyInfo(myInfo.data) // 내정보 update
+          globalCtx.action.updateIsMailboxOn(profileInfo.data.isMailboxOn)
 
           //--##마이페이지 Redirect
           if (mypageURL !== '') {

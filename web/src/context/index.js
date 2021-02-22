@@ -116,6 +116,7 @@ const GlobalProvider = (props) => {
   //isMailboxNew
   const [isMailboxNew, setIsMailboxNew] = useState(false)
   const [useMailbox, setUseMailbox] = useState(false)
+  const [isMailboxOn, setIsMailboxOn] = useState(true)
   // 주간 클립 테이블
   const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
@@ -469,11 +470,14 @@ const GlobalProvider = (props) => {
       setSplash(obj)
     },
     //malibox
-    updateIsisMailboxNew: (boolean) => {
+    updateIsMailboxNew: (boolean) => {
       setIsMailboxNew(boolean)
     },
     updateUseMailbox: (boolean) => {
       setUseMailbox(boolean)
+    },
+    updateIsMailboxOn: (boolean) => {
+      setIsMailboxOn(boolean)
     },
     updateDateState: (string) => {
       setDateState(string)
@@ -555,7 +559,8 @@ const GlobalProvider = (props) => {
     splash,
     isMailboxNew,
     useMailbox,
-    dateState
+    dateState,
+    isMailboxOn
   }
   return <Provider value={value}>{props.children}</Provider>
 }

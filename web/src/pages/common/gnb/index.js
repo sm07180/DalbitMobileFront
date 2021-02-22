@@ -139,7 +139,7 @@ export default (props) => {
     const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        globalCtx.action.updateIsisMailboxNew(data.isNew)
+        globalCtx.action.updateIsMailboxNew(data.isNew)
       } else {
         globalCtx.action.alert({
           msg: message
@@ -150,43 +150,50 @@ export default (props) => {
   }, [])
 
   const createMailboxIcon = () => {
-    if (context.useMailbox) {
-      if (
-        __NODE_ENV === 'dev' ||
-        customHeader.os === OS_TYPE['Desktop'] ||
-        (customHeader.os === OS_TYPE['Android'] && customHeader.appBuild >= 51) ||
-        (customHeader.os === OS_TYPE['IOS'] && customHeader.appBuild >= 273)
-      ) {
-        if (globalCtx.isMailboxNew && globalCtx.token.isLogin) {
-          return (
-            <button
-              className="alarmSize"
-              onClick={() => {
-                if (isHybrid()) {
-                  moveToLogin('mailbox')
-                } else {
-                  globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
-                }
-              }}>
-              <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
-            </button>
-          )
-        } else {
-          return (
-            <button
-              className="alarmSize"
-              onClick={() => {
-                if (isHybrid()) {
-                  moveToLogin('mailbox')
-                } else {
-                  globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
-                }
-              }}>
-              <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />
-            </button>
-          )
-        }
-      }
+    if (!globalCtx.isMailboxOn && globalCtx.token.isLogin) {
+      return (
+        <button
+          className="alarmSize"
+          onClick={() => {
+            if (isHybrid()) {
+              moveToLogin('mailbox')
+            } else {
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+            }
+          }}>
+          <img src="https://image.dalbitlive.com/svg/postbox_m_w_off.svg" alt="우체통" />
+        </button>
+      )
+    }
+
+    if (globalCtx.isMailboxNew && globalCtx.token.isLogin) {
+      return (
+        <button
+          className="alarmSize"
+          onClick={() => {
+            if (isHybrid()) {
+              moveToLogin('mailbox')
+            } else {
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+            }
+          }}>
+          <img src="https://image.dalbitlive.com/svg/postbox_w_on.svg" alt="우체통" />
+        </button>
+      )
+    } else {
+      return (
+        <button
+          className="alarmSize"
+          onClick={() => {
+            if (isHybrid()) {
+              moveToLogin('mailbox')
+            } else {
+              globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+            }
+          }}>
+          <img className="icon mailbox" src="https://image.dalbitlive.com/svg/postbox_w.svg" alt="우체통" />
+        </button>
+      )
     }
   }
 

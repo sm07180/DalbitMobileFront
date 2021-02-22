@@ -245,7 +245,7 @@ export default (props) => {
     const isMailboxNewCheck = async () => {
       const {result, data, message} = await Api.checkIsMailboxNew()
       if (result === 'success') {
-        globalCtx.action.updateIsisMailboxNew(data.isNew)
+        globalCtx.action.updateIsMailboxNew(data.isNew)
       } else {
         globalCtx.action.alert({
           msg: message

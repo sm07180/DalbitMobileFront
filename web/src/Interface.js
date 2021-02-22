@@ -560,17 +560,15 @@ export default () => {
         history.push(`/`)
         break
       case 'mailbox-state':
-        console.log(event.detail)
-        // if (__NODE_ENV === 'dev') {
-        //   alert('mailbox-state')
-        //   alert(JSON.stringify(event.detail))
-        // }
-        if (event.detail.new) {
-          context.action.updateIsisMailboxNew(true)
-        } else {
-          context.action.updateIsisMailboxNew(false)
-        }
+        console.log(JSON.stringify(event.detail))
+        context.action.updateIsMailboxNew(event.detail.new)
         break
+
+      case 'mailbox-use-state':
+        console.log(JSON.stringify(event.detail))
+        context.action.updateIsMailboxOn(event.detail.isMailboxOn)
+        break
+
       default:
         break
     }
@@ -855,6 +853,7 @@ export default () => {
 
     /*----mailbox----*/
     document.addEventListener('mailbox-state', update)
+    document.addEventListener('mailbox-use-state', update)
 
     return () => {
       /*----native----*/
@@ -889,6 +888,7 @@ export default () => {
 
       /*----mailbox----*/
       document.removeEventListener('mailbox-state', update)
+      document.removeEventListener('mailbox-use-state', update)
     }
   }, [])
 
