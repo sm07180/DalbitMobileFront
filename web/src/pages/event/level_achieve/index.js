@@ -52,7 +52,7 @@ export default () => {
     } else {
       if (context.token.isLogin === false) {
         context.action.alert({
-          msg: `로그인 후 참여해주세요.`,
+          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
           callback: () => {
             history.push({
               pathname: '/login',

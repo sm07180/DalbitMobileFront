@@ -34,14 +34,14 @@ const Layout = (props) => {
   const noAppCheck = customHeader['os'] === OS_TYPE['Desktop']
 
   useEffect(() => {
-    if (context.token.isLogin && noAppCheck) {
+    if (noAppCheck) {
       if (Utility.getCookie('AppPopup')) {
         setAppPopupState(false)
       } else {
         setAppPopupState(true)
       }
     }
-  }, [context.token.isLogin])
+  }, [noAppCheck])
 
   return (
     <>
@@ -67,7 +67,7 @@ const Layout = (props) => {
       {/* IP노출 */}
       <Ip {...props} />
 
-      {appPopupState === true && context.token.isLogin && noAppCheck && (
+      {appPopupState === true && noAppCheck && (
         <>
           <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />
         </>

@@ -25,7 +25,7 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
   const loginCheck = () => {
     if (!token.isLogin) {
       globalCtx.action.alert({
-        msg: '로그인 후 참여해주세요.',
+        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
 
         callback: () => {
           history.push({

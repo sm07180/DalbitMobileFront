@@ -27,7 +27,7 @@ export default (props) => {
   const handleStatus = () => {
     if (global_ctx.token.isLogin !== true)
       global_ctx.action.alert({
-        msg: '로그인을 해주세요',
+        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           global_ctx.action.alert(
             history.push({
