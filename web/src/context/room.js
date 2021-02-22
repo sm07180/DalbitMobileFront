@@ -120,6 +120,8 @@ export const RoomJoin = async (obj) => {
       if (listener === 'listener' || listener === 'clip') {
         sessionStorage.removeItem('room_active')
         return RoomJoin({roomNo: roomNo, shadow: 0})
+      } else if (Room.context.adminChecker === false && roomNo === Utility.getCookie('listen_room_no')) {
+        return Hybrid('EnterRoom', '')
       } else {
         return Room.context.action.confirm({
           callback: () => {
