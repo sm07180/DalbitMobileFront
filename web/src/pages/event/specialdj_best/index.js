@@ -117,7 +117,7 @@ export default function SpecialDjBest() {
               </button>
             </div>
             <div className="support_box">
-              <img src="https://image.dalbitlive.com/event/specialdj/20210216/support_img_03.png" />
+              <img src="https://image.dalbitlive.com/event/specialdj/20210222/support_img_03.png" />
               <button onClick={() => setMoonPop(true)} className="btn_support_moon">
                 <img
                   src="https://image.dalbitlive.com/event/specialdj/20210216/btn_support_moon@2x.png"
