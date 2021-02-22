@@ -66,11 +66,13 @@ export default (props) => {
     }
   }
   useEffect(() => {
+    setMypageFixed(false)
+
     window.addEventListener('scroll', windowScrollEvent)
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
     }
-  }, [memNo])
+  }, [memNo, category])
 
   //navi Array
   let navigationList = [
@@ -235,7 +237,6 @@ export default (props) => {
     }
   }
   const profileCount = (idx) => {
-    console.log('profileInfo', profileInfo)
     if (profileInfo !== null) {
       switch (idx) {
         case 0:

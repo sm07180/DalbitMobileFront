@@ -304,14 +304,20 @@ const NoticeDetail = (props) => {
           <div className="noticeDetail__reply">
             {/* 답글 영역 */}
 
-            <button
-              className={`replyToggle ${replyToggle && 'on'}`}
-              onClick={() => {
-                setReplyToggle(!replyToggle)
-              }}>
-              {replyPaging === null ? '답글쓰기' : '답글'}
-              <span className="cnt">{replyPaging === null ? '' : replyPaging.total}</span>
-            </button>
+            <div className="count_box">
+              <p className="replyToggle view_number">
+                조회수 <span className="count">{detailItem.readCnt}</span>
+              </p>
+
+              <button
+                className={`replyToggle ${replyToggle ? 'on' : ''}`}
+                onClick={() => {
+                  setReplyToggle(!replyToggle)
+                }}>
+                {replyPaging === null ? '답글쓰기' : '답글'}
+                <span className="count">{replyPaging === null ? '' : replyPaging.total}</span>
+              </button>
+            </div>
 
             {replyToggle === true && replyList !== null && (
               <ul className="replyBox">

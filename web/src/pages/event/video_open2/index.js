@@ -16,6 +16,7 @@ export default function VideoOpenEvent() {
   const history = useHistory()
   const context = useContext(Context)
   const [eventType, setEventType] = useState(1) // star, fan
+  const [popupType, setPopupType] = useState(0) // star, fan
   // const [eventRound, setEventRound] = useState(0);
   const [videoRankList, setVideoRankList] = useState([
     {
@@ -40,6 +41,10 @@ export default function VideoOpenEvent() {
 
   const clickCloseBtn = () => {
     return history.goBack()
+  }
+
+  const switchType = (type) => {
+    setEventType(type)
   }
 
   async function fetchInitData() {
@@ -67,7 +72,7 @@ export default function VideoOpenEvent() {
 
   async function fetchInitBestData() {
     const {result, data} = await Api.getVideoOpenBest({
-      slctType: eventType,
+      slctType: popupType,
       eventNo: 2
     })
 
@@ -79,14 +84,6 @@ export default function VideoOpenEvent() {
       })
     }
   }
-
-  //----------------------------
-
-  useEffect(() => {
-    fetchInitData()
-    fetchInitBestData()
-  }, [eventType])
-
   const refreshList = () => {
     fetchInitData()
     setRefresh(true)
@@ -95,6 +92,14 @@ export default function VideoOpenEvent() {
       setRefresh(false)
     }, 360)
   }
+
+  useEffect(() => {
+    fetchInitData()
+  }, [eventType])
+
+  useEffect(() => {
+    if (popupType !== 0) fetchInitBestData()
+  }, [popupType])
 
   return (
     <div>
@@ -109,12 +114,12 @@ export default function VideoOpenEvent() {
           </button>
         </div>
         <div className="tab_box">
-          <button className="tab" onClick={() => setEventType(1)}>
+          <button className="tab" onClick={() => switchType(1)}>
             <img
               src={`https://image.dalbitlive.com/event/video_open/20210217/tab_star${eventType === 1 ? '_focus' : ''}@3x.png`}
             />
           </button>
-          <button className="tab" onClick={() => setEventType(2)}>
+          <button className="tab" onClick={() => switchType(2)}>
             <img
               src={`https://image.dalbitlive.com/event/video_open/20210217/tab_fan${eventType === 2 ? '_focus' : ''}@3x.png`}
             />
@@ -142,6 +147,7 @@ export default function VideoOpenEvent() {
                   <button
                     className="btn"
                     onClick={() => {
+                      setPopupType(1)
                       setLayerWinner(true)
                     }}>
                     일간 최고 DJ 확인
@@ -221,6 +227,7 @@ export default function VideoOpenEvent() {
                   <button
                     className="btn"
                     onClick={() => {
+                      setPopupType(2)
                       setLayerWinner(true)
                     }}>
                     일간 최고 팬 확인
@@ -286,7 +293,9 @@ export default function VideoOpenEvent() {
       </div>
       {layerDetail && <LayerDetail setLayerDetail={setLayerDetail} content={videoRankInfo.detailDesc} />}
       {layerGift && <LayerGift setLayerGift={setLayerGift} content={videoRankInfo.giftDesc} />}
-      {layerWinner && <LayerWinner setLayerWinner={setLayerWinner} list={videoWinnerInfo} type={eventType} />}
+      {layerWinner && (
+        <LayerWinner setLayerWinner={setLayerWinner} list={videoWinnerInfo} popupType={popupType} setPopupType={setPopupType} />
+      )}
     </div>
   )
 }

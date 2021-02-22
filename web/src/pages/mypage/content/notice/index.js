@@ -27,14 +27,11 @@ function NoticeComponent(props) {
   const context = useContext(Context)
 
   //체크상태
-
   const [photoUploading, setPhotoUploading] = useState(false)
 
   // 기본 State
   const [noticeList, setNoticeList] = useState([])
-
   const [totalPage, setTotalPage] = useState(0)
-
   const [currentPage, setCurrentPage] = useState(1)
 
   const detailItem = useMemo(() => {

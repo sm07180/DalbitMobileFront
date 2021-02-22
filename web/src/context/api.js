@@ -847,6 +847,14 @@ export default class API {
     })
   }
 
+  static postMypageNoticeReadCnt = async (data) => {
+    return await ajax({
+      url: '/mypage/notice/read',
+      method: 'POST',
+      data: data
+    })
+  }
+
   /**
    * @brief 회원 달 선물하기 -> 마이페이지
    * @method "POST"
