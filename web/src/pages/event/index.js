@@ -20,6 +20,7 @@ import RestClear from './rest_customer/customer_clear'
 import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
+import SpecialdjBest from './specialdj_best'
 import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
 import Award from './award'
@@ -69,7 +70,7 @@ export default () => {
       case 'happy_time':
         return <HappyTime />
       case 'specialdj':
-        return <Specialdj />
+        return <SpecialdjBest />
       case 'shiningdj':
         return <ShiningDj />
       case 'level_achieve':
