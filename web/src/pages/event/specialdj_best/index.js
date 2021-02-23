@@ -126,7 +126,7 @@ export default function SpecialDjBest() {
               </button> */}
             </div>
             <div className="support_box">
-              <img src="https://image.dalbitlive.com/event/specialdj/20210216/support_img_04.png" />
+              <img src="https://image.dalbitlive.com/event/specialdj/20210223/support_img_04.png" />
               <button onClick={() => setTabState('best')} className="btn_pick_more">
                 <img src="https://image.dalbitlive.com/event/specialdj/20210216/btn_best_more.png" alt="베스트 스디 확인하기" />
               </button>
