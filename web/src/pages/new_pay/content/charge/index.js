@@ -8,7 +8,7 @@
  * @date_20200728 스마트문상, 도서문화상품권 숨김처리
  */
 
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {useContext, useEffect, useRef, useState, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -27,6 +27,7 @@ import LayerPopupWrap from '../../../main/component/layer_popup_wrap.js'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
+import {Hybrid} from "context/hybrid";
 
 const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
 const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
@@ -50,6 +51,7 @@ export default () => {
 
   //결제 data 셋팅
   const {name, price, itemNo, webview, event} = qs.parse(location.search)
+  const dalVal = Number(name.split(" ")[1]);
 
   const [totalQuantity, setTotalQuantity] = useState(1)
   const [totalPrice, setTOtalPrice] = useState(price)
@@ -68,6 +70,7 @@ export default () => {
 
   // if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
   payMethod = [
+    // {type: '계좌 간편결제'},
     {type: '무통장 입금(계좌이체)', code: 'coocon'},
     {type: '카드 결제', fetch: 'pay_card'},
     {type: '휴대폰 결제', fetch: 'pay_phone'},
@@ -213,13 +216,25 @@ export default () => {
       })
     }
   }
-  useEffect(() => {
-    if (selectedPay.type) payFetch()
-  }, [selectedPay])
 
-  useEffect(() => {
-    fetchMainPopupData(12)
-  }, [])
+  const bonusDal = useMemo(() => {
+    if((Number(price) * totalQuantity) > 100000) {
+      return Math.floor(dalVal * totalQuantity * 0.1);
+    } else if((Number(price) * totalQuantity) > 30000) {
+      return  Math.floor(dalVal * totalQuantity * 0.05);
+    } else {
+      return null;
+    }
+
+  },[price, totalQuantity, (Number(price) * totalQuantity)])
+
+  const isBonusDalYn = useMemo(() => {
+    if((Number(price) * totalQuantity) > 30000) {
+      return true;
+    } else {
+      return false;
+    }
+  },[price, totalQuantity, (Number(price) * totalQuantity)])
 
   const makeDisabled = (type) => {
     switch (type) {
@@ -273,6 +288,46 @@ export default () => {
     }
   }
 
+  const phoneCallWrap = () => {
+    if (customHeader.os === OS_TYPE['Android']) {
+      return (
+        <span
+          onClick={() => {
+            Hybrid('openCall', `tel:1522-0251`)
+          }}>
+          1522-0251
+        </span>
+      )
+    } else if (customHeader.os === OS_TYPE['IOS']) {
+      return (
+        <span
+          onClick={() => {
+            Hybrid('openUrl', `tel:1522-0251`)
+          }}>
+          1522-0251
+        </span>
+      )
+    } else {
+      return (
+        <span
+          onClick={() => {
+            window.location.href = `tel:1522-0251`
+          }}>
+          1522-0251
+        </span>
+      )
+    }
+  }
+
+  useEffect(() => {
+    if (selectedPay.type) payFetch()
+  }, [selectedPay])
+
+  useEffect(() => {
+    fetchMainPopupData(12)
+  }, [])
+
+
   return (
     <>
       {webview !== 'new' && <Header title="달 충전" />}
@@ -280,8 +335,20 @@ export default () => {
         <h2>구매 내역</h2>
         <div className="field">
           <label>결제상품</label>
-          <p>{name}</p>
+          <p>
+            <img src="https://image.dalbitlive.com/svg/moon_yellow_s.svg" alt="달 아이콘" className="dalIcon" />
+            {dalVal}
+          </p>
         </div>
+
+        {isBonusDalYn && (
+          <div className="field">
+            <label>추가지급</label>
+            <p>
+              <img src="https://image.dalbitlive.com/svg/moon_yellow_s.svg" alt="달 아이콘" className="dalIcon" />{bonusDal}
+            </p>
+          </div>
+        )}
 
         <div className="field">
           <label>상품수량</label>
@@ -322,7 +389,7 @@ export default () => {
           <h5>
             달 충전 안내
             <span>
-              <strong>결제 문의</strong>1522-0251
+              <strong>결제 문의</strong>{phoneCallWrap()}
             </span>
           </h5>
           <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
@@ -351,7 +418,8 @@ const Content = styled.div`
   h2 {
     padding: 15px 0 4px 0;
     font-size: 16px;
-    font-weight: 900;
+    font-weight: 600;
+    color: #000;
 
     &.more-tab {
       display: flex;
@@ -388,20 +456,26 @@ const Content = styled.div`
     background-color: #ffffff;
 
     label {
-      color: ${COLOR_MAIN};
       font-size: 14px;
       font-weight: bold;
+      color: #000;
     }
     p {
-      color: #000;
+      display: flex;
+      color: #632beb;
       margin-left: auto;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: bold;
       strong {
         font-size: 18px;
       }
+      img {
+        margin-top: 2px;
+        margin-right: 4px;
+      }
       &.quantity {
         span {
+          color: #000;
           display: inline-block;
           width: 50px;
           font-size: 18px;
@@ -429,6 +503,9 @@ const Content = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
       width: calc(50% - 2px);
       height: 44px;
       margin-bottom: 4px;
@@ -447,9 +524,23 @@ const Content = styled.div`
         background: #f5f5f5;
       }
     }
+    
     button:nth-child(1) {
       width: 100%;
     }
+    // button:nth-child(-n + 2) {
+    //   width: 100%;
+    // }
+    // button:nth-child(1) {
+    //   &::after {
+    //     content: '';
+    //     margin-left: 6px;
+    //     width: 15px;
+    //     height: 15px;
+    //     background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
+    //   }
+    // }
+    
     &.more {
       overflow: hidden;
       height: 144px;

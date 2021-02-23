@@ -179,7 +179,7 @@ export default (props) => {
     <>
       <Header title="달 충전" />
       <Content>
-        <div className="store_banner">
+        <div className="bannerBox">
           {topbannerData &&
             topbannerData.map((v, idx) => {
               return (
@@ -189,9 +189,10 @@ export default (props) => {
               )
             })}
         </div>
-        <p className="mydal">
-          보유 달 <span>{mydal.toLocaleString()}</span>
-        </p>
+        <div className="dalWrap">
+          <label>보유 달</label>
+          <span>{mydal.toLocaleString()}</span>
+        </div>
         {creatResult()}
         <div className="desc_wrap">
           <strong className="title">환급 안내</strong>
@@ -210,21 +211,45 @@ const Content = styled.section`
   padding: 0 16px;
   background: #eeeeee;
   padding-bottom: 16px;
-  .store_banner {
-    padding-top: 16px;
+
+  .bannerBox {
+    padding: 16px 0;
     img {
       width: 100%;
     }
   }
 
-  .mydal {
-    padding: 16px 0 8px 0;
-    font-size: 16px;
-    font-weight: bold;
+  .dalWrap {
+    margin-bottom: 16px;
+    padding: 12px 16px;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    label {
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.14;
+    }
+
     span {
+      height: 20px;
+      float: right;
+      font-size: 18px;
+      font-weight: bold;
+      line-height: 1.17;
       color: ${COLOR_MAIN};
+      &::before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 4px;
+        width: 20px;
+        height: 20px;
+        background: url('https://image.dalbitlive.com/svg/moon_yellow_s.svg') no-repeat 0 0;
+      }
     }
   }
+
   .btn-wrap {
     display: flex;
     margin-top: 10px;
@@ -274,7 +299,7 @@ const Content = styled.section`
           height: 80px;
         }
       }
-      img-wrap .price {
+      .img-wrap .price {
         font-size: 16px;
         font-weight: bold;
         line-height: 32px;
