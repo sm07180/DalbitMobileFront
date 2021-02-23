@@ -117,13 +117,13 @@ export default function SpecialDjBest() {
               </button>
             </div>
             <div className="support_box">
-              <img src="https://image.dalbitlive.com/event/specialdj/20210222/support_img_03.png" />
-              <button onClick={() => setMoonPop(true)} className="btn_support_moon">
+              <img src="https://image.dalbitlive.com/event/specialdj/20210223/support_img_03.png" />
+              {/* <button onClick={() => setMoonPop(true)} className="btn_support_moon">
                 <img
                   src="https://image.dalbitlive.com/event/specialdj/20210216/btn_support_moon@2x.png"
                   alt="활동지원비 확인하기"
                 />
-              </button>
+              </button> */}
             </div>
             <div className="support_box">
               <img src="https://image.dalbitlive.com/event/specialdj/20210216/support_img_04.png" />
@@ -132,7 +132,7 @@ export default function SpecialDjBest() {
               </button>
             </div>
             <div className="support_box">
-              <img src="https://image.dalbitlive.com/event/specialdj/20210216/support_img_05.png" />
+              <img src="https://image.dalbitlive.com/event/specialdj/20210223/support_img_05.png" />
             </div>
 
             {context.token.isLogin && conditionData ? (
@@ -157,7 +157,7 @@ export default function SpecialDjBest() {
         )}
         {tabState === 'best' && (
           <div className="tab_wrap best">
-            <img src="https://image.dalbitlive.com/event/specialdj/20210216/best_img.png" className="top_image" />
+            <img src="https://image.dalbitlive.com/event/specialdj/20210223/best_img.png" className="top_image" />
           </div>
         )}
 
