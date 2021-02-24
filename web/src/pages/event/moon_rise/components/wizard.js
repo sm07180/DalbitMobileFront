@@ -46,12 +46,8 @@ export default function (props) {
   return (
     <React.Fragment>
       <div className="wizard">
-        <div className="wizard_info">
-          <img
-            src="https://image.dalbitlive.com/event/moonrise/moonrise_fullmoon_dj.png"
-            alt="문법사 보상 이미지"
-            style={{minHeight: '400px'}}
-          />
+        <div className="wizard_info" style={{minHeight: '330px'}}>
+          <img src="https://image.dalbitlive.com/event/moonrise/moonrise_fullmoon_dj.png" alt="문법사 보상 이미지" />
           <button className="wizard_popUpBtn" onClick={() => setPopupState(true)}>
             <img src="https://image.dalbitlive.com/event/moonrise/moonrise_btn_notice.png" alt="보상 팝업 이미지" />
           </button>
