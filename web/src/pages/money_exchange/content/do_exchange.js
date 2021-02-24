@@ -63,7 +63,7 @@ const FormDataReducer = (state, action) => {
             currentDt = '19' + action.val
           }
           const age = calcAge(currentDt)
-          if (age <= 15) {
+          if (age < 11) {
             return {
               ...state,
               fSocialNo: action.val,
