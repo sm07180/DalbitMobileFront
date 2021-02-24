@@ -8,7 +8,7 @@ import Utility from 'components/lib/utility'
 const NoticeList = (props) => {
   const history = useHistory()
   const {memNo} = useParams()
-  const {noticeList} = props
+  const {noticeList, emptyState} = props
 
   const [readCnt, setReadCnt] = useState(0)
   const [readIdx, setReadIdx] = useState(0)
@@ -30,7 +30,7 @@ const NoticeList = (props) => {
 
   return (
     <>
-      {noticeList !== null && noticeList.length === 0 ? (
+      {emptyState && noticeList !== null && noticeList.length === 0 ? (
         <NoResult type="default" text="방송공지가 없습니다." />
       ) : (
         <>

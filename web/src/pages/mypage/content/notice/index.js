@@ -33,6 +33,7 @@ function NoticeComponent(props) {
   const [noticeList, setNoticeList] = useState([])
   const [totalPage, setTotalPage] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
+  const [empty, setEmpty] = useState(false)
 
   const detailItem = useMemo(() => {
     if (noticeList.length > 0 && history.location.search) {
@@ -55,9 +56,16 @@ function NoticeComponent(props) {
       records: records
     })
     if (result === 'success') {
-      setNoticeList(data.list)
-      if (data.paging) {
-        setTotalPage(data.paging.totalPage)
+      if(data.list.length > 0) {
+        setEmpty(false)
+        setNoticeList(data.list)
+        if (data.paging) {
+          setTotalPage(data.paging.totalPage)
+        }
+      } else {
+        setEmpty(true);
+        setNoticeList([]);
+        setTotalPage(1);
       }
     } else {
       context.action.alert({
@@ -109,7 +117,7 @@ function NoticeComponent(props) {
 
   const makeView = () => {
     if (addpage == undefined || addpage === '') {
-      return <NoticeListCompnent noticeList={noticeList} />
+      return <NoticeListCompnent noticeList={noticeList} emptyState={empty} />
     } else if (addpage.indexOf('isDetail') !== -1 && detailItem !== null) {
       return (
         <NoticeDetailCompenet

@@ -11,18 +11,24 @@ export default () => {
   const history = useHistory()
   const [currentPage, setCurrentPage] = useState(1)
   const [storyList, setStoryList] = useState([])
+  const [empty, setEmpty] = useState(false)
 
   function fetchStoryList() {
     Api.getStoryList({page: currentPage, records: 20}).then((res) => {
       const {result, data, message} = res
       if (result === 'success') {
-        if (currentPage > 1) {
-          setStoryList(storyList.concat(data.data))
+        if(data.data.length > 0) {
+          setEmpty(false)
+          if (currentPage > 1) {
+            setStoryList(storyList.concat(data.data))
+          } else {
+            setStoryList(data.data)
+          }
+          if (data.paging) {
+            totalPage = data.paging.totalPage
+          }
         } else {
-          setStoryList(data.data)
-        }
-        if (data.paging) {
-          totalPage = data.paging.totalPage
+          setEmpty(true)
         }
       } else {
         globalCtx.action.alert({title: 'Error', msg: message})
@@ -68,7 +74,7 @@ export default () => {
             </div>
           )
         })
-      ) : (
+      ) : empty && (
         <NoResult
           type="default"
           text="방송 중 받은 사연이 없습니다.
