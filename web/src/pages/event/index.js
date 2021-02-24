@@ -94,6 +94,8 @@ export default () => {
         return <VideoOpen />
       case 'video_open2':
         return <VideoOpen2 />
+      case 'moon_rise':
+        return <MoonRise />
       default:
         return <></>
         break
