@@ -14,22 +14,28 @@ const Detail = () => {
   const [storyList, setStoryList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [totalCnt, setTotalCnt] = useState(0)
+  const [empty, setEmpty] = useState(false);
 
   function fetchStory() {
     Api.getStory({roomNo, page: currentPage, records: 10}).then((res) => {
       const {result, data, message} = res
       if (result === 'success') {
         const {list, paging} = data
-        if (currentPage > 1) {
-          setStoryList(storyList.concat(list))
-        } else {
-          setStoryList(list)
-        }
+        if(list.length > 0) {
+          setEmpty(false)
+          if (currentPage > 1) {
+            setStoryList(storyList.concat(list))
+          } else {
+            setStoryList(list)
+          }
 
-        if (paging) {
-          const {total} = paging
-          setTotalCnt(total)
-          totalPage = paging.totalPage
+          if (paging) {
+            const {total} = paging
+            setTotalCnt(total)
+            totalPage = paging.totalPage
+          }
+        } else {
+          setEmpty(true)
         }
       } else {
         globalCtx.action.alert({title: 'Error', msg: message})
@@ -107,7 +113,7 @@ const Detail = () => {
             )
           })}
         </>
-      ) : (
+      ) : empty && (
         <NoResult type="default" text="받은 사연이 없습니다.<br/>" />
       )}
     </div>

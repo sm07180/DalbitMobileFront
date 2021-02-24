@@ -1,7 +1,7 @@
-import React, {useContext, useRef, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useContext, useRef, useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import Api from 'context/api'
-import {ClipRankContext} from 'context/clip_rank_ctx'
+import { ClipRankContext } from 'context/clip_rank_ctx'
 
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
@@ -23,6 +23,8 @@ function CilpRank() {
   const {formState, clipRankList} = clipRankState
   const setClipRankList = clipRankAction.setClipRankList
   const setMyInfo = clipRankAction.setMyInfo
+  const [loading, setLoading] = useState(false);
+  const [empty, setEmpty] = useState(false);
 
   const TopRef = useRef()
   const FixedWrapRef = useRef()
@@ -40,13 +42,17 @@ function CilpRank() {
     localStorage.setItem('clipPlayListInfo', JSON.stringify(resParams))
     const res = await Api.getClipRankingList({...resParams})
     if (res.result === 'success') {
+      setLoading(false)
       if (res.data.list.length > 5) {
         setClipRankList(res.data.list)
+        setEmpty(false)
       } else {
         setClipRankList([])
+        setEmpty(true)
       }
       setMyInfo(res.data)
     } else {
+      setLoading(true);
       setMyInfo({})
       setClipRankList([])
     }
@@ -88,6 +94,7 @@ function CilpRank() {
 
   return (
     <Layout status="no_gnb">
+      {!loading && (
       <div id="clipRank" className="subContent gray">
         <div ref={TopItemHeight}>
           <Header type="noBack">
@@ -117,7 +124,7 @@ function CilpRank() {
                 {/* 어제 랭킹 1,2,3 트로피 영역 */}
                 <ClipRankingListTop3 />
               </div>
-            ) : (
+            ) : empty && clipRankList.length > 0 && (
               <div className="noResultBox">
                 <NoResult type="default" text="조회 된 결과가 없습니다." />
               </div>
@@ -133,6 +140,7 @@ function CilpRank() {
           <></>
         )}
       </div>
+      )}
     </Layout>
   )
 }

@@ -3173,6 +3173,21 @@ export default class API {
       params: data
     })
   }
+  static getMoonRiseTime = async (data) => {
+    return await ajax({
+      url: '/event/fullmoon/info',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getMoonRiseRank = async (data) => {
+    return await ajax({
+      url: '/event/fullmoon/rank',
+      method: 'POST',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

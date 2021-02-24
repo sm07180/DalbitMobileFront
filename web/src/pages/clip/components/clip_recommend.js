@@ -1,19 +1,21 @@
-import React, {useState, useEffect, useContext, useMemo, useRef} from 'react'
-import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
-import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
-import {convertDateFormat} from 'components/lib/dalbit_moment'
-import {OS_TYPE} from 'context/config'
+import React, { useState, useEffect, useContext, useMemo, useRef } from 'react'
+import { useHistory } from 'react-router-dom'
+import { Context } from 'context'
+import { calcDate, convertMonday } from 'pages/common/rank/rank_fn'
+import { convertDateFormat } from 'components/lib/dalbit_moment'
+import Utility from 'components/lib/utility'
+
+import { OS_TYPE } from 'context/config'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
-import Utility from 'components/lib/utility'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import { Hybrid, isHybrid } from 'context/hybrid'
 
 import Header from 'components/ui/new_header.js'
 import Layout from 'pages/common/layout/new_layout'
 import NoResult from 'components/ui/new_noResult'
+import { ClipPlayFn } from 'pages/clip/components/clip_play_fn'
+
 import '../clip.scss'
-import { ClipPlayFn } from "pages/clip/components/clip_play_fn";
 
 export default function ClipRecommend() {
   const context = useContext(Context)
@@ -27,6 +29,8 @@ export default function ClipRecommend() {
   const [clip, setClip] = useState('')
   const contentText = useRef(null)
   const [buttonToggle, setButtonToggle] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [empty, setEmpty] = useState(false)
 
   const isLast = useMemo(() => {
     const currentDate = convertDateFormat(convertMonday(), 'YYYY-MM-DD')
@@ -69,10 +73,19 @@ export default function ClipRecommend() {
       } else {
         setButtonToggle(false)
       }
+
       setMarketingClipObj(data.recommendInfo)
-      setMarketingClipList(data.list)
       setClip(data.recommendInfo.clipNo)
+      setLoading(false)
+      if(data.list.length > 0) {
+        setMarketingClipList(data.list)
+        setEmpty(false)
+      } else {
+        setMarketingClipList([])
+        setEmpty(true)
+      }
     } else {
+      setLoading(true)
       context.action.alert({msg: message})
     }
   }
@@ -96,7 +109,7 @@ export default function ClipRecommend() {
         <button
           className="allPlay"
           onClick={() => {
-            ClipPlayFn(marketingClipList[0].clipNo, 'all', context, history);
+            ClipPlayFn(marketingClipList[0].clipNo, 'all', context, history)
             context.action.updateDateState(marketingClipObj.recDate)
           }}>
           전체듣기
@@ -111,6 +124,7 @@ export default function ClipRecommend() {
 
   return (
     <Layout status="no_gnb">
+      {!loading && (
       <div id="clipRecommend">
         <Header title="주간 클립테이블" />
         <div className="subContent gray">
@@ -142,7 +156,7 @@ export default function ClipRecommend() {
                 <div
                   className="video"
                   onClick={() => {
-                    ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
+                    ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
                     context.action.updateDateState(marketingClipObj.recDate)
                   }}>
                   {marketingClipObj.bannerUrl ? (
@@ -156,7 +170,7 @@ export default function ClipRecommend() {
                   <ul
                     className="scoreBox"
                     onClick={() => {
-                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
+                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
                       context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     <li className="scoreList">
@@ -213,7 +227,7 @@ export default function ClipRecommend() {
                   <h4
                     className="playName"
                     onClick={() => {
-                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history);
+                      ClipPlayFn(marketingClipObj.clipNo, 'dal', context, history)
                       context.action.updateDateState(marketingClipObj.recDate)
                     }}>
                     {marketingClipObj.title}
@@ -276,7 +290,7 @@ export default function ClipRecommend() {
                       <div
                         className="thumbnail"
                         onClick={() => {
-                          ClipPlayFn(v.clipNo, 'dal', context, history);
+                          ClipPlayFn(v.clipNo, 'dal', context, history)
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
@@ -287,7 +301,7 @@ export default function ClipRecommend() {
                       <div
                         className="textItem"
                         onClick={() => {
-                          ClipPlayFn(v.clipNo, 'dal', context, history);
+                          ClipPlayFn(v.clipNo, 'dal', context, history)
                           context.action.updateDateState(marketingClipObj.recDate)
                         }}>
                         <div className="textItem__titleBox">
@@ -295,11 +309,10 @@ export default function ClipRecommend() {
                           <h4 className="textItem__title">{v.title}</h4>
                         </div>
                         <div className="textItem__nickName">
-                          {v.gender === 'f' && (
-                            <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" className="femaleIcon" alt="남성" />
-                          )}
-                          {v.gender === 'm' && (
-                            <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" className="maleIcon" alt="여성" />
+                          {v.gender !== '' && (
+                            <em className={`icon_wrap ${v.gender === 'm' ? 'icon_male' : 'icon_female'}`}>
+                              <span className="blind">성별</span>
+                            </em>
                           )}
                           {v.nickName}
                         </div>
@@ -317,7 +330,7 @@ export default function ClipRecommend() {
                           <span
                             className="textItem__moreButton--play"
                             onClick={() => {
-                              ClipPlayFn(v.clipNo, 'dal', context, history);
+                              ClipPlayFn(v.clipNo, 'dal', context, history)
                               context.action.updateDateState(marketingClipObj.recDate)
                             }}>
                             플레이 아이콘
@@ -339,11 +352,12 @@ export default function ClipRecommend() {
                 })}
               </ul>
             </>
-          ) : (
+          ) : empty && marketingClipList.length === 0 && (
             <NoResult type="default" text="등록된 클립이 없습니다." />
           )}
         </div>
       </div>
+      )}
       {/*{popupState && <RankPopup setPopupState={setPopupState} clip={clip} />}*/}
     </Layout>
   )
