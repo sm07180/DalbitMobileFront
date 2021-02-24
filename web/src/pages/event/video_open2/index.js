@@ -144,6 +144,13 @@ export default function VideoOpenEvent() {
                     <br />
                     추가로 <span>1,000달</span>을 더 드립니다!
                   </p>
+
+                  <p className="memo">
+                    ※ 일간 최고 DJ은 이벤트 기간 중 1회만 선정됩니다
+                    <br />
+                    (중복 선정 불가)
+                  </p>
+
                   <button
                     className="btn"
                     onClick={() => {
@@ -223,6 +230,12 @@ export default function VideoOpenEvent() {
                     <span>매일!</span> 방송 선물을 제일 많이 보낸 팬분들께
                     <br />
                     추가로 <span>1,000달</span>을 더 드립니다!
+                  </p>
+
+                  <p className="memo">
+                    ※ 일간 최고 팬은 이벤트 기간 중 1회만 선정됩니다
+                    <br />
+                    (중복 선정 불가)
                   </p>
                   <button
                     className="btn"

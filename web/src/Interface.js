@@ -772,6 +772,11 @@ export default () => {
           }
         }
         break
+      case '53': //-----------------마이클립
+        if (isLogin) {
+          window.location.href = `/event/attend_event`
+        }
+        break
       case '4': //------------------등록 된 캐스트(미정)
         window.location.href = `/`
         break

@@ -150,7 +150,9 @@ export default function Alert() {
         break
       case 48:
         history.push(`/mypage/${context.profile.memNo}/my_clip`)
-
+        break
+      case 53:
+        history.push(`/event/attend_event`)
         break
       case 50:
         let mobileLink = link
