@@ -1,0 +1,270 @@
+@import '../../../styles/variables';
+
+#moonRise {
+  position: relative;
+  .btnBack {
+    position: absolute;
+    top: 1%;
+    right: 2%;
+    width: 32px;
+    height: 32px;
+    z-index: 3;
+  }
+  .moonNoresult_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 80px;
+    > img {
+      width: 80%;
+    }
+    .innerTxt {
+      margin-top: 20px;
+      font-size: 18px;
+      letter-spacing: -0.8px;
+      color: $greishGray;
+
+      .purpleColor {
+        color: $primary;
+        font-weight: 600;
+      }
+    }
+  }
+  .share_header {
+    position: relative;
+    .share_topDate {
+      position: absolute;
+      right: 7%;
+      color: $black;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      z-index: 2;
+      &.riseDate {
+        width: 42%;
+        bottom: 17.5%;
+      }
+      &.wholeDate {
+        width: 52%;
+        bottom: 8.4%;
+      }
+    }
+    > img {
+      width: 100%;
+    }
+  }
+  .share_tabWrap {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -1px;
+    background-color: $black;
+    .share_tabItem {
+      width: 33.3%;
+      > img {
+        width: 100%;
+      }
+    }
+  }
+  .guide {
+    > img {
+      width: 100%;
+    }
+  }
+  .wizard {
+    background-color: #262626;
+    .wizard_info {
+      position: relative;
+      > img {
+        width: 100%;
+      }
+      .wizard_popUpBtn {
+        position: absolute;
+        left: 50%;
+        bottom: 28px;
+        transform: translateX(-50%);
+        width: 64%;
+        > img {
+          width: 100%;
+        }
+      }
+    }
+    .wizard_listWrap {
+      min-height: 500px;
+      padding: 4%;
+      box-sizing: border-box;
+      background-color: $lighterGray;
+      border-top-left-radius: 32px;
+      border-top-right-radius: 32px;
+      .listItem {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 3% 4%;
+        margin-bottom: 4px;
+        background-color: $white;
+        border-radius: 16px;
+        .rankImg {
+          width: 32px;
+          height: 40px;
+        }
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        .defaultRankIcon {
+          display: inline-block;
+          width: 40px;
+          background: $lighterGray;
+          border-radius: 20px;
+          font-size: 12px;
+          color: $black;
+          font-weight: 600;
+          line-height: 20px;
+          text-align: center;
+        }
+        .listInfo {
+          display: flex;
+          align-items: center;
+          width: calc(100% - 120px);
+          margin-left: 8px;
+          .profImg {
+            width: 44px;
+            height: 44px;
+            margin-right: 8px;
+            border-radius: 50%;
+          }
+          .detail_box {
+            width: calc(100% - 52px);
+            .nick {
+              display: inline-block;
+              width: 90%;
+              font-size: 14px;
+              font-weight: 600;
+              letter-spacing: -0.7px;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+            .date {
+              font-size: 12px;
+              font-weight: 600;
+              color: $greishGray;
+              .timeIcon {
+                vertical-align: middle;
+                margin: 0 2px 0 3px;
+              }
+            }
+          }
+        }
+        .moonCntWrap {
+          position: relative;
+          width: 72px;
+          .moonCnt {
+            width: 50%;
+            position: absolute;
+            top: 50%;
+            right: 0%;
+            transform: translateY(-50%);
+            margin-left: 6px;
+            font-size: 14px;
+            color: $white;
+            font-weight: 600;
+            text-align: center;
+            z-index: 2;
+          }
+          > img {
+            position: relative;
+            width: 50%;
+            z-index: 2;
+          }
+          &::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 94%;
+            padding: 21% 0;
+            background-color: #939393;
+            border-radius: 20px;
+            z-index: 1;
+          }
+          &.ranker {
+            &::before {
+              background-color: #ff593e;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+// popUp
+.scoreGuideWrap {
+  li {
+    margin-bottom: 16px;
+    padding-left: 8px;
+    text-indent: -4px;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    text-align: justify;
+    &:before {
+      display: inline-block;
+      margin-right: 4px;
+      content: '·';
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .aboutMoons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    .moonsItem {
+      width: calc(50% - 2px);
+      min-height: 142px;
+      padding: 10px 16px;
+      background-color: $whiteGray;
+      border-radius: 8px;
+      box-sizing: border-box;
+
+      .innerTxt {
+        font-size: 12px;
+        font-weight: normal;
+        color: $darkGray;
+        text-align: left;
+      }
+    }
+  }
+  .strongPurple {
+    font-size: 14px;
+    font-weight: 600;
+    color: $primary;
+    text-align: center;
+
+    &.block {
+      display: block;
+    }
+  }
+  .strongRed {
+    margin-left: 4px;
+    color: $red;
+    font-size: 14px;
+    letter-spacing: -0.35px;
+    text-align: justify;
+  }
+}
+.agreeBtn {
+  width: 100%;
+  height: 44px;
+  margin-top: 16px;
+  background-color: $primary;
+  border-radius: 12px;
+  color: $white;
+  font-size: 18px;
+  text-align: center;
+}

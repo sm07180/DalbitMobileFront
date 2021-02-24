@@ -32,6 +32,7 @@ import NewYear from './new_year'
 import Package from './package'
 import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
+import MoonRise from './moon_rise'
 
 export default () => {
   const params = useParams()
