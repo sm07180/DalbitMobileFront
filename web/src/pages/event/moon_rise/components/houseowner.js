@@ -3,7 +3,6 @@ import API from 'context/api'
 import {useHistory} from 'react-router-dom'
 import ScorePop from './score_pop'
 import NoResult from './no_result'
-import Utility, {addComma} from 'components/lib/utility'
 
 export default function (props) {
   const history = useHistory()
@@ -56,7 +55,6 @@ export default function (props) {
           ) : (
             list.map((wizardItem, idx) => {
               const {profileImage, nickName, rank, completeCnt, lastDate, listenTime, mem_no} = wizardItem
-
               return (
                 <div key={idx} className="listItem" onClick={() => history.push(`/mypage/${mem_no}`)}>
                   <RankDivideRender rank={rank} />
@@ -64,11 +62,7 @@ export default function (props) {
                     <img src={profileImage[`thumb62x62`]} className="profImg" alt="프로필이미지" />
                     <div className="detail_box">
                       <span className="nick">{nickName}</span>
-                      <p className="date">
-                        {lastDate}
-                        <img src={`https://image.dalbitlive.com/svg/time_g_s.svg`} className="timeIcon" alt="타임아이콘" />
-                        {Utility.addComma(listenTime)}
-                      </p>
+                      <p className="date">{lastDate}</p>
                     </div>
                   </div>
                   <div className={idx > 2 ? 'moonCntWrap' : 'moonCntWrap ranker'}>
