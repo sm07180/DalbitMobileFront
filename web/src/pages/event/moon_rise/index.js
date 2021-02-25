@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useLayoutEffect} from 'react'
-import Layout from 'pages/common/layout'
+
 import './index.scss'
 
 import {useHistory} from 'react-router-dom'
@@ -54,28 +54,26 @@ export default function () {
   }, [tabState])
 
   return (
-    <Layout status="no_gnb">
-      <div id="moonRise">
-        <button className="btnBack" onClick={() => history.goBack()}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-        </button>
-        <div className="share_header">
-          <img src="https://image.dalbitlive.com/event/moonrise/background_fullmoon_head.png" alt="달띄우기상단공통이미지" />
-          <span className="share_topDate riseDate">{moonRiseTime.fullmoonText}</span>
-          <span className="share_topDate wholeDate">{moonRiseTime.fullmoonDuration}</span>
-        </div>
-        <div className="share_tabWrap">
-          {moonRiseBtnArray.map((tabItem, idx) => {
-            const {title, id, srcOn, srcOff} = tabItem
-            return (
-              <button key={`${title} + ${id}`} className="share_tabItem" onClick={() => setTabState(title)}>
-                <img src={title === tabState ? srcOn : srcOff} alt={`달띄우기공통탭${title}`} />
-              </button>
-            )
-          })}
-        </div>
-        <MakeView />
+    <div id="moonRise">
+      <button className="btnBack" onClick={() => history.goBack()}>
+        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+      </button>
+      <div className="share_header">
+        <img src="https://image.dalbitlive.com/event/moonrise/background_fullmoon_head.png" alt="달띄우기상단공통이미지" />
+        <span className="share_topDate riseDate">{moonRiseTime.fullmoonText}</span>
+        <span className="share_topDate wholeDate">{moonRiseTime.fullmoonDuration}</span>
       </div>
-    </Layout>
+      <div className="share_tabWrap">
+        {moonRiseBtnArray.map((tabItem, idx) => {
+          const {title, id, srcOn, srcOff} = tabItem
+          return (
+            <button key={`${title} + ${id}`} className="share_tabItem" onClick={() => setTabState(title)}>
+              <img src={title === tabState ? srcOn : srcOff} alt={`달띄우기공통탭${title}`} />
+            </button>
+          )
+        })}
+      </div>
+      <MakeView />
+    </div>
   )
 }
