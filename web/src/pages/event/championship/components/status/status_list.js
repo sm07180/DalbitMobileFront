@@ -47,7 +47,7 @@ export default function StatusList({nowEventNo, scoreData}) {
         </article>
         {eventNo()}
       </li>
-      {scoreData.length === 0 ? (
+      {nowEventNo === 1 ? (
         <div className="noResult">
           <img src="https://image.dalbitlive.com/event/championship/20210223/img_noresult.png" alt="집계중입니다" />
         </div>
