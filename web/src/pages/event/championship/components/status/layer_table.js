@@ -31,81 +31,6 @@ export default function LayerTable({setLayerPointTable, content}) {
         </p>
         <div className="layerContent" dangerouslySetInnerHTML={{__html: content}}></div>
         <button className="btnClose" onClick={closePopup}></button>
-
-        {/* <div className="table_box">
-          <table>
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>승점</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1등</td>
-                <td>15</td>
-              </tr>
-              <tr>
-                <td>3등</td>
-                <td>12</td>
-              </tr>
-              <tr>
-                <td>5등</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <td>7등</td>
-                <td>7</td>
-              </tr>
-              <tr>
-                <td>9등</td>
-                <td>5</td>
-              </tr>
-              <tr>
-                <td>11~20등</td>
-                <td>3</td>
-              </tr>
-              <tr>
-                <td>51~100등</td>
-                <td>1</td>
-              </tr>
-            </tbody>
-          </table>
-          <table>
-            <thead>
-              <tr>
-                <th>순위</th>
-                <th>승점</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>2등</td>
-                <td>13</td>
-              </tr>
-              <tr>
-                <td>4등</td>
-                <td>10</td>
-              </tr>
-              <tr>
-                <td>6등</td>
-                <td>8</td>
-              </tr>
-              <tr>
-                <td>8등</td>
-                <td>6</td>
-              </tr>
-              <tr>
-                <td>10등</td>
-                <td>4</td>
-              </tr>
-              <tr>
-                <td>21~50등</td>
-                <td>2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> */}
       </div>
     </PopupWrap>
   )
@@ -130,7 +55,7 @@ const PopupWrap = styled.div`
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+    background: url('https://image.dalbitlive.com/svg/close_w_l.svg') no-repeat 0 0;
   }
 
   .layerContainer {
@@ -154,9 +79,9 @@ const PopupWrap = styled.div`
     }
 
     > p {
-      padding: 16px 0;
+      padding: 16px 0 0;
       text-align: center;
-      font-weight: $regular;
+      font-weight: normal;
       font-size: 14px;
       line-height: 20px;
       letter-spacing: -0.35px;
