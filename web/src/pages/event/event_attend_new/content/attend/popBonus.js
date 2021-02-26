@@ -82,6 +82,7 @@ const PopupWrap = styled.div`
   align-items: center;
 
   .content-wrap {
+    position: relative;
     width: calc(100% - 32px);
     max-width: 328px;
     padding: 20px 0;
@@ -131,7 +132,7 @@ const PopupWrap = styled.div`
     .btn-close {
       position: absolute;
       right: 20%;
-      top: 27%;
+      top: 5%;
       width: 24px;
       height: 24px;
 

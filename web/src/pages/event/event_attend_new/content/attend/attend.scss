@@ -1,9 +1,9 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/mixins';
+@import '../../../../../styles/global';
 
 .attendTab {
   .topBanner {
     position: relative;
+    background: #91313f;
 
     img {
       width: 100%;
@@ -12,7 +12,7 @@
     button.attend {
       position: absolute;
       left: 20%;
-      bottom: 8%;
+      bottom: 0%;
       width: 60%;
     }
   }
@@ -25,22 +25,83 @@
     }
 
     .attendStateList {
-      display: flex;
-      justify-content: center;
+      @include flex;
       position: absolute;
       left: 8%;
-      top: 34%;
-      width: 70%;
+      top: 57%;
+      width: 83%;
       padding: 10px 0;
-      background-color: $white;
       border-radius: 12px;
-      font-size: 14px;
+      font-size: 16px;
       letter-spacing: -0.5px;
       text-align: center;
+      @media (max-width: 420px) {
+        top: 56%;
+        font-size: 14px;
+        letter-spacing: -0.5px;
+      }
+
+      dl,
+      dt,
+      dd {
+        line-height: 100%;
+      }
 
       dd {
         padding: 0 5px 0 2px;
-        font-weight: 600;
+        font-weight: $bold;
+        &:last-child {
+          padding-right: 0px;
+        }
+      }
+    }
+  }
+
+  .bonus_box {
+    position: relative;
+    img {
+      width: 100%;
+    }
+    .btn {
+      position: absolute;
+      right: 10%;
+      top: 62%;
+      width: 50%;
+
+      &.notouch {
+        cursor: default;
+      }
+    }
+
+    .point_box {
+      position: absolute;
+      left: 47%;
+      bottom: 23%;
+      width: 40%;
+      font-size: 16px;
+      line-height: 26px;
+
+      @media (max-width: 420px) {
+        top: 56%;
+        font-size: 14px;
+        letter-spacing: -0.5px;
+      }
+
+      @media (max-width: 361px) {
+        font-size: 12px;
+        line-height: 21px;
+      }
+
+      li {
+        @include flex('', flex-start);
+      }
+      p {
+        margin: 0 2px 0 2px;
+        font-weight: $bold;
+      }
+      span {
+        font-weight: $bold;
+        color: #f51f60;
       }
     }
   }

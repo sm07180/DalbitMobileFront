@@ -1,8 +1,6 @@
 @import '../../../styles/global';
 
 #attendEventPage {
-  max-width: 460px;
-  min-width: 360px;
   margin: 0 auto;
 
   .commonTopWrap {
@@ -23,7 +21,6 @@
 
   .tabWrap {
     width: 100%;
-    max-width: 460px;
     padding-top: 2px;
     background-color: #fb7964;
     border-bottom: 2px solid #91313f;

@@ -61,7 +61,7 @@ export default () => {
 
   const clickGiftButton = () => {
     async function fetchEventAttendGift() {
-      const {result, data} = await API.postEventAttendGift()
+      const {result, data, message} = await API.postEventAttendGift()
       if (result === 'success') {
         const {status, summary} = data
         eventAttendAction.setSummaryList(summary)
@@ -69,7 +69,9 @@ export default () => {
         eventAttendAction.setDateList(dateList)
         setPopup(popup ? false : true)
       } else {
-        //실패
+        context.action.alert({
+          msg: message
+        })
       }
     }
     fetchEventAttendGift()
@@ -93,7 +95,7 @@ export default () => {
       6: '일요일'
     }
 
-    const text = ['EXP10+1달', 'EXP10+2달', 'EXP10+1달', 'EXP10+2달', 'EXP15+2달', 'EXP15+2달', 'EXP15+2달']
+    const text = ['EXP10+1달', 'EXP10+2달', 'EXP10+1달', 'EXP10+2달', 'EXP15+3달', 'EXP15+3달', 'EXP15+3달']
 
     return (
       <>
@@ -114,11 +116,7 @@ export default () => {
               if (index === 7) {
                 return (
                   <li key={`event-date-${index}`} className="stampBoxItem pointBox">
-                    {statusList.bonus === '0' ? (
-                      <img src={`${IMG_SERVER}/event/attend/201019/stamp_bonus@2x.png`} />
-                    ) : (
-                      <img src={`${IMG_SERVER}/event/attend/201019/stamp_bonus_after@2x.png`} />
-                    )}
+                    <img src={`${IMG_SERVER}/event/attend/210226/stamp_img_moon@2x.png`} alt="달 이미지" />
                   </li>
                 )
               }
@@ -137,8 +135,34 @@ export default () => {
             })}
           </ul>
         </div>
+        <div className="bonus_box">
+          {statusList.bonus === '2' ? (
+            <img src={`${IMG_SERVER}/event/attend/210226/event_img_01_4_on@2x.png`} alt="보너스 지급 완료" />
+          ) : (
+            <img src={`${IMG_SERVER}/event/attend/210226/event_img_01_4@2x.png`} alt="출석체크 혜택 보너스" />
+          )}
 
-        <div>{createBonus()}</div>
+          {statusList.bonus === '0' ? (
+            <button className="btn notouch">
+              <img src={`${IMG_SERVER}/event/attend/210226/btn_bonus_gift_disabled@2x.png`} alt="보너스 선물받기 받을수없음" />
+            </button>
+          ) : statusList.bonus === '1' ? (
+            <button className="btn" onClick={() => clickGiftButton()}>
+              <img src={`${IMG_SERVER}/event/attend/210226/btn_bonus_gift@2x.png`} alt="보너스 선물받기 받을수있음" />
+            </button>
+          ) : statusList.bonus === '2' ? (
+            <ul className="point_box">
+              <li>
+                경험치 (EXP) : <p>{summaryList.totalExp}</p> <span className="bonus"> +{statusList.exp}</span>
+              </li>
+              <li>
+                받은 달 : <p>{summaryList.dalCnt}</p> <span className="bonus"> +{statusList.dal}</span>
+              </li>
+            </ul>
+          ) : (
+            <></>
+          )}
+        </div>
 
         {popup && <BonusPop setPopup={setPopup}></BonusPop>}
       </>

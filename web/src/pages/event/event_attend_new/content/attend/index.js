@@ -91,7 +91,7 @@ export default function AttendTab() {
   return (
     <div className="attendTab">
       <div className="topBanner">
-        <img src={`${IMG_SERVER}/event/attend/201217/event_img_01_1@2x.png`} />
+        <img src={`${IMG_SERVER}/event/attend/210226/event_img_01_1@2x.png`} alt=" 최대 25달 + 경험치 매일 출석 check" />
 
         {statusList.check_gift === '1' ? (
           <button type="button" className="attend" onClick={() => attendDateIn()}>
@@ -105,7 +105,7 @@ export default function AttendTab() {
       </div>
 
       <div className="attendStatebox">
-        <img src={`${IMG_SERVER}/event/attend/201019/event_img_01_2@2x.png`} alt="출석체크 현황" />
+        <img src={`${IMG_SERVER}/event/attend/210226/event_img_01_2@2x.png`} alt="출석체크 현황" />
         <dl className="attendStateList">
           <dt>출석체크 :</dt>
           <dd>{summaryList.attendanceDays}</dd>
@@ -116,13 +116,9 @@ export default function AttendTab() {
         </dl>
       </div>
 
-      <div>
-        <AttendList />
-      </div>
+      <AttendList />
 
-      <div>
-        <Notice />
-      </div>
+      <Notice />
 
       {popup && <AttendPop setPopup={setPopup} />}
     </div>

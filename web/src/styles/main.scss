@@ -1418,15 +1418,10 @@
 
       .dj-nickname {
         width: 100%;
-        display: block;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        @include multi-ellipsis(1);
         color: $white;
         font-weight: $bold;
         font-size: 12px;
-
-        line-height: 1.08;
         letter-spacing: -0.36px;
       }
     }
