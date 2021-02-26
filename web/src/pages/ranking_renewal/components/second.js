@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import Utility, { addComma } from "components/lib/utility";
-import { RankContext } from 'context/rank_ctx'
+import React, {useContext, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
+import Utility, {addComma} from 'components/lib/utility'
+import {RankContext} from 'context/rank_ctx'
 import styled, {css} from 'styled-components'
 import NoResult from 'components/ui/new_noResult'
 import ProfileImage from 'components/ui/profileImage'
@@ -9,8 +9,8 @@ import '../index.scss'
 
 function Second({empty}) {
   const history = useHistory()
-  const { rankState } = useContext(RankContext)
-  const { secondList } = rankState
+  const {rankState} = useContext(RankContext)
+  const {secondList} = rankState
 
   return (
     <div className="specialPage">
@@ -48,7 +48,7 @@ function Second({empty}) {
                           <div className="nickNameBox ellipsis">{v1.memNick}</div>
                           <span className="genderBox">
                             <LevelBox levelColor={v1.levelColor}>Lv{v1.level}</LevelBox>
-                            <em className={`icon_wrap ${v1.memSex1 === 'm' ? 'icon_male' : 'icon_female'}`}>
+                            <em className={`icon_wrap ${v1.memSex === 'm' ? 'icon_male' : 'icon_female'}`}>
                               <span className="blind">성별</span>
                             </em>
                           </span>
