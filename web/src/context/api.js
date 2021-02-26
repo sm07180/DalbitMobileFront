@@ -3188,6 +3188,30 @@ export default class API {
       params: data
     })
   }
+
+  static getChampionship = async (data) => {
+    return await ajax({
+      url: '/event/championship',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getChampionshipPoint = async (data) => {
+    return await ajax({
+      url: '/event/championship/point',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static postChampionshipGift = async (data) => {
+    return await ajax({
+      url: '/event/championship/gift',
+      method: 'POST',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

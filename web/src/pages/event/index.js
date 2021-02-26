@@ -33,6 +33,8 @@ import Package from './package'
 import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
 import MoonRise from './moon_rise'
+import BestdjIntro from './bestdj_intro'
+import Championship from './championship'
 
 export default () => {
   const params = useParams()

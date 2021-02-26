@@ -1,0 +1,579 @@
+@import '../../../styles/global.scss';
+
+#championship_page {
+  position: relative;
+
+  img {
+    width: 100%;
+  }
+
+  .btnBack {
+    position: absolute;
+    right: 16px;
+    top: 16px;
+    width: 40px;
+    height: 40px;
+
+    &.popup {
+      right: 0;
+      top: -50px;
+    }
+  }
+
+  .tab_box {
+    display: flex;
+    background-color: #87c9dd;
+
+    button {
+      width: 43.1%;
+      &:last-child {
+        flex: 1;
+      }
+    }
+  }
+
+  .event_content_wrap {
+    overflow: hidden;
+    margin-top: -1px;
+
+    .stage_wrap {
+      background-color: #fff;
+
+      .tab_box {
+        padding: 5% 5% 0;
+        background-color: $white;
+        box-sizing: border-box;
+
+        button {
+          flex: 1;
+          margin-left: 5px;
+
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
+
+      .img_box {
+        padding: 3% 5% 0;
+        margin-bottom: -4%;
+
+        &.status {
+          padding-top: 5%;
+          margin-right: -5%;
+
+          img {
+            margin-left: 15%;
+          }
+        }
+
+        &.rank {
+          padding: 5% 12% 0;
+          margin-bottom: 0;
+
+          .btn_box {
+            display: flex;
+            padding: 4.5% 0 7%;
+
+            button + button {
+              margin-left: 2px;
+            }
+          }
+        }
+      }
+
+      .status_wrap {
+        position: relative;
+        padding: 22% 0 18%;
+        background-color: #87c9dd;
+        box-sizing: border-box;
+
+        .status_img {
+          position: absolute;
+          top: 7%;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 73%;
+        }
+
+        .score_list {
+          display: flex;
+          padding: 2% 5% 2%;
+
+          .score_item + .score_item {
+            margin-left: 1px;
+          }
+
+          .score_item {
+            width: 15%;
+            overflow: hidden;
+
+            &.total {
+              flex: 1;
+              margin-left: 4px;
+              border-radius: 10px;
+
+              dt {
+                background-color: #ec455f;
+              }
+            }
+
+            dt {
+              height: 38px;
+              background-color: $black;
+              text-align: center;
+              line-height: 38px;
+              color: $white;
+              font-size: 15px;
+              font-weight: $bold;
+
+              &.active {
+                background-color: $primary;
+              }
+
+              &.complete {
+                background-color: #c7c7c7;
+              }
+            }
+
+            dd {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              height: 62px;
+              background-color: $white;
+              font-size: 15px;
+              letter-spacing: -0.75px;
+              line-height: 19px;
+              font-weight: $regular;
+              text-align: center;
+              color: #676767;
+
+              > span {
+                font-weight: $bold;
+                color: $black;
+              }
+            }
+          }
+
+          > div {
+            &:first-of-type {
+              border-radius: 10px 0 0 10px;
+            }
+
+            &:last-of-type {
+              border-radius: 0 10px 10px 0;
+            }
+          }
+        }
+
+        .img_box {
+          position: relative;
+
+          .receive_btn {
+            position: absolute;
+            left: 50%;
+            bottom: -13%;
+            transform: translateX(-50%);
+            width: 33%;
+            cursor: pointer;
+          }
+        }
+      }
+
+      .notice_box {
+        padding: 12px;
+        font-size: 13px;
+        line-height: 26px;
+        letter-spacing: -1px;
+        color: $white;
+        background: url('https://image.dalbitlive.com/event/championship/20210223/event_notice_bg.png');
+        background-size: 100%;
+
+        p {
+          position: relative;
+          padding-left: 16px;
+          padding-bottom: 5px;
+          line-height: 20px;
+
+          &::before {
+            content: '※';
+            position: absolute;
+            top: 0;
+            left: 0;
+          }
+
+          span {
+            font-size: 12px;
+          }
+        }
+
+        button {
+          margin-left: 5px;
+          padding: 0 5px;
+          height: 18px;
+          line-height: 18px;
+          border-radius: 10px;
+          background-color: $black;
+          color: $white;
+          font-size: 13px;
+
+          &:last-of-type {
+            background-color: #ec455f;
+          }
+        }
+      }
+
+      .my_info_box {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 8px 20px;
+        background-color: #632beb;
+        color: $white;
+
+        .my_rank_box {
+          position: relative;
+
+          &:first-child {
+            padding-right: 37px;
+            &::after {
+              content: '';
+              position: absolute;
+              top: 10px;
+              right: 16px;
+              width: 1px;
+              height: 14px;
+              background-color: $darkGray;
+            }
+          }
+
+          img {
+            width: 24px;
+            margin-top: -2px;
+            vertical-align: middle;
+          }
+
+          .rank {
+            display: inline-block;
+            margin: 0 2px 0 8px;
+            padding: 0 12px;
+            height: 28px;
+            border-radius: 14px;
+            background: $white;
+            font-size: 22px;
+            letter-spacing: -0.55px;
+            text-align: center;
+            color: $black;
+            font-weight: 500;
+            line-height: 28px;
+          }
+
+          .point {
+            margin-left: 8px;
+            font-size: 18px;
+            font-weight: $bold;
+            letter-spacing: -0.45px;
+            color: #fd942b;
+          }
+        }
+
+        .my_point {
+          position: relative;
+          width: 100%;
+          margin-top: 9px;
+
+          span {
+            color: #fcff1c;
+          }
+        }
+        .btn_refresh {
+          position: absolute;
+          bottom: 7px;
+          right: 12px;
+
+          .refresh-img {
+            width: 100%;
+            margin-top: -2px;
+            margin-left: 8px;
+            max-width: 28px;
+            vertical-align: middle;
+            &.active {
+              @include rotate_animation(-360deg);
+            }
+          }
+        }
+      }
+
+      .event_item {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        border-bottom: 1px solid #f2f2f2;
+        box-sizing: border-box;
+
+        &.status_item {
+          > span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0.2;
+            font-size: 14px;
+            letter-spacing: -0.7px;
+            font-weight: $bold;
+            color: #612eed;
+          }
+
+          .info_box {
+            display: flex;
+            align-items: center;
+            height: 48px;
+            flex: 0.96;
+            .rank {
+              > img {
+                padding-top: 0;
+              }
+            }
+            .nick {
+              width: calc(100% - 64px);
+              font-size: 14px;
+              font-weight: $bold;
+              letter-spacing: -0.35px;
+              cursor: pointer;
+
+              @include multi-ellipsis(1);
+            }
+          }
+        }
+
+        &.category {
+          height: 48px;
+
+          > article + article {
+            margin-left: 1px;
+          }
+
+          > article:first-child {
+            flex: 1;
+            height: 100%;
+            background-color: #979797;
+
+            .nickname {
+              width: calc(100% - 64px);
+            }
+          }
+
+          .status {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 10%;
+            height: 100%;
+            background-color: $black;
+            font-size: 14px;
+            font-weight: $bold;
+            color: $white;
+            text-align: center;
+            letter-spacing: -0.7px;
+
+            &:first-of-type {
+              flex-direction: row;
+            }
+
+            > span {
+              font-size: 12px;
+              letter-spacing: -0.6px;
+              font-weight: $regular;
+            }
+
+            &.active {
+              background-color: #612eed;
+            }
+
+            &.complete {
+              background-color: #c7c7c7;
+            }
+          }
+        }
+
+        .rank {
+          flex-shrink: 0;
+          width: 64px;
+          text-align: center;
+
+          .medal_icon {
+            padding-top: 8px;
+            width: 32px;
+          }
+
+          .num {
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+            line-height: 20px;
+            border-radius: 12px;
+            background-color: $lighterGray;
+            font-size: 12px;
+            font-weight: $white;
+            text-align: center;
+          }
+        }
+
+        &:first-child {
+          .medal_icon {
+            width: 40px;
+          }
+        }
+
+        .info_box {
+          display: flex;
+          align-items: center;
+          width: calc(100% - 64px);
+
+          .dj_info,
+          .cupid_info {
+            display: flex;
+            align-items: center;
+            width: 60%;
+            padding: 10px 0;
+            box-sizing: border-box;
+
+            &.fan {
+              width: 100%;
+            }
+
+            .thumb {
+              overflow: hidden;
+              position: relative;
+              width: 48px;
+              height: 48px;
+              min-width: 48px;
+              margin-right: 7px;
+              border-radius: 50%;
+              cursor: pointer;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            .nick_box {
+              width: calc(100% - 55px);
+              font-size: 14px;
+              letter-spacing: -0.35px;
+
+              .nick {
+                max-width: 95%;
+                font-weight: $bold;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+              }
+
+              .level {
+                font-size: 14px;
+                font-weight: $bold;
+                letter-spacing: -0.35px;
+                vertical-align: middle;
+
+                .icon_wrap {
+                  vertical-align: middle;
+                }
+              }
+
+              .level + .nick {
+                margin-top: 4px;
+              }
+            }
+
+            .exp {
+              margin-top: 3px;
+              font-size: 12px;
+              letter-spacing: -0.3px;
+              color: #919191;
+              font-weight: 500;
+
+              img {
+                width: 16px;
+              }
+
+              span {
+                color: $primary;
+              }
+            }
+          }
+
+          .cupid_info {
+            width: 40%;
+            .thumb {
+              overflow: visible;
+
+              img {
+                border-radius: 50%;
+              }
+            }
+            .cupid {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              height: 16px;
+              border-radius: 14px;
+              background-color: #f3529d;
+              font-size: 10px;
+              font-weight: $bold;
+              color: $white;
+              text-align: center;
+              letter-spacing: -0.25px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .best_daily {
+    padding: 0;
+
+    .tab_box {
+      background-color: $whiteGray;
+
+      button {
+        width: 60px;
+        height: 40px;
+        font-size: 16px;
+        color: $greishBrown;
+
+        &.active {
+          position: relative;
+          font-weight: $bold;
+          color: $primary;
+
+          &:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: $primary;
+          }
+        }
+      }
+    }
+  }
+  .noResult {
+    @include flex('', 'flex-start');
+    min-height: 400px;
+    padding: 0 33px;
+    > img {
+      width: 100%;
+      margin-top: 30px;
+    }
+  }
+}
