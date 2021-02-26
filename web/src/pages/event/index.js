@@ -20,7 +20,7 @@ import RestClear from './rest_customer/customer_clear'
 import RestNotice from './rest_customer/customer_notice'
 import HappyTime from './happy_time'
 import Specialdj from './specialdj'
-// import SpecialLeague from './special_league'
+import SpecialLeague from './special_league'
 import SpecialdjBest from './specialdj_best'
 import ShiningDj from './shiningdj'
 import LevelAchieve from './level_achieve'
@@ -97,8 +97,8 @@ export default () => {
         return <VideoOpen />
       case 'video_open2':
         return <VideoOpen2 />
-      // case 'special_league':
-      //   return <SpecialLeague />
+      case 'special_league':
+        return <SpecialLeague />
       case 'moon_rise':
         return <MoonRise />
       case 'bestdj_intro':

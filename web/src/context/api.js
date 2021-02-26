@@ -3173,6 +3173,15 @@ export default class API {
       params: data
     })
   }
+
+  static getSpecialLeague = async (data) => {
+    return await ajax({
+      url: '/event/special',
+      method: 'GET',
+      params: data
+    })
+  }
+
   static getMoonRiseTime = async (data) => {
     return await ajax({
       url: '/event/fullmoon/info',
