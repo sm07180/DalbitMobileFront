@@ -22,7 +22,7 @@ export default function LayerTable({setLayerPointTable, content}) {
 
   return (
     <PopupWrap id="layerPopup" onClick={closePopupDim}>
-      <div className="layerContainer">
+      <div className="layerContainer championship">
         <h3>1회차 순위별 승점표</h3>
         <p>
           회차별 승점은 주차별로 다르며,
@@ -58,7 +58,7 @@ const PopupWrap = styled.div`
     background: url('https://image.dalbitlive.com/svg/close_w_l.svg') no-repeat 0 0;
   }
 
-  .layerContainer {
+  .championship {
     position: relative;
     width: calc(100% - 32px);
     max-width: 360px;
