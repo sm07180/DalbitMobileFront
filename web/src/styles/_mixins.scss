@@ -740,7 +740,47 @@
   }
 }
 
-@mixin flexbox($align: center) {
+@mixin flexbox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
   display: flex;
+}
+@mixin inline-flex {
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -moz-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+}
+// flex() -> flex(row,center,center)
+// flex("",flex-start,"") -> flex(row,flex-start,center)
+@mixin flex($direction: row, $justify: center, $align: center) {
+  @include flexbox();
+  @if $direction == '' {
+    $direction: row;
+  }
+  @if $justify == '' {
+    $justify: center;
+  }
+  @if $align == '' {
+    $align: center;
+  }
+  -webkit-flex-direction: $direction;
+  -moz-flex-direction: $direction;
+  -ms-flex-direction: $direction;
+  flex-direction: $direction;
+  -webkit-justify-content: $justify;
+  -moz-justify-content: $justify;
+  justify-content: $justify;
+  -webkit-align-items: $align;
+  -moz-align-items: $align;
   align-items: $align;
+}
+@mixin flex-wrap($wrap: wrap) {
+  -webkit-flex-wrap: $wrap;
+  -moz-flex-wrap: $wrap;
+  -ms-flex-wrap: $wrap;
+  flex-wrap: $wrap;
 }
