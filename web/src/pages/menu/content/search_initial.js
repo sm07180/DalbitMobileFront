@@ -38,7 +38,20 @@ const makeContents = (props) => {
   const ctx = useContext(Context)
   if (liveListType === 'detail') {
     return list.map((list, idx) => {
-      const {roomNo, roomType, bjProfImg, bjNickNm, bjGender, title, likeCnt, entryCnt, giftCnt, isSpecial, boostCnt, rank} = list
+      const {
+        roomNo,
+        roomType,
+        bjProfImg,
+        bjNickNm,
+        bjGender,
+        title,
+        likeCnt,
+        entryCnt,
+        giftCnt,
+        badgeSpecial,
+        boostCnt,
+        rank
+      } = list
 
       return (
         <LiveList
@@ -52,7 +65,7 @@ const makeContents = (props) => {
               <img className="type-icon" src={audioIcon} />
               <div className="type-text">{broadcastLive[roomType]}</div>
               {bjGender !== '' && <img className="gender-icon" src={bjGender === 'm' ? maleIcon : femaleIcon} />}
-              {isSpecial === true && <em className="specialIcon">스페셜DJ</em>}
+              {badgeSpecial > 0 && <em className="specialIcon">스페셜DJ</em>}
             </div>
             <div className="title">{title}</div>
             <div className="nickname">{bjNickNm}</div>
@@ -107,7 +120,7 @@ const makeContents = (props) => {
                   ) : (
                     <span className="all-icon">ALL</span>
                   )}
-                  {firstList.isSpecial && <span className="special-icon">S</span>}
+                  {firstList.badgeSpecial > 0 && <span className="special-icon">S</span>}
                 </div>
                 <div className="entry-count">
                   <img className="entry-img" src={EntryImg} />
@@ -135,7 +148,7 @@ const makeContents = (props) => {
                     ) : (
                       <span className="all-icon">ALL</span>
                     )}
-                    {lastList.isSpecial && <img src={specialIcon} className="special-icon" />}
+                    {lastList.badgeSpecial > 0 && <img src={specialIcon} className="special-icon" />}
                   </div>
                   <div className="entry-count">
                     <img className="entry-img" src={EntryImg} />

@@ -416,6 +416,12 @@
   }
 }
 
+@mixin normal-font($font-size: 16px) {
+  font-size: $font-size;
+  font-weight: $regular;
+  font-style: normal;
+}
+
 @mixin font-size($pixel) {
   font-size: $pixel * 1px;
 }

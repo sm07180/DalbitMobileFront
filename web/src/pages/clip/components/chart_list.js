@@ -123,9 +123,10 @@ export default (props) => {
         byeolCnt,
         goodCnt,
         entryType,
-        isSpecial,
+
         clipNo,
-        replyCnt
+        replyCnt,
+        badgeSpecial
       } = detailsItem
       return (
         <li
@@ -149,7 +150,13 @@ export default (props) => {
             }
           }}>
           <div className="chartListDetailItem__thumb">
-            {isSpecial && <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>}
+            {badgeSpecial > 0 && badgeSpecial === 1 ? (
+              <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+            ) : badgeSpecial === 2 ? (
+              <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+            ) : (
+              <></>
+            )}
             <img src={bgImg[`thumb120x120`]} alt={title} />
             <span className="chartListDetailItem__thumb__playTime">{filePlayTime}</span>
           </div>
@@ -252,7 +259,7 @@ export default (props) => {
                 subjectType,
                 byeolCnt,
                 goodCnt,
-                isSpecial,
+                badgeSpecial,
                 entryType,
                 clipNo,
                 replyCnt
@@ -279,7 +286,15 @@ export default (props) => {
                     }
                   }}>
                   <div className="itemBox">
-                    <div className="itemBox__status">{isSpecial && <em className="icon_wrap icon_specialdj_label">S</em>}</div>
+                    <div className="itemBox__status">
+                      {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                      ) : badgeSpecial === 2 ? (
+                        <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
 
                     <div className="itemBox__score">
                       <span className="message">

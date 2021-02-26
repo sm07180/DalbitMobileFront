@@ -87,7 +87,7 @@ export default (props) => {
       <div className={changeTab === 0 ? 'simpleWrap' : 'chartListDetail'}>
         {recoList.length !== 0 && changeTab === 0
           ? recoList.map((item, idx) => {
-              const {bgImg, entryCnt, isSpecial, roomNo, title, entryType, nickNm} = item
+              const {bgImg, entryCnt, badgeSpecial, roomNo, title, entryType, nickNm} = item
 
               return (
                 <div
@@ -118,7 +118,13 @@ export default (props) => {
                         ) : (
                           <em className="icon_wrap ico_all_label">전체 이용가 방송</em>
                         )}
-                        {isSpecial && <em className="icon_wrap icon_specialdj_label">스페셜DJ</em>}
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                          <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                        ) : badgeSpecial === 2 ? (
+                          <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       <span className="simpleContainer__iconBox__entry">{entryCnt}</span>
                     </div>
@@ -129,7 +135,7 @@ export default (props) => {
               )
             })
           : recoListClip.map((item, idx) => {
-              const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
+              const {bgImg, clipNo, filePlayTime, gender, goodCnt, badgeSpecial, nickName, replyCnt, subjectType, title} = item
               return (
                 <li
                   className="chartListDetailItem"
@@ -152,7 +158,13 @@ export default (props) => {
                   }}>
                   <img className="clipBtnPlay" src={ClipPlayerIcon} />
                   <div className="chartListDetailItem__thumb">
-                    {isSpecial && <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>}
+                    {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                      <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+                    ) : badgeSpecial === 2 ? (
+                      <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+                    ) : (
+                      <></>
+                    )}
                     <img
                       src={bgImg[`thumb190x190`]}
                       alt={title}

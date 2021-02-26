@@ -41,9 +41,7 @@ export default (props) => {
                 listenerPoint,
                 goodPoint,
                 broadcastPoint,
-                fanPoint,
-                djPoint,
-                isSpecial,
+                badgeSpecial,
                 roomNo,
                 memNo,
                 holder,
@@ -111,7 +109,7 @@ export default (props) => {
                       <div className="iconBox">
                         {/*<img src={korea} srcSet={`${korea} 1x, ${korea2x} 2x`} className="korea-m"/> */}
                         <span className={genderName}>{gender}</span>
-                        {isSpecial === true && <em className="specialDj">스페셜DJ</em>}
+                        {badgeSpecial > 0 && <em className="specialDj">스페셜DJ</em>}
                       </div>
                     </div>
                   </div>

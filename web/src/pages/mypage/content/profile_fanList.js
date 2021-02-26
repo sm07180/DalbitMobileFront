@@ -397,15 +397,15 @@ export default (props) => {
                           })}
                         {specialInfo !== '' && name === '스디' && (
                           <div className="historyWrap">
-                            <div className={`historyWrap__header ${profile.isSpecial ? 'isSpecial' : ''}`}>
-                              {profile.isSpecial ? (
+                            <div className={`historyWrap__header ${profile.badgeSpecial > 0 ? 'isSpecial' : ''}`}>
+                              {profile.badgeSpecial > 0 ? (
                                 <img src={SpecialBadgeOn} className="historyWrap__badge" />
                               ) : (
                                 <img src={SpecialBadgeOff} className="historyWrap__badge" />
                               )}
                               <div className="historyWrap__info">
                                 <span className="historyWrap__info__nick">{specialInfo.nickNm}</span> 님은 <br />
-                                {profile.isSpecial ? '현재 스페셜 DJ입니다.' : '스페셜 DJ 출신입니다.'} <br />총
+                                {profile.badgeSpecial > 0 ? '현재 스페셜 DJ입니다.' : '스페셜 DJ 출신입니다.'} <br />총
                                 {profile.specialDjCnt}회 선정되셨습니다.
                               </div>
                             </div>

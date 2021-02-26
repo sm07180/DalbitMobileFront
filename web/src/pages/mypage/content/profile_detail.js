@@ -328,13 +328,13 @@ export default (props) => {
   }
   // check special Dj
   const checkSpecialDj = () => {
-    if (profile.wasSpecial === true && profile.isSpecial === false) {
+    if (profile.wasSpecial === true && profile.badgeSpecial === 0) {
       return (
         <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
           <div className="specialIcon prev" />
         </div>
       )
-    } else if (profile.isSpecial === true) {
+    } else if (profile.badgeSpecial > 0) {
       return (
         <div className="checkBadge" onClick={() => context.action.updateCloseSpecial(true)}>
           <div className="specialIcon">

@@ -15,13 +15,6 @@ import {DATE_TYPE, RANK_TYPE} from 'pages/ranking_renewal/constant'
 
 import BadgeList from 'common/badge_list'
 
-//static
-const goldMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-gold.png`
-const silverMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-silver.png`
-const bronzeMedalIcon = `${IMG_SERVER}/main/200714/ico-ranking-bronze.png`
-const liveIcon = `${IMG_SERVER}/svg/ico_ranking_live.svg`
-const listenIcon = `${IMG_SERVER}/svg/ico_ranking_listen.svg`
-
 function RankList() {
   //context
   const history = useHistory()
@@ -63,7 +56,7 @@ function RankList() {
                 listenerPoint,
                 goodPoint,
                 broadcastPoint,
-                isSpecial,
+                badgeSpecial,
                 roomNo,
                 listenRoomNo,
                 memNo,
@@ -153,8 +146,13 @@ function RankList() {
                           {formState[formState.pageType].dateType === DATE_TYPE.DAY && (
                             <>{liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}</>
                           )}
-
-                          {isSpecial === true && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
+                          {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                            <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                          ) : badgeSpecial === 2 ? (
+                            <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
 

@@ -173,7 +173,7 @@ export default function DoExchange({state, dispatch}) {
   }, [context.splash])
 
   const history = useHistory()
-  const [isSpecial, setIsSpecial] = useState(false)
+  const [badgeSpecial, setBadgeSpecial] = useState(false)
   const [currentByeol, setCurrentByeol] = useState(0)
   const [exchangeCalc, setExchangeCalc] = useState({
     basicCash: 0, // 환전예상금액
@@ -471,8 +471,8 @@ export default function DoExchange({state, dispatch}) {
       formDispatch({type: 'byeol', val: userProfile.byeolCnt})
     }
 
-    if (userProfile.isSpecial) {
-      setIsSpecial(true)
+    if (userProfile.badgeSpecial > 0) {
+      setBadgeSpecial(true)
     }
 
     async function fetchData() {
@@ -563,7 +563,7 @@ export default function DoExchange({state, dispatch}) {
               <span>환전안내</span>
             </div>
           </div>
-          {isSpecial && (
+          {badgeSpecial > 0 && (
             <div className="doExchangeWrap__special">
               <p className="doExchangeWrap__special--title">DJ님은 스페셜 DJ 입니다.</p>
               <p className="doExchangeWrap__special--point">환전 실수령액이 5% 추가 됩니다.</p>

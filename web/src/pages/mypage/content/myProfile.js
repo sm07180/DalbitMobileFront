@@ -7,6 +7,7 @@ import ProfileDetail from './profile_detail'
 
 const myProfile = (props) => {
   const {webview, profile} = props
+
   // loading
   if (profile === null) {
     return <div style={{minHeight: '300px'}}></div>

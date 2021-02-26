@@ -102,7 +102,7 @@ export default (props) => {
             )}
             {memberList && memberList.length !== 0 ? (
               (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
-                const {nickNm, profImg, isNew, gender, isSpecial, memNo, roomNo, fanCnt} = item
+                const {nickNm, profImg, isNew, gender, badgeSpecial, memNo, roomNo, fanCnt} = item
                 return (
                   <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
                     {roomNo !== '' && (
@@ -133,7 +133,13 @@ export default (props) => {
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
                         {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
-                        {isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                          <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                        ) : badgeSpecial === 2 ? (
+                          <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                        ) : (
+                          <></>
+                        )}
                       </div>
                       <span className="memberItem__info__fanCnt">
                         <img src={PersonIcon} />
@@ -173,7 +179,7 @@ export default (props) => {
                     title,
                     bgImg,
                     bjProfImg,
-                    isSpecial,
+                    badgeSpecial,
                     bjGender,
                     bjNickNm,
                     roomType,
@@ -206,7 +212,13 @@ export default (props) => {
                         }
                       }}>
                       <div className="chartListDetailItem__thumb">
-                        {isSpecial && <span className="newSpecialIcon">스페셜DJ</span>}
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                          <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+                        ) : badgeSpecial === 2 ? (
+                          <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+                        ) : (
+                          <></>
+                        )}
                         <img src={bjProfImg[`thumb190x190`]} className="thumb-dj" alt={title} />
                         {gstProfImg.thumb120x120 && (
                           <span className="thumb-guest">
@@ -276,7 +288,18 @@ export default (props) => {
             <div className="chartListDetail pdl0">
               {clipList && clipList.length !== 0 ? (
                 (CategoryType === 3 ? clipList : clipList.slice(0, 2)).map((item, idx) => {
-                  const {bgImg, clipNo, filePlayTime, gender, goodCnt, isSpecial, nickName, replyCnt, subjectType, title} = item
+                  const {
+                    bgImg,
+                    clipNo,
+                    filePlayTime,
+                    gender,
+                    goodCnt,
+                    badgeSpecial,
+                    nickName,
+                    replyCnt,
+                    subjectType,
+                    title
+                  } = item
                   return (
                     <li
                       className="chartListDetailItem"
@@ -299,7 +322,13 @@ export default (props) => {
                       }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
-                        {isSpecial && <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>}
+                        {badgeSpecial  > 0 && badgeSpecial === 1 ? (
+                          <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+                        ) : badgeSpecial === 2 ? (
+                          <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+                        ) : (
+                          <></>
+                        )}
                         <img
                           src={bgImg[`thumb190x190`]}
                           alt={title}

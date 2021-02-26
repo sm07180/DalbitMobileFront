@@ -307,7 +307,13 @@ export default function MyProfile({rankSettingBtn, setRankSetting, setResetPoint
                                 )}
                               </>
                             )}
-                            {myProfile.isSpecial && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
+                            {myProfile.badgeSpecial > 0 && myProfile.badgeSpecial === 1 ? (
+                              <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+                            ) : myProfile.badgeSpecial === 2 ? (
+                              <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                            ) : (
+                              <></>
+                            )}
                           </div>
                         </div>
 

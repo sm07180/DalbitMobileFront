@@ -31,8 +31,7 @@ const makeContents = (props) => {
       entryCnt,
       entryType,
       giftCnt,
-      isSpecial,
-      isShining,
+      badgeSpecial,
       isAdmin,
       boostCnt,
       rank,
@@ -108,12 +107,10 @@ const makeContents = (props) => {
               {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
               {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
 
-              {isSpecial === true && isShining === false ? (
+              {badgeSpecial > 0 && badgeSpecial === 1 ? (
                 <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
-              ) : isSpecial === false && isShining === true ? (
-                <em className="icon_wrap icon_shinigdj_half">샤이닝DJ</em>
-              ) : isSpecial === true && isShining === true ? (
-                <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+              ) : badgeSpecial === 2 ? (
+                <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
               ) : (
                 <></>
               )}
@@ -160,12 +157,10 @@ const makeContents = (props) => {
         ) : (
           <>
             <div className="top-status">
-              {isSpecial === true && isShining === false ? (
+              {badgeSpecial > 0 && badgeSpecial === 1 ? (
                 <em className="icon_wrap icon_specialdj">스페셜DJ</em>
-              ) : isSpecial === false && isShining === true ? (
-                <em className="icon_wrap icon_shiningdj">샤이닝DJ</em>
-              ) : isSpecial === true && isShining === true ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
+              ) : badgeSpecial === 2 ? (
+                <em className="icon_wrap icon_bestdj">베스트DJ</em>
               ) : (
                 <></>
               )}

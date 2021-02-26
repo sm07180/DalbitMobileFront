@@ -41,6 +41,7 @@ export default () => {
         isNew: data.isNew,
         filePlayTime: data.filePlay,
         isSpecial: data.isSpecial,
+        badgeSpecial: data.badgeSpecial,
         gender: data.gender,
         replyCnt: data.replyCnt,
         goodCnt: data.goodCnt,
