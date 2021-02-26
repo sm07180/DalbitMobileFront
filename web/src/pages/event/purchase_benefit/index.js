@@ -29,14 +29,18 @@ export default () => {
       <button className="btnBack" onClick={() => history.goBack()}>
         <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
       </button>
-      <img src="https://image.dalbitlive.com/event/purchase_benefit/210219/radio_view_open.png" alt="별, 달 추가 이벤트" />
+      <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/radio_view_open.png" alt="별, 달 추가 이벤트" />
       <button className="buy_btn" onClick={() => linkMove()}>
-        <img src="https://image.dalbitlive.com/event/purchase_benefit/210210/buy_button.png" alt="스토어 가기" />
+        <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/buy_button.png" alt="스토어 가기" />
       </button>
       <div className="notice">
-        <img src="https://image.dalbitlive.com/event/purchase_benefit/210219/radio_view_notice.png" alt="이벤트 유의사항" />
+        <img src="https://image.dalbitlive.com/event/purchase_benefit/210226/radio_view_notice.png" alt="이벤트 유의사항" />
         <ul className="text">
-          <li>본 이벤트는 예고 없이 종료될 수 있으니 지금 바로 혜택을 누리세요!</li>
+          <li>
+            본 이벤트는 예고 없이 종료될 수 있으니
+            <br />
+            지금 바로 혜택을 누리세요!
+          </li>
           <li>추가로 드리는 달과 별은 내 지갑에서 확인할 수 있습니다.</li>
           <li>
             부정한 방법으로 이벤트 참여 시 지급한 달/별의 회수 및<br />
@@ -60,7 +64,7 @@ const Content = styled.div`
     min-height: 100vh;
     margin: auto;
     padding-bottom: 70px;
-    background: #000;
+    background: #ec455f;
     img {
       width: 100%;
     }
