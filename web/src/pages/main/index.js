@@ -514,9 +514,9 @@ export default (props) => {
         if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
       }
 
-      const GAP = 300
+      const GAP = 500
       if (
-        window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+        window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP * liveForm.page &&
         !concatenating &&
         Array.isArray(liveList) &&
         liveList.length &&
