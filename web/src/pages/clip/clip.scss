@@ -1694,9 +1694,11 @@
           text-overflow: ellipsis;
           white-space: nowrap;
           cursor: pointer;
-
-          img {
-            margin-right: 4px;
+          em + em {
+            margin-left: 4px;
+          }
+          .nickName {
+            vertical-align: top;
           }
         }
 
@@ -1706,7 +1708,7 @@
           cursor: pointer;
 
           li + li {
-            margin-left: 15px;
+            margin-left: 10px;
           }
         }
 
@@ -1715,7 +1717,7 @@
           color: $greishBrown;
 
           span {
-            padding-left: 20px;
+            padding-left: 18px;
           }
 
           &--message {
