@@ -192,10 +192,5 @@ function RealTimeLive(props) {
     </React.Fragment>
   )
 }
-const diffType = (prev, cur) => {
-  if (prev.liveListType === cur.liveListType) {
-    return false
-  }
-  return true
-}
-export default React.memo(RealTimeLive, diffType)
+
+export default RealTimeLive
