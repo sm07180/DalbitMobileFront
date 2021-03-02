@@ -392,7 +392,7 @@
     &__content {
       display: flex;
       align-items: center;
-      width: calc(100% - 112px);
+      // width: calc(100% - 112px);
 
       .infoBox {
         width: calc(100% - 50px);
@@ -579,13 +579,14 @@
     position: relative;
   }
   .infoBox {
-    padding: 0 10px 0 6px;
+    // padding: 0 10px 0 6px;
     width: 100%;
     &-weekly {
       justify-content: center;
       .profileBox {
         width: 50%;
         flex-direction: column;
+        align-items: center;
       }
       .nickNameBox {
         text-align: center;
@@ -1618,6 +1619,10 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+
+      &.special {
+        width: 82%;
+      }
     }
 
     .genderBox {
@@ -1899,6 +1904,8 @@
       width: calc(100% - 80px);
     }
     .infoBox {
+      display: flex;
+      align-items: center;
       width: calc(100% - 50px);
       box-sizing: border-box;
     }

@@ -59,7 +59,7 @@ function SpecialList({empty}) {
                       </div>
                       <div className="textBox">
                         <div
-                          className="nickNameBox"
+                          className="nickNameBox special"
                           onClick={() => {
                             if (context.token.isLogin) {
                               if (context.token.memNo === v.memNo) {

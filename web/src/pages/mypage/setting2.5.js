@@ -483,8 +483,7 @@ export default (props) => {
                   defaultValue={profile.profMsg}
                   state={profileMsg}
                   setState={setProfileMsg}
-                  cols={20}
-                  rows={5}
+                  maxLength={100}
                   className="msgText"
                   placeholder="프로필 메시지는 최대 100자까지 입력할 수 있습니다."
                 />
