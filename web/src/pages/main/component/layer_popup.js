@@ -8,7 +8,7 @@ let prevAlign = null
 let prevGender = null
 
 export default (props) => {
-  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, resetFetchList} = props
+  const {alignSet, setPopup, liveAlign, setLiveAlign, liveGender, setLiveGender, setPage} = props
   const genderSet = {f: '여자', m: '남자', d: '신입'}
 
   // reference
@@ -48,7 +48,7 @@ export default (props) => {
 
   const applyClick = () => {
     setPopup(false)
-    resetFetchList()
+    setPage(1)
   }
 
   const tabClick = (type, value) => {

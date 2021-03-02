@@ -84,6 +84,8 @@ export default (props) => {
   const arrowRefreshRef = useRef()
   const liveArrowRefreshRef = useRef()
 
+  const TopSectionHeightRef = useRef(0)
+
   //context
   const globalCtx = useContext(Context)
   const {rankAction} = useContext(RankContext)
@@ -91,11 +93,12 @@ export default (props) => {
   // state
   const [initData, setInitData] = useState({})
   const [liveList, setLiveList] = useState(null)
+  const [liveNextList, setLiveNextList] = useState(null)
+
   const [rankType, setRankType] = useState('') // type: dj, fan
-  const [liveListType, setLiveListType] = useState('all') // type: // type: all, v, a
 
   const [liveCategoryFixed, setLiveCategoryFixed] = useState(false)
-  const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
+
   const [popup, setPopup] = useState(false)
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupData, setPopupData] = useState([])
@@ -107,7 +110,45 @@ export default (props) => {
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
 
-  const [livePage, setLivePage] = useState(1)
+  // const [livePage, setLivePage] = useState(1)
+  // const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
+  // const [liveListType, setLiveListType] = useState('all') // type: // type: all, v, a
+
+  const [liveForm, setLiveForm] = useState({
+    page: 1,
+    roomType: '',
+    mediaType: ''
+  })
+
+  const setPage = (page) => {
+    setLiveForm({
+      ...liveForm,
+      page
+    })
+  }
+
+  const setRoomType = (roomType) => {
+    if (TopSectionHeightRef.current !== 0) {
+      window.scrollTo(0, TopSectionHeightRef.current)
+    }
+    setLiveForm({
+      ...liveForm,
+      page: 1,
+      roomType
+    })
+  }
+
+  const setMediaType = (mediaType) => {
+    if (TopSectionHeightRef.current !== 0) {
+      window.scrollTo(0, TopSectionHeightRef.current)
+    }
+
+    setLiveForm({
+      ...liveForm,
+      page: 1,
+      mediaType
+    })
+  }
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
@@ -226,38 +267,17 @@ export default (props) => {
       })
     }
   }
-
-  const fetchLiveListAsInit = async () => {
-    // setLiveList(null)
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: 1,
-        records: records,
-        mediaType: liveListType !== 'all' ? liveListType : '',
-        roomType: '',
-        searchType: 1,
-        gender: ''
-      }
-    })
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        totalLivePage = totalPage
-      }
-      setLiveList(list)
-    }
-  }
-
-  const fetchLiveList = async (reset) => {
+  const fetchLiveList = async () => {
     setLiveList(null)
+
+    const {page, mediaType, roomType} = liveForm
+
     const broadcastList = await Api.broad_list({
       params: {
-        page: reset === true ? 1 : livePage,
-        mediaType: liveListType !== 'all' ? liveListType : '',
+        page,
+        mediaType,
         records: records,
-        roomType: selectedLiveRoomType,
+        roomType,
         searchType: liveAlign,
         gender: liveGender
       }
@@ -266,15 +286,35 @@ export default (props) => {
       const {list, paging} = broadcastList.data
       if (paging) {
         const {totalPage, page} = paging
-        setLivePage(page)
         totalLivePage = totalPage
       }
-      // if (broadcastList.data.isGreenMoon === true) {
-      //   setPopupMoonState(true)
-      // } else {
-      //   setPopupMoonState(false)
-      // }
       setLiveList(list)
+      fetchNextList()
+    }
+  }
+
+  const fetchNextList = async () => {
+    const {page, mediaType, roomType} = liveForm
+
+    const broadcastList = await Api.broad_list({
+      params: {
+        page: page + 1,
+        mediaType,
+        records: records,
+        roomType,
+        searchType: liveAlign,
+        gender: liveGender
+      }
+    })
+
+    if (broadcastList.result === 'success') {
+      const {list, paging} = broadcastList.data
+      if (paging) {
+        const {totalPage} = paging
+        totalLivePage = totalPage
+      }
+
+      setLiveNextList(list)
     }
   }
 
@@ -282,105 +322,29 @@ export default (props) => {
     concatenating = true
 
     const currentList = [...liveList]
-    const broadcastList = await Api.broad_list({
-      params: {
-        page: livePage + 1,
-        mediaType: liveListType !== 'all' ? liveListType : '',
-        records: records,
-        roomType: selectedLiveRoomType,
-        searchType: liveAlign,
-        gender: liveGender
-      }
-    })
+    // const {page, mediaType, roomType} = liveForm
+    // const broadcastList = await Api.broad_list({
+    //   params: {
+    //     page,
+    //     mediaType,
+    //     records: records,
+    //     roomType,
+    //     searchType: liveAlign,
+    //     gender: liveGender
+    //   }
+    // })
 
-    if (broadcastList.result === 'success') {
-      const {list, paging} = broadcastList.data
-      if (paging) {
-        const {totalPage, page} = paging
-        setLivePage(page)
-        totalLivePage = totalPage
+    // const {list, paging} = broadcastList.data
+    // if (paging) {
+    //   const {totalPage, page} = paging
+    //   totalLivePage = totalPage
+    // }
 
-        // setLoading(false)
-      }
+    if (liveNextList !== undefined && liveNextList !== null && Array.isArray(liveNextList) && liveNextList.length > 0) {
+      const concatenated = Utility.contactRemoveUnique(currentList, liveNextList, 'roomNo')
+      setLiveList([...concatenated])
 
-      if (list !== undefined && list !== null && Array.isArray(list) && list.length > 0) {
-        //const concatenated = currentList.concat(list)
-        const concatenated = Utility.contactRemoveUnique(currentList, list, 'roomNo')
-        setLiveList([...concatenated])
-      } else {
-        // setLoading(false)
-      }
-    }
-  }
-
-  const isScrolledToBtm = (diff = 400) => {
-    const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-    const fullScrollHeight = Math.max(
-      document.body.scrollHeight,
-      document.documentElement.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.offsetHeight,
-      document.body.clientHeight,
-      document.documentElement.clientHeight
-    )
-    const scrollFromTop = window.pageYOffset
-
-    return scrollFromTop + windowHeight >= fullScrollHeight - diff
-  }
-
-  const windowScrollEvent = () => {
-    const GnbHeight = 88
-    const sectionMarginTop = 30
-    const LiveTabDefaultHeight = 28
-
-    const MainNode = MainRef.current
-    const SubMainNode = SubMainRef.current
-    const RecommendNode = RecommendRef.current
-    const RankSectionNode = RankSectionRef.current
-    const StarSectionNode = StarSectionRef.current
-    const BannerSectionNode = BannerSectionRef.current
-
-    const LiveSectionNode = LiveSectionRef.current
-    const MainHeight = MainNode.clientHeight
-    // const SubMainHeight = SubMainNode.clientHeight
-    const RecommendHeight = RecommendNode.clientHeight
-    const RankSectionHeight = RankSectionNode.clientHeight
-    const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
-    // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
-    const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
-
-    const LiveSectionHeight = LiveSectionNode.clientHeight
-
-    let TopSectionHeight
-    if (customHeader['os'] === OS_TYPE['Desktop']) {
-      if (StarSectionNode) {
-        TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-      } else {
-        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-      }
-    } else {
-      if (globalCtx.token.isLogin === true) {
-        if (StarSectionNode) {
-          TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-        } else {
-          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
-        }
-      } else {
-        TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-      }
-    }
-
-    if (window.scrollY >= TopSectionHeight) {
-      setLiveCategoryFixed(true)
-    } else {
-      setLiveCategoryFixed(false)
-      if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
-    }
-
-    const GAP = 400
-    if (isScrolledToBtm() && !concatenating && Array.isArray(liveList) && liveList.length && livePage + 1 <= totalLivePage) {
-      // setLoading(true)
-      concatLiveList()
+      fetchNextList()
     }
   }
 
@@ -398,11 +362,6 @@ export default (props) => {
         playLottie(lottieObj, elem)
       })
     }
-  }
-
-  const resetFetchList = () => {
-    setLivePage(1)
-    fetchLiveList(true)
   }
 
   const popStateEvent = (e) => {
@@ -497,17 +456,92 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
+    const windowScrollEvent = () => {
+      if (window.scrollY >= 1) {
+        setScrollOn(true)
+      } else {
+        setScrollOn(false)
+      }
+
+      const GnbHeight = 88
+      const sectionMarginTop = 30
+      const LiveTabDefaultHeight = 28
+
+      const MainNode = MainRef.current
+      const SubMainNode = SubMainRef.current
+      const RecommendNode = RecommendRef.current
+      const RankSectionNode = RankSectionRef.current
+      const StarSectionNode = StarSectionRef.current
+      const BannerSectionNode = BannerSectionRef.current
+
+      const LiveSectionNode = LiveSectionRef.current
+      const MainHeight = MainNode.clientHeight
+      // const SubMainHeight = SubMainNode.clientHeight
+      const RecommendHeight = RecommendNode.clientHeight
+      const RankSectionHeight = RankSectionNode.clientHeight
+      const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
+      // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
+      const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
+
+      const LiveSectionHeight = LiveSectionNode.clientHeight
+
+      let TopSectionHeight
+      if (customHeader['os'] === OS_TYPE['Desktop']) {
+        if (StarSectionNode) {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+        } else {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+        }
+      } else {
+        if (globalCtx.token.isLogin === true) {
+          if (StarSectionNode) {
+            TopSectionHeight =
+              RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+          } else {
+            TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
+          }
+        } else {
+          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+        }
+      }
+
+      TopSectionHeightRef.current = TopSectionHeight
+
+      if (window.scrollY >= TopSectionHeight) {
+        setLiveCategoryFixed(true)
+      } else {
+        setLiveCategoryFixed(false)
+        if (globalCtx.attendStamp === false) globalCtx.action.updateAttendStamp(true)
+      }
+
+      const GAP = 300
+      if (
+        window.scrollY + window.innerHeight > MainHeight + GnbHeight - GAP &&
+        !concatenating &&
+        Array.isArray(liveList) &&
+        liveList.length &&
+        liveForm.page + 1 <= totalLivePage
+      ) {
+        // setLoading(true)
+        setPage(liveForm.page + 1)
+      }
+    }
+
     window.addEventListener('scroll', windowScrollEvent)
 
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
       concatenating = false
     }
-  }, [liveList, livePage])
+  }, [liveList, liveForm.page])
 
   useEffect(() => {
-    resetFetchList()
-  }, [selectedLiveRoomType, liveListType])
+    if (liveForm.page === 1) {
+      fetchLiveList()
+    } else {
+      concatLiveList()
+    }
+  }, [liveForm])
 
   useEffect(() => {
     fetchMainPopupData('6')
@@ -559,7 +593,8 @@ export default (props) => {
     // await fetchMainInitData()
     setLiveRefresh(true)
     await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    await fetchLiveList(true)
+    setPage(1)
+    // await fetchLiveList(true)
     setLiveRefresh(false)
     // setReloadInit(false)
   }
@@ -617,8 +652,6 @@ export default (props) => {
           await fetchMainInitData()
           setLiveListType('all')
           await fetchLiveList(true)
-          // await fetchLiveListAsInit()
-
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
 
@@ -641,7 +674,7 @@ export default (props) => {
               })
             sessionStorage.setItem('ranking_tab', 'dj')
           }
-          // setLiveListType('v')
+
           setSelectedLiveRoomType('')
           setReloadInit(false)
         }
@@ -662,20 +695,7 @@ export default (props) => {
     },
     [reloadInit]
   )
-  const scrollMove = () => {
-    if (window.scrollY >= 1) {
-      setScrollOn(true)
-    } else {
-      setScrollOn(false)
-    }
-  }
-  useEffect(() => {
-    window.addEventListener('scroll', scrollMove)
 
-    return () => {
-      window.removeEventListener('scroll', scrollMove)
-    }
-  }, [])
   useEffect(() => {
     if (globalCtx.profile && globalCtx.profile.gender === 'n' && globalCtx.profile.birth === '20200101') {
       setInputState(true)
@@ -935,15 +955,15 @@ export default (props) => {
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
                   )} */}
-                  <button className={`tab_all_btn ${liveListType === 'all' ? 'on' : ''}`} onClick={() => setLiveListType('all')}>
+                  <button className={`tab_all_btn ${liveForm.mediaType === '' ? 'on' : ''}`} onClick={() => setMediaType('')}>
                     전체선택
                   </button>
 
-                  <button className={`tab_video_btn ${liveListType === 'v' ? 'on' : ''}`} onClick={() => setLiveListType('v')}>
+                  <button className={`tab_video_btn ${liveForm.mediaType === 'v' ? 'on' : ''}`} onClick={() => setMediaType('v')}>
                     비디오 타입
                   </button>
 
-                  <button className={`tab_radio_btn ${liveListType === 'a' ? 'on' : ''}`} onClick={() => setLiveListType('a')}>
+                  <button className={`tab_radio_btn ${liveForm.mediaType === 'a' ? 'on' : ''}`} onClick={() => setMediaType('a')}>
                     라디오 타입
                   </button>
                   <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
@@ -961,9 +981,9 @@ export default (props) => {
                         .map((key, idx) => {
                           return (
                             <div
-                              className={`list ${key.cd === selectedLiveRoomType ? 'active' : ''}`}
+                              className={`list ${key.cd === liveForm.roomType ? 'active' : ''}`}
                               key={`list-${idx}`}
-                              onClick={() => setSelectedLiveRoomType(key.cd)}>
+                              onClick={() => setRoomType(key.cd)}>
                               {key.cdNm}
                             </div>
                           )
@@ -978,7 +998,7 @@ export default (props) => {
               {Array.isArray(liveList) ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
-                    <LiveList list={liveList} liveListType={liveListType} categoryList={categoryList} />
+                    <LiveList list={liveList} liveListType={liveForm.mediaType} categoryList={categoryList} />
                   </div>
                 ) : (
                   <NoResult />
@@ -997,7 +1017,7 @@ export default (props) => {
             setLiveAlign={setLiveAlign}
             liveGender={liveGender}
             setLiveGender={setLiveGender}
-            resetFetchList={resetFetchList}
+            setPage={setPage}
           />
         )}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
