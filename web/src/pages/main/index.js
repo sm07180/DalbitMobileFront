@@ -61,6 +61,7 @@ import 'styles/main.scss'
 let concatenating = false
 
 const records = 20
+const refreshDefaultHeight = 48
 
 let touchStartY = null
 let touchEndY = null
@@ -120,25 +121,25 @@ export default (props) => {
     mediaType: ''
   })
 
-  const setPage = (page) => {
+  const SET_PAGE = (page) => {
     setLiveForm({
       ...liveForm,
       page
     })
   }
 
-  const setRoomType = (roomType) => {
+  const SET_ROOMTYPE = (type) => {
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
     setLiveForm({
       ...liveForm,
       page: 1,
-      roomType
+      roomType: type
     })
   }
 
-  const setMediaType = (mediaType) => {
+  const SET_MEDIATYPE = (type) => {
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
@@ -146,7 +147,7 @@ export default (props) => {
     setLiveForm({
       ...liveForm,
       page: 1,
-      mediaType
+      mediaType: type
     })
   }
 
@@ -268,7 +269,7 @@ export default (props) => {
     }
   }
   const fetchLiveList = async () => {
-    setLiveList(null)
+    // setLiveList(null)
 
     const {page, mediaType, roomType} = liveForm
 
@@ -320,6 +321,11 @@ export default (props) => {
 
   const concatLiveList = async () => {
     concatenating = true
+
+    // if (liveList === null) {
+    //   SET_PAGE(1)
+    //   return
+    // }
 
     const currentList = [...liveList]
     // const {page, mediaType, roomType} = liveForm
@@ -475,7 +481,7 @@ export default (props) => {
       const BannerSectionNode = BannerSectionRef.current
 
       const LiveSectionNode = LiveSectionRef.current
-      const MainHeight = MainNode.clientHeight
+      const MainHeight = Math.max(MainNode.clientHeight, MainNode.offsetHeight)
       // const SubMainHeight = SubMainNode.clientHeight
       const RecommendHeight = RecommendNode.clientHeight
       const RankSectionHeight = RankSectionNode.clientHeight
@@ -483,7 +489,7 @@ export default (props) => {
       // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
       const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
 
-      const LiveSectionHeight = LiveSectionNode.clientHeight
+      const LiveSectionTop = LiveSectionNode.offsetTop
 
       let TopSectionHeight
       if (customHeader['os'] === OS_TYPE['Desktop']) {
@@ -507,7 +513,7 @@ export default (props) => {
 
       TopSectionHeightRef.current = TopSectionHeight
 
-      if (window.scrollY >= TopSectionHeight) {
+      if (window.scrollY >= LiveSectionTop - refreshDefaultHeight) {
         setLiveCategoryFixed(true)
       } else {
         setLiveCategoryFixed(false)
@@ -523,7 +529,7 @@ export default (props) => {
         liveForm.page + 1 <= totalLivePage
       ) {
         // setLoading(true)
-        setPage(liveForm.page + 1)
+        SET_PAGE(liveForm.page + 1)
       }
     }
 
@@ -536,10 +542,11 @@ export default (props) => {
   }, [liveList, liveForm.page])
 
   useEffect(() => {
-    if (liveForm.page === 1) {
-      fetchLiveList()
-    } else {
+    if (liveForm.page > 1) {
+      console.log('??')
       concatLiveList()
+    } else {
+      fetchLiveList()
     }
   }, [liveForm])
 
@@ -553,7 +560,6 @@ export default (props) => {
   }, [])
 
   const [reloadInit, setReloadInit] = useState(false)
-  const refreshDefaultHeight = 48
 
   const mainTouchStart = useCallback(
     (e) => {
@@ -589,11 +595,18 @@ export default (props) => {
     setPopupMoon(true)
   }
   const RefreshFunc = async () => {
+    // console.log(TopSectionHeightRef)
+    if (TopSectionHeightRef.current !== 0) {
+      // console.log(TopSectionHeightRef.current)
+      window.scrollTo(0, TopSectionHeightRef.current)
+    }
+
     // setReloadInit(true)
     // await fetchMainInitData()
+
     setLiveRefresh(true)
     await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-    setPage(1)
+    SET_PAGE(1)
     // await fetchLiveList(true)
     setLiveRefresh(false)
     // setReloadInit(false)
@@ -650,8 +663,12 @@ export default (props) => {
           }, 17)
 
           await fetchMainInitData()
-          setLiveListType('all')
-          await fetchLiveList(true)
+          setLiveForm({
+            page: 1,
+            mediaType: '',
+            roomType: ''
+          })
+          // await fetchLiveList(true)
           await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
           clearInterval(loadIntervalId)
 
@@ -675,7 +692,6 @@ export default (props) => {
             sessionStorage.setItem('ranking_tab', 'dj')
           }
 
-          setSelectedLiveRoomType('')
           setReloadInit(false)
         }
       }
@@ -955,15 +971,19 @@ export default (props) => {
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
                   )} */}
-                  <button className={`tab_all_btn ${liveForm.mediaType === '' ? 'on' : ''}`} onClick={() => setMediaType('')}>
+                  <button className={`tab_all_btn ${liveForm.mediaType === '' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('')}>
                     전체선택
                   </button>
 
-                  <button className={`tab_video_btn ${liveForm.mediaType === 'v' ? 'on' : ''}`} onClick={() => setMediaType('v')}>
+                  <button
+                    className={`tab_video_btn ${liveForm.mediaType === 'v' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('v')}>
                     비디오 타입
                   </button>
 
-                  <button className={`tab_radio_btn ${liveForm.mediaType === 'a' ? 'on' : ''}`} onClick={() => setMediaType('a')}>
+                  <button
+                    className={`tab_radio_btn ${liveForm.mediaType === 'a' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('a')}>
                     라디오 타입
                   </button>
                   <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
@@ -983,7 +1003,7 @@ export default (props) => {
                             <div
                               className={`list ${key.cd === liveForm.roomType ? 'active' : ''}`}
                               key={`list-${idx}`}
-                              onClick={() => setRoomType(key.cd)}>
+                              onClick={() => SET_ROOMTYPE(key.cd)}>
                               {key.cdNm}
                             </div>
                           )
@@ -995,7 +1015,7 @@ export default (props) => {
             </div>
 
             <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
-              {Array.isArray(liveList) ? (
+              {Array.isArray(liveList) && liveRefresh === false ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
                     <LiveList list={liveList} liveListType={liveForm.mediaType} categoryList={categoryList} />
@@ -1017,7 +1037,7 @@ export default (props) => {
             setLiveAlign={setLiveAlign}
             liveGender={liveGender}
             setLiveGender={setLiveGender}
-            setPage={setPage}
+            SET_PAGE={SET_PAGE}
           />
         )}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
