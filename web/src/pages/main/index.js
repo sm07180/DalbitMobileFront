@@ -491,27 +491,27 @@ export default (props) => {
 
       const LiveSectionTop = LiveSectionNode.offsetTop
 
-      let TopSectionHeight
-      if (customHeader['os'] === OS_TYPE['Desktop']) {
-        if (StarSectionNode) {
-          TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-        } else {
-          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-        }
-      } else {
-        if (globalCtx.token.isLogin === true) {
-          if (StarSectionNode) {
-            TopSectionHeight =
-              RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-          } else {
-            TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
-          }
-        } else {
-          TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-        }
-      }
+      // let TopSectionHeight
+      // if (customHeader['os'] === OS_TYPE['Desktop']) {
+      //   if (StarSectionNode) {
+      //     TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      //   } else {
+      //     TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
+      //   }
+      // } else {
+      //   if (globalCtx.token.isLogin === true) {
+      //     if (StarSectionNode) {
+      //       TopSectionHeight =
+      //         RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+      //     } else {
+      //       TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
+      //     }
+      //   } else {
+      //     TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
+      //   }
+      // }
 
-      TopSectionHeightRef.current = TopSectionHeight
+      TopSectionHeightRef.current = LiveSectionTop - refreshDefaultHeight
 
       if (window.scrollY >= LiveSectionTop - refreshDefaultHeight) {
         setLiveCategoryFixed(true)
