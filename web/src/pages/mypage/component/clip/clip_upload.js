@@ -1,30 +1,37 @@
-import React, {useContext, useEffect, useReducer, useState, useCallback} from 'react'
-import {useParams, useHistory} from 'react-router-dom'
+import React, {useContext, useEffect, useState, useCallback} from 'react'
+import {useHistory} from 'react-router-dom'
+import qs from 'query-string'
+import _ from 'lodash'
+
 import Api from 'context/api'
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
-import Utility, {printNumber, addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 import {clipJoin} from 'pages/common/clipPlayer/clip_func'
-import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
-//svg
-import PlayIcon from '../clip_play.svg'
-import LikeIcon from '../clip_like.svg'
-import MessageIcon from './message_w.svg'
+import UploadSubTab from './component/sub_tab'
+import UploadClip from './component/upload_list_item'
+
 //flag
 let currentPage = 1
 let timer
 let moreState = false
+
+const noClipMsgList = ['등록된 클립이 없습니다.', '청취한 회원이 없습니다', '좋아요 회원이 없습니다 ', '선물한 회원이 없습니다 ']
+
 function ClipUpload() {
   let history = useHistory()
-  let {memNo, category} = useParams()
   const customHeader = JSON.parse(Api.customHeader)
 
   const context = useContext(Context)
   const {webview} = qs.parse(location.search)
 
-  const [uploadList, setUploadList] = useState([])
+  const [dataList, setDataList] = useState({
+    isLoading: false,
+    list: []
+  })
   const [nextList, setNextList] = useState([])
+  const [slctedBtnIdx, setSlctedBtnIdx] = useState(null)
   // 토탈페이지
 
   const [uploadListLoding, setUpLoadLoading] = useState('')
@@ -32,34 +39,42 @@ function ClipUpload() {
   const uploadModal = () => {
     Hybrid('ClipUploadJoin')
   }
-  const fetchDataList = async (next) => {
-    if (!next) currentPage = 1
-    currentPage = next ? ++currentPage : currentPage
-    const res = await Api.getUploadList({
-      memNo: context.urlStr,
-      page: currentPage,
+
+  const fetchUploadDataList = async (fetchNext = false, tabType = context.clipTab) => {
+    /**
+     * refer to - API 정의서 클립 시트 - 내 클립 상세 현황 조회
+     * context.clipTab - 0 | 1 | 2 | 3
+     * 마이클립: 1 | 청취: 2 | 좋아요 : 3 | 선물: 4
+     */
+    if (!fetchNext) currentPage = 1
+
+    tabType += 1
+    const {result, data, message} = await Api.getMyClipDetail({
+      myClipType: tabType,
+      page: fetchNext ? ++currentPage : currentPage,
       records: 10
     })
-    if (res.result === 'success' && res.data.hasOwnProperty('list')) {
+
+    if (result === 'success' && data.hasOwnProperty('list')) {
       setUpLoadLoading(true)
-      if (res.data.list.length === 0) {
-        if (!next) {
-          setUploadList([])
+      if (data.list.length === 0) {
+        if (!fetchNext) {
+          setDataList({isLoading: false, list: []})
         }
         moreState = false
       } else {
         setUpLoadLoading(true)
-        if (next) {
+        if (fetchNext) {
           moreState = true
-          setNextList(res.data.list)
+          setNextList(data.list)
         } else {
-          setUploadList(res.data.list)
-          fetchDataList('next')
+          setDataList({isLoading: false, list: data.list})
+          fetchUploadDataList(true)
         }
       }
     } else {
       context.action.alert({
-        msg: res.message
+        msg: message
       })
     }
   }
@@ -99,17 +114,13 @@ function ClipUpload() {
       }
     }
   }
-  useEffect(() => {
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [nextList])
+
   const showMoreList = () => {
-    setUploadList(uploadList.concat(nextList))
-    fetchDataList('next')
+    setDataList({...dataList, list: dataList.list.concat(nextList)})
+    fetchUploadDataList(true)
   }
-  const scrollEvtHdr = (event) => {
+
+  const scrollEvtHdr = () => {
     if (timer) window.clearTimeout(timer)
     timer = window.setTimeout(function () {
       //스크롤
@@ -124,36 +135,50 @@ function ClipUpload() {
       }
     }, 10)
   }
+
   useEffect(() => {
-    fetchDataList()
-  }, [context.urlStr])
+    setDataList({isLoading: true, list: []})
+    fetchUploadDataList()
+  }, [context.clipTab])
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [nextList])
+
+  const eventGoClipHandler = (type) => {
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
+      context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
+    } else {
+      let alrtText = '클립 업로드는 청취중인 방송을 \n종료 한 후 가능합니다.'
+      if (type === 'goClip') alrtText = '클립 청취는 청취중인 방송을 \n 종료 한 후 가능합니다.'
+      if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
+        context.action.alert({msg: alrtText})
+        return
+      }
+      if (type === 'goClip') {
+        history.push(`/clip`)
+      } else {
+        uploadModal()
+      }
+    }
+  }
 
   const createContents = () => {
-    if (uploadList.length === 0) {
+    if (dataList.list.length === 0 && !dataList.isLoading) {
       return (
         <div className="noResult">
           <span className="noResult__guideTxt">
-            등록된 클립이 없습니다.
+            {noClipMsgList[context.clipTab]}
             <br /> {context.urlStr === context.profile.memNo && '클립을 업로드해 보세요.'}
           </span>
           {context.urlStr === context.profile.memNo ? (
             <button
               className="noResult__uploadBtn"
               onClick={() => {
-                if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  if (context.token.isLogin === false) {
-                    context.action.alert({
-                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                      callback: () => {
-                        history.push('/login')
-                      }
-                    })
-                  } else {
-                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 3)
-                  }
-                } else {
-                  uploadModal()
-                }
+                eventGoClipHandler('upload')
               }}>
               클립 업로드
             </button>
@@ -161,181 +186,52 @@ function ClipUpload() {
             <button
               className="noResult__uploadBtn"
               onClick={() => {
-                if (customHeader['os'] === OS_TYPE['Desktop']) {
-                  if (context.token.isLogin === false) {
-                    context.action.alert({
-                      msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                      callback: () => {
-                        history.push('/login')
-                      }
-                    })
-                  } else {
-                    context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
-                  }
-                } else {
-                  //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
-                  if (webview === 'new') {
-                    if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                      history.push(`/clip`)
-                    } else {
-                      return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
-                    }
-                  } else {
-                    history.push(`/clip`)
-                  }
-                }
+                eventGoClipHandler('goClip')
               }}>
               청취 하러가기
             </button>
           )}
         </div>
       )
-    } else if (context.urlStr === context.profile.memNo) {
+    } else if (dataList.isLoading) {
       return (
-        <div className="uploadList">
-          {uploadList.map((item, idx) => {
-            const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, replyCnt} = item
-
-            return (
-              <React.Fragment key={`uploadList-${idx}`}>
-                <div
-                  className="uploadList__container"
-                  onClick={() => {
-                    fetchDataPlay(clipNo, idx)
-                    // if (customHeader['os'] === OS_TYPE['Desktop']) {
-                    //   if (context.token.isLogin === false) {
-                    //     context.action.alert({
-                    //       msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    //       callback: () => {
-                    //         history.push('/login')
-                    //       }
-                    //     })
-                    //   } else {
-                    //     context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                    //   }
-                    // } else {
-                    // fetchDataPlay(clipNo)
-                    // }
-                  }}>
-                  <img src={bgImg['thumb120x120']} className="uploadList__profImg" />
-                  <div className="uploadList__details">
-                    <div className="uploadList__topWrap">
-                      {context.clipType.map((v, index) => {
-                        if (v.value === subjectType) {
-                          return (
-                            <span key={index} className="uploadList__category">
-                              {v.cdNm}
-                            </span>
-                          )
-                        }
-                      })}
-                      <i className="uploadList__line"></i>
-                      {/* {globalState.clipType
-                      .filter((v) => {
-                        if (v.value === subjectType) return v;
-                      })
-                      .map((v1, index) => {
-                        return <span key={index}>{v1.cdNm}</span>;
-                      })} */}
-                      <strong className="uploadList__title">{title}</strong>
-                    </div>
-                    <em className="uploadList__nickName">{nickName}</em>
-                    <div className="uploadList__cnt">
-                      <em className="uploadList__cnt play">
-                        {playCnt > 999 ? Utility.printNumber(playCnt) : Utility.addComma(playCnt)}
-                      </em>
-                      <em className="uploadList__cnt like">
-                        {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
-                      </em>
-                      {/* <em className="uploadList__cnt star">
-                        {byeolCnt > 999 ? Utility.printNumber(byeolCnt) : Utility.addComma(byeolCnt)}
-                      </em> */}
-                    </div>
-                  </div>
-                </div>
-              </React.Fragment>
-            )
-          })}
-          {/* {uploadList.length !== 0 && <button className="uploadBtn">업로드</button>} */}
+        <div className="loadingWrap">
+          <div className="loading">
+            <span></span>
+          </div>
         </div>
       )
-    } else if (context.urlStr !== context.profile.memNo) {
-      const windowHalfWidth = (window.innerWidth - 32) / 2
+    } else {
       return (
-        <div className="listSimple">
-          <ul className="listSimpleBox">
-            {uploadList.map((item, idx) => {
-              const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, playCnt, subjectType, title, replyCnt} = item
-              return (
-                <React.Fragment key={`uploadList-${idx}`}>
-                  <li
-                    className="listSimpleItem"
-                    onClick={() => {
-                      if (customHeader['os'] === OS_TYPE['Desktop']) {
-                        if (context.token.isLogin === false) {
-                          context.action.alert({
-                            msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                            callback: () => {
-                              history.push('/login')
-                            }
-                          })
-                        } else {
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                        }
-                      } else {
-                        fetchDataPlay(clipNo, idx)
-                      }
-                    }}
-                    style={{
-                      backgroundImage: `url('${bgImg[`thumb336x336`]}')`,
-                      height: `${windowHalfWidth}px`,
-                      cursor: 'pointer'
-                    }}>
-                    <div className="topWrap">
-                      {/* {context.clipType.map((v, index) => {
-                        if (v.value === subjectType) {
-                          return (
-                            <span key={index} className="uploadList__category">
-                              {v.cdNm}
-                            </span>
-                          )
-                        }
-                      })} */}
-                      <div className="topWrap__count">
-                        <img className="topWrap__count--icon" src={MessageIcon} />
-                        <span className="topWrap__count--num">{replyCnt}</span>
-                        <img className="topWrap__count--icon" src={LikeIcon} />
-                        <span className="topWrap__count--num">
-                          {goodCnt > 999 ? Utility.printNumber(goodCnt) : Utility.addComma(goodCnt)}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="bottomWrap">
-                      <p className="bottomWrap__nick">{nickName}</p>
-                      <p className="bottomWrap__title">{title}</p>
-                    </div>
-                  </li>
-                </React.Fragment>
-              )
-            })}
-            {/* {uploadList.length !== 0 && <button className="uploadBtn">업로드</button>} */}
-          </ul>
-        </div>
+        <UploadClip
+          dataList={dataList}
+          setDataList={setDataList}
+          slctedBtnIdx={slctedBtnIdx}
+          setSlctedBtnIdx={setSlctedBtnIdx}
+          fetchDataPlay={fetchDataPlay}
+        />
       )
     }
   }
+
   return (
-    <div
-      className="uploadWrap"
-      style={{
-        padding: context.profile.memNo !== context.urlStr && '0',
-        minHeight: context.profile.memNo !== context.urlStr && '300px',
-        backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
-      }}>
-      {/* <button onClick={() => history.push(`/clip/101598429926109/reply`)}>댓글테스트</button> */}
-      {uploadListLoding && createContents()}
-    </div>
+    <>
+      <UploadSubTab
+        contextClipTab={context.clipTab}
+        contextClipTabAction={context.action.updateClipTab}
+        fetchUploadDataList={fetchUploadDataList}
+      />
+
+      <div
+        className="uploadWrap"
+        style={{
+          padding: context.profile.memNo !== context.urlStr && '0',
+          minHeight: context.profile.memNo !== context.urlStr && '300px',
+          backgroundColor: context.profile.memNo !== context.urlStr && '#eeeeee'
+        }}>
+        {uploadListLoding && createContents()}
+      </div>
+    </>
   )
 }
 

@@ -5,6 +5,7 @@ import Api from 'context/api'
 import {Context} from 'context'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {OS_TYPE} from 'context/config.js'
+import {HISTORY_SUBTAB_TYPE} from 'pages/mypage/content/constant'
 // router
 import {useParams, useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
@@ -21,7 +22,7 @@ export default function ClipHistory() {
   const [historyList, setHistoryList] = useState([])
 
   const [historyLoding, setHistoryLoading] = useState(false)
-  const [historyTab, setHistoryTab] = useState(Number(subTab) || 0)
+  const [historyTab, setHistoryTab] = useState(HISTORY_SUBTAB_TYPE.LATEST)
   const customHeader = JSON.parse(Api.customHeader)
 
   const getPageFormIdx = useCallback((idx) => {
@@ -36,7 +37,7 @@ export default function ClipHistory() {
       clipNo: clipNum
     })
     if (result === 'success') {
-      if (historyTab === 0) {
+      if (historyTab === HISTORY_SUBTAB_TYPE.LATEST) {
         localStorage.removeItem('clipPlayListInfo')
         const oneClipPlayList = {
           clipNo: data.clipNo,
@@ -94,27 +95,13 @@ export default function ClipHistory() {
             className="noResult__uploadBtn"
             onClick={() => {
               if (customHeader['os'] === OS_TYPE['Desktop']) {
-                if (context.token.isLogin === false) {
-                  context.action.alert({
-                    msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                    callback: () => {
-                      history.push('/login')
-                    }
-                  })
-                } else {
-                  context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
-                }
+                context.action.updatePopup('APPDOWN', 'appDownAlrt', 2)
               } else {
-                //2020-10-15 웹뷰가 뉴 이고 방송방 청취 중일때만 금지, 클립 청취 중에는 가는것이 맞음
-                if (webview === 'new') {
-                  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-                    history.push(`/clip`)
-                  } else {
-                    return context.action.alert({msg: '방송 종료 후 청취 가능합니다. \n다시 시도해주세요.'})
-                  }
-                } else {
-                  history.push(`/clip`)
+                if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
+                  context.action.alert({msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'})
+                  return
                 }
+                history.push(`/clip`)
               }
             }}>
             청취 하러가기
@@ -123,7 +110,7 @@ export default function ClipHistory() {
       )
     } else {
       return (
-        <div className="uploadList">
+        <div className="uploadList history_list">
           {historyList.map((item, idx) => {
             const {bgImg, byeolCnt, clipNo, goodCnt, memNo, nickName, replyCnt, subjectType, title, gender} = item
 
@@ -133,17 +120,12 @@ export default function ClipHistory() {
                   className="uploadList__container"
                   onClick={() => {
                     if (customHeader['os'] === OS_TYPE['Desktop']) {
-                      if (context.token.isLogin === false) {
-                        context.action.alert({
-                          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
-                          callback: () => {
-                            history.push('/login')
-                          }
-                        })
-                      } else {
-                        context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
-                      }
+                      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
                     } else {
+                      if (webview === 'new' && Utility.getCookie('native-player-info') !== undefined) {
+                        context.action.alert({msg: '선택한 클립 재생은 청취중인 방송을\n 종료 한 후 가능합니다.'})
+                        return
+                      }
                       fetchDataPlay(clipNo, idx)
                     }
                   }}>
@@ -193,8 +175,22 @@ export default function ClipHistory() {
       )
     }
   }
+
   useEffect(() => {
-    // fetch data
+    const fetchDataClipType = async () => {
+      const {result, data} = await Api.getClipType({})
+      if (result === 'success') {
+        context.action.updateClipType(data)
+      } else {
+      }
+    }
+    fetchDataClipType()
+    // return () => {
+    //   context.action.updateClipTab(HISTORY_TAB_TYPE.UPLOAD)
+    // }
+  }, [])
+
+  useEffect(() => {
     const fetchDataList = async () => {
       const {result, data, message} = await Api.getHistoryList({
         memNo: context.profile.memNo,
@@ -216,23 +212,23 @@ export default function ClipHistory() {
   }, [historyTab])
 
   return (
-    <div className="uploadWrap">
+    <div className="historyWrap">
       {historyLoding && (
         <>
           <div className="historyBtnWrap">
             <button
-              onClick={() => setHistoryTab(0)}
-              className={historyTab === 0 ? 'historyBtn historyBtn--active' : 'historyBtn'}>
+              onClick={() => setHistoryTab(HISTORY_SUBTAB_TYPE.LATEST)}
+              className={historyTab === HISTORY_SUBTAB_TYPE.LATEST ? 'historyBtn historyBtn--active' : 'historyBtn'}>
               최근
             </button>
             <button
-              onClick={() => setHistoryTab(1)}
-              className={historyTab === 1 ? 'historyBtn historyBtn--active' : 'historyBtn'}>
+              onClick={() => setHistoryTab(HISTORY_SUBTAB_TYPE.GOOD)}
+              className={historyTab === HISTORY_SUBTAB_TYPE.GOOD ? 'historyBtn historyBtn--active' : 'historyBtn'}>
               좋아요
             </button>
             <button
-              onClick={() => setHistoryTab(2)}
-              className={historyTab === 2 ? 'historyBtn historyBtn--active' : 'historyBtn'}>
+              onClick={() => setHistoryTab(HISTORY_SUBTAB_TYPE.GIFT)}
+              className={historyTab === HISTORY_SUBTAB_TYPE.GIFT ? 'historyBtn historyBtn--active' : 'historyBtn'}>
               선물
             </button>
           </div>

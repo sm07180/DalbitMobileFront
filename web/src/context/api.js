@@ -2636,6 +2636,14 @@ export default class API {
     return await ajax({url: '/clip/myclip', method: 'GET', params})
   }
 
+  static getMyClipDetail = async (params) => {
+    return await ajax({url: '/clip/myclip/detail', method: 'GET', params})
+  }
+
+  static editMyClipDetail = async (params) => {
+    return await ajax({url: '/clip/myclip/edit', method: 'POST', params})
+  }
+
   static getClipGiftRank = async (params) => {
     return await ajax({url: '/clip/gift/rank/list', method: 'GET', params})
   }
