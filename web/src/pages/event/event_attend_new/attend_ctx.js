@@ -24,6 +24,9 @@ const EventAttendProvider = (props) => {
   const [authCheckYn, setAuthCheckYn] = useState('') //본인인증 할지말지 체크여부
 
   const [itemNo, setItemNo] = useState(0) //당첨된 아이템
+  const [imageUrl, setImageUrl] = useState('')
+  const [itemWinMsg, setItemWinMsg] = useState('')
+
   const [winPhone, setWinPhone] = useState(0)
   const [ios, setIos] = useState('')
   const [rouletteInfo, setRouletteInfo] = useState('')
@@ -45,6 +48,8 @@ const EventAttendProvider = (props) => {
     popGifticon,
     winIdx,
     itemNo,
+    imageUrl,
+    itemWinMsg,
     winPhone,
     ios,
     rouletteInfo,
@@ -62,6 +67,8 @@ const EventAttendProvider = (props) => {
     setAuthCheckYn,
     setPopGifticon,
     setWinIdx,
+    setImageUrl,
+    setItemWinMsg,
     setItemNo,
     setWinPhone,
     setIos,

@@ -199,7 +199,11 @@
         }
 
         &__image {
-          margin: 0 auto;
+          img {
+            width: 140px;
+            height: 140px;
+          }
+          margin: 0px auto 16px auto;
 
           .con {
             padding-top: 8px;

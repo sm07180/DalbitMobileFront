@@ -15,7 +15,7 @@ export default () => {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
-  const {itemNo} = eventAttendState
+  const {itemNo, imageUrl, itemWinMsg} = eventAttendState
   const [checks, setChecks] = useState([false, false])
 
   const [phone, setPhone] = useState(eventAttendState.winPhone)
@@ -171,66 +171,48 @@ export default () => {
     // })
   }
 
-  const gift_text = () => {
-    let giftItem
-
-    if (itemNo === 1) {
-      giftItem = '꽝'
-    } else if (itemNo === 2) {
-      giftItem = '1달 당첨!'
-    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59) {
-      giftItem = '100달 당첨!'
-    } else {
-      giftItem = eventAttendState.start.itemWinMsg
-    }
-
-    return giftItem
-  }
-
-  const gift_image = () => {
-    let giftImage
-
-    if (itemNo === 1) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_lose@2x.png`
-      return <img src={giftImage} width="160px" alt="꽝" />
-    } else if (itemNo === 2) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_moon1@2x.png`
-      return <img src={giftImage} width="80px" alt="1달" />
-    } else if (itemNo === 3) {
-      giftImage = `${IMG_SERVER}/event/attend/201019/img_moon3@2x.png`
-      return <img src={giftImage} width="88px" alt="3달" />
-    } else if (itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59) {
-      giftImage = `${IMG_SERVER}/event/attend/201217/img_moon100@2x.png`
-      return <img src={giftImage} width="100px" alt="100달" />
-    } else {
-      giftImage = <img src={eventAttendState.start.imageUrl} width="140px" alt={eventAttendState.start.itemName} />
-    }
-
-    return giftImage
-  }
-
-  //----------------------------
-
   useEffect(() => {
     intervalFormatter(eventAttendState.start.inputEndDate)
+
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
+    }
   }, [])
 
   return (
     <div className="popupWrap">
       <div className="popupContent gifticon">
         <h1>{itemNo === 1 ? '꽝! 다음 기회에~' : '축하합니다!'}</h1>
-        {itemNo <= 2 || itemNo === 9 || itemNo === 19 || itemNo === 29 || itemNo === 39 || itemNo === 49 || itemNo === 59 ? (
+        {itemNo <= 2 ||
+        itemNo === 9 ||
+        itemNo === 19 ||
+        itemNo === 29 ||
+        itemNo === 39 ||
+        itemNo === 49 ||
+        itemNo === 59 ||
+        itemNo === 10001 ||
+        itemNo === 10002 ||
+        itemNo === 10003 ||
+        itemNo === 10004 ? (
           <>
             <div className="winInfo">
-              <div className="winInfo__image">{gift_image()}</div>
-              {itemNo === 1 ? '' : <p className="winInfo__title">{gift_text()}</p>}
-              {itemNo === 1 ? (
-                <p className="winInfo__content">
-                  너무 미워하지 마세요.. <br /> 다음에는 꼭 당첨되기를!
-                </p>
-              ) : (
-                <p className="winInfo__content">[내 지갑]을 확인하세요!</p>
-              )}
+              <div className="winInfo__image">
+                {itemNo === 2 ? (
+                  <img src="https://image.dalbitlive.com/event/attend/201019/img_moon1@2x.png" alt="1달" />
+                ) : itemNo === 3 ? (
+                  <img src="https://image.dalbitlive.com/event/attend/201019/img_moon3@2x.png" alt="3달" />
+                ) : (
+                  <img src={imageUrl} alt="룰렛 결과 이미지" />
+                )}
+              </div>
+              <p className="winInfo__title">{itemNo === 2 ? '1달 당첨!' : itemNo === 3 ? '3달 당첨!' : <>{itemWinMsg}</>}</p>
+
+              <p className="winInfo__content">
+                {itemNo === 10001 || itemNo === 10002 || itemNo === 10003 || itemNo === 10004
+                  ? '다음에는 기프티콘도 당첨되기를!'
+                  : '[내 지갑]을 확인하세요!'}
+              </p>
             </div>
 
             <button
@@ -246,8 +228,10 @@ export default () => {
         ) : (
           <>
             <div className="winInfo">
-              <p className="winInfo__title">{gift_text()}</p>
-              <div className="winInfo__image">{gift_image()}</div>
+              <p className=" winInfo__image">
+                <img src={imageUrl} alt="룰렛 결과 이미지" />
+              </p>
+              <div className="winInfo__title">{itemWinMsg}</div>
             </div>
 
             <div>{makePhoneInputBox()}</div>

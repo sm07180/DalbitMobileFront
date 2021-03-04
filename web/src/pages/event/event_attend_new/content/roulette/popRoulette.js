@@ -58,6 +58,8 @@ export default () => {
       eventAttendAction.setEventCouponCnt(data.eventCouponCnt)
       eventAttendAction.setWinIdx(data.winIdx)
       eventAttendAction.setWinPhone(data.phone)
+      eventAttendAction.setImageUrl(data.imageUrl)
+      eventAttendAction.setItemWinMsg(data.itemWinMsg)
     } else {
       // 실패
     }
@@ -149,7 +151,13 @@ export default () => {
       itemNo === GIFT_ROTATION_TYPE.GIFT_GOOBNEFULLMOON
     ) {
       setRotation(292.5)
-    } else if (itemNo === GIFT_ROTATION_TYPE.FAILD) {
+    } else if (
+      itemNo === GIFT_ROTATION_TYPE.FAILD ||
+      itemNo === GIFT_ROTATION_TYPE.EXP1 ||
+      itemNo === GIFT_ROTATION_TYPE.EXP3 ||
+      itemNo === GIFT_ROTATION_TYPE.EXP5 ||
+      itemNo === GIFT_ROTATION_TYPE.EXP10
+    ) {
       setRotation(337.5)
     }
 

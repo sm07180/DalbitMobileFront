@@ -206,6 +206,14 @@ export default () => {
                       giftItem = '맘스터치 언빌리버블'
                     } else if (itemNo === 58) {
                       giftItem = '굽네치킨 보름달'
+                    } else if (itemNo === 10001) {
+                      giftItem = 'EXP 1'
+                    } else if (itemNo === 10002) {
+                      giftItem = 'EXP 3'
+                    } else if (itemNo === 10003) {
+                      giftItem = 'EXP 5'
+                    } else if (itemNo === 10004) {
+                      giftItem = 'EXP 10'
                     }
 
                     return giftItem
