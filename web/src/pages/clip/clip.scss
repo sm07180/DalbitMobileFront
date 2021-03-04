@@ -2050,3 +2050,108 @@
     }
   }
 }
+// 클립 등록 유도 팝업
+#clipRegPopup {
+  position: relative;
+  padding: 0 16px;
+  max-width: 360px;
+
+  .btn-close {
+    position: absolute;
+    top: -40px;
+    right: 16px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 8px;
+    background: url(https://image.dalbitlive.com/images/api/close_w_l.svg) no-repeat 0 0;
+    font-size: 0;
+  }
+  .layerContent {
+    background: none;
+
+    .content_wrap {
+      padding: 24px 16px 16px 16px;
+      border-radius: 20px;
+      background-color: $white;
+      img {
+        width: 100%;
+      }
+
+      .desc_wrap {
+        padding: 12px 19px 12px 12px;
+        margin-top: 4px;
+        border-radius: 12px;
+        background-color: $lighterGray;
+
+        li {
+          margin-top: 9px;
+          padding-left: 10px;
+          font-size: 13px;
+          text-indent: -4px;
+          letter-spacing: -1px;
+
+          &:first-child {
+            margin-top: 0px;
+          }
+
+          &::before {
+            content: '∙';
+            display: inline-block;
+            margin-right: 4px;
+          }
+        }
+      }
+
+      .btn_wrap {
+        display: flex;
+        margin-top: 16px;
+
+        .btn {
+          width: 50%;
+          //height: 44px;
+          padding: 12px 4px;
+          border-radius: 12px;
+          font-size: 18px;
+          font-weight: $bold;
+          line-height: 1.17;
+
+          &.rec {
+            margin-right: 2px;
+            background-color: $greishGray;
+            color: $white;
+          }
+
+          &.reg {
+            margin-left: 2px;
+            background-color: $primary;
+            color: $white;
+          }
+        }
+      }
+    }
+
+    .checkbox_wrap {
+      width: 100%;
+      margin-top: 8px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      background: #000;
+      color: #fff;
+      border-radius: 20px;
+
+      .checkbox_label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        span {
+          display: inline-block;
+          margin-left: 10px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

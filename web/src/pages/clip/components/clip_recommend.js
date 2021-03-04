@@ -296,7 +296,7 @@ export default function ClipRecommend() {
                           <img src={v.bgImg.thumb150x150} alt="썸네일" className="thumbnail__img" />
 
                           {/*<span className="thumbnail__specialDj">스페셜Dj</span>*/}
-                          <span className="thumbnail__playTime">{v.filePlay}</span>
+                          <span className="thumbnail__playTime">{v.filePlayTime}</span>
                         </div>
                         <div
                           className="textItem"

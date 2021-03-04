@@ -18,6 +18,7 @@ import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
 import BannerList from '../main/component/bannerList'
 import LayerPopupWrap from '../main/component/layer_popup_wrap'
+import ClipRegPopup from "./components/clip_reg_popup";
 import Layout from 'pages/common/layout'
 import NoResult from 'components/ui/noResult'
 //static
@@ -109,7 +110,7 @@ export default (props) => {
   const [popularType, setPopularType] = useState(0)
   const [latestList, setLatestList] = useState([])
 
-  const [myData, setMyDate] = useState([])
+  const [myData, setMyData] = useState([])
   const [date, setDate] = useState('')
   const [randomList, setRandomList] = useState([])
   const [myClipToggle, setMyClipToggle] = useState(false)
@@ -122,6 +123,9 @@ export default (props) => {
   // const [selectType, setSelectType] = useState(randomData)
   const [popupData, setPopupData] = useState([])
   const [reloadInit, setReloadInit] = useState(false)
+
+  const [regPopupState, setRegPopupState] = useState(false); // 등록 유도 팝업
+
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [marketingClipList, setMarketingClipList] = useState([])
 
@@ -189,7 +193,16 @@ export default (props) => {
   const fetchMyData = async () => {
     const {result, data, message} = await Api.getMyClipData({})
     if (result === 'success') {
-      setMyDate(data)
+      setMyData(data)
+      if(data.isReg) {
+        setRegPopupState(false);
+      } else {
+        if(Utility.getCookie("reg_popup") === undefined) {
+          setRegPopupState(true);
+        } else {
+          setRegPopupState(false);
+        }
+      }
     } else {
       context.action.alert({
         msg: message
@@ -1133,6 +1146,7 @@ export default (props) => {
           </div>
         </div>
       </div>
+      {regPopupState && <ClipRegPopup setRegPopupState={setRegPopupState} />}
       {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       {detailPopup && <DetailPopup setDetailPopup={setDetailPopup} />}
     </Layout>
