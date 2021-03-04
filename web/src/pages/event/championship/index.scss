@@ -55,16 +55,10 @@
       }
 
       .img_box {
-        padding: 3% 5% 0;
-        margin-bottom: -4%;
+        padding: 5%;
 
         &.status {
-          padding-top: 5%;
-          margin-right: -5%;
-
-          img {
-            margin-left: 15%;
-          }
+          padding: 3% 0 0;
         }
 
         &.rank {
@@ -84,7 +78,7 @@
 
       .status_wrap {
         position: relative;
-        padding: 22% 0 18%;
+        padding: 22% 0 9%;
         background-color: #87c9dd;
         box-sizing: border-box;
 
@@ -174,7 +168,7 @@
           .receive_btn {
             position: absolute;
             left: 50%;
-            bottom: -13%;
+            bottom: 5%;
             transform: translateX(-50%);
             width: 33%;
             cursor: pointer;
@@ -526,8 +520,8 @@
               height: 16px;
               border-radius: 14px;
               background-color: #f3529d;
-              font-size: 10px;
               line-height: 16px;
+              font-size: 10px;
               font-weight: $bold;
               color: $white;
               text-align: center;

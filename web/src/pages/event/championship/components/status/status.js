@@ -109,7 +109,7 @@ export default function Status() {
     <>
       <div className="stage_wrap">
         <div className="img_box status">
-          <img src="https://image.dalbitlive.com/event/championship/20210223/points_status.png" alt="승점 현황 안내" />
+          <img src="https://image.dalbitlive.com/event/championship/20210304/points_status.png" alt="승점 현황 안내" />
         </div>
         <div className="status_wrap">
           <img
