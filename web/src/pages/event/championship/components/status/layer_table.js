@@ -23,7 +23,7 @@ export default function LayerTable({setLayerPointTable, content}) {
   return (
     <PopupWrap id="layerPopup" onClick={closePopupDim}>
       <div className="layerContainer championship">
-        <h3>1회차 순위별 승점표</h3>
+        <h3>{nowEventNo === 6 ? 5 : nowEventNo}회차 순위별 승점표</h3>
         <p>
           회차별 승점은 주차별로 다르며,
           <br />
