@@ -176,7 +176,9 @@ export default function Status() {
         </div>
         {scoreData && <StatusList nowEventNo={myScoreData.nowEventNo} scoreData={scoreData} />}
       </div>
-      {layerPointTable && <LayerTable setLayerPointTable={setLayerPointTable} content={myScoreData.pointDesc} />}
+      {layerPointTable && (
+        <LayerTable nowEventNo={myScoreData.nowEventNo} setLayerPointTable={setLayerPointTable} content={myScoreData.pointDesc} />
+      )}
       {layerPresent && <LayerPresent setLayerPresent={setLayerPresent} />}
     </>
   )
