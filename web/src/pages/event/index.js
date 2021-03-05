@@ -37,6 +37,8 @@ import MoonRise from './moon_rise'
 import BestdjIntro from './bestdj_intro'
 import Championship from './championship'
 
+import BroadcastRoulette from './broadcast_roulette'
+
 export default () => {
   const params = useParams()
 
@@ -105,6 +107,8 @@ export default () => {
         return <BestdjIntro />
       case 'championship':
         return <Championship />
+      case 'broadcast_roulette':
+        return <BroadcastRoulette />
       default:
         return <></>
         break
