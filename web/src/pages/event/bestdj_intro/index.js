@@ -12,17 +12,17 @@ export default function bestdjIntro() {
 
       <div className="bestdj_intro">
         <div className="text">최대 150만원 현금을 받을 수 있는 기회!</div>
-        <img src="http://image.dalbitlive.com//event/best_dj/210224/visual.png" alt="우리모두 달빛하여 베스트스페셜DJ되세" />
+        <img src="https://image.dalbitlive.com//event/best_dj/210224/visual.png" alt="우리모두 달빛하여 베스트스페셜DJ되세" />
 
         <div className="text">스페셜DJ 누적 6회 달성시 베스트 스페셜 DJ로 승급됩니다!</div>
-        <img src="http://image.dalbitlive.com//event/best_dj/210224/content_img1.png" alt="베스트 스페셜 DJ" />
+        <img src="https://image.dalbitlive.com//event/best_dj/210224/content_img1.png" alt="베스트 스페셜 DJ" />
 
         <div className="text">베스트 스페셜 DJ의 경우 최대 150만원의 활동지원비를 지급해드립니다!</div>
-        <img src="http://image.dalbitlive.com//event/best_dj/210224/content_img2.png" alt="베스트 스페셜Dj 혜택" />
+        <img src="https://image.dalbitlive.com//event/best_dj/210224/content_img2.png" alt="베스트 스페셜Dj 혜택" />
 
         <div className="text">매월 말 스페셜Dj 선발 사전 공지에서 데이터 검토 기간을 확인합니다.</div>
-        <img src="http://image.dalbitlive.com//event/best_dj/210224/content_img3.png" alt="베스디를 유지하려면?" />
-        <img src="http://image.dalbitlive.com//event/best_dj/210224/content_img4.png" alt="기억해주세요" />
+        <img src="https://image.dalbitlive.com//event/best_dj/210224/content_img3.png" alt="베스디를 유지하려면?" />
+        <img src="https://image.dalbitlive.com//event/best_dj/210224/content_img4.png" alt="기억해주세요" />
       </div>
     </Content>
   )
