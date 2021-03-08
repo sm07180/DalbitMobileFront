@@ -772,6 +772,27 @@ export default (props) => {
     history.push(`/mypage/${context.token.memNo}/my_clip`)
   }
 
+  const goClipReg = (type) => {
+    if(customHeader['os'] === OS_TYPE['Desktop']) {
+      context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+    } else {
+      if (context.token.isLogin === false) {
+        return context.action.alert({
+          msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+          callback: () => {
+            history.push('/login')
+          }
+        })
+      } else {
+        if (type === 'recording') {
+          Hybrid('EnterClipRecord')
+        } else if (type === 'upload') {
+          Hybrid('ClipUploadJoin')
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
     if (Object.values(listTop3).length > 0) {
@@ -866,6 +887,11 @@ export default (props) => {
           </div>
         </div>
         {context.token.isLogin === true ? (
+          <>
+          <div className="clipRegWrap">
+            <button className="clipReg__button" onClick={() => goClipReg('recording')}>클립 녹음</button>
+            <button className="clipReg__button" onClick={() => goClipReg('upload')}>클립 업로드</button>
+          </div>
           <div className="myClip" ref={myClipRef}>
             <h3 className="clipTitle" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
               <em
@@ -913,6 +939,7 @@ export default (props) => {
               </ul>
             )}
           </div>
+          </>
         ) : context.token.isLogin === true ? (
           <div ref={myClipRef} style={{minHeight: '127px'}}></div>
         ) : (
