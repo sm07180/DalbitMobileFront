@@ -489,7 +489,6 @@ const GlobalProvider = (props) => {
         setBackFunction({name: 'multiViewer'})
       } else {
         setBackState(null)
-        setBackFunction(null)
       }
 
       setMultiviewer(obj)
