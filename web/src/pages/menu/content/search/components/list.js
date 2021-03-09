@@ -228,14 +228,14 @@ export default (props) => {
                       </div>
                       <div className="textBox">
                         <p className="textBox__subject">
-                          <span className="subject">
+                          {/* <span className="subject">
                             {context.roomType.map((item, index) => {
                               if (item.cd === roomType) {
                                 return <React.Fragment key={idx + 'typeList'}>{item.cdNm}</React.Fragment>
                               }
                             })}
                           </span>
-                          <i className="line"></i>
+                          <i className="line"></i> */}
                           <span className="title">{title}</span>
                         </p>
                         <p className="textBox__nickName">
