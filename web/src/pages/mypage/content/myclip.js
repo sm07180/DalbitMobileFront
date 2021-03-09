@@ -27,10 +27,11 @@ export default function Clip(props) {
   // divide components
   const createContents = () => {
     // props.type is "userprofile" when navigated from /mypage/memNo - clip tab
-    if (localClipTab === HISTORY_TAB_TYPE.UPLOAD && props.type !== 'userprofile') {
-      return <ClipUpload />
-    } else if (props.type === 'userprofile') {
+    if (props.type === 'userprofile' && context.urlStr !== context.profile.memNo) {
       return <MyPageClipUpload />
+    }
+    if (localClipTab === HISTORY_TAB_TYPE.UPLOAD) {
+      return <ClipUpload />
     } else {
       return <ClipHistory />
     }
