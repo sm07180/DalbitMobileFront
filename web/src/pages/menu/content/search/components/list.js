@@ -133,7 +133,7 @@ export default (props) => {
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
                         {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
-                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                        {badgeSpecial && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj">베스트DJ</em>
@@ -189,7 +189,8 @@ export default (props) => {
                     roomNo,
                     memNo,
                     os,
-                    gstProfImg
+                    gstProfImg,
+                    mediaType
                   } = item
                   return (
                     <li
@@ -212,7 +213,7 @@ export default (props) => {
                         }
                       }}>
                       <div className="chartListDetailItem__thumb">
-                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
+                        {badgeSpecial && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
@@ -228,14 +229,19 @@ export default (props) => {
                       </div>
                       <div className="textBox">
                         <p className="textBox__subject">
-                          <span className="subject">
+                          {/* <span className="subject">
                             {context.roomType.map((item, index) => {
                               if (item.cd === roomType) {
                                 return <React.Fragment key={idx + 'typeList'}>{item.cdNm}</React.Fragment>
                               }
                             })}
                           </span>
-                          <i className="line"></i>
+                          <i className="line"></i> */}
+                          {mediaType === 'a' ? (
+                            <em className="icon_wrap icon_roomtype">오디오</em>
+                          ) : (
+                            <em className="icon_wrap icon_roomtype icon_roomtype_video">영상</em>
+                          )}
                           <span className="title">{title}</span>
                         </p>
                         <p className="textBox__nickName">
@@ -322,7 +328,7 @@ export default (props) => {
                       }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
-                        {badgeSpecial  > 0 && badgeSpecial === 1 ? (
+                        {badgeSpecial && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj_half">베스트DJ</em>

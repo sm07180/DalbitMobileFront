@@ -322,6 +322,9 @@
           align-items: center;
           font-size: 14px;
           font-weight: 700;
+          .title {
+            margin-left: 6px;
+          }
         }
         i.line {
           flex-basis: 1px;
@@ -442,6 +445,17 @@
     &__live {
       background-color: $white;
       padding: 0px 0 14px 16px;
+    }
+    &__clip {
+      .chartListDetail {
+        .chartListDetailItem {
+          .textBox__subject {
+            .title {
+              margin-left: 0px;
+            }
+          }
+        }
+      }
     }
   }
   .liveBtn {
