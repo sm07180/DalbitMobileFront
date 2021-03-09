@@ -484,6 +484,14 @@ const GlobalProvider = (props) => {
       setDateState(string)
     },
     updateMultiViewer: (obj) => {
+      if (obj.show) {
+        setBackState(true)
+        setBackFunction({name: 'multiViewer'})
+      } else {
+        setBackState(null)
+        setBackFunction(null)
+      }
+
       setMultiviewer(obj)
     }
   }

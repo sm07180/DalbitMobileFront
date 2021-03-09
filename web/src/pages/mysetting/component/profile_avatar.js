@@ -12,6 +12,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
   const [cropOpen, setCropOpen] = useState(false)
   const [editedImg, setEditedImg] = useState(null)
   const [eventObj, setEventObj] = useState(null)
+  const [loading, setLoading] = useState(false)
 
   const hasPhotoList = useMemo(() => profile && profile.profImgList && profile.profImgList.length > 0, [profile.profImgList])
 
@@ -72,6 +73,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
   }, [])
 
   const uploadImageToServer = useCallback(() => {
+    setLoading(true)
     Api.image_upload({
       data: {
         dataURL: editedImg.content,
@@ -80,6 +82,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
     }).then((res) => {
       const {result, data} = res
       if (result === 'success') {
+        setLoading(false)
         if (!hasPhotoList) {
           setImg(data[IMAGE_THUMB])
           setCurrentAvatar(data.path)
@@ -87,6 +90,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
           addProfileImg(data.path)
         }
       } else {
+        setLoading(false)
         globalCtx.action.alert({
           msg: '사진 업로드에 실패하였습니다.\n다시 시도해주세요.',
           title: '',
@@ -174,6 +178,12 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
       </div>
       {cropOpen && eventObj !== null && (
         <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setEditedImg} />
+      )}
+
+      {loading && (
+        <div className="loading">
+          <span></span>
+        </div>
       )}
     </>
   )

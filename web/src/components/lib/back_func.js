@@ -10,6 +10,9 @@ export const backFunc = (context) => {
     case 'booleanType':
       context.action.updateBackFunction({name: 'booleanType', value: false})
       break
+    case 'multiViewer':
+      context.action.updateMultiViewer({show: false})
+      break
     case 'event':
     case 'selfauth':
       window.location.href = '/'
