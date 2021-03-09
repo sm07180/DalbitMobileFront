@@ -969,7 +969,7 @@ export default (props) => {
                     라디오 타입
                   </button>
                   <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
-                    <img src="https://image.dalbitlive.com/main/ico_refresh.svg" alt="새로고침" />
+                    <img src="https://image.dalbitlive.com/main/ico_live_refresh.svg" alt="새로고침" />
                   </button>
                 </div>
               </div>
