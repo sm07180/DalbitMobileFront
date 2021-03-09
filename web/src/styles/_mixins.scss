@@ -508,6 +508,7 @@
   -webkit-line-clamp: $line;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
+  word-break: break-word;
 }
 
 @mixin vw-convert-pc($property, $pc-pixel) {

@@ -42,7 +42,8 @@ const makeContents = (props) => {
       gstProfImg,
       isGoodMem,
       goodMem,
-      mediaType
+      mediaType,
+      newFanCnt
     } = list
 
     const alertCheck = (roomNo) => {
@@ -83,7 +84,7 @@ const makeContents = (props) => {
         {liveListType !== 'v' ? (
           <div className="broadcast-content">
             <div className="title">
-              <p className="category">
+              {/* <p className="category">
                 {categoryList && (
                   <>
                     {(() => {
@@ -95,15 +96,15 @@ const makeContents = (props) => {
                   </>
                 )}
               </p>
-              <i className="line"></i>
-              <span>{title}</span>
-            </div>
-            <div className="nickname">
+              <i className="line"></i> */}
               {mediaType === 'a' ? (
                 <em className="icon_wrap icon_roomtype">오디오</em>
               ) : (
                 <em className="icon_wrap icon_roomtype icon_roomtype_video">영상</em>
               )}
+              <span>{title}</span>
+            </div>
+            <div className="nickname">
               {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
               {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
 
@@ -141,6 +142,12 @@ const makeContents = (props) => {
                   <span>{Util.printNumber(likeCnt)}</span>
                 </div>
               )}
+
+              <div className="value">
+                <i className="value--newFan"></i>
+                <span>{Util.printNumber(newFanCnt)}</span>
+              </div>
+
               {goodMem && goodMem.length > 0 && (
                 <div className="value isGoodMember">
                   {goodMem.map((idx) => {

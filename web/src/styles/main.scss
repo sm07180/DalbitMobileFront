@@ -108,12 +108,12 @@
     box-sizing: border-box;
 
     &.rank {
-      height: 195px;
-      padding: 26px 0 0;
+      height: 198px;
+      padding: 32px 0 0;
       background-color: $white;
       color: $white;
       .swiper-container {
-        padding: 12px 0 0 16px;
+        padding: 8px 0 0 16px;
       }
       .rank-slide {
         position: relative;
@@ -216,15 +216,15 @@
       }
     }
     &.banner {
-      padding: 20px 16px 0 16px;
+      padding: 26px 16px 0 16px;
     }
     &.my-star {
       // display: none;
-      padding-top: 20px;
-      height: 180px;
+      padding-top: 24px;
+      height: 174px;
       &.visible {
         display: block;
-        height: 180px;
+        height: 174px;
       }
       .title {
         color: $white;
@@ -295,12 +295,12 @@
       }
     }
     &.live-list {
-      margin-top: 10px;
+      margin-top: 18px;
       padding: 0 16px;
       .title-wrap {
         display: flex;
         flex-direction: column;
-        padding: 0;
+        padding: 10px 0;
         background: $white;
         box-sizing: border-box;
 
@@ -309,14 +309,12 @@
           top: 48px;
           left: 0;
           width: 100%;
-          padding: 0 16px;
+          padding: 10px 16px;
           z-index: 10;
         }
 
         .title {
           justify-content: space-between;
-          padding: 8px 0 6px;
-          border-bottom: 1px solid $lighterGray;
           .txt {
             .title_img {
               width: 28px;
@@ -401,7 +399,6 @@
   .live-list-category {
     position: relative;
     display: flex;
-
     flex-direction: row;
     align-items: center;
     background-color: $white;
@@ -593,12 +590,12 @@
       align-items: center;
       flex-direction: row;
       padding: 20px 0 16px 16px;
-      margin: 10px 16px 0 16px;
+      margin: 4px 16px 0 16px;
       border-radius: 12px;
       background: $whiteGray;
     }
     .liveList {
-      padding: 16px 0;
+      padding: 10px 0 20px 0;
     }
   }
 
@@ -1060,11 +1057,13 @@
         align-items: center;
         line-height: 1.3;
         span {
-          color: #242424;
+          overflow: hidden;
+          margin-left: 6px;
           flex: 1;
+          color: #242424;
+          line-height: 16px;
           white-space: nowrap;
           text-overflow: ellipsis;
-          overflow: hidden;
           letter-spacing: -0.5px;
         }
 
@@ -1090,7 +1089,7 @@
         font-size: 12px;
         color: $darkGray;
         line-height: 1.3;
-        margin: 7px 0px;
+        margin: 10px 0px;
         font-weight: normal;
         .text {
           margin-right: 2px;
@@ -1219,6 +1218,10 @@
           }
           &--like {
             background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+          }
+          &--newFan {
+            margin-right: 2px;
+            background-image: url(https://image.dalbitlive.com/main/ico_newpeople.svg);
           }
           &--message {
             background-image: url(https://image.dalbitlive.com/svg/ico_message_g_s.svg);
@@ -1422,6 +1425,8 @@
         color: $white;
         font-weight: $bold;
         font-size: 12px;
+
+        line-height: 1.08;
         letter-spacing: -0.36px;
       }
     }

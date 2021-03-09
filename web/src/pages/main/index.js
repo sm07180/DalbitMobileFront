@@ -80,6 +80,7 @@ export default (props) => {
   const BannerSectionRef = useRef()
   const StarSectionRef = useRef()
   const LiveSectionRef = useRef()
+  const LiveSectionTitleRef = useRef()
 
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
@@ -461,6 +462,8 @@ export default (props) => {
     }
   }, [])
 
+  const LiveSectionTitleNode = LiveSectionTitleRef.current
+  const LiveSectionTitleHeight = LiveSectionTitleNode && LiveSectionTitleNode.clientHeight
   useEffect(() => {
     const windowScrollEvent = () => {
       if (window.scrollY >= 1) {
@@ -488,28 +491,7 @@ export default (props) => {
       const StarSectionHeight = StarSectionNode && StarSectionNode.clientHeight
       // const StarSectionHeight = StarSectionNode.style.display !== 'none' ? StarSectionNode.clientHeight : 0
       const BannerSectionHeight = BannerSectionNode ? BannerSectionNode.clientHeight + sectionMarginTop : 0
-
       const LiveSectionTop = LiveSectionNode.offsetTop
-
-      // let TopSectionHeight
-      // if (customHeader['os'] === OS_TYPE['Desktop']) {
-      //   if (StarSectionNode) {
-      //     TopSectionHeight = RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-      //   } else {
-      //     TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + LiveTabDefaultHeight
-      //   }
-      // } else {
-      //   if (globalCtx.token.isLogin === true) {
-      //     if (StarSectionNode) {
-      //       TopSectionHeight =
-      //         RecommendHeight + RankSectionHeight + StarSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-      //     } else {
-      //       TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight + 20
-      //     }
-      //   } else {
-      //     TopSectionHeight = RecommendHeight + RankSectionHeight + BannerSectionHeight - LiveTabDefaultHeight
-      //   }
-      // }
 
       TopSectionHeightRef.current = LiveSectionTop - refreshDefaultHeight
 
@@ -949,7 +931,7 @@ export default (props) => {
           )}
 
           <div className="section live-list" ref={LiveSectionRef}>
-            <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`}>
+            <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`} ref={LiveSectionTitleRef}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
                   <img src="https://image.dalbitlive.com/svg/icon_live_title.svg" className="title_img" alt="실시간 Live" />
@@ -987,12 +969,12 @@ export default (props) => {
                     라디오 타입
                   </button>
                   <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
-                    <img src="https://image.dalbitlive.com/main/200714/ico-refresh-gray.png" alt="새로고침" />
+                    <img src="https://image.dalbitlive.com/main/ico_refresh.svg" alt="새로고침" />
                   </button>
                 </div>
               </div>
 
-              <div className="live-list-category">
+              {/* <div className="live-list-category">
                 <div className="inner-wrapper">
                   {Array.isArray(categoryList) && categoryList.length > 1 && (
                     <Swiper {...swiperParams}>
@@ -1011,10 +993,10 @@ export default (props) => {
                     </Swiper>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
 
-            <div className="content-wrap" style={{paddingTop: liveCategoryFixed && '86px'}}>
+            <div className="content-wrap" style={liveCategoryFixed ? {paddingTop: LiveSectionTitleHeight + `px`} : {}}>
               {Array.isArray(liveList) && liveRefresh === false ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">
