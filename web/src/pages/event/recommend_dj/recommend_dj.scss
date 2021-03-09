@@ -91,11 +91,12 @@
       .fanBox {
         padding-right: 12px;
         &__thumbnail {
+          margin-bottom: 12px;
+
           img {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            margin-bottom: 12px;
           }
         }
 

@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect, useCallback} from 'react'
-import {useHistory, Link} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 
 import {GENDER_TYPE, AGE_TYPE} from './constant'
@@ -87,6 +87,28 @@ export default function RecommendDj() {
       setRefresh(false)
     }, 360)
   }, [selectedGenderArr, selectedAgeArr])
+
+  const addFanImageHandler = useCallback(
+    async (memNo, nickNm, listIdx) => {
+      if (fetchedList[listIdx].isFan) {
+        history.push(`/mypage/${memNo}`)
+      } else {
+        const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
+        if (result === 'success') {
+          toggleFan(listIdx)
+          context.action.alert_no_close({
+            msg: `${nickNm} 님의 팬이 되셨습니다.`,
+            callback: () => history.push(`/mypage/${memNo}`)
+          })
+        } else {
+          context.action.alert({
+            msg: message
+          })
+        }
+      }
+    },
+    [fetchedList]
+  )
 
   const addFanHandler = useCallback(
     async (memNo, nickNm, listIdx) => {
@@ -245,11 +267,10 @@ export default function RecommendDj() {
             <li className="userItem" key={`${list.memNo}-${idx}`}>
               <div className="fanBoxWrap">
                 <div className="fanBox">
-                  <div className="fanBox__thumbnail">
-                    <Link to={`/mypage/${list.memNo}`}>
-                      <img src={list.profImg['thumb120x120']} alt={list.nickNm} />
-                    </Link>
+                  <div className="fanBox__thumbnail" onClick={() => addFanImageHandler(list.memNo, list.nickNm, idx)}>
+                    <img src={list.profImg['thumb120x120']} alt={list.nickNm} />
                   </div>
+
                   {list.isFan && (
                     <button className="fanPlus" type="button" onClick={() => confirmCancelFan(list.memNo, list.nickNm, idx)}>
                       팬
