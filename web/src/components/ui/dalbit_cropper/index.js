@@ -107,7 +107,7 @@ function DalbitCropper(props) {
   return (
     <div className={customName || ''}>
       <Header>
-        <button className="croperClose" onClick={() => setCropOpen(false)}>
+        <button className="croperClose" onClick={() => setCropOpen(false)} type="button">
           크롭퍼 닫기
         </button>
       </Header>
@@ -131,13 +131,13 @@ function DalbitCropper(props) {
         zoomable={false}
       />
       <div className="btnBox">
-        <button onClick={rotateImage}>
+        <button onClick={rotateImage} type="button">
           <img src={CropRotation} alt="회전" />
         </button>
-        <button className="cropButton" onClick={cropImage}>
+        <button className="cropButton" onClick={cropImage} type="button">
           <img src={CropImg} alt="자르기" />
         </button>
-        <button className="btn__save" onClick={submit}>
+        <button className="btn__save" onClick={submit} type="button">
           저장
         </button>
       </div>

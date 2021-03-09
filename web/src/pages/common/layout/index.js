@@ -18,6 +18,7 @@ import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogi
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config'
+import MultiImageViewer from '../multi_image_viewer'
 //
 const Layout = (props) => {
   const {children, webview} = props
@@ -72,6 +73,8 @@ const Layout = (props) => {
           <LayerPopupAppDownLogin appPopupState={appPopupState} setAppPopupState={setAppPopupState} />
         </>
       )}
+
+      {context.multiViewer.show && <MultiImageViewer />}
     </>
   )
 }

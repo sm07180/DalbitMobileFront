@@ -1156,6 +1156,17 @@ export default class API {
     return await ajax({url: `/profile`, method: 'GET', params: params})
   }
 
+  static postAddProfileImg = async (data) => {
+    return await ajax({url: '/profile/add/img', method: 'POST', data})
+  }
+  static postSetLeaderProfileImg = async (data) => {
+    return await ajax({url: '/profile/leader/img', method: 'POST', data})
+  }
+
+  static postDeleteProfileImg = async (data) => {
+    return await ajax({url: '/profile/delete/img', method: 'POST', data})
+  }
+
   /**
    * @brief 회원 방송방 기본설정 조회하기
    * @method "GET"

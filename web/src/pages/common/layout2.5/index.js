@@ -16,6 +16,7 @@ import Message from 'pages/common/message'
 
 import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
+import MultiImageViewer from '../multi_image_viewer'
 //
 const Layout = (props) => {
   const {children, webview} = props
@@ -45,6 +46,7 @@ const Layout = (props) => {
 
       {/* IP노출 */}
       <Ip {...props} />
+      {context.multiViewer.show && <MultiImageViewer />}
     </React.Fragment>
   )
 }

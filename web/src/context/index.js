@@ -120,6 +120,7 @@ const GlobalProvider = (props) => {
   // 주간 클립 테이블
   const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
+  const [multiViewer, setMultiviewer] = useState({show: false}) // {show:bool, list?:array, initSlide?:number}
   const action = {
     updateState: (obj) => {
       setState((state) => ({...state, ...obj}))
@@ -481,6 +482,9 @@ const GlobalProvider = (props) => {
     },
     updateDateState: (string) => {
       setDateState(string)
+    },
+    updateMultiViewer: (obj) => {
+      setMultiviewer(obj)
     }
   }
   //---------------------------------------------------------------------
@@ -560,6 +564,7 @@ const GlobalProvider = (props) => {
     isMailboxNew,
     useMailbox,
     dateState,
+    multiViewer,
     isMailboxOn
   }
   return <Provider value={value}>{props.children}</Provider>
