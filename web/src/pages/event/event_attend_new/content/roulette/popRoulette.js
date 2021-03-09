@@ -91,7 +91,7 @@ export default () => {
     }, 5000)
 
     if (
-      // 상품 C
+      // 상품 A
       itemNo === GIFT_ROTATION_TYPE.GIFT_DOCTORYOU ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_BANANAMILK ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_VITA500 ||
@@ -113,12 +113,12 @@ export default () => {
     ) {
       setRotation(112.5)
     } else if (
-      // 상품 A
+      // 상품 C
       itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKS ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_EDIYA ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_BASKIN ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_DUNKINMUNCHKINS ||
-      itemNo === GIFT_ROTATION_TYPE.GIFT_DUNKINAMERDONUT ||
+      itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKSAMERICANO ||
       itemNo === GIFT_ROTATION_TYPE.GIFT_STARBUCKSLATTE
     ) {
       setRotation(157.5)

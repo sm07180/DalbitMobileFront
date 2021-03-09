@@ -183,8 +183,9 @@ export default () => {
   return (
     <div className="popupWrap">
       <div className="popupContent gifticon">
-        <h1>{itemNo === 1 ? '꽝! 다음 기회에~' : '축하합니다!'}</h1>
-        {itemNo <= 2 ||
+        <h1>축하합니다!</h1>
+        {itemNo === 2 ||
+        itemNo === 3 ||
         itemNo === 9 ||
         itemNo === 19 ||
         itemNo === 29 ||

@@ -126,102 +126,11 @@ export default () => {
                 </tr>
               ) : (
                 applyList.map((item, index) => {
-                  const {itemNo, applyDt, phone} = item
-
-                  const gift_pair = () => {
-                    let giftItem
-
-                    if (itemNo === 1) {
-                      giftItem = '꽝'
-                    } else if (itemNo === 2) {
-                      giftItem = '1달'
-                    } else if (itemNo === 3) {
-                      giftItem = '3달'
-                    } else if (itemNo === 4) {
-                      giftItem = '초코에몽'
-                    } else if (itemNo === 5) {
-                      giftItem = '편의점 상품권'
-                    } else if (itemNo === 6) {
-                      giftItem = '스타벅스 커피'
-                    } else if (itemNo === 7) {
-                      giftItem = '문화상품권'
-                    } else if (itemNo === 8) {
-                      giftItem = '교촌치킨 세트'
-                    } else if (
-                      itemNo === 9 ||
-                      itemNo === 19 ||
-                      itemNo === 29 ||
-                      itemNo === 39 ||
-                      itemNo === 49 ||
-                      itemNo === 59
-                    ) {
-                      giftItem = '100달'
-                    } else if (itemNo === 14) {
-                      giftItem = '초코송이'
-                    } else if (itemNo === 15) {
-                      giftItem = '바리스타 모카'
-                    } else if (itemNo === 16) {
-                      giftItem = '베라 싱글'
-                    } else if (itemNo === 17) {
-                      giftItem = '버거킹 세트'
-                    } else if (itemNo === 18) {
-                      giftItem = '도미노 피자'
-                    } else if (itemNo === 24) {
-                      giftItem = '스니커즈'
-                    } else if (itemNo === 25) {
-                      giftItem = '빠바상품권'
-                    } else if (itemNo === 26) {
-                      giftItem = '이디야 플랫치노'
-                    } else if (itemNo === 27) {
-                      giftItem = '맘스터치 세트'
-                    } else if (itemNo === 28) {
-                      giftItem = '베라 D-BOX'
-                    } else if (itemNo === 34) {
-                      giftItem = '에너지바'
-                    } else if (itemNo === 35) {
-                      giftItem = '미닛메이드'
-                    } else if (itemNo === 36) {
-                      giftItem = '던킨 먼치킨'
-                    } else if (itemNo === 37) {
-                      giftItem = '버거킹 몬스터X'
-                    } else if (itemNo === 38) {
-                      giftItem = '빠바 케이크'
-                    } else if (itemNo === 44) {
-                      giftItem = '바나나우유'
-                    } else if (itemNo === 45) {
-                      giftItem = '빈츠'
-                    } else if (itemNo === 46) {
-                      giftItem = '던킨 아메&도너츠'
-                    } else if (itemNo === 47) {
-                      giftItem = '베라 파인트'
-                    } else if (itemNo === 48) {
-                      giftItem = '도미노 피자'
-                    } else if (itemNo === 54) {
-                      giftItem = '비타 500'
-                    } else if (itemNo === 55) {
-                      giftItem = '허쉬 아이스바'
-                    } else if (itemNo === 56) {
-                      giftItem = '스타벅스 커피'
-                    } else if (itemNo === 57) {
-                      giftItem = '맘스터치 언빌리버블'
-                    } else if (itemNo === 58) {
-                      giftItem = '굽네치킨 보름달'
-                    } else if (itemNo === 10001) {
-                      giftItem = 'EXP 1'
-                    } else if (itemNo === 10002) {
-                      giftItem = 'EXP 3'
-                    } else if (itemNo === 10003) {
-                      giftItem = 'EXP 5'
-                    } else if (itemNo === 10004) {
-                      giftItem = 'EXP 10'
-                    }
-
-                    return giftItem
-                  }
+                  const {applyDt, phone, itemName} = item
 
                   return (
                     <tr key={index}>
-                      <td className="gift">{gift_pair()}</td>
+                      <td className="gift">{itemName}</td>
                       <td className="date">{dateFormatter(applyDt)}</td>
                       <td className="phone">
                         <p>{phone === '' ? '해당없음' : `${phone}`}</p>

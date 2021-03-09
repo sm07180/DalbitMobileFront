@@ -811,9 +811,11 @@ export default () => {
       //IOS
     } else {
       //ANDROID
-      if (event.detail.isExist) {
+      if (event.detail.isExist || event.detail.isExist == 'true') {
         if (event.detail.tid == '') {
           nativeTid = 'adbrix'
+        }else{
+          nativeTid = event.detail.tid
         }
       } else {
         nativeTid = ''
