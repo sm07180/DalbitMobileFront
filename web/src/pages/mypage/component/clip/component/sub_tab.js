@@ -1,6 +1,7 @@
 import React, {useContext} from 'react'
 import Swiper from 'react-id-swiper'
 
+import Util from 'components/lib/utility.js'
 import {Context} from 'context'
 import {UPLOAD_SUBTAB_TYPE} from 'pages/mypage/content/constant'
 
@@ -12,7 +13,7 @@ const buttonList = [
 ]
 
 export default function UploadSubTab(props) {
-  const {contextClipTab, contextClipTabAction} = props
+  const {totalData, contextClipTab, contextClipTabAction} = props
   const context = useContext(Context)
 
   const swiperParams = {
@@ -29,27 +30,30 @@ export default function UploadSubTab(props) {
   const renderSubText = () => {
     switch (contextClipTab) {
       case UPLOAD_SUBTAB_TYPE.SUBTAB_MY:
-        return <p>본인이 등록한 클립 내역</p>
+        return (
+          <p>
+            내가 등록한 클립 : <span>{Util.printNumber(totalData)}건</span>
+          </p>
+        )
       case UPLOAD_SUBTAB_TYPE.SUBTAB_LISTEN:
         return (
           <p>
-            최근 3개월동안 나의 클립을 <em className="icon_play" />
-            청취한 회원
+            최근 3개월 내 클립 <em className="icon_play" />
+            청취한 회원 : <span>{Util.printNumber(totalData)}명</span>
           </p>
         )
       case UPLOAD_SUBTAB_TYPE.SUBTAB_LIKE:
         return (
           <p>
-            최근 3개월간 본인이 등록한 클립에 <em className="icon_good-color" />
-            좋아요한 회원
+            최근 3개월 내 클립 <em className="icon_good-color" />
+            좋아요한 회원 : <span>{Util.printNumber(totalData)}명</span>
           </p>
         )
       case UPLOAD_SUBTAB_TYPE.SUBTAB_GIFT:
         return (
           <p>
-            최근 3개월간 본인이 등록한 클립으로
-            <em className="icon_byeol" />
-            선물한 회원
+            최근 3개월 내 클립 <em className="icon_byeol" />
+            선물한 회원 : <span>{Util.printNumber(totalData)}명</span>
           </p>
         )
     }

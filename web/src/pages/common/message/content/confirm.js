@@ -89,7 +89,7 @@ export default (props) => {
         {context.message.title && <h1 dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.title)}}></h1>}
         <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.msg)}}></p>
         {context.message.subMsg && (
-            <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.subMsg)}}></div>
+          <div className="subMsg" dangerouslySetInnerHTML={{__html: Utility.nl2br(context.message.subMsg)}}></div>
         )}
 
         {context.message.remsg && (
@@ -236,6 +236,13 @@ const Alert = styled.section`
       letter-spacing: normal;
       text-align: center;
       color: ${COLOR_MAIN};
+    }
+  }
+
+  #nonMemberPopup {
+    img {
+      width: 166px;
+      padding-top: 12px;
     }
   }
 `

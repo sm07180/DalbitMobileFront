@@ -270,6 +270,23 @@ export default () => {
         Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
         break
+      case 'native-non-member-end':
+        context.action.confirm({
+          buttonText: {right: '로그인'},
+          msg: `<div id="nonMemberPopup"><p>이 방송이 즐거우셨나요~?<br/>로그인 후 DJ와 소통해보세요!<br>DJ가 당신을 기다립니다 ^^</p><img src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
+          callback: () => {
+            localStorage.setItem(
+              'prevRoomInfo',
+              JSON.stringify({
+                roomNo: event.detail.roomNo,
+                bjNickNm: event.detail.bjNickNm
+              })
+            )
+            history.push('/login')
+          }
+        })
+
+        break
       case 'native-google-login': //-------------------------Google 로그인
         const googleLogin = async () => {
           const customHeader = JSON.parse(Api.customHeader)
@@ -814,7 +831,7 @@ export default () => {
       if (event.detail.isExist || event.detail.isExist == 'true') {
         if (event.detail.tid == '') {
           nativeTid = 'adbrix'
-        }else{
+        } else {
           nativeTid = event.detail.tid
         }
       } else {
@@ -832,6 +849,8 @@ export default () => {
     document.addEventListener('native-player-show', update) //완료
     document.addEventListener('native-start', update) //완료
     document.addEventListener('native-end', update) //완료
+    document.addEventListener('native-non-member-end', update)
+
     document.addEventListener('native-push-background', pushBack) //native-push-background (roomJoin가능)
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
@@ -870,6 +889,7 @@ export default () => {
       document.removeEventListener('native-player-show', update)
       document.removeEventListener('native-start', update)
       document.removeEventListener('native-end', update)
+      document.removeEventListener('native-non-member-end', update)
       document.addEventListener('native-push-background', pushBack)
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인

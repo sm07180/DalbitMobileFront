@@ -192,6 +192,15 @@ const makeContents = (props) => {
 }
 
 function RealTimeLive(props) {
+  useEffect(() => {
+    const prevRoomInfo = JSON.parse(localStorage.getItem('prevRoomInfo'))
+    if (prevRoomInfo) {
+      RoomJoin({
+        roomNo: prevRoomInfo.roomNo,
+        nickNm: prevRoomInfo.bjNickNm
+      })
+    }
+  }, [])
   return (
     <React.Fragment>
       <Room />

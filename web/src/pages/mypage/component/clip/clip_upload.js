@@ -28,7 +28,8 @@ function ClipUpload() {
 
   const [dataList, setDataList] = useState({
     isLoading: false,
-    list: []
+    list: [],
+    totalData: 0
   })
   const [nextList, setNextList] = useState([])
   const [slctedBtnIdx, setSlctedBtnIdx] = useState(null)
@@ -59,7 +60,7 @@ function ClipUpload() {
       setUpLoadLoading(true)
       if (data.list.length === 0) {
         if (!fetchNext) {
-          setDataList({isLoading: false, list: []})
+          setDataList({isLoading: false, list: [], totalData: 0})
         }
         moreState = false
       } else {
@@ -68,7 +69,7 @@ function ClipUpload() {
           moreState = true
           setNextList(data.list)
         } else {
-          setDataList({isLoading: false, list: data.list})
+          setDataList({isLoading: false, list: data.list, totalData: data.paging.total})
           fetchUploadDataList(true)
         }
       }
@@ -137,7 +138,7 @@ function ClipUpload() {
   }
 
   useEffect(() => {
-    setDataList({isLoading: true, list: []})
+    setDataList({isLoading: true, list: [], totalData: 0})
     fetchUploadDataList()
   }, [context.clipTab])
 
@@ -217,9 +218,9 @@ function ClipUpload() {
   return (
     <>
       <UploadSubTab
+        totalData={dataList.totalData}
         contextClipTab={context.clipTab}
         contextClipTabAction={context.action.updateClipTab}
-        fetchUploadDataList={fetchUploadDataList}
       />
 
       <div

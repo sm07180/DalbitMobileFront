@@ -55,6 +55,7 @@ export const RoomJoin = async (obj) => {
   const {roomNo, callbackFunc, shadow, mode, nickNm, listener} = obj
   const customHeader = JSON.parse(Api.customHeader)
   const sessionRoomNo = sessionStorage.getItem('room_no')
+  localStorage.removeItem('prevRoomInfo')
   //const sessionRoomActive = sessionStorage.getItem('room_active')
   if (sessionStorage.getItem('room_active') === 'N') {
     Room.context.action.alert({
@@ -230,15 +231,12 @@ export const RoomJoin = async (obj) => {
     //
     if (res.result === 'fail') {
       if (res.code === '-99') {
+        sessionStorage.removeItem('room_active')
         Room.context.action.alert({
-          msg: res.message,
+          buttonMsg: '로그인',
+          msg: `<div id="nonMemberPopup"><p>로그인 후 DJ와 소통해보세요!<br/>DJ가 당신을 기다립니다 ^^</p><img style="width:166px;padding-top:12px;"src="https://image.dalbitlive.com/images/popup/non-member-popup.png" /></div>`,
           callback: () => {
-            sessionStorage.removeItem('room_active')
             window.location.href = '/login'
-            // history.push({
-            //   pathname: '/login',
-            //   state: `/broadcast/${roomNo}`
-            // })
           }
         })
       } else if (res.code === '-4' || res.code === '-10') {
@@ -272,33 +270,32 @@ export const RoomJoin = async (obj) => {
           alert(er)
         }
       } else if (res.code === '-6') {
-        async function fetchData() {
-          const authCheck = await Api.self_auth_check()
-          if (authCheck.result === 'success') {
-            Room.context.action.alert({
-              msg: '20세 이상만 입장할 수 있는 방송입니다.',
-              callback: () => {
-                sessionStorage.removeItem('room_active')
-              }
-            })
-          } else {
-            Room.context.action.alert({
-              msg: '20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.',
-              callback: () => {
-                sessionStorage.removeItem('room_active')
-                window.location.href = '/private'
-              }
-            })
+        sessionStorage.removeItem('room_active')
+        //20세 이상방 입장 실패
+        //비회원이 20세 이상방 입장 시도 시
+        //본인인증을 완료한 20세 이하 회원이 입장 시도시
+        Room.context.action.alert({
+          msg: '20세 이상만 입장할 수 있는 방송입니다.'
+        })
+      } else if (res.code === '-14') {
+        //20세 이상방 입장 실패
+        //본인인증을 하지 않은 회원이 입장 시도시
+        sessionStorage.removeItem('room_active')
+        Room.context.action.alert({
+          msg: res.message,
+          callback: () => {
+            window.location.href = '/selfauth?type=adultJoin'
           }
-        }
-
-        fetchData()
+        })
       } else {
         Room.context.action.alert({
           msg: res.message,
           callback: () => {
             sessionStorage.removeItem('room_active')
             window.location.reload()
+          },
+          btnCloseCallback: () => {
+            sessionStorage.removeItem('room_active')
           }
         })
       }
@@ -410,7 +407,7 @@ export const RoomMake = async (context) => {
               //success,fail노출
               if (exit.result === 'success') {
                 goRoomMake()
-              }else{
+              } else {
                 context.action.alert({
                   msg: exit.message
                 })
