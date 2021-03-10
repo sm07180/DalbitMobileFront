@@ -3,6 +3,7 @@ import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
 import styled from 'styled-components'
 import Api from 'context/api'
+import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
@@ -101,17 +102,58 @@ export default (props) => {
       url = url.split('_').join('BIT')
       return authReq(url, formTag, context)
     }
-    if (type === 'create') {
-      authReq('6', formTag, context)
-    } else {
-      authReq('4', formTag, context)
-    }
+
+    if (type === 'create' || type === 'adultCreate') return authReq('6', formTag, context)
+    if (type === 'adultJoin') return authReq('8', formTag, context)
+
+    return authReq('4', formTag, context)
   }
 
   const goBack = () => {
     //props.history.push(`/mypage/${context.profile.memNo}/wallet`)
+    if (type === 'create') return Hybrid('CloseLayerPopup')
     window.history.back()
     context.action.updateWalletIdx(1)
+  }
+
+  const AuthContent = () => {
+    if (event) {
+      return (
+        <>
+          <h4>
+            <span>이벤트 참여 또는 경품 수령을 위해</span>
+            <br />
+            본인인증을 필수로 받으셔야 합니다.
+          </h4>
+        </>
+      )
+    }
+    if (type === 'create' || type === 'adultJoin') {
+      return (
+        <>
+          <h4>
+            <span>20세 이상 방송을 진행하거나 청취하기 위해서는</span>
+            <br />
+            본인인증을 필수로 받으셔야 합니다.
+          </h4>
+        </>
+      )
+    }
+    return (
+      <>
+        <h4>
+          환전 승인을 받기 위해서는
+          <br />
+          <span>본인인증 절차</span>가 필요합니다.
+        </h4>
+        <p>
+          ※ 환전 신청은 12세 이상의 회원만 가능합니다.
+          <br />
+          ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
+          <br />※ 12세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
+        </p>
+      </>
+    )
   }
 
   //---------------------------------------------------------------------
@@ -124,38 +166,7 @@ export default (props) => {
           <h2>본인인증</h2>
         </div>
         <div className="auth-wrap">
-          {type === 'create' ? (
-            <>
-              <h4>
-                <span>처음 방송개설 및 클립등록 시</span>
-                <br />
-                본인인증을 필수로 받으셔야 합니다.
-              </h4>
-            </>
-          ) : event ? (
-            <>
-              <h4>
-                <span>이벤트 참여 또는 경품 수령을 위해</span>
-                <br />
-                본인인증을 필수로 받으셔야 합니다.
-              </h4>
-            </>
-          ) : (
-            <>
-              <h4>
-                환전 승인을 받기 위해서는
-                <br />
-                <span>본인인증 절차</span>가 필요합니다.
-              </h4>
-              <p>
-                ※ 환전 신청은 12세 이상의 회원만 가능합니다.
-                <br />
-                ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
-                <br />※ 12세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
-              </p>
-            </>
-          )}
-
+          <AuthContent />
           <div className="btn-wrap">
             <button onClick={authClick}>본인 인증하기</button>
           </div>

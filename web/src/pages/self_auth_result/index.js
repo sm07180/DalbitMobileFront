@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import Api from 'context/api'
 import {useHistory, useLocation} from 'react-router-dom'
 import qs from 'query-string'
+import {Hybrid} from 'context/hybrid'
 
 //context
 import {Context} from 'context'
@@ -67,6 +68,8 @@ export default (props) => {
       setAuthState(4)
     } else if (returntype === 'create') {
       setAuthState(5)
+    } else if (returntype === 'join') {
+      setAuthState(6)
     } else if (returntype === 'event') {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
@@ -198,20 +201,23 @@ export default (props) => {
             </div>
           </div>
         )
-      case 5: //방송방,클립 생성 본인인증 완료 후
+      case 5: //20세 이상 방송방 만들기
+      case 6: //20세 이상 방송방 참여
         return (
           <div className="auth-wrap">
             <h5>
-              <span>본인 인증이 완료되었습니다.</span>
+              본인 인증이 완료되었습니다.
               <br />
-              이제 방송개설 및 클립등록이 정상적으로 가능합니다.
-              <br />
-              감사합니다!
+              이제 <span>20세 이상 방송 및 청취</span>가 자유롭게 가능합니다.
             </h5>
             <div className="btn-wrap">
               <button
                 onClick={() => {
-                  window.location.href = '/'
+                  if (authState === 5) {
+                    Hybrid('CloseLayerPopup')
+                  } else if (authState === 6) {
+                    window.location.href = '/'
+                  }
                 }}>
                 확인
               </button>
