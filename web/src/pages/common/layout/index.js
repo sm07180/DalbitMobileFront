@@ -11,7 +11,8 @@ import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Sticker from 'pages/common/sticker'
 
-import React, {useContext, useMemo, useEffect, useState} from 'react'
+import React, {useContext, useMemo, useEffect, useState, useRef} from 'react'
+import {useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 import LayerPopupAppDownLogin from '../../main/component/layer_popup_appDownLogin'
@@ -24,6 +25,7 @@ const Layout = (props) => {
   const {children, webview} = props
 
   const context = useContext(Context)
+  const location = useLocation()
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
   })
@@ -43,6 +45,10 @@ const Layout = (props) => {
       }
     }
   }, [noAppCheck])
+
+  useEffect(() => {
+    context.action.updateMultiViewer({show: false})
+  }, [location])
 
   return (
     <>

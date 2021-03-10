@@ -94,7 +94,7 @@ export default function MySetting() {
             })
           } else {
             globalCtx.action.toast({
-              msg: '프로필 이미지 업로드 성공'
+              msg: '이미지 등록 되었습니다.'
             })
           }
         } else {

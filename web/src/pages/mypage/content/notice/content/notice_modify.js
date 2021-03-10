@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState, useContext, useMemo} from 'react'
+import React, {useCallback, useEffect, useState, useContext, useMemo, useRef} from 'react'
 import {useParams, useHistory} from 'react-router-dom'
 
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
@@ -16,6 +16,7 @@ function ModifyNoticeCompnents(props) {
 
   const {memNo, addpage} = useParams()
   const history = useHistory()
+  const inputRef = useRef()
 
   //크롭퍼 state
   const [image, setImage] = useState(null)
@@ -192,6 +193,7 @@ function ModifyNoticeCompnents(props) {
             )}
 
             <input
+              ref={inputRef}
               type="file"
               id="save_fileImg"
               onChange={(e) => {
@@ -203,7 +205,16 @@ function ModifyNoticeCompnents(props) {
           </div>
 
           {cropOpen && eventObj !== null && (
-            <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
+            <DalbitCropper
+              imgInfo={eventObj}
+              onClose={() => {
+                setCropOpen(false)
+                if (inputRef && inputRef.current) {
+                  inputRef.current.value = ''
+                }
+              }}
+              onCrop={(value) => setImage(value)}
+            />
           )}
 
           <button className={`modifyButton ${activeState && 'active'}`} onClick={ModionSubmit}>

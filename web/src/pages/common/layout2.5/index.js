@@ -1,7 +1,8 @@
 /**
  *
  */
-import React, {useMemo, useContext} from 'react'
+import React, {useMemo, useContext, useEffect} from 'react'
+import {useLocation} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import {Context} from 'context'
@@ -21,9 +22,15 @@ import MultiImageViewer from '../multi_image_viewer'
 const Layout = (props) => {
   const {children, webview} = props
   const context = useContext(Context)
+  const location = useLocation()
   const playerCls = useMemo(() => {
     return context.player || context.clipState ? 'player_show' : ''
   })
+
+  useEffect(() => {
+    context.action.updateMultiViewer({show: false})
+  }, [location])
+
   //---------------------------------------------------------------------
 
   return (

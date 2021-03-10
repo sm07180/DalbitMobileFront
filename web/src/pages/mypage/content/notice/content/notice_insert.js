@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react'
+import React, {useState, useCallback, useEffect, useContext, useRef} from 'react'
 import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 import DalbitCropper from 'components/ui/dalbit_cropper'
 import Api from 'context/api'
@@ -10,6 +10,7 @@ function NoticeInsertCompnent(props) {
   const context = useContext(Context)
   const history = useHistory()
 
+  const inputRef = useRef()
   //크롭퍼 state
   const [image, setImage] = useState(null)
   const [cropOpen, setCropOpen] = useState(false)
@@ -177,6 +178,7 @@ function NoticeInsertCompnent(props) {
         )}
 
         <input
+          ref={inputRef}
           type="file"
           id="save_fileImg"
           onChange={(e) => {
@@ -187,7 +189,16 @@ function NoticeInsertCompnent(props) {
         />
       </div>
       {cropOpen && eventObj !== null && (
-        <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setImage} />
+        <DalbitCropper
+          imgInfo={eventObj}
+          onClose={() => {
+            setCropOpen(false)
+            if (inputRef && inputRef.current) {
+              inputRef.current.value = ''
+            }
+          }}
+          onCrop={(value) => setImage(value)}
+        />
       )}
       <button className={`noticeWrite__button ${activeState && 'active'}`} onClick={insettNorice}>
         등록

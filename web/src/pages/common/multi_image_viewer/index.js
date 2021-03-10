@@ -1,4 +1,4 @@
-import React, {useState, useContext, useMemo} from 'react'
+import React, {useState, useContext, useMemo, useEffect} from 'react'
 import Swiper from 'react-id-swiper'
 import {Context} from 'context'
 
@@ -24,6 +24,15 @@ const MultiImageViewer = () => {
   const handleClose = () => {
     globalCtx.action.updateMultiViewer({show: false})
   }
+
+  useEffect(() => {
+    if (multiViewer.show) {
+      document.body.style.overflow = 'hidden'
+      return () => {
+        document.body.style.overflow = ''
+      }
+    }
+  }, [multiViewer.show])
 
   return (
     <div id="profileImgPop" className="overlay">

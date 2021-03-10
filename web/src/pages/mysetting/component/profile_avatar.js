@@ -1,4 +1,4 @@
-import React, {useEffect, useCallback, useState, useContext, useMemo} from 'react'
+import React, {useEffect, useCallback, useState, useContext, useMemo, useRef} from 'react'
 import Api from 'context/api'
 import {Context} from 'context'
 import DalbitCropper from 'components/ui/dalbit_cropper'
@@ -8,6 +8,8 @@ import {IMAGE_THUMB} from '../constant'
 const ProfileAvatar = ({setCurrentAvatar}) => {
   const globalCtx = useContext(Context)
   const {profile, token} = globalCtx
+  const inputRef = useRef(null)
+  const avatarInputRef = useRef(null)
   const [img, setImg] = useState('https://image.dalbitlive.com/mypage/ico_profile.svg')
   const [cropOpen, setCropOpen] = useState(false)
   const [editedImg, setEditedImg] = useState(null)
@@ -34,6 +36,15 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
       }
     })
   }
+
+  const clearInputValue = useCallback(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current.value = ''
+    }
+    if (avatarInputRef && avatarInputRef.current) {
+      avatarInputRef.current.value = ''
+    }
+  }, [inputRef, avatarInputRef])
 
   const onProfileClick = () => {
     if (indexOfMainProfile !== -1) {
@@ -66,6 +77,10 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
       const {result, message} = res
       if (result === 'success') {
         getProfileAcount()
+        setLoading(false)
+        globalCtx.action.toast({
+          msg: '이미지 등록 되었습니다.'
+        })
       } else {
         alertMessage(message)
       }
@@ -80,12 +95,13 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
         uploadType: 'profile'
       }
     }).then((res) => {
+      clearInputValue()
       const {result, data} = res
       if (result === 'success') {
-        setLoading(false)
         if (!hasPhotoList) {
           setImg(data[IMAGE_THUMB])
           setCurrentAvatar(data.path)
+          setLoading(false)
         } else {
           addProfileImg(data.path)
         }
@@ -100,7 +116,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
         })
       }
     })
-  }, [editedImg, hasPhotoList])
+  }, [editedImg, hasPhotoList, clearInputValue])
 
   const onAddProfileClick = () => {
     if (profile?.profImgList && profile?.profImgList.length >= 10) {
@@ -150,7 +166,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
           <img src={img} alt="프로필 사진" />
         </label>
         {indexOfMainProfile === -1 && (
-          <input type="file" id="mainProfile" accept="image/png, image/jpeg" onChange={onProfileChange} />
+          <input type="file" ref={avatarInputRef} id="mainProfile" accept="image/png, image/jpeg" onChange={onProfileChange} />
         )}
 
         <div className="subProfile">
@@ -162,6 +178,7 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
             <span>{profile?.profImgList.length}/10</span>
           </label>
           <input
+            ref={inputRef}
             type="file"
             id="subProfile"
             accept="image/png, image/jpeg"
@@ -177,12 +194,21 @@ const ProfileAvatar = ({setCurrentAvatar}) => {
         </div>
       </div>
       {cropOpen && eventObj !== null && (
-        <DalbitCropper customName={`croperWrap`} event={eventObj} setCropOpen={setCropOpen} setImage={setEditedImg} />
+        <DalbitCropper
+          imgInfo={eventObj}
+          onClose={() => {
+            setCropOpen(false)
+            clearInputValue()
+          }}
+          onCrop={(value) => setEditedImg(value)}
+        />
       )}
 
       {loading && (
-        <div className="loading">
-          <span></span>
+        <div id="dim-layer">
+          <div className="loading">
+            <span></span>
+          </div>
         </div>
       )}
     </>
