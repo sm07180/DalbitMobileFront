@@ -110,7 +110,8 @@ export default (props) => {
         }
         globalCtx.action.updateToken(logoutInfo.data)
         globalCtx.action.updateProfile(null)
-        props.history.push('/')
+        // props.history.push('/')
+        window.location.href = '/'
         return
       } else if (logoutInfo.result === 'fail') {
         globalCtx.action.alert({
