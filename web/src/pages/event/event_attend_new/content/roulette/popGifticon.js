@@ -115,8 +115,7 @@ export default () => {
                 )
               }}
             />
-            기프티콘은 입력된 연락처로 평일 기준 7일 이내 <br />
-            문자로 전송해드립니다.
+            기프티콘은 입력된 연락처로 평일 기준 7일 이내 문자로 전송해드립니다.
           </label>
 
           <label>
@@ -137,8 +136,8 @@ export default () => {
             수신 거부 번호 등을 확인해주세요.
           </label>
         </div>
-
         <button
+          className="winInfo__button"
           disabled={checks[0] === false || checks[1] === false || phone.length < 11 ? true : false}
           onClick={clickSaveButton}>
           저장 및 확인
@@ -184,6 +183,7 @@ export default () => {
     <div className="popupWrap">
       <div className="popupContent gifticon">
         <h1>축하합니다!</h1>
+
         {itemNo === 2 ||
         itemNo === 3 ||
         itemNo === 9 ||
@@ -235,7 +235,7 @@ export default () => {
               <div className="winInfo__title">{itemWinMsg}</div>
             </div>
 
-            <div>{makePhoneInputBox()}</div>
+            {makePhoneInputBox()}
           </>
         )}
       </div>

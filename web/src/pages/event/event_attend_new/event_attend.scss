@@ -200,8 +200,8 @@
 
         &__image {
           img {
-            width: 140px;
-            height: 140px;
+            width: 90px;
+            height: 90px;
           }
           margin: 0px auto 16px auto;
 
@@ -246,6 +246,7 @@
               margin-top: 12px;
             }
             input[type='checkbox'] {
+              flex-shrink: 0;
               margin-right: 8px;
             }
           }

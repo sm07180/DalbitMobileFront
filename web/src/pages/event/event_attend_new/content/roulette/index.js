@@ -106,28 +106,31 @@ export default function RouletteTab() {
         <img src="https://image.dalbitlive.com/event/attend/210205/event_img_02_1_1@3x.png" alt="룰렛을 돌려보아요!" />
 
         <div className="couponBox">
-          <div className="basicItem">
+          <div className="couponCount">
             <p className="couponBox__count">
-              <span className="couponBox__count--number">{eventAttendState.couponCnt}</span>
-              <span>개</span>
+              <span className="number">{eventAttendState.couponCnt}</span>
+              <span className="text">개</span>
             </p>
-            <button type="button" className="historyButton" onClick={() => history.push('/event/my_coupon')}>
-              <img src="https://image.dalbitlive.com/event/attend/201229/btn_coupon_history@2x.png" alt="응모권 지급 내역" />
-            </button>
-            <img src="https://image.dalbitlive.com/event/attend/201231/event_img_02_1_2@2x_01.jpg" alt="기본 룰렛 응모권" />
+            <img src="https://image.dalbitlive.com/event/attend/210309/event_img_02_1_2@2x_01.jpg" alt="기본 룰렛 응모권" />
           </div>
-          <div className="eventItem">
-            <p className="couponBox__count eventCount">
-              <span className="couponBox__count--number">{eventAttendState.eventCouponCnt}</span>
-              <span>개</span>
+
+          <div className="couponCount">
+            <p className="couponBox__count">
+              <span className="number">{eventAttendState.eventCouponCnt}</span>
+              <span className="text">개</span>
             </p>
-
-            <button type="button" className="roulleteButton" onClick={() => history.push('/event/my_history')}>
-              <img src="https://image.dalbitlive.com/event/attend/201229/btn_roullete_history@2x.png" alt="나의 당첨이력 확인" />
-            </button>
-
-            <img src="https://image.dalbitlive.com/event/attend/201231/event_img_02_1_2@2x_02.jpg" alt="이벤트 응모권" />
+            <img src="https://image.dalbitlive.com/event/attend/210309/event_img_02_1_2@2x_02.jpg" alt="이벤트 응모권" />
           </div>
+        </div>
+
+        <div className="buttonBox">
+          <button type="button" onClick={() => history.push('/event/my_coupon')}>
+            <img src="https://image.dalbitlive.com/event/attend/201229/btn_coupon_history@2x.png" alt="응모권 지급 내역" />
+          </button>
+
+          <button type="button" onClick={() => history.push('/event/my_history')}>
+            <img src="https://image.dalbitlive.com/event/attend/201229/btn_roullete_history@2x.png" alt="나의 당첨이력 확인" />
+          </button>
         </div>
       </div>
       <div className="giftWinner">

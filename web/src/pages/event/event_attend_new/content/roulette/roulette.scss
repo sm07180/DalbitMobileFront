@@ -1,71 +1,61 @@
-@import '../../../../../styles/variables';
-@import '../../../../../styles/mixins';
+@import '../../../../../styles/global';
 
 .rouletteTab {
+  background: #097b70;
   .topBanner {
     position: relative;
     img {
       width: 100%;
     }
 
-    button {
-      position: absolute;
-      bottom: 1.6%;
-      left: 29%;
-      width: 40%;
-    }
-
-    .historyButton {
-      position: absolute;
-      bottom: 5%;
-      left: 13.5%;
-      width: 84%;
-    }
-
-    .roulleteButton {
-      position: absolute;
-      bottom: 5%;
-      left: 3%;
-      width: 84%;
-    }
-
     .couponBox {
-      display: flex;
+      @include flexbox;
+      padding: 0px 16px;
 
-      .basicItem {
-        flex: 1;
+      .couponCount {
         position: relative;
-      }
-      .eventItem {
         flex: 1;
-        position: relative;
       }
+
       &__count {
-        width: 64%;
+        @include flex('', '', flex-end);
         position: absolute;
-        left: 22%;
-        top: 33%;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        left: 18%;
+        bottom: 18%;
+        width: 64%;
         font-size: 12px;
-        line-height: 26px;
 
-        &--number {
-          display: inline-block;
-          margin-right: 2px;
-          font-size: 28px;
+        .number {
           font-weight: $bold;
+          font-size: 26px;
+          margin-right: 2px;
+          @media (min-width: 560px) {
+            font-size: 32px;
+          }
+        }
+        .text {
+          margin-bottom: 2px;
+          @media (min-width: 560px) {
+            font-size: 16px;
+            margin-bottom: 6px;
+          }
         }
 
-        & > span {
-          display: inline-block;
-          margin-top: 6px;
+        @media (min-width: 460px) {
+          bottom: 22%;
         }
+      }
+    }
 
-        &.eventCount {
-          left: 14%;
-          top: 33%;
+    .buttonBox {
+      @include flexbox;
+      padding: 3% 16px;
+
+      button {
+        flex: 1;
+        width: calc(100% - 10px);
+        &:first-child {
+          margin-right: 10px;
         }
       }
     }
