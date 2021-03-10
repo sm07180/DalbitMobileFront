@@ -59,9 +59,15 @@ export default function login_sns({props}) {
 
   return (
     <>
-      <button className="btnHome" onClick={() => history.push('/')}>
-        둘러보기
-      </button>
+      {webview === 'new' ? (
+        <button className="btnHome" onClick={() => Hybrid('CloseLayerPopup')}>
+          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        </button>
+      ) : (
+        <button className="btnHome" onClick={() => history.push('/')}>
+          둘러보기
+        </button>
+      )}
       <div className="loginForm">
         <h1
           onClick={() => {
@@ -151,10 +157,14 @@ export default function login_sns({props}) {
           <span onClick={() => history.push('/signup')}>
             <div className="link-text">회원가입</div>
           </span>
-          <div className="bar" />
-          <a href="/service">
-            <div className="link-text yellow">고객센터</div>
-          </a>
+          {!webview && (
+            <>
+              <div className="bar" />
+              <a href="/service">
+                <div className="link-text yellow">고객센터</div>
+              </a>
+            </>
+          )}
         </div>
 
         {loginPop && <LoginForm setLoginPop={setLoginPop} props={props} />}
