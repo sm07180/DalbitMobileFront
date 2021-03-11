@@ -18,7 +18,7 @@ import DetailPopup from './components/detail_popup'
 import Header from 'components/ui/new_header'
 import BannerList from '../main/component/bannerList'
 import LayerPopupWrap from '../main/component/layer_popup_wrap'
-import ClipRegPopup from "./components/clip_reg_popup";
+import ClipRegPopup from './components/clip_reg_popup'
 import Layout from 'pages/common/layout'
 import NoResult from 'components/ui/noResult'
 //static
@@ -99,6 +99,7 @@ export default (props) => {
   const marketingClipRef = useRef()
   const iconWrapRef = useRef()
   const arrowRefreshRef = useRef()
+  const liveChartRef = useRef()
 
   //state
   const [chartListType, setChartListType] = useState('detail') // type: detail, simple
@@ -124,7 +125,7 @@ export default (props) => {
   const [popupData, setPopupData] = useState([])
   const [reloadInit, setReloadInit] = useState(false)
 
-  const [regPopupState, setRegPopupState] = useState(false); // 등록 유도 팝업
+  const [regPopupState, setRegPopupState] = useState(false) // 등록 유도 팝업
 
   const [clipCategoryFixed, setClipCategoryFixed] = useState(false)
   const [marketingClipList, setMarketingClipList] = useState([])
@@ -194,13 +195,13 @@ export default (props) => {
     const {result, data, message} = await Api.getMyClipData({})
     if (result === 'success') {
       setMyData(data)
-      if(data.isReg) {
-        setRegPopupState(false);
+      if (data.isReg) {
+        setRegPopupState(false)
       } else {
-        if(Utility.getCookie("reg_popup") === undefined) {
-          setRegPopupState(true);
+        if (Utility.getCookie('reg_popup') === undefined) {
+          setRegPopupState(true)
         } else {
-          setRegPopupState(false);
+          setRegPopupState(false)
         }
       }
     } else {
@@ -646,7 +647,7 @@ export default (props) => {
       BannerSectionHeight -
       20
     // console.log(TopSectionHeight)
-    if (window.scrollY >= TopSectionHeight) {
+    if (window.scrollY >= liveChartRef.current.offsetTop) {
       setClipCategoryFixed(true)
       setScrollY(TopSectionHeight)
     } else {
@@ -773,7 +774,7 @@ export default (props) => {
   }
 
   const goClipReg = (type) => {
-    if(customHeader['os'] === OS_TYPE['Desktop']) {
+    if (customHeader['os'] === OS_TYPE['Desktop']) {
       context.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
     } else {
       if (context.token.isLogin === false) {
@@ -791,7 +792,7 @@ export default (props) => {
         }
       }
     }
-  };
+  }
 
   useEffect(() => {
     //swiper-slide-duplicate onClick 붙지않는 이슈떄문에 addEventListener처리
@@ -888,57 +889,65 @@ export default (props) => {
         </div>
         {context.token.isLogin === true ? (
           <>
-          <div className="clipRegWrap">
-            <button className="clipReg__button" onClick={() => goClipReg('recording')}>클립 녹음</button>
-            <button className="clipReg__button" onClick={() => goClipReg('upload')}>클립 업로드</button>
-          </div>
-          <div className="myClip" ref={myClipRef}>
-            <h3 className="clipTitle" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
-              <em
-                onClick={() => {
-                  context.action.updatePopup('MYCLIP')
-                }}>
-                내 클립 현황
-              </em>
-              <div className="myClip__arrow" onClick={(e) => toggleMyClip(e)}>
-                {myClipToggle ? '접기' : '더보기'}
-                <img
-                  src={
-                    myClipToggle
-                      ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
-                      : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
-                  }
-                  alt="마이클립 화살표 버튼"
-                />
-              </div>
-            </h3>
-            {myClipToggle && (
-              <ul className="myClipWrap">
-                {/* <li className="upload" onClick={() => goClip(0, 0)}> */}
-                <li className="upload" onClick={() => goClip(0)}>
-                  <em></em>
-                  <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
-                </li>
-                {/* <li className="listen" onClick={() => goClip(1, 0)}> */}
-                <li className="listen" onClick={() => goClip(1)}>
-                  <em></em>
-                  <span>{myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회</span>
-                </li>
-                {/* <li className="like" onClick={() => goClip(1, 1)}> */}
-                <li className="like" onClick={() => goClip(2)}>
-                  <em></em>
-                  <span>{myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개</span>
-                </li>
-                {/* <li className="gift" onClick={() => goClip(1, 2)}> */}
-                <li className="gift" onClick={() => goClip(3)}>
-                  <em></em>
-                  <span>
-                    {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
-                  </span>
-                </li>
-              </ul>
-            )}
-          </div>
+            <div className="clipRegWrap">
+              <button className="clipReg__button" onClick={() => goClipReg('recording')}>
+                클립 녹음
+              </button>
+              <button className="clipReg__button" onClick={() => goClipReg('upload')}>
+                클립 업로드
+              </button>
+            </div>
+            <div className="myClip" ref={myClipRef}>
+              <h3 className="clipTitle" style={{paddingBottom: !myClipToggle ? '0' : '18px'}}>
+                <em
+                  onClick={() => {
+                    context.action.updatePopup('MYCLIP')
+                  }}>
+                  내 클립 현황
+                </em>
+                <div className="myClip__arrow" onClick={(e) => toggleMyClip(e)}>
+                  {myClipToggle ? '접기' : '더보기'}
+                  <img
+                    src={
+                      myClipToggle
+                        ? `https://image.dalbitlive.com/svg/ico_arrow_up_b.svg`
+                        : `https://image.dalbitlive.com/svg/ico_arrow_down_b.svg`
+                    }
+                    alt="마이클립 화살표 버튼"
+                  />
+                </div>
+              </h3>
+              {myClipToggle && (
+                <ul className="myClipWrap">
+                  {/* <li className="upload" onClick={() => goClip(0, 0)}> */}
+                  <li className="upload" onClick={() => goClip(0)}>
+                    <em></em>
+                    <span>{myData.regCnt > 999 ? Utility.printNumber(myData.regCnt) : Utility.addComma(myData.regCnt)} 건</span>
+                  </li>
+                  {/* <li className="listen" onClick={() => goClip(1, 0)}> */}
+                  <li className="listen" onClick={() => goClip(1)}>
+                    <em></em>
+                    <span>
+                      {myData.playCnt > 999 ? Utility.printNumber(myData.playCnt) : Utility.addComma(myData.playCnt)} 회
+                    </span>
+                  </li>
+                  {/* <li className="like" onClick={() => goClip(1, 1)}> */}
+                  <li className="like" onClick={() => goClip(2)}>
+                    <em></em>
+                    <span>
+                      {myData.goodCnt > 999 ? Utility.printNumber(myData.goodCnt) : Utility.addComma(myData.goodCnt)} 개
+                    </span>
+                  </li>
+                  {/* <li className="gift" onClick={() => goClip(1, 2)}> */}
+                  <li className="gift" onClick={() => goClip(3)}>
+                    <em></em>
+                    <span>
+                      {myData.byeolCnt > 999 ? Utility.printNumber(myData.byeolCnt) : Utility.addComma(myData.byeolCnt)} 별
+                    </span>
+                  </li>
+                </ul>
+              )}
+            </div>
           </>
         ) : context.token.isLogin === true ? (
           <div ref={myClipRef} style={{minHeight: '127px'}}></div>
@@ -1110,7 +1119,7 @@ export default (props) => {
           <div ref={categoryBestClipRef}></div>
         )}
 
-        <div className="liveChart">
+        <div className="liveChart" ref={liveChartRef}>
           <div className={`fixedArea ${clipCategoryFixed ? 'on' : ''}`}>
             <div className="titleBox">
               <h3 onClick={() => refreshCategory('category')} className="clipTitle">
@@ -1163,7 +1172,7 @@ export default (props) => {
               <></>
             )}
           </div>
-          <div style={clipCategoryFixed ? {paddingTop: `74px`} : {}}>
+          <div style={clipCategoryFixed ? {paddingTop: `104px`} : {}}>
             <ChartList
               chartListType={chartListType}
               clipTypeActive={clipTypeActive}
