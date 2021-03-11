@@ -460,6 +460,7 @@
         font-size: 18px;
         font-weight: bold;
         letter-spacing: -0.36px;
+        cursor: pointer;
 
         &.in-active {
           color: $mediumGray;
@@ -515,7 +516,7 @@
         height: 32px;
         text-indent: -9999px;
         & + button {
-          margin-left: 2px;
+          margin-left: 4px;
         }
       }
 
@@ -529,49 +530,43 @@
       .tab_video_btn {
         background: url(https://image.dalbitlive.com/svg/ico_video_play_list_off.svg) no-repeat center / 32px;
         &.on {
-          background: url(https://image.dalbitlive.com/svg/ico_video_play_list_on_b.svg) no-repeat center / 32px;
+          background: url(https://image.dalbitlive.com/main/ico_video_play_list_on_new_.svg) no-repeat center / 32px;
         }
       }
       .tab_radio_btn {
         background: url(https://image.dalbitlive.com/svg/ico_radio_play_list_off.svg) no-repeat center / 32px;
         &.on {
-          background: url(https://image.dalbitlive.com/svg/ico_radio_play_list_on_y.svg) no-repeat center / 32px;
+          background: url(https://image.dalbitlive.com/main/ico_audio_play_list_on_new_.svg) no-repeat center / 32px;
         }
       }
-
-      .tab_refresh_btn {
-        position: relative;
-        margin-left: 17px;
-        text-indent: 0;
-
-        &::before {
-          content: '';
-          display: inline-block;
-          position: absolute;
-          left: -8px;
-          top: 10px;
-          width: 1px;
-          height: 12px;
-          background: $lightGray;
-        }
-
-        img {
-          width: 32px;
-          height: 32px;
-        }
-
+      .tab_new_btn {
+        background: url(https://image.dalbitlive.com/main/ico_newMember_off.png) no-repeat center / 32px;
         &.on {
-          img {
-            animation: anim 0.36s infinite;
-          }
+          background: url(https://image.dalbitlive.com/main/ico_newMember_on.png) no-repeat center / 32px;
+        }
+      }
+    }
+    .tab_refresh_btn {
+      position: relative;
+      margin-right: 4px;
+      text-indent: 0;
 
-          @keyframes anim {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(-360deg);
-            }
+      img {
+        width: 28px;
+        height: 28px;
+      }
+
+      &.on {
+        img {
+          animation: anim 0.36s infinite;
+        }
+
+        @keyframes anim {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(-360deg);
           }
         }
       }
@@ -595,7 +590,7 @@
       background: $whiteGray;
     }
     .liveList {
-      padding: 10px 0 20px 0;
+      padding: 6px 0 20px 0;
     }
   }
 
@@ -1704,6 +1699,10 @@
       }
     }
   }
+}
+.newMember_banner {
+  padding: 2px 0 6px 0;
+  width: 100%;
 }
 
 #main-layer-popup {

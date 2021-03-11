@@ -144,7 +144,6 @@ export default (props) => {
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
-
     setLiveForm({
       ...liveForm,
       page: 1,
@@ -274,14 +273,17 @@ export default (props) => {
 
     const {page, mediaType, roomType} = liveForm
 
+    console.log(mediaType)
+
     const broadcastList = await Api.broad_list({
       params: {
         page,
-        mediaType,
+        mediaType: mediaType === 'new' ? '' : mediaType,
         records: records,
         roomType,
         searchType: liveAlign,
-        gender: liveGender
+        gender: liveGender,
+        djType: mediaType === 'new' ? 3 : ''
       }
     })
     if (broadcastList.result === 'success') {
@@ -301,11 +303,12 @@ export default (props) => {
     const broadcastList = await Api.broad_list({
       params: {
         page: page + 1,
-        mediaType,
+        mediaType: mediaType === 'new' ? '' : mediaType,
         records: records,
         roomType,
         searchType: liveAlign,
-        gender: liveGender
+        gender: liveGender,
+        djType: mediaType === 'new' ? 3 : ''
       }
     })
 
@@ -525,7 +528,6 @@ export default (props) => {
 
   useEffect(() => {
     if (liveForm.page > 1) {
-      console.log('??')
       concatLiveList()
     } else {
       fetchLiveList()
@@ -934,7 +936,9 @@ export default (props) => {
             <div className={`title-wrap ${liveCategoryFixed ? 'fixed' : ''}`} ref={LiveSectionTitleRef}>
               <div className="title">
                 <span className="txt" onClick={RefreshFunc}>
-                  <img src="https://image.dalbitlive.com/svg/icon_live_title.svg" className="title_img" alt="실시간 Live" />
+                  <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`}>
+                    <img src="https://image.dalbitlive.com/main/ico_live_refresh_new_s.svg" alt="새로고침" />
+                  </button>
                   실시간 LIVE
                 </span>
 
@@ -968,8 +972,11 @@ export default (props) => {
                     onClick={() => SET_MEDIATYPE('a')}>
                     라디오 타입
                   </button>
-                  <button className={`tab_refresh_btn ${liveRefresh ? 'on' : ''}`} onClick={RefreshFunc}>
-                    <img src="https://image.dalbitlive.com/main/ico_live_refresh.svg" alt="새로고침" />
+
+                  <button
+                    className={`tab_new_btn ${liveForm.mediaType === 'new' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('new')}>
+                    신입 타입
                   </button>
                 </div>
               </div>
@@ -995,7 +1002,13 @@ export default (props) => {
                 </div>
               </div> */}
             </div>
-
+            {liveForm.mediaType === 'new' && (
+              <img
+                src="https://image.dalbitlive.com/main/banner_newMember.png"
+                alt="총 방송시간 30시간 미만의 새로운 DJ들입니다. 많은 관심 부탁드립니다!"
+                className="newMember_banner"
+              />
+            )}
             <div className="content-wrap" style={liveCategoryFixed ? {paddingTop: LiveSectionTitleHeight + `px`} : {}}>
               {Array.isArray(liveList) && liveRefresh === false ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
