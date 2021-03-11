@@ -269,6 +269,19 @@ const App = () => {
     fetchData()
   }, [])
 
+  const [cookieAuthToken, setCookieAuthToken] = useState('')
+  useEffect(() => {
+    if (ready && cookieAuthToken !== Api.authToken) {
+      window.location.reload()
+    }
+  }, [cookieAuthToken])
+
+  useEffect(() => {
+    setInterval(() => {
+      setCookieAuthToken(Utility.getCookie('authToken'))
+    }, 1000)
+  }, [])
+
   function ErrorFallback({error, resetErrorBoundary}) {
     if ('ChunkLoadError' === error.name) {
       window.location.reload()
