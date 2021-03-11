@@ -1936,23 +1936,6 @@
           color: #616161;
           height: 20px;
           line-height: 20px;
-
-          .maleIcon,
-          .femaleIcon {
-            display: inline-block;
-            margin-right: 4px;
-            width: 24px;
-            height: 16px;
-            background: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
-            background-color: #fff;
-            border-radius: 10px;
-            margin-left: 1px;
-          }
-          .femaleIcon {
-            background: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
-            background-color: #fff;
-            border-radius: 10px;
-          }
         }
 
         &__subject {

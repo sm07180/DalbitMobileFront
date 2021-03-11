@@ -133,7 +133,7 @@ export default (props) => {
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
                         {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
-                        {badgeSpecial && badgeSpecial === 1 ? (
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj">베스트DJ</em>
@@ -213,7 +213,7 @@ export default (props) => {
                         }
                       }}>
                       <div className="chartListDetailItem__thumb">
-                        {badgeSpecial && badgeSpecial === 1 ? (
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
@@ -328,7 +328,7 @@ export default (props) => {
                       }}>
                       <img className="clipBtnPlay" src={ClipPlayerIcon} />
                       <div className="chartListDetailItem__thumb">
-                        {badgeSpecial && badgeSpecial === 1 ? (
+                        {badgeSpecial > 0 && badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
                         ) : badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj_half">베스트DJ</em>

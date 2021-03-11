@@ -1002,14 +1002,15 @@ export default (props) => {
                 </div>
               </div> */}
             </div>
-            {liveForm.mediaType === 'new' && (
-              <img
-                src="https://image.dalbitlive.com/main/banner_newMember.png"
-                alt="총 방송시간 30시간 미만의 새로운 DJ들입니다. 많은 관심 부탁드립니다!"
-                className="newMember_banner"
-              />
-            )}
+
             <div className="content-wrap" style={liveCategoryFixed ? {paddingTop: LiveSectionTitleHeight + `px`} : {}}>
+              {liveForm.mediaType === 'new' && (
+                <img
+                  src="https://image.dalbitlive.com/main/banner_newMember.png"
+                  alt="총 방송시간 30시간 미만의 새로운 DJ들입니다. 많은 관심 부탁드립니다!"
+                  className="newMember_banner"
+                />
+              )}
               {Array.isArray(liveList) && liveRefresh === false ? (
                 liveList.length > 0 && categoryList.length > 1 ? (
                   <div className="liveList">

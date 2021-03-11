@@ -370,7 +370,6 @@ export default function DoExchange({state, dispatch}) {
     const res = await Api.exchangeSearchAccount({})
     const {result, data, message} = res
     if (result === 'success') {
-      console.log()
       setAddList(data.list)
     } else {
       context.action.alert({
