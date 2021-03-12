@@ -89,7 +89,7 @@ const OperationModal = forwardRef((props, ref) => {
             <div className="modal__content">
               <div className="modal__content__btnWrap star">
                 <button className="modal__content__btnWrap__btn" type="button" onClick={onStarClick}>
-                  메인 사진 등록하기
+                  대표 사진 등록하기
                 </button>
               </div>
               <div className="modal__content__btnWrap del">

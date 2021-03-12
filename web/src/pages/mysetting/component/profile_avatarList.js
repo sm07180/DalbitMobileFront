@@ -22,24 +22,22 @@ const ProfileAvatarList = ({onImgClick}) => {
     setImgInfo(imgInfo)
   }
 
-  // useLayoutEffect(() => {
-  //   if (profile && profile.profImgList) {
-
-  //   }
-  // }, [profile?.profImgList]);
-
   return (
     <>
       <Swiper {...params} className="custom-swiper">
         {profile?.profImgList.map((photo, index) => (
           <div key={photo.profImg.path} className={`keen-slider__slide`}>
-            <div className={`img_wrap`}>
-              <img src={photo.profImg[IMAGE_THUMB]} alt={photo.profImg.path} onClick={() => onImgClick(index)} />
-              <button className="img_wrap__btn" type="button" onClick={() => onButtonClick(photo.idx)}>
-                <span className="img_wrap__btn__dot"></span>
-                <span className="img_wrap__btn__dot"></span>
-                <span className="img_wrap__btn__dot"></span>
-              </button>
+            <div className={`img_wrap ${photo.isLeader ? 'leader' : ''}`}>
+              <div onClick={() => onImgClick(index)}>
+                <img src={photo.profImg[IMAGE_THUMB]} alt={photo.profImg.path} />
+                {photo.isLeader && (
+                  <span className="checkmark">
+                    <div className="checkmark_stem"></div>
+                    <div className="checkmark_kick"></div>
+                  </span>
+                )}
+              </div>
+              <button className="img_wrap__btn" type="button" onClick={() => onButtonClick(photo.idx)}></button>
             </div>
           </div>
         ))}
