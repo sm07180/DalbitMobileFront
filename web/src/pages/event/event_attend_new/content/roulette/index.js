@@ -79,8 +79,14 @@ export default function RouletteTab() {
         msg: '해당 서비스를 위해<br/>로그인을 해주세요.'
       })
     } else {
-      if (authCheckYn === 'Y' && globalCtx.selfAuth === false) {
-        history.push('/selfauth?event=/event/attend_event/roulette')
+      if (globalCtx.selfAuth === false) {
+        globalCtx.action.alert({
+          msg: '본인인증 후 참여해주세요.',
+
+          callback: () => {
+            history.push('/selfauth?event=/event/attend_event/roulette')
+          }
+        })
       } else {
         if (eventAttendState.couponCnt !== 0 || eventAttendState.eventCouponCnt !== 0) {
           eventAttendAction.setPopRoulette(popRoulette ? false : true)
