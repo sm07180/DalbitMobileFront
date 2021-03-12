@@ -12,6 +12,7 @@ import MainList from './components/main_list'
 import Status from './components/status/status'
 
 import './index.scss'
+import {IMG_SERVER} from 'context/config'
 
 export default () => {
   const history = useHistory()
@@ -98,21 +99,22 @@ export default () => {
 
   return (
     <div id="championship_page">
-      <img src={imgList.topBgImg} alt="달빛라이브 챔피언십" />
+      {/* <img src={imgList.topBgImg} alt="달빛라이브 챔피언십" /> */}
+      <img src={`${IMG_SERVER}/event/championship/3round/3round_title.png`} alt="달빛라이브 챔피언십" />
       <button className="btnBack" onClick={() => clickCloseBtn()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
       </button>
       <div className="tab_box">
         <button onClick={() => setEventMainType(1)}>
           <img
-            src={`https://image.dalbitlive.com/event/championship/20210223/tab_star${eventMainType === 1 ? '_focus' : ''}.png`}
+            src={`${IMG_SERVER}/event/championship/20210223/tab_star${eventMainType === 1 ? '_focus' : ''}.png`}
             alt="이벤트 메인"
           />
         </button>
 
         <button onClick={() => setEventMainType(2)}>
           <img
-            src={`https://image.dalbitlive.com/event/championship/20210223/tab_fan${eventMainType === 2 ? '_focus' : ''}.png`}
+            src={`${IMG_SERVER}/event/championship/20210223/tab_fan${eventMainType === 2 ? '_focus' : ''}.png`}
             alt="총 승점 현황(DJ)"
           />
         </button>
@@ -130,16 +132,17 @@ export default () => {
                   onClick={() => {
                     setEventSubType(1)
                   }}>
-                  <img src="https://image.dalbitlive.com/event/championship/20210223/dj_rank_focus.png" alt="DJ 랭킹" />
+                  <img src={`${IMG_SERVER}/event/championship/20210223/dj_rank_focus.png`} alt="DJ 랭킹" />
                 </button>
                 <button
                   onClick={() => {
                     setEventSubType(2)
                   }}>
-                  <img src="https://image.dalbitlive.com/event/championship/20210223/fan_rank.png" alt="팬 랭킹" />
+                  <img src={`${IMG_SERVER}/event/championship/20210223/fan_rank.png`} alt="팬 랭킹" />
                 </button>
               </div>
-              <img src={imgList.djBgImg} alt="DJ 이벤트 안내" />
+              {/* <img src={imgList.djBgImg} alt="DJ 이벤트 안내" /> */}
+              <img src={`${IMG_SERVER}/event/championship/3round/3round_dj.png`} alt="DJ 이벤트 안내" />
               <div className="notice_box">
                 <p>순위는 실시간으로 집계됩니다.</p>
                 <p>
@@ -166,14 +169,14 @@ export default () => {
                 </div>
                 <div className="my_rank_box">
                   <span>
-                    <img src="https://image.dalbitlive.com/event/video_open/ic_star@3x.png" alt="star" /> 받은 별
+                    <img src={`${IMG_SERVER}/event/video_open/ic_star@3x.png`} alt="star" /> 받은 별
                   </span>
                   <span className="point">{rankInfo.myPoint.toLocaleString()}</span>
                 </div>
 
                 <button className="btn_refresh" onClick={refreshList}>
                   <img
-                    src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
+                    src={`${IMG_SERVER}/event/video_open/ic_refresh_new.svg`}
                     alt="새로고침"
                     className={`refresh-img${refresh ? ' active' : ''}`}
                   />
@@ -204,16 +207,17 @@ export default () => {
                   onClick={() => {
                     setEventSubType(1)
                   }}>
-                  <img src="https://image.dalbitlive.com/event/championship/20210223/dj_rank.png" alt="DJ 랭킹" />
+                  <img src={`${IMG_SERVER}/event/championship/20210223/dj_rank.png`} alt="DJ 랭킹" />
                 </button>
                 <button
                   onClick={() => {
                     setEventSubType(2)
                   }}>
-                  <img src="https://image.dalbitlive.com/event/championship/20210223/fan_rank_focus.png" alt="팬 랭킹" />
+                  <img src={`${IMG_SERVER}/event/championship/20210223/fan_rank_focus.png`} alt="팬 랭킹" />
                 </button>
               </div>
-              <img src={imgList.fanBgImg} alt="팬 이벤트 안내" />
+              {/* <img src={imgList.fanBgImg} alt="팬 이벤트 안내" /> */}
+              <img src={`${IMG_SERVER}/event/championship/3round/3round_fan.png`} alt="팬 이벤트 안내" />
               <div className="notice_box">
                 <p>순위는 실시간으로 집계됩니다.</p>
                 <p>
@@ -240,7 +244,7 @@ export default () => {
                 </div>
                 <div className="my_rank_box">
                   <span>
-                    <img src="https://image.dalbitlive.com/event/video_open/ic_moon@3x.png" alt="moon" /> 보낸 달
+                    <img src={`${IMG_SERVER}/event/video_open/ic_moon@3x.png`} alt="moon" /> 보낸 달
                   </span>
                   <span className="point">{rankInfo.myPoint.toLocaleString()}</span>
                 </div>
@@ -261,7 +265,7 @@ export default () => {
 
                 <button className="btn_refresh" onClick={refreshList}>
                   <img
-                    src={'https://image.dalbitlive.com/event/video_open/ic_refresh_new.svg'}
+                    src={`${IMG_SERVER}/event/video_open/ic_refresh_new.svg`}
                     alt="새로고침"
                     className={`refresh-img${refresh ? ' active' : ''}`}
                   />

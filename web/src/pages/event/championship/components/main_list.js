@@ -3,11 +3,12 @@ import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import {Context} from 'context'
 import NoResult from 'components/ui/new_noResult'
+import {IMG_SERVER} from 'context/config'
 
 // static
-const GoldMedal = 'https://image.dalbitlive.com/svg/medal_gold_b.svg'
-const SivelMedal = 'https://image.dalbitlive.com/svg/medal_silver_b.svg'
-const BronzeMedal = 'https://image.dalbitlive.com/svg/medal_bronze_m.svg'
+const GoldMedal = `${IMG_SERVER}/svg/medal_gold_b.svg`
+const SivelMedal = `${IMG_SERVER}/svg/medal_silver_b.svg`
+const BronzeMedal = `${IMG_SERVER}/svg/medal_bronze_m.svg`
 
 export default function VideoEventList({djRankList, eventSubType}) {
   const history = useHistory()

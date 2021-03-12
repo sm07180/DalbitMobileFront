@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
+import {IMG_SERVER} from 'context/config'
+
 export default function LayerDetail({setLayerDetail, content}) {
   const closePopup = () => {
     setLayerDetail(false)
@@ -50,7 +52,7 @@ const PopupWrap = styled.div`
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+    background: url(${IMG_SERVER}/svg/close_w_l.svg) no-repeat 0 0;
   }
 
   .layerContainer {

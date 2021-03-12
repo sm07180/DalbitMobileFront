@@ -1,6 +1,8 @@
 import React, {useContext, useEffect} from 'react'
 import styled from 'styled-components'
 
+import {IMG_SERVER} from 'context/config'
+
 export default function LayerPresent({setLayerPresent}) {
   const closePopup = () => {
     setLayerPresent(false)
@@ -20,8 +22,8 @@ export default function LayerPresent({setLayerPresent}) {
   }, [])
 
   return (
-    <PopupWrap id="layerPopup" onClick={closePopupDim}>
-      <div className="layerContainer championship">
+    <PopupWrap id="layerPopup" className="championship" onClick={closePopupDim}>
+      {/* <div className="layerContainer">
         <h3>깜짝 선물 보기</h3>
         <p>
           깜짝 선물은 <br /> 3주차에 공개됩니다
@@ -32,7 +34,16 @@ export default function LayerPresent({setLayerPresent}) {
           </button>
         </div>
         <button className="btnBack popup" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+          <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
+        </button>
+      </div> */}
+
+      <div className="layerContainer imgSection">
+        <div className="bgBox">
+          <img src={`${IMG_SERVER}/event/championship/20210223/bg_present.png`} alt="깜짝 선물 이미지" />
+        </div>
+        <button className="btnBack imgPopup" onClick={closePopup}>
+          <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
         </button>
       </div>
     </PopupWrap>
@@ -45,13 +56,13 @@ const PopupWrap = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.6);
   z-index: 60;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  .championship {
+  .layerContainer {
     position: relative;
     min-width: 320px;
     max-width: 360px;
@@ -60,6 +71,10 @@ const PopupWrap = styled.div`
     border-radius: 16px;
     background-color: #fff;
     box-sizing: border-box;
+
+    &.imgSection {
+      background-color: transparent;
+    }
 
     h3 {
       padding: 16px 0;
@@ -79,6 +94,12 @@ const PopupWrap = styled.div`
       line-height: 30px;
       color: #632beb;
       text-align: center;
+    }
+
+    .bgBox {
+      height: 480px;
+      overflow-y: auto;
+      border-radius: 20px;
     }
   }
 `

@@ -18,6 +18,10 @@
       right: 0;
       top: -50px;
     }
+    &.imgPopup {
+      right: 10px;
+      top: -50px;
+    }
   }
 
   .tab_box {
@@ -58,7 +62,15 @@
         padding: 5%;
 
         &.status {
+          position: relative;
           padding: 3% 0 0;
+
+          > button {
+            position: absolute;
+            left: 7.5%;
+            bottom: 14%;
+            width: 38%;
+          }
         }
 
         &.rank {
@@ -67,6 +79,7 @@
 
           .btn_box {
             display: flex;
+            justify-content: center;
             padding: 4.5% 0 7%;
 
             button + button {
@@ -182,7 +195,7 @@
         line-height: 26px;
         letter-spacing: -1px;
         color: $white;
-        background: url('https://image.dalbitlive.com/event/championship/20210223/event_notice_bg.png');
+        background: url($IMG_SERVER + '/event/championship/20210223/event_notice_bg.png');
         background-size: 100%;
 
         p {

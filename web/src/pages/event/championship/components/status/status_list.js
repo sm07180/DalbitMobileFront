@@ -3,11 +3,12 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
 import NoResult from 'components/ui/new_noResult'
+import {IMG_SERVER} from 'context/config'
 
 // static
-const GoldMedal = 'https://image.dalbitlive.com/svg/medal_gold_b.svg'
-const SivelMedal = 'https://image.dalbitlive.com/svg/medal_silver_b.svg'
-const BronzeMedal = 'https://image.dalbitlive.com/svg/medal_bronze_m.svg'
+const GoldMedal = `${IMG_SERVER}/svg/medal_gold_b.svg`
+const SivelMedal = `${IMG_SERVER}/svg/medal_silver_b.svg`
+const BronzeMedal = `${IMG_SERVER}/svg/medal_bronze_m.svg`
 
 export default function StatusList({nowEventNo, scoreData}) {
   const history = useHistory()
@@ -49,7 +50,7 @@ export default function StatusList({nowEventNo, scoreData}) {
       </li>
       {nowEventNo === 1 ? (
         <div className="noResult">
-          <img src="https://image.dalbitlive.com/event/championship/20210223/img_noresult.png" alt="집계중입니다" />
+          <img src={`${IMG_SERVER}/event/championship/20210223/img_noresult.png`} alt="집계중입니다" />
         </div>
       ) : (
         <>

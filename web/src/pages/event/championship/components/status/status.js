@@ -10,6 +10,8 @@ import StatusList from './status_list'
 import LayerTable from './layer_table'
 import LayerPresent from './layer_present'
 
+import {IMG_SERVER} from 'context/config'
+
 export default function Status() {
   const history = useHistory()
   const context = useContext(Context)
@@ -40,7 +42,6 @@ export default function Status() {
 
     if (result === 'success') {
       setScoreData(data.list)
-      console.log(data)
       setMyScoreData(data)
     } else {
       context.action.alert({
@@ -109,12 +110,18 @@ export default function Status() {
     <>
       <div className="stage_wrap">
         <div className="img_box status">
-          <img src="https://image.dalbitlive.com/event/championship/20210304/points_status.png" alt="승점 현황 안내" />
+          <img src={`${IMG_SERVER}/event/championship/3round/points_status.png`} alt="승점 현황 안내" />
+          <button
+            onClick={() => {
+              setLayerPresent(true)
+            }}>
+            <img src={`${IMG_SERVER}/event/championship/3round/view_surprise_present.png`} alt="깜짝 선물 보기" />
+          </button>
         </div>
         <div className="status_wrap">
           <img
             className="status_img"
-            src="https://image.dalbitlive.com/event/championship/20210223/points_rank_status.png"
+            src={`${IMG_SERVER}/event/championship/20210223/points_rank_status.png`}
             alt="내 점수 및 순위 현황"
           />
           <dl className="score_list">
@@ -134,7 +141,7 @@ export default function Status() {
             </article>
           </dl>
           <div className="img_box">
-            <img src="https://image.dalbitlive.com/event/championship/20210223/status_surprise.png" alt="surprise event" />
+            <img src={`${IMG_SERVER}/event/championship/20210223/status_surprise.png`} alt="surprise event" />
             <button
               className="receive_btn"
               onClick={() => {
@@ -147,37 +154,31 @@ export default function Status() {
                       }
                     })
               }}>
-              <img src="https://image.dalbitlive.com/event/championship/20210223/status_receive.png" alt="선물 받기" />
+              <img src={`${IMG_SERVER}/event/championship/20210223/status_receive.png`} alt="선물 받기" />
             </button>
           </div>
         </div>
         <div className="img_box rank">
-          <img src="https://image.dalbitlive.com/event/championship/20210223/rank_status.png" alt="전체 순위 현황" />
+          <img src={`${IMG_SERVER}/event/championship/20210223/rank_status.png`} alt="전체 순위 현황" />
           <div className="btn_box">
             <button
               onClick={() => {
                 setLayerPointTable(true)
               }}>
-              <img
-                src="https://image.dalbitlive.com/event/championship/20210223/view_points_table.png"
-                alt="순위별 승점표 보기"
-              />
+              <img src={`${IMG_SERVER}/event/championship/20210223/view_points_table.png`} alt="순위별 승점표 보기" />
             </button>
             <button
               onClick={() => {
                 setLayerPresent(true)
               }}>
-              <img
-                src="https://image.dalbitlive.com/event/championship/20210223/view_surprise_present.png"
-                alt="깜짝 선물 보기"
-              />
+              <img src={`${IMG_SERVER}/event/championship/20210223/view_surprise_present.png`} alt="깜짝 선물 보기" />
             </button>
           </div>
         </div>
         {scoreData && <StatusList nowEventNo={myScoreData.nowEventNo} scoreData={scoreData} />}
       </div>
       {layerPointTable && (
-        <LayerTable nowEventNo={myScoreData.nowEventNo} setLayerPointTable={setLayerPointTable} content={myScoreData.pointDesc} />
+        <LayerTable setLayerPointTable={setLayerPointTable} content={myScoreData.pointDesc} nowEventNo={myScoreData.nowEventNo} />
       )}
       {layerPresent && <LayerPresent setLayerPresent={setLayerPresent} />}
     </>
