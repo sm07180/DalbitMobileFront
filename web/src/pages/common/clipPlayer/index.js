@@ -105,6 +105,7 @@ export default (props) => {
           onClick={() => {
             sessionStorage.removeItem('clip_active')
             clipExit(globalCtx)
+            sessionStorage.setItem('listening', 'N')
           }}>
           닫기
         </button>

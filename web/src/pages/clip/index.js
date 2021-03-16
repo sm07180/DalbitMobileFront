@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 import {Hybrid} from 'context/hybrid'
-import {clipJoin} from 'pages/common/clipPlayer/clip_func'
+import {clipJoin, clipReg} from 'pages/common/clipPlayer/clip_func'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 import {calcDate, convertMonday} from 'pages/common/rank/rank_fn'
 import {OS_TYPE} from 'context/config.js'
@@ -786,9 +786,9 @@ export default (props) => {
         })
       } else {
         if (type === 'recording') {
-          Hybrid('EnterClipRecord')
+          clipReg('record', globalCtx)
         } else if (type === 'upload') {
-          Hybrid('ClipUploadJoin')
+          clipReg('upload', globalCtx)
         }
       }
     }

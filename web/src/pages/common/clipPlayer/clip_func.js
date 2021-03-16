@@ -162,6 +162,42 @@ export const clipExit = (context) => {
   context.action.updateClipPlayerState(null)
   context.action.updatePlayer(false)
 }
+export const clipReg = (type, context) => {
+  if (!context.token.isLogin) return (window.location.href = '/login')
+  const text = type === 'upload' ? '업로드' : '녹음'
+  if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+    if (Utility.getCookie('clip-player-info')) {
+      context.action.confirm({
+        msg: `현재 재생 중인 클립이 있습니다.\n클립을 ${text}하시겠습니까?`,
+        callback: () => {
+          clipExit(context)
+          if (type === 'upload') {
+            Hybrid('ClipUploadJoin')
+          } else {
+            Hybrid('EnterClipRecord')
+          }
+        }
+      })
+    } else {
+      Hybrid('ClipUploadJoin')
+    }
+  } else {
+    context.action.confirm({
+      msg: `현재 청취 중인 방송방이 있습니다.\n클립을 ${text}하시겠습니까?`,
+      callback: () => {
+        sessionStorage.removeItem('room_no')
+        Utility.setCookie('listen_room_no', null)
+        Hybrid('ExitRoom', '')
+        context.action.updatePlayer(false)
+        if (type === 'upload') {
+          Hybrid('ClipUploadJoin')
+        } else {
+          Hybrid('EnterClipRecord')
+        }
+      }
+    })
+  }
+}
 
 export const updateClipInfo = (data) => {
   Hybrid('ClipUpdateInfo', data)

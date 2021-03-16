@@ -1,7 +1,7 @@
-import React, { useContext, useRef, useEffect, useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, {useContext, useRef, useEffect, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import { ClipRankContext } from 'context/clip_rank_ctx'
+import {ClipRankContext} from 'context/clip_rank_ctx'
 
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
@@ -23,8 +23,8 @@ function CilpRank() {
   const {formState, clipRankList} = clipRankState
   const setClipRankList = clipRankAction.setClipRankList
   const setMyInfo = clipRankAction.setMyInfo
-  const [loading, setLoading] = useState(false);
-  const [empty, setEmpty] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [empty, setEmpty] = useState(false)
 
   const TopRef = useRef()
   const FixedWrapRef = useRef()
@@ -52,7 +52,7 @@ function CilpRank() {
       }
       setMyInfo(res.data)
     } else {
-      setLoading(true);
+      setLoading(true)
       setMyInfo({})
       setClipRankList([])
     }
@@ -95,51 +95,54 @@ function CilpRank() {
   return (
     <Layout status="no_gnb">
       {!loading && (
-      <div id="clipRank" className="subContent gray">
-        <div ref={TopItemHeight}>
-          <Header type="noBack">
-            <h2 className="header-title">클립 랭킹</h2>
+        <div id="clipRank" className="subContent gray">
+          <div ref={TopItemHeight}>
+            <Header>
+              <h2 className="header-title">클립 랭킹</h2>
 
-            <div
-              className="benefitMore"
-              onClick={() => {
-                history.push({
-                  pathname: `/clip_rank/guidance`
-                })
-              }}>
-              <img src="https://image.dalbitlive.com/images/clip_rank/benefit@2x.png " width={60} alt="혜택" />
+              <div
+                className="benefitMore"
+                onClick={() => {
+                  history.push({
+                    pathname: `/clip_rank/guidance`
+                  })
+                }}>
+                <img src="https://image.dalbitlive.com/images/clip_rank/benefit@2x.png " width={60} alt="혜택" />
+              </div>
+            </Header>
+
+            <div ref={FixedWrapRef}>
+              <ClipRankDateBtn />
+              <ClipRankHandleDateBtn />
             </div>
-          </Header>
 
-          <div ref={FixedWrapRef}>
-            <ClipRankDateBtn />
-            <ClipRankHandleDateBtn />
+            <div ref={TopItemWrap}>
+              {clipRankList.length > 0 ? (
+                <div className="rankTop3Box" ref={TopRef}>
+                  {/* 랭킹 보상 & 내 클립 랭킹 영역 */}
+                  <ClipRankingMyRank />
+                  {/* 어제 랭킹 1,2,3 트로피 영역 */}
+                  <ClipRankingListTop3 />
+                </div>
+              ) : (
+                empty &&
+                clipRankList.length > 0 && (
+                  <div className="noResultBox">
+                    <NoResult type="default" text="조회 된 결과가 없습니다." />
+                  </div>
+                )
+              )}
+            </div>
           </div>
-
-          <div ref={TopItemWrap}>
-            {clipRankList.length > 0 ? (
-              <div className="rankTop3Box" ref={TopRef}>
-                {/* 랭킹 보상 & 내 클립 랭킹 영역 */}
-                <ClipRankingMyRank />
-                {/* 어제 랭킹 1,2,3 트로피 영역 */}
-                <ClipRankingListTop3 />
-              </div>
-            ) : empty && clipRankList.length > 0 && (
-              <div className="noResultBox">
-                <NoResult type="default" text="조회 된 결과가 없습니다." />
-              </div>
-            )}
-          </div>
+          {/* 4등 부터 리스트 시작 */}
+          {clipRankList.length > 0 ? (
+            <div ref={BottomList}>
+              <ClipRankingList />
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
-        {/* 4등 부터 리스트 시작 */}
-        {clipRankList.length > 0 ? (
-          <div ref={BottomList}>
-            <ClipRankingList />
-          </div>
-        ) : (
-          <></>
-        )}
-      </div>
       )}
     </Layout>
   )

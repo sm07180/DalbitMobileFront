@@ -1,14 +1,19 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
-
+import qs from 'query-string'
 // static
 import closeBtn from './ic_back.svg'
 
 export default (props) => {
   const history = useHistory()
+  const {webview} = qs.parse(location.search)
 
   const goBack = () => {
-    return history.goBack()
+    if (webview === 'new') {
+      return Hybrid('CloseLayerPopup')
+    } else {
+      return history.goBack()
+    }
   }
 
   return (
