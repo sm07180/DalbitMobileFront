@@ -179,7 +179,11 @@ export const clipReg = (type, context) => {
         }
       })
     } else {
-      Hybrid('ClipUploadJoin')
+      if (type === 'upload') {
+        Hybrid('ClipUploadJoin')
+      } else {
+        Hybrid('EnterClipRecord')
+      }
     }
   } else {
     context.action.confirm({

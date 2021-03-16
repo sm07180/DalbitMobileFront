@@ -92,7 +92,7 @@ export default function ClipRegPop(props) {
               </li>
             </ul>
             <div className="btn_wrap">
-              <button className="btn rec" onClick={() => goClipReg('record')}>
+              <button className="btn rec" onClick={() => goClipReg('recording')}>
                 클립 녹음
               </button>
               <button className="btn reg" onClick={() => goClipReg('upload')}>
