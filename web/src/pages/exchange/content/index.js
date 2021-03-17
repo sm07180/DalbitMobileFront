@@ -107,7 +107,7 @@ export default (props) => {
 
     if (selected.byeol > mydal) {
       return context.action.confirm({
-        msg: `달 교환은 200별부터 가능합니다.`
+        msg: `달 교환은 50별부터 가능합니다.`
       })
     }
 
