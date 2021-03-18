@@ -70,7 +70,7 @@ export default () => {
 
   // if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
   payMethod = [
-    {type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple'},
+    // { type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple' },
     {type: '무통장 입금(계좌이체)', code: 'coocon'},
     {type: '카드 결제', fetch: 'pay_card'},
     {type: '휴대폰 결제', fetch: 'pay_phone'},
@@ -558,9 +558,6 @@ const Content = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
     button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
       width: calc(50% - 2px);
       height: 44px;
       margin-bottom: 4px;
@@ -579,23 +576,9 @@ const Content = styled.div`
         background: #f5f5f5;
       }
     }
-
     button:nth-child(1) {
       width: 100%;
     }
-    button:nth-child(-n + 2) {
-      width: 100%;
-    }
-    button:nth-child(1) {
-      &::after {
-        content: '';
-        margin-left: 6px;
-        width: 15px;
-        height: 15px;
-        background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
-      }
-    }
-
     &.more {
       overflow: hidden;
       height: 144px;
