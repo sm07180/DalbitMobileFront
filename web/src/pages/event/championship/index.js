@@ -99,8 +99,8 @@ export default () => {
 
   return (
     <div id="championship_page">
-      {/* <img src={imgList.topBgImg} alt="달빛라이브 챔피언십" /> */}
-      <img src={`${IMG_SERVER}/event/championship/3round/3round_title.png`} alt="달빛라이브 챔피언십" />
+      <img src={imgList.topBgImg} alt="달빛라이브 챔피언십" />
+      {/* <img src={`${IMG_SERVER}/event/championship/4round/4round_title.png`} alt="달빛라이브 챔피언십" /> */}
       <button className="btnBack" onClick={() => clickCloseBtn()}>
         <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
       </button>
@@ -141,8 +141,8 @@ export default () => {
                   <img src={`${IMG_SERVER}/event/championship/20210223/fan_rank.png`} alt="팬 랭킹" />
                 </button>
               </div>
-              {/* <img src={imgList.djBgImg} alt="DJ 이벤트 안내" /> */}
-              <img src={`${IMG_SERVER}/event/championship/3round/3round_dj.png`} alt="DJ 이벤트 안내" />
+              <img src={imgList.djBgImg} alt="DJ 이벤트 안내" />
+              {/* <img src={`${IMG_SERVER}/event/championship/4round/4round_dj.png`} alt="DJ 이벤트 안내" /> */}
               <div className="notice_box">
                 <p>순위는 실시간으로 집계됩니다.</p>
                 <p>
@@ -216,8 +216,8 @@ export default () => {
                   <img src={`${IMG_SERVER}/event/championship/20210223/fan_rank_focus.png`} alt="팬 랭킹" />
                 </button>
               </div>
-              {/* <img src={imgList.fanBgImg} alt="팬 이벤트 안내" /> */}
-              <img src={`${IMG_SERVER}/event/championship/3round/3round_fan.png`} alt="팬 이벤트 안내" />
+              <img src={imgList.fanBgImg} alt="팬 이벤트 안내" />
+              {/* <img src={`${IMG_SERVER}/event/championship/4round/4round_fan.png`} alt="팬 이벤트 안내" /> */}
               <div className="notice_box">
                 <p>순위는 실시간으로 집계됩니다.</p>
                 <p>
