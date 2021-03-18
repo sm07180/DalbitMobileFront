@@ -8,14 +8,14 @@
  * @date_20200728 스마트문상, 도서문화상품권 숨김처리
  */
 
-import React, {useContext, useEffect, useRef, useState, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 
 //context
-import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
-import {COLOR_MAIN} from 'context/color'
+import { Context } from 'context'
+import { OS_TYPE } from 'context/config.js'
+import { COLOR_MAIN } from 'context/color'
 import Api from 'context/api'
 import qs from 'query-string'
 import Utility from 'components/lib/utility'
@@ -27,7 +27,7 @@ import LayerPopupWrap from '../../../main/component/layer_popup_wrap.js'
 //static
 import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
-import {Hybrid} from "context/hybrid";
+import { Hybrid } from "context/hybrid";
 
 const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
 const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
@@ -42,7 +42,7 @@ export default () => {
   const customHeader = JSON.parse(Api.customHeader)
 
   //state
-  const [selectedPay, setSelectedPay] = useState({type: '', fetch: ''})
+  const [selectedPay, setSelectedPay] = useState({ type: '', fetch: '' })
   const [moreState, setMoreState] = useState(false)
   const [bankPop, setBankPop] = useState(false)
   const [popupData, setPopupData] = useState([])
@@ -50,7 +50,7 @@ export default () => {
   const formTag = useRef(null)
 
   //결제 data 셋팅
-  const {name, price, itemNo, webview, event} = qs.parse(location.search)
+  const { name, price, itemNo, webview, event } = qs.parse(location.search)
   const dalVal = Number(name.split(" ")[1]);
 
   const [totalQuantity, setTotalQuantity] = useState(1)
@@ -70,24 +70,24 @@ export default () => {
 
   // if (__NODE_ENV === 'dev' || context.token.memNo === '51594275686446') {
   payMethod = [
-    // {type: '계좌 간편결제'},
-    {type: '무통장 입금(계좌이체)', code: 'coocon'},
-    {type: '카드 결제', fetch: 'pay_card'},
-    {type: '휴대폰 결제', fetch: 'pay_phone'},
-    {type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney'},
-    {type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay'},
-    {type: '페이코', fetch: 'pay_letter', code: 'payco'},
-    {type: '문화상품권', fetch: 'pay_gm'},
-    {type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney'},
-    {type: '해피머니상품권', fetch: 'pay_hm'}
+    { type: '계좌 간편결제', fetch: 'pay_simple', code: 'simple' },
+    { type: '무통장 입금(계좌이체)', code: 'coocon' },
+    { type: '카드 결제', fetch: 'pay_card' },
+    { type: '휴대폰 결제', fetch: 'pay_phone' },
+    { type: '카카오페이(머니)', fetch: 'pay_km', code: 'kakaomoney' },
+    { type: '카카오페이(카드)', fetch: 'pay_letter', code: 'kakaopay' },
+    { type: '페이코', fetch: 'pay_letter', code: 'payco' },
+    { type: '문화상품권', fetch: 'pay_gm' },
+    { type: '티머니/캐시비', fetch: 'pay_letter', code: 'tmoney' },
+    { type: '해피머니상품권', fetch: 'pay_hm' }
     // {type: '캐시비', fetch: 'pay_letter', code: 'cashbee'},
     // { type: "스마트문상(게임문화상품권)", fetch: 'pay_gg' },
     // { type: "도서문화상품권", fetch: 'pay_gc' },
   ]
   // }
 
-  async function payFetch() {
-    const {type, fetch, code} = selectedPay
+  async function payFetch(ciData) {
+    const { type, fetch, code } = selectedPay
 
     // if (type === '카카오페이' || type === '페이코') {
     //   return context.action.alert({
@@ -146,22 +146,22 @@ export default () => {
       }
     }
 
-    const {result, data, message} = await Api[fetch]({
+    const { result, data, message } = await Api[fetch]({
       data: {
         Prdtnm: name,
         Prdtprice: totalPrice * totalQuantity,
         itemNo: itemNo,
         pageCode: pageCode,
         pgCode: code,
-        itemAmt: totalQuantity
+        itemAmt: totalQuantity,
+        ci: ciData,
       }
     })
-    console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
+    // console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
-      console.log(data)
-      if (data.hasOwnProperty('mobileUrl')) {
-        return (window.location.href = data.mobileUrl)
+      if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
+        return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
       } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
         return (window.location.href = data.next_redirect_mobile_url)
       }
@@ -193,7 +193,7 @@ export default () => {
         position: arg
       }
     })
-    const {result, data, message} = res
+    const { result, data, message } = res
     if (result === 'success') {
       if (data) {
         // 딤 팝업
@@ -211,30 +211,30 @@ export default () => {
       context.action.alert({
         msg: message,
         callback: () => {
-          context.action.alert({visible: false})
+          context.action.alert({ visible: false })
         }
       })
     }
   }
 
   const bonusDal = useMemo(() => {
-    if((Number(price) * totalQuantity) > 100000) {
+    if ((Number(price) * totalQuantity) > 100000) {
       return Math.floor(dalVal * totalQuantity * 0.1);
-    } else if((Number(price) * totalQuantity) > 30000) {
-      return  Math.floor(dalVal * totalQuantity * 0.05);
+    } else if ((Number(price) * totalQuantity) > 30000) {
+      return Math.floor(dalVal * totalQuantity * 0.05);
     } else {
       return null;
     }
 
-  },[price, totalQuantity, (Number(price) * totalQuantity)])
+  }, [price, totalQuantity, (Number(price) * totalQuantity)])
 
   const isBonusDalYn = useMemo(() => {
-    if((Number(price) * totalQuantity) > 30000) {
+    if ((Number(price) * totalQuantity) > 30000) {
       return true;
     } else {
       return false;
     }
-  },[price, totalQuantity, (Number(price) * totalQuantity)])
+  }, [price, totalQuantity, (Number(price) * totalQuantity)])
 
   const makeDisabled = (type) => {
     switch (type) {
@@ -259,8 +259,8 @@ export default () => {
     } else {
       currentPayMethod = payMethod.slice(0, 3)
     }
-    return currentPayMethod.map((item, idx) => {
-      const {type} = item
+    return payMethod.map((item, idx) => {
+      const { type } = item
       const disabledState = makeDisabled(type)
       return (
         <button
@@ -277,12 +277,12 @@ export default () => {
   const quantityCalc = (type) => {
     if (type === 'plus') {
       if (totalQuantity === 10) {
-        return context.action.toast({msg: '최대 10개까지 구매 가능합니다.'})
+        return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
       }
       setTotalQuantity(totalQuantity + 1)
     } else if (type === 'minus') {
       if (totalQuantity === 1) {
-        return context.action.toast({msg: '최소 1개부터 구매 가능합니다.'})
+        return context.action.toast({ msg: '최소 1개부터 구매 가능합니다.' })
       }
       setTotalQuantity(totalQuantity - 1)
     }
@@ -319,8 +319,69 @@ export default () => {
     }
   }
 
+  const setPopupCookie = () => {
+    const exdate = new Date();
+    exdate.setDate(exdate.getDate() + 1);
+    exdate.setHours(0);
+    exdate.setMinutes(0);
+    exdate.setSeconds(0);
+
+    const encodedValue = encodeURIComponent("y");
+    const c_value = encodedValue + "; expires=" + exdate.toUTCString();
+    document.cookie =
+      "simpleCheck" +
+      "=" +
+      c_value +
+      "; path=/; secure; domain=.dalbitlive.com";
+  };
+
+  const simplePayCheck = () => {
+    async function fetchSelfAuth() {
+      const res = await Api.self_auth_check({})
+      if (res.result === 'success') {
+        if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
+          payFetch(res.data.ci);
+        } else {
+          context.action.alert({
+            msg:
+              `
+              <p style="font-size: 15px; text-align: left;">
+            ★ 필수 : 인증 정보를 확인해 주세요.
+            ---------------------------------------------
+            회원 이름 : <span style='color: #632beb; font-weight: bold;'>${res.data.memName}</span>
+            연락처 : <span style='color: #632beb; font-weight: bold;'>${res.data.phoneNo.replace(
+                /(\d{3})(\d{4})(\d{4})/,
+                "$1-$2-$3"
+              )}</span>
+            ---------------------------------------------
+            <br />
+            - 안전한 계좌 정보 등록을 위해
+              한 번 더 본인인증을 해주셔야 합니다.
+            - (중요) 추가 인증 시에는 반드시
+              위의 회원정보와 일치해야 합니다.
+              ※ 추가 인증은 딱 1회만 진행됩니다.
+              </p>
+            `
+            ,
+            callback: () => {
+              setPopupCookie();
+              payFetch(res.data.ci);
+            }
+          })
+        }
+      } else {
+        history.push(`/selfauth?event=/pay/store`)
+      }
+    }
+    fetchSelfAuth()
+  }
+
   useEffect(() => {
-    if (selectedPay.type) payFetch()
+    if (selectedPay.code === "simple") {
+      simplePayCheck()
+    } else {
+      if (selectedPay.type) payFetch()
+    }
   }, [selectedPay])
 
   useEffect(() => {
@@ -379,11 +440,11 @@ export default () => {
             {moreState ? '결제수단 간략 보기' : '결제수단 전체 보기'}
           </button> */}
         </h2>
-        <div className="select-item">{createMethodBtn('top')}</div>
-        <div className="more-wrap">
-          {/* <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div> */}
+        <div className="select-item">{createMethodBtn()}</div>
+        {/* <div className="more-wrap">
+          <div className={`select-item more ${moreState}`}>{createMethodBtn('more')}</div>
           <div className={`select-item more true`}>{createMethodBtn('more')}</div>
-        </div>
+        </div> */}
 
         <div className="info-wrap">
           <h5>
@@ -528,18 +589,18 @@ const Content = styled.div`
     button:nth-child(1) {
       width: 100%;
     }
-    // button:nth-child(-n + 2) {
-    //   width: 100%;
-    // }
-    // button:nth-child(1) {
-    //   &::after {
-    //     content: '';
-    //     margin-left: 6px;
-    //     width: 15px;
-    //     height: 15px;
-    //     background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
-    //   }
-    // }
+    button:nth-child(-n + 2) {
+      width: 100%;
+    }
+    button:nth-child(1) {
+      &::after {
+        content: '';
+        margin-left: 6px;
+        width: 15px;
+        height: 15px;
+        background: url('https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png') no-repeat center / 15px;
+      }
+    }
     
     &.more {
       overflow: hidden;

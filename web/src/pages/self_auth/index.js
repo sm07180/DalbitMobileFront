@@ -1,14 +1,14 @@
-import React, {useContext, useState, useEffect, useRef} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, { useContext, useState, useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import qs from 'query-string'
 import styled from 'styled-components'
 import Api from 'context/api'
-import {Hybrid} from 'context/hybrid'
+import { Hybrid } from 'context/hybrid'
 
 //context
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
-import {COLOR_MAIN} from 'context/color'
+import { Context } from 'context'
+import { IMG_SERVER } from 'context/config'
+import { COLOR_MAIN } from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
@@ -46,7 +46,7 @@ export const openAuthPage = (formTagRef, context) => {
     }
     document.authForm.target = 'KMCISWindow'
   }
-  console.log(document.authForm)
+  // console.log(document.authForm)
   document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
   document.authForm.submit()
 }
@@ -73,7 +73,7 @@ export const authReq = async (code, formTagRef, context) => {
       authForm.append(makeHiddenInput(key, res.data[key]))
     })
 
-    console.log(authForm)
+    // console.log(authForm)
     openAuthPage(formTagRef, context)
   } else {
     context.action.alert({
@@ -86,7 +86,7 @@ export const authReq = async (code, formTagRef, context) => {
 export default (props) => {
   const location = useLocation()
 
-  const {type, event} = qs.parse(location.search)
+  const { type, event } = qs.parse(location.search)
 
   //---------------------------------------------------------------------
   //context
@@ -118,15 +118,28 @@ export default (props) => {
 
   const AuthContent = () => {
     if (event) {
-      return (
-        <>
-          <h4>
-            <span>이벤트 참여 또는 경품 수령을 위해</span>
+      if (event === "/pay/store") {
+        return (
+          <>
+            <h4>
+              간편결제 계좌 등록을 위해서는
             <br />
+              <span>본인인증을 필수</span>로
+            받으셔야 합니다.
+            </h4>
+          </>
+        )
+      } else {
+        return (
+          <>
+            <h4>
+              <span>이벤트 참여 또는 경품 수령을 위해</span>
+              <br />
             본인인증을 필수로 받으셔야 합니다.
           </h4>
-        </>
-      )
+          </>
+        )
+      }
     }
     if (type === 'create' || type === 'adultJoin') {
       return (

@@ -9,8 +9,8 @@ import {Hybrid} from 'context/hybrid'
 export default () => {
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
+
   const context = useContext(Context)
-  console.log(location)
   if (location.state === undefined) {
     location.state = {
       result: 'fail',
@@ -36,6 +36,7 @@ export default () => {
   } = location.state
 
   let payType = ''
+
 
   const makePayType = () => {
     if (!phoneNo && cardNum) {
@@ -79,6 +80,9 @@ export default () => {
           break
         case 'kakaoMoney':
           payType = '카카오페이(머니)'
+          break
+        case 'simple':
+          payType = '계좌 간편결제'
           break
         default:
           payType = 'PayLetter'

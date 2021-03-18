@@ -2184,6 +2184,15 @@ export default class API {
       data: data
     })
   }
+  static pay_simple = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax ({
+      ...obj,
+      url: url || `/rest/pay/simple`,
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   //인증샷 이벤트
   static event_proofshot_list = async (obj) => {
