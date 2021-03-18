@@ -3,6 +3,7 @@ import API from 'context/api'
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Lottie from 'react-lottie'
+import {IMG_SERVER} from 'context/config'
 // static
 import stampActive from '../static/stamp_active.json'
 
@@ -55,13 +56,7 @@ export default (props) => {
             } catch (e) {}
             history.push('/event/attend_event')
           }}>
-          <Lottie
-            options={{
-              loop: true,
-              autoPlay: true,
-              animationData: stampActive
-            }}
-          />
+          <img src={`${IMG_SERVER}/webp/attend_stamp.webp`} alt="attend stamp active" width={48} height={48} />
         </div>
       )
     } else if (token.isLogin && attendCheck === 2) {
