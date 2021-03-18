@@ -217,13 +217,7 @@ export default (props) => {
           {createMailboxIcon()}
           {newAlarm === true ? (
             <button onClick={() => moveToLogin('alarm')} className="alarIconSize">
-              <Lottie
-                options={{
-                  loop: true,
-                  autoplay: true,
-                  path: `https://image.dalbitlive.com/event/200805/alarmdot_w.json`
-                }}
-              />
+              <img src="https://image.dalbitlive.com/ani/webp/main/gnb_alarm_w.webp" alt="alarm active" width={40} height={40} />
             </button>
           ) : (
             <button onClick={() => moveToLogin('alarm')}>
