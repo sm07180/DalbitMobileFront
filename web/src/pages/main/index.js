@@ -39,23 +39,11 @@ import {clipExit} from 'pages/common/clipPlayer/clip_func'
 import {Hybrid} from 'context/hybrid'
 
 // static
-import detailListIcon from './static/detaillist_circle_w.svg'
-import detailListIconActive from './static/detaillist_circle_purple.svg'
-import simpleListIcon from './static/simplylist_circle_w.svg'
-import simpleListIconActive from './static/simplylist_circle_purple.svg'
-import sortIcon from './static/choose_circle_w.svg'
 import RankArrow from './static/arrow_right_b.svg'
-import CrownIcon from './static/ic_crown.png'
-import LiveIcon from './static/ic_newlive.png'
-import CrownLottie from './static/crown_lottie.json'
-import LiveLottie from './static/live_lottie.json'
 const arrowRefreshIcon = 'https://image.dalbitlive.com/main/common/ico_refresh.png'
-const liveNew = 'https://image.dalbitlive.com/svg/newlive_s.svg'
 const starNew = 'https://image.dalbitlive.com/svg/mystar_live.svg'
 const RankNew = 'https://image.dalbitlive.com/svg/ranking_live.svg'
 
-// import LoadingLottieIcon from './static/listloading.json'
-// import Lottie from 'react-lottie'
 import 'styles/main.scss'
 
 let concatenating = false
@@ -141,6 +129,7 @@ export default (props) => {
   }
 
   const SET_MEDIATYPE = (type) => {
+    setLiveList(null)
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
@@ -152,7 +141,7 @@ export default (props) => {
   }
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
-  const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
+  // const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
   const customHeader = JSON.parse(Api.customHeader)
 
   const eventPopupStartTime = new Date('2020-09-25T09:00:00')
@@ -245,14 +234,14 @@ export default (props) => {
     }
 
     fetchMainInitData()
-    if (globalCtx.roomType && globalCtx.roomType.length > 0) {
-      const concatenated = categoryList.concat(globalCtx.roomType)
-      globalCtx.action.updateRoomType(concatenated)
-      concatenated.forEach((v, idx) => {
-        if (idx > 0 && v.sorNo === 0) concatenated.splice(1, idx)
-      })
-      setCategoryList(concatenated)
-    }
+    // if (globalCtx.roomType && globalCtx.roomType.length > 0) {
+    //   const concatenated = categoryList.concat(globalCtx.roomType)
+    //   globalCtx.action.updateRoomType(concatenated)
+    //   concatenated.forEach((v, idx) => {
+    //     if (idx > 0 && v.sorNo === 0) concatenated.splice(1, idx)
+    //   })
+    //   setCategoryList(concatenated)
+    // }
   }, [])
 
   const fetchMainInitData = async () => {
@@ -613,6 +602,33 @@ export default (props) => {
   const closeLink = () => {
     setChecker(false)
   }
+
+  const MainListRoadingBar = () => {
+    return (
+      <div className={`main-loadingWrap ${liveCategoryFixed ? 'top-fixed' : ''}`}>
+        <div className="loading">
+          <span></span>
+        </div>
+      </div>
+    )
+  }
+
+  const LiveListComponent = useCallback(() => {
+    if (liveList === null) <MainListRoadingBar />
+    if (Array.isArray(liveList) && liveRefresh === false) {
+      if (liveList.length > 0) {
+        return (
+          <div className="liveList">
+            <LiveList list={liveList} liveListType={liveForm.mediaType} />
+          </div>
+        )
+      } else {
+        return <NoResult />
+      }
+    } else {
+      return <MainListRoadingBar />
+    }
+  }, [liveList, liveRefresh])
 
   const mainTouchEnd = useCallback(
     async (e) => {

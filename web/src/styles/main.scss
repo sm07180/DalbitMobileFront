@@ -102,6 +102,16 @@
 
 // main
 .main-wrap {
+  .main-loadingWrap {
+    position: relative;
+    height: 200px;
+    &.top-fixed {
+      height: 500px;
+    }
+    .loading {
+      position: absolute;
+    }
+  }
   .section {
     color: red;
     font-weight: 700;
