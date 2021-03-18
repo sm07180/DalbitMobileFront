@@ -262,8 +262,6 @@ export default (props) => {
 
     const {page, mediaType, roomType} = liveForm
 
-    console.log(mediaType)
-
     const broadcastList = await Api.broad_list({
       params: {
         page,
@@ -1027,17 +1025,7 @@ export default (props) => {
                   className="newMember_banner"
                 />
               )}
-              {Array.isArray(liveList) && liveRefresh === false ? (
-                liveList.length > 0 && categoryList.length > 1 ? (
-                  <div className="liveList">
-                    <LiveList list={liveList} liveListType={liveForm.mediaType} categoryList={categoryList} />
-                  </div>
-                ) : (
-                  <NoResult />
-                )
-              ) : (
-                <div style={{height: '600px'}}></div>
-              )}
+              <LiveListComponent />
             </div>
           </div>
         </div>
