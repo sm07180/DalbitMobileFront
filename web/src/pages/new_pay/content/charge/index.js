@@ -257,9 +257,9 @@ export default () => {
 
     let currentPayMethod = []
     const isTestId =
-      testId === "11584609037776" ||
-        testId === "11584609037869" ||
-        testId === "11584609037403"
+      testId === "11584609206936" ||
+        testId === "11584609206286" ||
+        testId === "11584609206852"
         ? ""
         : "hide";
     if (type === 'more') {
