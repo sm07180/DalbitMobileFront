@@ -347,35 +347,39 @@ export default () => {
     async function fetchSelfAuth() {
       const res = await Api.self_auth_check({})
       if (res.result === 'success') {
-        if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
-          payFetch(res.data.ci);
+        const ciValue = res.data.ci;
+        if (ciValue === null || ciValue === false || ciValue === "testuser" || ciValue === "admin" || ciValue.length < 10) {
+          history.push(`/selfauth?event=/pay/store`)
         } else {
-          context.action.alert({
-            msg:
-              `
-              <p style="font-size: 15px; text-align: left;">
+          if (Utility.getCookie("simpleCheck") === "y" || res.data.isSimplePay) {
+            payFetch(res.data.ci);
+          } else {
+            context.action.alert({
+              msg:
+                `
+              <div style="font-size: 16px; text-align: left;">
             ★ 필수 : 인증 정보를 확인해 주세요.
             ---------------------------------------------
             회원 이름 : <span style='color: #632beb; font-weight: bold;'>${res.data.memName}</span>
             연락처 : <span style='color: #632beb; font-weight: bold;'>${res.data.phoneNo.replace(
-                /(\d{3})(\d{4})(\d{4})/,
-                "$1-$2-$3"
-              )}</span>
+                  /(\d{3})(\d{4})(\d{4})/,
+                  "$1-$2-$3"
+                )}</span>
             ---------------------------------------------
-            <br />
             - 안전한 계좌 정보 등록을 위해
               한 번 더 본인인증을 해주셔야 합니다.
             - (중요) 추가 인증 시에는 반드시
               위의 회원정보와 일치해야 합니다.
               ※ 추가 인증은 딱 1회만 진행됩니다.
-              </p>
+              </div>
             `
-            ,
-            callback: () => {
-              setPopupCookie();
-              payFetch(res.data.ci);
-            }
-          })
+              ,
+              callback: () => {
+                setPopupCookie();
+                payFetch(res.data.ci);
+              }
+            })
+          }
         }
       } else {
         history.push(`/selfauth?event=/pay/store`)
