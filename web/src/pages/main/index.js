@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
+import React, {useContext, useEffect, useState, useRef, useCallback, useMemo} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 //context
@@ -140,6 +140,9 @@ export default (props) => {
       mediaType: type
     })
   }
+  const mediaTypeMemo = useMemo(() => {
+    return liveForm.mediaType
+  }, [liveForm.mediaType])
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   // const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
@@ -973,25 +976,19 @@ export default (props) => {
                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
                     </button>
                   )} */}
-                  <button className={`tab_all_btn ${liveForm.mediaType === '' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('')}>
+                  <button className={`tab_all_btn ${mediaTypeMemo === '' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('')}>
                     전체선택
                   </button>
 
-                  <button
-                    className={`tab_video_btn ${liveForm.mediaType === 'v' ? 'on' : ''}`}
-                    onClick={() => SET_MEDIATYPE('v')}>
+                  <button className={`tab_video_btn ${mediaTypeMemo === 'v' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('v')}>
                     비디오 타입
                   </button>
 
-                  <button
-                    className={`tab_radio_btn ${liveForm.mediaType === 'a' ? 'on' : ''}`}
-                    onClick={() => SET_MEDIATYPE('a')}>
+                  <button className={`tab_radio_btn ${mediaTypeMemo === 'a' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('a')}>
                     라디오 타입
                   </button>
 
-                  <button
-                    className={`tab_new_btn ${liveForm.mediaType === 'new' ? 'on' : ''}`}
-                    onClick={() => SET_MEDIATYPE('new')}>
+                  <button className={`tab_new_btn ${mediaTypeMemo === 'new' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('new')}>
                     신입 타입
                   </button>
                 </div>
