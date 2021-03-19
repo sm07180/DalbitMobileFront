@@ -18,7 +18,7 @@ export default () => {
   async function fetchEventRouletteCoupon(next) {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
-    const {result, data} = await API.getEventRouletteCouponHistory({pageNo: currentPage, pageCnt: 30})
+    const {result, data} = await API.getEventRouletteCouponHistory({pageNo: currentPage, pageCnt: 40})
     if (result === 'success' && data.hasOwnProperty('list')) {
       if (data.list.length === 0) {
         if (!next) {

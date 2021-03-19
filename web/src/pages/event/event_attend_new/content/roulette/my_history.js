@@ -22,7 +22,7 @@ export default () => {
   async function fetchEventRouletteApply(next) {
     if (!next) currentPage = 1
     currentPage = next ? ++currentPage : currentPage
-    const {result, data} = await API.getEventRouletteApply({records: 15, page: currentPage})
+    const {result, data} = await API.getEventRouletteApply({records: 40, page: currentPage})
     if (result === 'success' && data.hasOwnProperty('list')) {
       if (data.list.length === 0) {
         if (!next) {
