@@ -129,6 +129,7 @@ export default (props) => {
   }
 
   const SET_MEDIATYPE = (type) => {
+    setLiveList(null)
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
@@ -260,8 +261,6 @@ export default (props) => {
     // setLiveList(null)
 
     const {page, mediaType, roomType} = liveForm
-
-    console.log(mediaType)
 
     const broadcastList = await Api.broad_list({
       params: {
@@ -601,6 +600,33 @@ export default (props) => {
   const closeLink = () => {
     setChecker(false)
   }
+
+  const MainListRoadingBar = () => {
+    return (
+      <div className={`main-loadingWrap ${liveCategoryFixed ? 'top-fixed' : ''}`}>
+        <div className="loading">
+          <span></span>
+        </div>
+      </div>
+    )
+  }
+
+  const LiveListComponent = useCallback(() => {
+    if (liveList === null) <MainListRoadingBar />
+    if (Array.isArray(liveList) && liveRefresh === false) {
+      if (liveList.length > 0) {
+        return (
+          <div className="liveList">
+            <LiveList list={liveList} liveListType={liveForm.mediaType} />
+          </div>
+        )
+      } else {
+        return <NoResult />
+      }
+    } else {
+      return <MainListRoadingBar />
+    }
+  }, [liveList, liveRefresh])
 
   const mainTouchEnd = useCallback(
     async (e) => {
@@ -999,17 +1025,7 @@ export default (props) => {
                   className="newMember_banner"
                 />
               )}
-              {Array.isArray(liveList) && liveRefresh === false ? (
-                liveList.length > 0 ? (
-                  <div className="liveList">
-                    <LiveList list={liveList} liveListType={liveForm.mediaType} />
-                  </div>
-                ) : (
-                  <NoResult />
-                )
-              ) : (
-                <div style={{height: '600px'}}></div>
-              )}
+              <LiveListComponent />
             </div>
           </div>
         </div>
