@@ -2,7 +2,7 @@
  * @file main.js
  * @brief 메인페이지
  */
-import React, {useContext, useEffect, useState, useRef, useCallback, useMemo} from 'react'
+import React, {useContext, useEffect, useState, useRef, useCallback} from 'react'
 import {NavLink} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 //context
@@ -59,8 +59,6 @@ let totalLivePage = 1
 // updateLink
 let storeUrl = ''
 let updateState
-
-let loading = false
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -140,9 +138,6 @@ export default (props) => {
       mediaType: type
     })
   }
-  const mediaTypeMemo = useMemo(() => {
-    return liveForm.mediaType
-  }, [liveForm.mediaType])
 
   const [broadcastBtnActive, setBroadcastBtnActive] = useState(false)
   // const [categoryList, setCategoryList] = useState([{sorNo: 0, cd: '', cdNm: '전체'}])
@@ -265,7 +260,9 @@ export default (props) => {
     // setLiveList(null)
 
     const {page, mediaType, roomType} = liveForm
-    loading = true
+
+    console.log(mediaType)
+
     const broadcastList = await Api.broad_list({
       params: {
         page,
@@ -285,8 +282,6 @@ export default (props) => {
       }
       setLiveList(list)
       fetchNextList()
-
-      loading = false
     }
   }
 
@@ -607,32 +602,6 @@ export default (props) => {
     setChecker(false)
   }
 
-  const MainListRoadingBar = () => {
-    return (
-      <div className={`main-loadingWrap ${liveCategoryFixed ? 'top-fixed' : ''}`}>
-        <div className="loading">
-          <span></span>
-        </div>
-      </div>
-    )
-  }
-
-  const LiveListComponent = useCallback(() => {
-    if (Array.isArray(liveList) && liveRefresh === false && loading === false) {
-      if (liveList.length > 0) {
-        return (
-          <div className="liveList">
-            <LiveList list={liveList} liveListType={liveForm.mediaType} />
-          </div>
-        )
-      } else {
-        return <NoResult />
-      }
-    } else {
-      return <MainListRoadingBar />
-    }
-  }, [liveList, liveRefresh])
-
   const mainTouchEnd = useCallback(
     async (e) => {
       if (reloadInit === true) return
@@ -883,16 +852,16 @@ export default (props) => {
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 {/* <Lottie
-                  options={{
-                    loop: true,
-                    autoPlay: true,
-                    animationData: CrownLottie
-                  }}
-                  width={40}
-                /> */}
+                   options={{
+                     loop: true,
+                     autoPlay: true,
+                     animationData: CrownLottie
+                   }}
+                   width={40}
+                 /> */}
                 {/* <span className="ico-lottie">
-                  <img src={CrownIcon} alt="실시간랭킹" width={40} />
-                </span> */}
+                   <img src={CrownIcon} alt="실시간랭킹" width={40} />
+                 </span> */}
                 <img className="rank-arrow" src={RankNew} />
                 <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
@@ -963,57 +932,63 @@ export default (props) => {
 
                 <div className="live_btn_box">
                   {/* <span className="text" onClick={() => setPopup(popup ? false : true)}>
-                  {(() => {
-                    return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
-                  })()}
-                  </span>
-                  <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
-                    <img src={sortIcon} alt="검색 정렬하기" />
-                  </button> */}
+                   {(() => {
+                     return liveAlign ? `${alignSet[liveAlign]}순` : '전체'
+                   })()}
+                   </span>
+                   <button className="sequence-icon" onClick={() => setPopup(popup ? false : true)}>
+                     <img src={sortIcon} alt="검색 정렬하기" />
+                   </button> */}
 
                   {/* {popupMoonState && (
-                    <button className="btn__moon" onClick={openPopupMoon}>
-                      <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
-                    </button>
-                  )} */}
-                  <button className={`tab_all_btn ${mediaTypeMemo === '' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('')}>
+                     <button className="btn__moon" onClick={openPopupMoon}>
+                       <img src="https://image.dalbitlive.com/main/common/ico_moon.png" alt="달이 된 병아리" />
+                     </button>
+                   )} */}
+                  <button className={`tab_all_btn ${liveForm.mediaType === '' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('')}>
                     전체선택
                   </button>
 
-                  <button className={`tab_video_btn ${mediaTypeMemo === 'v' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('v')}>
+                  <button
+                    className={`tab_video_btn ${liveForm.mediaType === 'v' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('v')}>
                     비디오 타입
                   </button>
 
-                  <button className={`tab_radio_btn ${mediaTypeMemo === 'a' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('a')}>
+                  <button
+                    className={`tab_radio_btn ${liveForm.mediaType === 'a' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('a')}>
                     라디오 타입
                   </button>
 
-                  <button className={`tab_new_btn ${mediaTypeMemo === 'new' ? 'on' : ''}`} onClick={() => SET_MEDIATYPE('new')}>
+                  <button
+                    className={`tab_new_btn ${liveForm.mediaType === 'new' ? 'on' : ''}`}
+                    onClick={() => SET_MEDIATYPE('new')}>
                     신입 타입
                   </button>
                 </div>
               </div>
 
               {/* <div className="live-list-category">
-                <div className="inner-wrapper">
-                  {Array.isArray(categoryList) && categoryList.length > 1 && (
-                    <Swiper {...swiperParams}>
-                      {categoryList
-                        .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
-                        .map((key, idx) => {
-                          return (
-                            <div
-                              className={`list ${key.cd === liveForm.roomType ? 'active' : ''}`}
-                              key={`list-${idx}`}
-                              onClick={() => SET_ROOMTYPE(key.cd)}>
-                              {key.cdNm}
-                            </div>
-                          )
-                        })}
-                    </Swiper>
-                  )}
-                </div>
-              </div> */}
+                 <div className="inner-wrapper">
+                   {Array.isArray(categoryList) && categoryList.length > 1 && (
+                     <Swiper {...swiperParams}>
+                       {categoryList
+                         .sort((a, b) => Number(a.sortNo) - Number(b.sortNo))
+                         .map((key, idx) => {
+                           return (
+                             <div
+                               className={`list ${key.cd === liveForm.roomType ? 'active' : ''}`}
+                               key={`list-${idx}`}
+                               onClick={() => SET_ROOMTYPE(key.cd)}>
+                               {key.cdNm}
+                             </div>
+                           )
+                         })}
+                     </Swiper>
+                   )}
+                 </div>
+               </div> */}
             </div>
 
             <div className="content-wrap" style={liveCategoryFixed ? {paddingTop: LiveSectionTitleHeight + `px`} : {}}>
@@ -1024,7 +999,17 @@ export default (props) => {
                   className="newMember_banner"
                 />
               )}
-              <LiveListComponent />
+              {Array.isArray(liveList) && liveRefresh === false ? (
+                liveList.length > 0 ? (
+                  <div className="liveList">
+                    <LiveList list={liveList} liveListType={liveForm.mediaType} />
+                  </div>
+                ) : (
+                  <NoResult />
+                )
+              ) : (
+                <div style={{height: '600px'}}></div>
+              )}
             </div>
           </div>
         </div>
@@ -1044,28 +1029,28 @@ export default (props) => {
           <LayerPopupEvent setEventPop={setEventPop} popupData={popupData} />
         )}
         {/* {popupMoon && (
-          <LayerPopupCommon setPopupMoon={setPopupMoon}>
-            <span className="img img-moon">
-              <img src="https://image.dalbitlive.com/main/common/img_moon_popup.png" alt="달이 된 병아리" />
-            </span>
-            <h3 className="title title--purple">달이 된 병아리가 나타났습니다!</h3>
-            <p className="subTitle">
-              DJ님, 조금만 노력하시면
-              <br />내 방송이 상단으로 올라갈 수 있어요.
-              <br />날 수 없었던 저처럼 말이죠!
-            </p>
-            <div className="desc">
-              <strong>P.S</strong>
-              <p>
-                저는 아무 때나 나타나지 않고,
-                <br />
-                DJ님이 실시간 LIVE 상단으로
-                <br />
-                쉽게 올라갈 수 있을 때 나타나요.
-              </p>
-            </div>
-          </LayerPopupCommon>
-        )} */}
+           <LayerPopupCommon setPopupMoon={setPopupMoon}>
+             <span className="img img-moon">
+               <img src="https://image.dalbitlive.com/main/common/img_moon_popup.png" alt="달이 된 병아리" />
+             </span>
+             <h3 className="title title--purple">달이 된 병아리가 나타났습니다!</h3>
+             <p className="subTitle">
+               DJ님, 조금만 노력하시면
+               <br />내 방송이 상단으로 올라갈 수 있어요.
+               <br />날 수 없었던 저처럼 말이죠!
+             </p>
+             <div className="desc">
+               <strong>P.S</strong>
+               <p>
+                 저는 아무 때나 나타나지 않고,
+                 <br />
+                 DJ님이 실시간 LIVE 상단으로
+                 <br />
+                 쉽게 올라갈 수 있을 때 나타나요.
+               </p>
+             </div>
+           </LayerPopupCommon>
+         )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
         {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
         {scrollOn && <AttendEventBtn />}
