@@ -104,12 +104,10 @@
 .main-wrap {
   .main-loadingWrap {
     position: relative;
-    height: 200px;
-    &.top-fixed {
-      height: 500px;
-    }
+    height: 700px;
     .loading {
       position: absolute;
+      top: 30%;
     }
   }
   .section {
