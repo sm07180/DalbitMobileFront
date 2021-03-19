@@ -59,6 +59,8 @@ let totalLivePage = 1
 // updateLink
 let storeUrl = ''
 let updateState
+
+let loading = false
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -129,7 +131,6 @@ export default (props) => {
   }
 
   const SET_MEDIATYPE = (type) => {
-    setLiveList(null)
     if (TopSectionHeightRef.current !== 0) {
       window.scrollTo(0, TopSectionHeightRef.current)
     }
@@ -261,7 +262,7 @@ export default (props) => {
     // setLiveList(null)
 
     const {page, mediaType, roomType} = liveForm
-
+    loading = true
     const broadcastList = await Api.broad_list({
       params: {
         page,
@@ -281,6 +282,8 @@ export default (props) => {
       }
       setLiveList(list)
       fetchNextList()
+
+      loading = false
     }
   }
 
@@ -612,8 +615,7 @@ export default (props) => {
   }
 
   const LiveListComponent = useCallback(() => {
-    if (liveList === null) <MainListRoadingBar />
-    if (Array.isArray(liveList) && liveRefresh === false) {
+    if (Array.isArray(liveList) && liveRefresh === false && loading === false) {
       if (liveList.length > 0) {
         return (
           <div className="liveList">
