@@ -48,8 +48,6 @@ export default () => {
   //ref
   const formTag = useRef(null)
 
-  const testId = context.myInfo.memNo
-
   //결제 data 셋팅
   const { name, price, itemNo, webview, event } = qs.parse(location.search)
   const dalVal = Number(name.split(" ")[1]);
@@ -254,14 +252,7 @@ export default () => {
   }
 
   const createMethodBtn = (type) => {
-
     let currentPayMethod = []
-    const isTestId =
-      testId === "11584609206936" ||
-        testId === "11584609206286" ||
-        testId === "11584609206852"
-        ? ""
-        : "hide";
     if (type === 'more') {
       currentPayMethod = payMethod.slice(3)
     } else {
@@ -273,7 +264,7 @@ export default () => {
       return (
         <button
           key={idx}
-          className={`type === selectedPay.type ? 'on' : '' ${isTestId}`}
+          className={type === selectedPay.type ? 'on' : ''}
           onClick={() => setSelectedPay(item)}
           disabled={disabledState}>
           {type}
@@ -596,15 +587,6 @@ const Content = styled.div`
         color: #9e9e9e;
         background: #f5f5f5;
       }
-
-      // =============테스트================
-      &.hide {
-        &:first-child {
-          display: none;
-        }
-      }
-      // ===================================
-
     }
     
     button:nth-child(1) {
