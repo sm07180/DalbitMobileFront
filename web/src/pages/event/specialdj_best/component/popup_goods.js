@@ -1,5 +1,7 @@
 import React, {useEffect} from 'react'
 
+import {IMG_SERVER} from 'context/config'
+
 export default ({setGoodsPop}) => {
   const closePopup = () => {
     setGoodsPop(false)
@@ -25,7 +27,7 @@ export default ({setGoodsPop}) => {
       <div className="layerContainer goods_pop">
         <h3>굿즈 상품 미리보기</h3>
         <div className="layerContent scroll_box">
-          <img src={'https://image.dalbitlive.com/event/2007/24/goods_img_640.jpg'} />
+          <img src={`${IMG_SERVER}/event/2007/24/goods_img_640.jpg`} alt="굿즈 상품 이미지" />
         </div>
         <button className="btnClose" onClick={closePopup}>
           닫기

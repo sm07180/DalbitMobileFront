@@ -23,8 +23,11 @@
 
     .support_box {
       position: relative;
-      padding-bottom: 7%;
       text-align: center;
+
+      &.padding {
+        padding-bottom: 7%;
+      }
 
       img {
         width: 100%;
@@ -37,7 +40,7 @@
       .btn_goods_more {
         position: absolute;
         left: 31%;
-        bottom: 17%;
+        bottom: 7%;
         width: 38%;
       }
 
@@ -59,6 +62,11 @@
 
       img.title {
         margin-bottom: 3%;
+      }
+
+      img.method {
+        width: 100%;
+        max-width: 300px;
       }
 
       .end_date_box {
@@ -127,16 +135,16 @@
           display: block;
           top: 50%;
           transform: translateY(50%);
-          background: url(https://image.dalbitlive.com/event/specialdj/20210216/ic_unsuccess.png) no-repeat;
-          background-size: 14%;
+          background: url('#{$IMG_SERVER}/event/specialdj/20210216/ic_unsuccess.png') no-repeat;
+          background-size: contain;
           background-position: 95%;
         }
 
         &.active {
           &::after {
             content: '스페셜 DJ에 \A 도전해보세요!';
-            background: url(https://image.dalbitlive.com/event/specialdj/20210216/ic_success.png) no-repeat;
-            background-size: 14%;
+            background: url('#{$IMG_SERVER}/event/specialdj/20210216/ic_success.png') no-repeat;
+            background-size: contain;
             background-position: 95%;
             color: $black;
           }
@@ -146,11 +154,13 @@
           &::after {
             content: '베스트 스페셜 DJ \A 유지 최소 조건을 \A 충족하지 않습니다';
             transform: translateY(15%);
+            background-size: 14%;
           }
 
           &.active {
             &::after {
               content: '다음 달 \A 베스트 스페셜 DJ\A 자격이 유지되셨습니다.';
+              background-size: 14%;
             }
           }
         }
@@ -197,7 +207,7 @@
       width: 32px;
       height: 32px;
       text-indent: -9999px;
-      background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+      background: url('#{$IMG_SERVER}/svg/close_w_l.svg') no-repeat 0 0;
     }
 
     .layerContainer {
@@ -205,7 +215,6 @@
       width: calc(100% - 32px);
       min-width: 320px;
       max-width: 360px;
-      padding: 0 16px;
       border-radius: 16px;
       background-color: $white;
       box-sizing: border-box;
@@ -223,10 +232,21 @@
       }
 
       .layerContent {
-        padding: 16px 0;
+        padding: 16px;
+        border-radius: 0 0 16px 16px;
+
         &.scroll_box {
           overflow-y: auto;
           max-height: 350px;
+        }
+
+        .btnWrap {
+          padding: 0;
+        }
+      }
+      &.send_pop {
+        .layerContent {
+          background: $lighterGray;
         }
       }
     }

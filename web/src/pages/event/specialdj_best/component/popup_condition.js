@@ -35,16 +35,17 @@ export default ({setConditionPop}) => {
           <ul>
             <li>
               <img src={NumberImg01} className="number_img" />
-              방송 점수, 청취자 점수, 방송 퀄리티 및 호응도,
+              평가 항목은 방송 점수(25%),
               <br />
-              받은 선물 총 4가지 항목으로 나누어
+              방송 호응도 점수(25%), 받은 선물(25%),
               <br />
-              신청자를 평가 합니다. (각각 25%)
+              청취자 점수(20%), 신규 팬 등록 수(25%)로
+              <br />총 5개 항목입니다.
             </li>
 
             <li>
               <img src={NumberImg02} className="number_img" />
-              공개된 4개 항목을 합산하여
+              공개된 5개 항목을 합산하여
               <br />총 100점으로 점수를 산정합니다.
             </li>
 

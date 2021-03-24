@@ -1,5 +1,7 @@
 import React, {useContext, useEffect, useState} from 'react'
 
+import {IMG_SERVER} from 'context/config'
+
 export default ({infoData, conditionData, bestData, setSendPop}) => {
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
@@ -55,7 +57,7 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
       const startM = startDay.slice(4, 6)
       const startD = startDay.slice(6, 8)
 
-      setStartDate(startY + '년 ' + startM + '월 ' + startD + '일')
+      setStartDate(startM + '월 ' + startD + '일')
     }
   }, [infoData])
 
@@ -79,42 +81,32 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
         {bestData && bestData.is_best === 1 ? (
           <div className="dj_pick_item">
             <img
-              src="https://image.dalbitlive.com/event/specialdj/20210216/title_01_best.png"
+              src={`${IMG_SERVER}/event/specialdj/20210216/title_01_best.png`}
               width={253}
               className="title"
               alt="베스트 스페셜DJ 선발 방식"
             />
             <br />
-            <img src="https://image.dalbitlive.com/event/specialdj/20210216/img_step_best.png" width={148} alt="step" />
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/img_step_best.png`} width={148} alt="step" />
           </div>
         ) : (
           <div className="dj_pick_item">
             <img
-              src="https://image.dalbitlive.com/event/specialdj/20210216/title_01.png"
+              src={`${IMG_SERVER}/event/specialdj/20210216/title_01.png`}
               width={192}
               className="title"
               alt="스페셜DJ 선발 방식"
             />
             <br />
-            <img src="https://image.dalbitlive.com/event/specialdj/20210216/img_step.png" width={300} alt="step" />
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/img_step.png`} alt="step" className="method" />
           </div>
         )}
 
         <div className="dj_pick_item">
           {bestData && bestData.is_best === 1 ? (
-            <img
-              src="https://image.dalbitlive.com/event/specialdj/20210216/title_02_best.png"
-              width={120}
-              className="title"
-              alt="심사 기한"
-            />
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/title_02_best.png`} width={120} className="title" alt="심사 기한" />
           ) : (
-            <img
-              src="https://image.dalbitlive.com/event/specialdj/20210216/title_02.png"
-              width={120}
-              className="title"
-              alt="접수 기한"
-            />
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/title_02.png`} width={120} className="title" alt="접수 기한" />
           )}
 
           <div className="end_date_box">
@@ -124,12 +116,7 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
           </div>
         </div>
 
-        <img
-          src="https://image.dalbitlive.com/event/specialdj/20210216/title_03.png"
-          className="title"
-          width={120}
-          alt="유지 조건"
-        />
+        <img src={`${IMG_SERVER}/event/specialdj/20210216/title_03.png`} className="title" width={120} alt="유지 조건" />
         <ul className="condition_list">
           {conditionData.conditionList &&
             conditionData.conditionList.map((item, index) => {
@@ -153,20 +140,17 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
                 <>
                   {activeState ? (
                     <button onClick={() => setSendPop(true)}>
-                      <img src="https://image.dalbitlive.com/event/specialdj/20210216/btn_sand.png" alt="스페셜DJ 지원하기" />
+                      <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_sand.png`} alt="스페셜DJ 지원하기" />
                     </button>
                   ) : (
                     <button disabled>
-                      <img
-                        src="https://image.dalbitlive.com/event/specialdj/20210216/btn_sand_next.png"
-                        alt="다음에 지원해주세요"
-                      />
+                      <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_sand_next.png`} alt="다음에 지원해주세요" />
                     </button>
                   )}
                 </>
               ) : (
                 <button disabled>
-                  <img src="https://image.dalbitlive.com/event/specialdj/20210216/btn_sand_not.png" alt="이미 지원하셨습니다" />
+                  <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_sand_not.png`} alt="이미 지원하셨습니다" />
                 </button>
               )}
             </>
