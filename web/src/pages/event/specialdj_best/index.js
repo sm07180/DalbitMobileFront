@@ -133,7 +133,7 @@ export default function SpecialDjBest() {
               </button>
             </div>
             <div className="support_box">
-              <img src={`${IMG_SERVER}/event/specialdj/20210223/support_img_05.png`} alt="스페셜 DJ 유의 사항" />
+              <img src={`${IMG_SERVER}/event/specialdj/20210315/support_img_05.png`} alt="스페셜 DJ 유의 사항" />
             </div>
 
             {context.token.isLogin && conditionData ? (
