@@ -225,6 +225,16 @@ const App = () => {
         document.cookie = key + '=' + '; expires=' + yesterDay + '; path=/; secure; domain=.dalbitlive.com'
       })
 
+      Api.error_log({
+        data: {
+          os: 'mobile',
+          appVer: customHeader.appVersion,
+          dataType: __NODE_ENV,
+          commandType: window.location.pathname,
+          desc: 'get token error' + error.name + '\n' + error.message + '\n' + error.stack
+        }
+      })
+
       globalCtx.action.alert({
         title: tokenInfo.messageKey,
         msg: tokenInfo.message,
@@ -246,6 +256,16 @@ const App = () => {
       }
       globalCtx.action.updateSplash(data)
       globalCtx.action.updateUseMailbox(useMailBox)
+    } else {
+      Api.error_log({
+        data: {
+          os: 'mobile',
+          appVer: customHeader.appVersion,
+          dataType: __NODE_ENV,
+          commandType: window.location.pathname,
+          desc: 'splash error' + error.name + '\n' + error.message + '\n' + error.stack
+        }
+      })
     }
   }
 
