@@ -81,96 +81,87 @@ export default function SpecialDjBest() {
   }, [tabState])
 
   return (
-    <Layout status="no_gnb">
+    <div id="speacial_dj_page">
       <Header title={infoData && infoData.title} />
-      <div id="speacial_dj_page">
-        <img
-          src={`${IMG_SERVER}/event/specialdj/20210216/common_top_img.png`}
-          className="top_image"
-          alt="우리모두 달빛하여 스페샬디제이 되세"
-        />
-        <div className="tab_box">
-          <button onClick={() => setTabState('support')}>
-            <img
-              src={`${IMG_SERVER}/event/specialdj/20210216/tab_support${tabState === 'support' ? '_on' : ''}.png`}
-              alt="지원하기"
-            />
-          </button>
-          <button onClick={() => setTabState('best')}>
-            <img
-              src={`${IMG_SERVER}/event/specialdj/20210216/tab_best${tabState === 'best' ? '_on' : ''}.png`}
-              alt="베스트 스디"
-            />
-          </button>
-        </div>
-        {tabState === 'support' && (
-          <div className="tab_wrap support">
-            <div className="support_box padding">
-              <img src={`${IMG_SERVER}/event/specialdj/20210216/support_img_01.png`} alt="스페셜 DJ 설명" />
-              <button onClick={() => setConditionPop(true)} className="btn_pick_more">
-                <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_pick_more.png`} alt="선발 요건 확인하기" />
-              </button>
-            </div>
-            <div className="support_box">
-              <img src={`${IMG_SERVER}/event/specialdj/20210216/support_img_02.png`} alt="스페셜 DJ 혜택" />
-              <button onClick={() => setGoodsPop(true)} className="btn_goods_more">
-                <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_goods_more.png`} alt="굿즈상품 더보기" />
-              </button>
-            </div>
-            <div className="support_box">
-              <img src={`${IMG_SERVER}/event/specialdj/20210315/support_img_03.png`} alt="스페셜 DJ 혜택 상세보기" />
-              {/* <button onClick={() => setMoonPop(true)} className="btn_support_moon">
+      <img
+        src={`${IMG_SERVER}/event/specialdj/20210216/common_top_img.png`}
+        className="top_image"
+        alt="우리모두 달빛하여 스페샬디제이 되세"
+      />
+      <div className="tab_box">
+        <button onClick={() => setTabState('support')}>
+          <img
+            src={`${IMG_SERVER}/event/specialdj/20210216/tab_support${tabState === 'support' ? '_on' : ''}.png`}
+            alt="지원하기"
+          />
+        </button>
+        <button onClick={() => setTabState('best')}>
+          <img src={`${IMG_SERVER}/event/specialdj/20210216/tab_best${tabState === 'best' ? '_on' : ''}.png`} alt="베스트 스디" />
+        </button>
+      </div>
+      {tabState === 'support' && (
+        <div className="tab_wrap support">
+          <div className="support_box padding">
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/support_img_01.png`} alt="스페셜 DJ 설명" />
+            <button onClick={() => setConditionPop(true)} className="btn_pick_more">
+              <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_pick_more.png`} alt="선발 요건 확인하기" />
+            </button>
+          </div>
+          <div className="support_box">
+            <img src={`${IMG_SERVER}/event/specialdj/20210216/support_img_02.png`} alt="스페셜 DJ 혜택" />
+            <button onClick={() => setGoodsPop(true)} className="btn_goods_more">
+              <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_goods_more.png`} alt="굿즈상품 더보기" />
+            </button>
+          </div>
+          <div className="support_box">
+            <img src={`${IMG_SERVER}/event/specialdj/20210315/support_img_03.png`} alt="스페셜 DJ 혜택 상세보기" />
+            {/* <button onClick={() => setMoonPop(true)} className="btn_support_moon">
                 <img
                   src{`${IMG_SERVER}/event/specialdj/20210216/btn_support_moon@2x.png"
                   alt="활동지원비 확인하기"
                 />
               </button> */}
-            </div>
-            <div className="support_box padding">
-              <img src={`${IMG_SERVER}/event/specialdj/20210223/support_img_04.png`} alt="베스트 스페셜 DJ 설명" />
-              <button onClick={() => setTabState('best')} className="btn_pick_more">
-                <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_best_more.png`} alt="베스트 스디 확인하기" />
+          </div>
+          <div className="support_box padding">
+            <img src={`${IMG_SERVER}/event/specialdj/20210223/support_img_04.png`} alt="베스트 스페셜 DJ 설명" />
+            <button onClick={() => setTabState('best')} className="btn_pick_more">
+              <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_best_more.png`} alt="베스트 스디 확인하기" />
+            </button>
+          </div>
+          <div className="support_box">
+            <img src={`${IMG_SERVER}/event/specialdj/20210315/support_img_05.png`} alt="스페셜 DJ 유의 사항" />
+          </div>
+
+          {context.token.isLogin && conditionData ? (
+            <DjCheckBox infoData={infoData} conditionData={conditionData} bestData={bestData} setSendPop={setSendPop} />
+          ) : (
+            <div className="btnWrap login">
+              <button
+                className="btn_login"
+                onClick={() => {
+                  history.push({
+                    pathname: '/login',
+                    state: {
+                      state: 'event/specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
+                    }
+                  })
+                }}>
+                <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_login.png`} alt="로그인" />
               </button>
             </div>
-            <div className="support_box">
-              <img src={`${IMG_SERVER}/event/specialdj/20210315/support_img_05.png`} alt="스페셜 DJ 유의 사항" />
-            </div>
+          )}
+        </div>
+      )}
+      {tabState === 'best' && (
+        <div className="tab_wrap best">
+          <img src={`${IMG_SERVER}/event/specialdj/20210315/best_img.png`} alt="베스트 스페셜 DJ 이미지" className="top_image" />
+        </div>
+      )}
 
-            {context.token.isLogin && conditionData ? (
-              <DjCheckBox infoData={infoData} conditionData={conditionData} bestData={bestData} setSendPop={setSendPop} />
-            ) : (
-              <div className="btnWrap login">
-                <button
-                  className="btn_login"
-                  onClick={() => {
-                    history.push({
-                      pathname: '/login',
-                      state: {
-                        state: 'event/specialdj?select_year=' + parameter.select_year + '&select_month=' + parameter.select_month
-                      }
-                    })
-                  }}>
-                  <img src={`${IMG_SERVER}/event/specialdj/20210216/btn_login.png`} alt="로그인" />
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-        {tabState === 'best' && (
-          <div className="tab_wrap best">
-            <img
-              src={`${IMG_SERVER}/event/specialdj/20210315/best_img.png`}
-              alt="베스트 스페셜 DJ 이미지"
-              className="top_image"
-            />
-          </div>
-        )}
-
-        {conditionPop && <PopupCondition setConditionPop={setConditionPop} />}
-        {goodsPop && <PopupGoods setGoodsPop={setGoodsPop} />}
-        {moonPop && <PopupMoon setMoonPop={setMoonPop} />}
-        {sendPop && <PopupSend setSendPop={setSendPop} />}
-      </div>
-    </Layout>
+      {conditionPop && <PopupCondition setConditionPop={setConditionPop} />}
+      {goodsPop && <PopupGoods setGoodsPop={setGoodsPop} />}
+      {moonPop && <PopupMoon setMoonPop={setMoonPop} />}
+      {sendPop && <PopupSend setSendPop={setSendPop} />}
+    </div>
   )
 }
