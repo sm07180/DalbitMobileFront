@@ -1061,7 +1061,7 @@ export default (props) => {
           <BannerList ref={BannerSectionRef} bannerPosition="10" type="clip" />
         </div>
 
-        {marketingClipList.length > 0 && (
+        {/* {marketingClipList.length > 0 && (
           <div className="weekClip" ref={marketingClipRef}>
             <div className="weekClip__titleBox">
               <h3
@@ -1100,7 +1100,7 @@ export default (props) => {
               )}
             </div>
           </div>
-        )}
+        )} */}
         <div className="rankClip" ref={rankClipRef}>
           <div className="titleBox">
             <h3 className="clipTitle isArrow" onClick={handleScroll}>

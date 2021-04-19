@@ -135,7 +135,7 @@
           display: block;
           top: 50%;
           transform: translateY(50%);
-          background: url('#{$IMG_SERVER}/event/specialdj/20210216/ic_unsuccess.png') no-repeat;
+          background: url('#{$IMG_SERVER}/event/specialdj/common/ic_unsuccess.png') no-repeat;
           background-size: contain;
           background-position: 95%;
         }
@@ -143,7 +143,7 @@
         &.active {
           &::after {
             content: '스페셜 DJ에 \A 도전해보세요!';
-            background: url('#{$IMG_SERVER}/event/specialdj/20210216/ic_success.png') no-repeat;
+            background: url('#{$IMG_SERVER}/event/specialdj/common/ic_success.png') no-repeat;
             background-size: contain;
             background-position: 95%;
             color: $black;
@@ -234,7 +234,6 @@
       .layerContent {
         padding: 16px;
         border-radius: 0 0 16px 16px;
-
         &.scroll_box {
           overflow-y: auto;
           max-height: 350px;
