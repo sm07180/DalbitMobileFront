@@ -135,13 +135,13 @@ export default function SpecialDjBest() {
             {/* <img src={`${IMG_SERVER}/event/specialdj/common/img_cont05.png`} alt="스페셜 DJ 유의 사항" /> */}
             <h4 className="tit"><img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" /></h4>
               <ul className="notice_list">
-                <li>달빛라이브의 스페셜 DJ는 월 1회,<br />매월 마지막 일자에 발표합니다.</li>
+                <li>달빛라이브의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
                 <li>달빛라이브의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
-                <li>스페셜 DJ 유지 기간은 정책에 의거,<br />유지 기간의 변경이 있을 수 있습니다.</li>
-                <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로<br />위반하는 경우 자격이 박탈 될 수 있습니다.</li>
-                <li>지원 요건을 충족해도 스페셜 DJ에<br />미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>
+                <li>스페셜 DJ 유지 기간은 정책에 의거, 유지 기간의 변경이 있을 수 있습니다.</li>
+                <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로 위반하는 경우 자격이 박탈 될 수 있습니다.</li>
+                <li>지원 요건을 충족해도 스페셜 DJ에 미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>
                 <li>스페셜 DJ 부스터 혜택은 별이 지급되지 않습니다.</li>
-                <li>스페셜 DJ 누적 1~5회 활동지원비는<br />매월 1일 스페셜 DJ 선발 발표 후<br />다음 날 (영업일 기준) 오전 중 지급해드립니다.</li>
+                <li>스페셜 DJ 누적 1~5회 활동지원비는 매월 1일 스페셜 DJ 선발 발표 후 다음 날 (영업일 기준) 오전 중 지급해드립니다.</li>
                 <li>스페셜 DJ 혜택은 추후 조정될 수 있습니다.</li>
               </ul>
           </div>
