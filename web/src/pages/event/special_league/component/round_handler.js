@@ -46,23 +46,23 @@ export default function RoundHandler({nowRoundNo}) {
 
   return (
     <div className="realTime_box">
-      <button
+      {/* <button
         className={`prev_btn ${roundCount > 10 ? 'active' : ''}`}
         disabled={roundCount > 10 ? false : true}
         onClick={() => {
           roundFunction('prevState')
         }}>
         이전
-      </button>
+      </button> */}
       <span>
         {roundCount}기 {realTime}
       </span>
-      <button
+      {/* <button
         className={`next_btn ${roundCount < nowRoundNo ? 'active' : ''}`}
         disabled={roundCount < nowRoundNo ? false : true}
         onClick={() => roundFunction('nextState')}>
         다음
-      </button>
+      </button> */}
     </div>
   )
 }

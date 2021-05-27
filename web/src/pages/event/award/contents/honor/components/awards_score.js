@@ -47,7 +47,7 @@ export default function AwardsScore(props) {
         <div className="dayText">
           <p>{djNickNm}</p> 님과
           <br />
-          <span>{Utility.dateFormatterKor(joinDt.toString(), '')}</span> 부터 함께해서 행복했어요!
+          {joinDt && <span>{Utility.dateFormatterKor(joinDt.toString(), '')}</span>} 부터 함께해서 행복했어요!
         </div>
       </div>
 
