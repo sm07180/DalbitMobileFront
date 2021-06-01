@@ -32,6 +32,7 @@ export default (props) => {
   const [isScreet, setIsScreet] = useState(false)
   const [isOther, setIsOther] = useState(true)
   const [writeType, setWriteType] = useState('')
+  const [currentProfileMemNo, setCurrentProfileMemNo] = useState('');
   //팬보드 댓글 온체인지
   const handleChangeInput = (e) => {
     const target = e.currentTarget
@@ -257,77 +258,84 @@ export default (props) => {
       setWriteType('clip_board')
     }
   }, [writeState, ctx.fanBoardBigIdx])
+  useEffect(() => {
+    setCurrentProfileMemNo(urlrStr)    
+  },[urlrStr])
   //--------------------------------------------------
   return (
-    <div className="writeWrap">
-      <div className="writeWrap__top">
-        <div
-          className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
-          onClick={() => {
-            writeToggle(writeState)
-          }}>
-          <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
-          {writeState === false && (
-            <span>
-              글쓰기 <span className="gray">최대 100자</span>
-            </span>
+    <>
+    { currentProfileMemNo !== '10000000000000' && 
+      <div className="writeWrap">
+        <div className="writeWrap__top">
+          <div
+            className={`writeWrap__header ${writeState === true && 'writeWrap__header--active'}`}
+            onClick={() => {
+              writeToggle(writeState)
+            }}>
+            <img src={profile.profImg.thumb62x62} alt={profile.nickNm} />
+            {writeState === false && (
+              <span>
+                글쓰기 <span className="gray">최대 100자</span>
+              </span>
+            )}
+            {writeState === true && <strong>{profile.nickNm}</strong>}
+          </div>
+          {writeState === true && (
+            <div className="content_area">
+              <textarea autoFocus="autofocus" placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
+            </div>
           )}
-          {writeState === true && <strong>{profile.nickNm}</strong>}
         </div>
         {writeState === true && (
-          <div className="content_area">
-            <textarea autoFocus="autofocus" placeholder="내용을 입력해주세요" onChange={handleChangeInput} value={textChange} />
+          <div className="writeWrap__btnWrap">
+            <span className="countBox">
+              {isOther === true && !props.isViewOn ? (
+                writeType === 'board' && (
+                  <span className="secret">
+                    <DalbitCheckbox
+                      status={isScreet}
+                      callback={() => {
+                        setIsScreet(!isScreet)
+                      }}
+                    />
+                    <span className="bold">비공개</span>
+                  </span>
+                )
+              ) : (
+                <></>
+              )}
+              <span className="count">
+                <em>{textChange.length}</em> / 100
+              </span>
+            </span>
+            {props.type === 'modify' ? (
+              <button className="btn__ok" onClick={() => editBoard(props.editType)}>
+                수정
+              </button>
+            ) : (
+              <button className="btn__ok" onClick={() => PostBoardData()}>
+                등록
+              </button>
+            )}
           </div>
         )}
+        {props.replyWriteState || writeState === true ? (
+          <div
+            className="writeWrap__btn"
+            onClick={() => {
+              if (writeType === 'reply') {
+                context.action.updateFanboardReplyNum(-1)
+              }
+              writeToggle(writeState)
+            }}>
+            <button className="btn__toggle">접기</button>
+          </div>
+        ) : (
+          <></>
+        )}
+        {props.isShowBtn && createWriteBtn()}
       </div>
-      {writeState === true && (
-        <div className="writeWrap__btnWrap">
-          <span className="countBox">
-            {isOther === true && !props.isViewOn ? (
-              writeType === 'board' && (
-                <span className="secret">
-                  <DalbitCheckbox
-                    status={isScreet}
-                    callback={() => {
-                      setIsScreet(!isScreet)
-                    }}
-                  />
-                  <span className="bold">비공개</span>
-                </span>
-              )
-            ) : (
-              <></>
-            )}
-            <span className="count">
-              <em>{textChange.length}</em> / 100
-            </span>
-          </span>
-          {props.type === 'modify' ? (
-            <button className="btn__ok" onClick={() => editBoard(props.editType)}>
-              수정
-            </button>
-          ) : (
-            <button className="btn__ok" onClick={() => PostBoardData()}>
-              등록
-            </button>
-          )}
-        </div>
-      )}
-      {props.replyWriteState || writeState === true ? (
-        <div
-          className="writeWrap__btn"
-          onClick={() => {
-            if (writeType === 'reply') {
-              context.action.updateFanboardReplyNum(-1)
-            }
-            writeToggle(writeState)
-          }}>
-          <button className="btn__toggle">접기</button>
-        </div>
-      ) : (
-        <></>
-      )}
-      {props.isShowBtn && createWriteBtn()}
-    </div>
+    }
+    </>
   )
 }

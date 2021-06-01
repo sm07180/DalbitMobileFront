@@ -812,7 +812,7 @@ export default (props) => {
         </div>
 
         {/* 선물하기 */}
-        {showPresent && (
+        {showPresent && profile.memNo !== '10000000000000' && (
           <div className="buttonWrap">
             {context.customHeader['os'] !== OS_TYPE['IOS'] && (
               <button
