@@ -40,10 +40,10 @@ export default function RoundList({rankList}) {
                 </div>
 
                 <dl className="point_box">
-                  <dt>
+                  {/* <dt>
                     <img src="https://image.dalbitlive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
                   </dt>
-                  <dd>{totalPoint.toLocaleString()}</dd>
+                  <dd>{totalPoint.toLocaleString()}</dd> */}
                   <dt>
                     <img src="https://image.dalbitlive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
                   </dt>
@@ -87,10 +87,10 @@ export default function RoundList({rankList}) {
                 </div>
 
                 <dl className="point_box">
-                  <dt>
+                  {/* <dt>
                     <img src="https://image.dalbitlive.com/svg/ico_point.svg" width={16} alt="획득" /> 획득
                   </dt>
-                  <dd>{totalPoint.toLocaleString()}</dd>
+                  <dd>{totalPoint.toLocaleString()}</dd> */}
                   <dt>
                     <img src="https://image.dalbitlive.com/svg/people_g_m.svg" width={16} alt="청취자수" /> 50
                   </dt>
