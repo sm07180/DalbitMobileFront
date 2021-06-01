@@ -72,7 +72,7 @@ export default function SpecialLeague() {
         <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <img
-        src="https://image.dalbitlive.com/event/special_league/210222/common_top_img.png"
+        src="https://image.dalbitlive.com/event/special_league/210601/common_top_img.jpg"
         className="top_image"
         alt="매월 오직 스페셜DJ만의 스페셜 리그가 진행됩니다."
       />
@@ -96,7 +96,7 @@ export default function SpecialLeague() {
 
       {tabState === 'benefit' && (
         <div className="tab_content benefit">
-          <img src="https://image.dalbitlive.com/event/special_league/210222/benefit_img_01.png" />
+          <img src="https://image.dalbitlive.com/event/special_league/210601/benefit_img_01.png" />
           <img src="https://image.dalbitlive.com/event/special_league/210222/benefit_img_02.png" />
           <img src="https://image.dalbitlive.com/event/special_league/210222/benefit_img_03.png" />
         </div>
