@@ -1,7 +1,10 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
-export default function anniversaryEventPresentPop({setPresentPop}) {
+export default function anniversaryEventPresentPop(props) {
+  const rcvDalCnt = () =>{
+    setRcvDalCnt()
+  }
   const closePopup = () => {
     setPresentPop(false)
   }
@@ -24,7 +27,7 @@ export default function anniversaryEventPresentPop({setPresentPop}) {
         <h3>축하합니다!</h3>
         <div className="layerContent">
           <img src="https://image.dalbitlive.com/event/anniversary/moonBox.png" className="layerContent__img" />
-          <div className="layerContent__subTitle">5달이 지급되었습니다.</div>
+          <div className="layerContent__subTitle">{rcvDalCnt}달이 지급되었습니다.</div>
           <div className="layerContent__text">달빛라이브 많이 사랑해주세요~♥</div>
         </div>
         <button className="bottomClose"  onClick={closePopup}>

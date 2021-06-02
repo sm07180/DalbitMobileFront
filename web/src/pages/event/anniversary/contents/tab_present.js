@@ -7,7 +7,8 @@ import Api from 'context/api'
 
 export default function anniversaryEventPresnet(){
     const [presentPop, setPresentPop] = useState(false)
-    const [popupExp, setPopupExp] = useState(false);
+    const [popupExp, setPopupExp] = useState(false)
+    const [rcvDalCnt, setRcvDalCnt] = useState()
     const globalCtx = useContext(Context)
 
     async function eventOneYearCheck() {
@@ -21,7 +22,7 @@ export default function anniversaryEventPresnet(){
         }
     }
     async function eventOneYearInsert() {
-        const {result, code, message} = await Api.postEventOneYearInsert()
+        const {result, message} = await Api.postEventOneYearInsert()
         if (result === 'success') {
             setPresentPop(true)
         }else {
@@ -32,7 +33,7 @@ export default function anniversaryEventPresnet(){
         eventOneYearCheck()
     }
 
-    return(
+return(
         <>
             <div className="tabContentWrap">
                 <img src="https://image.dalbitlive.com/event/anniversary/present.png" className="contentImg" />
