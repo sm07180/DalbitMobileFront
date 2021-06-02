@@ -72,7 +72,7 @@ export default function awardEventComment() {
   return (
     <>
         <div className="tabContentWrap">
-            <div className="tabContentWrap__imgWrap">
+            <div className="tabContentWrap_imgWrap">
                 <img src="https://image.dalbitlive.com/event/anniversary/comment.png" className="contentImg" />
             </div>
         </div>

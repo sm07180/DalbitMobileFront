@@ -1,12 +1,31 @@
-import React from 'react'
-import {useParams} from 'react-router-dom'
+import React,{useState} from  'react'
 
-import Layout from 'pages/common/layout'
-import AnniversaryMain from './contents'
-// import AnniversaryResult from './contents/result/result'
-// import Anniversary2021 from './contents/honor/2021'
 import './anniversary.scss'
+import PresentTab from './contents/tab_present'
+import CommentTab from './contents/tab_comment'
 
 export default function anniversaryEvent() {
-  return <div id="anniversaryEventPage"><AnniversaryMain /></div>
+  const [tabState, setTabState] = useState('present')
+
+  return (
+  <div id="anniversaryEventPage">
+    <div className="topBox">
+        <img src="https://image.dalbitlive.com/event/anniversary/main.png" className="topBox_mainImg" alt="main Image" />
+      </div>
+      <div className="contentBox">
+        <div className="tabBox">
+          <button className={`btn ${tabState === 'present' && 'active'}`} onClick={() => setTabState('present')}>
+            <span>EVENT 01</span>
+            <span>선물 이벤트</span>
+          </button>
+          <button className={`btn ${tabState === 'comment' && 'active'}`} onClick={() => setTabState('comment')}>
+            <span>EVENT 02</span>
+            <span>댓글 이벤트</span>
+          </button>
+        </div>
+        {tabState === 'present' && <PresentTab />}
+        {tabState === 'comment' && <CommentTab />}
+      </div>
+  </div>
+  )
 }
