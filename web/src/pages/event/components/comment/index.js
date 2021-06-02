@@ -75,37 +75,44 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
         </div>
 
         <div className="listBox">
-          {commentList.map((value, idx) => {
-            const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
+          {commentList.length > 0 ? (
+            <>
+              {commentList.map((value, idx) => {
+                const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
 
-            return (
-              <div className="listItem" key={`comment-${idx}`}>
-                <div
-                  className="thumb"
-                  onClick={() => {
-                    history.push(`/mypage/${writerNo}`)
-                  }}>
-                  <img src={profImg.thumb120x120} alt={nickNm} />
-                </div>
-                <div className="textBox">
-                  <div className="nick">
-                    {nickNm} <span className="date">{timeFormat(writeDt)}</span>
+                return (
+                  <div className="listItem" key={`comment-${idx}`}>
+                    <div
+                      className="thumb"
+                      onClick={() => {
+                        history.push(`/mypage/${writerNo}`)
+                      }}>
+                      <img src={profImg.thumb120x120} alt={nickNm} />
+                    </div>
+                    <div className="textBox">
+                      <div className="nick">
+                        {nickNm} <span className="date">{timeFormat(writeDt)}</span>
+                      </div>
+                      <p className="msg">{content}</p>
+                    </div>
+
+                    {token.memNo === writerNo && (
+                      <button
+                        className="btnDelete"
+                        onClick={() => {
+                          commentDel(replyIdx)
+                        }}>
+                        <img src={deleteIcon} alt="삭제하기" />
+                      </button>
+                    )}
                   </div>
-                  <p className="msg">{content}</p>
-                </div>
-
-                {token.memNo === writerNo && (
-                  <button
-                    className="btnDelete"
-                    onClick={() => {
-                      commentDel(replyIdx)
-                    }}>
-                    <img src={deleteIcon} alt="삭제하기" />
-                  </button>
-                )}
-              </div>
-            )
-          })}
+                )
+              })}
+            </>
+          ) : (
+            <>등록된 댓글이 없습니다</>
+          )}
+          
         </div>
       </div>
     </div>
