@@ -2571,6 +2571,13 @@ export default class API {
     return await ajax({url: '/event/roulette/phone', method: 'POST', data})
   }
 
+  static postEventOneYearCheck = async (params) => {
+    return await ajax({url: '/oneYear/dal/check', method: 'POST', params})
+  }
+  static postEventOneYearInsert = async (params) => {
+    return await ajax({url: '/oneYear/dal/ins', method: 'POST', params})
+  }
+  
   //이벤트용 ios 심사여부 조회
   static getIosJudge = async (params) => {
     return await ajax({url: '/ios/judge', method: 'GET', params})

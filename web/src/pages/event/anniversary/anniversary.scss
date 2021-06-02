@@ -1,0 +1,67 @@
+@import '../../../styles/variables';
+
+#anniversaryEventPage {
+  .topBox {
+    position: relative;
+    text-align: center;
+    z-index: -1;
+
+    &__mainImg {
+      width: 100%;
+    }
+
+    .btnBack {
+      position: absolute;
+      top: 2%;
+      right: 2%;
+      width: 32px;
+      height: 32px;
+    } 
+  }
+  .contentBox{
+    width:100%;
+    margin-top:-20px;
+  }
+  .tabBox{
+    display:flex; justify-content: center; align-items: center;
+    width:100%;
+    .btn{
+      display:flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      width:50%; height:100%;
+      border-radius:10px 10px 0 0;
+      padding:12px 0;
+      font-size:14px; font-weight:700; color:#fff;
+      font-family: "Noto Sans KR", sans-serif;
+      background:linear-gradient(#B1B1B1,#959595);
+      text-shadow: -2px -2px 0 #919191, 2px -2px 0 #919191, -2px 2px 0 #919191, 2px 2px 0 #919191;
+      >span:last-child{font-size:16px;}
+      &.active{
+        background:linear-gradient(#FF8FAC,#FF688E);
+        text-shadow: -2px -2px 0 #ff678e, 2px -2px 0 #ff678e, -2px 2px 0 #ff678e, 2px 2px 0 #ff678e;
+      }
+      .tabTitle{width:45%;}
+    }
+  }
+  .tabContentWrap {
+    position:relative;
+    width:100%;
+    padding:12px 14px;
+    background:#FF7B9C;
+    &__imgWrap{width:100%;}
+    &__button{
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      &.present{top:58%; width:58%;}
+      &.level{bottom:6%; width:52%}
+      .button__img{width:100%}
+    }
+    .contentImg {
+      width: 100%;
+    }
+  }
+  .notice{
+    width:100%
+  }
+} 
