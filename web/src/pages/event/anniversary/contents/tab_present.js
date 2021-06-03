@@ -1,17 +1,17 @@
-import React, {useState, useRef, useEffect, useContext} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
-import PresentPop from './pop_present'
-import LayerPopupExp from './layer_popup_exp'
+import React, {useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
+
+import PresentPop from './pop_present'
+import LayerPopupExp from './layer_popup_exp'
 
 export default function anniversaryEventPresnet(){
     const [presentPop, setPresentPop] = useState(false)
     const [popupExp, setPopupExp] = useState(false)
-    const [rcvDalCnt, setRcvDalCnt] = useState()
     const globalCtx = useContext(Context)
     const history = useHistory()
-
+    
     async function eventOneYearCheck() {
         const {result, message} = await Api.postEventOneYearCheck()
         if (result === 'success') {
