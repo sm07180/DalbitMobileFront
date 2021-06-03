@@ -1,10 +1,7 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
-export default function anniversaryEventPresentPop(props) {
-  const rcvDalCnt = () =>{
-    setRcvDalCnt()
-  }
+export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
   const closePopup = () => {
     setPresentPop(false)
   }
