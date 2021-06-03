@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
@@ -6,13 +6,14 @@ import {Context} from 'context'
 import PresentPop from './pop_present'
 import LayerPopupExp from './layer_popup_exp'
 
-export default function anniversaryEventPresnet(){
+export default function anniversaryEventPresnet(props){
+    const {noticeData} = props
     const [presentPop, setPresentPop] = useState(false)
     const [popupExp, setPopupExp] = useState(false)
     const [rcvDalCnt, setRcvDalCnt] = useState(0)
     const globalCtx = useContext(Context)
     const history = useHistory()
-    
+
     async function eventOneYearCheck() {
         const {result, message} = await Api.postEventOneYearCheck()
         if (result === 'success') {
@@ -60,13 +61,7 @@ return(
                 <div className="notice_title">
                     <span className="exclamation">!</span>이벤트 유의사항
                 </div>
-                <ul className="notice_list">
-                    <li>- 선물은 1인 1번만 지급됩니다.</li>
-                    <li>- 휴대폰 인증 후 선물이 지급됩니다.</li>
-                    <li>- 부정한 방법으로 선물 수령시 회수 조치 및 제재될 수 있습니다.</li>
-                    <li>- 휴대폰 번호가 없는 해외 회원의 경우 1:1 문의로 별도 문의해주세요.</li>
-                    <li>- 댓글 이벤트 결과는 0월 0일 공지사항에서 확인할 수 있습니다.</li>
-                </ul>
+                <div dangerouslySetInnerHTML={{__html: noticeData}}></div>
             </div>
             {presentPop && <PresentPop setPresentPop={setPresentPop} rcvDalCnt={rcvDalCnt}/>}
             {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}

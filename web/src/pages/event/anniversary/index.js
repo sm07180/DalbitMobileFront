@@ -1,14 +1,46 @@
-import React,{useState} from  'react'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import React, { useState,useEffect } from  'react'
 import {useHistory} from 'react-router-dom'
-
-import './anniversary.scss'
+import {Hybrid, isHybrid} from 'context/hybrid'
+import Api from 'context/api'
+import {IMG_SERVER} from 'context/config'
 import PresentTab from './contents/tab_present'
 import CommentTab from './contents/tab_comment'
+import './anniversary.scss'
 
 export default function anniversaryEvent() {
   const history = useHistory()
   const [tabState, setTabState] = useState('present')
+  const [noticeData, setNoticeData] = useState(false)
+  const [eventDate, setEventDate] = useState('')
+
+  const dateFormatterKor = (num, type) => {
+    if (!num) return ''
+    var formatNum = ''
+    num = num.replace(/\s/gi, '')
+    num = num.substr(4, 6)
+    try {
+      formatNum = num.replace(/(\d{2})(\d{2})(\d{2})/, '$1월 $2일 $3시')
+    } catch (e) {
+      formatNum = num
+      console.log(e)
+    }
+    return formatNum
+  }
+  async function fetchEventData() {
+      const {result, data} = await Api.getVideoOpenEvent({
+        slctType: 1,
+        eventNo: 8
+      })
+
+      if (result === 'success') {
+        setNoticeData(data.detailDesc)
+        setEventDate(dateFormatterKor(data.startDt) + ' ~ ' + dateFormatterKor(data.endDt))
+      } else {
+          context.action.alert({
+            msg: message
+          })
+      }
+  }
 
   const clickCloseBtn = () => {
     if (isHybrid() && webview && webview === 'new') {
@@ -17,15 +49,20 @@ export default function anniversaryEvent() {
       return history.goBack()
     }
   }
+  
+  useEffect(() => {
+    // 이벤트 관리자 데이터 호출
+    fetchEventData()
+  },[])
 
   return (
   <div id="anniversaryEventPage">
     <div className="topBox">
       <button className="btnBack" onClick={() => clickCloseBtn()}>
-        <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
+        <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
       </button>
       <img src="https://image.dalbitlive.com/event/anniversary/main.png" className="topBox_mainImg" alt="main Image" />
-      <div className="topBox_datebox">이벤트 기간 : <strong>5월 28일 14시 ~ 6월 10일 14시</strong></div>
+      <div className="topBox_datebox">이벤트 기간 : <strong>{eventDate}</strong></div>
     </div>
     <div className="contentBox">
       <div className="tabBox">
@@ -38,7 +75,7 @@ export default function anniversaryEvent() {
           <span>댓글 이벤트</span>
         </button>
       </div>
-      {tabState === 'present' && <PresentTab />}
+      {tabState === 'present' && <PresentTab noticeData={noticeData} />}
       {tabState === 'comment' && <CommentTab />}
     </div>
   </div>
