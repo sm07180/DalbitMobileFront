@@ -1,14 +1,17 @@
 import React, { useState,useEffect } from  'react'
-import {useHistory} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
+import qs from 'query-string'
 import PresentTab from './contents/tab_present'
 import CommentTab from './contents/tab_comment'
 import './anniversary.scss'
 
 export default function anniversaryEvent() {
   const history = useHistory()
+  const location = useLocation()
+  let urlrStr = qs.parse(location.search)
   const [tabState, setTabState] = useState('present')
   const [noticeData, setNoticeData] = useState(false)
   const [eventDate, setEventDate] = useState('')
@@ -53,6 +56,9 @@ export default function anniversaryEvent() {
   useEffect(() => {
     // 이벤트 관리자 데이터 호출
     fetchEventData()
+    if(urlrStr.tab === 'comment') {
+      setTabState('comment')
+    }
   },[])
 
   return (
@@ -76,7 +82,7 @@ export default function anniversaryEvent() {
         </button>
       </div>
       {tabState === 'present' && <PresentTab noticeData={noticeData} />}
-      {tabState === 'comment' && <CommentTab />}
+      {tabState === 'comment' && <CommentTab tabState={tabState} setTabState={setTabState} />}
     </div>
   </div>
   )

@@ -34,7 +34,7 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
           history.push({
             pathname: '/login',
             state: {
-              state: 'event/award/comment'
+              state: 'event/anniversary?tab=comment'
             }
           })
         }
@@ -91,7 +91,7 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
         </div>
 
         <div className="listBox">
-          {commentList.length > 0 ? (
+          {commentList && commentList.length > 0 ? (
             <>
               {commentList.map((value, idx) => {
                 const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value

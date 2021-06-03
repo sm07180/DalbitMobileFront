@@ -8,7 +8,8 @@ import Api from 'context/api'
 
 import Comment from '../../components/comment'
 
-export default function awardEventComment() {
+export default function awardEventComment(props) {
+  const { tabState, setTabState } = props
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
@@ -24,7 +25,6 @@ export default function awardEventComment() {
   async function fetchCommentData() {
     const {result, data, message} = await API.postEventOneYearComment()
     if (result === 'success') {
-      console.log(data[1]);
       setCommentList(data[1])
     }else {
       console.log(message);
@@ -50,9 +50,9 @@ export default function awardEventComment() {
       }
     } else {
       globalCtx.action.alert({
-        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+        msg: '111해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
-          history.push(`/login?redirect=/event/anniversary`)
+          history.push(`/login?redirect=/event/anniversary?tab=comment`)
         }
       })
     }
@@ -61,7 +61,6 @@ export default function awardEventComment() {
   const commentDel = (tail_no,tail_mem_no) => {
     async function DeleteComment(tail_no,tail_mem_no) {
       const {result, data} = await API.postEventOneYearCommentDelete({tailNo:tail_no,tailMemNo:tail_mem_no})
-      console.log(tail_no,tail_mem_no,result)
       if (result === 'success') {
         fetchCommentData()
       } else {
