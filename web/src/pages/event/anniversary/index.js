@@ -25,6 +25,7 @@ export default function anniversaryEvent() {
         <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <img src="https://image.dalbitlive.com/event/anniversary/main.png" className="topBox_mainImg" alt="main Image" />
+      <div className="topBox_datebox">이벤트 기간 : <strong>5월 28일 14시 ~ 6월 10일 14시</strong></div>
     </div>
     <div className="contentBox">
       <div className="tabBox">

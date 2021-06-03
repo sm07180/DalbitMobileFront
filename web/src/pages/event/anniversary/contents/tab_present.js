@@ -9,6 +9,7 @@ import LayerPopupExp from './layer_popup_exp'
 export default function anniversaryEventPresnet(){
     const [presentPop, setPresentPop] = useState(false)
     const [popupExp, setPopupExp] = useState(false)
+    const [rcvDalCnt, setRcvDalCnt] = useState(0)
     const globalCtx = useContext(Context)
     const history = useHistory()
     
@@ -23,9 +24,11 @@ export default function anniversaryEventPresnet(){
         }
     }
     async function eventOneYearInsert() {
-        const {result, message} = await Api.postEventOneYearInsert()
+        const {result, message, data} = await Api.postEventOneYearInsert()
         if (result === 'success') {
             setPresentPop(true)
+            console.log(data.rcvDalCnt)
+            setRcvDalCnt(data.rcvDalCnt)
         }else {
             console.log(message);
         }
@@ -53,8 +56,19 @@ return(
                 <button className="button_level" onClick={() => setPopupExp(true)}>레벨 올리는 방법 알아보기
                 </button>
             </div>
-            <img src="https://image.dalbitlive.com/event/anniversary/notice.png" className="notice" alt="이벤트 유의사항"/>
-            {presentPop && <PresentPop setPresentPop={setPresentPop}/>}
+            <div className="notice">
+                <div className="notice_title">
+                    <span className="exclamation">!</span>이벤트 유의사항
+                </div>
+                <ul className="notice_list">
+                    <li>- 선물은 1인 1번만 지급됩니다.</li>
+                    <li>- 휴대폰 인증 후 선물이 지급됩니다.</li>
+                    <li>- 부정한 방법으로 선물 수령시 회수 조치 및 제재될 수 있습니다.</li>
+                    <li>- 휴대폰 번호가 없는 해외 회원의 경우 1:1 문의로 별도 문의해주세요.</li>
+                    <li>- 댓글 이벤트 결과는 0월 0일 공지사항에서 확인할 수 있습니다.</li>
+                </ul>
+            </div>
+            {presentPop && <PresentPop setPresentPop={setPresentPop} rcvDalCnt={rcvDalCnt}/>}
             {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
         </>
     )
