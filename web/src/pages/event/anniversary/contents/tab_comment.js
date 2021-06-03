@@ -65,7 +65,7 @@ export default function awardEventComment() {
       if (result === 'success') {
         fetchCommentData()
       } else {
-        console.log(tail_no,tail_mem_no,result)
+        console.log(message)
       }
     }
     globalCtx.action.confirm({
@@ -74,6 +74,19 @@ export default function awardEventComment() {
         DeleteComment(tail_no,tail_mem_no)
       }
     })
+  }
+  // 댓글수정
+  const commentUpd = (tail_no,tail_conts) => {
+    async function UpdateComment(tail_no,tail_conts) {
+      const {result, data} = await API.postEventOneYearCommentUpdate({tailNo:tail_no,tailConts:tail_conts,tailLoginMedia:loginMedia})
+      if (result === 'success') {
+        let textArea = document.getElementsByClassName('addInputBox')
+        console.log(textArea);
+      } else {
+        console.log(tail_no,tail_conts)
+      }
+    }
+    UpdateComment(tail_no,tail_conts)
   }
 
   useEffect(() => {
@@ -97,6 +110,7 @@ export default function awardEventComment() {
         <Comment
           commentList={commentList}
           commentAdd={commentAdd}
+          commentUpd={commentUpd}
           commentTxt={commentTxt}
           setCommentTxt={setCommentTxt}
           commentDel={commentDel}

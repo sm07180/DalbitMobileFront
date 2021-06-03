@@ -9,7 +9,7 @@ import deleteIcon from '../../static/close.svg'
 
 import './comment.scss'
 
-export default function eventComment({commentList, commentAdd, commentTxt, setCommentTxt, commentDel}) {
+export default function eventComment({commentList, commentAdd, commentUpd, commentTxt, setCommentTxt, commentDel}) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
@@ -44,12 +44,14 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
   }
 
   const moreToggle = (boardIdx) => {
-    if (boardIdx === context.boardIdx) {
-      context.action.updateBoardIdx(0)
-      setMoreState(moreState)
+    console.log(boardIdx,moreState,context.boardIdx);
+    if (boardIdx !== moreState) {
+      setMoreState(boardIdx)
+      // context.action.updateBoardIdx(0)
       console.log('success',boardIdx,setMoreState);
     } else {
-      context.action.updateBoardIdx(boardIdx)
+      setMoreState(-1)
+      // context.action.updateBoardIdx(boardIdx)
       console.log('fail',boardIdx,setMoreState);
     }
   }
@@ -107,23 +109,23 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
                       <div className="nick">
                         {mem_nick} <span className="date">{ins_date}</span>
                       </div>
-                      <p className="msg">{tail_conts}</p>
+                      <p className="msg" dangerouslySetInnerHTML={{__html: tail_conts}}></p>
                     </div>
 
                     {parseInt(token.memNo) === tail_mem_no && (
                       <>
                         <button
                           className="btnMore"
-                          onClick={() => {commentDel(tail_no,tail_mem_no)}}>
-                          {/* onClick={() => {moreToggle(idx)}} */}
+                          onClick={() => {moreToggle(idx)}}>
+                          {/* onClick={() => {commentDel(tail_no,tail_mem_no)}} */}
                           {/* <img src={deleteIcon} alt="삭제하기" /> */}
                         </button>
-                        {/* {
+                        {moreState === idx &&
                         <div className="moreList">
-                          <button>수정하기</button>
-                          <button>삭제하기</button>
+                          <button onClick={() => {commentUpd(tail_no,tail_conts)}}>수정하기</button>
+                          <button onClick={() => {commentDel(tail_no,tail_mem_no)}}>삭제하기</button>
                         </div>
-                        } */}
+                        }
                       </>
                     )}
                   </div>
