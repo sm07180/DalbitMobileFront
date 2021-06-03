@@ -11,6 +11,7 @@ export default function anniversaryEventPresnet(){
     const [popupExp, setPopupExp] = useState(false)
     const [rcvDalCnt, setRcvDalCnt] = useState(0)
     const globalCtx = useContext(Context)
+    const {token} = globalCtx
     const history = useHistory()
     
     async function eventOneYearCheck() {
@@ -34,19 +35,33 @@ export default function anniversaryEventPresnet(){
         }
     }
     const onReceivePresent = () => {
-        if (globalCtx.selfAuth === false) {
+        if (!token.isLogin) {
             globalCtx.action.alert({
-                msg: `본인인증 후 참여해주세요.`,
-                callback: () => {
-                history.push('/selfauth?event=/event/anniversary')
-                }
+              msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
+              callback: () => {
+                history.push({
+                  pathname: '/login',
+                  state: {
+                    state: 'event/anniversary'
+                  }
+                })
+              }
             })
-        }else {
-            eventOneYearCheck()
+        }else{
+            if (globalCtx.profile.level >= 5) {
+                if (globalCtx.selfAuth === false) {
+                    globalCtx.action.alert({
+                        msg: `본인인증 후 참여해주세요.`,
+                        callback: () => {
+                        history.push('/selfauth?event=/event/anniversary')
+                        }
+                    })
+                }else {eventOneYearCheck()}                
+            }else {eventOneYearCheck()}
         }
     }
 
-return(
+    return(
         <>
             <div className="tabContentWrap">
                 <img src="https://image.dalbitlive.com/event/anniversary/present.png" className="contentImg" />
@@ -71,5 +86,5 @@ return(
             {presentPop && <PresentPop setPresentPop={setPresentPop} rcvDalCnt={rcvDalCnt}/>}
             {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
         </>
-    )
+        )
 }
