@@ -78,29 +78,29 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
           {commentList.length > 0 ? (
             <>
               {commentList.map((value, idx) => {
-                const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
+                const {tail_no, image_profile, mem_nick, tail_mem_id, ins_date, tail_conts} = value
 
                 return (
                   <div className="listItem" key={`comment-${idx}`}>
                     <div
                       className="thumb"
                       onClick={() => {
-                        history.push(`/mypage/${writerNo}`)
+                        history.push(`/mypage/${tail_mem_id}`)
                       }}>
-                      <img src={profImg.thumb120x120} alt={nickNm} />
+                      <img src={image_profile} alt={mem_nick} />
                     </div>
                     <div className="textBox">
                       <div className="nick">
-                        {nickNm} <span className="date">{timeFormat(writeDt)}</span>
+                        {mem_nick} <span className="date">{timeFormat(ins_date)}</span>
                       </div>
-                      <p className="msg">{content}</p>
+                      <p className="msg">{tail_conts}</p>
                     </div>
 
-                    {token.memNo === writerNo && (
+                    {token.memNo === tail_mem_id && (
                       <button
                         className="btnDelete"
                         onClick={() => {
-                          commentDel(replyIdx)
+                          commentDel(tail_no)
                         }}>
                         <img src={deleteIcon} alt="삭제하기" />
                       </button>

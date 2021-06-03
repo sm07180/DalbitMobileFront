@@ -20,6 +20,7 @@ export default function awardEventComment() {
   const [loginMedia, setLoginMedia] = useState('')
 
   const customHeader = JSON.parse(Api.customHeader)
+  // 댓글조회
   async function fetchCommentData() {
     const {result, data, message} = await API.postEventOneYearComment({pageNo:1,pagePerCnt:10})
     if (result === 'success') {
@@ -29,10 +30,10 @@ export default function awardEventComment() {
       console.log(message);
     }
   }
-
+  // 댓글작성
   const commentAdd = () => {
     async function AddComment(content) {
-      const {result, data} = await API.postEventOneYearCommentInsert({content,loginMedia})
+      const {result, data} = await API.postEventOneYearCommentInsert({tailConts:content,tailLoginMedia:loginMedia})
       if (result === 'success') {
         fetchCommentData()
         // window.scrollTo(0, document.body.scrollHeight)
@@ -56,7 +57,7 @@ export default function awardEventComment() {
       })
     }
   }
-
+  // 댓글삭제
   const commentDel = (replyIdx) => {
     async function DeleteComment(replyIdx, eventIdx) {
       const {result, data} = await API.postEventOneYearCommentDelete({replyIdx, eventIdx})
