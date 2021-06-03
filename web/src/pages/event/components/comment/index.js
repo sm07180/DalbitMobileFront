@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React, {useState,useContext} from 'react'
 
 //context
 import {useHistory} from 'react-router-dom'
@@ -13,7 +13,9 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
-  console.log(token);
+  const context = useContext(Context)
+
+  const [moreState, setMoreState] = useState(-1)
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
@@ -38,6 +40,17 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
         }
       })
     } else {
+    }
+  }
+
+  const moreToggle = (boardIdx) => {
+    if (boardIdx === context.boardIdx) {
+      context.action.updateBoardIdx(0)
+      setMoreState(moreState)
+      console.log('success',boardIdx,setMoreState);
+    } else {
+      context.action.updateBoardIdx(boardIdx)
+      console.log('fail',boardIdx,setMoreState);
     }
   }
 
@@ -98,13 +111,20 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
                     </div>
 
                     {parseInt(token.memNo) === tail_mem_no && (
-                      <button
-                        className="btnDelete"
-                        onClick={() => {
-                          commentDel(tail_no)
-                        }}>
-                        <img src={deleteIcon} alt="삭제하기" />
-                      </button>
+                      <>
+                        <button
+                          className="btnMore"
+                          onClick={() => {commentDel(tail_no,tail_mem_no)}}>
+                          {/* onClick={() => {moreToggle(idx)}} */}
+                          {/* <img src={deleteIcon} alt="삭제하기" /> */}
+                        </button>
+                        {/* {
+                        <div className="moreList">
+                          <button>수정하기</button>
+                          <button>삭제하기</button>
+                        </div>
+                        } */}
+                      </>
                     )}
                   </div>
                 )

@@ -63,6 +63,7 @@
           .nick {
             font-size: 14px;
             font-weight: $bold;
+            padding-right:32px;
 
             .date {
               font-size: 12px;
@@ -88,6 +89,31 @@
           position: absolute;
           top: 0;
           right: 0;
+        }
+        // 210603 추가
+        .btnMore {
+          position: absolute;
+          top: 8px;
+          right: 0;
+          width:24px;
+          height:24px;
+          background:url("data:image/svg+xml;base64,DQo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgaWQ9InByZWZpeF9fbW9yZWxpc3RfZyIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIDAgMjQgMjQiPg0KICAgIDxkZWZzPg0KICAgICAgICA8c3R5bGU+DQogICAgICAgICAgICAucHJlZml4X19jbHMtMntmaWxsOiNiZGJkYmR9DQogICAgICAgIDwvc3R5bGU+DQogICAgPC9kZWZzPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OCIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ4IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCA0KSIvPg0KICAgIDxjaXJjbGUgaWQ9InByZWZpeF9f7YOA7JuQXzI0OSIgY3g9IjIiIGN5PSIyIiByPSIyIiBjbGFzcz0icHJlZml4X19jbHMtMiIgZGF0YS1uYW1lPSLtg4Dsm5AgMjQ5IiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMCAxMCkiLz4NCiAgICA8Y2lyY2xlIGlkPSJwcmVmaXhfX+2DgOybkF8yNTAiIGN4PSIyIiBjeT0iMiIgcj0iMiIgY2xhc3M9InByZWZpeF9fY2xzLTIiIGRhdGEtbmFtZT0i7YOA7JuQIDI1MCIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoMTAgMTYpIi8+DQo8L3N2Zz4NCg==") no-repeat center center/cover;
+        }
+        .moreList {
+          position:absolute;right:10px;top:34px;
+          display:flex;flex-direction:column;
+          border:1px solid #e0e0e0;
+          background-color:#fff;
+          padding:8px 0;
+          z-index:50;
+          button {
+            width:78px;
+            height:26px;
+            font-size:14px;
+            line-height:2.14;letter-spacing:-0.35px;
+            text-align:center;
+            color:#757575;
+          }
         }
       }
     }

@@ -22,7 +22,7 @@ export default function awardEventComment() {
   const customHeader = JSON.parse(Api.customHeader)
   // 댓글조회
   async function fetchCommentData() {
-    const {result, data, message} = await API.postEventOneYearComment({pageNo:1,pagePerCnt:10})
+    const {result, data, message} = await API.postEventOneYearComment()
     if (result === 'success') {
       console.log(data[1]);
       setCommentList(data[1])
@@ -58,17 +58,20 @@ export default function awardEventComment() {
     }
   }
   // 댓글삭제
-  const commentDel = (replyIdx) => {
-    async function DeleteComment(replyIdx, eventIdx) {
-      const {result, data} = await API.postEventOneYearCommentDelete({replyIdx, eventIdx})
+  const commentDel = (tail_no,tail_mem_no) => {
+    async function DeleteComment(tail_no,tail_mem_no) {
+      const {result, data} = await API.postEventOneYearCommentDelete({tailNo:tail_no,tailMemNo:tail_mem_no})
+      console.log(tail_no,tail_mem_no,result)
       if (result === 'success') {
         fetchCommentData()
+      } else {
+        console.log(tail_no,tail_mem_no,result)
       }
     }
     globalCtx.action.confirm({
       msg: '댓글을 삭제하시겠습니까?',
       callback: () => {
-        DeleteComment(replyIdx, eventIndex)
+        DeleteComment(tail_no,tail_mem_no)
       }
     })
   }
