@@ -3,7 +3,7 @@ import React, {useContext} from 'react'
 //context
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-
+import {PHOTO_SERVER} from 'context/config'
 // static
 import deleteIcon from '../../static/close.svg'
 
@@ -13,6 +13,7 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
+  console.log(token);
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
@@ -78,29 +79,29 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
           {commentList.length > 0 ? (
             <>
               {commentList.map((value, idx) => {
-                const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
+                const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
 
                 return (
                   <div className="listItem" key={`comment-${idx}`}>
                     <div
                       className="thumb"
                       onClick={() => {
-                        history.push(`/mypage/${writerNo}`)
+                        history.push(`/mypage/${tail_mem_no}`)
                       }}>
-                      <img src={profImg.thumb120x120} alt={nickNm} />
+                      <img src={`https://photo.dalbitlive.com${image_profile}?120x120`} alt={mem_nick} />
                     </div>
                     <div className="textBox">
                       <div className="nick">
-                        {nickNm} <span className="date">{timeFormat(writeDt)}</span>
+                        {mem_nick} <span className="date">{ins_date}</span>
                       </div>
-                      <p className="msg">{content}</p>
+                      <p className="msg">{tail_conts}</p>
                     </div>
 
-                    {token.memNo === writerNo && (
+                    {parseInt(token.memNo) === tail_mem_no && (
                       <button
                         className="btnDelete"
                         onClick={() => {
-                          commentDel(replyIdx)
+                          commentDel(tail_no)
                         }}>
                         <img src={deleteIcon} alt="삭제하기" />
                       </button>
@@ -110,7 +111,7 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
               })}
             </>
           ) : (
-            <>등록된 댓글이 없습니다</>
+            <span>아직 작성된 댓글이 없습니다. 이벤트에 참여하는 첫 번째 회원님이 되어주세요</span>
           )}
           
         </div>
