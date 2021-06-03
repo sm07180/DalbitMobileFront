@@ -6,16 +6,15 @@
     text-align: center;
     z-index: -1;
 
-    &__mainImg {
+    &_mainImg {
       width: 100%;
     }
 
     .btnBack {
       position: absolute;
-      top: 2%;
-      right: 2%;
-      width: 32px;
-      height: 32px;
+      top: 2%; right: 2%;
+      width: 32px; height: 32px;
+      z-index:2;
     } 
   }
   .contentBox{
@@ -48,20 +47,30 @@
     width:100%;
     padding:12px 14px;
     background:#FF7B9C;
-    &__imgWrap{width:100%;}
-    &__button{
-      position:absolute;
-      left:50%;
-      transform:translateX(-50%);
-      &.present{top:58%; width:58%;}
-      &.level{bottom:6%; width:52%}
-      .button__img{width:100%}
-    }
+    &_imgWrap{width:100%;}
     .contentImg {
       width: 100%;
     }
   }
   .notice{
     width:100%
+  }
+  .button{
+    &_present{
+      position:absolute;
+      top:58%; left:50%; 
+      transform:translateX(-50%);
+      width:58%; 
+    }
+    &_level{
+      position:absolute;
+      bottom:6%; left:50%; 
+      transform:translateX(-50%); 
+      height:26px; line-height: 26px;
+      font-size:14px; font-weight:500; color:#fff; letter-spacing: -0.3px;
+      background:#3e3e3e; border-radius:15px; text-align: center;
+      padding:0 15px;
+    }
+    &_img{width:100%}
   }
 } 

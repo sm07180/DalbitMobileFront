@@ -7,7 +7,8 @@ import {Context} from 'context'
 
 export default function anniversaryEventPresnet(){
     const [presentPop, setPresentPop] = useState(false)
-    const [popupExp, setPopupExp] = useState(false);
+    const [popupExp, setPopupExp] = useState(false)
+    const [rcvDalCnt, setRcvDalCnt] = useState()
     const globalCtx = useContext(Context)
     const history = useHistory()
 
@@ -16,7 +17,9 @@ export default function anniversaryEventPresnet(){
         if (result === 'success') {
             eventOneYearInsert()
         }else {
-            alert(message)
+            globalCtx.action.alert({
+                msg: message
+              })
         }
     }
     async function eventOneYearInsert() {
@@ -40,18 +43,17 @@ export default function anniversaryEventPresnet(){
         }
     }
 
-    return(
+return(
         <>
             <div className="tabContentWrap">
                 <img src="https://image.dalbitlive.com/event/anniversary/present.png" className="contentImg" />
-                <button className="tabContentWrap__button present">
-                    <img src="https://image.dalbitlive.com/event/anniversary/btn_present.png" className="button__img"  onClick={() => onReceivePresent()}/>
+                <button className="button_present">
+                    <img src="https://image.dalbitlive.com/event/anniversary/btn_present.png" className="button_img"  onClick={() => onReceivePresent()}/>
                 </button>
-                <button className="tabContentWrap__button level">
-                    <img src="https://image.dalbitlive.com/event/anniversary/btn_level.png" className="button__img"  onClick={() => setPopupExp(true)}/>
+                <button className="button_level" onClick={() => setPopupExp(true)}>레벨 올리는 방법 알아보기
                 </button>
             </div>
-            <img src="https://image.dalbitlive.com/event/anniversary/notice.png" className="notice"/>
+            <img src="https://image.dalbitlive.com/event/anniversary/notice.png" className="notice" alt="이벤트 유의사항"/>
             {presentPop && <PresentPop setPresentPop={setPresentPop}/>}
             {popupExp && <LayerPopupExp setPopupExp={setPopupExp} />}
         </>
