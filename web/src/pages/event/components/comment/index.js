@@ -138,7 +138,14 @@ export default function eventComment({
                       onClick={() => {
                         history.push(`/mypage/${tail_mem_no}`)
                       }}>
-                      <img src={`https://photo.dalbitlive.com${image_profile}?120x120`} alt={mem_nick} />
+                      <img
+                        src={
+                          image_profile
+                            ? `https://photo.dalbitlive.com${image_profile}?120x120`
+                            : `https://photo.dalbitlive.com/profile_3/profile_m_200327.jpg`
+                        }
+                        alt={mem_nick}
+                      />
                     </div>
                     <div className="textBox">
                       <div className="nick">
