@@ -9,7 +9,7 @@ export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
     closePopup()
   }
   const addStopPropagation = (e) => {
-    e.stopPropagation();
+    e.stopPropagation()
   }
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -27,8 +27,8 @@ export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
           <div className="layerContent__subTitle">{rcvDalCnt}달이 지급되었습니다.</div>
           <div className="layerContent__text">달빛라이브 많이 사랑해주세요~♥</div>
         </div>
-        <button className="bottomClose"  onClick={closePopup}>
-            확인
+        <button className="bottomClose" onClick={closePopup}>
+          확인
         </button>
         <button className="btnClose" onClick={closePopup}>
           닫기
