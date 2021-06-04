@@ -1,9 +1,9 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
 import API from 'context/api'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {isHybrid} from 'context/hybrid'
 import {OS_TYPE} from 'context/config.js'
+import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
 import Comment from '../../components/comment'
@@ -18,24 +18,39 @@ export default function awardEventComment(props) {
   const [commentList, setCommentList] = useState([])
   const [commentTxt, setCommentTxt] = useState('')
   const [commentNo, setCommentNo] = useState('')
+  const [totalCommentCnt, setTotalCommentCnt] = useState(0)
+  // const [totalPage, setTotalPage] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [loginMedia, setLoginMedia] = useState('')
 
   const customHeader = JSON.parse(Api.customHeader)
   // 댓글조회
-  async function fetchCommentData() {
-    const {result, data, message} = await API.postEventOneYearComment()
+  let totalPage = 1
+  let pagePerCnt = 10
+  const fetchCommentData = useCallback(async () => {
+    const {result, data, message} = await API.postEventOneYearComment({
+      pageNo: currentPage,
+      pagePerCnt: pagePerCnt
+    })
     if (result === 'success') {
-      setCommentList(data[1])
+      setTotalCommentCnt(data[0])
+      totalPage = Math.ceil(data[0] / pagePerCnt)
+      if (currentPage > 1) {
+        setCommentList(commentList.concat(data[1]))
+      } else {
+        setCommentList(data[1])
+      }
     } else {
       console.log(message)
     }
-  }
+  }, [currentPage])
+
   // 댓글작성
   const commentAdd = () => {
     async function AddComment(content) {
       const {result, data} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
-        fetchCommentData()
+        setCurrentPage(0)
         // window.scrollTo(0, document.body.scrollHeight)
       }
     }
@@ -62,31 +77,30 @@ export default function awardEventComment(props) {
     async function DeleteComment(tail_no, tail_mem_no) {
       const {result, data} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
-        if (token.isAdmin) {
-          globalCtx.action.confirm({
-            msg: '정말 삭제하시겠습니까?',
-            callback: () => {
-              DeleteComment(tail_no, tail_mem_no)
-            },
-            buttonText: {
-              left: '취소',
-              right: '삭제'
-            }
-          })
-        } else {
-          fetchCommentData()
-        }
+        setCurrentPage(0)
       } else {
         console.log(message)
       }
     }
-    globalCtx.action.confirm({
-      msg: '등록된 댓글을 삭제하시겠습니까?',
-      callback: () => {
-        DeleteComment(tail_no, tail_mem_no)
-        setCommentTxt('')
-      }
-    })
+    if (token.isAdmin) {
+      globalCtx.action.confirm({
+        msg: '정말 삭제하시겠습니까?',
+        callback: () => {
+          DeleteComment(tail_no, tail_mem_no)
+        },
+        buttonText: {
+          left: '취소',
+          right: '삭제'
+        }
+      })
+    } else {
+      globalCtx.action.confirm({
+        msg: '등록된 댓글을 삭제하시겠습니까?',
+        callback: () => {
+          DeleteComment(tail_no, tail_mem_no)
+        }
+      })
+    }
   }
   // 댓글수정
   const commentUpd = () => {
@@ -100,7 +114,7 @@ export default function awardEventComment(props) {
         globalCtx.action.alert({
           msg: '내용이 수정되었습니다.'
         })
-        fetchCommentData()
+        setCurrentPage(0)
       } else {
         globalCtx.action.alert({
           msg: message
@@ -115,6 +129,23 @@ export default function awardEventComment(props) {
       }
     })
   }
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [currentPage])
+
+  useEffect(() => {
+    if (currentPage > 0) fetchCommentData()
+  }, [currentPage])
+
   useEffect(() => {
     // login medea setting
     if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
@@ -122,8 +153,6 @@ export default function awardEventComment(props) {
     } else if (customHeader['os'] === 3) {
       setLoginMedia('w')
     }
-    // fetch comment list
-    fetchCommentData()
   }, [])
 
   return (
@@ -135,6 +164,7 @@ export default function awardEventComment(props) {
       </div>
       <Comment
         commentList={commentList}
+        totalCommentCnt={totalCommentCnt}
         commentAdd={commentAdd}
         commentUpd={commentUpd}
         commentTxt={commentTxt}
@@ -142,6 +172,7 @@ export default function awardEventComment(props) {
         setCommentNo={setCommentNo}
         commentDel={commentDel}
         fetchCommentData={fetchCommentData}
+        setCurrentPage={setCurrentPage}
       />
     </>
   )

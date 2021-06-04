@@ -11,30 +11,22 @@ import './comment.scss'
 
 export default function eventComment({
   commentList,
+  totalCommentCnt,
   commentAdd,
   commentUpd,
   commentTxt,
   setCommentTxt,
   setCommentNo,
   commentDel,
-  fetchCommentData
+  setCurrentPage
 }) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
-  const context = useContext(Context)
 
   const [moreState, setMoreState] = useState(-1)
   const [modifyState, setModifyState] = useState(true)
   const [refreshState, setRefreshState] = useState(false)
-
-  const timeFormat = (strFormatFromServer) => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4)].join(':')
-    return `${date} ${time}`
-  }
 
   const loginCheck = () => {
     if (!token.isLogin) {
@@ -70,7 +62,7 @@ export default function eventComment({
     } else {
       setRefreshState(false)
     }
-    fetchCommentData()
+    setCurrentPage(0)
   }
 
   return (
@@ -109,7 +101,7 @@ export default function eventComment({
       </div>
       <div className="commentBox">
         <div className="totalBox">
-          댓글 <span>{`${commentList.length}`}</span>개
+          댓글 <span>{`${totalCommentCnt}`}</span>개
           <button
             className={`refreshBtn ${refreshState ? 'on' : ''}`}
             onClick={() => {
@@ -149,35 +141,49 @@ export default function eventComment({
                     </div>
                     <div className="textBox">
                       <div className="nick">
-                        {mem_nick} <span className="date">{ins_date}</span>
+                        {mem_nick}
+                        <span className="date">{ins_date}</span>
                       </div>
                       <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
-
-                    {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
+                    {token.isAdmin ? (
                       <>
                         <button
-                          className="btnMore"
+                          className=""
                           onClick={() => {
-                            moreToggle(idx)
-                          }}></button>
-                        {moreState === idx && (
-                          <div className="moreList">
+                            commentDel(tail_no, tail_mem_no)
+                          }}>
+                          X
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
+                          <>
                             <button
+                              className="btnMore"
                               onClick={() => {
-                                setCommentNo(tail_no)
-                                setCommentTxt(tail_conts)
-                                setMoreState(-1), setModifyState(false)
-                              }}>
-                              수정하기
-                            </button>
-                            <button
-                              onClick={() => {
-                                commentDel(tail_no, tail_mem_no), setMoreState(-1)
-                              }}>
-                              삭제하기
-                            </button>
-                          </div>
+                                moreToggle(idx)
+                              }}></button>
+                            {moreState === idx && (
+                              <div className="moreList">
+                                <button
+                                  onClick={() => {
+                                    setCommentNo(tail_no)
+                                    setCommentTxt(tail_conts)
+                                    setMoreState(-1), setModifyState(false)
+                                  }}>
+                                  수정
+                                </button>
+                                <button
+                                  onClick={() => {
+                                    commentDel(tail_no, tail_mem_no), setMoreState(-1)
+                                  }}>
+                                  삭제
+                                </button>
+                              </div>
+                            )}
+                          </>
                         )}
                       </>
                     )}
