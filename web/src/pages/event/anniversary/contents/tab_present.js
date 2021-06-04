@@ -74,7 +74,7 @@ export default function anniversaryEventPresnet(props){
             </div>
             <div className="notice">
                 <div className="notice_title">
-                    <span className="exclamation">!</span>이벤트 유의사항
+                    <span className="alert">!</span>이벤트 유의사항
                 </div>
                 <div dangerouslySetInnerHTML={{__html: noticeData}}></div>
             </div>
