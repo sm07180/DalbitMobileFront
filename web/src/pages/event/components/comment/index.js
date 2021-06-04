@@ -1,21 +1,32 @@
-import React, {useState,useContext} from 'react'
+import React, {useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 //context
-import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
+import Utility from 'components/lib/utility'
 // static
 import deleteIcon from '../../static/close.svg'
-
 import './comment.scss'
 
-export default function eventComment({commentList, commentAdd, commentUpd, commentTxt, setCommentTxt, commentDel}) {
+export default function eventComment({
+  commentList,
+  commentAdd,
+  commentUpd,
+  commentTxt,
+  setCommentTxt,
+  setCommentNo,
+  commentDel,
+  fetchCommentData
+}) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
   const context = useContext(Context)
 
   const [moreState, setMoreState] = useState(-1)
+  const [modifyState, setModifyState] = useState(true)
+  const [refreshState, setRefreshState] = useState(false)
 
   const timeFormat = (strFormatFromServer) => {
     let date = strFormatFromServer.slice(0, 8)
@@ -44,16 +55,22 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
   }
 
   const moreToggle = (boardIdx) => {
-    console.log(boardIdx,moreState,context.boardIdx);
     if (boardIdx !== moreState) {
       setMoreState(boardIdx)
-      // context.action.updateBoardIdx(0)
-      console.log('success',boardIdx,setMoreState);
     } else {
       setMoreState(-1)
-      // context.action.updateBoardIdx(boardIdx)
-      console.log('fail',boardIdx,setMoreState);
     }
+  }
+
+  const refreshFunc = async () => {
+    if (refreshState === false) {
+      setRefreshState(true)
+      await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+      setRefreshState(false)
+    } else {
+      setRefreshState(false)
+    }
+    fetchCommentData()
   }
 
   return (
@@ -67,21 +84,39 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
             const value = target.value
             if (value.length >= 300) return
             setCommentTxt(value)
+            if (value.length == 0) {
+              setModifyState(true)
+            }
           }}></textarea>
-
-        <button
-          onClick={() => {
-            // globalCtx.action.alert({
-            //   msg: '댓글 이벤트가 종료되었습니다.'
-            // })
-            commentAdd()
-          }}>
-          등록
-        </button>
+        {modifyState === true ? (
+          <button
+            onClick={() => {
+              // globalCtx.action.alert({
+              //   msg: '댓글 이벤트가 종료되었습니다.'
+              // })
+              commentAdd()
+            }}>
+            등록
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              commentUpd(), setModifyState(true)
+            }}>
+            수정
+          </button>
+        )}
       </div>
       <div className="commentBox">
         <div className="totalBox">
           댓글 <span>{`${commentList.length}`}</span>개
+          <button
+            className={`refreshBtn ${refreshState ? 'on' : ''}`}
+            onClick={() => {
+              refreshFunc()
+            }}>
+            <img src="https://image.dalbitlive.com/main/ico_live_refresh_new_s.svg" alt="새로고침" />
+          </button>
           {/* <img
             onClick={() => {
               setCommentList([])
@@ -109,23 +144,34 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
                       <div className="nick">
                         {mem_nick} <span className="date">{ins_date}</span>
                       </div>
-                      <p className="msg" dangerouslySetInnerHTML={{__html: tail_conts}}></p>
+                      <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
 
-                    {parseInt(token.memNo) === tail_mem_no && (
+                    {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
                       <>
                         <button
                           className="btnMore"
-                          onClick={() => {moreToggle(idx)}}>
-                          {/* onClick={() => {commentDel(tail_no,tail_mem_no)}} */}
-                          {/* <img src={deleteIcon} alt="삭제하기" /> */}
-                        </button>
-                        {moreState === idx &&
-                        <div className="moreList">
-                          <button onClick={() => {commentUpd(tail_no,tail_conts)}}>수정하기</button>
-                          <button onClick={() => {commentDel(tail_no,tail_mem_no)}}>삭제하기</button>
-                        </div>
-                        }
+                          onClick={() => {
+                            moreToggle(idx)
+                          }}></button>
+                        {moreState === idx && (
+                          <div className="moreList">
+                            <button
+                              onClick={() => {
+                                setCommentNo(tail_no)
+                                setCommentTxt(tail_conts)
+                                setMoreState(-1), setModifyState(false)
+                              }}>
+                              수정하기
+                            </button>
+                            <button
+                              onClick={() => {
+                                commentDel(tail_no, tail_mem_no), setMoreState(-1)
+                              }}>
+                              삭제하기
+                            </button>
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
@@ -135,7 +181,6 @@ export default function eventComment({commentList, commentAdd, commentUpd, comme
           ) : (
             <span>아직 작성된 댓글이 없습니다. 이벤트에 참여하는 첫 번째 회원님이 되어주세요</span>
           )}
-          
         </div>
       </div>
     </div>

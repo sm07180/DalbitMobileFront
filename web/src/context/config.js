@@ -9,7 +9,7 @@ export const VERSION = ''
 /**
  * @brief 서버분기
  */
-export const API_SERVER = 'https://devapi.dalbitlive.com' //API서버
+export const API_SERVER = __API_SERVER_URL //API서버
 // export const API_SERVER = 'https://devm-hwlee.dalbitlive.com:4431' //형원님
 // export const API_SERVER = 'https://devm-daink.dalbitlive.com:4431'
 export const IMG_SERVER = __STATIC_PHOTO_SERVER_URL //이미지 CDN
