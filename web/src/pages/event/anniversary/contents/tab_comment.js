@@ -84,15 +84,11 @@ export default function awardEventComment(props) {
       msg: '등록된 댓글을 삭제하시겠습니까?',
       callback: () => {
         DeleteComment(tail_no, tail_mem_no)
-<<<<<<< HEAD
         setCommentTxt('')
-=======
->>>>>>> d9c8114a926a2320939b3821c7b34b3c6cf976f8
       }
     })
   }
   // 댓글수정
-<<<<<<< HEAD
   const commentUpd = () => {
     async function UpdateComment() {
       const {result, message} = await API.postEventOneYearCommentUpdate({
@@ -118,23 +114,6 @@ export default function awardEventComment(props) {
         setCommentTxt('')
       }
     })
-=======
-  const commentUpd = (tail_no, tail_conts) => {
-    async function UpdateComment(tail_no, tail_conts) {
-      const {result, data} = await API.postEventOneYearCommentUpdate({
-        tailNo: tail_no,
-        tailConts: tail_conts,
-        tailLoginMedia: loginMedia
-      })
-      if (result === 'success') {
-        let textArea = document.getElementsByClassName('addInputBox')
-        console.log(textArea)
-      } else {
-        console.log(tail_no, tail_conts)
-      }
-    }
-    UpdateComment(tail_no, tail_conts)
->>>>>>> d9c8114a926a2320939b3821c7b34b3c6cf976f8
   }
   useEffect(() => {
     // login medea setting
@@ -160,13 +139,9 @@ export default function awardEventComment(props) {
         commentUpd={commentUpd}
         commentTxt={commentTxt}
         setCommentTxt={setCommentTxt}
-<<<<<<< HEAD
         setCommentNo={setCommentNo}
         commentDel={commentDel}
         fetchCommentData={fetchCommentData}
-=======
-        commentDel={commentDel}
->>>>>>> d9c8114a926a2320939b3821c7b34b3c6cf976f8
       />
     </>
   )
