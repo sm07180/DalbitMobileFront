@@ -106,6 +106,11 @@ export default (props) => {
 }
 
 const LayerPopup = styled.div`
-  .popup-exp{width:330px!important;}
-  .txt>em{color:#3A36FF!important; background:#EAE9FF!important;}
+  .popup-exp {
+    width: 330px !important;
+  }
+  .txt > em {
+    color: #3a36ff !important;
+    background: #eae9ff !important;
+  }
 `

@@ -9,7 +9,7 @@ import Api from 'context/api'
 import Comment from '../../components/comment'
 
 export default function awardEventComment(props) {
-  const { tabState, setTabState } = props
+  const {tabState, setTabState} = props
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
@@ -26,14 +26,14 @@ export default function awardEventComment(props) {
     const {result, data, message} = await API.postEventOneYearComment()
     if (result === 'success') {
       setCommentList(data[1])
-    }else {
-      console.log(message);
+    } else {
+      console.log(message)
     }
   }
   // 댓글작성
   const commentAdd = () => {
     async function AddComment(content) {
-      const {result, data} = await API.postEventOneYearCommentInsert({tailConts:content,tailLoginMedia:loginMedia})
+      const {result, data} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
         fetchCommentData()
         // window.scrollTo(0, document.body.scrollHeight)
@@ -58,9 +58,9 @@ export default function awardEventComment(props) {
     }
   }
   // 댓글삭제
-  const commentDel = (tail_no,tail_mem_no) => {
-    async function DeleteComment(tail_no,tail_mem_no) {
-      const {result, data} = await API.postEventOneYearCommentDelete({tailNo:tail_no,tailMemNo:tail_mem_no})
+  const commentDel = (tail_no, tail_mem_no) => {
+    async function DeleteComment(tail_no, tail_mem_no) {
+      const {result, data} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         fetchCommentData()
       } else {
@@ -70,29 +70,33 @@ export default function awardEventComment(props) {
     globalCtx.action.confirm({
       msg: '댓글을 삭제하시겠습니까?',
       callback: () => {
-        DeleteComment(tail_no,tail_mem_no)
+        DeleteComment(tail_no, tail_mem_no)
       }
     })
   }
   // 댓글수정
-  const commentUpd = (tail_no,tail_conts) => {
-    async function UpdateComment(tail_no,tail_conts) {
-      const {result, data} = await API.postEventOneYearCommentUpdate({tailNo:tail_no,tailConts:tail_conts,tailLoginMedia:loginMedia})
+  const commentUpd = (tail_no, tail_conts) => {
+    async function UpdateComment(tail_no, tail_conts) {
+      const {result, data} = await API.postEventOneYearCommentUpdate({
+        tailNo: tail_no,
+        tailConts: tail_conts,
+        tailLoginMedia: loginMedia
+      })
       if (result === 'success') {
         let textArea = document.getElementsByClassName('addInputBox')
-        console.log(textArea);
+        console.log(textArea)
       } else {
-        console.log(tail_no,tail_conts)
+        console.log(tail_no, tail_conts)
       }
     }
-    UpdateComment(tail_no,tail_conts)
+    UpdateComment(tail_no, tail_conts)
   }
 
   useEffect(() => {
     // login medea setting
     if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
       setLoginMedia('s')
-    }else if(customHeader['os'] === 3) {
+    } else if (customHeader['os'] === 3) {
       setLoginMedia('w')
     }
     // fetch comment list
@@ -101,19 +105,19 @@ export default function awardEventComment(props) {
 
   return (
     <>
-        <div className="tabContentWrap">
-          <div className="tabContentWrap__imgWrap">
-            <img src="https://image.dalbitlive.com/event/anniversary/comment.png" className="contentImg" />
-          </div>
+      <div className="tabContentWrap">
+        <div className="tabContentWrap__imgWrap">
+          <img src="https://image.dalbitlive.com/event/anniversary/comment.png" className="contentImg" />
         </div>
-        <Comment
-          commentList={commentList}
-          commentAdd={commentAdd}
-          commentUpd={commentUpd}
-          commentTxt={commentTxt}
-          setCommentTxt={setCommentTxt}
-          commentDel={commentDel}
-        />
+      </div>
+      <Comment
+        commentList={commentList}
+        commentAdd={commentAdd}
+        commentUpd={commentUpd}
+        commentTxt={commentTxt}
+        setCommentTxt={setCommentTxt}
+        commentDel={commentDel}
+      />
     </>
   )
 }
