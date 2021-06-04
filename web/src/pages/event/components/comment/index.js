@@ -5,8 +5,9 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import {PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
+
 // static
-import deleteIcon from '../../static/close.svg'
+import NoResult from 'components/ui/noResult'
 import './comment.scss'
 
 export default function eventComment({
@@ -82,9 +83,12 @@ export default function eventComment({
           onChange={(e) => {
             const target = e.currentTarget
             const value = target.value
-            if (value.length >= 300) return
-            setCommentTxt(value)
-            if (value.length == 0) {
+            if (value.length >= 300) {
+              context.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
+            } else {
+              setCommentTxt(value)
+            }
+            if (value.length === 0) {
               setModifyState(true)
             }
           }}></textarea>
@@ -177,9 +181,10 @@ export default function eventComment({
                   </div>
                 )
               })}
+              <NoResult />
             </>
           ) : (
-            <span>아직 작성된 댓글이 없습니다. 이벤트에 참여하는 첫 번째 회원님이 되어주세요</span>
+            <NoResult text="아직 작성된 댓글이 없습니다." brText=" 이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
           )}
         </div>
       </div>
