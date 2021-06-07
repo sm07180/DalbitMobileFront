@@ -2571,6 +2571,26 @@ export default class API {
     return await ajax({url: '/event/roulette/phone', method: 'POST', data})
   }
 
+  // 1주년이벤트 댓글
+  static postEventOneYearCheck = async (params) => {
+    return await ajax({url: '/oneYear/dal/check', method: 'POST', params})
+  }
+  static postEventOneYearInsert = async (params) => {
+    return await ajax({url: '/oneYear/dal/ins', method: 'POST', params})
+  }  
+  static postEventOneYearComment = async (data) => {
+    return await ajax({url: '/oneYear/tail/list', method: 'POST', data})
+  }
+  static postEventOneYearCommentInsert = async (data) => {
+    return await ajax({url: '/oneYear/tail/ins', method: 'POST', data})
+  }
+  static postEventOneYearCommentUpdate = async (data) => {
+    return await ajax({url: '/oneYear/tail/upd', method: 'POST', data})
+  }
+  static postEventOneYearCommentDelete = async (data) => {
+    return await ajax({url: '/oneYear/tail/del', method: 'POST', data})
+  }
+  
   //이벤트용 ios 심사여부 조회
   static getIosJudge = async (params) => {
     return await ajax({url: '/ios/judge', method: 'GET', params})

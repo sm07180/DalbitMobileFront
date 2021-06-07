@@ -36,8 +36,8 @@ import VideoOpen2 from './video_open2'
 import MoonRise from './moon_rise'
 import BestdjIntro from './bestdj_intro'
 import Championship from './championship'
-
 import BroadcastRoulette from './broadcast_roulette'
+import AnniversaryEvent from './anniversary'
 
 export default () => {
   const params = useParams()
@@ -109,6 +109,8 @@ export default () => {
         return <Championship />
       case 'broadcast_roulette':
         return <BroadcastRoulette />
+      case 'anniversary':
+        return <AnniversaryEvent />
       default:
         return <></>
         break

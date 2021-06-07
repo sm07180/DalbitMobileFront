@@ -1,26 +1,34 @@
-import React, {useContext} from 'react'
+import React, {useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 //context
-import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
+import Utility from 'components/lib/utility'
 
 // static
-import deleteIcon from '../../static/close.svg'
-
+import NoResult from 'components/ui/new_noResult'
 import './comment.scss'
 
-export default function eventComment({commentList, commentAdd, commentTxt, setCommentTxt, commentDel}) {
+export default function eventComment({
+  commentList,
+  totalCommentCnt,
+  commentAdd,
+  commentUpd,
+  commentTxt,
+  setCommentTxt,
+  setCommentNo,
+  commentDel,
+  setCurrentPage
+}) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
 
-  const timeFormat = (strFormatFromServer) => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(4, 6), date.slice(6)].join('.')
-    let time = strFormatFromServer.slice(8)
-    time = [time.slice(0, 2), time.slice(2, 4)].join(':')
-    return `${date} ${time}`
-  }
+  const [moreState, setMoreState] = useState(-1)
+  const [modifyState, setModifyState] = useState(true)
+  const [refreshState, setRefreshState] = useState(false)
+  const [writeState, setWriteState] = useState(false)
 
   const loginCheck = () => {
     if (!token.isLogin) {
@@ -31,13 +39,32 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
           history.push({
             pathname: '/login',
             state: {
-              state: 'event/award/comment'
+              state: 'event/anniversary?tab=comment'
             }
           })
         }
       })
     } else {
     }
+  }
+
+  const moreToggle = (boardIdx) => {
+    if (boardIdx !== moreState) {
+      setMoreState(boardIdx)
+    } else {
+      setMoreState(-1)
+    }
+  }
+
+  const refreshFunc = async () => {
+    if (refreshState === false) {
+      setRefreshState(true)
+      await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
+      setRefreshState(false)
+    } else {
+      setRefreshState(false)
+    }
+    setCurrentPage(0)
   }
 
   return (
@@ -49,23 +76,44 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
           onChange={(e) => {
             const target = e.currentTarget
             const value = target.value
-            if (value.length >= 300) return
-            setCommentTxt(value)
+            if (value.length >= 300) {
+              globalCtx.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
+            } else {
+              setWriteState(true)
+              setCommentTxt(value)
+            }
+            if (value.length === 0) {
+              setModifyState(true)
+            }
           }}></textarea>
-
-        <button
-          onClick={() => {
-            // globalCtx.action.alert({
-            //   msg: '댓글 이벤트가 종료되었습니다.'
-            // })
-            commentAdd()
-          }}>
-          등록
-        </button>
+        {modifyState === true ? (
+          <button
+            className={`writeBtn ${writeState ? 'on' : ''}`}
+            onClick={() => {
+              commentAdd(setWriteState)
+            }}>
+            등록
+          </button>
+        ) : (
+          <button
+            className={`writeBtn ${writeState ? 'on' : ''}`}
+            onClick={() => {
+              commentUpd(setWriteState, setModifyState)
+            }}>
+            수정
+          </button>
+        )}
       </div>
       <div className="commentBox">
         <div className="totalBox">
-          댓글 <span>{`${commentList.length}`}</span>개
+          댓글 <span>{`${totalCommentCnt}`}</span>개
+          <button
+            className={`refreshBtn ${refreshState ? 'on' : ''}`}
+            onClick={() => {
+              refreshFunc()
+            }}>
+            <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
+          </button>
           {/* <img
             onClick={() => {
               setCommentList([])
@@ -75,37 +123,79 @@ export default function eventComment({commentList, commentAdd, commentTxt, setCo
         </div>
 
         <div className="listBox">
-          {commentList.map((value, idx) => {
-            const {replyIdx, profImg, nickNm, writerNo, writeDt, content} = value
+          {commentList && commentList.length > 0 ? (
+            <>
+              {commentList.map((value, idx) => {
+                const {tail_no, image_profile, mem_nick, tail_mem_no, ins_date, tail_conts} = value
 
-            return (
-              <div className="listItem" key={`comment-${idx}`}>
-                <div
-                  className="thumb"
-                  onClick={() => {
-                    history.push(`/mypage/${writerNo}`)
-                  }}>
-                  <img src={profImg.thumb120x120} alt={nickNm} />
-                </div>
-                <div className="textBox">
-                  <div className="nick">
-                    {nickNm} <span className="date">{timeFormat(writeDt)}</span>
+                return (
+                  <div className="listItem" key={`comment-${idx}`}>
+                    <div
+                      className="thumb"
+                      onClick={() => {
+                        history.push(`/mypage/${tail_mem_no}`)
+                      }}>
+                      <img
+                        src={
+                          image_profile
+                            ? `https://photo.dalbitlive.com${image_profile}?120x120`
+                            : `https://photo.dalbitlive.com/profile_3/profile_m_200327.jpg`
+                        }
+                        alt={mem_nick}
+                      />
+                    </div>
+                    <div className="textBox">
+                      <div className="nick">
+                        {mem_nick}
+                        <span className="date"> {ins_date}</span>
+                      </div>
+                      <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
+                    </div>
+
+                    {parseInt(token.memNo) === tail_mem_no && modifyState === true ? (
+                      <>
+                        <button
+                          className="btnMore"
+                          onClick={() => {
+                            moreToggle(idx)
+                          }}></button>
+                        {moreState === idx && (
+                          <div className="moreList">
+                            <button
+                              onClick={() => {
+                                setCommentNo(tail_no)
+                                setCommentTxt(tail_conts)
+                                setMoreState(-1), setModifyState(false)
+                              }}>
+                              수정
+                            </button>
+                            <button
+                              onClick={() => {
+                                commentDel(tail_no, tail_mem_no), setMoreState(-1)
+                              }}>
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      globalCtx.adminChecker === true && (
+                        <button
+                          className="btnDelete"
+                          onClick={() => {
+                            commentDel(tail_no, tail_mem_no)
+                          }}>
+                          <img src="https://image.dalbitlive.com/svg/close_g_l.svg" alt="삭제하기" />
+                        </button>
+                      )
+                    )}
                   </div>
-                  <p className="msg">{content}</p>
-                </div>
-
-                {token.memNo === writerNo && (
-                  <button
-                    className="btnDelete"
-                    onClick={() => {
-                      commentDel(replyIdx)
-                    }}>
-                    <img src={deleteIcon} alt="삭제하기" />
-                  </button>
-                )}
-              </div>
-            )
-          })}
+                )
+              })}
+            </>
+          ) : (
+            <NoResult type="default" text="아직 작성된 댓글이 없습니다.<br />이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
+          )}
         </div>
       </div>
     </div>
