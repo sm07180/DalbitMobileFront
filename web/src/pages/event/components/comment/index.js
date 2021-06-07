@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
@@ -24,6 +24,7 @@ export default function eventComment({
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
+  const focus = useRef()
 
   const [moreState, setMoreState] = useState(-1)
   const [modifyState, setModifyState] = useState(true)
@@ -73,6 +74,7 @@ export default function eventComment({
         <textarea
           placeholder="댓글을 입력해주세요. (최대 300자)"
           value={commentTxt}
+          ref={focus}
           onChange={(e) => {
             const target = e.currentTarget
             const value = target.value
@@ -83,7 +85,9 @@ export default function eventComment({
               setCommentTxt(value)
             }
             if (value.length === 0) {
-              setModifyState(true)
+              setWriteState(true)
+              setModifyState(false)
+              setCommentTxt(value)
             }
           }}></textarea>
         {modifyState === true ? (
@@ -98,7 +102,7 @@ export default function eventComment({
           <button
             className={`writeBtn ${writeState ? 'on' : ''}`}
             onClick={() => {
-              commentUpd(setWriteState, setModifyState)
+              commentUpd(setWriteState, setModifyState, commentTxt)
             }}>
             수정
           </button>
@@ -166,6 +170,7 @@ export default function eventComment({
                                 setCommentNo(tail_no)
                                 setCommentTxt(tail_conts)
                                 setMoreState(-1), setModifyState(false)
+                                focus.current.focus()
                               }}>
                               수정
                             </button>
@@ -179,7 +184,8 @@ export default function eventComment({
                         )}
                       </>
                     ) : (
-                      globalCtx.adminChecker === true && (
+                      globalCtx.adminChecker === true &&
+                      parseInt(token.memNo) !== tail_mem_no && (
                         <button
                           className="btnDelete"
                           onClick={() => {
