@@ -76,7 +76,7 @@ export default function eventComment({
             const target = e.currentTarget
             const value = target.value
             if (value.length >= 300) {
-              context.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
+              globalCtx.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
             } else {
               setCommentTxt(value)
             }
