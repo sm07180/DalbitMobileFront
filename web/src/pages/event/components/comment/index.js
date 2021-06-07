@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 
 //context
 import {Context} from 'context'
-import {PHOTO_SERVER} from 'context/config'
+import {IMG_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 // static
@@ -116,7 +116,7 @@ export default function eventComment({
             onClick={() => {
               refreshFunc()
             }}>
-            <img src="https://image.dalbitlive.com/main/ico_live_refresh_new_s.svg" alt="새로고침" />
+            <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
           </button>
           {/* <img
             onClick={() => {
