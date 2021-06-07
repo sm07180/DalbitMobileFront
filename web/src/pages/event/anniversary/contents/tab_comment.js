@@ -5,6 +5,7 @@ import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
+import {IMG_SERVER} from 'context/config'
 
 import Comment from '../../components/comment'
 
@@ -51,7 +52,9 @@ export default function awardEventComment(props) {
       const {result, message} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
         setCurrentPage(0)
-        // window.scrollTo(0, document.body.scrollHeight)
+        globalCtx.action.toast({
+          msg: message
+        })
       } else {
         globalCtx.action.toast({
           msg: message
@@ -79,11 +82,16 @@ export default function awardEventComment(props) {
   // 댓글삭제
   const commentDel = (tail_no, tail_mem_no) => {
     async function DeleteComment(tail_no, tail_mem_no) {
-      const {result, data} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
+      const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         setCurrentPage(0)
+        globalCtx.action.toast({
+          msg: message
+        })
       } else {
-        console.log(message)
+        globalCtx.action.toast({
+          msg: message
+        })
       }
     }
     if (token.isAdmin) {
@@ -116,7 +124,7 @@ export default function awardEventComment(props) {
       })
       if (result === 'success') {
         globalCtx.action.toast({
-          msg: '내용이 수정되었습니다.'
+          msg: message
         })
         setCurrentPage(0)
       } else {
@@ -163,7 +171,7 @@ export default function awardEventComment(props) {
     <>
       <div className="tabContentWrap">
         <div className="tabContentWrap__imgWrap">
-          <img src="https://image.dalbitlive.com/event/anniversary/comment.png" className="contentImg" />
+          <img src={`${IMG_SERVER}/event/anniversary/comment.png`} className="contentImg" />
         </div>
       </div>
       <Comment
