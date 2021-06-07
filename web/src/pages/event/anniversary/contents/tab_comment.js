@@ -13,13 +13,14 @@ export default function awardEventComment(props) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
+  const context = useContext(Context)
 
   //댓글 state
+  // const [totalPage, setTotalPage] = useState(0)
   const [commentList, setCommentList] = useState([])
   const [commentTxt, setCommentTxt] = useState('')
   const [commentNo, setCommentNo] = useState('')
   const [totalCommentCnt, setTotalCommentCnt] = useState(0)
-  // const [totalPage, setTotalPage] = useState(0)
   const [currentPage, setCurrentPage] = useState(0)
   const [loginMedia, setLoginMedia] = useState('')
 
@@ -46,11 +47,13 @@ export default function awardEventComment(props) {
   }, [currentPage])
 
   // 댓글작성
-  const commentAdd = () => {
+  const commentAdd = (setWriteState) => {
     async function AddComment(content) {
-      const {result, data} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
+      const {result, message} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
         setCurrentPage(0)
+        setWriteState(false)
+        context.action.toast({msg: message})
         // window.scrollTo(0, document.body.scrollHeight)
       }
     }
@@ -75,14 +78,15 @@ export default function awardEventComment(props) {
   // 댓글삭제
   const commentDel = (tail_no, tail_mem_no) => {
     async function DeleteComment(tail_no, tail_mem_no) {
-      const {result, data} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
+      const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         setCurrentPage(0)
+        context.action.toast({msg: message})
       } else {
         console.log(message)
       }
     }
-    if (token.isAdmin) {
+    if (context.adminChecker) {
       globalCtx.action.confirm({
         msg: '정말 삭제하시겠습니까?',
         callback: () => {
@@ -103,7 +107,7 @@ export default function awardEventComment(props) {
     }
   }
   // 댓글수정
-  const commentUpd = () => {
+  const commentUpd = (setWriteState, setModifyState) => {
     async function UpdateComment() {
       const {result, message} = await API.postEventOneYearCommentUpdate({
         tailNo: commentNo,
@@ -111,10 +115,10 @@ export default function awardEventComment(props) {
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        globalCtx.action.alert({
-          msg: '내용이 수정되었습니다.'
-        })
+        context.action.toast({msg: message})
         setCurrentPage(0)
+        setWriteState(false)
+        setModifyState(true)
       } else {
         globalCtx.action.alert({
           msg: message

@@ -24,10 +24,12 @@ export default function eventComment({
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
+  const context = useContext(Context)
 
   const [moreState, setMoreState] = useState(-1)
   const [modifyState, setModifyState] = useState(true)
   const [refreshState, setRefreshState] = useState(false)
+  const [writeState, setWriteState] = useState(false)
 
   const loginCheck = () => {
     if (!token.isLogin) {
@@ -78,6 +80,7 @@ export default function eventComment({
             if (value.length >= 300) {
               context.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
             } else {
+              setWriteState(true)
               setCommentTxt(value)
             }
             if (value.length === 0) {
@@ -86,18 +89,20 @@ export default function eventComment({
           }}></textarea>
         {modifyState === true ? (
           <button
+            className={`writeBtn ${writeState ? 'on' : ''}`}
             onClick={() => {
               // globalCtx.action.alert({
               //   msg: '댓글 이벤트가 종료되었습니다.'
               // })
-              commentAdd()
+              commentAdd(setWriteState)
             }}>
             등록
           </button>
         ) : (
           <button
+            className={`writeBtn ${writeState ? 'on' : ''}`}
             onClick={() => {
-              commentUpd(), setModifyState(true)
+              commentUpd(setWriteState, setModifyState)
             }}>
             수정
           </button>
@@ -150,51 +155,47 @@ export default function eventComment({
                       </div>
                       <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
-                    {token.isAdmin ? (
+
+                    {parseInt(token.memNo) === tail_mem_no && modifyState === true ? (
                       <>
                         <button
-                          className=""
+                          className="btnMore"
+                          onClick={() => {
+                            moreToggle(idx)
+                          }}></button>
+                        {moreState === idx && (
+                          <div className="moreList">
+                            <button
+                              onClick={() => {
+                                setCommentNo(tail_no)
+                                setCommentTxt(tail_conts)
+                                setMoreState(-1), setModifyState(false)
+                              }}>
+                              수정
+                            </button>
+                            <button
+                              onClick={() => {
+                                commentDel(tail_no, tail_mem_no), setMoreState(-1)
+                              }}>
+                              삭제
+                            </button>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      context.adminChecker === true && (
+                        <button
+                          className="btnDelete"
                           onClick={() => {
                             commentDel(tail_no, tail_mem_no)
                           }}>
-                          X
+                          <img src="https://image.dalbitlive.com/svg/close_g_l.svg" alt="삭제하기" />
                         </button>
-                      </>
-                    ) : (
-                      <>
-                        {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
-                          <>
-                            <button
-                              className="btnMore"
-                              onClick={() => {
-                                moreToggle(idx)
-                              }}></button>
-                            {moreState === idx && (
-                              <div className="moreList">
-                                <button
-                                  onClick={() => {
-                                    setCommentNo(tail_no)
-                                    setCommentTxt(tail_conts)
-                                    setMoreState(-1), setModifyState(false)
-                                  }}>
-                                  수정
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    commentDel(tail_no, tail_mem_no), setMoreState(-1)
-                                  }}>
-                                  삭제
-                                </button>
-                              </div>
-                            )}
-                          </>
-                        )}
-                      </>
+                      )
                     )}
                   </div>
                 )
               })}
-              <NoResult />
             </>
           ) : (
             <NoResult text="아직 작성된 댓글이 없습니다." brText=" 이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />

@@ -17,13 +17,16 @@
       border: 1px solid #c4c4c4;
     }
 
-    button {
+    .writeBtn {
       width: 60px;
       height: 60px;
       margin-left: 5px;
       border-radius: 10px;
-      background-color: $primary;
+      background-color: $gray;
       color: $white;
+      &.on {
+        background-color: $primary;
+      }
     }
   }
 
