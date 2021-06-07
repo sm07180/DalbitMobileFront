@@ -130,8 +130,6 @@ export default function awardEventComment(props) {
       globalCtx.action.toast({
         msg: '내용을 입력해주세요.'
       })
-      setWriteState(false)
-      setModifyState(true)
     } else {
       globalCtx.action.confirm({
         msg: '등록된 댓글을 수정하시겠습니까?',
