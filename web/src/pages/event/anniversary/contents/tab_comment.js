@@ -48,15 +48,19 @@ export default function awardEventComment(props) {
   // 댓글작성
   const commentAdd = () => {
     async function AddComment(content) {
-      const {result, data} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
+      const {result, message} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
         setCurrentPage(0)
         // window.scrollTo(0, document.body.scrollHeight)
+      } else {
+        globalCtx.action.toast({
+          msg: message
+        })
       }
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: '내용을 입력해주세요.'
         })
       } else {
@@ -111,12 +115,12 @@ export default function awardEventComment(props) {
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: '내용이 수정되었습니다.'
         })
         setCurrentPage(0)
       } else {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: message
         })
       }

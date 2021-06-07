@@ -87,9 +87,6 @@ export default function eventComment({
         {modifyState === true ? (
           <button
             onClick={() => {
-              // globalCtx.action.alert({
-              //   msg: '댓글 이벤트가 종료되었습니다.'
-              // })
               commentAdd()
             }}>
             등록
@@ -146,48 +143,44 @@ export default function eventComment({
                     <div className="textBox">
                       <div className="nick">
                         {mem_nick}
-                        <span className="date">{ins_date}</span>
+                        <span className="date"> {ins_date}</span>
                       </div>
                       <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
-                    {token.isAdmin ? (
+                    {globalCtx.adminChecker === true && (
+                      <button
+                        className="btnDelete"
+                        onClick={() => {
+                          commentDel(tail_no, tail_mem_no)
+                        }}>
+                        <img src="https://image.dalbitlive.com/svg/close_g_l.svg" alt="삭제하기" />
+                      </button>
+                    )}
+
+                    {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
                       <>
                         <button
-                          className=""
+                          className="btnMore"
                           onClick={() => {
-                            commentDel(tail_no, tail_mem_no)
-                          }}>
-                          X
-                        </button>
-                      </>
-                    ) : (
-                      <>
-                        {parseInt(token.memNo) === tail_mem_no && modifyState === true && (
-                          <>
+                            moreToggle(idx)
+                          }}></button>
+                        {moreState === idx && (
+                          <div className="moreList">
                             <button
-                              className="btnMore"
                               onClick={() => {
-                                moreToggle(idx)
-                              }}></button>
-                            {moreState === idx && (
-                              <div className="moreList">
-                                <button
-                                  onClick={() => {
-                                    setCommentNo(tail_no)
-                                    setCommentTxt(tail_conts)
-                                    setMoreState(-1), setModifyState(false)
-                                  }}>
-                                  수정
-                                </button>
-                                <button
-                                  onClick={() => {
-                                    commentDel(tail_no, tail_mem_no), setMoreState(-1)
-                                  }}>
-                                  삭제
-                                </button>
-                              </div>
-                            )}
-                          </>
+                                setCommentNo(tail_no)
+                                setCommentTxt(tail_conts)
+                                setMoreState(-1), setModifyState(false)
+                              }}>
+                              수정
+                            </button>
+                            <button
+                              onClick={() => {
+                                commentDel(tail_no, tail_mem_no), setMoreState(-1)
+                              }}>
+                              삭제
+                            </button>
+                          </div>
                         )}
                       </>
                     )}
