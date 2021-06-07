@@ -24,7 +24,6 @@ export default function eventComment({
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
-  const context = useContext(Context)
 
   const [moreState, setMoreState] = useState(-1)
   const [modifyState, setModifyState] = useState(true)
@@ -180,7 +179,7 @@ export default function eventComment({
                         )}
                       </>
                     ) : (
-                      context.adminChecker === true && (
+                      globalCtx.adminChecker === true && (
                         <button
                           className="btnDelete"
                           onClick={() => {

@@ -14,7 +14,6 @@ export default function awardEventComment(props) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
-  const context = useContext(Context)
 
   //댓글 state
   // const [totalPage, setTotalPage] = useState(0)
@@ -54,10 +53,10 @@ export default function awardEventComment(props) {
       if (result === 'success') {
         setCurrentPage(0)
         setWriteState(false)
-        context.action.toast({msg: message})
+        globalCtx.action.toast({msg: message})
         // window.scrollTo(0, document.body.scrollHeight)
       } else {
-        context.action.toast({msg: message})
+        globalCtx.action.toast({msg: message})
       }
     }
     if (token.isLogin) {
@@ -84,14 +83,14 @@ export default function awardEventComment(props) {
       const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
         setCurrentPage(0)
-        context.action.toast({msg: message})
+        globalCtx.action.toast({msg: message})
       } else {
         globalCtx.action.toast({
           msg: message
         })
       }
     }
-    if (context.adminChecker) {
+    if (globalCtx.adminChecker) {
       globalCtx.action.confirm({
         msg: '정말 삭제하시겠습니까?',
         callback: () => {
@@ -120,7 +119,7 @@ export default function awardEventComment(props) {
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        context.action.toast({msg: message})
+        globalCtx.action.toast({msg: message})
         setCurrentPage(0)
         setWriteState(false)
         setModifyState(true)
