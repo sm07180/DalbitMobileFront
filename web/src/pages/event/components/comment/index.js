@@ -7,7 +7,7 @@ import {PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 // static
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 import './comment.scss'
 
 export default function eventComment({
@@ -194,10 +194,9 @@ export default function eventComment({
                   </div>
                 )
               })}
-              <NoResult />
             </>
           ) : (
-            <NoResult text="아직 작성된 댓글이 없습니다." brText=" 이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
+            <NoResult type="default" text="아직 작성된 댓글이 없습니다.<br />이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
           )}
         </div>
       </div>
