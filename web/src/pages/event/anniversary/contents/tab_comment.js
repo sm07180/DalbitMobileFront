@@ -5,6 +5,7 @@ import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 import Utility from 'components/lib/utility'
 import Api from 'context/api'
+import {IMG_SERVER} from 'context/config'
 
 import Comment from '../../components/comment'
 
@@ -55,11 +56,13 @@ export default function awardEventComment(props) {
         setWriteState(false)
         context.action.toast({msg: message})
         // window.scrollTo(0, document.body.scrollHeight)
+      } else {
+        context.action.toast({msg: message})
       }
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: '내용을 입력해주세요.'
         })
       } else {
@@ -83,7 +86,9 @@ export default function awardEventComment(props) {
         setCurrentPage(0)
         context.action.toast({msg: message})
       } else {
-        console.log(message)
+        globalCtx.action.toast({
+          msg: message
+        })
       }
     }
     if (context.adminChecker) {
@@ -120,7 +125,7 @@ export default function awardEventComment(props) {
         setWriteState(false)
         setModifyState(true)
       } else {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: message
         })
       }
@@ -163,7 +168,7 @@ export default function awardEventComment(props) {
     <>
       <div className="tabContentWrap">
         <div className="tabContentWrap__imgWrap">
-          <img src="https://image.dalbitlive.com/event/anniversary/comment.png" className="contentImg" />
+          <img src={`${IMG_SERVER}/event/anniversary/comment.png`} className="contentImg" />
         </div>
       </div>
       <Comment

@@ -7,7 +7,7 @@ import {PHOTO_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
 
 // static
-import NoResult from 'components/ui/noResult'
+import NoResult from 'components/ui/new_noResult'
 import './comment.scss'
 
 export default function eventComment({
@@ -78,7 +78,7 @@ export default function eventComment({
             const target = e.currentTarget
             const value = target.value
             if (value.length >= 300) {
-              context.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
+              globalCtx.action.toast({msg: '최대 300자 이내 입력 가능합니다.'})
             } else {
               setWriteState(true)
               setCommentTxt(value)
@@ -91,9 +91,6 @@ export default function eventComment({
           <button
             className={`writeBtn ${writeState ? 'on' : ''}`}
             onClick={() => {
-              // globalCtx.action.alert({
-              //   msg: '댓글 이벤트가 종료되었습니다.'
-              // })
               commentAdd(setWriteState)
             }}>
             등록
@@ -151,7 +148,7 @@ export default function eventComment({
                     <div className="textBox">
                       <div className="nick">
                         {mem_nick}
-                        <span className="date">{ins_date}</span>
+                        <span className="date"> {ins_date}</span>
                       </div>
                       <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
@@ -198,7 +195,7 @@ export default function eventComment({
               })}
             </>
           ) : (
-            <NoResult text="아직 작성된 댓글이 없습니다." brText=" 이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
+            <NoResult type="default" text="아직 작성된 댓글이 없습니다.<br />이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
           )}
         </div>
       </div>
