@@ -1,22 +1,18 @@
 import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
-import API from 'context/api'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {OS_TYPE} from 'context/config.js'
+import API from 'context/api'
+import {OS_TYPE, IMG_SERVER} from 'context/config'
 import Utility from 'components/lib/utility'
-import Api from 'context/api'
-import {IMG_SERVER} from 'context/config'
 
 import Comment from '../../components/comment'
 
 export default function awardEventComment(props) {
-  const {tabState, setTabState} = props
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
 
   //댓글 state
-  // const [totalPage, setTotalPage] = useState(0)
   const [commentList, setCommentList] = useState([])
   const [commentTxt, setCommentTxt] = useState('')
   const [commentNo, setCommentNo] = useState('')
@@ -24,7 +20,7 @@ export default function awardEventComment(props) {
   const [currentPage, setCurrentPage] = useState(0)
   const [loginMedia, setLoginMedia] = useState('')
 
-  const customHeader = JSON.parse(Api.customHeader)
+  const customHeader = JSON.parse(API.customHeader)
   // 댓글조회
   let totalPage = 1
   let pagePerCnt = 10
@@ -54,7 +50,6 @@ export default function awardEventComment(props) {
         setCurrentPage(0)
         setWriteState(false)
         globalCtx.action.toast({msg: message})
-        // window.scrollTo(0, document.body.scrollHeight)
       } else {
         globalCtx.action.toast({msg: message})
       }
