@@ -46,11 +46,7 @@ export default function anniversaryEvent() {
   }
 
   const clickCloseBtn = () => {
-    if (isHybrid() && webview && webview === 'new') {
-      Hybrid('CloseLayerPopup')
-    } else {
-      return history.goBack()
-    }
+    history.goBack()
   }
 
   useEffect(() => {
