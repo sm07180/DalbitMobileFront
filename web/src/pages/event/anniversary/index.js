@@ -21,9 +21,9 @@ export default function anniversaryEvent() {
     if (!num) return ''
     var formatNum = ''
     num = num.replace(/\s/gi, '')
-    num = num.substr(4, 6)
+    num = num.substr(4, 4)
     try {
-      formatNum = num.replace(/(\d{2})(\d{2})(\d{2})/, '$1월 $2일 $3시')
+      formatNum = num.replace(/(\d{2})(\d{2})/, '$1월 $2일')
     } catch (e) {
       formatNum = num
       console.log(e)
