@@ -27,7 +27,7 @@ export default function eventComment({
   const focus = useRef()
 
   const [moreState, setMoreState] = useState(-1)
-  const [modifyState, setModifyState] = useState(true)
+  const [modifyState, setModifyState] = useState(false)
   const [refreshState, setRefreshState] = useState(false)
   const [writeState, setWriteState] = useState(false)
 
@@ -90,7 +90,7 @@ export default function eventComment({
               setCommentTxt(value)
             }
           }}></textarea>
-        {modifyState === true ? (
+        {modifyState === false ? (
           <button
             className={`writeBtn ${writeState ? 'on' : ''}`}
             onClick={() => {
@@ -169,7 +169,7 @@ export default function eventComment({
                               onClick={() => {
                                 setCommentNo(tail_no)
                                 setCommentTxt(tail_conts)
-                                setMoreState(-1), setModifyState(false)
+                                setMoreState(-1), setModifyState(true)
                                 focus.current.focus()
                               }}>
                               수정
