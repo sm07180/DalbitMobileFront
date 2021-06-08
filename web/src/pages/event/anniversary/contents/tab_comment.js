@@ -116,15 +116,13 @@ export default function awardEventComment(props) {
       if (result === 'success') {
         globalCtx.action.toast({msg: message})
         setCurrentPage(0)
-        setWriteState(false)
-        setModifyState(true)
       } else {
         globalCtx.action.toast({
           msg: message
         })
-        setWriteState(false)
-        setModifyState(true)
       }
+      setWriteState(false)
+      setModifyState(false)
     }
     if (commentTxt === '') {
       globalCtx.action.toast({

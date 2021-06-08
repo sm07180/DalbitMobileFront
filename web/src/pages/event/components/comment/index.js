@@ -84,11 +84,6 @@ export default function eventComment({
               setWriteState(true)
               setCommentTxt(value)
             }
-            if (value.length === 0) {
-              setWriteState(true)
-              setModifyState(false)
-              setCommentTxt(value)
-            }
           }}></textarea>
         {modifyState === false ? (
           <button
@@ -156,7 +151,7 @@ export default function eventComment({
                       <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}></p>
                     </div>
 
-                    {parseInt(token.memNo) === tail_mem_no && modifyState === true ? (
+                    {parseInt(token.memNo) === tail_mem_no && modifyState === false ? (
                       <>
                         <button
                           className="btnMore"
