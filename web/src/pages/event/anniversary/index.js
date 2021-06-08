@@ -11,6 +11,7 @@ import './anniversary.scss'
 export default function anniversaryEvent() {
   const history = useHistory()
   const location = useLocation()
+  const {webview, type} = qs.parse(location.search)
   let urlrStr = qs.parse(location.search)
   const [tabState, setTabState] = useState('present')
   const [noticeData, setNoticeData] = useState(false)
@@ -46,7 +47,11 @@ export default function anniversaryEvent() {
   }
 
   const clickCloseBtn = () => {
-    history.goBack()
+    if (isHybrid() && webview && webview === 'new') {
+      Hybrid('CloseLayerPopup')
+    } else {
+      return history.goBack()
+    }
   }
 
   useEffect(() => {
@@ -63,7 +68,7 @@ export default function anniversaryEvent() {
         <button className="btnBack" onClick={() => clickCloseBtn()}>
           <img src={`${IMG_SERVER}/svg/close_w_l.svg`} alt="close" />
         </button>
-        <img src="https://image.dalbitlive.com/event/anniversary/main.png" className="topBox_mainImg" alt="main Image" />
+        <img src={`${IMG_SERVER}/event/anniversary/main.png`} className="topBox_mainImg" alt="main Image" />
         <div className="topBox_datebox">
           이벤트 기간 : <strong>{eventDate}</strong>
         </div>

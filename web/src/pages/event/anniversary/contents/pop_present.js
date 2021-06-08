@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
+import {IMG_SERVER} from 'context/config'
 
 export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
   const closePopup = () => {
@@ -23,7 +24,7 @@ export default function anniversaryEventPresentPop({setPresentPop, rcvDalCnt}) {
       <div className="layerContainer" onClick={addStopPropagation}>
         <h3>축하합니다!</h3>
         <div className="layerContent">
-          <img src="https://image.dalbitlive.com/event/anniversary/moonBox.png" className="layerContent__img" />
+          <img src={`${IMG_SERVER}/event/anniversary/moonBox.png`} className="layerContent__img" />
           <div className="layerContent__subTitle">{rcvDalCnt}달이 지급되었습니다.</div>
           <div className="layerContent__text">달빛라이브 많이 사랑해주세요~♥</div>
         </div>
@@ -57,7 +58,7 @@ const LayerPopup = styled.div`
     width: 32px;
     height: 32px;
     text-indent: -9999px;
-    background: url('https://image.dalbitlive.com/svg/close_w_l.svg') no-repeat 0 0;
+    background: url('${IMG_SERVER}/svg/close_w_l.svg') no-repeat 0 0;
   }
   .bottomClose{
     width:100%; height:44px;
