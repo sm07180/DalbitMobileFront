@@ -17,13 +17,22 @@ export default function anniversaryEventPresnet(props) {
   const history = useHistory()
 
   async function eventOneYearCheck() {
-    const {result, message} = await Api.postEventOneYearCheck()
+    const {result, message, code} = await Api.postEventOneYearCheck({memLevel: globalCtx.profile.level})
     if (result === 'success') {
       eventOneYearInsert()
     } else {
-      globalCtx.action.alert({
-        msg: message
-      })
+      if (code === '-3') {
+        globalCtx.action.alert({
+          msg: message,
+          callback: () => {
+            history.push('/selfauth?event=/event/anniversary')
+          }
+        })
+      } else {
+        globalCtx.action.alert({
+          msg: message
+        })
+      }
     }
   }
   async function eventOneYearInsert() {
@@ -50,20 +59,7 @@ export default function anniversaryEventPresnet(props) {
         }
       })
     } else {
-      if (globalCtx.profile.level >= 5) {
-        if (globalCtx.selfAuth === false) {
-          globalCtx.action.alert({
-            msg: `본인인증 후 참여해주세요.`,
-            callback: () => {
-              history.push('/selfauth?event=/event/anniversary')
-            }
-          })
-        } else {
-          eventOneYearCheck()
-        }
-      } else {
-        eventOneYearCheck()
-      }
+      eventOneYearCheck()
     }
   }
 
