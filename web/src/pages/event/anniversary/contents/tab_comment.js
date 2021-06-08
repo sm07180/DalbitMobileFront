@@ -1,48 +1,62 @@
-import React, {useState, useContext, useEffect} from 'react'
-import API from 'context/api'
+import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
-import {isHybrid} from 'context/hybrid'
-import {OS_TYPE} from 'context/config.js'
-import Api from 'context/api'
+import API from 'context/api'
+import {OS_TYPE, IMG_SERVER} from 'context/config'
+import Utility from 'components/lib/utility'
 
 import Comment from '../../components/comment'
 
 export default function awardEventComment(props) {
-  const {tabState, setTabState} = props
   const globalCtx = useContext(Context)
   const {token} = globalCtx
   const history = useHistory()
 
   //댓글 state
-  const [eventIndex, setEventIndex] = useState(4)
   const [commentList, setCommentList] = useState([])
   const [commentTxt, setCommentTxt] = useState('')
+  const [commentNo, setCommentNo] = useState('')
+  const [totalCommentCnt, setTotalCommentCnt] = useState(0)
+  const [currentPage, setCurrentPage] = useState(0)
   const [loginMedia, setLoginMedia] = useState('')
 
-  const customHeader = JSON.parse(Api.customHeader)
+  const customHeader = JSON.parse(API.customHeader)
   // 댓글조회
-  async function fetchCommentData() {
-    const {result, data, message} = await API.postEventOneYearComment()
+  let totalPage = 1
+  let pagePerCnt = 10
+  const fetchCommentData = useCallback(async () => {
+    const {result, data, message} = await API.postEventOneYearComment({
+      pageNo: currentPage,
+      pagePerCnt: pagePerCnt
+    })
     if (result === 'success') {
-      setCommentList(data[1])
+      setTotalCommentCnt(data[0])
+      totalPage = Math.ceil(data[0] / pagePerCnt)
+      if (currentPage > 1) {
+        setCommentList(commentList.concat(data[1]))
+      } else {
+        setCommentList(data[1])
+      }
     } else {
       console.log(message)
     }
-  }
+  }, [currentPage])
+
   // 댓글작성
-  const commentAdd = () => {
+  const commentAdd = (setWriteState) => {
     async function AddComment(content) {
-      const {result, data} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
+      const {result, message} = await API.postEventOneYearCommentInsert({tailConts: content, tailLoginMedia: loginMedia})
       if (result === 'success') {
-        fetchCommentData()
-        // window.scrollTo(0, document.body.scrollHeight)
+        setCurrentPage(0)
+        setWriteState(false)
+        globalCtx.action.toast({msg: message})
+      } else {
+        globalCtx.action.toast({msg: message})
       }
     }
     if (token.isLogin) {
       if (commentTxt === '') {
-        globalCtx.action.alert({
+        globalCtx.action.toast({
           msg: '내용을 입력해주세요.'
         })
       } else {
@@ -51,7 +65,7 @@ export default function awardEventComment(props) {
       }
     } else {
       globalCtx.action.alert({
-        msg: '111해당 서비스를 위해<br/>로그인을 해주세요.',
+        msg: '해당 서비스를 위해<br/>로그인을 해주세요.',
         callback: () => {
           history.push(`/login?redirect=/event/anniversary?tab=comment`)
         }
@@ -61,37 +75,85 @@ export default function awardEventComment(props) {
   // 댓글삭제
   const commentDel = (tail_no, tail_mem_no) => {
     async function DeleteComment(tail_no, tail_mem_no) {
-      const {result, data} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
+      const {result, message} = await API.postEventOneYearCommentDelete({tailNo: tail_no, tailMemNo: tail_mem_no})
       if (result === 'success') {
-        fetchCommentData()
+        setCurrentPage(0)
+        globalCtx.action.toast({msg: message})
       } else {
-        console.log(message)
+        globalCtx.action.toast({
+          msg: message
+        })
       }
     }
-    globalCtx.action.confirm({
-      msg: '댓글을 삭제하시겠습니까?',
-      callback: () => {
-        DeleteComment(tail_no, tail_mem_no)
-      }
-    })
+    if (globalCtx.adminChecker) {
+      globalCtx.action.confirm({
+        msg: '정말 삭제하시겠습니까?',
+        callback: () => {
+          DeleteComment(tail_no, tail_mem_no)
+        },
+        buttonText: {
+          left: '취소',
+          right: '삭제'
+        }
+      })
+    } else {
+      globalCtx.action.confirm({
+        msg: '등록된 댓글을 삭제하시겠습니까?',
+        callback: () => {
+          DeleteComment(tail_no, tail_mem_no)
+        }
+      })
+    }
   }
   // 댓글수정
-  const commentUpd = (tail_no, tail_conts) => {
-    async function UpdateComment(tail_no, tail_conts) {
-      const {result, data} = await API.postEventOneYearCommentUpdate({
-        tailNo: tail_no,
-        tailConts: tail_conts,
+  const commentUpd = (setWriteState, setModifyState) => {
+    async function UpdateComment() {
+      const {result, message} = await API.postEventOneYearCommentUpdate({
+        tailNo: commentNo,
+        tailConts: commentTxt,
         tailLoginMedia: loginMedia
       })
       if (result === 'success') {
-        let textArea = document.getElementsByClassName('addInputBox')
-        console.log(textArea)
+        globalCtx.action.toast({msg: message})
+        setCurrentPage(0)
       } else {
-        console.log(tail_no, tail_conts)
+        globalCtx.action.toast({
+          msg: message
+        })
       }
+      setWriteState(false)
+      setModifyState(false)
     }
-    UpdateComment(tail_no, tail_conts)
+    if (commentTxt === '') {
+      globalCtx.action.toast({
+        msg: '내용을 입력해주세요.'
+      })
+    } else {
+      globalCtx.action.confirm({
+        msg: '등록된 댓글을 수정하시겠습니까?',
+        callback: () => {
+          UpdateComment(commentNo, commentTxt)
+          setCommentTxt('')
+        }
+      })
+    }
   }
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [currentPage])
+
+  useEffect(() => {
+    if (currentPage > 0) fetchCommentData()
+  }, [currentPage])
 
   useEffect(() => {
     // login medea setting
@@ -100,8 +162,6 @@ export default function awardEventComment(props) {
     } else if (customHeader['os'] === 3) {
       setLoginMedia('w')
     }
-    // fetch comment list
-    fetchCommentData()
   }, [])
 
   return (
@@ -113,11 +173,15 @@ export default function awardEventComment(props) {
       </div>
       <Comment
         commentList={commentList}
+        totalCommentCnt={totalCommentCnt}
         commentAdd={commentAdd}
         commentUpd={commentUpd}
         commentTxt={commentTxt}
         setCommentTxt={setCommentTxt}
+        setCommentNo={setCommentNo}
         commentDel={commentDel}
+        fetchCommentData={fetchCommentData}
+        setCurrentPage={setCurrentPage}
       />
     </>
   )
