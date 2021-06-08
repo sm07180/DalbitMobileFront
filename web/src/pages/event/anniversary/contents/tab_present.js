@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
 
 import PresentPop from './pop_present'
 import LayerPopupExp from './layer_popup_exp'
@@ -69,10 +70,10 @@ export default function anniversaryEventPresnet(props) {
   return (
     <>
       <div className="tabContentWrap">
-        <img src="https://image.dalbitlive.com/event/anniversary/present.png" className="contentImg" />
+        <img src={`${IMG_SERVER}/event/anniversary/present.png`} className="contentImg" />
         <button className="button_present">
           <img
-            src="https://image.dalbitlive.com/event/anniversary/btn_present.png"
+            src={`${IMG_SERVER}/event/anniversary/btn_present.png`}
             className="button_img"
             onClick={() => onReceivePresent()}
           />
