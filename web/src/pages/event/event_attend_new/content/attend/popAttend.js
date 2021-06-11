@@ -24,14 +24,13 @@ export default (props) => {
   const dalExp = () => {
     let gift
 
-    if (statusList.the_day === '0' || statusList.the_day === '2') {
+    if (statusList.the_day === '0' || statusList.the_day === '1' || statusList.the_day === '2' || statusList.the_day === '3') {
       gift = '1달+10EXP'
-    } else if (statusList.the_day === '1' || statusList.the_day === '3') {
-      gift = '2달+10EXP'
+    } else if (statusList.the_day === '4') {
+      gift = '1달+15EXP'
     } else {
-      gift = '3달+15EXP'
+      gift = '2달+15EXP'
     }
-
     return gift
   }
 
