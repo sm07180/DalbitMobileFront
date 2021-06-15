@@ -59,8 +59,8 @@ export default function () {
         <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
       </button>
       <div className="share_header">
-        <img src="https://image.dalbitlive.com/event/moonrise/background_fullmoon_head.png" alt="달띄우기상단공통이미지" />
-        <span className="share_topDate riseDate">{moonRiseTime.fullmoonText}</span>
+        <img src="https://image.dalbitlive.com/event/moonrise/img_title.png" alt="달띄우기상단공통이미지" />
+        {/* <span className="share_topDate riseDate">{moonRiseTime.fullmoonText}</span> */}
         <span className="share_topDate wholeDate">{moonRiseTime.fullmoonDuration}</span>
       </div>
       <div className="share_tabWrap">
