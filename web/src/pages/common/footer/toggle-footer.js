@@ -4,7 +4,7 @@ import Footer from '.'
 import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 
-export default props => {
+export default (props) => {
   const [show, setShow] = useState(true)
   const ToggleBtn = () => {
     show ? setShow(false) : setShow(true)
@@ -49,7 +49,7 @@ const Child = () => {
       </Info>
       <Info>
         <li>
-          <span>주소</span>서울특별시 강남구 테헤란로83길 18(삼성동) 8층
+          <span>주소</span>광주광역시 서구 상무대로 773 4층
         </li>
         <li>
           <span>연락처</span> 1522-0251
@@ -80,7 +80,7 @@ const Logo = styled.div`
 const Button = styled.button`
   flex-basis: 17.64%;
   height: 36px;
-  background: url(${props =>
+  background: url(${(props) =>
       props.value === true ? `${IMG_SERVER}/images/api/arrow-top.png` : `${IMG_SERVER}/images/api/ico-down.png`})
     no-repeat center center / cover;
 `
