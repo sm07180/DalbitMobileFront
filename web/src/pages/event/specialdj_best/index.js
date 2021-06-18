@@ -110,14 +110,16 @@ export default function SpecialDjBest() {
             </button>
           </div>
           <div className="support_box">
-            <h3 className="tit"><img src={`${IMG_SERVER}/event/specialdj/common/tit_cont02.png`} alt="스페셜 DJ 혜택" /></h3>
+            <h3 className="tit">
+              <img src={`${IMG_SERVER}/event/specialdj/common/tit_cont02.png`} alt="스페셜 DJ 혜택" />
+            </h3>
             {/* <img src={`${IMG_SERVER}/event/specialdj/common/img_cont02.png`} alt="스페셜 DJ 혜택" />
             <button onClick={() => setGoodsPop(true)} className="btn_goods_more">
               <img src={`${IMG_SERVER}/event/specialdj/common/btn_goods.png`} alt="굿즈상품 더보기" />
             </button> */}
           </div>
           <div className="support_box">
-            <img src={`${IMG_SERVER}/event/specialdj/common/img_cont03_0518.png`} alt="스폐셜 DJ 혜택 상세보기" />
+            <img src={`${IMG_SERVER}/event/specialdj/common/img_cont03_0618.png`} alt="스폐셜 DJ 혜택 상세보기" />
             {/* <button onClick={() => setMoonPop(true)} className="btn_support_moon">
                 <img
                   src={`${IMG_SERVER}/event/specialdj/common/btn_support_moon.png`}
@@ -133,17 +135,19 @@ export default function SpecialDjBest() {
           </div>
           <div className="support_box padding">
             {/* <img src={`${IMG_SERVER}/event/specialdj/common/img_cont05.png`} alt="스페셜 DJ 유의 사항" /> */}
-            <h4 className="tit"><img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" /></h4>
-              <ul className="notice_list">
-                <li>달빛라이브의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
-                <li>달빛라이브의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
-                <li>스페셜 DJ 유지 기간은 정책에 의거, 유지 기간의 변경이 있을 수 있습니다.</li>
-                <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로 위반하는 경우 자격이 박탈 될 수 있습니다.</li>
-                <li>지원 요건을 충족해도 스페셜 DJ에 미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>
-                <li>스페셜 DJ 부스터 혜택은 별이 지급되지 않습니다.</li>
-                <li>스페셜 DJ 누적 1~5회 활동지원비는 매월 1일 스페셜 DJ 선발 발표 후 다음 날 (영업일 기준) 오전 중 지급해드립니다.</li>
-                <li>스페셜 DJ 혜택은 추후 조정될 수 있습니다.</li>
-              </ul>
+            <h4 className="tit">
+              <img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" />
+            </h4>
+            <ul className="notice_list">
+              <li>달빛라이브의 스페셜 DJ는 월 1회, 매월 마지막 일자에 발표합니다.</li>
+              <li>달빛라이브의 스페셜 DJ는 1개월 동안 유지됩니다.</li>
+              <li>스페셜 DJ 유지 기간은 정책에 의거, 유지 기간의 변경이 있을 수 있습니다.</li>
+              <li>스페셜 DJ 선발 후 운영원칙을 상습/의도적으로 위반하는 경우 자격이 박탈 될 수 있습니다.</li>
+              <li>지원 요건을 충족해도 스페셜 DJ에 미지원한 DJ들은 스페셜 DJ에 선정되지 않습니다.</li>
+              <li>스페셜 DJ 부스터 혜택은 별이 지급되지 않습니다.</li>
+              <li>스페셜 DJ 활동지원비는 스페셜 DJ 발표 후 다음날 (영업일 기준) 지급해드립니다.</li>
+              <li>스페셜 DJ 혜택은 추후 조정될 수 있습니다.</li>
+            </ul>
           </div>
 
           {context.token.isLogin && conditionData ? (
@@ -168,7 +172,23 @@ export default function SpecialDjBest() {
       )}
       {tabState === 'best' && (
         <div className="tab_wrap best">
-          <img src={`${IMG_SERVER}/event/specialdj/common/img_bestdj.png`} alt="베스트 스페셜 DJ 이미지" className="top_image" />
+          <img
+            src={`${IMG_SERVER}/event/specialdj/common/img_bestdj_0618.png`}
+            alt="베스트 스페셜 DJ 이미지"
+            className="top_image"
+          />
+          <div className="support_box padding">
+            <h4 className="tit">
+              <img src={`${IMG_SERVER}/event/specialdj/common/tit_notice.png`} alt="기억해 주세요" />
+            </h4>
+            <ul className="notice_list best">
+              <li>베스트 스페셜 DJ의 경우도 [프로필 &gt; 스페셜 DJ 약력]과 [랭킹 &gt; 명예의 전당]은 스페셜 DJ로 표시됩니다.</li>
+              <li>베스트 스페셜 DJ 활동지원비는 매월 1일 스페셜 DJ 선발 발표 후 (영업일 기준) 오전 중 지급해드립니다.</li>
+              <li>현금은 별로 환산(환전수수료 혜택 5% 반영)해서 지급됩니다.</li>
+              <li>베스트 스페셜 DJ 혜택은 추후 조정될 수 있습니다.</li>
+              <li>베스트 스페셜 DJ 아이디 양도(공동 사용)는 불가하며 제재 대상이 됩니다.</li>
+            </ul>
+          </div>
         </div>
       )}
 
