@@ -43,7 +43,7 @@
           text-indent: -12px;
           color: $greishBrown;
           letter-spacing: -0.8px;
-          &::before {    
+          &::before {
             position: relative;
             top: -4px;
             display: inline-block;
@@ -56,6 +56,13 @@
           }
           & + li {
             margin-top: 8px;
+          }
+        }
+        &.best {
+          > li {
+            &::before {
+              background: #632bec;
+            }
           }
         }
       }
