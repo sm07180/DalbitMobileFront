@@ -22,6 +22,19 @@
     margin-left: 0;
     background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_half.png');
   }
+  &.icon_contentsdj {
+    width: 72px;
+    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_2103.png');
+  }
+  &.icon_contentsdj_half {
+    width: 80px;
+    z-index: 1;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-left: 0;
+    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_half.png');
+  }
   &.icon_shiningdj {
     background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj.png');
   }
@@ -34,15 +47,18 @@
     background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj_half.png');
   }
   &.icon_bestdj {
-    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj.png');
+    width: 70px;
+    height: 16px;
+    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_2103.png');
   }
   &.icon_bestdj_half {
+    width: 80px;
     z-index: 1;
     position: absolute;
     left: 0px;
     top: 0px;
     margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_half.png');
+    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_half_2109.png');
   }
   &.icon_specialdj_label {
     width: 16px;

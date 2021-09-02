@@ -277,15 +277,19 @@ export default (props) => {
           {icon !== '' && <img src={icon} alt="뱃지아이콘" className="icon-badge" />}
           <span>{text}</span>
         </span> */}
-        <em
-          className={`icon_wrap icon_badge ${icon !== '' ? 'img' : 'text'}`}
-          key={`badge-${index}`}
-          style={{
-            background: `linear-gradient(to right, ${startColor}, ${endColor}`
-          }}>
-          {icon !== '' && <img src={icon} alt="뱃지아이콘" className="img" />}
-          <span>{text}</span>
-        </em>
+        {text === '콘텐츠 DJ' ? (
+          <em className={`icon_wrap icon_contentsdj`}></em>
+        ) : (
+          <em
+            className={`icon_wrap icon_badge ${icon !== '' ? 'img' : 'text'}`}
+            key={`badge-${index}`}
+            style={{
+              background: `linear-gradient(to right, ${startColor}, ${endColor}`
+            }}>
+            {icon !== '' && <img src={icon} alt="뱃지아이콘" className="img" />}
+            <span>{text}</span>
+          </em>
+        )}
       </div>
     )
   })
