@@ -29,6 +29,7 @@ import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
+import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
 import Package from './package'
 import VideoOpen from './video_open'
@@ -91,6 +92,8 @@ export default () => {
         return <PostGuide />
       case 'recommend_dj':
         return <RecommendDj />
+      case 'recommend_dj2':
+        return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
       case 'package':
