@@ -13,42 +13,9 @@ import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {IMG_SERVER} from 'context/config'
 
-import './recommend_dj2.scss'
+import hitIcon from '../../menu/static/ico_hit_g.svg'
 
-// const genderList = [
-//   {
-//     text: '남성',
-//     name: 'male',
-//     value: GENDER_TYPE.male
-//   },
-//   {
-//     text: '여성',
-//     name: 'female',
-//     value: GENDER_TYPE.female
-//   }
-// ]
-// const ageList = [
-//   {
-//     text: '10대',
-//     name: 'ageTen',
-//     value: AGE_TYPE.ten
-//   },
-//   {
-//     text: '20대',
-//     name: 'ageTwenty',
-//     value: AGE_TYPE.twenty
-//   },
-//   {
-//     text: '30대',
-//     name: 'ageThirty',
-//     value: AGE_TYPE.thirty
-//   },
-//   {
-//     text: '40대이상',
-//     name: 'ageForty',
-//     value: AGE_TYPE.forty
-//   }
-// ]
+import './recommend_dj2.scss'
 
 export default function RecommendDj() {
   const history = useHistory()
@@ -58,17 +25,18 @@ export default function RecommendDj() {
 
   const [selectedGenderArr, setSelectedGenderArr] = useState([])
   const [selectedAgeArr, setSelectedAgeArr] = useState([])
-  const [memList, setMemList] = useState([])
   const [fetchedList, setFetchedList] = useState([])
-  const [fetched, setFetched] = useState(true)
   const [refresh, setRefresh] = useState(false)
-  const [select, setSelect] = useState(true)
+  const [memList, setMemList] = useState([])
+  const [select, setSelect] = useState(false)
 
   const fetchRecommendedDJList = useCallback(async () => {
     const {result, data, message} = await Api.getRecommendedDJ()
     if (result === 'success') {
+      let memNoList = []
+      data.list.slice(0, 6).map((e) => memNoList.push(e.memNo))
       setFetchedList(data.list.slice(0, 6))
-      setMemList(data.list.slice(0, 6))
+      setMemList(memNoList)
     } else {
       context.action.alert({
         msg: message
@@ -80,32 +48,21 @@ export default function RecommendDj() {
     }, 360)
   })
 
-  const addFanHandler = useCallback(
-    async (memNo, nickNm, listIdx) => {
-      const {result, message} = await Api.fan_change({data: {memNo, type: 1}})
-      if (result === 'success') {
-        toggleFan(listIdx)
-      } else {
-        context.action.alert({
-          msg: message
-        })
-      }
-    },
-    [fetchedList]
-  )
-  const cancelFanHandler = useCallback(
-    async (memNo, listIdx) => {
-      const {result, message} = await Api.mypage_fan_cancel({data: {memNo}})
-      if (result === 'success') {
-        toggleFan(listIdx)
-      } else {
-        context.action.alert({
-          msg: message
-        })
-      }
-    },
-    [fetchedList]
-  )
+  const addFanHandler = useCallback(async () => {
+    console.log(memList)
+    const {result, message} = await Api.fan_multi_change({
+      data: {memNoList: memList}
+    })
+    console.log(result)
+    if (result === 'success') {
+      toggleFan(listIdx)
+      history.push('/')
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }, [memList])
 
   const toggleFan = (listIdx) => {
     const deepClonedList = _.cloneDeep(fetchedList)
@@ -113,19 +70,25 @@ export default function RecommendDj() {
     setFetchedList(deepClonedList)
   }
 
-  const toggleSelect = (e, idx, key) => {
-    console.log(e, idx, key)
-    if (idx === 0) {
-      setSelect(true)
+  const toggleSelect = (e, idx) => {
+    // console.log(e.currentTarget.className, memList)
+    let memNoList = memList
+    if (e.currentTarget.className === 'fanBoxWrap') {
+      e.currentTarget.className += ' active'
+      memNoList.push(fetchedList[idx].memNo)
+    } else {
+      e.currentTarget.classList.remove('active')
+      memNoList.pop(fetchedList[idx].memNo)
     }
-    console.log(fetchedList[idx], idx)
-    console.log(memList[idx].memNo)
+
+    console.log(e.currentTarget.className, memNoList)
+
+    setMemList(memNoList)
   }
 
   const onRefresh = () => {
     fetchRecommendedDJList()
     setRefresh(true)
-    window.scrollTo(0, 0)
   }
 
   useEffect(() => {
@@ -178,24 +141,18 @@ export default function RecommendDj() {
           {fetchedList.length > 0 ? (
             fetchedList.map((list, idx) => (
               <li className="userItem" key={`${list.memNo}-${idx}`}>
-                <div className="fanBoxWrap" onClick={() => toggleSelect(idx)}>
-                  <div className={`thumbnail ${list.isFan === false ? 'active' : ''}`}>
+                <button className={`fanBoxWrap active`} onClick={(e) => toggleSelect(e, idx)}>
+                  <div className={`thumbnail`}>
                     <img src={list.profImg['thumb120x120']} className="photo" alt={list.nickNm} />
-                    <img
-                      src={`${IMG_SERVER}/event/recommend_dj2/ico_check${list.isFan === false ? '_active' : ''}.png`}
-                      className="icoCheck"
-                      alt=""
-                    />
+                    <em className="icoCheck"></em>
                   </div>
                   <div className="userText">
                     <div className="nickName">{list.nickNm}</div>
-                    <p className="subject">
-                      테스트
-                      <br />
-                      테스트
-                    </p>
+                    <p className="subject">{list.dj_keyword}</p>
                     <div className="value">
-                      <i className="user"></i>
+                      <i className="user">
+                        <img src={hitIcon} alt="" />
+                      </i>
                       <span>41234</span>
                     </div>
                   </div>
@@ -211,7 +168,7 @@ export default function RecommendDj() {
                         }
                       }}></button>
                   )}
-                </div>
+                </button>
               </li>
             ))
           ) : (
