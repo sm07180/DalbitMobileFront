@@ -166,10 +166,12 @@ const makeContents = (props) => {
         ) : (
           <>
             <div className="top-status">
-              {badgeSpecial > 0 && badgeSpecial === 1 ? (
-                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
-              ) : badgeSpecial === 2 ? (
+              {badgeSpecial > 0 && badgeSpecial === 2 ? (
                 <em className="icon_wrap icon_bestdj">베스트DJ</em>
+              ) : badgeSpecial === 3 ? (
+                <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
+              ) : badgeSpecial === 1 ? (
+                <em className="icon_wrap icon_specialdj">스페셜DJ</em>
               ) : (
                 <></>
               )}
