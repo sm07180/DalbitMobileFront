@@ -633,7 +633,7 @@ export default (props) => {
         }
         context.action.updateProfile(profileInfo.data)
         // return props.history.push('/')
-        return props.history.push('/event/recommend_dj')
+        return props.history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({

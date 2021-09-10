@@ -28,13 +28,12 @@ export default function RecommendDj() {
   const [fetchedList, setFetchedList] = useState([])
   const [refresh, setRefresh] = useState(false)
   const [memList, setMemList] = useState([])
-  const [select, setSelect] = useState(false)
 
   const fetchRecommendedDJList = useCallback(async () => {
     const {result, data, message} = await Api.getRecommendedDJ()
     if (result === 'success') {
       let memNoList = []
-      data.list.slice(0, 6).map((e) => memNoList.push(e.memNo))
+      memNoList = data.list.slice(0, 6).map((e) => e.memNo)
       setFetchedList(data.list.slice(0, 6))
       setMemList(memNoList)
     } else {
@@ -71,17 +70,14 @@ export default function RecommendDj() {
   }
 
   const toggleSelect = (e, idx) => {
-    // console.log(e.currentTarget.className, memList)
     let memNoList = memList
     if (e.currentTarget.className === 'fanBoxWrap') {
       e.currentTarget.className += ' active'
       memNoList.push(fetchedList[idx].memNo)
     } else {
       e.currentTarget.classList.remove('active')
-      memNoList.pop(fetchedList[idx].memNo)
+      memNoList.splice(memNoList.indexOf(fetchedList[idx].memNo), 1)
     }
-
-    console.log(e.currentTarget.className, memNoList)
 
     setMemList(memNoList)
   }
@@ -101,21 +97,6 @@ export default function RecommendDj() {
           state: 'event/recommend_dj2'
         }
       })
-    } else {
-      if (profile !== null) {
-        const getGender =
-          profile.gender === 'n'
-            ? [GENDER_TYPE.male, GENDER_TYPE.female]
-            : profile.gender === 'm'
-            ? [GENDER_TYPE.female]
-            : [GENDER_TYPE.male]
-        setSelectedGenderArr(getGender)
-
-        const getAge =
-          profile.age === 0 ? [AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty] : [(profile.age / 10).toString()]
-
-        setSelectedAgeArr(getAge)
-      }
     }
   }, [context.profile, context.token.isLogin])
 
@@ -153,7 +134,7 @@ export default function RecommendDj() {
                       <i className="user">
                         <img src={hitIcon} alt="" />
                       </i>
-                      <span>41234</span>
+                      <span>{list.tot_clip_play_cnt + list.tot_listener_cnt}</span>
                     </div>
                   </div>
                   {list.roomNo && (
@@ -175,13 +156,6 @@ export default function RecommendDj() {
             <NoResult text="추천DJ가 없습니다.<br />다른 조건으로 검색해주세요." />
           )}
         </ul>
-        {/* <button className="btn__refresh" onClick={onRefresh}>
-          <img
-            src={`${IMG_SERVER}/event/recommend_dj2/ico_refresh.png`}
-            alt="새로고침"
-            className={`refresh-img${refresh ? ' active' : ''}`}
-          />
-        </button> */}
         <button className="refreshBtn" onClick={onRefresh}>
           <img src={`${IMG_SERVER}/event/recommend_dj2/ico_refresh.png`} className={`refresh-img${refresh}`} alt="새로고침" />
           다른 추천DJ 보기
