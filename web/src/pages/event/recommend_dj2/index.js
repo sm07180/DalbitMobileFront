@@ -52,22 +52,23 @@ export default function RecommendDj() {
     const {result, message} = await Api.fan_multi_change({
       data: {memNoList: memList}
     })
+    const movePage = () => {
+      history.push({
+        pathname: '/',
+        state: {
+          state: '/'
+        }
+      })
+    }
     console.log(result)
     if (result === 'success') {
-      toggleFan(listIdx)
-      history.push('/')
+      movePage()
     } else {
       context.action.alert({
         msg: message
       })
     }
   }, [memList])
-
-  const toggleFan = (listIdx) => {
-    const deepClonedList = _.cloneDeep(fetchedList)
-    deepClonedList[listIdx].isFan = !deepClonedList[listIdx].isFan
-    setFetchedList(deepClonedList)
-  }
 
   const toggleSelect = (e, idx) => {
     let memNoList = memList
