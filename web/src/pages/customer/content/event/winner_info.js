@@ -310,7 +310,7 @@ export default function WinnerInfo({state, formDispatch, WinnerInspection}) {
       </div>
       <div className="inputForm__box prize">
         <span className="formText">입금은행/예금주</span>
-        <span className="infoText">신한은행 / (주)여보야</span>
+        <span className="infoText">신한은행 / (주)인포렉스</span>
       </div>
       <div className="inputForm__box prize">
         <span className="formText">계좌번호</span>
