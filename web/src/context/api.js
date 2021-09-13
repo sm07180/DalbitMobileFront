@@ -1128,6 +1128,16 @@ export default class API {
       data: data
     })
   }
+  // 멀티 팬등록,해제
+  static fan_multi_change = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/multi/fan`,
+      method: method || 'POST',
+      data: data
+    })
+  }
 
   /**
    * @brief 회원정보조회 member_info -> mypage
@@ -2186,7 +2196,7 @@ export default class API {
   }
   static pay_simple = async (obj) => {
     const {url, method, data} = obj || {}
-    return await ajax ({
+    return await ajax({
       ...obj,
       url: url || `/rest/pay/simple`,
       method: method || 'POST',
@@ -2577,7 +2587,7 @@ export default class API {
   }
   static postEventOneYearInsert = async (params) => {
     return await ajax({url: '/oneYear/dal/ins', method: 'POST', params})
-  }  
+  }
   static postEventOneYearComment = async (data) => {
     return await ajax({url: '/oneYear/tail/list', method: 'POST', data})
   }
@@ -2590,7 +2600,7 @@ export default class API {
   static postEventOneYearCommentDelete = async (data) => {
     return await ajax({url: '/oneYear/tail/del', method: 'POST', data})
   }
-  
+
   //이벤트용 ios 심사여부 조회
   static getIosJudge = async (params) => {
     return await ajax({url: '/ios/judge', method: 'GET', params})

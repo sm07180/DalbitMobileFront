@@ -148,8 +148,16 @@ export default function login_sns({props}) {
                 <span>다른 방법으로 계속하기</span>
               </button>
             )}
+          </div>
+        )}
 
-            {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
+        {appleAlert && (
+          <div className="apple-alert">
+            OS를 최신 버전으로 업데이트해 주세요.
+            <br />
+            만약 OS업데이트 후에도 로그인이 안 될 경우
+            <br />
+            앱을 재설치하신 뒤 휴대폰을 재부팅한 후 로그인을 시도해 주세요.
           </div>
         )}
 

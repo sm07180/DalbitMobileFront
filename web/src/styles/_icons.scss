@@ -44,6 +44,17 @@
     margin-left: 0;
     background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_half.png');
   }
+  &.icon_contentsdj {
+    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj.png');
+  }
+  &.icon_contentsdj_half {
+    z-index: 1;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin-left: 0;
+    background-image: url('#{$IMG_SERVER}/main/common/ico_contentsdj_half.png');
+  }
   &.icon_specialdj_label {
     width: 16px;
     background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_label.png');
