@@ -194,12 +194,12 @@ export default (props) => {
           <span>{mydal.toLocaleString()}</span>
         </div>
         {creatResult()}
-        {/* <div className="desc_wrap">
+        <div className="desc_wrap">
           <strong className="title">환급 안내</strong>
           <p className="list">
             DJ에게 달을 선물하면 <span className="emp">최대 80%</span>가 환급됩니다.
           </p>
-        </div> */}
+        </div>
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
