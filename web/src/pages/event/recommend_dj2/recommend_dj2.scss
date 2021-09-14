@@ -131,9 +131,11 @@
     .combo {
       position: fixed;
       bottom: 0;
+      z-index: 1;
       display: flex;
       width: 100%;
       padding: 16px 16px 24px;
+      background-color: #fff;
     }
     .refreshBtn {
       display: flex;
