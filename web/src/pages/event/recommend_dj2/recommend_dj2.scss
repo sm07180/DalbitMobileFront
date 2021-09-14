@@ -35,17 +35,22 @@
         margin-right: auto;
       }
       .fanBoxWrap {
-        width: 92px;
+        position: relative;
+        width: 100%;
         margin-bottom: 26px;
         .thumbnail {
           position: relative;
-          width: 92px;
-          height: 92px;
+          width: 71.77%;
+          height: 0;
+          padding-top: 68.65%;
           margin: 0 auto;
           border: 2px solid #cccccc;
           border-radius: 50%;
           box-sizing: border-box;
           .photo {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             border-radius: 50%;
@@ -55,8 +60,8 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 22px;
-            height: 22px;
+            width: 25%;
+            height: 25%;
             background: url('https://image.dalbitlive.com/event/recommend_dj2/ico_check.png') center/contain no-repeat;
           }
         }
@@ -68,8 +73,8 @@
             position: absolute;
             bottom: 0;
             right: 0;
-            width: 22px;
-            height: 22px;
+            width: 25%;
+            height: 25%;
             background: url('https://image.dalbitlive.com/event/recommend_dj2/ico_check_active.png') center/contain no-repeat;
           }
         }
@@ -123,16 +128,18 @@
         }
       }
     }
+    .combo {
+      position: fixed;
+      bottom: 0;
+      display: flex;
+      width: 100%;
+      padding: 16px 16px 24px;
+    }
     .refreshBtn {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 28px;
-      margin: auto 0 12px;
-      letter-spacing: -1.5px;
-      font-size: 16px;
-      font-weight: 700;
-      color: #632beb;
+      height: 48px;
       img {
         height: 100%;
         margin-right: 4px;
@@ -141,7 +148,6 @@
     .startBtn {
       width: calc(100% - 32px);
       height: 48px;
-      margin: 0 16px 24px;
       border-radius: 12px;
       background-color: #632beb;
       font-size: 18px;

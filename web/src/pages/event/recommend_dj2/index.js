@@ -105,7 +105,7 @@ export default function RecommendDj() {
       <div className="subContent">
         <div className="topImg">
           <img
-            src={`${IMG_SERVER}/event/recommend_dj2/topImg.png`}
+            src={`${IMG_SERVER}/event/recommend_dj2/topImg-m.png`}
             alt="꿀잼보장! 추천DJ를 소개합니다. 팬이 되면 DJ가 방송할 때 알려드려요."
           />
           <button onClick={() => history.push('/')}>
@@ -152,13 +152,14 @@ export default function RecommendDj() {
             <NoResult text="추천DJ가 없습니다.<br />다른 조건으로 검색해주세요." />
           )}
         </ul>
-        <button className="refreshBtn" onClick={onRefresh}>
-          <img src={`${IMG_SERVER}/event/recommend_dj2/ico_refresh.png`} className={`refresh-img${refresh}`} alt="새로고침" />
-          다른 추천DJ 보기
-        </button>
-        <button className="startBtn" onClick={addFanHandler}>
-          시작하기
-        </button>
+        <div className="combo">
+          <button className="refreshBtn" onClick={onRefresh}>
+            <img src={`${IMG_SERVER}/event/recommend_dj2/ico_refresh-m.png`} className={`refresh-img${refresh}`} alt="새로고침" />
+          </button>
+          <button className="startBtn" onClick={addFanHandler}>
+            시작하기
+          </button>
+        </div>
       </div>
     </div>
   )
