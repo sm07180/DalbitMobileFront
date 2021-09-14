@@ -62,6 +62,7 @@ export default function RecommendDj() {
       context.action.alert({
         msg: message
       })
+      movePage()
     }
   }, [memList])
 
