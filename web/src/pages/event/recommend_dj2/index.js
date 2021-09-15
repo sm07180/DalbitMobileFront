@@ -24,8 +24,13 @@ export default function RecommendDj() {
   const [refresh, setRefresh] = useState(false)
   const [memList, setMemList] = useState([])
 
+  const selectedAgeArr = [1, 2, 3, 4]
+  const selectedGenderArr = ['m', 'f']
   const fetchRecommendedDJList = useCallback(async () => {
-    const {result, data, message} = await Api.getRecommendedDJ()
+    const ageList = joinChar(selectedAgeArr)
+    const gender = joinChar(selectedGenderArr)
+
+    const {result, data, message} = await Api.getRecommendedDJ({ageList, gender})
     if (result === 'success') {
       let memNoList = []
       memNoList = data.list.slice(0, 6).map((e) => e.memNo)
@@ -59,9 +64,7 @@ export default function RecommendDj() {
     if (result === 'success') {
       movePage()
     } else {
-      context.action.alert({
-        msg: message
-      })
+      console.log(message)
       movePage()
     }
   }, [memList])
@@ -78,6 +81,8 @@ export default function RecommendDj() {
 
     setMemList(memNoList)
   }
+
+  const joinChar = (state) => state.join('|')
 
   const onRefresh = () => {
     fetchRecommendedDJList()
@@ -119,14 +124,27 @@ export default function RecommendDj() {
           {fetchedList.length > 0 ? (
             fetchedList.map((list, idx) => (
               <li className="userItem" key={`${list.memNo}-${idx}`}>
-                <button className={`fanBoxWrap active`} onClick={(e) => toggleSelect(e, idx)}>
+                <div className={`fanBoxWrap active`} onClick={(e) => toggleSelect(e, idx)}>
                   <div className={`thumbnail`}>
                     <img src={list.profImg['thumb120x120']} className="photo" alt={list.nickNm} />
                     <em className="icoCheck"></em>
                   </div>
                   <div className="userText">
-                    <div className="nickName">{list.nickNm}</div>
-                    <p className="subject">{list.dj_keyword}</p>
+                    <div className={`nickName ${list.gender === 'm' ? 'man' : 'woman'}`}>{list.nickNm}</div>
+                    <p className="subject">
+                      {list.dj_keyword.split('\n').map((line, index) => {
+                        if (list.dj_keyword.match('\n')) {
+                          return (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          )
+                        } else {
+                          return <React.Fragment key={index}>{list.dj_keyword}</React.Fragment>
+                        }
+                      })}
+                    </p>
                     <div className="value">
                       <i className="user">
                         <img src={hitIcon} alt="" />
@@ -134,19 +152,7 @@ export default function RecommendDj() {
                       <span>{list.tot_clip_play_cnt + list.tot_listener_cnt}</span>
                     </div>
                   </div>
-                  {list.roomNo && (
-                    <button
-                      className="liveLink"
-                      onClick={() => {
-                        if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          console.log('hello')
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
-                        } else {
-                          RoomJoin({roomNo: list.roomNo, nickNm: list.nickNm})
-                        }
-                      }}></button>
-                  )}
-                </button>
+                </div>
               </li>
             ))
           ) : (
