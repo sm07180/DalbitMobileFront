@@ -24,8 +24,13 @@ export default function RecommendDj() {
   const [refresh, setRefresh] = useState(false)
   const [memList, setMemList] = useState([])
 
+  const selectedAgeArr = [1, 2, 3, 4]
+  const selectedGenderArr = ['m', 'f']
   const fetchRecommendedDJList = useCallback(async () => {
-    const {result, data, message} = await Api.getRecommendedDJ()
+    const ageList = joinChar(selectedAgeArr)
+    const gender = joinChar(selectedGenderArr)
+
+    const {result, data, message} = await Api.getRecommendedDJ({ageList, gender})
     if (result === 'success') {
       let memNoList = []
       memNoList = data.list.slice(0, 6).map((e) => e.memNo)
@@ -79,6 +84,8 @@ export default function RecommendDj() {
     setMemList(memNoList)
   }
 
+  const joinChar = (state) => state.join('|')
+
   const onRefresh = () => {
     fetchRecommendedDJList()
     setRefresh(true)
@@ -125,7 +132,7 @@ export default function RecommendDj() {
                     <em className="icoCheck"></em>
                   </div>
                   <div className="userText">
-                    <div className="nickName">{list.nickNm}</div>
+                    <div className={`nickName ${list.gender === 'm' ? 'man' : 'woman'}`}>{list.nickNm}</div>
                     <p className="subject">{list.dj_keyword}</p>
                     <div className="value">
                       <i className="user">
