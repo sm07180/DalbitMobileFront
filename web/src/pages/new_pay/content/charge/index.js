@@ -217,22 +217,27 @@ export default () => {
   }
 
   const bonusDal = useMemo(() => {
-    if ((Number(price) * totalQuantity) > 100000) {
+    if(Number(price) * totalQuantity >= 1100000) {
+      return Math.floor(dalVal * totalQuantity * 0.05);
+    }
+    return null;
+    /*if ((Number(price) * totalQuantity) > 100000) {
       return Math.floor(dalVal * totalQuantity * 0.1);
     } else if ((Number(price) * totalQuantity) > 30000) {
       return Math.floor(dalVal * totalQuantity * 0.05);
     } else {
       return null;
-    }
+    }*/
 
   }, [price, totalQuantity, (Number(price) * totalQuantity)])
 
   const isBonusDalYn = useMemo(() => {
-    if ((Number(price) * totalQuantity) > 30000) {
+    return Number(price) * totalQuantity >= 1100000;
+    /*if ((Number(price) * totalQuantity) > 30000) {
       return true;
     } else {
       return false;
-    }
+    }*/
   }, [price, totalQuantity, (Number(price) * totalQuantity)])
 
   const makeDisabled = (type) => {
