@@ -64,9 +64,7 @@ export default function RecommendDj() {
     if (result === 'success') {
       movePage()
     } else {
-      context.action.alert({
-        msg: message
-      })
+      console.log(message)
       movePage()
     }
   }, [memList])
