@@ -152,18 +152,6 @@ export default function RecommendDj() {
                       <span>{list.tot_clip_play_cnt + list.tot_listener_cnt}</span>
                     </div>
                   </div>
-                  {list.roomNo && (
-                    <button
-                      className="liveLink"
-                      onClick={() => {
-                        if (customHeader['os'] === OS_TYPE['Desktop']) {
-                          console.log('hello')
-                          context.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
-                        } else {
-                          RoomJoin({roomNo: list.roomNo, nickNm: list.nickNm})
-                        }
-                      }}></button>
-                  )}
                 </div>
               </li>
             ))
