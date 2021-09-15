@@ -124,7 +124,7 @@ export default function RecommendDj() {
           {fetchedList.length > 0 ? (
             fetchedList.map((list, idx) => (
               <li className="userItem" key={`${list.memNo}-${idx}`}>
-                <button className={`fanBoxWrap active`} onClick={(e) => toggleSelect(e, idx)}>
+                <div className={`fanBoxWrap active`} onClick={(e) => toggleSelect(e, idx)}>
                   <div className={`thumbnail`}>
                     <img src={list.profImg['thumb120x120']} className="photo" alt={list.nickNm} />
                     <em className="icoCheck"></em>
@@ -164,7 +164,7 @@ export default function RecommendDj() {
                         }
                       }}></button>
                   )}
-                </button>
+                </div>
               </li>
             ))
           ) : (
