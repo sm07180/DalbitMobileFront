@@ -25,7 +25,7 @@
     }
     .userItem {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
       width: 33.3%;
       &:nth-child(3n) .fanBoxWrap {
