@@ -131,7 +131,20 @@ export default function RecommendDj() {
                   </div>
                   <div className="userText">
                     <div className={`nickName ${list.gender === 'm' ? 'man' : 'woman'}`}>{list.nickNm}</div>
-                    <p className="subject">{list.dj_keyword}</p>
+                    <p className="subject">
+                      {list.dj_keyword.split('\n').map((line, index) => {
+                        if (list.dj_keyword.match('\n')) {
+                          return (
+                            <React.Fragment key={index}>
+                              {line}
+                              <br />
+                            </React.Fragment>
+                          )
+                        } else {
+                          return <React.Fragment key={index}>{list.dj_keyword}</React.Fragment>
+                        }
+                      })}
+                    </p>
                     <div className="value">
                       <i className="user">
                         <img src={hitIcon} alt="" />
