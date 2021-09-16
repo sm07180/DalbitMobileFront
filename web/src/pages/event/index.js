@@ -35,6 +35,7 @@ import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
 import MoonRise from './moon_rise'
 import BestdjIntro from './bestdj_intro'
+import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
@@ -105,6 +106,8 @@ export default () => {
         return <MoonRise />
       case 'bestdj_intro':
         return <BestdjIntro />
+      case 'bestdj':
+        return <Bestdj />
       case 'championship':
         return <Championship />
       case 'broadcast_roulette':
