@@ -18,25 +18,27 @@ export default function bestdj() {
   const fetchBestdjInfo = async () => {
     const res = await Api.bestdj_info([]);
 
-    if (res.result === 'success') {
-      let fanRankList = [];
-      let bestDjMemNumberList = [];
+    globalCtx.action.updateBestDjState(res.data);
 
-      for(var i = 0; i < res.data.length; i++) {
-        const fanRanking = res.data[i].fanRankList;
-        const bestDjMemNo = res.data[i].bestDjMemNo;
+    // if (res.result === 'success') {
+    //   let fanRankList = [];
+    //   let bestDjMemNumberList = [];
 
-        fanRankList.push(fanRanking);
-        bestDjMemNumberList.push(bestDjMemNo);
-      }
+    //   for(var i = 0; i < res.data.length; i++) {
+    //     const fanRanking = res.data[i].fanRankList;
+    //     const bestDjMemNo = res.data[i].bestDjMemNo;
 
-      setFanRank(fanRankList);
-      setBestDjMemNumber(bestDjMemNumberList);
-    } else {
-      globalCtx.action.alert({
-        msg: message
-      })
-    }
+    //     fanRankList.push(fanRanking);
+    //     bestDjMemNumberList.push(bestDjMemNo);
+    //   }
+
+    //   setFanRank(fanRankList);
+    //   setBestDjMemNumber(bestDjMemNumberList);
+    // } else {
+    //   globalCtx.action.alert({
+    //     msg: message
+    //   })
+    // }
   }
 
   useEffect(() => {
@@ -55,25 +57,24 @@ export default function bestdj() {
           className="img__full"
           />
           <div className="listWrap">
-            {bestDjMemNumber.length > 0 &&
-              bestDjMemNumber.map((item, index) => {
+            {globalCtx.bestDjData.map((item, index) => {
                 return (
                   <div className="list" key={index}>
-                    <div className="clickArea" id={`${item}`} 
-                         onClick={() => {history.push(`/mypage/${item}`)}}/>
+                    <div className="clickArea" id={`${item.bestDjMemNo}`} 
+                         onClick={() => {history.push(`/mypage/${item.bestDjMemNo}`)}}/>
                     <div className="fanRank">
                       <ul className="fanRankListWrap">
-                      {fanRank[index].length > 0 ?
-                        fanRank[index].map((item, idx) => {
+                      {item.fanRankList.length > 0 ?
+                        item.fanRankList.map((rankData, idx) => {
                           return (                            
                             <li className="fanRankList"
-                                id={`${item.memNo}`}
-                                onClick={() => {history.push(`/mypage/${item.memNo}`)}}
+                                id={`${rankData.memNo}`}
+                                onClick={() => {history.push(`/mypage/${rankData.memNo}`)}}
                                 key={idx}
                               >
-                              <div className={`fanRankThumb ${item.rank === 1 ? 'gold' : item.rank === 2 ? 'silver' : 'bronze'}`}
-                              style={{backgroundImage: `url(${item.profImg.url})`}}></div>
-                              <div className="fanRankNick">{item.nickNm}</div>
+                              <div className={`fanRankThumb ${rankData.rank === 1 ? 'gold' : rankData.rank === 2 ? 'silver' : 'bronze'}`}
+                              style={{backgroundImage: `url(${rankData.profImg.url})`}}></div>
+                              <div className="fanRankNick">{rankData.nickNm}</div>
                             </li>
                           )
                         })

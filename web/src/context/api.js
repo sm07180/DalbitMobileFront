@@ -909,6 +909,7 @@ export default class API {
     return await ajax({
       url: '/dj/best/fan/rank/list',
       method: 'GET',
+      cache: true,
       data: data
     })
   }
