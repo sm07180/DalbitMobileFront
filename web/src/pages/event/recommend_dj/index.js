@@ -57,10 +57,11 @@ export default function RecommendDj() {
   const customHeader = JSON.parse(Api.customHeader)
 
   const [selectedGenderArr, setSelectedGenderArr] = useState([])
-  const [selectedAgeArr, setSelectedAgeArr] = useState([])
   const [fetchedList, setFetchedList] = useState([])
-  const [fetched, setFetched] = useState(true)
+  // const [fetched, setFetched] = useState(true)
   const [refresh, setRefresh] = useState(false)
+
+  const selectedAgeArr = ['1', '2', '3', '4']
 
   const fetchRecommendedDJList = useCallback(async () => {
     const ageList = joinChar(selectedAgeArr)
@@ -69,14 +70,14 @@ export default function RecommendDj() {
     const {result, data, message} = await Api.getRecommendedDJ({ageList, gender})
     if (result === 'success') {
       setFetchedList(data.list)
-      if (fetched) {
-        if (data.list.length >= 20) {
-          setFetched(false)
-        } else if (!_.isEqual(selectedAgeArr, [AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty])) {
-          setSelectedAgeArr([AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty])
-          setFetched(false)
-        }
-      }
+      // if (fetched) {
+      //   if (data.list.length >= 20) {
+      //     setFetched(false)
+      //   } else if (!_.isEqual(selectedAgeArr, [AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty])) {
+      //     setSelectedAgeArr([AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty])
+      //     setFetched(false)
+      //   }
+      // }
     } else {
       context.action.alert({
         msg: message
@@ -86,7 +87,7 @@ export default function RecommendDj() {
     setTimeout(() => {
       setRefresh(false)
     }, 360)
-  }, [selectedGenderArr, selectedAgeArr])
+  }, [selectedGenderArr])
 
   const addFanImageHandler = useCallback(
     async (memNo, nickNm, listIdx) => {
@@ -197,19 +198,18 @@ export default function RecommendDj() {
             : [GENDER_TYPE.male]
         setSelectedGenderArr(getGender)
 
-        const getAge =
-          profile.age === 0 ? [AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty] : [(profile.age / 10).toString()]
-
-        setSelectedAgeArr(getAge)
+        // const getAge =
+        //   profile.age === 0 ? [AGE_TYPE.ten, AGE_TYPE.twenty, AGE_TYPE.thirty, AGE_TYPE.forty] : [(profile.age / 10).toString()]
+        // setSelectedAgeArr(getAge)
       }
     }
   }, [context.profile, context.token.isLogin])
 
   useEffect(() => {
-    if (selectedGenderArr.length && selectedAgeArr.length) {
+    if (selectedGenderArr.length) {
       fetchRecommendedDJList()
     }
-  }, [selectedGenderArr, selectedAgeArr])
+  }, [selectedGenderArr])
 
   return (
     <div id="recommendDj">
@@ -239,7 +239,7 @@ export default function RecommendDj() {
             ))}
           </div>
 
-          <div className="btnBox__ageBtn">
+          {/* <div className="btnBox__ageBtn">
             {ageList.map((eachAge, idx) => (
               <button
                 key={`${eachAge.value}-${idx}`}
@@ -251,7 +251,7 @@ export default function RecommendDj() {
                 {eachAge.text}
               </button>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div className="notice">
@@ -284,11 +284,10 @@ export default function RecommendDj() {
                 </div>
 
                 <div className="userText">
-                  <div className="userText__nickName">{list.nickNm}</div>
                   <span className="userText__genderBox">
                     {list.gender === 'f' && <img src="https://image.dalbitlive.com/svg/gender_w_w.svg" alt="여성" />}
                     {list.gender === 'm' && <img src="https://image.dalbitlive.com/svg/gender_m_w.svg" alt="남성" />}
-                    {list.ageDesc}
+                    <span className="userText__nickName">{list.nickNm}</span>
                   </span>
                   <span className="userText__liveTime">{list.title}</span>
                   <p className="userText__subject">{list.desc}</p>
