@@ -118,10 +118,12 @@ export default (props) => {
                     <div className="iconWrapper">
                       {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                       {nickNm !== 'banner' && isNew === true && <em className="icon_wrap icon_newdj">신입DJ</em>}
-                      {badgeSpecial > 0 && badgeSpecial === 1 ? (
-                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
-                      ) : badgeSpecial === 2 ? (
+                      {badgeSpecial > 0 && badgeSpecial === 2 ? (
                         <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                      ) : badgeSpecial === 3 ? (
+                        <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
+                      ) : badgeSpecial === 1 ? (
+                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                       ) : (
                         <></>
                       )}

@@ -63,7 +63,7 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
 
   return (
     <div className="dj_pick_wrap">
-      {/* {bestData && bestData.is_best === 1 ? (
+      {bestData && bestData.is_best === 1 ? (
         <p className="best_dj_box">
           <span>{bestData.mem_nick}</span>님은
           <br />
@@ -75,10 +75,10 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
         </p>
       ) : (
         <></>
-      )} */}
+      )}
 
       <div className="inner_round">
-        {/* {bestData && bestData.is_best === 1 ? (
+        {bestData && bestData.is_best === 1 ? (
           <div className="dj_pick_item">
             <img
               src={`${IMG_SERVER}/event/specialdj/common/title01_best.png`}
@@ -89,20 +89,25 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
             <br />
             <img src={`${IMG_SERVER}/event/specialdj/common/img_step_best.png`} width={148} alt="step" />
           </div>
-        ) : ( */}
-        <div className="dj_pick_item">
-          <img src={`${IMG_SERVER}/event/specialdj/common/title01.png`} width={192} className="title" alt="스페셜DJ 선발 방식" />
-          <br />
-          <img src={`${IMG_SERVER}/event/specialdj/common/img_step.png`} alt="step" className="method" />
-        </div>
-        {/* )} */}
+        ) : (
+          <div className="dj_pick_item">
+            <img
+              src={`${IMG_SERVER}/event/specialdj/common/title01.png`}
+              width={192}
+              className="title"
+              alt="스페셜DJ 선발 방식"
+            />
+            <br />
+            <img src={`${IMG_SERVER}/event/specialdj/common/img_step.png`} alt="step" className="method" />
+          </div>
+        )}
 
         <div className="dj_pick_item">
-          {/* {bestData && bestData.is_best === 1 ? (
+          {bestData && bestData.is_best === 1 ? (
             <img src={`${IMG_SERVER}/event/specialdj/common/title02_best.png`} width={120} className="title" alt="심사 기한" />
-          ) : ( */}
-          <img src={`${IMG_SERVER}/event/specialdj/common/title02.png`} width={120} className="title" alt="접수 기한" />
-          {/* )} */}
+          ) : (
+            <img src={`${IMG_SERVER}/event/specialdj/common/title02.png`} width={120} className="title" alt="접수 기한" />
+          )}
 
           <div className="end_date_box">
             {infoData !== '' && endDate !== null && `${startDate} ~ ${endDate.split('-')[1]}월 ${endDate.split('-')[2]}일`}
@@ -122,35 +127,34 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
                     {title}
                     <br />({value})
                   </div>
-                  {/* <div className={`check ${bestData.is_best === 1 ? 'best' : ''} ${condition === 1 ? 'active' : ''}`}></div> */}
-                  <div className={`check ${condition === 1 ? 'active' : ''}`}></div>
+                  <div className={`check ${bestData.is_best === 1 ? 'best' : ''} ${condition === 1 ? 'active' : ''}`}></div>
                 </li>
               )
             })}
         </ul>
 
         <div className="btnWrap">
-          {/* {bestData.is_best === 0 && (
-            <> */}
-          {conditionData.already === 0 ? (
+          {bestData.is_best === 0 && (
             <>
-              {activeState ? (
-                <button onClick={() => setSendPop(true)}>
-                  <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply.png`} alt="스페셜DJ 지원하기" />
-                </button>
+              {conditionData.already === 0 ? (
+                <>
+                  {activeState ? (
+                    <button onClick={() => setSendPop(true)}>
+                      <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply.png`} alt="스페셜DJ 지원하기" />
+                    </button>
+                  ) : (
+                    <button disabled>
+                      <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply_next.png`} alt="다음에 지원해주세요" />
+                    </button>
+                  )}
+                </>
               ) : (
                 <button disabled>
-                  <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply_next.png`} alt="다음에 지원해주세요" />
+                  <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply_already.png`} alt="이미 지원하셨습니다" />
                 </button>
               )}
             </>
-          ) : (
-            <button disabled>
-              <img src={`${IMG_SERVER}/event/specialdj/common/btn_apply_already.png`} alt="이미 지원하셨습니다" />
-            </button>
           )}
-          {/* </>
-          )} */}
         </div>
       </div>
     </div>
