@@ -28,7 +28,7 @@ export default (props) => {
         <Button onClick={ToggleBtn} value={show}></Button>
       </Wrap>
       {show && <Child />}
-      <CopyRight>Copyrightⓒ2020 by (주)인포렉스. All rights reserved.</CopyRight>
+      <CopyRight>Copyrightⓒ2020 by (주)여보야. All rights reserved.</CopyRight>
     </>
   )
 }
