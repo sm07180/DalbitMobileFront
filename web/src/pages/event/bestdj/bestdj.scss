@@ -1,0 +1,218 @@
+@import '../../../styles/variables';
+
+#bestDj {
+    .img__full {
+      width: 100%;
+      -webkit-user-drag: none;
+      vertical-align: middle;
+      image-rendering: -webkit-optimize-contrast;
+      &.MAT--100 {
+          margin-top: -100px;
+      }
+    }
+    .list {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+          margin-bottom: 35px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          image-rendering: -webkit-optimize-contrast;
+          &:nth-child(1) {
+              padding-bottom: 126%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-1.png');
+          }
+          &:nth-child(2) {
+              padding-bottom: 126%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-2.png');
+          }
+          &:nth-child(3) {
+              padding-bottom: 126%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-3.png');
+          }
+          &:nth-child(4) {
+              padding-bottom: 132%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-4.png');
+          }
+          &:nth-child(5) {
+              padding-bottom: 132%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-5.png');
+          }
+          &:nth-child(6) {
+              padding-bottom: 126%;
+              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-6.png');
+          }
+          &:last-child {
+              margin-bottom: 0px;
+          }
+      &Wrap {
+          position: relative;
+          width: 100%;
+          margin-top: -55px;
+          z-index: 1;
+      }
+      & > .clickArea {
+          position: absolute;
+          top: 0; left: 50%;
+          transform:  translateX(-50%);
+          width: 60%;
+          padding-bottom: 67%;
+          cursor: pointer;
+      }
+    }
+    .fanRank {
+        position: absolute;
+        bottom: 0px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        padding: 12% 20% 8%;
+        box-sizing: border-box;
+      &List {
+          flex: none;
+          display: block;
+          width: 30%;
+          margin-right: 20px;
+          cursor: pointer;
+          &:last-child {
+            margin-right: 0;
+          }
+          &Wrap {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+          }
+      }
+      &None {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          padding: 15% 0;
+          font-size: 12px;
+          font-weight: 500px;
+          color: #666;
+      }
+      &Thumb {
+          position: relative;
+          display: block;
+          width: 80%;
+          padding-bottom: 80%;
+          margin: 0 auto;
+          border-radius: 50%;
+          background-color: #FFF;     
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+          image-rendering: -webkit-optimize-contrast;   
+          &.gold {
+              &::after {
+                  content: "";
+                  display: block;
+                  position: absolute;
+                  bottom: 0;
+                  right: -5px;
+                  width: 40%;
+                  height: 40%;
+                  background-image: url('https://image.dalbitlive.com/event/medal/medal_gold.png');
+                  background-position: center;
+                  background-size: 100%;
+                  background-repeat: no-repeat;
+                  image-rendering: -webkit-optimize-contrast;
+              }
+          }
+          &.silver {
+              &::after {
+                  content: "";
+                  display: block;
+                  position: absolute;
+                  bottom: 0;
+                  right: -5px;
+                  width: 40%;
+                  height: 40%;
+                  background-image: url('https://image.dalbitlive.com/event/medal/medal_silver.png');
+                  background-position: center;
+                  background-size: 100%;
+                  background-repeat: no-repeat;
+                  image-rendering: -webkit-optimize-contrast;
+              }
+          }
+          &.bronze {
+              &::after {
+                  content: "";
+                  display: block;
+                  position: absolute;
+                  bottom: 0;
+                  right: -5px;
+                  width: 40%;
+                  height: 40%;
+                  background-image: url('https://image.dalbitlive.com/event/medal/medal_bronze.png');
+                  background-position: center;
+                  background-size: 100%;
+                  background-repeat: no-repeat;
+                  image-rendering: -webkit-optimize-contrast;
+              }
+          }
+      }
+      &Nick {
+          display: block;
+          margin-top: 4px;
+          font-size: 12px;
+          font-weight: 400;
+          color: #1D1D1D;
+          text-align: center;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+      }
+    }
+    .footer {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        padding: 65% 0 15%;
+        margin-top: -130px;
+        background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-bottom.png');
+        background-position: bottom center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        image-rendering: -webkit-optimize-contrast;
+      &Info {
+          text-align: center;
+          font-size: 14px;
+          font-weight: 400;
+          color: #FFF1B7;
+      }
+      &Btn {
+          position: relative;
+          margin-top: 10px;
+          font-size: 15px;
+          font-weight: 500;
+          color: #FFF;
+          border-bottom: 1px solid #fff;
+          &::after {
+              content: "";
+              position: absolute;
+              top: 50%;
+              right: -15px;
+              transform: translateY(-50%) rotate(270deg);
+              display: inline-block;
+              width: 15px; height: 12px;
+              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36.77 36.77'%3E%3Cpath fill='%23fff' d='M15.628 34.012L0 18.385l2.757-2.758 15.627 15.627 15.628-15.627 2.757 2.758L18.385 36.77z'/%3E%3C/svg%3E")
+                  no-repeat;
+              background-position: 0;
+          }
+      }
+    }
+  }

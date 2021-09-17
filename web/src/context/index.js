@@ -121,6 +121,10 @@ const GlobalProvider = (props) => {
   const [dateState, setDateState] = useState(convertDateFormat(convertMonday(), 'YYYY-MM-DD'))
   //---------------------------------------------------------------------
   const [multiViewer, setMultiviewer] = useState({show: false}) // {show:bool, list?:array, initSlide?:number}
+
+  // bestDJ 데이터
+  const [bestDjData, setBestDjData] = useState([]);
+
   const action = {
     updateState: (obj) => {
       setState((state) => ({...state, ...obj}))
@@ -492,7 +496,10 @@ const GlobalProvider = (props) => {
       }
 
       setMultiviewer(obj)
-    }
+    },
+    updateBestDjState: (obj) => {
+      setBestDjData(obj);
+    },
   }
   //---------------------------------------------------------------------
   const value = {
@@ -572,7 +579,8 @@ const GlobalProvider = (props) => {
     useMailbox,
     dateState,
     multiViewer,
-    isMailboxOn
+    isMailboxOn,
+    bestDjData,
   }
   return <Provider value={value}>{props.children}</Provider>
 }
