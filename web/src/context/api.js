@@ -900,6 +900,20 @@ export default class API {
     })
   }
 
+/**
+   * @brief 매달 베스트DJ 소개페이지
+   * @method "GET"
+   * @create 박지호 2021.09.15
+   */
+  static bestdj_info = async (data) => {
+    return await ajax({
+      url: '/dj/best/fan/rank/list',
+      method: 'GET',
+      cache: true,
+      data: data
+    })
+  }
+
   /**
    * @brief 마이패이지 회원 좋아요 랭킹
    * @method "GET"
