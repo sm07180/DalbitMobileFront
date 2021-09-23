@@ -67,7 +67,7 @@ export default () => {
 
         <div className="text-wrap">
           <span>예금주</span>
-          <p>(주)인포렉스</p>
+          <p>(주)여보야</p>
         </div>
 
         <div className="text-wrap">
