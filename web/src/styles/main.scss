@@ -755,12 +755,12 @@
     }
   }
   .main-slide {
-    height: 220px;
     background: $lighterGray;
     .topSlide {
       position: relative;
       width: 100%;
-      height: 220px;
+      height: 0;
+      padding-top: 61.113%;
       &__buttonWrap {
         position: absolute;
         top: 24px;
@@ -876,6 +876,20 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             color: rgb(255, 179, 0);
+          }
+        }
+      }
+      .swiper-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        .swiper-wrapper {
+          width: 100%;
+          height: 100%;
+          .topSlide__bg {
+            height: 100%;
           }
         }
       }
