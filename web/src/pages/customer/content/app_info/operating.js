@@ -410,7 +410,7 @@ export default function Operating() {
         <strong>
           *영구 정지의 경우 유저의 계정과 IP, 소유하신 모바일 디바이스 아이디를 차단하여 영구적으로 제재 받게 됩니다.
         </strong>
-        <strong>*임시 정지의 경우 유저의 계정이 만 14세가 되는 해 자동 해제됩니다.</strong>
+        <strong>*임시 정지의 경우 유저의 계정이 만 14세가 되는 날부터 본인인증을 통해 수동 해제 가능합니다.</strong>
         <strong>*경고와 정지의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.</strong>
         <strong>*회사의 판단에 따라 예외적으로 조정될 수 있습니다.</strong>
       </p>
@@ -438,7 +438,7 @@ export default function Operating() {
           </tr>
           <tr>
             <td className="bold">임시정지</td>
-            <td colSpan={3}>(11세까지의 회원) 모든 서비스 이용 불가</td>
+            <td colSpan={3}>(만 14세 미만 회원) 모든 서비스 이용 불가</td>
           </tr>
           <tr>
             <td className="bold" rowSpan={2}>
@@ -541,7 +541,7 @@ export default function Operating() {
           </tr>
           <tr>
             <td>임시정지</td>
-            <td colSpan={3}>만 14세 미만 회원 임시 정지 (만 14세가 되는 1월 1일 00시 자동 해제)</td>
+            <td colSpan={3}>만 14세 미만 회원 임시 정지 (만 14세가 되는 날 본인인증으로 수동 해제)</td>
           </tr>
         </tbody>
       </table>
