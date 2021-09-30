@@ -105,7 +105,7 @@ export default (props) => {
 
     if (myBirth > baseYear) {
       return context.action.alert({
-        msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+        msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
       })
     }
 
@@ -141,7 +141,7 @@ export default (props) => {
               <strong>본인인증이 완료되었습니다.</strong>
             </h4>
             <h5>
-              20세 미만 회원의 환전 신청 시 <br />
+              만 19세 미만 회원의 환전 신청 시 <br />
               <span>법정대리인(보호자) 동의가 필요합니다.</span>
             </h5>
             <p>
@@ -165,7 +165,7 @@ export default (props) => {
         return (
           <div className="auth-wrap">
             <h4>
-              20세 미만 미성년자 이용에 대한
+              만 19세 미만 미성년자 이용에 대한
               <br />
               <span>법정대리인(보호자) 동의가 완료</span>되었습니다.
             </h4>

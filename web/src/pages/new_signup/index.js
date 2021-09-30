@@ -8,6 +8,7 @@ import moment from 'moment'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {PHOTO_SERVER} from 'context/config'
+import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
@@ -28,6 +29,7 @@ let setTime = 300
 
 export default (props) => {
   const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
   const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
@@ -124,7 +126,7 @@ export default (props) => {
     loginPwd: '',
     loginPwdCheck: '',
     nickNm: '',
-    // birth: null,
+    birth: null,
     // gender: 'n',
     profImgUrl: '',
     memType: 'p',
@@ -174,10 +176,10 @@ export default (props) => {
       check: true,
       text: ''
     },
-    // birth: {
-    //   check: true,
-    //   text: ''
-    // },
+    birth: {
+      check: true,
+      text: ''
+    },
     term: {
       check: true,
       text: ''
@@ -189,7 +191,7 @@ export default (props) => {
     loginPwd,
     loginPwdCheck,
     nickNm,
-    // birth,
+    birth,
     // gender,
     profImgUrl,
     memType,
@@ -537,7 +539,7 @@ export default (props) => {
     if (currentBirthYear <= baseDateYear) {
       return setValidate({name: 'birth', check: true})
     } else {
-      return setValidate({name: 'birth', check: false, text: '12세 이상만 가입 가능합니다.'})
+      return setValidate({name: 'birth', check: false, text: '만 14세 이상만 가입 가능합니다.'})
     }
   }
 
@@ -632,8 +634,12 @@ export default (props) => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        // return props.history.push('/')
-        return props.history.push('/event/recommend_dj2')
+        const {age} = profileInfo.data
+        if (age > 14) {
+          return props.history.push('/event/recommend_dj2')
+        } else {
+          return props.history.push('/no_service')
+        }
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({
@@ -653,7 +659,7 @@ export default (props) => {
         memPwd: changes.loginPwd,
         // gender: changes.gender,
         nickNm: changes.nickNm,
-        // birth: changes.birth,
+        birth: changes.birth,
         term1: changes.term1,
         term2: changes.term2,
         term3: changes.term3,
@@ -706,7 +712,7 @@ export default (props) => {
       validatePwd()
       validatePwdCheck()
     }
-    // validateBirth()
+    validateBirth()
     validateTerm()
   }
   useEffect(() => {
@@ -736,7 +742,7 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout status="no_gnb" header="회원가입">
+    <Layout status="no_gnb" header="가입">
       <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
       <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
       <Content>
@@ -784,6 +790,24 @@ export default (props) => {
               </div>
               {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
             </InputItem>
+            {/* 생년월일 ---------------------------------------------------------- */}
+            {customHeader['os'] !== OS_TYPE['IOS'] ? (
+              <>
+                <InputItem button={false} validate={validate.birth.check}>
+                  <div className="layer">
+                    <label htmlFor="birth">생년월일</label>
+                    <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
+                  </div>
+                  {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
+                </InputItem>
+                <p className="birthText">
+                  * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
+                  <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
+                </p>
+              </>
+            ) : (
+              <></>
+            )}
           </>
         )}
 
@@ -863,16 +887,6 @@ export default (props) => {
           </>
         )}
 
-        {/* 생년월일 ---------------------------------------------------------- */}
-        {/* <InputItem button={false} validate={validate.birth.check}>
-          <div className="layer">
-            <label htmlFor="birth">생년월일</label>
-            <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
-          </div>
-          {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
-        </InputItem>
-        <p className="birthText">허위정보로 가입 시 이용을 제한할 수 있습니다.</p> */}
-
         {/* 성별 ---------------------------------------------------------- */}
         {/* <GenderInput gender={gender}>
           <button className="male" value="m" onClick={genderBtnHandle}>
@@ -914,17 +928,7 @@ const Content = styled.section`
     padding: 3px 0 5px 5px;
     font-size: 12px;
     letter-spacing: -0.3px;
-    color: #e84d6f;
-    &::before {
-      display: inline-block;
-      margin-top: 7px;
-      vertical-align: top;
-      margin-right: 4px;
-      width: 2px;
-      height: 2px;
-      background: #e84d6f;
-      content: '';
-    }
+    color: #632beb;
   }
 `
 
@@ -937,6 +941,10 @@ const InputItem = styled.div`
     height: 58px;
     letter-spacing: -0.5px;
     z-index: 1;
+    &.birth {
+      height: auto;
+      padding: 2px 0;
+    }
 
     label {
       display: block;

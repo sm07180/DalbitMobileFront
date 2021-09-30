@@ -1,14 +1,14 @@
-import React, { useContext, useState, useEffect, useRef } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, {useContext, useState, useEffect, useRef} from 'react'
+import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
 import styled from 'styled-components'
 import Api from 'context/api'
-import { Hybrid } from 'context/hybrid'
+import {Hybrid} from 'context/hybrid'
 
 //context
-import { Context } from 'context'
-import { IMG_SERVER } from 'context/config'
-import { COLOR_MAIN } from 'context/color'
+import {Context} from 'context'
+import {IMG_SERVER} from 'context/config'
+import {COLOR_MAIN} from 'context/color'
 
 //layout
 import Layout from 'pages/common/layout'
@@ -40,8 +40,7 @@ export const openAuthPage = (formTagRef, context) => {
 
     if (KMCIS_window == null) {
       context.action.alert({
-        msg:
-          ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
+        msg: ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
       })
     }
     document.authForm.target = 'KMCISWindow'
@@ -86,7 +85,7 @@ export const authReq = async (code, formTagRef, context) => {
 export default (props) => {
   const location = useLocation()
 
-  const { type, event } = qs.parse(location.search)
+  const {type, event} = qs.parse(location.search)
 
   //---------------------------------------------------------------------
   //context
@@ -118,14 +117,13 @@ export default (props) => {
 
   const AuthContent = () => {
     if (event) {
-      if (event === "/pay/store") {
+      if (event === '/pay/store') {
         return (
           <>
             <h4>
               간편결제 계좌 등록을 위해서는
-            <br />
-              <span>본인인증을 필수</span>로
-            받으셔야 합니다.
+              <br />
+              <span>본인인증을 필수</span>로 받으셔야 합니다.
             </h4>
           </>
         )
@@ -135,8 +133,8 @@ export default (props) => {
             <h4>
               <span>이벤트 참여 또는 경품 수령을 위해</span>
               <br />
-            본인인증을 필수로 받으셔야 합니다.
-          </h4>
+              본인인증을 필수로 받으셔야 합니다.
+            </h4>
           </>
         )
       }
@@ -160,10 +158,10 @@ export default (props) => {
           <span>본인인증 절차</span>가 필요합니다.
         </h4>
         <p>
-          ※ 환전 신청은 12세 이상의 회원만 가능합니다.
+          ※ 환전 신청은 만 14세 이상의 회원만 가능합니다.
           <br />
           ※ 환전 승인을 위해 최초 1회 본인인증이 필요합니다.
-          <br />※ 12세~20세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
+          <br />※ 만 14세~만 19세(미성년자)의 경우 법정대리인의 동의는 필수사항 입니다.
         </p>
       </>
     )

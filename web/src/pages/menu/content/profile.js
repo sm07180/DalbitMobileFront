@@ -144,7 +144,7 @@ export default (props) => {
         if (parentsAgreeYn === 'n' && adultYn === 'n') return props.history.push('/selfauth_result')
         if (myBirth > baseYear) {
           return context.action.alert({
-            msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
+            msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
           })
         } else {
           props.history.push('/money_exchange')

@@ -42,7 +42,7 @@ export default (props) => {
             name="birth"
             value={selectedDate}
             onChange={handleDateChange}
-            emptyLabel={'YYYY / MM / DD'}
+            emptyLabel={'생년월일을 선택해주세요.'}
             maxDate={maxDate}
             initialFocusedDate={startDate}
           />
