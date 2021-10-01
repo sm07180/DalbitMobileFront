@@ -43,9 +43,7 @@ export default function login_sns({props}) {
       Hybrid('openGoogleSignIn')
     } else if(vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) { // 안드로이드 페이스북 로그인
       const res = await Api.verisionCheck();
-      alert(JSON.stringify(res));
-      const nowVersion = res.nowVersion;
-      alert(nowVersion);
+      const nowVersion = res.data.nowVersion;
       const compareAppVersion = (targetVersion) => {
         const versionArr = nowVersion.split('.');
         const firstPos = Number(versionArr[0]);
@@ -56,9 +54,6 @@ export default function login_sns({props}) {
         const targetSecondPos = Number(targetVerArr[1]);
         const targetThirdPos = Number(targetVerArr[2]);
 
-        alert(versionArr);
-        alert(targetVerArr);
-        alert(firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos);
         if(firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos) {
           context.action.confirm({
             buttonText: {right: '업데이트'},
