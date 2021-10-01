@@ -59,7 +59,6 @@ export default function login_sns({props}) {
             buttonText: {right: '업데이트'},
             msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
             callback: async () => {
-              const res = await Api.verisionCheck();
               Hybrid('goToPlayStore')
             }
           })
