@@ -26,6 +26,7 @@ export default function login_sns({props}) {
   const [moreSection, setMoreSection] = useState(false)
 
   const customHeader = JSON.parse(Api.customHeader)
+  const context = useContext(Context);
 
   const fetchSocialData = async (vendor) => {
     if (vendor === 'apple') {
@@ -36,15 +37,39 @@ export default function login_sns({props}) {
       setAppleAlert(false)
     }
 
-    alert("deviceType : " + customHeader['os'])
-
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
       //TODO: 새창로그인 여부 추가
       //Hybrid('openGoogleSignIn', {'webview' : webview})
       Hybrid('openGoogleSignIn')
-    } else if(vendor === 'facebook' /*&& customHeader['os'] === OS_TYPE['Android']*/) { // 안드로이드 페이스북 로그인
-      alert("appVer : " + customHeader.appVersion);
-      Hybrid('openFacebookLogin');
+    } else if(vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) { // 안드로이드 페이스북 로그인
+      const res = await Api.verisionCheck();
+      const nowVersion = res.nowVersion;
+      const compareAppVersion = (targetVersion) => {
+        const versionArr = nowVersion.split('.');
+        const firstPos = Number(versionArr[0]);
+        const secondPos = Number(versionArr[1]);
+        const thirdPos = Number(versionArr[2]);
+        const targetVerArr = targetVersion.split('.');
+        const targetFirstPos = Number(targetVerArr[0]);
+        const targetSecondPos = Number(targetVerArr[1]);
+        const targetThirdPos = Number(targetVerArr[2]);
+
+        if(firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos) {
+          context.action.confirm({
+            buttonText: {right: '업데이트'},
+            msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
+            callback: async () => {
+              Hybrid('goToPlayStore')
+            }
+          })
+          return false;
+        }
+
+        return true;
+      }
+      if(compareAppVersion('1.6.0')) {
+        Hybrid('openFacebookLogin');
+      }
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',
