@@ -60,7 +60,7 @@ export default function login_sns({props}) {
             msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
             callback: async () => {
               const res = await Api.verisionCheck();
-              Hybrid('openUrl', res.storeUrl)
+              Hybrid('goToPlayStore')
             }
           })
           return false;
