@@ -173,7 +173,7 @@ export default function SpecialDjBest() {
       {tabState === 'best' && (
         <div className="tab_wrap best">
           <img
-            src={`${IMG_SERVER}/event/specialdj/common/img_bestdj_0618.png`}
+            src={`${IMG_SERVER}/event/specialdj/common/img_bestdj_1005.png`}
             alt="베스트 스페셜 DJ 이미지"
             className="top_image"
           />
@@ -187,6 +187,7 @@ export default function SpecialDjBest() {
               <li>현금은 별로 환산(환전수수료 혜택 5% 반영)해서 지급됩니다.</li>
               <li>베스트 스페셜 DJ 혜택은 추후 조정될 수 있습니다.</li>
               <li>베스트 스페셜 DJ 아이디 양도(공동 사용)는 불가하며 제재 대상이 됩니다.</li>
+              <li>푸시 알림은 1:1문의를 통해<br/>방송(이벤트/기념일/콘텐츠 방송 한정) 예정 시간, 제목 및 내용(각 20글자 이내)을 보내주시면 검수 후 발송됩니다.</li>
             </ul>
           </div>
         </div>
