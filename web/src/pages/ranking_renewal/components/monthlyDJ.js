@@ -20,10 +20,10 @@ export default () => {
             <div className="monthlyDJ">
                 <div className="contentWrap">
                     <div className="title">
-                        월간 DJ랭킹 혜택!
+                    🎤 월간 DJ랭킹 혜택!
                     </div>
                     <div className="content">
-                        랭킹 5위까지 전체 회원 대상 푸시 발송 지원
+                    랭킹 5위까지 전체 회원 대상 푸시 발송 지원
                     </div>
                 </div>
                 <div className="btn" onClick={togglePopup}>
