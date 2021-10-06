@@ -29,12 +29,14 @@ import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import RecommendDj from './recommend_dj'
+import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
 import Package from './package'
 import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
 import MoonRise from './moon_rise'
 import BestdjIntro from './bestdj_intro'
+import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
@@ -91,6 +93,8 @@ export default () => {
         return <PostGuide />
       case 'recommend_dj':
         return <RecommendDj />
+      case 'recommend_dj2':
+        return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
       case 'package':
@@ -105,6 +109,8 @@ export default () => {
         return <MoonRise />
       case 'bestdj_intro':
         return <BestdjIntro />
+      case 'bestdj':
+        return <Bestdj />
       case 'championship':
         return <Championship />
       case 'broadcast_roulette':

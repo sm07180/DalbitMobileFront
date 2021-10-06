@@ -900,6 +900,20 @@ export default class API {
     })
   }
 
+/**
+   * @brief 매달 베스트DJ 소개페이지
+   * @method "GET"
+   * @create 박지호 2021.09.15
+   */
+  static bestdj_info = async (data) => {
+    return await ajax({
+      url: '/dj/best/fan/rank/list',
+      method: 'GET',
+      cache: true,
+      data: data
+    })
+  }
+
   /**
    * @brief 마이패이지 회원 좋아요 랭킹
    * @method "GET"
@@ -1124,6 +1138,15 @@ export default class API {
     return await ajax({
       ...obj,
       url: url || `/mypage/fan`,
+      method: method || 'POST',
+      data: data
+    })
+  }
+  static fan_multi_change = async (obj) => {
+    const {url, method, data} = obj || {}
+    return await ajax({
+      ...obj,
+      url: url || `/mypage/multi/fan`,
       method: method || 'POST',
       data: data
     })
@@ -2186,7 +2209,7 @@ export default class API {
   }
   static pay_simple = async (obj) => {
     const {url, method, data} = obj || {}
-    return await ajax ({
+    return await ajax({
       ...obj,
       url: url || `/rest/pay/simple`,
       method: method || 'POST',
@@ -2383,6 +2406,11 @@ export default class API {
     return await ajax({url: `/social/google/callback`, method: 'POST', data})
   }
 
+  static facebook_login = async (obj) => {
+    const {data} = obj
+    return await ajax({url: `/social/facebook/callback`, method: 'POST', data})
+  }
+
   /**
    * @brief PUSH Click
    * @method "POST"
@@ -2577,7 +2605,7 @@ export default class API {
   }
   static postEventOneYearInsert = async (params) => {
     return await ajax({url: '/oneYear/dal/ins', method: 'POST', params})
-  }  
+  }
   static postEventOneYearComment = async (data) => {
     return await ajax({url: '/oneYear/tail/list', method: 'POST', data})
   }
@@ -2590,7 +2618,7 @@ export default class API {
   static postEventOneYearCommentDelete = async (data) => {
     return await ajax({url: '/oneYear/tail/del', method: 'POST', data})
   }
-  
+
   //이벤트용 ios 심사여부 조회
   static getIosJudge = async (params) => {
     return await ajax({url: '/ios/judge', method: 'GET', params})
