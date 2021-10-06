@@ -52,14 +52,19 @@ export default function bestdj() {
       </Header>
       <div className="subContent">
           <img
-          src={`${IMG_SERVER}/event/bestDj/2109/bestDj_2109-top.png`}
-          alt="달빛라이브를 대표하는 9월의 베스트DJ"
+          src={`${IMG_SERVER}/event/bestDj/2110/bestDj_2110-top.png`}
+          alt="달빛라이브를 대표하는 10월의 베스트DJ"
           className="img__full"
           />
           <div className="listWrap">
             {globalCtx.bestDjData.map((item, index) => {
                 return (
                   <div className="list" key={index}>
+                    <img
+                    src={`${IMG_SERVER}/event/bestDj/2110/bestDj_2110-user-${index + 1}.png`}
+                    alt="베스트DJ"
+                    className="img__full"
+                    />
                     <div className="clickArea" id={`${item.bestDjMemNo}`} 
                          onClick={() => {history.push(`/mypage/${item.bestDjMemNo}`)}}/>
                     <div className="fanRank">

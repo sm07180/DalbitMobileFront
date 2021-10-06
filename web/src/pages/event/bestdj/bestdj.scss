@@ -17,47 +17,43 @@
           justify-content: center;
           flex-direction: column;
           width: 100%;
-          margin-bottom: 35px;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-size: cover;
+          padding-bottom: 30px;
+          background-size: 100%;
           image-rendering: -webkit-optimize-contrast;
           &:nth-child(1) {
-              padding-bottom: 126%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-1.png');
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-1.png') #fff bottom no-repeat;
+            background-size: 100% 100%;
           }
           &:nth-child(2) {
-              padding-bottom: 126%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-2.png');
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-2.png') #F2F7FF bottom no-repeat;
+            background-size: 100% 100%;
           }
           &:nth-child(3) {
-              padding-bottom: 126%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-3.png');
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-3.png') #fff bottom no-repeat;
+            background-size: 100% 100%;
           }
           &:nth-child(4) {
-              padding-bottom: 132%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-4.png');
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-4.png') #F2F7FF bottom no-repeat;
+            background-size: 100% 100%;
           }
           &:nth-child(5) {
-              padding-bottom: 132%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-5.png');
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-5.png') #fff bottom no-repeat;
+            background-size: 100% 100%;
           }
           &:nth-child(6) {
-              padding-bottom: 126%;
-              background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-user-6.png');
+              padding-bottom: 60px;
+            background: url('https://image.dalbitlive.com/event/bestDj/2110/bestDj_2110-bg-6.png') #F2F7FF bottom no-repeat;
+            background-size: 100% 100%;
           }
-          &:last-child {
-              margin-bottom: 0px;
-          }
+          
       &Wrap {
           position: relative;
           width: 100%;
-          margin-top: -55px;
           z-index: 1;
       }
       & > .clickArea {
           position: absolute;
-          top: 0; left: 50%;
+          top: 20px; left: 50%;
           transform:  translateX(-50%);
           width: 60%;
           padding-bottom: 67%;
@@ -65,14 +61,13 @@
       }
     }
     .fanRank {
-        position: absolute;
-        bottom: 0px;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        padding: 12% 20% 8%;
+        padding: 0% 20%;
         box-sizing: border-box;
       &List {
           flex: none;
@@ -181,26 +176,21 @@
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        padding: 65% 0 15%;
-        margin-top: -130px;
-        background-image: url('https://image.dalbitlive.com/event/bestDj/2109/bestDj_2109-bottom.png');
-        background-position: bottom center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        image-rendering: -webkit-optimize-contrast;
+        padding: 10% 0;
+        background: #2474FF;
       &Info {
           text-align: center;
           font-size: 14px;
           font-weight: 400;
-          color: #FFF1B7;
+          color: #FFF;
       }
       &Btn {
           position: relative;
           margin-top: 10px;
           font-size: 15px;
           font-weight: 500;
-          color: #FFF;
-          border-bottom: 1px solid #fff;
+          color: #FFEE51;
+          border-bottom: 1px solid #FFEE51;
           &::after {
               content: "";
               position: absolute;
@@ -209,7 +199,7 @@
               transform: translateY(-50%) rotate(270deg);
               display: inline-block;
               width: 15px; height: 12px;
-              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36.77 36.77'%3E%3Cpath fill='%23fff' d='M15.628 34.012L0 18.385l2.757-2.758 15.627 15.627 15.628-15.627 2.757 2.758L18.385 36.77z'/%3E%3C/svg%3E")
+              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36.77 36.77'%3E%3Cpath fill='%23FFEE51' d='M15.628 34.012L0 18.385l2.757-2.758 15.627 15.627 15.628-15.627 2.757 2.758L18.385 36.77z'/%3E%3C/svg%3E")
                   no-repeat;
               background-position: 0;
           }
