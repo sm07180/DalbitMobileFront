@@ -34,6 +34,7 @@ import WeeklyPickWrap from './components/weekly_pick'
 import SecondWrap from './components/second'
 import ResetPointPop from './components/reset_point_pop'
 import LikeListTop from './components/like_list_top'
+import MonthlyDJ from './components/monthlyDJ'
 
 //constant
 import {DATE_TYPE, RANK_TYPE, PAGE_TYPE} from './constant'
@@ -776,9 +777,15 @@ function Ranking() {
             <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
           </div>
+          
           {formState.pageType === PAGE_TYPE.RANKING && (
             <>
               <RankDateBtn fetching={fetching} />
+              {formState[formState.pageType].rankType === RANK_TYPE.DJ && formState[formState.pageType].dateType === DATE_TYPE.MONTH && (
+                <>
+                  <MonthlyDJ/>
+                </>
+              )}
               <RankHandleDateBtn fetching={fetching} />
             </>
           )}
