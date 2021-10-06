@@ -95,8 +95,12 @@ export default () => {
     const customHeader = JSON.parse(Api.customHeader)
     const {webview, redirect} = qs.parse(location.search)
     let social_result;
+    if (customHeader['os'] === OS_TYPE['IOS']) {
+      inputData = JSON.parse(decodeURIComponent(inputData))
+    }
+
     if(type === 'google') {
-      social_result = await Api.google_login({data: inputData});;
+      social_result = await Api.google_login({data: inputData});
     }else if(type === 'facebook') {
       social_result = await Api.facebook_login({data: inputData});
     }
