@@ -142,7 +142,7 @@ export default function Service() {
               <span>
                 <span>고객센터 (해외)</span> <span className="bold">+82-1522-0251</span> {makeCallBtn('+82-1522-0251')}
               </span>
-              <span className="gray">(상담시간 : 평일 10:00 ~ 17:30 토/일/공휴일 제외)</span>
+              <span className="gray">(상담시간 : 평일 10:00 ~ 18:00 토/일/공휴일 제외)</span>
             </div>
           </div>
           <div className="serviceWrap__personal">
