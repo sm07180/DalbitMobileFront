@@ -33,6 +33,7 @@ const makeContents = (props) => {
       giftCnt,
       badgeSpecial,
       isAdmin,
+      isConDj,
       boostCnt,
       rank,
       os,
@@ -79,6 +80,15 @@ const makeContents = (props) => {
               <img src={gstProfImg.thumb62x62} alt="게스트" />
             </span>
           )}
+          {badgeSpecial > 0 && badgeSpecial === 2 ? (
+            <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+          ) : isConDj === true ? (
+            <em className="icon_wrap icon_contentsdj_half">콘텐츠DJ</em>
+          ) : badgeSpecial === 1 ? (
+            <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
+          ) : (
+            <></>
+          )}
         </div>
 
         {liveListType !== 'v' ? (
@@ -107,16 +117,6 @@ const makeContents = (props) => {
             <div className="nickname">
               {bjGender !== '' && <em className={`icon_wrap ${bjGender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
               {os === 3 && <em className="icon_wrap icon_pc">PC</em>}
-
-              {badgeSpecial > 0 && badgeSpecial === 2 ? (
-                <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
-              ) : badgeSpecial === 3 ? (
-                <em className="icon_wrap icon_contentsdj_half">콘텐츠DJ</em>
-              ) : badgeSpecial === 1 ? (
-                <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
-              ) : (
-                <></>
-              )}
               {isNew === true && <em className="icon_wrap icon_newdj">신입DJ</em>}
               {liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}
 
