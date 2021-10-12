@@ -34,7 +34,8 @@ export default (props) => {
       <Swiper {...swiperParams}>
         {list instanceof Array &&
           list.map((bannerData, index) => {
-            const {bannerUrl, profImg, isAdmin, isConDj, isNew, badgeSpecial, nickNm, roomNo, roomType, title, liveBadgeList} = bannerData
+            const {bannerUrl, profImg, isAdmin, isConDj, isNew, badgeSpecial, nickNm, roomNo, roomType, title, liveBadgeList} =
+              bannerData
             let bgImgUrl = bannerUrl
             // if (nickNm !== 'banner' && !bgImgUrl.toLowerCase().endsWith(".gif")) {
             //   bgImgUrl += "?700x700"
@@ -118,13 +119,9 @@ export default (props) => {
                     <div className="iconWrapper">
                       {isAdmin ? <em className="adminIcon">운영자</em> : ''}
                       {nickNm !== 'banner' && isNew === true && <em className="icon_wrap icon_newdj">신입DJ</em>}
-                      {(badgeSpecial > 0 && badgeSpecial === 2) && (
-                        <em className="icon_wrap icon_bestdj">베스트DJ</em>
-                      )}
+                      {badgeSpecial > 0 && badgeSpecial === 2 && <em className="icon_wrap icon_bestdj">베스트DJ</em>}
                       {isConDj && <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>}
-                      {(badgeSpecial > 0 && badgeSpecial === 1) && (
-                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
-                      )}
+                      {badgeSpecial > 0 && badgeSpecial === 1 && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                       {liveBadgeList && liveBadgeList.length !== 0 && <BadgeList list={liveBadgeList} />}
                       {nickNm === 'banner' && <em className="icon_wrap icon_event">EVENT</em>}
                     </div>

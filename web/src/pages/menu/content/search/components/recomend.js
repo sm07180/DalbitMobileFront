@@ -87,7 +87,7 @@ export default (props) => {
       <div className={changeTab === 0 ? 'simpleWrap' : 'chartListDetail'}>
         {recoList.length !== 0 && changeTab === 0
           ? recoList.map((item, idx) => {
-              const {bgImg, entryCnt, badgeSpecial, isBadge, roomNo, title, entryType, nickNm} = item
+              const {bgImg, entryCnt, badgeSpecial, isConDj, roomNo, title, entryType, nickNm} = item
 
               return (
                 <div
@@ -120,7 +120,7 @@ export default (props) => {
                         )}
                         {badgeSpecial > 0 && badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj">베스트DJ</em>
-                        ) : isBadge === '3' ? (
+                        ) : isConDj === true ? (
                           <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
                         ) : badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj">스페셜DJ</em>
@@ -137,7 +137,19 @@ export default (props) => {
               )
             })
           : recoListClip.map((item, idx) => {
-              const {bgImg, clipNo, filePlayTime, gender, goodCnt, badgeSpecial, nickName, replyCnt, subjectType, title} = item
+              const {
+                bgImg,
+                clipNo,
+                filePlayTime,
+                gender,
+                goodCnt,
+                badgeSpecial,
+                isConDj,
+                nickName,
+                replyCnt,
+                subjectType,
+                title
+              } = item
               return (
                 <li
                   className="chartListDetailItem"
@@ -162,7 +174,7 @@ export default (props) => {
                   <div className="chartListDetailItem__thumb">
                     {badgeSpecial > 0 && badgeSpecial === 2 ? (
                       <em className="icon_wrap icon_bestdj">베스트DJ</em>
-                    ) : badgeSpecial === 3 ? (
+                    ) : isConDj === true ? (
                       <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
                     ) : badgeSpecial === 1 ? (
                       <em className="icon_wrap icon_specialdj">스페셜DJ</em>

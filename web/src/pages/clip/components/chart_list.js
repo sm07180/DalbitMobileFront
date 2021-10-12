@@ -123,7 +123,7 @@ export default (props) => {
         byeolCnt,
         goodCnt,
         entryType,
-
+        isConDj,
         clipNo,
         replyCnt,
         badgeSpecial
@@ -150,10 +150,12 @@ export default (props) => {
             }
           }}>
           <div className="chartListDetailItem__thumb">
-            {badgeSpecial > 0 && badgeSpecial === 1 ? (
-              <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
-            ) : badgeSpecial === 2 ? (
+            {badgeSpecial > 0 && badgeSpecial === 2 ? (
               <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
+            ) : isConDj === true ? (
+              <em className="icon_wrap icon_contentsdj_half">콘텐츠DJ</em>
+            ) : badgeSpecial === 1 ? (
+              <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
             ) : (
               <></>
             )}
@@ -260,6 +262,7 @@ export default (props) => {
                 byeolCnt,
                 goodCnt,
                 badgeSpecial,
+                isConDj,
                 entryType,
                 clipNo,
                 replyCnt
@@ -287,10 +290,12 @@ export default (props) => {
                   }}>
                   <div className="itemBox">
                     <div className="itemBox__status">
-                      {badgeSpecial > 0 && badgeSpecial === 1 ? (
-                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
-                      ) : badgeSpecial === 2 ? (
+                      {badgeSpecial > 0 && badgeSpecial === 2 ? (
                         <em className="icon_wrap icon_bestdj">베스트DJ</em>
+                      ) : isConDj === true ? (
+                        <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>
+                      ) : badgeSpecial === 1 ? (
+                        <em className="icon_wrap icon_specialdj">스페셜DJ</em>
                       ) : (
                         <></>
                       )}

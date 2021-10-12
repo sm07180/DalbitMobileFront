@@ -102,7 +102,7 @@ export default (props) => {
             )}
             {memberList && memberList.length !== 0 ? (
               (CategoryType === 1 ? memberList : memberList.slice(0, 2)).map((item, idx) => {
-                const {nickNm, profImg, isNew, gender, badgeSpecial, memNo, roomNo, fanCnt} = item
+                const {nickNm, profImg, isNew, gender, badgeSpecial, isConDj, memNo, roomNo, fanCnt} = item
                 return (
                   <div key={`${idx}+categoryTab`} className="memberItem" onClick={() => Link(memNo)}>
                     {roomNo !== '' && (
@@ -133,15 +133,9 @@ export default (props) => {
                       <span className="memberItem__info__nick">{nickNm}</span>
                       <div className="memberItem__info__iconBox">
                         {gender !== '' && <em className={`icon_wrap ${gender === 'm' ? 'icon_male' : 'icon_female'}`}>성별</em>}
-                        {badgeSpecial > 0 && badgeSpecial === 2 ? (
-                          <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
-                        ) : badgeSpecial === 3 ? (
-                          <em className="icon_wrap icon_contentsdj_half">콘텐츠DJ</em>
-                        ) : badgeSpecial === 1 ? (
-                          <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
-                        ) : (
-                          <></>
-                        )}
+                        {badgeSpecial > 0 && badgeSpecial === 2 && <em className="icon_wrap icon_bestdj">베스트DJ</em>}
+                        {isConDj && <em className="icon_wrap icon_contentsdj">콘텐츠DJ</em>}
+                        {badgeSpecial > 0 && badgeSpecial === 1 && <em className="icon_wrap icon_specialdj">스페셜DJ</em>}
                       </div>
                       <span className="memberItem__info__fanCnt">
                         <img src={PersonIcon} />
@@ -186,7 +180,7 @@ export default (props) => {
                     bjNickNm,
                     roomType,
                     entryCnt,
-                    isBadge,
+                    isConDj,
                     totalCnt,
                     likeCnt,
                     roomNo,
@@ -218,7 +212,7 @@ export default (props) => {
                       <div className="chartListDetailItem__thumb">
                         {badgeSpecial > 0 && badgeSpecial === 2 ? (
                           <em className="icon_wrap icon_bestdj_half">베스트DJ</em>
-                        ) : isBadge === '3' ? (
+                        ) : isConDj === true ? (
                           <em className="icon_wrap icon_contentsdj_half">콘텐츠DJ</em>
                         ) : badgeSpecial === 1 ? (
                           <em className="icon_wrap icon_specialdj_half">스페셜DJ</em>
