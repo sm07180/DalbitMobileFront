@@ -17,6 +17,8 @@
     color: #757575;
   }
   .buttonWrap {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-top: auto;
     padding: 0 16px 30px;
@@ -37,6 +39,16 @@
       &:nth-child(2) {
         background-color: #632beb;
         color: #fff;
+      }
+      &.logOut {
+        width: auto;
+        height: auto;
+        line-height: 1;
+        margin: 0 auto;
+        padding: 8px 16px;
+        font-size: 14px;
+        color: #757575;
+        cursor: pointer;
       }
     }
   }

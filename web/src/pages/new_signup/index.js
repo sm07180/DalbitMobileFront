@@ -742,7 +742,7 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout status="no_gnb" header="가입">
+    <Layout status="no_gnb" header="회원가입">
       <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
       <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
       <Content>
@@ -790,24 +790,6 @@ export default (props) => {
               </div>
               {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
             </InputItem>
-            {/* 생년월일 ---------------------------------------------------------- */}
-            {customHeader['os'] !== OS_TYPE['IOS'] ? (
-              <>
-                <InputItem button={false} validate={validate.birth.check}>
-                  <div className="layer">
-                    <label htmlFor="birth">생년월일</label>
-                    <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
-                  </div>
-                  {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
-                </InputItem>
-                <p className="birthText">
-                  * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
-                  <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
-                </p>
-              </>
-            ) : (
-              <></>
-            )}
           </>
         )}
 
@@ -848,6 +830,25 @@ export default (props) => {
           </div>
           {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
         </InputItem>
+
+        {/* 생년월일 ---------------------------------------------------------- */}
+        {customHeader['os'] !== OS_TYPE['IOS'] ? (
+          <>
+            <InputItem button={false} validate={validate.birth.check}>
+              <div className="layer">
+                <label htmlFor="birth">생년월일</label>
+                <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
+              </div>
+              {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
+            </InputItem>
+            <p className="birthText">
+              * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
+              <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
+            </p>
+          </>
+        ) : (
+          <></>
+        )}
 
         {/* 비밀번호 ---------------------------------------------------------- */}
         {memType === 'p' && (
