@@ -116,7 +116,7 @@
     box-sizing: border-box;
 
     &.rank {
-      height: 198px;
+      height: 223px;
       padding: 32px 0 0;
       background-color: $white;
       color: $white;
@@ -1740,4 +1740,12 @@
       top: 5px;
     }
   }
+}
+
+.realTimer-wrap {
+  width: calc(100% - 32px);
+  height: 25px;
+  margin: 0 16px;
+  border-radius: 4px;
+  background: linear-gradient(125deg, #ecb546, #de5a3e, #c63b70, #860bff);
 }

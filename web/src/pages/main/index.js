@@ -744,6 +744,22 @@ export default (props) => {
     }
   }, [])
 
+  //2021-10-18 실시간 카운터 다운
+  const realTimeTitle = ['실시간 랭킹 (1회차)', '실시간 랭킹 (2회차)', '실시간 랭킹 (3회차)']
+  const CountDownTimer = () => {
+    let now = new Date()
+    // let end = new Date(21, 00, 00)
+    // let open = new Date(09, 00, 00)
+
+    let nt = now.getTime()
+    let ot = open.getTime()
+    let et = end.getTime()
+
+    console.log(now)
+  }
+  // setInterval(remaindTime, 1000)
+  console.log(remaindTime)
+
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div
@@ -926,7 +942,13 @@ export default (props) => {
                 </button>
               </div>
             </div>
-
+            <div className="realTimer-wrap">
+              <span className="hours"></span>
+              <span className="col">:</span>
+              <span className="minutes"></span>
+              <span className="col">:</span>
+              <span className="seconds"></span>
+            </div>
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
