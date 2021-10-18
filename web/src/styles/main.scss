@@ -116,7 +116,7 @@
     box-sizing: border-box;
 
     &.rank {
-      height: 223px;
+      height: 231px;
       padding: 32px 0 0;
       background-color: $white;
       color: $white;
@@ -1745,7 +1745,19 @@
 .realTimer-wrap {
   width: calc(100% - 32px);
   height: 25px;
-  margin: 0 16px;
+  margin: 8px 16px 0;
   border-radius: 4px;
   background: linear-gradient(125deg, #ecb546, #de5a3e, #c63b70, #860bff);
+  .realTime {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    line-height: 25px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: medium;
+    span {
+      letter-spacing: 2px;
+    }
+  }
 }
