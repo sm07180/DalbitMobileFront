@@ -173,8 +173,8 @@ export default (props) => {
     {
       title: '2회차',
       start: '100000',
-      end: '185959',
-      timer: '165959'
+      end: '155959',
+      timer: '135959'
     },
     {
       title: '3회차',
@@ -183,11 +183,9 @@ export default (props) => {
       timer: '215959'
     }
   ]
-  const [hours, setHours] = useState(nowHours)
-  const [minutes, setMinutes] = useState(nowMinutes)
-  const [seconds, setSeconds] = useState(nowSeconds)
-
-  console.log(roundTime, hours)
+  const [hours, setHours] = useState(1)
+  const [minutes, setMinutes] = useState(59 - nowMinutes)
+  const [seconds, setSeconds] = useState(59 - nowSeconds)
 
   //loading
   // const [loading, setLoading] = useState(false)
@@ -775,40 +773,45 @@ export default (props) => {
   }, [])
 
   //2021-10-18 실시간 카운터 다운
-  const CountDownTimer = useCallback(() => {
-    useEffect(() => {
-      const countdown = setInterval(() => {
-        if (parseInt(seconds) > 0) {
-          setSeconds(parseInt(seconds) - 1)
-        }
-        if (parseInt(seconds) === 0) {
-          if (parseInt(minutes) === 0) {
-            if (parseInt(hours) === 0) {
-              clearInterval(countdown)
-            } else {
-              setHours(parseInt(hours) - 1)
-              setMinutes(60)
-            }
-          } else {
-            setMinutes(parseInt(minutes) - 1)
-            setSeconds(59)
+  const CountDownTimer = useCallback(
+    (props) => {
+      let {timer, end} = props
+      useEffect(() => {
+        setHours(parseInt(end.substring(0, 2)) - nowHours)
+        const countdown = setInterval(() => {
+          if (parseInt(seconds) > 0) {
+            setSeconds(parseInt(seconds) - 1)
           }
-        }
-      }, 1000)
-      return () => clearInterval(countdown)
-    }, [hours, minutes, seconds])
-    return (
-      <div className="realTimer-wrap">
-        <span className="realTime">
-          마감까지{' '}
-          <span>
-            {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-          </span>{' '}
-          남았습니다.
-        </span>
-      </div>
-    )
-  }, [hours, minutes, seconds])
+          if (parseInt(seconds) === 0) {
+            if (parseInt(minutes) === 0) {
+              if (parseInt(hours) === 0) {
+                clearInterval(countdown)
+              } else {
+                setHours(parseInt(hours) - 1)
+                setMinutes(60)
+              }
+            } else {
+              setMinutes(parseInt(minutes) - 1)
+              setSeconds(59)
+            }
+          }
+        }, 1000)
+        return () => clearInterval(countdown)
+      }, [hours, minutes, seconds])
+      return (
+        <div className="realTimer-wrap">
+          <span className="realTime">
+            마감까지{' '}
+            <span>
+              {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+            </span>{' '}
+            남았습니다.
+          </span>
+        </div>
+      )
+    },
+    [hours, minutes, seconds]
+  )
 
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
@@ -946,67 +949,70 @@ export default (props) => {
 
         <div className="main-content">
           <div className="section rank" ref={RankSectionRef}>
-            {round.map((data, index) => {
-              const {title, start, end, timer} = data
-              return (
-                <React.Fragment key={index}>
-                  {start < roundTime && end > roundTime && (
-                    <>
-                      <div className="title-wrap">
-                        <button className="title" onClick={() => goRank()}>
-                          {/* <Lottie
-                    options={{
-                      loop: true,
-                      autoPlay: true,
-                      animationData: CrownLottie
-                    }}
-                    width={40}
-                  /> */}
-                          {/* <span className="ico-lottie">
-                    <img src={CrownIcon} alt="실시간랭킹" width={40} />
-                  </span> */}
-                          <img className="rank-arrow" src={RankNew} />
-                          <div className="txt">실시간 랭킹 ({title})</div>
-                          <img className="rank-arrow" src={RankArrow} />
-                        </button>
-                        <div className="right-side">
-                          <button
-                            className={`text ${rankType === 'dj' ? 'active' : ''}`}
-                            onClick={() => {
-                              setRankType('dj')
-                              rankAction.formDispatch &&
-                                rankAction.formDispatch({
-                                  type: 'RANK_TYPE',
-                                  val: 1
-                                })
-                            }}>
-                            DJ
-                          </button>
+            <div className="title-wrap">
+              <button className="title" onClick={() => goRank()}>
+                {/* <Lottie
+          options={{
+            loop: true,
+            autoPlay: true,
+            animationData: CrownLottie
+          }}
+          width={40}
+        /> */}
+                {/* <span className="ico-lottie">
+          <img src={CrownIcon} alt="실시간랭킹" width={40} />
+        </span> */}
+                <img className="rank-arrow" src={RankNew} />
 
-                          <button
-                            style={{marginLeft: '2px'}}
-                            className={`text ${rankType === 'fan' ? 'active' : ''}`}
-                            onClick={() => {
-                              setRankType('fan')
-                              rankAction.formDispatch &&
-                                rankAction.formDispatch({
-                                  type: 'RANK_TYPE',
-                                  val: 2
-                                })
-                            }}>
-                            팬
-                          </button>
-                        </div>
-                      </div>
-                      {roundTime >= timer && <CountDownTimer />}
-                      <div className="content-wrap ranking">
-                        <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
-                      </div>
-                    </>
-                  )}
+                <div className="txt">
+                  실시간 랭킹
+                  {round.map((data, index) => {
+                    const {title, start, end} = data
+                    return <React.Fragment key={index}>{start <= roundTime && end >= roundTime && `(${title})`}</React.Fragment>
+                  })}
+                </div>
+                <img className="rank-arrow" src={RankArrow} />
+              </button>
+              <div className="right-side">
+                <button
+                  className={`text ${rankType === 'dj' ? 'active' : ''}`}
+                  onClick={() => {
+                    setRankType('dj')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 1
+                      })
+                  }}>
+                  DJ
+                </button>
+
+                <button
+                  style={{marginLeft: '2px'}}
+                  className={`text ${rankType === 'fan' ? 'active' : ''}`}
+                  onClick={() => {
+                    setRankType('fan')
+                    rankAction.formDispatch &&
+                      rankAction.formDispatch({
+                        type: 'RANK_TYPE',
+                        val: 2
+                      })
+                  }}>
+                  팬
+                </button>
+              </div>
+            </div>
+            {round.map((data, idx) => {
+              const {timer, start, end} = data
+              return (
+                <React.Fragment key={idx}>
+                  {start <= roundTime && end >= roundTime && timer <= roundTime && <CountDownTimer timer={timer} end={end} />}
                 </React.Fragment>
               )
             })}
+            <div className="content-wrap ranking">
+              <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
+            </div>
           </div>
 
           <div className="section banner" ref={BannerSectionRef}>
