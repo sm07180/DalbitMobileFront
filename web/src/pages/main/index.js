@@ -173,8 +173,8 @@ export default (props) => {
     {
       title: '2회차',
       start: '100000',
-      end: '155959',
-      timer: '135959'
+      end: '185959', // 185959
+      timer: '165959' // 165959
     },
     {
       title: '3회차',
@@ -184,8 +184,8 @@ export default (props) => {
     }
   ]
   const [hours, setHours] = useState(1)
-  const [minutes, setMinutes] = useState(59 - nowMinutes)
-  const [seconds, setSeconds] = useState(59 - nowSeconds)
+  const [minutes, setMinutes] = useState(60 - nowMinutes)
+  const [seconds, setSeconds] = useState(60 - nowSeconds)
 
   //loading
   // const [loading, setLoading] = useState(false)
