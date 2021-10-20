@@ -2406,6 +2406,11 @@ export default class API {
     return await ajax({url: `/social/google/callback`, method: 'POST', data})
   }
 
+  static facebook_login = async (obj) => {
+    const {data} = obj
+    return await ajax({url: `/social/facebook/callback`, method: 'POST', data})
+  }
+
   /**
    * @brief PUSH Click
    * @method "POST"

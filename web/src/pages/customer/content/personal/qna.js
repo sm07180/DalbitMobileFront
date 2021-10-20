@@ -587,7 +587,7 @@ export default function Qna() {
               <strong className="callBox_title__custom">
                 고객센터 (국내)<span>1522-0251</span>
               </strong>
-              <span className="callBox_desc">(상담시간 : 평일 09:30~17:30 토/일/공휴일 제외)</span>
+              <span className="callBox_desc">(상담시간 : 평일 10:00~18:00 토/일/공휴일 제외)</span>
             </div>
             {phoneCallWrap()}
           </div>

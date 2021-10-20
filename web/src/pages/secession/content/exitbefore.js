@@ -1,18 +1,14 @@
 import React, {useState, useEffect, useContext, useReducer} from 'react'
 import styled from 'styled-components'
 //context
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
 import {IMG_SERVER, WIDTH_PC, WIDTH_PC_S, WIDTH_TABLET, WIDTH_TABLET_S, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
 import Api from 'context/api'
 import {Context} from 'context'
 import Checkbox from './checkbox'
 import {useHistory} from 'react-router-dom'
 import {Hybrid} from 'context/hybrid'
-import Utility from 'components/lib/utility'
-import {Hybrid} from 'context/hybrid'
 // etc
 import Utility from 'components/lib/utility'
-import {clipExit} from 'pages/common/clipPlayer/clip_func'
 
 //
 const Exit = (props) => {
@@ -53,12 +49,13 @@ const Exit = (props) => {
       if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
         if (Utility.getCookie('clip-player-info')) {
         }
-      secfun()
-    } else {
-      console.log(res)
-      context.action.alert({
-        msg: res.message
-      })
+        secfun()
+      } else {
+        console.log(res)
+        context.action.alert({
+          msg: res.message
+        })
+      }
     }
   }
   const Validate = () => {
@@ -73,17 +70,6 @@ const Exit = (props) => {
   }
 
   const clearFilter = () => {
-    // setState(agree)
-    // if (
-    //   state.click1 === true &&
-    //   state.click2 === true &&
-    //   state.click3 === true &&
-    //   state.click4 === true &&
-    //   state.click5 === true &&
-    //   state.click6 === true
-    // ) {
-    //   setState(initialState)
-    // }
     if (all === false) {
       setAll(true)
     } else if (all === true) {
@@ -91,22 +77,6 @@ const Exit = (props) => {
     }
   }
 
-  useEffect(() => {
-    // if (all) {
-    //   setState({click1: true, click2: true, click6: true})
-    // } else {
-    //   //setState({click1: false, click2: false, click6: false})
-    // }
-  }, [all])
-
-  // useEffect(() => {
-  //   if (state.click1 === true && state.click2 === true && state.click6 === true) {
-  //     setAll(true)
-  //   }
-  //   if (state.click1 === false || state.click2 === false || state.click6 === false) {
-  //     setAll(false)
-  //   }
-  // }, [state])
   return (
     <Wrap>
       <Checkbox
@@ -123,17 +93,6 @@ const Exit = (props) => {
         fnChange={(v) => setState({click2: v})}
         checked={state.click2}
       />
-      {/* <Checkbox
-        title="탈퇴 후 기존 보유한 팬 정보는 모두 삭제됩니다."
-        fnChange={v => setState({click3: v})}
-        checked={state.click3}
-      />
-      <Checkbox
-        title="탈퇴 후 삭제한 계정에 대한 정보 복구는 불가합니다."
-        fnChange={v => setState({click4: v})}
-        checked={state.click4}
-      />
-      <Checkbox title="탈퇴 후 7일간 서비스 재가입은 불가합니다." fnChange={v => setState({click5: v})} checked={state.click5} /> */}
       <Checkbox
         title="약관에 의해 제재중인 계정의 경우 즉시 탈퇴가 불가합니다. 별도로 문의해주시기 바랍니다."
         fnChange={(v) => setState({click6: v})}

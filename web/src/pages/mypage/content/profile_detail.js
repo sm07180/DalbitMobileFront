@@ -277,9 +277,8 @@ export default (props) => {
           {icon !== '' && <img src={icon} alt="뱃지아이콘" className="icon-badge" />}
           <span>{text}</span>
         </span> */}
-        {text === '콘텐츠 DJ' ? (
-          <em className={`icon_wrap icon_contentsdj`}></em>
-        ) : (
+        {text === '콘텐츠 DJ' && <em className={`icon_wrap icon_contentsdj_profile`}></em>}
+        {text !== '콘텐츠 DJ' && (
           <em
             className={`icon_wrap icon_badge ${icon !== '' ? 'img' : 'text'}`}
             key={`badge-${index}`}
