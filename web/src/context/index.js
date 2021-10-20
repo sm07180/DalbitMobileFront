@@ -125,6 +125,11 @@ const GlobalProvider = (props) => {
   // bestDJ 데이터
   const [bestDjData, setBestDjData] = useState([]);
 
+  // 본인인증 ref
+  const [authRef, setAuthRef] = useState(null);
+  // 14세 미만 페이지
+  const [noServiceYn, setNoServiceYn] = useState("");
+
   const action = {
     updateState: (obj) => {
       setState((state) => ({...state, ...obj}))
@@ -500,6 +505,12 @@ const GlobalProvider = (props) => {
     updateBestDjState: (obj) => {
       setBestDjData(obj);
     },
+    updateAuthRef: (obj) => {
+      setAuthRef(obj);
+    },
+    updateNoServiceYn: (obj) => {
+      setNoServiceYn(obj);
+    },
   }
   //---------------------------------------------------------------------
   const value = {
@@ -581,6 +592,8 @@ const GlobalProvider = (props) => {
     multiViewer,
     isMailboxOn,
     bestDjData,
+    authRef,
+    noServiceYn,
   }
   return <Provider value={value}>{props.children}</Provider>
 }

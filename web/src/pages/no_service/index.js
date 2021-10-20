@@ -1,6 +1,5 @@
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {Context} from 'context'
-import {OS_TYPE} from 'context/config'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {authReq} from 'pages/self_auth'
@@ -10,11 +9,10 @@ import {BeforeLogout} from 'common/logout_func'
 
 import NoServiceIcon from './static/ic_sorry.png'
 import './index.scss'
+import Message from "pages/common/message";
 
 export default function Service() {
   const globalCtx = useContext(Context)
-  const hisotry = useHistory()
-  const formTag = useRef(null)
   const [fetching, setFetching] = useState(false)
 
   const clickLogoutBtn = async () => {
@@ -46,7 +44,6 @@ export default function Service() {
 
   return (
     <Layout status="no_gnb">
-      <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
       <div id="noServiceWrap">
         <div className="infoWrap">
           <img src={NoServiceIcon} alt="달빛이미지" />
@@ -58,12 +55,13 @@ export default function Service() {
         </div>
         <div className="buttonWrap">
           <button onClick={() => (window.location.href = '/customer/personal')}>1:1 문의하기</button>
-          <button onClick={() => authReq('5', formTag, globalCtx)}>본인인증</button>
+          <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>본인인증</button>
           <button className="logOut" onClick={clickLogoutBtn}>
             로그아웃
           </button>
         </div>
       </div>
+      <Message />
     </Layout>
   )
 }

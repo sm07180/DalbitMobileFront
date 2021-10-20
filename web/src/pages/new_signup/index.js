@@ -18,8 +18,6 @@ import DatePicker from './content/datepicker'
 //static
 import IcoProfile from './static/ico-profil.svg'
 import IcoCamera from './static/ico-camera.svg'
-import IcoFemale from './static/female.svg'
-import IcoMale from './static/male.svg'
 import IcoCheckOn from './static/checkbox_on.svg'
 import IcoCheckOff from './static/checkbox_off.svg'
 import IcoArrow from './static/arrow.svg'
@@ -41,6 +39,12 @@ export default (props) => {
     auth: false
   })
   const [termOpen, setTermOpen] = useState(true)
+
+  const [appInfo, setAppInfo] = useState({
+    os: "",
+    version: "",
+    showBirthForm: false,
+  });
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -702,19 +706,38 @@ export default (props) => {
 
   //회원가입 완료 버튼
   const signUp = () => {
-    if (CMID !== true && memType === 'p') {
+    /*if (CMID !== true && memType === 'p') {
       return context.action.alert({
         msg: '휴대폰 본인인증을 진행해주세요.'
       })
-    }
+    }*/
     validateNick()
+    validateBirth()
     if (memType === 'p') {
       validatePwd()
       validatePwdCheck()
     }
-    validateBirth()
+
     validateTerm()
   }
+
+  const appInfoSetting = () => {
+    const headerInfo = JSON.parse(Utility.getCookie("custom-header"));
+    const os = headerInfo.os;
+    const version = headerInfo.appVer;
+    let showBirthForm = true;
+
+    const tempIosVersion = "1.6.1"
+
+
+    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
+    if(os === 2) {
+      showBirthForm = false;
+    }
+
+    setAppInfo({ os, version, showBirthForm });
+  };
+
   useEffect(() => {
     const validateKey = Object.keys(validate)
     //ios 이슈 수정
@@ -733,6 +756,8 @@ export default (props) => {
   }, [validate.nickNm])
 
   useEffect(() => {
+    appInfoSetting();
+
     //Facebook,Firebase 이벤트 호출
     try {
       fbq('track', 'Lead')
@@ -821,7 +846,7 @@ export default (props) => {
               type="text"
               id="nickNm"
               name="nickNm"
-              placeholder="2~20자 한글/영문/숫자"
+              placeholder="최대 20자까지 입력"
               autoComplete="off"
               maxLength={20}
               value={nickNm}
@@ -832,7 +857,7 @@ export default (props) => {
         </InputItem>
 
         {/* 생년월일 ---------------------------------------------------------- */}
-        {customHeader['os'] !== OS_TYPE['IOS'] ? (
+        {appInfo.showBirthForm &&
           <>
             <InputItem button={false} validate={validate.birth.check}>
               <div className="layer">
@@ -841,14 +866,9 @@ export default (props) => {
               </div>
               {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
             </InputItem>
-            <p className="birthText">
-              * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
-              <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
-            </p>
+            <AgeGuidance />
           </>
-        ) : (
-          <></>
-        )}
+        }
 
         {/* 비밀번호 ---------------------------------------------------------- */}
         {memType === 'p' && (
@@ -908,6 +928,15 @@ export default (props) => {
         </button>
       </Content>
     </Layout>
+  )
+}
+
+const AgeGuidance = () => {
+  return (
+    <p className="birthText">
+      * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
+      <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
+    </p>
   )
 }
 

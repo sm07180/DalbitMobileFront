@@ -10,16 +10,11 @@ import {StylesProvider} from '@material-ui/core/styles'
 import icoCal from '../static/calender_b.svg'
 
 export default (props) => {
-  //---------------------------------------------------------------------
-  let maxDate = new Date()
-  maxDate.setFullYear(maxDate.getFullYear() - 11)
-  maxDate.setMonth(12)
-  maxDate.setDate(0)
-
-  let startDate = new Date()
-  startDate.setFullYear(startDate.getFullYear() - 11)
-  startDate.setMonth(0)
-  startDate.setDate(1)
+  const [calendarDate, setCalendarDate] = useState({
+    startDate: null,
+    minDate: null,
+    maxDate: null,
+  });
 
   const [selectedDate, setSelectedDate] = useState(props.value)
 
@@ -28,7 +23,27 @@ export default (props) => {
     props.change(moment(date).format('YYYYMMDD'))
   }
 
-  moment.locale('ko')
+  const datepickerSetting = () => {
+    let maxDate = new Date()
+
+    let minDate = new Date(); // 올해 - 99
+    minDate.setFullYear(minDate.getFullYear() - 99);
+    minDate.setMonth(0);
+    minDate.setDate(1);
+
+    let startDate = new Date()
+    startDate.setFullYear(startDate.getFullYear() - 19)
+    startDate.setMonth(0)
+    startDate.setDate(1)
+
+    setCalendarDate({startDate, minDate, maxDate});
+  }
+
+  useEffect(() => {
+    moment.locale('ko');
+    datepickerSetting();
+  }, []);
+
   //---------------------------------------------------------------------
   return (
     <StylesProvider injectFirst>
@@ -43,8 +58,9 @@ export default (props) => {
             value={selectedDate}
             onChange={handleDateChange}
             emptyLabel={'생년월일을 선택해주세요.'}
-            maxDate={maxDate}
-            initialFocusedDate={startDate}
+            maxDate={calendarDate.maxDate}
+            minDate={calendarDate.minDate}
+            initialFocusedDate={calendarDate.startDate}
           />
         </MuiPickersUtilsProvider>
       </DatepickerWrap>

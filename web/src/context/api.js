@@ -3292,6 +3292,14 @@ export default class API {
       params: data
     })
   }
+
+  // 1일 1회 본인인증 확인
+  static certificationCheck = async () => {
+    return await ajax({
+      url: '/profile/certification/check',
+      method: 'GET',
+    })
+  }
 }
 
 API.customHeader = null

@@ -14,8 +14,6 @@ import {COLOR_MAIN} from 'context/color'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
 
-let formTag
-
 export const openAuthPage = (formTagRef, context) => {
   var KMCIS_window
   var UserAgent = navigator.userAgent
@@ -91,21 +89,18 @@ export default (props) => {
   //context
   const context = useContext(Context)
 
-  //ref
-  formTag = useRef(null)
-
   //인증 요청 버튼
   function authClick() {
     if (event) {
       let url = event.split('/').join('DAL')
       url = url.split('_').join('BIT')
-      return authReq(url, formTag, context)
+      return authReq(url, context.authRef, context)
     }
 
-    if (type === 'create' || type === 'adultCreate') return authReq('6', formTag, context)
-    if (type === 'adultJoin') return authReq('8', formTag, context)
+    if (type === 'create' || type === 'adultCreate') return authReq('6', context.authRef, context)
+    if (type === 'adultJoin') return authReq('8', context.authRef, context)
 
-    return authReq('4', formTag, context)
+    return authReq('4', context.authRef, context)
   }
 
   const goBack = () => {
@@ -182,7 +177,6 @@ export default (props) => {
             <button onClick={authClick}>본인 인증하기</button>
           </div>
         </div>
-        <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
       </Content>
     </Layout>
   )

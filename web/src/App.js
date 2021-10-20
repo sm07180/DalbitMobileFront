@@ -2,7 +2,7 @@
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
  */
-import React, {useMemo, useState, useEffect, useContext, useCallback} from 'react'
+import React, {useMemo, useState, useEffect, useContext, useRef} from 'react'
 import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
 
@@ -14,16 +14,20 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
+import NoService from './pages/no_service/index';
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
+import moment from "moment";
 
 const App = () => {
   const globalCtx = useContext(Context)
   App.context = () => context
+  //본인인증
+  const authRef = useRef();
 
   const [ready, setReady] = useState(false)
-  const myInfo = globalCtx.myInfo
+  const AGE_LIMIT = 14;
 
   const isJsonString = (str) => {
     try {
@@ -181,10 +185,18 @@ const App = () => {
             }
           })
           if (myProfile.result === 'success') {
-            globalCtx.action.updateProfile(myProfile.data)
-            globalCtx.action.updateIsMailboxOn(myProfile.data.isMailboxOn)
+            const data = myProfile.data;
+            const americanAge = birthToAmericanAge(data.birth);
+            if(americanAge < AGE_LIMIT) {
+              globalCtx.action.updateNoServiceYn("y");
+            }else {
+              globalCtx.action.updateNoServiceYn("n");
+            }
+            globalCtx.action.updateProfile(data)
+            globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
           } else {
             globalCtx.action.updateProfile(false)
+            globalCtx.action.updateNoServiceYn("n");
           }
         }
         const myInfoRes = async () => {
@@ -208,6 +220,7 @@ const App = () => {
         globalCtx.action.updateProfile(false)
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
+        globalCtx.action.updateNoServiceYn("n");
       }
 
       //모든 처리 완료
@@ -269,6 +282,30 @@ const App = () => {
     }
   }
 
+  const ageCheck = () => {
+    const pathname = location.pathname;
+    const americanAge = birthToAmericanAge(globalCtx.profile.birth);
+    if (americanAge < AGE_LIMIT && // 나이 14세 미만
+      (!pathname.includes("/customer/personal") && !pathname.includes("/customer/qnaList"))) { // 1:1문의, 문의내역은 보임
+      globalCtx.action.updateNoServiceYn("y");
+    }else {
+      globalCtx.action.updateNoServiceYn("n");
+    }
+  };
+
+  const birthToAmericanAge = (birth) => {
+    // age: YYYYMMDD
+    const birthYear = parseInt(birth.substring(0, 4));
+    const birthMonthAndDay = parseInt(birth.substring(4));
+    const nowYear = parseInt(moment().format('YYYY'));
+    const nowMonthAndDay = parseInt(moment().format('MMDD'));
+    const yearDiff = nowYear - birthYear;
+    const monthAndDayDiff = nowMonthAndDay - birthMonthAndDay;
+
+    console.log(monthAndDayDiff >= 0 ? yearDiff : yearDiff -1);
+    return monthAndDayDiff >= 0 ? yearDiff : yearDiff -1;
+  }
+
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
       setReady(true)
@@ -289,6 +326,13 @@ const App = () => {
     fetchData()
   }, [])
 
+  useEffect(() => {
+    if(globalCtx.token && globalCtx.token.isLogin && globalCtx.profile) {
+      console.log('eliwsjfs');
+      ageCheck();
+    }
+  }, [globalCtx.profile, location.pathname]);
+
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
@@ -300,6 +344,8 @@ const App = () => {
     setInterval(() => {
       setCookieAuthToken(Utility.getCookie('authToken'))
     }, 1000)
+
+    globalCtx.action.updateAuthRef(authRef); // 본인인증 ref
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {
@@ -349,27 +395,27 @@ const App = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      {/* {ready && <Interface />}
-      {ready && <Route />} */}
-
-      {ready ? (
-        <>
-          <Interface />
-          <Route />
-        </>
-      ) : (
-        <>
-          <div className="loading">
-            <span></span>
-          </div>
-          {/* <button
-            id="btn-home"
-            onClick={() => {
-              location.href = '/'
-            }}
-          /> */}
-        </>
-      )}
+      {globalCtx.noServiceYn === 'n' ?
+        ready ? (
+            <>
+              <Interface />
+              <Route />
+            </>
+          ) : (
+            <>
+              <div className="loading">
+                <span></span>
+              </div>
+            </>
+          )
+        : globalCtx.noServiceYn  === 'y' ?
+          <>
+            <NoService />
+            <Interface />
+          </>
+          : <></>
+      }
+      <form ref={authRef} name="authForm" method="post" id="authForm" target="KMCISWindow" />
     </ErrorBoundary>
   )
 }
