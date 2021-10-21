@@ -21,6 +21,7 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
+import CountDown from './component/countDown.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupCommon from './component/layer_popup_common.js'
@@ -159,10 +160,6 @@ export default (props) => {
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
 
-  const nowHours = nowTime.getHours()
-  const nowMinutes = nowTime.getMinutes()
-  const nowSeconds = nowTime.getSeconds()
-  const roundTime = `${nowHours}${nowMinutes}${nowSeconds}`
   const round = [
     {
       title: '1회차',
@@ -183,9 +180,6 @@ export default (props) => {
       timer: '215959'
     }
   ]
-  const [hours, setHours] = useState(1)
-  const [minutes, setMinutes] = useState(60 - nowMinutes)
-  const [seconds, setSeconds] = useState(60 - nowSeconds)
 
   //loading
   // const [loading, setLoading] = useState(false)
@@ -772,47 +766,6 @@ export default (props) => {
     }
   }, [])
 
-  //2021-10-18 실시간 카운터 다운
-  const CountDownTimer = useCallback(
-    (props) => {
-      let {timer, end} = props
-      useEffect(() => {
-        setHours(parseInt(end.substring(0, 2)) - nowHours)
-        const countdown = setInterval(() => {
-          if (parseInt(seconds) > 0) {
-            setSeconds(parseInt(seconds) - 1)
-          }
-          if (parseInt(seconds) === 0) {
-            if (parseInt(minutes) === 0) {
-              if (parseInt(hours) === 0) {
-                clearInterval(countdown)
-              } else {
-                setHours(parseInt(hours) - 1)
-                setMinutes(60)
-              }
-            } else {
-              setMinutes(parseInt(minutes) - 1)
-              setSeconds(59)
-            }
-          }
-        }, 1000)
-        return () => clearInterval(countdown)
-      }, [hours, minutes, seconds])
-      return (
-        <div className="realTimer-wrap">
-          <span className="realTime">
-            마감까지{' '}
-            <span>
-              {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-            </span>{' '}
-            남았습니다.
-          </span>
-        </div>
-      )
-    },
-    [hours, minutes, seconds]
-  )
-
   return (
     <Layout {...props} sticker={globalCtx.sticker}>
       <div
@@ -964,13 +917,7 @@ export default (props) => {
         </span> */}
                 <img className="rank-arrow" src={RankNew} />
 
-                <div className="txt">
-                  실시간 랭킹
-                  {round.map((data, index) => {
-                    const {title, start, end} = data
-                    return <React.Fragment key={index}>{start <= roundTime && end >= roundTime && `(${title})`}</React.Fragment>
-                  })}
-                </div>
+                <div className="txt">실시간 랭킹</div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
@@ -1002,14 +949,7 @@ export default (props) => {
                 </button>
               </div>
             </div>
-            {round.map((data, idx) => {
-              const {timer, start, end} = data
-              return (
-                <React.Fragment key={idx}>
-                  {start <= roundTime && end >= roundTime && timer <= roundTime && <CountDownTimer timer={timer} end={end} />}
-                </React.Fragment>
-              )
-            })}
+            <CountDown timeTillDate="16:00:00" timeFormat="hh:mm:ss" />
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
