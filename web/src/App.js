@@ -384,7 +384,7 @@ const App = () => {
   useEffect(() => {
     const noServiceInfo = globalCtx.noServiceInfo;
     if(globalCtx.selfAuth && noServiceInfo.americanAge >= noServiceInfo.limitAge && noServiceInfo.showPageYn === 'y') {
-      location.reload();
+      location.replace("/");
     }
   }, [globalCtx.selfAuth]);
 
