@@ -132,6 +132,7 @@ const GlobalProvider = (props) => {
     showPageYn: "",
     americanAge: 0,
     limitAge: 14,
+    passed: false,
   });
 
   const action = {

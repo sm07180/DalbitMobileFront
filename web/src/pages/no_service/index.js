@@ -68,9 +68,9 @@ export default function Service() {
           </div>
         </div>
         <div className="buttonWrap">
-          <button onClick={() => (window.location.href = '/customer/personal')}>1:1 문의하기</button>
+          <button onClick={() => location.replace('/customer/personal')}>1:1 문의하기</button>
           {authCheckYn === 'y' ? (
-            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>본인인증</button>
+            <button onClick={() => authReq('11', globalCtx.authRef, globalCtx)}>본인인증</button>
           ) : (
             <button className="disabled" disabled>
               본인인증을 이미 완료했습니다.

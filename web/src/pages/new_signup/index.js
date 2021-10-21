@@ -635,14 +635,6 @@ export default (props) => {
           }
         }
 
-        const americanAge = Utility.birthToAmericanAge(profileInfo.data.birth);
-
-        if(profileInfo.age < AGE_LIMIT) {
-          context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y", americanAge});
-        }else {
-          context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", americanAge});
-        }
-
         if (redirect) {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)

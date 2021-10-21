@@ -188,9 +188,9 @@ const App = () => {
             const data = myProfile.data;
             const americanAge = Utility.birthToAmericanAge(data.birth);
             if(americanAge < AGE_LIMIT) {
-              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y", americanAge});
+              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y", americanAge, passed: false});
             }else {
-              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n", americanAge});
+              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n", americanAge, passed: true});
             }
             globalCtx.action.updateProfile(data)
             globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
@@ -287,9 +287,11 @@ const App = () => {
     const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth);
     if (americanAge < AGE_LIMIT && // 나이 14세 미만
       (!pathname.includes("/customer/personal") && !pathname.includes("/customer/qnaList"))) { // 1:1문의, 문의내역은 보임
-      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y"});
+      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: "y"});
     }else {
-      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
+      let passed = false;
+      if(americanAge >= globalCtx.noServiceInfo.limitAge) passed = true;
+      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: "n", passed});
     }
   };
 
@@ -316,10 +318,15 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if(globalCtx.token && globalCtx.token.isLogin && globalCtx.profile) {
-      ageCheck();
+    if(globalCtx.token) {
+      if(globalCtx.token.isLogin) {
+        if(globalCtx.noServiceInfo.passed) return;
+        ageCheck();
+      }else if(!globalCtx.token.isLogin) {
+        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false});
+      }
     }
-  }, [globalCtx.profile]);
+  }, [globalCtx.profile, location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -380,13 +387,6 @@ const App = () => {
       )
     }
   }
-
-  useEffect(() => {
-    const noServiceInfo = globalCtx.noServiceInfo;
-    if(globalCtx.selfAuth && noServiceInfo.americanAge >= noServiceInfo.limitAge && noServiceInfo.showPageYn === 'y') {
-      location.replace("/");
-    }
-  }, [globalCtx.selfAuth]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

@@ -74,6 +74,8 @@ export default (props) => {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
       return history.push(changeUrl)
+    } else if(returntype === '') {
+      setAuthState(11)
     } else {
       checkAuth()
     }
@@ -218,6 +220,20 @@ export default (props) => {
                     window.location.href = '/'
                   }
                 }}>
+                확인
+              </button>
+            </div>
+          </div>
+        )
+      case 11:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              <span>본인 인증이 완료되었습니다.</span>
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => window.location.replace('/')}>
                 확인
               </button>
             </div>
