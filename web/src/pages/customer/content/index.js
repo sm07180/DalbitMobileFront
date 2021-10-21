@@ -110,12 +110,15 @@ const Index = (props) => {
   }
 
   useEffect(() => {
-    if(title === 'personal' || title === 'qnaList') {
-      context.action.updateNoServiceYn("n")
+    console.log('a');
+    if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
+    }else if(title === 'personal' || title === 'qnaList') {
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
     }else {
-      context.action.updateNoServiceYn("y")
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
     }
-  }, [props.match.params]);
+  }, [title]);
 
   //---------------------------------------------------------------------
   return (

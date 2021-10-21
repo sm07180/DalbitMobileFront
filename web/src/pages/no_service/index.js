@@ -1,6 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react'
 import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {authReq} from 'pages/self_auth'
 import {Hybrid, isHybrid} from 'context/hybrid'
@@ -14,6 +13,7 @@ import Message from "pages/common/message";
 export default function Service() {
   const globalCtx = useContext(Context)
   const [fetching, setFetching] = useState(false)
+  const [authCheckYn, setAuthCheckYn] = useState("y"); // y인 경우에 본인인증을 시도할 수 있다 (1일 1회)
 
   const clickLogoutBtn = async () => {
     if (fetching) {
@@ -42,6 +42,20 @@ export default function Service() {
     BeforeLogout(globalCtx, fetchLogout)
   }
 
+  const authYnCheck = () => {
+    Api.certificationCheck().then(res => {
+      if(res.data === "y") {
+        setAuthCheckYn("y");
+      }else {
+        setAuthCheckYn("n");
+      }
+    });
+  };
+
+  useEffect(() => {
+    authYnCheck();
+  }, []);
+
   return (
     <Layout status="no_gnb">
       <div id="noServiceWrap">
@@ -55,7 +69,15 @@ export default function Service() {
         </div>
         <div className="buttonWrap">
           <button onClick={() => (window.location.href = '/customer/personal')}>1:1 문의하기</button>
-          <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>본인인증</button>
+          {authCheckYn === "y" ?
+            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>
+              본인인증
+            </button>
+            :
+            <button>
+              본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.
+            </button>
+          }
           <button className="logOut" onClick={clickLogoutBtn}>
             로그아웃
           </button>

@@ -128,7 +128,11 @@ const GlobalProvider = (props) => {
   // 본인인증 ref
   const [authRef, setAuthRef] = useState(null);
   // 14세 미만 페이지
-  const [noServiceYn, setNoServiceYn] = useState("");
+  const [noServiceInfo, setNoServiceInfo] = useState({
+    showPageYn: "",
+    americanAge: 0,
+    limitAge: 14,
+  });
 
   const action = {
     updateState: (obj) => {
@@ -508,8 +512,8 @@ const GlobalProvider = (props) => {
     updateAuthRef: (obj) => {
       setAuthRef(obj);
     },
-    updateNoServiceYn: (obj) => {
-      setNoServiceYn(obj);
+    updateNoServiceInfo: (obj) => {
+      setNoServiceInfo(obj);
     },
   }
   //---------------------------------------------------------------------
@@ -593,7 +597,7 @@ const GlobalProvider = (props) => {
     isMailboxOn,
     bestDjData,
     authRef,
-    noServiceYn,
+    noServiceInfo,
   }
   return <Provider value={value}>{props.children}</Provider>
 }

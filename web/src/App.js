@@ -27,7 +27,7 @@ const App = () => {
   const authRef = useRef();
 
   const [ready, setReady] = useState(false)
-  const AGE_LIMIT = 14;
+  const AGE_LIMIT = globalCtx.noServiceInfo.limitAge;
 
   const isJsonString = (str) => {
     try {
@@ -186,17 +186,17 @@ const App = () => {
           })
           if (myProfile.result === 'success') {
             const data = myProfile.data;
-            const americanAge = birthToAmericanAge(data.birth);
+            const americanAge = Utility.birthToAmericanAge(data.birth);
             if(americanAge < AGE_LIMIT) {
-              globalCtx.action.updateNoServiceYn("y");
+              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y", americanAge});
             }else {
-              globalCtx.action.updateNoServiceYn("n");
+              globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n", americanAge});
             }
             globalCtx.action.updateProfile(data)
             globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
           } else {
             globalCtx.action.updateProfile(false)
-            globalCtx.action.updateNoServiceYn("n");
+            globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
           }
         }
         const myInfoRes = async () => {
@@ -220,7 +220,7 @@ const App = () => {
         globalCtx.action.updateProfile(false)
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
-        globalCtx.action.updateNoServiceYn("n");
+        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
       }
 
       //모든 처리 완료
@@ -284,27 +284,18 @@ const App = () => {
 
   const ageCheck = () => {
     const pathname = location.pathname;
-    const americanAge = birthToAmericanAge(globalCtx.profile.birth);
+    const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth);
     if (americanAge < AGE_LIMIT && // 나이 14세 미만
       (!pathname.includes("/customer/personal") && !pathname.includes("/customer/qnaList"))) { // 1:1문의, 문의내역은 보임
-      globalCtx.action.updateNoServiceYn("y");
+      console.log('ageCheck1')
+      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y"});
     }else {
-      globalCtx.action.updateNoServiceYn("n");
+      console.log('ageCheck2')
+      globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
     }
   };
 
-  const birthToAmericanAge = (birth) => {
-    // age: YYYYMMDD
-    const birthYear = parseInt(birth.substring(0, 4));
-    const birthMonthAndDay = parseInt(birth.substring(4));
-    const nowYear = parseInt(moment().format('YYYY'));
-    const nowMonthAndDay = parseInt(moment().format('MMDD'));
-    const yearDiff = nowYear - birthYear;
-    const monthAndDayDiff = nowMonthAndDay - birthMonthAndDay;
 
-    console.log(monthAndDayDiff >= 0 ? yearDiff : yearDiff -1);
-    return monthAndDayDiff >= 0 ? yearDiff : yearDiff -1;
-  }
 
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
@@ -328,10 +319,9 @@ const App = () => {
 
   useEffect(() => {
     if(globalCtx.token && globalCtx.token.isLogin && globalCtx.profile) {
-      console.log('eliwsjfs');
       ageCheck();
     }
-  }, [globalCtx.profile, location.pathname]);
+  }, [globalCtx.profile]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -395,7 +385,7 @@ const App = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      {globalCtx.noServiceYn === 'n' ?
+      {globalCtx.noServiceInfo.showPageYn === 'n' ?
         ready ? (
             <>
               <Interface />
@@ -408,7 +398,7 @@ const App = () => {
               </div>
             </>
           )
-        : globalCtx.noServiceYn  === 'y' ?
+        : globalCtx.noServiceInfo.showPageYn  === 'y' ?
           <>
             <NoService />
             <Interface />

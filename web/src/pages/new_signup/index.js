@@ -622,6 +622,8 @@ export default (props) => {
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
+      const AGE_LIMIT = context.noServiceInfo.limitAge;
+
       context.action.updateToken(loginInfo.data)
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
@@ -633,17 +635,20 @@ export default (props) => {
           }
         }
 
+        const americanAge = Utility.birthToAmericanAge(profileInfo.data.birth);
+
+        if(profileInfo.age < AGE_LIMIT) {
+          context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y", americanAge});
+        }else {
+          context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", americanAge});
+        }
+
         if (redirect) {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        const {age} = profileInfo.data
-        if (age > 14) {
-          return props.history.push('/event/recommend_dj2')
-        } else {
-          return props.history.push('/no_service')
-        }
+        return props.history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
       context.action.alert({
@@ -688,9 +693,9 @@ export default (props) => {
           //애드브릭스 이벤트 전달
           if (data.adbrixData != '' && data.adbrixData != 'init') {
             Hybrid('adbrixEvent', data.adbrixData)
-            if (__NODE_ENV === 'dev') {
-              alert(JSON.stringify(data.adbrixData))
-            }
+            // if (__NODE_ENV === 'dev') {
+              // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
+            // }
           }
           loginFetch()
         },
@@ -712,7 +717,9 @@ export default (props) => {
       })
     }*/
     validateNick()
-    validateBirth()
+    if(appInfo.showBirthForm) {
+      validateBirth()
+    }
     if (memType === 'p') {
       validatePwd()
       validatePwdCheck()
@@ -729,9 +736,10 @@ export default (props) => {
 
     const tempIosVersion = "1.6.1"
 
+    const hideFromStatus = !Utility.compareAppVersion(tempIosVersion);
 
     // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if(os === 2) {
+    if(os === 2 && hideFromStatus) {
       showBirthForm = false;
     }
 
