@@ -8,12 +8,12 @@ import {BeforeLogout} from 'common/logout_func'
 
 import NoServiceIcon from './static/ic_sorry.png'
 import './index.scss'
-import Message from "pages/common/message";
+import Message from 'pages/common/message'
 
 export default function Service() {
   const globalCtx = useContext(Context)
   const [fetching, setFetching] = useState(false)
-  const [authCheckYn, setAuthCheckYn] = useState("y"); // y인 경우에 본인인증을 시도할 수 있다 (1일 1회)
+  const [authCheckYn, setAuthCheckYn] = useState('y') // y인 경우에 본인인증을 시도할 수 있다 (1일 1회)
 
   const clickLogoutBtn = async () => {
     if (fetching) {
@@ -43,18 +43,18 @@ export default function Service() {
   }
 
   const authYnCheck = () => {
-    Api.certificationCheck().then(res => {
-      if(res.data === "y") {
-        setAuthCheckYn("y");
-      }else {
-        setAuthCheckYn("n");
+    Api.certificationCheck().then((res) => {
+      if (res.data === 'y') {
+        setAuthCheckYn('y')
+      } else {
+        setAuthCheckYn('n')
       }
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    authYnCheck();
-  }, []);
+    authYnCheck()
+  }, [])
 
   return (
     <Layout status="no_gnb">
@@ -69,15 +69,15 @@ export default function Service() {
         </div>
         <div className="buttonWrap">
           <button onClick={() => (window.location.href = '/customer/personal')}>1:1 문의하기</button>
-          {authCheckYn === "y" ?
-            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>
-              본인인증
+          {authCheckYn === 'y' ? (
+            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>본인인증</button>
+          ) : (
+            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)} className="disabled" disabled>
+              본인인증을 이미 완료했습니다.
+              <br />
+              1일 1회만 가능합니다.
             </button>
-            :
-            <button>
-              본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.
-            </button>
-          }
+          )}
           <button className="logOut" onClick={clickLogoutBtn}>
             로그아웃
           </button>

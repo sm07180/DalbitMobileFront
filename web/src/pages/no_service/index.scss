@@ -40,6 +40,11 @@
         background-color: #632beb;
         color: #fff;
       }
+      &.disabled {
+        line-height: 18px;
+        background-color: #a1a1a1;
+        color: #fff;
+      }
       &.logOut {
         width: auto;
         height: auto;
