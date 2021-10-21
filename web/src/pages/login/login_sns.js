@@ -14,6 +14,7 @@ import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
 import phoneLogo from './static/phone_logo.svg'
 import logoW from './static/logo_w_no_symbol.svg'
+import Utility from "components/lib/utility";
 
 export default function login_sns({props}) {
   const history = useHistory()
@@ -42,31 +43,15 @@ export default function login_sns({props}) {
       //Hybrid('openGoogleSignIn', {'webview' : webview})
       Hybrid('openGoogleSignIn')
     } else if(vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) { // 안드로이드 페이스북 로그인
-      const res = await Api.verisionCheck();
-      const nowVersion = res.data.nowVersion;
-      const compareAppVersion = (targetVersion) => {
-        const versionArr = nowVersion.split('.');
-        const firstPos = Number(versionArr[0]);
-        const secondPos = Number(versionArr[1]);
-        const thirdPos = Number(versionArr[2]);
-        const targetVerArr = targetVersion.split('.');
-        const targetFirstPos = Number(targetVerArr[0]);
-        const targetSecondPos = Number(targetVerArr[1]);
-        const targetThirdPos = Number(targetVerArr[2]);
-
-        if(firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos) {
-          context.action.confirm({
-            buttonText: {right: '업데이트'},
-            msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
-            callback: async () => Hybrid('goToPlayStore')
-          })
-          return false;
-        }
-        return true;
+      const successCallback = () => Hybrid('openFacebookLogin');
+      const failCallback = () => {
+        context.action.confirm({
+          buttonText: {right: '업데이트'},
+          msg: `페이스북 로그인을 하시려면<br/>앱을 업데이트해 주세요.`,
+          callback: async () => Hybrid('goToPlayStore')
+        })
       }
-      if(compareAppVersion('1.6.0')) {
-        Hybrid('openFacebookLogin');
-      }
+      await Utility.compareAppVersion('1.6.0', successCallback, failCallback);
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',

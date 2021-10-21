@@ -41,7 +41,7 @@ export default function MoneyExchange(props) {
       if (myBirth > baseYear) {
         setAuth(false)
         context.action.alert({
-          msg: `12세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`,
+          msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`,
           callback: () => props.history.push('/'),
           cancleCallback: () => props.history.push('/')
         })

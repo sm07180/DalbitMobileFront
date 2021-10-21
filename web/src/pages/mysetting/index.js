@@ -1,4 +1,4 @@
-import React, {useContext, useCallback, useEffect, useRef, useState, useMemo} from 'react'
+import React, {useContext, useCallback, useEffect, useState, useMemo} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {convertDateFormat} from 'components/lib/dalbit_moment'
@@ -12,7 +12,6 @@ import './mysetting.scss'
 let initProfileInfo = {}
 export default function MySetting() {
   const history = useHistory()
-  const formTag = useRef(null)
   const globalCtx = useContext(Context)
   const {token, profile} = globalCtx
   const [profileInfo, setProfileInfo] = useState({})
@@ -171,7 +170,6 @@ export default function MySetting() {
     <Layout status="no_gnb">
       <Header title="프로필 수정" />
       <div id="settingPage" className="subContent gray">
-        <form ref={formTag} name="authForm" method="post" id="authForm" target="KMCISWindow"></form>
         <form
           action="#"
           method="POST"
@@ -181,7 +179,7 @@ export default function MySetting() {
           }}>
           <ProfileAvatar setCurrentAvatar={setCurrentAvatar} />
           <div className="profileInfoBox profileForm">
-            <ProfileSelfCheck formTag={formTag} />
+            <ProfileSelfCheck />
 
             <div className="formInputBox">
               <label className="inputBoxTitle" htmlFor="nick">

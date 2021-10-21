@@ -31,7 +31,6 @@ export default function noticeTab() {
     }
   }
   useEffect(() => {
-    console.log(profile)
     async function fetchData() {
       const {result, data, message} = await Api.getMyPageNew(profile.memNo)
       if (result === 'success') {

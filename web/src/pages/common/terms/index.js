@@ -54,6 +54,7 @@ export default (props) => {
 
   const scrollOnUpdate = () => {
     if (document.getElementsByClassName('round')[0]) {
+      termsArea.current.children[0].style.top = `30px`
       termsArea.current.children[0].children[0].style.maxHeight = `calc(${
         document.getElementsByClassName('round')[0].offsetHeight
       }px - 41px)`

@@ -9,11 +9,10 @@ import {Switch, Route} from 'react-router-dom'
 import styled from 'styled-components'
 //context
 import {CustomerStore} from '../store'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P} from 'context/color'
+import {Context} from 'context';
+import {COLOR_MAIN} from 'context/color'
 import useResize from 'components/hooks/useResize'
 //components
-import Banner from './banner'
-import Tab from './tab'
 import Notice from './notice/list'
 import NoticeDetail from './notice/detail'
 import Event from './event/index'
@@ -34,6 +33,7 @@ const Index = (props) => {
   //---------------------------------------------------------------------
   //context
   const store = useContext(CustomerStore)
+  const context = useContext(Context);
   Index.store = store
 
   const {title, num} = props.match.params
@@ -108,6 +108,16 @@ const Index = (props) => {
         return <Notice />
     }
   }
+
+  useEffect(() => {
+    if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
+    }else if(title === 'personal' || title === 'qnaList') {
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
+    }else {
+      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+    }
+  }, [title]);
 
   //---------------------------------------------------------------------
   return (
