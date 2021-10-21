@@ -72,7 +72,7 @@ export default function Service() {
           {authCheckYn === 'y' ? (
             <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>본인인증</button>
           ) : (
-            <button onClick={() => authReq('5', globalCtx.authRef, globalCtx)} className="disabled" disabled>
+            <button className="disabled" disabled>
               본인인증을 이미 완료했습니다.
               <br />
               1일 1회만 가능합니다.

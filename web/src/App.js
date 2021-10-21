@@ -287,10 +287,8 @@ const App = () => {
     const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth);
     if (americanAge < AGE_LIMIT && // 나이 14세 미만
       (!pathname.includes("/customer/personal") && !pathname.includes("/customer/qnaList"))) { // 1:1문의, 문의내역은 보임
-      console.log('ageCheck1')
       globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y"});
     }else {
-      console.log('ageCheck2')
       globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
     }
   };
