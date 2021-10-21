@@ -110,7 +110,6 @@ const Index = (props) => {
   }
 
   useEffect(() => {
-    console.log('a');
     if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
       context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
     }else if(title === 'personal' || title === 'qnaList') {

@@ -711,11 +711,11 @@ export default (props) => {
 
   //회원가입 완료 버튼
   const signUp = () => {
-    /*if (CMID !== true && memType === 'p') {
+    if (CMID !== true && memType === 'p') {
       return context.action.alert({
         msg: '휴대폰 본인인증을 진행해주세요.'
       })
-    }*/
+    }
     validateNick()
     if(appInfo.showBirthForm) {
       validateBirth()
@@ -728,21 +728,21 @@ export default (props) => {
     validateTerm()
   }
 
-  const appInfoSetting = () => {
+  const appInfoSetting = async () => {
     const headerInfo = JSON.parse(Utility.getCookie("custom-header"));
     const os = headerInfo.os;
     const version = headerInfo.appVer;
     let showBirthForm = true;
+    const tempIosVersion = "1.6.1" // 이 버전 이상은 birthForm 을 감출려고 한다
 
-    const tempIosVersion = "1.6.1"
+    const successCallback = () => {
+      // IOS 심사 제출시 생년월일 폼이 보이면 안된다
+      if(os === 2) {
+        showBirthForm = false;
+      }
+    };
 
-    const hideFromStatus = !Utility.compareAppVersion(tempIosVersion);
-
-    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if(os === 2 && hideFromStatus) {
-      showBirthForm = false;
-    }
-
+    await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
     setAppInfo({ os, version, showBirthForm });
   };
 

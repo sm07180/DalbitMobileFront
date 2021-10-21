@@ -383,6 +383,13 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    const noServiceInfo = globalCtx.noServiceInfo;
+    if(globalCtx.selfAuth && noServiceInfo.americanAge >= noServiceInfo.limitAge && noServiceInfo.showPageYn === 'y') {
+      location.reload();
+    }
+  }, [globalCtx.selfAuth]);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ?
