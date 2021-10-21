@@ -172,15 +172,15 @@ export default (props) => {
       check: true,
       text: ''
     },
+    birth: {
+      check: true,
+      text: ''
+    },
     loginPwd: {
       check: true,
       text: ''
     },
     loginPwdCheck: {
-      check: true,
-      text: ''
-    },
-    birth: {
       check: true,
       text: ''
     },
@@ -504,6 +504,22 @@ export default (props) => {
     }
   }
 
+  //생년월일
+  const birthChange = (birth) => {
+    dispatch({name: 'birth', value: birth})
+  }
+  // const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
+  const validateBirth = () => {
+    if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
+    return setValidate({name: 'birth', check: true})
+    // const currentBirthYear = birth.slice(0, 4)
+    // if (currentBirthYear <= baseDateYear) {
+    //   return setValidate({name: 'birth', check: true})
+    // } else {
+    //   return setValidate({name: 'birth', check: false, text: '만 14세 이상만 가입 가능합니다.'})
+    // }
+  }
+
   //비밀번호
   const validatePwd = () => {
     const num = loginPwd.search(/[0-9]/g)
@@ -528,22 +544,6 @@ export default (props) => {
       return setValidate({name: 'loginPwdCheck', check: true})
     } else {
       return setValidate({name: 'loginPwdCheck', check: false, text: '비밀번호를 다시 확인해주세요.'})
-    }
-  }
-
-  //생년월일
-  const birthChange = (birth) => {
-    dispatch({name: 'birth', value: birth})
-  }
-  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
-  const validateBirth = () => {
-    if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
-
-    const currentBirthYear = birth.slice(0, 4)
-    if (currentBirthYear <= baseDateYear) {
-      return setValidate({name: 'birth', check: true})
-    } else {
-      return setValidate({name: 'birth', check: false, text: '만 14세 이상만 가입 가능합니다.'})
     }
   }
 
