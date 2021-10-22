@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
+import moment from 'moment'
 //import Lottie from 'react-lottie'
 import LottiePlayer from 'lottie-web'
 import styled from 'styled-components'
@@ -160,6 +161,11 @@ export default (props) => {
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
 
+  const rHours = nowTime.getHours()
+  const rMinutes = nowTime.getMinutes()
+  const rSeconds = nowTime.getSeconds()
+
+  const realTime = `${rHours}${rMinutes}${rSeconds}`
   const round = [
     {
       title: '1회차',
@@ -170,8 +176,8 @@ export default (props) => {
     {
       title: '2회차',
       start: '100000',
-      end: '185959', // 185959
-      timer: '165959' // 165959
+      end: '175959', // 185959
+      timer: '145959' // 165959
     },
     {
       title: '3회차',
@@ -181,6 +187,44 @@ export default (props) => {
     }
   ]
 
+  const [hours, setHours] = useState()
+  const [minutes, setMinutes] = useState()
+  const [seconds, setSeconds] = useState()
+
+  const CountDownTimer = useCallback(
+    (props) => {
+      useEffect(() => {
+        const interval = setInterval(() => {
+          const {timeTillDate, timeFormat} = props
+          const then = moment(timeTillDate, timeFormat).format('HHmmss')
+          const now = moment().format('HHmmss')
+          const hours = then.substring(0, 2) - now.substring(0, 2)
+          const minutes = then.substring(2, 4) - now.substring(2, 4)
+          const seconds = then.substring(4, 6) - now.substring(4, 6)
+
+          setHours(hours)
+          setMinutes(minutes)
+          setSeconds(seconds)
+          console.log(hours, minutes, seconds)
+          console.log(realTime)
+        }, 1000)
+        return () => {
+          if (interval) {
+            clearInterval(interval)
+          }
+        }
+      }, [hours, minutes, seconds])
+      return (
+        <div className="realTimer-wrap">
+          <span className="realTime">
+            마감까지 {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} :{' '}
+            {seconds < 10 ? `0${seconds}` : seconds} 남았습니다.
+          </span>
+        </div>
+      )
+    },
+    [hours, minutes, seconds]
+  )
   //loading
   // const [loading, setLoading] = useState(false)
 
@@ -917,7 +961,13 @@ export default (props) => {
         </span> */}
                 <img className="rank-arrow" src={RankNew} />
 
-                <div className="txt">실시간 랭킹</div>
+                <div className="txt">
+                  실시간 랭킹
+                  {round.map((data, index) => {
+                    const {title, start, end} = data
+                    return <React.Fragment key={index}>{start <= realTime && end >= realTime && `(${title})`}</React.Fragment>
+                  })}
+                </div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
@@ -949,7 +999,16 @@ export default (props) => {
                 </button>
               </div>
             </div>
-            <CountDown timeTillDate="16:00:00" timeFormat="hh:mm:ss" />
+            {round.map((data, idx) => {
+              const {timer, start, end} = data
+              return (
+                <React.Fragment key={idx}>
+                  {start <= realTime && end >= realTime && timer <= realTime && (
+                    <CountDownTimer timeTillDate={end} timeFormat="hhmmss" />
+                  )}
+                </React.Fragment>
+              )
+            })}
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>

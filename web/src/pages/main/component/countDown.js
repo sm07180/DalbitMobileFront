@@ -10,17 +10,16 @@ export default (props) => {
   useEffect(() => {
     const interval = setInterval(() => {
       const {timeTillDate, timeFormat} = props
-      const then = moment(timeTillDate, timeFormat)
-      const now = moment()
-      const countdown = moment(then - now)
-      const hours = countdown.hours()
-      const minutes = countdown.minutes()
-      const seconds = countdown.seconds()
+      const then = moment(timeTillDate, timeFormat).format('HHmmss')
+      const now = moment().format('HHmmss')
+      const hours = then.substring(0, 2) - now.substring(0, 2)
+      const minutes = then.substring(2, 4) - now.substring(2, 4)
+      const seconds = then.substring(4, 6) - now.substring(4, 6)
 
       setHours(hours)
       setMinutes(minutes)
       setSeconds(seconds)
-      console.log(now, then, countdown, seconds)
+      console.log(hours, minutes, seconds)
     }, 1000)
     return () => {
       if (interval) {
@@ -32,7 +31,8 @@ export default (props) => {
   return (
     <div className="realTimer-wrap">
       <span className="realTime">
-        마감까지 {hours} : {minutes} : {seconds} 남았습니다.
+        마감까지 {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} :{' '}
+        {seconds < 10 ? `0${seconds}` : seconds} 남았습니다.
       </span>
     </div>
   )
