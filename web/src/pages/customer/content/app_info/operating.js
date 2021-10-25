@@ -549,7 +549,7 @@ export default function Operating() {
       <p>
         부칙
         <br />
-        9. 본 운영정책 Ver 1.8는 yyyy년 mm월 dd일부터 적용됩니다.
+        9. 본 운영정책 Ver 1.8는 2021년 10월 25일부터 적용됩니다.
         <br />
         8. 본 운영정책 Ver 1.7는 2021년 08월 03일부터 적용됩니다.
         <br />
