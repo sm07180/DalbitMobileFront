@@ -352,19 +352,21 @@ export default class Utility {
     return windowBottom >= docHeight - diff
   }
 
-  /* 타겟버전이 nowVersion(현재 다운로드된 앱 버전) 보다 높으면 successCallback 아니면 failCallback */
+  /* 타겟버전이 nowVersion(현재 다운로드된 앱 버전) 이상이면 successCallback 아니면 failCallback */
   static compareAppVersion = async (targetVersion, successCallback, failCallback) => {
     const res = await Api.verisionCheck();
     const nowVersion = res.data.nowVersion;
 
     const versionArr = nowVersion.split('.');
-    const firstPos = Number(versionArr[0]);
-    const secondPos = Number(versionArr[1]);
-    const thirdPos = Number(versionArr[2]);
+    const firstPos = parseInt(versionArr[0]);
+    const secondPos = parseInt(versionArr[1]);
+    const thirdPos = parseInt(versionArr[2]);
     const targetVerArr = targetVersion.split('.');
-    const targetFirstPos = Number(targetVerArr[0]);
-    const targetSecondPos = Number(targetVerArr[1]);
-    const targetThirdPos = Number(targetVerArr[2]);
+    const targetFirstPos = parseInt(targetVerArr[0]);
+    const targetSecondPos = parseInt(targetVerArr[1]);
+    const targetThirdPos = parseInt(targetVerArr[2]);
+
+    alert("다운로드 된 버전 : " + nowVersion);
 
     if (firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos) {
       if (typeof successCallback === 'function') successCallback();
