@@ -352,7 +352,7 @@ export default class Utility {
     return windowBottom >= docHeight - diff
   }
 
-  /* 타겟버전이 nowVersion(현재 다운로드된 앱 버전) 이상이면 successCallback 아니면 failCallback */
+  /* nowVersion(현재 다운로드된 앱 버전)이 타겟버전 이상이면 successCallback 아니면 failCallback */
   static compareAppVersion = async (targetVersion, successCallback, failCallback) => {
     const res = await Api.verisionCheck();
     const nowVersion = res.data.nowVersion;
@@ -366,13 +366,14 @@ export default class Utility {
     const targetSecondPos = parseInt(targetVerArr[1]);
     const targetThirdPos = parseInt(targetVerArr[2]);
 
-    alert("다운로드 된 버전 : " + nowVersion);
-
-    if (firstPos <= targetFirstPos && secondPos <= targetSecondPos && thirdPos <= targetThirdPos) {
+    if(firstPos > targetFirstPos ||
+      (firstPos === targetFirstPos && secondPos > targetSecondPos) ||
+      (firstPos === targetFirstPos && secondPos === targetSecondPos && thirdPos >= targetThirdPos)
+    ) {
       if (typeof successCallback === 'function') successCallback();
+    }else {
+      if (typeof failCallback === 'function') failCallback();
     }
-
-    if (typeof failCallback === 'function') failCallback();
   }
 
   static birthToAmericanAge = (birth) => {
