@@ -165,7 +165,9 @@ export default (props) => {
   const rMinutes = nowTime.getMinutes()
   const rSeconds = nowTime.getSeconds()
 
-  const realTime = `${rHours}${rMinutes}${rSeconds}`
+  const realTime = `${rHours < 10 ? `0${rHours}` : rHours}${rMinutes < 10 ? `0${rMinutes}` : rMinutes}${
+    rSeconds < 10 ? `0${rSeconds}` : rSeconds
+  }`
   const round = [
     {
       title: '1회차',
@@ -190,6 +192,7 @@ export default (props) => {
   const [hours, setHours] = useState()
   const [minutes, setMinutes] = useState()
   const [seconds, setSeconds] = useState()
+  console.log(realTime, round[0].end)
 
   const CountDownTimer = useCallback(
     (props) => {
@@ -205,8 +208,7 @@ export default (props) => {
           setHours(hours)
           setMinutes(minutes)
           setSeconds(seconds)
-          console.log(hours, minutes, seconds)
-          console.log(realTime)
+          console.log(realTime, timeTillDate)
         }, 1000)
         return () => {
           if (interval) {
