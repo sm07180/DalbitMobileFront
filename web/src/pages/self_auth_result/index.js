@@ -114,7 +114,6 @@ export default (props) => {
   }
 
   const createResult = () => {
-    alert('createResult : ' + authState);
     switch (authState) {
       case 0: //초기상태
         return <></>
