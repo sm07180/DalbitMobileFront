@@ -33,7 +33,7 @@ export default () => {
           context.action.confirm({
             msg: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
-              authReq('6', context.authRef, context);
+              authReq('9', context.authRef, context);
             }
           })
         }else {
