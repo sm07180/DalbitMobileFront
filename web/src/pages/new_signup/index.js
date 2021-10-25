@@ -725,16 +725,18 @@ export default (props) => {
     const os = headerInfo.os;
     const version = headerInfo.appVer;
     let showBirthForm = true;
-    const tempIosVersion = "1.6.1" // 이 버전 이상은 birthForm 을 감출려고 한다
 
-    const successCallback = () => {
-      // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-      if(os === 2) {
-        showBirthForm = false;
+    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
+    if(os === 2) {
+      const appReviewYn = 'y';
+      if(appReviewYn === 'y') {
+        const tempIosVersion = "1.6.2" // 이 버전 이상은 birthForm 을 감출려고 한다
+        const successCallback = () => showBirthForm = false;
+
+        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
       }
-    };
+    }
 
-    await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
     setAppInfo({ os, version, showBirthForm });
   };
 

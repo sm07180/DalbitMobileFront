@@ -74,6 +74,8 @@ export default (props) => {
       let changeUrl = url.split('DAL').join('/')
       changeUrl = changeUrl.split('BIT').join('_')
       return history.push(changeUrl)
+    } else if (returntype === 'ageAuth') {
+      setAuthState(9)
     } else {
       checkAuth()
     }
@@ -112,6 +114,7 @@ export default (props) => {
   }
 
   const createResult = () => {
+    alert('createResult : ' + authState);
     switch (authState) {
       case 0: //초기상태
         return <></>
@@ -219,6 +222,20 @@ export default (props) => {
                   }
                 }}>
                 확인
+              </button>
+            </div>
+          </div>
+        )
+      case 9:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다.
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => window.location.href = '/'}
+              >확인
               </button>
             </div>
           </div>
