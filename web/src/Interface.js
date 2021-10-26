@@ -44,7 +44,6 @@ export default () => {
       }
     });
   };
-  const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
 
   // 플레이가공
   const clipPlay = async (clipNum) => {
@@ -235,6 +234,8 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
+    const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
+
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
