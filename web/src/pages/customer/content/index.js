@@ -110,12 +110,15 @@ const Index = (props) => {
   }
 
   useEffect(() => {
-    if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
-    }else if(title === 'personal' || title === 'qnaList') {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
-    }else {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+    const isOldUser = context.profile.memJoinYn === 'o';
+    if(!isOldUser) {
+      if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
+      }else if(title === 'personal' || title === 'qnaList') {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
+      }else {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+      }
     }
   }, [title]);
 
