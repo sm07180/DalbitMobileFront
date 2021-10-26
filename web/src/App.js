@@ -359,7 +359,7 @@ const App = () => {
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false});
       }
     }
-  }, [globalCtx.profile, location.pathname, globalCtx.token.isLogin]);
+  }, [globalCtx.profile, location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
