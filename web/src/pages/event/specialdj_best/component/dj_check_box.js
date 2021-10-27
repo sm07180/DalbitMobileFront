@@ -39,8 +39,6 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
     if (conditionData.hasOwnProperty('conditionList')) conditionCheck()
   }, [conditionData])
 
-  console.log(activeState)
-
   //---------------------
   useEffect(() => {
     if (infoData !== '') {

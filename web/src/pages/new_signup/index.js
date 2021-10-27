@@ -8,6 +8,7 @@ import moment from 'moment'
 import Utility from 'components/lib/utility'
 import {COLOR_MAIN} from 'context/color'
 import {PHOTO_SERVER} from 'context/config'
+import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
@@ -17,8 +18,6 @@ import DatePicker from './content/datepicker'
 //static
 import IcoProfile from './static/ico-profil.svg'
 import IcoCamera from './static/ico-camera.svg'
-import IcoFemale from './static/female.svg'
-import IcoMale from './static/male.svg'
 import IcoCheckOn from './static/checkbox_on.svg'
 import IcoCheckOff from './static/checkbox_off.svg'
 import IcoArrow from './static/arrow.svg'
@@ -28,6 +27,7 @@ let setTime = 300
 
 export default (props) => {
   const context = useContext(Context)
+  const customHeader = JSON.parse(Api.customHeader)
   const {webview, redirect} = qs.parse(location.search)
 
   const memIdRef = useRef(null)
@@ -39,6 +39,12 @@ export default (props) => {
     auth: false
   })
   const [termOpen, setTermOpen] = useState(true)
+
+  const [appInfo, setAppInfo] = useState({
+    os: "",
+    version: "",
+    showBirthForm: false,
+  });
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -124,7 +130,7 @@ export default (props) => {
     loginPwd: '',
     loginPwdCheck: '',
     nickNm: '',
-    // birth: null,
+    birth: null,
     // gender: 'n',
     profImgUrl: '',
     memType: 'p',
@@ -166,6 +172,10 @@ export default (props) => {
       check: true,
       text: ''
     },
+    birth: {
+      check: true,
+      text: ''
+    },
     loginPwd: {
       check: true,
       text: ''
@@ -174,10 +184,6 @@ export default (props) => {
       check: true,
       text: ''
     },
-    // birth: {
-    //   check: true,
-    //   text: ''
-    // },
     term: {
       check: true,
       text: ''
@@ -189,7 +195,7 @@ export default (props) => {
     loginPwd,
     loginPwdCheck,
     nickNm,
-    // birth,
+    birth,
     // gender,
     profImgUrl,
     memType,
@@ -498,6 +504,22 @@ export default (props) => {
     }
   }
 
+  //생년월일
+  const birthChange = (birth) => {
+    dispatch({name: 'birth', value: birth})
+  }
+  // const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
+  const validateBirth = () => {
+    if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
+    return setValidate({name: 'birth', check: true})
+    // const currentBirthYear = birth.slice(0, 4)
+    // if (currentBirthYear <= baseDateYear) {
+    //   return setValidate({name: 'birth', check: true})
+    // } else {
+    //   return setValidate({name: 'birth', check: false, text: '만 14세 이상만 가입 가능합니다.'})
+    // }
+  }
+
   //비밀번호
   const validatePwd = () => {
     const num = loginPwd.search(/[0-9]/g)
@@ -522,22 +544,6 @@ export default (props) => {
       return setValidate({name: 'loginPwdCheck', check: true})
     } else {
       return setValidate({name: 'loginPwdCheck', check: false, text: '비밀번호를 다시 확인해주세요.'})
-    }
-  }
-
-  //생년월일
-  const birthChange = (birth) => {
-    dispatch({name: 'birth', value: birth})
-  }
-  const baseDateYear = moment(new Date()).format('YYYYMMDD').slice(0, 4) - 11
-  const validateBirth = () => {
-    if (birth === null) return setValidate({name: 'birth', check: false, text: '생년월일을 선택해주세요.'})
-
-    const currentBirthYear = birth.slice(0, 4)
-    if (currentBirthYear <= baseDateYear) {
-      return setValidate({name: 'birth', check: true})
-    } else {
-      return setValidate({name: 'birth', check: false, text: '12세 이상만 가입 가능합니다.'})
     }
   }
 
@@ -616,6 +622,8 @@ export default (props) => {
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
+      const AGE_LIMIT = context.noServiceInfo.limitAge;
+
       context.action.updateToken(loginInfo.data)
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
@@ -632,7 +640,6 @@ export default (props) => {
           return (window.location.href = decodedUrl)
         }
         context.action.updateProfile(profileInfo.data)
-        // return props.history.push('/')
         return props.history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
@@ -653,7 +660,7 @@ export default (props) => {
         memPwd: changes.loginPwd,
         // gender: changes.gender,
         nickNm: changes.nickNm,
-        // birth: changes.birth,
+        birth: changes.birth,
         term1: changes.term1,
         term2: changes.term2,
         term3: changes.term3,
@@ -678,9 +685,9 @@ export default (props) => {
           //애드브릭스 이벤트 전달
           if (data.adbrixData != '' && data.adbrixData != 'init') {
             Hybrid('adbrixEvent', data.adbrixData)
-            if (__NODE_ENV === 'dev') {
-              alert(JSON.stringify(data.adbrixData))
-            }
+            // if (__NODE_ENV === 'dev') {
+              // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
+            // }
           }
           loginFetch()
         },
@@ -702,13 +709,37 @@ export default (props) => {
       })
     }
     validateNick()
+    if(appInfo.showBirthForm) {
+      validateBirth()
+    }
     if (memType === 'p') {
       validatePwd()
       validatePwdCheck()
     }
-    // validateBirth()
+
     validateTerm()
   }
+
+  const appInfoSetting = async () => {
+    const headerInfo = JSON.parse(Utility.getCookie("custom-header"));
+    const os = headerInfo.os;
+    const version = headerInfo.appVer;
+    let showBirthForm = true;
+
+    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
+    if(os === 2) {
+      const appReviewYn = 'y';
+      if(appReviewYn === 'y') {
+        const tempIosVersion = "1.6.2" // 이 버전 이상은 birthForm 을 감출려고 한다
+        const successCallback = () => showBirthForm = false;
+
+        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
+      }
+    }
+
+    setAppInfo({ os, version, showBirthForm });
+  };
+
   useEffect(() => {
     const validateKey = Object.keys(validate)
     //ios 이슈 수정
@@ -727,6 +758,8 @@ export default (props) => {
   }, [validate.nickNm])
 
   useEffect(() => {
+    appInfoSetting();
+
     //Facebook,Firebase 이벤트 호출
     try {
       fbq('track', 'Lead')
@@ -815,7 +848,7 @@ export default (props) => {
               type="text"
               id="nickNm"
               name="nickNm"
-              placeholder="2~20자 한글/영문/숫자"
+              placeholder="최대 20자까지 입력"
               autoComplete="off"
               maxLength={20}
               value={nickNm}
@@ -824,6 +857,20 @@ export default (props) => {
           </div>
           {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
         </InputItem>
+
+        {/* 생년월일 ---------------------------------------------------------- */}
+        {appInfo.showBirthForm &&
+          <>
+            <InputItem button={false} validate={validate.birth.check}>
+              <div className="layer">
+                <label htmlFor="birth">생년월일</label>
+                <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
+              </div>
+              {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
+            </InputItem>
+            <AgeGuidance />
+          </>
+        }
 
         {/* 비밀번호 ---------------------------------------------------------- */}
         {memType === 'p' && (
@@ -863,16 +910,6 @@ export default (props) => {
           </>
         )}
 
-        {/* 생년월일 ---------------------------------------------------------- */}
-        {/* <InputItem button={false} validate={validate.birth.check}>
-          <div className="layer">
-            <label htmlFor="birth">생년월일</label>
-            <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
-          </div>
-          {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
-        </InputItem>
-        <p className="birthText">허위정보로 가입 시 이용을 제한할 수 있습니다.</p> */}
-
         {/* 성별 ---------------------------------------------------------- */}
         {/* <GenderInput gender={gender}>
           <button className="male" value="m" onClick={genderBtnHandle}>
@@ -896,6 +933,15 @@ export default (props) => {
   )
 }
 
+const AgeGuidance = () => {
+  return (
+    <p className="birthText">
+      * 달빛라이브는 만 14세 이상부터 이용 가능한 서비스입니다.
+      <br />* 만 14세 미만일 경우 서비스 이용이 제한됩니다.
+    </p>
+  )
+}
+
 const Content = styled.section`
   padding: 12px 16px;
   background: #eeeeee;
@@ -914,17 +960,7 @@ const Content = styled.section`
     padding: 3px 0 5px 5px;
     font-size: 12px;
     letter-spacing: -0.3px;
-    color: #e84d6f;
-    &::before {
-      display: inline-block;
-      margin-top: 7px;
-      vertical-align: top;
-      margin-right: 4px;
-      width: 2px;
-      height: 2px;
-      background: #e84d6f;
-      content: '';
-    }
+    color: #632beb;
   }
 `
 
@@ -937,6 +973,10 @@ const InputItem = styled.div`
     height: 58px;
     letter-spacing: -0.5px;
     z-index: 1;
+    &.birth {
+      height: auto;
+      padding: 2px 0;
+    }
 
     label {
       display: block;

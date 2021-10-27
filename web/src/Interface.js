@@ -4,7 +4,7 @@
  * @notice
  * @code document.dispatchEvent(new CustomEvent('native-goLogin', {detail:{info:'someDate'}}))
  */
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import _ from 'lodash'
 //context
@@ -19,12 +19,32 @@ import {backFunc} from 'components/lib/back_func'
 import Utility from 'components/lib/utility'
 
 import qs from 'query-string'
+import {authReq} from "pages/self_auth";
 
 export default () => {
   //context
   const context = useContext(Context)
   //history
   let history = useHistory()
+  const doAuthCheck = () => {
+    Api.certificationCheck().then(res => {
+      if(res.message === "SUCCESS") {
+        if(res.data === 'y') {
+          context.action.confirm({
+            msg: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
+            callback: () => {
+              authReq('9', context.authRef, context);
+            }
+          })
+        }else {
+          context.action.alert({
+            msg: '본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.'
+          })
+        }
+      }
+    });
+  };
+
   // 플레이가공
   const clipPlay = async (clipNum) => {
     const {result, data, message, code} = await Api.postClipPlay({
@@ -214,6 +234,8 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
+    const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
+
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
         let pushMsg = event.detail
@@ -415,30 +437,40 @@ export default () => {
         socialLogin(event.detail, 'facebook');
         break;
       case 'native-room-make':
-        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-          if (Utility.getCookie('clip-player-info')) {
-            context.action.confirm({
-              msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
-              callback: () => {
-                clipExit(context)
+        if (!context.token.isLogin) return (window.location.href = '/login');
+        if(authState) {
+          if(agePassYn === 'y') {
+            if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+              if (Utility.getCookie('clip-player-info')) {
+                context.action.confirm({
+                  msg: `현재 재생 중인 클립이 있습니다.\n방송을 생성하시겠습니까?`,
+                  callback: () => {
+                    clipExit(context)
+                    RoomMake(context)
+                  }
+                })
+              } else {
                 RoomMake(context)
               }
-            })
-          } else {
-            RoomMake(context)
-          }
-        } else {
-          context.action.confirm({
-            msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
-            callback: () => {
-              sessionStorage.removeItem('room_no')
-              Utility.setCookie('listen_room_no', null)
-              Hybrid('ExitRoom', '')
-              context.action.updatePlayer(false)
-              RoomMake(context)
+            } else {
+              context.action.confirm({
+                msg: `현재 청취 중인 방송방이 있습니다.\n방송을 생성하시겠습니까?`,
+                callback: () => {
+                  sessionStorage.removeItem('room_no')
+                  Utility.setCookie('listen_room_no', null)
+                  Hybrid('ExitRoom', '')
+                  context.action.updatePlayer(false)
+                  RoomMake(context)
+                }
+              })
             }
-          })
+          }else {
+            doAuthCheck();
+          }
+        }else {
+          doAuthCheck();
         }
+
         break
       case 'react-debug': //-------------------------GNB 열기
         const detail = event.detail
@@ -496,59 +528,77 @@ export default () => {
         if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
-        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-          if (Utility.getCookie('clip-player-info')) {
-            context.action.confirm({
-              msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
-              callback: () => {
-                clipExit(context)
+        if(authState) {
+          if(agePassYn === 'y') {
+            if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+              if (Utility.getCookie('clip-player-info')) {
+                context.action.confirm({
+                  msg: `현재 재생 중인 클립이 있습니다.\n클립을 업로드하시겠습니까?`,
+                  callback: () => {
+                    clipExit(context)
+                    Hybrid('ClipUploadJoin')
+                  }
+                })
+              } else {
                 Hybrid('ClipUploadJoin')
               }
-            })
-          } else {
-            Hybrid('ClipUploadJoin')
-          }
-        } else {
-          context.action.confirm({
-            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 업로드하시겠습니까?`,
-            callback: () => {
-              sessionStorage.removeItem('room_no')
-              Utility.setCookie('listen_room_no', null)
-              Hybrid('ExitRoom', '')
-              context.action.updatePlayer(false)
-              Hybrid('ClipUploadJoin')
+            } else {
+              context.action.confirm({
+                msg: `현재 청취 중인 방송방이 있습니다.\n클립을 업로드하시겠습니까?`,
+                callback: () => {
+                  sessionStorage.removeItem('room_no')
+                  Utility.setCookie('listen_room_no', null)
+                  Hybrid('ExitRoom', '')
+                  context.action.updatePlayer(false)
+                  Hybrid('ClipUploadJoin')
+                }
+              })
             }
-          })
+          }else {
+            doAuthCheck();
+          }
+        }else {
+          doAuthCheck();
         }
+
         break
       case 'native-clip-record': //-----------------------네이티브 딤 메뉴에서 클립 녹음 클릭 시
         if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
-        if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
-          if (Utility.getCookie('clip-player-info')) {
-            context.action.confirm({
-              msg: `현재 재생 중인 클립이 있습니다.\n클립을 녹음하시겠습니까?`,
-              callback: () => {
-                clipExit(context)
+        if(authState) {
+          if(agePassYn === 'y') {
+            if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
+              if (Utility.getCookie('clip-player-info')) {
+                context.action.confirm({
+                  msg: `현재 재생 중인 클립이 있습니다.\n클립을 녹음하시겠습니까?`,
+                  callback: () => {
+                    clipExit(context)
+                    Hybrid('EnterClipRecord')
+                  }
+                })
+              } else {
                 Hybrid('EnterClipRecord')
               }
-            })
-          } else {
-            Hybrid('EnterClipRecord')
-          }
-        } else {
-          context.action.confirm({
-            msg: `현재 청취 중인 방송방이 있습니다.\n클립을 녹음하시겠습니까?`,
-            callback: () => {
-              sessionStorage.removeItem('room_no')
-              Utility.setCookie('listen_room_no', null)
-              Hybrid('ExitRoom', '')
-              context.action.updatePlayer(false)
-              Hybrid('EnterClipRecord')
+            } else {
+              context.action.confirm({
+                msg: `현재 청취 중인 방송방이 있습니다.\n클립을 녹음하시겠습니까?`,
+                callback: () => {
+                  sessionStorage.removeItem('room_no')
+                  Utility.setCookie('listen_room_no', null)
+                  Hybrid('ExitRoom', '')
+                  context.action.updatePlayer(false)
+                  Hybrid('EnterClipRecord')
+                }
+              })
             }
-          })
+          }else {
+            doAuthCheck();
+          }
+        }else {
+          doAuthCheck();
         }
+
         break
       case 'native-close-layer-popup': //---------- 안드로이드 물리 백키로 새창 닫았을때
         sessionStorage.removeItem('webview')

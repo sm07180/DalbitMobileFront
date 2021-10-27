@@ -318,7 +318,7 @@ export default function Operating() {
               <strong>*유저는 제재 조치에 대해 이의가 있을 경우 이의 신청을 할 수 있습니다.</strong>
             </li>
             <li>
-              <span>나)</span>12세 미만 회원 규제항목: 임시정지
+              <span>나)</span>만 14세 미만 회원 규제항목: 임시정지
               <ol className="dpeth3">
                 <li>
                   <span>-</span>연령제한으로 인한 한시적 제재조치
@@ -410,7 +410,7 @@ export default function Operating() {
         <strong>
           *영구 정지의 경우 유저의 계정과 IP, 소유하신 모바일 디바이스 아이디를 차단하여 영구적으로 제재 받게 됩니다.
         </strong>
-        <strong>*임시 정지의 경우 유저의 계정이 11세까지 제재를 받게 되고 12세가 되는 해 자동 해제됩니다.</strong>
+        <strong>*임시 정지의 경우 유저의 계정이 만 14세가 되는 날부터 본인인증을 통해 수동 해제 가능합니다.</strong>
         <strong>*경고와 정지의 경우 3차 적발 후 30일 이내 재 적발 시 3차와 동일한 제재가 적용됩니다.</strong>
         <strong>*회사의 판단에 따라 예외적으로 조정될 수 있습니다.</strong>
       </p>
@@ -438,7 +438,7 @@ export default function Operating() {
           </tr>
           <tr>
             <td className="bold">임시정지</td>
-            <td colSpan={3}>(11세까지의 회원) 모든 서비스 이용 불가</td>
+            <td colSpan={3}>(만 14세 미만 회원) 모든 서비스 이용 불가</td>
           </tr>
           <tr>
             <td className="bold" rowSpan={2}>
@@ -541,13 +541,17 @@ export default function Operating() {
           </tr>
           <tr>
             <td>임시정지</td>
-            <td colSpan={3}>12세 미만 회원 임시 정지 (12세가 되는 1월 1일 00시 자동 해제)</td>
+            <td colSpan={3}>만 14세 미만 회원 임시 정지 (만 14세가 되는 날 본인인증으로 수동 해제)</td>
           </tr>
         </tbody>
       </table>
       <br />
       <p>
         부칙
+        <br />
+        9. 본 운영정책 Ver 1.8는 2021년 10월 25일부터 적용됩니다.
+        <br />
+        8. 본 운영정책 Ver 1.7는 2021년 08월 03일부터 적용됩니다.
         <br />
         7. 본 운영정책 Ver 1.6는 2021년 02월 08일부터 적용됩니다.
         <br />

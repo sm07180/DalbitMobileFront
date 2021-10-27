@@ -4,7 +4,6 @@ import {authReq} from 'pages/self_auth'
 import {Context} from 'context'
 
 const ProfileSelfCheck = (props) => {
-  const {formTag} = props
   const globalCtx = useContext(Context)
   const [authState, setAuthState] = useState(false)
   const [phone, setPhone] = useState('')
@@ -35,9 +34,7 @@ const ProfileSelfCheck = (props) => {
         <button
           type="button"
           className="requestBtn"
-          onClick={() => {
-            authReq('5', formTag, globalCtx)
-          }}>
+          onClick={() => authReq('5', globalCtx.authRef, globalCtx)}>
           본인인증
         </button>
       </div>

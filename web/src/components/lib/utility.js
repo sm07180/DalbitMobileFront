@@ -7,6 +7,8 @@
 //---------------------------------------------------------------------
 import {isHybrid, Hybrid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
+import Api from "context/api";
+import moment from "moment";
 
 export default class Utility {
   /**
@@ -348,5 +350,41 @@ export default class Utility {
     const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
     const windowBottom = windowHeight + window.pageYOffset
     return windowBottom >= docHeight - diff
+  }
+
+  /* nowVersion(현재 다운로드된 앱 버전)이 타겟버전 이상이면 successCallback 아니면 failCallback */
+  static compareAppVersion = async (targetVersion, successCallback, failCallback) => {
+    const res = await Api.verisionCheck();
+    const nowVersion = res.data.nowVersion;
+
+    const versionArr = nowVersion.split('.');
+    const firstPos = parseInt(versionArr[0]);
+    const secondPos = parseInt(versionArr[1]);
+    const thirdPos = parseInt(versionArr[2]);
+    const targetVerArr = targetVersion.split('.');
+    const targetFirstPos = parseInt(targetVerArr[0]);
+    const targetSecondPos = parseInt(targetVerArr[1]);
+    const targetThirdPos = parseInt(targetVerArr[2]);
+
+    if(firstPos > targetFirstPos ||
+      (firstPos === targetFirstPos && secondPos > targetSecondPos) ||
+      (firstPos === targetFirstPos && secondPos === targetSecondPos && thirdPos >= targetThirdPos)
+    ) {
+      if (typeof successCallback === 'function') successCallback();
+    }else {
+      if (typeof failCallback === 'function') failCallback();
+    }
+  }
+
+  static birthToAmericanAge = (birth) => {
+    // age: YYYYMMDD
+    const birthYear = parseInt(birth.substring(0, 4));
+    const birthMonthAndDay = parseInt(birth.substring(4));
+    const nowYear = parseInt(moment().format('YYYY'));
+    const nowMonthAndDay = parseInt(moment().format('MMDD'));
+    const yearDiff = nowYear - birthYear;
+    const monthAndDayDiff = nowMonthAndDay - birthMonthAndDay;
+
+    return monthAndDayDiff >= 0 ? yearDiff : yearDiff -1;
   }
 }

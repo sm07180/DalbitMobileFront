@@ -56,6 +56,7 @@ const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
+const NoService = React.lazy(() => import('pages/no_service'))
 
 const Clip = React.lazy(() => import('pages/clip'))
 const ClipReply = React.lazy(() => import('pages/clip_reply'))
@@ -118,6 +119,7 @@ export default () => {
         <Route exact path="/attend_event/:title" component={AttendEvent} />
         <Route exact path="/event_rising" component={EventRising} />
         <Route exact path="/service" component={Service} />
+        <Route exact path="/no_service" component={NoService} />
         <Route exact path="/error" component={ErrorPage} />
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
