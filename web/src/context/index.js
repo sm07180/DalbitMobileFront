@@ -135,6 +135,13 @@ const GlobalProvider = (props) => {
     passed: false,
   });
 
+  // 앱 버전 체크 (회원가입 생년월일)
+  const [appInfo, setAppInfo] = useState({
+    os: "",
+    version: "",
+    showBirthForm: false,
+  });
+
   const action = {
     updateState: (obj) => {
       setState((state) => ({...state, ...obj}))
@@ -516,6 +523,9 @@ const GlobalProvider = (props) => {
     updateNoServiceInfo: (obj) => {
       setNoServiceInfo(obj);
     },
+    updateAppInfo: (obj) => {
+      setAppInfo(obj);
+    },
   }
   //---------------------------------------------------------------------
   const value = {
@@ -599,6 +609,7 @@ const GlobalProvider = (props) => {
     bestDjData,
     authRef,
     noServiceInfo,
+    appInfo,
   }
   return <Provider value={value}>{props.children}</Provider>
 }
