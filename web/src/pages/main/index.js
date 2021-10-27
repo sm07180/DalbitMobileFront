@@ -178,8 +178,8 @@ export default (props) => {
     {
       title: '2회차',
       start: '100000',
-      end: '175959', // 185959
-      timer: '145959' // 165959
+      end: '185959', // 185959
+      timer: '165959' // 165959
     },
     {
       title: '3회차',
@@ -219,8 +219,12 @@ export default (props) => {
       return (
         <div className="realTimer-wrap">
           <span className="realTime">
-            마감까지 {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} :{' '}
-            {seconds < 10 ? `0${seconds}` : seconds} 남았습니다.
+            마감까지{' '}
+            <span>
+              {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} :{' '}
+              {seconds < 10 ? `0${seconds}` : seconds}
+            </span>{' '}
+            남았습니다.
           </span>
         </div>
       )
