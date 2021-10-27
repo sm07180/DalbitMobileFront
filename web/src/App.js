@@ -351,7 +351,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if(globalCtx.token) {
+    if(ready && globalCtx.token) {
       if(globalCtx.token.isLogin) {
         if(globalCtx.noServiceInfo.passed) return;
         ageCheck();
@@ -359,7 +359,7 @@ const App = () => {
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false});
       }
     }
-  }, [globalCtx.profile, location.pathname]);
+  }, [globalCtx.profile, location.pathname, globalCtx.token]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
