@@ -22,7 +22,6 @@ import LiveList from './component/livelist.js'
 import RankList from './component/rankList.js'
 import BannerList from './component/bannerList.js'
 import StarList from './component/starList.js'
-import CountDown from './component/countDown.js'
 import LayerPopup from './component/layer_popup.js'
 import LayerPopupWrap from './component/layer_popup_wrap.js'
 import LayerPopupCommon from './component/layer_popup_common.js'
@@ -32,6 +31,7 @@ import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
+import RankingTimer from './component/rankingTimer';
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -63,6 +63,28 @@ let storeUrl = ''
 let updateState
 
 let loading = false
+
+const round = [
+  {
+    title: '1회차',
+    start: '000000',
+    end: '095959',
+    timer: '075959'
+  },
+  {
+    title: '2회차',
+    start: '100000',
+    end: '185959', // 185959
+    timer: '165959' // 165959
+  },
+  {
+    title: '3회차',
+    start: '190000',
+    end: '235959',
+    timer: '215959'
+  }
+]
+
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -161,76 +183,11 @@ export default (props) => {
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
 
-  const rHours = nowTime.getHours()
-  const rMinutes = nowTime.getMinutes()
-  const rSeconds = nowTime.getSeconds()
-
-  const realTime = `${rHours < 10 ? `0${rHours}` : rHours}${rMinutes < 10 ? `0${rMinutes}` : rMinutes}${
-    rSeconds < 10 ? `0${rSeconds}` : rSeconds
-  }`
-  const round = [
-    {
-      title: '1회차',
-      start: '000000',
-      end: '095959',
-      timer: '075959'
-    },
-    {
-      title: '2회차',
-      start: '100000',
-      end: '185959', // 185959
-      timer: '165959' // 165959
-    },
-    {
-      title: '3회차',
-      start: '190000',
-      end: '235959',
-      timer: '215959'
-    }
-  ]
-
-  const [hours, setHours] = useState()
-  const [minutes, setMinutes] = useState()
-  const [seconds, setSeconds] = useState()
-  console.log(realTime, round[0].end)
-
-  const CountDownTimer = useCallback(
-    (props) => {
-      useEffect(() => {
-        const interval = setInterval(() => {
-          const {timeTillDate, timeFormat} = props
-          const then = moment(timeTillDate, timeFormat).format('HHmmss')
-          const now = moment().format('HHmmss')
-          const hours = then.substring(0, 2) - now.substring(0, 2)
-          const minutes = then.substring(2, 4) - now.substring(2, 4)
-          const seconds = then.substring(4, 6) - now.substring(4, 6)
-
-          setHours(hours)
-          setMinutes(minutes)
-          setSeconds(seconds)
-          console.log(realTime, timeTillDate)
-        }, 1000)
-        return () => {
-          if (interval) {
-            clearInterval(interval)
-          }
-        }
-      }, [hours, minutes, seconds])
-      return (
-        <div className="realTimer-wrap">
-          <span className="realTime">
-            마감까지{' '}
-            <span>
-              {hours < 10 ? `0${hours}` : hours} : {minutes < 10 ? `0${minutes}` : minutes} :{' '}
-              {seconds < 10 ? `0${seconds}` : seconds}
-            </span>{' '}
-            남았습니다.
-          </span>
-        </div>
-      )
-    },
-    [hours, minutes, seconds]
-  )
+  const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
+    roundIndex: -1,
+    showTimeYn: 'n',
+    timerForm: '',
+  });
   //loading
   // const [loading, setLoading] = useState(false)
 
@@ -969,10 +926,7 @@ export default (props) => {
 
                 <div className="txt">
                   실시간 랭킹
-                  {round.map((data, index) => {
-                    const {title, start, end} = data
-                    return <React.Fragment key={index}>{start <= realTime && end >= realTime && `(${title})`}</React.Fragment>
-                  })}
+                  {rankingCountDownInfo.roundIndex >= 0 && `(${round[rankingCountDownInfo.roundIndex].title})`}
                 </div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -1005,16 +959,11 @@ export default (props) => {
                 </button>
               </div>
             </div>
-            {round.map((data, idx) => {
-              const {timer, start, end} = data
-              return (
-                <React.Fragment key={idx}>
-                  {start <= realTime && end >= realTime && timer <= realTime && (
-                    <CountDownTimer timeTillDate={end} timeFormat="hhmmss" />
-                  )}
-                </React.Fragment>
-              )
-            })}
+
+            { <RankingTimer rankingCountDownInfo={rankingCountDownInfo} setRankingCountDownInfo={setRankingCountDownInfo}
+                            round={round}
+            /> }
+
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
             </div>
