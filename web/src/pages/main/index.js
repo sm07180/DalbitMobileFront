@@ -11,6 +11,7 @@ import {Context} from 'context'
 import {RankContext} from 'context/rank_ctx'
 import {StoreLink} from 'context/link'
 import qs from 'query-string'
+import moment from 'moment'
 //import Lottie from 'react-lottie'
 import LottiePlayer from 'lottie-web'
 import styled from 'styled-components'
@@ -30,6 +31,7 @@ import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
+import RankingTimer from './component/rankingTimer';
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -61,6 +63,28 @@ let storeUrl = ''
 let updateState
 
 let loading = false
+
+const round = [
+  {
+    title: "1회차",
+    start: "000000",
+    end: "100000",
+    timer: "080000",
+  },
+  {
+    title: "2회차",
+    start: "100000",
+    end: "190000",
+    timer: "170000",
+  },
+  {
+    title: "3회차",
+    start: "190000",
+    end: "235959",
+    timer: "220000",
+  },
+];
+
 export default (props) => {
   // reference
   const MainRef = useRef()
@@ -159,6 +183,11 @@ export default (props) => {
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
 
+  const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
+    roundIndex: -1,
+    showTimeYn: 'n',
+    timerForm: '',
+  });
   //loading
   // const [loading, setLoading] = useState(false)
 
@@ -883,18 +912,22 @@ export default (props) => {
             <div className="title-wrap">
               <button className="title" onClick={() => goRank()}>
                 {/* <Lottie
-                  options={{
-                    loop: true,
-                    autoPlay: true,
-                    animationData: CrownLottie
-                  }}
-                  width={40}
-                /> */}
+          options={{
+            loop: true,
+            autoPlay: true,
+            animationData: CrownLottie
+          }}
+          width={40}
+        /> */}
                 {/* <span className="ico-lottie">
-                  <img src={CrownIcon} alt="실시간랭킹" width={40} />
-                </span> */}
+          <img src={CrownIcon} alt="실시간랭킹" width={40} />
+        </span> */}
                 <img className="rank-arrow" src={RankNew} />
-                <div className="txt">실시간 랭킹</div>
+
+                <div className="txt">
+                  실시간 랭킹
+                  {rankingCountDownInfo.roundIndex >= 0 && `(${round[rankingCountDownInfo.roundIndex].title})`}
+                </div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
               <div className="right-side">
@@ -926,6 +959,10 @@ export default (props) => {
                 </button>
               </div>
             </div>
+
+            { <RankingTimer rankingCountDownInfo={rankingCountDownInfo} setRankingCountDownInfo={setRankingCountDownInfo}
+                            round={round}
+            /> }
 
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
