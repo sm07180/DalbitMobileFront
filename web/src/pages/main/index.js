@@ -31,7 +31,7 @@ import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
-import RankingTimer from './component/rankingTimer';
+import RankingTimer from './component/rankingTimer'
 
 import Swiper from 'react-id-swiper'
 import {useHistory} from 'react-router-dom'
@@ -66,24 +66,24 @@ let loading = false
 
 const round = [
   {
-    title: "1회차",
-    start: "000000",
-    end: "100000",
-    timer: "080000",
+    title: '1회차',
+    start: '000000',
+    end: '100000',
+    timer: '080000'
   },
   {
-    title: "2회차",
-    start: "100000",
-    end: "190000",
-    timer: "170000",
+    title: '2회차',
+    start: '100000',
+    end: '190000',
+    timer: '170000'
   },
   {
-    title: "3회차",
-    start: "190000",
-    end: "235959",
-    timer: "220000",
-  },
-];
+    title: '3회차',
+    start: '190000',
+    end: '235959',
+    timer: '220000'
+  }
+]
 
 export default (props) => {
   // reference
@@ -186,8 +186,8 @@ export default (props) => {
   const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
     roundIndex: -1,
     showTimeYn: 'n',
-    timerForm: '',
-  });
+    timerForm: ''
+  })
   //loading
   // const [loading, setLoading] = useState(false)
 
@@ -926,7 +926,9 @@ export default (props) => {
 
                 <div className="txt">
                   실시간 랭킹
-                  {rankingCountDownInfo.roundIndex >= 0 && `(${round[rankingCountDownInfo.roundIndex].title})`}
+                  {rankType === 'dj' &&
+                    rankingCountDownInfo.roundIndex >= 0 &&
+                    `(${round[rankingCountDownInfo.roundIndex].title})`}
                 </div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -960,9 +962,13 @@ export default (props) => {
               </div>
             </div>
 
-            { <RankingTimer rankingCountDownInfo={rankingCountDownInfo} setRankingCountDownInfo={setRankingCountDownInfo}
-                            round={round}
-            /> }
+            {rankType === 'dj' && (
+              <RankingTimer
+                rankingCountDownInfo={rankingCountDownInfo}
+                setRankingCountDownInfo={setRankingCountDownInfo}
+                round={round}
+              />
+            )}
 
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />
