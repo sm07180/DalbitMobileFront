@@ -14,7 +14,7 @@ import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
 import phoneLogo from './static/phone_logo.svg'
 import logoW from './static/logo_w_no_symbol.svg'
-import Utility from "components/lib/utility";
+import Utility from 'components/lib/utility'
 
 export default function login_sns({props}) {
   const history = useHistory()
@@ -27,7 +27,7 @@ export default function login_sns({props}) {
   const [moreSection, setMoreSection] = useState(false)
 
   const customHeader = JSON.parse(Api.customHeader)
-  const context = useContext(Context);
+  const context = useContext(Context)
 
   const fetchSocialData = async (vendor) => {
     if (vendor === 'apple') {
@@ -42,8 +42,9 @@ export default function login_sns({props}) {
       //TODO: 새창로그인 여부 추가
       //Hybrid('openGoogleSignIn', {'webview' : webview})
       Hybrid('openGoogleSignIn')
-    } else if(vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) { // 안드로이드 페이스북 로그인
-      const successCallback = () => Hybrid('openFacebookLogin');
+    } else if (vendor === 'facebook' && customHeader['os'] === OS_TYPE['Android']) {
+      // 안드로이드 페이스북 로그인
+      const successCallback = () => Hybrid('openFacebookLogin')
       const failCallback = () => {
         context.action.confirm({
           buttonText: {right: '업데이트'},
@@ -51,7 +52,7 @@ export default function login_sns({props}) {
           callback: async () => Hybrid('goToPlayStore')
         })
       }
-      await Utility.compareAppVersion('1.6.0', successCallback, failCallback);
+      await Utility.compareAppVersion('1.6.0', successCallback, failCallback)
     } else {
       const res = await fetch(`${__SOCIAL_URL}/${vendor}?target=mobile&pop=${webview}`, {
         method: 'get',
@@ -161,7 +162,16 @@ export default function login_sns({props}) {
               </button>
             )}
 
-            {appleAlert && <div className="apple-alert">OS를 최신 버전으로 설치해주세요.</div>}
+            {appleAlert && (
+              <div className="apple-alert">
+                OS를 최신 버전으로 업데이트해 주세요.
+                <br />
+                만약 OS업데이트 후에도 로그인이 안 될 경우
+                <br />
+                앱을 재설치하신 뒤 휴대폰을 재부팅한 후<br />
+                로그인을 시도해 주세요.
+              </div>
+            )}
           </div>
         )}
 
