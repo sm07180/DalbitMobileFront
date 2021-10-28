@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import moment from "moment";
 
 export default (props) => {
   const { rankingCountDownInfo, setRankingCountDownInfo, round } = props;
   const [rankingInterval, setRankingInterval] = useState(null);
 
-  const toTime = (num) => {
+  const toTime = useCallback((num) => {
     try{
       let myNum = parseInt(num, 10);
       let hours   = Math.floor(myNum / 3600);
@@ -19,9 +19,9 @@ export default (props) => {
     }catch (e) {
       return '00:00:00';
     }
-  }
+  }, []);
 
-  const timerInfo = () => {
+  const timerInfo = useCallback(() => {
     const nowTime = moment().format('HHmmss');
     const nowTimeToNumber = parseInt(nowTime);
     let roundIndex = 0;
@@ -37,17 +37,17 @@ export default (props) => {
     }
 
     return { nowTime, roundIndex, showTimeYn };
-  }
+  }, []);
 
-  const timerInit = () => {
+  const timerInit = useCallback(() => {
     const {nowTime, roundIndex, showTimeYn} = timerInfo();
     const remainTime = timeDiff(round[roundIndex].end, nowTime);
     const timerForm = toTime(remainTime);
 
     setRankingCountDownInfo({...rankingCountDownInfo, roundIndex, showTimeYn, timerForm });
-  }
+  }, []);
 
-  const timeDiff = (obj1, obj2) => {
+  const timeDiff = useCallback((obj1, obj2) => {
     const obj1Hour = obj1.substring(0, 2);
     const obj1Min = obj1.substring(2, 4);
     const obj1Sec = obj1.substring(4, 6);
@@ -60,7 +60,7 @@ export default (props) => {
     const sec = obj1Sec - obj2Sec
 
     return hour + min + sec;
-  }
+  }, []);
 
   useEffect(() => {
     timerInit();

@@ -66,24 +66,24 @@ let loading = false
 
 const round = [
   {
-    title: '1회차',
-    start: '000000',
-    end: '095959',
-    timer: '075959'
+    title: "1회차",
+    start: "000000",
+    end: "100000",
+    timer: "080000",
   },
   {
-    title: '2회차',
-    start: '100000',
-    end: '185959', // 185959
-    timer: '165959' // 165959
+    title: "2회차",
+    start: "100000",
+    end: "190000",
+    timer: "170000",
   },
   {
-    title: '3회차',
-    start: '190000',
-    end: '235959',
-    timer: '215959'
-  }
-]
+    title: "3회차",
+    start: "190000",
+    end: "235959",
+    timer: "220000",
+  },
+];
 
 export default (props) => {
   // reference
