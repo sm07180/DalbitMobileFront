@@ -40,12 +40,6 @@ export default (props) => {
   })
   const [termOpen, setTermOpen] = useState(true)
 
-  const [appInfo, setAppInfo] = useState({
-    os: "",
-    version: "",
-    showBirthForm: false,
-  });
-
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
 
@@ -709,7 +703,7 @@ export default (props) => {
       })
     }
     validateNick()
-    if(appInfo.showBirthForm) {
+    if(context.appInfo.showBirthForm) {
       validateBirth()
     }
     if (memType === 'p') {
@@ -719,26 +713,6 @@ export default (props) => {
 
     validateTerm()
   }
-
-  const appInfoSetting = async () => {
-    const headerInfo = JSON.parse(Utility.getCookie("custom-header"));
-    const os = headerInfo.os;
-    const version = headerInfo.appVer;
-    let showBirthForm = true;
-
-    // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if(os === 2) {
-      const appReviewYn = 'y';
-      if(appReviewYn === 'y') {
-        const tempIosVersion = "1.6.2" // 이 버전 이상은 birthForm 을 감출려고 한다
-        const successCallback = () => showBirthForm = false;
-
-        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
-      }
-    }
-
-    setAppInfo({ os, version, showBirthForm });
-  };
 
   useEffect(() => {
     const validateKey = Object.keys(validate)
@@ -758,8 +732,6 @@ export default (props) => {
   }, [validate.nickNm])
 
   useEffect(() => {
-    appInfoSetting();
-
     //Facebook,Firebase 이벤트 호출
     try {
       fbq('track', 'Lead')
@@ -859,7 +831,7 @@ export default (props) => {
         </InputItem>
 
         {/* 생년월일 ---------------------------------------------------------- */}
-        {appInfo.showBirthForm &&
+        {context.appInfo.showBirthForm &&
           <>
             <InputItem button={false} validate={validate.birth.check}>
               <div className="layer">

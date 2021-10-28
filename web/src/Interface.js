@@ -992,7 +992,7 @@ export default () => {
       document.removeEventListener('native-clip-upload', update)
       document.removeEventListener('native-clip-record', update)
     }
-  }, [context.token, authState])
+  }, [context.token, authState, context.noServiceInfo.americanAge])
 
   useEffect(() => {
     checkSelfAuth()
