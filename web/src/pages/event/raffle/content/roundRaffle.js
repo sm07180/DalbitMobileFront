@@ -12,7 +12,7 @@ export default () => {
 
   return (
     <div id="round">
-      <div className="section-1">
+      <section className="section-1">
         <div className="title">
           1<img src="https://image.dalbitlive.com/event/raffle/round-title-1.png" alt="회차" />
         </div>
@@ -22,8 +22,8 @@ export default () => {
           className="txt"
           alt="매회 경품에 응모한 분들 중 추첨을 통해 선물을 드립니다."
         />
-      </div>
-      <div className="section-2">
+      </section>
+      <section className="section-2">
         <div className="title">
           1<img src="https://image.dalbitlive.com/event/raffle/round-title-2.png" alt="" />
           <span>000</span>개
@@ -57,10 +57,10 @@ export default () => {
           <div className="td">3</div>
         </div>
         <img src="https://image.dalbitlive.com/event/raffle/alert.png" className="alert" alt="" />
-      </div>
-      <div className="section-3">
+      </section>
+      <section className="section-3">
         <img src="https://image.dalbitlive.com/event/raffle/round-section-3.png" alt="" />
-      </div>
+      </section>
       <footer>
         <div className="fTop">
           <img src="https://image.dalbitlive.com/event/raffle/bottomTitle2.png" height="16px" alt="유의사항" />

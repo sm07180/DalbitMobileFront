@@ -4,13 +4,14 @@ import Api from 'context/api'
 
 import PopupNotice from './popupNotice'
 
-export default () => {
+export default (props) => {
+  const {whoIs} = props
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupDetails, setPopupDetails] = useState(false)
 
   return (
     <div id="total">
-      <div className="section-1">
+      <section className="section-1">
         <img src="https://image.dalbitlive.com/event/raffle/secImg-1.png" alt="" />
         <div className="ticket">
           <div className="number">
@@ -45,8 +46,8 @@ export default () => {
             <img src="https://image.dalbitlive.com/event/raffle/secBtn-2.png" alt="추첨 이벤트 보기" />
           </button>
         </div>
-      </div>
-      <div className="section-2">
+      </section>
+      <section className="section-2">
         <div className="list">
           <div className="top">
             <img src="" alt="" />
@@ -62,13 +63,13 @@ export default () => {
             </button>
           </div>
         </div>
-      </div>
-      <div className="section-3">
+      </section>
+      <section className="section-3">
         <img
           src="https://image.dalbitlive.com/event/raffle/bottomImg.png"
           alt="가장 많이 응모한 단 1명에게 특정 DJ에게 스페셜DJ 가산점 10점을 부여할 수 있는 특별한 권한을 드립니다."
         />
-      </div>
+      </section>
       <footer>
         <div className="fTop">
           <img src="https://image.dalbitlive.com/event/raffle/bottomTitle.png" height="16px" alt="꼭 읽어보세요" />
@@ -93,7 +94,7 @@ export default () => {
           <li>가장 많이 응모한 1명에게는 5월 4일 개별 연락 드리겠습니다.</li>
         </ul>
       </footer>
-      {popupNotice === true && <PopupNotice setPopupNotice={setPopupNotice} />}
+      {popupNotice === true && <PopupNotice setPopupNotice={setPopupNotice} whoIs={whoIs} />}
       {popupDetails === true && <PopupDetails setPopupDetails={setPopupDetails} />}
     </div>
   )

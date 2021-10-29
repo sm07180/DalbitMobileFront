@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
 export default (props) => {
-  const {setPopupNotice} = props
+  const {setPopupNotice, whoIs} = props
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'

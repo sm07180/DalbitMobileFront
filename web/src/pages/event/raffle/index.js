@@ -15,7 +15,7 @@ export default () => {
   const [tabFixed, setTabFixed] = useState(false)
   const [scrollOn, setScrollOn] = useState(false)
   const [whoIs, setWhoIs] = useState('dj') // listener, dj
-  const [tabContent, setTabContent] = useState('round') // total, round
+  const [tabContent, setTabContent] = useState('total') // total, round
 
   const goBack = () => {
     history.goBack()
@@ -90,7 +90,11 @@ export default () => {
           </div>
         </div>
       )}
-      {whoIs === 'listener' ? <>{tabContent === 'total' ? <TotalRaffle /> : <RoundRaffle />}</> : <RaffleDj />}
+      {whoIs === 'listener' ? (
+        <>{tabContent === 'total' ? <TotalRaffle whoIs={whoIs} /> : <RoundRaffle />}</>
+      ) : (
+        <RaffleDj whoIs={whoIs} />
+      )}
     </div>
   )
 }
