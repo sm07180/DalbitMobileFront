@@ -28,6 +28,7 @@ import Award from './award'
 import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
+import Raffle from './raffle'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
@@ -91,6 +92,8 @@ export default () => {
         return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
+      case 'raffle':
+        return <Raffle />
       case 'recommend_dj':
         return <RecommendDj />
       case 'recommend_dj2':
