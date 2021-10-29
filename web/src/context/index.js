@@ -48,6 +48,7 @@ const GlobalProvider = (props) => {
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
   const [mypageReport, setMypageReport] = useState(false)
+  const [userReport, setUserReport] = useState({state: false, targetMemNo: "", targetNickName: ""})
   const [mypageFanCnt, setMypageFanCnt] = useState('')
   const [close, setClose] = useState(false)
   const [closeFanCnt, setCloseFanCnt] = useState(false)
@@ -329,6 +330,9 @@ const GlobalProvider = (props) => {
     updateMypageReport: (bool) => {
       setMypageReport(bool)
     },
+    updateUserReport: (bool) => {
+      setUserReport(bool)
+    },
     updateMypageFanCnt: (str) => {
       setMypageFanCnt(str)
     },
@@ -552,6 +556,7 @@ const GlobalProvider = (props) => {
     logoChange,
     player,
     mypageReport,
+    userReport,
     mypageFanCnt,
     close,
     closeFanCnt,
