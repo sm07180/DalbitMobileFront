@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
 
-import Api from 'context/api'
-
 import PopupNotice from './popupNotice'
+import PopupDetails from './popupDetails'
 
 export default (props) => {
   const {whoIs} = props
@@ -86,13 +85,13 @@ export default (props) => {
             alt="경품 자세히"
           />
         </div>
-        <ul>
+        {/* <ul>
           <li>경품별로 상위 00명까지 가장 많이 응모한 회원에게 해당 경품이 지급됩니다.</li>
           <li>중복 당첨은 불가하며 1계정에 1개의 경품만 당첨됩니다.</li>
           <li>내 응모 현황 외 경품별 응모 현황은 공개되지 않습니다.</li>
           <li>공지사항을 통해 당첨자를 발표합니다.</li>
           <li>가장 많이 응모한 1명에게는 5월 4일 개별 연락 드리겠습니다.</li>
-        </ul>
+        </ul> */}
       </footer>
       {popupNotice === true && <PopupNotice setPopupNotice={setPopupNotice} whoIs={whoIs} />}
       {popupDetails === true && <PopupDetails setPopupDetails={setPopupDetails} />}

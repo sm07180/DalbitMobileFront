@@ -28,29 +28,41 @@ export default (props) => {
         <div className="title">
           <img src="https://image.dalbitlive.com/event/raffle/popTitle-1.png" alt="이벤트 유의사항" />
         </div>
+        <div className="subTitle">
+          <img src="https://image.dalbitlive.com/event/raffle/popupSubTitle-1.png" alt="# 이벤트1." />
+        </div>
         <ul>
+          <li>받은 선물수는 이벤트1의 5% 추가 적립 개수는 제외한 순수 선물수만으로 집계됩니다.</li>
+          <li>별 추가 지급은 방송 종료 시각 기준으로 적립</li>
           <li>
-            경품 숫자별로 가장 많이 응모한 상위 회원들에 지급 <br />※ 응모횟수가 같은 경우 총 응모횟수가 많은 순, 레벨 순 선정
-          </li>
-          <li>공지사항을 통해 발표 (※경품별 응모횟수는 공개 안 함)</li>
-          <li>중복당첨 불가, 1계정에 1개의 경품만 당첨</li>
-          <li>가장 많이 응모한 분께는 개별 연락 드리겠습니다. </li>
-          <li className="red">
-            청취시간은 1개의 방에서만 인정, 동시자리는 인정 안함.
+            추가 적립은 평일 최대 150개(휴일 300개)만 적립됩니다. <br />
+            예로 3201개의 경우 5%인 160개가 아닌 150개만
             <br />
-            (※ 리포트와는 다르게 집계될 수 있습니다)
+            지급됩니다. 휴일에는 300개까지 추가 지급됩니다.
           </li>
+        </ul>
+        <div className="subTitle">
+          <img src="https://image.dalbitlive.com/event/raffle/popupSubTitle-3.png" alt="# 이벤트3." />
+        </div>
+        <ul>
+          <li>조건(방송시간,선물수)을 충족하면 해당 선물을 드립니다.</li>
           <li>제세공과금(22%)은 당첨자 부담입니다.</li>
+          <li className="red">
+            최소 방송시간을 채우지 못하면 선물액의 50%만 제세
+            <br />
+            공과금 제외 후 현금 지급됩니다. (※ 달100개 상품 제외)
+          </li>
           <li>
-            경품 대신 현금으로 받고 싶은 경우, <br />
+            경품 대신 현금으로 받고 싶은 경우,
+            <br />
             메일(<em>help@dalbitlive.com</em>) 로 당첨자 서류와 함께
             <br />
-            [현금 입금 희망] 내용을 남겨주세요. 이벤트 서류 확인 후<br />
+            [현금 입금 희망] 내용을 남겨주세요. 이벤트 서류 확인 후 <br />
             제세공과금(22%)을 제외한 금액이 입금됩니다.
           </li>
           <li>
             경품 대신 달로 받고 싶은 경우,1:1문의에 남겨주세요. 
-            <br />이 경우에는 제세공과금이 발생하지 않습니다.{' '}
+            <br />이 경우에는 제세공과금이 발생하지 않습니다.
           </li>
           <li>당첨자 관련 서류는 문자를 통해 별도 안내 드립니다.</li>
         </ul>

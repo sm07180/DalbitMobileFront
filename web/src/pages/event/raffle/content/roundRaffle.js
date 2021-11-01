@@ -1,15 +1,6 @@
 import React, {useState} from 'react'
 
-import {Context} from 'context'
-import {useHistory} from 'react-router-dom'
-import Api from 'context/api'
-
-import PopupNotice from './popupNotice'
-
 export default () => {
-  const [popupNotice, setPopupNotice] = useState(false)
-  const [popupDetails, setPopupDetails] = useState(false)
-
   return (
     <div id="round">
       <section className="section-1">
@@ -43,17 +34,25 @@ export default () => {
           <div className="th">
             <img src="https://image.dalbitlive.com/event/raffle/table-3.png" alt="당첨 확률" />
           </div>
-          <div className="td">1</div>
-          <div className="td">2</div>
+          <div className="td">경품1</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/td-lack.png" alt="횟수 부족" />
+          </div>
           <div className="td">3</div>
-          <div className="td">1</div>
-          <div className="td">2</div>
+          <div className="td">경품2</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
+          </div>
           <div className="td">3</div>
-          <div className="td">1</div>
-          <div className="td">2</div>
+          <div className="td">경품3</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
+          </div>
           <div className="td">3</div>
-          <div className="td">1</div>
-          <div className="td">2</div>
+          <div className="td">경품4</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
+          </div>
           <div className="td">3</div>
         </div>
         <img src="https://image.dalbitlive.com/event/raffle/alert.png" className="alert" alt="" />
