@@ -260,7 +260,7 @@
           padding-left: 10px;
           font-size: 13px;
           font-weight: 600;
-          letter-spacing: -0.5;
+          letter-spacing: -0.5px;
           color: rgba(255, 255, 255, 0.6);
           &:before {
             position: absolute;
@@ -405,150 +405,8 @@
           padding-left: 10px;
           font-size: 13px;
           font-weight: 600;
-          letter-spacing: -0.5;
+          letter-spacing: -0.5px;
           color: #e0e0e0;
-          &:before {
-            position: absolute;
-            top: 0;
-            left: 0;
-            content: '-';
-            display: block;
-          }
-        }
-      }
-    }
-  }
-
-  #raffleDj {
-    background: linear-gradient(to bottom, #ffee01 50%, #00abe3 51%, #00abe3 100%);
-    > section {
-      position: relative;
-      > img {
-        width: 100%;
-      }
-    }
-    .section-1 {
-      margin-top: -30px;
-    }
-    .section-2 {
-      .time {
-        position: absolute;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        width: calc(100% - 48px);
-        height: 41px;
-        margin: 0 24px 14px;
-        padding: 0 3px 0 10px;
-        background-color: #000000;
-        border-radius: 15px;
-        white-space: nowrap;
-        font-size: 18px;
-        font-weight: bold;
-        color: #ffffff;
-        box-sizing: border-box;
-        > img {
-          width: 67.5px;
-          height: 20px;
-          margin-right: 4px;
-        }
-        .inline {
-          display: inline-block;
-          height: 41px;
-          line-height: 40px;
-        }
-        button {
-          flex: none;
-          margin-left: auto;
-          img {
-            width: 107px;
-            height: 35px;
-          }
-        }
-      }
-    }
-    .section-3 {
-      .gift {
-        position: absolute;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: calc(100% - 48px);
-        height: 64px;
-        margin: 0 24px 38px;
-        padding: 0 16px 0 12px;
-        background-color: #ffffff;
-        border: 2px solid #000000;
-        border-radius: 15px;
-        box-sizing: border-box;
-        > img {
-          width: 67.5px;
-          height: 20px;
-          margin-right: 4px;
-        }
-        .giftList {
-          display: flex;
-          align-items: center;
-          width: 100%;
-          font-size: 14px;
-          font-weight: bold;
-          img {
-            height: 18px;
-          }
-          span {
-            margin-left: auto;
-            letter-spacing: -1px;
-          }
-          &:first-child {
-            span {
-              color: #ff4874;
-            }
-          }
-          &:last-child {
-            span {
-              color: #4879ff;
-            }
-          }
-        }
-        button {
-          flex: none;
-          margin-left: auto;
-          img {
-            width: 107px;
-            height: 35px;
-          }
-        }
-      }
-    }
-    .section-4 {
-      margin-top: -30px;
-    }
-    footer {
-      padding: 16px 12px 40px 16px;
-      background-color: #424242;
-      .fTop {
-        display: flex;
-        align-items: center;
-        img {
-          &:first-child {
-            margin-right: auto;
-          }
-          &:last-child {
-            margin-left: 3px;
-          }
-        }
-      }
-      ul {
-        margin-top: 12px;
-        li {
-          position: relative;
-          margin-bottom: 4px;
-          padding-left: 10px;
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: -0.5;
-          color: rgba(255, 255, 255, 0.6);
           &:before {
             position: absolute;
             top: 0;

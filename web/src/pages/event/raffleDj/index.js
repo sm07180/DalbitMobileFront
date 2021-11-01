@@ -81,18 +81,12 @@ export default () => {
         <footer>
           <div className="fTop">
             <img src="https://image.dalbitlive.com/event/raffle/bottomTitle.png" height="16px" alt="꼭 읽어보세요" />
-            <img
-              src="https://image.dalbitlive.com/event/raffle/bottomBtn-1.png"
-              height="22px"
-              onClick={() => setPopupNotice(true)}
-              alt="유의사항"
-            />
-            <img
-              src="https://image.dalbitlive.com/event/raffle/bottomBtn-2.png"
-              height="22px"
-              onClick={() => setPopupDetails(true)}
-              alt="경품 자세히"
-            />
+            <button onClick={() => setPopupNotice(true)}>
+              <img src="https://image.dalbitlive.com/event/raffle/bottomBtn-1.png" height="22px" alt="유의사항" />
+            </button>
+            <button onClick={() => setPopupDetails(true)}>
+              <img src="https://image.dalbitlive.com/event/raffle/bottomBtn-2.png" height="22px" alt="경품 자세히" />
+            </button>
           </div>
         </footer>
         {popupNotice === true && <PopupNotice setPopupNotice={setPopupNotice} />}

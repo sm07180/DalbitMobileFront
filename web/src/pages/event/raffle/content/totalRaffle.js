@@ -3,8 +3,7 @@ import React, {useState} from 'react'
 import PopupNotice from './popupNotice'
 import PopupDetails from './popupDetails'
 
-export default (props) => {
-  const {whoIs} = props
+export default () => {
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupDetails, setPopupDetails] = useState(false)
 
@@ -51,7 +50,7 @@ export default (props) => {
           <div className="top">
             <img src="" alt="" />
             <span className="status">
-              내 응모 현황 : <span>0,000회</span>
+              내 응모 횟수 : <span>0,000회</span>
             </span>
           </div>
           <div className="bottom">
@@ -72,18 +71,12 @@ export default (props) => {
       <footer>
         <div className="fTop">
           <img src="https://image.dalbitlive.com/event/raffle/bottomTitle.png" height="16px" alt="꼭 읽어보세요" />
-          <img
-            src="https://image.dalbitlive.com/event/raffle/bottomBtn-1.png"
-            height="22px"
-            onClick={() => setPopupNotice(true)}
-            alt="유의사항"
-          />
-          <img
-            src="https://image.dalbitlive.com/event/raffle/bottomBtn-2.png"
-            height="22px"
-            onClick={() => setPopupDetails(true)}
-            alt="경품 자세히"
-          />
+          <button onClick={() => setPopupNotice(true)}>
+            <img src="https://image.dalbitlive.com/event/raffle/bottomBtn-1.png" height="22px" alt="유의사항" />
+          </button>
+          <button onClick={() => setPopupDetails(true)}>
+            <img src="https://image.dalbitlive.com/event/raffle/bottomBtn-2.png" height="22px" alt="경품 자세히" />
+          </button>
         </div>
         {/* <ul>
           <li>경품별로 상위 00명까지 가장 많이 응모한 회원에게 해당 경품이 지급됩니다.</li>
