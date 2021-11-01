@@ -392,7 +392,7 @@ const App = () => {
     }, 1000)
 
     globalCtx.action.updateAuthRef(authRef); // 본인인증 ref
-    updateAppInfo();
+    // updateAppInfo();
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {
