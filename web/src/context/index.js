@@ -140,7 +140,7 @@ const GlobalProvider = (props) => {
   const [appInfo, setAppInfo] = useState({
     os: "",
     version: "",
-    showBirthForm: false,
+    showBirthForm: true,
   });
 
   const action = {
