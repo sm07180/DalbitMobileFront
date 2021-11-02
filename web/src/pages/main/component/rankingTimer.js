@@ -2,8 +2,13 @@ import React, {useCallback, useEffect, useState} from 'react';
 import moment from "moment";
 
 export default (props) => {
-  const { rankingCountDownInfo, setRankingCountDownInfo, round } = props;
+  const { round, setRoundTitle } = props;
   const [rankingInterval, setRankingInterval] = useState(null);
+  const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
+    roundIndex: -1,
+    showTimeYn: 'n',
+    timerForm: ''
+  })
 
   const toTime = useCallback((num) => {
     try{
@@ -43,7 +48,9 @@ export default (props) => {
     const {nowTime, roundIndex, showTimeYn} = timerInfo();
     const remainTime = timeDiff(round[roundIndex].end, nowTime);
     const timerForm = toTime(remainTime);
+    const roundTitle = `(${round[roundIndex].title})`;
 
+    setRoundTitle(roundTitle);
     setRankingCountDownInfo({...rankingCountDownInfo, roundIndex, showTimeYn, timerForm });
   }, []);
 

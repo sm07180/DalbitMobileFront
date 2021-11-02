@@ -80,7 +80,7 @@ const round = [
   {
     title: '3회차',
     start: '190000',
-    end: '235959',
+    end: '240000',
     timer: '220000'
   }
 ]
@@ -125,6 +125,7 @@ export default (props) => {
 
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
+  const [roundTitle, setRoundTitle] = useState("");
 
   // const [livePage, setLivePage] = useState(1)
   // const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -183,11 +184,6 @@ export default (props) => {
   const [checker, setChecker] = useState(null)
   const [inputState, setInputState] = useState(false)
 
-  const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
-    roundIndex: -1,
-    showTimeYn: 'n',
-    timerForm: ''
-  })
   //loading
   // const [loading, setLoading] = useState(false)
 
@@ -926,9 +922,7 @@ export default (props) => {
 
                 <div className="txt">
                   실시간 랭킹
-                  {rankType === 'dj' &&
-                    rankingCountDownInfo.roundIndex >= 0 &&
-                    `(${round[rankingCountDownInfo.roundIndex].title})`}
+                  {rankType === 'dj' && roundTitle }
                 </div>
                 <img className="rank-arrow" src={RankArrow} />
               </button>
@@ -962,13 +956,7 @@ export default (props) => {
               </div>
             </div>
 
-            {rankType === 'dj' && (
-              <RankingTimer
-                rankingCountDownInfo={rankingCountDownInfo}
-                setRankingCountDownInfo={setRankingCountDownInfo}
-                round={round}
-              />
-            )}
+            { rankType === 'dj' && <RankingTimer round={round} setRoundTitle={setRoundTitle} /> }
 
             <div className="content-wrap ranking">
               <RankList rankType={rankType} djRank={initData.djRank} fanRank={initData.fanRank} />

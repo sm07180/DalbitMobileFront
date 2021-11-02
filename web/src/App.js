@@ -185,34 +185,10 @@ const App = () => {
           })
           if (myProfile.result === 'success') {
             const data = myProfile.data;
-            const americanAge = Utility.birthToAmericanAge(data.birth);
-            const ageCheckFunc = () => {
-              if(americanAge < AGE_LIMIT) {
-                globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "y", americanAge, passed: false});
-              }else {
-                globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n", americanAge, passed: true});
-              }
-            };
-
-            if(data.memJoinYn === 'o') {
-              const auth = async () => {
-                const authCheck = await Api.self_auth_check();
-                if(authCheck.result === 'fail') {
-                  globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: 'n', americanAge, passed: true});
-                }else {
-                  ageCheckFunc();
-                }
-              }
-              auth();
-            }else {
-              ageCheckFunc();
-            }
-
             globalCtx.action.updateProfile(data)
             globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
           } else {
             globalCtx.action.updateProfile(false)
-            globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
           }
         }
         const myInfoRes = async () => {
@@ -236,7 +212,6 @@ const App = () => {
         globalCtx.action.updateProfile(false)
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: "n"});
       }
 
       //모든 처리 완료
