@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 
 import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
@@ -11,6 +11,7 @@ import './style.scss'
 
 export default () => {
   const history = useHistory()
+  const TabMenuRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
   const [scrollOn, setScrollOn] = useState(false)
   const [tabContent, setTabContent] = useState('total') // total, round
@@ -18,30 +19,23 @@ export default () => {
   const goBack = () => {
     history.goBack()
   }
+
   useEffect(() => {
+    const TabMenuNode = TabMenuRef.current
+    const TabMenuTop = TabMenuNode.offsetTop
+
+    console.log(TabMenuTop)
     const windowScrollEvent = () => {
-      if (window.scrollY >= 1) {
-        setScrollOn(true)
-        console.log('scrollY: true')
+      if (window.scrollY >= TabMenuTop) {
+        setTabFixed(true)
       } else {
-        setScrollOn(false)
-        console.log('scrollY: false')
+        setTabFixed(false)
       }
     }
     window.addEventListener('scroll', windowScrollEvent)
-    console.log('event on')
     return () => {
       window.removeEventListener('scroll', windowScrollEvent)
-      console.log('return event on')
     }
-  }, [])
-
-  //   function tabMenuFixed() {
-  //         window.addEventListener('scroll', windowScrollEvent)
-  //   }
-
-  useEffect(() => {
-    console.log('rendering')
   }, [])
 
   return (
@@ -62,7 +56,7 @@ export default () => {
           <img src="https://image.dalbitlive.com/event/raffle/date-listener.png" alt="총 이벤트 기간 11/10 ~ 12/7, 발표 12/8" />
         </div>
       </div>
-      <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`}>
+      <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={TabMenuRef}>
         <div className="tabBtn">
           <button onClick={() => setTabContent('total')}>
             <img src="https://image.dalbitlive.com/event/raffle/tabBtn-1.png" alt="종합 경품 이벤트" />

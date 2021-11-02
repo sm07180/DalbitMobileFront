@@ -51,44 +51,6 @@
       }
     }
   }
-  .tabWrap {
-    position: relative;
-    z-index: 10;
-    height: 0;
-    .tabBtn {
-      position: absolute;
-      bottom: 0;
-      display: flex;
-      width: 100%;
-      button {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 48px;
-        line-height: 48px;
-        font-size: 20px;
-        font-weight: bold;
-        text-align: center;
-        letter-spacing: -1px;
-        &:first-child {
-          background: #ffffff;
-          color: #000000;
-          border-top-right-radius: 15px;
-        }
-        &:last-child {
-          background: #00abe3;
-          color: #ffffff;
-          border-top-left-radius: 15px;
-        }
-        img {
-          flex: none;
-          width: auto;
-          height: 22px;
-        }
-      }
-    }
-  }
 
   #raffleDj {
     background: linear-gradient(to bottom, #ffee01 50%, #00abe3 51%, #00abe3 100%);
