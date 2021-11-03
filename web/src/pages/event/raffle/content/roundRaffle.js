@@ -34,22 +34,30 @@ export default () => {
           <div className="th">
             <img src="https://image.dalbitlive.com/event/raffle/table-3.png" alt="당첨 확률" />
           </div>
-          <div className="td">경품1</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/round-item-1.png" alt="1,000달" />
+          </div>
           <div className="td">
             <img src="https://image.dalbitlive.com/event/raffle/td-lack.png" alt="횟수 부족" />
           </div>
           <div className="td">3</div>
-          <div className="td">경품2</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/round-item-2.png" alt="상품권" />
+          </div>
           <div className="td">
             <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
           </div>
           <div className="td">3</div>
-          <div className="td">경품3</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/round-item-3.png" alt="치킨" />
+          </div>
           <div className="td">
             <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
           </div>
           <div className="td">3</div>
-          <div className="td">경품4</div>
+          <div className="td">
+            <img src="https://image.dalbitlive.com/event/raffle/round-item-4.png" alt="커피" />
+          </div>
           <div className="td">
             <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
           </div>
