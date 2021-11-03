@@ -13,7 +13,6 @@ export default () => {
   const history = useHistory()
   const TabMenuRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [scrollOn, setScrollOn] = useState(false)
   const [tabContent, setTabContent] = useState('total') // total, round
 
   const goBack = () => {
@@ -24,7 +23,7 @@ export default () => {
     const TabMenuNode = TabMenuRef.current
     const TabMenuTop = TabMenuNode.offsetTop
 
-    console.log(TabMenuTop)
+    console.log(window.scrollY, TabMenuTop)
     const windowScrollEvent = () => {
       if (window.scrollY >= TabMenuTop) {
         setTabFixed(true)
@@ -66,7 +65,7 @@ export default () => {
           </button>
         </div>
       </div>
-      {tabContent === 'total' ? <TotalRaffle /> : <RoundRaffle />}
+      {tabContent === 'total' ? <TotalRaffle setTabContent={setTabContent} /> : <RoundRaffle />}
     </div>
   )
 }

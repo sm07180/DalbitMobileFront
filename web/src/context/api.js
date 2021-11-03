@@ -900,7 +900,7 @@ export default class API {
     })
   }
 
-/**
+  /**
    * @brief 매달 베스트DJ 소개페이지
    * @method "GET"
    * @create 박지호 2021.09.15
@@ -3298,11 +3298,26 @@ export default class API {
     })
   }
 
+  static getRaffleEventTotalInfo = async () => {
+    return await ajax({
+      url: '/event/raffle/fan/total/list',
+      method: 'GET'
+    })
+  }
+
+  static putEnterRaffleEvent = async (data) => {
+    return await ajax({
+      url: '/event/raffle/enter',
+      method: 'Put',
+      params: data
+    })
+  }
+
   // 1일 1회 본인인증 확인
   static certificationCheck = async () => {
     return await ajax({
       url: '/profile/certification/check',
-      method: 'GET',
+      method: 'GET'
     })
   }
 }
