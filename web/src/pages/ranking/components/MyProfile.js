@@ -18,7 +18,7 @@ import peopleWhite from '../static/people_w_s.svg'
 import timeWhite from '../static/time_w_s.svg'
 
 export default function MyProfile(props) {
-  const {myInfo, rankType, dateType, setMyInfo} = props
+  const {rankType, dateType, setMyInfo} = props
   const history = useHistory()
   const global_ctx = useContext(Context)
 

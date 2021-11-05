@@ -1,13 +1,17 @@
-import React, {useEffect, useState, useRef} from 'react'
+import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Utility, {addComma} from 'components/lib/utility'
+import Utility from 'components/lib/utility'
 
 import PopupNotice from './popupNotice'
 import PopupDetails from './popupDetails'
+import {Context} from "context";
+
+const RAFFLE_INPUT_VALUE_MAX_SIZE = 5; // 응모권 입력 자리수
 
 export default (props) => {
-  const {setTabContent} = props
+  const context = useContext(Context)
+  const {tabContent, setTabContent} = props
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupDetails, setPopupDetails] = useState(false)
   const [raffleTotalSummaryInfo, setRaffleTotalSummaryInfo] = useState({
@@ -19,36 +23,61 @@ export default (props) => {
 
   const history = useHistory()
   const itemListRef = useRef([])
+  const numberReg = /^[0-9]*$/;
 
   // 달 충전
   const chargeDal = () => history.push('/pay/store')
+  const numberValidation = useCallback(val => numberReg.test(val) && !isNaN(val), []);
 
   // 응모하기
-  const goRaffle = async (itemCode, index) => {
-    const inputCnt = itemListRef.current[index]
-    // const { message, data } = await putEnterRaffleEvent({ fanGiftNo: itemCode });
-    console.log(inputCnt)
-  }
+  const goRaffle = useCallback(async (itemCode, index) => {
+    const inputCnt = parseInt(itemListRef.current[index].value);
+    const isNumber = numberValidation(inputCnt);
 
-  const getTotalEventInfo = async () => {
+    let alertMsg = '잠시후 다시 시도해주세요';
+    if(!isNumber) {
+      alertMsg = '숫자만 입력하세요'
+    }else {
+      const {message, data, code} = await Api.putEnterRaffleEvent({ fanGiftNo: itemCode, couponCnt: inputCnt });
+      console.log('message, data, code : ', message, data, code);
+      if(code !== '99999') {
+        if(data.couponInsRes === 1) {
+          alertMsg = `${inputCnt}회를 응모하였습니다`;
+          setRaffleTotalSummaryInfo(data.summaryInfo);
+          setRaffleItemInfo(data.itemInfo);
+        }else if(data.couponInsRes === -2) {
+          alertMsg = message;
+        }
+      }
+    }
+
+    context.action.alert({
+      msg: alertMsg,
+    })
+  }, []);
+
+  const getTotalEventInfo = useCallback(async () => {
     const {message, data} = await Api.getRaffleEventTotalInfo()
+    console.log('totalInfo : ', message, data)
     if (message === 'SUCCESS') {
       setRaffleTotalSummaryInfo(data.summaryInfo)
       setRaffleItemInfo(data.itemInfo)
     }
-  }
+  }, []);
 
   useEffect(() => {
-    getTotalEventInfo()
-  }, [])
+    if(tabContent === 'total') {
+      getTotalEventInfo()
+    }
+  }, [tabContent])
 
   return (
-    <div id="total">
+    <div id="total" style={{display: `${tabContent === 'total' ? 'block' : 'none'}`}}>
       <section className="section-1">
         <img src="https://image.dalbitlive.com/event/raffle/secImg-1.png" alt="" />
         <div className="ticket">
           <div className="number">
-            <span>{Utility.addComma(raffleTotalSummaryInfo.fan_use_coupon_cnt)}</span>개
+            <span>{Utility.addComma(raffleTotalSummaryInfo.coupon_cnt)}</span>개
           </div>
           <button onClick={chargeDal}>
             <img src="https://image.dalbitlive.com/event/raffle/secBtn-1.png" alt="달충전" />
@@ -81,33 +110,44 @@ export default (props) => {
         </div>
       </section>
       <section className="section-2">
-        {raffleItemInfo.length > 0 &&
-          raffleItemInfo.map((data, index) => {
-            return (
-              <div className="list" key={index}>
-                <div className="top">
-                  <img src={data.fan_gift_file_name} className="items" alt={data.fan_gift_name} />
-                  <span className="status">
-                    내 응모 횟수 : <span>{Utility.addComma(data.fan_use_coupon_cnt)}회</span>
-                  </span>
-                  <div className="number">
-                    <img src={data.fan_gift_cnt_file_name} alt="" />
-                  </div>
-                </div>
-                <div className="bottom">
-                  <input type="number" placeholder="0" ref={(el) => (itemListRef.current[index] = el)} />
-                  <img src="https://image.dalbitlive.com/event/raffle/gae.png" className="gae" alt="개" />
-                  <button>
-                    <img
-                      src="https://image.dalbitlive.com/event/raffle/listBtn.png"
-                      alt="응모"
-                      onClick={() => goRaffle(data.auto_no, index)}
-                    />
-                  </button>
+        {raffleItemInfo.map((data, index) => {
+          return (
+            <div className="list" key={index}>
+              <div className="top">
+                <img src={data.fan_gift_file_name} className="items" alt={data.fan_gift_name} />
+                <span className="status">
+                  내 응모 횟수 : <span>{Utility.addComma(data.fan_use_coupon_cnt)}회</span>
+                </span>
+                <div className="number">
+                  <img src={data.fan_gift_cnt_file_name} alt="" />
                 </div>
               </div>
-            )
-          })}
+              <div className="bottom">
+                <input type="number"
+                       defaultValue={1}
+                       ref={(el) => (itemListRef.current[index] = el)}
+                       onChange={e => {
+                         const {target: {value}} = e;
+                         if(value.length > RAFFLE_INPUT_VALUE_MAX_SIZE) {
+                           const obj = itemListRef.current[index];
+                           if(obj) {
+                             obj.value = obj.value.substring(0, RAFFLE_INPUT_VALUE_MAX_SIZE);
+                           }
+                         }
+                       }}
+                />
+                <img src="https://image.dalbitlive.com/event/raffle/gae.png" className="gae" alt="개" />
+                <button>
+                  <img
+                    src="https://image.dalbitlive.com/event/raffle/listBtn.png"
+                    alt="응모"
+                    onClick={() => goRaffle(data.auto_no, index)}
+                  />
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </section>
       <section className="section-3">
         <img
@@ -125,16 +165,9 @@ export default (props) => {
             <img src="https://image.dalbitlive.com/event/raffle/bottomBtn-2.png" height="22px" alt="경품 자세히" />
           </button>
         </div>
-        {/* <ul>
-          <li>경품별로 상위 00명까지 가장 많이 응모한 회원에게 해당 경품이 지급됩니다.</li>
-          <li>중복 당첨은 불가하며 1계정에 1개의 경품만 당첨됩니다.</li>
-          <li>내 응모 현황 외 경품별 응모 현황은 공개되지 않습니다.</li>
-          <li>공지사항을 통해 당첨자를 발표합니다.</li>
-          <li>가장 많이 응모한 1명에게는 5월 4일 개별 연락 드리겠습니다.</li>
-        </ul> */}
       </footer>
-      {popupNotice === true && <PopupNotice setPopupNotice={setPopupNotice} />}
-      {popupDetails === true && <PopupDetails setPopupDetails={setPopupDetails} />}
+      {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
+      {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} />}
     </div>
   )
 }

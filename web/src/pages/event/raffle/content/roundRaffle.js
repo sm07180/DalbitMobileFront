@@ -1,13 +1,39 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
+import Utility from "components/lib/utility";
+import Api from 'context/api'
 
-export default () => {
+export default (props) => {
+  const { tabContent } = props;
+  const [myRoundCouponCnt, setMyRoundCouponCnt] = useState(0); // 회차별 내 응모 횟수
+  const [myRoundConditionStatus, setMyRoundConditionStatus] = useState(0);
+  const [roundInfos, setRoundInfos] = useState([]);
+  const [roundDuration, setRoundDuration] = useState(""); // 현재 회차
+
+  const getRoundRaffleInfo = useCallback(async () => {
+    const {code, data} = await Api.getRaffleEventRoundInfo();
+    console.log(code, data);
+    if(code === '00000') {
+      setMyRoundConditionStatus(data.myRoundConditionStatus);
+      setMyRoundCouponCnt(data.myRoundCouponCnt);
+      setRoundInfos(data.itemInfo);
+      setRoundDuration(data.roundDuration);
+    }
+  }, []);
+
+  useEffect(() => {
+    if(tabContent === 'round') {
+      getRoundRaffleInfo();
+    }
+  }, [tabContent]);
+
   return (
-    <div id="round">
+    <div id="round" style={{display: `${tabContent === 'round' ? 'block': 'none'}`}}>
       <section className="section-1">
         <div className="title">
-          1<img src="https://image.dalbitlive.com/event/raffle/round-title-1.png" alt="회차" />
+          {roundInfos[0] && roundInfos[0].evt_no}
+          <img src="https://image.dalbitlive.com/event/raffle/round-title-1.png" alt="회차" />
         </div>
-        <p>11/10(수)~11/16(화), 발표 : 11/17(수)</p>
+        <p>{roundDuration}</p>
         <img
           src="https://image.dalbitlive.com/event/raffle/round-txt-1.png"
           className="txt"
@@ -16,12 +42,13 @@ export default () => {
       </section>
       <section className="section-2">
         <div className="title">
-          1<img src="https://image.dalbitlive.com/event/raffle/round-title-2.png" alt="" />
-          <span>000</span>개
+          {roundInfos[0] && roundInfos[0].evt_no}
+          <img src="https://image.dalbitlive.com/event/raffle/round-title-2.png" alt="" />
+          <span>{Utility.addComma(myRoundCouponCnt)}</span>개
         </div>
         <div className="subTitle">
           <img src="https://image.dalbitlive.com/event/raffle/subtitle-1.png" alt="당첨 가능 현황 :" />
-          3
+          {myRoundConditionStatus}
           <img src="https://image.dalbitlive.com/event/raffle/subtitle-2.png" alt="가지 참여 중" />
         </div>
         <div className="table">
@@ -34,34 +61,25 @@ export default () => {
           <div className="th">
             <img src="https://image.dalbitlive.com/event/raffle/table-3.png" alt="당첨 확률" />
           </div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/round-item-1.png" alt="1,000달" />
-          </div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/td-lack.png" alt="횟수 부족" />
-          </div>
-          <div className="td">3</div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/round-item-2.png" alt="상품권" />
-          </div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
-          </div>
-          <div className="td">3</div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/round-item-3.png" alt="치킨" />
-          </div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
-          </div>
-          <div className="td">3</div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/round-item-4.png" alt="커피" />
-          </div>
-          <div className="td">
-            <img src="https://image.dalbitlive.com/event/raffle/td-success.png" alt="참여 성공" />
-          </div>
-          <div className="td">3</div>
+          {roundInfos.map((data, index) => {
+            return (
+              <React.Fragment key={index}>
+                <div className="td">
+                  <img
+                    src={data.fan_week_gift_file_name}
+                    alt={`경품이미지${index+1}`}
+                  />
+                </div>
+                <div className="td">
+                  <img
+                    src={data.presentConditionImg}
+                    alt="참여여부"
+                  />
+                </div>
+                <div className="td">{data.fan_week_gift_cnt} / {data.tot_ins_cnt}</div>
+              </React.Fragment>
+            )
+          })}
         </div>
         <img src="https://image.dalbitlive.com/event/raffle/alert.png" className="alert" alt="" />
       </section>

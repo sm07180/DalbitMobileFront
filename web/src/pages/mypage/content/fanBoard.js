@@ -145,20 +145,22 @@ export default (props) => {
   }
   const windowScrollEvent = () => {
     const boardListNode = BoardListRef.current
-    const boardListHeight = boardListNode.offsetTop
-    if (props.type) {
-      if (props.isShowBtn) {
-        setIsWriteBtn(true)
+    if(boardListNode) {
+      const boardListHeight = boardListNode.offsetTop
+      if (props.type) {
+        if (props.isShowBtn) {
+          setIsWriteBtn(true)
+        } else {
+          setIsWriteBtn(false)
+        }
       } else {
-        setIsWriteBtn(false)
-      }
-    } else {
-      if (window.scrollY >= boardListHeight) {
-        setIsWriteBtn(true)
-        setScrollY(boardListHeight)
-      } else {
-        setIsWriteBtn(false)
-        setScrollY(0)
+        if (window.scrollY >= boardListHeight) {
+          setIsWriteBtn(true)
+          setScrollY(boardListHeight)
+        } else {
+          setIsWriteBtn(false)
+          setScrollY(0)
+        }
       }
     }
   }

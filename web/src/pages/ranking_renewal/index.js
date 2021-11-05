@@ -441,7 +441,6 @@ function Ranking() {
             myInfo,
             ...res.data
           })
-          console.log(setTotalPage)
         }
       } else {
         setRankList([])

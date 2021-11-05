@@ -1,22 +1,87 @@
-import React, {useState} from 'react'
+import React, {useContext, useState, useCallback, useEffect} from 'react'
 
-import {Context} from 'context'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-
 import PopupNotice from './content/popupNotice'
 import PopupDetails from './content/popupDetails'
 
 import './style.scss'
+import {Context} from "context";
+import Utility from "components/lib/utility";
+
+const GET_ITEM_CONDITION_HOUR = 50; // 50시간
+const GET_ITEM_CONDITION = GET_ITEM_CONDITION_HOUR * 3600; // 50시간 -> 초
 
 export default () => {
   const history = useHistory()
+  const context = useContext(Context)
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupDetails, setPopupDetails] = useState(false)
+  const [djEventUserInfo, setDjEventUserInfo] = useState({
+    memNo: '',
+    play_time: 0,
+    rcv_dal_cnt: 0,
+    playTimeToFullTime: '',
+    rcv_bonus_gold: 0,
+    rcv_booster: 0,
+  })
+  const [canReceivePresent, setCanReceivePresent] = useState({
+    myPresentName: "",
+    myBroadTimeConditionYn: "",
+  });
 
-  const goBack = () => {
-    history.goBack()
+  const goBack = () => history.goBack();
+
+  // 부스터 아이템 지급 관련
+  const param = {
+    itemType: 1, // itemType: 1: 부스터
+    itemState: 1, // itemState: 1: 지급, 2: 사용, 3: 차감
+    itemCnt: 20, // itemCnt: 아이템 개수
+    opName: '11월 이벤트 부스터 지급' // opName: 처리내용
+  };
+  const insBooster = async () => {
+    let alertMsg = '';
+    const {data} = await Api.eventItemIns(param);
+    if(data === 1) {
+      setDjEventUserInfo({...djEventUserInfo, rcv_booster: 20});
+      alertMsg = '부스터 20개가 지급되었습니다.';
+    }else {
+      alertMsg = '잠시 후 다시 시도해주세요.';
+    }
+
+    context.action.alert({
+      msg: alertMsg,
+    })
   }
+
+  const receiveBoosterItem = () => {
+    if(djEventUserInfo.play_time >= GET_ITEM_CONDITION) {
+      if(djEventUserInfo.rcv_booster === 0) {
+        insBooster();
+      }else {
+        context.action.alert({
+          msg: '이미 지급받으셨습니다.',
+        })
+      }
+    }else {
+      context.action.alert({
+        msg: `${GET_ITEM_CONDITION_HOUR}시간을 달성해야 부스터를 받을 수 있습니다.`,
+      })
+    }
+  };
+
+  const getDjRaffleInfo = useCallback(async () => {
+    const {data, code} = await Api.getRaffleEventDjInfo();
+    console.log('dj data: ', data, code);
+    if(code === '00000') {
+      setCanReceivePresent({myPresentName: data.myPresentName, myBroadTimeConditionYn: data.myBroadTimeConditionYn })
+      setDjEventUserInfo({...data.djEventUserInfo, playTimeToFullTime: Utility.secondToHM(data.djEventUserInfo.play_time)});
+    }
+  }, []);
+
+  useEffect(() => {
+    getDjRaffleInfo();
+  }, []);
 
   return (
     <div id="raffleDj">
@@ -29,10 +94,6 @@ export default () => {
           alt="DJ님!! 이게 머선129? 방송에서 선물을 받으면 추가 적립! 많이 받으면 보너스 선물까지!"
         />
         <div className="date">
-          {/* <span className="red">총 이벤트 기간</span>
-            <span>11/10 ~ 12/7,</span>
-            <span className="red">발표</span>
-            <span>12/8</span> */}
           <img src="https://image.dalbitlive.com/event/raffle/date-dj.png" alt="총 이벤트 기간 11/10 ~ 12/7, 발표 12/8" />
         </div>
       </div>
@@ -49,9 +110,12 @@ export default () => {
         />
         <div className="time">
           <img src="https://image.dalbitlive.com/event/raffle/event-time.png" alt="방송시간:" />
-          <span className="inline">12시간 12분</span>
+          <span className="inline">{djEventUserInfo.playTimeToFullTime}</span>
           <button>
-            <img src="https://image.dalbitlive.com/event/raffle/event2-btn.png" alt="선물 받기" />
+            <img src="https://image.dalbitlive.com/event/raffle/event2-btn.png"
+                 alt="선물 받기"
+                 onClick={receiveBoosterItem}
+            />
           </button>
         </div>
       </section>
@@ -63,11 +127,16 @@ export default () => {
         <div className="gift">
           <div className="giftList">
             <img src="https://image.dalbitlive.com/event/raffle/evnet3-txt1.png" alt="" />
-            <span>100,100개</span>
+            <span>{Utility.addComma(djEventUserInfo.rcv_dal_cnt)}개</span>
           </div>
           <div className="giftList">
             <img src="https://image.dalbitlive.com/event/raffle/evnet3-txt2.png" alt="" />
-            <span>라이브 방송세트(50%)</span>
+            {canReceivePresent.myPresentName ?
+              <span style={{color: `${canReceivePresent.myBroadTimeConditionYn === "y" ? '#ff4874' : '#4879ff'}`}}>
+                  {canReceivePresent.myPresentName}
+                </span>
+              : <span style={{color: 'gray'}}>아직 받을 수 있는 선물이 없습니다.</span>
+            }
           </div>
         </div>
       </section>
