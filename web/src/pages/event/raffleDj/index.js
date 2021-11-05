@@ -21,7 +21,7 @@ export default () => {
     memNo: '',
     play_time: 0,
     rcv_dal_cnt: 0,
-    playTimeToFullTime: '',
+    playTimeToFullTime: '0시간 0분',
     rcv_bonus_gold: 0,
     rcv_booster: 0,
   })
@@ -55,6 +55,11 @@ export default () => {
   }
 
   const receiveBoosterItem = () => {
+    if(!context.token.isLogin) {
+      history.push("/login");
+      return;
+    }
+
     if(djEventUserInfo.play_time >= GET_ITEM_CONDITION) {
       if(djEventUserInfo.rcv_booster === 0) {
         insBooster();
@@ -72,7 +77,6 @@ export default () => {
 
   const getDjRaffleInfo = useCallback(async () => {
     const {data, code} = await Api.getRaffleEventDjInfo();
-    console.log('dj data: ', data, code);
     if(code === '00000') {
       setCanReceivePresent({myPresentName: data.myPresentName, myBroadTimeConditionYn: data.myBroadTimeConditionYn })
       setDjEventUserInfo({...data.djEventUserInfo, playTimeToFullTime: Utility.secondToHM(data.djEventUserInfo.play_time)});
@@ -80,7 +84,9 @@ export default () => {
   }, []);
 
   useEffect(() => {
-    getDjRaffleInfo();
+    if(context.token.isLogin) {
+      getDjRaffleInfo();
+    }
   }, []);
 
   return (

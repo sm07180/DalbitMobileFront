@@ -26,11 +26,23 @@ export default (props) => {
   const numberReg = /^[0-9]*$/;
 
   // 달 충전
-  const chargeDal = () => history.push('/pay/store')
+  const chargeDal = () => {
+    if(!context.token.isLogin) {
+      history.push("/login");
+      return;
+    }
+
+    history.push('/pay/store')
+  }
   const numberValidation = useCallback(val => numberReg.test(val) && !isNaN(val), []);
 
   // 응모하기
   const goRaffle = useCallback(async (itemCode, index) => {
+    if(!context.token.isLogin) {
+      history.push("/login");
+      return;
+    }
+
     const inputCnt = parseInt(itemListRef.current[index].value);
     const isNumber = numberValidation(inputCnt);
 
@@ -39,7 +51,6 @@ export default (props) => {
       alertMsg = '숫자만 입력하세요'
     }else {
       const {message, data, code} = await Api.putEnterRaffleEvent({ fanGiftNo: itemCode, couponCnt: inputCnt });
-      console.log('message, data, code : ', message, data, code);
       if(code !== '99999') {
         if(data.couponInsRes === 1) {
           alertMsg = `${inputCnt}회를 응모하였습니다`;
@@ -58,7 +69,6 @@ export default (props) => {
 
   const getTotalEventInfo = useCallback(async () => {
     const {message, data} = await Api.getRaffleEventTotalInfo()
-    console.log('totalInfo : ', message, data)
     if (message === 'SUCCESS') {
       setRaffleTotalSummaryInfo(data.summaryInfo)
       setRaffleItemInfo(data.itemInfo)

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback} from 'react'
+import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 
 import {useHistory} from 'react-router-dom'
 
@@ -8,15 +8,13 @@ import RoundRaffle from './content/roundRaffle'
 import './style.scss'
 
 export default () => {
-  const history = useHistory()
+  const history = useHistory();
   const tabMenuRef = useRef()
   const tabBtnRef = useRef();
   const [tabFixed, setTabFixed] = useState(false)
   const [tabContent, setTabContent] = useState('total') // total, round
 
-  const goBack = useCallback(() => {
-    history.goBack()
-  }, []);
+  const goBack = useCallback(() => history.goBack(), []);
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
@@ -34,9 +32,7 @@ export default () => {
 
   useEffect(() => {
     window.addEventListener('scroll', tabScrollEvent)
-    return () => {
-      window.removeEventListener('scroll', tabScrollEvent)
-    }
+    return () => window.removeEventListener('scroll', tabScrollEvent);
   }, [])
 
   useEffect(() => {
@@ -69,7 +65,6 @@ export default () => {
           </button>
         </div>
       </div>
-      {/*{tabContent === 'total' ? <TotalRaffle setTabContent={setTabContent} /> : <RoundRaffle />}*/}
       <TotalRaffle tabContent={tabContent} setTabContent={setTabContent} />
       <RoundRaffle tabContent={tabContent} />
     </div>
