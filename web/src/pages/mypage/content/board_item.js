@@ -135,6 +135,17 @@ export default (props) => {
       }
     }
   }
+  const userReport = () => {
+    const reportParam = {
+      state: true,
+      targetMemNo: props.data.writerMemNo,
+      targetNickName: props.data.nickName
+    };
+
+    context.action.updateBoardIdx(0)
+    context.action.updateUserReport(reportParam);
+  }
+
   useEffect(() => {
     return () => {
       context.action.updateBoardIdx(0)
@@ -151,21 +162,20 @@ export default (props) => {
       {modifyState === false && (
         <>
           <div className="list-item__header">
-            {urlrStr === context.token.memNo ||
-            props.data.writerMemNo === context.token.memNo ||
-            props.data.clipMemNo === context.token.memNo ? (
-              <>
-                <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
-                <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
-                  {props.data.writerMemNo === context.token.memNo && (
-                    <button onClick={() => editToggle(props.data.contents, props.data.replyIdx)}>수정하기</button>
-                  )}
-                  <button onClick={() => deleteBoard(props.data.replyIdx, props.data.clipMemNo)}>삭제하기</button>
-                </div>
-              </>
-            ) : (
-              <></>
-            )}
+            <button className="btn__more" onClick={() => moreToggle(props.data.replyIdx, props.data.contents)}></button>
+            <div className={context.boardIdx === props.data.replyIdx ? 'moreList on' : 'moreList'}>
+              {props.data.writerMemNo === context.token.memNo && (
+                <button onClick={() => editToggle(props.data.contents, props.data.replyIdx)}>수정하기</button>
+              )}
+              {(urlrStr === context.token.memNo ||
+              props.data.writerMemNo === context.token.memNo ||
+              props.data.clipMemNo === context.token.memNo) &&
+              <button onClick={() => deleteBoard(props.data.replyIdx, props.data.clipMemNo)}>삭제하기</button>
+              }
+              {props.data.writerMemNo !== context.token.memNo && props.data.clipMemNo !== context.token.memNo &&
+                <button onClick={userReport}>신고하기</button>
+              }
+            </div>
             <span className="thumb" style={{backgroundImage: `url(${props.data.profImg.thumb190x190})`}} onClick={Link}></span>
             <span className="info" onClick={Link}>
               <span className="info__name">

@@ -15,6 +15,7 @@ import Swiper from 'react-id-swiper'
 import BadgeList from 'common/badge_list'
 //component
 import ProfileReport from './profile_report'
+import UserReport from './user_report'
 import ProfileFanList from './profile_fanList'
 import ProfilePresent from './profile_present'
 import ProfileRank from './profile_rank'
@@ -855,6 +856,7 @@ export default (props) => {
         )}
       </div>
       {context.mypageReport === true && <ProfileReport {...props} reportShow={reportShow} />}
+      {context.userReport.state === true && <UserReport {...props} urlrStr={context.userReport.targetMemNo} />}
       {context.close === true && <ProfileFanList {...props} reportShow={reportShow} name="팬 랭킹" />}
       {context.closeFanCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="팬" />}
       {context.closeStarCnt === true && <ProfileFanList {...props} reportShow={reportShow} name="스타" />}

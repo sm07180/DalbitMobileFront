@@ -26,7 +26,6 @@ export default (props) => {
   }
 
   const swiperParams = {
-    spaceBetween: 20,
     slidesPerView: 'auto',
     // slidesPerView: '3',
     rebuildOnUpdate: true

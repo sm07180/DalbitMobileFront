@@ -16,6 +16,7 @@ import BoardList from './board_list'
 import WriteBoard from './board_write'
 //svg
 import NoResult from 'components/ui/new_noResult'
+import UserReport from "pages/mypage/content/user_report";
 // concat
 // let currentPage = 1
 // let timer
@@ -221,6 +222,7 @@ export default (props) => {
           <BoardList list={boardList} boardType={props.type} totalCount={totalCount} set={setAction} />
         </div>
       )}
+      {context.userReport.state === true && <UserReport {...props} urlrStr={context.userReport.targetMemNo} />}
     </div>
   )
 }
