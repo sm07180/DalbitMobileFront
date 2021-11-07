@@ -134,7 +134,7 @@ export default (props) => {
               </div>
               <div className="bottom">
                 <input type="number"
-                       defaultValue={1}
+                       defaultValue={`${context.token.isLogin ? 1 : 0}`}
                        ref={(el) => (itemListRef.current[index] = el)}
                        onChange={e => {
                          const {target: {value}} = e;

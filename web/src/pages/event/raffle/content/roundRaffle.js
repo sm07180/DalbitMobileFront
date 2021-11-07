@@ -11,7 +11,6 @@ export default (props) => {
 
   const getRoundRaffleInfo = useCallback(async () => {
     const {code, data} = await Api.getRaffleEventRoundInfo();
-    console.log(code, data);
     if(code === '00000') {
       setMyRoundConditionStatus(data.myRoundConditionStatus);
       setMyRoundCouponCnt(data.myRoundCouponCnt);
