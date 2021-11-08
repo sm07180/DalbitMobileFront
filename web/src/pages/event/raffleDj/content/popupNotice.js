@@ -32,7 +32,7 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popupSubTitle-1.png" alt="# 이벤트1." />
         </div>
         <ul>
-          <li>받은 선물수는 이벤트1의 5% 추가 적립 개수는 제외한 순수 선물수만으로 집계됩니다.</li>
+          <li>받은 선물수는 이벤트1의 5% 추가 적립 개수를 제외한 순수 선물수만으로 집계됩니다.</li>
           <li>방송 종료 시각 기준으로 이벤트 참여 날짜 적용 및 5% 추가 적립됩니다.</li>
           <li>
             추가 적립은 평일 최대 150개(휴일 300개)만 적립됩니다. <br />
