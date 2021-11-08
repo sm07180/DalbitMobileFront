@@ -26,6 +26,13 @@ export default (props) => {
     <PopupWrap id="pupupDetails" onClick={wrapClick}>
       <div className="contentWrap">
         <div className="title">경품 소개</div>
+        <ul>
+          <li>황금열쇠 7돈(순금) : 216만원(변동 가능)</li>
+          <li>갤럭시 제트플립 3 : 125만원</li>
+          <li>방송장비세트 : 50만원</li>
+          <li>에어팟 프로 : 33만원</li>
+          <li>블루 예티 나노 : 14만원</li>
+        </ul>
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
