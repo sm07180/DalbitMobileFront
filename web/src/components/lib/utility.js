@@ -387,4 +387,17 @@ export default class Utility {
 
     return monthAndDayDiff >= 0 ? yearDiff : yearDiff -1;
   }
+
+  // 초를 xx시간 xx분으로
+  static secondToHM = (time) => {
+    let hour = 0;
+    let min = 0;
+    if(time >= 3600) {
+      hour = Math.floor(time / 3600);
+      time = time % 3600;
+    }
+    min = Math.floor(time / 60);
+
+    return `${hour}시간 ${min}분`;
+  }
 }
