@@ -42,7 +42,11 @@ export default () => {
   const insBooster = async () => {
     let alertMsg = '';
     const {data} = await Api.eventItemIns(param);
-    if(data === 1) {
+    if(data === -3) {
+      alert('이벤트가 종료되었습니다.');
+      window.location.replace("/");
+      return;
+    }else if(data === 1) {
       setDjEventUserInfo({...djEventUserInfo, rcv_booster: 20});
       alertMsg = '부스터 20개가 지급되었습니다.';
     }else {

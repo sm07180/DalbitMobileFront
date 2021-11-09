@@ -52,10 +52,15 @@ export default (props) => {
     }else {
       const {message, data, code} = await Api.putEnterRaffleEvent({ fanGiftNo: itemCode, couponCnt: inputCnt });
       if(code !== '99999') {
-        if(data.couponInsRes === 1) {
+        if(data.couponInsRes === -3){
+          alert("이벤트가 종료되었습니다")
+          window.location.replace('/');
+          return;
+        }else if(data.couponInsRes === 1) {
           alertMsg = `${inputCnt}회를 응모하였습니다`;
           setRaffleTotalSummaryInfo(data.summaryInfo);
           setRaffleItemInfo(data.itemInfo);
+          itemListRef.current[index].value = 1;
         }else if(data.couponInsRes === -2) {
           alertMsg = message;
         }
@@ -102,7 +107,7 @@ export default (props) => {
                 height="15px"
                 alt="- 총 응모 현황 :"
               />
-              {Utility.addComma(raffleTotalSummaryInfo.fan_week_use_coupon_cnt)} 회
+              {Utility.addComma(raffleTotalSummaryInfo.fan_use_coupon_cnt)} 회
             </div>
             <div className="title">
               <img

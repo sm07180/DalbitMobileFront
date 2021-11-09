@@ -27,6 +27,7 @@ import AppInfoRoute from './app_info/route'
 import Layout from 'pages/common/layout/new_layout'
 import EventWinner from 'pages/customer/content/event/event_winner.js'
 import WinnerInfoForm from 'pages/customer/content/event/winner_info_form.js'
+import Api from "context/api";
 //
 
 const Index = (props) => {
@@ -110,9 +111,11 @@ const Index = (props) => {
   }
 
   useEffect(() => {
-    if(context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge) {
+    const noServiceInfo = context.noServiceInfo;
+    const isQnaPage = title === 'personal' || title === 'qnaList';
+    if(noServiceInfo.americanAge >= noServiceInfo.limitAge) {
       context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
-    }else if(!context.profile.memJoinYn === 'o' || title === 'personal' || title === 'qnaList') {
+    }else if(context.profile.memJoinYn === 'o' || isQnaPage) {
       context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
     }else {
       context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
