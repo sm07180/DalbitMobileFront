@@ -32,8 +32,8 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popupSubTitle-1.png" alt="# 이벤트1." />
         </div>
         <ul>
-          <li>받은 선물수는 이벤트1의 5% 추가 적립 개수는 제외한 순수 선물수만으로 집계됩니다.</li>
-          <li>별 추가 지급은 방송 종료 시각 기준으로 적립</li>
+          <li>받은 선물수는 이벤트1의 5% 추가 적립 개수를 제외한 순수 선물수만으로 집계됩니다.</li>
+          <li>방송 종료 시각 기준으로 이벤트 참여 날짜 적용 및 5% 추가 적립됩니다.</li>
           <li>
             추가 적립은 평일 최대 150개(휴일 300개)만 적립됩니다. <br />
             예로 3201개의 경우 5%인 160개가 아닌 150개만
@@ -50,7 +50,11 @@ export default (props) => {
           <li className="red">
             최소 방송시간을 채우지 못하면 선물액의 50%만 제세
             <br />
-            공과금 제외 후 현금 지급됩니다. (※ 달100개 상품 제외)
+            공과금 제외 후 현금 지급됩니다.
+            <br />
+            단, 하위 경품 당첨 조건에 부합하며 해당 경품의 선물액이 더 높을 경우, 하위 경품으로 당첨됩니다.
+            <br />
+            (※ 달100개 상품 제외)
           </li>
           <li>
             경품 대신 현금으로 받고 싶은 경우,
@@ -124,7 +128,7 @@ const PopupWrap = styled.div`
       padding-left: 12px;
       li {
         position: relative;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         letter-spacing: -1.5px;
         &:before {
           position: absolute;

@@ -26,6 +26,14 @@ export default (props) => {
     <PopupWrap id="pupupDetails" onClick={wrapClick}>
       <div className="contentWrap">
         <div className="title">경품 소개</div>
+        <ul>
+          <li>iPhone 13 Pro(128GB) : 135만원</li>
+          <li>iPad Air 4세대(64GB) : 78만원</li>
+          <li>애플워치 7(41mm) + 스포츠밴드 : 62만원</li>
+          <li>갤럭시 워치 4(44mm) + 스포츠스트랩 : 30만원</li>
+          <li>닌텐도 스위치 라이트 : 25만원</li>
+          <li>아웃백 상품권 : 10만원</li>
+        </ul>
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
