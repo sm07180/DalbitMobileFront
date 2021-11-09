@@ -45,7 +45,7 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popupSubTitle-3.png" alt="# 이벤트3." />
         </div>
         <ul>
-          <li>조건(방송시간,선물수)을 충족하면 해당 선물을 드립니다.</li>
+          <li>조건(방송시간,선물수)을 충족하는 가장 상위의 선물을 드립니다.</li>
           <li>제세공과금(22%)은 당첨자 부담입니다.</li>
           <li className="red">
             최소 방송시간을 채우지 못하면 선물액의 50%만 제세

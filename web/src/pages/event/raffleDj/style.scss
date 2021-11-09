@@ -27,7 +27,7 @@
   .top {
     position: relative;
     width: 100%;
-    img {
+    > img {
       width: 100%;
     }
     .date {
@@ -126,6 +126,7 @@
         font-weight: bold;
         img {
           height: 18px;
+          image-rendering: -webkit-optimize-contrast;
         }
         span {
           margin-left: auto;

@@ -1,32 +1,32 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import Utility from "components/lib/utility";
+import Utility from 'components/lib/utility'
 import Api from 'context/api'
 
 export default (props) => {
-  const { tabContent } = props;
-  const [myRoundCouponCnt, setMyRoundCouponCnt] = useState(0); // 회차별 내 응모 횟수
-  const [myRoundConditionStatus, setMyRoundConditionStatus] = useState(0);
-  const [roundInfos, setRoundInfos] = useState([]);
-  const [roundDuration, setRoundDuration] = useState(""); // 현재 회차
+  const {tabContent} = props
+  const [myRoundCouponCnt, setMyRoundCouponCnt] = useState(0) // 회차별 내 응모 횟수
+  const [myRoundConditionStatus, setMyRoundConditionStatus] = useState(0)
+  const [roundInfos, setRoundInfos] = useState([])
+  const [roundDuration, setRoundDuration] = useState('') // 현재 회차
 
   const getRoundRaffleInfo = useCallback(async () => {
-    const {code, data} = await Api.getRaffleEventRoundInfo();
-    if(code === '00000') {
-      setMyRoundConditionStatus(data.myRoundConditionStatus);
-      setMyRoundCouponCnt(data.myRoundCouponCnt);
-      setRoundInfos(data.itemInfo);
-      setRoundDuration(data.roundDuration);
+    const {code, data} = await Api.getRaffleEventRoundInfo()
+    if (code === '00000') {
+      setMyRoundConditionStatus(data.myRoundConditionStatus)
+      setMyRoundCouponCnt(data.myRoundCouponCnt)
+      setRoundInfos(data.itemInfo)
+      setRoundDuration(data.roundDuration)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    if(tabContent === 'round') {
-      getRoundRaffleInfo();
+    if (tabContent === 'round') {
+      getRoundRaffleInfo()
     }
-  }, [tabContent]);
+  }, [tabContent])
 
   return (
-    <div id="round" style={{display: `${tabContent === 'round' ? 'block': 'none'}`}}>
+    <div id="round" style={{display: `${tabContent === 'round' ? 'block' : 'none'}`}}>
       <section className="section-1">
         <div className="title">
           {roundInfos[0] && roundInfos[0].evt_no}
@@ -42,7 +42,7 @@ export default (props) => {
       <section className="section-2">
         <div className="title">
           {roundInfos[0] && roundInfos[0].evt_no}
-          <img src="https://image.dalbitlive.com/event/raffle/round-title-2.png" alt="" />
+          <img src="https://image.dalbitlive.com/event/raffle/round-title-2.png" alt="회차 내 응모횟수 :" />
           <span>{Utility.addComma(myRoundCouponCnt)}</span>개
         </div>
         <div className="subTitle">
@@ -64,18 +64,14 @@ export default (props) => {
             return (
               <React.Fragment key={index}>
                 <div className="td">
-                  <img
-                    src={data.fan_week_gift_file_name}
-                    alt={`경품이미지${index+1}`}
-                  />
+                  <img src={data.fan_week_gift_file_name} alt={`경품이미지${index + 1}`} />
                 </div>
                 <div className="td">
-                  <img
-                    src={data.presentConditionImg}
-                    alt="참여여부"
-                  />
+                  <img src={data.presentConditionImg} alt="참여여부" />
                 </div>
-                <div className="td">{data.fan_week_gift_cnt} / {data.tot_ins_cnt}</div>
+                <div className="td">
+                  {data.fan_week_gift_cnt} / {data.tot_ins_cnt}
+                </div>
               </React.Fragment>
             )
           })}
