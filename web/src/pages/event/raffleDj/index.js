@@ -9,10 +9,10 @@ import './style.scss'
 import {Context} from 'context'
 import Utility from 'components/lib/utility'
 
-// const GET_ITEM_CONDITION_HOUR = 50 // 50시간
-const GET_ITEM_CONDITION_HOUR = 10 // 10분
-// const GET_ITEM_CONDITION = GET_ITEM_CONDITION_HOUR * 3600 // 50시간 -> 초
-const GET_ITEM_CONDITION = 600 // 50시간 -> 초
+const GET_ITEM_CONDITION_HOUR = 50 // 50시간
+// const GET_ITEM_CONDITION_HOUR = 10; // 10분
+const GET_ITEM_CONDITION = GET_ITEM_CONDITION_HOUR * 3600 // 50시간 -> 초
+// const GET_ITEM_CONDITION = 600; // 50시간 -> 초
 
 export default () => {
   const history = useHistory()
@@ -72,7 +72,7 @@ export default () => {
       }
     } else {
       context.action.alert({
-        msg: `${GET_ITEM_CONDITION_HOUR}분을 달성해야 부스터를 받을 수 있습니다.`
+        msg: `${GET_ITEM_CONDITION_HOUR}시간을 달성해야 부스터를 받을 수 있습니다.`
       })
     }
   }
