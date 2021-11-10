@@ -55,6 +55,11 @@ export default (props) => {
             <br />이 경우에는 제세공과금이 발생하지 않습니다.{' '}
           </li>
           <li>당첨자 관련 서류는 문자를 통해 별도 안내 드립니다.</li>
+          <li className="red">
+            달 충전 결제 취소 시 해당 건으로 응모한 내역은 인정되지 않으며,
+            <br />
+            이벤트 선물 당첨에 이용된 결제 내역은 환불 진행이 불가할 수 있습니다.
+          </li>
         </ul>
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
