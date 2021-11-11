@@ -113,12 +113,15 @@ const Index = (props) => {
   useEffect(() => {
     const noServiceInfo = context.noServiceInfo;
     const isQnaPage = title === 'personal' || title === 'qnaList';
-    if(noServiceInfo.americanAge >= noServiceInfo.limitAge) {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
-    }else if(context.profile.memJoinYn === 'o' || isQnaPage) {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
-    }else {
-      context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+
+    if(context.token.isLogin) {
+      if(noServiceInfo.americanAge >= noServiceInfo.limitAge) {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n", passed: true});
+      }else if(context.profile.memJoinYn === 'o' || isQnaPage) {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "n"});
+      }else {
+        context.action.updateNoServiceInfo({...context.noServiceInfo, showPageYn: "y"});
+      }
     }
   }, [title]);
 
