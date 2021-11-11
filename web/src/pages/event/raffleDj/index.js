@@ -135,11 +135,15 @@ export default () => {
         />
         <div className="gift">
           <div className="giftList">
-            <img src="https://image.dalbitlive.com/event/raffle/evnet3-txt1.png" alt="" />
+            <img src="https://image.dalbitlive.com/event/raffle/evnet3-txt1.png" className="giftTitle1" alt="받은 선물 개수" />
             <span>{Utility.addComma(djEventUserInfo.rcv_dal_cnt)}개</span>
           </div>
           <div className="giftList">
-            <img src="https://image.dalbitlive.com/event/raffle/evnet3-txt2.png" alt="" />
+            <img
+              src="https://image.dalbitlive.com/event/raffle/evnet3-txt2.png"
+              className="giftTitle2"
+              alt="내가 받을 수 있는 선물"
+            />
             {canReceivePresent.myPresentName ? (
               <span style={{color: `${canReceivePresent.myBroadTimeConditionYn === 'y' ? '#ff4874' : '#4879ff'}`}}>
                 {canReceivePresent.myPresentName}
