@@ -745,25 +745,26 @@ function Ranking() {
               <img src={hallOfFameIcon} alt="명예의 전당" />
             </button>
           ) : (
-            <button
-              className="hallOfFame"
-              onClick={() => {
-                setRankTimeData({
-                  prevDate: '',
-                  nextDate: '',
-                  rankRound: 0,
-                  titleText: '',
-                  isRankData: false
-                })
-                history.push({
-                  pathname: `/event/award/2020`,
-                  state: {
-                    tabType: formState[PAGE_TYPE.RANKING].rankType
-                  }
-                })
-              }}>
-              <img src={awardIcon} width={78} alt="어워즈" />
-            </button>
+            // <button
+            //   className="hallOfFame"
+            //   onClick={() => {
+            //     setRankTimeData({
+            //       prevDate: '',
+            //       nextDate: '',
+            //       rankRound: 0,
+            //       titleText: '',
+            //       isRankData: false
+            //     })
+            //     history.push({
+            //       pathname: `/event/award/2020`,
+            //       state: {
+            //         tabType: formState[PAGE_TYPE.RANKING].rankType
+            //       }
+            //     })
+            //   }}>
+            //   <img src={awardIcon} width={78} alt="어워즈" />
+            // </button>
+            <></>
           )}
         </Header>
         <div className="refresh-wrap rank" ref={iconWrapRef}>
@@ -776,15 +777,16 @@ function Ranking() {
             <RankBtnWrap fetching={fetching} />
             {/* <div className="rankTopBox__update">{formState[formState.pageType].rankType !== 3 && formState[formState.pageType].rankType !== 4 && `${realTime()}`}</div> */}
           </div>
-          
+
           {formState.pageType === PAGE_TYPE.RANKING && (
             <>
               <RankDateBtn fetching={fetching} />
-              {formState[formState.pageType].rankType === RANK_TYPE.DJ && formState[formState.pageType].dateType === DATE_TYPE.MONTH && (
-                <>
-                  <MonthlyDJ/>
-                </>
-              )}
+              {formState[formState.pageType].rankType === RANK_TYPE.DJ &&
+                formState[formState.pageType].dateType === DATE_TYPE.MONTH && (
+                  <>
+                    <MonthlyDJ />
+                  </>
+                )}
               <RankHandleDateBtn fetching={fetching} />
             </>
           )}
