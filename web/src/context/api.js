@@ -2410,6 +2410,22 @@ export default class API {
     const {data} = obj
     return await ajax({url: `/social/facebook/callback`, method: 'POST', data})
   }
+  static getChangeItem = async (obj) => {
+    const {params} = obj
+    return await ajax({
+      url: `/mypage/change/item`,
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static new_social_login = async (obj) => {
+    return await ajax({
+      url: `/social/${obj.type}/callback`,
+      method: 'GET',
+      params: obj.type === 'google' ? {idToken: obj.token} : {accessToken: obj.token}
+    })
+  }
 
   /**
    * @brief PUSH Click

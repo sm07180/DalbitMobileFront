@@ -140,7 +140,7 @@ export default (props) => {
 
   function validateReducer(state, validate) {
     if (validate.name === 'nickNm' && validate.check) {
-      if (state.loginPwd.check && state.loginPwdCheck.check && state.term.check) {
+      if (state.birth.check && state.loginPwd.check && state.loginPwdCheck.check && state.term.check) {
         sighUpFetch()
       }
     }
@@ -644,6 +644,32 @@ export default (props) => {
     }
   }
 
+  const addAdsData = async () => {
+    const os = context.customHeader['os'];
+    const isAndroid = os === OS_TYPE['Android'];
+    const isIos = os === OS_TYPE['IOS'];
+    const targetVersion = isAndroid ? '1.6.9' : '1.6.3'; // 이 버전 이상으로 강업되면 예전버전 지우기
+    const successCallback = () => {
+      const firebaseDataArray = [
+        { type : "firebase", key : "CompleteRegistration", value : {} },
+        { type : "adbrix", key : "CompleteRegistration", value : {} },
+      ];
+      kakaoPixel('114527450721661229').completeRegistration()
+      Hybrid('eventTracking', {service :  firebaseDataArray})
+    };
+    const failCallback = () => {
+      fbq('track', 'CompleteRegistration')
+      firebase.analytics().logEvent('CompleteRegistration')
+      kakaoPixel('114527450721661229').completeRegistration()
+    }
+
+    if(isAndroid || isIos) {
+      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+    }else {
+      failCallback();
+    }
+  }
+
   //회원가입 Data fetch
   async function sighUpFetch() {
     const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
@@ -668,11 +694,7 @@ export default (props) => {
     })
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
-      try {
-        fbq('track', 'CompleteRegistration')
-        firebase.analytics().logEvent('CompleteRegistration')
-        kakaoPixel('114527450721661229').completeRegistration()
-      } catch (e) {}
+      addAdsData();
 
       context.action.alert({
         callback: () => {
