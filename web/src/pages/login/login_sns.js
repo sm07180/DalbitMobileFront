@@ -29,15 +29,7 @@ export default function login_sns({props}) {
   const customHeader = JSON.parse(Api.customHeader)
   const context = useContext(Context)
 
-  const fetchSocialData = async (vendor) => {
-    if (vendor === 'apple') {
-      setTimeout(() => {
-        setAppleAlert(true)
-      }, 1000)
-    } else {
-      setAppleAlert(false)
-    }
-
+  const oldLogin = async (vendor) => {
     if (vendor === 'google' && (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'])) {
       //TODO: 새창로그인 여부 추가
       //Hybrid('openGoogleSignIn', {'webview' : webview})
@@ -67,6 +59,33 @@ export default function login_sns({props}) {
         const redirectUrl = await res.text()
         return (window.location.href = `${redirectUrl}`)
       }
+    }
+  }
+
+  const newSocialLogin = (vendor) => {
+    Hybrid("getSocialToken", {type: vendor})
+  }
+
+  const fetchSocialData = async (vendor) => {
+    if (vendor === 'apple') {
+      setTimeout(() => {
+        setAppleAlert(true)
+      }, 1000)
+    } else {
+      setAppleAlert(false)
+    }
+
+    const isAndroid = customHeader['os'] === OS_TYPE['Android'];
+    const isIos = customHeader['os'] === OS_TYPE['IOS'];
+    let targetVersion = '';
+    const successCallback = () => newSocialLogin(vendor); // 소셜로그인 native 처리 이후 버전
+    const failCallback = () => oldLogin(vendor); // 소셜로그인 옛날 버전 & 사과로그인(사과만 웹에서)
+
+    if(vendor !== 'apple' && (isAndroid || isIos)) {
+      targetVersion = isAndroid ? '1.6.9' : '1.6.3';
+      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+    }else {
+      await failCallback();
     }
   }
 
