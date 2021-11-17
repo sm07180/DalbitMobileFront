@@ -217,10 +217,13 @@
           }
           .status {
             position: absolute;
+            left: 50%;
             bottom: 2%;
+            transform: translateX(-50%);
             font-size: 12px;
             font-weight: bold;
             color: #000000;
+            white-space: nowrap;
             letter-spacing: -0.5px;
             span {
               color: #632beb;
