@@ -232,16 +232,10 @@ export default () => {
   }
 
   const newSocialLogin = async (inputData) => {
-    const customHeader = JSON.parse(Api.customHeader)
     const {webview, redirect} = qs.parse(location.search)
-    let social_result;
-    if (customHeader['os'] === OS_TYPE['IOS']) {
-      inputData = JSON.parse(decodeURIComponent(inputData))
-    }
+    let social_result = await Api.new_social_login(inputData);
+    let sessionRoomNo = sessionStorage.getItem('room_no');
 
-    social_result = await Api.new_social_login(inputData);
-
-    let sessionRoomNo = sessionStorage.getItem('room_no')
     if (sessionRoomNo === undefined || sessionRoomNo === null) {
       sessionRoomNo = Utility.getCookie('listen_room_no')
       if (sessionRoomNo === undefined || sessionRoomNo === null) {
@@ -553,8 +547,14 @@ export default () => {
         socialLogin(event.detail, 'facebook');
         break;
       case 'resSocialToken': // 소셜로그인을 native에서 처리하면서 통합 됨
-        if(event.detail.token !== '0') {
-          newSocialLogin(event.detail);
+        const customHeader = JSON.parse(Api.customHeader)
+        let param = event.detail;
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+          param = JSON.parse(decodeURIComponent(param))
+        }
+
+        if(param.token && param.token !== '0') {
+          newSocialLogin(param);
         }
         break;
       case 'native-room-make':
