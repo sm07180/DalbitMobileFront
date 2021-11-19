@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
 import LoginForm from './login_form'
 import appleLogo from './static/apple_logo.svg'
 import facebookLogo from './static/facebook_logo.svg'
@@ -75,14 +75,11 @@ export default function login_sns({props}) {
       setAppleAlert(false)
     }
 
-    const isAndroid = customHeader['os'] === OS_TYPE['Android'];
-    const isIos = customHeader['os'] === OS_TYPE['IOS'];
-    let targetVersion = '';
     const successCallback = () => newSocialLogin(vendor); // 소셜로그인 native 처리 이후 버전
     const failCallback = () => oldLogin(vendor); // 소셜로그인 옛날 버전 & 사과로그인(사과만 웹에서)
 
-    if(vendor !== 'apple' && (isAndroid || isIos)) {
-      targetVersion = isAndroid ? '1.6.9' : '1.6.3';
+    if(vendor !== 'apple' && (isHybrid())) {
+      const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
       await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
     }else {
       await failCallback();

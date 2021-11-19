@@ -17,18 +17,22 @@ import {OS_TYPE} from 'context/config.js'
  */
 export const isHybrid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS']) {
-    return true
-  }
-  return false
+  return customHeader['os'] === OS_TYPE['Android'] || customHeader['os'] === OS_TYPE['IOS'];
 }
 
 export const isAndroid = () => {
   const customHeader = JSON.parse(Api.customHeader)
-  if (customHeader['os'] === OS_TYPE['Android']) {
-    return true
-  }
-  return false
+  return customHeader['os'] === OS_TYPE['Android'];
+}
+
+export const isIos = ()=> {
+  const customHeader = JSON.parse(Api.customHeader)
+  return customHeader['os'] === OS_TYPE['IOS'];
+}
+
+export const isMobileWeb = ()=> {
+  const customHeader = JSON.parse(Api.customHeader)
+  return customHeader['os'] === OS_TYPE['Desktop'];
 }
 
 /**
