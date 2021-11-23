@@ -1096,7 +1096,8 @@ export default (props) => {
             <li className="isBlock">
               <span className="sbj">제휴/이벤트</span>
               <span className="emp">
-                <a href="mailto:help@dalbitlive.com" className="emailLink">
+                {/*<a href="mailto:help@dalbitlive.com" className="emailLink">*/}
+                <a className="emailLink">
                   help@dalbitlive.com
                 </a>
               </span>
