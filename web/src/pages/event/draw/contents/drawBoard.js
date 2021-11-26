@@ -8,11 +8,21 @@ export default () => {
             <div className="boardList">
                 <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
             </div>
-            <div className="boardList"></div>
-            <div className="boardList"></div>
-            <div className="boardList"></div>
-            <div className="boardList"></div>
-            <div className="boardList"></div>
+            <div className="boardList">
+                <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
+            </div>
+            <div className="boardList">
+                <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
+            </div>
+            <div className="boardList">
+                <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
+            </div>
+            <div className="boardList">
+                <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
+            </div>
+            <div className="boardList">
+                <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
+            </div>
         </div>
         )
     }
@@ -40,6 +50,7 @@ const BoardWrap = styled.div`
             height:100%;
             grid-template-columns : repeat(6, 1fr);
             grid-template-rows : repeat(1, 1fr);
+            column-gap: 5px;
         }
         &List {
             img {width:100%;}
