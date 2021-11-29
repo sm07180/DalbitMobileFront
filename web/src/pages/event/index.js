@@ -28,6 +28,7 @@ import Award from './award'
 import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
+import Kanbu from './kanbu'
 import Raffle from './raffle'
 import RaffleDj from './raffleDj'
 import RecommendDj from './recommend_dj'
@@ -93,6 +94,8 @@ export default () => {
         return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
+      case 'kanbu':
+        return <Kanbu />
       case 'raffle':
         return <Raffle />
       case 'raffleDj':
