@@ -1,6 +1,9 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 
 import {useHistory} from 'react-router-dom'
+import Header from 'components/ui/new_header.js'
+import Collect from './content/collect'
+import Betting from './content/betting'
 
 import './style.scss'
 
@@ -39,36 +42,34 @@ export default () => {
   }, [tabContent])
 
   return (
-    <div id="raffle">
+    <div id="kanbu">
+      <Header title="깐부게임" />
       <button className="close" onClick={goBack}>
         <img src="https://image.dalbitlive.com/event/raffle/close.png" alt="닫기" />
       </button>
       <div className="top">
         <img
-          src="https://image.dalbitlive.com/event/raffle/topImg.png"
+          src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png"
           className="topImg"
-          alt="청취자님!! 이게 머선129? 응모권 모으면 경품이 터집니다! 감동의 눈물도 터져요! 청취만 해도 대박 경품에 당첨될 수 있고! 매회 푸짐한 상품 추첨 기회까지!"
+          alt="깐부게임 00만원 상금이 피었습니다."
         />
-        <div className="date">
-          <img
-            src="https://image.dalbitlive.com/event/raffle/date-listener.png"
-            className="dateImg"
-            alt="총 이벤트 기간 11/10 ~ 12/7, 발표 12/8"
-          />
-        </div>
+        <button className="topBtn">
+          <img src="https://image.dalbitlive.com/event/kanbu/topBtn.png" alt="" />
+        </button>
+        <div className="memo"></div>
       </div>
       <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={tabMenuRef}>
         <div className="tabBtn" ref={tabBtnRef}>
           <button onClick={() => setTabContent('total')}>
-            <img src="https://image.dalbitlive.com/event/raffle/tabBtn-1.png" alt="종합 경품 이벤트" />
+            <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-1.png" alt="구슬 모으기" />
           </button>
           <button onClick={() => setTabContent('round')}>
-            <img src="https://image.dalbitlive.com/event/raffle/tabBtn-2.png" alt="회차별 추첨 이벤트" />
+            <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-2.png" alt="구슬 베팅소" />
           </button>
         </div>
       </div>
-      {/* <TotalRaffle tabContent={tabContent} setTabContent={setTabContent} />
-      <RoundRaffle tabContent={tabContent} /> */}
+      <Collect tabContent={tabContent} setTabContent={setTabContent} />
+      <Betting tabContent={tabContent} />
     </div>
   )
 }
