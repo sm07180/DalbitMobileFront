@@ -6,13 +6,14 @@ import Collect from './content/collect'
 import Betting from './content/betting'
 
 import './style.scss'
+import './betting.scss'
 
 export default () => {
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [tabContent, setTabContent] = useState('total') // total, round
+  const [tabContent, setTabContent] = useState('round') // total, round
 
   const goBack = useCallback(() => history.goBack(), [])
 
@@ -69,7 +70,7 @@ export default () => {
         </div>
       </div>
       <Collect tabContent={tabContent} setTabContent={setTabContent} />
-      <Betting tabContent={tabContent} />
+      <Betting tabContent={tabContent} setTabContent={setTabContent}/>
     </div>
   )
 }

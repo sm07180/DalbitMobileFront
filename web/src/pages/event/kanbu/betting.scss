@@ -1,0 +1,444 @@
+@import '../../../styles/variables';
+
+#kanbu {
+  #betting {
+    .participant {
+      padding: 20px 12px 14px;
+      .participantWrap {
+        overflow: hidden;
+        border-radius: 100px;
+        border: 3px solid #FF2980;
+        background-color: #FF2980;
+        cursor: pointer;
+      }
+      .participantBox {
+        display: flex;
+        letter-spacing: -1px;
+        font-size: 14px;
+    
+        label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 30%;
+          height: 36px;
+          background-color: #FF2980;
+          vertical-align: middle;
+        }
+    
+        .swiper-container-vertical {
+          width: 65%;
+          height: 40px;
+        }
+        
+      }
+      .participantList {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        background-color: #FFF;
+  
+        .nodata {
+          width: 100%;
+          height: 100%;
+          padding: 8px 14px;
+          box-sizing: border-box;
+          font-size: 14px;
+          font-weight: 500;
+          color: #757575;
+          letter-spacing: -1px;
+        }
+  
+        .time {
+          width: 30%;
+          max-width: 92px;
+          margin-right: 2%;
+          color: #757575;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+          letter-spacing: -1px;
+        }
+  
+        .user {
+          width: 70%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
+  
+        .result {
+          width: 70%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+          word-wrap: normal;
+        }
+      }
+    }
+
+    .betting {
+      position: relative;
+      width: 100%;
+      padding-bottom: 171%;
+      background-image: url(https://image.dalbitlive.com/event/kanbu/bead_betting-bg.png);
+      background-position: bottom center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      .bettingWrap {
+        position: absolute;
+        top: 58%; left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 76%;
+        height: 180px;
+        & > form {
+          width: 100%;
+        }
+      }
+      .bettingBtn {
+        position: absolute;
+        bottom: 2%; left: 50%;
+        transform: translateX(-50%);
+        width: 25%; padding-bottom: 26%;
+        border-radius: 50%;
+        background-image: url(https://image.dalbitlive.com/event/kanbu/betting_btn.png);
+        background-position: bottom center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        cursor: pointer;
+        &.disable {
+          background-image: url(https://image.dalbitlive.com/event/kanbu/betting_btn-disable.png);
+          pointer-events: none;
+        }
+      }
+
+      .section {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 18px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+        .sectionTitle {
+          display: block;
+        }              
+        .sectionBead {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+        }
+        .beadData {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 15px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+        .beadIcon {
+          display: inline-block;
+          width: 12px; height: 12px;
+          margin-right: 8px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          &.red {
+            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+          }
+          &.yellow {
+            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+          }
+          &.blue {
+            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+          }
+          &.purple {
+            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+          }
+        }
+        .bettingCount {
+          display: inline-block;
+          width: 22px;
+          height: 18px;
+          border: 1px solid #A5A5A5;
+          border-radius: 2px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #656565;
+          line-height: 18px;
+          text-align: center;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    .beadLog {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      padding: 76px 12px 14px;
+      margin-top: -44px;
+      background-color: #FF2980;
+      box-sizing: border-box;
+      .title {
+        margin-bottom: 20px;
+      }
+      .logTable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        .logHead {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          height: 40px;
+          background-color: #FF8AC4;
+          .logTitle {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: #fff;
+            &:nth-child(1) {width: 50%;}
+            &:nth-child(2) {width: 10%;}
+            &:nth-child(3) {width: 40%;}
+          }
+        }
+        .logBody {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+          background-color: #FFF;
+          .logList {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 52px;
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: 0; left: 50%;
+              width: 90%; height: 1px;
+              transform: translateX(-50%);
+              background: linear-gradient(to right, #FFF 0%, #C5C5C5 30%, #C5C5C5 70%, #FFF 100%);
+            }
+            &:last-child::after {
+              content: none;
+            }
+            .logBead {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 50%;
+              .beadData {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 10px;
+                &:last-child {
+                  margin-right: 0;
+                }
+              }
+              .beadIcon {
+                display: inline-block;
+                width: 12px; height: 12px;
+                margin-right: 4px;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                &.red {
+                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+                }
+                &.yellow {
+                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+                }
+                &.blue {
+                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+                }
+                &.purple {
+                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+                }
+              }
+            }
+            .logResult {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 10%;
+              font-size: 14px;
+              font-weight: 700;              
+              & .success {
+                color: #FF2980;
+              }
+              & .fail {
+                color: #A1A1A1;
+              }
+            }
+            .logData {
+              display: block;
+              width: 40%;
+              padding: 0 10px;
+              overflow: hidden;
+              .logUser {
+                display: block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+                font-size: 14px;
+                font-weight: 700;  
+                color: #242424;
+              }
+              .logTime {
+                font-size: 12px;
+                font-weight: 400;  
+                color: #757575;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#participantPage {
+  .participantBox {
+    .content {
+      padding: 24px 3%;
+
+      .note {
+        padding: 16px 21px;
+        font-size: 13px;
+        line-height: 20px;
+        letter-spacing: -0.33px;
+        text-align: center;
+        color: #757575;
+        &.coupon {
+          padding: 0 0 24px 0;
+        }
+      }
+
+      .gift {
+        font-weight: 800;
+      }
+
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          color: #632beb;
+        }
+
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+          color: $darkGray;
+          overflow: hidden;
+
+          &.gift {
+            font-weight: $bold;
+            color: $black;
+          }
+
+          &.phone {
+            color: $greishBrown;
+          }
+
+          &.result {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px 8px;
+            letter-spacing: -1px;
+          }
+
+          &.date {
+            color: $greishGray;
+            padding: 10px 8px;            
+            .iconNew {
+              display: inline-block;
+              width: 20px;
+              line-height: 13px;
+            }
+          }
+          &.category {
+            font-size: 13px;
+          }
+
+          &.state {
+            color: $mediumGray;
+
+            &.point {
+              color: $black;
+            }
+          }
+
+          &.nick {
+            display: flex;
+            align-items: center;
+            color: $greishBrown;
+            font-weight: $bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+            padding: 10px 8px;
+
+            &.coupon {
+              display: block;
+              font-weight: $regular;
+              color: $darkGray;
+              text-align: center;
+              padding-left: 8px;
+            }
+
+            .thumb {
+              overflow: hidden;
+              width: 28px;
+              height: 28px;
+              margin-right: 5px;
+              border-radius: 50%;
+
+              img {
+                width: 100%;
+              }
+            }
+
+            .phone {
+              text-align: center;
+            }
+
+            p {
+              width: calc(100% - 33px);
+              text-align: left;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+}
