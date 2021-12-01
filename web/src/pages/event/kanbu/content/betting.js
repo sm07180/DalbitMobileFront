@@ -4,8 +4,8 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import Swiper from 'react-id-swiper'
 
-// import PopupNotice from './popupNotice'
-// import PopupDetails from './popupDetails'
+import BettingPop from './bettingPop'
+
 import {Context} from 'context'
 
 const RAFFLE_INPUT_VALUE_MAX_SIZE = 5 // 응모권 입력 자리수
@@ -13,7 +13,7 @@ const RAFFLE_INPUT_VALUE_MAX_SIZE = 5 // 응모권 입력 자리수
 export default (props) => {
   const context = useContext(Context)
   const {tabContent, setTabContent} = props
-  const [raffleItemInfo, setRaffleItemInfo] = useState([])
+  const [bettingPop, setBettingPop] = useState(true)
 
   const history = useHistory()
   const itemListRef = useRef([])
@@ -170,7 +170,7 @@ export default (props) => {
             </div>
           </form>          
         </div>
-        <button className="bettingBtn disable"></button>
+        <button className="bettingBtn disable" onClick={() => setBettingPop(true)}></button>
       </div>
 
       <div className="beadLog">
@@ -241,6 +241,11 @@ export default (props) => {
           </div>
         </div>
       </div>
+      {bettingPop === true ?
+       <BettingPop setBettingPop={setBettingPop}/>
+       :
+        <></>
+      }
     </div>
   )
 }
