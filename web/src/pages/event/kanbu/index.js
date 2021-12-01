@@ -4,6 +4,9 @@ import {useHistory} from 'react-router-dom'
 import Header from 'components/ui/new_header.js'
 import Collect from './content/collect'
 import Betting from './content/betting'
+import PopupNotice from './content/popupNotice'
+import PopupSearch from './content/popupSearch'
+import PopupStatus from './content/popupStatus'
 
 import './style.scss'
 
@@ -12,7 +15,10 @@ export default () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [tabContent, setTabContent] = useState('total') // total, round
+  const [tabContent, setTabContent] = useState('collect') // collect, betting
+  const [popupNotice, setPopupNotice] = useState(false)
+  const [popupSearch, setPopupSearch] = useState(false)
+  const [popupStatus, setPopupStatus] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])
 
@@ -44,32 +50,61 @@ export default () => {
   return (
     <div id="kanbu">
       <Header title="깐부게임" />
-      <button className="close" onClick={goBack}>
-        <img src="https://image.dalbitlive.com/event/raffle/close.png" alt="닫기" />
-      </button>
       <div className="top">
         <img
           src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png"
           className="topImg"
           alt="깐부게임 00만원 상금이 피었습니다."
         />
-        <button className="topBtn">
+        <button className="topBtn" onClick={() => setPopupNotice(true)}>
           <img src="https://image.dalbitlive.com/event/kanbu/topBtn.png" alt="" />
         </button>
-        <div className="memo"></div>
+        <div className="memo">
+          <div className="memoInner">
+            <div className="userWrap">
+              <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓴느 친구 말이야.</div>
+              <div className="userUl">
+                <div className="userList">
+                  <div className="photo">
+                    <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" alt="" />
+                  </div>
+                  <span className="badge">Lv 65</span>
+                  <span className="nick">띵 동 ◡̈♪</span>
+                </div>
+                <div className="dot">
+                  <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" alt="" />
+                </div>
+                <div className="userList">
+                  <div className="photo" onClick={() => setPopupSearch(true)}>
+                    <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" alt="" />
+                  </div>
+                  <button className="kanbuBtn" onClick={() => setPopupStatus(true)}>
+                    깐부신청현황
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={tabMenuRef}>
         <div className="tabBtn" ref={tabBtnRef}>
-          <button onClick={() => setTabContent('total')}>
+          <button className={tabContent === 'collect' ? 'active' : ''} onClick={() => setTabContent('collect')}>
             <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-1.png" alt="구슬 모으기" />
           </button>
-          <button onClick={() => setTabContent('round')}>
+          <button className={tabContent === 'betting' ? 'active' : ''} onClick={() => setTabContent('betting')}>
             <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-2.png" alt="구슬 베팅소" />
           </button>
+          <span className="tabLine"></span>
         </div>
       </div>
       <Collect tabContent={tabContent} setTabContent={setTabContent} />
-      <Betting tabContent={tabContent} />
+      {/* <Betting tabContent={tabContent} /> */}
+
+      {/* 팝업 */}
+      {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
+      {popupSearch && <PopupSearch setPopupSearch={setPopupSearch} />}
+      {popupStatus && <PopupStatus setPopupStatus={setPopupStatus} />}
     </div>
   )
 }

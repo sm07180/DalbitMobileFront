@@ -3365,6 +3365,17 @@ export default class API {
       method: 'GET'
     })
   }
+
+  // 깐부 이벤트
+  /**
+   * @brief 깐부 이벤트
+   * @method "GET"
+   * @create
+   */
+  static getKanbu = async (obj) => {
+    const {params} = obj
+    return await ajax({url: `/banner`, method: 'GET', params: params})
+  }
 }
 
 API.customHeader = null

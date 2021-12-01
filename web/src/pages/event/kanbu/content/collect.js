@@ -1,19 +1,20 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Utility from 'components/lib/utility'
+import Lottie from 'react-lottie'
+// component
+import {IMG_SERVER} from 'context/config'
 
-// import PopupNotice from './popupNotice'
-// import PopupDetails from './popupDetails'
+import PopupDetails from './popupDetails'
+import PopupReport from './popupReport'
 import {Context} from 'context'
-
-const RAFFLE_INPUT_VALUE_MAX_SIZE = 5 // 응모권 입력 자리수
 
 export default (props) => {
   const context = useContext(Context)
   const {tabContent, setTabContent} = props
-  const [popupNotice, setPopupNotice] = useState(false)
+  const [noticeTab, setNoticeTab] = useState(false)
   const [popupDetails, setPopupDetails] = useState(false)
+  const [popupReport, setPopupReport] = useState(false)
   const [raffleTotalSummaryInfo, setRaffleTotalSummaryInfo] = useState({
     coupon_cnt: 0, // 내 응모권 수
     fan_use_coupon_cnt: 0, // 총 응모 현황
@@ -25,15 +26,6 @@ export default (props) => {
   const itemListRef = useRef([])
   const numberReg = /^[0-9]*$/
 
-  // 달 충전
-  const chargeDal = () => {
-    if (!context.token.isLogin) {
-      history.push('/login')
-      return
-    }
-
-    history.push('/pay/store')
-  }
   const numberValidation = useCallback((val) => numberReg.test(val) && !isNaN(val), [])
 
   // 응모하기
@@ -81,29 +73,82 @@ export default (props) => {
   }, [])
 
   useEffect(() => {
-    if (tabContent === 'total') {
+    if (tabContent === 'collect') {
       getTotalEventInfo()
     }
   }, [tabContent])
 
   return (
-    <div id="collect" style={{display: `${tabContent === 'total' ? 'block' : 'none'}`}}>
-      <img src="https://image.dalbitlive.com/event/kanbu/kanbuBottomImg.png" className="bg" />
-      <div className="title">
-        <img src="https://image.dalbitlive.com/event/kanbu/bottomTitle.png" alt="구슬 현황" />
-      </div>
-      <div className="subTitle">
-        <img src="https://image.dalbitlive.com/event/kanbu/bottomBtn.png" alt="구슬 얻는 법" />
-      </div>
-      <section className="rank">
-        <img src="https://image.dalbitlive.com/event/kanbu/wrapperTop.png" />
-        <div className="rankWrap">
+    <>
+      <div id="collect" style={{display: `${tabContent === 'collect' ? 'block' : 'none'}`}}>
+        <section className="content">
+          <img src="https://image.dalbitlive.com/event/kanbu/kanbuBottomImg.png" className="bg" />
+          <div className="title">
+            <img src="https://image.dalbitlive.com/event/kanbu/bottomTitle.png" alt="구슬 현황" />
+          </div>
+          <button className="subTitle" onClick={() => setPopupDetails(true)}>
+            <img src="https://image.dalbitlive.com/event/kanbu/bottomBtn.png" alt="구슬 얻는 법" />
+          </button>
+          <div className="status">
+            <div className="statusWrap">
+              <div className="marbleWrap">
+                <div className="report">
+                  <div className="list">
+                    <img src="https://image.dalbitlive.com/event/kanbu/marble-1.png" />
+                    <span>10</span>
+                  </div>
+                  <div className="list">
+                    <img src="https://image.dalbitlive.com/event/kanbu/marble-2.png" />
+                    <span>10</span>
+                  </div>
+                  <div className="list">
+                    <img src="https://image.dalbitlive.com/event/kanbu/marble-3.png" />
+                    <span>100</span>
+                  </div>
+                  <div className="list">
+                    <img src="https://image.dalbitlive.com/event/kanbu/marble-4.png" />
+                    <span>10</span>
+                  </div>
+                  <button onClick={() => setPopupReport(true)}>
+                    <img src="https://image.dalbitlive.com/event/kanbu/btnReport.png" alt="구슬 리포트" />
+                  </button>
+                </div>
+                <div className="pocket">
+                  <div className="list">
+                    {/* <img src="https://image.dalbitlive.com/event/kanbu/marblePocket-1.png" /> */}
+                    <Lottie
+                      options={{
+                        loop: true,
+                        autoPlay: true,
+                        path: `${IMG_SERVER}/event/kanbu/marblePocket-1-lottie.json`
+                      }}
+                    />
+                    <span>456</span>
+                  </div>
+                  <button>
+                    <img src="https://image.dalbitlive.com/event/kanbu/btnPocket.png" alt="구슬 주머니" />
+                  </button>
+                </div>
+              </div>
+              <div className="score">총 20,879점</div>
+            </div>
+          </div>
+        </section>
+        <section className={`notice ${noticeTab === false ? 'off' : 'on'}`} onClick={() => setNoticeTab(noticeTab)}>
+          {noticeTab === false ? (
+            <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-on.png" />
+          ) : (
+            <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-off.png" />
+          )}
+        </section>
+        <section className="rank">
+          <img src="https://image.dalbitlive.com/event/kanbu/wrapperTop.png" />
           <div className="rankList my">
             <div className="number">
               <span className="tit">내 순위</span>
               <span className="num">32</span>
             </div>
-            <div className="rankbox">
+            <div className="rankBox">
               <div className="rankItem">
                 <em className="badge">lv 65</em>
                 <span className="userNick">해나잉뎅</span>
@@ -116,33 +161,79 @@ export default (props) => {
               </div>
             </div>
             <div className="score">
-              <img src="" />
+              <img src="https://image.dalbitlive.com/event/kanbu/iconScore.png" />
               <span>2,181</span>
             </div>
           </div>
-          <div className="rankList">
-            <div className="number"></div>
-            <div className="rankbox">
-              <div className="rankItem">
-                <em className="badge">lv 65</em>
-                <span className="userNick">해나잉뎅</span>
-                <span className="userId">maiwcl88</span>
+          <div className="rankWrap">
+            <div className="rankList">
+              <div className="number medal-1">
+                <img src="https://image.dalbitlive.com/event/kanbu/rankMedal-1.png" />
               </div>
-              <div className="rankItem">
-                <em className="badge">lv 65</em>
-                <span className="userNick">해나잉뎅</span>
-                <span className="userId">maiwcl88</span>
+              <div className="rankBox">
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+              </div>
+              <div className="score">
+                <img src="https://image.dalbitlive.com/event/kanbu/iconScore.png" />
+                <span>2,181</span>
               </div>
             </div>
-            <div className="score">
-              <img src="" />
-              <span>2,181</span>
+            <div className="rankList">
+              <div className="number medal-2">
+                <img src="https://image.dalbitlive.com/event/kanbu/rankMedal-2.png" />
+              </div>
+              <div className="rankBox">
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+              </div>
+              <div className="score">
+                <img src="https://image.dalbitlive.com/event/kanbu/iconScore.png" />
+                <span>2,181</span>
+              </div>
+            </div>
+            <div className="rankList">
+              <div className="number medal-3">
+                <img src="https://image.dalbitlive.com/event/kanbu/rankMedal-3.png" />
+              </div>
+              <div className="rankBox">
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+              </div>
+              <div className="score">
+                <img src="https://image.dalbitlive.com/event/kanbu/iconScore.png" />
+                <span>2,181</span>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-      {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
+        </section>
+      </div>
       {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} />}
-    </div>
+      {popupReport && <PopupReport setPopupReport={setPopupReport} />}
+    </>
   )
 }
