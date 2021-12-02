@@ -111,16 +111,22 @@ export default () => {
       <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={tabMenuRef}>
         <div className="tabBtn" ref={tabBtnRef}>
           <button className={tabContent === 'collect' ? 'active' : ''} onClick={() => setTabContent('collect')}>
-            <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-1.png" alt="구슬 모으기" />
+            <img
+              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
+              alt="구슬 모으기"
+            />
           </button>
           <button className={tabContent === 'betting' ? 'active' : ''} onClick={() => setTabContent('betting')}>
-            <img src="https://image.dalbitlive.com/event/kanbu/tabTxt-2.png" alt="구슬 베팅소" />
+            <img
+              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
+              alt="구슬 베팅소"
+            />
           </button>
           <span className="tabLine"></span>
         </div>
       </div>
       <Collect tabContent={tabContent} setTabContent={setTabContent} />
-      {/* <Betting tabContent={tabContent} /> */}
+      <Betting tabContent={tabContent} setTabContent={setTabContent} />
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

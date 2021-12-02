@@ -119,15 +119,15 @@ export default () => {
                 <div className="beadGroup">
                   <span className="bead red"></span>
                   <span className="beadCount">23</span>
-                </div>                
+                </div>
                 <div className="beadGroup">
                   <span className="bead yellow"></span>
                   <span className="beadCount">0</span>
-                </div>                
+                </div>
                 <div className="beadGroup">
                   <span className="bead blue"></span>
                   <span className="beadCount">38</span>
-                </div>                
+                </div>
                 <div className="beadGroup">
                   <span className="bead purple"></span>
                   <span className="beadCount">11</span>
@@ -140,8 +140,8 @@ export default () => {
             <div className="title">교환 가능한 구슬 주머니</div>
             <div className="shadowBox">
               <div className="pocketWrap">
-                  <span className="pocket blue"></span>
-                  <span className="pocketCount">0</span>
+                <span className="pocket blue"></span>
+                <span className="pocketCount">0</span>
               </div>
             </div>
             <button className="beadBtn large">구슬 주머니 열기</button>
@@ -171,7 +171,7 @@ export default () => {
               {!winList.length ? (
                 <tr>
                   <td colSpan="3">받은 내역이 없습니다.</td>
-                </tr> 
+                </tr>
               ) : (
                 winList.map((item, index) => {
                   const {winDt, nickNm, profImg, isNew, memNo, itemImageUrl, itemName} = item
@@ -184,14 +184,12 @@ export default () => {
                         }}>
                         <p>{nickNm}</p>
                       </td>
-                      <td className="bonus">
-                        점
-                      </td>
+                      <td className="bonus">점</td>
                       <td className="date">
                         <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
 
                         {dateFormatter(winDt)}
-                      </td>                      
+                      </td>
                     </tr>
                   )
                 })

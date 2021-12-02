@@ -1,14 +1,13 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
-import Utility from 'components/lib/utility'
+import NoResult from 'components/ui/new_noResult'
 import Swiper from 'react-id-swiper'
 
 import BettingPop from './bettingPop'
 
 import {Context} from 'context'
-
-const RAFFLE_INPUT_VALUE_MAX_SIZE = 5 // 응모권 입력 자리수
+import noResult from 'components/ui/noResult'
 
 export default (props) => {
   const globalCtx = useContext(Context)
@@ -16,10 +15,6 @@ export default (props) => {
   const [bettingPop, setBettingPop] = useState(true)
 
   const history = useHistory()
-  const itemListRef = useRef([])
-  const numberReg = /^[0-9]*$/
-  const numberValidation = useCallback((val) => numberReg.test(val) && !isNaN(val), [])
-
   const getRoundEventInfo = useCallback(async () => {
     const {message, data} = await Api.getRaffleEventTotalInfo()
     if (message === 'SUCCESS') {
@@ -29,7 +24,7 @@ export default (props) => {
   }, [])
 
   const [winList, setWinList] = useState()
-  
+
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -52,31 +47,31 @@ export default (props) => {
   }
 
   const bettingBeadCount = (e) => {
-    let inputVal = new Array;
-    let inputLength = document.getElementsByClassName('bettingCount').length;
-    let inputtotal = 0;
+    let inputVal = new Array()
+    let inputLength = document.getElementsByClassName('bettingCount').length
+    let inputtotal = 0
 
-    for(let i = 0; i < inputLength; i++){
-      inputVal[i] = Number(document.getElementsByName("beadBettingCount")[i].value);
-      inputtotal = inputVal.reduce((a,b) => (a+b));
+    for (let i = 0; i < inputLength; i++) {
+      inputVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)
+      inputtotal = inputVal.reduce((a, b) => a + b)
     }
     if (e.target.value > 10) {
-      e.target.value = ""
+      e.target.value = ''
     }
     if (inputtotal > 10) {
-      globalCtx.action.toast({msg: "베팅 가능한 최대 개수는 10개 입니다."})   
-      e.target.value = ""
+      globalCtx.action.toast({msg: '베팅 가능한 최대 개수는 10개 입니다.'})
+      e.target.value = ''
     }
   }
 
   useEffect(() => {
-    if (tabContent === 'round') {
+    if (tabContent === 'betting') {
       getRoundEventInfo()
     }
   }, [tabContent])
 
   return (
-    <div id="betting" style={{display: `${tabContent === 'round' ? 'block' : 'none'}`}}>
+    <div id="betting" style={{display: `${tabContent === 'betting' ? 'block' : 'none'}`}}>
       <div className="participant">
         <div className="participantWrap">
           <div
@@ -88,7 +83,7 @@ export default (props) => {
               <img src="https://image.dalbitlive.com/event/kanbu/bettingLog_title.png" alt="베팅 참여자" />
             </label>
 
-            {winList ? 
+            {winList ? (
               <Swiper {...swiperParams}>
                 {winList.length > 0 &&
                   winList.map((item, index) => {
@@ -98,20 +93,20 @@ export default (props) => {
                       <div className="participantList" key={index}>
                         <p className="time">{dateFormatter(winDt)}</p>
                         <p className="user">{nickNm}</p>
-                        <p className={`result ${result === "성공" ? "success" : "fail"}`}>{result}</p>
+                        <p className={`result ${result === '성공' ? 'success' : 'fail'}`}>{result}</p>
                       </div>
                     )
                   })}
               </Swiper>
-             : 
+            ) : (
               <div className="participantList">
                 <p className="nodata">깐부 눈치 보지 말고 베팅해버려~</p>
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
-      
+
       <div className="betting">
         <div className="bettingWrap">
           <form action="" method="get">
@@ -146,19 +141,19 @@ export default (props) => {
               <div className="sectionBead">
                 <div className="beadData">
                   <span className="beadIcon red"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon yellow"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon blue"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon purple"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
                 </div>
               </div>
             </div>
@@ -186,7 +181,7 @@ export default (props) => {
                 </div>
               </div>
             </div>
-          </form>          
+          </form>
         </div>
         <button className="bettingBtn disable" onClick={() => setBettingPop(true)}></button>
       </div>
@@ -197,9 +192,13 @@ export default (props) => {
         </div>
         <div className="logTable">
           <div className="logHead">
-              <div className="logTitle">베팅한 구슬</div>
-              <div className="logTitle">성공<br/>여부</div>
-              <div className="logTitle">참여자 / 일시</div>
+            <div className="logTitle">베팅한 구슬</div>
+            <div className="logTitle">
+              성공
+              <br />
+              여부
+            </div>
+            <div className="logTitle">참여자 / 일시</div>
           </div>
           <div className="logBody">
             <div className="logList">
@@ -225,9 +224,9 @@ export default (props) => {
                 <p className="success">성공</p>
               </div>
               <div className="logData">
-                <div className="logUser">띵 동   ◡̈♪</div>
-                <div className="logTime">12/22  15:00</div>
-              </div>        
+                <div className="logUser">띵 동 ◡̈♪</div>
+                <div className="logTime">12/22 15:00</div>
+              </div>
             </div>
             <div className="logList">
               <div className="logBead">
@@ -253,17 +252,14 @@ export default (props) => {
               </div>
               <div className="logData">
                 <div className="logUser">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
-                <div className="logTime">12/22  15:00</div>
-              </div>        
+                <div className="logTime">12/22 15:00</div>
+              </div>
             </div>
+            <NoResult type="default" text="아직 베팅 내역이 없습니다." />
           </div>
         </div>
       </div>
-      {bettingPop === true ?
-       <BettingPop setBettingPop={setBettingPop}/>
-       :
-        <></>
-      }
+      {bettingPop && <BettingPop setBettingPop={setBettingPop} />}
     </div>
   )
 }

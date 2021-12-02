@@ -29,6 +29,7 @@ import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import Kanbu from './kanbu'
+import KanbuPocket from './kanbu/content/beadPocket'
 import Raffle from './raffle'
 import RaffleDj from './raffleDj'
 import RecommendDj from './recommend_dj'
@@ -98,6 +99,8 @@ export default () => {
         return <PostGuide />
       case 'kanbu':
         return <Kanbu />
+      case 'kanbuPocket':
+        return <KanbuPocket />
       case 'raffle':
         return <Raffle />
       case 'raffleDj':

@@ -2,12 +2,13 @@ import React, {useEffect, useState, useRef, useCallback, useContext} from 'react
 import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
+import NoResult from 'components/ui/new_noResult'
 // component
+import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 import PopupDetails from './popupDetails'
 import PopupReport from './popupReport'
-import {Context} from 'context'
 
 export default (props) => {
   const context = useContext(Context)
@@ -73,7 +74,7 @@ export default (props) => {
                     />
                     <span>456</span>
                   </div>
-                  <button>
+                  <button onClick={() => history.push({pathname: `/event/kanbuPocket`})}>
                     <img src="https://image.dalbitlive.com/event/kanbu/btnPocket.png" alt="구슬 주머니" />
                   </button>
                 </div>
@@ -81,7 +82,7 @@ export default (props) => {
               <div className="score">총 20,879점</div>
             </div>
           </div>
-          <div className="status">
+          <div className="status" style={{display: 'none'}}>
             <div className="statusWrap">
               <div className="marbleWrapNone">
                 깐부를 맺으면
@@ -215,6 +216,7 @@ export default (props) => {
                 <span>2,181</span>
               </div>
             </div>
+            <NoResult type="default" text="아직 순위가 없습니다." />
           </div>
         </section>
       </div>
