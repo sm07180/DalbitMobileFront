@@ -1,12 +1,13 @@
 import React, {useState, useEffect, useCallback} from 'react'
 import Api from 'context/api'
+import NoResult from 'components/ui/new_noResult'
 
 import './search.scss'
 
 export default (props) => {
   const {setPopupStatus} = props
 
-  const [tabBtn, setTabBtn] = useState(0)
+  const [tabBtn, setTabBtn] = useState('r')
   const [kanbuSubList, setKanbuSubList] = useState([])
   const [popAgreement, setPopAgreement] = useState(false)
 
@@ -28,17 +29,17 @@ export default (props) => {
     }
   }
 
+  const application = tabBtn
   const fetchKanbuSubList = async () => {
-    const {result, data, message} = await Api.getKanbu({
-      param: {
-        insSlct: 'r',
-        gganbuNo: 1,
-        pageNo: 1,
-        pagePerCnt: 1
-      }
-    })
+    const param = {
+      insSlct: application,
+      gganbuNo: 1,
+      pageNo: 1,
+      pagePerCnt: 50
+    }
+    const {result, data, message} = await Api.getKanbu(param)
     if (result === 'success') {
-      setKanbuSubList(data)
+      setKanbuSubList(data.list)
     } else {
       console.log(message)
     }
@@ -46,7 +47,7 @@ export default (props) => {
 
   useEffect(() => {
     fetchKanbuSubList()
-  }, [])
+  }, [application])
 
   // 수락 => 동의서, 수락
   const accept = () => {
@@ -96,119 +97,40 @@ export default (props) => {
       <div className="contentWrap">
         <h1 className="title">깐부 신청 현황</h1>
         <div className="tabBtnWrap">
-          <button className={tabBtn === 0 ? 'active' : ''} onClick={() => setTabBtn(0)}>
+          <button className={tabBtn === 'r' ? 'active' : ''} onClick={() => setTabBtn('r')}>
             받은 신청
           </button>
-          <button className={tabBtn === 1 ? 'active' : ''} onClick={() => setTabBtn(1)}>
+          <button className={tabBtn === 'm' ? 'active' : ''} onClick={() => setTabBtn('m')}>
             나의 신청
           </button>
         </div>
-        {tabBtn === 0 ? (
+        {tabBtn === 'r' ? (
           <>
-            <div className="searchTitle">
-              나의 팬<span>낮은 레벨 순</span>
+            <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
+            <div className="listWrap" style={{display: 'none'}}>
+              <div className="list">
+                <div className="photo">
+                  <img src="" alt="유저이미지" />
+                </div>
+                <div className="listBox">
+                  <div className="nick">finish</div>
+                  <div className="listItem">
+                    <span>Lv. 38</span>
+                    <span className="average">
+                      <em>평균</em>
+                      <span>Lv 20</span>
+                    </span>
+                  </div>
+                </div>
+                <button className="accept">수락</button>
+              </div>
             </div>
-            <div className="listWrap">
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
+            <div className="listNone">
+              <NoResult type="default" text="신청한 회원이 없습니다." />
             </div>
           </>
         ) : (
-          <div className="listWrap" style={{height: '339px'}}>
+          <div className="listWrap" style={{height: '334px'}}>
             <div className="list">
               <div className="photo">
                 <img src="" alt="유저이미지" />

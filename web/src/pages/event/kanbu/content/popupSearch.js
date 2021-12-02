@@ -1,10 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
+import {Context} from 'context/index.js'
+import Api from 'context/api'
 
 import './search.scss'
 
+let btnAccess = false
+
 export default (props) => {
   const {setPopupSearch} = props
+  const context = useContext(Context)
 
+  const [result, setResult] = useState('')
+  const [memberList, setMemberList] = useState([])
   const [popAgreement, setPopAgreement] = useState(true)
 
   useEffect(() => {
@@ -22,6 +29,47 @@ export default (props) => {
     const target = e.target
     if (target.id === 'popupSearch') {
       closePopup()
+    }
+  }
+
+  async function fetchSearchMember() {
+    const res = await Api.member_search({
+      params: {
+        search: result,
+        page: 1,
+        records: 20
+      }
+    })
+    if (res.result === 'success') {
+      setMemberList(res.data.list)
+    } else {
+      context.action.alert({
+        msg: res.message
+      })
+    }
+  }
+  const holeSearch = () => {
+    fetchSearchMember()
+  }
+
+  const onChange = (e) => {
+    setResult(e.target.value)
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    btnAccess = true
+    if (result.length < 2) {
+      context.action.alert({
+        msg: `두 글자 이상 입력해 주세요.`,
+        callback: () => {
+          btnAccess = false
+        }
+      })
+    } else {
+      holeSearch()
+      setTimeout(() => {
+        btnAccess = false
+      }, 1000)
     }
   }
 
@@ -73,10 +121,18 @@ export default (props) => {
       <div className="contentWrap">
         <h1 className="title">깐부찾기</h1>
         <div className="searchWrap">
-          <input type="text" className="searchInput" placeholder="깐부를 맺고 싶은 회원을 검색해 보세요." />
-          <button type="submit">
-            <img src="https://image.dalbitlive.com/event/kanbu/icoSearch.png" />
-          </button>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className="searchInput"
+              value={result}
+              onChange={onChange}
+              placeholder="깐부를 맺고 싶은 회원을 검색해 보세요."
+            />
+            <button type="submit" disabled={btnAccess}>
+              <img src="https://image.dalbitlive.com/event/kanbu/icoSearch.png" />
+            </button>
+          </form>
         </div>
         <div className="searchTitle">
           나의 팬<span>낮은 레벨 순</span>

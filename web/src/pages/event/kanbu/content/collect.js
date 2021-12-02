@@ -15,62 +15,8 @@ export default (props) => {
   const [noticeTab, setNoticeTab] = useState('')
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
-  const [raffleTotalSummaryInfo, setRaffleTotalSummaryInfo] = useState({
-    coupon_cnt: 0, // 내 응모권 수
-    fan_use_coupon_cnt: 0, // 총 응모 현황
-    fan_week_use_coupon_cnt: 0 // 이번 회 응모 현황
-  })
-  const [raffleItemInfo, setRaffleItemInfo] = useState([])
 
   const history = useHistory()
-  const itemListRef = useRef([])
-  const numberReg = /^[0-9]*$/
-
-  const numberValidation = useCallback((val) => numberReg.test(val) && !isNaN(val), [])
-
-  // 응모하기
-  const goRaffle = useCallback(async (itemCode, index) => {
-    if (!context.token.isLogin) {
-      history.push('/login')
-      return
-    }
-
-    const inputCnt = parseInt(itemListRef.current[index].value)
-    const isNumber = numberValidation(inputCnt)
-
-    let alertMsg = '잠시후 다시 시도해주세요'
-    if (!isNumber) {
-      alertMsg = '숫자만 입력하세요'
-    } else {
-      const {message, data, code} = await Api.putEnterRaffleEvent({fanGiftNo: itemCode, couponCnt: inputCnt})
-      if (code !== '99999') {
-        if (data.couponInsRes === -3) {
-          alert('이벤트가 종료되었습니다')
-          window.location.replace('/')
-          return
-        } else if (data.couponInsRes === 1) {
-          alertMsg = `${inputCnt}회를 응모하였습니다`
-          setRaffleTotalSummaryInfo(data.summaryInfo)
-          setRaffleItemInfo(data.itemInfo)
-          itemListRef.current[index].value = 1
-        } else if (data.couponInsRes === -2) {
-          alertMsg = message
-        }
-      }
-    }
-
-    context.action.alert({
-      msg: alertMsg
-    })
-  }, [])
-
-  const getTotalEventInfo = useCallback(async () => {
-    const {message, data} = await Api.getRaffleEventTotalInfo()
-    if (message === 'SUCCESS') {
-      setRaffleTotalSummaryInfo(data.summaryInfo)
-      setRaffleItemInfo(data.itemInfo)
-    }
-  }, [])
 
   const tabActive = () => {
     if (noticeTab === 'active') {
@@ -79,12 +25,6 @@ export default (props) => {
       setNoticeTab('active')
     }
   }
-
-  useEffect(() => {
-    if (tabContent === 'collect') {
-      getTotalEventInfo()
-    }
-  }, [tabContent])
 
   return (
     <>

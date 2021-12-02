@@ -18,8 +18,8 @@ export default () => {
   const [kanbuOn, setKanbuOn] = useState(true)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
-  const [popupSearch, setPopupSearch] = useState(false)
-  const [popupStatus, setPopupStatus] = useState(true)
+  const [popupSearch, setPopupSearch] = useState(true)
+  const [popupStatus, setPopupStatus] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])
 
@@ -73,8 +73,8 @@ export default () => {
                   <span className="nick">띵 동 ◡̈♪</span>
                 </div>
                 <div className="dot">
-                  {kanbuOn === false && <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" />}
-                  {kanbuOn === true && (
+                  {kanbuOn === true && <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" />}
+                  {kanbuOn === false && (
                     <div className="var">
                       <img src="https://image.dalbitlive.com/event/kanbu/dotKanbu.png" />
                       <span className="varLevel">56</span>
@@ -82,7 +82,7 @@ export default () => {
                     </div>
                   )}
                 </div>
-                {kanbuOn === false && (
+                {kanbuOn === true && (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
                       <img src="https://image.dalbitlive.com/event/kanbu/kanbuUserNone.png" />
@@ -93,7 +93,7 @@ export default () => {
                     </button>
                   </div>
                 )}
-                {kanbuOn === true && (
+                {kanbuOn === false && (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
                       <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" />
