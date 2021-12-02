@@ -16,7 +16,7 @@ export default () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [kanbuOn, setKanbuOn] = useState(true)
+  const [gganbuOn, setGganbuOn] = useState(true)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupSearch, setPopupSearch] = useState(true)
@@ -50,16 +50,16 @@ export default () => {
   }, [tabContent])
 
   return (
-    <div id="kanbu">
+    <div id="gganbu">
       <Header title="깐부게임" />
       <div className="top">
         <img
-          src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png"
+          src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
           className="topImg"
           alt="깐부게임 00만원 상금이 피었습니다."
         />
         <button className="topBtn" onClick={() => setPopupNotice(true)}>
-          <img src="https://image.dalbitlive.com/event/kanbu/topBtn.png" alt="" />
+          <img src="https://image.dalbitlive.com/event/gganbu/topBtn.png" alt="" />
         </button>
         <div className="memo">
           <div className="memoInner">
@@ -68,36 +68,36 @@ export default () => {
               <div className="userUl">
                 <div className="userList">
                   <div className="photo">
-                    <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" alt="" />
+                    <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png" alt="" />
                   </div>
                   <span className="badge">Lv 65</span>
                   <span className="nick">띵 동 ◡̈♪</span>
                 </div>
                 <div className="dot">
-                  {kanbuOn === true && <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" />}
-                  {kanbuOn === false && (
+                  {gganbuOn === true && <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />}
+                  {gganbuOn === false && (
                     <div className="var">
-                      <img src="https://image.dalbitlive.com/event/kanbu/dotKanbu.png" />
+                      <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
                       <span className="varLevel">56</span>
                       <span className="varTit">평균레벨</span>
                     </div>
                   )}
                 </div>
-                {kanbuOn === true && (
+                {gganbuOn === true && (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuUserNone.png" />
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
                     </div>
-                    <button className="kanbuBtn" onClick={() => setPopupStatus(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtn.png" />
-                      <img className="btnNew" src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtnNew.png" />
+                    <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+                      <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
                     </button>
                   </div>
                 )}
-                {kanbuOn === false && (
+                {gganbuOn === false && (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" />
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png" />
                     </div>
                     <span className="badge">Lv 65</span>
                     <span className="nick">띵 동 ◡̈♪</span>
@@ -112,13 +112,13 @@ export default () => {
         <div className="tabBtn" ref={tabBtnRef}>
           <button className={tabContent === 'collect' ? 'active' : ''} onClick={() => setTabContent('collect')}>
             <img
-              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
               alt="구슬 모으기"
             />
           </button>
           <button className={tabContent === 'betting' ? 'active' : ''} onClick={() => setTabContent('betting')}>
             <img
-              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
             />
           </button>

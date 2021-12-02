@@ -8,7 +8,7 @@ export default (props) => {
   const {setPopupStatus} = props
 
   const [tabBtn, setTabBtn] = useState('r')
-  const [kanbuSubList, setKanbuSubList] = useState([])
+  const [gganbuSubList, setGganbuSubList] = useState([])
   const [popAgreement, setPopAgreement] = useState(false)
 
   useEffect(() => {
@@ -30,23 +30,23 @@ export default (props) => {
   }
 
   const application = tabBtn
-  const fetchKanbuSubList = async () => {
+  const fetchGganbuSubList = async () => {
     const param = {
       insSlct: application,
       gganbuNo: 1,
       pageNo: 1,
       pagePerCnt: 50
     }
-    const {result, data, message} = await Api.getKanbu(param)
+    const {result, data, message} = await Api.getGganbu(param)
     if (result === 'success') {
-      setKanbuSubList(data.list)
+      setGganbuSubList(data.list)
     } else {
       console.log(message)
     }
   }
 
   useEffect(() => {
-    fetchKanbuSubList()
+    fetchGganbuSubList()
   }, [application])
 
   // 수락 => 동의서, 수락

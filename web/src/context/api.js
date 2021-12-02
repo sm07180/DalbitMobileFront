@@ -3372,7 +3372,7 @@ export default class API {
    * @method "POST"
    * @create
    */
-  static getKanbu = async (data) => {
+  static getGganbu = async (data) => {
     return await ajax({
       url: `/event/gganbu/relationship/list`,
       method: 'POST',

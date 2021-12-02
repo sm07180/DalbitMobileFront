@@ -1,6 +1,6 @@
 @import '../../../styles/variables';
 
-#kanbu {
+#gganbu {
   position: relative;
   width: 100%;
   height: calc(100% - 50px);
@@ -39,7 +39,7 @@
         position: relative;
         width: 100%;
         padding-top: 67.69%;
-        background: url('https://image.dalbitlive.com/event/kanbu/TopMemo.png') center/auto 100% no-repeat;
+        background: url('https://image.dalbitlive.com/event/gganbu/TopMemo.png') center/auto 100% no-repeat;
         .userWrap {
           position: absolute;
           top: 25%;
@@ -103,7 +103,7 @@
                 font-weight: 700;
                 color: #333;
               }
-              .kanbuBtn {
+              .gganbuBtn {
                 position: relative;
                 width: 86px;
                 height: 28px;

@@ -130,7 +130,7 @@ export default (props) => {
               placeholder="깐부를 맺고 싶은 회원을 검색해 보세요."
             />
             <button type="submit" disabled={btnAccess}>
-              <img src="https://image.dalbitlive.com/event/kanbu/icoSearch.png" />
+              <img src="https://image.dalbitlive.com/event/gganbu/icoSearch.png" />
             </button>
           </form>
         </div>
