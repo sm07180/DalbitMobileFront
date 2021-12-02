@@ -1,13 +1,20 @@
 import React, {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import Lottie from 'react-lottie'
+
+import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
   const {setBettingPop} = props
   const [popResult, setPopResult] = useState(false)
+  const [valueType, setValueType] = useState("")
+  const [typeSelect, setTypeSelect] = useState("")
+  const [bettingResult, setBettingResult] = useState("")
+  const [beadNum, setBeadNum] = useState(0);
+
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-
     return () => {
       document.body.style.overflow = ''
     }
@@ -16,11 +23,44 @@ export default (props) => {
   const closePopup = () => {
     setBettingPop(false)
   }
+
   const wrapClick = (e) => {
     const target = e.target
-    if (target.id === 'pupupDetails') {
+    if (target.id === 'bettingPop') {
       closePopup()
     }
+  }
+
+  const selectVal = (e) => {
+    const selectValue = document.querySelector('input[name="bettingType"]:checked').value;
+    setValueType(selectValue);
+  }
+
+  const betting = () => {
+    const selectValue = document.querySelector('input[name="bettingType"]:checked').value;
+    const beadLength = Math.floor(Math.random() * 4) + 1;
+    let resultType = "";
+    
+    setBeadNum(beadLength);
+
+    if(beadLength === 1 || beadLength === 3){
+      resultType = "odd";
+    } else {
+      resultType = "even";
+    }
+
+    if(selectValue === "odd") {
+      setTypeSelect("홀수");
+    } else {
+      setTypeSelect("짝수");
+    }
+
+    if(selectValue === resultType) {
+      setBettingResult("success");
+    } else {
+      setBettingResult("fail");
+    }
+    setPopResult(true);
   }
 
   return (
@@ -32,7 +72,7 @@ export default (props) => {
             {popResult &&
               <div className="bettingType"> 
                   <div className="bettingTitle">나의 베팅</div>
-                  <div className="bettingMy">짝수</div>
+                  <div className="bettingMy">{typeSelect}</div>
               </div>
             }
             <div className="bettingBead">
@@ -59,14 +99,33 @@ export default (props) => {
           </div>
           <div className="bettingAni">           
             {popResult ?
-              <div id="bettingAni"></div>
+              <div id="bettingAni">                
+                <Lottie
+                  options={{
+                    loop: false,
+                    autoPlay: true,
+                    path: `${IMG_SERVER}/event/kanbu/ani/odd_even_game_0${beadNum}.json`
+                  }}
+                />
+                {bettingResult === "success" ? 
+                  <div className="resultToast">
+                    이겼다!
+                  </div>
+                  :
+                  <div className="resultToast">
+                    그만해~<br/>
+                    이러다가 다 잃어!
+                  </div>
+                }
+              </div>
               :
               <img src="https://image.dalbitlive.com/event/kanbu/betting_ani.png" alt="베팅 준비중" />
             }
           </div>
-          <div className="bettingInfo">
-            <label className="selectMenu">
-              <input type="radio" name="bettingType" className="bettingSelect"/>
+          {!popResult &&
+            <div className="bettingInfo">
+            <label className={`selectMenu ${valueType === "odd" ? "active" : ""}`} onClick={selectVal}>
+              <input type="radio" name="bettingType" value="odd" className="bettingSelect" />
               <div className="selectRow">
                 <span className="selectType">홀수</span>
                 <span className="selectRadio"></span>
@@ -84,8 +143,8 @@ export default (props) => {
                 <span className="percentUnit">%</span>
               </div>
             </label>
-            <label className="selectMenu">
-              <input type="radio" name="bettingType" className="bettingSelect"/>
+            <label className={`selectMenu ${valueType === "even" ? "active" : ""}`} onClick={selectVal}>
+              <input type="radio" name="bettingType" value="even" className="bettingSelect"/>
               <div className="selectRow">
                 <span className="selectType">짝수</span>
                 <span className="selectRadio"></span>
@@ -104,8 +163,14 @@ export default (props) => {
               </div>
             </label>
           </div>
+          }          
         </div>
-        <div className="bottom">
+        <div className="bottom">        
+            {popResult ?
+              <button className="bettingBtn active" onClick={closePopup}>확인</button>
+              :
+              <button className={`bettingBtn ${valueType === "" ? "" : "active"}`} onClick={betting}>예측하기</button>
+            }
         </div>
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/kanbu/bettingPop_btn-close.png" alt="닫기" />
@@ -151,8 +216,31 @@ const PopupWrap = styled.div`
         align-items: center;
         justify-content: flex-start;
         flex-direction: column;
-        width: 100%; height: 386px;
+        width: 100%;
         box-sizing: border-box;
+        margin-bottom: 12px;
+      }
+      .bottom {
+        display: flex;
+        align-items: center;
+        width: 100%;
+      }
+      .bettingBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%; height: 44px;
+        border-radius: 12px;
+        font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
+        font-size: 18px;
+        font-weight: 500;
+        color: #FFF;
+        background-color: #BDBDBD;
+        pointer-events : none;
+        &.active {
+          background-color: #632BEB;
+          pointer-events : auto;
+        }
       }
       .bettingMyInfo {
         display: flex;
@@ -198,6 +286,27 @@ const PopupWrap = styled.div`
         align-items: center;
         justify-content: center;
         width: 100%;
+        #bettingAni {
+          position: relative;
+          width: 100%;
+          .resultToast {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: 700;
+            color:#fff;
+            text-align: center;
+            background-color: rgba(0,0,0,0.7);
+            animation: resultToast 3s linear forwards;
+          }
+        }
       }
       .bettingInfo {
         display: flex;
@@ -211,6 +320,7 @@ const PopupWrap = styled.div`
           border: 1px solid #E0E0E0;
           &:nth-child(1){border-radius:12px 0 0 12px;}
           &:nth-child(2){border-radius:0 12px 12px 0;}
+          &.active {border: 1px solid #632BEB;}
           .bettingSelect {
             position: absolute;
             top: 0;
@@ -284,20 +394,20 @@ const PopupWrap = styled.div`
               margin-right: 4px;
               font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
               font-size: 12px;
-              font-weight: 400;
-              color: #424242;
+              font-weight: 700;
+              color: #632BEB;
             }
             .percentTotal {
               font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
               font-size: 12px;
               font-weight: 700;
-              color: #424242;
+              color: #000000;
             }
             .percentUnit {
               font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
               font-size: 12px;
               font-weight: 700;
-              color: #424242;
+              color: #000000;
             }
           }
         }
@@ -354,4 +464,19 @@ const PopupWrap = styled.div`
       }
     }
   }
+
+  @keyframes resultToast {
+    0% {
+      opacity: 0;
+    }
+    75% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+}
 `

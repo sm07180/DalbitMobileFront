@@ -11,7 +11,7 @@ import {Context} from 'context'
 const RAFFLE_INPUT_VALUE_MAX_SIZE = 5 // 응모권 입력 자리수
 
 export default (props) => {
-  const context = useContext(Context)
+  const globalCtx = useContext(Context)
   const {tabContent, setTabContent} = props
   const [bettingPop, setBettingPop] = useState(true)
 
@@ -51,6 +51,24 @@ export default (props) => {
     }
   }
 
+  const bettingBeadCount = (e) => {
+    let inputVal = new Array;
+    let inputLength = document.getElementsByClassName('bettingCount').length;
+    let inputtotal = 0;
+
+    for(let i = 0; i < inputLength; i++){
+      inputVal[i] = Number(document.getElementsByName("beadBettingCount")[i].value);
+      inputtotal = inputVal.reduce((a,b) => (a+b));
+    }
+    if (e.target.value > 10) {
+      e.target.value = ""
+    }
+    if (inputtotal > 10) {
+      globalCtx.action.toast({msg: "베팅 가능한 최대 개수는 10개 입니다."})   
+      e.target.value = ""
+    }
+  }
+
   useEffect(() => {
     if (tabContent === 'round') {
       getRoundEventInfo()
@@ -70,7 +88,7 @@ export default (props) => {
               <img src="https://image.dalbitlive.com/event/kanbu/bettingLog_title.png" alt="베팅 참여자" />
             </label>
 
-            {winList ? (
+            {winList ? 
               <Swiper {...swiperParams}>
                 {winList.length > 0 &&
                   winList.map((item, index) => {
@@ -80,16 +98,16 @@ export default (props) => {
                       <div className="participantList" key={index}>
                         <p className="time">{dateFormatter(winDt)}</p>
                         <p className="user">{nickNm}</p>
-                        <p className="result">{nickNm}</p>
+                        <p className={`result ${result === "성공" ? "success" : "fail"}`}>{result}</p>
                       </div>
                     )
                   })}
               </Swiper>
-            ) : (
+             : 
               <div className="participantList">
                 <p className="nodata">깐부 눈치 보지 말고 베팅해버려~</p>
               </div>
-            )}
+            }
           </div>
         </div>
       </div>
@@ -128,19 +146,19 @@ export default (props) => {
               <div className="sectionBead">
                 <div className="beadData">
                   <span className="beadIcon red"></span>
-                  <input type="text" name="beadBettingCount" className="bettingCount" maxLength="2" placeholder="0"/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon yellow"></span>
-                  <input type="text" name="beadBettingCount" className="bettingCount" maxLength="2" placeholder="0"/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon blue"></span>
-                  <input type="text" name="beadBettingCount" className="bettingCount" maxLength="2" placeholder="0"/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon purple"></span>
-                  <input type="text" name="beadBettingCount" className="bettingCount" maxLength="2" placeholder="0"/>
+                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount}/>
                 </div>
               </div>
             </div>

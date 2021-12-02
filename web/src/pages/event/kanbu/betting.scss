@@ -52,9 +52,11 @@
         .time {
           width: 30%;
           max-width: 92px;
-          margin-right: 2%;
+          font-size: 14px;
+          font-weight: 500;
           color: #757575;
           text-overflow: ellipsis;
+          text-align: center;
           overflow: hidden;
           white-space: nowrap;
           word-wrap: normal;
@@ -62,19 +64,29 @@
         }
   
         .user {
-          width: 70%;
+          flex: 1;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
           word-wrap: normal;
+          font-size: 14px;
+          font-weight: 500;
+          color: #000000;
         }
   
         .result {
-          width: 70%;
+          width: 20%;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
           word-wrap: normal;
+          font-size: 14px;
+          font-weight: 700;
+          color: #000000;
+          text-align: center;
+          padding-right: 10px;
+          &.success {color: #FF2980}
+          &.fail {color: #A1A1A1}
         }
       }
     }
@@ -431,6 +443,217 @@
             p {
               width: calc(100% - 33px);
               text-align: left;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+#beadPocketPage {
+  .beadPocketBox {
+    font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
+    .space {
+      display: block;
+      width: 100%; height: 8px;
+      background-color: #EEE;
+    }
+    .content {
+      padding: 16px 16px 26px;
+      .titleWrap {
+        display: block;
+        margin-bottom: 10px;
+      }
+      .title {        
+        font-size: 16px;
+        font-weight: 700;
+        color: #000;
+      }
+      .info {        
+        font-size: 12px;
+        font-weight: 400;
+        color: #9C9C9C;
+        letter-spacing: -1px;
+      }
+
+      .mypointWrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+      }
+      .mypoint {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #424242;
+        .score {
+          font-size: 20px;
+          font-weight: 700;
+          color: #632BEB;
+          margin-right: 4px;
+        }
+      }
+      .exchangeBead {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        margin-bottom: 25px;
+      }
+      .shadowBox {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 8px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background-color: #fff;
+        box-shadow: 0px 1px 3px rgba($color: #000000, $alpha: 0.2);
+      }
+      .beadWrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 100%;
+      }
+      .beadGroup {
+        display: flex;
+        align-items: center;
+      }
+      .bead {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        &.red {
+          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+        }        
+        &.yellow {
+          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+        }        
+        &.blue {
+          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+        }        
+        &.purple {
+          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+        }        
+      }
+      .beadCount {
+        font-size: 14px;
+        font-weight: 500;
+        color: #424242;
+        margin-left: 12px;
+      }
+
+      .pocketWrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+      .pocket {
+        display: inline-block;
+        width: 58px;
+        height: 44px;
+        background-image: url(https://image.dalbitlive.com/event/kanbu/beadpocket.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;      
+      }
+      .pocketCount {
+        font-size: 14px;
+        font-weight: 500;
+        color: #424242;
+        margin-left: 12px;
+      }
+
+      .beadBtn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 10px;
+        background-color: #BDBDBD;
+        pointer-events: none;
+        &.small {
+          padding: 7px 0;
+          margin-top: 16px;
+          font-size: 14px;
+          font-weight: 700;
+          color: #FFF;
+          &.possible {
+            color: #FFFF77;
+          }
+        }
+        &.large {
+          padding: 11px 0;
+          margin-top: 10px;
+          font-size: 18px;
+          font-weight: 700;
+          color: #FFF;
+        }
+        &.active {
+          cursor: pointer;
+          background-color:#632BEB;
+        }
+      }
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          color: #632beb;
+        }
+
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+          color: $darkGray;
+          overflow: hidden;
+
+          &.bonus {
+            text-align: center;
+            font-weight: 600;
+            padding: 10px 8px;
+            letter-spacing: -1px;
+          }
+
+          &.date {
+            color: $greishGray;
+            padding: 10px 8px;            
+            .iconNew {
+              display: inline-block;
+              width: 20px;
+              line-height: 13px;
+            }
+          }
+          &.nick {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: $greishBrown;
+            font-weight: $bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: center;
+            padding: 10px 8px;
+
+            p {
               text-overflow: ellipsis;
               overflow: hidden;
               white-space: nowrap;
