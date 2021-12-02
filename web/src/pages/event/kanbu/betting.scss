@@ -664,4 +664,61 @@
       }
     }
   }
+
+  .openPocket {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.5);
+  }
+  .openPocketAni {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%; height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    &.ani1 {
+      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_01.webp);
+      .openPocketNum {animation-delay: 3.5s;}
+    }
+    &.ani2 {
+      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_02.webp);
+      .openPocketNum {animation-delay: 3.5s;}
+    }
+    &.ani3 {
+      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_03.webp);
+      .openPocketNum {animation-delay: 4.5s;}
+    }
+    &.ani4 {
+      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_04.webp);
+      .openPocketNum {animation-delay: 5.5s;}
+    }
+  }
+  .openPocketNum {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0.5, 0.5);
+    font-size: 56px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #fff;
+    animation: openPocketNum 0.5s linear forwards;
+    opacity: 0;
+    &::before {
+      content: "+";
+    }
+  }
+  @keyframes openPocketNum {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5, 0.5);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -250%) scale(1, 1);
+    }
+  }
 }

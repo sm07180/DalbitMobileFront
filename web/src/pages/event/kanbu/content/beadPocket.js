@@ -198,6 +198,19 @@ export default () => {
           </table>
         </div>
       </div>
+
+      {/*
+       <div className="openPocket"> 삭제 시점
+        ani1 = 5초
+        ani2 = 5초
+        ani3 = 6초
+        ani4 = 7초
+      */}
+      <div className="openPocket">
+        <div className="openPocketAni ani4">
+          <div className="openPocketNum">100</div>
+        </div>
+      </div>
     </div>
   )
 }
