@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
+import Swiper from 'react-id-swiper'
 
 export default (props) => {
   const {setPopupPresent} = props
@@ -23,6 +24,35 @@ export default (props) => {
     }
   }
 
+  const presentDatas=[
+      {
+          num : 1,
+          name : '이마트 1만원',
+          count : '상품권 1개'
+      },
+      {
+          num : 2,
+          name : '이마트 5천원',
+          count : '상품권 1개'
+      },
+      {
+          num : 3,
+          name : '맘스터치',
+          count : '싸이버거 1개'
+      },
+      {
+          num : 4,
+          name : '스타벅스',
+          count : '아메리카노 1개'
+      },
+  ]
+
+  const swiperParams = {
+    loop: true,
+    direction: 'vertical',
+    // slidesPerColumnFill: 'row',
+  }
+
   return (
     <PopupWrap id="popupPresent" onClick={wrapClick}>
         <div className="popLayer">
@@ -30,6 +60,20 @@ export default (props) => {
                 <div className="title">
                     선물을 받았어요!
                 </div>
+                {/* {
+                    presentDatas.map((present, index) => {
+                        return(
+                            <div className="presentWrap" key={index}>
+                                <div className="imgWrap">
+                                    <img src={`${IMG_SERVER}/event/draw/present-${present.num}.png`}></img>
+                                </div>
+                                <div className="result">추첨결과(1/8)</div>
+                                <div className="name">{present.name}</div>
+                                <div className="counter">{present.count}</div>
+                            </div>
+                        )
+                    })
+                } */}
                 <div className="presentWrap">
                     <div className="imgWrap">
                         <img src={`${IMG_SERVER}/event/draw/present-1.png`}></img>
