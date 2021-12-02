@@ -12,7 +12,7 @@ import {Context} from 'context'
 export default (props) => {
   const context = useContext(Context)
   const {tabContent, setTabContent} = props
-  const [noticeTab, setNoticeTab] = useState(false)
+  const [noticeTab, setNoticeTab] = useState('')
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
   const [raffleTotalSummaryInfo, setRaffleTotalSummaryInfo] = useState({
@@ -71,6 +71,14 @@ export default (props) => {
       setRaffleItemInfo(data.itemInfo)
     }
   }, [])
+
+  const tabActive = () => {
+    if (noticeTab === 'active') {
+      setNoticeTab('')
+    } else {
+      setNoticeTab('active')
+    }
+  }
 
   useEffect(() => {
     if (tabContent === 'collect') {
@@ -133,12 +141,31 @@ export default (props) => {
               <div className="score">총 20,879점</div>
             </div>
           </div>
+          <div className="status">
+            <div className="statusWrap">
+              <div className="marbleWrapNone">
+                깐부를 맺으면
+                <br />
+                구슬을 모을 수 있습니다.
+              </div>
+            </div>
+          </div>
         </section>
-        <section className={`notice ${noticeTab === false ? 'off' : 'on'}`} onClick={() => setNoticeTab(noticeTab)}>
-          {noticeTab === false ? (
-            <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-on.png" />
+        <section className={`notice ${noticeTab === 'active' ? 'active' : ''}`}>
+          {noticeTab === 'active' ? (
+            <>
+              <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-on.png" />
+              <button onClick={() => tabActive(noticeTab)}>
+                <img src="https://image.dalbitlive.com/event/kanbu/tabArrow.png" />
+              </button>
+            </>
           ) : (
-            <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-off.png" />
+            <>
+              <img src="https://image.dalbitlive.com/event/kanbu/kanbuNoticeImg-off.png" />
+              <button onClick={() => tabActive(noticeTab)}>
+                <img src="https://image.dalbitlive.com/event/kanbu/tabArrow.png" />
+              </button>
+            </>
           )}
         </section>
         <section className="rank">
@@ -212,6 +239,25 @@ export default (props) => {
               <div className="number medal-3">
                 <img src="https://image.dalbitlive.com/event/kanbu/rankMedal-3.png" />
               </div>
+              <div className="rankBox">
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+                <div className="rankItem">
+                  <em className="badge">lv 65</em>
+                  <span className="userNick">해나잉뎅</span>
+                  <span className="userId">maiwcl88</span>
+                </div>
+              </div>
+              <div className="score">
+                <img src="https://image.dalbitlive.com/event/kanbu/iconScore.png" />
+                <span>2,181</span>
+              </div>
+            </div>
+            <div className="rankList">
+              <div className="number"></div>
               <div className="rankBox">
                 <div className="rankItem">
                   <em className="badge">lv 65</em>

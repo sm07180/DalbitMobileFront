@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
+import Api from 'context/api'
 
 import './search.scss'
 
@@ -6,6 +7,7 @@ export default (props) => {
   const {setPopupStatus} = props
 
   const [tabBtn, setTabBtn] = useState(0)
+  const [kanbuSubList, setKanbuSubList] = useState([])
   const [popAgreement, setPopAgreement] = useState(false)
 
   useEffect(() => {
@@ -25,6 +27,26 @@ export default (props) => {
       closePopup()
     }
   }
+
+  const fetchKanbuSubList = async () => {
+    const {result, data, message} = await Api.getKanbu({
+      param: {
+        insSlct: 'r',
+        gganbuNo: 1,
+        pageNo: 1,
+        pagePerCnt: 1
+      }
+    })
+    if (result === 'success') {
+      setKanbuSubList(data)
+    } else {
+      console.log(message)
+    }
+  }
+
+  useEffect(() => {
+    fetchKanbuSubList()
+  }, [])
 
   // 수락 => 동의서, 수락
   const accept = () => {
@@ -101,23 +123,7 @@ export default (props) => {
                     </span>
                   </div>
                 </div>
-                <button className="submit">신청</button>
-              </div>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
-                </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="cancel">취소</button>
+                <button className="accept">수락</button>
               </div>
               <div className="list">
                 <div className="photo">
@@ -149,9 +155,7 @@ export default (props) => {
                     </span>
                   </div>
                 </div>
-                <button className="disable" disabled>
-                  신청불가
-                </button>
+                <button className="accept">수락</button>
               </div>
               <div className="list">
                 <div className="photo">
@@ -167,9 +171,7 @@ export default (props) => {
                     </span>
                   </div>
                 </div>
-                <button className="disable" disabled>
-                  신청불가
-                </button>
+                <button className="accept">수락</button>
               </div>
               <div className="list">
                 <div className="photo">
@@ -185,9 +187,23 @@ export default (props) => {
                     </span>
                   </div>
                 </div>
-                <button className="disable" disabled>
-                  신청불가
-                </button>
+                <button className="accept">수락</button>
+              </div>
+              <div className="list">
+                <div className="photo">
+                  <img src="" alt="유저이미지" />
+                </div>
+                <div className="listBox">
+                  <div className="nick">finish</div>
+                  <div className="listItem">
+                    <span>Lv. 38</span>
+                    <span className="average">
+                      <em>평균</em>
+                      <span>Lv 20</span>
+                    </span>
+                  </div>
+                </div>
+                <button className="accept">수락</button>
               </div>
             </div>
           </>
@@ -207,7 +223,7 @@ export default (props) => {
                   </span>
                 </div>
               </div>
-              <button className="submit">신청</button>
+              <button className="cancel">취소</button>
             </div>
           </div>
         )}

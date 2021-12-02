@@ -15,10 +15,11 @@ export default () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
+  const [kanbuOn, setKanbuOn] = useState(true)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupSearch, setPopupSearch] = useState(false)
-  const [popupStatus, setPopupStatus] = useState(false)
+  const [popupStatus, setPopupStatus] = useState(true)
 
   const goBack = useCallback(() => history.goBack(), [])
 
@@ -72,16 +73,35 @@ export default () => {
                   <span className="nick">띵 동 ◡̈♪</span>
                 </div>
                 <div className="dot">
-                  <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" alt="" />
+                  {kanbuOn === false && <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" />}
+                  {kanbuOn === true && (
+                    <div className="var">
+                      <img src="https://image.dalbitlive.com/event/kanbu/dotKanbu.png" />
+                      <span className="varLevel">56</span>
+                      <span className="varTit">평균레벨</span>
+                    </div>
+                  )}
                 </div>
-                <div className="userList">
-                  <div className="photo" onClick={() => setPopupSearch(true)}>
-                    <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" alt="" />
+                {kanbuOn === false && (
+                  <div className="userList">
+                    <div className="photo" onClick={() => setPopupSearch(true)}>
+                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuUserNone.png" />
+                    </div>
+                    <button className="kanbuBtn" onClick={() => setPopupStatus(true)}>
+                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtn.png" />
+                      <img className="btnNew" src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtnNew.png" />
+                    </button>
                   </div>
-                  <button className="kanbuBtn" onClick={() => setPopupStatus(true)}>
-                    깐부신청현황
-                  </button>
-                </div>
+                )}
+                {kanbuOn === true && (
+                  <div className="userList">
+                    <div className="photo" onClick={() => setPopupSearch(true)}>
+                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" />
+                    </div>
+                    <span className="badge">Lv 65</span>
+                    <span className="nick">띵 동 ◡̈♪</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>

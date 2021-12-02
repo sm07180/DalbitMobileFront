@@ -3368,13 +3368,16 @@ export default class API {
 
   // 깐부 이벤트
   /**
-   * @brief 깐부 이벤트
-   * @method "GET"
+   * @brief 깐부 신청리스트
+   * @method "POST"
    * @create
    */
-  static getKanbu = async (obj) => {
-    const {params} = obj
-    return await ajax({url: `/banner`, method: 'GET', params: params})
+  static getKanbu = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/list`,
+      method: 'POST',
+      params: data
+    })
   }
 }
 

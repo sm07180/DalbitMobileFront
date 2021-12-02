@@ -104,15 +104,20 @@
                 color: #333;
               }
               .kanbuBtn {
-                width: 100%;
+                position: relative;
+                width: 86px;
                 height: 28px;
                 margin-top: 10px;
-                background-color: #9e5718;
-                border-radius: 6px;
-                font-size: 13px;
-                font-weight: 500;
-                color: white;
-                text-align: center;
+                img {
+                  width: 100%;
+                  &.btnNew {
+                    position: absolute;
+                    top: -10px;
+                    right: -12px;
+                    width: 28px;
+                    height: 26px;
+                  }
+                }
               }
             }
             .dot {
@@ -124,6 +129,40 @@
               margin: 0 12px auto;
               .normal {
                 width: 32px;
+              }
+              .var {
+                position: relative;
+                width: 52px;
+                img {
+                  width: 100%;
+                }
+                .varLevel {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  font-size: 16px;
+                  font-weight: 700;
+                  color: #000;
+                  text-shadow: 1px 1px 0 rgba(255, 255, 255, 1), -1px 1px 0 rgba(255, 255, 255, 1),
+                    1px -1px 0 rgba(255, 255, 255, 1), -1px -1px 0 rgba(255, 255, 255, 1);
+                }
+                .varTit {
+                  position: absolute;
+                  bottom: -5px;
+                  left: 50%;
+                  transform: translateX(-50%);
+                  display: inline-block;
+                  height: 14px;
+                  line-height: 14px;
+                  padding: 0 4px;
+                  border-radius: 100px;
+                  background-color: #50463f;
+                  font-size: 10px;
+                  font-weight: 500;
+                  color: #fff;
+                  white-space: nowrap;
+                }
               }
             }
           }
@@ -249,17 +288,16 @@
             align-items: center;
             width: 100%;
             height: calc(100% - 34px);
-            border-radius: 12px;
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
             .report {
               flex: 1;
               display: flex;
               align-items: center;
               flex-wrap: wrap;
               height: 100%;
-              padding: 10px 16px 6px;
-              border-right: 1px solid #e0e0e0;
+              padding: 10px 14px 6px;
+              border-radius: 12px;
+              background-color: #fff;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
               box-sizing: border-box;
               .list {
                 flex-basis: 50%;
@@ -292,7 +330,11 @@
               align-items: center;
               flex-wrap: wrap;
               height: 100%;
+              margin-left: 6px;
               padding: 10px 0 6px;
+              border-radius: 12px;
+              background-color: #fff;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
               box-sizing: border-box;
               .list {
                 flex: none;
@@ -316,6 +358,24 @@
                   width: 100%;
                 }
               }
+            }
+            &None {
+              position: absolute;
+              top: 50%;
+              left: 0;
+              transform: translateY(-50%);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              height: 79.02%;
+              border-radius: 12px;
+              background-color: white;
+              font-size: 14px;
+              font-weight: 500;
+              color: #333333;
+              text-align: center;
+              letter-spacing: -1px;
             }
           }
           .score {
@@ -344,6 +404,19 @@
       img {
         width: 100%;
       }
+      button {
+        position: absolute;
+        top: 20px;
+        right: 4.445%;
+        width: 24px;
+        transform-origin: center;
+        transform: rotate(180deg);
+      }
+      &.active {
+        button {
+          transform: rotate(0);
+        }
+      }
     }
     .rank {
       position: relative;
@@ -355,7 +428,7 @@
       }
       .rankWrap {
         width: 100%;
-        padding: 8px 0 40px;
+        padding: 8px 0 16px;
         background: #fff;
       }
       .rankList {
