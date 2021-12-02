@@ -9,6 +9,7 @@ import PopupSearch from './content/popupSearch'
 import PopupStatus from './content/popupStatus'
 
 import './style.scss'
+import './betting.scss'
 
 export default () => {
   const history = useHistory()

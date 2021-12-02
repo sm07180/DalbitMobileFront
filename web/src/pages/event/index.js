@@ -43,6 +43,8 @@ import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
+import Participant from './kanbu/content/participant'
+import BeadPocket from './kanbu/content/beadPocket'
 
 export default () => {
   const params = useParams()
@@ -126,6 +128,10 @@ export default () => {
         return <BroadcastRoulette />
       case 'anniversary':
         return <AnniversaryEvent />
+      case 'participant':
+        return <Participant />
+      case 'beadPocket':
+        return <BeadPocket />
       default:
         return <></>
         break
