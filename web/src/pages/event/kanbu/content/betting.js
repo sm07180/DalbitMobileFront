@@ -70,13 +70,13 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (tabContent === 'round') {
+    if (tabContent === 'betting') {
       getRoundEventInfo()
     }
   }, [tabContent])
 
   return (
-    <div id="betting" style={{display: `${tabContent === 'round' ? 'block' : 'none'}`}}>
+    <div id="betting" style={{display: `${tabContent === 'betting' ? 'block' : 'none'}`}}>
       <div className="participant">
         <div className="participantWrap">
           <div

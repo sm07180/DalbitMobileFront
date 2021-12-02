@@ -120,7 +120,7 @@ export default () => {
         </div>
       </div>
       <Collect tabContent={tabContent} setTabContent={setTabContent} />
-      {/* <Betting tabContent={tabContent} /> */}
+      <Betting tabContent={tabContent} setTabContent={setTabContent} />
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
