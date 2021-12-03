@@ -17,9 +17,9 @@ export default () => {
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
   const [gganbuOn, setGganbuOn] = useState(true)
-  const [tabContent, setTabContent] = useState('collect') // collect, betting
+  const [tabContent, setTabContent] = useState('betting') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
-  const [popupSearch, setPopupSearch] = useState(true)
+  const [popupSearch, setPopupSearch] = useState(false)
   const [popupStatus, setPopupStatus] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])

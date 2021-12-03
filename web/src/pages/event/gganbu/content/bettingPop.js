@@ -5,13 +5,14 @@ import Lottie from 'react-lottie'
 import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
-  const {setBettingPop} = props
+  const {setBettingPop, bettingVal, myBead} = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
   const [bettingResult, setBettingResult] = useState("")
   const [beadNum, setBeadNum] = useState(0);
-
+  const [resultVal, setResultVal] = useState([]);
+  const [gapVal, setGapVal] = useState([]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -57,8 +58,18 @@ export default (props) => {
 
     if(selectValue === resultType) {
       setBettingResult("success");
+      for(let i = 0; i < 4; i++){
+        resultVal[i] = myBead[i] + bettingVal[i]
+      }
     } else {
       setBettingResult("fail");
+      for(let i = 0; i < 4; i++){
+        resultVal[i] = myBead[i] - bettingVal[i]
+      }
+    }
+
+    for(let j = 0; j < 4; j++){
+      gapVal[j] = resultVal[j] - myBead[j]
     }
     setPopResult(true);
   }
@@ -68,35 +79,6 @@ export default (props) => {
       <div className="contentWrap">
         <div className="title">홀짝 게임</div>
         <div className="content">
-          <div className="bettingMyInfo">                  
-            {popResult &&
-              <div className="bettingType"> 
-                  <div className="bettingTitle">나의 베팅</div>
-                  <div className="bettingMy">{typeSelect}</div>
-              </div>
-            }
-            <div className="bettingBead">
-              <div className="bettingTitle">{popResult ? "구슬 현황" : "내가 베팅한 구슬"}</div>
-              <div className="sectionBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
-                </div>
-              </div>
-            </div>            
-          </div>
           <div className="bettingAni">           
             {popResult ?
               <div id="bettingAni">                
@@ -163,7 +145,72 @@ export default (props) => {
               </div>
             </label>
           </div>
-          }          
+          }   
+          <div className="bettingMyInfo">                  
+            {popResult &&
+              <div className="bettingType"> 
+                  <div className="bettingTitle">나의 베팅</div>
+                  <div className="bettingMy">{typeSelect}</div>
+              </div>
+            }
+            <div className={`bettingBead ${popResult ? "result" : ""}`}>
+              <div className="bettingTitle">{popResult ? "구슬 현황" : "내가 베팅한 구슬"}</div>
+              <div className="sectionBead">
+                <div className="beadData">
+                  <span className="beadIcon red"></span>
+                    {popResult ?
+                      <span className="beadCount">
+                        {resultVal[0]}
+                        <span className={`beadGap ${gapVal[0] >= 0 ? "plus": "minus"}`}>
+                          {gapVal[0] >= 0 ? `+${gapVal[0]}` : `${gapVal[0]}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="beadCount">{bettingVal[0]}</span>
+                    }                 
+                </div>
+                <div className="beadData">
+                  <span className="beadIcon yellow"></span>
+                    {popResult ?
+                      <span className="beadCount">
+                        {resultVal[1]}
+                        <span className={`beadGap ${gapVal[1] >= 0 ? "plus": "minus"}`}>
+                          {gapVal[1] >= 0 ? `+${gapVal[1]}` : `${gapVal[1]}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="beadCount">{bettingVal[1]}</span>
+                    }     
+                </div>
+                <div className="beadData">
+                  <span className="beadIcon blue"></span>
+                    {popResult ?
+                      <span className="beadCount">
+                        {resultVal[2]}
+                        <span className={`beadGap ${gapVal[2] >= 0 ? "plus": "minus"}`}>
+                          {gapVal[2] >= 0 ? `+${gapVal[2]}` : `${gapVal[2]}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="beadCount">{bettingVal[2]}</span>
+                    }     
+                </div>
+                <div className="beadData">
+                  <span className="beadIcon purple"></span>
+                    {popResult ?
+                      <span className="beadCount">
+                        {resultVal[3]}
+                        <span className={`beadGap ${gapVal[3] >= 0 ? "plus": "minus"}`}>
+                          {gapVal[3] >= 0 ? `+${gapVal[3]}` : `${gapVal[3]}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="beadCount">{bettingVal[3]}</span>
+                    }     
+                </div>
+              </div>
+            </div>            
+          </div> 
         </div>
         <div className="bottom">        
             {popResult ?
@@ -207,6 +254,7 @@ const PopupWrap = styled.div`
         font-size: 21px;
         font-weight: 900;
         text-align: center;
+        border-bottom: 1px solid #E0E0E0;
         font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
         letter-space: -1px;
         color: #000000;
@@ -249,9 +297,8 @@ const PopupWrap = styled.div`
         flex-direction: column;
         width: 100%;
         padding: 15px;
-        margin-bottom: 6px;
-        border-top: 1px solid #E0E0E0;
-        border-radius: 0 0 10px 10px;
+        margin-top: 6px;
+        border-radius: 10px;
         background-color: #F5F5F5;
         box-sizing: border-box;
         .bettingType {
@@ -270,7 +317,10 @@ const PopupWrap = styled.div`
           display: flex;
           align-items: center;
           justify-content: center;
-
+          width: 100%; height:24px;
+          &.result {
+            animation: resultBead 3s linear forwards;
+          }
         }
         .bettingTitle {
           font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
@@ -447,6 +497,30 @@ const PopupWrap = styled.div`
           background-image: url(https://image.dalbitlive.com/event/gganbu/bead-purple.png);
         }
       }
+      .beadCount {
+        position: relative;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333333;
+      }
+      .beadGap {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: 900;
+        color: #fff;
+        animation: gapValue 3s linear forwards;
+        pointer-events: none;
+        &.plus {
+          color: #3F5BFF;
+          text-shadow: 0px 0px 2px #fff;
+        }
+        &.minus {
+          color: #E03463;
+          text-shadow: 0px 0px 2px #fff;
+        }
+      }
       .close {
         position: absolute;
         top: -40px;
@@ -478,5 +552,46 @@ const PopupWrap = styled.div`
     100% {
       opacity: 1;
     }
-}
+  }
+  @keyframes resultBead {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes gapValue {
+    0% {
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1, 1);
+      opacity: 0;
+    }
+    50% {
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1, 1);
+      opacity: 0;
+    }
+    70% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.2, 1.2);
+      opacity: 1;
+    }
+    85% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.2, 1.2);
+      opacity: 1;
+    }
+    100% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.5, 1.5);
+      opacity: 0;
+    }
+  }
 `

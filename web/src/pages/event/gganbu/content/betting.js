@@ -12,7 +12,15 @@ import noResult from 'components/ui/noResult'
 export default (props) => {
   const globalCtx = useContext(Context)
   const {tabContent, setTabContent} = props
-  const [bettingPop, setBettingPop] = useState(true)
+  const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
+  const [ifSuccess, setIfSuccess] = useState([]) 
+  const [bettingVal, setBettingVal] = useState([]) // 베팅할 구슬
+  const [myBead, setMyBead] = useState([10,4,5,2])  // 보유한 구슬
+  const [successBead, setSuccessBead] = useState([])  // 성공 시 구슬
+  const [winList, setWinList] = useState()
+
+  let totalBetting = 1;
+  let inputtotal = 0;
 
   const history = useHistory()
   const getRoundEventInfo = useCallback(async () => {
@@ -23,7 +31,6 @@ export default (props) => {
     }
   }, [])
 
-  const [winList, setWinList] = useState()
 
   const dateFormatter = (date) => {
     if (!date) return null
@@ -46,21 +53,60 @@ export default (props) => {
     }
   }
 
+
   const bettingBeadCount = (e) => {
-    let inputVal = new Array()
     let inputLength = document.getElementsByClassName('bettingCount').length
-    let inputtotal = 0
 
     for (let i = 0; i < inputLength; i++) {
-      inputVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)
-      inputtotal = inputVal.reduce((a, b) => a + b)
+      bettingVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)
+
+      // 보유한 구슬보다 베팅할 구슬이 많을 경우 예외처리
+      if(bettingVal[i] <= myBead[i]){
+        successBead[i] = myBead[i] + bettingVal[i]
+        setIfSuccess(successBead);
+      } else {
+        globalCtx.action.toast({msg: '구슬 개수를 확인해주세요.'})
+        e.target.value = ""
+        successBead[i] = myBead[i]
+        bettingVal[i] = 0
+        setIfSuccess(myBead);
+      } 
+      inputtotal = bettingVal.reduce((a, b) => a + b)
     }
+
+    // 한 구슬을 10개 이상 입력했을 경우 예외처리
     if (e.target.value > 10) {
-      e.target.value = ''
+      globalCtx.action.toast({msg: '베팅 가능한 최대 개수는 10개 입니다.'})
+      e.target.value = ""
+      setIfSuccess(myBead);
     }
+
+    // 베팅한 모든 구슬의 합이 10개 이상일 경우 예외처리
     if (inputtotal > 10) {
       globalCtx.action.toast({msg: '베팅 가능한 최대 개수는 10개 입니다.'})
-      e.target.value = ''
+      e.target.value = ""
+      for (let i = 0; i < inputLength; i++) {
+        bettingVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)        
+        successBead[i] = myBead[i] + bettingVal[i]
+      }
+      setIfSuccess(successBead);
+    }
+    
+    // 베팅하기 버튼 활성화
+    const isBelowThreshold = (currentValue) => currentValue === 0;
+    const btnEle = document.getElementById('bettingBtn');
+    if(bettingVal.every(isBelowThreshold)) {      
+      btnEle.classList.add('disable');
+    } else {            
+      btnEle.classList.remove('disable');
+    }
+  }
+
+  const bettingStart = () => {
+    if(totalBetting <= 2){
+      setBettingPop(true);
+    } else {
+      globalCtx.action.toast({msg: `베팅 가능한 횟수는 하루에 두 번 입니다.`})
     }
   }
 
@@ -69,6 +115,10 @@ export default (props) => {
       getRoundEventInfo()
     }
   }, [tabContent])
+
+  useEffect(() => {
+    setIfSuccess(myBead);
+  }, [])
 
   return (
     <div id="betting" style={{display: `${tabContent === 'betting' ? 'block' : 'none'}`}}>
@@ -117,19 +167,19 @@ export default (props) => {
               <div className="sectionBead">
                 <div className="beadData">
                   <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{myBead[0]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{myBead[1]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{myBead[2]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{myBead[3]}</span>
                 </div>
               </div>
             </div>
@@ -141,19 +191,19 @@ export default (props) => {
               <div className="sectionBead">
                 <div className="beadData">
                   <span className="beadIcon red"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
+                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon yellow"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
+                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon blue"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
+                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
                 </div>
                 <div className="beadData">
                   <span className="beadIcon purple"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" onChange={bettingBeadCount} />
+                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
                 </div>
               </div>
             </div>
@@ -165,25 +215,25 @@ export default (props) => {
               <div className="sectionBead">
                 <div className="beadData">
                   <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{ifSuccess[0]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{ifSuccess[1]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{ifSuccess[2]}</span>
                 </div>
                 <div className="beadData">
                   <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
+                  <span className="beadCount">{ifSuccess[3]}</span>
                 </div>
               </div>
             </div>
           </form>
         </div>
-        <button className="bettingBtn disable" onClick={() => setBettingPop(true)}></button>
+        <button id="bettingBtn" className="bettingBtn disable" onClick={bettingStart}></button>
       </div>
 
       <div className="beadLog">
@@ -259,7 +309,7 @@ export default (props) => {
           </div>
         </div>
       </div>
-      {bettingPop && <BettingPop setBettingPop={setBettingPop} />}
+      {bettingPop && <BettingPop setBettingPop={setBettingPop} bettingVal={bettingVal} myBead={myBead}/>}
     </div>
   )
 }
