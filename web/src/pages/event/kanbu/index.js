@@ -1,6 +1,9 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 
 import {useHistory} from 'react-router-dom'
+import styled, {css} from 'styled-components'
+import Api from 'context/api'
+import {Context} from 'context'
 import Header from 'components/ui/new_header.js'
 import Collect from './content/collect'
 import Betting from './content/betting'
@@ -12,17 +15,44 @@ import './style.scss'
 import './betting.scss'
 
 export default () => {
+  const globalCtx = useContext(Context)
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
+  const [gganbuNo, setGganbuNo] = useState()
+  const [gganbuState, setGganbuState] = useState()
+  const [gganbuInfo, setGganbuInfo] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
-  const [kanbuOn, setKanbuOn] = useState(true)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
-  const [popupSearch, setPopupSearch] = useState(true)
+  const [popupSearch, setPopupSearch] = useState(false)
   const [popupStatus, setPopupStatus] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])
+
+  // 깐부회차 조회
+  const gganbuRoundLookup = useCallback(async () => {
+    const {data, message} = await Api.gganbuMarbleGather()
+    if (message === 'SUCCESS') {
+      const {gganbuState, gganbuRoundInfo, gganbuInfo, myRankInfo, rankIst} = data
+      setGganbuState(gganbuState)
+      setGganbuNo(gganbuRoundInfo.gganbuNo)
+      setGganbuInfo(gganbuInfo)
+    } else {
+      console.log(message)
+    }
+  }, [])
+  // 깐부 정보
+  const gganbuInformation = useCallback(async () => {
+    const {data, message} = await Api.gganbuInfoSel({
+      gganbuNo: 1
+    })
+    if (message === 'SUCCESS') {
+      console.log(1)
+    } else {
+      console.log(message)
+    }
+  }, [])
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
@@ -44,22 +74,28 @@ export default () => {
   }, [])
 
   useEffect(() => {
+    gganbuRoundLookup()
+    gganbuInformation()
+    console.log(gganbuNo, gganbuState, gganbuInfo)
+  }, [])
+
+  useEffect(() => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
   }, [tabContent])
 
   return (
-    <div id="kanbu">
-      <Header title="깐부게임" />
+    <div id="gganbu">
+      {gganbuNo === '1' && <Header title="깐부게임" />}
       <div className="top">
         <img
-          src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png"
+          src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
           className="topImg"
           alt="깐부게임 00만원 상금이 피었습니다."
         />
         <button className="topBtn" onClick={() => setPopupNotice(true)}>
-          <img src="https://image.dalbitlive.com/event/kanbu/topBtn.png" alt="" />
+          <img src="https://image.dalbitlive.com/event/gganbu/topBtn.png" alt="" />
         </button>
         <div className="memo">
           <div className="memoInner">
@@ -68,38 +104,42 @@ export default () => {
               <div className="userUl">
                 <div className="userList">
                   <div className="photo">
-                    <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" alt="" />
+                    <img src={globalCtx.profile.profImg.thumb88x88} alt="유저이미지" />
                   </div>
-                  <span className="badge">Lv 65</span>
-                  <span className="nick">띵 동 ◡̈♪</span>
+                  <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                    Lv {globalCtx.profile.level}
+                  </LevelBox>
+                  <span className="nick">{globalCtx.profile.nickNm}</span>
                 </div>
                 <div className="dot">
-                  {kanbuOn === true && <img className="normal" src="https://image.dalbitlive.com/event/kanbu/dotNormal.png" />}
-                  {kanbuOn === false && (
+                  {gganbuState === -1 ? (
+                    <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
+                  ) : (
                     <div className="var">
-                      <img src="https://image.dalbitlive.com/event/kanbu/dotKanbu.png" />
-                      <span className="varLevel">56</span>
+                      <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
+                      <span className="varLevel">{gganbuInfo.average_level}</span>
                       <span className="varTit">평균레벨</span>
                     </div>
                   )}
                 </div>
-                {kanbuOn === true && (
+                {gganbuState === -1 ? (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuUserNone.png" />
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
                     </div>
-                    <button className="kanbuBtn" onClick={() => setPopupStatus(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtn.png" />
-                      <img className="btnNew" src="https://image.dalbitlive.com/event/kanbu/kanbuStatusBtnNew.png" />
+                    <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+                      <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
                     </button>
                   </div>
-                )}
-                {kanbuOn === false && (
+                ) : (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src="https://image.dalbitlive.com/event/kanbu/kanbuTopImg.png" />
+                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png" />
                     </div>
-                    <span className="badge">Lv 65</span>
+                    <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                      Lv {gganbuInfo.mem_level}
+                    </LevelBox>
                     <span className="nick">띵 동 ◡̈♪</span>
                   </div>
                 )}
@@ -112,26 +152,49 @@ export default () => {
         <div className="tabBtn" ref={tabBtnRef}>
           <button className={tabContent === 'collect' ? 'active' : ''} onClick={() => setTabContent('collect')}>
             <img
-              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
               alt="구슬 모으기"
             />
           </button>
           <button className={tabContent === 'betting' ? 'active' : ''} onClick={() => setTabContent('betting')}>
             <img
-              src={`https://image.dalbitlive.com/event/kanbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
             />
           </button>
           <span className="tabLine"></span>
         </div>
       </div>
-      <Collect tabContent={tabContent} setTabContent={setTabContent} />
-      <Betting tabContent={tabContent} setTabContent={setTabContent} />
+      <Collect tabContent={tabContent} gganbuState={gganbuState} gganbuNo={gganbuNo} />
+      <Betting tabContent={tabContent} />
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
-      {popupSearch && <PopupSearch setPopupSearch={setPopupSearch} />}
-      {popupStatus && <PopupStatus setPopupStatus={setPopupStatus} />}
+      {popupSearch && <PopupSearch setPopupSearch={setPopupSearch} gganbuNo={gganbuNo} />}
+      {popupStatus && <PopupStatus setPopupStatus={setPopupStatus} gganbuNo={gganbuNo} />}
     </div>
   )
 }
+
+const LevelBox = styled.div`
+  ${(props) => {
+    if (props.levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${props.levelColor[0]}, ${props.levelColor[1]} 51%, ${props.levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${props.levelColor[0]};
+      `
+    }
+  }};
+  width: 44px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.3px;
+`

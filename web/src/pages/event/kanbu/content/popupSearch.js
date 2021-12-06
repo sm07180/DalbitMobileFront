@@ -3,16 +3,21 @@ import {Context} from 'context/index.js'
 import Api from 'context/api'
 
 import './search.scss'
+import NoResult from 'components/ui/new_noResult'
 
 let btnAccess = false
 
 export default (props) => {
-  const {setPopupSearch} = props
+  const {setPopupSearch, gganbuNo} = props
   const context = useContext(Context)
+  const myProfileNo = context.profile.memNo
 
   const [result, setResult] = useState('')
+  const [fanList, setFanList] = useState([])
   const [memberList, setMemberList] = useState([])
-  const [popAgreement, setPopAgreement] = useState(true)
+  const [memberNo, setMemberNo] = useState()
+  const [alertAccept, setAlertAccept] = useState(false)
+  const [alertFail, setAlertFailt] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -24,6 +29,11 @@ export default (props) => {
 
   const closePopup = () => {
     setPopupSearch()
+    btnAccess = false
+  }
+  const closeAlert = () => {
+    setAlertAccept(false)
+    setAlertFail(false)
   }
   const wrapClick = (e) => {
     const target = e.target
@@ -32,7 +42,8 @@ export default (props) => {
     }
   }
 
-  async function fetchSearchMember() {
+  // 회원 검색
+  const fetchSearchMember = async () => {
     const res = await Api.member_search({
       params: {
         search: result,
@@ -51,7 +62,6 @@ export default (props) => {
   const holeSearch = () => {
     fetchSearchMember()
   }
-
   const onChange = (e) => {
     setResult(e.target.value)
   }
@@ -67,18 +77,56 @@ export default (props) => {
       })
     } else {
       holeSearch()
-      setTimeout(() => {
-        btnAccess = false
-      }, 1000)
+      // setTimeout(() => {
+      //   btnAccess = false
+      // }, 1000)
     }
   }
 
+  // 팬 리스트
+  const fetchFanList = async () => {
+    const res = await Api.mypage_fan_list({
+      params: {
+        memNo: myProfileNo,
+        sortType: 0
+      }
+    })
+    if (res.result === 'success') {
+      setFanList(res.data.list)
+    } else {
+      context.action.alert({
+        callback: () => {},
+        msg: res.message
+      })
+    }
+    return
+  }
+
+  const postGganbuSub = async (memNo) => {
+    const param = {
+      gganbuNo: gganbuNo,
+      ptrMemNo: memNo
+    }
+    const {data, message} = await Api.postGganbuSub(param)
+    if (data === 1) {
+      closeAlert()
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+  }
+
+  useEffect(() => {
+    fetchFanList()
+  }, [])
+
   // 수락 => 동의서, 실패
-  const accept = () => {
+  const Accept = () => {
     return (
-      <div className="alret">
+      <div className="alert">
         <div className="contentWrap">
-          <h1 className="title">깐부찾기</h1>
+          <h1 className="title">동의서</h1>
           <div className="textWrap">
             <h2>제 1 항</h2>
             <p>
@@ -98,12 +146,19 @@ export default (props) => {
               <br />
               좋은 점수를 얻을 수 있습니다.
             </p>
+            <p>
+              <strong>정말 신청하시겠습니까?</strong>
+            </p>
+          </div>
+          <div className="buttonWrap">
+            <button onClick={closeAlert}>취소</button>
+            <button onClick={() => postGganbuSub(memberNo)}>신청</button>
           </div>
         </div>
       </div>
     )
   }
-  const fail = () => {
+  const Fail = () => {
     return (
       <div className="popWrap">
         <div className="contentWrap">
@@ -114,6 +169,11 @@ export default (props) => {
         </div>
       </div>
     )
+  }
+  const acceptBtn = (memNo) => {
+    setAlertAccept(true)
+    setMemberNo(memNo)
+    return <Accept />
   }
 
   return (
@@ -130,121 +190,81 @@ export default (props) => {
               placeholder="깐부를 맺고 싶은 회원을 검색해 보세요."
             />
             <button type="submit" disabled={btnAccess}>
-              <img src="https://image.dalbitlive.com/event/kanbu/icoSearch.png" />
+              <img src="https://image.dalbitlive.com/event/gganbu/icoSearch.png" />
             </button>
           </form>
         </div>
-        <div className="searchTitle">
-          나의 팬<span>낮은 레벨 순</span>
-        </div>
-        <div className="listWrap">
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
+        {btnAccess === false ? (
+          <>
+            <div className="searchTitle">
+              나의 팬<span>낮은 레벨 순</span>
             </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
+            <div className="listWrap">
+              {fanList.length > 0 &&
+                fanList.map((data, index) => {
+                  const {nickNm, profImg, memNo} = data
+                  return (
+                    <div className="list" key={`fan-${index}`}>
+                      <div className="photo">
+                        <img src={profImg.thumb50x50} alt="유저이미지" />
+                      </div>
+                      <div className="listBox">
+                        <div className="nick">{nickNm}</div>
+                        <div className="listItem">
+                          <span>Lv. 38</span>
+                          <span className="average">
+                            <em>평균</em>
+                            <span>Lv 20</span>
+                          </span>
+                        </div>
+                      </div>
+                      <button className="submit" onClick={(e) => acceptBtn(memNo)}>
+                        신청
+                      </button>
+                    </div>
+                  )
+                })}
+              {fanList.length === 0 && <NoResult type="default" text="팬이 없습니다." />}
             </div>
-            <button className="submit">신청</button>
+          </>
+        ) : (
+          <div className="listWrap" style={{height: '339px'}}>
+            {memberList.map((data, index) => {
+              const {nickNm, profImg, memNo} = data
+              return (
+                <div className="list" key={`memder-${index}`}>
+                  <div className="photo">
+                    <img src={profImg.thumb50x50} alt="유저이미지" />
+                  </div>
+                  <div className="listBox">
+                    <div className="nick">{nickNm}</div>
+                    <div className="listItem">
+                      <span>Lv. 38</span>
+                      <span className="average">
+                        <em>평균</em>
+                        <span>Lv 20</span>
+                      </span>
+                    </div>
+                  </div>
+                  <button className="submit" onClick={(e) => acceptBtn(memNo)}>
+                    신청
+                  </button>
+                  {/* <button className="cancel">취소</button>
+                  <button className="accept">수락</button>
+                  <button className="disable" disabled>
+                    신청불가
+                  </button> */}
+                </div>
+              )
+            })}
           </div>
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
-            </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
-            </div>
-            <button className="cancel">취소</button>
-          </div>
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
-            </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
-            </div>
-            <button className="accept">수락</button>
-          </div>
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
-            </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
-            </div>
-            <button className="disable" disabled>
-              신청불가
-            </button>
-          </div>
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
-            </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
-            </div>
-            <button className="disable" disabled>
-              신청불가
-            </button>
-          </div>
-          <div className="list">
-            <div className="photo">
-              <img src="" alt="유저이미지" />
-            </div>
-            <div className="listBox">
-              <div className="nick">finish</div>
-              <div className="listItem">
-                <span>Lv. 38</span>
-                <span className="average">
-                  <em>평균</em>
-                  <span>Lv 20</span>
-                </span>
-              </div>
-            </div>
-            <button className="disable" disabled>
-              신청불가
-            </button>
-          </div>
-        </div>
+        )}
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
+      {alertAccept === true && <Accept />}
+      {alertFail === true && <Fail />}
     </div>
   )
 }

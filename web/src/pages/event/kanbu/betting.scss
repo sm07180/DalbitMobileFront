@@ -1,43 +1,42 @@
 @import '../../../styles/variables';
 
-#kanbu {
+#gganbu {
   #betting {
     .participant {
       padding: 20px 12px 14px;
       .participantWrap {
         overflow: hidden;
         border-radius: 100px;
-        border: 3px solid #FF2980;
-        background-color: #FF2980;
+        border: 3px solid #ff2980;
+        background-color: #ff2980;
         cursor: pointer;
       }
       .participantBox {
         display: flex;
         letter-spacing: -1px;
         font-size: 14px;
-    
+
         label {
           display: flex;
           align-items: center;
           justify-content: center;
           width: 30%;
           height: 36px;
-          background-color: #FF2980;
+          background-color: #ff2980;
           vertical-align: middle;
         }
-    
+
         .swiper-container-vertical {
           width: 65%;
           height: 40px;
         }
-        
       }
       .participantList {
         flex: 1;
         display: flex;
         align-items: center;
-        background-color: #FFF;
-  
+        background-color: #fff;
+
         .nodata {
           width: 100%;
           height: 100%;
@@ -48,7 +47,7 @@
           color: #757575;
           letter-spacing: -1px;
         }
-  
+
         .time {
           width: 30%;
           max-width: 92px;
@@ -62,7 +61,7 @@
           word-wrap: normal;
           letter-spacing: -1px;
         }
-  
+
         .user {
           flex: 1;
           text-overflow: ellipsis;
@@ -73,7 +72,7 @@
           font-weight: 500;
           color: #000000;
         }
-  
+
         .result {
           width: 20%;
           text-overflow: ellipsis;
@@ -85,8 +84,12 @@
           color: #000000;
           text-align: center;
           padding-right: 10px;
-          &.success {color: #FF2980}
-          &.fail {color: #A1A1A1}
+          &.success {
+            color: #ff2980;
+          }
+          &.fail {
+            color: #a1a1a1;
+          }
         }
       }
     }
@@ -95,13 +98,14 @@
       position: relative;
       width: 100%;
       padding-bottom: 171%;
-      background-image: url(https://image.dalbitlive.com/event/kanbu/bead_betting-bg.png);
+      background-image: url(https://image.dalbitlive.com/event/gganbu/bead_betting-bg.png);
       background-position: bottom center;
       background-repeat: no-repeat;
       background-size: contain;
       .bettingWrap {
         position: absolute;
-        top: 58%; left: 50%;
+        top: 58%;
+        left: 50%;
         transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
@@ -114,17 +118,19 @@
       }
       .bettingBtn {
         position: absolute;
-        bottom: 2%; left: 50%;
+        bottom: 2%;
+        left: 50%;
         transform: translateX(-50%);
-        width: 25%; padding-bottom: 26%;
+        width: 25%;
+        padding-bottom: 26%;
         border-radius: 50%;
-        background-image: url(https://image.dalbitlive.com/event/kanbu/betting_btn.png);
+        background-image: url(https://image.dalbitlive.com/event/gganbu/betting_btn.png);
         background-position: bottom center;
         background-repeat: no-repeat;
         background-size: contain;
         cursor: pointer;
         &.disable {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/betting_btn-disable.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/betting_btn-disable.png);
           pointer-events: none;
         }
       }
@@ -140,7 +146,7 @@
         }
         .sectionTitle {
           display: block;
-        }              
+        }
         .sectionBead {
           display: flex;
           align-items: center;
@@ -158,29 +164,30 @@
         }
         .beadIcon {
           display: inline-block;
-          width: 12px; height: 12px;
+          width: 12px;
+          height: 12px;
           margin-right: 8px;
           background-position: center;
           background-repeat: no-repeat;
           background-size: contain;
           &.red {
-            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+            background-image: url(https://image.dalbitlive.com/event/gganbu/bead-red.png);
           }
           &.yellow {
-            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+            background-image: url(https://image.dalbitlive.com/event/gganbu/bead-yellow.png);
           }
           &.blue {
-            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+            background-image: url(https://image.dalbitlive.com/event/gganbu/bead-blue.png);
           }
           &.purple {
-            background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+            background-image: url(https://image.dalbitlive.com/event/gganbu/bead-purple.png);
           }
         }
         .bettingCount {
           display: inline-block;
           width: 22px;
           height: 18px;
-          border: 1px solid #A5A5A5;
+          border: 1px solid #a5a5a5;
           border-radius: 2px;
           font-size: 14px;
           font-weight: 500;
@@ -200,7 +207,7 @@
       width: 100%;
       padding: 76px 12px 14px;
       margin-top: -44px;
-      background-color: #FF2980;
+      background-color: #ff2980;
       box-sizing: border-box;
       .title {
         margin-bottom: 20px;
@@ -218,15 +225,21 @@
           align-items: center;
           width: 100%;
           height: 40px;
-          background-color: #FF8AC4;
+          background-color: #ff8ac4;
           .logTitle {
             text-align: center;
             font-size: 14px;
             font-weight: 900;
             color: #fff;
-            &:nth-child(1) {width: 50%;}
-            &:nth-child(2) {width: 10%;}
-            &:nth-child(3) {width: 40%;}
+            &:nth-child(1) {
+              width: 50%;
+            }
+            &:nth-child(2) {
+              width: 10%;
+            }
+            &:nth-child(3) {
+              width: 40%;
+            }
           }
         }
         .logBody {
@@ -235,7 +248,7 @@
           justify-content: center;
           flex-direction: column;
           width: 100%;
-          background-color: #FFF;
+          background-color: #fff;
           .logList {
             position: relative;
             display: flex;
@@ -243,12 +256,14 @@
             width: 100%;
             height: 52px;
             &::after {
-              content: "";
+              content: '';
               position: absolute;
-              bottom: 0; left: 50%;
-              width: 90%; height: 1px;
+              bottom: 0;
+              left: 50%;
+              width: 90%;
+              height: 1px;
               transform: translateX(-50%);
-              background: linear-gradient(to right, #FFF 0%, #C5C5C5 30%, #C5C5C5 70%, #FFF 100%);
+              background: linear-gradient(to right, #fff 0%, #c5c5c5 30%, #c5c5c5 70%, #fff 100%);
             }
             &:last-child::after {
               content: none;
@@ -269,22 +284,23 @@
               }
               .beadIcon {
                 display: inline-block;
-                width: 12px; height: 12px;
+                width: 12px;
+                height: 12px;
                 margin-right: 4px;
                 background-position: center;
                 background-repeat: no-repeat;
                 background-size: contain;
                 &.red {
-                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+                  background-image: url(https://image.dalbitlive.com/event/gganbu/bead-red.png);
                 }
                 &.yellow {
-                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+                  background-image: url(https://image.dalbitlive.com/event/gganbu/bead-yellow.png);
                 }
                 &.blue {
-                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+                  background-image: url(https://image.dalbitlive.com/event/gganbu/bead-blue.png);
                 }
                 &.purple {
-                  background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+                  background-image: url(https://image.dalbitlive.com/event/gganbu/bead-purple.png);
                 }
               }
             }
@@ -294,12 +310,12 @@
               justify-content: center;
               width: 10%;
               font-size: 14px;
-              font-weight: 700;              
+              font-weight: 700;
               & .success {
-                color: #FF2980;
+                color: #ff2980;
               }
               & .fail {
-                color: #A1A1A1;
+                color: #a1a1a1;
               }
             }
             .logData {
@@ -313,12 +329,12 @@
                 white-space: nowrap;
                 overflow: hidden;
                 font-size: 14px;
-                font-weight: 700;  
+                font-weight: 700;
                 color: #242424;
               }
               .logTime {
                 font-size: 12px;
-                font-weight: 400;  
+                font-weight: 400;
                 color: #757575;
               }
             }
@@ -386,7 +402,7 @@
 
           &.date {
             color: $greishGray;
-            padding: 10px 8px;            
+            padding: 10px 8px;
             .iconNew {
               display: inline-block;
               width: 20px;
@@ -459,8 +475,9 @@
     font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
     .space {
       display: block;
-      width: 100%; height: 8px;
-      background-color: #EEE;
+      width: 100%;
+      height: 8px;
+      background-color: #eee;
     }
     .content {
       padding: 16px 16px 26px;
@@ -468,15 +485,15 @@
         display: block;
         margin-bottom: 10px;
       }
-      .title {        
+      .title {
         font-size: 16px;
         font-weight: 700;
         color: #000;
       }
-      .info {        
+      .info {
         font-size: 12px;
         font-weight: 400;
-        color: #9C9C9C;
+        color: #9c9c9c;
         letter-spacing: -1px;
       }
 
@@ -495,7 +512,7 @@
         .score {
           font-size: 20px;
           font-weight: 700;
-          color: #632BEB;
+          color: #632beb;
           margin-right: 4px;
         }
       }
@@ -536,17 +553,17 @@
         background-repeat: no-repeat;
         background-size: contain;
         &.red {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
-        }        
+          background-image: url(https://image.dalbitlive.com/event/gganbu/bead-red.png);
+        }
         &.yellow {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
-        }        
+          background-image: url(https://image.dalbitlive.com/event/gganbu/bead-yellow.png);
+        }
         &.blue {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
-        }        
+          background-image: url(https://image.dalbitlive.com/event/gganbu/bead-blue.png);
+        }
         &.purple {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
-        }        
+          background-image: url(https://image.dalbitlive.com/event/gganbu/bead-purple.png);
+        }
       }
       .beadCount {
         font-size: 14px;
@@ -565,10 +582,10 @@
         display: inline-block;
         width: 58px;
         height: 44px;
-        background-image: url(https://image.dalbitlive.com/event/kanbu/beadpocket.png);
+        background-image: url(https://image.dalbitlive.com/event/gganbu/beadpocket.png);
         background-position: center;
         background-repeat: no-repeat;
-        background-size: contain;      
+        background-size: contain;
       }
       .pocketCount {
         font-size: 14px;
@@ -583,16 +600,16 @@
         justify-content: center;
         width: 100%;
         border-radius: 10px;
-        background-color: #BDBDBD;
+        background-color: #bdbdbd;
         pointer-events: none;
         &.small {
           padding: 7px 0;
           margin-top: 16px;
           font-size: 14px;
           font-weight: 700;
-          color: #FFF;
+          color: #fff;
           &.possible {
-            color: #FFFF77;
+            color: #ffff77;
           }
         }
         &.large {
@@ -600,11 +617,11 @@
           margin-top: 10px;
           font-size: 18px;
           font-weight: 700;
-          color: #FFF;
+          color: #fff;
         }
         &.active {
           cursor: pointer;
-          background-color:#632BEB;
+          background-color: #632beb;
         }
       }
       table {
@@ -634,7 +651,7 @@
 
           &.date {
             color: $greishGray;
-            padding: 10px 8px;            
+            padding: 10px 8px;
             .iconNew {
               display: inline-block;
               width: 20px;
@@ -667,39 +684,52 @@
 
   .openPocket {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
   }
   .openPocketAni {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%; height: 100vh;
+    width: 100%;
+    height: 100vh;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     &.ani1 {
-      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_01.webp);
-      .openPocketNum {animation-delay: 3.5s;}
+      background-image: url(https://image.dalbitlive.com/event/gganbu/ani/special_bead_01.webp);
+      .openPocketNum {
+        animation-delay: 3.5s;
+      }
     }
     &.ani2 {
-      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_02.webp);
-      .openPocketNum {animation-delay: 3.5s;}
+      background-image: url(https://image.dalbitlive.com/event/gganbu/ani/special_bead_02.webp);
+      .openPocketNum {
+        animation-delay: 3.5s;
+      }
     }
     &.ani3 {
-      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_03.webp);
-      .openPocketNum {animation-delay: 4.5s;}
+      background-image: url(https://image.dalbitlive.com/event/gganbu/ani/special_bead_03.webp);
+      .openPocketNum {
+        animation-delay: 4.5s;
+      }
     }
     &.ani4 {
-      background-image: url(https://image.dalbitlive.com/event/kanbu/ani/special_bead_04.webp);
-      .openPocketNum {animation-delay: 5.5s;}
+      background-image: url(https://image.dalbitlive.com/event/gganbu/ani/special_bead_04.webp);
+      .openPocketNum {
+        animation-delay: 5.5s;
+      }
     }
   }
   .openPocketNum {
     position: absolute;
-    top: 50%; left: 50%;
+    top: 50%;
+    left: 50%;
     transform: translate(-50%, -50%) scale(0.5, 0.5);
     font-size: 56px;
     font-weight: 900;
@@ -708,7 +738,7 @@
     animation: openPocketNum 0.5s linear forwards;
     opacity: 0;
     &::before {
-      content: "+";
+      content: '+';
     }
   }
   @keyframes openPocketNum {

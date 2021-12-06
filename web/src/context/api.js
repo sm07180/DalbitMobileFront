@@ -3366,19 +3366,101 @@ export default class API {
     })
   }
 
-  // 깐부 이벤트
   /**
-   * @brief 깐부 신청리스트
-   * @method "POST"
-   * @create
+   * @brief 깐부 이벤트
+   * @method
+   * @create 문형진
    */
-  static getKanbu = async (data) => {
+
+  // 깐부 이벤트 회차번호
+  static gganbuMarbleGather = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/marble/gather',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 정보
+  static gganbuInfoSel = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/relationship/sel',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 체크
+  // static gganbuCheck = async (data) => {
+  //   return await ajax({
+  //     url: '/event/gganbu/relationship/chk',
+  //     method: 'POST',
+  //     params: data
+  //   })
+  // }
+
+  // 깐부 랭킹 리스트
+  // static getGganbuRankList = async (data) => {
+  //   return await ajax({
+  //     url: `/event/gganbu/rank/list`,
+  //     method: 'GET',
+  //     params: data
+  //   })
+  // }
+
+  // 깐부 신청(버튼)
+  static postGganbuSub = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/req/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 신청 취소(버튼)
+  // static postGganbu = async (data) => {
+  //   return await ajax({
+  //     url: `/event/gganbu/relationship/cancel`,
+  //     method: 'POST',
+  //     params: data
+  //   })
+  // }
+
+  // 깐부 받은 내역 수락(버튼)
+  static postGganbuIns = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 신청리스트
+  static postGganbuList = async (data) => {
     return await ajax({
       url: `/event/gganbu/relationship/list`,
       method: 'POST',
       params: data
     })
   }
+
+  // 깐부 구슬 획득
+  // static postGganbuReport = async (data) => {
+  //   return await ajax({
+  //     url: `/event/gganbu/marble/ins`,
+  //     method: 'POST',
+  //     params: data
+  //   })
+  // }
+
+  // 깐부 구슬 리포트
+  // static postGganbuReport = async (data) => {
+  //   return await ajax({
+  //     url: `/event/gganbu/report/list`,
+  //     method: 'POST',
+  //     params: data
+  //   })
+  // }
 }
 
 API.customHeader = null

@@ -5,7 +5,7 @@ import Api from 'context/api'
 import './search.scss'
 
 export default (props) => {
-  const {setPopupReport} = props
+  const {setPopupReport, gganbuNo} = props
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -24,6 +24,24 @@ export default (props) => {
       closePopup()
     }
   }
+
+  // 깐부 리포트 리스트 조회
+  const postGganbuReport = async () => {
+    const {data, message} = await Api.postGganbuReport({
+      gganbuNo: gganbuNo,
+      pageNo: 1,
+      pagePerCnt: 50
+    })
+    if (message === 'SUCCESS') {
+      console.log(1)
+    } else {
+      console.log(message)
+    }
+  }
+
+  useEffect(() => {
+    postGganbuReport()
+  }, [])
 
   return (
     <div id="popupWrap" onClick={wrapClick}>

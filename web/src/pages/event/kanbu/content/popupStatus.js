@@ -5,11 +5,12 @@ import NoResult from 'components/ui/new_noResult'
 import './search.scss'
 
 export default (props) => {
-  const {setPopupStatus} = props
+  const {setPopupStatus, gganbuNo} = props
 
   const [tabBtn, setTabBtn] = useState('r')
-  const [kanbuSubList, setKanbuSubList] = useState([])
-  const [popAgreement, setPopAgreement] = useState(false)
+  const [gganbuSubList, setGganbuSubList] = useState([])
+  const [memberNo, setMemberNo] = useState()
+  const [alertAccept, setAlertAccept] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -22,6 +23,10 @@ export default (props) => {
   const closePopup = () => {
     setPopupStatus()
   }
+  const closeAlert = () => {
+    setAlertAccept(false)
+    // setAlertFail(false)
+  }
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popupWrap') {
@@ -30,31 +35,44 @@ export default (props) => {
   }
 
   const application = tabBtn
-  const fetchKanbuSubList = async () => {
+  const fetchGganbuSubList = async () => {
     const param = {
-      insSlct: application,
-      gganbuNo: 1,
+      insSlct: tabBtn,
+      gganbuNo: gganbuNo,
       pageNo: 1,
       pagePerCnt: 50
     }
-    const {result, data, message} = await Api.getKanbu(param)
-    if (result === 'success') {
-      setKanbuSubList(data.list)
+    const {data, message} = await Api.postGganbuList(param)
+    if (message === 'SUCCESS') {
+      setGganbuSubList(data.list)
+    } else {
+      console.log(message)
+    }
+  }
+
+  const postGganbuIns = async (memNo) => {
+    const param = {
+      gganbuNo: gganbuNo,
+      memNo: memNo
+    }
+    const {data, message} = await Api.postGganbuIns(param)
+    if (data === 1) {
+      console.log(message)
     } else {
       console.log(message)
     }
   }
 
   useEffect(() => {
-    fetchKanbuSubList()
+    fetchGganbuSubList()
   }, [application])
 
-  // 수락 => 동의서, 수락
-  const accept = () => {
+  // 수락 => 동의서, 실패
+  const Accept = () => {
     return (
       <div className="alert">
         <div className="contentWrap">
-          <h1 className="title">깐부찾기</h1>
+          <h1 className="title">동의서</h1>
           <div className="textWrap">
             <h2>제 1 항</h2>
             <p>
@@ -74,6 +92,13 @@ export default (props) => {
               <br />
               좋은 점수를 얻을 수 있습니다.
             </p>
+            <p>
+              <strong>정말 신청하시겠습니까?</strong>
+            </p>
+          </div>
+          <div className="buttonWrap">
+            <button onClick={closeAlert}>취소</button>
+            <button onClick={() => postGganbuIns(memberNo)}>신청</button>
           </div>
         </div>
       </div>
@@ -91,6 +116,11 @@ export default (props) => {
       </div>
     )
   }
+  const acceptBtn = (memNo) => {
+    setAlertAccept(true)
+    setMemberNo(memNo)
+    return <Accept />
+  }
 
   return (
     <div id="popupWrap" onClick={wrapClick}>
@@ -107,52 +137,75 @@ export default (props) => {
         {tabBtn === 'r' ? (
           <>
             <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
-            <div className="listWrap" style={{display: 'none'}}>
-              <div className="list">
-                <div className="photo">
-                  <img src="" alt="유저이미지" />
+            <div className="listWrap">
+              {gganbuSubList.length > 0 &&
+                gganbuSubList.map((data, index) => {
+                  const {average_level, gganbu_no, image_profile, mem_level, mem_nick, mem_no} = data
+                  return (
+                    <div className="list" key={`myGganbu-${index}`}>
+                      <div className="photo">
+                        <img src={image_profile} alt="유저이미지" />
+                      </div>
+                      <div className="listBox">
+                        <div className="nick">{mem_nick}</div>
+                        <div className="listItem">
+                          <span>Lv. {mem_level}</span>
+                          <span className="average">
+                            <em>평균</em>
+                            <span>Lv {average_level}</span>
+                          </span>
+                        </div>
+                      </div>
+                      <button className="accept" onClick={() => acceptBtn(mem_no)}>
+                        수락
+                      </button>
+                    </div>
+                  )
+                })}
+              {gganbuSubList.length === 0 && (
+                <div className="listNone">
+                  <NoResult type="default" text="신청한 회원이 없습니다." />
                 </div>
-                <div className="listBox">
-                  <div className="nick">finish</div>
-                  <div className="listItem">
-                    <span>Lv. 38</span>
-                    <span className="average">
-                      <em>평균</em>
-                      <span>Lv 20</span>
-                    </span>
-                  </div>
-                </div>
-                <button className="accept">수락</button>
-              </div>
-            </div>
-            <div className="listNone">
-              <NoResult type="default" text="신청한 회원이 없습니다." />
+              )}
             </div>
           </>
         ) : (
-          <div className="listWrap" style={{height: '334px'}}>
-            <div className="list">
-              <div className="photo">
-                <img src="" alt="유저이미지" />
+          <div className="listWrap" style={{height: '335px'}}>
+            {gganbuSubList.length > 0 &&
+              gganbuSubList.map((data, index) => {
+                const {average_level, gganbu_no, image_profile, mem_level, mem_nick} = data
+                return (
+                  <div className="list" key={index}>
+                    <div className="photo">
+                      <img src={image_profile} alt="유저이미지" />
+                    </div>
+                    <div className="listBox">
+                      <div className="nick">{mem_nick}</div>
+                      <div className="listItem">
+                        <span>Lv. {mem_level}</span>
+                        <span className="average">
+                          <em>평균</em>
+                          <span>Lv {average_level}</span>
+                        </span>
+                      </div>
+                    </div>
+                    <button className="cancel">취소</button>
+                  </div>
+                )
+              })}
+            {gganbuSubList.length === 0 && (
+              <div className="listNone">
+                <NoResult type="default" text="신청한 회원이 없습니다." />
               </div>
-              <div className="listBox">
-                <div className="nick">finish</div>
-                <div className="listItem">
-                  <span>Lv. 38</span>
-                  <span className="average">
-                    <em>평균</em>
-                    <span>Lv 20</span>
-                  </span>
-                </div>
-              </div>
-              <button className="cancel">취소</button>
-            </div>
+            )}
           </div>
         )}
         <button className="close" onClick={closePopup}>
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
+      {alertAccept === true && <Accept />}
+      {/* {alertFail === true && <Fail />} */}
     </div>
   )
 }
