@@ -25,26 +25,31 @@ export default (props) => {
   }
 
   const presentDatas=[
-      {
-          num : 1,
-          name : '이마트 1만원',
-          count : '상품권 1개'
-      },
-      {
-          num : 2,
-          name : '이마트 5천원',
-          count : '상품권 1개'
-      },
-      {
-          num : 3,
-          name : '맘스터치',
-          count : '싸이버거 1개'
-      },
-      {
-          num : 4,
-          name : '스타벅스',
-          count : '아메리카노 1개'
-      },
+        {
+            num : 1,
+            name : '이마트 1만원',
+            count : '상품권 1개'
+        },
+        {
+            num : 2,
+            name : '이마트 5천원',
+            count : '상품권 1개'
+        },
+        {
+            num : 3,
+            name : '맘스터치',
+            count : '싸이버거 1개'
+        },
+        {
+            num : 4,
+            name : '스타벅스',
+            count : '아메리카노 1개'
+        },
+        {
+            num : 5,
+            name : '꽝',
+            count : '아메리카노 1개'
+        },
   ]
 
   const swiperParams = {

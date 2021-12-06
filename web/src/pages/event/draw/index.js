@@ -81,7 +81,7 @@ export default () => {
                         <button className="refresh"></button>
                     </div>
                 </div>
-                <DrawBoard />
+                <DrawBoard/>
                 <img src={`${IMG_SERVER}/event/draw/present.png`} className="present" alt="선물소개"></img>
             </div>
             <div className="footer">
