@@ -3379,6 +3379,30 @@ export default class API {
       params: data
     })
   }
+
+  static getGganbuObtainMarble = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/marble/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuBettingList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/betting/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getGganbuMarbleBettingPage = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/marble/betting`,
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

@@ -29,7 +29,7 @@ import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import Gganbu from './gganbu'
-import GganbuPocket from './gganbu/content/beadPocket'
+import GganbuPocket from './gganbu/content/marblePocket'
 import Raffle from './raffle'
 import RaffleDj from './raffleDj'
 import RecommendDj from './recommend_dj'
@@ -45,7 +45,7 @@ import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Participant from './gganbu/content/participant'
-import BeadPocket from './gganbu/content/beadPocket'
+import MarblePocket from './gganbu/content/marblePocket'
 
 export default () => {
   const params = useParams()
@@ -133,8 +133,8 @@ export default () => {
         return <AnniversaryEvent />
       case 'participant':
         return <Participant />
-      case 'beadPocket':
-        return <BeadPocket />
+      case 'marblePocket':
+        return <MarblePocket />
       default:
         return <></>
         break

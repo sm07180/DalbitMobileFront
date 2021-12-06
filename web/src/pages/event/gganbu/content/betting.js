@@ -11,27 +11,51 @@ import noResult from 'components/ui/noResult'
 
 export default (props) => {
   const globalCtx = useContext(Context)
+  const MAX_MARBLE_BETTING_CNT = 10;
   const {tabContent, setTabContent} = props
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
-  const [ifSuccess, setIfSuccess] = useState([]) 
-  const [bettingVal, setBettingVal] = useState([]) // 베팅할 구슬
-  const [myBead, setMyBead] = useState([10,4,5,2])  // 보유한 구슬
-  const [successBead, setSuccessBead] = useState([])  // 성공 시 구슬
+  const [myMarble, setMyMarble] = useState({
+    rMarble: 10,
+    yMarble: 4,
+    bMarble: 5,
+    pMarble: 2,
+  })  // 보유한 구슬
+  
+  const [bettingVal, setBettingVal] = useState({
+    rBetting: 0,
+    yBetting: 0,
+    bBetting: 0,
+    pBetting: 0,
+  }) // 베팅할 구슬
   const [winList, setWinList] = useState()
+
+  const rMarbleRef = useRef();
+  const yMarbleRef = useRef();
+  const bMarbleRef = useRef();
+  const pMarbleRef = useRef();
+
+  const successMarbleRef = useRef([]);
 
   let totalBetting = 1;
   let inputtotal = 0;
 
   const history = useHistory()
-  const getRoundEventInfo = useCallback(async () => {
-    const {message, data} = await Api.getRaffleEventTotalInfo()
-    if (message === 'SUCCESS') {
-      // setRaffleTotalSummaryInfo(data.summaryInfo)
-      // setRaffleItemInfo(data.itemInfo)
+
+  const fetchBettingList = async () => {
+    const param = {
+      gganbuNo: 1,
+      pageNo:1,
+      pagePerCnt:5
     }
-  }, [])
-
-
+    const {data, message} = await Api.getGganbuBettingList(param);
+    if (message === 'SUCCESS') {
+      console.log(data);
+    } else {
+      globalCtx.action.alert({
+        msg: message
+      })
+    }
+  }
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -53,53 +77,120 @@ export default (props) => {
     }
   }
 
+  const marbleValueIns = (color, cnt) => {
+    const rMarbleInputVal = rMarbleRef.current.value ? parseInt(rMarbleRef.current.value) : 0;
+    const yMarbleInputVal = yMarbleRef.current.value ? parseInt(yMarbleRef.current.value) : 0;
+    const bMarbleInputVal = bMarbleRef.current.value ? parseInt(bMarbleRef.current.value) : 0;
+    const pMarbleInputVal = pMarbleRef.current.value ? parseInt(pMarbleRef.current.value) : 0;
+    let resetMarble = () => {};
 
-  const bettingBeadCount = (e) => {
-    let inputLength = document.getElementsByClassName('bettingCount').length
+    const toast1 = '구슬 개수를 확인해주세요'
+    const toast2 = '베팅 가능한 최대 개수는 10개입니다';
 
-    for (let i = 0; i < inputLength; i++) {
-      bettingVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)
+    let betCnt = cnt;
 
-      // 보유한 구슬보다 베팅할 구슬이 많을 경우 예외처리
-      if(bettingVal[i] <= myBead[i]){
-        successBead[i] = myBead[i] + bettingVal[i]
-        setIfSuccess(successBead);
-      } else {
-        globalCtx.action.toast({msg: '구슬 개수를 확인해주세요.'})
-        e.target.value = ""
-        successBead[i] = myBead[i]
-        bettingVal[i] = 0
-        setIfSuccess(myBead);
-      } 
-      inputtotal = bettingVal.reduce((a, b) => a + b)
+    switch(color) {
+      case 'r':
+        resetMarble = (toast) => {
+          globalCtx.action.toast({msg: toast});
+          successMarbleRef.current[0].innerText = myMarble.rMarble;
+          rMarbleRef.current.value = "";
+          betCnt = 0;
+        };
+        if(myMarble.rMarble < cnt){
+          // toast,
+          resetMarble(toast1);
+        } else if(cnt + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+          // toast,
+          resetMarble(toast2);
+        }else {
+          successMarbleRef.current[0].innerText = myMarble.rMarble + cnt;
+        }                
+        setBettingVal({
+          ...bettingVal,
+          rBetting : betCnt
+        })
+        break;
+
+      case 'y':
+        resetMarble = (toast) => {
+          globalCtx.action.toast({msg: toast});
+          successMarbleRef.current[1].innerText = myMarble.yMarble;
+          yMarbleRef.current.value = "";
+          betCnt = 0;
+        };
+        if(myMarble.yMarble < cnt){
+          // toast,
+          resetMarble(toast1);
+        } else if(cnt + rMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+          // toast,
+          resetMarble(toast2);
+        }else {
+          successMarbleRef.current[1].innerText = myMarble.yMarble + cnt;
+        }        
+        setBettingVal({
+          ...bettingVal,
+          yBetting : betCnt
+        })
+        break;
+
+      case 'b':
+        resetMarble = (toast) => {
+          globalCtx.action.toast({msg: toast});
+          successMarbleRef.current[2].innerText = myMarble.bMarble;
+          bMarbleRef.current.value = "";
+          betCnt = 0;
+        };
+        if(myMarble.bMarble < cnt){
+          // toast,
+          resetMarble(toast1);
+        } else if(cnt + rMarbleInputVal + yMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+          // toast,
+          resetMarble(toast2);
+        }else {
+          successMarbleRef.current[2].innerText = myMarble.bMarble + cnt;
+        }        
+        setBettingVal({
+          ...bettingVal,
+          bBetting : betCnt
+        })
+        break;
+
+      case 'p':
+        resetMarble = (toast) => {
+          globalCtx.action.toast({msg: toast});
+          successMarbleRef.current[3].innerText = myMarble.pMarble;
+          pMarbleRef.current.value = "";
+          betCnt = 0;
+        };
+        if(myMarble.pMarble < cnt){
+          resetMarble(toast1);
+        } else if(cnt + rMarbleInputVal + yMarbleInputVal + bMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+          resetMarble(toast2);
+        }else {
+          successMarbleRef.current[3].innerText = myMarble.pMarble + cnt;
+        }      
+        setBettingVal({
+          ...bettingVal,
+          pBetting : betCnt
+        })  
+        break;
+      
+      default:
     }
+  }
+  
 
-    // 한 구슬을 10개 이상 입력했을 경우 예외처리
-    if (e.target.value > 10) {
-      globalCtx.action.toast({msg: '베팅 가능한 최대 개수는 10개 입니다.'})
-      e.target.value = ""
-      setIfSuccess(myBead);
-    }
+  const marbleOnchange = (inputRef, marbleColor) => {
+    const marbleCnt = Number(inputRef.current.value);   
 
-    // 베팅한 모든 구슬의 합이 10개 이상일 경우 예외처리
-    if (inputtotal > 10) {
-      globalCtx.action.toast({msg: '베팅 가능한 최대 개수는 10개 입니다.'})
-      e.target.value = ""
-      for (let i = 0; i < inputLength; i++) {
-        bettingVal[i] = Number(document.getElementsByName('beadBettingCount')[i].value)        
-        successBead[i] = myBead[i] + bettingVal[i]
+    if(typeof marbleCnt === 'number') {
+      if(!isNaN(marbleCnt)) {
+        marbleValueIns(marbleColor, marbleCnt)
+      }else {
+        marbleValueIns(marbleColor, 0)
       }
-      setIfSuccess(successBead);
-    }
-    
-    // 베팅하기 버튼 활성화
-    const isBelowThreshold = (currentValue) => currentValue === 0;
-    const btnEle = document.getElementById('bettingBtn');
-    if(bettingVal.every(isBelowThreshold)) {      
-      btnEle.classList.add('disable');
-    } else {            
-      btnEle.classList.remove('disable');
-    }
+    }    
   }
 
   const bettingStart = () => {
@@ -112,13 +203,20 @@ export default (props) => {
 
   useEffect(() => {
     if (tabContent === 'betting') {
-      getRoundEventInfo()
+      fetchBettingList()
     }
   }, [tabContent])
 
   useEffect(() => {
-    setIfSuccess(myBead);
-  }, [])
+    const btnEle = document.getElementById('bettingBtn');
+
+    if(bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {      
+      btnEle.classList.remove('disable');
+    } else {            
+      btnEle.classList.add('disable');
+    }
+  }, [bettingVal])
+
 
   return (
     <div id="betting" style={{display: `${tabContent === 'betting' ? 'block' : 'none'}`}}>
@@ -162,72 +260,92 @@ export default (props) => {
           <form action="" method="get">
             <div className="section">
               <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/bead_title-status.png" alt="구슬 현황" />
+                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-status.png" alt="구슬 현황" />
               </div>
-              <div className="sectionBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">{myBead[0]}</span>
+              <div className="sectionMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                  <span className="marbleCount">{myMarble.rMarble}</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">{myBead[1]}</span>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                  <span className="marbleCount">{myMarble.yMarble}</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">{myBead[2]}</span>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                  <span className="marbleCount">{myMarble.bMarble}</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">{myBead[3]}</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="section">
-              <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/bead_title-betting.png" alt="배팅할 구슬 개수" />
-              </div>
-              <div className="sectionBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <input type="number" name="beadBettingCount" className="bettingCount" placeholder="0" onChange={bettingBeadCount} />
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                  <span className="marbleCount">{myMarble.pMarble}</span>
                 </div>
               </div>
             </div>
 
             <div className="section">
               <div className="sectionTitle">
-                <img src="https://image.dalbitlive.com/event/gganbu/bead_title-result.png" alt="성공시 내 구슬 개수" />
+                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-betting.png" alt="배팅할 구슬 개수" />
               </div>
-              <div className="sectionBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">{ifSuccess[0]}</span>
+              <div className="sectionMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                  <input type="number" ref={rMarbleRef} name="marbleBettingCount"
+                   className="bettingCount" placeholder="0"
+                    onChange={() => marbleOnchange(rMarbleRef, 'r')}
+                  />
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">{ifSuccess[1]}</span>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                  <input type="number" ref={yMarbleRef} name="marbleBettingCount"
+                   className="bettingCount" placeholder="0"
+                   onChange={() => marbleOnchange(yMarbleRef, 'y')}
+                  />
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">{ifSuccess[2]}</span>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                  <input type="number" ref={bMarbleRef} name="marbleBettingCount"
+                   className="bettingCount" placeholder="0"
+                   onChange={() => marbleOnchange(bMarbleRef, 'b')}
+                  />
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">{ifSuccess[3]}</span>
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                  <input type="number" ref={pMarbleRef} name="marbleBettingCount"
+                   className="bettingCount" placeholder="0"
+                   onChange={() => marbleOnchange(pMarbleRef, 'p')}
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="section">
+              <div className="sectionTitle">
+                <img src="https://image.dalbitlive.com/event/gganbu/marble_title-result.png" alt="성공시 내 구슬 개수" />
+              </div>
+              <div className="sectionMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                  <span ref={(el) => successMarbleRef.current[0] = el} className="marbleCount">
+                    {myMarble.rMarble}
+                  </span>
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                  <span ref={(el) => successMarbleRef.current[1] = el} className="marbleCount">
+                    {myMarble.yMarble}
+                  </span>
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                  <span ref={(el) => successMarbleRef.current[2] = el} className="marbleCount">
+                    {myMarble.bMarble}
+                  </span>
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                  <span ref={(el) => successMarbleRef.current[3] = el}className="marbleCount">
+                    {myMarble.pMarble}
+                  </span>
                 </div>
               </div>
             </div>
@@ -236,7 +354,7 @@ export default (props) => {
         <button id="bettingBtn" className="bettingBtn disable" onClick={bettingStart}></button>
       </div>
 
-      <div className="beadLog">
+      <div className="marbleLog">
         <div className="title">
           <img src="https://image.dalbitlive.com/event/gganbu/betting_myLog.png" alt="나의 베팅내역" />
         </div>
@@ -252,22 +370,22 @@ export default (props) => {
           </div>
           <div className="logBody">
             <div className="logList">
-              <div className="logBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
+              <div className="logMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                  <span className="marbleCount">0</span>
                 </div>
               </div>
               <div className="logResult">
@@ -279,22 +397,22 @@ export default (props) => {
               </div>
             </div>
             <div className="logList">
-              <div className="logBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
+              <div className="logMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                  <span className="marbleCount">0</span>
                 </div>
               </div>
               <div className="logResult">
@@ -309,7 +427,7 @@ export default (props) => {
           </div>
         </div>
       </div>
-      {bettingPop && <BettingPop setBettingPop={setBettingPop} bettingVal={bettingVal} myBead={myBead}/>}
+      {bettingPop && <BettingPop setBettingPop={setBettingPop} bettingVal={bettingVal} myMarble={myMarble}/>}
     </div>
   )
 }
