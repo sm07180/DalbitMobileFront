@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
+
+import '../draw.scss'
 
 export default (props) => {
     return (
@@ -9,7 +11,7 @@ export default (props) => {
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
                 </div>
                 <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1_used.png" />
+                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1_header.png" />
                 </div>
                 <div className="boardList">
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
@@ -29,7 +31,7 @@ export default (props) => {
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
                 </div>
                 <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_used.png" />
+                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
                 </div>
                 <div className="boardList">
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
@@ -41,7 +43,8 @@ export default (props) => {
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
                 </div>
                 <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
+                    <img className="squareHeader" src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
+                    <img className="square animate-out" src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
                 </div>
             </div>
         </BoardWrap>
@@ -68,7 +71,9 @@ const BoardWrap = styled.div`
         }
         &List {
             position:relative;
+            perspective:1000px;
             img {width:100%;}
+            cursor:pointer;
             &.active{
                 &:after{
                     content:"";
@@ -80,6 +85,12 @@ const BoardWrap = styled.div`
                     height:105%;
                     background: url("https://image.dalbitlive.com/event/draw/drawBoardActive.png") no-repeat center / contain;
                 }
+            }
+            .square{
+                position:absolute;
+                left:0;
+                top:0;
+                transform-origin : top right;
             }
         }
     }

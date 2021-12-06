@@ -67,8 +67,8 @@ export default () => {
             <div className="content">
                 <div className="topImgWrap">
                     <img src={`${IMG_SERVER}/event/draw/topImg.png`} className="topImg" alt="달빛표 추억의 뽑기판 달 구매 1만원당 응모권 1장 자동 지급!"></img>
-                    <div className={`ticketWrap ${ticketFixed === true ? 'fixed' : ''}`} ref={ticketWrapRef} onClick={chargeDal}>
-                        <button className="ticketBtn">999</button>
+                    <div className={`ticketWrap ${ticketFixed === true ? 'fixed' : ''}`} ref={ticketWrapRef}>
+                        <button className="ticketBtn" onClick={chargeDal}>999</button>
                     </div>
                     <button className="myWinningBtn" onClick={()=>setPopupWinning(true)}>
                         <img src={`${IMG_SERVER}/event/draw/myWinng.png`} alt="내 당첨 내역"></img> 

@@ -47,50 +47,71 @@ export default (props) => {
         },
         {
             num : 5,
+            name : '20달',
+            count : '1개'
+        },
+        {
+            num : 6,
+            name : '10달',
+            count : '1개'
+        },
+        {
+            num : 7,
+            name : '1달',
+            count : '1개'
+        },
+        {
+            num : 8,
             name : '꽝',
-            count : '아메리카노 1개'
+            count : '10개'
         },
   ]
 
   const swiperParams = {
-    loop: true,
-    direction: 'vertical',
-    // slidesPerColumnFill: 'row',
+    spaceBetween: 5,
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+      },
   }
 
   return (
     <PopupWrap id="popupPresent" onClick={wrapClick}>
+        {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
         <div className="popLayer">
-            <div className="contentWrap">
+            <div className="contentWrap" style={{width:'100%'}}>
                 <div className="title">
                     선물을 받았어요!
                 </div>
-                {/* {
-                    presentDatas.map((present, index) => {
-                        return(
-                            <div className="presentWrap" key={index}>
-                                <div className="imgWrap">
-                                    <img src={`${IMG_SERVER}/event/draw/present-${present.num}.png`}></img>
+                <Swiper {...swiperParams}>
+                        {presentDatas.map((present, index) => {
+                            return(
+                                <div className="presentWrap" key={index}>
+                                    <div className="imgWrap">
+                                        <img src={`${IMG_SERVER}/event/draw/present-${present.num}.png`}></img>
+                                    </div>
+                                    <div className="result">추첨결과(1/8)</div>
+                                    <div className="name">{present.name}</div>
+                                    <div className="counter">{present.count}</div>
                                 </div>
-                                <div className="result">추첨결과(1/8)</div>
-                                <div className="name">{present.name}</div>
-                                <div className="counter">{present.count}</div>
-                            </div>
-                        )
-                    })
-                } */}
-                <div className="presentWrap">
+                            )})
+                        }
+                </Swiper>
+                {/* 당첨 결과가 꽝일 경우 */}
+                {/* <div className="presentWrap">
                     <div className="imgWrap">
-                        <img src={`${IMG_SERVER}/event/draw/present-1.png`}></img>
+                        <img src={`${IMG_SERVER}/event/draw/present-8.png`}></img>
                         <div className="arrowWrap">
                             <img src={`${IMG_SERVER}/event/draw/presentLeft.png`}></img>
                             <img src={`${IMG_SERVER}/event/draw/presentRight.png`}></img>
                         </div>
                     </div>
                     <div className="result">추첨결과(1/8)</div>
-                    <div className="name">이마트 1만원</div>
-                    <div className="counter">상품권 1개</div>
-                </div>
+                    <div className="resultRow">
+                        <div className="name black">꽝</div>
+                        <div className="counter">10개</div>
+                    </div>
+                </div> */}
             </div>
             <div className="buttonWrap">
                 <button onClick={closePopup}>
@@ -119,12 +140,60 @@ const PopupWrap = styled.div`
     font-family: 'Noto Sans KR', sans-serif;
     color: #000000;
     letter-spacing: -1px;
+    .swiper-container {
+        width:100%;
+    }
+    .swiper-button-next{
+        top:30%;
+        right:0;
+        width:51px;
+        height:51px;
+        background:url("https://image.dalbitlive.com/event/draw/presentRight.png") no-repeat center / contain;
+        cursor:pointer;
+    }
+    .swiper-button-prev{
+        top:30%;
+        left:0;
+        width:51px;
+        height:51px;
+        background:url("https://image.dalbitlive.com/event/draw/presentLeft.png") no-repeat center / contain;
+        cursor:pointer;
+    }
     .popLayer{
         position: relative;
         width: calc(100% - 32px);
         max-width: 390px;
         border-radius: 15px;
         background-color: #fff;
+        &::after{
+            content:"";
+            position:absolute;
+            top:-96px;
+            left:50%;
+            transform: translateX(-50%);
+            width:164px;
+            height:139px;
+            background:url("https://image.dalbitlive.com/event/draw/presentTop.png") no-repeat center / contain;
+        }
+        &::before{
+            content:"";
+            position:absolute;
+            top:-80px;
+            left:50%;
+            transform: translateX(-50%);
+            width:350px;
+            height:135px;
+            background:url("https://image.dalbitlive.com/event/draw/presentBackLight.png") no-repeat center / contain;
+            opacity:0.4;
+        }
+        &.blank{
+            &::after{
+                content:none;
+            }
+            &::before{
+                content:none;
+            }
+        }
         .close {
             position: absolute;
             top: -50px;
@@ -185,11 +254,21 @@ const PopupWrap = styled.div`
                     font-weight:500;
                     text-align:center;
                     margin-top:5px;
+                    &Row{
+                        margin:17px 0;
+                        display:flex;
+                        .name{
+                            margin-right:5px;
+                        }
+                    }
                 }
                 .name{
                     font-size:21px;
                     font-weight:700;
                     color:#632BEB;
+                    &.black{
+                        color:black;
+                    }
                 }
                 .counter{
                     font-size:21px;
@@ -222,27 +301,6 @@ const PopupWrap = styled.div`
                 color:#fff;
             }
         }
-    }
-    .popLayer::after{
-        content:"";
-        position:absolute;
-        top:-96px;
-        left:50%;
-        transform: translateX(-50%);
-        width:164px;
-        height:139px;
-        background:url("https://image.dalbitlive.com/event/draw/presentTop.png") no-repeat center / contain;
-    }
-    .popLayer::before{
-        content:"";
-        position:absolute;
-        top:-80px;
-        left:50%;
-        transform: translateX(-50%);
-        width:350px;
-        height:135px;
-        background:url("https://image.dalbitlive.com/event/draw/presentBackLight.png") no-repeat center / contain;
-        opacity:0.4;
     }
     
 `
