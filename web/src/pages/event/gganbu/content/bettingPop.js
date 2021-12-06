@@ -5,13 +5,26 @@ import Lottie from 'react-lottie'
 import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
-  const {setBettingPop} = props
+  const {setBettingPop, bettingVal, myMarble} = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
   const [bettingResult, setBettingResult] = useState("")
-  const [beadNum, setBeadNum] = useState(0);
+  const [marbleNum, setMarbleNum] = useState(0);
+  const [resultVal, setResultVal] = useState({
+    rResult : "",
+    yResult : "",
+    bResult : "",
+    pResult : "",
+  });
+  const [gapVal, setGapVal] = useState({
+    rGap : "",
+    yGap : "",
+    bGap : "",
+    pGap : "",
+  });
 
+  console.log(resultVal);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -38,12 +51,13 @@ export default (props) => {
 
   const betting = () => {
     const selectValue = document.querySelector('input[name="bettingType"]:checked').value;
-    const beadLength = Math.floor(Math.random() * 4) + 1;
+    const marbleLength = Math.floor(Math.random() * 4) + 1;
     let resultType = "";
     
-    setBeadNum(beadLength);
+    setMarbleNum(marbleLength);
+    setPopResult(true);
 
-    if(beadLength === 1 || beadLength === 3){
+    if(marbleLength === 1 || marbleLength === 3){
       resultType = "odd";
     } else {
       resultType = "even";
@@ -54,13 +68,26 @@ export default (props) => {
     } else {
       setTypeSelect("짝수");
     }
+    
 
     if(selectValue === resultType) {
       setBettingResult("success");
+      resultVal.rResult = myMarble.rMarble + bettingVal.rBetting;
+      resultVal.yResult = myMarble.yMarble + bettingVal.yBetting;
+      resultVal.bResult = myMarble.bMarble + bettingVal.bBetting;
+      resultVal.pResult = myMarble.pMarble + bettingVal.pBetting;
     } else {
       setBettingResult("fail");
+      resultVal.rResult = myMarble.rMarble - bettingVal.rBetting;
+      resultVal.yResult = myMarble.yMarble - bettingVal.yBetting;
+      resultVal.bResult = myMarble.bMarble - bettingVal.bBetting;
+      resultVal.pResult = myMarble.pMarble - bettingVal.pBetting;
     }
-    setPopResult(true);
+        
+    gapVal.rGap = resultVal.rResult - myMarble.rMarble;
+    gapVal.yGap = resultVal.yResult - myMarble.yMarble;
+    gapVal.bGap = resultVal.bResult - myMarble.bMarble;
+    gapVal.pGap = resultVal.pResult - myMarble.pMarble;
   }
 
   return (
@@ -68,35 +95,6 @@ export default (props) => {
       <div className="contentWrap">
         <div className="title">홀짝 게임</div>
         <div className="content">
-          <div className="bettingMyInfo">                  
-            {popResult &&
-              <div className="bettingType"> 
-                  <div className="bettingTitle">나의 베팅</div>
-                  <div className="bettingMy">{typeSelect}</div>
-              </div>
-            }
-            <div className="bettingBead">
-              <div className="bettingTitle">{popResult ? "구슬 현황" : "내가 베팅한 구슬"}</div>
-              <div className="sectionBead">
-                <div className="beadData">
-                  <span className="beadIcon red"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon yellow"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon blue"></span>
-                  <span className="beadCount">0</span>
-                </div>
-                <div className="beadData">
-                  <span className="beadIcon purple"></span>
-                  <span className="beadCount">0</span>
-                </div>
-              </div>
-            </div>            
-          </div>
           <div className="bettingAni">           
             {popResult ?
               <div id="bettingAni">                
@@ -104,7 +102,7 @@ export default (props) => {
                   options={{
                     loop: false,
                     autoPlay: true,
-                    path: `${IMG_SERVER}/event/kanbu/ani/odd_even_game_0${beadNum}.json`
+                    path: `${IMG_SERVER}/event/gganbu/ani/odd_even_game_0${marbleNum}.json`
                   }}
                 />
                 {bettingResult === "success" ? 
@@ -119,7 +117,7 @@ export default (props) => {
                 }
               </div>
               :
-              <img src="https://image.dalbitlive.com/event/kanbu/betting_ani.png" alt="베팅 준비중" />
+              <img src="https://image.dalbitlive.com/event/gganbu/betting_ani.png" alt="베팅 준비중" />
             }
           </div>
           {!popResult &&
@@ -163,7 +161,72 @@ export default (props) => {
               </div>
             </label>
           </div>
-          }          
+          }   
+          <div className="bettingMyInfo">                  
+            {popResult &&
+              <div className="bettingType"> 
+                  <div className="bettingTitle">나의 베팅</div>
+                  <div className="bettingMy">{typeSelect}</div>
+              </div>
+            }
+            <div className={`bettingMarble ${popResult ? "result" : ""}`}>
+              <div className="bettingTitle">{popResult ? "구슬 현황" : "내가 베팅한 구슬"}</div>
+              <div className="sectionMarble">
+                <div className="marbleData">
+                  <span className="marbleIcon red"></span>
+                    {popResult ?
+                      <span className="marbleCount">
+                        {resultVal.rResult}
+                        <span className={`marbleGap ${gapVal.rGap >= 0 ? "plus": "minus"}`}>
+                          {gapVal.rGap >= 0 ? `+${gapVal.rGap}` : `${gapVal.rGap}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="marbleCount">{bettingVal.rBetting}</span>
+                    }                 
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon yellow"></span>
+                    {popResult ?
+                      <span className="marbleCount">
+                        {resultVal.yResult}
+                        <span className={`marbleGap ${gapVal.yGap >= 0 ? "plus": "minus"}`}>
+                          {gapVal.yGap >= 0 ? `+${gapVal.yGap}` : `${gapVal.yGap}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="marbleCount">{bettingVal.yBetting}</span>
+                    }     
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon blue"></span>
+                    {popResult ?
+                      <span className="marbleCount">
+                        {resultVal.bResult}
+                        <span className={`marbleGap ${gapVal.bGap >= 0 ? "plus": "minus"}`}>
+                          {gapVal.bGap >= 0 ? `+${gapVal.bGap}` : `${gapVal.bGap}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="marbleCount">{bettingVal.bBetting}</span>
+                    }  
+                </div>
+                <div className="marbleData">
+                  <span className="marbleIcon purple"></span>
+                    {popResult ?
+                      <span className="marbleCount">
+                        {resultVal.pResult}
+                        <span className={`marbleGap ${gapVal.pGap >= 0 ? "plus": "minus"}`}>
+                          {gapVal.pGap >= 0 ? `+${gapVal.pGap}` : `${gapVal.pGap}`}
+                        </span>
+                      </span>  
+                      :                   
+                      <span className="marbleCount">{bettingVal.pBetting}</span>
+                    }      
+                </div>
+              </div>
+            </div>            
+          </div> 
         </div>
         <div className="bottom">        
             {popResult ?
@@ -173,7 +236,7 @@ export default (props) => {
             }
         </div>
         <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/kanbu/bettingPop_btn-close.png" alt="닫기" />
+          <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기" />
         </button>
       </div>
     </PopupWrap>
@@ -207,6 +270,7 @@ const PopupWrap = styled.div`
         font-size: 21px;
         font-weight: 900;
         text-align: center;
+        border-bottom: 1px solid #E0E0E0;
         font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
         letter-space: -1px;
         color: #000000;
@@ -249,9 +313,8 @@ const PopupWrap = styled.div`
         flex-direction: column;
         width: 100%;
         padding: 15px;
-        margin-bottom: 6px;
-        border-top: 1px solid #E0E0E0;
-        border-radius: 0 0 10px 10px;
+        margin-top: 6px;
+        border-radius: 10px;
         background-color: #F5F5F5;
         box-sizing: border-box;
         .bettingType {
@@ -266,11 +329,14 @@ const PopupWrap = styled.div`
             color: #632BEB;
           }
         }
-        .bettingBead {
+        .bettingMarble {
           display: flex;
           align-items: center;
           justify-content: center;
-
+          width: 100%; height:24px;
+          &.result {
+            animation: resultMarble 3s linear forwards;
+          }
         }
         .bettingTitle {
           font-family: 'Noto Sans CJK KR', 'NanumSquare', sans-serif;
@@ -357,7 +423,7 @@ const PopupWrap = styled.div`
               display: inline-block;
               width: 17px; height: 17px;
               margin-right: 4px;
-              background-image: url(https://image.dalbitlive.com/event/kanbu/betting_icon-totalParticipant.png);
+              background-image: url(https://image.dalbitlive.com/event/gganbu/betting_icon-totalParticipant.png);
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;
@@ -385,7 +451,7 @@ const PopupWrap = styled.div`
               display: inline-block;
               width: 16px; height: 16px;
               margin-right: 4px;
-              background-image: url(https://image.dalbitlive.com/event/kanbu/betting_icon-percentage.png);
+              background-image: url(https://image.dalbitlive.com/event/gganbu/betting_icon-percentage.png);
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;              
@@ -413,12 +479,12 @@ const PopupWrap = styled.div`
         }
 
       }
-      .sectionBead {
+      .sectionMarble {
         display: flex;
         align-items: center;
         justify-content: center;
       }
-      .beadData {
+      .marbleData {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -427,7 +493,7 @@ const PopupWrap = styled.div`
           margin-right: 0;
         }
       }
-      .beadIcon {
+      .marbleIcon {
         display: inline-block;
         width: 12px; height: 12px;
         margin-right: 4px;
@@ -435,16 +501,40 @@ const PopupWrap = styled.div`
         background-repeat: no-repeat;
         background-size: contain;
         &.red {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-red.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-red.png);
         }
         &.yellow {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-yellow.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-yellow.png);
         }
         &.blue {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-blue.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-blue.png);
         }
         &.purple {
-          background-image: url(https://image.dalbitlive.com/event/kanbu/bead-purple.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-purple.png);
+        }
+      }
+      .marbleCount {
+        position: relative;
+        font-size: 14px;
+        font-weight: 500;
+        color: #333333;
+      }
+      .marbleGap {
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 20px;
+        font-weight: 900;
+        color: #fff;
+        animation: gapValue 3s linear forwards;
+        pointer-events: none;
+        &.plus {
+          color: #3F5BFF;
+          text-shadow: 0px 0px 2px #fff;
+        }
+        &.minus {
+          color: #E03463;
+          text-shadow: 0px 0px 2px #fff;
         }
       }
       .close {
@@ -478,5 +568,46 @@ const PopupWrap = styled.div`
     100% {
       opacity: 1;
     }
-}
+  }
+  @keyframes resultMarble {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes gapValue {
+    0% {
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1, 1);
+      opacity: 0;
+    }
+    50% {
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(1, 1);
+      opacity: 0;
+    }
+    70% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.2, 1.2);
+      opacity: 1;
+    }
+    85% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.2, 1.2);
+      opacity: 1;
+    }
+    100% {
+      top: 200%; left: 50%;
+      transform: translate(-50%, -50%) scale(1.5, 1.5);
+      opacity: 0;
+    }
+  }
 `

@@ -27,17 +27,17 @@ export default (props) => {
     <PopupWrap id="popupDetails">
       <Swiper {...swiperParams}>
         <div className="list">
-          <img src="https://image.dalbitlive.com/event/kanbu/popupDetails-1.png" />
+          <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-1.png" />
         </div>
         <div className="list">
-          <img src="https://image.dalbitlive.com/event/kanbu/popupDetails-2.png" />
+          <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-2.png" />
         </div>
         <div className="list">
-          <img src="https://image.dalbitlive.com/event/kanbu/popupDetails-3.png" />
+          <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-3.png" />
         </div>
       </Swiper>
       <div className="close" onClick={closePopup}>
-        <img src="https://image.dalbitlive.com/event/kanbu/popDetailClose.png" />
+        <img src="https://image.dalbitlive.com/event/gganbu/popDetailClose.png" />
       </div>
     </PopupWrap>
   )

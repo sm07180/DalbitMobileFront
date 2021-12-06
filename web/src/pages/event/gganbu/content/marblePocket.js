@@ -101,8 +101,8 @@ export default () => {
   }, [])
 
   return (
-    <div id="beadPocketPage">
-      <div className="beadPocketBox">
+    <div id="marblePocketPage">
+      <div className="marblePocketBox">
         <Header title="구슬 주머니" />
         <div className="content">
           <div className="mypointWrap">
@@ -111,29 +111,29 @@ export default () => {
               <span className="score">{Utility.addComma(2181)}</span>점
             </div>
           </div>
-          <div className="exchangeBead">
+          <div className="exchangeMarble">
             <div className="title">교환 가능한 구슬 획득 내역</div>
             <p className="info">*얻은 구슬만 집계되며, 주머니 받기 시 10개씩 차감됩니다.</p>
             <div className="shadowBox">
-              <div className="beadWrap">
-                <div className="beadGroup">
-                  <span className="bead red"></span>
-                  <span className="beadCount">23</span>
+              <div className="marbleWrap">
+                <div className="marbleGroup">
+                  <span className="marble red"></span>
+                  <span className="marbleCount">23</span>
                 </div>
-                <div className="beadGroup">
-                  <span className="bead yellow"></span>
-                  <span className="beadCount">0</span>
+                <div className="marbleGroup">
+                  <span className="marble yellow"></span>
+                  <span className="marbleCount">0</span>
                 </div>
-                <div className="beadGroup">
-                  <span className="bead blue"></span>
-                  <span className="beadCount">38</span>
+                <div className="marbleGroup">
+                  <span className="marble blue"></span>
+                  <span className="marbleCount">38</span>
                 </div>
-                <div className="beadGroup">
-                  <span className="bead purple"></span>
-                  <span className="beadCount">11</span>
+                <div className="marbleGroup">
+                  <span className="marble purple"></span>
+                  <span className="marbleCount">11</span>
                 </div>
               </div>
-              <button className="beadBtn small">구슬 주머니 받기</button>
+              <button className="marbleBtn small">구슬 주머니 받기</button>
             </div>
           </div>
           <div className="exchangePocket">
@@ -144,7 +144,7 @@ export default () => {
                 <span className="pocketCount">0</span>
               </div>
             </div>
-            <button className="beadBtn large">구슬 주머니 열기</button>
+            <button className="marbleBtn large">구슬 주머니 열기</button>
           </div>
         </div>
         <div className="space"></div>
