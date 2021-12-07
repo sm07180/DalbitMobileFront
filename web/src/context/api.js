@@ -3349,6 +3349,15 @@ export default class API {
       method: 'GET'
     })
   }
+
+  //사내 서버 주소 리스트
+  static getInnerServerList = async () => {
+    return await ajax({
+      url: '/main/ip/mob',
+      method: 'GET'
+    })
+
+  }
 }
 
 API.customHeader = null
