@@ -3381,32 +3381,23 @@ export default class API {
     })
   }
 
-  // 깐부 정보
-  static gganbuInfoSel = async (data) => {
+  // 깐부 랭킹 리스트
+  static getGganbuRankList = async (data) => {
     return await ajax({
-      url: '/event/gganbu/relationship/sel',
-      method: 'POST',
+      url: `/event/gganbu/rank/list`,
+      method: 'GET',
       params: data
     })
   }
 
-  // 깐부 체크
-  // static gganbuCheck = async (data) => {
-  //   return await ajax({
-  //     url: '/event/gganbu/relationship/chk',
-  //     method: 'POST',
-  //     params: data
-  //   })
-  // }
-
-  // 깐부 랭킹 리스트
-  // static getGganbuRankList = async (data) => {
-  //   return await ajax({
-  //     url: `/event/gganbu/rank/list`,
-  //     method: 'GET',
-  //     params: data
-  //   })
-  // }
+  // 깐부 검색
+  static getGganbuSearch = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/member/search`,
+      method: 'GET',
+      params: data
+    })
+  }
 
   // 깐부 신청(버튼)
   static postGganbuSub = async (data) => {
@@ -3418,13 +3409,13 @@ export default class API {
   }
 
   // 깐부 신청 취소(버튼)
-  // static postGganbu = async (data) => {
-  //   return await ajax({
-  //     url: `/event/gganbu/relationship/cancel`,
-  //     method: 'POST',
-  //     params: data
-  //   })
-  // }
+  static postGganbuCancel = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/req/cancel`,
+      method: 'POST',
+      params: data
+    })
+  }
 
   // 깐부 받은 내역 수락(버튼)
   static postGganbuIns = async (data) => {
@@ -3454,13 +3445,14 @@ export default class API {
   // }
 
   // 깐부 구슬 리포트
-  // static postGganbuReport = async (data) => {
-  //   return await ajax({
-  //     url: `/event/gganbu/report/list`,
-  //     method: 'POST',
-  //     params: data
-  //   })
-  // }
+  static postGganbuReportList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/report/list`,
+      method: 'POST',
+      params: data
+    })
+  }
+
   static getGganbuObtainMarble = async (data) => {
     return await ajax({
       url: `/event/gganbu/marble/ins`,

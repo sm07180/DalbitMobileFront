@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, {useState, useEffect, useContext, useCallback} from 'react'
+import {Context} from 'context/index.js'
 import Api from 'context/api'
 import NoResult from 'components/ui/new_noResult'
 
@@ -6,11 +7,13 @@ import './search.scss'
 
 export default (props) => {
   const {setPopupStatus, gganbuNo} = props
+  const context = useContext(Context)
 
   const [tabBtn, setTabBtn] = useState('r')
   const [gganbuSubList, setGganbuSubList] = useState([])
   const [memberNo, setMemberNo] = useState()
   const [alertAccept, setAlertAccept] = useState(false)
+  const [alertSuccess, setAlertSuccess] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -25,7 +28,7 @@ export default (props) => {
   }
   const closeAlert = () => {
     setAlertAccept(false)
-    // setAlertFail(false)
+    setAlertSuccess(false)
   }
   const wrapClick = (e) => {
     const target = e.target
@@ -49,7 +52,7 @@ export default (props) => {
       console.log(message)
     }
   }
-
+  // 수락 버튼
   const postGganbuIns = async (memNo) => {
     const param = {
       gganbuNo: gganbuNo,
@@ -57,9 +60,36 @@ export default (props) => {
     }
     const {data, message} = await Api.postGganbuIns(param)
     if (data === 1) {
-      console.log(message)
+      context.action.alert({
+        msg: `${context.profile.nickNm}님과 깐부를 맺었습니다.`,
+        callback: () => {
+          closeAlert()
+        }
+      })
     } else {
       console.log(message)
+    }
+  }
+  // 취소 버튼
+  const postGganbuCancel = async (memNo) => {
+    const param = {
+      gganbuNo: gganbuNo,
+      memNo: memNo
+    }
+    const {data, message} = await Api.postGganbuCancel(param)
+    if (data === 1) {
+      console.log(message)
+      context.action.alert({
+        msg: '취소 완료',
+        callback: () => {
+          closeAlert()
+          fetchGganbuSubList()
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: message
+      })
     }
   }
 
@@ -76,42 +106,36 @@ export default (props) => {
           <div className="textWrap">
             <h2>제 1 항</h2>
             <p>
-              깐부는 최대 두 명에게 신청
-              <br />
-              가능하며 신청 후에 취소할 수 있습니다.
-            </p>
-            <h2>제 2 항</h2>
-            <p>
-              상대가 수락 시 이번 회차에서 맺은 깐부는
+              이번 회차에서 맺은 깐부는
               <br />
               중도 해체할 수 없습니다.
             </p>
-            <h2>제 3 항</h2>
+            <h2>제 2 항</h2>
             <p>
               평균 레벨이 낮을수록 구슬 주머니에서
               <br />
               좋은 점수를 얻을 수 있습니다.
             </p>
             <p>
-              <strong>정말 신청하시겠습니까?</strong>
+              <strong>정말 깐부를 맺으시겠습니까?</strong>
             </p>
           </div>
           <div className="buttonWrap">
             <button onClick={closeAlert}>취소</button>
-            <button onClick={() => postGganbuIns(memberNo)}>신청</button>
+            <button onClick={() => postGganbuIns(memberNo)}>수락</button>
           </div>
         </div>
       </div>
     )
   }
-  const success = () => {
+  const Success = () => {
     return (
       <div className="alert">
         <div className="contentWrap">
           님과
           <br />
           깐부를 맺었습니다.
-          <button></button>
+          <button onClick={closeAlert}>확인</button>
         </div>
       </div>
     )
@@ -120,6 +144,12 @@ export default (props) => {
     setAlertAccept(true)
     setMemberNo(memNo)
     return <Accept />
+  }
+
+  const successBtn = (memNo) => {
+    setAlertSuccess(true)
+    setMemberNo(memNo)
+    return <Success />
   }
 
   return (
@@ -137,10 +167,10 @@ export default (props) => {
         {tabBtn === 'r' ? (
           <>
             <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
-            <div className="listWrap">
+            <div className="listWrap" style={{height: '329px'}}>
               {gganbuSubList.length > 0 &&
                 gganbuSubList.map((data, index) => {
-                  const {average_level, gganbu_no, image_profile, mem_level, mem_nick, mem_no} = data
+                  const {average_level, image_profile, mem_level, mem_nick, mem_no} = data
                   return (
                     <div className="list" key={`myGganbu-${index}`}>
                       <div className="photo">
@@ -170,10 +200,10 @@ export default (props) => {
             </div>
           </>
         ) : (
-          <div className="listWrap" style={{height: '335px'}}>
+          <div className="listWrap" style={{height: '364px'}}>
             {gganbuSubList.length > 0 &&
               gganbuSubList.map((data, index) => {
-                const {average_level, gganbu_no, image_profile, mem_level, mem_nick} = data
+                const {average_level, image_profile, mem_level, mem_nick, mem_no} = data
                 return (
                   <div className="list" key={index}>
                     <div className="photo">
@@ -189,7 +219,9 @@ export default (props) => {
                         </span>
                       </div>
                     </div>
-                    <button className="cancel">취소</button>
+                    <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                      취소
+                    </button>
                   </div>
                 )
               })}
@@ -205,7 +237,7 @@ export default (props) => {
         </button>
       </div>
       {alertAccept === true && <Accept />}
-      {/* {alertFail === true && <Fail />} */}
+      {alertSuccess === true && <Success />}
     </div>
   )
 }

@@ -22,8 +22,10 @@ export default () => {
   const [gganbuNo, setGganbuNo] = useState()
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState([])
+  const [myRankList, setMyRankList] = useState([])
+  const [rankList, setRankList] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
-  const [tabContent, setTabContent] = useState('betting') // collect, betting
+  const [tabContent, setTabContent] = useState('collect') // collect, betting
   const [popupNotice, setPopupNotice] = useState(false)
   const [popupSearch, setPopupSearch] = useState(false)
   const [popupStatus, setPopupStatus] = useState(false)
@@ -38,21 +40,21 @@ export default () => {
       setGganbuState(gganbuState)
       setGganbuNo(gganbuRoundInfo.gganbuNo)
       setGganbuInfo(gganbuInfo)
+      setMyRankList(myRankInfo)
+      setRankList(rankIst)
     } else {
       console.log(message)
     }
   }, [])
-  // 깐부 정보
-  const gganbuInformation = useCallback(async () => {
-    const {data, message} = await Api.gganbuInfoSel({
-      gganbuNo: 1
-    })
-    if (message === 'SUCCESS') {
-      console.log(1)
-    } else {
-      console.log(message)
-    }
-  }, [])
+
+  // 깐부 랭킹 리스트
+  // const gganbuRankList = useCallback(async () => {
+  //   const {data, message} = await Api.getGganbuRankList()
+  //   if (message === 'SUCCESS') {
+  //   } else {
+  //     console.log(message)
+  //   }
+  // }, [])
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
@@ -68,6 +70,12 @@ export default () => {
     }
   }
 
+  const notLoginAlert = () => {
+    globalCtx.action.alert({
+      msg: '깐부 없음'
+    })
+  }
+
   useEffect(() => {
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
@@ -75,8 +83,7 @@ export default () => {
 
   useEffect(() => {
     gganbuRoundLookup()
-    gganbuInformation()
-    console.log(gganbuNo, gganbuState, gganbuInfo)
+    // gganbuRankList()
   }, [])
 
   useEffect(() => {
@@ -104,7 +111,7 @@ export default () => {
               <div className="userUl">
                 <div className="userList">
                   <div className="photo">
-                    <img src={globalCtx.profile.profImg.thumb88x88} alt="유저이미지" />
+                    <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
                   </div>
                   <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
                     Lv {globalCtx.profile.level}
@@ -135,12 +142,12 @@ export default () => {
                 ) : (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png" />
+                      <img src={gganbuInfo.ptr_mem_profile} />
                     </div>
-                    <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                    <PtrLevelBox className="badge" memLevelColor={gganbuInfo.mem_level_color}>
                       Lv {gganbuInfo.mem_level}
-                    </LevelBox>
-                    <span className="nick">띵 동 ◡̈♪</span>
+                    </PtrLevelBox>
+                    <span className="nick">{gganbuInfo.mem_nick}</span>
                   </div>
                 )}
               </div>
@@ -156,7 +163,11 @@ export default () => {
               alt="구슬 모으기"
             />
           </button>
-          <button className={tabContent === 'betting' ? 'active' : ''} onClick={() => setTabContent('betting')}>
+          <button
+            className={tabContent === 'betting' ? 'active' : ''}
+            onClick={() => {
+              gganbuState === 1 ? setTabContent('betting') : notLoginAlert()
+            }}>
             <img
               src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
@@ -165,7 +176,14 @@ export default () => {
           <span className="tabLine"></span>
         </div>
       </div>
-      <Collect tabContent={tabContent} gganbuState={gganbuState} gganbuNo={gganbuNo} />
+      <Collect
+        tabContent={tabContent}
+        gganbuState={gganbuState}
+        gganbuNo={gganbuNo}
+        gganbuInfo={gganbuInfo}
+        myRankList={myRankList}
+        rankList={rankList}
+      />
       <Betting tabContent={tabContent} />
 
       {/* 팝업 */}
@@ -178,15 +196,39 @@ export default () => {
 
 const LevelBox = styled.div`
   ${(props) => {
-    if (props.levelColor.length === 3) {
+    const {levelColor} = props
+    if (levelColor.length === 3) {
       return css`
-        background-image: linear-gradient(to right, ${props.levelColor[0]}, ${props.levelColor[1]} 51%, ${props.levelColor[2]});
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
       `
     } else {
       return css`
-        background-color: ${props.levelColor[0]};
+        background-color: ${levelColor[0]};
       `
     }
+  }};
+  width: 44px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.3px;
+`
+const PtrLevelBox = styled.div`
+  ${(props) => {
+    const {memLevelColor} = props
+    // if (memLevelColor.length === 3) {
+    //   return css`
+    //     background-image: linear-gradient(to right, ${memLevelColor[0]}, ${memLevelColor[1]} 51%, ${memLevelColor[2]});
+    //   `
+    // } else {
+    //   return css`
+    //     background-color: ${memLevelColor[0]};
+    //   `
+    // }
   }};
   width: 44px;
   height: 16px;

@@ -1,6 +1,7 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
 import {Context} from 'context/index.js'
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 
 import './search.scss'
 import NoResult from 'components/ui/new_noResult'
@@ -11,13 +12,17 @@ export default (props) => {
   const {setPopupSearch, gganbuNo} = props
   const context = useContext(Context)
   const myProfileNo = context.profile.memNo
+  const myProfileLevel = context.profile.level
 
   const [result, setResult] = useState('')
   const [fanList, setFanList] = useState([])
   const [memberList, setMemberList] = useState([])
   const [memberNo, setMemberNo] = useState()
+  const [currentPage, setCurrentPage] = useState(0)
   const [alertAccept, setAlertAccept] = useState(false)
-  const [alertFail, setAlertFailt] = useState(false)
+
+  let totalPage = 1
+  let records = 20
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -33,7 +38,6 @@ export default (props) => {
   }
   const closeAlert = () => {
     setAlertAccept(false)
-    setAlertFail(false)
   }
   const wrapClick = (e) => {
     const target = e.target
@@ -41,26 +45,26 @@ export default (props) => {
       closePopup()
     }
   }
-
-  // 회원 검색
-  const fetchSearchMember = async () => {
-    const res = await Api.member_search({
-      params: {
-        search: result,
-        page: 1,
-        records: 20
+  // 깐부 검색
+  const fetchGganbuSearch = async () => {
+    const param = {
+      searchText: result,
+      myLevel: myProfileLevel,
+      pageNo: 1,
+      pagePerCnt: records
+    }
+    const {data, message} = await Api.getGganbuSearch(param)
+    if (message === 'SUCCESS') {
+      if (currentPage > 1) {
+        setMemberList(memberList.concat(data.list))
+      } else {
+        setMemberList(data.list)
       }
-    })
-    if (res.result === 'success') {
-      setMemberList(res.data.list)
     } else {
       context.action.alert({
-        msg: res.message
+        msg: message
       })
     }
-  }
-  const holeSearch = () => {
-    fetchSearchMember()
   }
   const onChange = (e) => {
     setResult(e.target.value)
@@ -76,12 +80,30 @@ export default (props) => {
         }
       })
     } else {
-      holeSearch()
-      // setTimeout(() => {
-      //   btnAccess = false
-      // }, 1000)
+      fetchGganbuSearch()
+      setTimeout(() => {
+        btnAccess = false
+      }, 1000)
     }
   }
+
+  // const scrollEvtHdr = () => {
+  //   if (totalPage > currentPage && Utility.isHitBottom()) {
+  //     setCurrentPage(currentPage + 1)
+  //   }
+  // }
+
+  // useLayoutEffect(() => {
+  //   if (currentPage === 0) setCurrentPage(1)
+  //   window.addEventListener('scroll', scrollEvtHdr)
+  //   return () => {
+  //     window.removeEventListener('scroll', scrollEvtHdr)
+  //   }
+  // }, [currentPage])
+
+  // useEffect(() => {
+  //   if (currentPage > 0 && result !== '') fetchSearchMember()
+  // }, [currentPage])
 
   // 팬 리스트
   const fetchFanList = async () => {
@@ -95,21 +117,25 @@ export default (props) => {
       setFanList(res.data.list)
     } else {
       context.action.alert({
-        callback: () => {},
         msg: res.message
       })
     }
     return
   }
 
-  const postGganbuSub = async (memNo) => {
+  const postGganbuSub = async () => {
     const param = {
       gganbuNo: gganbuNo,
-      ptrMemNo: memNo
+      ptrMemNo: memberNo
     }
     const {data, message} = await Api.postGganbuSub(param)
     if (data === 1) {
-      closeAlert()
+      context.action.alert({
+        msg: '신청 완료',
+        callback: () => {
+          closeAlert()
+        }
+      })
     } else {
       context.action.alert({
         msg: message
@@ -123,6 +149,7 @@ export default (props) => {
 
   // 수락 => 동의서, 실패
   const Accept = () => {
+    console.log(memberNo, context.profile.memNo)
     return (
       <div className="alert">
         <div className="contentWrap">
@@ -152,27 +179,15 @@ export default (props) => {
           </div>
           <div className="buttonWrap">
             <button onClick={closeAlert}>취소</button>
-            <button onClick={() => postGganbuSub(memberNo)}>신청</button>
+            <button onClick={() => postGganbuSub()}>신청</button>
           </div>
         </div>
       </div>
     )
   }
-  const Fail = () => {
-    return (
-      <div className="popWrap">
-        <div className="contentWrap">
-          깐부는 최대 2명에게 신청 가능합니다.
-          <br />
-          신청 취소 후 다시 접근해주세요.
-          <button></button>
-        </div>
-      </div>
-    )
-  }
-  const acceptBtn = (memNo) => {
+  const acceptBtn = (mem_no) => {
     setAlertAccept(true)
-    setMemberNo(memNo)
+    setMemberNo(mem_no)
     return <Accept />
   }
 
@@ -228,25 +243,25 @@ export default (props) => {
             </div>
           </>
         ) : (
-          <div className="listWrap" style={{height: '339px'}}>
+          <div className="listWrap" style={{height: '344px'}}>
             {memberList.map((data, index) => {
-              const {nickNm, profImg, memNo} = data
+              const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
               return (
                 <div className="list" key={`memder-${index}`}>
                   <div className="photo">
-                    <img src={profImg.thumb50x50} alt="유저이미지" />
+                    <img src={mem_profile.thumb50x50} alt="유저이미지" />
                   </div>
                   <div className="listBox">
-                    <div className="nick">{nickNm}</div>
+                    <div className="nick">{mem_nick}</div>
                     <div className="listItem">
-                      <span>Lv. 38</span>
+                      <span>Lv. {mem_level}</span>
                       <span className="average">
                         <em>평균</em>
-                        <span>Lv 20</span>
+                        <span>Lv {average_level}</span>
                       </span>
                     </div>
                   </div>
-                  <button className="submit" onClick={(e) => acceptBtn(memNo)}>
+                  <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
                     신청
                   </button>
                   {/* <button className="cancel">취소</button>
@@ -264,7 +279,6 @@ export default (props) => {
         </button>
       </div>
       {alertAccept === true && <Accept />}
-      {alertFail === true && <Fail />}
     </div>
   )
 }

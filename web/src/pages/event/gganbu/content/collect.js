@@ -12,7 +12,7 @@ import PopupReport from './popupReport'
 
 export default (props) => {
   const context = useContext(Context)
-  const {tabContent, gganbuState, gganbuNo} = props
+  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList, rankList} = props
   const [noticeTab, setNoticeTab] = useState('')
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
@@ -55,19 +55,19 @@ export default (props) => {
                   <div className="report">
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-1.png" />
-                      <span>10</span>
+                      <span>{gganbuInfo.red_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-2.png" />
-                      <span>10</span>
+                      <span>{gganbuInfo.yellow_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-3.png" />
-                      <span>100</span>
+                      <span>{gganbuInfo.blue_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-4.png" />
-                      <span>10</span>
+                      <span>{gganbuInfo.violet_marble}</span>
                     </div>
                     <button onClick={() => setPopupReport(true)}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnReport.png" alt="구슬 리포트" />
@@ -83,9 +83,9 @@ export default (props) => {
                           path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
                         }}
                       />
-                      <span>456</span>
+                      <span>{gganbuInfo.marble_pocket}</span>
                     </div>
-                    <button onClick={() => history.push({pathname: `/event/kanbuPocket`})}>
+                    <button onClick={() => history.push({pathname: `/event/gganbuPocket`})}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnPocket.png" alt="구슬 주머니" />
                     </button>
                   </div>
