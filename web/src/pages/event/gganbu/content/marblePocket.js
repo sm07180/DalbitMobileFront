@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react'
 
-import API from 'context/api'
+import Api from 'context/api'
 import {Context} from 'context'
 import Layout from 'pages/common/layout'
 import Header from 'components/ui/new_header'
@@ -21,11 +21,76 @@ export default () => {
   const history = useHistory()
   const [winList, setWinList] = useState([])
   const [nextList, setNextList] = useState([])
+  const [openPocket, setOpenPocket] = useState(false)
+  const [btnActive, setBtnActive] = useState(false)
+  const [exchangeAble, setExchangeAble] = useState(0)
+  const [myPoint, setMyPoint] = useState(0)
+  const [ticketCtn, setTicketCtn] = useState({
+    rTicket : 0,
+    yTicket : 0,
+    bTicket : 0,
+    pTicket : 0,
+  })
 
   const goBack = () => {
     return history.goBack()
   }
 
+  const fetchGganbuPocketReport = async (next) => {
+    if (!next) currentPage = 1
+    currentPage = next ? ++currentPage : currentPage
+
+    const {data, message} = await Api.getGganbuPocketReport({
+      gganbuNo: 1,
+      pageNo: 1,
+      pagePerCnt: currentPage
+    })
+    if(message === "SUCCESS") {
+      let listLength = data.list.length;
+      let pointSum = 0;
+
+      for(let i = 0; i < listLength; i++){
+        pointSum = pointSum + data.list[i].marble_pocket_pt;
+      }
+      setMyPoint(pointSum);
+    }
+  }
+
+  const fetchGganbuData = async () => {
+    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1});
+    console.log(data)
+    if(message === "SUCCESS") {
+      setTicketCtn({
+        rTicket : data.tot_red_marble,
+        yTicket : data.tot_yellow_marble,
+        bTicket : data.tot_blue_marble,
+        pTicket : data.tot_violet_marble,
+      })      
+      if((data.tot_red_marble >= 10) && (data.tot_yellow_marble >= 10) && (data.tot_blue_marble >= 10) && (data.tot_violet_marble >= 10)) {
+        setBtnActive(true)
+        let rPossible = data.tot_red_marble/10;
+        let yPossible = data.tot_yellow_marble/10;
+        let bPossible = data.tot_blue_marble/10;
+        let pPossible = data.tot_violet_marble/10;
+
+        var min = Math.min(rPossible,yPossible,bPossible,pPossible);
+        setExchangeAble(min)
+      }
+    }
+  }
+
+  const fetchGganbuPocketOpen = async () => {
+    const {data} = await Api.getGganbuPocketOpen({
+      averageLevel: 2
+    });
+    console.log(data)
+  }
+
+  const fetchGganbuPocket = async () => {
+    const {data} = await Api.getGganbuPocket();
+    console.log(data)
+  }
+  
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -37,39 +102,10 @@ export default () => {
     // return `${month}월 ${day}일 ${time}`
   }
 
-  async function fetchEventRouletteWin(next) {
-    if (!next) currentPage = 1
-    currentPage = next ? ++currentPage : currentPage
-
-    const {result, data, message} = await API.getEventRouletteWin({
-      winType: 0,
-      records: 15,
-      page: currentPage
-    })
-
-    if (result === 'success' && data.hasOwnProperty('list')) {
-      if (data.list.length === 0) {
-        if (!next) {
-          setWinList([])
-        }
-      } else {
-        if (next) {
-          moreState = true
-          setNextList(data.list)
-        } else {
-          setWinList(data.list)
-          fetchEventRouletteWin('next')
-        }
-      }
-    } else {
-      moreState = false
-    }
-  }
-
   //scroll
   const showMoreList = () => {
     setWinList(winList.concat(nextList))
-    fetchEventRouletteWin('next')
+    fetchGganbuPocketReport('next')
   }
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -86,6 +122,12 @@ export default () => {
       }
     }, 10)
   }
+  const pocketGet = () => {
+    console.log("click");
+  }
+
+  const pocketOpen = () => {
+  }
 
   //-------------------
   useEffect(() => {
@@ -96,8 +138,11 @@ export default () => {
   }, [nextList])
 
   useEffect(() => {
-    setWinList([])
-    fetchEventRouletteWin()
+    setWinList([]);
+    fetchGganbuPocketReport();
+    fetchGganbuData();
+    fetchGganbuPocketOpen();
+    fetchGganbuPocket();
   }, [])
 
   return (
@@ -108,32 +153,34 @@ export default () => {
           <div className="mypointWrap">
             <div className="title">내 구슬 주머니 점수</div>
             <div className="mypoint">
-              <span className="score">{Utility.addComma(2181)}</span>점
+              <span className="score">{Utility.addComma(myPoint)}</span>점
             </div>
           </div>
           <div className="exchangeMarble">
             <div className="title">교환 가능한 구슬 획득 내역</div>
             <p className="info">*얻은 구슬만 집계되며, 주머니 받기 시 10개씩 차감됩니다.</p>
             <div className="shadowBox">
-              <div className="marbleWrap">
-                <div className="marbleGroup">
-                  <span className="marble red"></span>
-                  <span className="marbleCount">23</span>
+              <div className="ticketWrap">
+                <div className="ticketGroup">
+                  <span className="ticket red"></span>
+                  <span className="ticketCount">{ticketCtn.rTicket}</span>
                 </div>
-                <div className="marbleGroup">
-                  <span className="marble yellow"></span>
-                  <span className="marbleCount">0</span>
+                <div className="ticketGroup">
+                  <span className="ticket yellow"></span>
+                  <span className="ticketCount">{ticketCtn.yTicket}</span>
                 </div>
-                <div className="marbleGroup">
-                  <span className="marble blue"></span>
-                  <span className="marbleCount">38</span>
+                <div className="ticketGroup">
+                  <span className="ticket blue"></span>
+                  <span className="ticketCount">{ticketCtn.bTicket}</span>
                 </div>
-                <div className="marbleGroup">
-                  <span className="marble purple"></span>
-                  <span className="marbleCount">11</span>
+                <div className="ticketGroup">
+                  <span className="ticket purple"></span>
+                  <span className="ticketCount">{ticketCtn.pTicket}</span>
                 </div>
               </div>
-              <button className="marbleBtn small">구슬 주머니 받기</button>
+              <button className={`pocketBtn small ${btnActive ? "active" : ""}`} onClick={pocketGet}>
+                구슬 주머니 받기 {btnActive ? <span className="possible">({exchangeAble}회 가능)</span> : ""}
+              </button>
             </div>
           </div>
           <div className="exchangePocket">
@@ -144,7 +191,7 @@ export default () => {
                 <span className="pocketCount">0</span>
               </div>
             </div>
-            <button className="marbleBtn large">구슬 주머니 열기</button>
+            <button className="pocketBtn large" onClick={pocketOpen}>구슬 주머니 열기</button>
           </div>
         </div>
         <div className="space"></div>
@@ -206,11 +253,13 @@ export default () => {
         ani3 = 6초
         ani4 = 7초
       */}
-      <div className="openPocket">
-        <div className="openPocketAni ani4">
-          <div className="openPocketNum">100</div>
+      {openPocket &&      
+        <div className="openPocket">
+          <div className="openPocketAni ani4">
+            <div className="openPocketNum">100</div>
+          </div>
         </div>
-      </div>
+      }
     </div>
   )
 }

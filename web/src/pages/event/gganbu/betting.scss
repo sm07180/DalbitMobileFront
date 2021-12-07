@@ -27,12 +27,11 @@
         }
 
         .swiper-container-vertical {
-          width: 65%;
-          height: 40px;
+          width: 70%;
+          height: 36px;
         }
       }
       .participantList {
-        flex: 1;
         display: flex;
         align-items: center;
         background-color: #fff;
@@ -383,7 +382,7 @@
         td {
           padding: 10px 0;
           text-align: center;
-          font-size: 13px;
+          font-size: 12px;
           border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
           color: $darkGray;
@@ -540,41 +539,41 @@
         background-color: #fff;
         box-shadow: 0px 1px 3px rgba($color: #000000, $alpha: 0.2);
       }
-      .marbleWrap {
+      .ticketWrap {
         display: flex;
         align-items: center;
         justify-content: space-around;
         width: 100%;
       }
-      .marbleGroup {
+      .ticketGroup {
         display: flex;
         align-items: center;
       }
-      .marble {
+      .ticket {
         display: inline-block;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
         &.red {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-red.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-red.png);
         }
         &.yellow {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-yellow.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-yellow.png);
         }
         &.blue {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-blue.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-blue.png);
         }
         &.purple {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-purple.png);
+          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-purple.png);
         }
       }
-      .marbleCount {
+      .ticketCount {
         font-size: 14px;
         font-weight: 500;
         color: #424242;
-        margin-left: 12px;
+        margin-left: 8px;
       }
 
       .pocketWrap {
@@ -599,7 +598,7 @@
         margin-left: 12px;
       }
 
-      .marbleBtn {
+      .pocketBtn {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -613,7 +612,8 @@
           font-size: 14px;
           font-weight: 700;
           color: #fff;
-          &.possible {
+          & .possible {
+            margin-left: 4px;
             color: #ffff77;
           }
         }
@@ -625,7 +625,7 @@
           color: #fff;
         }
         &.active {
-          cursor: pointer;
+          pointer-events: auto;
           background-color: #632beb;
         }
       }

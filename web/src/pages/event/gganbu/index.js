@@ -62,7 +62,7 @@ export default () => {
 
   const notLoginAlert = () => {
     globalCtx.action.alert({
-      msg: '깐부 없음'
+      msg: `깐부를 맻으면<br/>배팅소가 열립니다.`
     })
   }
 
@@ -173,7 +173,7 @@ export default () => {
         myRankList={myRankList}
         rankList={rankList}
       />
-      <Betting tabContent={tabContent} />
+      <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

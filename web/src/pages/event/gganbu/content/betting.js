@@ -7,27 +7,28 @@ import Swiper from 'react-id-swiper'
 import BettingPop from './bettingPop'
 
 import {Context} from 'context'
-import noResult from 'components/ui/noResult'
 
 export default (props) => {
   const globalCtx = useContext(Context)
   const MAX_MARBLE_BETTING_CNT = 10;
-  const {tabContent, setTabContent} = props
+  const {tabContent, setTabContent, gganbuInfo} = props
+
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
   const [myMarble, setMyMarble] = useState({
-    rMarble: 10,
-    yMarble: 4,
-    bMarble: 5,
-    pMarble: 2,
+    rMarble: 0,
+    yMarble: 0,
+    bMarble: 0,
+    pMarble: 0,
   })  // 보유한 구슬
-  
   const [bettingVal, setBettingVal] = useState({
     rBetting: 0,
     yBetting: 0,
     bBetting: 0,
     pBetting: 0,
   }) // 베팅할 구슬
-  const [winList, setWinList] = useState()
+  const [participantList, setParticipantList] = useState([]) // 베팅 참여자
+  const [myBettingLogList, setMyBettingLogList] = useState([]) // 베팅 참여자  
+  const [bettingAbled, setBettingAbled] = useState("y") // 베팅 참여자  
 
   const rMarbleRef = useRef();
   const yMarbleRef = useRef();
@@ -36,42 +37,75 @@ export default (props) => {
 
   const successMarbleRef = useRef([]);
 
-  let totalBetting = 1;
-  let inputtotal = 0;
-
   const history = useHistory()
 
-  const fetchBettingList = async () => {
-    const param = {
-      gganbuNo: 1,
-      pageNo:1,
-      pagePerCnt:5
-    }
-    const {data, message} = await Api.getGganbuBettingList(param);
-    if (message === 'SUCCESS') {
-      console.log(data);
+  const fetchGganbuCheck = async () => {
+    const {data} = await Api.gganbuCheck({gganbuNo: 1});
+    if (data === 1) {      
+      fetchGganbuData();
+      fetchBettingPage();
+      fetchBettingList();
     } else {
-      globalCtx.action.alert({
-        msg: message
-      })
+      setTabContent("collect")
+      globalCtx.action.alert({msg: "깐부를 맺으면 베팅소가 열립니다."})
     }
+  }
+  const fetchGganbuData = async () => {
+    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
+    if (message === 'SUCCESS') {
+      setMyMarble({
+        rMarble: data.red_marble,
+        yMarble: data.yellow_marble,
+        bMarble: data.blue_marble,
+        pMarble: data.violet_marble,
+      })    
+    }
+  }
+  const fetchBettingPage = async () => {
+    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: 1});
+    if (message === 'SUCCESS') {
+      setParticipantList(data.bettingListInfo.list);
+      setMyBettingLogList(data.myBettingListInfo.list);
+      setBettingAbled(data.bettingYn);
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
+  const fetchBettingList = async () => {
+    const {data, message} = await Api.getGganbuBettingList({
+      gganbuNo: 1,
+      pageNo: 1,
+      pagePerCnt: 50,
+    });
+    if (message === 'SUCCESS') {
+
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
+
+  const dateFormatterMMDD = (date) => {
+    if (!date) return null
+    let month = date.substring(5, 7)
+    let day = date.substring(8, 10)
+    return `${month}월 ${day}일`
   }
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
-    // 20200218145519
-    let month = date.substring(4, 6)
-    let day = date.substring(6, 8)
-    let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일`
-    // return `${month}월 ${day}일 ${time}`
+    // /2021-12-07T01:54:47.000+0000
+    let month = date.substring(5, 7)
+    let day = date.substring(8, 10)
+    let time = `${date.substring(11, 13)}:${date.substring(14, 16)}`
+    return `${month}월 ${day}일 ${time}`
+
   }
 
   const swiperParams = {
     loop: true,
     direction: 'vertical',
     slidesPerColumnFill: 'row',
-    // resistanceRatio: 0,
+    resistanceRatio: 0,
     autoplay: {
       delay: 2500
     }
@@ -97,14 +131,14 @@ export default (props) => {
           rMarbleRef.current.value = "";
           betCnt = 0;
         };
-        if(myMarble.rMarble < cnt){
-          // toast,
-          resetMarble(toast1);
-        } else if(cnt + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2);
-        }else {
-          successMarbleRef.current[0].innerText = myMarble.rMarble + cnt;
+        if(myMarble.rMarble < cnt) {
+            // toast,
+            resetMarble(toast1);
+          } else if(cnt + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+            // toast,
+            resetMarble(toast2);
+          } else {
+            successMarbleRef.current[0].innerText = myMarble.rMarble + cnt;
         }                
         setBettingVal({
           ...bettingVal,
@@ -119,14 +153,14 @@ export default (props) => {
           yMarbleRef.current.value = "";
           betCnt = 0;
         };
-        if(myMarble.yMarble < cnt){
-          // toast,
-          resetMarble(toast1);
-        } else if(cnt + rMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2);
-        }else {
-          successMarbleRef.current[1].innerText = myMarble.yMarble + cnt;
+        if(myMarble.yMarble < cnt) {
+            // toast,
+            resetMarble(toast1);
+          } else if(cnt + rMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+            // toast,
+            resetMarble(toast2);
+          } else {
+            successMarbleRef.current[1].innerText = myMarble.yMarble + cnt;
         }        
         setBettingVal({
           ...bettingVal,
@@ -141,14 +175,14 @@ export default (props) => {
           bMarbleRef.current.value = "";
           betCnt = 0;
         };
-        if(myMarble.bMarble < cnt){
-          // toast,
-          resetMarble(toast1);
-        } else if(cnt + rMarbleInputVal + yMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2);
-        }else {
-          successMarbleRef.current[2].innerText = myMarble.bMarble + cnt;
+        if(myMarble.bMarble < cnt) {
+            // toast,
+            resetMarble(toast1);
+          } else if(cnt + rMarbleInputVal + yMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+            // toast,
+            resetMarble(toast2);
+          } else {
+            successMarbleRef.current[2].innerText = myMarble.bMarble + cnt;
         }        
         setBettingVal({
           ...bettingVal,
@@ -163,12 +197,12 @@ export default (props) => {
           pMarbleRef.current.value = "";
           betCnt = 0;
         };
-        if(myMarble.pMarble < cnt){
-          resetMarble(toast1);
-        } else if(cnt + rMarbleInputVal + yMarbleInputVal + bMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          resetMarble(toast2);
-        }else {
-          successMarbleRef.current[3].innerText = myMarble.pMarble + cnt;
+        if(myMarble.pMarble < cnt) {
+            resetMarble(toast1);
+          } else if(cnt + rMarbleInputVal + yMarbleInputVal + bMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
+            resetMarble(toast2);
+          } else {
+            successMarbleRef.current[3].innerText = myMarble.pMarble + cnt;
         }      
         setBettingVal({
           ...bettingVal,
@@ -180,34 +214,28 @@ export default (props) => {
     }
   }
   
-
   const marbleOnchange = (inputRef, marbleColor) => {
-    const marbleCnt = Number(inputRef.current.value);   
-
-    if(typeof marbleCnt === 'number') {
-      if(!isNaN(marbleCnt)) {
+    const marbleCnt = Number(inputRef.current.value);
+    if(typeof marbleCnt === 'number') {      
+      if(marbleCnt <= 0) {
+        inputRef.current.value = "";
+      } else if(!isNaN(marbleCnt)) {
         marbleValueIns(marbleColor, marbleCnt)
-      }else {
+      } else {
         marbleValueIns(marbleColor, 0)
       }
     }    
   }
 
   const bettingStart = () => {
-    if(totalBetting <= 2){
+    if(bettingAbled === "y"){
       setBettingPop(true);
     } else {
       globalCtx.action.toast({msg: `베팅 가능한 횟수는 하루에 두 번 입니다.`})
     }
   }
 
-  useEffect(() => {
-    if (tabContent === 'betting') {
-      fetchBettingList()
-    }
-  }, [tabContent])
-
-  useEffect(() => {
+  const btnAbled = () => {
     const btnEle = document.getElementById('bettingBtn');
 
     if(bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {      
@@ -215,6 +243,15 @@ export default (props) => {
     } else {            
       btnEle.classList.add('disable');
     }
+  }
+
+  useEffect(() => {
+    fetchGganbuCheck();
+    fetchBettingPage();
+  }, [])
+
+  useEffect(() => {
+    btnAbled();
   }, [bettingVal])
 
 
@@ -230,23 +267,20 @@ export default (props) => {
             <label>
               <img src="https://image.dalbitlive.com/event/gganbu/bettingLog_title.png" alt="베팅 참여자" />
             </label>
-
-            {winList ? (
+            {participantList.length > 0 ? (
               <Swiper {...swiperParams}>
-                {winList.length > 0 &&
-                  winList.map((item, index) => {
-                    const {winDt, nickNm} = item
-
-                    return (
-                      <div className="participantList" key={index}>
-                        <p className="time">{dateFormatter(winDt)}</p>
-                        <p className="user">{nickNm}</p>
-                        <p className={`result ${result === '성공' ? 'success' : 'fail'}`}>{result}</p>
-                      </div>
-                    )
-                  })}
+                {participantList.map((item, index) => {
+                  const {ins_date, mem_nick, win_slct} = item
+                  return (
+                    <div className="participantList" key={index}>
+                      <p className="time">{dateFormatterMMDD(ins_date)}</p>
+                      <p className="user">{mem_nick}</p>
+                      <p className={`result ${win_slct === 'w' ? 'success' : 'fail'}`}>{win_slct === 'w' ? '성공' : '실패'}</p>
+                    </div>
+                  )
+                })}
               </Swiper>
-            ) : (
+             ) : (
               <div className="participantList">
                 <p className="nodata">깐부 눈치 보지 말고 베팅해버려~</p>
               </div>
@@ -292,6 +326,14 @@ export default (props) => {
                   <input type="number" ref={rMarbleRef} name="marbleBettingCount"
                    className="bettingCount" placeholder="0"
                     onChange={() => marbleOnchange(rMarbleRef, 'r')}
+                    onFocus={
+                      () => {
+                        if(bettingVal.rBetting === 0) {
+                          rMarbleRef.current.value = '';
+                        }
+                        console.log(bettingVal)
+                      }
+                    }
                   />
                 </div>
                 <div className="marbleData">
@@ -369,65 +411,47 @@ export default (props) => {
             <div className="logTitle">참여자 / 일시</div>
           </div>
           <div className="logBody">
-            <div className="logList">
-              <div className="logMarble">
-                <div className="marbleData">
-                  <span className="marbleIcon red"></span>
-                  <span className="marbleCount">0</span>
+          {myBettingLogList.length > 0 ?
+            myBettingLogList.map((item, index) => {
+              const {red_marble, yellow_marble, blue_marble, violet_marble, win_slct, mem_nick, ins_date} = item
+              return (
+                <div className="logList">
+                  <div className="logMarble">
+                    <div className="marbleData">
+                      <span className="marbleIcon red"></span>
+                      <span className="marbleCount">{red_marble}</span>
+                    </div>
+                    <div className="marbleData">
+                      <span className="marbleIcon yellow"></span>
+                      <span className="marbleCount">{yellow_marble}</span>
+                    </div>
+                    <div className="marbleData">
+                      <span className="marbleIcon blue"></span>
+                      <span className="marbleCount">{blue_marble}</span>
+                    </div>
+                    <div className="marbleData">
+                      <span className="marbleIcon purple"></span>
+                      <span className="marbleCount">{violet_marble}</span>
+                    </div>
+                  </div>
+                  <div className="logResult">
+                    <p className={`${win_slct === "w" ? "success" : "fail"}`}>{win_slct === "w" ? "성공" : "실패"}</p>
+                  </div>
+                  <div className="logData">
+                    <div className="logUser">{mem_nick}</div>
+                    <div className="logTime">{dateFormatter(ins_date)}</div>
+                  </div>
                 </div>
-                <div className="marbleData">
-                  <span className="marbleIcon yellow"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-                <div className="marbleData">
-                  <span className="marbleIcon blue"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-                <div className="marbleData">
-                  <span className="marbleIcon purple"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-              </div>
-              <div className="logResult">
-                <p className="success">성공</p>
-              </div>
-              <div className="logData">
-                <div className="logUser">띵 동 ◡̈♪</div>
-                <div className="logTime">12/22 15:00</div>
-              </div>
-            </div>
-            <div className="logList">
-              <div className="logMarble">
-                <div className="marbleData">
-                  <span className="marbleIcon red"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-                <div className="marbleData">
-                  <span className="marbleIcon yellow"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-                <div className="marbleData">
-                  <span className="marbleIcon blue"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-                <div className="marbleData">
-                  <span className="marbleIcon purple"></span>
-                  <span className="marbleCount">0</span>
-                </div>
-              </div>
-              <div className="logResult">
-                <p className="fail">실패</p>
-              </div>
-              <div className="logData">
-                <div className="logUser">일이삼사오육칠팔구십일이삼사오육칠팔구십</div>
-                <div className="logTime">12/22 15:00</div>
-              </div>
-            </div>
+              )
+            })
+            :
             <NoResult type="default" text="아직 베팅 내역이 없습니다." />
+          }
           </div>
+          
         </div>
       </div>
-      {bettingPop && <BettingPop setBettingPop={setBettingPop} bettingVal={bettingVal} myMarble={myMarble}/>}
+      {bettingPop && <BettingPop setBettingPop={setBettingPop} bettingVal={bettingVal} setBettingVal={setBettingVal} myMarble={myMarble} setMyMarble={setMyMarble}/>}
     </div>
   )
 }

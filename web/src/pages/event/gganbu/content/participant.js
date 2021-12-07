@@ -18,7 +18,7 @@ let timer
 export default () => {
   const context = useContext(Context)
   const history = useHistory()
-  const [winList, setWinList] = useState([])
+  const [participantList, setParticipantList] = useState([])
   const [nextList, setNextList] = useState([])
 
   const goBack = () => {
@@ -29,37 +29,22 @@ export default () => {
     if (!date) return null
     //0월 0일 00:00
     // 20200218145519
-    let month = date.substring(4, 6)
-    let day = date.substring(6, 8)
-    let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일`
-    // return `${month}월 ${day}일 ${time}`
+    let year = date.substring(0, 4)
+    let month = date.substring(5, 7)
+    let day = date.substring(8, 10)
+    return `${year}.${month}.${day}`
   }
 
-  async function fetchEventRouletteWin(next) {
-    if (!next) currentPage = 1
-    currentPage = next ? ++currentPage : currentPage
+  async function fetchBettingParticipant() {
 
-    const {result, data, message} = await API.getEventRouletteWin({
-      winType: 0,
-      records: 15,
-      page: currentPage
+    const {data, message} = await API.getGganbuMarbleBettingPage({
+      gganbuNo: 1,
+      pageNo: 1,
+      pagePerCnt: currentPage
     })
-
-    if (result === 'success' && data.hasOwnProperty('list')) {
-      if (data.list.length === 0) {
-        if (!next) {
-          setWinList([])
-        }
-      } else {
-        if (next) {
-          moreState = true
-          setNextList(data.list)
-        } else {
-          setWinList(data.list)
-          fetchEventRouletteWin('next')
-        }
-      }
+    if (message === 'SUCCESS') {
+      setParticipantList(data.bettingListInfo.list);
+      console.log(participantList);
     } else {
       moreState = false
     }
@@ -67,7 +52,7 @@ export default () => {
 
   //scroll
   const showMoreList = () => {
-    setWinList(winList.concat(nextList))
+    setParticipantList(participantList.concat(nextList))
     fetchEventRouletteWin('next')
   }
   const scrollEvtHdr = (event) => {
@@ -95,8 +80,7 @@ export default () => {
   }, [nextList])
 
   useEffect(() => {
-    setWinList([])
-    fetchEventRouletteWin()
+    fetchBettingParticipant();
   }, [])
 
   return (
@@ -127,32 +111,32 @@ export default () => {
             </thead>
 
             <tbody>
-              {!winList.length ? (
+              {!participantList.length > 0 ? (
                 <tr>
                   <td colSpan="3">깐부 눈치보지말고 베팅해버려~</td>
                 </tr>
               ) : (
-                winList.map((item, index) => {
-                  const {winDt, nickNm, profImg, isNew, memNo, itemImageUrl, itemName} = item
+                participantList.map((item, index) => {
+                  console.log(participantList)
+                  const {image_profile, mem_no, mem_nick, win_slct, ins_date, isNewYn} = item
                   return (
                     <tr key={index}>
                       <td
                         className="nick"
                         onClick={() => {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/mypage/${mem_no}`)
                         }}>
                         <div className="thumb">
-                          <img src={profImg.thumb120x120} />
+                          <img src={image_profile === null ? "https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?120x120" : image_profile.thumb120x120} />
                         </div>
-                        <p>{nickNm}</p>
+                        <p>{mem_nick}</p>
                       </td>
                       <td className="result">
-                        성공
+                        {win_slct === "w" ? "성공" : "실패"}
                       </td>
                       <td className="date">
-                        <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
-
-                        {dateFormatter(winDt)}
+                        {isNewYn === "y" && <span className="iconNew"> <img src={newIcon} width={14} alt="new" /> </span>}
+                        {dateFormatter(ins_date)}
                       </td>                      
                     </tr>
                   )
