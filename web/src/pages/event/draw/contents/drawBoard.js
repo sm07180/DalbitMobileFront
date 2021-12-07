@@ -43,8 +43,8 @@ export default (props) => {
                     <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
                 </div>
                 <div className="boardList">
-                    <img className="squareHeader" src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
-                    <img className="square animate-out" src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
+                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
+                    <img className="square splitOut" src="https://image.dalbitlive.com/event/draw/drawBoard_2_split.png" />
                 </div>
             </div>
         </BoardWrap>

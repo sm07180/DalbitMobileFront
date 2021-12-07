@@ -141,6 +141,22 @@
                     padding: 0 18px;
                     box-sizing: border-box;
                 }
+                &Left{
+                 position:absolute;   
+                 left:7%;
+                 width:26px;
+                 height:26px;
+                 background: url("https://image.dalbitlive.com/event/draw/boardLeft.png") no-repeat center / contain;
+                 cursor: pointer;
+                }
+                &Right{
+                 position:absolute;   
+                 right:7%;
+                 width:26px;
+                 height:26px;
+                 background: url("https://image.dalbitlive.com/event/draw/boardRight.png") no-repeat center / contain;
+                 cursor: pointer;
+                }
                 img{
                     height: 100%;
                     margin-right: 2px;
@@ -190,7 +206,7 @@
         }
     }
 }
-.animate-out {
+.splitOut {
     animation: out 1400ms cubic-bezier(0.5, 0.02, 0.5, 0.99) forwards;
     animation-delay: 0.5s;
 }

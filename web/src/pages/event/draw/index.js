@@ -78,7 +78,8 @@ export default () => {
                     <div className="boardMore">
                         <img src={`${IMG_SERVER}/event/draw/boardMore.png`} alt="뽑기판 더보기"></img>
                         <span className="">(1/5)</span>
-                        <button className="refresh"></button>
+                        <button className="boardMoreLeft"></button>
+                        <button className="boardMoreRight"></button>
                     </div>
                 </div>
                 <DrawBoard/>
