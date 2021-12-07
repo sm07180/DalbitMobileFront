@@ -1,11 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import styled from 'styled-components'
 import Lottie from 'react-lottie'
+import Api from 'context/api'
 
 import {IMG_SERVER} from 'context/config'
+import {Context} from 'context'
 
-export default (props) => {
-  const {setBettingPop, bettingVal, myMarble} = props
+export default (props) => {  
+  const globalCtx = useContext(Context)
+  const {setBettingPop, bettingVal, setBettingVal, myMarble ,setMyMarble} = props
+  console.log(bettingVal)
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
@@ -17,24 +21,78 @@ export default (props) => {
     bResult : "",
     pResult : "",
   });
+  const [participant, setParticipant] = useState({
+    oddParticipant : "",
+    evenParticipant : "",
+  });
+  const [winPercent, setWinPercent] = useState({
+    oddWinPercent : "",
+    evenWinPercent : "",
+  });
   const [gapVal, setGapVal] = useState({
     rGap : "",
     yGap : "",
     bGap : "",
     pGap : "",
   });
+  const [getMarble, setGetMarble] = useState({
+    insSlct : "b",
+    marbleCnt : 0,
+    winSlct : "",
+    bettingSlct : "",
+  });
 
-  console.log(resultVal);
-
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
-    return () => {
-      document.body.style.overflow = ''
+  async function fetchBettingComplete() {
+    const param = {
+      insSlct: "b",
+      rMarbleCnt: gapVal.rGap,
+      yMarbleCnt: gapVal.yGap,
+      bMarbleCnt: gapVal.bGap,
+      vMarbleCnt: gapVal.pGap,
+      winSlct: bettingResult,
+      bettingSlct: valueType,
     }
-  }, [])
+    const res = await Api.getGganbuObtainMarble(param);
+    console.log(param)
+    if (res.message === 'SUCCESS') {
+
+    } else if (res.message === 'FAIL') {
+
+    }
+  }
+
+  const fetchBettingData = async () => {
+    const {data, message} = await Api.getGganbuBettingData({gganbuNo: 1});
+    console.log(data);
+
+    if (message === 'SUCCESS') {
+      setParticipant({
+        oddParticipant : data[0].betting_cnt,
+        evenParticipant : data[1].betting_cnt,
+      })
+      setWinPercent({
+        oddWinPercent : data[0].oddWinProbability,
+        evenWinPercent : data[1].evenWinProbability,
+      })
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
 
   const closePopup = () => {
     setBettingPop(false)
+  }  
+
+  const completePopup = () => {
+    setBettingPop(false)
+    setBettingVal({
+      rBetting: 0,
+      yBetting: 0,
+      bBetting: 0,
+      pBetting: 0,
+    })
+    
+    fetchBettingComplete();
   }
 
   const wrapClick = (e) => {
@@ -58,12 +116,12 @@ export default (props) => {
     setPopResult(true);
 
     if(marbleLength === 1 || marbleLength === 3){
-      resultType = "odd";
+      resultType = "a";
     } else {
-      resultType = "even";
+      resultType = "b";
     }
 
-    if(selectValue === "odd") {
+    if(selectValue === "a") {
       setTypeSelect("홀수");
     } else {
       setTypeSelect("짝수");
@@ -71,17 +129,29 @@ export default (props) => {
     
 
     if(selectValue === resultType) {
-      setBettingResult("success");
+      setBettingResult("w");
       resultVal.rResult = myMarble.rMarble + bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble + bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble + bettingVal.bBetting;
       resultVal.pResult = myMarble.pMarble + bettingVal.pBetting;
+      setMyMarble({        
+        rMarble: resultVal.rResult,
+        yMarble: resultVal.yResult,
+        bMarble: resultVal.bResult,
+        pMarble: resultVal.pResult,
+      })
     } else {
-      setBettingResult("fail");
+      setBettingResult("l");
       resultVal.rResult = myMarble.rMarble - bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble - bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble - bettingVal.bBetting;
       resultVal.pResult = myMarble.pMarble - bettingVal.pBetting;
+      setMyMarble({        
+        rMarble: resultVal.rResult,
+        yMarble: resultVal.yResult,
+        bMarble: resultVal.bResult,
+        pMarble: resultVal.pResult,
+      })
     }
         
     gapVal.rGap = resultVal.rResult - myMarble.rMarble;
@@ -89,6 +159,12 @@ export default (props) => {
     gapVal.bGap = resultVal.bResult - myMarble.bMarble;
     gapVal.pGap = resultVal.pResult - myMarble.pMarble;
   }
+  
+  useEffect(() => {
+    fetchBettingData();
+    
+  }, [])
+
 
   return (
     <PopupWrap id="bettingPop" onClick={wrapClick}>
@@ -105,7 +181,7 @@ export default (props) => {
                     path: `${IMG_SERVER}/event/gganbu/ani/odd_even_game_0${marbleNum}.json`
                   }}
                 />
-                {bettingResult === "success" ? 
+                {bettingResult === "w" ? 
                   <div className="resultToast">
                     이겼다!
                   </div>
@@ -122,8 +198,8 @@ export default (props) => {
           </div>
           {!popResult &&
             <div className="bettingInfo">
-            <label className={`selectMenu ${valueType === "odd" ? "active" : ""}`} onClick={selectVal}>
-              <input type="radio" name="bettingType" value="odd" className="bettingSelect" />
+            <label className={`selectMenu ${valueType === "a" ? "active" : ""}`} onClick={selectVal}>
+              <input type="radio" name="bettingType" value="a" className="bettingSelect" />
               <div className="selectRow">
                 <span className="selectType">홀수</span>
                 <span className="selectRadio"></span>
@@ -131,18 +207,18 @@ export default (props) => {
               <div className="selectRow">
                 <span className="participantIcon"></span>
                 <span className="participantTitle">총 투표자</span>
-                <span className="participantTotal">23</span>
+                <span className="participantTotal">{participant.oddParticipant}</span>
                 <span className="participantUnit">명</span>
               </div> 
               <div className="selectRow">
                 <span className="percentIcon"></span>
                 <span className="percentTitle">이긴확률</span>
-                <span className="percentTotal">53</span>
+                <span className="percentTotal">{winPercent.oddWinPercent}</span>
                 <span className="percentUnit">%</span>
               </div>
             </label>
-            <label className={`selectMenu ${valueType === "even" ? "active" : ""}`} onClick={selectVal}>
-              <input type="radio" name="bettingType" value="even" className="bettingSelect"/>
+            <label className={`selectMenu ${valueType === "b" ? "active" : ""}`} onClick={selectVal}>
+              <input type="radio" name="bettingType" value="b" className="bettingSelect"/>
               <div className="selectRow">
                 <span className="selectType">짝수</span>
                 <span className="selectRadio"></span>
@@ -150,13 +226,13 @@ export default (props) => {
               <div className="selectRow">
                 <span className="participantIcon"></span>
                 <span className="participantTitle">총 투표자</span>
-                <span className="participantTotal">23</span>
+                <span className="participantTotal">{participant.evenParticipant}</span>
                 <span className="participantUnit">명</span>
               </div> 
               <div className="selectRow">
                 <span className="percentIcon"></span>
                 <span className="percentTitle">이긴확률</span>
-                <span className="percentTotal">53</span>
+                <span className="percentTotal">{winPercent.evenWinPercent}</span>
                 <span className="percentUnit">%</span>
               </div>
             </label>
@@ -230,7 +306,7 @@ export default (props) => {
         </div>
         <div className="bottom">        
             {popResult ?
-              <button className="bettingBtn active" onClick={closePopup}>확인</button>
+              <button className="bettingBtn active" onClick={completePopup}>확인</button>
               :
               <button className={`bettingBtn ${valueType === "" ? "" : "active"}`} onClick={betting}>예측하기</button>
             }

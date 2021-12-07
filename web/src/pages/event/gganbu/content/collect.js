@@ -85,7 +85,7 @@ export default (props) => {
                       />
                       <span>456</span>
                     </div>
-                    <button onClick={() => history.push({pathname: `/event/kanbuPocket`})}>
+                    <button onClick={() => history.push({pathname: `/event/gganbuPocket`})}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnPocket.png" alt="구슬 주머니" />
                     </button>
                   </div>

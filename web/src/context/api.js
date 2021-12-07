@@ -3391,13 +3391,13 @@ export default class API {
   }
 
   // 깐부 체크
-  // static gganbuCheck = async (data) => {
-  //   return await ajax({
-  //     url: '/event/gganbu/relationship/chk',
-  //     method: 'POST',
-  //     params: data
-  //   })
-  // }
+  static gganbuCheck = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/relationship/chk',
+      method: 'POST',
+      params: data
+    })
+  }
 
   // 깐부 랭킹 리스트
   // static getGganbuRankList = async (data) => {
@@ -3461,6 +3461,30 @@ export default class API {
   //     params: data
   //   })
   // }
+  static getGganbuPocket = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/get`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuPocketOpen = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/open`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuPocketReport = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/report/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
   static getGganbuObtainMarble = async (data) => {
     return await ajax({
       url: `/event/gganbu/marble/ins`,
@@ -3472,6 +3496,14 @@ export default class API {
   static getGganbuBettingList = async (data) => {
     return await ajax({
       url: `/event/gganbu/betting/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getGganbuBettingData = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/betting/stat/sel`,
       method: 'GET',
       params: data
     })

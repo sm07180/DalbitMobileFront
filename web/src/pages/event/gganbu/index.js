@@ -166,7 +166,7 @@ export default () => {
         </div>
       </div>
       <Collect tabContent={tabContent} gganbuState={gganbuState} gganbuNo={gganbuNo} />
-      <Betting tabContent={tabContent} />
+      <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo}/>
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
