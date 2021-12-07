@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import styled, {css} from 'styled-components'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
 import NoResult from 'components/ui/new_noResult'
@@ -26,6 +27,29 @@ export default (props) => {
       setNoticeTab('active')
     }
   }
+
+  // 깐부 랭킹 리스트
+  const gganbuRankList = async () => {
+    const param = {
+      gganbuNo: gganbuNo,
+      pageNo: 1,
+      pagePerCnt: 10
+    }
+    const {data, message} = await Api.getGganbuRankList(param)
+    if (message === 'SUCCESS') {
+      console.log(message)
+    } else {
+      console.log(message)
+    }
+  }
+
+  useEffect(() => {
+    if (gganbuNo !== undefined) {
+      gganbuRankList()
+    }
+  }, [gganbuNo])
+
+  console.log('gganbuInfo ' + gganbuInfo, 'myRankList ' + myRankList, 'rankList ' + rankList)
 
   return (
     <>
@@ -121,14 +145,14 @@ export default (props) => {
             </div>
             <div className="rankBox">
               <div className="rankItem">
-                <em className="badge">lv 65</em>
-                <span className="userNick">해나잉뎅</span>
-                <span className="userId">maiwcl88</span>
+                <LevelBox className="badge">lv {myRankList.ptr_mem_level}</LevelBox>
+                <span className="userNick">{myRankList.ptr_mem_nick}</span>
+                <span className="userId">{myRankList.ptr_mem_id}</span>
               </div>
               <div className="rankItem">
-                <em className="badge">lv 65</em>
-                <span className="userNick">해나잉뎅</span>
-                <span className="userId">maiwcl88</span>
+                <LevelBox className="badge">lv {myRankList.mem_level}</LevelBox>
+                <span className="userNick">{myRankList.mem_nick}</span>
+                <span className="userId">{myRankList.mem_id}</span>
               </div>
             </div>
             <div className="score">
@@ -137,89 +161,42 @@ export default (props) => {
             </div>
           </div>
           <div className="rankWrap">
-            <div className="rankList">
-              <div className="number medal-1">
-                <img src="https://image.dalbitlive.com/event/gganbu/rankMedal-1.png" />
-              </div>
-              <div className="rankBox">
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-              </div>
-              <div className="score">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>2,181</span>
-              </div>
-            </div>
-            <div className="rankList">
-              <div className="number medal-2">
-                <img src="https://image.dalbitlive.com/event/gganbu/rankMedal-2.png" />
-              </div>
-              <div className="rankBox">
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-              </div>
-              <div className="score">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>2,181</span>
-              </div>
-            </div>
-            <div className="rankList">
-              <div className="number medal-3">
-                <img src="https://image.dalbitlive.com/event/gganbu/rankMedal-3.png" />
-              </div>
-              <div className="rankBox">
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-              </div>
-              <div className="score">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>2,181</span>
-              </div>
-            </div>
-            <div className="rankList">
-              <div className="number"></div>
-              <div className="rankBox">
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-                <div className="rankItem">
-                  <em className="badge">lv 65</em>
-                  <span className="userNick">해나잉뎅</span>
-                  <span className="userId">maiwcl88</span>
-                </div>
-              </div>
-              <div className="score">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>2,181</span>
-              </div>
-            </div>
-            <NoResult type="default" text="아직 순위가 없습니다." />
+            {rankList && rankList.length > 0 ? (
+              <>
+                {rankList.map((data, index) => {
+                  const {ptr_mem_level, ptr_mem_nick, ptr_mem_id, mem_level, mem_nick, mem_id} = data
+                  return (
+                    <div className="rankList" key={index}>
+                      {index < 3 ? (
+                        <div className={`number medal-${index + 1}`}>
+                          <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
+                        </div>
+                      ) : (
+                        <div className="number">{index}</div>
+                      )}
+                      <div className="rankBox">
+                        <div className="rankItem">
+                          <LevelBox className="badge">lv {ptr_mem_level}</LevelBox>
+                          <span className="userNick">{ptr_mem_nick}</span>
+                          <span className="userId">{ptr_mem_id}</span>
+                        </div>
+                        <div className="rankItem">
+                          <LevelBox className="badge">lv {mem_level}</LevelBox>
+                          <span className="userNick">{mem_nick}</span>
+                          <span className="userId">{mem_id}</span>
+                        </div>
+                      </div>
+                      <div className="score">
+                        <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                        <span>2,181</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </>
+            ) : (
+              <NoResult type="default" text="아직 순위가 없습니다." />
+            )}
           </div>
         </section>
       </div>
@@ -228,3 +205,26 @@ export default (props) => {
     </>
   )
 }
+const LevelBox = styled.div`
+  ${(props) => {
+    // const {levelColor} = props
+    // if (levelColor.length === 3) {
+    //   return css`
+    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+    //   `
+    // } else {
+    //   return css`
+    //     background-color: ${levelColor[0]};
+    //   `
+    // }
+  }};
+  width: 44px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.3px;
+`

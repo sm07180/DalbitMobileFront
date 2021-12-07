@@ -487,8 +487,23 @@
         .rankBox {
           margin: 0 20px;
           .rankItem {
+            display: flex;
+            align-items: center;
             em {
               background: #eee;
+            }
+            .badge {
+              display: inline-block;
+              width: 44px;
+              height: 16px;
+              line-height: 16px;
+              border-radius: 14px;
+              background: #eee;
+              font-size: 12px;
+              font-weight: bold;
+              color: #fff;
+              text-align: center;
+              letter-spacing: -0.3px;
             }
             .userNick {
               margin-left: 6px;
@@ -496,6 +511,9 @@
               font-weight: 700;
               color: #242424;
               letter-spacing: -1px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
             }
             .userId {
               margin-left: 6px;

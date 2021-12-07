@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
-
 import {useHistory} from 'react-router-dom'
 import styled, {css} from 'styled-components'
 import Api from 'context/api'
@@ -36,25 +35,16 @@ export default () => {
   const gganbuRoundLookup = useCallback(async () => {
     const {data, message} = await Api.gganbuMarbleGather()
     if (message === 'SUCCESS') {
-      const {gganbuState, gganbuRoundInfo, gganbuInfo, myRankInfo, rankIst} = data
+      const {gganbuState, gganbuRoundInfo, gganbuInfo, myRankInfo, rankList} = data
       setGganbuState(gganbuState)
       setGganbuNo(gganbuRoundInfo.gganbuNo)
       setGganbuInfo(gganbuInfo)
       setMyRankList(myRankInfo)
-      setRankList(rankIst)
+      setRankList(rankList)
     } else {
       console.log(message)
     }
   }, [])
-
-  // 깐부 랭킹 리스트
-  // const gganbuRankList = useCallback(async () => {
-  //   const {data, message} = await Api.getGganbuRankList()
-  //   if (message === 'SUCCESS') {
-  //   } else {
-  //     console.log(message)
-  //   }
-  // }, [])
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
@@ -83,7 +73,6 @@ export default () => {
 
   useEffect(() => {
     gganbuRoundLookup()
-    // gganbuRankList()
   }, [])
 
   useEffect(() => {
@@ -94,7 +83,7 @@ export default () => {
 
   return (
     <div id="gganbu">
-      {gganbuNo === '1' && <Header title="깐부게임" />}
+      <Header title="깐부게임" />
       <div className="top">
         <img
           src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
@@ -142,9 +131,9 @@ export default () => {
                 ) : (
                   <div className="userList">
                     <div className="photo" onClick={() => setPopupSearch(true)}>
-                      <img src={gganbuInfo.ptr_mem_profile} />
+                      <img src={gganbuInfo.mem_profile ? gganbuInfo.mem_profile.thumb80x80 : ''} />
                     </div>
-                    <PtrLevelBox className="badge" memLevelColor={gganbuInfo.mem_level_color}>
+                    <PtrLevelBox className="badge" memLevelColor={gganbuInfo.mem_level_color ? gganbuInfo.mem_level_color : ''}>
                       Lv {gganbuInfo.mem_level}
                     </PtrLevelBox>
                     <span className="nick">{gganbuInfo.mem_nick}</span>
@@ -220,15 +209,15 @@ const LevelBox = styled.div`
 const PtrLevelBox = styled.div`
   ${(props) => {
     const {memLevelColor} = props
-    // if (memLevelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${memLevelColor[0]}, ${memLevelColor[1]} 51%, ${memLevelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${memLevelColor[0]};
-    //   `
-    // }
+    if (memLevelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${memLevelColor[0]}, ${memLevelColor[1]} 51%, ${memLevelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${memLevelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;

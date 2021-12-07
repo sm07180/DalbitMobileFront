@@ -72,7 +72,7 @@ export default (props) => {
       <div className="contentWrap">
         <h1 className="title">구슬 리포트</h1>
         <div className="searchTitle">상세 내역</div>
-        <div className="listWrap">
+        <div className="listWrap" style={{height: '364px'}}>
           {reportList.length > 0 &&
             reportList.map((data, index) => {
               const {mem_nick} = data

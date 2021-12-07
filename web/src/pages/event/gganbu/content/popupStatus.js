@@ -170,11 +170,11 @@ export default (props) => {
             <div className="listWrap" style={{height: '329px'}}>
               {gganbuSubList.length > 0 &&
                 gganbuSubList.map((data, index) => {
-                  const {average_level, image_profile, mem_level, mem_nick, mem_no} = data
+                  const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
                   return (
                     <div className="list" key={`myGganbu-${index}`}>
                       <div className="photo">
-                        <img src={image_profile} alt="유저이미지" />
+                        <img src={mem_profile.thumb50x50} alt="유저이미지" />
                       </div>
                       <div className="listBox">
                         <div className="nick">{mem_nick}</div>
@@ -203,11 +203,11 @@ export default (props) => {
           <div className="listWrap" style={{height: '364px'}}>
             {gganbuSubList.length > 0 &&
               gganbuSubList.map((data, index) => {
-                const {average_level, image_profile, mem_level, mem_nick, mem_no} = data
+                const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
                 return (
                   <div className="list" key={index}>
                     <div className="photo">
-                      <img src={image_profile} alt="유저이미지" />
+                      <img src={mem_profile.thumb50x50} alt="유저이미지" />
                     </div>
                     <div className="listBox">
                       <div className="nick">{mem_nick}</div>
