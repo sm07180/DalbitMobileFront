@@ -1,13 +1,17 @@
-import React, {useCallback} from 'react'
-import styled, {keyframes} from 'styled-components'
+import React, {useCallback, useContext} from 'react'
+import styled from 'styled-components'
 
 import '../draw.scss'
+import {Context} from "context";
 
 export default (props) => {
 
   const {listInfo, drawList, pageNo} = props;
+  const context = useContext(Context);
 
-  const fakeClick = useCallback(() => {}, []);
+  const fakeClick = useCallback(() => {
+    context.action.toast({msg: `일시적인 통신 장애로 ${res.data.failCnt}개의 뽑기가 추첨되지 않았습니다. 잠시 후 다시 추첨해주세요.`});
+  }, []);
 
   return (
     <BoardWrap>
