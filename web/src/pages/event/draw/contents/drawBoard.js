@@ -10,7 +10,7 @@ export default (props) => {
   const context = useContext(Context);
 
   const fakeClick = useCallback(() => {
-    context.action.toast({msg: `일시적인 통신 장애로 ${res.data.failCnt}개의 뽑기가 추첨되지 않았습니다. 잠시 후 다시 추첨해주세요.`});
+    context.action.toast({msg: `이미 추첨된 뽑기입니다.`});
   }, []);
 
   return (

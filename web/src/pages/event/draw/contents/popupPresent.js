@@ -1,10 +1,11 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, createRef} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 export default (props) => {
   const {popupPresent, onClose} = props
+  const [failViewYn, setFailViewYn] = useState(false);
 
   const swiperParams = {
     spaceBetween: 5,
@@ -12,19 +13,22 @@ export default (props) => {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-  };
-
-  const closePopup = () => {
-    onClose();
-  }
-
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'popupPresent') {
-      closePopup()
+    on: {
+      slideChange: (e) => {
+        if (e.isEnd && popupPresent.resultInfo.findIndex(row => (row.bbopgi_gift_no && row.temp_result_cnt !== 0)) > -1 ) {
+          setFailViewYn(true);
+        } else {
+          setFailViewYn(false);
+        }
+      }
     }
   };
 
+  useEffect(() => {
+    if (popupPresent.resultInfo !== undefined && popupPresent.resultInfo.length === 1 && popupPresent.resultInfo[0].bbopgi_gift_no === 8) {
+      setFailViewYn(true);
+    }
+  },[popupPresent]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -32,16 +36,14 @@ export default (props) => {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [])
+  }, []);
 
   return (
-    <PopupWrap id="popupPresent" onClick={wrapClick}>
+    <PopupWrap id="popupPresent">
       {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
-      <div className="popLayer">
+      <div className={`popLayer ${failViewYn ? 'blank' : ''}`}>
         <div className="contentWrap" style={{width: '100%'}}>
-          <div className="title">
-            선물을 받았어요!
-          </div>
+          <div className="title">{failViewYn ? '꽝! 다음 기회에...' : '선물을 받았어요!'}</div>
           <Swiper {...swiperParams}>
             {popupPresent.resultInfo !== undefined && popupPresent.resultInfo.map((row, index) => {
               if (row.bbopgi_gift_no === 0) {
@@ -206,6 +208,7 @@ const PopupWrap = styled.div`
                     text-align:center;
                     margin-top:5px;
                     &Row{
+                        line-height: 21px;
                         margin:17px 0;
                         display:flex;
                         .name{
