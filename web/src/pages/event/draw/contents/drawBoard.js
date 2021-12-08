@@ -1,8 +1,7 @@
-import React, {useCallback, useContext} from 'react'
-import styled from 'styled-components'
-
-import '../draw.scss'
+import React, {useCallback, useContext} from 'react';
+import styled from 'styled-components';
 import {Context} from "context";
+import '../draw.scss';
 
 export default (props) => {
 

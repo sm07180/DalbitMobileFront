@@ -1,9 +1,7 @@
 import React, {useState, useEffect, useCallback, useRef, useContext} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
-import {Hybrid, isHybrid} from 'context/hybrid'
+import {useHistory} from 'react-router-dom'
 import Api from 'context/api'
 import {IMG_SERVER} from 'context/config'
-import qs from 'query-string'
 import {Context} from 'context'
 
 import './draw.scss'
@@ -56,6 +54,7 @@ export default () => {
       return;
     }
 
+    // 응모권 개수 체크
     if (ticketCnt == 0) {
       context.action.confirm({
         msg: `응모권이 부족합니다.\n 달충전 1만원당 응모권 1개가 자동 지급됩니다. \n달충전을 진행하시겠습니까?`,
@@ -72,6 +71,7 @@ export default () => {
       if (res.code === '00000' || (res.code === '30004' && res.data.resultInfo.length > 0)) {
         getDrawTicketCnt(); // 티켓 개수 갱신
         setDrawList({select: [], aniList: drawList.select });
+        // 애니메이션 종료 시점에 팝업 정보 SET
         setTimeout(() => {
           let temp = res.data.resultInfo;
           setPopupPresent({ open: true, failCnt: res.data.failCnt, resultInfo: temp.filter(row => row.bbopgi_gift_no !== 0) });
@@ -81,7 +81,7 @@ export default () => {
       } else if (res.code === '30102') {
         context.action.toast({msg: res.data.message });
       } else {
-        console.log(res);
+        context.action.toast({msg: `일시적인 통신 장애로 뽑기가 추첨되지 않았습니다. 잠시 후 다시 추첨해주세요.`});
       }
     }).catch(e => console.log(e));
   };
@@ -166,7 +166,7 @@ export default () => {
     }
 
     getDrawTicketCnt(); // 응모권 개수 가져오기
-    getDrawListInfo();
+    getDrawListInfo(); // 뽑기 리스트 가져오기
 
     window.addEventListener('scroll', tabScrollEvent);
 

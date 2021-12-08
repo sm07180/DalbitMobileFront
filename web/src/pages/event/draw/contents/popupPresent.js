@@ -1,11 +1,11 @@
-import React, {useEffect, useState, createRef} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 export default (props) => {
   const {popupPresent, onClose} = props
-  const [failViewYn, setFailViewYn] = useState(false);
+  const [failViewYn, setFailViewYn] = useState(false); // 꽝일때 처리하기 위한 Flag 값
 
   const swiperParams = {
     spaceBetween: 5,
