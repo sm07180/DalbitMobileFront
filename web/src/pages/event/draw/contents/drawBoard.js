@@ -1,54 +1,78 @@
-import React, {useState} from 'react'
+import React, {useCallback} from 'react'
 import styled, {keyframes} from 'styled-components'
 
 import '../draw.scss'
 
 export default (props) => {
-    return (
-        <BoardWrap>
-            <div className="boardRow">
-                <div className="boardList active">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+
+  const {listInfo, drawList, pageNo} = props;
+
+  const fakeClick = useCallback(() => {}, []);
+
+  return (
+    <BoardWrap>
+      {new Array(10).fill(0).map((row, index) => {
+        const startNum = (index * 6) + (pageNo - 1) * 60;
+        const evenYn = index % 2 === 1;
+        return (
+          <div className="boardRow" key={index}>
+            {listInfo.slice(startNum, startNum + 6).map((value, vIndex) => {
+              const activeYn = drawList.select.findIndex(row => row == value.bbopgi_gift_pos_no) !== -1;
+              const aniYn = drawList.aniList.findIndex(row => row == value.bbopgi_gift_pos_no) !== -1;
+              return (
+                <div className={`boardList ${activeYn ? 'active' : ''}`} key={vIndex} data-pos-no={value.bbopgi_gift_pos_no} onClick={value.ins_date === null ? props.onSelectItem : fakeClick}>
+                  <img src={`https://image.dalbitlive.com/event/draw/drawBoard_${evenYn ? 2 : 1}${(value.ins_date !== null || aniYn) ? '_header' : ''}.png`}/>
+                  {aniYn && <img className="square splitOut" src={`https://image.dalbitlive.com/event/draw/drawBoard_${evenYn ? 2 : 1}_split.png`}/>}
                 </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1_header.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png" />
-                </div>
-            </div>
-            <div className="boardRow">
-                <div className="boardList active">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png" />
-                </div>
-                <div className="boardList">
-                    <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png" />
-                    <img className="square splitOut" src="https://image.dalbitlive.com/event/draw/drawBoard_2_split.png" />
-                </div>
-            </div>
-        </BoardWrap>
-    )
+              )
+            })}
+          </div>
+        )
+      })}
+{/*
+      <div className="boardRow">
+        <div className="boardList active">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1_header.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
+        </div>
+      </div>
+      <div className="boardRow">
+        <div className="boardList active">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
+        </div>
+        <div className="boardList">
+          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png"/>
+          <img className="square splitOut" src="https://image.dalbitlive.com/event/draw/drawBoard_2_split.png"/>
+        </div>
+      </div>*/}
+    </BoardWrap>
+  )
 }
 
 const BoardWrap = styled.div`
@@ -56,7 +80,7 @@ const BoardWrap = styled.div`
     width: 100%;
     min-height: 545px;
     grid-template-columns : repeat(1, 1fr);
-    grid-template-rows : repeat(10, 1fr);
+    /*grid-template-rows : repeat(10, 1fr);*/
     row-gap: 5px;
     padding: 0 17px;
     box-sizing: border-box;

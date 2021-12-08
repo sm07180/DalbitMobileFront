@@ -1,78 +1,74 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
+import Api from "context/api";
 
 export default (props) => {
-  const {setPopupWinning} = props
+  const {onClose} = props;
+  const [listInfo, setListInfo] = useState([]);
+
+  const wrapClick = (e) => {
+    const target = e.target
+    if (target.id === 'popupWinning') {
+      props.onClose();
+    }
+  }
+
+  const getDrawListInfo = () => {
+    Api.getDrawWinningInfo().then(res => {
+      if (res.code === '00000') {
+        setListInfo(res.data);
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  };
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+
+    getDrawListInfo();
 
     return () => {
       document.body.style.overflow = ''
     }
   }, [])
 
-  const closePopup = () => {
-    setPopupWinning()
-  }
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'popupWinning') {
-      closePopup()
-    }
-  }
-
-  const winningLists = [
-      {
-          name : "이마트 1만원 상품권",
-          get : "1개",
-          number : "1개"
-      },{
-        name : "이마트 5천원 상품권",
-        get : "1개",
-        number : "10개"
-    },{
-        name : "맘스터치 싸이버거",
-        get : "1개",
-        number : "2개"
-    },
-  ]
-
   return (
     <PopupWrap id="popupWinning" onClick={wrapClick}>
-        <div className="popLayer">
-            <div className="contentWrap">
-                <div className="title">
-                내 당첨 내역
+      <div className="popLayer">
+        <div className="contentWrap">
+          <div className="title">
+            내 당첨 내역
+          </div>
+          <div className="listWrap">
+            {listInfo.map(row => {
+              return (
+                <div className="listRow" key={row.bbopgi_gift_no}>
+                  <div>{row.bbopgi_gift_name}</div>
+                  <div>
+                    <span className="listImportant">{row.use_coupon_cnt} 개</span> / {row.gift_cnt} 개
+                  </div>
                 </div>
-                <div className="listWrap">
-                    {winningLists.map((winningList, index) =>{
-                        return (
-                            <div className="listRow" key={index}>
-                                <div>{winningList.name}</div>
-                                <div>
-                                    <span className="listImportant">{winningList.get}</span> / {winningList.number}
-                                    </div>
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
-            <div className="popNotice">
-                기프티콘은 당첨 후 영업장 평일<br/>7일 이내 문자로 전송해드립니다.
-            </div>
-            <div className="buttonWrap">
-                <button onClick={closePopup}>
-                    확인
-                </button>
-            </div>
-            <button className="close" onClick={closePopup}>
-                <img src="https://image.dalbitlive.com/images/api/close_w_l.svg" alt="닫기" />
-            </button>
+              )
+            })}
+          </div>
         </div>
+        <div className="popNotice">
+          기프티콘은 당첨 후 영업장 평일<br/>7일 이내 문자로 전송해드립니다.
+        </div>
+        <div className="buttonWrap">
+          <button onClick={props.onClose}>
+            확인
+          </button>
+        </div>
+        <button className="close" onClick={props.onClose}>
+          <img src="https://image.dalbitlive.com/images/api/close_w_l.svg" alt="닫기"/>
+        </button>
+      </div>
     </PopupWrap>
   )
 }
+
 const PopupWrap = styled.div`
     position: fixed;
     top: 0;

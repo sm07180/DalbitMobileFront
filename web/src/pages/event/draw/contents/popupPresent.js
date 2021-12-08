@@ -4,7 +4,27 @@ import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 export default (props) => {
-  const {setPopupPresent} = props
+  const {popupPresent, onClose} = props
+
+  const swiperParams = {
+    spaceBetween: 5,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  };
+
+  const closePopup = () => {
+    onClose();
+  }
+
+  const wrapClick = (e) => {
+    const target = e.target
+    if (target.id === 'popupPresent') {
+      closePopup()
+    }
+  };
+
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -14,117 +34,48 @@ export default (props) => {
     }
   }, [])
 
-  const closePopup = () => {
-    setPopupPresent()
-  }
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'popupPresent') {
-      closePopup()
-    }
-  }
-
-  const presentDatas=[
-        {
-            num : 1,
-            name : '이마트 1만원',
-            count : '상품권 1개'
-        },
-        {
-            num : 2,
-            name : '이마트 5천원',
-            count : '상품권 1개'
-        },
-        {
-            num : 3,
-            name : '맘스터치',
-            count : '싸이버거 1개'
-        },
-        {
-            num : 4,
-            name : '스타벅스',
-            count : '아메리카노 1개'
-        },
-        {
-            num : 5,
-            name : '20달',
-            count : '1개'
-        },
-        {
-            num : 6,
-            name : '10달',
-            count : '1개'
-        },
-        {
-            num : 7,
-            name : '1달',
-            count : '1개'
-        },
-        {
-            num : 8,
-            name : '꽝',
-            count : '10개'
-        },
-  ]
-
-  const swiperParams = {
-    spaceBetween: 5,
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-      },
-  }
-
   return (
     <PopupWrap id="popupPresent" onClick={wrapClick}>
-        {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
-        <div className="popLayer">
-            <div className="contentWrap" style={{width:'100%'}}>
-                <div className="title">
-                    선물을 받았어요!
+      {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
+      <div className="popLayer">
+        <div className="contentWrap" style={{width: '100%'}}>
+          <div className="title">
+            선물을 받았어요!
+          </div>
+          <Swiper {...swiperParams}>
+            {popupPresent.resultInfo !== undefined && popupPresent.resultInfo.map((row, index) => {
+              if (row.bbopgi_gift_no === 0) {
+                return (<></>)
+              }
+
+              return (
+                <div className="presentWrap" key={index}>
+                  <div className="imgWrap">
+                    <img src={`${IMG_SERVER}/event/draw/present-${row.bbopgi_gift_no}.png`}/>
+                  </div>
+                  <div className="result">추첨결과({index + 1}/{popupPresent.resultInfo.length})</div>
+                  <div className={`${row.bbopgi_gift_no !== 8 ? 'resultCenter': 'resultRow'}`}>
+                    <div className="name">{row.bbopgi_gift_name}</div>
+                    <div className="counter">{row.temp_result_cnt}개</div>
+                  </div>
                 </div>
-                <Swiper {...swiperParams}>
-                        {presentDatas.map((present, index) => {
-                            return(
-                                <div className="presentWrap" key={index}>
-                                    <div className="imgWrap">
-                                        <img src={`${IMG_SERVER}/event/draw/present-${present.num}.png`}></img>
-                                    </div>
-                                    <div className="result">추첨결과(1/8)</div>
-                                    <div className="name">{present.name}</div>
-                                    <div className="counter">{present.count}</div>
-                                </div>
-                            )})
-                        }
-                </Swiper>
-                {/* 당첨 결과가 꽝일 경우 */}
-                {/* <div className="presentWrap">
-                    <div className="imgWrap">
-                        <img src={`${IMG_SERVER}/event/draw/present-8.png`}></img>
-                        <div className="arrowWrap">
-                            <img src={`${IMG_SERVER}/event/draw/presentLeft.png`}></img>
-                            <img src={`${IMG_SERVER}/event/draw/presentRight.png`}></img>
-                        </div>
-                    </div>
-                    <div className="result">추첨결과(1/8)</div>
-                    <div className="resultRow">
-                        <div className="name black">꽝</div>
-                        <div className="counter">10개</div>
-                    </div>
-                </div> */}
-            </div>
-            <div className="buttonWrap">
-                <button onClick={closePopup}>
-                    확인
-                </button>
-            </div>
-            <button className="close" onClick={closePopup}>
-                <img src="https://image.dalbitlive.com/images/api/close_w_l.svg" alt="닫기" />
-            </button>
+              )
+            })}
+          </Swiper>
         </div>
+        <div className="buttonWrap">
+          <button onClick={onClose}>
+            확인
+          </button>
+        </div>
+        <button className="close" onClick={onClose}>
+          <img src="https://image.dalbitlive.com/images/api/close_w_l.svg" alt="닫기"/>
+        </button>
+      </div>
     </PopupWrap>
   )
 }
+
 const PopupWrap = styled.div`
     position: fixed;
     top: 0;
@@ -259,16 +210,17 @@ const PopupWrap = styled.div`
                         display:flex;
                         .name{
                             margin-right:5px;
+                            color:black;
                         }
+                    }
+                    &Center{
+                        text-align: center;
                     }
                 }
                 .name{
                     font-size:21px;
                     font-weight:700;
                     color:#632BEB;
-                    &.black{
-                        color:black;
-                    }
                 }
                 .counter{
                     font-size:21px;
