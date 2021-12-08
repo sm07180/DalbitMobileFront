@@ -52,7 +52,18 @@ export default () => {
   // 뽑기 이벤트
   const putDrawSelect = () => {
     if (drawList.select.length === 0) {
-      alert('뽑기를 선택해주세요.');
+      context.action.toast({msg: `뽑기를 선택해주세요.`});
+      return;
+    }
+
+    if (ticketCnt == 0) {
+      context.action.confirm({
+        msg: `응모권이 부족합니다.\n 달충전 1만원당 응모권 1개가 자동 지급됩니다. \n달충전을 진행하시겠습니까?`,
+        buttonText: { right : '충전하기'},
+        callback: () => {
+          chargeDal();
+        }
+      });
       return;
     }
 
@@ -63,8 +74,10 @@ export default () => {
         setDrawList({select: [], aniList: res.data.resultInfo });
         let temp = res.data.resultInfo;
         setPopupPresent({ open: true, failCnt: res.data.failCnt, resultInfo: temp.filter(row => row.bbopgi_gift_no !== 0) });
-      } else if (res.code === '30004' && res.data.failCnt === drawList.select.length) {
+      } else if (res.code === '30101' && res.data.failCnt === drawList.select.length) {
         context.action.toast({msg: `일시적인 통신 장애로 ${res.data.failCnt}개의 뽑기가 추첨되지 않았습니다. 잠시 후 다시 추첨해주세요.`});
+      } else if (res.code === '30102') {
+        context.action.toast({msg: res.data.message });
       } else {
         console.log(res);
       }
@@ -75,7 +88,7 @@ export default () => {
   const chargeDal = () => {
     if (!context.token.isLogin) {
       history.push('/login')
-      return
+      return;
     }
 
     history.push('/pay/store')
@@ -85,14 +98,13 @@ export default () => {
   const selectDraw = (e) => {
     const targetPosNo = e.currentTarget.dataset.posNo;
 
-    if (drawList.select.length >= 30) {
-      context.action.toast({msg: '뽑기 최대 개수는 30개를 넘을 수 없습니다.'});
-      return;
-    }
-
     if (targetPosNo !== undefined) {
       if (drawList.select.findIndex(row => row === targetPosNo) === -1) {
-        setDrawList({ ...drawList, select: drawList.select.concat(targetPosNo)});
+        if (drawList.select.length >= 30) {
+          context.action.toast({msg: '한 번에 30개까지 선택할 수 있습니다.'});
+        } else {
+          setDrawList({ ...drawList, select: drawList.select.concat(targetPosNo)});
+        }
       } else {
         setDrawList({ ...drawList, select: drawList.select.filter(item => item != targetPosNo)});
       }
@@ -118,10 +130,10 @@ export default () => {
     const type = e.currentTarget.dataset.type;
 
     if (type === 'left') {
-      setDrawList({ select: [], aniList: [] });
+      setDrawList({...drawList, aniList: []});
       setPageNo(pageNo - 1);
     } else if (type === 'right') {
-      setDrawList({ select: [], aniList: [] });
+      setDrawList({...drawList, aniList: []});
       setPageNo(pageNo + 1);
     }
   }
@@ -146,6 +158,10 @@ export default () => {
   };
 
   useEffect(() => {
+    if (!context.token.isLogin) {
+      history.push('/login')
+      return;
+    }
 
     getDrawTicketCnt(); // 응모권 개수 가져오기
     getDrawListInfo();
