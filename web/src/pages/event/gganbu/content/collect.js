@@ -1,5 +1,6 @@
-import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
+import React, {useEffect, useState, useCallback, useContext, useLayoutEffect} from 'react'
 import {useHistory} from 'react-router-dom'
+import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import styled, {css} from 'styled-components'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
@@ -13,8 +14,10 @@ import PopupReport from './popupReport'
 
 export default (props) => {
   const context = useContext(Context)
-  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList, rankList} = props
+  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList} = props
   const [noticeTab, setNoticeTab] = useState('')
+  const [rankList, setRankList] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
 
@@ -28,28 +31,47 @@ export default (props) => {
     }
   }
 
+  let totalPage = 1
+  let pagePerCnt = 10
   // 깐부 랭킹 리스트
-  const gganbuRankList = async () => {
+  const gganbuRankList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNo,
-      pageNo: 1,
-      pagePerCnt: 10
+      pageNo: currentPage,
+      pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.getGganbuRankList(param)
     if (message === 'SUCCESS') {
-      console.log(message)
+      totalPage = Math.ceil(data.listCnt / pagePerCnt)
+      if (currentPage > 1) {
+        setRankList(rankList.concat(data.list))
+      } else {
+        setRankList(data.list)
+      }
     } else {
       console.log(message)
     }
+  }, [gganbuNo, currentPage])
+
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
   }
+
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [currentPage])
 
   useEffect(() => {
     if (gganbuNo !== undefined) {
       gganbuRankList()
     }
   }, [gganbuNo])
-
-  console.log('gganbuInfo ' + gganbuInfo, 'myRankList ' + myRankList, 'rankList ' + rankList)
 
   return (
     <>
@@ -114,7 +136,7 @@ export default (props) => {
                     </button>
                   </div>
                 </div>
-                <div className="score">총 20,879점</div>
+                <div className="score">총 {Utility.addComma(gganbuInfo.marble_pocket_pt)}점</div>
               </div>
             </div>
           )}
@@ -137,29 +159,31 @@ export default (props) => {
           )}
         </section>
         <section className="rank">
-          <img src="https://image.dalbitlive.com/event/gganbu/wrapperTop.png" />
-          <div className="rankList my">
-            <div className="number">
-              <span className="tit">내 순위</span>
-              <span className="num">32</span>
-            </div>
-            <div className="rankBox">
-              <div className="rankItem">
-                <LevelBox className="badge">lv {myRankList.ptr_mem_level}</LevelBox>
-                <span className="userNick">{myRankList.ptr_mem_nick}</span>
-                <span className="userId">{myRankList.ptr_mem_id}</span>
+          <img className="rankTopImg" src="https://image.dalbitlive.com/event/gganbu/wrapperTop.png" />
+          {gganbuState === 1 && (
+            <div className="rankList my">
+              <div className="number">
+                <span className="tit">내 순위</span>
+                <span className="num">32</span>
               </div>
-              <div className="rankItem">
-                <LevelBox className="badge">lv {myRankList.mem_level}</LevelBox>
-                <span className="userNick">{myRankList.mem_nick}</span>
-                <span className="userId">{myRankList.mem_id}</span>
+              <div className="rankBox">
+                <div className="rankItem">
+                  <LevelBox className="badge">lv {myRankList.ptr_mem_level}</LevelBox>
+                  <span className="userNick">{myRankList.ptr_mem_nick}</span>
+                  <span className="userId">{myRankList.ptr_mem_id}</span>
+                </div>
+                <div className="rankItem">
+                  <LevelBox className="badge">lv {myRankList.mem_level}</LevelBox>
+                  <span className="userNick">{myRankList.mem_nick}</span>
+                  <span className="userId">{myRankList.mem_id}</span>
+                </div>
+              </div>
+              <div className="score">
+                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                <span>2,181</span>
               </div>
             </div>
-            <div className="score">
-              <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-              <span>2,181</span>
-            </div>
-          </div>
+          )}
           <div className="rankWrap">
             {rankList && rankList.length > 0 ? (
               <>

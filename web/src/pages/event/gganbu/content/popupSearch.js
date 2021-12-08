@@ -26,7 +26,6 @@ export default (props) => {
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-
     return () => {
       document.body.style.overflow = ''
     }
@@ -87,24 +86,6 @@ export default (props) => {
     }
   }
 
-  // const scrollEvtHdr = () => {
-  //   if (totalPage > currentPage && Utility.isHitBottom()) {
-  //     setCurrentPage(currentPage + 1)
-  //   }
-  // }
-
-  // useLayoutEffect(() => {
-  //   if (currentPage === 0) setCurrentPage(1)
-  //   window.addEventListener('scroll', scrollEvtHdr)
-  //   return () => {
-  //     window.removeEventListener('scroll', scrollEvtHdr)
-  //   }
-  // }, [currentPage])
-
-  // useEffect(() => {
-  //   if (currentPage > 0 && result !== '') fetchSearchMember()
-  // }, [currentPage])
-
   // 팬 리스트
   const fetchFanList = async () => {
     const res = await Api.mypage_fan_list({
@@ -123,10 +104,11 @@ export default (props) => {
     return
   }
 
+  // 깐부 신청
   const postGganbuSub = async () => {
     const param = {
       gganbuNo: gganbuNo,
-      ptrMemNo: memberNo
+      ptrMemNo: memberNo // 대상자
     }
     const {data, message} = await Api.postGganbuSub(param)
     if (data === 1) {
@@ -245,7 +227,7 @@ export default (props) => {
         ) : (
           <div className="listWrap" style={{height: '344px'}}>
             {memberList.map((data, index) => {
-              const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
+              const {average_level, mem_profile, mem_level, mem_nick, mem_no, rcvYn, sendYn} = data
               return (
                 <div className="list" key={`memder-${index}`}>
                   <div className="photo">
@@ -261,12 +243,20 @@ export default (props) => {
                       </span>
                     </div>
                   </div>
-                  <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
-                    신청
-                  </button>
-                  {/* <button className="cancel">취소</button>
-                  <button className="accept">수락</button>
-                  <button className="disable" disabled>
+                  {rcvYn === 'n' ? (
+                    <>
+                      {sendYn === 'n' ? (
+                        <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
+                          신청
+                        </button>
+                      ) : (
+                        <button className="cancel">취소</button>
+                      )}
+                    </>
+                  ) : (
+                    <button className="accept">수락</button>
+                  )}
+                  {/* <button className="disable" disabled>
                     신청불가
                   </button> */}
                 </div>

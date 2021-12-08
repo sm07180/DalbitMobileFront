@@ -3,8 +3,7 @@
 #gganbu {
   position: relative;
   width: 100%;
-  height: calc(100% - 50px);
-  margin: auto;
+  height: calc(100vh - 50px);
   padding-top: 50px;
   .header-wrap {
     position: fixed;
@@ -447,6 +446,9 @@
       margin-top: -5.559%;
       img {
         width: 100%;
+        &.rankTopImg {
+          vertical-align: bottom;
+        }
       }
       .rankWrap {
         width: 100%;
@@ -462,6 +464,7 @@
         border-radius: 14px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         .number {
+          flex: none;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -485,7 +488,10 @@
           }
         }
         .rankBox {
-          margin: 0 20px;
+          flex: 1;
+          min-width: 0;
+          padding: 0 20px;
+          box-sizing: border-box;
           .rankItem {
             display: flex;
             align-items: center;
@@ -493,6 +499,7 @@
               background: #eee;
             }
             .badge {
+              flex: none;
               display: inline-block;
               width: 44px;
               height: 16px;
@@ -516,14 +523,17 @@
               overflow: hidden;
             }
             .userId {
+              flex: none;
               margin-left: 6px;
               font-size: 12px;
               color: #757575;
               letter-spacing: -0.5px;
+              white-space: nowrap;
             }
           }
         }
         .score {
+          flex: none;
           display: flex;
           flex-direction: column;
           align-items: center;

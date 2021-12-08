@@ -10,10 +10,9 @@ export default (props) => {
   const context = useContext(Context)
 
   const [tabBtn, setTabBtn] = useState('r')
-  const [gganbuSubList, setGganbuSubList] = useState([])
   const [memberNo, setMemberNo] = useState()
+  const [gganbuSubList, setGganbuSubList] = useState([])
   const [alertAccept, setAlertAccept] = useState(false)
-  const [alertSuccess, setAlertSuccess] = useState(false)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -28,7 +27,6 @@ export default (props) => {
   }
   const closeAlert = () => {
     setAlertAccept(false)
-    setAlertSuccess(false)
   }
   const wrapClick = (e) => {
     const target = e.target
@@ -41,9 +39,7 @@ export default (props) => {
   const fetchGganbuSubList = async () => {
     const param = {
       insSlct: tabBtn,
-      gganbuNo: gganbuNo,
-      pageNo: 1,
-      pagePerCnt: 50
+      gganbuNo: gganbuNo
     }
     const {data, message} = await Api.postGganbuList(param)
     if (message === 'SUCCESS') {
@@ -53,7 +49,7 @@ export default (props) => {
     }
   }
   // 수락 버튼
-  const postGganbuIns = async (memNo) => {
+  const postGganbuIns = async (memNo, memNick) => {
     const param = {
       gganbuNo: gganbuNo,
       memNo: memNo
@@ -61,7 +57,7 @@ export default (props) => {
     const {data, message} = await Api.postGganbuIns(param)
     if (data === 1) {
       context.action.alert({
-        msg: `${context.profile.nickNm}님과 깐부를 맺었습니다.`,
+        msg: `${memNick}님과<br/>깐부를 맺었습니다.`,
         callback: () => {
           closeAlert()
         }
@@ -71,13 +67,13 @@ export default (props) => {
     }
   }
   // 취소 버튼
-  const postGganbuCancel = async (memNo) => {
+  const postGganbuCancel = async (ptr_mem_no) => {
     const param = {
       gganbuNo: gganbuNo,
-      memNo: memNo
+      ptrMemNo: ptr_mem_no
     }
     const {data, message} = await Api.postGganbuCancel(param)
-    if (data === 1) {
+    if (message === 'SUCCESS') {
       console.log(message)
       context.action.alert({
         msg: '취소 완료',
@@ -98,7 +94,8 @@ export default (props) => {
   }, [application])
 
   // 수락 => 동의서, 실패
-  const Accept = () => {
+  const Accept = (props) => {
+    const {mem_nick} = props
     return (
       <div className="alert">
         <div className="contentWrap">
@@ -122,34 +119,16 @@ export default (props) => {
           </div>
           <div className="buttonWrap">
             <button onClick={closeAlert}>취소</button>
-            <button onClick={() => postGganbuIns(memberNo)}>수락</button>
+            <button onClick={() => postGganbuIns(memberNo, mem_nick)}>수락</button>
           </div>
         </div>
       </div>
     )
   }
-  const Success = () => {
-    return (
-      <div className="alert">
-        <div className="contentWrap">
-          님과
-          <br />
-          깐부를 맺었습니다.
-          <button onClick={closeAlert}>확인</button>
-        </div>
-      </div>
-    )
-  }
-  const acceptBtn = (memNo) => {
+  const acceptBtn = (memNo, mem_nick) => {
     setAlertAccept(true)
     setMemberNo(memNo)
-    return <Accept />
-  }
-
-  const successBtn = (memNo) => {
-    setAlertSuccess(true)
-    setMemberNo(memNo)
-    return <Success />
+    return <Accept mem_nick={mem_nick} />
   }
 
   return (
@@ -186,7 +165,7 @@ export default (props) => {
                           </span>
                         </div>
                       </div>
-                      <button className="accept" onClick={() => acceptBtn(mem_no)}>
+                      <button className="accept" onClick={() => acceptBtn(mem_no, mem_nick)}>
                         수락
                       </button>
                     </div>
@@ -203,23 +182,23 @@ export default (props) => {
           <div className="listWrap" style={{height: '364px'}}>
             {gganbuSubList.length > 0 &&
               gganbuSubList.map((data, index) => {
-                const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
+                const {average_level, mem_no, ptr_mem_profile, ptr_mem_level, ptr_mem_nick, ptr_mem_no} = data
                 return (
                   <div className="list" key={index}>
                     <div className="photo">
-                      <img src={mem_profile.thumb50x50} alt="유저이미지" />
+                      <img src={ptr_mem_profile.thumb50x50} alt="유저이미지" />
                     </div>
                     <div className="listBox">
-                      <div className="nick">{mem_nick}</div>
+                      <div className="nick">{ptr_mem_nick}</div>
                       <div className="listItem">
-                        <span>Lv. {mem_level}</span>
+                        <span>Lv. {ptr_mem_level}</span>
                         <span className="average">
                           <em>평균</em>
                           <span>Lv {average_level}</span>
                         </span>
                       </div>
                     </div>
-                    <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                    <button className="cancel" onClick={(e) => postGganbuCancel(ptr_mem_no)}>
                       취소
                     </button>
                   </div>
@@ -237,7 +216,6 @@ export default (props) => {
         </button>
       </div>
       {alertAccept === true && <Accept />}
-      {alertSuccess === true && <Success />}
     </div>
   )
 }

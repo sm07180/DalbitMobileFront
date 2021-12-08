@@ -130,7 +130,7 @@ export default () => {
                   </div>
                 ) : (
                   <div className="userList">
-                    <div className="photo" onClick={() => setPopupSearch(true)}>
+                    <div className="photo">
                       <img src={gganbuInfo.mem_profile ? gganbuInfo.mem_profile.thumb80x80 : ''} />
                     </div>
                     <PtrLevelBox className="badge" memLevelColor={gganbuInfo.mem_level_color ? gganbuInfo.mem_level_color : ''}>
