@@ -3444,6 +3444,15 @@ export default class API {
     })
   }
 
+  // 깐부 팬 리스트
+  static getGganbuFanList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/search/fan`,
+      method: 'GET',
+      params: data
+    })
+  }
+
   // 깐부 구슬 획득
   static postGganbuReport = async (data) => {
     return await ajax({

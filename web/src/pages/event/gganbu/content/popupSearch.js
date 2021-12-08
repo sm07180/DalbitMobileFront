@@ -21,15 +21,16 @@ export default (props) => {
   const [currentPage, setCurrentPage] = useState(0)
   const [alertAccept, setAlertAccept] = useState(false)
 
-  let totalPage = 1
-  let records = 20
-
   useEffect(() => {
     document.body.style.overflow = 'hidden'
+
     return () => {
       document.body.style.overflow = ''
     }
   }, [])
+
+  let totalPage = 1
+  let records = 20
 
   const closePopup = () => {
     setPopupSearch()
@@ -86,19 +87,22 @@ export default (props) => {
     }
   }
 
-  // 팬 리스트
+  // 깐부 팬 리스트
   const fetchFanList = async () => {
-    const res = await Api.mypage_fan_list({
-      params: {
-        memNo: myProfileNo,
-        sortType: 0
-      }
-    })
-    if (res.result === 'success') {
-      setFanList(res.data.list)
+    const param = {
+      ptrMemNo: myProfileNo,
+      memLevel: myProfileLevel,
+      ordSlct: 0,
+      pageNo: 1,
+      pagePerCnt: 50
+    }
+    const {data, message} = await Api.getGganbuFanList(param) //mypage_fan_list, getGganbuFanList
+    if (message === 'SUCCESS') {
+      setFanList(data.list)
+      console.log(data)
     } else {
       context.action.alert({
-        msg: res.message
+        msg: message
       })
     }
     return
@@ -197,31 +201,45 @@ export default (props) => {
               나의 팬<span>낮은 레벨 순</span>
             </div>
             <div className="listWrap">
-              {fanList.length > 0 &&
-                fanList.map((data, index) => {
-                  const {nickNm, profImg, memNo} = data
-                  return (
-                    <div className="list" key={`fan-${index}`}>
-                      <div className="photo">
-                        <img src={profImg.thumb50x50} alt="유저이미지" />
-                      </div>
-                      <div className="listBox">
-                        <div className="nick">{nickNm}</div>
-                        <div className="listItem">
-                          <span>Lv. 38</span>
-                          <span className="average">
-                            <em>평균</em>
-                            <span>Lv 20</span>
-                          </span>
+              {fanList.length > 0 ? (
+                <>
+                  {fanList.map((data, index) => {
+                    const {averageLevel, nickName, level, fanMemProfile, mem_no, rcvYn, sendYn} = data
+                    return (
+                      <div className="list" key={`fan-${index}`}>
+                        <div className="photo">
+                          <img src={fanMemProfile.thumb50x50} alt="유저이미지" />
                         </div>
+                        <div className="listBox">
+                          <div className="nick">{nickName}</div>
+                          <div className="listItem">
+                            <span>Lv. {level}</span>
+                            <span className="average">
+                              <em>평균</em>
+                              <span>Lv {averageLevel}</span>
+                            </span>
+                          </div>
+                        </div>
+                        {rcvYn === 'n' ? (
+                          <>
+                            {sendYn === 'n' ? (
+                              <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
+                                신청
+                              </button>
+                            ) : (
+                              <button className="cancel">취소</button>
+                            )}
+                          </>
+                        ) : (
+                          <button className="accept">수락</button>
+                        )}
                       </div>
-                      <button className="submit" onClick={(e) => acceptBtn(memNo)}>
-                        신청
-                      </button>
-                    </div>
-                  )
-                })}
-              {fanList.length === 0 && <NoResult type="default" text="팬이 없습니다." />}
+                    )
+                  })}
+                </>
+              ) : (
+                <NoResult type="default" text="팬이 없습니다." />
+              )}
             </div>
           </>
         ) : (
