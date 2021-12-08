@@ -1,6 +1,8 @@
 /**
  * @title error페이지
  * @url https://devwww2.dalbitlive.com/ctrl/check/ip
+ *
+ * 변경사항 : 요청 URL API서버로 변경
  */
 import React, {useState, useEffect, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
@@ -18,10 +20,13 @@ export default () => {
   const context = useContext(Context);
   const [redirectList, setRedirectList] = useState([]);
 
-  //return : undefined or {host, api, photo}
+  /** host 주소값으로 리스트에서 같은 값이 있는지 검색
+   * @return : undefined or {host, api, photo, socketURL} */
   const readDevInfoData = useCallback((selectHost = '') => redirectList.find((v, i) => (v.host === selectHost)), [redirectList]);
 
-  //요청 전에 내부서버 아이피 확인
+  /** 요청 전에 내부서버 아이피 확인
+   * @param : string (ex : '192.168.0.1')
+   * @return : boolean */
   const innerIpChk = (ip = '') => {
     const ipArr = ip.split('.');
     if (ip === 'undefined' || ipArr.length !== 4) return false;
@@ -30,6 +35,7 @@ export default () => {
     return g1 === '61' && g2 === '80' && g3 === '148' && (parseInt(g4) > 0 && parseInt(g4) < 256) || ip === '59.13.127.250' || ip === '59.13.127.251';
   };
 
+  //API서버에 내부서버리스트 요청
   const getInnerServerList = async () => {
     const {list, innerChk} = await Api.getInnerServerList();
 
@@ -51,42 +57,25 @@ export default () => {
     }
   }, []);
 
-  return (
-    <>
-      {redirectList.length > 0 && (
-        <select
-          style={{
-            display: 'inline-block',
-            position: 'fixed',
-            bottom: '100px',
-            right: '10px',
-            backgroundColor: 'blue',
-            color: 'white',
-            zIndex: '500',
-            padding: '5px 5px',
-            marginBottom: '-50px'
-          }}
-          value={location.origin}
-          onChange={(e) => {
-            const obj = readDevInfoData(e.target.value);
-            if (obj) {
-              const {host, api, photo} = obj;
-              Hybrid('setAppHost', {
-                host,
-                api,
-                photo
-              });
-            }
-          }}>
-          {redirectList.map((info, idx) => {
-            return (
-              <option key={`url-${idx}`} value={info.host}>
-                {info.name}
-              </option>
-            )
-          })}
-        </select>
-      )}
-    </>
-  )
+  return (<>
+    {redirectList.length > 0 &&
+    <select style={{display: 'inline-block', position: 'fixed', bottom: '100px', right: '10px', backgroundColor: 'blue', color: 'white', zIndex: '500', padding: '5px 5px', marginBottom: '-50px'}}
+            value={location.origin}
+            onChange={(e) => {
+              const obj = readDevInfoData(e.target.value);
+              if (obj) {
+                const {host, api, photo, socketURL} = obj;
+                Hybrid('setAppHost', {host, api, photo, socketURL});
+              }
+            }}>
+      {redirectList.map((info, idx) => {
+        return (
+          <option key={`url-${idx}`} value={info.host}>
+            {info.name}
+          </option>
+        )
+      })}
+    </select>
+    }
+  </>);
 }
