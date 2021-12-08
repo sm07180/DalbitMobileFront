@@ -42,6 +42,7 @@ import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
+import Draw from './draw'
 
 export default () => {
   const params = useParams()
@@ -123,6 +124,8 @@ export default () => {
         return <BroadcastRoulette />
       case 'anniversary':
         return <AnniversaryEvent />
+      case 'draw':
+        return <Draw />
       default:
         return <></>
         break
