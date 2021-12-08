@@ -33,48 +33,6 @@ export default (props) => {
           </div>
         )
       })}
-{/*
-      <div className="boardRow">
-        <div className="boardList active">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1_header.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_1.png"/>
-        </div>
-      </div>
-      <div className="boardRow">
-        <div className="boardList active">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2.png"/>
-        </div>
-        <div className="boardList">
-          <img src="https://image.dalbitlive.com/event/draw/drawBoard_2_header.png"/>
-          <img className="square splitOut" src="https://image.dalbitlive.com/event/draw/drawBoard_2_split.png"/>
-        </div>
-      </div>*/}
     </BoardWrap>
   )
 }

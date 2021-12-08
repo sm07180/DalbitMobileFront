@@ -71,9 +71,11 @@ export default () => {
     Api.putDrawSelect(param).then(res => {
       if (res.code === '00000' || (res.code === '30004' && res.data.resultInfo.length > 0)) {
         getDrawTicketCnt(); // 티켓 개수 갱신
-        setDrawList({select: [], aniList: res.data.resultInfo });
-        let temp = res.data.resultInfo;
-        setPopupPresent({ open: true, failCnt: res.data.failCnt, resultInfo: temp.filter(row => row.bbopgi_gift_no !== 0) });
+        setDrawList({select: [], aniList: drawList.select });
+        setTimeout(() => {
+          let temp = res.data.resultInfo;
+          setPopupPresent({ open: true, failCnt: res.data.failCnt, resultInfo: temp.filter(row => row.bbopgi_gift_no !== 0) });
+        }, [2000]);
       } else if (res.code === '30101' && res.data.failCnt === drawList.select.length) {
         context.action.toast({msg: `일시적인 통신 장애로 ${res.data.failCnt}개의 뽑기가 추첨되지 않았습니다. 잠시 후 다시 추첨해주세요.`});
       } else if (res.code === '30102') {
