@@ -112,6 +112,9 @@
       }
 
       .end_date_box {
+        letter-spacing: -1px;
+        font-weight: 700;
+        line-height: 24px;
         p {
           color: #e84d6f;
         }
@@ -152,7 +155,7 @@
       .title {
         display: flex;
         align-items: center;
-        width: 35%;
+        width: 48%;
         padding: 10px;
         height: 70px;
         background-color: #d1d1d1;
@@ -208,6 +211,11 @@
         }
       }
     }
+  }
+
+  .extraPoint {
+    width: 100%;
+    margin-top: 5%;
   }
 
   .btnWrap {

@@ -231,6 +231,116 @@ export default () => {
     }
   }
 
+  const newSocialLogin = async (inputData) => {
+    const {webview, redirect} = qs.parse(location.search)
+    let social_result = await Api.new_social_login(inputData);
+    let sessionRoomNo = sessionStorage.getItem('room_no');
+
+    if (sessionRoomNo === undefined || sessionRoomNo === null) {
+      sessionRoomNo = Utility.getCookie('listen_room_no')
+      if (sessionRoomNo === undefined || sessionRoomNo === null) {
+        sessionRoomNo = ''
+      }
+    }
+    social_result.data['room_no'] = sessionRoomNo
+    if (social_result.result === 'success') {
+      const loginInfo = await Api.member_login({
+        data: social_result.data
+      })
+
+      if (loginInfo.result === 'success') {
+        const {memNo} = loginInfo.data
+
+        //--##
+        /**
+         * @마이페이지 redirect
+         */
+        let mypageURL = ''
+        const _parse = qs.parse(location.search)
+        if (_parse !== undefined && _parse.mypage_redirect === 'yes') {
+          mypageURL = `/mypage/${memNo}`
+          if (_parse.mypage !== '/') mypageURL = `/mypage/${memNo}${_parse.mypage}`
+        }
+
+        context.action.updateToken(loginInfo.data)
+        const profileInfo = await Api.profile({params: {memNo}})
+
+        if (profileInfo.result === 'success') {
+          if (webview && webview === 'new') {
+            Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          } else {
+            Hybrid('GetLoginToken', loginInfo.data)
+          }
+
+          if (redirect) {
+            const decodedUrl = decodeURIComponent(redirect)
+            return (window.location.href = decodedUrl)
+          }
+          context.action.updateProfile(profileInfo.data)
+
+          //--##마이페이지 Redirect
+          if (mypageURL !== '') {
+            return (window.location.href = mypageURL)
+          }
+
+          //return props.history.push('/')
+          // return (window.location.href = '/')
+        }
+      } else if (loginInfo.code + '' == '1') {
+        if (webview && webview === 'new') {
+          //TODO: 추후 웹브릿지 연결
+          window.location.replace('/signup?' + qs.stringify(social_result.data) + '&webview=new')
+        } else {
+          window.location.replace('/signup?' + qs.stringify(social_result.data))
+        }
+      } else if (loginInfo.code === '-3' || loginInfo.code === '-5') {
+        let msg = loginInfo.data.opMsg
+        if (msg === undefined || msg === null || msg === '') {
+          msg = loginInfo.message
+        }
+        context.action.alert({
+          title: '달빛라이브 사용 제한',
+          msg: `${msg}`,
+          callback: () => {
+            if (webview && webview === 'new') {
+              Hybrid('CloseLayerPopUp')
+            }
+          }
+        })
+      } else if (loginInfo.code === '-6') {
+        context.action.confirm({
+          msg: '이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?',
+          callback: () => {
+            const callResetListen = async (mem_no) => {
+              const fetchResetListen = await Api.postResetListen({
+                memNo: mem_no
+              })
+              if (fetchResetListen.result === 'success') {
+                setTimeout(() => {
+                  socialLogin(inputData, type);
+                }, 700)
+              } else {
+                context.action.alert({
+                  msg: `${loginInfo.message}`
+                })
+              }
+            }
+            callResetListen(loginInfo.data.memNo)
+          }
+        })
+      } else {
+        context.action.alert({
+          title: '로그인 실패',
+          msg: `${loginInfo.message}`
+        })
+      }
+    } else {
+      context.action.alert({
+        msg: `${social_result.message}`
+      })
+    }
+  }
+
   //
   //---------------------------------------------------------------------
   function update(event) {
@@ -435,6 +545,17 @@ export default () => {
         break
       case 'native-facebook-login':
         socialLogin(event.detail, 'facebook');
+        break;
+      case 'resSocialToken': // 소셜로그인을 native에서 처리하면서 통합 됨
+        const customHeader = JSON.parse(Api.customHeader)
+        let param = event.detail;
+        if (customHeader['os'] === OS_TYPE['IOS']) {
+          param = JSON.parse(decodeURIComponent(param))
+        }
+
+        if(param.token && param.token !== '0') {
+          newSocialLogin(param);
+        }
         break;
       case 'native-room-make':
         if (!context.token.isLogin) return (window.location.href = '/login');
@@ -916,6 +1037,7 @@ export default () => {
     document.addEventListener('native-google-login', update) //구글로그인
     document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
     document.addEventListener('native-facebook-login', update); // 페이스북 로그인
+    document.addEventListener('resSocialToken', update); // 소셜로그인 통합
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -956,6 +1078,7 @@ export default () => {
       document.addEventListener('native-google-login', update) //구글로그인
       document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
       document.removeEventListener('native-facebook-login', update); // 페이스북 로그인
+      document.removeEventListener('resSocialToken', update); // 소셜로그인 통합
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)

@@ -1066,6 +1066,7 @@ export default (props) => {
             </div>
           </div>
         </div>
+        
         {popup && (
           <LayerPopup
             alignSet={alignSet}

@@ -127,6 +127,12 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
             })}
         </ul>
 
+        <img
+          src={`${IMG_SERVER}/event/specialdj/common/img_cont06.png`}
+          className="extraPoint"
+          alt="잠깐! 스페셜DJ 가산점을 아시나요? 스페셜DJ 가산점은 스페셜DJ 선정에 큰 영향을 주며 실시간 랭킹 1~3위 달성 시 획득하게 됩니다."
+        />
+
         <div className="btnWrap">
           {/* {bestData.is_best === 0 && (
             <> */}

@@ -52,8 +52,8 @@ export default function bestdj() {
       </Header>
       <div className="subContent">
           <img
-          src={`${IMG_SERVER}/event/bestDj/2111/bestDj_2111-top.png`}
-          alt="달빛라이브를 대표하는 10월의 베스트DJ"
+          src={`${IMG_SERVER}/event/bestDj/2112/bestDj_2112-top.png`}
+          alt="달빛라이브를 대표하는 12월의 베스트DJ"
           className="img__full"
           />
           <div className="listWrap">
@@ -61,7 +61,7 @@ export default function bestdj() {
                 return (
                   <div className="list" key={index}>
                     <img
-                    src={`${IMG_SERVER}/event/bestDj/2111/bestDj_2111-user-${index + 1}.png`}
+                    src={`${IMG_SERVER}/event/bestDj/2112/bestDj_2112-user-${index + 1}.png`}
                     alt="베스트DJ"
                     className="img__full"
                     />
@@ -101,7 +101,7 @@ export default function bestdj() {
               <strong>베스트DJ</strong>는<br/>
               <strong>스페셜DJ를 누적 6회 이상</strong> 달성한 DJ입니다.
             </div>
-            <a href="/event/bestdj_intro" className="footerBtn">베스트DJ자세히보기</a>
+            <a onClick={() => history.push('/event/bestdj_intro')} className="footerBtn">베스트DJ자세히보기</a>
           </div>
         </div>
     </div>
