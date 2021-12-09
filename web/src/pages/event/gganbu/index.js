@@ -21,7 +21,7 @@ export default () => {
   const [gganbuNo, setGganbuNo] = useState()
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
-  const [myRankList, setMyRankList] = useState([])
+  const [myRankList, setMyRankList] = useState()
   const [metchState, setMetchState] = useState(false)
   const [rankList, setRankList] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
@@ -117,7 +117,7 @@ export default () => {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
   }, [tabContent])
-  console.log(myRankList)
+
   return (
     <div id="gganbu">
       <Header title="깐부게임" />

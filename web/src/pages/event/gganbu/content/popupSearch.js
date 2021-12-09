@@ -150,11 +150,11 @@ export default (props) => {
     }
   }, [result])
 
-  const acceptBtn = (mem_no, type, mem_nick) => {
+  const acceptBtn = (memNo, type, memNick) => {
     setAlertAccept(true)
     setAcceptType(type)
-    setMemberNo(mem_no)
-    setMemberNick(mem_nick)
+    setMemberNo(memNo)
+    setMemberNick(memNick)
   }
 
   return (
@@ -203,7 +203,7 @@ export default (props) => {
                         {rcvYn === 'n' ? (
                           <>
                             {sendYn === 'n' ? (
-                              <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application')}>
+                              <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', nickName)}>
                                 신청
                               </button>
                             ) : (
@@ -248,7 +248,7 @@ export default (props) => {
                   {rcvYn === 'n' ? (
                     <>
                       {sendYn === 'n' ? (
-                        <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application')}>
+                        <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', mem_nick)}>
                           신청
                         </button>
                       ) : (
@@ -277,7 +277,8 @@ export default (props) => {
           memberNo={memberNo}
           memberNick={memberNick}
           acceptType={acceptType}
-          setAlertAccept={setAlertAccept}
+          closeAlert={closeAlert}
+          closePopup={closePopup}
           searchStateCheck={searchStateCheck}
         />
       )}

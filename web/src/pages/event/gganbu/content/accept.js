@@ -6,11 +6,9 @@ import './search.scss'
 
 export default (props) => {
   const context = useContext(Context)
-  const {gganbuNo, memberNo, memberNick, setAlertAccept, acceptType, searchStateCheck} = props
+  const {gganbuNo, memberNo, memberNick, acceptType, closeAlert, closePopup, searchStateCheck} = props
 
-  const closeAlert = () => {
-    setAlertAccept(false)
-  }
+  console.log(memberNick, 1)
 
   // 깐부 신청
   const postGganbuSub = async () => {
@@ -45,11 +43,13 @@ export default (props) => {
       memNo: memNo
     }
     const {data, message} = await Api.postGganbuIns(param)
+    console.log(memNick, 1)
     if (data === 1) {
       context.action.alert({
-        msg: `${memberNick}님과<br/>깐부를 맺었습니다.`,
+        msg: `<div class="alertUserId"><span>${memNick}</span>님과</div><div>깐부를 맺었습니다.</div>`,
         callback: () => {
           closeAlert()
+          closePopup()
         }
       })
     } else {
@@ -112,7 +112,7 @@ export default (props) => {
             </div>
             <div className="buttonWrap">
               <button onClick={closeAlert}>취소</button>
-              <button onClick={() => postGganbuIns(memberNo, mem_nick)}>수락</button>
+              <button onClick={() => postGganbuIns(memberNo, memberNick)}>수락</button>
             </div>
           </>
         )}

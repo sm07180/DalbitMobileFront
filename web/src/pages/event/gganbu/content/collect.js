@@ -159,7 +159,7 @@ export default (props) => {
         </section>
         <section className="rank">
           <img className="rankTopImg" src="https://image.dalbitlive.com/event/gganbu/wrapperTop.png" />
-          {gganbuState === 1 && (
+          {myRankList && gganbuState === 1 && (
             <div className="rankList my">
               <div className="number">
                 <span className="tit">내 순위</span>
@@ -167,14 +167,18 @@ export default (props) => {
               </div>
               <div className="rankBox">
                 <div className="rankItem">
-                  <LevelBox className="badge">lv {myRankList && myRankList.ptr_mem_level}</LevelBox>
-                  <span className="userNick">{myRankList && myRankList.ptr_mem_nick}</span>
-                  <span className="userId">{myRankList && myRankList.ptr_mem_id}</span>
+                  <PtrLevelBox className="badge" levelColor={myRankList.ptr_mem_level_color}>
+                    lv {myRankList.ptr_mem_level}
+                  </PtrLevelBox>
+                  <span className="userNick">{myRankList.ptr_mem_nick}</span>
+                  <span className="userId">{myRankList.ptr_mem_id}</span>
                 </div>
                 <div className="rankItem">
-                  <LevelBox className="badge">lv {myRankList && myRankList.mem_level}</LevelBox>
-                  <span className="userNick">{myRankList && myRankList.mem_nick}</span>
-                  <span className="userId">{myRankList && myRankList.mem_id}</span>
+                  <LevelBox className="badge" levelColor={myRankList.mem_level_color}>
+                    lv {myRankList.mem_level}
+                  </LevelBox>
+                  <span className="userNick">{myRankList.mem_nick}</span>
+                  <span className="userId">{myRankList.mem_id}</span>
                 </div>
               </div>
               <div className="score">
@@ -204,7 +208,7 @@ export default (props) => {
                           <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
                         </div>
                       ) : (
-                        <div className="number">{index}</div>
+                        <div className="number">{index + 1}</div>
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
@@ -221,10 +225,6 @@ export default (props) => {
                           <span className="userNick">{mem_nick}</span>
                           <span className="userId">{mem_id}</span>
                         </div>
-                      </div>
-                      <div className="score">
-                        <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                        <span>2,181</span>
                       </div>
                     </div>
                   )
@@ -243,16 +243,16 @@ export default (props) => {
 }
 const LevelBox = styled.div`
   ${(props) => {
-    // const {levelColor} = props
-    // if (levelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${levelColor[0]};
-    //   `
-    // }
+    const {levelColor} = props
+    if (levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${levelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;
@@ -266,16 +266,16 @@ const LevelBox = styled.div`
 `
 const PtrLevelBox = styled.div`
   ${(props) => {
-    // const {levelColor} = props
-    // if (levelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${levelColor[0]};
-    //   `
-    // }
+    const {levelColor} = props
+    if (levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${levelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;

@@ -2,6 +2,7 @@ import React, {useState, useEffect, useContext, useCallback} from 'react'
 import {Context} from 'context/index.js'
 import Api from 'context/api'
 import NoResult from 'components/ui/new_noResult'
+import Accept from './accept'
 
 import './search.scss'
 
@@ -11,8 +12,10 @@ export default (props) => {
 
   const [tabBtn, setTabBtn] = useState('r')
   const [memberNo, setMemberNo] = useState()
+  const [memberNick, setMemberNick] = useState()
   const [gganbuSubList, setGganbuSubList] = useState([])
   const [alertAccept, setAlertAccept] = useState(false)
+  const [acceptType, setAcceptType] = useState('') //acceptance, application
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -47,24 +50,7 @@ export default (props) => {
       console.log(message)
     }
   }
-  // 수락 버튼
-  const postGganbuIns = async (memNo, memNick) => {
-    const param = {
-      gganbuNo: gganbuNo,
-      memNo: memNo
-    }
-    const {data, message} = await Api.postGganbuIns(param)
-    if (data === 1) {
-      context.action.alert({
-        msg: `${memNick}님과<br/>깐부를 맺었습니다.`,
-        callback: () => {
-          closeAlert()
-        }
-      })
-    } else {
-      console.log(message)
-    }
-  }
+
   // 취소 버튼
   const postGganbuCancel = async (ptr_mem_no) => {
     const param = {
@@ -92,42 +78,11 @@ export default (props) => {
     fetchGganbuSubList()
   }, [tabBtn])
 
-  // 수락 => 동의서, 실패
-  const Accept = (props) => {
-    const {mem_nick} = props
-    return (
-      <div className="alert">
-        <div className="contentWrap">
-          <h1 className="title">동의서</h1>
-          <div className="textWrap">
-            <h2>제 1 항</h2>
-            <p>
-              이번 회차에서 맺은 깐부는
-              <br />
-              중도 해체할 수 없습니다.
-            </p>
-            <h2>제 2 항</h2>
-            <p>
-              평균 레벨이 낮을수록 구슬 주머니에서
-              <br />
-              좋은 점수를 얻을 수 있습니다.
-            </p>
-            <p>
-              <strong>정말 깐부를 맺으시겠습니까?</strong>
-            </p>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={closeAlert}>취소</button>
-            <button onClick={() => postGganbuIns(memberNo, mem_nick)}>수락</button>
-          </div>
-        </div>
-      </div>
-    )
-  }
-  const acceptBtn = (memNo, mem_nick) => {
+  const acceptBtn = (memNo, type, memNick) => {
     setAlertAccept(true)
+    setAcceptType(type)
     setMemberNo(memNo)
-    return <Accept mem_nick={mem_nick} />
+    setMemberNick(memNick)
   }
 
   return (
@@ -165,7 +120,7 @@ export default (props) => {
                             </span>
                           </div>
                         </div>
-                        <button className="accept" onClick={() => acceptBtn(mem_no, mem_nick)}>
+                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
                           수락
                         </button>
                       </div>
@@ -216,7 +171,16 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
-      {alertAccept === true && <Accept />}
+      {alertAccept === true && (
+        <Accept
+          gganbuNo={gganbuNo}
+          memberNo={memberNo}
+          memberNick={memberNick}
+          acceptType={acceptType}
+          closeAlert={closeAlert}
+          closePopup={closePopup}
+        />
+      )}
     </div>
   )
 }
