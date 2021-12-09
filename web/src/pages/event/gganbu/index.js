@@ -46,9 +46,6 @@ export default () => {
     }
   }
 
-  console.log(gganbuInfo)
-  console.log(myRankList)
-
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
     const tabBtnNode = tabBtnRef.current
@@ -64,28 +61,37 @@ export default () => {
   }
 
   const GganbuMetch = () => {
+    if (globalCtx.profile.memNo === gganbuInfo.mem_no) {
+      console.log(1)
+    } else {
+      console.log(2)
+    }
     return (
       <>
         <div className="userList">
           <div className="photo">
-            <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
+            <img src={gganbuInfo.mem_profile.thumb80x80} alt="유저이미지" />
           </div>
-          <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
-            Lv {globalCtx.profile.level}
+          <LevelBox className="badge" levelColor={gganbuInfo.mem_level_color}>
+            Lv {gganbuInfo.mem_level}
           </LevelBox>
-          <span className="nick">{globalCtx.profile.nickNm}</span>
+          <span className="nick">{gganbuInfo.mem_nick}</span>
         </div>
         <div className="dot">
-          <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
+          <div className="var">
+            <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
+            <span className="varLevel">{gganbuInfo.average_level}</span>
+            <span className="varTit">평균레벨</span>
+          </div>
         </div>
         <div className="userList">
-          <div className="photo" onClick={() => setPopupSearch(true)}>
-            <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
+          <div className="photo">
+            <img src={gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
           </div>
-          <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
-            <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
-            <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
-          </button>
+          <PtrLevelBox className="badge" memLevelColor={gganbuInfo.ptr_mem_level_color}>
+            Lv {gganbuInfo.ptr_mem_level}
+          </PtrLevelBox>
+          <span className="nick">{gganbuInfo.ptr_mem_nick}</span>
         </div>
       </>
     )
@@ -153,33 +159,7 @@ export default () => {
                         </div>
                       </>
                     ) : (
-                      <>
-                        <div className="userList">
-                          <div className="photo">
-                            <img src={gganbuInfo.mem_profile.thumb80x80} alt="유저이미지" />
-                          </div>
-                          <LevelBox className="badge" levelColor={gganbuInfo.mem_level_color}>
-                            Lv {gganbuInfo.mem_level}
-                          </LevelBox>
-                          <span className="nick">{gganbuInfo.mem_nick}</span>
-                        </div>
-                        <div className="dot">
-                          <div className="var">
-                            <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
-                            <span className="varLevel">{gganbuInfo.average_level}</span>
-                            <span className="varTit">평균레벨</span>
-                          </div>
-                        </div>
-                        <div className="userList">
-                          <div className="photo">
-                            <img src={gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
-                          </div>
-                          <PtrLevelBox className="badge" memLevelColor={gganbuInfo.ptr_mem_level_color}>
-                            Lv {gganbuInfo.ptr_mem_level}
-                          </PtrLevelBox>
-                          <span className="nick">{gganbuInfo.ptr_mem_nick}</span>
-                        </div>
-                      </>
+                      <GganbuMetch />
                     )}
                   </>
                 )}
