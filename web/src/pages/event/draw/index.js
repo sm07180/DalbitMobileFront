@@ -68,9 +68,9 @@ export default () => {
 
     const param = { selectList: drawList.select.toString() };
     Api.putDrawSelect(param).then(res => {
-      if (res.code === '00000' || (res.code === '30004' && res.data.resultInfo.length > 0)) {
+      if (res.code === '00000' || (res.code === '30004' && res.data.successList.length > 0)) {
         getDrawTicketCnt(); // 티켓 개수 갱신
-        setDrawList({select: [], aniList: drawList.select });
+        setDrawList({select: [], aniList: res.data.successList });
         // 애니메이션 종료 시점에 팝업 정보 SET
         setTimeout(() => {
           let temp = res.data.resultInfo;
@@ -100,10 +100,24 @@ export default () => {
   const selectDraw = (e) => {
     const targetPosNo = e.currentTarget.dataset.posNo;
 
+    // 응모권 개수 체크
+    if (ticketCnt == 0) {
+      context.action.confirm({
+        msg: `응모권이 부족합니다.\n 달충전 1만원당 응모권 1개가 자동 지급됩니다. \n달충전을 진행하시겠습니까?`,
+        buttonText: { right : '충전하기'},
+        callback: () => {
+          chargeDal();
+        }
+      });
+      return;
+    }
+
     if (targetPosNo !== undefined) {
       if (drawList.select.findIndex(row => row === targetPosNo) === -1) {
         if (drawList.select.length >= 30) {
           context.action.toast({msg: '한 번에 30개까지 선택할 수 있습니다.'});
+        } else if (drawList.select.length >= ticketCnt) {
+          context.action.toast({msg: '가지고 있는 응모권을 초과됩니다.'});
         } else {
           setDrawList({ ...drawList, select: drawList.select.concat(targetPosNo)});
         }
