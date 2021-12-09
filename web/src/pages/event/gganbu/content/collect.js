@@ -100,19 +100,19 @@ export default (props) => {
                   <div className="report">
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-1.png" />
-                      <span>{gganbuInfo.red_marble}</span>
+                      <span>{gganbuInfo && gganbuInfo.red_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-2.png" />
-                      <span>{gganbuInfo.yellow_marble}</span>
+                      <span>{gganbuInfo && gganbuInfo.yellow_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-3.png" />
-                      <span>{gganbuInfo.blue_marble}</span>
+                      <span>{gganbuInfo && gganbuInfo.blue_marble}</span>
                     </div>
                     <div className="list">
                       <img src="https://image.dalbitlive.com/event/gganbu/marble-4.png" />
-                      <span>{gganbuInfo.violet_marble}</span>
+                      <span>{gganbuInfo && gganbuInfo.violet_marble}</span>
                     </div>
                     <button onClick={() => setPopupReport(true)}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnReport.png" alt="구슬 리포트" />
@@ -128,14 +128,14 @@ export default (props) => {
                           path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
                         }}
                       />
-                      <span>{gganbuInfo.marble_pocket}</span>
+                      <span>{gganbuInfo && gganbuInfo.marble_pocket}</span>
                     </div>
                     <button onClick={() => history.push({pathname: `/event/gganbuPocket`})}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnPocket.png" alt="구슬 주머니" />
                     </button>
                   </div>
                 </div>
-                <div className="score">총 {Utility.addComma(gganbuInfo.marble_pocket_pt)}점</div>
+                <div className="score">총 {Utility.addComma(gganbuInfo && gganbuInfo.marble_pocket_pt)}점</div>
               </div>
             </div>
           )}

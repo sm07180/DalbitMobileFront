@@ -15,6 +15,14 @@ export default (props) => {
   const [reportList, setReportList] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [])
+
   const closePopup = () => {
     setPopupReport()
   }
@@ -56,7 +64,6 @@ export default (props) => {
   }, [currentPage])
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'
     gganbuReportList()
   }, [])
 

@@ -20,7 +20,7 @@ export default () => {
   const tabBtnRef = useRef()
   const [gganbuNo, setGganbuNo] = useState()
   const [gganbuState, setGganbuState] = useState()
-  const [gganbuInfo, setGganbuInfo] = useState([])
+  const [gganbuInfo, setGganbuInfo] = useState()
   const [myRankList, setMyRankList] = useState([])
   const [rankList, setRankList] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
@@ -63,44 +63,29 @@ export default () => {
     }
   }
 
-  const GganbuMatch = (props) => {
-    const {
-      average_level,
-      mem_profile,
-      mem_level_color,
-      mem_level,
-      mem_nick,
-      ptr_mem_profile,
-      ptr_mem_level_color,
-      ptr_mem_level,
-      ptr_mem_nick
-    } = props
+  const GganbuMetch = () => {
     return (
       <>
         <div className="userList">
           <div className="photo">
-            <img src={mem_profile} alt="유저이미지" />
+            <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
           </div>
-          <LevelBox className="badge" levelColor={mem_level_color}>
-            Lv {mem_level}
+          <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+            Lv {globalCtx.profile.level}
           </LevelBox>
-          <span className="nick">{mem_nick}</span>
+          <span className="nick">{globalCtx.profile.nickNm}</span>
         </div>
         <div className="dot">
-          <div className="var">
-            <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
-            <span className="varLevel">{average_level}</span>
-            <span className="varTit">평균레벨</span>
-          </div>
+          <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
         </div>
         <div className="userList">
-          <div className="photo">
-            <img src={ptr_mem_profile} alt="유저이미지" />
+          <div className="photo" onClick={() => setPopupSearch(true)}>
+            <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
           </div>
-          <PtrLevelBox className="badge" memLevelColor={ptr_mem_level_color}>
-            Lv {ptr_mem_level}
-          </PtrLevelBox>
-          <span className="nick">{ptr_mem_nick}</span>
+          <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
+            <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+            <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+          </button>
         </div>
       </>
     )
@@ -139,34 +124,66 @@ export default () => {
         <div className="memo">
           <div className="memoInner">
             <div className="userWrap">
-              <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓴느 친구 말이야.</div>
+              <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓰는 친구 말이야.</div>
               <div className="userUl">
-                {gganbuState === -1 ? (
+                {gganbuInfo && (
                   <>
-                    <div className="userList">
-                      <div className="photo">
-                        <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
-                      </div>
-                      <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
-                        Lv {globalCtx.profile.level}
-                      </LevelBox>
-                      <span className="nick">{globalCtx.profile.nickNm}</span>
-                    </div>
-                    <div className="dot">
-                      <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
-                    </div>
-                    <div className="userList">
-                      <div className="photo" onClick={() => setPopupSearch(true)}>
-                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
-                      </div>
-                      <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
-                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
-                        <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
-                      </button>
-                    </div>
+                    {gganbuState === -1 ? (
+                      <>
+                        <div className="userList">
+                          <div className="photo">
+                            <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
+                          </div>
+                          <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                            Lv {globalCtx.profile.level}
+                          </LevelBox>
+                          <span className="nick">{globalCtx.profile.nickNm}</span>
+                        </div>
+                        <div className="dot">
+                          <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
+                        </div>
+                        <div className="userList">
+                          <div className="photo" onClick={() => setPopupSearch(true)}>
+                            <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
+                          </div>
+                          <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
+                            <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+                            <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                          </button>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                      {globalCtx.profile.memNo === gganbuInfo.mem_no ? 
+                      <>
+                        <div className="userList">
+                          <div className="photo">
+                            <img src={gganbuInfo.mem_profile.thumb80x80} alt="유저이미지" />
+                          </div>
+                          <LevelBox className="badge" levelColor={gganbuInfo.mem_level_color}>
+                            Lv {gganbuInfo.mem_level}
+                          </LevelBox>
+                          <span className="nick">{gganbuInfo.mem_nick}</span>
+                        </div>
+                        <div className="dot">
+                          <div className="var">
+                            <img src="https://image.dalbitlive.com/event/gganbu/dotGganbu.png" />
+                            <span className="varLevel">{gganbuInfo.average_level}</span>
+                            <span className="varTit">평균레벨</span>
+                          </div>
+                        </div>
+                        <div className="userList">
+                          <div className="photo">
+                            <img src={gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+                          </div>
+                          <PtrLevelBox className="badge" memLevelColor={gganbuInfo.ptr_mem_level_color}>
+                            Lv {gganbuInfo.ptr_mem_level}
+                          </PtrLevelBox>
+                          <span className="nick">{gganbuInfo.ptr_mem_nick}</span>
+                        </div>
+                      </>
+                    )}
                   </>
-                ) : (
-                  <GganbuMatch gganbuInfo={gganbuInfo} />
                 )}
               </div>
             </div>
@@ -214,16 +231,16 @@ export default () => {
 
 const LevelBox = styled.div`
   ${(props) => {
-    // const {levelColor} = props
-    // if (levelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${levelColor[0]};
-    //   `
-    // }
+    const {levelColor} = props
+    if (levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${levelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;
@@ -237,16 +254,16 @@ const LevelBox = styled.div`
 `
 const PtrLevelBox = styled.div`
   ${(props) => {
-    // const {memLevelColor} = props
-    // if (memLevelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${memLevelColor[0]}, ${memLevelColor[1]} 51%, ${memLevelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${memLevelColor[0]};
-    //   `
-    // }
+    const {memLevelColor} = props
+    if (memLevelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${memLevelColor[0]}, ${memLevelColor[1]} 51%, ${memLevelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${memLevelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;
