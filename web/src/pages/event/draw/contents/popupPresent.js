@@ -6,6 +6,7 @@ import Swiper from 'react-id-swiper'
 export default (props) => {
   const {popupPresent, onClose} = props
   const [failViewYn, setFailViewYn] = useState(false); // 꽝일때 처리하기 위한 Flag 값
+  const [swiper, setSwiper] = useState(null);
 
   const swiperParams = {
     spaceBetween: 5,
@@ -13,9 +14,12 @@ export default (props) => {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
+    getSwiper: (val) => {
+      setSwiper(val)
+    },
     on: {
-      slideChange: (e) => {
-        if (e.isEnd && popupPresent.resultInfo.findIndex(row => (row.bbopgi_gift_no && row.temp_result_cnt !== 0)) > -1 ) {
+      slideChange: () => {
+        if (swiper !== null && swiper.isEnd && popupPresent.resultInfo.findIndex(row => (row.bbopgi_gift_no && row.temp_result_cnt !== 0)) > -1 ) {
           setFailViewYn(true);
         } else {
           setFailViewYn(false);
