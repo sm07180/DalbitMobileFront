@@ -30,8 +30,6 @@ export default () => {
   const [popupSearch, setPopupSearch] = useState(false)
   const [popupStatus, setPopupStatus] = useState(false)
 
-  const goBack = useCallback(() => history.goBack(), [])
-
   // 깐부회차 조회
   const gganbuRoundLookup = async () => {
     const {data, message} = await Api.gganbuMarbleGather()
@@ -61,12 +59,17 @@ export default () => {
     }
   }
 
-  const GganbuMetch = () => {
-    if (globalCtx.profile.memNo === gganbuInfo.mem_no) {
-      setMetchState(true)
-    } else {
-      setMetchState(false)
+  useEffect(() => {
+    if (gganbuInfo) {
+      if (globalCtx.profile.memNo === gganbuInfo.mem_no) {
+        setMetchState(true)
+      } else {
+        setMetchState(false)
+      }
     }
+  }, [])
+
+  const GganbuMetch = () => {
     return (
       <>
         <div className="userList">
@@ -198,7 +201,7 @@ export default () => {
           rankList={rankList}
         />
       ) : (
-        <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+        <Betting tabContent={tabContent} gganbuNo={gganbuNo} gganbuInfo={gganbuInfo} />
       )}
 
       {/* 팝업 */}

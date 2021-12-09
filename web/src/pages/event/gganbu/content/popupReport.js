@@ -90,7 +90,7 @@ export default (props) => {
             reportList.map((data, index) => {
               const {ins_slct, ins_date, mem_nick, mem_profile, red_marble, yellow_marble, blue_marble, violet_marble} = data
               return (
-                <div className="list" key={index}>
+                <div className="list" style={{height: '72px'}} key={index}>
                   <div className="photo">
                     <img src={mem_profile.thumb50x50} alt="유저이미지" />
                   </div>
