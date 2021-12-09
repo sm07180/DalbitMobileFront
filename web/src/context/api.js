@@ -3365,6 +3365,40 @@ export default class API {
       method: 'GET'
     })
   }
+
+  // 추억의 뽑기 이벤트 뽑기
+  static putDrawSelect = async (data) => {
+    console.log(data);
+    return await ajax({
+      url: '/event/draw/select',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  // 추억의 뽑기 이벤트 응모권 조회
+  static getDrawTicketCnt = async () => {
+    return await ajax({
+      url: '/event/draw/ticketCnt',
+      method: 'GET'
+    })
+  }
+
+  // 추억의 뽑기 이벤트 당첨내역 조회
+  static getDrawWinningInfo = async () => {
+    return await ajax({
+      url: '/event/draw/winningInfo',
+      method: 'GET'
+    })
+  }
+
+  // 추억의 뽑기 이벤트 뽑기 리스트 조회
+  static getDrawListInfo = async () => {
+    return await ajax({
+      url: '/event/draw/listInfo',
+      method: 'GET'
+    })
+  }
 }
 
 API.customHeader = null

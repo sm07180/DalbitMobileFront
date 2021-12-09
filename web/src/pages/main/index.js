@@ -31,6 +31,7 @@ import LayerPopupInput from './component/layer_popup_input.js'
 import NoResult from './component/NoResult.js'
 import {OS_TYPE} from 'context/config.js'
 import AttendEventBtn from './component/attend_event_button'
+import DrawEventBtn from './component/drawEventButton'
 import RankingTimer from './component/rankingTimer'
 
 import Swiper from 'react-id-swiper'
@@ -1107,6 +1108,7 @@ export default (props) => {
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
         {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
         {scrollOn && <AttendEventBtn />}
+        <DrawEventBtn scrollOn={scrollOn} />
         {checker && (
           <UpdateWrap>
             <div className="Wrapper">
