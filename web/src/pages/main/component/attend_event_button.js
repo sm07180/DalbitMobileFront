@@ -12,7 +12,7 @@ export default (props) => {
   const context = useContext(Context)
   const globalCtx = useContext(Context)
   const {token} = globalCtx
-  const [attendCheck, setAttendCheck] = useState(-1)
+  const [attendCheck, setAttendCheck] = useState(-1) // 0 - 완료, 1 - 시간부족, 2 -- 시간충족
 
   //pathname
   const urlrStr = history.location.pathname
@@ -27,6 +27,16 @@ export default (props) => {
       //실패
     }
   }
+
+  // 출석체크 이벤트 페이지
+  const goEventDrawPage = () => {
+    if (!context.token.isLogin) {
+      history.push('/login')
+      return;
+    }
+
+    history.push('/event/draw');
+  };
 
   useEffect(() => {
     fetchEventAttendCheck()
@@ -43,7 +53,7 @@ export default (props) => {
               firebase.analytics().logEvent('attend_event')
             } catch (e) {}
             history.push('/event/attend_event')
-          }}></div>
+          }}/>
       )
     } else if (token.isLogin && attendCheck === 1) {
       return (
@@ -69,10 +79,16 @@ export default (props) => {
               firebase.analytics().logEvent('attend_event')
             } catch (e) {}
             history.push('/event/attend_event/roulette')
-          }}></div>
+          }}/>
       )
     }
   }
 
-  return <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>{urlrStr !== '/rank' && attendStampState()}</div>
+  return (
+    <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>
+      <div className={`eventFloat draw`} onClick={goEventDrawPage}/>
+      {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
+    </div>
+  )
+
 }
