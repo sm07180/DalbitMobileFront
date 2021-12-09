@@ -483,6 +483,32 @@
       height: 8px;
       background-color: #eee;
     }
+    .mypointWrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px;
+      background-color: #FF2980;
+      .title {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
+      .mypoint {
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-weight: 500;
+        color: #fff;
+        .score {
+          font-size: 20px;
+          font-weight: 700;
+          color: #fff;
+          margin-right: 4px;
+        }
+      }
+    }
+    
     .content {
       padding: 16px 16px 26px;
       .titleWrap {
@@ -494,32 +520,19 @@
         font-weight: 700;
         color: #000;
       }
+      .infoWrap {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        margin-top: 6px;
+      }
       .info {
         font-size: 12px;
         font-weight: 400;
         color: #9c9c9c;
         letter-spacing: -1px;
-      }
-
-      .mypointWrap {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 25px;
-      }
-      .mypoint {
-        display: flex;
-        align-items: center;
-        font-size: 16px;
-        font-weight: 500;
-        color: #424242;
-        .score {
-          font-size: 20px;
-          font-weight: 700;
-          color: #632beb;
-          margin-right: 4px;
-        }
-      }
+      } 
       .exchangeMarble {
         display: flex;
         align-items: flex-start;
@@ -539,42 +552,6 @@
         background-color: #fff;
         box-shadow: 0px 1px 3px rgba($color: #000000, $alpha: 0.2);
       }
-      .ticketWrap {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        width: 100%;
-      }
-      .ticketGroup {
-        display: flex;
-        align-items: center;
-      }
-      .ticket {
-        display: inline-block;
-        width: 40px;
-        height: 40px;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-        &.red {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-red.png);
-        }
-        &.yellow {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-yellow.png);
-        }
-        &.blue {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-blue.png);
-        }
-        &.purple {
-          background-image: url(https://image.dalbitlive.com/event/gganbu/ticket-purple.png);
-        }
-      }
-      .ticketCount {
-        font-size: 14px;
-        font-weight: 500;
-        color: #424242;
-        margin-left: 8px;
-      }
 
       .pocketWrap {
         display: flex;
@@ -584,9 +561,8 @@
       }
       .pocket {
         display: inline-block;
-        width: 58px;
-        height: 44px;
-        background-image: url(https://image.dalbitlive.com/event/gganbu/marblepocket.png);
+        width: 74px;
+        height: 66px;
         background-position: center;
         background-repeat: no-repeat;
         background-size: contain;
@@ -603,30 +579,47 @@
         align-items: center;
         justify-content: center;
         width: 100%;
+        padding: 11px 0;
+        margin-top: 10px;
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
         border-radius: 10px;
         background-color: #bdbdbd;
         pointer-events: none;
-        &.small {
-          padding: 7px 0;
-          margin-top: 16px;
-          font-size: 14px;
-          font-weight: 700;
-          color: #fff;
-          & .possible {
-            margin-left: 4px;
-            color: #ffff77;
-          }
-        }
-        &.large {
-          padding: 11px 0;
-          margin-top: 10px;
-          font-size: 18px;
-          font-weight: 700;
-          color: #fff;
-        }
         &.active {
           pointer-events: auto;
           background-color: #632beb;
+        }
+      }
+
+      .pocketTab {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+      .pocketTabMenu {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        border: 1px solid #E0E0E0;
+        font-size: 14px;
+        font-weight: 700;
+        color: #000000;
+        padding: 6px 0;
+        margin-right: 4px;
+        &:last-child{
+          margin-right: 0px;
+        }
+        &.active {
+          font-size: 14px;
+          font-weight: 700;
+          color: #fff;
+          background-color: #632BEB;
+          border: 1px solid #632BEB;
         }
       }
       table {
@@ -641,15 +634,15 @@
         td {
           padding: 10px 0;
           text-align: center;
-          font-size: 13px;
+          font-size: 12px;
+          font-weight: 500;
           border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
-          color: $darkGray;
+          color: #424242;
           overflow: hidden;
-
           &.bonus {
             text-align: center;
-            font-weight: 600;
+            font-weight: 500;
             padding: 10px 8px;
             letter-spacing: -1px;
           }
@@ -664,11 +657,9 @@
             }
           }
           &.nick {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: $greishBrown;
-            font-weight: $bold;
+            display: block;
+            color: #424242;
+            font-weight: 500;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;

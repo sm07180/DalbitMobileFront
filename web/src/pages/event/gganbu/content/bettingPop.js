@@ -41,7 +41,6 @@ export default (props) => {
   });
   let bettingResult = ""
 
-  console.log(bettingVal);
   const fetchGganbuData = async () => {
     const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
     if (message === 'SUCCESS') {
@@ -66,7 +65,6 @@ export default (props) => {
   }
   const fetchBettingData = async () => {
     const {data, message} = await Api.getGganbuBettingData({gganbuNo: 1});
-    console.log(data);
 
     if (message === 'SUCCESS') {
       setParticipant({
@@ -93,7 +91,6 @@ export default (props) => {
       bettingSlct: valueType,
     }
     const res = await Api.getGganbuObtainMarble(param);
-    console.log(param)
     if (res.message === 'SUCCESS') {      
       fetchGganbuData();
       fetchBettingPage();
@@ -170,8 +167,6 @@ export default (props) => {
     gapVal.bGap = resultVal.bResult - myMarble.bMarble;
     gapVal.pGap = resultVal.pResult - myMarble.pMarble;
     
-    console.log(bettingResult);
-
     fetchBettingComplete();
   }
   

@@ -7,6 +7,7 @@ import Swiper from 'react-id-swiper'
 import BettingPop from './bettingPop'
 
 import {Context} from 'context'
+import moment from 'moment'
 
 export default (props) => {
   const globalCtx = useContext(Context)
@@ -75,19 +76,12 @@ export default (props) => {
 
   const dateFormatterMMDD = (date) => {
     if (!date) return null
-    let month = date.substring(5, 7)
-    let day = date.substring(8, 10)
-    return `${month}월 ${day}일`
+    return moment(date).format('MM월 DD일');
   }
 
   const dateFormatter = (date) => {
     if (!date) return null
-    //0월 0일 00:00
-    // /2021-12-07T01:54:47.000+0000
-    let month = date.substring(5, 7)
-    let day = date.substring(8, 10)
-    let time = `${date.substring(11, 13)}:${date.substring(14, 16)}`
-    return `${month}월 ${day}일 ${time}`
+    return moment(date).format('MM월 DD일 HH:mm');
   }
 
   const swiperParams = {
@@ -97,6 +91,15 @@ export default (props) => {
     resistanceRatio: 0,
     autoplay: {
       delay: 2500
+    }
+  }
+  
+  const btnAbled = () => {
+    const btnEle = document.getElementById('bettingBtn')
+    if (bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {
+      btnEle.classList.remove('disable')
+    } else {
+      btnEle.classList.add('disable')
     }
   }
 
@@ -113,45 +116,82 @@ export default (props) => {
     const bMarbleInputVal = Number(bMarbleRef.current.value)
     const pMarbleInputVal = Number(pMarbleRef.current.value)
     let comparisonMarble
+    let thisEl = inputRef.current.id;
 
-    if ((marbleColor = 'r')) {
-      comparisonMarble = rMyMarble
-    } else if ((marbleColor = 'y')) {
+    if ((thisEl === 'rMarbleRef')) {
+      comparisonMarble = rMyMarble      
+      setBettingVal({...bettingVal, rBetting: targetVal})
+    } else if ((thisEl === 'yMarbleRef')) {
       comparisonMarble = yMyMarble
-    } else if ((marbleColor = 'b')) {
+      setBettingVal({...bettingVal, yBetting: targetVal})
+    } else if ((thisEl === 'bMarbleRef')) {
       comparisonMarble = bMyMarble
-    } else if ((marbleColor = 'p')) {
+      setBettingVal({...bettingVal, bBetting: targetVal})
+    } else if ((thisEl === 'pMarbleRef')) {
       comparisonMarble = pMyMarble
+      setBettingVal({...bettingVal, pBetting: targetVal})
     }
-
+    
     if (typeof targetVal === 'number') {
       if (targetVal <= 0) {
         inputRef.current.value = ''
-      }
-      if (targetVal > 10) {
+        if ((thisEl === 'rMarbleRef')) {   
+          setSuccessVal({...successVal, rSuccess: rMyMarble})
+        } else if ((thisEl === 'yMarbleRef')) {
+          setSuccessVal({...successVal, ySuccess: yMyMarble})
+        } else if ((thisEl === 'bMarbleRef')) {
+          setSuccessVal({...successVal, bSuccess: bMyMarble})
+        } else if ((thisEl === 'pMarbleRef')) {
+          setSuccessVal({...successVal, pSuccess: pMyMarble})
+        }
+      } else if (targetVal > comparisonMarble) {
         inputRef.current.value = ''
-        globalCtx.action.toast({msg: toast2})
-      }
-      if (targetVal > comparisonMarble) {
-        inputRef.current.value = ''
+        if ((thisEl === 'rMarbleRef')) {   
+          setSuccessVal({...successVal, rSuccess: rMyMarble})
+        } else if ((thisEl === 'yMarbleRef')) {
+          setSuccessVal({...successVal, ySuccess: yMyMarble})
+        } else if ((thisEl === 'bMarbleRef')) {
+          setSuccessVal({...successVal, bSuccess: bMyMarble})
+        } else if ((thisEl === 'pMarbleRef')) {
+          setSuccessVal({...successVal, pSuccess: pMyMarble})
+        }
         globalCtx.action.toast({msg: toast1})
-      }
-      if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
+      } else if (targetVal > 10) {
         inputRef.current.value = ''
+        if ((thisEl === 'rMarbleRef')) {   
+          setSuccessVal({...successVal, rSuccess: rMyMarble})
+        } else if ((thisEl === 'yMarbleRef')) {
+          setSuccessVal({...successVal, ySuccess: yMyMarble})
+        } else if ((thisEl === 'bMarbleRef')) {
+          setSuccessVal({...successVal, bSuccess: bMyMarble})
+        } else if ((thisEl === 'pMarbleRef')) {
+          setSuccessVal({...successVal, pSuccess: pMyMarble})
+        }
+        globalCtx.action.toast({msg: toast2});
+      } else if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
+        inputRef.current.value = ''
+        if ((thisEl === 'rMarbleRef')) {   
+          setSuccessVal({...successVal, rSuccess: rMyMarble})
+        } else if ((thisEl === 'yMarbleRef')) {
+          setSuccessVal({...successVal, ySuccess: yMyMarble})
+        } else if ((thisEl === 'bMarbleRef')) {
+          setSuccessVal({...successVal, bSuccess: bMyMarble})
+        } else if ((thisEl === 'pMarbleRef')) {
+          setSuccessVal({...successVal, pSuccess: pMyMarble})
+        }
         globalCtx.action.toast({msg: toast2})
+      } else {
+        setSuccessVal({
+          rSuccess: rMyMarble + rMarbleInputVal,
+          ySuccess: yMyMarble + yMarbleInputVal,
+          bSuccess: bMyMarble + bMarbleInputVal,
+          pSuccess: pMyMarble + pMarbleInputVal
+        })
       }
     }
-
-    setSuccessVal({
-      rSuccess: rMyMarble + rMarbleInputVal,
-      ySuccess: yMyMarble + yMarbleInputVal,
-      bSuccess: bMyMarble + bMarbleInputVal,
-      pSuccess: pMyMarble + pMarbleInputVal
-    })
   }
 
   const marbleOnfocus = (inputRef) => {
-    console.log('focusIn')
     let val = Number(inputRef.current.value)
     if (val === 0) {
       inputRef.current.value = ''
@@ -217,20 +257,11 @@ export default (props) => {
     fetchGganbuData()
   }
 
-  const btnAbled = () => {
-    const btnEle = document.getElementById('bettingBtn')
-
-    if (bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {
-      btnEle.classList.remove('disable')
-    } else {
-      btnEle.classList.add('disable')
-    }
-  }
 
   useEffect(() => {
     fetchGganbuData()
     fetchBettingPage()
-  }, [])
+  }, [tabContent])
 
   useEffect(() => {
     btnAbled()
@@ -309,6 +340,7 @@ export default (props) => {
                     ref={rMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
+                    id="rMarbleRef"
                     defaultValue="0"
                     onChange={() => marbleOnchange(rMarbleRef, 'r')}
                     onFocus={() => marbleOnfocus(rMarbleRef)}
@@ -322,6 +354,7 @@ export default (props) => {
                     ref={yMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
+                    id="yMarbleRef"
                     defaultValue="0"
                     onChange={() => marbleOnchange(yMarbleRef, 'y')}
                     onFocus={() => marbleOnfocus(yMarbleRef)}
@@ -335,6 +368,7 @@ export default (props) => {
                     ref={bMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
+                    id="bMarbleRef"
                     defaultValue="0"
                     onChange={() => marbleOnchange(bMarbleRef, 'b')}
                     onFocus={() => marbleOnfocus(bMarbleRef)}
@@ -348,6 +382,7 @@ export default (props) => {
                     ref={pMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
+                    id="pMarbleRef"
                     defaultValue="0"
                     onChange={() => marbleOnchange(pMarbleRef, 'p')}
                     onFocus={() => marbleOnfocus(pMarbleRef)}
@@ -404,7 +439,7 @@ export default (props) => {
               myBettingLogList.map((item, index) => {
                 const {red_marble, yellow_marble, blue_marble, violet_marble, win_slct, mem_nick, ins_date} = item
                 return (
-                  <div className="logList">
+                  <div className="logList" key={index}>
                     <div className="logMarble">
                       <div className="marbleData">
                         <span className="marbleIcon red"></span>

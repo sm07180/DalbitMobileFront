@@ -135,8 +135,6 @@ export default () => {
             <div className="userWrap">
               <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓰는 친구 말이야.</div>
               <div className="userUl">
-                {gganbuInfo && (
-                  <>
                     {gganbuState === -1 ? (
                       <>
                         <div className="userList">
@@ -160,12 +158,11 @@ export default () => {
                             <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
                           </button>
                         </div>
-                      </>
+                        </>
                     ) : (
-                      <GganbuMetch />
+                      <>
+                      {gganbuInfo && <GganbuMetch />}</>
                     )}
-                  </>
-                )}
               </div>
             </div>
           </div>
@@ -192,15 +189,19 @@ export default () => {
           <span className="tabLine"></span>
         </div>
       </div>
-      <Collect
-        tabContent={tabContent}
-        gganbuState={gganbuState}
-        gganbuNo={gganbuNo}
-        gganbuInfo={gganbuInfo}
-        myRankList={myRankList}
-        rankList={rankList}
-      />
+      {tabContent === "collect" &&
+        <Collect
+          tabContent={tabContent}
+          gganbuState={gganbuState}
+          gganbuNo={gganbuNo}
+          gganbuInfo={gganbuInfo}
+          myRankList={myRankList}
+          rankList={rankList}
+        />
+      }
+      {tabContent === "betting" &&      
       <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+      }
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

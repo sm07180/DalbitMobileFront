@@ -7,6 +7,9 @@ import Header from 'components/ui/new_header'
 
 //components
 import {useHistory} from 'react-router-dom'
+import {IMG_SERVER} from 'context/config'
+import Lottie from 'react-lottie'
+import moment from 'moment'
 import Utility, {printNumber, addComma} from 'components/lib/utility'
 
 //staic
@@ -27,6 +30,7 @@ export default () => {
   const [averageLevel, setAverageLevel] = useState(0)
   const [randomPoint, setRandomPoint] = useState(0)
   const [aniLevel, setAniLevel] = useState("")
+  const [tabMenuActive, setTabMenuActive] = useState("r")
   const [ticketCtn, setTicketCtn] = useState({
     rTicket : 0,
     yTicket : 0,
@@ -36,7 +40,6 @@ export default () => {
 
   const fetchGganbuPocketPage = async () => {
     const {data, message} = await Api.gganbuPocketPage({gganbuNo: 1});
-    console.log(data)
     if(message === "SUCCESS") {
       if(message === "SUCCESS") {
         setTicketCtn({
@@ -62,15 +65,12 @@ export default () => {
     }
   }
 
-  const fetchGganbuPocketOpen = async (randomPoint) => {
+  const fetchGganbuPocketOpen = async (point) => {
     const {data} = await Api.getGganbuPocketOpen({
-      marblePocketPt : randomPoint
+      marblePocketPt : point
     });
     if(data === 1) {
-      setPocketCtn(pocketCtn - 1);
-      setOpenPocket(true)
-  
-       
+      setOpenPocket(true)       
     }
   }
 
@@ -95,35 +95,33 @@ export default () => {
   
   const dateFormatter = (date) => {
     if (!date) return null
-
-    let month = date.substring(5, 7)
-    let day = date.substring(8, 10)
-    let time = `${date.substring(11, 13)}:${date.substring(14, 16)}`
-    return `${month}.${day} ${time}`
+    return moment(date).format('MM.DD HH:mm');
   }
 
   let totalPage = 1
   let pagePerCnt = 30
+
   // 깐부 리포트 리스트 조회
   const fetchGganbuPocketReport = useCallback(async () => {
     const {data, message} = await Api.getGganbuPocketReport({
       gganbuNo: 1,
       pageNo: currentPage,
-      pagePerCnt: pagePerCnt
+      pagePerCnt: pagePerCnt,
+      tabSlct: tabMenuActive,
     })
     if (message === 'SUCCESS') {
-      setLogList(data.list)
       setTotalCommentCnt(data.listCnt)
 
       totalPage = Math.ceil(data.listCnt / pagePerCnt)
 
-      if (currentPage > 1) {
-        setLogList(data.list.concat(data.list))
+      if(currentPage === 1){
+        setLogList(data.list)
+      } else if (currentPage > 1) {
+        const datas = logList.concat(data.list);
+        setLogList(datas)
       }
-    } else {
-      console.log(message)
     }
-  }, [currentPage])
+  }, [currentPage, tabMenuActive])
 
   const scrollEvtHdr = () => {
     if (totalPage > currentPage && Utility.isHitBottom()) {
@@ -133,7 +131,6 @@ export default () => {
 
   useLayoutEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
-    console.log(currentPage)
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
@@ -143,11 +140,6 @@ export default () => {
   useEffect(() => {
     if (currentPage > 0) fetchGganbuPocketReport()
   }, [currentPage])
-
- 
-  const pocketGet = () => {
-    fetchGganbuPocket();    
-  }
 
   const pocketOpen = () => {
     let point = 0;
@@ -184,9 +176,13 @@ export default () => {
         fetchGganbuPocketPage();
       }, 8000);
     }
-
-    fetchGganbuPocketOpen(point);    
+    fetchGganbuPocketOpen(point);  
   }
+
+  useEffect(() => {
+    fetchGganbuPocketReport();
+    setCurrentPage(1)
+  }, [tabMenuActive])
 
   useEffect(() => {
     fetchGganbuPocketPage();
@@ -197,50 +193,37 @@ export default () => {
     <div id="marblePocketPage">
       <div className="marblePocketBox">
         <Header title="구슬 주머니" />
+        <div className="mypointWrap">
+          <div className="title">
+            <img src="https://image.dalbitlive.com/event/gganbu/gganbuPocket_title-myScore.png"/>
+          </div>
+          <div className="mypoint">
+            <span className="score">{Utility.addComma(myPoint)}</span>점
+          </div>
+        </div>
         <div className="content">
-          <div className="mypointWrap">
-            <div className="title">내 구슬 주머니 점수</div>
-            <div className="mypoint">
-              <span className="score">{Utility.addComma(myPoint)}</span>점
-            </div>
-          </div>
-          <div className="exchangeMarble">
-            <div className="title">구슬 티켓</div>
-            <p className="info">*구슬 한 개 당 해당 색깔의 티켓을 한 장 드립니다.</p>
-            <p className="info">*구슬 주머니로 교환 시 10개씩 차감됩니다.</p>
-            <div className="shadowBox">
-              <div className="ticketWrap">
-                <div className="ticketGroup">
-                  <span className="ticket red"></span>
-                  <span className="ticketCount">{ticketCtn.rTicket}</span>
-                </div>
-                <div className="ticketGroup">
-                  <span className="ticket yellow"></span>
-                  <span className="ticketCount">{ticketCtn.yTicket}</span>
-                </div>
-                <div className="ticketGroup">
-                  <span className="ticket blue"></span>
-                  <span className="ticketCount">{ticketCtn.bTicket}</span>
-                </div>
-                <div className="ticketGroup">
-                  <span className="ticket purple"></span>
-                  <span className="ticketCount">{ticketCtn.pTicket}</span>
-                </div>
-              </div>
-              <button className={`pocketBtn small ${btnActive ? "active" : ""}`} onClick={pocketGet}>
-                구슬 주머니 받기 {btnActive ? <span className="possible">({exchangeAble}회 가능)</span> : ""}
-              </button>
-            </div>
-          </div>
           <div className="exchangePocket">
-            <div className="title">교환 가능한 구슬 주머니</div>
+            <div className="title">구슬 주머니 보유 개수</div>
             <div className="shadowBox">
               <div className="pocketWrap">
-                <span className="pocket blue"></span>
+                <span id="pocketAni" className="pocket">
+                  <Lottie
+                    options={{
+                      loop: true,
+                      autoPlay: true,
+                      path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
+                    }}
+                  />
+                </span>
                 <span className="pocketCount">{pocketCtn}</span>
               </div>
+              <button className={`pocketBtn ${pocketCtn > 0 ? "active" : ""}`} onClick={pocketOpen}>구슬 주머니 열기</button>
             </div>
-            <button className={`pocketBtn large ${pocketCtn > 0 ? "active" : ""}`} onClick={pocketOpen}>구슬 주머니 열기</button>
+            <div className="infoWrap">
+              <p className="info">*구슬 주머니로 모은 보너스 점수는 전체 점수에 실시간으로 합산됩니다.</p>
+              <p className="info">*구슬 주머니를 열면 보너스 점수를 확인할 수 있습니다.</p>
+              <p className="info">*회차가 지나가면 구슬 주머니는 소멸되니 그 전에 꼭 확인(열기)하세요.</p>
+            </div>
           </div>
         </div>
         <div className="space"></div>
@@ -248,46 +231,93 @@ export default () => {
           <div className="titleWrap">
             <div className="title">받은 내역</div>
           </div>
-          <table>
-            <colgroup>
-              <col width="40%" />
-              <col width="25%" />
-              <col width="*" />
-            </colgroup>
+          <div className="pocketTab">
+            <div className={`pocketTabMenu ${tabMenuActive === "r" ? "active" : ""}`} onClick={() => setTabMenuActive("r")}>구슬 주머니 받은 내역</div>
+            <div className={`pocketTabMenu ${tabMenuActive === "p" ? "active" : ""}`} onClick={() => setTabMenuActive("p")}>보너스 점수 내역</div>
+          </div>
+          {tabMenuActive === "r" ?
+            <table>
+              <colgroup>
+                <col width="30%" />
+                <col width="25%" />
+                <col width="45%" />
+              </colgroup>
 
-            <thead>
-              <tr>
-                <th>받은 사람</th>
-                <th>얻은 점수</th>
-                <th>받은 일시</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {!logList.length ? (
+              <thead>
                 <tr>
-                  <td colSpan="3">받은 내역이 없습니다.</td>
+                  <th>받은 사유</th>
+                  <th>받은 일시</th>
+                  <th>받은 사람</th>
                 </tr>
-              ) : (
-                logList.map((item, index) => {
-                  const {mem_nick, mem_no, marble_pocket_pt, ins_date} = item
-                  return (
-                    <tr key={index}>
-                      <td
-                        className="nick"
-                        onClick={() => {
-                          history.push(`/mypage/${mem_no}`)
-                        }}>
-                        <p>{mem_nick}</p>
-                      </td>
-                      <td className="bonus">{marble_pocket_pt}점</td>
-                      <td className="date">{dateFormatter(ins_date)}</td>
-                    </tr>
-                  )
-                })
-              )}
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                {!logList.length ? (
+                  <tr>
+                    <td colSpan="3">받은 내역이 없습니다.</td>
+                  </tr>
+                ) : (
+                  logList.map((item, index) => {
+                    const {mem_nick, mem_no, marble_pocket_pt, ins_date, rcvReason} = item
+                    return (
+                      <tr key={index}>
+                        <td className="reason">{rcvReason}</td>
+                        <td className="date">{dateFormatter(ins_date)}</td>
+                        <td
+                          className="nick"
+                          onClick={() => {
+                            history.push(`/mypage/${mem_no}`)
+                          }}>
+                          {mem_nick}
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>
+           : 
+           <table>
+              <colgroup>
+                <col width="30%" />
+                <col width="25%" />
+                <col width="45%" />
+              </colgroup>
+
+              <thead>
+                <tr>
+                  <th>얻은 점수</th>
+                  <th>얻은 일시</th>
+                  <th>얻은 사람</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {!logList.length ? (
+                  <tr>
+                    <td colSpan="3">받은 내역이 없습니다.</td>
+                  </tr>
+                ) : (
+                  logList.map((item, index) => {
+                    const {mem_nick, mem_no, marble_pocket_pt, ins_date} = item
+                    return (
+                      <tr key={index}>
+                        <td className="bonus">{marble_pocket_pt}점</td>
+                        <td className="date">{dateFormatter(ins_date)}</td>
+                        <td
+                          className="nick"
+                          onClick={() => {
+                            history.push(`/mypage/${mem_no}`)
+                          }}>
+                          {mem_nick}
+                        </td>
+                      </tr>
+                    )
+                  })
+                )}
+              </tbody>
+            </table>          }
+          
         </div>
       </div>
 
