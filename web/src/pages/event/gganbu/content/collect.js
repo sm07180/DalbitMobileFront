@@ -42,6 +42,7 @@ export default (props) => {
     const {data, message} = await Api.getGganbuRankList(param)
     if (message === 'SUCCESS') {
       totalPage = Math.ceil(data.listCnt / pagePerCnt)
+      console.log('totalPage', totalPage)
       if (currentPage > 1) {
         setRankList(rankList.concat(data.list))
       } else {
@@ -53,8 +54,9 @@ export default (props) => {
   }, [gganbuNo, currentPage])
 
   const scrollEvtHdr = () => {
-    if (totalPage > currentPage && Utility.isHitBottom()) {
+    if (Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
+      console.log('bottom hit!', currentPage)
     }
   }
 
@@ -63,6 +65,7 @@ export default (props) => {
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
+      console.log('hit!!!', currentPage)
     }
   }, [currentPage])
 
@@ -196,10 +199,12 @@ export default (props) => {
                     ptr_mem_level_color,
                     ptr_mem_nick,
                     ptr_mem_id,
+                    ptr_mem_stat,
                     mem_level,
                     mem_level_color,
                     mem_nick,
-                    mem_id
+                    mem_id,
+                    mem_state
                   } = data
                   return (
                     <div className="rankList" key={index}>
@@ -212,18 +217,44 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
-                            lv {ptr_mem_level}
-                          </PtrLevelBox>
-                          <span className="userNick">{ptr_mem_nick}</span>
-                          <span className="userId">{ptr_mem_id}</span>
+                          {ptr_mem_stat === 1 ? (
+                            <>
+                              <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
+                                lv {ptr_mem_level}
+                              </PtrLevelBox>
+                              <span className="userNick">{ptr_mem_nick}</span>
+                              <span className="userId">{ptr_mem_id}</span>
+                            </>
+                          ) : ptr_mem_stat === 4 ? (
+                            <>
+                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                                lv {ptr_mem_level}
+                              </div>
+                              <span className="userNick">깍두기</span>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                         <div className="rankItem">
-                          <LevelBox className="badge" levelColor={mem_level_color}>
-                            lv {mem_level}
-                          </LevelBox>
-                          <span className="userNick">{mem_nick}</span>
-                          <span className="userId">{mem_id}</span>
+                          {mem_state === 1 ? (
+                            <>
+                              <LevelBox className="badge" levelColor={mem_level_color}>
+                                lv {mem_level}
+                              </LevelBox>
+                              <span className="userNick">{mem_nick}</span>
+                              <span className="userId">{mem_id}</span>
+                            </>
+                          ) : mem_state === 4 ? (
+                            <>
+                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                                lv {ptr_mem_level}
+                              </div>
+                              <span className="userNick">깍두기</span>
+                            </>
+                          ) : (
+                            <></>
+                          )}
                         </div>
                       </div>
                     </div>

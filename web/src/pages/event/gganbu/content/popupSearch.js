@@ -33,9 +33,6 @@ export default (props) => {
     }
   }, [])
 
-  let totalPage = 1
-  let records = 20
-
   const closePopup = () => {
     setPopupSearch()
     btnAccess = false
@@ -51,13 +48,16 @@ export default (props) => {
       closePopup()
     }
   }
+
+  let totalPage = 1
+  let pagePerCnt = 20
   // 깐부 검색
   const fetchGganbuSearch = async () => {
     const param = {
       searchText: result,
       myLevel: myProfileLevel,
       pageNo: totalPage,
-      pagePerCnt: records
+      pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.getGganbuSearch(param)
     if (message === 'SUCCESS') {
