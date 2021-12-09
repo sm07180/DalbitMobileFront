@@ -43,7 +43,9 @@ export default (props) => {
       pagePerCnt: pagePerCnt
     })
     if (message === 'SUCCESS') {
+      if (currentPage > 1) {
       setReportList(data.list)
+    }
     } else {
       console.log(message)
     }

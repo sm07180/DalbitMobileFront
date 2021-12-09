@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext ,useLayoutEffect, useCallback} from 'react'
 
 import Api from 'context/api'
 import {Context} from 'context'
@@ -12,19 +12,21 @@ import Utility, {printNumber, addComma} from 'components/lib/utility'
 //staic
 import newIcon from '../static/new_circle_m.svg'
 
-//flag
-let currentPage = 1
-let moreState = false
-let timer
 export default () => {
   const context = useContext(Context)
   const history = useHistory()
-  const [winList, setWinList] = useState([])
+  const [totalCommentCnt, setTotalCommentCnt] = useState(0)
   const [nextList, setNextList] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
+  const [logList, setLogList] = useState([])
   const [openPocket, setOpenPocket] = useState(false)
   const [btnActive, setBtnActive] = useState(false)
   const [exchangeAble, setExchangeAble] = useState(0)
+  const [pocketCtn, setPocketCtn] = useState(0)
   const [myPoint, setMyPoint] = useState(0)
+  const [averageLevel, setAverageLevel] = useState(0)
+  const [randomPoint, setRandomPoint] = useState(0)
+  const [aniLevel, setAniLevel] = useState("")
   const [ticketCtn, setTicketCtn] = useState({
     rTicket : 0,
     yTicket : 0,
@@ -32,117 +34,163 @@ export default () => {
     pTicket : 0,
   })
 
-  const goBack = () => {
-    return history.goBack()
-  }
-
-  const fetchGganbuPocketReport = async (next) => {
-    if (!next) currentPage = 1
-    currentPage = next ? ++currentPage : currentPage
-
-    const {data, message} = await Api.getGganbuPocketReport({
-      gganbuNo: 1,
-      pageNo: 1,
-      pagePerCnt: currentPage
-    })
-    if(message === "SUCCESS") {
-      let listLength = data.list.length;
-      let pointSum = 0;
-
-      for(let i = 0; i < listLength; i++){
-        pointSum = pointSum + data.list[i].marble_pocket_pt;
-      }
-      setMyPoint(pointSum);
-    }
-  }
-
-  const fetchGganbuData = async () => {
-    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1});
+  const fetchGganbuPocketPage = async () => {
+    const {data, message} = await Api.gganbuPocketPage({gganbuNo: 1});
     console.log(data)
     if(message === "SUCCESS") {
-      setTicketCtn({
-        rTicket : data.tot_red_marble,
-        yTicket : data.tot_yellow_marble,
-        bTicket : data.tot_blue_marble,
-        pTicket : data.tot_violet_marble,
-      })      
-      if((data.tot_red_marble >= 10) && (data.tot_yellow_marble >= 10) && (data.tot_blue_marble >= 10) && (data.tot_violet_marble >= 10)) {
-        setBtnActive(true)
-        let rPossible = data.tot_red_marble/10;
-        let yPossible = data.tot_yellow_marble/10;
-        let bPossible = data.tot_blue_marble/10;
-        let pPossible = data.tot_violet_marble/10;
-
-        var min = Math.min(rPossible,yPossible,bPossible,pPossible);
-        setExchangeAble(min)
+      if(message === "SUCCESS") {
+        setTicketCtn({
+          rTicket : data.gganbuMemSel.exc_red_marble,
+          yTicket : data.gganbuMemSel.exc_yellow_marble,
+          bTicket : data.gganbuMemSel.exc_blue_marble,
+          pTicket : data.gganbuMemSel.exc_violet_marble,
+        })      
+        if((data.gganbuMemSel.exc_red_marble >= 10) && (data.gganbuMemSel.exc_yellow_marble >= 10) && (data.gganbuMemSel.exc_blue_marble >= 10) && (data.gganbuMemSel.exc_violet_marble >= 10)) {
+          let rPossible = data.gganbuMemSel.exc_red_marble/10;
+          let yPossible = data.gganbuMemSel.exc_yellow_marble/10;
+          let bPossible = data.gganbuMemSel.exc_blue_marble/10;
+          let pPossible = data.gganbuMemSel.exc_violet_marble/10;
+  
+          var min = parseInt(Math.min(rPossible,yPossible,bPossible,pPossible));
+          setExchangeAble(min)
+          setBtnActive(true)
+        }
+        setMyPoint(data.gganbuMemSel.marble_pocket_pt);
+        setPocketCtn(data.gganbuMemSel.marble_pocket);
+        setAverageLevel(data.gganbuMemSel.average_level);
       }
     }
   }
 
-  const fetchGganbuPocketOpen = async () => {
+  const fetchGganbuPocketOpen = async (randomPoint) => {
     const {data} = await Api.getGganbuPocketOpen({
-      averageLevel: 2
+      marblePocketPt : randomPoint
     });
-    console.log(data)
+    if(data === 1) {
+      setPocketCtn(pocketCtn - 1);
+      setOpenPocket(true)
+  
+       
+    }
   }
 
   const fetchGganbuPocket = async () => {
     const {data} = await Api.getGganbuPocket();
-    console.log(data)
+    if(data === 1) {
+      setPocketCtn(pocketCtn + 1)
+      setExchangeAble(exchangeAble - 1);
+      setTicketCtn({
+        rTicket : ticketCtn.rTicket - 10,
+        yTicket : ticketCtn.yTicket - 10,
+        bTicket : ticketCtn.bTicket - 10,
+        pTicket : ticketCtn.pTicket - 10,
+      })   
+      if(exchangeAble > 1) {
+  
+      } else {
+        setBtnActive(false);
+      }
+    }
   }
   
   const dateFormatter = (date) => {
     if (!date) return null
-    //0월 0일 00:00
-    // 20200218145519
-    let month = date.substring(4, 6)
-    let day = date.substring(6, 8)
-    let time = `${date.substring(8, 10)}:${date.substring(10, 12)}`
-    return `${month}월 ${day}일`
-    // return `${month}월 ${day}일 ${time}`
+
+    let month = date.substring(5, 7)
+    let day = date.substring(8, 10)
+    let time = `${date.substring(11, 13)}:${date.substring(14, 16)}`
+    return `${month}.${day} ${time}`
   }
 
-  //scroll
-  const showMoreList = () => {
-    setWinList(winList.concat(nextList))
-    fetchGganbuPocketReport('next')
-  }
-  const scrollEvtHdr = (event) => {
-    if (timer) window.clearTimeout(timer)
-    timer = window.setTimeout(function () {
-      //스크롤
-      const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-      const body = document.body
-      const html = document.documentElement
-      const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-      const windowBottom = windowHeight + window.pageYOffset
-      if (moreState && windowBottom >= docHeight - 200) {
-        showMoreList()
-      } else {
+  let totalPage = 1
+  let pagePerCnt = 30
+  // 깐부 리포트 리스트 조회
+  const fetchGganbuPocketReport = useCallback(async () => {
+    const {data, message} = await Api.getGganbuPocketReport({
+      gganbuNo: 1,
+      pageNo: currentPage,
+      pagePerCnt: pagePerCnt
+    })
+    if (message === 'SUCCESS') {
+      setLogList(data.list)
+      setTotalCommentCnt(data.listCnt)
+
+      totalPage = Math.ceil(data.listCnt / pagePerCnt)
+
+      if (currentPage > 1) {
+        setLogList(data.list.concat(data.list))
       }
-    }, 10)
-  }
-  const pocketGet = () => {
-    console.log("click");
+    } else {
+      console.log(message)
+    }
+  }, [currentPage])
+
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
   }
 
-  const pocketOpen = () => {
-  }
-
-  //-------------------
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    console.log(currentPage)
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [nextList])
+  }, [currentPage])
 
   useEffect(() => {
-    setWinList([]);
+    if (currentPage > 0) fetchGganbuPocketReport()
+  }, [currentPage])
+
+ 
+  const pocketGet = () => {
+    fetchGganbuPocket();    
+  }
+
+  const pocketOpen = () => {
+    let point = 0;
+    if(averageLevel < 30) {
+      point = Math.floor(Math.random() * 30) + 70;
+      setRandomPoint(point);
+      setAniLevel("ani4");
+      setTimeout(() => {      
+        setOpenPocket(false);
+        fetchGganbuPocketPage();
+      }, 10000);
+    } else if (averageLevel < 50) {
+      point = Math.floor(Math.random() * 30) + 40;
+      setRandomPoint(point);
+      setAniLevel("ani3");
+      setTimeout(() => {      
+        setOpenPocket(false);
+        fetchGganbuPocketPage();
+      }, 9000);
+    } else if (averageLevel < 70) {
+      point = Math.floor(Math.random() * 20) + 30;
+      setRandomPoint(point);
+      setAniLevel("ani2");
+      setTimeout(() => {      
+        setOpenPocket(false);
+        fetchGganbuPocketPage();
+      }, 8000);
+    } else {
+      point = Math.floor(Math.random() * 20) + 10;
+      setRandomPoint(point);
+      setAniLevel("ani1");
+      setTimeout(() => {      
+        setOpenPocket(false);
+        fetchGganbuPocketPage();
+      }, 8000);
+    }
+
+    fetchGganbuPocketOpen(point);    
+  }
+
+  useEffect(() => {
+    fetchGganbuPocketPage();
     fetchGganbuPocketReport();
-    fetchGganbuData();
-    fetchGganbuPocketOpen();
-    fetchGganbuPocket();
   }, [])
 
   return (
@@ -157,8 +205,9 @@ export default () => {
             </div>
           </div>
           <div className="exchangeMarble">
-            <div className="title">교환 가능한 구슬 획득 내역</div>
-            <p className="info">*얻은 구슬만 집계되며, 주머니 받기 시 10개씩 차감됩니다.</p>
+            <div className="title">구슬 티켓</div>
+            <p className="info">*구슬 한 개 당 해당 색깔의 티켓을 한 장 드립니다.</p>
+            <p className="info">*구슬 주머니로 교환 시 10개씩 차감됩니다.</p>
             <div className="shadowBox">
               <div className="ticketWrap">
                 <div className="ticketGroup">
@@ -188,10 +237,10 @@ export default () => {
             <div className="shadowBox">
               <div className="pocketWrap">
                 <span className="pocket blue"></span>
-                <span className="pocketCount">0</span>
+                <span className="pocketCount">{pocketCtn}</span>
               </div>
             </div>
-            <button className="pocketBtn large" onClick={pocketOpen}>구슬 주머니 열기</button>
+            <button className={`pocketBtn large ${pocketCtn > 0 ? "active" : ""}`} onClick={pocketOpen}>구슬 주머니 열기</button>
           </div>
         </div>
         <div className="space"></div>
@@ -208,35 +257,31 @@ export default () => {
 
             <thead>
               <tr>
-                <th>받은사람</th>
-                <th>보너스점수</th>
-                <th>일자</th>
+                <th>받은 사람</th>
+                <th>얻은 점수</th>
+                <th>받은 일시</th>
               </tr>
             </thead>
 
             <tbody>
-              {!winList.length ? (
+              {!logList.length ? (
                 <tr>
                   <td colSpan="3">받은 내역이 없습니다.</td>
                 </tr>
               ) : (
-                winList.map((item, index) => {
-                  const {winDt, nickNm, profImg, isNew, memNo, itemImageUrl, itemName} = item
+                logList.map((item, index) => {
+                  const {mem_nick, mem_no, marble_pocket_pt, ins_date} = item
                   return (
                     <tr key={index}>
                       <td
                         className="nick"
                         onClick={() => {
-                          history.push(`/mypage/${memNo}`)
+                          history.push(`/mypage/${mem_no}`)
                         }}>
-                        <p>{nickNm}</p>
+                        <p>{mem_nick}</p>
                       </td>
-                      <td className="bonus">점</td>
-                      <td className="date">
-                        <span className="iconNew">{isNew ? <img src={newIcon} width={14} alt="new" /> : ''}</span>
-
-                        {dateFormatter(winDt)}
-                      </td>
+                      <td className="bonus">{marble_pocket_pt}점</td>
+                      <td className="date">{dateFormatter(ins_date)}</td>
                     </tr>
                   )
                 })
@@ -255,8 +300,10 @@ export default () => {
       */}
       {openPocket &&      
         <div className="openPocket">
-          <div className="openPocketAni ani4">
-            <div className="openPocketNum">100</div>
+          <div className={`openPocketAni`} 
+               style={{backgroundImage: `url(https://image.dalbitlive.com/event/gganbu/ani/special_marble_0${aniLevel === "ani1" ? 1 : aniLevel === "ani2" ? 2 : aniLevel === "ani3" ? 3 : 4}.webp?timestamp=${Math.random()})` }}
+          >
+            <div className="openPocketNum" style={{animationDelay: `${aniLevel === "ani1" ? "3.5s" : aniLevel === "ani2" ? "3.5s" : aniLevel === "ani3" ? "4.5s" : "5.5s"}`}}>{randomPoint}</div>
           </div>
         </div>
       }

@@ -8,12 +8,10 @@ import {Context} from 'context'
 
 export default (props) => {  
   const globalCtx = useContext(Context)
-  const {setBettingPop, bettingVal, setBettingVal, myMarble ,setMyMarble} = props
-  console.log(bettingVal)
+  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup} = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
-  const [bettingResult, setBettingResult] = useState("")
   const [marbleNum, setMarbleNum] = useState(0);
   const [resultVal, setResultVal] = useState({
     rResult : "",
@@ -41,26 +39,31 @@ export default (props) => {
     winSlct : "",
     bettingSlct : "",
   });
+  let bettingResult = ""
 
-  async function fetchBettingComplete() {
-    const param = {
-      insSlct: "b",
-      rMarbleCnt: gapVal.rGap,
-      yMarbleCnt: gapVal.yGap,
-      bMarbleCnt: gapVal.bGap,
-      vMarbleCnt: gapVal.pGap,
-      winSlct: bettingResult,
-      bettingSlct: valueType,
-    }
-    const res = await Api.getGganbuObtainMarble(param);
-    console.log(param)
-    if (res.message === 'SUCCESS') {
-
-    } else if (res.message === 'FAIL') {
-
+  console.log(bettingVal);
+  const fetchGganbuData = async () => {
+    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
+    if (message === 'SUCCESS') {
+      setMyMarble({
+        rMarble: data.red_marble,
+        yMarble: data.yellow_marble,
+        bMarble: data.blue_marble,
+        pMarble: data.violet_marble,
+      })    
     }
   }
-
+  const fetchBettingPage = async () => {
+    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: 1});
+    if (message === 'SUCCESS') {
+      setParticipantList(data.bettingListInfo.list);
+      setMyBettingLogList(data.myBettingListInfo.list);
+      setBettingVal({rBetting: 0, yBetting: 0, bBetting: 0, pBetting: 0})
+      setBettingAbled(data.bettingYn);
+    } else {
+      globalCtx.action.alert({msg: message})
+    }
+  }
   const fetchBettingData = async () => {
     const {data, message} = await Api.getGganbuBettingData({gganbuNo: 1});
     console.log(data);
@@ -79,21 +82,29 @@ export default (props) => {
     }
   }
 
+  async function fetchBettingComplete() {
+    const param = {
+      insSlct: "b",
+      rMarbleCnt: gapVal.rGap < 0 ? gapVal.rGap * -1 : gapVal.rGap ,
+      yMarbleCnt: gapVal.yGap < 0 ? gapVal.yGap * -1 : gapVal.yGap,
+      bMarbleCnt: gapVal.bGap < 0 ? gapVal.bGap * -1 : gapVal.bGap,
+      vMarbleCnt: gapVal.pGap < 0 ? gapVal.pGap * -1 : gapVal.pGap,
+      winSlct: bettingResult,
+      bettingSlct: valueType,
+    }
+    const res = await Api.getGganbuObtainMarble(param);
+    console.log(param)
+    if (res.message === 'SUCCESS') {      
+      fetchGganbuData();
+      fetchBettingPage();
+    }
+  }  
+
   const closePopup = () => {
     setBettingPop(false)
   }  
 
-  const completePopup = () => {
-    setBettingPop(false)
-    setBettingVal({
-      rBetting: 0,
-      yBetting: 0,
-      bBetting: 0,
-      pBetting: 0,
-    })
-    
-    fetchBettingComplete();
-  }
+  
 
   const wrapClick = (e) => {
     const target = e.target
@@ -129,7 +140,7 @@ export default (props) => {
     
 
     if(selectValue === resultType) {
-      setBettingResult("w");
+      bettingResult = "w";
       resultVal.rResult = myMarble.rMarble + bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble + bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble + bettingVal.bBetting;
@@ -141,7 +152,7 @@ export default (props) => {
         pMarble: resultVal.pResult,
       })
     } else {
-      setBettingResult("l");
+      bettingResult = "l";
       resultVal.rResult = myMarble.rMarble - bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble - bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble - bettingVal.bBetting;
@@ -158,6 +169,10 @@ export default (props) => {
     gapVal.yGap = resultVal.yResult - myMarble.yMarble;
     gapVal.bGap = resultVal.bResult - myMarble.bMarble;
     gapVal.pGap = resultVal.pResult - myMarble.pMarble;
+    
+    console.log(bettingResult);
+
+    fetchBettingComplete();
   }
   
   useEffect(() => {
