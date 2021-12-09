@@ -22,7 +22,7 @@ export default () => {
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
   const [myRankList, setMyRankList] = useState([])
-  const [metchState, setMetchState] = useState()
+  const [metchState, setMetchState] = useState(false)
   const [rankList, setRankList] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
@@ -200,7 +200,7 @@ export default () => {
         myRankList={myRankList}
         rankList={rankList}
       />
-      <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+      {/* <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} /> */}
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

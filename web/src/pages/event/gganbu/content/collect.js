@@ -184,7 +184,7 @@ export default (props) => {
             </div>
           )}
           <div className="rankWrap">
-            {rankList && rankList.length > 0 ? (
+            {rankList ? (
               <>
                 {rankList.map((data, index) => {
                   const {ptr_mem_level, ptr_mem_nick, ptr_mem_id, mem_level, mem_nick, mem_id} = data

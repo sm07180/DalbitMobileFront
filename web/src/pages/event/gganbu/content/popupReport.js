@@ -6,13 +6,11 @@ import Utility from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 
 import './search.scss'
-import {Context} from 'context'
 
 export default (props) => {
   const {setPopupReport, gganbuNo} = props
-  const context = useContext(Context)
 
-  const [reportList, setReportList] = useState(1)
+  const [reportList, setReportList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
@@ -33,47 +31,50 @@ export default (props) => {
     }
   }
 
-  const isHitPopupBottom = (diff = 30) => {
-    const popCnt = document.getElementById('popupWrap')
-    const popHeight = 'innerHeight' in popCnt ? popCnt.innerHeight : document.documentElement.offsetHeight
-    const body = document.body
-    const html = document.documentElement
-    const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-    const windowBottom = popHeight + window.pageYOffset
-    return windowBottom >= docHeight - diff
-  }
+  // const isHitPopupBottom = (diff = 30) => {
+  //   const popCnt = document.getElementById('popupWrap')
+  //   const popHeight = 'innerHeight' in popCnt ? popCnt.innerHeight : document.documentElement.offsetHeight
+  //   const body = document.body
+  //   const html = document.documentElement
+  //   const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
+  //   const windowBottom = popHeight + window.pageYOffset
+  //   return windowBottom >= docHeight - diff
+  // }
 
   let totalPage = 1
   let pagePerCnt = 50
   // 깐부 리포트 리스트 조회
   const gganbuReportList = useCallback(async () => {
-    const {data, message} = await Api.postGganbuReportList({
+    const param = {
       gganbuNo: gganbuNo,
       pageNo: currentPage,
       pagePerCnt: pagePerCnt
-    })
+    }
+    const {data, message} = await Api.postGganbuReportList(param)
     if (message === 'SUCCESS') {
       if (currentPage > 1) {
-      setReportList(data.list)
-    }
+        setReportList(reportList.concat(data.list))
+      } else {
+        setReportList(data.list)
+      }
     } else {
       console.log(message)
     }
   }, [currentPage])
 
-  const scrollEvtHdr = () => {
-    if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
+  // const scrollEvtHdr = () => {
+  //   if (totalPage > currentPage && Utility.isHitBottom()) {
+  //     setCurrentPage(currentPage + 1)
+  //   }
+  // }
 
-  useLayoutEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [currentPage])
+  // useLayoutEffect(() => {
+  //   if (currentPage === 0) setCurrentPage(1)
+  //   window.addEventListener('scroll', scrollEvtHdr)
+  //   return () => {
+  //     window.removeEventListener('scroll', scrollEvtHdr)
+  //   }
+  // }, [currentPage])
 
   useEffect(() => {
     gganbuReportList()
@@ -99,6 +100,8 @@ export default (props) => {
                       <span className="category">
                         {ins_slct === 'r'
                           ? '방송'
+                          : ins_slct === 'v'
+                          ? '청취'
                           : ins_slct === 'c'
                           ? '달구매'
                           : ins_slct === 'e'

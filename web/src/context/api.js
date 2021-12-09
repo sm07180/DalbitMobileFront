@@ -3525,7 +3525,7 @@ export default class API {
       params: data
     })
   }
-  
+
   static gganbuPocketPage = async (data) => {
     return await ajax({
       url: '/event/gganbu/pocket/page',
