@@ -386,7 +386,10 @@ export default () => {
 
   useEffect(() => {
     if (selectedPay.code === "simple") {
-      simplePayCheck()
+      // simplePayCheck()
+      return context.action.alert({
+        msg: `장애가 발생하여 일시적으로 결제가 불가능합니다. 다른 결제수단을 이용 부탁드립니다.`
+      })
     } else {
       if (selectedPay.type) payFetch()
     }
