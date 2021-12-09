@@ -22,6 +22,7 @@ export default () => {
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
   const [myRankList, setMyRankList] = useState([])
+  const [metchState, setMetchState] = useState()
   const [rankList, setRankList] = useState([])
   const [tabFixed, setTabFixed] = useState(false)
   const [tabContent, setTabContent] = useState('collect') // collect, betting
@@ -62,20 +63,20 @@ export default () => {
 
   const GganbuMetch = () => {
     if (globalCtx.profile.memNo === gganbuInfo.mem_no) {
-      console.log(1)
+      setMetchState(true)
     } else {
-      console.log(2)
+      setMetchState(false)
     }
     return (
       <>
         <div className="userList">
           <div className="photo">
-            <img src={gganbuInfo.mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
           </div>
-          <LevelBox className="badge" levelColor={gganbuInfo.mem_level_color}>
-            Lv {gganbuInfo.mem_level}
+          <LevelBox className="badge" levelColor={metchState ? gganbuInfo.mem_level_color : gganbuInfo.ptr_mem_level_color}>
+            Lv {metchState ? gganbuInfo.mem_level : gganbuInfo.ptr_mem_level}
           </LevelBox>
-          <span className="nick">{gganbuInfo.mem_nick}</span>
+          <span className="nick">{metchState ? gganbuInfo.mem_nick : gganbuInfo.ptr_mem_nick}</span>
         </div>
         <div className="dot">
           <div className="var">
@@ -86,12 +87,14 @@ export default () => {
         </div>
         <div className="userList">
           <div className="photo">
-            <img src={gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
+            <img src={!metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
           </div>
-          <PtrLevelBox className="badge" memLevelColor={gganbuInfo.ptr_mem_level_color}>
-            Lv {gganbuInfo.ptr_mem_level}
+          <PtrLevelBox
+            className="badge"
+            memLevelColor={!metchState ? gganbuInfo.mem_level_color : gganbuInfo.ptr_mem_level_color}>
+            Lv {!metchState ? gganbuInfo.mem_level : gganbuInfo.ptr_mem_level}
           </PtrLevelBox>
-          <span className="nick">{gganbuInfo.ptr_mem_nick}</span>
+          <span className="nick">{!metchState ? gganbuInfo.mem_nick : gganbuInfo.ptr_mem_nick}</span>
         </div>
       </>
     )

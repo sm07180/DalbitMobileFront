@@ -75,20 +75,45 @@ export default (props) => {
         <div className="listWrap" style={{height: '364px'}}>
           {reportList.length > 0 &&
             reportList.map((data, index) => {
-              const {mem_nick} = data
+              const {ins_slct, ins_date, mem_nick, mem_profile, red_marble, yellow_marble, blue_marble, violet_marble} = data
               return (
                 <div className="list" key={index}>
                   <div className="photo">
-                    <img src={context.profile.profImg} alt="유저이미지" />
+                    <img src={mem_profile.thumb50x50} alt="유저이미지" />
                   </div>
                   <div className="listBox">
                     <div className="nick">{mem_nick}</div>
                     <div className="listItem">
-                      <span className="category">청취</span>
-                      <span className="time">청취</span>
+                      <span className="category">
+                        {ins_slct === 'r'
+                          ? '방송'
+                          : ins_slct === 'c'
+                          ? '달구매'
+                          : ins_slct === 'e'
+                          ? '교환'
+                          : ins_slct === 'b'
+                          ? '베팅소'
+                          : ''}
+                      </span>
+                      <span className="time">{ins_date}</span>
                     </div>
                     <div className="listItem">
-                      <span>Lv. 38</span>
+                      <span className="marble">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-red.png" />
+                        {red_marble}
+                      </span>
+                      <span className="marble">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-yellow.png" />
+                        {yellow_marble}
+                      </span>
+                      <span className="marble">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-blue.png" />
+                        {blue_marble}
+                      </span>
+                      <span className="marble">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-purple.png" />
+                        {violet_marble}
+                      </span>
                     </div>
                   </div>
                 </div>
