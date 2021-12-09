@@ -3314,50 +3314,6 @@ export default class API {
     })
   }
 
-  // 11월 이벤트 (팬)
-  static getRaffleEventTotalInfo = async () => {
-    return await ajax({
-      url: '/event/raffle/fan/total/list',
-      method: 'GET'
-    })
-  }
-
-  // 11월 이벤트 응모 (팬)
-  static putEnterRaffleEvent = async (data) => {
-    return await ajax({
-      url: '/event/raffle/enter',
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 회차별 (팬)
-  static getRaffleEventRoundInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/fan/round/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 DJ
-  static getRaffleEventDjInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/main/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 아이템 지급 및 차감
-  static eventItemIns = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/ins/item',
-      method: 'POST',
-      params: data
-    })
-  }
-
   // 1일 1회 본인인증 확인
   static certificationCheck = async () => {
     return await ajax({
