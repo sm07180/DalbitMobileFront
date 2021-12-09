@@ -154,8 +154,6 @@ export default () => {
                       </>
                     ) : (
                       <>
-                      {globalCtx.profile.memNo === gganbuInfo.mem_no ? 
-                      <>
                         <div className="userList">
                           <div className="photo">
                             <img src={gganbuInfo.mem_profile.thumb80x80} alt="유저이미지" />

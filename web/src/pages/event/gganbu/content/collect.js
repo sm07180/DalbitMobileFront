@@ -167,14 +167,14 @@ export default (props) => {
               </div>
               <div className="rankBox">
                 <div className="rankItem">
-                  <LevelBox className="badge">lv {myRankList.ptr_mem_level}</LevelBox>
-                  <span className="userNick">{myRankList.ptr_mem_nick}</span>
-                  <span className="userId">{myRankList.ptr_mem_id}</span>
+                  <LevelBox className="badge">lv {myRankList && myRankList.ptr_mem_level}</LevelBox>
+                  <span className="userNick">{myRankList && myRankList.ptr_mem_nick}</span>
+                  <span className="userId">{myRankList && myRankList.ptr_mem_id}</span>
                 </div>
                 <div className="rankItem">
-                  <LevelBox className="badge">lv {myRankList.mem_level}</LevelBox>
-                  <span className="userNick">{myRankList.mem_nick}</span>
-                  <span className="userId">{myRankList.mem_id}</span>
+                  <LevelBox className="badge">lv {myRankList && myRankList.mem_level}</LevelBox>
+                  <span className="userNick">{myRankList && myRankList.mem_nick}</span>
+                  <span className="userId">{myRankList && myRankList.mem_id}</span>
                 </div>
               </div>
               <div className="score">
