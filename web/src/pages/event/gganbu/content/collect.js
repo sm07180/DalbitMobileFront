@@ -187,7 +187,16 @@ export default (props) => {
             {rankList ? (
               <>
                 {rankList.map((data, index) => {
-                  const {ptr_mem_level, ptr_mem_nick, ptr_mem_id, mem_level, mem_nick, mem_id} = data
+                  const {
+                    ptr_mem_level,
+                    ptr_mem_level_color,
+                    ptr_mem_nick,
+                    ptr_mem_id,
+                    mem_level,
+                    mem_level_color,
+                    mem_nick,
+                    mem_id
+                  } = data
                   return (
                     <div className="rankList" key={index}>
                       {index < 3 ? (
@@ -199,12 +208,16 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          <LevelBox className="badge">lv {ptr_mem_level}</LevelBox>
+                          <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
+                            lv {ptr_mem_level}
+                          </PtrLevelBox>
                           <span className="userNick">{ptr_mem_nick}</span>
                           <span className="userId">{ptr_mem_id}</span>
                         </div>
                         <div className="rankItem">
-                          <LevelBox className="badge">lv {mem_level}</LevelBox>
+                          <LevelBox className="badge" levelColor={mem_level_color}>
+                            lv {mem_level}
+                          </LevelBox>
                           <span className="userNick">{mem_nick}</span>
                           <span className="userId">{mem_id}</span>
                         </div>
@@ -230,16 +243,39 @@ export default (props) => {
 }
 const LevelBox = styled.div`
   ${(props) => {
-    // const {levelColor} = props
-    // if (levelColor.length === 3) {
-    //   return css`
-    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-    //   `
-    // } else {
-    //   return css`
-    //     background-color: ${levelColor[0]};
-    //   `
-    // }
+    const {levelColor} = props
+    if (levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${levelColor[0]};
+      `
+    }
+  }};
+  width: 44px;
+  height: 16px;
+  line-height: 16px;
+  border-radius: 14px;
+  font-weight: bold;
+  font-size: 12px;
+  color: #fff;
+  text-align: center;
+  letter-spacing: -0.3px;
+`
+const PtrLevelBox = styled.div`
+  ${(props) => {
+    const {levelColor} = props
+    if (levelColor.length === 3) {
+      return css`
+        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+      `
+    } else {
+      return css`
+        background-color: ${levelColor[0]};
+      `
+    }
   }};
   width: 44px;
   height: 16px;

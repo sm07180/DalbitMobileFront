@@ -404,7 +404,7 @@ export default (props) => {
               myBettingLogList.map((item, index) => {
                 const {red_marble, yellow_marble, blue_marble, violet_marble, win_slct, mem_nick, ins_date} = item
                 return (
-                  <div className="logList">
+                  <div className="logList" key={index}>
                     <div className="logMarble">
                       <div className="marbleData">
                         <span className="marbleIcon red"></span>

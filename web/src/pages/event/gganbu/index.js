@@ -135,36 +135,32 @@ export default () => {
             <div className="userWrap">
               <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓰는 친구 말이야.</div>
               <div className="userUl">
-                {gganbuInfo && (
+                {gganbuState === -1 ? (
                   <>
-                    {gganbuState === -1 ? (
-                      <>
-                        <div className="userList">
-                          <div className="photo">
-                            <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
-                          </div>
-                          <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
-                            Lv {globalCtx.profile.level}
-                          </LevelBox>
-                          <span className="nick">{globalCtx.profile.nickNm}</span>
-                        </div>
-                        <div className="dot">
-                          <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
-                        </div>
-                        <div className="userList">
-                          <div className="photo" onClick={() => setPopupSearch(true)}>
-                            <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
-                          </div>
-                          <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
-                            <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
-                            <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
-                          </button>
-                        </div>
-                      </>
-                    ) : (
-                      <GganbuMetch />
-                    )}
+                    <div className="userList">
+                      <div className="photo">
+                        <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
+                      </div>
+                      <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>
+                        Lv {globalCtx.profile.level}
+                      </LevelBox>
+                      <span className="nick">{globalCtx.profile.nickNm}</span>
+                    </div>
+                    <div className="dot">
+                      <img className="normal" src="https://image.dalbitlive.com/event/gganbu/dotNormal.png" />
+                    </div>
+                    <div className="userList">
+                      <div className="photo" onClick={() => setPopupSearch(true)}>
+                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuUserNone.png" />
+                      </div>
+                      <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
+                        <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
+                        <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                      </button>
+                    </div>
                   </>
+                ) : (
+                  <>{gganbuInfo && <GganbuMetch />}</>
                 )}
               </div>
             </div>
@@ -200,7 +196,7 @@ export default () => {
         myRankList={myRankList}
         rankList={rankList}
       />
-      {/* <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} /> */}
+      <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

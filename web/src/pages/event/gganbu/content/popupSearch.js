@@ -116,31 +116,6 @@ export default (props) => {
     return
   }
 
-  // 깐부 신청
-  const postGganbuSub = async () => {
-    const param = {
-      gganbuNo: gganbuNo,
-      ptrMemNo: memberNo // 대상자
-    }
-    const {data, message} = await Api.postGganbuSub(param)
-    if (data === 1) {
-      context.action.alert({
-        msg: '신청 완료',
-        callback: () => {
-          closeAlert()
-          searchStateCheck()
-        }
-      })
-    } else {
-      context.action.alert({
-        msg: message,
-        callback: () => {
-          closeAlert()
-          searchStateCheck()
-        }
-      })
-    }
-  }
   // 취소 버튼
   const postGganbuCancel = async (ptr_mem_no) => {
     const param = {
@@ -170,48 +145,9 @@ export default (props) => {
     }
   }, [result])
 
-  // 수락 => 동의서, 실패
-  const Accept = () => {
-    console.log(memberNo, context.profile.memNo)
-    return (
-      <div className="alert">
-        <div className="contentWrap">
-          <h1 className="title">동의서</h1>
-          <div className="textWrap">
-            <h2>제 1 항</h2>
-            <p>
-              깐부는 최대 두 명에게 신청
-              <br />
-              가능하며 신청 후에 취소할 수 있습니다.
-            </p>
-            <h2>제 2 항</h2>
-            <p>
-              상대가 수락 시 이번 회차에서 맺은 깐부는
-              <br />
-              중도 해체할 수 없습니다.
-            </p>
-            <h2>제 3 항</h2>
-            <p>
-              평균 레벨이 낮을수록 구슬 주머니에서
-              <br />
-              좋은 점수를 얻을 수 있습니다.
-            </p>
-            <p>
-              <strong>정말 신청하시겠습니까?</strong>
-            </p>
-          </div>
-          <div className="buttonWrap">
-            <button onClick={closeAlert}>취소</button>
-            <button onClick={() => postGganbuSub()}>신청</button>
-          </div>
-        </div>
-      </div>
-    )
-  }
   const acceptBtn = (mem_no) => {
-    setAlertAccept(true)
     setMemberNo(mem_no)
-    return <Accept />
+    return <Accept memberNo={memberNo} />
   }
 
   return (
@@ -324,7 +260,6 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
-      {alertAccept === true && <Accept />}
     </div>
   )
 }
