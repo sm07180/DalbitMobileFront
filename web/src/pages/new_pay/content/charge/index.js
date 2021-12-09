@@ -384,12 +384,26 @@ export default () => {
     fetchSelfAuth()
   }
 
+  // 안드로이드 간편결제 url 오류로 인한 버전 분기처리
+  const appVersionCheck = async () => {
+    const targetVersion = '1.7.2';
+    const successCallback = () => simplePayCheck();
+    const failCallback = () => {
+      return context.action.confirm({
+        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
+        callback: () => Hybrid('goToPlayStore')
+      })
+    }
+    await Utility.compareAppVersion(targetVersion, successCallback, failCallback)
+  }
+
   useEffect(() => {
     if (selectedPay.code === "simple") {
-      // simplePayCheck()
-      return context.action.alert({
-        msg: `장애가 발생하여 일시적으로 결제가 불가능합니다. 다른 결제수단을 이용 부탁드립니다.`
-      })
+      if(customHeader['os'] === OS_TYPE['Android']) {
+        appVersionCheck();
+      }else {
+        simplePayCheck();
+      }
     } else {
       if (selectedPay.type) payFetch()
     }
