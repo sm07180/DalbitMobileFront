@@ -117,7 +117,7 @@ export default () => {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
   }, [tabContent])
-
+  console.log(myRankList)
   return (
     <div id="gganbu">
       <Header title="깐부게임" />
@@ -188,15 +188,18 @@ export default () => {
           <span className="tabLine"></span>
         </div>
       </div>
-      <Collect
-        tabContent={tabContent}
-        gganbuState={gganbuState}
-        gganbuNo={gganbuNo}
-        gganbuInfo={gganbuInfo}
-        myRankList={myRankList}
-        rankList={rankList}
-      />
-      <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+      {tabContent === 'collect' ? (
+        <Collect
+          tabContent={tabContent}
+          gganbuState={gganbuState}
+          gganbuNo={gganbuNo}
+          gganbuInfo={gganbuInfo}
+          myRankList={myRankList}
+          rankList={rankList}
+        />
+      ) : (
+        <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+      )}
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}

@@ -5,6 +5,7 @@ import Utility from 'components/lib/utility'
 
 import './search.scss'
 import NoResult from 'components/ui/new_noResult'
+import Accept from './accept'
 
 let btnAccess = false
 
@@ -18,9 +19,11 @@ export default (props) => {
   const [fanList, setFanList] = useState([])
   const [memberList, setMemberList] = useState([])
   const [memberNo, setMemberNo] = useState()
+  const [memberNick, setMemberNick] = useState()
   const [searchState, setSearchState] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [alertAccept, setAlertAccept] = useState(false)
+  const [acceptType, setAcceptType] = useState('') //acceptance, application
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -37,9 +40,11 @@ export default (props) => {
     setPopupSearch()
     btnAccess = false
   }
+
   const closeAlert = () => {
     setAlertAccept(false)
   }
+
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popupSearch') {
@@ -145,9 +150,11 @@ export default (props) => {
     }
   }, [result])
 
-  const acceptBtn = (mem_no) => {
+  const acceptBtn = (mem_no, type, mem_nick) => {
+    setAlertAccept(true)
+    setAcceptType(type)
     setMemberNo(mem_no)
-    return <Accept memberNo={memberNo} />
+    setMemberNick(mem_nick)
   }
 
   return (
@@ -196,7 +203,7 @@ export default (props) => {
                         {rcvYn === 'n' ? (
                           <>
                             {sendYn === 'n' ? (
-                              <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
+                              <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application')}>
                                 신청
                               </button>
                             ) : (
@@ -206,7 +213,9 @@ export default (props) => {
                             )}
                           </>
                         ) : (
-                          <button className="accept">수락</button>
+                          <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', nickName)}>
+                            수락
+                          </button>
                         )}
                       </div>
                     )
@@ -239,7 +248,7 @@ export default (props) => {
                   {rcvYn === 'n' ? (
                     <>
                       {sendYn === 'n' ? (
-                        <button className="submit" onClick={(e) => acceptBtn(mem_no)}>
+                        <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application')}>
                           신청
                         </button>
                       ) : (
@@ -249,7 +258,9 @@ export default (props) => {
                       )}
                     </>
                   ) : (
-                    <button className="accept">수락</button>
+                    <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
+                      수락
+                    </button>
                   )}
                 </div>
               )
@@ -260,6 +271,16 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/raffle/popClose.png" alt="닫기" />
         </button>
       </div>
+      {alertAccept === true && (
+        <Accept
+          gganbuNo={gganbuNo}
+          memberNo={memberNo}
+          memberNick={memberNick}
+          acceptType={acceptType}
+          setAlertAccept={setAlertAccept}
+          searchStateCheck={searchStateCheck}
+        />
+      )}
     </div>
   )
 }

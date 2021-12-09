@@ -243,16 +243,16 @@ export default (props) => {
 }
 const LevelBox = styled.div`
   ${(props) => {
-    const {levelColor} = props
-    if (levelColor.length === 3) {
-      return css`
-        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-      `
-    } else {
-      return css`
-        background-color: ${levelColor[0]};
-      `
-    }
+    // const {levelColor} = props
+    // if (levelColor.length === 3) {
+    //   return css`
+    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+    //   `
+    // } else {
+    //   return css`
+    //     background-color: ${levelColor[0]};
+    //   `
+    // }
   }};
   width: 44px;
   height: 16px;
@@ -266,16 +266,16 @@ const LevelBox = styled.div`
 `
 const PtrLevelBox = styled.div`
   ${(props) => {
-    const {levelColor} = props
-    if (levelColor.length === 3) {
-      return css`
-        background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
-      `
-    } else {
-      return css`
-        background-color: ${levelColor[0]};
-      `
-    }
+    // const {levelColor} = props
+    // if (levelColor.length === 3) {
+    //   return css`
+    //     background-image: linear-gradient(to right, ${levelColor[0]}, ${levelColor[1]} 51%, ${levelColor[2]});
+    //   `
+    // } else {
+    //   return css`
+    //     background-color: ${levelColor[0]};
+    //   `
+    // }
   }};
   width: 44px;
   height: 16px;
