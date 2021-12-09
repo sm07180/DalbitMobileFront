@@ -11,7 +11,7 @@ import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 import Api from 'context/api'
 import {OS_TYPE, API_SERVER, PHOTO_SERVER} from 'context/config.js'
-import {Hybrid} from "context/hybrid";
+import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
 
 export default () => {
@@ -65,7 +65,9 @@ export default () => {
               const obj = readDevInfoData(e.target.value);
               if (obj) {
                 const {host, api, photo, socketURL} = obj;
-                Hybrid('setAppHost', {host, api, photo, socketURL});
+                !isHybrid() ?
+                  (() => location.href = host)()
+                    :Hybrid('setAppHost', {host, api, photo, socketURL});
               }
             }}>
       {redirectList.map((info, idx) => {
