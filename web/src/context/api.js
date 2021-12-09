@@ -3399,6 +3399,15 @@ export default class API {
     })
   }
 
+  // 깐부 팬 리스트
+  static getGganbuFanList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/search/fan`,
+      method: 'GET',
+      params: data
+    })
+  }
+
   // 깐부 신청(버튼)
   static postGganbuSub = async (data) => {
     return await ajax({
@@ -3440,15 +3449,6 @@ export default class API {
     return await ajax({
       url: `/event/gganbu/report/list`,
       method: 'POST',
-      params: data
-    })
-  }
-
-  // 깐부 팬 리스트
-  static getGganbuFanList = async (data) => {
-    return await ajax({
-      url: `/event/gganbu/search/fan`,
-      method: 'GET',
       params: data
     })
   }
