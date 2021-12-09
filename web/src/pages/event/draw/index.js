@@ -68,7 +68,7 @@ export default () => {
 
     const param = { selectList: drawList.select.toString() };
     Api.putDrawSelect(param).then(res => {
-      if (res.code === '00000' || (res.code === '30004' && res.data.successList.length > 0)) {
+      if (res.code === '00000' || (res.code === '30101' && res.data.successList.length > 0)) {
         getDrawTicketCnt(); // 티켓 개수 갱신
         setDrawList({select: [], aniList: res.data.successList });
         // 애니메이션 종료 시점에 팝업 정보 SET
