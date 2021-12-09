@@ -14,17 +14,19 @@ export default (props) => {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-    getSwiper: (val) => {
-      setSwiper(val)
-    },
+
     on: {
+      /*init: () => {
+        console.log(e);
+        setSwiper(e);
+      },
       slideChange: () => {
         if (swiper !== null && swiper.isEnd && popupPresent.resultInfo.findIndex(row => (row.bbopgi_gift_no && row.temp_result_cnt !== 0)) > -1 ) {
           setFailViewYn(true);
         } else {
           setFailViewYn(false);
         }
-      }
+      }*/
     }
   };
 
@@ -47,7 +49,6 @@ export default (props) => {
       {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
       <div className={`popLayer ${failViewYn ? 'blank' : ''}`}>
         <div className="contentWrap" style={{width: '100%'}}>
-          <div className="title">{failViewYn ? '꽝! 다음 기회에...' : '선물을 받았어요!'}</div>
           <Swiper {...swiperParams}>
             {popupPresent.resultInfo !== undefined && popupPresent.resultInfo.map((row, index) => {
               if (row.bbopgi_gift_no === 0) {
@@ -56,6 +57,7 @@ export default (props) => {
 
               return (
                 <div className="presentWrap" key={index}>
+                  <div className="title">{row.bbopgi_gift_no === 8 ? '꽝! 다음 기회에...' : '선물을 받았어요!'}</div>
                   <div className="imgWrap">
                     <img src={`${IMG_SERVER}/event/draw/present-${row.bbopgi_gift_no}.png`}/>
                   </div>
@@ -101,7 +103,7 @@ const PopupWrap = styled.div`
         width:100%;
     }
     .swiper-button-next{
-        top:30%;
+        top:48%;
         right:0;
         width:51px;
         height:51px;
@@ -109,7 +111,7 @@ const PopupWrap = styled.div`
         cursor:pointer;
     }
     .swiper-button-prev{
-        top:30%;
+        top:48%;
         left:0;
         width:51px;
         height:51px;
