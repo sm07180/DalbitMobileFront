@@ -3517,6 +3517,22 @@ export default class API {
       params: data
     })
   }
+
+  static gganbuInfoSel = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/relationship/sel',
+      method: 'POST',
+      params: data
+    })
+  }
+  
+  static gganbuPocketPage = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/pocket/page',
+      method: 'GET',
+      params: data
+    })
+  }
 }
 
 API.customHeader = null

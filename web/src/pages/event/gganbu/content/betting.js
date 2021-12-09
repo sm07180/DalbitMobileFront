@@ -26,6 +26,12 @@ export default (props) => {
     bBetting: 0,
     pBetting: 0
   }) // 베팅할 구슬
+  const [successVal, setSuccessVal] = useState({
+    rSuccess: 0,
+    ySuccess: 0,
+    bSuccess: 0,
+    pSuccess: 0
+  }) // 베팅할 구슬
   const [participantList, setParticipantList] = useState([]) // 베팅 참여자
   const [myBettingLogList, setMyBettingLogList] = useState([]) // 베팅 참여자
   const [bettingAbled, setBettingAbled] = useState('y') // 베팅 참여자
@@ -39,17 +45,6 @@ export default (props) => {
 
   const history = useHistory()
 
-  const fetchGganbuCheck = async () => {
-    const {data} = await Api.gganbuCheck({gganbuNo: 1})
-    if (data === 1) {
-      fetchGganbuData()
-      fetchBettingPage()
-      fetchBettingList()
-    } else {
-      setTabContent('collect')
-      globalCtx.action.alert({msg: '깐부를 맺으면 베팅소가 열립니다.'})
-    }
-  }
   const fetchGganbuData = async () => {
     const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
     if (message === 'SUCCESS') {
@@ -58,6 +53,12 @@ export default (props) => {
         yMarble: data.yellow_marble,
         bMarble: data.blue_marble,
         pMarble: data.violet_marble
+      })
+      setSuccessVal({
+        rSuccess: data.red_marble,
+        ySuccess: data.yellow_marble,
+        bSuccess: data.blue_marble,
+        pSuccess: data.violet_marble
       })
     }
   }
@@ -71,17 +72,6 @@ export default (props) => {
       globalCtx.action.alert({msg: message})
     }
   }
-  const fetchBettingList = async () => {
-    const {data, message} = await Api.getGganbuBettingList({
-      gganbuNo: 1,
-      pageNo: 1,
-      pagePerCnt: 50
-    })
-    if (message === 'SUCCESS') {
-    } else {
-      globalCtx.action.alert({msg: message})
-    }
-  }
 
   const dateFormatterMMDD = (date) => {
     if (!date) return null
@@ -89,6 +79,7 @@ export default (props) => {
     let day = date.substring(8, 10)
     return `${month}월 ${day}일`
   }
+
   const dateFormatter = (date) => {
     if (!date) return null
     //0월 0일 00:00
@@ -109,120 +100,97 @@ export default (props) => {
     }
   }
 
-  const marbleValueIns = (color, cnt) => {
-    const rMarbleInputVal = rMarbleRef.current.value ? parseInt(rMarbleRef.current.value) : 0
-    const yMarbleInputVal = yMarbleRef.current.value ? parseInt(yMarbleRef.current.value) : 0
-    const bMarbleInputVal = bMarbleRef.current.value ? parseInt(bMarbleRef.current.value) : 0
-    const pMarbleInputVal = pMarbleRef.current.value ? parseInt(pMarbleRef.current.value) : 0
-    let resetMarble = () => {}
-
+  const marbleOnchange = (inputRef, marbleColor) => {
+    const targetVal = Number(inputRef.current.value)
     const toast1 = '구슬 개수를 확인해주세요'
     const toast2 = '베팅 가능한 최대 개수는 10개입니다'
+    const rMyMarble = myMarble.rMarble
+    const yMyMarble = myMarble.yMarble
+    const bMyMarble = myMarble.bMarble
+    const pMyMarble = myMarble.pMarble
+    const rMarbleInputVal = Number(rMarbleRef.current.value)
+    const yMarbleInputVal = Number(yMarbleRef.current.value)
+    const bMarbleInputVal = Number(bMarbleRef.current.value)
+    const pMarbleInputVal = Number(pMarbleRef.current.value)
+    let comparisonMarble
 
-    let betCnt = cnt
-
-    switch (color) {
-      case 'r':
-        resetMarble = (toast) => {
-          globalCtx.action.toast({msg: toast})
-          successMarbleRef.current[0].innerText = myMarble.rMarble
-          rMarbleRef.current.value = ''
-          betCnt = 0
-        }
-        if (myMarble.rMarble < cnt) {
-          // toast,
-          resetMarble(toast1)
-        } else if (cnt + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2)
-        } else {
-          successMarbleRef.current[0].innerText = myMarble.rMarble + cnt
-        }
-        setBettingVal({
-          ...bettingVal,
-          rBetting: betCnt
-        })
-        break
-
-      case 'y':
-        resetMarble = (toast) => {
-          globalCtx.action.toast({msg: toast})
-          successMarbleRef.current[1].innerText = myMarble.yMarble
-          yMarbleRef.current.value = ''
-          betCnt = 0
-        }
-        if (myMarble.yMarble < cnt) {
-          // toast,
-          resetMarble(toast1)
-        } else if (cnt + rMarbleInputVal + bMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2)
-        } else {
-          successMarbleRef.current[1].innerText = myMarble.yMarble + cnt
-        }
-        setBettingVal({
-          ...bettingVal,
-          yBetting: betCnt
-        })
-        break
-
-      case 'b':
-        resetMarble = (toast) => {
-          globalCtx.action.toast({msg: toast})
-          successMarbleRef.current[2].innerText = myMarble.bMarble
-          bMarbleRef.current.value = ''
-          betCnt = 0
-        }
-        if (myMarble.bMarble < cnt) {
-          // toast,
-          resetMarble(toast1)
-        } else if (cnt + rMarbleInputVal + yMarbleInputVal + pMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          // toast,
-          resetMarble(toast2)
-        } else {
-          successMarbleRef.current[2].innerText = myMarble.bMarble + cnt
-        }
-        setBettingVal({
-          ...bettingVal,
-          bBetting: betCnt
-        })
-        break
-
-      case 'p':
-        resetMarble = (toast) => {
-          globalCtx.action.toast({msg: toast})
-          successMarbleRef.current[3].innerText = myMarble.pMarble
-          pMarbleRef.current.value = ''
-          betCnt = 0
-        }
-        if (myMarble.pMarble < cnt) {
-          resetMarble(toast1)
-        } else if (cnt + rMarbleInputVal + yMarbleInputVal + bMarbleInputVal > MAX_MARBLE_BETTING_CNT) {
-          resetMarble(toast2)
-        } else {
-          successMarbleRef.current[3].innerText = myMarble.pMarble + cnt
-        }
-        setBettingVal({
-          ...bettingVal,
-          pBetting: betCnt
-        })
-        break
-
-      default:
+    if ((marbleColor = 'r')) {
+      comparisonMarble = rMyMarble
+    } else if ((marbleColor = 'y')) {
+      comparisonMarble = yMyMarble
+    } else if ((marbleColor = 'b')) {
+      comparisonMarble = bMyMarble
+    } else if ((marbleColor = 'p')) {
+      comparisonMarble = pMyMarble
     }
-  }
 
-  const marbleOnchange = (inputRef, marbleColor) => {
-    const marbleCnt = Number(inputRef.current.value)
-    if (typeof marbleCnt === 'number') {
-      if (marbleCnt <= 0) {
+    if (typeof targetVal === 'number') {
+      if (targetVal <= 0) {
         inputRef.current.value = ''
-      } else if (!isNaN(marbleCnt)) {
-        marbleValueIns(marbleColor, marbleCnt)
-      } else {
-        marbleValueIns(marbleColor, 0)
+      }
+      if (targetVal > 10) {
+        inputRef.current.value = ''
+        globalCtx.action.toast({msg: toast2})
+      }
+      if (targetVal > comparisonMarble) {
+        inputRef.current.value = ''
+        globalCtx.action.toast({msg: toast1})
+      }
+      if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
+        inputRef.current.value = ''
+        globalCtx.action.toast({msg: toast2})
       }
     }
+
+    setSuccessVal({
+      rSuccess: rMyMarble + rMarbleInputVal,
+      ySuccess: yMyMarble + yMarbleInputVal,
+      bSuccess: bMyMarble + bMarbleInputVal,
+      pSuccess: pMyMarble + pMarbleInputVal
+    })
+  }
+
+  const marbleOnfocus = (inputRef) => {
+    console.log('focusIn')
+    let val = Number(inputRef.current.value)
+    if (val === 0) {
+      inputRef.current.value = ''
+    }
+  }
+  const marbleOnfocusout = () => {
+    const rMyMarble = myMarble.rMarble
+    const yMyMarble = myMarble.yMarble
+    const bMyMarble = myMarble.bMarble
+    const pMyMarble = myMarble.pMarble
+    const rMarbleInputVal = Number(rMarbleRef.current.value)
+    const yMarbleInputVal = Number(yMarbleRef.current.value)
+    const bMarbleInputVal = Number(bMarbleRef.current.value)
+    const pMarbleInputVal = Number(pMarbleRef.current.value)
+    if (rMarbleRef.current.value === '') {
+      rMarbleRef.current.value = 0
+    }
+    if (yMarbleRef.current.value === '') {
+      yMarbleRef.current.value = 0
+    }
+    if (bMarbleRef.current.value === '') {
+      bMarbleRef.current.value = 0
+    }
+    if (pMarbleRef.current.value === '') {
+      pMarbleRef.current.value = 0
+    }
+    setBettingVal({
+      rBetting: Number(rMarbleRef.current.value),
+      yBetting: Number(yMarbleRef.current.value),
+      bBetting: Number(bMarbleRef.current.value),
+      pBetting: Number(pMarbleRef.current.value)
+    })
+
+    setSuccessVal({
+      rSuccess: rMyMarble + rMarbleInputVal,
+      ySuccess: yMyMarble + yMarbleInputVal,
+      bSuccess: bMyMarble + bMarbleInputVal,
+      pSuccess: pMyMarble + pMarbleInputVal
+    })
   }
 
   const bettingStart = () => {
@@ -231,6 +199,22 @@ export default (props) => {
     } else {
       globalCtx.action.toast({msg: `베팅 가능한 횟수는 하루에 두 번 입니다.`})
     }
+  }
+
+  const completePopup = () => {
+    setBettingPop(false)
+    setBettingVal({
+      rBetting: 0,
+      yBetting: 0,
+      bBetting: 0,
+      pBetting: 0
+    })
+    rMarbleRef.current.value = 0
+    yMarbleRef.current.value = 0
+    bMarbleRef.current.value = 0
+    pMarbleRef.current.value = 0
+
+    fetchGganbuData()
   }
 
   const btnAbled = () => {
@@ -244,7 +228,7 @@ export default (props) => {
   }
 
   useEffect(() => {
-    fetchGganbuCheck()
+    fetchGganbuData()
     fetchBettingPage()
   }, [])
 
@@ -325,13 +309,10 @@ export default (props) => {
                     ref={rMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
-                    placeholder="0"
+                    defaultValue="0"
                     onChange={() => marbleOnchange(rMarbleRef, 'r')}
-                    onFocus={() => {
-                      if (bettingVal.rBetting === 0) {
-                        rMarbleRef.current.value = ''
-                      }
-                    }}
+                    onFocus={() => marbleOnfocus(rMarbleRef)}
+                    onBlur={() => marbleOnfocusout()}
                   />
                 </div>
                 <div className="marbleData">
@@ -341,8 +322,10 @@ export default (props) => {
                     ref={yMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
-                    placeholder="0"
+                    defaultValue="0"
                     onChange={() => marbleOnchange(yMarbleRef, 'y')}
+                    onFocus={() => marbleOnfocus(yMarbleRef)}
+                    onBlur={() => marbleOnfocusout()}
                   />
                 </div>
                 <div className="marbleData">
@@ -352,8 +335,10 @@ export default (props) => {
                     ref={bMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
-                    placeholder="0"
+                    defaultValue="0"
                     onChange={() => marbleOnchange(bMarbleRef, 'b')}
+                    onFocus={() => marbleOnfocus(bMarbleRef)}
+                    onBlur={() => marbleOnfocusout()}
                   />
                 </div>
                 <div className="marbleData">
@@ -363,8 +348,10 @@ export default (props) => {
                     ref={pMarbleRef}
                     name="marbleBettingCount"
                     className="bettingCount"
-                    placeholder="0"
+                    defaultValue="0"
                     onChange={() => marbleOnchange(pMarbleRef, 'p')}
+                    onFocus={() => marbleOnfocus(pMarbleRef)}
+                    onBlur={() => marbleOnfocusout()}
                   />
                 </div>
               </div>
@@ -377,27 +364,19 @@ export default (props) => {
               <div className="sectionMarble">
                 <div className="marbleData">
                   <span className="marbleIcon red"></span>
-                  <span ref={(el) => (successMarbleRef.current[0] = el)} className="marbleCount">
-                    {myMarble.rMarble}
-                  </span>
+                  <span className="marbleCount">{successVal.rSuccess}</span>
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon yellow"></span>
-                  <span ref={(el) => (successMarbleRef.current[1] = el)} className="marbleCount">
-                    {myMarble.yMarble}
-                  </span>
+                  <span className="marbleCount">{successVal.ySuccess}</span>
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon blue"></span>
-                  <span ref={(el) => (successMarbleRef.current[2] = el)} className="marbleCount">
-                    {myMarble.bMarble}
-                  </span>
+                  <span className="marbleCount">{successVal.bSuccess}</span>
                 </div>
                 <div className="marbleData">
                   <span className="marbleIcon purple"></span>
-                  <span ref={(el) => (successMarbleRef.current[3] = el)} className="marbleCount">
-                    {myMarble.pMarble}
-                  </span>
+                  <span className="marbleCount">{successVal.pSuccess}</span>
                 </div>
               </div>
             </div>
@@ -467,6 +446,10 @@ export default (props) => {
           setBettingVal={setBettingVal}
           myMarble={myMarble}
           setMyMarble={setMyMarble}
+          setParticipantList={setParticipantList}
+          setMyBettingLogList={setMyBettingLogList}
+          setBettingAbled={setBettingAbled}
+          completePopup={completePopup}
         />
       )}
     </div>
