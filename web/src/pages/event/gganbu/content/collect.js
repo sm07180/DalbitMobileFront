@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useContext, useLayoutEffect} from 'react'
+import React, {useEffect, useState, useCallback, useLayoutEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import styled, {css} from 'styled-components'
@@ -13,7 +13,6 @@ import PopupDetails from './popupDetails'
 import PopupReport from './popupReport'
 
 export default (props) => {
-  const context = useContext(Context)
   const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList} = props
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])

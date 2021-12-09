@@ -35,7 +35,6 @@ export default (props) => {
     }
   }
 
-  const application = tabBtn
   const fetchGganbuSubList = async () => {
     const param = {
       insSlct: tabBtn,
@@ -72,7 +71,7 @@ export default (props) => {
       gganbuNo: gganbuNo,
       ptrMemNo: ptr_mem_no
     }
-    const {data, message} = await Api.postGganbuCancel(param)
+    const {message} = await Api.postGganbuCancel(param)
     if (message === 'SUCCESS') {
       console.log(message)
       context.action.alert({
@@ -91,7 +90,7 @@ export default (props) => {
 
   useEffect(() => {
     fetchGganbuSubList()
-  }, [application])
+  }, [tabBtn])
 
   // 수락 => 동의서, 실패
   const Accept = (props) => {
@@ -147,31 +146,33 @@ export default (props) => {
           <>
             <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
             <div className="listWrap" style={{height: '329px'}}>
-              {gganbuSubList.length > 0 &&
-                gganbuSubList.map((data, index) => {
-                  const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
-                  return (
-                    <div className="list" key={`myGganbu-${index}`}>
-                      <div className="photo">
-                        <img src={mem_profile.thumb50x50} alt="유저이미지" />
-                      </div>
-                      <div className="listBox">
-                        <div className="nick">{mem_nick}</div>
-                        <div className="listItem">
-                          <span>Lv. {mem_level}</span>
-                          <span className="average">
-                            <em>평균</em>
-                            <span>Lv {average_level}</span>
-                          </span>
+              {gganbuSubList.length > 0 ? (
+                <>
+                  {gganbuSubList.map((data, index) => {
+                    const {average_level, mem_profile, mem_level, mem_nick, mem_no} = data
+                    return (
+                      <div className="list" key={`rGganbu-${index}`}>
+                        <div className="photo">
+                          <img src={mem_profile.thumb50x50} alt="유저이미지" />
                         </div>
+                        <div className="listBox">
+                          <div className="nick">{mem_nick}</div>
+                          <div className="listItem">
+                            <span>Lv. {mem_level}</span>
+                            <span className="average">
+                              <em>평균</em>
+                              <span>Lv {average_level}</span>
+                            </span>
+                          </div>
+                        </div>
+                        <button className="accept" onClick={() => acceptBtn(mem_no, mem_nick)}>
+                          수락
+                        </button>
                       </div>
-                      <button className="accept" onClick={() => acceptBtn(mem_no, mem_nick)}>
-                        수락
-                      </button>
-                    </div>
-                  )
-                })}
-              {gganbuSubList.length === 0 && (
+                    )
+                  })}
+                </>
+              ) : (
                 <div className="listNone">
                   <NoResult type="default" text="신청한 회원이 없습니다." />
                 </div>
@@ -184,7 +185,7 @@ export default (props) => {
               gganbuSubList.map((data, index) => {
                 const {average_level, mem_no, ptr_mem_profile, ptr_mem_level, ptr_mem_nick, ptr_mem_no} = data
                 return (
-                  <div className="list" key={index}>
+                  <div className="list" key={`mGganbu-${index}`}>
                     <div className="photo">
                       <img src={ptr_mem_profile.thumb50x50} alt="유저이미지" />
                     </div>

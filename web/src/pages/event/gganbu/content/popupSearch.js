@@ -18,7 +18,8 @@ export default (props) => {
   const [fanList, setFanList] = useState([])
   const [memberList, setMemberList] = useState([])
   const [memberNo, setMemberNo] = useState()
-  const [currentPage, setCurrentPage] = useState(0)
+  const [searchState, setSearchState] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
   const [alertAccept, setAlertAccept] = useState(false)
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export default (props) => {
     const param = {
       searchText: result,
       myLevel: myProfileLevel,
-      pageNo: 1,
+      pageNo: totalPage,
       pagePerCnt: records
     }
     const {data, message} = await Api.getGganbuSearch(param)
@@ -80,10 +81,18 @@ export default (props) => {
         }
       })
     } else {
+      setSearchState(true)
       fetchGganbuSearch()
       setTimeout(() => {
         btnAccess = false
       }, 1000)
+    }
+  }
+  const searchStateCheck = () => {
+    if (searchState) {
+      fetchGganbuSearch()
+    } else {
+      fetchFanList()
     }
   }
 
@@ -96,10 +105,9 @@ export default (props) => {
       pageNo: 1,
       pagePerCnt: 50
     }
-    const {data, message} = await Api.getGganbuFanList(param) //mypage_fan_list, getGganbuFanList
+    const {data, message} = await Api.getGganbuFanList(param)
     if (message === 'SUCCESS') {
       setFanList(data.list)
-      console.log(data)
     } else {
       context.action.alert({
         msg: message
@@ -120,6 +128,32 @@ export default (props) => {
         msg: '신청 완료',
         callback: () => {
           closeAlert()
+          searchStateCheck()
+        }
+      })
+    } else {
+      context.action.alert({
+        msg: message,
+        callback: () => {
+          closeAlert()
+          searchStateCheck()
+        }
+      })
+    }
+  }
+  // 취소 버튼
+  const postGganbuCancel = async (ptr_mem_no) => {
+    const param = {
+      gganbuNo: gganbuNo,
+      ptrMemNo: ptr_mem_no
+    }
+    const {message} = await Api.postGganbuCancel(param)
+    if (message === 'SUCCESS') {
+      context.action.alert({
+        msg: '취소 완료',
+        callback: () => {
+          closeAlert()
+          searchStateCheck()
         }
       })
     } else {
@@ -130,8 +164,11 @@ export default (props) => {
   }
 
   useEffect(() => {
-    fetchFanList()
-  }, [])
+    if (result === '') {
+      fetchFanList()
+      setSearchState(false)
+    }
+  }, [result])
 
   // 수락 => 동의서, 실패
   const Accept = () => {
@@ -195,7 +232,7 @@ export default (props) => {
             </button>
           </form>
         </div>
-        {btnAccess === false ? (
+        {!searchState ? (
           <>
             <div className="searchTitle">
               나의 팬<span>낮은 레벨 순</span>
@@ -227,7 +264,9 @@ export default (props) => {
                                 신청
                               </button>
                             ) : (
-                              <button className="cancel">취소</button>
+                              <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                                취소
+                              </button>
                             )}
                           </>
                         ) : (
@@ -268,15 +307,14 @@ export default (props) => {
                           신청
                         </button>
                       ) : (
-                        <button className="cancel">취소</button>
+                        <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                          취소
+                        </button>
                       )}
                     </>
                   ) : (
                     <button className="accept">수락</button>
                   )}
-                  {/* <button className="disable" disabled>
-                    신청불가
-                  </button> */}
                 </div>
               )
             })}
