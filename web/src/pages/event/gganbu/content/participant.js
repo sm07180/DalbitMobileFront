@@ -7,7 +7,7 @@ import Header from 'components/ui/new_header'
 
 //components
 import {useHistory} from 'react-router-dom'
-
+import moment from 'moment'
 //staic
 import newIcon from '../static/new_circle_m.svg'
 
@@ -27,12 +27,7 @@ export default () => {
 
   const dateFormatter = (date) => {
     if (!date) return null
-    //0월 0일 00:00
-    // 20200218145519
-    let year = date.substring(0, 4)
-    let month = date.substring(5, 7)
-    let day = date.substring(8, 10)
-    return `${year}.${month}.${day}`
+    return moment(date).format('YYYY.MM.DD');
   }
 
   async function fetchBettingParticipant() {
@@ -44,7 +39,6 @@ export default () => {
     })
     if (message === 'SUCCESS') {
       setParticipantList(data.bettingListInfo.list);
-      console.log(participantList);
     } else {
       moreState = false
     }
@@ -117,7 +111,6 @@ export default () => {
                 </tr>
               ) : (
                 participantList.map((item, index) => {
-                  console.log(participantList)
                   const {image_profile, mem_no, mem_nick, win_slct, ins_date, isNewYn} = item
                   return (
                     <tr key={index}>
