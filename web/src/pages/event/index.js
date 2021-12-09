@@ -28,8 +28,6 @@ import Award from './award'
 import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
-import Raffle from './raffle'
-import RaffleDj from './raffleDj'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
@@ -42,6 +40,7 @@ import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
+import Draw from './draw'
 
 export default () => {
   const params = useParams()
@@ -93,10 +92,6 @@ export default () => {
         return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
-      case 'raffle':
-        return <Raffle />
-      case 'raffleDj':
-        return <RaffleDj />
       case 'recommend_dj':
         return <RecommendDj />
       case 'recommend_dj2':
@@ -123,6 +118,8 @@ export default () => {
         return <BroadcastRoulette />
       case 'anniversary':
         return <AnniversaryEvent />
+      case 'draw':
+        return <Draw />
       default:
         return <></>
         break

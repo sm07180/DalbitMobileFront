@@ -341,7 +341,7 @@ const App = () => {
     if(os === 2) {
       const appReviewYn = 'y';
       if(appReviewYn === 'y') {
-        const tempIosVersion = "1.6.2" // 이 버전 이상은 birthForm 을 감출려고 한다
+        const tempIosVersion = "1.6.3" // 이 버전 이상은 birthForm 을 감출려고 한다
         const successCallback = () => showBirthForm = false;
 
         await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});

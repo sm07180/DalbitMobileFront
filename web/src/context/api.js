@@ -2410,6 +2410,22 @@ export default class API {
     const {data} = obj
     return await ajax({url: `/social/facebook/callback`, method: 'POST', data})
   }
+  static getChangeItem = async (obj) => {
+    const {params} = obj
+    return await ajax({
+      url: `/mypage/change/item`,
+      method: 'GET',
+      params: params
+    })
+  }
+
+  static new_social_login = async (obj) => {
+    return await ajax({
+      url: `/social/${obj.type}/callback`,
+      method: 'GET',
+      params: obj.type === 'google' ? {idToken: obj.token} : {accessToken: obj.token}
+    })
+  }
 
   /**
    * @brief PUSH Click
@@ -3298,54 +3314,44 @@ export default class API {
     })
   }
 
-  // 11월 이벤트 (팬)
-  static getRaffleEventTotalInfo = async () => {
-    return await ajax({
-      url: '/event/raffle/fan/total/list',
-      method: 'GET'
-    })
-  }
-
-  // 11월 이벤트 응모 (팬)
-  static putEnterRaffleEvent = async (data) => {
-    return await ajax({
-      url: '/event/raffle/enter',
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 회차별 (팬)
-  static getRaffleEventRoundInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/fan/round/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 DJ
-  static getRaffleEventDjInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/main/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 아이템 지급 및 차감
-  static eventItemIns = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/ins/item',
-      method: 'POST',
-      params: data
-    })
-  }
-
   // 1일 1회 본인인증 확인
   static certificationCheck = async () => {
     return await ajax({
       url: '/profile/certification/check',
+      method: 'GET'
+    })
+  }
+
+  // 추억의 뽑기 이벤트 뽑기
+  static putDrawSelect = async (data) => {
+    console.log(data);
+    return await ajax({
+      url: '/event/draw/select',
+      method: 'POST',
+      data: data
+    })
+  }
+
+  // 추억의 뽑기 이벤트 응모권 조회
+  static getDrawTicketCnt = async () => {
+    return await ajax({
+      url: '/event/draw/ticketCnt',
+      method: 'GET'
+    })
+  }
+
+  // 추억의 뽑기 이벤트 당첨내역 조회
+  static getDrawWinningInfo = async () => {
+    return await ajax({
+      url: '/event/draw/winningInfo',
+      method: 'GET'
+    })
+  }
+
+  // 추억의 뽑기 이벤트 뽑기 리스트 조회
+  static getDrawListInfo = async () => {
+    return await ajax({
+      url: '/event/draw/listInfo',
       method: 'GET'
     })
   }

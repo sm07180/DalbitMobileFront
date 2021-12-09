@@ -17,41 +17,47 @@
           justify-content: center;
           flex-direction: column;
           width: 100%;
-          padding-bottom: 30px;
+          padding-bottom: 40px;
           background-size: 100%;
           image-rendering: auto;
           &:nth-child(1) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-1.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-1.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(2) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-2.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-2.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(3) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-3.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-3.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(4) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-4.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-4.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(5) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-5.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-5.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(6) {
-              padding-bottom: 60px;
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-6.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-6.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(7) {
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-7.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-7.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           &:nth-child(8) {
-              padding-bottom: 60px;
-            background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bg-8.png') #fff bottom no-repeat;
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-8.png') #fff bottom no-repeat;
+            background-size: 100% 100%;
+          }
+          &:nth-child(9) {
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-9.png') #fff bottom no-repeat;
+            background-size: 100% 100%;
+          }
+          &:nth-child(10) {
+            background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bg-10.png') #fff bottom no-repeat;
             background-size: 100% 100%;
           }
           
@@ -64,8 +70,8 @@
           position: absolute;
           top: 20px; left: 50%;
           transform:  translateX(-50%);
-          width: 60%;
-          padding-bottom: 67%;
+          width: 50%;
+          padding-bottom: 65%;
           cursor: pointer;
       }
     }
@@ -77,6 +83,7 @@
         flex-direction: column;
         width: 70%;
         padding: 5% 10% 2%;
+        margin-top: 10px;
         border: 1px solid #DEBFF9;
         border-radius: 10px;
         box-sizing: border-box;
@@ -203,7 +210,7 @@
         flex-direction: column;
         width: 100%;
         padding: 10% 0;
-        background: url('https://image.dalbitlive.com/event/bestDj/2111/bestDj_2111-bottom.png') bottom no-repeat;
+        background: url('https://image.dalbitlive.com/event/bestDj/2112/bestDj_2112-bottom.png') bottom no-repeat;
         background-size: 100% 100%;
       &Info {
           text-align: center;
