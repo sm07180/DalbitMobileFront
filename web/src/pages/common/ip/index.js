@@ -44,6 +44,20 @@ export default () => {
       localStorage.setItem('innerChk', innerChk); //client ip
     }
   };
+  //userAgent check
+  const getDeviceOSTypeChk = () => {
+    if(typeof window ==='undefined') return;
+    const userAgent = window.navigator.userAgent;
+    let osName;
+    if(userAgent) { // return: Array or null
+      osName = userAgent.match(/(Android)/gi) || userAgent.match(/(iPhone)/gi) || userAgent.match(/(iPad)/gi) || userAgent.match(/(Windows)/gi);
+    }
+    osName = osName? osName[0] : 'Windows'; // null이면 Desktop으로 세팅
+    return osName === 'Android' ? OS_TYPE['Android'] :
+      osName === 'iPhone' ? OS_TYPE['IOS'] :
+        osName === 'iPad' ? OS_TYPE['IOS'] :
+          osName === 'Windows' ? OS_TYPE['Desktop'] : OS_TYPE['Desktop'];
+  };
 
   useEffect(() => {
     if (history && history.location.pathname === '/') {  //메인페이지에서만 서버 리스트를 보여줍니다.
@@ -65,9 +79,16 @@ export default () => {
               const obj = readDevInfoData(e.target.value);
               if (obj) {
                 const {host, api, photo, socketURL} = obj;
-                !isHybrid() ?
-                  (() => location.href = host)()
-                    :Hybrid('setAppHost', {host, api, photo, socketURL});
+                if(!isHybrid()) { //web
+                  location.href = host;
+                } else { //mobile
+                  const osType = getDeviceOSTypeChk();
+                  if(osType === OS_TYPE['IOS']){ //IOS 브릿지 작업안되어서 분기처리
+                    location.href = host;
+                  } else { //Android
+                    Hybrid('setAppHost', {host, api, photo, socketURL});
+                  }
+                }
               }
             }}>
       {redirectList.map((info, idx) => {
