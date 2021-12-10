@@ -78,7 +78,6 @@ const App = () => {
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader');
 
-    console.log('getDeviceOSTypeChk', getDeviceOSTypeChk());
 
     if (customHeaderTag && customHeaderTag.value) {
       // The data that got from server is encoded as URIComponent.
