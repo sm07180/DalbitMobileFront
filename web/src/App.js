@@ -101,7 +101,7 @@ const App = () => {
       if (isJsonString(customHeaderCookie)) {
         const parsed = JSON.parse(customHeaderCookie)
         if (parsed['os']) {
-          parsed['os'] = getDeviceOSTypeChk();
+          parsed['os'] = Number(parsed['os'])
         }
 
         if (parsed['deviceId']) {
@@ -113,7 +113,7 @@ const App = () => {
     }
 
     const createHeader = {
-      os: getDeviceOSTypeChk(),
+      os: OS_TYPE['Desktop'],
       deviceId: createDeviceUUid(),
       appVersion: '1.0.1',
       locale: 'ko',
