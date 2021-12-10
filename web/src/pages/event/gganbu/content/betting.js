@@ -12,7 +12,7 @@ import moment from 'moment'
 export default (props) => {
   const globalCtx = useContext(Context)
   const MAX_MARBLE_BETTING_CNT = 10
-  const {tabContent, setTabContent, gganbuInfo} = props
+  const {tabContent, gganbuNo} = props
 
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
   const [myMarble, setMyMarble] = useState({
@@ -47,7 +47,7 @@ export default (props) => {
   const history = useHistory()
 
   const fetchGganbuData = async () => {
-    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
+    const {data, message} = await Api.gganbuInfoSel({gganbuNo: gganbuNo})
     if (message === 'SUCCESS') {
       setMyMarble({
         rMarble: data.red_marble,
@@ -64,7 +64,7 @@ export default (props) => {
     }
   }
   const fetchBettingPage = async () => {
-    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: 1})
+    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: gganbuNo})
     if (message === 'SUCCESS') {
       setParticipantList(data.bettingListInfo.list)
       setMyBettingLogList(data.myBettingListInfo.list)
@@ -485,6 +485,7 @@ export default (props) => {
           setMyBettingLogList={setMyBettingLogList}
           setBettingAbled={setBettingAbled}
           completePopup={completePopup}
+          gganbuNo={gganbuNo}
         />
       )}
     </div>

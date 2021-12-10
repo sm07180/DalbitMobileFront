@@ -198,7 +198,7 @@ export default () => {
           rankList={rankList}
         />
       ) : (
-        <Betting tabContent={tabContent} setTabContent={setTabContent} gganbuInfo={gganbuInfo} />
+        <Betting tabContent={tabContent} gganbuNo={gganbuNo} />
       )}
 
       {/* 팝업 */}
