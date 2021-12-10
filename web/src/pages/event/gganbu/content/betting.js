@@ -61,7 +61,7 @@ export default (props) => {
       })
     }
   }
-  
+
   const fetchBettingPage = async () => {
     const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: gganbuNo})
     if (message === 'SUCCESS') {
@@ -95,6 +95,7 @@ export default (props) => {
   
   const btnAbled = () => {
     const btnEle = document.getElementById('bettingBtn')
+
     if (bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {
       btnEle.classList.remove('disable')
     } else {

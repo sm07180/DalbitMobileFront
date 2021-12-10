@@ -30,7 +30,10 @@ export default () => {
   const [popupSearch, setPopupSearch] = useState(false)
   const [popupStatus, setPopupStatus] = useState(false)
 
-  const goBack = useCallback(() => history.goBack(), [])
+  const goBack = useCallback(() => {
+    globalCtx.action.updateGganbuTab('collect');
+    history.goBack();
+  }, []);
 
   // 깐부회차 조회
   const gganbuRoundLookup = async () => {
@@ -169,28 +172,28 @@ export default () => {
       </div>
       <div className={`tabWrap ${tabFixed === true ? 'fixed' : ''}`} ref={tabMenuRef}>
         <div className="tabBtn" ref={tabBtnRef}>
-          <button className={tabContent === 'collect' ? 'active' : ''} onClick={() => setTabContent('collect')}>
+          <button className={globalCtx.gganbuTab === 'collect' ? 'active' : ''} onClick={() => globalCtx.action.updateGganbuTab('collect')}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${tabContent === 'collect' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-1-${globalCtx.gganbuTab === 'collect' ? 'on' : 'off'}.png`}
               alt="구슬 모으기"
             />
           </button>
           <button
-            className={tabContent === 'betting' ? 'active' : ''}
+            className={globalCtx.gganbuTab === 'betting' ? 'active' : ''}
             onClick={() => {
-              gganbuState === 1 ? setTabContent('betting') : notLoginAlert()
+              gganbuState === 1 ? globalCtx.action.updateGganbuTab('betting') : notLoginAlert()
             }}>
             <img
-              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${tabContent === 'betting' ? 'on' : 'off'}.png`}
+              src={`https://image.dalbitlive.com/event/gganbu/tabTxt-2-${globalCtx.gganbuTab === 'betting' ? 'on' : 'off'}.png`}
               alt="구슬 베팅소"
             />
           </button>
           <span className="tabLine"></span>
         </div>
       </div>
-      {tabContent === 'collect' ? (
+      {globalCtx.gganbuTab === 'collect' ? (
         <Collect
-          tabContent={tabContent}
+          tabContent={globalCtx.gganbuTab}
           gganbuState={gganbuState}
           gganbuNo={gganbuNo}
           gganbuInfo={gganbuInfo}
@@ -198,7 +201,7 @@ export default () => {
           rankList={rankList}
         />
       ) : (
-        <Betting tabContent={tabContent} gganbuNo={gganbuNo} />
+        <Betting tabContent={globalCtx.gganbuTab} gganbuNo={gganbuNo} />
       )}
 
       {/* 팝업 */}
