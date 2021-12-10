@@ -18,10 +18,12 @@ import newIcon from '../static/new_circle_m.svg'
 export default () => {
   const context = useContext(Context)
   const history = useHistory()
+  const [gganbuNumber, setGganbuNumber] = useState(0)
   const [totalCommentCnt, setTotalCommentCnt] = useState(0)
   const [nextList, setNextList] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
   const [logList, setLogList] = useState([])
+  const [logList2, setLogList2] = useState([]);
   const [openPocket, setOpenPocket] = useState(false)
   const [btnActive, setBtnActive] = useState(false)
   const [exchangeAble, setExchangeAble] = useState(0)
@@ -38,73 +40,34 @@ export default () => {
     pTicket : 0,
   })
 
+
   const fetchGganbuPocketPage = async () => {
-    const {data, message} = await Api.gganbuPocketPage({gganbuNo: 1});
-    if(message === "SUCCESS") {
-      if(message === "SUCCESS") {
-        setTicketCtn({
-          rTicket : data.gganbuMemSel.exc_red_marble,
-          yTicket : data.gganbuMemSel.exc_yellow_marble,
-          bTicket : data.gganbuMemSel.exc_blue_marble,
-          pTicket : data.gganbuMemSel.exc_violet_marble,
-        })      
-        if((data.gganbuMemSel.exc_red_marble >= 10) && (data.gganbuMemSel.exc_yellow_marble >= 10) && (data.gganbuMemSel.exc_blue_marble >= 10) && (data.gganbuMemSel.exc_violet_marble >= 10)) {
-          let rPossible = data.gganbuMemSel.exc_red_marble/10;
-          let yPossible = data.gganbuMemSel.exc_yellow_marble/10;
-          let bPossible = data.gganbuMemSel.exc_blue_marble/10;
-          let pPossible = data.gganbuMemSel.exc_violet_marble/10;
-  
-          var min = parseInt(Math.min(rPossible,yPossible,bPossible,pPossible));
-          setExchangeAble(min)
-          setBtnActive(true)
-        }
-        setMyPoint(data.gganbuMemSel.marble_pocket_pt);
-        setPocketCtn(data.gganbuMemSel.marble_pocket);
-        setAverageLevel(data.gganbuMemSel.average_level);
-      }
+    const {data, message} = await Api.gganbuPocketPage();
+    if(message === "SUCCESS") { 
+      setGganbuNumber(data.gganbuNo);
+      setMyPoint(data.gganbuMemSel.marble_pocket_pt);
+      setPocketCtn(data.gganbuMemSel.marble_pocket);
+      setAverageLevel(data.gganbuMemSel.average_level);
     }
   }
 
   const fetchGganbuPocketOpen = async (point) => {
-    const {data} = await Api.getGganbuPocketOpen({
-      marblePocketPt : point
-    });
-    if(data === 1) {
-      setOpenPocket(true)       
-    }
+    const {data} = await Api.getGganbuPocketOpen({marblePocketPt : point});
+    if(data === 1) {setOpenPocket(true)}
   }
 
-  const fetchGganbuPocket = async () => {
-    const {data} = await Api.getGganbuPocket();
-    if(data === 1) {
-      setPocketCtn(pocketCtn + 1)
-      setExchangeAble(exchangeAble - 1);
-      setTicketCtn({
-        rTicket : ticketCtn.rTicket - 10,
-        yTicket : ticketCtn.yTicket - 10,
-        bTicket : ticketCtn.bTicket - 10,
-        pTicket : ticketCtn.pTicket - 10,
-      })   
-      if(exchangeAble > 1) {
-  
-      } else {
-        setBtnActive(false);
-      }
-    }
-  }
-  
   const dateFormatter = (date) => {
     if (!date) return null
     return moment(date).format('MM.DD HH:mm');
   }
 
   let totalPage = 1
-  let pagePerCnt = 30
+  let pagePerCnt = 50
 
   // 깐부 리포트 리스트 조회
   const fetchGganbuPocketReport = useCallback(async () => {
     const {data, message} = await Api.getGganbuPocketReport({
-      gganbuNo: 1,
+      gganbuNo: gganbuNumber,
       pageNo: currentPage,
       pagePerCnt: pagePerCnt,
       tabSlct: tabMenuActive,
@@ -114,11 +77,21 @@ export default () => {
 
       totalPage = Math.ceil(data.listCnt / pagePerCnt)
 
+
       if(currentPage === 1){
-        setLogList(data.list)
-      } else if (currentPage > 1) {
-        const datas = logList.concat(data.list);
+        if(tabMenuActive === 'r') {
+          setLogList(data.list)
+        }else {
+          setLogList2(data.list);
+        }
+      }else{
+        if(tabMenuActive === 'r') {
+          const datas = logList.concat(data.list);
         setLogList(datas)
+        }else {
+          const datas = logList2.concat(data.list);
+        setLogList2(datas)
+        }
       }
     }
   }, [currentPage, tabMenuActive])
@@ -138,7 +111,7 @@ export default () => {
   }, [currentPage])
 
   useEffect(() => {
-    if (currentPage > 0) fetchGganbuPocketReport()
+    if (currentPage > 1) fetchGganbuPocketReport()
   }, [currentPage])
 
   const pocketOpen = () => {
@@ -148,45 +121,47 @@ export default () => {
       setRandomPoint(point);
       setAniLevel("ani4");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
         fetchGganbuPocketPage();
+        setCurrentPage(1);    
       }, 10000);
     } else if (averageLevel < 50) {
       point = Math.floor(Math.random() * 30) + 40;
       setRandomPoint(point);
       setAniLevel("ani3");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
         fetchGganbuPocketPage();
+        setCurrentPage(1);    
       }, 9000);
     } else if (averageLevel < 70) {
       point = Math.floor(Math.random() * 20) + 30;
       setRandomPoint(point);
       setAniLevel("ani2");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
         fetchGganbuPocketPage();
+        setCurrentPage(1);    
       }, 8000);
     } else {
       point = Math.floor(Math.random() * 20) + 10;
       setRandomPoint(point);
       setAniLevel("ani1");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
         fetchGganbuPocketPage();
+        setCurrentPage(1);    
       }, 8000);
     }
-    fetchGganbuPocketOpen(point);  
+    fetchGganbuPocketOpen(point); 
   }
 
   useEffect(() => {
     fetchGganbuPocketReport();
-    setCurrentPage(1)
-  }, [tabMenuActive])
+  }, [tabMenuActive]);
 
   useEffect(() => {
     fetchGganbuPocketPage();
-    fetchGganbuPocketReport();
   }, [])
 
   return (
@@ -232,8 +207,8 @@ export default () => {
             <div className="title">받은 내역</div>
           </div>
           <div className="pocketTab">
-            <div className={`pocketTabMenu ${tabMenuActive === "r" ? "active" : ""}`} onClick={() => setTabMenuActive("r")}>구슬 주머니 받은 내역</div>
-            <div className={`pocketTabMenu ${tabMenuActive === "p" ? "active" : ""}`} onClick={() => setTabMenuActive("p")}>보너스 점수 내역</div>
+            <div className={`pocketTabMenu ${tabMenuActive === "r" ? "active" : ""}`} onClick={() => {setTabMenuActive("r"); setCurrentPage(1)}}>구슬 주머니 받은 내역</div>
+            <div className={`pocketTabMenu ${tabMenuActive === "p" ? "active" : ""}`} onClick={() => {setTabMenuActive("p"); setCurrentPage(1)}}>보너스 점수 내역</div>
           </div>
           {tabMenuActive === "r" ?
             <table>
@@ -252,7 +227,7 @@ export default () => {
               </thead>
 
               <tbody>
-                {!logList.length ? (
+                {logList.length === 0 ? (
                   <tr>
                     <td colSpan="3">받은 내역이 없습니다.</td>
                   </tr>
@@ -293,12 +268,12 @@ export default () => {
               </thead>
 
               <tbody>
-                {!logList.length ? (
+                {logList2.length === 0 ? (
                   <tr>
                     <td colSpan="3">받은 내역이 없습니다.</td>
                   </tr>
                 ) : (
-                  logList.map((item, index) => {
+                  logList2.map((item, index) => {
                     const {mem_nick, mem_no, marble_pocket_pt, ins_date} = item
                     return (
                       <tr key={index}>
@@ -316,8 +291,8 @@ export default () => {
                   })
                 )}
               </tbody>
-            </table>          }
-          
+            </table>
+          }          
         </div>
       </div>
 

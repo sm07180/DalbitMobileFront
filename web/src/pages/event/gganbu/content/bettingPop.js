@@ -8,7 +8,7 @@ import {Context} from 'context'
 
 export default (props) => {  
   const globalCtx = useContext(Context)
-  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup} = props
+  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup, gganbuNo} = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
@@ -42,7 +42,7 @@ export default (props) => {
   let bettingResult = ""
 
   const fetchGganbuData = async () => {
-    const {data, message} = await Api.gganbuInfoSel({gganbuNo: 1})
+    const {data, message} = await Api.gganbuInfoSel({gganbuNo: gganbuNo})
     if (message === 'SUCCESS') {
       setMyMarble({
         rMarble: data.red_marble,
@@ -53,7 +53,7 @@ export default (props) => {
     }
   }
   const fetchBettingPage = async () => {
-    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: 1});
+    const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: gganbuNo});
     if (message === 'SUCCESS') {
       setParticipantList(data.bettingListInfo.list);
       setMyBettingLogList(data.myBettingListInfo.list);
@@ -64,7 +64,7 @@ export default (props) => {
     }
   }
   const fetchBettingData = async () => {
-    const {data, message} = await Api.getGganbuBettingData({gganbuNo: 1});
+    const {data, message} = await Api.getGganbuBettingData({gganbuNo: gganbuNo});
 
     if (message === 'SUCCESS') {
       setParticipant({
