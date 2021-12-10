@@ -148,7 +148,8 @@ export default () => {
       setRandomPoint(point);
       setAniLevel("ani4");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
+        fetchGganbuPocketReport();
         fetchGganbuPocketPage();
       }, 10000);
     } else if (averageLevel < 50) {
@@ -156,7 +157,8 @@ export default () => {
       setRandomPoint(point);
       setAniLevel("ani3");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
+        fetchGganbuPocketReport();
         fetchGganbuPocketPage();
       }, 9000);
     } else if (averageLevel < 70) {
@@ -164,7 +166,8 @@ export default () => {
       setRandomPoint(point);
       setAniLevel("ani2");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
+        fetchGganbuPocketReport();
         fetchGganbuPocketPage();
       }, 8000);
     } else {
@@ -172,11 +175,12 @@ export default () => {
       setRandomPoint(point);
       setAniLevel("ani1");
       setTimeout(() => {      
-        setOpenPocket(false);
+        setOpenPocket(false); 
+        fetchGganbuPocketReport();
         fetchGganbuPocketPage();
       }, 8000);
     }
-    fetchGganbuPocketOpen(point);  
+    fetchGganbuPocketOpen(point); 
   }
 
   useEffect(() => {
