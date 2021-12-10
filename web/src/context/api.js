@@ -3373,11 +3373,10 @@ export default class API {
    */
 
   // 깐부 이벤트 회차번호
-  static gganbuMarbleGather = async (data) => {
+  static gganbuMarbleGather = async () => {
     return await ajax({
       url: '/event/gganbu/marble/gather',
-      method: 'POST',
-      params: data
+      method: 'POST'
     })
   }
 

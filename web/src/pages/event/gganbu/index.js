@@ -15,7 +15,6 @@ import './betting.scss'
 
 export default () => {
   const globalCtx = useContext(Context)
-  const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [gganbuNo, setGganbuNo] = useState()
@@ -110,12 +109,14 @@ export default () => {
   }
 
   useEffect(() => {
-    gganbuRoundLookup()
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
 
   useEffect(() => {
+    if (tabContent === 'collect') {
+      gganbuRoundLookup()
+    }
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }

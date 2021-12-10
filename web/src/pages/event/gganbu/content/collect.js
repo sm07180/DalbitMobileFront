@@ -13,7 +13,7 @@ import PopupDetails from './popupDetails'
 import PopupReport from './popupReport'
 
 export default (props) => {
-  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList} = props
+  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList} = props // rankList
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
@@ -51,7 +51,7 @@ export default (props) => {
     } else {
       console.log(message)
     }
-  }, [gganbuNo, currentPage])
+  }, [currentPage])
 
   const scrollEvtHdr = () => {
     if (Utility.isHitBottom()) {
