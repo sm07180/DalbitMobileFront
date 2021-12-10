@@ -33,12 +33,7 @@ export default (props) => {
     bGap : "",
     pGap : "",
   });
-  const [getMarble, setGetMarble] = useState({
-    insSlct : "b",
-    marbleCnt : 0,
-    winSlct : "",
-    bettingSlct : "",
-  });
+
   let bettingResult = ""
 
   const fetchGganbuData = async () => {
@@ -52,6 +47,7 @@ export default (props) => {
       })    
     }
   }
+
   const fetchBettingPage = async () => {
     const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: gganbuNo});
     if (message === 'SUCCESS') {
@@ -63,6 +59,7 @@ export default (props) => {
       globalCtx.action.alert({msg: message})
     }
   }
+
   const fetchBettingData = async () => {
     const {data, message} = await Api.getGganbuBettingData({gganbuNo: gganbuNo});
 
@@ -83,7 +80,7 @@ export default (props) => {
   async function fetchBettingComplete() {
     const param = {
       insSlct: "b",
-      rMarbleCnt: gapVal.rGap < 0 ? gapVal.rGap * -1 : gapVal.rGap ,
+      rMarbleCnt: gapVal.rGap < 0 ? gapVal.rGap * -1 : gapVal.rGap,
       yMarbleCnt: gapVal.yGap < 0 ? gapVal.yGap * -1 : gapVal.yGap,
       bMarbleCnt: gapVal.bGap < 0 ? gapVal.bGap * -1 : gapVal.bGap,
       vMarbleCnt: gapVal.pGap < 0 ? gapVal.pGap * -1 : gapVal.pGap,
@@ -99,9 +96,7 @@ export default (props) => {
 
   const closePopup = () => {
     setBettingPop(false)
-  }  
-
-  
+  }   
 
   const wrapClick = (e) => {
     const target = e.target
@@ -133,8 +128,7 @@ export default (props) => {
       setTypeSelect("홀수");
     } else {
       setTypeSelect("짝수");
-    }
-    
+    }    
 
     if(selectValue === resultType) {
       bettingResult = "w";
@@ -171,8 +165,7 @@ export default (props) => {
   }
   
   useEffect(() => {
-    fetchBettingData();
-    
+    fetchBettingData();    
   }, [])
 
 

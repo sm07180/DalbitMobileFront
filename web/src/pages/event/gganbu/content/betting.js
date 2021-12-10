@@ -1,17 +1,17 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import {Context} from 'context'
+
 import Api from 'context/api'
 import NoResult from 'components/ui/new_noResult'
 import Swiper from 'react-id-swiper'
+import moment from 'moment'
 
 import BettingPop from './bettingPop'
 
-import {Context} from 'context'
-import moment from 'moment'
 
 export default (props) => {
   const globalCtx = useContext(Context)
-  const MAX_MARBLE_BETTING_CNT = 10
   const {tabContent, gganbuNo} = props
 
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
@@ -42,8 +42,6 @@ export default (props) => {
   const bMarbleRef = useRef()
   const pMarbleRef = useRef()
 
-  const successMarbleRef = useRef([])
-
   const history = useHistory()
 
   const fetchGganbuData = async () => {
@@ -63,6 +61,7 @@ export default (props) => {
       })
     }
   }
+  
   const fetchBettingPage = async () => {
     const {data, message} = await Api.getGganbuMarbleBettingPage({gganbuNo: gganbuNo})
     if (message === 'SUCCESS') {
