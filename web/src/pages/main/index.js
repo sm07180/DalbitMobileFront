@@ -1106,7 +1106,7 @@ export default (props) => {
         )} */}
         {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
         {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
-        {scrollOn && <AttendEventBtn />}
+        <AttendEventBtn scrollOn={scrollOn}/>
         {checker && (
           <UpdateWrap>
             <div className="Wrapper">
