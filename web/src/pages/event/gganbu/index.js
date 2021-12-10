@@ -104,7 +104,7 @@ export default () => {
 
   const notLoginAlert = () => {
     globalCtx.action.alert({
-      msg: `깐부를 맻으면<br/>배팅소가 열립니다.`
+      msg: `깐부를 맺으면<br/>베팅소가 열립니다.`
     })
   }
 

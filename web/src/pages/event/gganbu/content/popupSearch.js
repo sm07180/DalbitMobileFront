@@ -228,6 +228,9 @@ export default (props) => {
           </>
         ) : (
           <div className="listWrap" style={{height: '344px'}}>
+            <div className="searchTitle">
+              검색결과<p>※ 탈퇴/정지/깐부를 맺은 회원은 검색되지 않습니다.</p>
+            </div>
             {memberList.map((data, index) => {
               const {average_level, mem_profile, mem_level, mem_nick, mem_no, rcvYn, sendYn} = data
               return (
