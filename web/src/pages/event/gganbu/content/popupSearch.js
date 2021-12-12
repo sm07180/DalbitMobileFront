@@ -129,8 +129,8 @@ export default (props) => {
     }
     const {message} = await Api.postGganbuCancel(param)
     if (message === 'SUCCESS') {
-      context.action.alert({
-        msg: '취소 완료',
+      context.action.confirm({
+        msg: '정말 신청 취소하시겠습니까?',
         callback: () => {
           closeAlert()
           searchStateCheck()
@@ -231,43 +231,51 @@ export default (props) => {
             <div className="searchTitle">
               검색결과<p>※ 탈퇴/정지/깐부를 맺은 회원은 검색되지 않습니다.</p>
             </div>
-            {memberList.map((data, index) => {
-              const {average_level, mem_profile, mem_level, mem_nick, mem_no, rcvYn, sendYn} = data
-              return (
-                <div className="list" key={`memder-${index}`}>
-                  <div className="photo">
-                    <img src={mem_profile.thumb50x50} alt="유저이미지" />
-                  </div>
-                  <div className="listBox">
-                    <div className="nick">{mem_nick}</div>
-                    <div className="listItem">
-                      <span>Lv. {mem_level}</span>
-                      <span className="average">
-                        <em>평균</em>
-                        <span>Lv {average_level}</span>
-                      </span>
-                    </div>
-                  </div>
-                  {rcvYn === 'n' ? (
-                    <>
-                      {sendYn === 'n' ? (
-                        <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', mem_nick)}>
-                          신청
-                        </button>
+            {memberList.length > 0 ? (
+              <>
+                {memberList.map((data, index) => {
+                  const {average_level, mem_profile, mem_level, mem_nick, mem_no, rcvYn, sendYn} = data
+                  return (
+                    <div className="list" key={`memder-${index}`}>
+                      <div className="photo">
+                        <img src={mem_profile.thumb50x50} alt="유저이미지" />
+                      </div>
+                      <div className="listBox">
+                        <div className="nick">{mem_nick}</div>
+                        <div className="listItem">
+                          <span>Lv. {mem_level}</span>
+                          <span className="average">
+                            <em>평균</em>
+                            <span>Lv {average_level}</span>
+                          </span>
+                        </div>
+                      </div>
+                      {rcvYn === 'n' ? (
+                        <>
+                          {sendYn === 'n' ? (
+                            <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', mem_nick)}>
+                              신청
+                            </button>
+                          ) : (
+                            <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                              취소
+                            </button>
+                          )}
+                        </>
                       ) : (
-                        <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
-                          취소
+                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
+                          수락
                         </button>
                       )}
-                    </>
-                  ) : (
-                    <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
-                      수락
-                    </button>
-                  )}
-                </div>
-              )
-            })}
+                    </div>
+                  )
+                })}
+              </>
+            ) : (
+              <>
+                <NoResult type="default" text="검색 결과가 없습니다." />
+              </>
+            )}
           </div>
         )}
         <button className="close" onClick={closePopup}>

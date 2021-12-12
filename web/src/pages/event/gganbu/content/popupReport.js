@@ -31,16 +31,6 @@ export default (props) => {
     }
   }
 
-  // const isHitPopupBottom = (diff = 30) => {
-  //   const popCnt = document.getElementById('popupWrap')
-  //   const popHeight = 'innerHeight' in popCnt ? popCnt.innerHeight : document.documentElement.offsetHeight
-  //   const body = document.body
-  //   const html = document.documentElement
-  //   const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-  //   const windowBottom = popHeight + window.pageYOffset
-  //   return windowBottom >= docHeight - diff
-  // }
-
   let totalPage = 1
   let pagePerCnt = 50
   // 깐부 리포트 리스트 조회

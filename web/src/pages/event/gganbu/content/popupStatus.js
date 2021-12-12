@@ -60,8 +60,8 @@ export default (props) => {
     const {message} = await Api.postGganbuCancel(param)
     if (message === 'SUCCESS') {
       console.log(message)
-      context.action.alert({
-        msg: '취소 완료',
+      context.action.confirm({
+        msg: '정말 신청 취소하시겠습니까?',
         callback: () => {
           closeAlert()
           fetchGganbuSubList()
@@ -99,7 +99,7 @@ export default (props) => {
         </div>
         {tabBtn === 'r' ? (
           <>
-            <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
+            <div className="searchTitle status">※ 탈퇴/정지/깐부를 맺은 회원은 검색되지 않습니다.</div>
             <div className="listWrap" style={{height: '329px'}}>
               {gganbuSubList.length > 0 ? (
                 <>
@@ -128,9 +128,7 @@ export default (props) => {
                   })}
                 </>
               ) : (
-                <div className="listNone">
-                  <NoResult type="default" text="신청한 회원이 없습니다." />
-                </div>
+                <NoResult type="default" text="신청한 회원이 없습니다." />
               )}
             </div>
           </>

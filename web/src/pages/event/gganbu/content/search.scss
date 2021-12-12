@@ -68,6 +68,11 @@
         font-size: 12px;
         color: #632beb;
       }
+      p {
+        font-size: 12px;
+        font-weight: 500;
+        color: #424242;
+      }
       &.status {
         font-size: 12px;
         font-weight: 500;
@@ -301,6 +306,8 @@
   }
 }
 .alertUserId {
+  min-width: 0;
+  max-width: 200px;
   font-size: 16px;
   letter-spacing: -1px;
   span {
@@ -308,5 +315,7 @@
     font-weight: 500;
     color: #632beb;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }

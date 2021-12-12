@@ -66,7 +66,7 @@ export default () => {
         setMetchState(false)
       }
     }
-  }, [])
+  }, [gganbuState])
 
   const GganbuMetch = () => {
     return (
@@ -137,10 +137,10 @@ export default () => {
         <div className="memo">
           <div className="memoInner">
             <div className="userWrap">
-              <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓰는 친구 말이야.</div>
-              <div className="userUl">
-                {gganbuState === -1 ? (
-                  <>
+              {gganbuState === -1 ? (
+                <>
+                  <div className="userTxt"></div>
+                  <div className="userUl">
                     <div className="userList">
                       <div className="photo">
                         <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
@@ -162,11 +162,14 @@ export default () => {
                         <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
                       </button>
                     </div>
-                  </>
-                ) : (
-                  <>{gganbuInfo && <GganbuMetch />}</>
-                )}
-              </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="userTxt">우리는 깐부잖나. 구슬을 같이 쓰는 친구 말이야.</div>
+                  <div className="userUl">{gganbuInfo && <GganbuMetch />}</div>
+                </>
+              )}
             </div>
           </div>
         </div>

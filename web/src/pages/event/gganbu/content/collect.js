@@ -186,7 +186,7 @@ export default (props) => {
               </div>
               <div className="score">
                 <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>2,181</span>
+                <span>{myRankList.marble_pocket_pt}</span>
               </div>
             </div>
           )}
