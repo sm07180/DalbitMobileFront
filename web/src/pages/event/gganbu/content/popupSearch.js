@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect, useLayoutEffect, useCallback} from 'react'
+import React, {useState, useContext, useEffect, KeyboardEvent} from 'react'
 import {Context} from 'context/index.js'
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
@@ -144,11 +144,8 @@ export default (props) => {
   }
 
   useEffect(() => {
-    if (result === '') {
-      fetchFanList()
-      setSearchState(false)
-    }
-  }, [result])
+    fetchFanList()
+  }, [])
 
   const acceptBtn = (memNo, type, memNick) => {
     setAlertAccept(true)
