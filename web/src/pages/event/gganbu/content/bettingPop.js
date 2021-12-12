@@ -313,10 +313,12 @@ export default (props) => {
               :
               <button className={`bettingBtn ${valueType === "" ? "" : "active"}`} onClick={betting}>예측하기</button>
             }
-        </div>
-        <button className="close" onClick={closePopup}>
-          <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기" />
-        </button>
+        </div>        
+        {!popResult &&
+          <button className="close" onClick={closePopup}>
+            <img src="https://image.dalbitlive.com/event/gganbu/bettingPop_btn-close.png" alt="닫기"/>
+          </button>
+        }
       </div>
     </PopupWrap>
   )
