@@ -126,6 +126,13 @@ export default (props) => {
   const [liveAlign, setLiveAlign] = useState(1)
   const [liveGender, setLiveGender] = useState('')
   const [roundTitle, setRoundTitle] = useState("");
+  const [rewardPop, setRewardPop] = useState(false);
+  const [getMarble, setGetMarble] = useState({
+    rmarbleCnt : 0,
+    ymarbleCnt : 0,
+    bmarbleCnt : 0,
+    vmarbleCnt : 0,
+  });
 
   // const [livePage, setLivePage] = useState(1)
   // const [selectedLiveRoomType, setSelectedLiveRoomType] = useState('')
@@ -1145,7 +1152,7 @@ export default (props) => {
             </div>
           </LayerPopupCommon>
         )} */}
-        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} />}
+        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} setRewardPop={setRewardPop} getMarble={getMarble} rewardPop={rewardPop}/>}
         {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
         {scrollOn && <AttendEventBtn />}
         {checker && (
