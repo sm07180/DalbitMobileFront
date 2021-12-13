@@ -13,7 +13,7 @@ import NewPlayer from 'pages/common/newPlayer'
 import ClipPlayer from 'pages/common/clipPlayer'
 import Popup from 'pages/common/popup'
 import Message from 'pages/common/message'
-import Ip from 'pages/common/ip'
+//import Ip from 'pages/common/ip'
 import Sticker from 'pages/common/sticker'
 import Header from 'components/ui/new_header.js'
 //
@@ -46,7 +46,7 @@ const Layout = (props) => {
       {/* 메시지팝업 */}
       {/* <Message {...props} /> */}
       {/* IP노출 */}
-      <Ip {...props} />
+      {/*<Ip {...props} />*/}
     </React.Fragment>
   )
 }
