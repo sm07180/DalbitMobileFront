@@ -68,7 +68,8 @@ export default () => {
         setMetchState(false)
       }
     }
-  }, [gganbuState])
+    console.log(globalCtx.globalGganbuState)
+  }, [gganbuRoundLookup, globalCtx.globalGganbuState])
 
   const GganbuMetch = () => {
     return (

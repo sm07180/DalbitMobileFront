@@ -125,8 +125,6 @@ export default (props) => {
                   <div className="pocket">
                     <div className="list">
                       {gganbuInfo && gganbuInfo.marble_pocket > 0 ? (
-                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
-                      ) : (
                         <Lottie
                           options={{
                             loop: true,
@@ -134,6 +132,8 @@ export default (props) => {
                             path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
                           }}
                         />
+                      ) : (
+                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
                       )}
                     </div>
                     <div className="pocketScore">{gganbuInfo && gganbuInfo.marble_pocket_pt}점</div>
