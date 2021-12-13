@@ -17,7 +17,7 @@ export default () => {
   const globalCtx = useContext(Context)
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
-  const [gganbuNo, setGganbuNo] = useState()
+  const [gganbuNumber, setGganbuNumber] = useState()
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
   const [myRankList, setMyRankList] = useState()
@@ -37,7 +37,7 @@ export default () => {
     if (message === 'SUCCESS') {
       const {gganbuState, gganbuRoundInfo, gganbuInfo, myRankInfo, rankList} = data
       setGganbuState(gganbuState)
-      setGganbuNo(gganbuRoundInfo.gganbuNo)
+      setGganbuNumber(gganbuRoundInfo.gganbuNo)
       setGganbuInfo(gganbuInfo)
       setMyRankList(myRankInfo)
       setRankList(rankList)
@@ -203,19 +203,19 @@ export default () => {
         <Collect
           tabContent={globalCtx.gganbuTab}
           gganbuState={gganbuState}
-          gganbuNo={gganbuNo}
+          gganbuNumber={gganbuNumber}
           gganbuInfo={gganbuInfo}
           myRankList={myRankList}
           rankList={rankList}
         />
       ) : (
-        <Betting tabContent={globalCtx.gganbuTab} gganbuNo={gganbuNo} />
+        <Betting tabContent={globalCtx.gganbuTab} gganbuNo={gganbuNumber} />
       )}
 
       {/* 팝업 */}
       {popupNotice && <PopupNotice setPopupNotice={setPopupNotice} />}
-      {popupSearch && <PopupSearch setPopupSearch={setPopupSearch} gganbuNo={gganbuNo} />}
-      {popupStatus && <PopupStatus setPopupStatus={setPopupStatus} gganbuNo={gganbuNo} />}
+      {popupSearch && <PopupSearch setPopupSearch={setPopupSearch} gganbuNumber={gganbuNumber} />}
+      {popupStatus && <PopupStatus setPopupStatus={setPopupStatus} gganbuNumber={gganbuNumber} />}
     </div>
   )
 }

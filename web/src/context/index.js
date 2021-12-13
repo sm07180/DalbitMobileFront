@@ -105,7 +105,7 @@ const GlobalProvider = (props) => {
   const [clipPlayerState, setClipPlayerState] = useState(null)
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
-  const [isDevIp, setIsDevIp] = useState(false)
+  // const [isDevIp, setIsDevIp] = useState(false)
   const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
@@ -603,7 +603,7 @@ const GlobalProvider = (props) => {
     clipState,
     clipPlayerState,
     clipPlayerInfo,
-    isDevIp,
+    // isDevIp,
     boardIdx,
     boardModifyInfo,
     backState,

@@ -30,8 +30,6 @@ import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
 import Gganbu from './gganbu'
 import GganbuPocket from './gganbu/content/marblePocket'
-import Raffle from './raffle'
-import RaffleDj from './raffleDj'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
@@ -44,6 +42,7 @@ import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
+import Draw from './draw'
 import Participant from './gganbu/content/participant'
 import MarblePocket from './gganbu/content/marblePocket'
 
@@ -101,10 +100,6 @@ export default () => {
         return <Gganbu />
       case 'gganbuPocket':
         return <GganbuPocket />
-      case 'raffle':
-        return <Raffle />
-      case 'raffleDj':
-        return <RaffleDj />
       case 'recommend_dj':
         return <RecommendDj />
       case 'recommend_dj2':
@@ -131,6 +126,8 @@ export default () => {
         return <BroadcastRoulette />
       case 'anniversary':
         return <AnniversaryEvent />
+      case 'draw':
+        return <Draw />
       case 'participant':
         return <Participant />
       case 'marblePocket':

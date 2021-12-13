@@ -13,7 +13,7 @@ import PopupDetails from './popupDetails'
 import PopupReport from './popupReport'
 
 export default (props) => {
-  const {tabContent, gganbuState, gganbuNo, gganbuInfo, myRankList} = props // rankList
+  const {tabContent, gganbuState, gganbuNumber, gganbuInfo, myRankList} = props // rankList
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])
   const [currentPage, setCurrentPage] = useState(0)
@@ -35,7 +35,7 @@ export default (props) => {
   // 깐부 랭킹 리스트
   const gganbuRankList = useCallback(async () => {
     const param = {
-      gganbuNo: gganbuNo,
+      gganbuNo: gganbuNumber,
       pageNo: currentPage,
       pagePerCnt: pagePerCnt
     }
@@ -54,9 +54,8 @@ export default (props) => {
   }, [currentPage])
 
   const scrollEvtHdr = () => {
-    if (Utility.isHitBottom()) {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
-      console.log('bottom hit!', currentPage)
     }
   }
 
@@ -65,15 +64,14 @@ export default (props) => {
     window.addEventListener('scroll', scrollEvtHdr)
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
-      console.log('hit!!!', currentPage)
     }
   }, [currentPage])
 
   useEffect(() => {
-    if (gganbuNo !== undefined) {
-      gganbuRankList()
+    if (gganbuNumber !== undefined) {
+      if (currentPage > 0) gganbuRankList()
     }
-  }, [gganbuNo])
+  }, [gganbuNumber])
 
   return (
     <>
@@ -101,44 +99,50 @@ export default (props) => {
               <div className="statusWrap">
                 <div className="marbleWrap">
                   <div className="report">
-                    <div className="list">
-                      <img src="https://image.dalbitlive.com/event/gganbu/marble-1.png" />
-                      <span>{gganbuInfo && gganbuInfo.red_marble}</span>
+                    <div className="marbleListWrap">
+                      <div className="list">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-1.png" />
+                        <span>{gganbuInfo && gganbuInfo.red_marble}</span>
+                      </div>
+                      <div className="list">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-2.png" />
+                        <span>{gganbuInfo && gganbuInfo.yellow_marble}</span>
+                      </div>
+                      <div className="list">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-3.png" />
+                        <span>{gganbuInfo && gganbuInfo.blue_marble}</span>
+                      </div>
+                      <div className="list">
+                        <img src="https://image.dalbitlive.com/event/gganbu/marble-4.png" />
+                        <span>{gganbuInfo && gganbuInfo.violet_marble}</span>
+                      </div>
                     </div>
-                    <div className="list">
-                      <img src="https://image.dalbitlive.com/event/gganbu/marble-2.png" />
-                      <span>{gganbuInfo && gganbuInfo.yellow_marble}</span>
-                    </div>
-                    <div className="list">
-                      <img src="https://image.dalbitlive.com/event/gganbu/marble-3.png" />
-                      <span>{gganbuInfo && gganbuInfo.blue_marble}</span>
-                    </div>
-                    <div className="list">
-                      <img src="https://image.dalbitlive.com/event/gganbu/marble-4.png" />
-                      <span>{gganbuInfo && gganbuInfo.violet_marble}</span>
-                    </div>
+                    <div className="marbleScore">{gganbuInfo && gganbuInfo.marble_pt}점</div>
                     <button onClick={() => setPopupReport(true)}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnReport.png" alt="구슬 리포트" />
                     </button>
                   </div>
                   <div className="pocket">
                     <div className="list">
-                      {/* <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" /> */}
-                      <Lottie
-                        options={{
-                          loop: true,
-                          autoPlay: true,
-                          path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
-                        }}
-                      />
-                      <span>{gganbuInfo && gganbuInfo.marble_pocket}</span>
+                      {gganbuInfo && gganbuInfo.marble_pocket > 0 ? (
+                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
+                      ) : (
+                        <Lottie
+                          options={{
+                            loop: true,
+                            autoPlay: true,
+                            path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
+                          }}
+                        />
+                      )}
                     </div>
+                    <div className="pocketScore">{gganbuInfo && gganbuInfo.marble_pocket_pt}점</div>
                     <button onClick={() => history.push({pathname: `/event/gganbuPocket`})}>
                       <img src="https://image.dalbitlive.com/event/gganbu/btnPocket.png" alt="구슬 주머니" />
                     </button>
                   </div>
                 </div>
-                <div className="score">총 {Utility.addComma(gganbuInfo && gganbuInfo.marble_pocket_pt)}점</div>
+                <div className="score">총 {Utility.addComma(gganbuInfo && gganbuInfo.tot_marble_pocket_pt)}점</div>
               </div>
             </div>
           )}
@@ -268,7 +272,7 @@ export default (props) => {
         </section>
       </div>
       {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} />}
-      {popupReport && <PopupReport setPopupReport={setPopupReport} gganbuNo={gganbuNo} />}
+      {popupReport && <PopupReport setPopupReport={setPopupReport} gganbuNumber={gganbuNumber} />}
     </>
   )
 }
