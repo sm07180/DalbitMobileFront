@@ -105,7 +105,7 @@ const GlobalProvider = (props) => {
   const [clipPlayerState, setClipPlayerState] = useState(null)
   const [clipPlayerInfo, setClipPlayerInfo] = useState(null)
   //
-  const [isDevIp, setIsDevIp] = useState(false)
+  // const [isDevIp, setIsDevIp] = useState(false)
   const [roomType, setRoomType] = useState('')
   //back
   const [backState, setBackState] = useState(null)
@@ -125,6 +125,9 @@ const GlobalProvider = (props) => {
 
   // bestDJ 데이터
   const [bestDjData, setBestDjData] = useState([]);
+
+  // 깐부 데이터
+  const [gganbuTab, setGganbuTab] = useState('collect');
 
   // 본인인증 ref
   const [authRef, setAuthRef] = useState(null);
@@ -530,6 +533,9 @@ const GlobalProvider = (props) => {
     updateAppInfo: (obj) => {
       setAppInfo(obj);
     },
+    updateGganbuTab: (value) => {
+      setGganbuTab(value);
+    }
   }
   //---------------------------------------------------------------------
   const value = {
@@ -597,7 +603,7 @@ const GlobalProvider = (props) => {
     clipState,
     clipPlayerState,
     clipPlayerInfo,
-    isDevIp,
+    // isDevIp,
     boardIdx,
     boardModifyInfo,
     backState,
@@ -615,6 +621,7 @@ const GlobalProvider = (props) => {
     authRef,
     noServiceInfo,
     appInfo,
+    gganbuTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }

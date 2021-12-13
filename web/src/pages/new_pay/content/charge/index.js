@@ -386,7 +386,7 @@ export default () => {
 
   useEffect(() => {
     if (selectedPay.code === "simple") {
-      simplePayCheck()
+      simplePayCheck();
     } else {
       if (selectedPay.type) payFetch()
     }

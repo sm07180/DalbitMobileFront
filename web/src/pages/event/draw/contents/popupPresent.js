@@ -1,10 +1,12 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 
 export default (props) => {
   const {popupPresent, onClose} = props
+  const [failViewYn, setFailViewYn] = useState(false); // 꽝일때 처리하기 위한 Flag 값
+  const [swiper, setSwiper] = useState(null);
 
   const swiperParams = {
     spaceBetween: 5,
@@ -12,19 +14,27 @@ export default (props) => {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
-  };
 
-  const closePopup = () => {
-    onClose();
-  }
-
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'popupPresent') {
-      closePopup()
+    on: {
+      /*init: () => {
+        console.log(e);
+        setSwiper(e);
+      },
+      slideChange: () => {
+        if (swiper !== null && swiper.isEnd && popupPresent.resultInfo.findIndex(row => (row.bbopgi_gift_no && row.temp_result_cnt !== 0)) > -1 ) {
+          setFailViewYn(true);
+        } else {
+          setFailViewYn(false);
+        }
+      }*/
     }
   };
 
+  useEffect(() => {
+    if (popupPresent.resultInfo !== undefined && popupPresent.resultInfo.length === 1 && popupPresent.resultInfo[0].bbopgi_gift_no === 8) {
+      setFailViewYn(true);
+    }
+  },[popupPresent]);
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -32,16 +42,13 @@ export default (props) => {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [])
+  }, []);
 
   return (
-    <PopupWrap id="popupPresent" onClick={wrapClick}>
+    <PopupWrap id="popupPresent">
       {/* 당첨 결과가 꽝인 경우 popLayer에 blank클래스 추가 */}
-      <div className="popLayer">
+      <div className={`popLayer ${failViewYn ? 'blank' : ''}`}>
         <div className="contentWrap" style={{width: '100%'}}>
-          <div className="title">
-            선물을 받았어요!
-          </div>
           <Swiper {...swiperParams}>
             {popupPresent.resultInfo !== undefined && popupPresent.resultInfo.map((row, index) => {
               if (row.bbopgi_gift_no === 0) {
@@ -50,6 +57,7 @@ export default (props) => {
 
               return (
                 <div className="presentWrap" key={index}>
+                  <div className="title">{row.bbopgi_gift_no === 8 ? '꽝! 다음 기회에...' : '선물을 받았어요!'}</div>
                   <div className="imgWrap">
                     <img src={`${IMG_SERVER}/event/draw/present-${row.bbopgi_gift_no}.png`}/>
                   </div>
@@ -95,7 +103,7 @@ const PopupWrap = styled.div`
         width:100%;
     }
     .swiper-button-next{
-        top:30%;
+        top:48%;
         right:0;
         width:51px;
         height:51px;
@@ -103,7 +111,7 @@ const PopupWrap = styled.div`
         cursor:pointer;
     }
     .swiper-button-prev{
-        top:30%;
+        top:48%;
         left:0;
         width:51px;
         height:51px;
@@ -206,6 +214,7 @@ const PopupWrap = styled.div`
                     text-align:center;
                     margin-top:5px;
                     &Row{
+                        line-height: 21px;
                         margin:17px 0;
                         display:flex;
                         .name{

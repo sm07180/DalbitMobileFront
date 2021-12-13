@@ -52,7 +52,7 @@ const Layout = (props) => {
       {/* 메시지팝업 */}
 
       {/* IP노출 */}
-      <Ip {...props} />
+      {/*<Ip {...props} />*/}
       {context.multiViewer.show && <MultiImageViewer />}
     </React.Fragment>
   )

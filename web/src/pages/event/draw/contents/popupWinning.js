@@ -9,10 +9,11 @@ export default (props) => {
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popupWinning') {
-      props.onClose();
+      onClose();
     }
   }
 
+  // 당첨 리스트 가져오기
   const getDrawListInfo = () => {
     Api.getDrawWinningInfo().then(res => {
       if (res.code === '00000') {
@@ -26,7 +27,7 @@ export default (props) => {
   useEffect(() => {
     document.body.style.overflow = 'hidden'
 
-    getDrawListInfo();
+    getDrawListInfo(); // 당첨 리스트 가져오기
 
     return () => {
       document.body.style.overflow = ''
@@ -57,11 +58,11 @@ export default (props) => {
           기프티콘은 당첨 후 영업장 평일<br/>7일 이내 문자로 전송해드립니다.
         </div>
         <div className="buttonWrap">
-          <button onClick={props.onClose}>
+          <button onClick={onClose}>
             확인
           </button>
         </div>
-        <button className="close" onClick={props.onClose}>
+        <button className="close" onClick={onClose}>
           <img src="https://image.dalbitlive.com/images/api/close_w_l.svg" alt="닫기"/>
         </button>
       </div>

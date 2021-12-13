@@ -3314,50 +3314,6 @@ export default class API {
     })
   }
 
-  // 11월 이벤트 (팬)
-  static getRaffleEventTotalInfo = async () => {
-    return await ajax({
-      url: '/event/raffle/fan/total/list',
-      method: 'GET'
-    })
-  }
-
-  // 11월 이벤트 응모 (팬)
-  static putEnterRaffleEvent = async (data) => {
-    return await ajax({
-      url: '/event/raffle/enter',
-      method: 'POST',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 회차별 (팬)
-  static getRaffleEventRoundInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/fan/round/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 11월 이벤트 DJ
-  static getRaffleEventDjInfo = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/main/list',
-      method: 'GET',
-      params: data
-    })
-  }
-
-  // 아이템 지급 및 차감
-  static eventItemIns = async (data) => {
-    return await ajax({
-      url: '/event/raffle/dj/ins/item',
-      method: 'POST',
-      params: data
-    })
-  }
-
   // 1일 1회 본인인증 확인
   static certificationCheck = async () => {
     return await ajax({
@@ -3397,6 +3353,182 @@ export default class API {
     return await ajax({
       url: '/event/draw/listInfo',
       method: 'GET'
+    })
+  }
+
+  //사내 서버 주소 리스트
+  static getInnerServerList = async () => {
+    return await ajax({
+      url: '/main/ip/mob',
+      method: 'GET'
+    })
+
+  }
+
+  /**
+   * @brief 깐부 이벤트
+   * @method
+   * @create 문형진
+   */
+
+  // 깐부 이벤트 회차번호
+  static gganbuMarbleGather = async () => {
+    return await ajax({
+      url: '/event/gganbu/marble/gather',
+      method: 'POST'
+    })
+  }
+
+  // 깐부 랭킹 리스트
+  static getGganbuRankList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/rank/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 깐부 검색
+  static getGganbuSearch = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/member/search`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 깐부 팬 리스트
+  static getGganbuFanList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/search/fan`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 깐부 신청(버튼)
+  static postGganbuSub = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/req/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 신청 취소(버튼)
+  static postGganbuCancel = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/req/cancel`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 받은 내역 수락(버튼)
+  static postGganbuIns = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 신청리스트
+  static postGganbuList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/relationship/list`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 구슬 리포트
+  static postGganbuReportList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/report/list`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 깐부 구슬 획득
+  static postGganbuReport = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/marble/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuPocket = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/get`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuPocketOpen = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/open`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuPocketReport = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/pocket/report/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getGganbuObtainMarble = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/marble/ins`,
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static getGganbuBettingList = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/betting/list`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getGganbuBettingData = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/betting/stat/sel`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static getGganbuMarbleBettingPage = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/marble/betting`,
+      method: 'GET',
+      params: data
+    })
+  }
+
+  static gganbuInfoSel = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/relationship/sel',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  static gganbuPocketPage = async (data) => {
+    return await ajax({
+      url: '/event/gganbu/pocket/page',
+      method: 'GET',
+      params: data
     })
   }
 }
