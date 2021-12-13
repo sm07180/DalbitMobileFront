@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useContext, useCallback} from 'react'
-import {Context} from 'context/index.js'
+import React, {useState, useContext} from 'react'
+import {Context} from 'context'
 import Api from 'context/api'
 
 import './search.scss'
@@ -8,6 +8,7 @@ export default (props) => {
   const context = useContext(Context)
   const {gganbuNumber, memberNumber, memberNick, acceptType, closeAlert, closePopup, searchStateCheck} = props
 
+  console.log(context.globalGganbuState)
   // 깐부 신청
   const postGganbuSub = async () => {
     const param = {
@@ -33,7 +34,6 @@ export default (props) => {
       })
     }
   }
-
   // 깐부 수락 버튼
   const postGganbuIns = async (memNo, memNick) => {
     const param = {
@@ -41,14 +41,13 @@ export default (props) => {
       memNo: memNo
     }
     const {data, message} = await Api.postGganbuIns(param)
-    console.log(memNick, 1)
     if (data === 1) {
       context.action.alert({
-        msg: `<div class="alertUserId"><span>${memNick}</span>님과<br/>깐부를 맺었습니다.</div>`,
+        msg: `<div class="alertUserId"><span><strong>${memNick}</strong>님과</span><span>깐부를 맺었습니다.</span></div>`,
         callback: () => {
           closeAlert()
           closePopup()
-          context.acticon.updateGlobalGganbuState(gganbuNumber)
+          context.action.updateGlobalGganbuState(gganbuNumber)
         }
       })
     } else {

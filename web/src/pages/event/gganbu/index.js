@@ -15,6 +15,7 @@ import './betting.scss'
 
 export default () => {
   const globalCtx = useContext(Context)
+  const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [gganbuNumber, setGganbuNumber] = useState()
@@ -75,7 +76,13 @@ export default () => {
     return (
       <>
         <div className="userList">
-          <div className="photo">
+          <div
+            className="photo"
+            onClick={
+              metchState
+                ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
+                : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
+            }>
             <img src={metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
           </div>
           <LevelBox className="badge" levelColor={metchState ? gganbuInfo.mem_level_color : gganbuInfo.ptr_mem_level_color}>
@@ -91,7 +98,13 @@ export default () => {
           </div>
         </div>
         <div className="userList">
-          <div className="photo">
+          <div
+            className="photo"
+            onClick={
+              !metchState
+                ? () => history.push(`/mypage/${gganbuInfo.mem_no}`)
+                : () => history.push(`/mypage/${gganbuInfo.ptr_mem_no}`)
+            }>
             <img src={!metchState ? gganbuInfo.mem_profile.thumb80x80 : gganbuInfo.ptr_mem_profile.thumb80x80} alt="유저이미지" />
           </div>
           <PtrLevelBox
@@ -105,11 +118,35 @@ export default () => {
     )
   }
 
+  const loginCheck = () => {
+    if (!globalCtx.token.isLogin) {
+      globalCtx.action.alert({
+        msg: `해당 서비스를 위해<br/>로그인을 해주세요.`,
+        callback: () => {
+          history.push({
+            pathname: '/login',
+            state: {
+              state: 'event/gganbu'
+            }
+          })
+        }
+      })
+    } else {
+      if (globalCtx.profile !== null) {
+        gganbuRoundLookup()
+      }
+    }
+  }
+
   const notLoginAlert = () => {
     globalCtx.action.alert({
       msg: `깐부를 맺으면<br/>베팅소가 열립니다.`
     })
   }
+
+  useEffect(() => {
+    loginCheck()
+  }, [])
 
   useEffect(() => {
     window.addEventListener('scroll', tabScrollEvent)
@@ -123,7 +160,7 @@ export default () => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
-  }, [tabContent])
+  }, [tabContent, globalCtx.globalGganbuState])
 
   return (
     <div id="gganbu">
@@ -140,12 +177,12 @@ export default () => {
         <div className="memo">
           <div className="memoInner">
             <div className="userWrap">
-              {gganbuState === -1 ? (
+              {globalCtx.profile && gganbuState === -1 ? (
                 <>
                   <div className="userTxt"></div>
                   <div className="userUl">
                     <div className="userList">
-                      <div className="photo">
+                      <div className="photo" onClick={() => history.push(`/mypage/${globalCtx.profile.memNo}`)}>
                         <img src={globalCtx.profile.profImg.thumb80x80} alt="유저이미지" />
                       </div>
                       <LevelBox className="badge" levelColor={globalCtx.profile.levelColor}>

@@ -170,7 +170,7 @@ export default (props) => {
             <div className="rankList my">
               <div className="number">
                 <span className="tit">내 순위</span>
-                <span className="num">32</span>
+                <span className="num">{myRankList.my_rank_no}</span>
               </div>
               <div className="rankBox">
                 <div className="rankItem">

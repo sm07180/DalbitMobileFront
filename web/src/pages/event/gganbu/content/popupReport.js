@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, useLayoutEffect, useCallback} from 'react'
 //context
 import Api from 'context/api'
-import Utility from 'components/lib/utility'
+import moment from 'moment'
 
 import NoResult from 'components/ui/new_noResult'
 
@@ -11,7 +11,6 @@ export default (props) => {
   const {setPopupReport, gganbuNumber} = props
 
   const [reportList, setReportList] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -31,40 +30,21 @@ export default (props) => {
     }
   }
 
-  let totalPage = 1
   let pagePerCnt = 50
   // 깐부 리포트 리스트 조회
   const gganbuReportList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      pageNo: currentPage,
+      pageNo: 1,
       pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.postGganbuReportList(param)
     if (message === 'SUCCESS') {
-      if (currentPage > 1) {
-        setReportList(reportList.concat(data.list))
-      } else {
-        setReportList(data.list)
-      }
+      setReportList(data.list)
     } else {
       console.log(message)
     }
-  }, [currentPage])
-
-  // const scrollEvtHdr = () => {
-  //   if (totalPage > currentPage && Utility.isHitBottom()) {
-  //     setCurrentPage(currentPage + 1)
-  //   }
-  // }
-
-  // useLayoutEffect(() => {
-  //   if (currentPage === 0) setCurrentPage(1)
-  //   window.addEventListener('scroll', scrollEvtHdr)
-  //   return () => {
-  //     window.removeEventListener('scroll', scrollEvtHdr)
-  //   }
-  // }, [currentPage])
+  }, [])
 
   useEffect(() => {
     gganbuReportList()
@@ -78,7 +58,17 @@ export default (props) => {
         <div className="listWrap" style={{height: '364px'}}>
           {reportList.length > 0 &&
             reportList.map((data, index) => {
-              const {ins_slct, ins_date, mem_nick, mem_profile, red_marble, yellow_marble, blue_marble, violet_marble} = data
+              const {
+                ins_slct,
+                ins_date,
+                chng_slct,
+                mem_nick,
+                mem_profile,
+                red_marble,
+                yellow_marble,
+                blue_marble,
+                violet_marble
+              } = data
               return (
                 <div className="list" style={{height: '72px'}} key={index}>
                   <div className="photo">
@@ -100,24 +90,24 @@ export default (props) => {
                           ? '베팅소'
                           : ''}
                       </span>
-                      <span className="time">{ins_date}</span>
+                      <span className="time">{moment(ins_date).format('YYYY.MM.DD HH:mm:ss')}</span>
                     </div>
                     <div className="listItem">
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-red.png" />
-                        {red_marble}
+                        {chng_slct === 's' ? red_marble : `-${red_marble}`}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-yellow.png" />
-                        {yellow_marble}
+                        {chng_slct === 's' ? yellow_marble : `-${yellow_marble}`}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-blue.png" />
-                        {blue_marble}
+                        {chng_slct === 's' ? blue_marble : `-${blue_marble}`}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-purple.png" />
-                        {violet_marble}
+                        {chng_slct === 's' ? violet_marble : `-${violet_marble}`}
                       </span>
                     </div>
                   </div>
