@@ -10,7 +10,7 @@ import Accept from './accept'
 let btnAccess = false
 
 export default (props) => {
-  const {setPopupSearch, gganbuNo} = props
+  const {setPopupSearch, gganbuNumber} = props
   const context = useContext(Context)
   const myProfileNo = context.profile.memNo
   const myProfileLevel = context.profile.level
@@ -18,7 +18,7 @@ export default (props) => {
   const [result, setResult] = useState('')
   const [fanList, setFanList] = useState([])
   const [memberList, setMemberList] = useState([])
-  const [memberNo, setMemberNo] = useState()
+  const [memberNumber, setMemberNumber] = useState()
   const [memberNick, setMemberNick] = useState()
   const [searchState, setSearchState] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
@@ -122,25 +122,31 @@ export default (props) => {
   }
 
   // 취소 버튼
-  const postGganbuCancel = async (ptr_mem_no) => {
-    const param = {
-      gganbuNo: gganbuNo,
-      ptrMemNo: ptr_mem_no
-    }
-    const {message} = await Api.postGganbuCancel(param)
-    if (message === 'SUCCESS') {
-      context.action.confirm({
-        msg: '정말 신청 취소하시겠습니까?',
-        callback: () => {
-          closeAlert()
-          searchStateCheck()
+  const cancelBtn = (mem_no) => {
+    context.action.confirm({
+      msg: '정말 신청 취소하시겠습니까?',
+      cancelCallback: () => {
+        closeAlert()
+      },
+      callback: () => {
+        const ptrMemNo = mem_no
+        const goCancelBtn = async () => {
+          const param = {
+            gganbuNo: gganbuNumber,
+            ptrMemNo: ptrMemNo
+          }
+          const {message} = await Api.postGganbuCancel(param)
+          if (message === 'SUCCESS') {
+            closeAlert()
+            searchStateCheck()
+          } else {
+            closeAlert()
+          }
+          return
         }
-      })
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
+        goCancelBtn()
+      }
+    })
   }
 
   useEffect(() => {
@@ -150,7 +156,7 @@ export default (props) => {
   const acceptBtn = (memNo, type, memNick) => {
     setAlertAccept(true)
     setAcceptType(type)
-    setMemberNo(memNo)
+    setMemberNumber(memNo)
     setMemberNick(memNick)
   }
 
@@ -204,7 +210,7 @@ export default (props) => {
                                 신청
                               </button>
                             ) : (
-                              <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                              <button className="cancel" onClick={(e) => cancelBtn(mem_no)}>
                                 취소
                               </button>
                             )}
@@ -254,7 +260,7 @@ export default (props) => {
                               신청
                             </button>
                           ) : (
-                            <button className="cancel" onClick={(e) => postGganbuCancel(mem_no)}>
+                            <button className="cancel" onClick={(e) => cancelBtn(mem_no)}>
                               취소
                             </button>
                           )}
@@ -281,8 +287,8 @@ export default (props) => {
       </div>
       {alertAccept === true && (
         <Accept
-          gganbuNo={gganbuNo}
-          memberNo={memberNo}
+          gganbuNumber={gganbuNumber}
+          memberNumber={memberNumber}
           memberNick={memberNick}
           acceptType={acceptType}
           closeAlert={closeAlert}

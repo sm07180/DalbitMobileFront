@@ -8,7 +8,7 @@ import NoResult from 'components/ui/new_noResult'
 import './search.scss'
 
 export default (props) => {
-  const {setPopupReport, gganbuNo} = props
+  const {setPopupReport, gganbuNumber} = props
 
   const [reportList, setReportList] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -36,7 +36,7 @@ export default (props) => {
   // 깐부 리포트 리스트 조회
   const gganbuReportList = useCallback(async () => {
     const param = {
-      gganbuNo: gganbuNo,
+      gganbuNo: gganbuNumber,
       pageNo: currentPage,
       pagePerCnt: pagePerCnt
     }

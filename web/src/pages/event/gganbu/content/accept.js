@@ -6,15 +6,13 @@ import './search.scss'
 
 export default (props) => {
   const context = useContext(Context)
-  const {gganbuNo, memberNo, memberNick, acceptType, closeAlert, closePopup, searchStateCheck} = props
-
-  console.log(memberNick, 1)
+  const {gganbuNumber, memberNumber, memberNick, acceptType, closeAlert, closePopup, searchStateCheck} = props
 
   // 깐부 신청
   const postGganbuSub = async () => {
     const param = {
-      gganbuNo: gganbuNo,
-      ptrMemNo: memberNo // 대상자
+      gganbuNo: gganbuNumber,
+      ptrMemNo: memberNumber // 대상자
     }
     const {data, message} = await Api.postGganbuSub(param)
     if (data === 1) {
@@ -39,14 +37,14 @@ export default (props) => {
   // 깐부 수락 버튼
   const postGganbuIns = async (memNo, memNick) => {
     const param = {
-      gganbuNo: gganbuNo,
+      gganbuNo: gganbuNumber,
       memNo: memNo
     }
     const {data, message} = await Api.postGganbuIns(param)
     console.log(memNick, 1)
     if (data === 1) {
       context.action.alert({
-        msg: `<div class="alertUserId"><span>${memNick}</span>님과</div><br/><div>깐부를 맺었습니다.</div>`,
+        msg: `<div class="alertUserId"><span>${memNick}</span>님과</div><div>깐부를 맺었습니다.</div>`,
         callback: () => {
           closeAlert()
           closePopup()
@@ -112,7 +110,7 @@ export default (props) => {
             </div>
             <div className="buttonWrap">
               <button onClick={closeAlert}>취소</button>
-              <button onClick={() => postGganbuIns(memberNo, memberNick)}>수락</button>
+              <button onClick={() => postGganbuIns(memberNumber, memberNick)}>수락</button>
             </div>
           </>
         )}

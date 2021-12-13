@@ -7,11 +7,11 @@ import Accept from './accept'
 import './search.scss'
 
 export default (props) => {
-  const {setPopupStatus, gganbuNo} = props
+  const {setPopupStatus, gganbuNumber} = props
   const context = useContext(Context)
 
   const [tabBtn, setTabBtn] = useState('r')
-  const [memberNo, setMemberNo] = useState()
+  const [memberNumber, setMemberNumber] = useState()
   const [memberNick, setMemberNick] = useState()
   const [gganbuSubList, setGganbuSubList] = useState([])
   const [alertAccept, setAlertAccept] = useState(false)
@@ -41,7 +41,7 @@ export default (props) => {
   const fetchGganbuSubList = async () => {
     const param = {
       insSlct: tabBtn,
-      gganbuNo: gganbuNo
+      gganbuNo: gganbuNumber
     }
     const {data, message} = await Api.postGganbuList(param)
     if (message === 'SUCCESS') {
@@ -52,26 +52,31 @@ export default (props) => {
   }
 
   // 취소 버튼
-  const postGganbuCancel = async (ptr_mem_no) => {
-    const param = {
-      gganbuNo: gganbuNo,
-      ptrMemNo: ptr_mem_no
-    }
-    const {message} = await Api.postGganbuCancel(param)
-    if (message === 'SUCCESS') {
-      console.log(message)
-      context.action.confirm({
-        msg: '정말 신청 취소하시겠습니까?',
-        callback: () => {
-          closeAlert()
-          fetchGganbuSubList()
+  const cancelBtn = (ptr_mem_no) => {
+    context.action.confirm({
+      msg: '정말 신청 취소하시겠습니까?',
+      cancelCallback: () => {
+        closeAlert()
+      },
+      callback: () => {
+        const ptrMemNo = ptr_mem_no
+        const goCancelBtn = async () => {
+          const param = {
+            gganbuNo: gganbuNumber,
+            ptrMemNo: ptrMemNo
+          }
+          const {message} = await postGganbuCancel(param)
+          if (message === 'SUCCESS') {
+            closeAlert()
+            fetchGganbuSubList()
+          } else {
+            closeAlert()
+          }
+          return
         }
-      })
-    } else {
-      context.action.alert({
-        msg: message
-      })
-    }
+        goCancelBtn()
+      }
+    })
   }
 
   useEffect(() => {
@@ -81,7 +86,7 @@ export default (props) => {
   const acceptBtn = (memNo, type, memNick) => {
     setAlertAccept(true)
     setAcceptType(type)
-    setMemberNo(memNo)
+    setMemberNumber(memNo)
     setMemberNick(memNick)
   }
 
@@ -152,7 +157,7 @@ export default (props) => {
                         </span>
                       </div>
                     </div>
-                    <button className="cancel" onClick={(e) => postGganbuCancel(ptr_mem_no)}>
+                    <button className="cancel" onClick={(e) => cancelBtn(ptr_mem_no)}>
                       취소
                     </button>
                   </div>
@@ -171,8 +176,8 @@ export default (props) => {
       </div>
       {alertAccept === true && (
         <Accept
-          gganbuNo={gganbuNo}
-          memberNo={memberNo}
+          gganbuNumber={gganbuNumber}
+          memberNumber={memberNumber}
           memberNick={memberNick}
           acceptType={acceptType}
           closeAlert={closeAlert}
