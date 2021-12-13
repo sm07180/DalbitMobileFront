@@ -1152,7 +1152,7 @@ export default (props) => {
             </div>
           </LayerPopupCommon>
         )} */}
-        {payState && <LayerPopupPay info={payState} setPopup={setPayPopup} setRewardPop={setRewardPop} getMarble={getMarble} rewardPop={rewardPop}/>}
+        {!payState && <LayerPopupPay info={payState} setPayState={setPayState} setPopup={setPayPopup}/>}
         {inputState && <LayerPopupInput info={payState} setInputPopup={setInputPopup} />}
         {scrollOn && <AttendEventBtn />}
         {checker && (

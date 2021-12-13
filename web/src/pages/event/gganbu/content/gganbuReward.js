@@ -1,9 +1,9 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 
 export default (props) => {
-  const {setRewardPop, getMarble, content} = props
+  const {setRewardPop, getMarble, content, setPayState} = props
 
   // reference
   const gganbuGetMarble = useRef()
@@ -18,12 +18,13 @@ export default (props) => {
 
   const closeReward = () => {
     setRewardPop(false)
+    setPayState(true)
   }
 
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'main-layer-popup') {
-      closePopup()
+    closeReward()
     }
   }
 
@@ -34,7 +35,11 @@ export default (props) => {
         <div className="content">
             <div className="reward">
                 <div className="rewardTitle">구슬지급</div>
-                <div className="rewardContent">{content}</div>
+                <div className="rewardContent">
+                    {content.split('\n').map((data, index) => {
+                        return <span key={index}>{data}<br/></span>
+                    })}
+                </div>
                 <div className="rewardWrap">
                     <div className="rewardItem">
                         <span className={`marble red`}></span>

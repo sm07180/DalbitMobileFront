@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 
@@ -6,11 +6,13 @@ import Utility from 'components/lib/utility'
 import CloseBtn from '../static/ic_close.svg'
 import GganbuReward from '../../event/gganbu/content/gganbuReward'
 
+import Api from 'context/api'
+
 let prevAlign = null
 let prevGender = null
 
 export default (props) => {
-  const {setPopup, info} = props
+  const {setPopup, info, setPayState} = props
   const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno, itemCnt} = info
   const [rewardPop, setRewardPop] = useState(false)
   const [getMarble, setGetMarble] = useState({
@@ -21,18 +23,18 @@ export default (props) => {
     totalmarbleCnt : 0,
   });
   const [chargeContent, setChargeContent] = useState("");
-
+  let marbleTotleCtn = 0;
   async function fetchPayComplete() {
-    console.log(prdtPrice);
-    if(prdtPrice > 10000) {
-      marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
+    const testprice = 123440
+    if(testprice >= 10000) {
+      marbleTotleCtn = Math.floor((Number(testprice) / 10000));
       const param = {
         insSlct: "c",
         marbleCnt : marbleTotleCtn,
       };
       const {data} = await Api.getGganbuObtainMarble(param)
       if (data.s_return === 1) {
-        setChargeContent(`달 ${prdtPrice}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+        setChargeContent(`달 ${Utility.addComma(testprice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
         setRewardPop(true);
         setGetMarble({
           rmarbleCnt : data.rmarbleCnt,
@@ -153,7 +155,7 @@ export default (props) => {
           </div>
         </div>
       </PopupWrap>
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} />}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} setPayState={setPayState}/>}
     </>
   )
 }
