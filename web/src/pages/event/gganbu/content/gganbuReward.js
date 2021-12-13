@@ -18,7 +18,9 @@ export default (props) => {
 
   const closeReward = () => {
     setRewardPop(false)
-    setPayState(true)
+    if(setPayState){
+        setPayState(false)
+    }
   }
 
   const wrapClick = (e) => {
