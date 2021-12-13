@@ -11,6 +11,7 @@
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import moment from 'moment'
 
 //context
 import { Context } from 'context'
@@ -45,6 +46,9 @@ export default () => {
   const [moreState, setMoreState] = useState(false)
   const [bankPop, setBankPop] = useState(false)
   const [popupData, setPopupData] = useState([])
+  const [gganbuEnd, setGganbuEnd] = useState(false);
+  const [today, setToday] = useState("");
+  const [eventEnd, setEventEnd] = useState("");
   //ref
   const formTag = useRef(null)
 
@@ -213,6 +217,15 @@ export default () => {
           context.action.alert({ visible: false })
         }
       })
+    }
+  }
+
+  async function gganbuDate() {
+    const {data, message} = await Api.gganbuEventDate();
+    if (message === "SUCCESS") {
+      let todayIs = new Date;
+      setToday(moment(todayIs).format("YYYY-MM-DD"));
+      setEventEnd(moment(data.endDate).format("YYYY-MM-DD"));
     }
   }
 
@@ -393,6 +406,15 @@ export default () => {
   }, [selectedPay])
 
   useEffect(() => {
+    gganbuDate();
+    if(moment(today).isAfter(eventEnd)) {
+      setGganbuEnd(true);
+    } else {
+      setGganbuEnd(false);
+    }
+  }, [today]);
+
+  useEffect(() => {
     fetchMainPopupData(12)
   }, [])
 
@@ -465,6 +487,11 @@ export default () => {
           <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
           <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
           <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          {!gganbuEnd &&
+            <p>
+              깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.
+            </p>
+          }  
         </div>
 
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>

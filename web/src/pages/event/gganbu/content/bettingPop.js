@@ -34,7 +34,7 @@ export default (props) => {
     pGap : "",
   });
 
-  let bettingResult = ""
+  const [winOrLose, setWinOrLose] = useState('');
 
   const fetchGganbuData = async () => {
     const {data, message} = await Api.gganbuInfoSel({gganbuNo: gganbuNo})
@@ -84,7 +84,7 @@ export default (props) => {
       yMarbleCnt: gapVal.yGap < 0 ? gapVal.yGap * -1 : gapVal.yGap,
       bMarbleCnt: gapVal.bGap < 0 ? gapVal.bGap * -1 : gapVal.bGap,
       vMarbleCnt: gapVal.pGap < 0 ? gapVal.pGap * -1 : gapVal.pGap,
-      winSlct: bettingResult,
+      winSlct: winOrLose,
       bettingSlct: valueType,
     }
     const res = await Api.getGganbuObtainMarble(param);
@@ -98,12 +98,12 @@ export default (props) => {
     setBettingPop(false)
   }   
 
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'bettingPop') {
-      closePopup()
-    }
-  }
+  // const wrapClick = (e) => {
+  //   const target = e.target
+  //   if (target.id === 'bettingPop') {
+  //     closePopup()
+  //   }
+  // }
 
   const selectVal = (e) => {
     const selectValue = document.querySelector('input[name="bettingType"]:checked').value;
@@ -131,7 +131,7 @@ export default (props) => {
     }    
 
     if(selectValue === resultType) {
-      bettingResult = "w";
+      setWinOrLose('w');
       resultVal.rResult = myMarble.rMarble + bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble + bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble + bettingVal.bBetting;
@@ -143,7 +143,7 @@ export default (props) => {
         pMarble: resultVal.pResult,
       })
     } else {
-      bettingResult = "l";
+      setWinOrLose('l');
       resultVal.rResult = myMarble.rMarble - bettingVal.rBetting;
       resultVal.yResult = myMarble.yMarble - bettingVal.yBetting;
       resultVal.bResult = myMarble.bMarble - bettingVal.bBetting;
@@ -160,9 +160,13 @@ export default (props) => {
     gapVal.yGap = resultVal.yResult - myMarble.yMarble;
     gapVal.bGap = resultVal.bResult - myMarble.bMarble;
     gapVal.pGap = resultVal.pResult - myMarble.pMarble;
-    
-    fetchBettingComplete();
   }
+
+  useEffect(() => {
+    if(winOrLose !== '') {
+      fetchBettingComplete();
+    }
+  }, [winOrLose]);
   
   useEffect(() => {
     fetchBettingData();    
@@ -170,7 +174,7 @@ export default (props) => {
 
 
   return (
-    <PopupWrap id="bettingPop" onClick={wrapClick}>
+    <PopupWrap id="bettingPop">
       <div className="contentWrap">
         <div className="title">홀짝 게임</div>
         <div className="content">
@@ -184,7 +188,7 @@ export default (props) => {
                     path: `${IMG_SERVER}/event/gganbu/ani/odd_even_game_0${marbleNum}.json`
                   }}
                 />
-                {bettingResult === "w" ? 
+                {winOrLose === "w" ? 
                   <div className="resultToast">
                     이겼다!
                   </div>

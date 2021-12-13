@@ -3388,6 +3388,15 @@ export default class API {
     })
   }
 
+  // 깐부 이벤트 회차번호
+  static gganbuEventDate = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/round/info`,
+      method: 'GET',
+      params: data
+    })
+  }
+
   // 깐부 검색
   static getGganbuSearch = async (data) => {
     return await ajax({
@@ -3452,7 +3461,7 @@ export default class API {
   }
 
   // 깐부 구슬 획득
-  static postGganbuReport = async (data) => {
+  static getGganbuObtainMarble = async (data) => {
     return await ajax({
       url: `/event/gganbu/marble/ins`,
       method: 'POST',
