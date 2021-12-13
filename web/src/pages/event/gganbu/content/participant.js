@@ -47,7 +47,6 @@ export default () => {
   //scroll
   const showMoreList = () => {
     setParticipantList(participantList.concat(nextList))
-    fetchEventRouletteWin('next')
   }
   const scrollEvtHdr = (event) => {
     if (timer) window.clearTimeout(timer)
@@ -111,7 +110,7 @@ export default () => {
                 </tr>
               ) : (
                 participantList.map((item, index) => {
-                  const {image_profile, mem_no, mem_nick, win_slct, ins_date, isNewYn} = item
+                  const {mem_profile, mem_no, mem_nick, win_slct, ins_date, isNewYn} = item
                   return (
                     <tr key={index}>
                       <td
@@ -120,7 +119,7 @@ export default () => {
                           history.push(`/mypage/${mem_no}`)
                         }}>
                         <div className="thumb">
-                          <img src={image_profile === null ? "https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?120x120" : image_profile.thumb120x120} />
+                          <img src={mem_profile.thumb120x120} />
                         </div>
                         <p>{mem_nick}</p>
                       </td>

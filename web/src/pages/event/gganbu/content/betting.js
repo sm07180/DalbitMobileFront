@@ -1,18 +1,18 @@
 import React, {useEffect, useState, useRef, useCallback, useLayoutEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import {Context} from 'context'
+
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 import NoResult from 'components/ui/new_noResult'
 import Swiper from 'react-id-swiper'
+import moment from 'moment'
 
 import BettingPop from './bettingPop'
 
-import {Context} from 'context'
-import moment from 'moment'
 
 export default (props) => {
   const globalCtx = useContext(Context)
-  const MAX_MARBLE_BETTING_CNT = 10
   const {tabContent, gganbuNo} = props
 
   const [currentPage, setCurrentPage] = useState(0)
@@ -43,8 +43,6 @@ export default (props) => {
   const yMarbleRef = useRef()
   const bMarbleRef = useRef()
   const pMarbleRef = useRef()
-
-  const successMarbleRef = useRef([])
 
   const history = useHistory()
 
@@ -136,6 +134,7 @@ export default (props) => {
 
   const btnAbled = () => {
     const btnEle = document.getElementById('bettingBtn')
+
     if (bettingVal.rBetting !== 0 || bettingVal.yBetting !== 0 || bettingVal.bBetting !== 0 || bettingVal.pBetting !== 0) {
       btnEle.classList.remove('disable')
     } else {

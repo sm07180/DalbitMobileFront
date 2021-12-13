@@ -181,16 +181,20 @@ export default () => {
             <div className="title">구슬 주머니 보유 개수</div>
             <div className="shadowBox">
               <div className="pocketWrap">
-                <span id="pocketAni" className="pocket">
-                  <Lottie
-                    options={{
-                      loop: true,
-                      autoPlay: true,
-                      path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
-                    }}
-                  />
-                </span>
-                <span className="pocketCount">{pocketCtn}</span>
+                {pocketCtn > 0 ? 
+                    <span id="pocketAni" className="pocket">
+                      <Lottie
+                        options={{
+                          loop: true,
+                          autoPlay: true,
+                          path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
+                        }}
+                      />
+                    </span>
+                  : 
+                    <img src="https://image.dalbitlive.com/event/gganbu/marblePocket.png"/>
+                }      
+                <span className="pocketCount">{pocketCtn}</span>          
               </div>
               <button className={`pocketBtn ${pocketCtn > 0 ? "active" : ""}`} onClick={pocketOpen}>구슬 주머니 열기</button>
             </div>
