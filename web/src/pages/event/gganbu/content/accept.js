@@ -44,10 +44,11 @@ export default (props) => {
     console.log(memNick, 1)
     if (data === 1) {
       context.action.alert({
-        msg: `<div class="alertUserId"><span>${memNick}</span>님과</div><div>깐부를 맺었습니다.</div>`,
+        msg: `<div class="alertUserId"><span>${memNick}</span>님과<br/>깐부를 맺었습니다.</div>`,
         callback: () => {
           closeAlert()
           closePopup()
+          context.acticon.updateGlobalGganbuState(gganbuNumber)
         }
       })
     } else {
