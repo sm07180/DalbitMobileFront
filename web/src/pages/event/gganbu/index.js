@@ -164,7 +164,7 @@ export default () => {
 
   return (
     <div id="gganbu">
-      <Header title="깐부게임" />
+      <Header title="이벤트" />
       <div className="top">
         <img
           src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
