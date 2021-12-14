@@ -125,8 +125,6 @@ export default (props) => {
                   <div className="pocket">
                     <div className="list">
                       {gganbuInfo && gganbuInfo.marble_pocket > 0 ? (
-                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
-                      ) : (
                         <Lottie
                           options={{
                             loop: true,
@@ -134,6 +132,8 @@ export default (props) => {
                             path: `${IMG_SERVER}/event/gganbu/marblePocket-1-lottie.json`
                           }}
                         />
+                      ) : (
+                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
                       )}
                     </div>
                     <div className="pocketScore">{gganbuInfo && gganbuInfo.marble_pocket_pt}점</div>
@@ -170,7 +170,7 @@ export default (props) => {
             <div className="rankList my">
               <div className="number">
                 <span className="tit">내 순위</span>
-                <span className="num">32</span>
+                <span className="num">{myRankList.my_rank_no}</span>
               </div>
               <div className="rankBox">
                 <div className="rankItem">
@@ -190,7 +190,7 @@ export default (props) => {
               </div>
               <div className="score">
                 <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>{myRankList.marble_pocket_pt}</span>
+                <span>{myRankList.tot_marble_pocket_pt}</span>
               </div>
             </div>
           )}
