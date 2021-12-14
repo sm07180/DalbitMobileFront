@@ -18,6 +18,7 @@ import StoreCharge from './content/store_charge'
 import BankDeposit from './content/charge/bank_deposit'
 import BankWait from './content/charge/bank_deposit_wait'
 import BankInfo from './content/charge/bank_info'
+import GganbuReward from '../event/gganbu/content/gganbuReward';
 
 ////---------------------------------------------------------------------
 export default () => {
@@ -25,6 +26,16 @@ export default () => {
   const location = useLocation()
 
   const {webview, canceltype, tabType} = qs.parse(location.search)
+  const [rewardPop, setRewardPop] = useState(false)
+  const [getMarble, setGetMarble] = useState({
+    rmarbleCnt : 0,
+    ymarbleCnt : 0,
+    bmarbleCnt : 0,
+    vmarbleCnt : 0,
+    totalmarbleCnt : 0,
+  });
+  
+  const [chargeContent, setChargeContent] = useState("");
 
   const [selected, setSelected] = useState({
     num: 3,
@@ -33,6 +44,11 @@ export default () => {
     itemNo: 'A1555',
     event: 0
   })
+  
+  const androidClosePopup = () => {
+    Hybrid('CloseLayerPopup')
+    Hybrid('ClosePayPopup')
+  }
 
   const createContent = useCallback(() => {
     let {title} = params
@@ -48,7 +64,8 @@ export default () => {
       case 'charge':
         return <Charge />
       case 'result':
-        return <Result />
+        return <Result setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent}
+         androidClosePopup={androidClosePopup} />
       case 'room':
         return <RoomCharge tabType={tabType} />
       case 'store':
@@ -64,5 +81,12 @@ export default () => {
         break
     }
   }, [selected, params, location])
-  return <Layout status="no_gnb">{createContent()}</Layout>
+  return <Layout status="no_gnb">
+    {createContent()}
+    
+    {rewardPop &&
+     <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} setPayState={setPayState}
+     androidClosePopup={androidClosePopup}
+    />}
+    </Layout>
 }

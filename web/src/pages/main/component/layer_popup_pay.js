@@ -25,16 +25,15 @@ export default (props) => {
   const [chargeContent, setChargeContent] = useState("");
   let marbleTotleCtn = 0;
   async function fetchPayComplete() {
-    const testprice = 123440
-    if(testprice >= 10000) {
-      marbleTotleCtn = Math.floor((Number(testprice) / 10000));
+    if(prdtPrice >= 10000) {
+      marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
       const param = {
         insSlct: "c",
         marbleCnt : marbleTotleCtn,
       };
       const {data} = await Api.getGganbuObtainMarble(param)
       if (data.s_return === 1) {
-        setChargeContent(`달 ${Utility.addComma(testprice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+        setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
         setRewardPop(true);
         setGetMarble({
           rmarbleCnt : data.rmarbleCnt,
