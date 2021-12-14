@@ -155,20 +155,16 @@ export default (props) => {
     const bMarbleInputVal = Number(bMarbleRef.current.value)
     const pMarbleInputVal = Number(pMarbleRef.current.value)
     let comparisonMarble
-    let thisEl = inputRef.current.id
-
+    let thisEl = inputRef.current.id 
+    
     if (thisEl === 'rMarbleRef') {
       comparisonMarble = rMyMarble
-      setBettingVal({...bettingVal, rBetting: targetVal})
     } else if (thisEl === 'yMarbleRef') {
       comparisonMarble = yMyMarble
-      setBettingVal({...bettingVal, yBetting: targetVal})
     } else if (thisEl === 'bMarbleRef') {
       comparisonMarble = bMyMarble
-      setBettingVal({...bettingVal, bBetting: targetVal})
     } else if (thisEl === 'pMarbleRef') {
       comparisonMarble = pMyMarble
-      setBettingVal({...bettingVal, pBetting: targetVal})
     }
 
     if (typeof targetVal === 'number') {
@@ -176,50 +172,75 @@ export default (props) => {
         inputRef.current.value = ''
         if (thisEl === 'rMarbleRef') {
           setSuccessVal({...successVal, rSuccess: rMyMarble})
+          setBettingVal({...bettingVal, rBetting: 0})
         } else if (thisEl === 'yMarbleRef') {
           setSuccessVal({...successVal, ySuccess: yMyMarble})
+          setBettingVal({...bettingVal, yBetting: 0})
         } else if (thisEl === 'bMarbleRef') {
           setSuccessVal({...successVal, bSuccess: bMyMarble})
+          setBettingVal({...bettingVal, bBetting: 0})
         } else if (thisEl === 'pMarbleRef') {
           setSuccessVal({...successVal, pSuccess: pMyMarble})
+          setBettingVal({...bettingVal, pBetting: 0})
         }
       } else if (targetVal > comparisonMarble) {
         inputRef.current.value = ''
         if (thisEl === 'rMarbleRef') {
           setSuccessVal({...successVal, rSuccess: rMyMarble})
+          setBettingVal({...bettingVal, rBetting: 0})
         } else if (thisEl === 'yMarbleRef') {
           setSuccessVal({...successVal, ySuccess: yMyMarble})
+          setBettingVal({...bettingVal, yBetting: 0})
         } else if (thisEl === 'bMarbleRef') {
           setSuccessVal({...successVal, bSuccess: bMyMarble})
+          setBettingVal({...bettingVal, bBetting: 0})
         } else if (thisEl === 'pMarbleRef') {
           setSuccessVal({...successVal, pSuccess: pMyMarble})
+          setBettingVal({...bettingVal, pBetting: 0})
         }
         globalCtx.action.toast({msg: toast1})
       } else if (targetVal > 10) {
         inputRef.current.value = ''
         if (thisEl === 'rMarbleRef') {
           setSuccessVal({...successVal, rSuccess: rMyMarble})
+          setBettingVal({...bettingVal, rBetting: 0})
         } else if (thisEl === 'yMarbleRef') {
           setSuccessVal({...successVal, ySuccess: yMyMarble})
+          setBettingVal({...bettingVal, yBetting: 0})
         } else if (thisEl === 'bMarbleRef') {
           setSuccessVal({...successVal, bSuccess: bMyMarble})
+          setBettingVal({...bettingVal, bBetting: 0})
         } else if (thisEl === 'pMarbleRef') {
           setSuccessVal({...successVal, pSuccess: pMyMarble})
+          setBettingVal({...bettingVal, pBetting: 0})
         }
         globalCtx.action.toast({msg: toast2})
       } else if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
         inputRef.current.value = ''
         if (thisEl === 'rMarbleRef') {
           setSuccessVal({...successVal, rSuccess: rMyMarble})
+          setBettingVal({...bettingVal, rBetting: 0})
         } else if (thisEl === 'yMarbleRef') {
           setSuccessVal({...successVal, ySuccess: yMyMarble})
+          setBettingVal({...bettingVal, yBetting: 0})
         } else if (thisEl === 'bMarbleRef') {
           setSuccessVal({...successVal, bSuccess: bMyMarble})
+          setBettingVal({...bettingVal, bBetting: 0})
         } else if (thisEl === 'pMarbleRef') {
           setSuccessVal({...successVal, pSuccess: pMyMarble})
+          setBettingVal({...bettingVal, pBetting: 0})
         }
         globalCtx.action.toast({msg: toast2})
       } else {
+        if (thisEl === 'rMarbleRef') {
+          setBettingVal({...bettingVal, rBetting: targetVal})
+        } else if (thisEl === 'yMarbleRef') {
+          setBettingVal({...bettingVal, yBetting: targetVal})
+        } else if (thisEl === 'bMarbleRef') {
+          setBettingVal({...bettingVal, bBetting: targetVal})
+        } else if (thisEl === 'pMarbleRef') {
+          setBettingVal({...bettingVal, pBetting: targetVal})
+        }
         setSuccessVal({
           rSuccess: rMyMarble + rMarbleInputVal,
           ySuccess: yMyMarble + yMarbleInputVal,
