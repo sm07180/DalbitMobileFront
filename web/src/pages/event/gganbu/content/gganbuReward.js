@@ -2,8 +2,24 @@ import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 
+import Api from 'context/api'
+import moment from "moment";
+
 export default (props) => {
   const {setRewardPop, getMarble, content, setPayState} = props
+
+  const [gganbuEnd, setGganbuEnd] = useState(false);
+  const [today, setToday] = useState("");
+  const [eventEnd, setEventEnd] = useState("");
+
+  async function gganbuDate() {
+    const {data, message} = await Api.gganbuEventDate();
+    if (message === "SUCCESS") {
+      let todayIs = new Date;
+      setToday(moment(todayIs).format("YYYY-MM-DD"));
+      setEventEnd(moment(data.endDate).format("YYYY-MM-DD"));
+    }
+  }
 
   // reference
   const gganbuGetMarble = useRef()
@@ -30,43 +46,57 @@ export default (props) => {
     }
   }
 
+  useEffect(() => {
+    gganbuDate();
+    if(moment(today).isAfter(eventEnd)) {
+      setGganbuEnd(true);
+    } else {
+      setGganbuEnd(false);
+    }
+  }, [today]);
+
   return (
-    <PopupWrap id="main-layer-popup" ref={gganbuGetMarble} onClick={wrapClick}>
-        <div className="contentWrap">
-        <h1 className="title">깐부게임 보상</h1>
-        <div className="content">
-            <div className="reward">
-                <div className="rewardTitle">구슬지급</div>
-                <div className="rewardContent">
-                    {content.split('\n').map((data, index) => {
-                        return <span key={index}>{data}<br/></span>
-                    })}
+      <>
+        {!gganbuEnd && 
+            <PopupWrap id="main-layer-popup" ref={gganbuGetMarble} onClick={wrapClick}>
+                <div className="contentWrap">
+                <h1 className="title">깐부게임 보상</h1>
+                <div className="content">
+                    <div className="reward">
+                        <div className="rewardTitle">구슬지급</div>
+                        <div className="rewardContent">
+                            {content.split('\n').map((data, index) => {
+                                return <span key={index}>{data}<br/></span>
+                            })}
+                        </div>
+                        <div className="rewardWrap">
+                            <div className="rewardItem">
+                                <span className={`marble red`}></span>
+                                <span className="itemCtn">{getMarble.rmarbleCnt}</span>
+                            </div>
+                            <div className="rewardItem">
+                                <span className={`marble yellow`}></span>
+                                <span className="itemCtn">{getMarble.ymarbleCnt}</span>
+                            </div>
+                            <div className="rewardItem">
+                                <span className={`marble blue`}></span>
+                                <span className="itemCtn">{getMarble.bmarbleCnt}</span>
+                            </div>
+                            <div className="rewardItem">
+                                <span className={`marble purple`}></span>
+                                <span className="itemCtn">{getMarble.vmarbleCnt}</span>
+                            </div>
+                        </div>
+                    </div>            
+                    <div className="btnWrap">
+                        <button className="btn" onClick={() => closeReward()}>확인</button>
+                    </div>
                 </div>
-                <div className="rewardWrap">
-                    <div className="rewardItem">
-                        <span className={`marble red`}></span>
-                        <span className="itemCtn">{getMarble.rmarbleCnt}</span>
-                    </div>
-                    <div className="rewardItem">
-                        <span className={`marble yellow`}></span>
-                        <span className="itemCtn">{getMarble.ymarbleCnt}</span>
-                    </div>
-                    <div className="rewardItem">
-                        <span className={`marble blue`}></span>
-                        <span className="itemCtn">{getMarble.bmarbleCnt}</span>
-                    </div>
-                    <div className="rewardItem">
-                        <span className={`marble purple`}></span>
-                        <span className="itemCtn">{getMarble.vmarbleCnt}</span>
-                    </div>
                 </div>
-            </div>            
-            <div className="btnWrap">
-                <button className="btn" onClick={() => closeReward()}>확인</button>
-            </div>
-        </div>
-        </div>
-    </PopupWrap>
+            </PopupWrap>
+        }
+    </>
+    
     )
 }
 
