@@ -432,7 +432,9 @@ export default () => {
             context.action.alert({msg: pushMsg.contents})
             break
           case '64': // 깐부 수락 / 신청
-            history.push('/event/gganbu');
+            // history.push('/event/gganbu');
+            window.location.href = '/event/gganbu';
+            break;
           default:
             //------------------기본값
             //window.location.href = `/`
