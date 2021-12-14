@@ -168,11 +168,45 @@ export default (props) => {
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMyByeol(Utility.addComma(res.data.byeolCnt))
         setMyDal(Utility.addComma(res.data.dalCnt))
+        // fetchPayComplete()
+
+
+        let gganbuData;
+        let marbleTotleCtn;
+
+        if(selected.byeol >= 300){
+          marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
+          const param = {
+            insSlct: "e",
+            marbleCnt : marbleTotleCtn,
+          };
+          gganbuData = await Api.getGganbuObtainMarble(param)
+          
+        }
+
         context.action.alert({
           msg: res.message,
           callback: () => {
             console.log('완료되엇습니다')
-            Hybrid('CloseLayerPopup')
+            if(gganbuData) {
+              const data = gganbuData.data;
+            
+              if (data.s_return === 1) {
+                setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+                setRewardPop(true);
+                setGetMarble({
+                  rmarbleCnt : data.rmarbleCnt,
+                  ymarbleCnt : data.ymarbleCnt,
+                  bmarbleCnt : data.bmarbleCnt,
+                  vmarbleCnt : data.vmarbleCnt,
+                  totalmarbleCnt : data.marbleCnt,
+                })
+              }else{
+                Hybrid('CloseLayerPopup');
+              }
+            }else {
+              Hybrid('CloseLayerPopup')
+            }
           }
         })
       } else {
@@ -185,34 +219,33 @@ export default (props) => {
       }
     }
 
-    async function fetchPayComplete() {
-      console.log(selected.byeol);
-      if(selected.byeol >= 300){
-        marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
-        const param = {
-          insSlct: "e",
-          marbleCnt : marbleTotleCtn,
-        };
-        const {data} = await Api.getGganbuObtainMarble(param)
-        if (data.s_return === 1) {
-          setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-          setRewardPop(true);
-          setGetMarble({
-            rmarbleCnt : data.rmarbleCnt,
-            ymarbleCnt : data.ymarbleCnt,
-            bmarbleCnt : data.bmarbleCnt,
-            vmarbleCnt : data.vmarbleCnt,
-            totalmarbleCnt : data.marbleCnt,
-          })
-        } 
-      }
-    }
+    // async function fetchPayComplete() {
+    //   console.log(selected.byeol);
+    //   if(selected.byeol >= 300){
+    //     marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
+    //     const param = {
+    //       insSlct: "e",
+    //       marbleCnt : marbleTotleCtn,
+    //     };
+    //     const {data} = await Api.getGganbuObtainMarble(param)
+    //     if (data.s_return === 1) {
+    //       setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+    //       setRewardPop(true);
+    //       setGetMarble({
+    //         rmarbleCnt : data.rmarbleCnt,
+    //         ymarbleCnt : data.ymarbleCnt,
+    //         bmarbleCnt : data.bmarbleCnt,
+    //         vmarbleCnt : data.vmarbleCnt,
+    //         totalmarbleCnt : data.marbleCnt,
+    //       })
+    //     } 
+    //   }
+    // }
 
     context.action.confirm({
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
       callback: () => {
         postChange()
-        fetchPayComplete()
       }
     })
   }
@@ -224,6 +257,10 @@ export default (props) => {
 
   const goBackClick = () => {
     Hybrid('CloseLayerPopup')
+  }
+
+  const androidClosePopup = () => {
+    Hybrid('CloseLayerPopup');
   }
 
   //useEffect
@@ -301,7 +338,9 @@ export default (props) => {
           )}
         </>
       )}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} />}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent}
+       androidClosePopup={androidClosePopup}
+       />}
     </Content>
   )
 }
