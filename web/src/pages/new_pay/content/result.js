@@ -1,12 +1,14 @@
 import React, {useEffect, useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
+import Api from 'context/api'
 
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 
-export default () => {
+export default (props) => {
+  const { setRewardPop, setGetMarble, setChargeContent, androidClosePopup } = props;
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
 
@@ -114,8 +116,34 @@ export default () => {
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            Hybrid('CloseLayerPopup')
-            Hybrid('ClosePayPopup')
+            if(prdtPrice >= 10000) {
+              const test = async () => {
+                let marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
+              const param = {
+                insSlct: "c",
+                marbleCnt : marbleTotleCtn,
+              };
+              const {data} = await Api.getGganbuObtainMarble(param)
+              if (data.s_return === 1) {
+                setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+                setRewardPop(true);
+                setGetMarble({
+                  rmarbleCnt : data.rmarbleCnt,
+                  ymarbleCnt : data.ymarbleCnt,
+                  bmarbleCnt : data.bmarbleCnt,
+                  vmarbleCnt : data.vmarbleCnt,
+                  totalmarbleCnt : data.marbleCnt,
+                })
+              }else {
+                androidClosePopup()
+              }
+            }
+
+              test();
+              
+            }else {
+              androidClosePopup()
+            }
           }
         })
       } else {

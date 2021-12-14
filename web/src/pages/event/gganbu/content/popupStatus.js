@@ -55,9 +55,6 @@ export default (props) => {
   const cancelBtn = (ptr_mem_no) => {
     context.action.confirm({
       msg: '정말 신청 취소하시겠습니까?',
-      cancelCallback: () => {
-        closeAlert()
-      },
       callback: () => {
         const ptrMemNo = ptr_mem_no
         const goCancelBtn = async () => {
@@ -65,14 +62,13 @@ export default (props) => {
             gganbuNo: gganbuNumber,
             ptrMemNo: ptrMemNo
           }
-          const {message} = await postGganbuCancel(param)
+          const {message} = await Api.postGganbuCancel(param)
           if (message === 'SUCCESS') {
             closeAlert()
             fetchGganbuSubList()
           } else {
             closeAlert()
           }
-          return
         }
         goCancelBtn()
       }
@@ -104,7 +100,7 @@ export default (props) => {
         </div>
         {tabBtn === 'r' ? (
           <>
-            <div className="searchTitle status">※ 탈퇴/정지/깐부를 맺은 회원은 검색되지 않습니다.</div>
+            <div className="searchTitle status">※ 이미 깐부를 맺은 회원은 리스트에서 삭제됩니다.</div>
             <div className="listWrap" style={{height: '329px'}}>
               {gganbuSubList.length > 0 ? (
                 <>

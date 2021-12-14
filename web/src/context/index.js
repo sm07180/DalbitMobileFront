@@ -62,6 +62,16 @@ const GlobalProvider = (props) => {
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
   const [bannerCheck, setBannerCheck] = useState(false)
   //
+  const [exitMarbleInfo, setExitMarbleInfo] = useState({
+    rMarbleCnt: 0,
+    yMarbleCnt: 0,
+    bMarbleCnt: 0,
+    vMarbleCnt: 0,
+    isBjYn: '',
+    marbleCnt: 0,
+    pocketCnt: 0,
+    showState: false
+  })
   const [globalGganbuState, setGlobalGganbuState] = useState(-1)
   const [news, setNews] = useState(false)
   const [sticker, setSticker] = useState(false)
@@ -373,9 +383,6 @@ const GlobalProvider = (props) => {
     updateBannerCheck: (bool) => {
       setBannerCheck(bool)
     },
-    updateGlobalGganbuState: (num) => {
-      setGlobalGganbuState(num)
-    },
     updateMyInfo: (obj) => {
       setMyInfo(obj)
     },
@@ -537,6 +544,12 @@ const GlobalProvider = (props) => {
     updateAppInfo: (obj) => {
       setAppInfo(obj)
     },
+    updateExitMarbleInfo: (num) => {
+      setExitMarbleInfo(num)
+    },
+    updateGlobalGganbuState: (num) => {
+      setGlobalGganbuState(num)
+    },
     updateGganbuTab: (value) => {
       setGganbuTab(value)
     }
@@ -625,8 +638,9 @@ const GlobalProvider = (props) => {
     authRef,
     noServiceInfo,
     appInfo,
-    gganbuTab,
-    globalGganbuState
+    exitMarbleInfo,
+    globalGganbuState,
+    gganbuTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }

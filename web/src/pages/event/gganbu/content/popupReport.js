@@ -85,7 +85,7 @@ export default (props) => {
                           : ins_slct === 'c'
                           ? '달구매'
                           : ins_slct === 'e'
-                          ? '교환'
+                          ? '달교환'
                           : ins_slct === 'b'
                           ? '베팅소'
                           : ''}

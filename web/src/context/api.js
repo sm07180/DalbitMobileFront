@@ -3324,7 +3324,7 @@ export default class API {
 
   // 추억의 뽑기 이벤트 뽑기
   static putDrawSelect = async (data) => {
-    console.log(data);
+    console.log(data)
     return await ajax({
       url: '/event/draw/select',
       method: 'POST',
@@ -3362,7 +3362,6 @@ export default class API {
       url: '/main/ip/mob',
       method: 'GET'
     })
-
   }
 
   /**
@@ -3384,6 +3383,15 @@ export default class API {
     return await ajax({
       url: `/event/gganbu/rank/list`,
       method: 'GET',
+      params: data
+    })
+  }
+
+  // 깐부 현황 N 뱃지 갱신
+  static getGganbuBadge = async (data) => {
+    return await ajax({
+      url: `/event/gganbu/badge/upd`,
+      method: 'POST',
       params: data
     })
   }

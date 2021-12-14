@@ -19,7 +19,7 @@ import {backFunc} from 'components/lib/back_func'
 import Utility from 'components/lib/utility'
 
 import qs from 'query-string'
-import {authReq} from "pages/self_auth";
+import {authReq} from 'pages/self_auth'
 
 export default () => {
   //context
@@ -27,23 +27,23 @@ export default () => {
   //history
   let history = useHistory()
   const doAuthCheck = () => {
-    Api.certificationCheck().then(res => {
-      if(res.message === "SUCCESS") {
-        if(res.data === 'y') {
+    Api.certificationCheck().then((res) => {
+      if (res.message === 'SUCCESS') {
+        if (res.data === 'y') {
           context.action.confirm({
             msg: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
-              authReq('9', context.authRef, context);
+              authReq('9', context.authRef, context)
             }
           })
-        }else {
+        } else {
           context.action.alert({
             msg: '본인인증을 이미 완료했습니다.<br/>1일 1회만 가능합니다.'
           })
         }
       }
-    });
-  };
+    })
+  }
 
   // 플레이가공
   const clipPlay = async (clipNum) => {
@@ -114,15 +114,15 @@ export default () => {
   const socialLogin = async (inputData, type) => {
     const customHeader = JSON.parse(Api.customHeader)
     const {webview, redirect} = qs.parse(location.search)
-    let social_result;
+    let social_result
     if (customHeader['os'] === OS_TYPE['IOS']) {
       inputData = JSON.parse(decodeURIComponent(inputData))
     }
 
-    if(type === 'google') {
-      social_result = await Api.google_login({data: inputData});
-    }else if(type === 'facebook') {
-      social_result = await Api.facebook_login({data: inputData});
+    if (type === 'google') {
+      social_result = await Api.google_login({data: inputData})
+    } else if (type === 'facebook') {
+      social_result = await Api.facebook_login({data: inputData})
     }
 
     let sessionRoomNo = sessionStorage.getItem('room_no')
@@ -207,7 +207,7 @@ export default () => {
               })
               if (fetchResetListen.result === 'success') {
                 setTimeout(() => {
-                  socialLogin(inputData, type);
+                  socialLogin(inputData, type)
                 }, 700)
               } else {
                 context.action.alert({
@@ -233,8 +233,8 @@ export default () => {
 
   const newSocialLogin = async (inputData) => {
     const {webview, redirect} = qs.parse(location.search)
-    let social_result = await Api.new_social_login(inputData);
-    let sessionRoomNo = sessionStorage.getItem('room_no');
+    let social_result = await Api.new_social_login(inputData)
+    let sessionRoomNo = sessionStorage.getItem('room_no')
 
     if (sessionRoomNo === undefined || sessionRoomNo === null) {
       sessionRoomNo = Utility.getCookie('listen_room_no')
@@ -317,7 +317,7 @@ export default () => {
               })
               if (fetchResetListen.result === 'success') {
                 setTimeout(() => {
-                  socialLogin(inputData, type);
+                  socialLogin(inputData, type)
                 }, 700)
               } else {
                 context.action.alert({
@@ -344,7 +344,7 @@ export default () => {
   //
   //---------------------------------------------------------------------
   function update(event) {
-    const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n'; // 14세 미만 본인인증 받아야됨
+    const agePassYn = context.noServiceInfo.americanAge >= context.noServiceInfo.limitAge ? 'y' : 'n' // 14세 미만 본인인증 받아야됨
 
     switch (event.type) {
       case 'native-push-foreground': //----------------------native-push-foreground
@@ -522,6 +522,8 @@ export default () => {
         sessionStorage.removeItem('room_no')
         Utility.setCookie('listen_room_no', null)
         sessionStorage.removeItem('room_active')
+        // const {getMarbleInfo} = event.datail
+        // alert('tq', JSON.stringify(getMarbleInfo))
         break
       case 'native-non-member-end':
         context.action.confirm({
@@ -541,26 +543,26 @@ export default () => {
 
         break
       case 'native-google-login': //-------------------------Google 로그인
-        socialLogin(event.detail, 'google');
+        socialLogin(event.detail, 'google')
         break
       case 'native-facebook-login':
-        socialLogin(event.detail, 'facebook');
-        break;
+        socialLogin(event.detail, 'facebook')
+        break
       case 'resSocialToken': // 소셜로그인을 native에서 처리하면서 통합 됨
         const customHeader = JSON.parse(Api.customHeader)
-        let param = event.detail;
+        let param = event.detail
         if (customHeader['os'] === OS_TYPE['IOS']) {
           param = JSON.parse(decodeURIComponent(param))
         }
 
-        if(param.token && param.token !== '0') {
-          newSocialLogin(param);
+        if (param.token && param.token !== '0') {
+          newSocialLogin(param)
         }
-        break;
+        break
       case 'native-room-make':
-        if (!context.token.isLogin) return (window.location.href = '/login');
-        if(authState) {
-          if(agePassYn === 'y') {
+        if (!context.token.isLogin) return (window.location.href = '/login')
+        if (authState) {
+          if (agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
                 context.action.confirm({
@@ -585,11 +587,11 @@ export default () => {
                 }
               })
             }
-          }else {
-            doAuthCheck();
+          } else {
+            doAuthCheck()
           }
-        }else {
-          doAuthCheck();
+        } else {
+          doAuthCheck()
         }
 
         break
@@ -649,8 +651,8 @@ export default () => {
         if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
-        if(authState) {
-          if(agePassYn === 'y') {
+        if (authState) {
+          if (agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
                 context.action.confirm({
@@ -675,11 +677,11 @@ export default () => {
                 }
               })
             }
-          }else {
-            doAuthCheck();
+          } else {
+            doAuthCheck()
           }
-        }else {
-          doAuthCheck();
+        } else {
+          doAuthCheck()
         }
 
         break
@@ -687,8 +689,8 @@ export default () => {
         if (!context.token.isLogin) return (window.location.href = '/login')
         //2020-10-13 본인인증 임시 막기
         // if (!authState) return (window.location.href = '/selfauth?type=create')
-        if(authState) {
-          if(agePassYn === 'y') {
+        if (authState) {
+          if (agePassYn === 'y') {
             if (Utility.getCookie('listen_room_no') === undefined || Utility.getCookie('listen_room_no') === 'null') {
               if (Utility.getCookie('clip-player-info')) {
                 context.action.confirm({
@@ -713,11 +715,11 @@ export default () => {
                 }
               })
             }
-          }else {
-            doAuthCheck();
+          } else {
+            doAuthCheck()
           }
-        }else {
-          doAuthCheck();
+        } else {
+          doAuthCheck()
         }
 
         break
@@ -1036,8 +1038,8 @@ export default () => {
     document.addEventListener('native-auth-check', update) //방인증정보
     document.addEventListener('native-google-login', update) //구글로그인
     document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
-    document.addEventListener('native-facebook-login', update); // 페이스북 로그인
-    document.addEventListener('resSocialToken', update); // 소셜로그인 통합
+    document.addEventListener('native-facebook-login', update) // 페이스북 로그인
+    document.addEventListener('resSocialToken', update) // 소셜로그인 통합
 
     /*----react----*/
     document.addEventListener('react-debug', update)
@@ -1077,8 +1079,8 @@ export default () => {
       document.removeEventListener('native-auth-check', update)
       document.addEventListener('native-google-login', update) //구글로그인
       document.addEventListener('native-get-tid', nativeGetTid) //tid 가져오기
-      document.removeEventListener('native-facebook-login', update); // 페이스북 로그인
-      document.removeEventListener('resSocialToken', update); // 소셜로그인 통합
+      document.removeEventListener('native-facebook-login', update) // 페이스북 로그인
+      document.removeEventListener('resSocialToken', update) // 소셜로그인 통합
       /*----react----*/
       document.removeEventListener('react-debug', update)
       document.removeEventListener('react-gnb-open', update)

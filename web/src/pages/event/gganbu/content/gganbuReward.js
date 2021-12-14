@@ -6,7 +6,7 @@ import Api from 'context/api'
 import moment from "moment";
 
 export default (props) => {
-  const {setRewardPop, getMarble, content, setPayState} = props
+  const {setRewardPop, getMarble, content, setPayState, androidClosePopup} = props
 
   const [gganbuEnd, setGganbuEnd] = useState(false);
   const [today, setToday] = useState("");
@@ -37,6 +37,10 @@ export default (props) => {
     if(setPayState){
         setPayState(false)
     }
+
+    if(typeof androidClosePopup === 'function') {
+        androidClosePopup();
+    }
   }
 
   const wrapClick = (e) => {
@@ -65,9 +69,11 @@ export default (props) => {
                     <div className="reward">
                         <div className="rewardTitle">구슬지급</div>
                         <div className="rewardContent">
-                            {content.split('\n').map((data, index) => {
-                                return <span key={index}>{data}<br/></span>
-                            })}
+                            {content &&
+                                content.split('\n').map((data, index) => {
+                                    return <span key={index}>{data}<br/></span>
+                                })
+                            }
                         </div>
                         <div className="rewardWrap">
                             <div className="rewardItem">
