@@ -30,6 +30,8 @@ import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
 import { Hybrid } from "context/hybrid";
 
+import GganbuReward from '../../../event/gganbu/content/gganbuReward';
+
 const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
 const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 
@@ -417,7 +419,6 @@ export default () => {
   useEffect(() => {
     fetchMainPopupData(12)
   }, [])
-
 
   return (
     <>

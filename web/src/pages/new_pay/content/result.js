@@ -135,14 +135,16 @@ export default (props) => {
                   totalmarbleCnt : data.marbleCnt,
                 })
               }else {
-                Hybrid('CloseLayerPopup');
+                Hybrid('CloseLayerPopup')
+                Hybrid('ClosePayPopup')
               }
             }
 
               getMarbleIns();
               
             }else {
-              Hybrid('CloseLayerPopup');
+              Hybrid('CloseLayerPopup')
+              Hybrid('ClosePayPopup')
             }
           }
         })

@@ -64,8 +64,7 @@ export default () => {
       case 'charge':
         return <Charge />
       case 'result':
-        return <Result setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent}
-         androidClosePopup={androidClosePopup} />
+        return <Result setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
       case 'room':
         return <RoomCharge tabType={tabType} />
       case 'store':
@@ -85,8 +84,7 @@ export default () => {
     {createContent()}
     
     {rewardPop &&
-     <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} setPayState={setPayState}
-     androidClosePopup={androidClosePopup}
+     <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
     />}
     </Layout>
 }

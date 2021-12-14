@@ -336,8 +336,7 @@ export default (props) => {
           )}
         </>
       )}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent}
-       androidClosePopup={androidClosePopup}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
        />}
     </Content>
   )
