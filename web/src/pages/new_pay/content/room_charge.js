@@ -181,13 +181,11 @@ export default (props) => {
             marbleCnt : marbleTotleCtn,
           };
           gganbuData = await Api.getGganbuObtainMarble(param)
-          
         }
 
         context.action.alert({
           msg: res.message,
           callback: () => {
-            console.log('완료되엇습니다')
             if(gganbuData) {
               const data = gganbuData.data;
             
