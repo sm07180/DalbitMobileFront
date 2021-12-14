@@ -65,9 +65,11 @@ export default (props) => {
                     <div className="reward">
                         <div className="rewardTitle">구슬지급</div>
                         <div className="rewardContent">
-                            {content.split('\n').map((data, index) => {
-                                return <span key={index}>{data}<br/></span>
-                            })}
+                            {content &&
+                                content.split('\n').map((data, index) => {
+                                    return <span key={index}>{data}<br/></span>
+                                })
+                            }
                         </div>
                         <div className="rewardWrap">
                             <div className="rewardItem">
