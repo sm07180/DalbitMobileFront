@@ -18,6 +18,7 @@ export default () => {
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
+  const [gganbuBadgeCnt, setGganbuBadgeCnt] = useState()
   const [gganbuNumber, setGganbuNumber] = useState()
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
@@ -36,8 +37,9 @@ export default () => {
   const gganbuRoundLookup = async () => {
     const {data, message} = await Api.gganbuMarbleGather()
     if (message === 'SUCCESS') {
-      const {gganbuState} = data
+      const {badgeCnt, gganbuState} = data
       setGganbuState(gganbuState)
+      setGganbuBadgeCnt(badgeCnt)
       if (gganbuState === -1) {
         const {gganbuRoundInfo, rankList} = data
         setGganbuNumber(gganbuRoundInfo.gganbuNo)
@@ -153,10 +155,6 @@ export default () => {
           })
         }
       })
-    } else {
-      if (globalCtx.profile !== null) {
-        gganbuRoundLookup()
-      }
     }
   }
 
@@ -226,7 +224,9 @@ export default () => {
                       </div>
                       <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
                         <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
-                        <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                        {gganbuBadgeCnt && gganbuBadgeCnt.s_reqCnt > 0 && (
+                          <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                        )}
                       </button>
                     </div>
                   </div>

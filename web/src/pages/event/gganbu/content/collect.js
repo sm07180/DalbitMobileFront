@@ -16,7 +16,6 @@ export default (props) => {
   const {tabContent, gganbuState, gganbuNumber, gganbuInfo, myRankList} = props // rankList
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
 
@@ -36,40 +35,20 @@ export default (props) => {
   const gganbuRankList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      pageNo: currentPage,
+      pageNo: 1,
       pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.getGganbuRankList(param)
     if (message === 'SUCCESS') {
-      totalPage = Math.ceil(data.listCnt / pagePerCnt)
-      console.log('totalPage', totalPage)
-      if (currentPage > 1) {
-        setRankList(rankList.concat(data.list))
-      } else {
-        setRankList(data.list)
-      }
+      setRankList(data.list)
     } else {
       console.log(message)
     }
-  }, [currentPage])
-
-  const scrollEvtHdr = () => {
-    if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  useLayoutEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [currentPage])
+  }, [])
 
   useEffect(() => {
     if (gganbuNumber !== undefined) {
-      if (currentPage > 0) gganbuRankList()
+      gganbuRankList()
     }
   }, [gganbuNumber])
 

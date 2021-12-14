@@ -433,6 +433,8 @@ export default () => {
             break
           case '64': // 깐부 수락 / 신청
             history.push('/event/gganbu');
+            // window.location.href = '/event/gganbu';
+            break;
           default:
             //------------------기본값
             //window.location.href = `/`
@@ -997,7 +999,10 @@ export default () => {
           window.location.href = `/customer/notice/${board_idx}`
         }
         break
-
+      case '64': // 깐부 수락 / 신청
+        history.push('/event/gganbu');
+        // window.location.href = '/event/gganbu';
+        break;
       default:
         //------------------기본값
         //window.location.href = `/`
