@@ -13,7 +13,8 @@ export default (props) => {
   const postGganbuSub = async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      ptrMemNo: memberNumber // 대상자
+      ptrMemNo: memberNumber, // 대상자
+      memNick: memberNick
     }
     const {data, message} = await Api.postGganbuSub(param)
     if (data === 1) {
@@ -38,7 +39,8 @@ export default (props) => {
   const postGganbuIns = async (memNo, memNick) => {
     const param = {
       gganbuNo: gganbuNumber,
-      memNo: memNo
+      memNo: memNo,
+      memNick: memNick
     }
     const {data, message} = await Api.postGganbuIns(param)
     if (data === 1) {

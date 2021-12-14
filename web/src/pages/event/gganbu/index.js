@@ -36,12 +36,35 @@ export default () => {
   const gganbuRoundLookup = async () => {
     const {data, message} = await Api.gganbuMarbleGather()
     if (message === 'SUCCESS') {
-      const {gganbuState, gganbuRoundInfo, gganbuInfo, myRankInfo, rankList} = data
+      const {gganbuState} = data
       setGganbuState(gganbuState)
-      setGganbuNumber(gganbuRoundInfo.gganbuNo)
-      setGganbuInfo(gganbuInfo)
-      setMyRankList(myRankInfo)
-      setRankList(rankList)
+      if (gganbuState === -1) {
+        const {gganbuRoundInfo, rankList} = data
+        setGganbuNumber(gganbuRoundInfo.gganbuNo)
+        setRankList(rankList)
+      } else if (gganbuState === 1) {
+        const {gganbuRoundInfo, gganbuInfo, myRankInfo, rankList} = data
+        setGganbuState(gganbuState)
+        setGganbuNumber(gganbuRoundInfo.gganbuNo)
+        setGganbuInfo(gganbuInfo)
+        setMyRankList(myRankInfo)
+        setRankList(rankList)
+      }
+    } else {
+      console.log(message)
+    }
+  }
+  // 깐부 현황 N뱃지
+  const fetchGganbuBadge = async () => {
+    const param = {
+      gganbuNo: 1,
+      memNo: globalCtx.profile.memNo,
+      badgeSlct: 'p'
+    }
+    const {data, message} = await Api.getGganbuBadge(param)
+    console.log(gganbuNumber, globalCtx.profile.memNo)
+    if (message === 'SUCCESS') {
+      console.log(message)
     } else {
       console.log(message)
     }
@@ -69,7 +92,6 @@ export default () => {
         setMetchState(false)
       }
     }
-    console.log(globalCtx.globalGganbuState)
   }, [gganbuRoundLookup, globalCtx.globalGganbuState])
 
   const GganbuMetch = () => {
@@ -126,7 +148,7 @@ export default () => {
           history.push({
             pathname: '/login',
             state: {
-              state: 'event/gganbu'
+              state: '/'
             }
           })
         }
@@ -146,7 +168,12 @@ export default () => {
 
   useEffect(() => {
     loginCheck()
+    fetchGganbuBadge()
   }, [])
+
+  useEffect(() => {
+    if (globalCtx.globalGganbuState > 0) gganbuRoundLookup()
+  }, [globalCtx.globalGganbuState])
 
   useEffect(() => {
     window.addEventListener('scroll', tabScrollEvent)
@@ -160,7 +187,7 @@ export default () => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
-  }, [tabContent, globalCtx.globalGganbuState])
+  }, [tabContent])
 
   return (
     <div id="gganbu">

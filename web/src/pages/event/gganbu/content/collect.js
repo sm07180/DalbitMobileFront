@@ -31,7 +31,7 @@ export default (props) => {
   }
 
   let totalPage = 1
-  let pagePerCnt = 10
+  let pagePerCnt = 50
   // 깐부 랭킹 리스트
   const gganbuRankList = useCallback(async () => {
     const param = {
@@ -177,14 +177,18 @@ export default (props) => {
                   <PtrLevelBox className="badge" levelColor={myRankList.ptr_mem_level_color}>
                     lv {myRankList.ptr_mem_level}
                   </PtrLevelBox>
-                  <span className="userNick">{myRankList.ptr_mem_nick}</span>
+                  <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.ptr_mem_no}`})}>
+                    {myRankList.ptr_mem_nick}
+                  </span>
                   <span className="userId">{myRankList.ptr_mem_id}</span>
                 </div>
                 <div className="rankItem">
                   <LevelBox className="badge" levelColor={myRankList.mem_level_color}>
                     lv {myRankList.mem_level}
                   </LevelBox>
-                  <span className="userNick">{myRankList.mem_nick}</span>
+                  <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.mem_no}`})}>
+                    {myRankList.mem_nick}
+                  </span>
                   <span className="userId">{myRankList.mem_id}</span>
                 </div>
               </div>
@@ -202,11 +206,13 @@ export default (props) => {
                     ptr_mem_level,
                     ptr_mem_level_color,
                     ptr_mem_nick,
+                    ptr_mem_no,
                     ptr_mem_id,
                     ptr_mem_stat,
                     mem_level,
                     mem_level_color,
                     mem_nick,
+                    mem_no,
                     mem_id,
                     mem_state
                   } = data
@@ -226,7 +232,9 @@ export default (props) => {
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
                               </PtrLevelBox>
-                              <span className="userNick">{ptr_mem_nick}</span>
+                              <span className="userNick" onClick={() => history.push({pathname: `/mypage/${ptr_mem_no}`})}>
+                                {ptr_mem_nick}
+                              </span>
                               <span className="userId">{ptr_mem_id}</span>
                             </>
                           ) : ptr_mem_stat === 4 ? (
@@ -246,7 +254,9 @@ export default (props) => {
                               <LevelBox className="badge" levelColor={mem_level_color}>
                                 lv {mem_level}
                               </LevelBox>
-                              <span className="userNick">{mem_nick}</span>
+                              <span className="userNick" onClick={() => history.push({pathname: `/mypage/${mem_no}`})}>
+                                {mem_nick}
+                              </span>
                               <span className="userId">{mem_id}</span>
                             </>
                           ) : mem_state === 4 ? (
