@@ -88,10 +88,26 @@ export default (props) => {
       bettingSlct: valueType,
     }
     const res = await Api.getGganbuObtainMarble(param);
-    if (res.message === 'SUCCESS') {      
+    if (res.s_return === 1) {
       fetchGganbuData();
       fetchBettingPage();
-    }
+    } else if (res.s_return === -4) {
+      globalCtx.action.alert({msg: "베팅할 구슬이 부족합니다."})
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -3) {
+      globalCtx.action.alert({msg: "이미 지급되었습니다."})
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -2) {
+      globalCtx.action.alert({msg: "깐부가 없습니다."})
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -1) {
+      globalCtx.action.alert({msg: "이벤트 기간이 아닙니다."})
+      fetchGganbuData();
+      fetchBettingPage();
+    } 
   }  
 
   const closePopup = () => {
