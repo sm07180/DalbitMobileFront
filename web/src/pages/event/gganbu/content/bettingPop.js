@@ -73,7 +73,8 @@ export default (props) => {
         evenWinPercent : data[1].evenWinProbability,
       })
     } else {
-      globalCtx.action.alert({msg: message})
+      globalCtx.action.alert({msg: "베팅을 할 수 없습니다."})
+      setBettingPop(false)
     }
   }
 
