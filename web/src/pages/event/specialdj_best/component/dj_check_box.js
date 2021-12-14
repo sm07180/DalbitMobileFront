@@ -113,11 +113,13 @@ export default ({infoData, conditionData, bestData, setSendPop}) => {
         <ul className="condition_list">
           {conditionData.conditionList &&
             conditionData.conditionList.map((item, index) => {
-              const {condition, title, value} = item
+              const {condition, title, subtitle, value} = item
               return (
                 <li key={index} className="condition_item">
                   <div className="title">
                     {title}
+                    {subtitle != undefined ? <br /> : ''}
+                    {subtitle}
                     <br />({value})
                   </div>
                   {/* <div className={`check ${bestData.is_best === 1 ? 'best' : ''} ${condition === 1 ? 'active' : ''}`}></div> */}
