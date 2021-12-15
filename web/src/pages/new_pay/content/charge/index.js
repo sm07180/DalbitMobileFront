@@ -151,16 +151,6 @@ export default (props) => {
       }
     }
 
-    if(typeof props.setRoomSelected === 'function') {
-      const param = {
-        ...props.roomSelected,
-        price: totalPrice * totalQuantity,
-        itemNo: itemNo,
-        name: name,
-      }
-      props.setRoomSelected(param);
-    }
-
     const { result, data, message } = await Api[fetch]({
       data: {
         Prdtnm: name,
@@ -175,14 +165,7 @@ export default (props) => {
     // console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
-      if(typeof props.setRoomSelected === 'function') {
-        props.setRoomSelected({
-          ...props.roomSelected,
-          name: name,
-          price: totalPrice * totalQuantity,
-          itemNo: itemNo,
-        })
-      }
+      sessionStorage.setItem('buy_item_data', totalPrice * totalQuantity);
 
       if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
         return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
