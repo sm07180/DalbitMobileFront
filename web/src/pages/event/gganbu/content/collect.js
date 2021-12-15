@@ -16,6 +16,7 @@ export default (props) => {
   const {tabContent, gganbuState, gganbuNumber, gganbuInfo, myRankList} = props // rankList
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
 
@@ -30,27 +31,43 @@ export default (props) => {
   }
 
   let totalPage = 1
-  let pagePerCnt = 50
+  let pagePerCnt = 5
   // 깐부 랭킹 리스트
   const gganbuRankList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      pageNo: 1,
+      pageNo: currentPage,
       pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.getGganbuRankList(param)
     if (message === 'SUCCESS') {
-      setRankList(data.list)
+      totalPage = Math.ceil(data.listCnt / pagePerCnt)
+      if (currentPage > 1) {
+        setRankList(rankList.concat(data.list))
+      } else {
+        setRankList(data.list)
+      }
     } else {
       console.log(message)
     }
-  }, [])
+  }, [currentPage])
+
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [currentPage])
 
   useEffect(() => {
-    if (gganbuNumber !== undefined) {
-      gganbuRankList()
-    }
-  }, [gganbuNumber])
+    if (currentPage > 0) gganbuRankList()
+  }, [gganbuNumber, currentPage])
 
   return (
     <>
@@ -198,13 +215,13 @@ export default (props) => {
                   } = data
                   return (
                     <div className="rankList" key={index}>
-                      {my_rank_no && my_rank_no < 4 ? (
-                        <div className={`number medal-${my_rank_no}`}>
+                      {index < 3 ? (
+                        <div className={`number medal-${index + 1}`}>
                           <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
                         </div>
                       ) : (
                         <div className="number">
-                          <span className="rankNum">{my_rank_no}</span>
+                          <span className="rankNum">{index + 1}</span>
                         </div>
                       )}
                       <div className="rankBox">
