@@ -188,6 +188,7 @@ export default (props) => {
                     ptr_mem_no,
                     ptr_mem_id,
                     ptr_mem_stat,
+                    my_rank_no,
                     mem_level,
                     mem_level_color,
                     mem_nick,
@@ -197,12 +198,14 @@ export default (props) => {
                   } = data
                   return (
                     <div className="rankList" key={index}>
-                      {index < 3 ? (
-                        <div className={`number medal-${index + 1}`}>
+                      {my_rank_no && my_rank_no < 4 ? (
+                        <div className={`number medal-${my_rank_no}`}>
                           <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
                         </div>
                       ) : (
-                        <div className="number">{index + 1}</div>
+                        <div className="number">
+                          <span className="rankNum">{my_rank_no}</span>
+                        </div>
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
