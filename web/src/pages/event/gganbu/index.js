@@ -167,7 +167,7 @@ export default () => {
   useEffect(() => {
     loginCheck()
     fetchGganbuBadge()
-  }, [gganbuNumber])
+  }, [])
 
   useEffect(() => {
     if (globalCtx.globalGganbuState > 0) gganbuRoundLookup()
@@ -191,17 +191,11 @@ export default () => {
     <div id="gganbu">
       <Header title="이벤트" />
       <div className="top">
-        {gganbuNumber && gganbuNumber === 1 ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-1.png" className="topImg" />
-        ) : gganbuNumber && gganbuNumber === 2 ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-2.png" className="topImg" />
-        ) : gganbuNumber && gganbuNumber === 3 ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-3.png" className="topImg" />
-        ) : gganbuNumber && gganbuNumber === 4 ? (
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-4.png" className="topImg" />
-        ) : (
-          <></>
-        )}
+        <img
+          src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
+          className="topImg"
+          alt="깐부게임 00만원 상금이 피었습니다."
+        />
         <button className="topBtn" onClick={() => setPopupNotice(true)}>
           <img src="https://image.dalbitlive.com/event/gganbu/topBtn.png" alt="" />
         </button>
