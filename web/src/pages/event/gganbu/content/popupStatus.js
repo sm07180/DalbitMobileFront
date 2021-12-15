@@ -121,7 +121,7 @@ export default (props) => {
                             </span>
                           </div>
                         </div>
-                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
+                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
                           수락
                         </button>
                       </div>
