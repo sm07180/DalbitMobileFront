@@ -431,7 +431,7 @@ export default () => {
           case '7': //------------------공지사항 페이지 [board_idx](미정)
             context.action.alert({msg: pushMsg.contents})
             break
-          case '64': // 깐부 수락 / 신청
+          case '65': // 깐부 수락 / 신청
             history.push('/event/gganbu');
             // window.location.href = '/event/gganbu';
             break;
@@ -999,7 +999,7 @@ export default () => {
           window.location.href = `/customer/notice/${board_idx}`
         }
         break
-      case '64': // 깐부 수락 / 신청
+      case '65': // 깐부 수락 / 신청
         history.push('/event/gganbu');
         // window.location.href = '/event/gganbu';
         break;
