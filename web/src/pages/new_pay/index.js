@@ -64,7 +64,7 @@ export default () => {
       case 'charge':
         return <Charge />
       case 'result':
-        return <Result setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
+        return <Result location={location} setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
       case 'room':
         return <RoomCharge tabType={tabType} />
       case 'store':

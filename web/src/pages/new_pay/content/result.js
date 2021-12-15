@@ -6,10 +6,10 @@ import Api from 'context/api'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+import Utility from "components/lib/utility";
 
 export default (props) => {
-  const { setRewardPop, setGetMarble, setChargeContent } = props;
-  const location = useLocation()
+  const { setRewardPop, setGetMarble, setChargeContent, location } = props;
   const {webview, canceltype} = qs.parse(location.search)
 
   const context = useContext(Context)
@@ -105,7 +105,21 @@ export default (props) => {
       }
     }
 
+    let data;
+    let marbleTotleCtn;
+
+    const marbleIns = async () => {
+      marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
+      const param = {
+        insSlct: "c",
+        marbleCnt : marbleTotleCtn,
+      };
+      data = await Api.getGganbuObtainMarble(param).data
+    }
+
     if (result === 'success') {
+      marbleIns();
+
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -118,27 +132,22 @@ export default (props) => {
           callback: () => {
             if(parseInt(prdtPrice) >= 10000) {
               const getMarbleIns = async () => {
-                let marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
-              const param = {
-                insSlct: "c",
-                marbleCnt : marbleTotleCtn,
-              };
-              const {data} = await Api.getGganbuObtainMarble(param)
-              if (data.s_return === 1) {
-                setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-                setRewardPop(true);
-                setGetMarble({
-                  rmarbleCnt : data.rmarbleCnt,
-                  ymarbleCnt : data.ymarbleCnt,
-                  bmarbleCnt : data.bmarbleCnt,
-                  vmarbleCnt : data.vmarbleCnt,
-                  totalmarbleCnt : data.marbleCnt,
-                })
-              }else {
-                Hybrid('CloseLayerPopup')
-                Hybrid('ClosePayPopup')
+
+                if (data.s_return === 1) {
+                  setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+                  setRewardPop(true);
+                  setGetMarble({
+                    rmarbleCnt : data.rmarbleCnt,
+                    ymarbleCnt : data.ymarbleCnt,
+                    bmarbleCnt : data.bmarbleCnt,
+                    vmarbleCnt : data.vmarbleCnt,
+                    totalmarbleCnt : data.marbleCnt,
+                  })
+                }else {
+                  Hybrid('CloseLayerPopup')
+                  Hybrid('ClosePayPopup')
+                }
               }
-            }
 
               getMarbleIns();
               
