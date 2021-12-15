@@ -545,6 +545,7 @@ export default (props) => {
           setBettingAbled={setBettingAbled}
           completePopup={completePopup}
           gganbuNo={gganbuNo}
+          setSuccessVal={setSuccessVal}
         />
       )}
     </div>
