@@ -108,8 +108,10 @@ export default (props) => {
     let data;
     let marbleTotleCtn = 0;
 
+  alert('selected  : ' + JSON.stringify(selected));
+
     const marbleIns = async () => {
-      if(selected.price >= 10000) {
+      if(parseInt(selected.price) >= 10000) {
         marbleTotleCtn = Math.floor(Number(selected.price) / 10000)
         const param = {
           insSlct: 'c',

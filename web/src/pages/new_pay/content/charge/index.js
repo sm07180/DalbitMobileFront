@@ -151,6 +151,16 @@ export default (props) => {
       }
     }
 
+    if(typeof props.setRoomSelected === 'function') {
+      const param = {
+        ...props.roomSelected,
+        price: totalPrice * totalQuantity,
+        itemNo: itemNo,
+        name: name,
+      }
+      props.setRoomSelected(param);
+    }
+
     const { result, data, message } = await Api[fetch]({
       data: {
         Prdtnm: name,

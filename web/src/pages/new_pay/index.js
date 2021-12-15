@@ -80,6 +80,7 @@ export default () => {
         break
     }
   }, [selected, params, location])
+
   return <Layout status="no_gnb">
     {createContent()}
     

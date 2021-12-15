@@ -93,9 +93,6 @@ export default (props) => {
               console.log(item)
               if (selected.num == index) {
                 setSelected(-1)
-                if(typeof props.setRoomSelected === 'function') {
-                  setRoomSelected(-1)
-                }
               } else {
                 setSelected({
                   num: index,
@@ -103,14 +100,6 @@ export default (props) => {
                   price: item.salePrice,
                   itemNo: item.itemNo
                 })
-                if(typeof props.setRoomSelected === 'function') {
-                  setRoomSelected({
-                    num: index,
-                    name: item.itemNm,
-                    price: item.salePrice,
-                    itemNo: item.itemNo
-                  })
-                }
               }
             }}>
             <div className="item-wrap">
@@ -136,9 +125,6 @@ export default (props) => {
             onClick={() => {
               if (selected.num == index) {
                 setSelected(-1)
-                if(typeof props.setRoomSelected === 'function') {
-                  setRoomSelected(-1)
-                }
               } else {
                 setSelected({
                   num: index,
@@ -146,14 +132,6 @@ export default (props) => {
                   byeol: item.byeolCnt,
                   itemCode: item.itemCode
                 })
-                if(typeof props.setRoomSelected === 'function') {
-                  setRoomSelected({
-                    num: index,
-                    dal: item.dalCnt,
-                    byeol: item.byeolCnt,
-                    itemCode: item.itemCode
-                  })
-                }
               }
             }}>
             <div className="item-wrap">
@@ -274,9 +252,6 @@ export default (props) => {
   const tabClick = (type) => {
     setSelectedItem(type)
     setSelected(-1)
-    if(typeof props.setRoomSelected === 'function') {
-      setRoomSelected(-1)
-    }
   }
 
   const goBackClick = () => {
