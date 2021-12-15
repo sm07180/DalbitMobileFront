@@ -107,6 +107,7 @@ export default (props) => {
     }
 
     if (result === 'success') {
+      alert('returntype : ', returntype);
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -116,12 +117,14 @@ export default (props) => {
         } catch (e) {}
         let data;
         let marbleTotleCtn = 0;
+        alert('prdtPrice : ' + prdtPrice);
         const marbleIns = async () => {
           marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
           const param = {
             insSlct: "c",
             marbleCnt : marbleTotleCtn,
           };
+          alert('param : ' + JSON.stringify(param));
           data = await Api.getGganbuObtainMarble(param).data;
         }
 
@@ -129,7 +132,9 @@ export default (props) => {
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
+            alert('callback! : ' + JSON.stringify(data));
             if(parseInt(prdtPrice) >= 10000) {
+              alert('hi : ' + data.s_return);
               if (data.s_return === 1) {
                 setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
                 setRewardPop(true);

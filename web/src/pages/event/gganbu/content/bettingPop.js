@@ -8,7 +8,7 @@ import {Context} from 'context'
 
 export default (props) => {  
   const globalCtx = useContext(Context)
-  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup, gganbuNo} = props
+  const {setBettingPop, bettingVal, setBettingVal, setBettingAbled, myMarble ,setMyMarble,setParticipantList,setMyBettingLogList, completePopup, gganbuNo, setSuccessVal} = props
   const [popResult, setPopResult] = useState(false)
   const [valueType, setValueType] = useState("")
   const [typeSelect, setTypeSelect] = useState("")
