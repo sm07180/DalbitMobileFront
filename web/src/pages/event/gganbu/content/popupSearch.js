@@ -73,7 +73,9 @@ export default (props) => {
     }
   }
   const onChange = (e) => {
-    setResult(e.target.value)
+    let {target: {value}} = e;
+    value = value.replaceAll('\'', '').replaceAll('"', '');
+    setResult(value)
   }
   const handleSubmit = (e) => {
     e.preventDefault()
