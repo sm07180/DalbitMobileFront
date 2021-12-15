@@ -166,7 +166,7 @@ export default (props) => {
 
     if (result === 'success') {
       if(typeof props.setRoomSelected === 'function') {
-        setRoomSelected({
+        props.setRoomSelected({
           ...props.roomSelected,
           name: name,
           price: totalPrice * totalQuantity,
