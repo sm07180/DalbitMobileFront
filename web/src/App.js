@@ -110,8 +110,7 @@ const App = () => {
       if (isJsonString(customHeaderCookie)) {
         const parsed = JSON.parse(customHeaderCookie)
         if (parsed['os']) {
-          // parsed['os'] = Number(parsed['os'])
-          parsed['os'] = 1
+          parsed['os'] = Number(parsed['os'])
         }
 
         if (parsed['deviceId']) {
