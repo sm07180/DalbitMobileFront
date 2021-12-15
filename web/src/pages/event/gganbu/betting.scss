@@ -24,6 +24,7 @@
           height: 36px;
           background-color: #ff2980;
           vertical-align: middle;
+          img{flex: none;width: auto;height: 16px;}
         }
 
         .swiper-container-vertical {
@@ -354,9 +355,6 @@
 
 #participantPage {
   .participantBox {
-    & img {
-      flex: none; width: auto; height: 16px;
-    }
     .content {
       padding: 24px 3%;
 

@@ -6,6 +6,7 @@ import Api from 'context/api'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 
 export default (props) => {
   const { setRewardPop, setGetMarble, setChargeContent } = props;
@@ -113,17 +114,22 @@ export default (props) => {
           firebase.analytics().logEvent('Purchase')
           kakaoPixel('114527450721661229').purchase()
         } catch (e) {}
+        let data;
+        let marbleTotleCtn = 0;
+        const marbleIns = async () => {
+          marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
+          const param = {
+            insSlct: "c",
+            marbleCnt : marbleTotleCtn,
+          };
+          data = await Api.getGganbuObtainMarble(param).data;
+        }
+
+        marbleIns();
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
             if(parseInt(prdtPrice) >= 10000) {
-              const getMarbleIns = async () => {
-                let marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
-              const param = {
-                insSlct: "c",
-                marbleCnt : marbleTotleCtn,
-              };
-              const {data} = await Api.getGganbuObtainMarble(param)
               if (data.s_return === 1) {
                 setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
                 setRewardPop(true);
@@ -138,10 +144,6 @@ export default (props) => {
                 Hybrid('CloseLayerPopup')
                 Hybrid('ClosePayPopup')
               }
-            }
-
-              getMarbleIns();
-              
             }else {
               Hybrid('CloseLayerPopup')
               Hybrid('ClosePayPopup')
