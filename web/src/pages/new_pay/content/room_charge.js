@@ -90,6 +90,7 @@ export default (props) => {
             key={index}
             applestoreid={item.appleStoreId}
             onClick={() => {
+              console.log(item)
               if (selected.num == index) {
                 setSelected(-1)
               } else {

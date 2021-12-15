@@ -58,7 +58,7 @@ export default (props) => {
   }
 
   return (
-    <div className="alert">
+    <div className="alertLayer">
       <div className="contentWrap">
         <h1 className="title">동의서</h1>
         {acceptType === 'application' ? (

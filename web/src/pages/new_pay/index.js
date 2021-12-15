@@ -62,11 +62,11 @@ export default () => {
     }
     switch (title) {
       case 'charge':
-        return <Charge />
+        return <Charge roomSelected={selected} setRoomSelected={setSelected} />
       case 'result':
         return <Result selected={selected} setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
       case 'room':
-        return <RoomCharge tabType={tabType} />
+        return <RoomCharge tabType={tabType} setRoomSelected={setSelected} />
       case 'store':
         return <StoreCharge selected={selected} setSelected={setSelected} />
       case 'bank':
@@ -80,6 +80,7 @@ export default () => {
         break
     }
   }, [selected, params, location])
+
   return <Layout status="no_gnb">
     {createContent()}
     

@@ -169,6 +169,11 @@ export default () => {
     fetchGganbuPocketPage();
   }, [])
 
+  useEffect(() => {
+    fetchGganbuPocketReport();
+    fetchGganbuPocketPage();
+  }, [openPocket]);
+
   return (
     <div id="marblePocketPage">
       <div className="marblePocketBox">

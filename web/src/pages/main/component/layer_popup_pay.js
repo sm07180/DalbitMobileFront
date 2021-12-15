@@ -23,6 +23,7 @@ export default (props) => {
     totalmarbleCnt : 0,
   });
   const [chargeContent, setChargeContent] = useState("");
+  const [data, setData] = useState();
   let marbleTotleCtn = 0;
   async function fetchPayComplete() {
     if(prdtPrice >= 10000) {
@@ -32,17 +33,8 @@ export default (props) => {
         marbleCnt : marbleTotleCtn,
       };
       const {data} = await Api.getGganbuObtainMarble(param)
-      if (data.s_return === 1) {
-        setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-        setRewardPop(true);
-        setGetMarble({
-          rmarbleCnt : data.rmarbleCnt,
-          ymarbleCnt : data.ymarbleCnt,
-          bmarbleCnt : data.bmarbleCnt,
-          vmarbleCnt : data.vmarbleCnt,
-          totalmarbleCnt : data.marbleCnt,
-        })
-      }
+
+      setData(data);
     }
   }
 
@@ -74,8 +66,24 @@ export default (props) => {
 
   const applyClick = () => {
     setPopup();
-    fetchPayComplete();
+
+    alert('aa : ' + JSON.stringify(data))
+    if (data.s_return === 1) {
+      setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+      setRewardPop(true);
+      setGetMarble({
+        rmarbleCnt : data.rmarbleCnt,
+        ymarbleCnt : data.ymarbleCnt,
+        bmarbleCnt : data.bmarbleCnt,
+        vmarbleCnt : data.vmarbleCnt,
+        totalmarbleCnt : data.marbleCnt,
+      })
+    }
   }
+
+  useEffect(() => {
+    fetchPayComplete();
+  }, []);
 
   const createTypeResult = () => {
     if (payType === '휴대폰 결제') {

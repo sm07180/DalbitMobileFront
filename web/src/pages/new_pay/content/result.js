@@ -107,15 +107,22 @@ export default (props) => {
 
     let data;
     let marbleTotleCtn = 0;
-
+    let resultPrice = 0;
+    
     const marbleIns = async () => {
-      if(selected.price >= 10000) {
-        marbleTotleCtn = Math.floor(Number(selected.price) / 10000)
-        const param = {
-          insSlct: 'c',
-          marbleCnt: marbleTotleCtn
+      const item = sessionStorage.getItem("buy_item_data");
+      if(item) {
+        resultPrice = parseInt(item);
+        
+        if(resultPrice >= 10000) {
+          marbleTotleCtn = Math.floor(Number(resultPrice) / 10000)
+          const param = {
+            insSlct: 'c',
+            marbleCnt: marbleTotleCtn
+          }
+          data = await Api.getGganbuObtainMarble(param).data
+          sessionStorage.removeItem("buy_item_data")
         }
-        data = await Api.getGganbuObtainMarble(param).data
       }
     }
 
@@ -133,10 +140,10 @@ export default (props) => {
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            if (parseInt(selected.price) >= 10000) {
+            if (resultPrice >= 10000) {
               const getMarbleIns = async () => {
                 if (data && data.s_return === 1) {
-                  setChargeContent(`달 ${Utility.addComma(selected.price)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
+                  setChargeContent(`달 ${Utility.addComma(resultPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
                   setRewardPop(true)
                   setGetMarble({
                     rmarbleCnt: data.rmarbleCnt,

@@ -16,6 +16,7 @@
     width: 100%;
     .topImg {
       width: 100%;
+      pointer-events: none;
     }
     .topBtn {
       position: absolute;
@@ -264,6 +265,7 @@
       .bg {
         width: 100%;
         vertical-align: bottom;
+        pointer-events: none;
       }
       .title {
         position: absolute;

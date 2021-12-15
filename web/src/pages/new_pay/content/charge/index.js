@@ -37,7 +37,7 @@ const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
-export default () => {
+export default (props) => {
   const history = useHistory()
 
   //context
@@ -165,6 +165,8 @@ export default () => {
     // console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
+      sessionStorage.setItem('buy_item_data', totalPrice * totalQuantity);
+
       if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
         return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
       } else if (data.hasOwnProperty('next_redirect_mobile_url')) {

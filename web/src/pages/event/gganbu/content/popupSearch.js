@@ -208,7 +208,9 @@ export default (props) => {
                         {rcvYn === 'n' ? (
                           <>
                             {sendYn === 'n' ? (
-                              <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', nickName)}>
+                              <button
+                                className="submit"
+                                onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm)}>
                                 신청
                               </button>
                             ) : (
@@ -218,7 +220,7 @@ export default (props) => {
                             )}
                           </>
                         ) : (
-                          <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', nickName)}>
+                          <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
                             수락
                           </button>
                         )}
@@ -258,7 +260,7 @@ export default (props) => {
                       {rcvYn === 'n' ? (
                         <>
                           {sendYn === 'n' ? (
-                            <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', mem_nick)}>
+                            <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm)}>
                               신청
                             </button>
                           ) : (
@@ -268,7 +270,7 @@ export default (props) => {
                           )}
                         </>
                       ) : (
-                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', mem_nick)}>
+                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
                           수락
                         </button>
                       )}
