@@ -9,7 +9,8 @@ import {Hybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
 export default (props) => {
-  const {setRewardPop, setGetMarble, setChargeContent, location} = props
+  const {setRewardPop, setGetMarble, setChargeContent, selected} = props
+  const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
 
   const context = useContext(Context)
@@ -104,22 +105,23 @@ export default (props) => {
       }
     }
 
-    let data
-    let marbleTotleCtn
+    let data;
+    let marbleTotleCtn = 0;
 
     const marbleIns = async () => {
-      marbleTotleCtn = Math.floor(Number(prdtPrice) / 10000)
-      const param = {
-        insSlct: 'c',
-        marbleCnt: marbleTotleCtn
+      if(selected.price >= 10000) {
+        marbleTotleCtn = Math.floor(Number(selected.price) / 10000)
+        const param = {
+          insSlct: 'c',
+          marbleCnt: marbleTotleCtn
+        }
+        data = await Api.getGganbuObtainMarble(param).data
       }
-      data = await Api.getGganbuObtainMarble(param).data
     }
 
     if (result === 'success') {
       marbleIns()
 
-      alert('returntype : ', returntype)
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -127,28 +129,14 @@ export default (props) => {
           firebase.analytics().logEvent('Purchase')
           kakaoPixel('114527450721661229').purchase()
         } catch (e) {}
-        let data
-        let marbleTotleCtn = 0
-        alert('prdtPrice : ' + prdtPrice)
-        const marbleIns = async () => {
-          marbleTotleCtn = Math.floor(Number(prdtPrice) / 10000)
-          const param = {
-            insSlct: 'c',
-            marbleCnt: marbleTotleCtn
-          }
-          alert('param : ' + JSON.stringify(param))
-          data = await Api.getGganbuObtainMarble(param).data
-        }
 
-        marbleIns()
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            alert('callback! : ' + JSON.stringify(data))
-            if (parseInt(prdtPrice) >= 10000) {
+            if (parseInt(selected.price) >= 10000) {
               const getMarbleIns = async () => {
-                if (data.s_return === 1) {
-                  setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
+                if (data && data.s_return === 1) {
+                  setChargeContent(`달 ${Utility.addComma(selected.price)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
                   setRewardPop(true)
                   setGetMarble({
                     rmarbleCnt: data.rmarbleCnt,
