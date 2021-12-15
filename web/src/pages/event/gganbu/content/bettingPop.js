@@ -65,12 +65,12 @@ export default (props) => {
 
     if (message === 'SUCCESS') {
       setParticipant({
-        oddParticipant : data[0].betting_cnt,
-        evenParticipant : data[1].betting_cnt,
+        oddParticipant : data.s_aBettingCnt,
+        evenParticipant : data.s_bBettingCnt,
       })
       setWinPercent({
-        oddWinPercent : data[0].oddWinProbability,
-        evenWinPercent : data[1].evenWinProbability,
+        oddWinPercent : data.oddWinProbability,
+        evenWinPercent : data.evenWinProbability,
       })
     } else {
       globalCtx.action.alert({msg: "베팅을 할 수 없습니다."})
@@ -458,6 +458,7 @@ const PopupWrap = styled.div`
         align-items: center;
         justify-content: center;
         width: 100%;
+        pointer-events: none;
         #bettingAni {
           position: relative;
           width: 100%;
