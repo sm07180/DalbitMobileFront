@@ -8,7 +8,7 @@ import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
 
 export default (props) => {
-  const { setRewardPop, setGetMarble, setChargeContent, androidClosePopup } = props;
+  const { setRewardPop, setGetMarble, setChargeContent } = props;
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
 
@@ -116,8 +116,8 @@ export default (props) => {
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            if(prdtPrice >= 10000) {
-              const test = async () => {
+            if(parseInt(prdtPrice) >= 10000) {
+              const getMarbleIns = async () => {
                 let marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
               const param = {
                 insSlct: "c",
@@ -135,14 +135,16 @@ export default (props) => {
                   totalmarbleCnt : data.marbleCnt,
                 })
               }else {
-                androidClosePopup()
+                Hybrid('CloseLayerPopup')
+                Hybrid('ClosePayPopup')
               }
             }
 
-              test();
+              getMarbleIns();
               
             }else {
-              androidClosePopup()
+              Hybrid('CloseLayerPopup')
+              Hybrid('ClosePayPopup')
             }
           }
         })

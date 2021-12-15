@@ -6,7 +6,7 @@ import Api from 'context/api'
 import moment from "moment";
 
 export default (props) => {
-  const {setRewardPop, getMarble, content, setPayState, androidClosePopup} = props
+  const {setRewardPop, getMarble, content, androidClosePopup} = props
 
   const [gganbuEnd, setGganbuEnd] = useState(false);
   const [today, setToday] = useState("");
@@ -34,9 +34,6 @@ export default (props) => {
 
   const closeReward = () => {
     setRewardPop(false)
-    if(setPayState){
-        setPayState(false)
-    }
 
     if(typeof androidClosePopup === 'function') {
         androidClosePopup();

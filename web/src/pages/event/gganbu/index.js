@@ -18,6 +18,7 @@ export default () => {
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
+  const [gganbuBadgeCnt, setGganbuBadgeCnt] = useState()
   const [gganbuNumber, setGganbuNumber] = useState()
   const [gganbuState, setGganbuState] = useState()
   const [gganbuInfo, setGganbuInfo] = useState()
@@ -36,8 +37,9 @@ export default () => {
   const gganbuRoundLookup = async () => {
     const {data, message} = await Api.gganbuMarbleGather()
     if (message === 'SUCCESS') {
-      const {gganbuState} = data
+      const {badgeCnt, gganbuState} = data
       setGganbuState(gganbuState)
+      setGganbuBadgeCnt(badgeCnt)
       if (gganbuState === -1) {
         const {gganbuRoundInfo, rankList} = data
         setGganbuNumber(gganbuRoundInfo.gganbuNo)
@@ -153,10 +155,6 @@ export default () => {
           })
         }
       })
-    } else {
-      if (globalCtx.profile !== null) {
-        gganbuRoundLookup()
-      }
     }
   }
 
@@ -169,7 +167,7 @@ export default () => {
   useEffect(() => {
     loginCheck()
     fetchGganbuBadge()
-  }, [])
+  }, [gganbuNumber])
 
   useEffect(() => {
     if (globalCtx.globalGganbuState > 0) gganbuRoundLookup()
@@ -193,11 +191,17 @@ export default () => {
     <div id="gganbu">
       <Header title="이벤트" />
       <div className="top">
-        <img
-          src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg.png"
-          className="topImg"
-          alt="깐부게임 00만원 상금이 피었습니다."
-        />
+        {gganbuNumber && gganbuNumber === '1' ? (
+          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-1.png" className="topImg" />
+        ) : gganbuNumber && gganbuNumber === '2' ? (
+          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-2.png" className="topImg" />
+        ) : gganbuNumber && gganbuNumber === '3' ? (
+          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-3.png" className="topImg" />
+        ) : gganbuNumber && gganbuNumber === '4' ? (
+          <img src="https://image.dalbitlive.com/event/gganbu/gganbuTopImg-4.png" className="topImg" />
+        ) : (
+          <></>
+        )}
         <button className="topBtn" onClick={() => setPopupNotice(true)}>
           <img src="https://image.dalbitlive.com/event/gganbu/topBtn.png" alt="" />
         </button>
@@ -226,7 +230,9 @@ export default () => {
                       </div>
                       <button className="gganbuBtn" onClick={() => setPopupStatus(true)}>
                         <img src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtn.png" />
-                        <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                        {gganbuBadgeCnt && gganbuBadgeCnt.s_reqCnt > 0 && (
+                          <img className="btnNew" src="https://image.dalbitlive.com/event/gganbu/gganbuStatusBtnNew.png" />
+                        )}
                       </button>
                     </div>
                   </div>

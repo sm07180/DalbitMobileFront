@@ -154,7 +154,7 @@ export default (props) => {
           </div>
         </div>
       </PopupWrap>
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} setPayState={setPayState}/>}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent}/>}
     </>
   )
 }

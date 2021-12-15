@@ -65,15 +65,16 @@ export default (props) => {
 
     if (message === 'SUCCESS') {
       setParticipant({
-        oddParticipant : data[0].betting_cnt,
-        evenParticipant : data[1].betting_cnt,
+        oddParticipant : data.s_aBettingCnt,
+        evenParticipant : data.s_bBettingCnt,
       })
       setWinPercent({
-        oddWinPercent : data[0].oddWinProbability,
-        evenWinPercent : data[1].evenWinProbability,
+        oddWinPercent : data.oddWinProbability,
+        evenWinPercent : data.evenWinProbability,
       })
     } else {
-      globalCtx.action.alert({msg: message})
+      globalCtx.action.alert({msg: "베팅을 할 수 없습니다."})
+      setBettingPop(false)
     }
   }
 
@@ -88,10 +89,30 @@ export default (props) => {
       bettingSlct: valueType,
     }
     const res = await Api.getGganbuObtainMarble(param);
-    if (res.message === 'SUCCESS') {      
+    if (res.s_return === 1) {
       fetchGganbuData();
       fetchBettingPage();
-    }
+    } else if (res.s_return === -4) {
+      globalCtx.action.alert({msg: "베팅할 구슬이 부족합니다."})
+      setBettingPop(false)
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -3) {
+      globalCtx.action.alert({msg: "이미 지급되었습니다."})
+      setBettingPop(false)
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -2) {
+      globalCtx.action.alert({msg: "깐부가 없습니다."})
+      setBettingPop(false)
+      fetchGganbuData();
+      fetchBettingPage();
+    } else if (res.s_return === -1) {
+      globalCtx.action.alert({msg: "이벤트 기간이 아닙니다."})
+      setBettingPop(false)
+      fetchGganbuData();
+      fetchBettingPage();
+    } 
   }  
 
   const closePopup = () => {
@@ -437,6 +458,7 @@ const PopupWrap = styled.div`
         align-items: center;
         justify-content: center;
         width: 100%;
+        pointer-events: none;
         #bettingAni {
           position: relative;
           width: 100%;

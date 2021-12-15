@@ -16,7 +16,6 @@ export default (props) => {
   const {tabContent, gganbuState, gganbuNumber, gganbuInfo, myRankList} = props // rankList
   const [noticeTab, setNoticeTab] = useState('')
   const [rankList, setRankList] = useState([])
-  const [currentPage, setCurrentPage] = useState(0)
   const [popupDetails, setPopupDetails] = useState(false)
   const [popupReport, setPopupReport] = useState(false)
 
@@ -36,40 +35,20 @@ export default (props) => {
   const gganbuRankList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      pageNo: currentPage,
+      pageNo: 1,
       pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.getGganbuRankList(param)
     if (message === 'SUCCESS') {
-      totalPage = Math.ceil(data.listCnt / pagePerCnt)
-      console.log('totalPage', totalPage)
-      if (currentPage > 1) {
-        setRankList(rankList.concat(data.list))
-      } else {
-        setRankList(data.list)
-      }
+      setRankList(data.list)
     } else {
       console.log(message)
     }
-  }, [currentPage])
-
-  const scrollEvtHdr = () => {
-    if (totalPage > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  useLayoutEffect(() => {
-    if (currentPage === 0) setCurrentPage(1)
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-    }
-  }, [currentPage])
+  }, [])
 
   useEffect(() => {
     if (gganbuNumber !== undefined) {
-      if (currentPage > 0) gganbuRankList()
+      gganbuRankList()
     }
   }, [gganbuNumber])
 
@@ -199,7 +178,7 @@ export default (props) => {
             </div>
           )}
           <div className="rankWrap">
-            {rankList ? (
+            {rankList && rankList.length > 0 ? (
               <>
                 {rankList.map((data, index) => {
                   const {
@@ -209,6 +188,7 @@ export default (props) => {
                     ptr_mem_no,
                     ptr_mem_id,
                     ptr_mem_stat,
+                    my_rank_no,
                     mem_level,
                     mem_level_color,
                     mem_nick,
@@ -218,12 +198,14 @@ export default (props) => {
                   } = data
                   return (
                     <div className="rankList" key={index}>
-                      {index < 3 ? (
-                        <div className={`number medal-${index + 1}`}>
+                      {my_rank_no && my_rank_no < 4 ? (
+                        <div className={`number medal-${my_rank_no}`}>
                           <img src={`https://image.dalbitlive.com/event/gganbu/rankMedal-${index + 1}.png`} />
                         </div>
                       ) : (
-                        <div className="number">{index + 1}</div>
+                        <div className="number">
+                          <span className="rankNum">{my_rank_no}</span>
+                        </div>
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
@@ -276,7 +258,7 @@ export default (props) => {
                 })}
               </>
             ) : (
-              <NoResult type="default" text="아직 순위가 없습니다." />
+              <>{rankList && rankList.length === 0 && <NoResult type="default" text="아직 순위가 없습니다." />}</>
             )}
           </div>
         </section>

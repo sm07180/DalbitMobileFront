@@ -181,13 +181,11 @@ export default (props) => {
             marbleCnt : marbleTotleCtn,
           };
           gganbuData = await Api.getGganbuObtainMarble(param)
-          
         }
 
         context.action.alert({
           msg: res.message,
           callback: () => {
-            console.log('완료되엇습니다')
             if(gganbuData) {
               const data = gganbuData.data;
             
@@ -338,8 +336,7 @@ export default (props) => {
           )}
         </>
       )}
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent}
-       androidClosePopup={androidClosePopup}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
        />}
     </Content>
   )
