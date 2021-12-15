@@ -178,7 +178,7 @@ export default (props) => {
             </div>
           )}
           <div className="rankWrap">
-            {rankList ? (
+            {rankList && rankList.length > 0 ? (
               <>
                 {rankList.map((data, index) => {
                   const {
@@ -255,7 +255,7 @@ export default (props) => {
                 })}
               </>
             ) : (
-              <NoResult type="default" text="아직 순위가 없습니다." />
+              <>{rankList && rankList.length === 0 && <NoResult type="default" text="아직 순위가 없습니다." />}</>
             )}
           </div>
         </section>
