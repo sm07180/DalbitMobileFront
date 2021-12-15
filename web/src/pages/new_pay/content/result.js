@@ -6,10 +6,10 @@ import Api from 'context/api'
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
-import Utility from "components/lib/utility";
+import Utility from 'components/lib/utility'
 
 export default (props) => {
-  const { setRewardPop, setGetMarble, setChargeContent, location } = props;
+  const {setRewardPop, setGetMarble, setChargeContent, location} = props
   const {webview, canceltype} = qs.parse(location.search)
 
   const context = useContext(Context)
@@ -38,7 +38,6 @@ export default (props) => {
   } = location.state
 
   let payType = ''
-
 
   const makePayType = () => {
     if (!phoneNo && cardNum) {
@@ -105,21 +104,22 @@ export default (props) => {
       }
     }
 
-    let data;
-    let marbleTotleCtn;
+    let data
+    let marbleTotleCtn
 
     const marbleIns = async () => {
-      marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
+      marbleTotleCtn = Math.floor(Number(prdtPrice) / 10000)
       const param = {
-        insSlct: "c",
-        marbleCnt : marbleTotleCtn,
-      };
+        insSlct: 'c',
+        marbleCnt: marbleTotleCtn
+      }
       data = await Api.getGganbuObtainMarble(param).data
     }
 
     if (result === 'success') {
-      marbleIns();
+      marbleIns()
 
+      alert('returntype : ', returntype)
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -127,31 +127,44 @@ export default (props) => {
           firebase.analytics().logEvent('Purchase')
           kakaoPixel('114527450721661229').purchase()
         } catch (e) {}
+        let data
+        let marbleTotleCtn = 0
+        alert('prdtPrice : ' + prdtPrice)
+        const marbleIns = async () => {
+          marbleTotleCtn = Math.floor(Number(prdtPrice) / 10000)
+          const param = {
+            insSlct: 'c',
+            marbleCnt: marbleTotleCtn
+          }
+          alert('param : ' + JSON.stringify(param))
+          data = await Api.getGganbuObtainMarble(param).data
+        }
+
+        marbleIns()
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            if(parseInt(prdtPrice) >= 10000) {
+            alert('callback! : ' + JSON.stringify(data))
+            if (parseInt(prdtPrice) >= 10000) {
               const getMarbleIns = async () => {
-
                 if (data.s_return === 1) {
-                  setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-                  setRewardPop(true);
+                  setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
+                  setRewardPop(true)
                   setGetMarble({
-                    rmarbleCnt : data.rmarbleCnt,
-                    ymarbleCnt : data.ymarbleCnt,
-                    bmarbleCnt : data.bmarbleCnt,
-                    vmarbleCnt : data.vmarbleCnt,
-                    totalmarbleCnt : data.marbleCnt,
+                    rmarbleCnt: data.rmarbleCnt,
+                    ymarbleCnt: data.ymarbleCnt,
+                    bmarbleCnt: data.bmarbleCnt,
+                    vmarbleCnt: data.vmarbleCnt,
+                    totalmarbleCnt: data.marbleCnt
                   })
-                }else {
+                } else {
                   Hybrid('CloseLayerPopup')
                   Hybrid('ClosePayPopup')
                 }
               }
 
-              getMarbleIns();
-              
-            }else {
+              getMarbleIns()
+            } else {
               Hybrid('CloseLayerPopup')
               Hybrid('ClosePayPopup')
             }

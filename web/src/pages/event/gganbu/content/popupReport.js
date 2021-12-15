@@ -95,19 +95,23 @@ export default (props) => {
                     <div className="listItem">
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-red.png" />
-                        {chng_slct === 's' ? red_marble : `-${red_marble}`}
+                        {chng_slct === 'u' && red_marble != 0 ? '-' : ''}
+                        {red_marble}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-yellow.png" />
-                        {chng_slct === 's' ? yellow_marble : `-${yellow_marble}`}
+                        {chng_slct === 'u' && yellow_marble != 0 ? '-' : ''}
+                        {yellow_marble}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-blue.png" />
-                        {chng_slct === 's' ? blue_marble : `-${blue_marble}`}
+                        {chng_slct === 'u' && blue_marble != 0 ? '-' : ''}
+                        {blue_marble}
                       </span>
                       <span className="marble">
                         <img src="https://image.dalbitlive.com/event/gganbu/marble-purple.png" />
-                        {chng_slct === 's' ? violet_marble : `-${violet_marble}`}
+                        {chng_slct === 'u' && violet_marble != 0 ? '-' : ''}
+                        {violet_marble}
                       </span>
                     </div>
                   </div>

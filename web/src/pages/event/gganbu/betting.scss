@@ -24,6 +24,7 @@
           height: 36px;
           background-color: #ff2980;
           vertical-align: middle;
+          img{flex: none;width: auto;height: 16px;}
         }
 
         .swiper-container-vertical {
@@ -336,13 +337,11 @@
                 font-size: 14px;
                 font-weight: 700;
                 color: #242424;
-                text-align: center;
               }
               .logTime {
                 font-size: 12px;
                 font-weight: 400;
                 color: #757575;
-                text-align: center;
               }
             }
           }
@@ -354,9 +353,6 @@
 
 #participantPage {
   .participantBox {
-    & img {
-      flex: none; width: auto; height: 16px;
-    }
     .content {
       padding: 24px 3%;
 
