@@ -62,7 +62,7 @@ export default () => {
     }
     switch (title) {
       case 'charge':
-        return <Charge />
+        return <Charge roomSelected={selected} setRoomSelected={setSelected} />
       case 'result':
         return <Result selected={selected} setRewardPop={setRewardPop} setGetMarble={setGetMarble} setChargeContent={setChargeContent} />
       case 'room':
