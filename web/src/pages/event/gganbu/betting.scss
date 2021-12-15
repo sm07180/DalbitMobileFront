@@ -376,31 +376,28 @@
       }
 
       table {
-        th {
-          padding: 5px 0;
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
-          font-size: 12px;
-          color: #632beb;
+        border-collapse: collapse;
+        tHead {
+          tr {
+            border-top: 1px solid #632beb;
+            border-bottom: 1px solid #632beb;
+          }
+          th {
+            padding: 5px 0;
+            font-size: 12px;
+            color: #632beb;
+          }  
         }
-
+        tr{
+          border-bottom: 1px solid #e0e0e0;
+        }
         td {
           padding: 10px 0;
           text-align: center;
           font-size: 12px;
-          border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
-          color: $darkGray;
+          color: #424242;
           overflow: hidden;
-
-          &.gift {
-            font-weight: $bold;
-            color: $black;
-          }
-
-          &.phone {
-            color: $greishBrown;
-          }
 
           &.result {
             text-align: center;
@@ -422,14 +419,6 @@
             font-size: 13px;
           }
 
-          &.state {
-            color: $mediumGray;
-
-            &.point {
-              color: $black;
-            }
-          }
-
           &.nick {
             display: flex;
             align-items: center;
@@ -441,14 +430,6 @@
             text-align: center;
             padding: 10px 8px;
             cursor: pointer;
-
-            &.coupon {
-              display: block;
-              font-weight: $regular;
-              color: $darkGray;
-              text-align: center;
-              padding-left: 8px;
-            }
 
             .thumb {
               overflow: hidden;
@@ -631,20 +612,26 @@
         }
       }
       table {
-        th {
-          padding: 5px 0;
-          border-top: 1px solid #632beb;
-          border-bottom: 1px solid #632beb;
-          font-size: 12px;
-          color: #632beb;
+        border-collapse: collapse;
+        tHead {
+          tr {
+            border-top: 1px solid #632beb;
+            border-bottom: 1px solid #632beb;
+          }
+          th {
+            padding: 5px 0;
+            font-size: 12px;
+            color: #632beb;
+          }  
         }
-
+        tr{
+          border-bottom: 1px solid #e0e0e0;
+        }
         td {
           padding: 10px 0;
           text-align: center;
           font-size: 12px;
           font-weight: 500;
-          border-bottom: 1px solid #e0e0e0;
           letter-spacing: -0.5px;
           color: #424242;
           overflow: hidden;
@@ -656,7 +643,7 @@
           }
 
           &.date {
-            color: $greishGray;
+            color: #424242;
             padding: 10px 8px;
             .iconNew {
               display: inline-block;
