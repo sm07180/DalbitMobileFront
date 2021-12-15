@@ -1,12 +1,15 @@
 import React, {useEffect, useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
+import Api from 'context/api'
 
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 
-export default () => {
+export default (props) => {
+  const {setRewardPop, setGetMarble, setChargeContent, selected} = props
   const location = useLocation()
   const {webview, canceltype} = qs.parse(location.search)
 
@@ -36,7 +39,6 @@ export default () => {
   } = location.state
 
   let payType = ''
-
 
   const makePayType = () => {
     if (!phoneNo && cardNum) {
@@ -103,7 +105,30 @@ export default () => {
       }
     }
 
+    let data;
+    let marbleTotleCtn = 0;
+    let resultPrice = 0;
+    
+    const marbleIns = async () => {
+      const item = sessionStorage.getItem("buy_item_data");
+      if(item) {
+        resultPrice = parseInt(item);
+        
+        if(resultPrice >= 10000) {
+          marbleTotleCtn = Math.floor(Number(resultPrice) / 10000)
+          const param = {
+            insSlct: 'c',
+            marbleCnt: marbleTotleCtn
+          }
+          data = await Api.getGganbuObtainMarble(param).data
+          sessionStorage.removeItem("buy_item_data")
+        }
+      }
+    }
+
     if (result === 'success') {
+      marbleIns()
+
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -111,11 +136,33 @@ export default () => {
           firebase.analytics().logEvent('Purchase')
           kakaoPixel('114527450721661229').purchase()
         } catch (e) {}
+
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            Hybrid('CloseLayerPopup')
-            Hybrid('ClosePayPopup')
+            if (resultPrice >= 10000) {
+              const getMarbleIns = async () => {
+                if (data && data.s_return === 1) {
+                  setChargeContent(`달 ${Utility.addComma(resultPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`)
+                  setRewardPop(true)
+                  setGetMarble({
+                    rmarbleCnt: data.rmarbleCnt,
+                    ymarbleCnt: data.ymarbleCnt,
+                    bmarbleCnt: data.bmarbleCnt,
+                    vmarbleCnt: data.vmarbleCnt,
+                    totalmarbleCnt: data.marbleCnt
+                  })
+                } else {
+                  Hybrid('CloseLayerPopup')
+                  Hybrid('ClosePayPopup')
+                }
+              }
+
+              getMarbleIns()
+            } else {
+              Hybrid('CloseLayerPopup')
+              Hybrid('ClosePayPopup')
+            }
           }
         })
       } else {

@@ -21,6 +21,9 @@ import dalIcon from '../static/ic_moon_s.svg'
 import starIcon from '../static/ic_star_s.svg'
 import notiIcon from '../static/ic_notice.svg'
 
+import GganbuReward from '../../event/gganbu/content/gganbuReward'
+
+
 export default (props) => {
   //---------------------------------------------------------------------
   const context = useContext(Context)
@@ -40,6 +43,15 @@ export default (props) => {
   const [selectedItem, setSelectedItem] = useState(tabType)
   const [myDal, setMyDal] = useState('')
   const [myByeol, setMyByeol] = useState('')
+  const [rewardPop, setRewardPop] = useState(false)
+  const [getMarble, setGetMarble] = useState({
+    rmarbleCnt : 0,
+    ymarbleCnt : 0,
+    bmarbleCnt : 0,
+    vmarbleCnt : 0,
+    totalmarbleCnt : 0,
+  });
+  const [chargeContent, setChargeContent] = useState("");
 
   //---------------------------------------------------------------------
 
@@ -78,6 +90,7 @@ export default (props) => {
             key={index}
             applestoreid={item.appleStoreId}
             onClick={() => {
+              console.log(item)
               if (selected.num == index) {
                 setSelected(-1)
               } else {
@@ -156,11 +169,43 @@ export default (props) => {
       if (res.result === 'success' && _.hasIn(res, 'data')) {
         setMyByeol(Utility.addComma(res.data.byeolCnt))
         setMyDal(Utility.addComma(res.data.dalCnt))
+        // fetchPayComplete()
+
+
+        let gganbuData;
+        let marbleTotleCtn;
+
+        if(selected.byeol >= 300){
+          marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
+          const param = {
+            insSlct: "e",
+            marbleCnt : marbleTotleCtn,
+          };
+          gganbuData = await Api.getGganbuObtainMarble(param)
+        }
+
         context.action.alert({
           msg: res.message,
           callback: () => {
-            console.log('완료되엇습니다')
-            Hybrid('CloseLayerPopup')
+            if(gganbuData) {
+              const data = gganbuData.data;
+            
+              if (data.s_return === 1) {
+                setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+                setRewardPop(true);
+                setGetMarble({
+                  rmarbleCnt : data.rmarbleCnt,
+                  ymarbleCnt : data.ymarbleCnt,
+                  bmarbleCnt : data.bmarbleCnt,
+                  vmarbleCnt : data.vmarbleCnt,
+                  totalmarbleCnt : data.marbleCnt,
+                })
+              }else{
+                Hybrid('CloseLayerPopup');
+              }
+            }else {
+              Hybrid('CloseLayerPopup')
+            }
           }
         })
       } else {
@@ -172,6 +217,29 @@ export default (props) => {
         })
       }
     }
+
+    // async function fetchPayComplete() {
+    //   console.log(selected.byeol);
+    //   if(selected.byeol >= 300){
+    //     marbleTotleCtn = Math.floor((Number(selected.byeol) / 100));
+    //     const param = {
+    //       insSlct: "e",
+    //       marbleCnt : marbleTotleCtn,
+    //     };
+    //     const {data} = await Api.getGganbuObtainMarble(param)
+    //     if (data.s_return === 1) {
+    //       setChargeContent(`별 ${selected.byeol}개 교환으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
+    //       setRewardPop(true);
+    //       setGetMarble({
+    //         rmarbleCnt : data.rmarbleCnt,
+    //         ymarbleCnt : data.ymarbleCnt,
+    //         bmarbleCnt : data.bmarbleCnt,
+    //         vmarbleCnt : data.vmarbleCnt,
+    //         totalmarbleCnt : data.marbleCnt,
+    //       })
+    //     } 
+    //   }
+    // }
 
     context.action.confirm({
       msg: `별 ${selected.byeol}을 달 ${selected.dal}으로 \n 교환하시겠습니까?`,
@@ -188,6 +256,10 @@ export default (props) => {
 
   const goBackClick = () => {
     Hybrid('CloseLayerPopup')
+  }
+
+  const androidClosePopup = () => {
+    Hybrid('CloseLayerPopup');
   }
 
   //useEffect
@@ -265,6 +337,8 @@ export default (props) => {
           )}
         </>
       )}
+      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent} androidClosePopup={androidClosePopup}
+       />}
     </Content>
   )
 }

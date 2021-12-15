@@ -11,6 +11,7 @@
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import moment from 'moment'
 
 //context
 import { Context } from 'context'
@@ -29,12 +30,14 @@ import icoNotice from '../../static/ic_notice.svg'
 import icoMore from '../../static/icn_more_xs_gr.svg'
 import { Hybrid } from "context/hybrid";
 
+import GganbuReward from '../../../event/gganbu/content/gganbuReward';
+
 const icoPlus = 'https://image.dalbitlive.com/svg/ico_add.svg'
 const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
-export default () => {
+export default (props) => {
   const history = useHistory()
 
   //context
@@ -45,6 +48,9 @@ export default () => {
   const [moreState, setMoreState] = useState(false)
   const [bankPop, setBankPop] = useState(false)
   const [popupData, setPopupData] = useState([])
+  const [gganbuEnd, setGganbuEnd] = useState(false);
+  const [today, setToday] = useState("");
+  const [eventEnd, setEventEnd] = useState("");
   //ref
   const formTag = useRef(null)
 
@@ -159,6 +165,8 @@ export default () => {
     // console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
+      sessionStorage.setItem('buy_item_data', totalPrice * totalQuantity);
+
       if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
         return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
       } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
@@ -213,6 +221,15 @@ export default () => {
           context.action.alert({ visible: false })
         }
       })
+    }
+  }
+
+  async function gganbuDate() {
+    const {data, message} = await Api.gganbuEventDate();
+    if (message === "SUCCESS") {
+      let todayIs = new Date;
+      setToday(moment(todayIs).format("YYYY-MM-DD"));
+      setEventEnd(moment(data.endDate).format("YYYY-MM-DD"));
     }
   }
 
@@ -384,35 +401,26 @@ export default () => {
     fetchSelfAuth()
   }
 
-  // 안드로이드 간편결제 url 오류로 인한 버전 분기처리
-  const appVersionCheck = async () => {
-    const targetVersion = '1.7.2';
-    const successCallback = () => simplePayCheck();
-    const failCallback = () => {
-      return context.action.confirm({
-        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
-        callback: () => Hybrid('goToPlayStore')
-      })
-    }
-    await Utility.compareAppVersion(targetVersion, successCallback, failCallback)
-  }
-
   useEffect(() => {
     if (selectedPay.code === "simple") {
-      if(customHeader['os'] === OS_TYPE['Android']) {
-        appVersionCheck();
-      }else {
-        simplePayCheck();
-      }
+      simplePayCheck();
     } else {
       if (selectedPay.type) payFetch()
     }
   }, [selectedPay])
 
   useEffect(() => {
+    gganbuDate();
+    if(moment(today).isAfter(eventEnd)) {
+      setGganbuEnd(true);
+    } else {
+      setGganbuEnd(false);
+    }
+  }, [today]);
+
+  useEffect(() => {
     fetchMainPopupData(12)
   }, [])
-
 
   return (
     <>
@@ -482,6 +490,11 @@ export default () => {
           <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
           <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
           <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          {!gganbuEnd &&
+            <p>
+              깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.
+            </p>
+          }  
         </div>
 
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
