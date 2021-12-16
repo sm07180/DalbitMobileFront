@@ -90,28 +90,18 @@ export default (props) => {
     }
     const res = await Api.getGganbuObtainMarble(param);
     if (res.s_return === 1) {
-      fetchGganbuData();
-      fetchBettingPage();
     } else if (res.s_return === -4) {
       globalCtx.action.alert({msg: "베팅할 구슬이 부족합니다."})
       setBettingPop(false)
-      fetchGganbuData();
-      fetchBettingPage();
     } else if (res.s_return === -3) {
       globalCtx.action.alert({msg: "이미 지급되었습니다."})
       setBettingPop(false)
-      fetchGganbuData();
-      fetchBettingPage();
     } else if (res.s_return === -2) {
       globalCtx.action.alert({msg: "깐부가 없습니다."})
       setBettingPop(false)
-      fetchGganbuData();
-      fetchBettingPage();
     } else if (res.s_return === -1) {
       globalCtx.action.alert({msg: "이벤트 기간이 아닙니다."})
       setBettingPop(false)
-      fetchGganbuData();
-      fetchBettingPage();
     } 
   }  
 
@@ -281,8 +271,8 @@ export default (props) => {
                     {popResult ?
                       <span className="marbleCount">
                         {resultVal.rResult}
-                        <span className={`marbleGap ${gapVal.rGap >= 0 ? "plus": "minus"}`}>
-                          {gapVal.rGap >= 0 ? `+${gapVal.rGap}` : `${gapVal.rGap}`}
+                        <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
+                          {winOrLose === "w" ? `+${gapVal.rGap}` : `-${gapVal.rGap * -1}`}
                         </span>
                       </span>  
                       :                   
@@ -294,8 +284,8 @@ export default (props) => {
                     {popResult ?
                       <span className="marbleCount">
                         {resultVal.yResult}
-                        <span className={`marbleGap ${gapVal.yGap >= 0 ? "plus": "minus"}`}>
-                          {gapVal.yGap >= 0 ? `+${gapVal.yGap}` : `${gapVal.yGap}`}
+                        <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
+                          {winOrLose === "w" ? `+${gapVal.yGap}` : `-${gapVal.yGap * -1}`}
                         </span>
                       </span>  
                       :                   
@@ -307,8 +297,8 @@ export default (props) => {
                     {popResult ?
                       <span className="marbleCount">
                         {resultVal.bResult}
-                        <span className={`marbleGap ${gapVal.bGap >= 0 ? "plus": "minus"}`}>
-                          {gapVal.bGap >= 0 ? `+${gapVal.bGap}` : `${gapVal.bGap}`}
+                        <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
+                          {winOrLose === "w" ? `+${gapVal.bGap}` : `-${gapVal.bGap * -1}`}
                         </span>
                       </span>  
                       :                   
@@ -320,8 +310,8 @@ export default (props) => {
                     {popResult ?
                       <span className="marbleCount">
                         {resultVal.pResult}
-                        <span className={`marbleGap ${gapVal.pGap >= 0 ? "plus": "minus"}`}>
-                          {gapVal.pGap >= 0 ? `+${gapVal.pGap}` : `${gapVal.pGap}`}
+                        <span className={`marbleGap ${winOrLose === "w" ? "plus" : "minus"}`}>
+                          {winOrLose === "w" ? `+${gapVal.pGap}` : `-${gapVal.pGap * -1}`}
                         </span>
                       </span>  
                       :                   
