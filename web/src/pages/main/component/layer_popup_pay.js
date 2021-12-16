@@ -67,7 +67,6 @@ export default (props) => {
   const applyClick = () => {
     setPopup();
 
-    alert('aa : ' + JSON.stringify(data))
     if (data.s_return === 1) {
       setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
       setRewardPop(true);
