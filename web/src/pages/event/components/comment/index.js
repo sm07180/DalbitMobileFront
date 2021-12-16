@@ -71,6 +71,10 @@ export default function eventComment({
   return (
     <div className="commentEventWrap">
       <div className="addInputBox" onClick={() => loginCheck()}>
+        <div className="userBox">
+          <div className="photo">{/* <img src={globalCtx.profile.profImg.thumb62x62} /> */}</div>
+          <div className="userNick">{globalCtx.profile.nickNm}test</div>
+        </div>
         <textarea
           placeholder="댓글을 입력해주세요. (최대 300자)"
           value={commentTxt}
@@ -195,7 +199,7 @@ export default function eventComment({
               })}
             </>
           ) : (
-            <NoResult type="default" text="아직 작성된 댓글이 없습니다.<br />이벤트에 참여하는 첫 번째 회원님이 되어주세요!" />
+            <NoResult type="default" text="아직 작성된 댓글이 없습니다." />
           )}
         </div>
       </div>

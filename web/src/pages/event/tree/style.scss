@@ -1,0 +1,285 @@
+#tree {
+  position: relative;
+
+  width: 100%;
+  section {
+    position: relative;
+    .bgImg {
+      width: 100%;
+    }
+    &.tabContainer {
+      position: relative;
+      width: 100%;
+      height: 0;
+      z-index: 1;
+      .tabWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 97.225%;
+        height: 0;
+        margin: 0 1.39%;
+        padding-top: 13.89%;
+        .tabmenu {
+          position: absolute;
+          top: 0;
+          left: 0;
+          display: flex;
+          width: 100%;
+          height: 100%;
+          border-radius: 10px;
+          background-color: #be9463;
+          box-shadow: 0 3px 0 rgb(147, 95, 59);
+          box-sizing: border-box;
+          button {
+            flex: 1;
+            background-color: #be9463;
+            &.active {
+              background-color: #439867;
+            }
+            &:first-child {
+              border-radius: 10px 0 0 10px;
+            }
+            &:last-child {
+              border-radius: 0 10px 10px 0;
+            }
+            img {
+              height: 42%;
+            }
+          }
+        }
+        &.fixed {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          margin: 0;
+          button {
+            &:first-child {
+              border-radius: 0 0 0 10px;
+            }
+            &:last-child {
+              border-radius: 0 0 10px 0;
+            }
+          }
+        }
+      }
+      .signRing {
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: -4.17%;
+        padding: 0 5.56%;
+        box-sizing: border-box;
+        img {
+          width: 2.5%;
+        }
+      }
+    }
+    &.term {
+      button {
+        position: absolute;
+        bottom: 3.06%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 75%;
+        img {
+          width: 100%;
+          vertical-align: bottom;
+        }
+      }
+    }
+    &.treeContents {
+      padding: 0 1.39%;
+      background-color: #e9cdad;
+      .bgImg {
+        width: 100%;
+      }
+      .treeEventBox {
+        position: absolute;
+        top: 12px;
+        left: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        width: 128px;
+        height: 56px;
+        padding: 5px;
+        background-color: #e96e61;
+        border: 2px solid #fcbfbf;
+        border-radius: 5px;
+        box-sizing: border-box;
+        .countBox {
+          letter-spacing: -1px;
+          font-size: 15px;
+          font-weight: bold;
+          color: white;
+          span {
+            color: #ffd448;
+          }
+        }
+        .gaugeBox {
+          width: 96%;
+          height: 12px;
+          margin-top: 6px;
+          border-radius: 100px;
+          background-color: white;
+          .geugeInner {
+            width: calc(100% - 24px);
+          }
+          .gaugeBar {
+            position: relative;
+            height: 100%;
+            border-radius: 100px;
+            background: linear-gradient(to bottom, #ff4764, #d3324c 50%, #be001f);
+            .gaugePointer {
+              position: absolute;
+              left: 0;
+              top: 50%;
+              transform: translateY(-50%);
+              width: 100%;
+              height: 12px;
+              padding: 0 12px;
+              box-sizing: border-box;
+              span {
+                position: relative;
+                display: inline-block;
+                display: flex;
+                align-items: center;
+                height: 100%;
+                &:after {
+                  position: absolute;
+                  top: 50%;
+                  right: -12px;
+                  transform: translateY(-50%);
+                  content: '';
+                  width: 24px;
+                  height: 24px;
+                  background: url('https://image.dalbitlive.com/event/tree/gaugePointer.png') center/cover no-repeat;
+                }
+              }
+              img {
+                width: 24px;
+                height: 24px;
+              }
+            }
+          }
+        }
+      }
+    }
+    &.commentContainer {
+      margin-top: -5%;
+      min-height: 500px;
+      padding: 20px 15px 0;
+      border-radius: 15px 15px 0 0;
+      background-color: #fff;
+      box-shadow: 0 -5px 5px rgba(78, 34, 0, 0.16);
+      box-sizing: border-box;
+    }
+    &.rankContainer {
+      margin-top: -5%;
+      min-height: 300px;
+      padding: 15px;
+      border-radius: 15px 15px 0 0;
+      background-color: #5a5a5a;
+      .detailView {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-bottom: 15px;
+        color: white;
+        .title {
+          font-size: 14px;
+          font-weight: bold;
+          text-align: center;
+          letter-spacing: -1.5px;
+          &Wrap {
+            font-size: 18px;
+          }
+          span {
+            opacity: 0.7;
+          }
+        }
+        button {
+          font-weight: bold;
+          color: white;
+          img {
+            width: 24px;
+            height: 24px;
+          }
+          &.next img {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      .rankUl {
+        height: 100%;
+        border-radius: 15px;
+        background-color: white;
+        overflow: hidden;
+      }
+      .rankList {
+        display: flex;
+        align-items: center;
+        height: 90px;
+        padding: 16px 10px;
+        background-color: white;
+        box-sizing: border-box;
+        .rankNum {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          span {
+            font-size: 12px;
+            &.num {
+              width: 100%;
+              height: 20px;
+              line-height: 20px;
+              background-color: #f15c5c;
+              border-radius: 100px;
+              text-align: center;
+              color: white;
+            }
+          }
+        }
+        .photo {
+          width: 50px;
+          height: 50px;
+          margin-left: 10px;
+          border-radius: 50%;
+          overflow: hidden;
+          border: 1px solid red;
+        }
+        .listBox {
+          display: flex;
+          align-items: center;
+          margin: 0 10px;
+        }
+        .listBack {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin-left: auto;
+        }
+        &.my {
+          height: 74px;
+          margin-bottom: 15px;
+          padding: 12px 10px;
+          border-radius: 10px;
+          box-sizing: border-box;
+          .rankNum .num {
+            margin-top: 4px;
+            background-color: black;
+          }
+        }
+      }
+    }
+  }
+}

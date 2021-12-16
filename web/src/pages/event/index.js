@@ -33,6 +33,7 @@ import GganbuPocket from './gganbu/content/marblePocket'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
 import NewYear from './new_year'
+import Tree from './tree'
 import Package from './package'
 import VideoOpen from './video_open'
 import VideoOpen2 from './video_open2'
@@ -106,6 +107,8 @@ export default () => {
         return <RecommendDj2 />
       case 'new_year':
         return <NewYear />
+      case 'tree':
+        return <Tree />
       case 'package':
         return <Package />
       case 'video_open':
