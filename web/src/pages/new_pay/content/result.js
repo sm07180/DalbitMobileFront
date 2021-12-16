@@ -184,7 +184,6 @@ export default (props) => {
           apprno: apprno,
           itemCnt: itemCnt
         }
-        // alert(JSON.stringify(payInfo))
         sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
         if (returntype === 'store') {
           window.location.href = '/'

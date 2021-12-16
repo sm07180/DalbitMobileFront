@@ -143,7 +143,12 @@ export default (props) => {
   }
 
   const marbleOnchange = (inputRef, marbleColor) => {
-    const targetVal = Number(inputRef.current.value)
+    let targetVal = 0;
+    if(inputRef.keyCode < 48 || inputRef.keyCode > 57) {
+      targetVal = 0;
+    } else {
+      targetVal = Number(inputRef.current.value);      
+    }
     const toast1 = '구슬 개수를 확인해주세요'
     const toast2 = '베팅 가능한 최대 개수는 10개입니다'
     const rMyMarble = myMarble.rMarble
@@ -314,7 +319,8 @@ export default (props) => {
     bMarbleRef.current.value = 0
     pMarbleRef.current.value = 0
 
-    fetchGganbuData()
+    fetchGganbuData();
+    fetchBettingPage();
   }
 
   useEffect(() => {
