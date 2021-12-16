@@ -30,6 +30,8 @@
         .swiper-container-vertical {
           width: 70%;
           height: 36px;
+          border-radius: 0 100px 100px 0;
+          overflow: hidden;
         }
       }
       .participantList {
