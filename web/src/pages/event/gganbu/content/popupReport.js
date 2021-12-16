@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useLayoutEffect, useCallback} from 'react'
+import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react'
 //context
 import Api from 'context/api'
 import moment from 'moment'
@@ -11,6 +11,7 @@ export default (props) => {
   const {setPopupReport, gganbuNumber} = props
 
   const [reportList, setReportList] = useState([])
+  const [currentPage, setCurrentPage] = useState(0)
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -30,25 +31,44 @@ export default (props) => {
     }
   }
 
+  let totalPage = 1
   let pagePerCnt = 50
   // 깐부 리포트 리스트 조회
-  const gganbuReportList = useCallback(async () => {
+  const fetchgganbuReportList = useCallback(async () => {
     const param = {
       gganbuNo: gganbuNumber,
-      pageNo: 1,
+      pageNo: currentPage,
       pagePerCnt: pagePerCnt
     }
     const {data, message} = await Api.postGganbuReportList(param)
     if (message === 'SUCCESS') {
-      setReportList(data.list)
+      totalPage = Math.ceil(data.listCnt / pagePerCnt)
+      if (currentPage > 1) {
+        setReportList(reportList.concat(data.list))
+      } else {
+        setReportList(data.list)
+      }
     } else {
       console.log(message)
     }
-  }, [])
+  }, [currentPage])
+
+  const scrollEvtHdr = () => {
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+  useLayoutEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
+    window.addEventListener('scroll', scrollEvtHdr)
+    return () => {
+      window.removeEventListener('scroll', scrollEvtHdr)
+    }
+  }, [currentPage])
 
   useEffect(() => {
-    gganbuReportList()
-  }, [])
+    if (currentPage > 0) fetchgganbuReportList()
+  }, [currentPage])
 
   return (
     <div id="popupWrap" onClick={wrapClick}>
