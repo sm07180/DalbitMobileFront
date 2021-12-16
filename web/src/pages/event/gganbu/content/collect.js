@@ -224,7 +224,7 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          {ptr_mem_stat === 1 ? (
+                          {ptr_mem_stat !== 4 ? (
                             <>
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
@@ -234,19 +234,17 @@ export default (props) => {
                               </span>
                               <span className="userId">{ptr_mem_id}</span>
                             </>
-                          ) : ptr_mem_stat === 4 ? (
+                          ) : (
                             <>
                               <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
                                 lv {ptr_mem_level}
                               </div>
                               <span className="userNick">깍두기</span>
                             </>
-                          ) : (
-                            <></>
                           )}
                         </div>
                         <div className="rankItem">
-                          {mem_state === 1 ? (
+                          {mem_state !== 4 ? (
                             <>
                               <LevelBox className="badge" levelColor={mem_level_color}>
                                 lv {mem_level}
@@ -256,15 +254,13 @@ export default (props) => {
                               </span>
                               <span className="userId">{mem_id}</span>
                             </>
-                          ) : mem_state === 4 ? (
+                          ) : (
                             <>
                               <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
                                 lv {ptr_mem_level}
                               </div>
                               <span className="userNick">깍두기</span>
                             </>
-                          ) : (
-                            <></>
                           )}
                         </div>
                       </div>
