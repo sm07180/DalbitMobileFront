@@ -117,6 +117,7 @@ export default () => {
   const pocketOpen = () => {
     let point = 0;
     const modular = 10;
+    
     if(averageLevel < 30) {
       point = Math.floor(Math.random() * 39) + 70; // 70 ~ 109
       point = Math.floor(point / modular) * modular;
@@ -126,6 +127,8 @@ export default () => {
         setOpenPocket(false); 
         fetchGganbuPocketPage();
         setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
       }, 10000);
     } else if (averageLevel < 50) {
       point = Math.floor(Math.random() * 39) + 40; // 40 ~ 74
@@ -136,6 +139,8 @@ export default () => {
         setOpenPocket(false); 
         fetchGganbuPocketPage();
         setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
       }, 9000);
     } else if (averageLevel < 70) {
       point = Math.floor(Math.random() * 29) + 30;
@@ -146,6 +151,8 @@ export default () => {
         setOpenPocket(false); 
         fetchGganbuPocketPage();
         setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
       }, 8000);
     } else {
       point = Math.floor(Math.random() * 29) + 10;
@@ -156,6 +163,8 @@ export default () => {
         setOpenPocket(false); 
         fetchGganbuPocketPage();
         setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
       }, 8000);
     }
     fetchGganbuPocketOpen(point); 
@@ -168,11 +177,6 @@ export default () => {
   useEffect(() => {
     fetchGganbuPocketPage();
   }, [])
-
-  useEffect(() => {
-    fetchGganbuPocketReport();
-    fetchGganbuPocketPage();
-  }, [openPocket]);
 
   return (
     <div id="marblePocketPage">

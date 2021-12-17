@@ -4,10 +4,9 @@ import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import styled, {css} from 'styled-components'
 import Api from 'context/api'
 import Lottie from 'react-lottie'
-import NoResult from 'components/ui/new_noResult'
-// component
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
+// component
+import NoResult from 'components/ui/new_noResult'
 
 import PopupDetails from './popupDetails'
 import PopupReport from './popupReport'
@@ -73,12 +72,12 @@ export default (props) => {
     <>
       <div id="collect" style={{display: `${tabContent === 'collect' ? 'block' : 'none'}`}}>
         <section className="content">
-          <img src="https://image.dalbitlive.com/event/gganbu/gganbuBottomImg.png" className="bg" />
+          <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg.png`} className="bg" />
           <div className="title">
-            <img src="https://image.dalbitlive.com/event/gganbu/bottomTitle.png" alt="구슬 현황" />
+            <img src={`${IMG_SERVER}/event/gganbu/bottomTitle.png`} alt="구슬 현황" />
           </div>
           <button className="subTitle" onClick={() => setPopupDetails(true)}>
-            <img src="https://image.dalbitlive.com/event/gganbu/bottomBtn.png" alt="구슬 얻는 법" />
+            <img src={`${IMG_SERVER}/event/gganbu/bottomBtn.png`} alt="구슬 얻는 법" />
           </button>
           {gganbuState === -1 ? (
             <div className="status">
@@ -97,25 +96,25 @@ export default (props) => {
                   <div className="report">
                     <div className="marbleListWrap">
                       <div className="list">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-1.png" />
+                        <img src={`${IMG_SERVER}/event/gganbu/marble-1.png`} />
                         <span>{gganbuInfo && gganbuInfo.red_marble}</span>
                       </div>
                       <div className="list">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-2.png" />
+                        <img src={`${IMG_SERVER}/event/gganbu/marble-2.png`} />
                         <span>{gganbuInfo && gganbuInfo.yellow_marble}</span>
                       </div>
                       <div className="list">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-3.png" />
+                        <img src={`${IMG_SERVER}/event/gganbu/marble-3.png`} />
                         <span>{gganbuInfo && gganbuInfo.blue_marble}</span>
                       </div>
                       <div className="list">
-                        <img src="https://image.dalbitlive.com/event/gganbu/marble-4.png" />
+                        <img src={`${IMG_SERVER}/event/gganbu/marble-4.png`} />
                         <span>{gganbuInfo && gganbuInfo.violet_marble}</span>
                       </div>
                     </div>
-                    <div className="marbleScore">{gganbuInfo && gganbuInfo.marble_pt}점</div>
+                    <div className="marbleScore">{Utility.addComma(gganbuInfo && gganbuInfo.marble_pt)}점</div>
                     <button onClick={() => setPopupReport(true)}>
-                      <img src="https://image.dalbitlive.com/event/gganbu/btnReport.png" alt="구슬 리포트" />
+                      <img src={`${IMG_SERVER}/event/gganbu/btnReport.png`} alt="구슬 리포트" />
                     </button>
                   </div>
                   <div className="pocket">
@@ -129,12 +128,12 @@ export default (props) => {
                           }}
                         />
                       ) : (
-                        <img src="https://image.dalbitlive.com/event/gganbu/marblePocket-1.png" />
+                        <img src={`${IMG_SERVER}/event/gganbu/marblePocket-1.png`} />
                       )}
                     </div>
-                    <div className="pocketScore">{gganbuInfo && gganbuInfo.marble_pocket_pt}점</div>
+                    <div className="pocketScore">{Utility.addComma(gganbuInfo && gganbuInfo.marble_pocket_pt)}점</div>
                     <button onClick={() => history.push({pathname: `/event/gganbuPocket`})}>
-                      <img src="https://image.dalbitlive.com/event/gganbu/btnPocket.png" alt="구슬 주머니" />
+                      <img src={`${IMG_SERVER}/event/gganbu/btnPocket.png`} alt="구슬 주머니" />
                     </button>
                   </div>
                 </div>
@@ -146,22 +145,22 @@ export default (props) => {
         <section className={`notice ${noticeTab === 'active' ? 'active' : ''}`}>
           {noticeTab === 'active' ? (
             <>
-              <img src="https://image.dalbitlive.com/event/gganbu/gganbuNoticeImg-on.png" />
+              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on.png`} />
               <button onClick={() => tabActive(noticeTab)}>
-                <img src="https://image.dalbitlive.com/event/gganbu/tabArrow.png" />
+                <img src={`${IMG_SERVER}/event/gganbu/tabArrow.png`} />
               </button>
             </>
           ) : (
             <>
-              <img src="https://image.dalbitlive.com/event/gganbu/gganbuNoticeImg-off.png" />
+              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-off.png`} />
               <button onClick={() => tabActive(noticeTab)}>
-                <img src="https://image.dalbitlive.com/event/gganbu/tabArrow.png" />
+                <img src={`${IMG_SERVER}/event/gganbu/tabArrow.png`} />
               </button>
             </>
           )}
         </section>
         <section className="rank">
-          <img className="rankTopImg" src="https://image.dalbitlive.com/event/gganbu/wrapperTop.png" />
+          <img className="rankTopImg" src={`${IMG_SERVER}/event/gganbu/wrapperTop.png`} />
           {myRankList && gganbuState === 1 && (
             <div className="rankList my">
               <div className="number">
@@ -189,8 +188,8 @@ export default (props) => {
                 </div>
               </div>
               <div className="score">
-                <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
-                <span>{myRankList.tot_marble_pocket_pt}</span>
+                <img src={`${IMG_SERVER}/event/gganbu/iconScore.png`} />
+                <span>{Utility.addComma(myRankList.tot_marble_pocket_pt)}</span>
               </div>
             </div>
           )}
@@ -205,7 +204,6 @@ export default (props) => {
                     ptr_mem_no,
                     ptr_mem_id,
                     ptr_mem_stat,
-                    my_rank_no,
                     mem_level,
                     mem_level_color,
                     mem_nick,
@@ -226,7 +224,7 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          {ptr_mem_stat === 1 ? (
+                          {(ptr_mem_stat !== 0 && ptr_mem_stat !== 4) ? (
                             <>
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
@@ -236,19 +234,19 @@ export default (props) => {
                               </span>
                               <span className="userId">{ptr_mem_id}</span>
                             </>
-                          ) : ptr_mem_stat === 4 ? (
+                          ) : (
                             <>
-                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                              <div className="badge" style={{backgroundColor: '#9F9F9F'}}>
                                 lv {ptr_mem_level}
                               </div>
-                              <span className="userNick">깍두기</span>
+                              <span className="userNick">
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                              </span>
                             </>
-                          ) : (
-                            <></>
                           )}
                         </div>
                         <div className="rankItem">
-                          {mem_state === 1 ? (
+                          {(mem_state !== 0 && mem_state !== 4) ? (
                             <>
                               <LevelBox className="badge" levelColor={mem_level_color}>
                                 lv {mem_level}
@@ -258,15 +256,15 @@ export default (props) => {
                               </span>
                               <span className="userId">{mem_id}</span>
                             </>
-                          ) : mem_state === 4 ? (
-                            <>
-                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
-                                lv {ptr_mem_level}
-                              </div>
-                              <span className="userNick">깍두기</span>
-                            </>
                           ) : (
-                            <></>
+                            <>
+                              <div className="badge" style={{backgroundColor: '#9F9F9F'}}>
+                                lv {mem_level}
+                              </div>
+                              <span className="userNick">
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                              </span>
+                            </>
                           )}
                         </div>
                       </div>
