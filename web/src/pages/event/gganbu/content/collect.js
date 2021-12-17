@@ -224,7 +224,7 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          {(ptr_mem_stat !== 0 || ptr_mem_stat !== 4) ? (
+                          {(ptr_mem_stat !== 0 && ptr_mem_stat !== 4) ? (
                             <>
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
