@@ -55,7 +55,7 @@ export default (props) => {
       ) != null ||
       UserAgent.match(/LG|SAMSUNG|Samsung/) != null
     ) {
-      document.authForm.target = ''
+      // document.authForm.target = ''
     } else {
       KMCIS_window = window.open(
         '',
@@ -69,10 +69,11 @@ export default (props) => {
             ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
         })
       }
-      document.authForm.target = 'KMCISWindow'
+      // document.authForm.target = 'KMCISWindow'
     }
-    document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
-    document.authForm.submit()
+    const target = document.getElementById('authForm');
+    target.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
+    target.submit()
   }
 
   //인증 요청
