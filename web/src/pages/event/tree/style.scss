@@ -174,6 +174,60 @@
           }
         }
       }
+      .treeItem {
+        z-index: 0;
+        width: 16.67%;
+        height: 12.345%;
+        border-radius: 50%;
+        box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.8);
+        &.first {
+          position: absolute;
+          top: 22.013%;
+          right: 33.335%;
+          background: url('https://image.dalbitlive.com/event/tree/treeItem-1.png') center/cover no-repeat;
+          .ribbon {
+            background: url('https://image.dalbitlive.com/event/tree/ribbon-1.png') center/cover no-repeat;
+          }
+        }
+        &.second {
+          position: absolute;
+          top: 40%;
+          left: 25%;
+          background: url('https://image.dalbitlive.com/event/tree/treeItem-2.png') center/cover no-repeat;
+          .ribbon {
+            background: url('https://image.dalbitlive.com/event/tree/ribbon-2.png') center/cover no-repeat;
+          }
+        }
+        &.third {
+          position: absolute;
+          top: 50%;
+          right: 20%;
+          background: url('https://image.dalbitlive.com/event/tree/treeItem-3.png') center/cover no-repeat;
+          .ribbon {
+            background: url('https://image.dalbitlive.com/event/tree/ribbon-3.png') center/cover no-repeat;
+          }
+        }
+        .ribbon {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 66.67%;
+          height: 33.35%;
+        }
+        .photo {
+          width: 80%;
+          height: 80%;
+          margin: 10%;
+          border-radius: 50%;
+          box-sizing: border-box;
+          overflow: hidden;
+          img {
+            width: 100%;
+            height: 100%;
+          }
+        }
+      }
       .treeBottom {
         position: absolute;
         bottom: 0;

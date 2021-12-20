@@ -146,6 +146,27 @@ const Tree = (props) => {
       <section className="treeContents">
         <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
 
+        <div className="treeItem first">
+          <div className="photo">
+            <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} />
+          </div>
+          <div className="ribbon"></div>
+        </div>
+
+        <div className="treeItem second">
+          <div className="photo">
+            <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} />
+          </div>
+          <div className="ribbon"></div>
+        </div>
+
+        <div className="treeItem third">
+          <div className="photo">
+            <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} />
+          </div>
+          <div className="ribbon"></div>
+        </div>
+
         <div className="treeBottom">
           {
             {
