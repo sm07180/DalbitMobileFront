@@ -30,7 +30,7 @@ export default (props) => {
   }
 
   let totalPage = 1
-  let pagePerCnt = 5
+  let pagePerCnt = 50
   // 깐부 랭킹 리스트
   const gganbuRankList = useCallback(async () => {
     const param = {
@@ -145,17 +145,20 @@ export default (props) => {
         <section className={`notice ${noticeTab === 'active' ? 'active' : ''}`}>
           {noticeTab === 'active' ? (
             <>
-              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on.png`} />
-              <button onClick={() => tabActive(noticeTab)}>
-                <img src={`${IMG_SERVER}/event/gganbu/tabArrow.png`} />
-              </button>
+              <img
+                src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-top.png`}
+                onClick={(e) => tabActive(noticeTab)}
+                style={{cursor: 'pointer'}}
+              />
+              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom.png`} />
             </>
           ) : (
             <>
-              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-off.png`} />
-              <button onClick={() => tabActive(noticeTab)}>
-                <img src={`${IMG_SERVER}/event/gganbu/tabArrow.png`} />
-              </button>
+              <img
+                src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-off-new.png`}
+                onClick={(e) => tabActive(noticeTab)}
+                style={{cursor: 'pointer'}}
+              />
             </>
           )}
         </section>
@@ -169,22 +172,44 @@ export default (props) => {
               </div>
               <div className="rankBox">
                 <div className="rankItem">
-                  <PtrLevelBox className="badge" levelColor={myRankList.ptr_mem_level_color}>
-                    lv {myRankList.ptr_mem_level}
-                  </PtrLevelBox>
-                  <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.ptr_mem_no}`})}>
-                    {myRankList.ptr_mem_nick}
-                  </span>
-                  <span className="userId">{myRankList.ptr_mem_id}</span>
+                  {myRankList.ptr_mem_stat !== 4 ? (
+                    <>
+                      <PtrLevelBox className="badge" levelColor={myRankList.ptr_mem_level_color}>
+                        lv {myRankList.ptr_mem_level}
+                      </PtrLevelBox>
+                      <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.ptr_mem_no}`})}>
+                        {myRankList.ptr_mem_nick}
+                      </span>
+                      <span className="userId">{myRankList.ptr_mem_id}</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                        lv {myRankList.ptr_mem_level}
+                      </div>
+                      <span className="userNick">깍두기</span>
+                    </>
+                  )}
                 </div>
                 <div className="rankItem">
-                  <LevelBox className="badge" levelColor={myRankList.mem_level_color}>
-                    lv {myRankList.mem_level}
-                  </LevelBox>
-                  <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.mem_no}`})}>
-                    {myRankList.mem_nick}
-                  </span>
-                  <span className="userId">{myRankList.mem_id}</span>
+                  {myRankList.mem_state !== 4 ? (
+                    <>
+                      <LevelBox className="badge" levelColor={myRankList.mem_level_color}>
+                        lv {myRankList.mem_level}
+                      </LevelBox>
+                      <span className="userNick" onClick={() => history.push({pathname: `/mypage/${myRankList.mem_no}`})}>
+                        {myRankList.mem_nick}
+                      </span>
+                      <span className="userId">{myRankList.mem_id}</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                        lv {myRankList.ptr_mem_level}
+                      </div>
+                      <span className="userNick">깍두기</span>
+                    </>
+                  )}
                 </div>
               </div>
               <div className="score">
