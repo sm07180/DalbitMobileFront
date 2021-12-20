@@ -18,6 +18,7 @@ import NoService from './pages/no_service/index';
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
+import {getDeviceOSTypeChk} from './common/DeviceCommon';
 
 const App = () => {
   const globalCtx = useContext(Context)
@@ -50,30 +51,13 @@ const App = () => {
     return uuid
   }
 
-  //userAgent 체크후 os 값 반환
-  const getDeviceOSTypeChk = () => {
-    if(typeof window ==='undefined') return;
-    const userAgent = window.navigator.userAgent;
-    let osName;
-    if(userAgent) { // return: Array or null
-      osName = userAgent.match(/(Android)/gi) || userAgent.match(/(iPhone)/gi) || userAgent.match(/(iPad)/gi) || userAgent.match(/(Windows)/gi);
-    }
-    osName = osName? osName[0] : 'Windows'; // null이면 Desktop으로 세팅
-    return osName === 'Android' ? OS_TYPE['Android'] :
-              osName === 'iPhone' ? OS_TYPE['IOS'] :
-                osName === 'iPad' ? OS_TYPE['IOS'] :
-                  osName === 'Windows' ? OS_TYPE['Desktop'] : OS_TYPE['Desktop'];
-  };
-
   /**
-   * 기존 로직 :
+   * custom header Cookie 생성 (userAgent)
    *   안드로이드 www에 페이지 요청 : request - header에 'custom-header': {os, deviceId, ...} 추가해서 요청
    *   www (Back) : layout.jsp 에서 request에서 custom-header를 DOM에 담아서 줌 (id="customHeader"의 value에 넣어있음)
    *   1) DOM id="customHeader"에서 꺼내서 쿠키를 만듬
    *   2) 유지되있는 쿠키에서 가져와서 씀
    *   3) 새로 만듬
-   * 
-   * 변경사항 : os 타입을 로컬환경에서는 못받아서(로컬 Back www에서는 못받음) 직접 체크해서 값을 변경하도록 변경
    */
   const customHeader = useMemo(() => {
     const customHeaderTag = document.getElementById('customHeader');
@@ -111,9 +95,11 @@ const App = () => {
         }
       }
     }
-
+    //앱 업데이트를 안하면 커스텀 userAgent를 받아올수 없다.
+    //앱 업데이트 후 에이전트 받음
+    //모바일 웹, PC 웹인 경우
     const createHeader = {
-      os: OS_TYPE['Desktop'],
+      os: getDeviceOSTypeChk(), //OS_TYPE['Desktop']
       deviceId: createDeviceUUid(),
       appVersion: '1.0.1',
       locale: 'ko',
@@ -385,7 +371,7 @@ const App = () => {
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
-      window.location.reload()
+      //window.location.reload()
     }
   }, [cookieAuthToken])
 
