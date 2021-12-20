@@ -92,6 +92,7 @@
       }
     }
     &.treeContents {
+      position: relative;
       padding: 0 1.39%;
       background-color: #e9cdad;
       .treeImg {
@@ -114,7 +115,6 @@
         border: 3px solid #fcbfbf;
         border-radius: 9px;
         box-sizing: border-box;
-        transition: all 1s;
         transform: scale(1);
         transform-origin: top left;
         .countBox {
@@ -129,7 +129,7 @@
         .gaugeBox {
           width: 96%;
           height: 12px;
-          margin-top: 4px;
+          margin-top: 6px;
           border-radius: 100px;
           background-color: white;
           .geugeInner {
@@ -173,6 +173,19 @@
             }
           }
         }
+      }
+      .treeBottom {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        z-index: 1;
+        transform: translateX(-50%);
+        border-radius: 0 0 15px 15px;
+        display: block;
+        content: '';
+        width: calc(100% - 2.78%);
+        height: 21%;
+        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
       }
     }
     &.commentContainer {

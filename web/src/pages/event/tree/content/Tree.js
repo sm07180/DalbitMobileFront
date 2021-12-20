@@ -66,6 +66,9 @@ const Tree = (props) => {
       </section>
       <section className="treeContents">
         <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
+        <div className="treeBottom">
+          <img src={`${IMG_SERVER}/event/tree/`} alt="" />
+        </div>
         <div className="treeEventBox">
           <div className="countBox">
             {Utility.addComma(mainListInfo.totScoreCnt)}
