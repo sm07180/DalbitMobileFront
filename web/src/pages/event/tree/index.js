@@ -13,11 +13,11 @@ import Lover from './content/Lover'
 import './style.scss'
 
 const TreePage = () => {
-  const constext = useContext(Context);
+  const constext = useContext(Context)
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
-  const [tabContent, setTabContent] = useState('lover') // tree , lover
+  const [tabContent, setTabContent] = useState('tree') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])
@@ -51,10 +51,16 @@ const TreePage = () => {
         <div className={`tabWrapper ${tabFixed === true ? 'fixed' : ''}`} ref={tabBtnRef}>
           <div className="tabmenu">
             <button className={tabContent === 'tree' ? 'active' : ''} onClick={() => setTabContent('tree')}>
-              <img src={`${IMG_SERVER}/event/tree/tabmenu-1-${tabContent === 'tree' ? 'on' : 'off'}.png`} alt="좋아요 트리만들기!" />
+              <img
+                src={`${IMG_SERVER}/event/tree/tabmenu-1-${tabContent === 'tree' ? 'on' : 'off'}.png`}
+                alt="좋아요 트리만들기!"
+              />
             </button>
             <button className={tabContent === 'lover' ? 'active' : ''} onClick={() => setTabContent('lover')}>
-              <img src={`${IMG_SERVER}/event/tree/tabmenu-2-${tabContent === 'lover' ? 'on' : 'off'}.png`} alt="사랑꾼 선발대회" />
+              <img
+                src={`${IMG_SERVER}/event/tree/tabmenu-2-${tabContent === 'lover' ? 'on' : 'off'}.png`}
+                alt="사랑꾼 선발대회"
+              />
             </button>
           </div>
         </div>

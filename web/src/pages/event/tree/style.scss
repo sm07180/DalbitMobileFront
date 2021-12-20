@@ -94,8 +94,10 @@
     &.treeContents {
       padding: 0 1.39%;
       background-color: #e9cdad;
-      .bgImg {
+      .treeImg {
         width: 100%;
+        vertical-align: bottom;
+        border-radius: 15px;
       }
       .treeEventBox {
         position: absolute;
@@ -105,16 +107,19 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: calc(36% - 6px);
-        height: calc(12% - 6px);
+        width: 127px;
+        height: 56px;
         padding: 5px;
         background-color: #e96e61;
         border: 3px solid #fcbfbf;
         border-radius: 9px;
         box-sizing: border-box;
+        transition: all 1s;
+        transform: scale(1);
+        transform-origin: top left;
         .countBox {
           letter-spacing: -1px;
-          font-size: 21px;
+          font-size: 14px;
           font-weight: bold;
           color: white;
           span {
@@ -123,8 +128,8 @@
         }
         .gaugeBox {
           width: 96%;
-          height: 24px;
-          margin-top: 15px;
+          height: 12px;
+          margin-top: 4px;
           border-radius: 100px;
           background-color: white;
           .geugeInner {

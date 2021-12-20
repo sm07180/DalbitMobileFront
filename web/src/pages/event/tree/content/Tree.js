@@ -6,55 +6,55 @@ import {IMG_SERVER} from 'context/config'
 
 // Component
 import EventComment from '../../components/comment'
-import {Context} from "context";
+import {Context} from 'context'
 
 // 좋아요 트리만들기 Content Component
 const Tree = (props) => {
-  const constext = useContext(Context);
-  const history = useHistory();
-  const [makePopInfo, setMakePopInfo] = useState({open: false}); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
-  const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
-  const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
-  const [mainListInfo, setMainListInfo] = useState({totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
-  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: []}); // 사연리스트 정보
-  const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
+  const constext = useContext(Context)
+  const history = useHistory()
+  const [makePopInfo, setMakePopInfo] = useState({open: false}) // 트리 만드는 법 & 트리 완성 보상 팝업 정보
+  const [presentPopInfo, setPresentPopInfo] = useState({open: false}) // 선물 팝업 정보
+  const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}) // 편지 팝업 정보
+  const [mainListInfo, setMainListInfo] = useState({totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}) // 메인 리스트 정보
+  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: []}) // 사연리스트 정보
+  const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}) // 사연 검색 정보
 
   // 메인 리스트 가져오기
   const getMainListInfo = () => {
-    Api.getLikeTreeMainList().then(res => {
-      if (res.code === '00000') {
-        setMainListInfo({ ...mainListInfo, ...res.data, mainPercent: Math.floor(res.data.totScoreCnt/mainListInfo.limitScore) });
-      } else {
-        console.log(res);
-      }
-    }).catch(e => console.log(e));
-  };
+    Api.getLikeTreeMainList()
+      .then((res) => {
+        if (res.code === '00000') {
+          setMainListInfo({...mainListInfo, ...res.data, mainPercent: Math.floor(res.data.totScoreCnt / mainListInfo.limitScore)})
+        } else {
+          console.log(res)
+        }
+      })
+      .catch((e) => console.log(e))
+  }
 
   // 사연 리스트 가져오기
   const getStoryListInfo = () => {
-    Api.getLikeTreeStoryList(storyPageInfo).then(res => {
+    Api.getLikeTreeStoryList(storyPageInfo).then((res) => {
       if (res.code === '00000') {
-        const { cnt, list } = res.data;
-        let temp = [];
-        list.forEach(value => {
-          temp.push({
-
-          })
-        });
-        setStoryListInfo(res.data);
+        const {cnt, list} = res.data
+        let temp = []
+        list.forEach((value) => {
+          temp.push({})
+        })
+        setStoryListInfo(res.data)
       } else {
-        console.log(res);
+        console.log(res)
       }
     })
-  };
+  }
 
   useEffect(() => {
-    getStoryListInfo();
-  }, [storyPageInfo]);
+    getStoryListInfo()
+  }, [storyPageInfo])
 
   useEffect(() => {
-    getMainListInfo();
-  }, []);
+    getMainListInfo()
+  }, [])
 
   return (
     <>
@@ -65,7 +65,7 @@ const Tree = (props) => {
         </button>
       </section>
       <section className="treeContents">
-        <img src={`${IMG_SERVER}/event/tree/treeContents.png`} className="bgImg" />
+        <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
         <div className="treeEventBox">
           <div className="countBox">
             {Utility.addComma(mainListInfo.totScoreCnt)}
@@ -90,4 +90,4 @@ const Tree = (props) => {
   )
 }
 
-export default Tree;
+export default Tree
