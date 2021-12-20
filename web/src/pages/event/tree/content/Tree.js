@@ -16,8 +16,9 @@ const Tree = (props) => {
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
   const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
   const [mainListInfo, setMainListInfo] = useState({totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
-  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: []}); // 사연리스트 정보
+  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [] }); // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
+  const [storyInputInfo, setStoryInputInfo] = useState({ cont: '' }); // 사연 입력 정보
 
   // 메인 리스트 가져오기
   const getMainListInfo = () => {
@@ -47,6 +48,47 @@ const Tree = (props) => {
       }
     })
   };
+
+  // 사연 등록하기
+  const putStoryCont = () => {
+    const params = {storyConts: ''};
+    Api.likeTreeStoryIns(params).then(res => {
+      if (res.code === '00000') {
+        console.log(res);
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  }
+  
+  // 사연 수정하기
+  const updStoryCont = () => {
+    const params = {storyConts: ''};
+    Api.likeTreeStoryUpd(params).then(res => {
+      if (res.code === '00000') {
+        console.log(res);
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  }
+
+  // 사연 삭제하기
+  const delStoryCont = () => {
+    const params = {storyConts: ''};
+    Api.likeTreeStoryDel(params).then(res => {
+      if (res.code === '00000') {
+        console.log(res);
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  };
+
+  // 사연 state 관리
+  const handleStoryInput = (value) => {
+    console.log(value);
+  }
 
   useEffect(() => {
     getStoryListInfo();
@@ -84,7 +126,8 @@ const Tree = (props) => {
         <img src={`${IMG_SERVER}/event/tree/treeBg-3.png`} className="bgImg" />
       </section>
       <section className="commentContainer">
-        <EventComment />
+        <EventComment commentList={storyListInfo.list} totalCommentCnt={storyListInfo.cnt} commentAdd={putStoryCont} commentUpd={updStoryCont} commentDel={delStoryCont}
+                      commentTxt={storyInputInfo.cont} />
       </section>
     </>
   )
