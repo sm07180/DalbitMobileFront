@@ -10,7 +10,7 @@ export default (props) => {
 
   const swiperParams = {
     pagination: {
-      el: '.swiper-pagination'
+      el: '.swiper-letter'
     }
   }
 
@@ -44,7 +44,9 @@ export default (props) => {
         <Swiper {...swiperParams}>
           <div className="letterList">
             <div className="letter">
-              헤헤 2022년 짱짱짱 너무 재밌었고 완전히히 대박이였지 진짜루 하하대박이였지 진짜루 하하 대박 이였지 진짜루 하하
+              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
+              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
+              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
               대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
               <div className="date">2021. 12. 25</div>
             </div>
