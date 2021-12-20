@@ -1,10 +1,12 @@
 import React, {useEffect, useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import qs from 'query-string'
+import Api from 'context/api'
 
 //context
 import {Context} from 'context'
 import {Hybrid} from 'context/hybrid'
+import Utility from 'components/lib/utility'
 
 export default () => {
   const location = useLocation()
@@ -36,7 +38,6 @@ export default () => {
   } = location.state
 
   let payType = ''
-
 
   const makePayType = () => {
     if (!phoneNo && cardNum) {
@@ -104,6 +105,8 @@ export default () => {
     }
 
     if (result === 'success') {
+      marbleIns()
+
       if (returntype === 'room') {
         //Facebook,Firebase 이벤트 호출
         try {
@@ -111,11 +114,12 @@ export default () => {
           firebase.analytics().logEvent('Purchase')
           kakaoPixel('114527450721661229').purchase()
         } catch (e) {}
+
         context.action.alert({
           msg: `결제가 완료되었습니다. \n 충전 내역은 '마이페이지 >\n 내 지갑'에서 확인해주세요.`,
           callback: () => {
-            Hybrid('CloseLayerPopup')
-            Hybrid('ClosePayPopup')
+              Hybrid('CloseLayerPopup')
+              Hybrid('ClosePayPopup')
           }
         })
       } else {
@@ -137,7 +141,6 @@ export default () => {
           apprno: apprno,
           itemCnt: itemCnt
         }
-        // alert(JSON.stringify(payInfo))
         sessionStorage.setItem('pay_info', JSON.stringify(payInfo))
         if (returntype === 'store') {
           window.location.href = '/'

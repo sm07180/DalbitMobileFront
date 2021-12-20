@@ -1,23 +1,25 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styled from 'styled-components'
 import Utility from 'components/lib/utility'
 
 // static
 import CloseBtn from '../static/ic_close.svg'
 
+import Api from 'context/api'
+
 let prevAlign = null
 let prevGender = null
 
 export default (props) => {
-  const {setPopup, info} = props
+  const {setPopup, info, setPayState} = props
   const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno, itemCnt} = info
+  const [data, setData] = useState();
 
   // reference
   const layerWrapRef = useRef()
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
-
     return () => {
       document.body.style.overflow = ''
     }
@@ -39,8 +41,12 @@ export default (props) => {
   }
 
   const applyClick = () => {
-    setPopup()
+    setPopup();
   }
+
+  useEffect(() => {
+
+  }, []);
 
   const createTypeResult = () => {
     if (payType === '휴대폰 결제') {
@@ -75,49 +81,51 @@ export default (props) => {
   }
 
   return (
-    <PopupWrap id="main-layer-popup" ref={layerWrapRef}>
-      <div className="content-wrap">
-        <div className="title-wrap">
-          <div className="text">결제 완료</div>
-          <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
-        </div>
+    <>
+      <PopupWrap id="main-layer-popup" ref={layerWrapRef}>
+        <div className="content-wrap">
+          <div className="title-wrap">
+            <div className="text">결제 완료</div>
+            <img src={CloseBtn} className="close-btn" onClick={() => closePopup()} />
+          </div>
 
-        <div className="content">
-          <h2 className="charge__title">결제가 완료 되었습니다.</h2>
-          <div className="exchangeList">
-            결제금액
-            <div className="exchangeList__text">
-              <div className="exchangeList__text exchangeList__text--purple">{Utility.addComma(prdtPrice)}</div>원 (부가세 포함)
+          <div className="content">
+            <h2 className="charge__title">결제가 완료 되었습니다.</h2>
+            <div className="exchangeList">
+              결제금액
+              <div className="exchangeList__text">
+                <div className="exchangeList__text exchangeList__text--purple">{Utility.addComma(prdtPrice)}</div>원 (부가세 포함)
+              </div>
+            </div>
+            <div className="exchangeList">
+              상품명
+              <div className="exchangeList__text">
+                {prdtNm} X {itemCnt}
+              </div>
+            </div>
+            <div className="exchangeList">
+              결제수단 <div className="exchangeList__text">{payType}</div>
+            </div>
+
+            {createTypeResult()}
+
+            <div className="exchangeList__notice">
+              결제 내역은 마이페이지 &gt; 내지갑에서
+              <br /> 확인하실 수 있습니다.
+              <br />
+              확인 버튼을 누르시면 메인화면으로 이동합니다.
+              <br />
             </div>
           </div>
-          <div className="exchangeList">
-            상품명
-            <div className="exchangeList__text">
-              {prdtNm} X {itemCnt}
-            </div>
-          </div>
-          <div className="exchangeList">
-            결제수단 <div className="exchangeList__text">{payType}</div>
-          </div>
 
-          {createTypeResult()}
-
-          <div className="exchangeList__notice">
-            결제 내역은 마이페이지 &gt; 내지갑에서
-            <br /> 확인하실 수 있습니다.
-            <br />
-            확인 버튼을 누르시면 메인화면으로 이동합니다.
-            <br />
+          <div className="btn-wrap">
+            <button className="apply-btn" onClick={applyClick}>
+              확인
+            </button>
           </div>
         </div>
-
-        <div className="btn-wrap">
-          <button className="apply-btn" onClick={applyClick}>
-            확인
-          </button>
-        </div>
-      </div>
-    </PopupWrap>
+      </PopupWrap>
+    </>
   )
 }
 
@@ -129,10 +137,118 @@ const PopupWrap = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.7);
   z-index: 60;
-
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .contentWrap {
+    position: relative;
+    width: calc(100% - 32px);
+    max-width: 390px;
+    padding: 0;
+    border-radius: 15px;
+    background-color: #fff;
+    overflow: hidden;
+    .title {
+      height: 52px;
+      line-height: 52px;
+      border-bottom: 1px solid #e0e0e0;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: -1px;
+      color: #000000;
+      box-sizing: border-box;
+    }
+    .content {
+        width: 100%;
+        min-height: auto;
+        padding: 30px 16px 16px;
+        box-sizing: border-box;
+        .reward {
+            display:flex;
+            align-items:center;
+            justify-content: center;
+            flex-direction: column;
+            margin-bottom: 30px;
+            .rewardTitle {                
+                font-size: 16px;
+                font-weight: 700;
+                color: #632BEB;
+                margin-bottom: 3px;
+            }
+            .rewardContent {                
+                font-size: 16px;
+                font-weight: 400;
+                color: #000000;
+                text-align: center;
+                margin-bottom: 6px;
+            }
+            .rewardWrap {
+                display:flex;
+                align-items:center;
+                justify-content: center;
+                .rewardItem {
+                    display:flex;
+                    align-items:center;
+                    margin: 0px 8px;
+                    .marble {
+                        display: inline-block;
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 8px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;
+                        &.red {
+                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-red.png);
+                        }
+                        &.yellow {
+                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-yellow.png);
+                        }
+                        &.blue {
+                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-blue.png);
+                        }
+                        &.purple {
+                          background-image: url(https://image.dalbitlive.com/event/gganbu/marble-purple.png);
+                        }
+                    }
+                    .pocket {
+                        display: inline-block;
+                        width: 16px;
+                        height: 16px;
+                        margin-right: 8px;
+                        background-position: center;
+                        background-repeat: no-repeat;
+                        background-size: contain;                        
+                        background-image: url(https://image.dalbitlive.com/event/gganbu/pocketIcon.png);
+                    }
+                    .itemCtn {       
+                        font-size: 14px;
+                        font-weight: 500;
+                        color: #333;
+                    }
+                }
+            }
+        }
+    }
+    .btnWrap {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-top: 0px;
+        .btn {
+            width: 100%;
+            height: 44px;
+            font-size: 18px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            text-align: center;
+            background-color: #632beb;
+        }
+    }
+  }
 
   .content-wrap {
     width: calc(100% - 32px);

@@ -57,7 +57,7 @@ export default function bestdj() {
           className="img__full"
           />
           <div className="listWrap">
-            {globalCtx.bestDjData.slice(0).reverse().map((item, index) => {
+            {globalCtx.bestDjData.map((item, index) => {
                 return (
                   <div className="list" key={index}>
                     <img

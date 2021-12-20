@@ -961,7 +961,6 @@
     bottom: 20px;
     z-index: 13;
     width: 48px;
-    height: 48px;
 
     &.usePlayer {
       bottom: 70px;
@@ -971,6 +970,7 @@
       width: 48px;
       height: 48px;
       cursor: pointer;
+      margin: 5px 0 0;
 
       &.basic {
         background: url('https://image.dalbitlive.com/event/attend/200811/icon_button@2x.png') center no-repeat;
@@ -1015,6 +1015,23 @@
       }
     }
   }  
+}
+// 이벤트 플로팅 버튼
+.eventFloat{
+  position: relative;
+  right: 0;
+  bottom: 0;
+  z-index:13;
+  width:48px;
+  height:48px;
+  cursor: pointer;
+    &.low{
+      bottom:20px;
+    }
+    &.draw {
+      background: url('https://image.dalbitlive.com/event/draw/floatingButton.png') center no-repeat;
+      background-size: 100%;
+    }
 }
 
 // 실시간 라이브

@@ -11,6 +11,7 @@
 import React, { useContext, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
+import moment from 'moment'
 
 //context
 import { Context } from 'context'
@@ -34,7 +35,7 @@ const icoMinus = 'https://image.dalbitlive.com/svg/ico_minus.svg'
 
 //방송방 내 결제에서는 헤더 보이지 않기, 취소 처리 등 다름
 
-export default () => {
+export default (props) => {
   const history = useHistory()
 
   //context
@@ -159,6 +160,8 @@ export default () => {
     // console.log(name, totalPrice * totalQuantity, itemNo, pageCode, code, totalQuantity)
 
     if (result === 'success') {
+      sessionStorage.setItem('buy_item_data', totalPrice * totalQuantity);
+
       if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
         return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
       } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
@@ -386,7 +389,7 @@ export default () => {
 
   useEffect(() => {
     if (selectedPay.code === "simple") {
-      simplePayCheck()
+      simplePayCheck();
     } else {
       if (selectedPay.type) payFetch()
     }
@@ -395,7 +398,6 @@ export default () => {
   useEffect(() => {
     fetchMainPopupData(12)
   }, [])
-
 
   return (
     <>
@@ -465,6 +467,7 @@ export default () => {
           <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
           <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
           <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+          <p>깐부 게임에 참여중인 회원은 1만원 이상 달 구매 시 받은 구슬을 사용했을 경우 달 환불이 불가합니다.</p>
         </div>
 
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
