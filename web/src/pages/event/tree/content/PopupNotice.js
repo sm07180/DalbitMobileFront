@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react'
-import Swiper from 'react-id-swiper'
+import React, {useEffect} from 'react';
+import Swiper from 'react-id-swiper';
+import {IMG_SERVER} from 'context/config';
+import './popup.scss';
 
-import {IMG_SERVER} from 'context/config'
-
-import './popup.scss'
-
-export default (props) => {
-  const {setPopupNotice} = props
+const PopupNotice = (props) => {
+  const {onClose} = props
 
   const swiperParams = {
     pagination: {
@@ -22,13 +20,10 @@ export default (props) => {
     }
   }, [])
 
-  const closePopup = () => {
-    setPopupNotice()
-  }
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popup') {
-      closePopup()
+      onClose()
     }
   }
 
@@ -43,10 +38,12 @@ export default (props) => {
             <img src={`${IMG_SERVER}/event/tree/slideImg-2.png`} />
           </div>
         </Swiper>
-        <button className="closeBtn" onClick={closePopup}>
+        <button className="closeBtn" onClick={onClose}>
           닫기
         </button>
       </div>
     </div>
   )
-}
+};
+
+export default PopupNotice;

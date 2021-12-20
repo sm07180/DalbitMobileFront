@@ -1,11 +1,9 @@
-import React, {useEffect} from 'react'
+import React, {useEffect} from 'react';
+import {IMG_SERVER} from 'context/config';
+import './popup.scss';
 
-import {IMG_SERVER} from 'context/config'
-
-import './popup.scss'
-
-export default (props) => {
-  const {setPopupNotice} = props
+const PopUpResult = (props) => {
+  const {onClose} = props
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -15,13 +13,10 @@ export default (props) => {
     }
   }, [])
 
-  const closePopup = () => {
-    setPopupNotice()
-  }
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popup') {
-      closePopup()
+      onClose()
     }
   }
 
@@ -37,7 +32,7 @@ export default (props) => {
             선물 받았습니다!
             <span>따뜻한 겨울 보내세요!</span>
           </div>
-          <button className="closeBtn2" onClick={closePopup}>
+          <button className="closeBtn2" onClick={onClose}>
             닫기
           </button>
         </div>
@@ -45,3 +40,5 @@ export default (props) => {
     </div>
   )
 }
+
+export default PopUpResult;

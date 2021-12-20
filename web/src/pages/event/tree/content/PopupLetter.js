@@ -1,68 +1,93 @@
-import React, {useEffect} from 'react'
-import Swiper from 'react-id-swiper'
+import React, {useContext, useEffect, useState} from 'react';
+import Swiper from 'react-id-swiper';
+import {IMG_SERVER, PHOTO_SERVER} from 'context/config';
+import './popup.scss';
+import Api from "context/api";
+import {Context} from "context";
 
-import {IMG_SERVER} from 'context/config'
+const PopupLetter = (props) => {
+  const { onClose, seqNo } = props;
 
-import './popup.scss'
-
-export default (props) => {
-  const {setPopupNotice} = props
+  const context = useContext(Context);
+  const [pageInfo, setPageInfo] = useState({ pageNo: 1, pagePerCnt: 5 });
+  const [listInfo, setListInfo] = useState({ cnt: 0, list: []});
 
   const swiperParams = {
     pagination: {
       el: '.swiper-letter'
     }
-  }
+  };
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden'
+  // 사연 장식 리스트 가져오기
+  const getStoryListInfo = () => {
+    Api.getLikeTreeDecoList({ seqNo, ...pageInfo }).then(res => {
+      if (res.code === '00000') {
+        const { cnt, list } = res.data;
+        if (cnt < 0) {
+          context.action.alert({msg: '사연이 존재하지 않습니다'});
+          onClose();
+        } else {
+          setListInfo({cnt, list});
+        }
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  };
 
-    return () => {
-      document.body.style.overflow = ''
-    }
-  }, [])
-
-  const closePopup = () => {
-    setPopupNotice()
-  }
   const wrapClick = (e) => {
     const target = e.target
     if (target.id === 'popup') {
-      closePopup()
+      onClose();
+    };
+  };
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = ''
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    getStoryListInfo();
+  }, [pageInfo]);
 
   return (
     <div id="popup" onClick={wrapClick}>
       <div className="wrapper letter">
-        <div className="head">
-          <div className="photo">
-            <img src="" alt="" />
-          </div>
-          <div className="userId">ㅁㄴㅇㄻㄴㅇㄹ님의 편지</div>
-        </div>
         <Swiper {...swiperParams}>
-          <div className="letterList">
-            <div className="letter">
-              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
-              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
-              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
-              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
-              <div className="date">2021. 12. 25</div>
-            </div>
-          </div>
-          <div className="letterList">
-            <div className="letter">
-              헤헤 2022년 짱짱짱 너무 재밌었고 완전히히 대박이였지 진짜루 하하대박이였지 진짜루 하하 대박 이였지 진짜루 하하
-              대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하 대박이였지 진짜루 하하
-              <div className="date">2021. 12. 25</div>
-            </div>
-          </div>
+          {listInfo.list.map((row, index) => {
+            return (
+              <div className="letterList">
+                <div className="head">
+                  <div className="photo">
+                    {row.imageProfile !== '' ? (
+                      <img style={{width: '100%'}} src={`${PHOTO_SERVER}${row.imageProfile}?120x120`} alt={row.memNick} />
+                    ) : (
+                      <img style={{width: '100%'}} src={`${PHOTO_SERVER}/profile_3/profile_m_200327.jpg`} alt={row.memNick} />
+                    )}
+                  </div>
+                  <div className="userId">{`${row.memNick}의 편지`}</div>
+                </div>
+                <div className="letter">
+                  {row.storyConts}
+                  <div className="date">{row.insDate}</div>
+                </div>
+              </div>
+            )
+          })}
         </Swiper>
-        <button className="closeBtn2" onClick={closePopup}>
+        <button className="closeBtn2" onClick={onClose}>
           닫기
         </button>
       </div>
     </div>
   )
 }
+
+PopupLetter.defaultProps = {
+  seqNo: 1
+};
+
+export default PopupLetter;

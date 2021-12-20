@@ -15,10 +15,10 @@ import {Context} from 'context'
 const Tree = (props) => {
   const constext = useContext(Context);
   const history = useHistory();
-  const [makePopInfo, setMakePopInfo] = useState({open: false}); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
+  const [makePopInfo, setMakePopInfo] = useState(false); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
   const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
-  const [mainListInfo, setMainListInfo] = useState({totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
+  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
   const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [] }); // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
   const [storyInputInfo, setStoryInputInfo] = useState({ cont: '' }); // 사연 입력 정보
@@ -93,6 +93,40 @@ const Tree = (props) => {
     console.log(value);
   }
 
+  // 트리 만드는 법 팝업 열기 이벤트
+  const makePopOpen = () => {
+    setMakePopInfo(true);
+  };
+
+  // 트리 만드는 법 팝업 닫기 이벤트
+  const makePopClose = () => {
+    setMakePopInfo(false);
+  };
+
+  // 선물 받기
+  const presentPopOpen = () => {
+    setPresentPopInfo({...presentPopInfo, open: true} );
+  };
+
+  // 선물 받기 팝업 닫기 이벤트
+  const presentPopClose = () => {
+    setPresentPopInfo({...presentPopInfo, open: false} );
+  };
+
+  // 사연 보기 팝업 열기 이벤트
+  const letterPopOpen = (e) => {
+    const { targetNum } = e.target.dataset;
+
+    if (targetNum !== undefined) {
+      setLetterPopInfo({ ...letterPopInfo, open: true, seqNo: targetNum } );
+    }
+  };
+
+  // 사연 보기 팝업 닫기 이벤트
+  const letterPopClose = () => {
+    setLetterPopInfo({ ...letterPopInfo, open: false } );
+  };
+
   useEffect(() => {
     getStoryListInfo();
   }, [storyPageInfo]);
@@ -105,29 +139,21 @@ const Tree = (props) => {
     <>
       <section className="term">
         <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} className="bgImg" />
-        <button>
+        <button onClick={makePopOpen}>
           <img src={`${IMG_SERVER}/event/tree/treeBtn-1.png`} />
         </button>
       </section>
       <section className="treeContents">
         <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
+
         <div className="treeBottom">
-          {/* <img
-            src={`${IMG_SERVER}/event/tree/treeTextStart.png`}
-            className="treeText"
-            alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"
-          /> */}
-          {/* <img
-            src={`${IMG_SERVER}/event/tree/treeTextEnd.png`}
-            className="treeText"
-            alt="이벤트 기간 종료 후 트리에서 선물을 받아가세요!"
-          /> */}
-          {/* <button>
-            <img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기" />
-          </button> */}
-          <button>
-            <img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기" />
-          </button>
+          {
+            {
+              1: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!" onClick={letterPopOpen}/>,
+              2: <button  onClick={presentPopOpen}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
+              3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(완료)" /></button>
+            }[mainListInfo.step]
+          }
         </div>
         <div className="treeEventBox">
           <div className="countBox">
@@ -137,7 +163,7 @@ const Tree = (props) => {
           <div className="gaugeBox">
             <div className="gaugeBar" style={{width: `${mainListInfo.mainPercent}%`}}>
               <div className="gaugePointer">
-                <span></span>
+                <span/>
               </div>
             </div>
           </div>
@@ -150,11 +176,11 @@ const Tree = (props) => {
         <EventComment commentList={storyListInfo.list} totalCommentCnt={storyListInfo.cnt} commentAdd={putStoryCont} commentUpd={updStoryCont} commentDel={delStoryCont}
                       commentTxt={storyInputInfo.cont} />
       </section>
-      {/* <PopupNotice /> */}
-      {/* <PopupResult /> */}
-      <PopupLetter />
+      {makePopInfo &&  <PopupNotice onClose={makePopClose}/>}
+      {presentPopInfo.open && <PopupResult onClose={presentPopClose}/>}
+      {letterPopInfo.open && <PopupLetter onClose={letterPopClose}/>}
     </>
   )
-}
+};
 
 export default Tree;
