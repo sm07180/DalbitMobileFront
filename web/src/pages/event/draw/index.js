@@ -8,6 +8,7 @@ import './draw.scss'
 import DrawBoard from './contents/drawBoard'
 import PopupWinning from './contents/popupWinning'
 import PopupPresent from './contents/popupPresent'
+import moment from 'moment';
 
 export default () => {
   const history = useHistory();
@@ -99,6 +100,11 @@ export default () => {
   // 티켓 선택 이벤트
   const selectDraw = (e) => {
     const targetPosNo = e.currentTarget.dataset.posNo;
+
+    if (!moment().isBefore('2021-12-17')) {
+      context.action.toast({msg: '이벤트 기간이 만료 되었습니다.'});
+      return;
+    }
 
     // 응모권 개수 체크
     if (ticketCnt == 0) {
@@ -202,7 +208,7 @@ export default () => {
       </div>
       <div className="content">
         <div className="topImgWrap">
-          <img src={`${IMG_SERVER}/event/draw/topImg.png`} className="topImg" alt="달빛표 추억의 뽑기판 달 구매 1만원당 응모권 1장 자동 지급!"/>
+          <img src={`${IMG_SERVER}/event/draw/topImg-2.png`} className="topImg" alt="달빛표 추억의 뽑기판 달 구매 1만원당 응모권 1장 자동 지급!"/>
           <div className={`ticketWrap ${ticketFixed === true ? 'fixed' : ''}`} ref={ticketWrapRef}>
             <button className="ticketBtn" onClick={chargeDal}>{ticketCnt}</button>
           </div>

@@ -14,7 +14,7 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 import Route from './Route'
 import Interface from './Interface'
-import NoService from './pages/no_service/index';
+import NoService from './pages/no_service/index'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
@@ -24,10 +24,10 @@ const App = () => {
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
-  const authRef = useRef();
+  const authRef = useRef()
 
   const [ready, setReady] = useState(false)
-  const AGE_LIMIT = globalCtx.noServiceInfo.limitAge;
+  const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
 
   const isJsonString = (str) => {
     try {
@@ -198,7 +198,7 @@ const App = () => {
             }
           })
           if (myProfile.result === 'success') {
-            const data = myProfile.data;
+            const data = myProfile.data
             globalCtx.action.updateProfile(data)
             globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
           } else {
@@ -288,54 +288,57 @@ const App = () => {
   }
 
   const ageCheck = () => {
-    const pathname = location.pathname;
-    const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth);
+    const pathname = location.pathname
+    const americanAge = Utility.birthToAmericanAge(globalCtx.profile.birth)
     const ageCheckFunc = () => {
-      if (americanAge < AGE_LIMIT && // 나이 14세 미만
-        (!pathname.includes("/customer/personal") && !pathname.includes("/customer/qnaList"))) { // 1:1문의, 문의내역은 보임
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: "y"});
-      }else {
-        let passed = false;
-        if(americanAge >= globalCtx.noServiceInfo.limitAge) passed = true;
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: "n", passed});
+      if (
+        americanAge < AGE_LIMIT && // 나이 14세 미만
+        !pathname.includes('/customer/personal') &&
+        !pathname.includes('/customer/qnaList')
+      ) {
+        // 1:1문의, 문의내역은 보임
+        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'y'})
+      } else {
+        let passed = false
+        if (americanAge >= globalCtx.noServiceInfo.limitAge) passed = true
+        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge, showPageYn: 'n', passed})
       }
-    };
+    }
 
-    if(globalCtx.profile.memJoinYn === 'o') {
+    if (globalCtx.profile.memJoinYn === 'o') {
       const auth = async () => {
-        const authCheck = await Api.self_auth_check();
-        if(authCheck.result === 'fail') {
-          globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: 'n', americanAge, passed: true});
-        }else {
-          ageCheckFunc();
+        const authCheck = await Api.self_auth_check()
+        if (authCheck.result === 'fail') {
+          globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, showPageYn: 'n', americanAge, passed: true})
+        } else {
+          ageCheckFunc()
         }
       }
-      auth();
-    }else {
-      ageCheckFunc();
+      auth()
+    } else {
+      ageCheckFunc()
     }
-  };
+  }
 
   const updateAppInfo = async () => {
-    const headerInfo = JSON.parse(Utility.getCookie("custom-header"));
-    const os = headerInfo.os;
-    const version = headerInfo.appVer;
-    let showBirthForm = true;
+    const headerInfo = JSON.parse(Utility.getCookie('custom-header'))
+    const os = headerInfo.os
+    const version = headerInfo.appVer
+    let showBirthForm = true
 
     // IOS 심사 제출시 생년월일 폼이 보이면 안된다
-    if(os === 2) {
-      const appReviewYn = 'y';
-      if(appReviewYn === 'y') {
-        const tempIosVersion = "1.6.3" // 이 버전 이상은 birthForm 을 감출려고 한다
-        const successCallback = () => showBirthForm = false;
+    if (os === 2) {
+      const appReviewYn = 'y'
+      if (appReviewYn === 'y') {
+        const tempIosVersion = '1.6.3' // 이 버전 이상은 birthForm 을 감출려고 한다
+        const successCallback = () => (showBirthForm = false)
 
-        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {});
+        await Utility.compareAppVersion(tempIosVersion, successCallback, () => {})
       }
     }
 
-    globalCtx.action.updateAppInfo({ os, version, showBirthForm });
+    globalCtx.action.updateAppInfo({os, version, showBirthForm})
   }
-
 
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
@@ -358,20 +361,20 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    if(globalCtx.token) {
-      if(globalCtx.token.isLogin) {
-        if(globalCtx.noServiceInfo.passed) return;
-        ageCheck();
-      }else if(!globalCtx.token.isLogin) {
-        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false});
+    if (globalCtx.token) {
+      if (globalCtx.token.isLogin) {
+        if (globalCtx.noServiceInfo.passed) return
+        ageCheck()
+      } else if (!globalCtx.token.isLogin) {
+        globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false})
       }
     }
-  }, [globalCtx.profile, location.pathname]);
+  }, [globalCtx.profile, location.pathname])
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
     if (ready && cookieAuthToken !== Api.authToken) {
-      //window.location.reload()
+      window.location.reload()
     }
   }, [cookieAuthToken])
 
@@ -380,7 +383,7 @@ const App = () => {
       setCookieAuthToken(Utility.getCookie('authToken'))
     }, 1000)
 
-    globalCtx.action.updateAuthRef(authRef); // 본인인증 ref
+    globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     // updateAppInfo();
   }, [])
 
@@ -431,26 +434,27 @@ const App = () => {
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
-      {globalCtx.noServiceInfo.showPageYn === 'n' ?
+      {globalCtx.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
-            <>
-              <Interface />
-              <Route />
-            </>
-          ) : (
-            <>
-              <div className="loading">
-                <span></span>
-              </div>
-            </>
-          )
-        : globalCtx.noServiceInfo.showPageYn  === 'y' ?
           <>
-            <NoService />
             <Interface />
+            <Route />
           </>
-          : <></>
-      }
+        ) : (
+          <>
+            <div className="loading">
+              <span></span>
+            </div>
+          </>
+        )
+      ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
+        <>
+          <NoService />
+          <Interface />
+        </>
+      ) : (
+        <></>
+      )}
       <form ref={authRef} name="authForm" method="post" id="authForm" target="KMCISWindow" />
     </ErrorBoundary>
   )

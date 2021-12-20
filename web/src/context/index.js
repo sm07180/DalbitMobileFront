@@ -48,7 +48,7 @@ const GlobalProvider = (props) => {
   const [logoChange, setLogoChange] = useState(false)
   const [player, setPlayer] = useState(false) //Player상태
   const [mypageReport, setMypageReport] = useState(false)
-  const [userReport, setUserReport] = useState({state: false, targetMemNo: "", targetNickName: ""})
+  const [userReport, setUserReport] = useState({state: false, targetMemNo: '', targetNickName: ''})
   const [mypageFanCnt, setMypageFanCnt] = useState('')
   const [close, setClose] = useState(false)
   const [closeFanCnt, setCloseFanCnt] = useState(false)
@@ -62,6 +62,17 @@ const GlobalProvider = (props) => {
   const [noticeIndexNum, setNoticeIndexNum] = useState('')
   const [bannerCheck, setBannerCheck] = useState(false)
   //
+  const [exitMarbleInfo, setExitMarbleInfo] = useState({
+    rMarbleCnt: 0,
+    yMarbleCnt: 0,
+    bMarbleCnt: 0,
+    vMarbleCnt: 0,
+    isBjYn: '',
+    marbleCnt: 0,
+    pocketCnt: 0,
+    showState: false
+  })
+  const [globalGganbuState, setGlobalGganbuState] = useState(-1)
   const [news, setNews] = useState(false)
   const [sticker, setSticker] = useState(false)
   const [stickerMsg, setStickerMsg] = useState({})
@@ -124,24 +135,27 @@ const GlobalProvider = (props) => {
   const [multiViewer, setMultiviewer] = useState({show: false}) // {show:bool, list?:array, initSlide?:number}
 
   // bestDJ 데이터
-  const [bestDjData, setBestDjData] = useState([]);
+  const [bestDjData, setBestDjData] = useState([])
+
+  // 깐부 데이터
+  const [gganbuTab, setGganbuTab] = useState('collect')
 
   // 본인인증 ref
-  const [authRef, setAuthRef] = useState(null);
+  const [authRef, setAuthRef] = useState(null)
   // 14세 미만 페이지
   const [noServiceInfo, setNoServiceInfo] = useState({
-    showPageYn: "",
+    showPageYn: '',
     americanAge: 0,
     limitAge: 14,
-    passed: false,
-  });
+    passed: false
+  })
 
   // 앱 버전 체크 (회원가입 생년월일)
   const [appInfo, setAppInfo] = useState({
-    os: "",
-    version: "",
-    showBirthForm: true,
-  });
+    os: '',
+    version: '',
+    showBirthForm: true
+  })
 
   const action = {
     updateState: (obj) => {
@@ -519,17 +533,26 @@ const GlobalProvider = (props) => {
       setMultiviewer(obj)
     },
     updateBestDjState: (obj) => {
-      setBestDjData(obj);
+      setBestDjData(obj)
     },
     updateAuthRef: (obj) => {
-      setAuthRef(obj);
+      setAuthRef(obj)
     },
     updateNoServiceInfo: (obj) => {
-      setNoServiceInfo(obj);
+      setNoServiceInfo(obj)
     },
     updateAppInfo: (obj) => {
-      setAppInfo(obj);
+      setAppInfo(obj)
     },
+    updateExitMarbleInfo: (num) => {
+      setExitMarbleInfo(num)
+    },
+    updateGlobalGganbuState: (num) => {
+      setGlobalGganbuState(num)
+    },
+    updateGganbuTab: (value) => {
+      setGganbuTab(value)
+    }
   }
   //---------------------------------------------------------------------
   const value = {
@@ -615,6 +638,9 @@ const GlobalProvider = (props) => {
     authRef,
     noServiceInfo,
     appInfo,
+    exitMarbleInfo,
+    globalGganbuState,
+    gganbuTab
   }
   return <Provider value={value}>{props.children}</Provider>
 }
