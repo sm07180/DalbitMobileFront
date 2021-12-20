@@ -96,7 +96,7 @@ export default function AttendTab() {
     <div className="attendTab">
       <div className="topBanner">
         {/* <img src={`${IMG_SERVER}/event/attend/210610/event_img_01_1@2x.png`} alt=" 최대 25달 + 경험치 매일 출석 check" /> */}
-        <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 26달 + 경험치 매일 출석 check" />
+        <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 24달 + 경험치 매일 출석 check" />
 
         {statusList.check_gift === '1' ? (
           <button type="button" className="attend" onClick={() => attendDateIn()}>
