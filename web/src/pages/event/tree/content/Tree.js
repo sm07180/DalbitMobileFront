@@ -152,7 +152,7 @@ const Tree = (props) => {
       </section>
       {/* <PopupNotice /> */}
       {/* <PopupResult /> */}
-      {/* <PopupLetter /> */}
+      <PopupLetter />
     </>
   )
 }
