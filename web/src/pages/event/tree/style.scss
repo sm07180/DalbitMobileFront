@@ -178,14 +178,26 @@
         position: absolute;
         bottom: 0;
         left: 50%;
-        z-index: 1;
+        z-index: 0;
         transform: translateX(-50%);
-        border-radius: 0 0 15px 15px;
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         content: '';
         width: calc(100% - 2.78%);
         height: 21%;
+        border-radius: 0 0 15px 15px;
+        text-align: center;
         background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+        .treeText {
+          height: 72.5%;
+        }
+        button {
+          height: 73.48%;
+          img {
+            height: 100%;
+          }
+        }
       }
     }
     &.commentContainer {
@@ -202,7 +214,7 @@
       min-height: 300px;
       padding: 15px;
       border-radius: 15px 15px 0 0;
-      background-color: #5a5a5a;
+      background-color: #439867;
       .detailView {
         display: flex;
         align-items: center;

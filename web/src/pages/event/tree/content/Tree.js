@@ -6,6 +6,9 @@ import {IMG_SERVER} from 'context/config'
 
 // Component
 import EventComment from '../../components/comment'
+import PopupNotice from './PopupNotice'
+import PopupResult from './PopupResult'
+import PopupLetter from './PopupLetter'
 import {Context} from 'context'
 
 // 좋아요 트리만들기 Content Component
@@ -67,7 +70,22 @@ const Tree = (props) => {
       <section className="treeContents">
         <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
         <div className="treeBottom">
-          <img src={`${IMG_SERVER}/event/tree/`} alt="" />
+          {/* <img
+            src={`${IMG_SERVER}/event/tree/treeTextStart.png`}
+            className="treeText"
+            alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"
+          /> */}
+          {/* <img
+            src={`${IMG_SERVER}/event/tree/treeTextEnd.png`}
+            className="treeText"
+            alt="이벤트 기간 종료 후 트리에서 선물을 받아가세요!"
+          /> */}
+          {/* <button>
+            <img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기" />
+          </button> */}
+          <button>
+            <img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기" />
+          </button>
         </div>
         <div className="treeEventBox">
           <div className="countBox">
@@ -89,6 +107,9 @@ const Tree = (props) => {
       <section className="commentContainer">
         <EventComment />
       </section>
+      {/* <PopupNotice /> */}
+      {/* <PopupResult /> */}
+      {/* <PopupLetter /> */}
     </>
   )
 }

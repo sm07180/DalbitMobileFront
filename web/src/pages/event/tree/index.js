@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import styled, {css} from 'styled-components'
 import Api from 'context/api'
 import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
