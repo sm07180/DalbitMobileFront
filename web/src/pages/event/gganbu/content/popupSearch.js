@@ -20,6 +20,7 @@ export default (props) => {
   const [memberList, setMemberList] = useState([])
   const [memberNumber, setMemberNumber] = useState()
   const [memberNick, setMemberNick] = useState()
+  const [ptrNick, setPtrNick] = useState()
   const [searchState, setSearchState] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [alertAccept, setAlertAccept] = useState(false)
@@ -73,8 +74,10 @@ export default (props) => {
     }
   }
   const onChange = (e) => {
-    let {target: {value}} = e;
-    value = value.replaceAll('\'', '').replaceAll('"', '');
+    let {
+      target: {value}
+    } = e
+    value = value.replaceAll("'", '').replaceAll('"', '')
     setResult(value)
   }
   const handleSubmit = (e) => {
@@ -155,11 +158,12 @@ export default (props) => {
     fetchFanList()
   }, [])
 
-  const acceptBtn = (memNo, type, memNick) => {
+  const acceptBtn = (memNo, type, memNick, nickName) => {
     setAlertAccept(true)
     setAcceptType(type)
     setMemberNumber(memNo)
     setMemberNick(memNick)
+    setPtrNick(nickName)
   }
 
   return (
@@ -220,7 +224,9 @@ export default (props) => {
                             )}
                           </>
                         ) : (
-                          <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
+                          <button
+                            className="accept"
+                            onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm, nickName)}>
                             수락
                           </button>
                         )}
@@ -260,7 +266,9 @@ export default (props) => {
                       {rcvYn === 'n' ? (
                         <>
                           {sendYn === 'n' ? (
-                            <button className="submit" onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm)}>
+                            <button
+                              className="submit"
+                              onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm, nickName)}>
                               신청
                             </button>
                           ) : (
@@ -294,6 +302,7 @@ export default (props) => {
           gganbuNumber={gganbuNumber}
           memberNumber={memberNumber}
           memberNick={memberNick}
+          ptrNick={ptrNick}
           acceptType={acceptType}
           closeAlert={closeAlert}
           closePopup={closePopup}
