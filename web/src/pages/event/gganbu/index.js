@@ -144,15 +144,10 @@ export default () => {
 
   const loginCheck = () => {
     if (!globalCtx.token.isLogin) {
-      globalCtx.action.alert({
-        msg: `해당 서비스를 위해<br/>로그인을 해주세요.`,
-        callback: () => {
-          history.push({
-            pathname: '/login',
-            state: {
-              state: '/'
-            }
-          })
+      history.push({
+        pathname: '/login',
+        state: {
+          state: '/'
         }
       })
     }

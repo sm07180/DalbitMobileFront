@@ -95,7 +95,8 @@ export default () => {
       6: '일요일'
     }
 
-    const text = ['EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP15+1달', 'EXP15+2달', 'EXP15+2달']
+    // const text = ['EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP15+1달', 'EXP15+2달', 'EXP15+2달']
+    const text = ['EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP15+2달', 'EXP15+2달', 'EXP15+2달']
 
     return (
       <>

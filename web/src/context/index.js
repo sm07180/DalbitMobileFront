@@ -156,6 +156,8 @@ const GlobalProvider = (props) => {
     version: '',
     showBirthForm: true
   })
+  //서버이동시 토큰갱신 setInterval 제거용
+  const [intervalId, setIntervalId] = useState(null);
 
   const action = {
     updateState: (obj) => {
@@ -552,6 +554,13 @@ const GlobalProvider = (props) => {
     },
     updateGganbuTab: (value) => {
       setGganbuTab(value)
+    },
+    /**
+     * 내부 서버 이동시 setInterval 작동을 막기위해 clearInterval 호출에 사용함
+     * @param: value : setIntervalId (number)
+     */
+    updateTokenRefreshSetIntervalId: (value) => {
+      setIntervalId(value);
     }
   }
   //---------------------------------------------------------------------
@@ -640,7 +649,8 @@ const GlobalProvider = (props) => {
     appInfo,
     exitMarbleInfo,
     globalGganbuState,
-    gganbuTab
+    gganbuTab,
+    intervalId
   }
   return <Provider value={value}>{props.children}</Provider>
 }

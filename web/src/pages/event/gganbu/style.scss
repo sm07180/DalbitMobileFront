@@ -557,12 +557,18 @@
               margin-left: 6px;
               padding-right: 2px;
               font-size: 14px;
-              font-weight: 700;
+              font-weight: 500;
               color: #242424;
               letter-spacing: -1px;
               text-overflow: ellipsis;
               white-space: nowrap;
               overflow: hidden;
+              
+              img {
+                flex: none;
+                width: auto;
+                height: 20px;
+              }
             }
             .userId {
               flex: none;

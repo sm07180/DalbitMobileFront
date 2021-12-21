@@ -64,7 +64,7 @@ export default (props) => {
           window.location.href = '/'
         }
       })
-    }else if(url === '10') {
+    } else if(url === '10') {
       setAuthState(10)
     } else if (returntype === 'profile') {
       setAuthState(4)
@@ -78,6 +78,8 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
+    } else if(returntype === '') {
+      setAuthState(10)
     } else {
       checkAuth()
     }
@@ -249,7 +251,7 @@ export default (props) => {
             </h5>
             <div className="btn-wrap">
               <button
-                onClick={() => history.replace('/event/tree')}
+                onClick={() => history.push('/event/tree')}
               >확인
               </button>
             </div>
