@@ -13,7 +13,7 @@ function WeeklyPick({empty}) {
   return (
     <div className="specialPage">
       <div className="notice">
-        달빛라이브 달과장을 심쿵하게 한<br />
+        달빛라이브 달대리을 심쿵하게 한<br />
         이주의 달빛 DJ는 누구일까요?
       </div>
       {empty === true ? (
