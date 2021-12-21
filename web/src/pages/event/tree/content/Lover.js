@@ -67,7 +67,7 @@ const Lover = (props) => {
             <div className="titleWrap">실시간</div>
             <span>(PM 18:52 기준)</span>
           </div>
-          <button className="next false">
+          <button className="next">
             다음
             <img src={`${IMG_SERVER}/event/tree/arrow.png`} />
           </button>
