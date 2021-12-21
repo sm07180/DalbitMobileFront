@@ -3630,6 +3630,15 @@ export default class API {
       params: data,
     })
   }
+
+  // 좋아요 선물 받기
+  static likeTreeRewardIns = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/reward/ins',
+      method: 'POST',
+      params: data,
+    })
+  }
 }
 
 API.customHeader = null

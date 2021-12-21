@@ -10,6 +10,7 @@ import PopupNotice from './PopupNotice'
 import PopupResult from './PopupResult'
 import PopupLetter from './PopupLetter'
 import {Context} from 'context'
+import {authReq} from "pages/self_auth";
 
 // 좋아요 트리만들기 Content Component
 const Tree = (props) => {
@@ -105,7 +106,36 @@ const Tree = (props) => {
     setMakePopInfo(false);
   };
 
+  // 선물 받기 클릭
+  const rcvPresentClick = async () => {
+    const res = await Api.self_auth_check({})
+    if(res.result === 'success') { // 인증 됨
+      context.action.confirm({
+        callback: () => rcvPresent(res.data.phoneNo) // 선물 받기
+        , cancelCallback: () => {}
+        , msg: '여러개의 계정을 소유하고 있더라도\n본인의 계정 중 1개의 계정으로만 완료보상을 수령할 수 있습니다.\n현재 계정으로 완료 보상을 수령하시겠습니까?'
+      })
+    }else { // 인증 안됨
+      context.action.confirm({
+        callback: () => authReq('9', context.authRef, context) // 본인 인증 하기
+        , cancelCallback: () => {}
+        , msg: '트리 완성 보상을 받기 위해서는\n본인인증이 필요합니다.'
+      })
+    }
+  }
+
   // 선물 받기
+  const rcvPresent = (memPhone) => {
+    Api.likeTreeRewardIns({ memPhone }).then(rewardRes => {
+      if(rewardRes.code === '00000') {
+        presentPopOpen(); // 결과 팝업
+      }else {
+        context.action.alert({ msg: rewardRes.message });
+      }
+    });
+  };
+
+  // 선물 받기 성공
   const presentPopOpen = () => {
     setPresentPopInfo({...presentPopInfo, open: true} );
   };
@@ -176,7 +206,7 @@ const Tree = (props) => {
           {
             {
               2: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
-              1: <button  onClick={presentPopOpen}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
+              1: <button  onClick={rcvPresentClick}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
               3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(완료)" /></button>
             }[mainListInfo.step]
           }
