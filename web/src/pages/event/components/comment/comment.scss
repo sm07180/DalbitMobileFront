@@ -16,12 +16,15 @@
       width: 100%;
       padding: 5px 10px;
       box-sizing: border-box;
-
       .photo {
         width: 32px;
         height: 32px;
         border-radius: 50%;
         border: 1px solid;
+        overflow: hidden;
+        & img {
+          width: 100%;
+        }
       }
       .userNick {
         margin-left: 8px;

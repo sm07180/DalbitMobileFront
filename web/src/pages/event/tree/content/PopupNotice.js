@@ -18,17 +18,10 @@ const PopupNotice = (props) => {
     return () => {
       document.body.style.overflow = ''
     }
-  }, [])
-
-  const wrapClick = (e) => {
-    const target = e.target
-    if (target.id === 'popup') {
-      onClose()
-    }
-  }
+  }, []);
 
   return (
-    <div id="popup" onClick={wrapClick}>
+    <div id="popup">
       <div className="wrapper">
         <Swiper {...swiperParams}>
           <div>

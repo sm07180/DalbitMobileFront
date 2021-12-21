@@ -59,7 +59,7 @@ const PopupLetter = (props) => {
         <Swiper {...swiperParams}>
           {listInfo.list.map((row, index) => {
             return (
-              <div className="letterList">
+              <div className="letterList" key={index}>
                 <div className="head">
                   <div className="photo">
                     {row.imageProfile !== '' ? (

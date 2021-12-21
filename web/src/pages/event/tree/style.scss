@@ -180,7 +180,7 @@
         height: 12.345%;
         border-radius: 50%;
         box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.8);
-        &.first {
+        &.item1 {
           position: absolute;
           top: 22.013%;
           right: 33.335%;
@@ -189,7 +189,7 @@
             background: url('https://image.dalbitlive.com/event/tree/ribbon-1.png') center/cover no-repeat;
           }
         }
-        &.second {
+        &.item2 {
           position: absolute;
           top: 40%;
           left: 25%;
@@ -198,7 +198,7 @@
             background: url('https://image.dalbitlive.com/event/tree/ribbon-2.png') center/cover no-repeat;
           }
         }
-        &.third {
+        &.item3 {
           position: absolute;
           top: 50%;
           right: 20%;

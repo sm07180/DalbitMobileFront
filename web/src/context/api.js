@@ -3597,7 +3597,7 @@ export default class API {
 
   // 좋아요 트리 사연 등록
   static likeTreeStoryIns = async (data) => {
-    return await likeTreeStoryIns({
+    return await ajax({
       url: '/event/likeTree/registStory',
       method: 'POST',
       params: data,
