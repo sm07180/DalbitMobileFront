@@ -28,16 +28,6 @@ export default (props) => {
     }
   }
 
-  // 출석체크 이벤트 페이지
-  const goEventDrawPage = () => {
-    if (!context.token.isLogin) {
-      history.push('/login')
-      return;
-    }
-
-    history.push('/event/draw');
-  };
-
   useEffect(() => {
     fetchEventAttendCheck()
   }, [])
@@ -86,7 +76,6 @@ export default (props) => {
 
   return (
     <div className={`fixedButton ${context.player ? 'usePlayer' : ''}`}>
-      <div className={`eventFloat draw`} onClick={goEventDrawPage}/>
       {props.scrollOn && (urlrStr !== '/rank' && attendStampState())}
     </div>
   )
