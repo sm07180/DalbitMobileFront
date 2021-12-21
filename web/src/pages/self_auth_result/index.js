@@ -82,7 +82,7 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
-    } else if(returntype === '') {
+    } else if(returntype === 'event') {
       setAuthState(10)
     } else {
       checkAuth()
