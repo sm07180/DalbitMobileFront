@@ -55,6 +55,12 @@ export default (props) => {
   }
 
   useEffect(() => {
+    alert(JSON.stringify(qs.parse(location.search)));
+    alert(JSON.stringify(qs.parse(location.search.result)));
+    alert(JSON.stringify(qs.parse(location.search.code)));
+    alert(JSON.stringify(qs.parse(location.search.message)));
+    alert(JSON.stringify(qs.parse(location.search.returntype)));
+    alert(JSON.stringify(qs.parse(location.search.url)));
     if (result === 'fail' || code === 'C007' || code === 'C008') {
       return context.action.alert({
         msg: message,
@@ -76,6 +82,8 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
+    } else if(returntype === '') {
+      setAuthState(10)
     } else {
       checkAuth()
     }
