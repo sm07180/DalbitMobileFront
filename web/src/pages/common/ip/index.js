@@ -16,7 +16,6 @@ import Utility from "components/lib/utility";
 import {getDeviceOSTypeChk} from '../../../common/DeviceCommon';
 
 export default () => {
-  const globalCtx = useContext(Context);
   const history = useHistory();
   const customHeader = JSON.parse(Api.customHeader);
   const context = useContext(Context);
@@ -49,13 +48,17 @@ export default () => {
 
   //서버 이동 브릿지 호출 함수 : (로그아웃 후 서버 이동 시킴)
   const serverChangeAction = async (host, api, photo, socketURL) => {
-    const logoutInfo = await Api.member_logout();
-    if (logoutInfo.result === 'success') {
-      if (isHybrid()) {
+    if (context.token.isLogin) {
+      const logoutInfo = await Api.member_logout();
+      if (logoutInfo.result === 'success') {
         Hybrid('GetLogoutToken', logoutInfo.data);
+        clearInterval(context.intervalId);
+        context.action.updateToken(logoutInfo.data);
+        context.action.updateProfile(null);
+
+        Hybrid('setAppHost', {host, api, photo, socketURL});
       }
-      globalCtx.action.updateToken(logoutInfo.data);
-      globalCtx.action.updateProfile(null);
+    } else {
       Hybrid('setAppHost', {host, api, photo, socketURL});
     }
   };

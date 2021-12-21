@@ -95,6 +95,7 @@ const App = () => {
         }
       }
     }
+    //실섭 유저는 이곳을 탈 수 없음
     //앱 업데이트를 안하면 커스텀 userAgent를 받아올수 없다.
     //앱 업데이트 후 에이전트 받음
     //모바일 웹, PC 웹인 경우
@@ -379,11 +380,12 @@ const App = () => {
   }, [cookieAuthToken])
 
   useEffect(() => {
-    setInterval(() => {
+    const id = setInterval(() => {
       setCookieAuthToken(Utility.getCookie('authToken'))
     }, 1000)
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
+    globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
     // updateAppInfo();
   }, [])
 
