@@ -251,7 +251,7 @@ export default (props) => {
             </h5>
             <div className="btn-wrap">
               <button
-                onClick={() => history.replace('/event/tree')}
+                onClick={() => history.push('/event/tree')}
               >확인
               </button>
             </div>
