@@ -16,7 +16,7 @@ const TreePage = () => {
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
-  const [tabContent, setTabContent] = useState('tree') // tree , lover
+  const [tabContent, setTabContent] = useState('lover') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
 
   const goBack = useCallback(() => history.goBack(), [])

@@ -1,13 +1,9 @@
-import React, {useEffect, useState, useCallback, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import Utility, {isHitBottom, addComma} from 'components/lib/utility'
-import styled, {css} from 'styled-components'
-import Api from 'context/api'
-import {Context} from 'context'
-import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
-
-// component
-import NoResult from 'components/ui/new_noResult'
+import React, {useEffect, useState, useCallback, useContext} from 'react';
+import {useHistory} from 'react-router-dom';
+import Utility, {isHitBottom, addComma} from 'components/lib/utility';
+import Api from 'context/api';
+import {Context} from 'context';
+import {IMG_SERVER, PHOTO_SERVER} from 'context/config';
 
 // 사랑꾼 선발대회 Content Component
 const Lover = (props) => {
@@ -15,13 +11,13 @@ const Lover = (props) => {
   const history = useHistory()
   const [myRankInfo, setMyRankInfo] = useState() // 자신의 랭킹 정보
   const [rankListInfo, setRankListInfo] = useState({cnt: 0, list: []}) // 랭킹 리스트 정보
-  const [pageInfo, setPageInfo] = useState({seqNo: 1, pageNo: 1, pagePerCnt: 30})
+  const [pageInfo, setPageInfo] = useState({seqNo: 1, pageNo: 1, pagePerCnt: 2})
 
+  // 사랑꾼 랭킹 가져오기
   const getRankListInfo = () => {
     Api.getLikeTreeRankList(pageInfo)
       .then((res) => {
         if (res.code === '00000') {
-          console.log(res.data)
           setRankListInfo(res.data)
         } else {
           console.log(res.code)
@@ -30,6 +26,7 @@ const Lover = (props) => {
       .catch((e) => console.log(e))
   }
 
+  // 사랑꾼 랭킹 가져오기
   const getRankUserInfo = () => {
     Api.getLikeTreeRankUserInfo({memNo: context.profile.memNo, seqNo: pageInfo.seqNo})
       .then((res) => {
@@ -86,7 +83,7 @@ const Lover = (props) => {
               <span className="userNick">{context.profile.nickNm}</span>
             </div>
             <div className="listBack">
-              <img src="" />
+              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`} />
               {Utility.addComma(myRankInfo.totScoreCnt)}
             </div>
           </div>
@@ -106,7 +103,7 @@ const Lover = (props) => {
                   )}
                 </div>
                 <div className="listBox">
-                  <em className="icon_wrap icon_male">
+                  <em className={`icon_wrap ${row.memSex === 'm' ? 'icon_male' : 'icon_female'}`} >
                     <span className="blind">성별</span>
                   </em>
                   <span className="userNick">{row.memNick}</span>
