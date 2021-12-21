@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
+import {IMG_SERVER} from 'context/config'
 import Header from 'components/ui/new_header.js'
 
 import './style.scss'
@@ -42,10 +43,17 @@ export default () => {
   }, [tabContent])
 
   return (
-    <div id="gganbu">
+    <div id="welcome">
       <Header title="이벤트" />
-      <img src="" alt="" />
+      <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
       <section className="tabContainer"></section>
+      <section className="step">
+        <div className="containerBox">
+          <div className="title">
+            <img src={`${IMG_SERVER}/event/welcome/step-1.png`} alt="step 1" />
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
