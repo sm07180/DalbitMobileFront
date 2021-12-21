@@ -56,7 +56,6 @@ export default (props) => {
 
   useEffect(() => {
     alert(JSON.stringify(qs.parse(location.search)));
-    alert(returntype);
     if (result === 'fail' || code === 'C007' || code === 'C008') {
       return context.action.alert({
         msg: message,
@@ -66,6 +65,9 @@ export default (props) => {
           window.location.href = '/'
         }
       })
+    } else if(url === '10') {
+      alert('hi');
+      setAuthState(10)
     } else if (returntype === 'profile') {
       setAuthState(4)
     } else if (returntype === 'create') {
@@ -78,9 +80,6 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
-    } else if(returntype === 'event') {
-      alert('hi');
-      setAuthState(10)
     } else {
       checkAuth()
     }
