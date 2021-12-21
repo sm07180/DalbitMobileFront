@@ -323,7 +323,7 @@ export default (props) => {
           </div>
         </section>
       </div>
-      {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} />}
+      {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} gganbuNumber={gganbuNumber} />}
       {popupReport && <PopupReport setPopupReport={setPopupReport} gganbuNumber={gganbuNumber} />}
     </>
   )
