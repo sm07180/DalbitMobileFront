@@ -175,8 +175,8 @@ const Tree = (props) => {
         <div className="treeBottom">
           {
             {
-              1: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
-              2: <button  onClick={presentPopOpen}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
+              2: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
+              1: <button  onClick={presentPopOpen}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
               3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(완료)" /></button>
             }[mainListInfo.step]
           }
