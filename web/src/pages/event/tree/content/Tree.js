@@ -117,7 +117,7 @@ const Tree = (props) => {
       })
     }else { // 인증 안됨
       context.action.confirm({
-        callback: () => authReq('9', context.authRef, context) // 본인 인증 하기
+        callback: () => authReq('10', context.authRef, context) // 본인 인증 하기
         , cancelCallback: () => {}
         , msg: '트리 완성 보상을 받기 위해서는\n본인인증이 필요합니다.'
       })
