@@ -72,7 +72,17 @@ export default (props) => {
     <>
       <div id="collect" style={{display: `${tabContent === 'collect' ? 'block' : 'none'}`}}>
         <section className="content">
-          <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg.png`} className="bg" />
+          {gganbuNumber && gganbuNumber === '1' ? (
+            <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg-1.png`} className="bg" />
+          ) : gganbuNumber && gganbuNumber === '2' ? (
+            <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg-2.png`} className="bg" />
+          ) : gganbuNumber && gganbuNumber === '3' ? (
+            <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg-3.png`} className="bg" />
+          ) : gganbuNumber && gganbuNumber === '4' ? (
+            <img src={`${IMG_SERVER}/event/gganbu/gganbuBottomImg-4.png`} className="bg" />
+          ) : (
+            <></>
+          )}
           <div className="title">
             <img src={`${IMG_SERVER}/event/gganbu/bottomTitle.png`} alt="구슬 현황" />
           </div>
@@ -150,7 +160,17 @@ export default (props) => {
                 onClick={(e) => tabActive(noticeTab)}
                 style={{cursor: 'pointer'}}
               />
-              <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom.png`} />
+              {gganbuNumber && gganbuNumber === '1' ? (
+                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-1.png`} />
+              ) : gganbuNumber && gganbuNumber === '2' ? (
+                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-2.png`} />
+              ) : gganbuNumber && gganbuNumber === '3' ? (
+                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-3.png`} />
+              ) : gganbuNumber && gganbuNumber === '4' ? (
+                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-4.png`} />
+              ) : (
+                <></>
+              )}
             </>
           ) : (
             <>
@@ -249,7 +269,7 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          {(ptr_mem_stat !== 0 && ptr_mem_stat !== 4) ? (
+                          {ptr_mem_stat !== 0 && ptr_mem_stat !== 4 ? (
                             <>
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
@@ -265,13 +285,13 @@ export default (props) => {
                                 lv {ptr_mem_level}
                               </div>
                               <span className="userNick">
-                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
                               </span>
                             </>
                           )}
                         </div>
                         <div className="rankItem">
-                          {(mem_state !== 0 && mem_state !== 4) ? (
+                          {mem_state !== 0 && mem_state !== 4 ? (
                             <>
                               <LevelBox className="badge" levelColor={mem_level_color}>
                                 lv {mem_level}
@@ -287,7 +307,7 @@ export default (props) => {
                                 lv {mem_level}
                               </div>
                               <span className="userNick">
-                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!" />
                               </span>
                             </>
                           )}
@@ -303,7 +323,7 @@ export default (props) => {
           </div>
         </section>
       </div>
-      {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} />}
+      {popupDetails && <PopupDetails setPopupDetails={setPopupDetails} gganbuNumber={gganbuNumber} />}
       {popupReport && <PopupReport setPopupReport={setPopupReport} gganbuNumber={gganbuNumber} />}
     </>
   )

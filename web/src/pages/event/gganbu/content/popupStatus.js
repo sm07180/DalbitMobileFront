@@ -13,6 +13,7 @@ export default (props) => {
   const [tabBtn, setTabBtn] = useState('r')
   const [memberNumber, setMemberNumber] = useState()
   const [memberNick, setMemberNick] = useState()
+  const [ptrNick, setPtrNick] = useState()
   const [gganbuSubList, setGganbuSubList] = useState([])
   const [alertAccept, setAlertAccept] = useState(false)
   const [acceptType, setAcceptType] = useState('') //acceptance, application
@@ -79,11 +80,12 @@ export default (props) => {
     fetchGganbuSubList()
   }, [tabBtn])
 
-  const acceptBtn = (memNo, type, memNick) => {
+  const acceptBtn = (memNo, type, memNick, nickName) => {
     setAlertAccept(true)
     setAcceptType(type)
     setMemberNumber(memNo)
     setMemberNick(memNick)
+    setPtrNick(nickName)
   }
 
   return (
@@ -121,7 +123,9 @@ export default (props) => {
                             </span>
                           </div>
                         </div>
-                        <button className="accept" onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm)}>
+                        <button
+                          className="accept"
+                          onClick={(e) => acceptBtn(mem_no, 'acceptance', context.profile.nickNm, mem_nick)}>
                           수락
                         </button>
                       </div>
@@ -175,6 +179,7 @@ export default (props) => {
           gganbuNumber={gganbuNumber}
           memberNumber={memberNumber}
           memberNick={memberNick}
+          ptrNick={ptrNick}
           acceptType={acceptType}
           closeAlert={closeAlert}
           closePopup={closePopup}
