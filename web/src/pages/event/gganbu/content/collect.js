@@ -249,7 +249,7 @@ export default (props) => {
                       )}
                       <div className="rankBox">
                         <div className="rankItem">
-                          {ptr_mem_stat !== 4 ? (
+                          {(ptr_mem_stat !== 0 && ptr_mem_stat !== 4) ? (
                             <>
                               <PtrLevelBox className="badge" levelColor={ptr_mem_level_color}>
                                 lv {ptr_mem_level}
@@ -261,15 +261,17 @@ export default (props) => {
                             </>
                           ) : (
                             <>
-                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
+                              <div className="badge" style={{backgroundColor: '#9F9F9F'}}>
                                 lv {ptr_mem_level}
                               </div>
-                              <span className="userNick">깍두기</span>
+                              <span className="userNick">
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                              </span>
                             </>
                           )}
                         </div>
                         <div className="rankItem">
-                          {mem_state !== 4 ? (
+                          {(mem_state !== 0 && mem_state !== 4) ? (
                             <>
                               <LevelBox className="badge" levelColor={mem_level_color}>
                                 lv {mem_level}
@@ -281,10 +283,12 @@ export default (props) => {
                             </>
                           ) : (
                             <>
-                              <div className="badge" style={{backgroundColor: '#6B6B6B'}}>
-                                lv {ptr_mem_level}
+                              <div className="badge" style={{backgroundColor: '#9F9F9F'}}>
+                                lv {mem_level}
                               </div>
-                              <span className="userNick">깍두기</span>
+                              <span className="userNick">
+                                <img src={`https://image.dalbitlive.com/event/gganbu/iamfine.png`} alt="깍두기여도 괜찮아!"/>
+                              </span>
                             </>
                           )}
                         </div>
