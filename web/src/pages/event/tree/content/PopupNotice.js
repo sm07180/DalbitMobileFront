@@ -8,7 +8,8 @@ const PopupNotice = (props) => {
 
   const swiperParams = {
     pagination: {
-      el: '.swiper-pagination'
+      el: '.swiper-pagination',
+      clickable: true
     }
   }
 
