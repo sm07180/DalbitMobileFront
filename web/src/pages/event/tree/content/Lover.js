@@ -11,7 +11,7 @@ const Lover = (props) => {
   const context = useContext(Context)
   const history = useHistory();
   const [myRankInfo, setMyRankInfo] = useState() // 자신의 랭킹 정보
-  const [rankListInfo, setRankListInfo] = useState({cnt: 0, list: [], breakNo: 30, title: '', subTitle: ''}) // 랭킹 리스트 정보
+  const [rankListInfo, setRankListInfo] = useState({cnt: 0, list: [], breakNo: 30, title: '실시간', subTitle: `(${moment().format('A HH:mm')} 기준)`}) // 랭킹 리스트 정보
   const [pageInfo, setPageInfo] = useState({ seqNo: props.seqNo, pageNo: 1, pagePerCnt: 500 });
 
   // 사랑꾼 랭킹 리스트 가져오기
@@ -79,7 +79,7 @@ const Lover = (props) => {
   // 다음 실기간 랭킹
   const nextEvent = () => {
     const current = moment();
-    if (pageInfo.seqNo !== 2) { // && current.isAfter(eventInfo[1])
+    if (pageInfo.seqNo !== 2) { // && current.isAfter('2021-12-30')
       setPageInfo({ ...pageInfo, seqNo: 2 });
     }
   };
@@ -133,7 +133,7 @@ const Lover = (props) => {
             <div className="titleWrap">{rankListInfo.title}</div>
             <span>{rankListInfo.subTitle}</span>
           </div>
-          <button className={`next ${pageInfo.seqNo !== 2 ? 'active' : 'noActive'}`} onClick={nextEvent}>
+          <button className={`next ${(pageInfo.seqNo !== 2 && moment().isAfter('2021-12-30')) ? 'active' : 'noActive'}`} onClick={nextEvent}>
             다음
             <img src={`${IMG_SERVER}/event/tree/arrow.png`}/>
           </button>
