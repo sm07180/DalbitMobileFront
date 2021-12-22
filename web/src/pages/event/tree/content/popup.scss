@@ -17,6 +17,12 @@
     border-radius: 15px;
     overflow: hidden;
     background: #fff;
+    // 사파리 대응
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+
     &.letter {
       background: url('https://image.dalbitlive.com/event/tree/letterBottom.png') bottom center/contain no-repeat white;
     }
@@ -100,7 +106,7 @@
       height: 40px;
       border-radius: 12px;
       background-color: #632beb;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 500;
       color: white;
       cursor: pointer;
@@ -114,7 +120,7 @@
       margin: 0 auto 16px;
       border-radius: 12px;
       background-color: #632beb;
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 500;
       color: white;
       cursor: pointer;
