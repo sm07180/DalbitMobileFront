@@ -19,10 +19,9 @@ const Tree = (props) => {
   const [makePopInfo, setMakePopInfo] = useState(false); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
   const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
-  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
-  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [] }); // 사연리스트 정보
+  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPercent: 0}); // 메인 리스트 정보
+  const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [], totalPage: 0}); // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
-  const [storyInputInfo, setStoryInputInfo] = useState({ cont: '' }); // 사연 입력 정보
 
   // 메인 리스트 가져오기
   const getMainListInfo = () => {
@@ -39,14 +38,18 @@ const Tree = (props) => {
   const getStoryListInfo = () => {
     Api.getLikeTreeStoryList(storyPageInfo).then(res => {
       if (res.code === '00000') {
-        const { cnt, list } = res.data;
-        let temp = [];
-        list.forEach(value => {
-          temp.push({
-
-          })
-        });
-        setStoryListInfo(res.data);
+        const { cnt, list, totalPage } = res.data;
+        if (storyPageInfo.pageNo !== 1) {
+          let temp = [];
+          list.forEach(value => {
+            if (storyListInfo.list.findIndex(target => target.autoNo == value.autoNo) === -1) {
+              temp.push(value);
+            }
+          });
+          setStoryListInfo({...res.data, list: storyListInfo.list.concat(temp) });
+        } else {
+          setStoryListInfo(res.data);
+        }
       } else {
         console.log(res);
       }
@@ -60,41 +63,38 @@ const Tree = (props) => {
     const params = {storyConts: value};
     Api.likeTreeStoryIns(params).then(res => {
       if (res.code === '00000') {
-        console.log(res);
-      } else {
-        console.log(res);
-      }
-    }).catch(e => console.log(e));
-  }
-
-  // 사연 수정하기
-  const updStoryCont = () => {
-    const params = {storyConts: ''};
-    Api.likeTreeStoryUpd(params).then(res => {
-      if (res.code === '00000') {
-        console.log(res);
-      } else {
-        console.log(res);
-      }
-    }).catch(e => console.log(e));
-  }
-
-  // 사연 삭제하기
-  const delStoryCont = () => {
-    const params = {storyConts: ''};
-    Api.likeTreeStoryDel(params).then(res => {
-      if (res.code === '00000') {
-        console.log(res);
+        resetStoryList();
+        context.action.alert({ msg: '사연이 등록되었습니다.' });
       } else {
         console.log(res);
       }
     }).catch(e => console.log(e));
   };
 
-  // 사연 state 관리
-  const handleStoryInput = (value) => {
-    console.log(value);
-  }
+  // 사연 삭제하기
+  const delStoryCont = (value) => {
+    const params = { storyNo: value };
+    Api.likeTreeStoryDel(params).then(res => {
+      if (res.code === '00000') {
+        resetStoryList();
+        context.action.alert({ msg: '사연을 삭제했습니다.' });
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  };
+
+  // 사연 신고하기 함수
+  const rptStoryCont = (value) => {
+    const params = { storyNo: value };
+    Api.likeTreeStoryRptIns(params).then(res => {
+      if (res.code === '00000') {
+        context.action.alert({ msg: '사연을 신고했습니다.' });
+      } else {
+        console.log(res);
+      }
+    }).catch(e => console.log(e));
+  };
 
   // 트리 만드는 법 팝업 열기 이벤트
   const makePopOpen = () => {
@@ -164,17 +164,44 @@ const Tree = (props) => {
     setStoryPageInfo({ pageNo: 1, pagePerCnt: 30 });
   };
 
+  // 사연 스크롤 이벤트
+  const scrollAddList = () => {
+    const windowHeight =
+      "innerHeight" in window
+        ? window.innerHeight
+        : document.documentElement.offsetHeight;
+    const body = document.body;
+    const html = document.documentElement;
+    const docHeight = Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      html.clientHeight,
+      html.scrollHeight,
+      html.offsetHeight
+    );
+    const windowBottom = windowHeight + window.pageYOffset;
+
+    if (storyListInfo.totalPage > storyPageInfo.pageNo && (windowBottom >= docHeight - 300)) {;
+      setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1});
+      window.removeEventListener("scroll", scrollAddList);
+    } else if (storyListInfo.cnt == storyListInfo.list.length) {
+      window.removeEventListener("scroll", scrollAddList);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", scrollAddList);
+    return () => {
+      window.removeEventListener("scroll", scrollAddList);
+    };
+  }, [storyListInfo]);
+
   useEffect(() => {
     getStoryListInfo();
   }, [storyPageInfo]);
 
   useEffect(() => {
-    //비로그인일때 페이지 팅김
-    if (!context.token.isLogin) {
-      history.push('/login');
-    } else {
-      getMainListInfo();
-    }
+    getMainListInfo();
   }, []);
 
   return (
@@ -205,8 +232,8 @@ const Tree = (props) => {
         <div className="treeBottom">
           {
             {
-              2: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
-              1: <button  onClick={rcvPresentClick}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
+              1: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
+              2: <button  onClick={rcvPresentClick}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
               3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(완료)" /></button>
             }[mainListInfo.step]
           }
@@ -229,8 +256,8 @@ const Tree = (props) => {
         <img src={`${IMG_SERVER}/event/tree/treeBg-3.png`} className="bgImg" />
       </section>
       <section className="commentContainer">
-        <EventComment commentList={storyListInfo.list} totalCommentCnt={storyListInfo.cnt} commentAdd={putStoryCont} commentUpd={updStoryCont} commentDel={delStoryCont}
-                      commentTxt={storyInputInfo.cont} setCurrentPage={resetStoryList} maxLength={100} contPlaceHolder={'욕설이나 도배, 타인을 비하하는 내용은 제재조치 될 수 있습니다.'}/>
+        <EventComment commentList={storyListInfo.list} totalCommentCnt={storyListInfo.cnt} commentAdd={putStoryCont} commentRpt={rptStoryCont} commentDel={delStoryCont}
+                      resetStoryList={resetStoryList} maxLength={100} contPlaceHolder={'욕설이나 도배, 타인을 비하하는 내용은 제재조치 될 수 있습니다.'}/>
       </section>
       {makePopInfo &&  <PopupNotice onClose={makePopClose}/>}
       {presentPopInfo.open && <PopupResult onClose={presentPopClose}/>}

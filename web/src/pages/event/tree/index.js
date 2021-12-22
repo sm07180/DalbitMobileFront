@@ -1,7 +1,5 @@
 import React, {useEffect, useState, useRef, useCallback, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
-import Api from 'context/api'
-import {Context} from 'context'
 import {IMG_SERVER} from 'context/config'
 
 // Component
@@ -10,16 +8,17 @@ import Tree from './content/Tree'
 import Lover from './content/Lover'
 
 import './style.scss'
+import {Context} from "context";
 
 const TreePage = () => {
-  const constext = useContext(Context)
+  const context = useContext(Context);
   const history = useHistory()
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabContent, setTabContent] = useState('tree') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
+  const [loverSeqNo, setLoverSeqNo] = useState(1);
 
-  const goBack = useCallback(() => history.goBack(), [])
 
   const tabScrollEvent = () => {
     const tabMenuNode = tabMenuRef.current
@@ -33,9 +32,27 @@ const TreePage = () => {
         setTabFixed(false)
       }
     }
-  }
+  };
+
+  // 탭 클릭 이벤트
+  const tabClick = (e) => {
+    const { tab } = e.currentTarget.dataset;
+
+    if (tab === 'lover') {
+      const current = moment();
+
+      if (current.isBefore('2022-01-07') && current.isAfter('2021-12-30')) {
+        setLoverSeqNo(2);
+      }
+    }
+    setTabContent(tab);
+  };
 
   useEffect(() => {
+    if (!context.token.isLogin) {
+      history.push('/login');
+    }
+
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
@@ -68,7 +85,7 @@ const TreePage = () => {
           <img src="https://image.dalbitlive.com/event/tree/signRing.png" />
         </div>
       </section>
-      {tabContent === 'tree' ? <Tree /> : <Lover />}
+      {tabContent === 'tree' ? <Tree /> : <Lover seqNo={loverSeqNo}/>}
     </div>
   )
 }

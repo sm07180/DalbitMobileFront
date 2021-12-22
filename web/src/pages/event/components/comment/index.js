@@ -9,16 +9,18 @@ import Utility from 'components/lib/utility'
 // static
 import NoResult from 'components/ui/new_noResult'
 import './comment.scss'
-const EventComment = (props) => {
-  const { commentList, totalCommentCnt, commentAdd, commentUpd, commentTxt, setCommentTxt, setCommentNo, commentDel, setCurrentPage, contPlaceHolder, noResultMsg, maxLength } = props;
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
-  const history = useHistory()
-  const contRef = useRef()
+import moment from "moment";
 
-  const [moreState, setMoreState] = useState(-1)
-  const [refreshState, setRefreshState] = useState(false)
-  const [writeState, setWriteState] = useState(false)
+
+const EventComment = (props) => {
+  const { commentList, totalCommentCnt, commentAdd, commentRpt, commentDel, resetStoryList, contPlaceHolder, noResultMsg, maxLength } = props;
+  const globalCtx = useContext(Context);
+  const {token} = globalCtx;
+  const history = useHistory();
+  const contRef = useRef();
+
+  const [moreState, setMoreState] = useState(-1);
+  const [writeState, setWriteState] = useState(false);
 
   const moreToggle = (boardIdx) => {
     if (boardIdx !== moreState) {
@@ -28,16 +30,6 @@ const EventComment = (props) => {
     }
   }
 
-  const refreshFunc = async () => {
-    if (refreshState === false) {
-      setRefreshState(true)
-      await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
-      setRefreshState(false)
-    } else {
-      setRefreshState(false)
-    }
-    setCurrentPage(0)
-  };
 
   // 사연 내용 validation
   const inputValueCheck = (e) => {
@@ -51,6 +43,7 @@ const EventComment = (props) => {
 
     if (value.length >= maxLength) {
       globalCtx.action.toast({msg: `최대 ${maxLength}자 이내 입력 가능합니다.`})
+      return;
     }
   };
 
@@ -64,31 +57,88 @@ const EventComment = (props) => {
   };
   
   // 댓글 쓰기 이벤트
-  const contEvent = () => {
+  const contAddEvent = () => {
     if (contRef !== undefined && contRef.current.value.length > 0) {
+      setMoreState(-1);
       commentAdd(contRef.current.value);
       contRef.current.value = '';
     } else {
       globalCtx.action.toast({msg: '사연을 입력해주세요.'});
     }
+  };
+
+  // 댓글 삭제 이벤트
+  const contDelEvent = (e) => {
+    const { targetNum } = e.currentTarget.dataset;
+
+    if (targetNum !== undefined) {
+      globalCtx.action.confirm({
+        callback: () => {
+          setMoreState(-1);
+          commentDel(targetNum);
+        },
+        msg: '해당 사연을 삭제하시겠습니까?\n'
+      });
+    }
+  };
+
+  // 댓글 신고 이벤트
+  const contRptEvent = (e) => {
+    const { targetNum } = e.currentTarget.dataset;
+
+    if (targetNum !== undefined) {
+      globalCtx.action.confirm({
+        callback: () => {
+          setMoreState(-1);
+          commentRpt(targetNum);
+        },
+        msg: '해당 사연을 신고하시겠습니까?\n'
+      });
+    }
   }
+
+  // 새로고침 이벤트
+  const refreshList = (e) => {
+    const target = e.currentTarget;
+    if (target !== undefined) {
+      resetStoryList();
+      target.classList.remove('on')
+      setTimeout(() => { target.classList.add('on') }, 0);
+    }
+  }
+
+  // 시간값 계산 함수
+  const getFormatting = (data) => {
+    const targetTime = moment(data);
+    const duration = moment.duration(moment().diff(targetTime));
+
+    if (duration.days() > 0) {
+      return targetTime.format('YYYY-MM-DD');
+    } else if (duration.hours() > 0) {
+      return `${duration.hours()} 시간 전`;
+    } else if (duration.minutes() > 0) {
+      return `${duration.minutes()} 분 전`;
+    } else {
+      return `${duration.seconds()} 초 전`;
+    }
+  };
 
   return (
     <div className="commentEventWrap">
       {globalCtx.token.isLogin &&
         <div className="addInputBox">
           <div className="userBox">
-            <div className="photo"><img src={globalCtx.profile.profImg.thumb62x62} /></div>
+            <div className="photo"><img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm}/></div>
             <div className="userNick">{globalCtx.profile.nickNm}</div>
           </div>
-          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck}/>
-          <button className={`writeBtn ${writeState ? 'on' : ''}`} onClick={contEvent}>등록</button>
+          <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100}/>
+          <button className={`writeBtn ${writeState ? 'on' : ''}`} onClick={contAddEvent}>등록</button>
         </div>
       }
       <div className="commentBox">
         <div className="totalBox">
           댓글 <span>{`${totalCommentCnt}`}</span>개
-          <button className={`refreshBtn ${refreshState ? 'on' : ''}`} onClick={refreshFunc}>
+          <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
           </button>
         </div>
@@ -107,28 +157,18 @@ const EventComment = (props) => {
                     <div className="textBox">
                       <div className="nick">
                         {mem_nick}
-                        <span className="date"> {ins_date}</span>
+                        <span className="date"> {getFormatting(ins_date)}</span>
                       </div>
-                      <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}/>
+                      <p className="msg">{tail_conts}</p>
                     </div>
-
-                    {parseInt(token.memNo) === tail_mem_no ? (
-                      <>
-                        <button className="btnMore" onClick={() => { moreToggle(idx) }}/>
-                        {moreState === idx && (
-                          <div className="moreList">
-                            <button onClick={commentDel}>삭제</button>
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      globalCtx.adminChecker === true &&
-                      parseInt(token.memNo) !== tail_mem_no && (
-                        <button className="btnDelete" onClick={commentDel}>
-                          <img src="https://image.dalbitlive.com/svg/close_g_l.svg" alt="삭제하기" />
-                        </button>
-                      )
-                    )}
+                      <button className="btnMore" onClick={() => { moreToggle(idx) }}/>
+                      {moreState === idx && (
+                        <div className="moreList">
+                          {(globalCtx.adminChecker === true || parseInt(token.memNo) == tail_mem_no) ?
+                            <button data-target-num={tail_no} onClick={contDelEvent}>삭제</button>
+                            : <button data-target-num={tail_no} onClick={contRptEvent}>신고</button> }
+                        </div>
+                      )}
                   </div>
                 )
               })}
