@@ -66,7 +66,7 @@ const Tree = (props) => {
         resetStoryList();
         context.action.alert({ msg: '사연이 등록되었습니다.' });
       } else {
-        console.log(res);
+        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 등록에 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -79,7 +79,7 @@ const Tree = (props) => {
         resetStoryList();
         context.action.alert({ msg: '사연을 삭제했습니다.' });
       } else {
-        console.log(res);
+        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 삭제에 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -91,7 +91,7 @@ const Tree = (props) => {
       if (res.code === '00000') {
         context.action.alert({ msg: '사연을 신고했습니다.' });
       } else {
-        console.log(res);
+        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 신고 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -220,7 +220,7 @@ const Tree = (props) => {
             <div className={`treeItem item${index+1}`} data-target-num={index + 1} onClick={letterPopOpen} key={index}>
               <div className="photo">
                 {row.imageProfile !== '' ? (
-                  <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} />
+                  <img src={`${PHOTO_SERVER}${row.imageProfile}`} />
                 ) : (
                   <img style={{width: '100%'}} src={`${PHOTO_SERVER}/profile_3/profile_m_200327.jpg`} alt={row.memNick} />
                 )}

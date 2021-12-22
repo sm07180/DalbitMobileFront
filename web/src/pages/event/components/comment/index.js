@@ -164,7 +164,7 @@ const EventComment = (props) => {
                       <button className="btnMore" onClick={() => { moreToggle(idx) }}/>
                       {moreState === idx && (
                         <div className="moreList">
-                          {(globalCtx.adminChecker === true || parseInt(token.memNo) == tail_mem_no) ?
+                          {parseInt(token.memNo) == tail_mem_no ?
                             <button data-target-num={tail_no} onClick={contDelEvent}>삭제</button>
                             : <button data-target-num={tail_no} onClick={contRptEvent}>신고</button> }
                         </div>

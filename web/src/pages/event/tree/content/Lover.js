@@ -18,21 +18,20 @@ const Lover = (props) => {
   const getRankListInfo = () => {
     Api.getLikeTreeRankList(pageInfo)
       .then((res) => {
-        if (res.code === '00000') {
-          const current = moment();
-          let title = '실시간';
-          let subTitle = `(${current.format('A HH:mm')} 기준)`;
+        const current = moment();
+        let title = '실시간';
+        let subTitle = `(${current.format('A HH:mm')} 기준)`;
 
-          if (current.isBefore('2022-01-07') && current.isAfter('2021-12-30')) {
-            if (pageInfo.seqNo === 1) {
-              title = '1회차';
-              subTitle = '';
-            }
+        if (current.isAfter(props.eventDuration.end1)) {
+          if (pageInfo.seqNo === 1) {
+            title = '1회차';
+            subTitle = '';
           }
-
+        }
+        if (res.code === '00000') {
           setRankListInfo({ ...rankListInfo, ...res.data, title, subTitle });
         } else {
-          console.log(res.code)
+          setRankListInfo({cnt: 0, list: [], breakNo: 30, title, subTitle});
         }
       })
       .catch((e) => console.log(e))
@@ -78,8 +77,7 @@ const Lover = (props) => {
 
   // 다음 실기간 랭킹
   const nextEvent = () => {
-    const current = moment();
-    if (pageInfo.seqNo !== 2) { // && current.isAfter('2021-12-30')
+    if (pageInfo.seqNo !== 2 && moment().isAfter(props.eventDuration.end1)) {
       setPageInfo({ ...pageInfo, seqNo: 2 });
     }
   };
@@ -133,7 +131,7 @@ const Lover = (props) => {
             <div className="titleWrap">{rankListInfo.title}</div>
             <span>{rankListInfo.subTitle}</span>
           </div>
-          <button className={`next ${(pageInfo.seqNo !== 2 && moment().isAfter('2021-12-30')) ? 'active' : 'noActive'}`} onClick={nextEvent}>
+          <button className={`next ${(pageInfo.seqNo !== 2 && moment().isAfter(props.eventDuration.end1)) ? 'active' : 'noActive'}`} onClick={nextEvent}>
             다음
             <img src={`${IMG_SERVER}/event/tree/arrow.png`}/>
           </button>
