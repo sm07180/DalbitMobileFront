@@ -19,7 +19,7 @@ const Tree = (props) => {
   const [makePopInfo, setMakePopInfo] = useState(false); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
   const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
-  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPercent: 0}); // 메인 리스트 정보
+  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPercent: 0, imgStep: 1}); // 메인 리스트 정보
   const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [], totalPage: 0}); // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
 
@@ -27,9 +27,9 @@ const Tree = (props) => {
   const getMainListInfo = () => {
     Api.getLikeTreeMainList().then(res => {
       if (res.code === '00000') {
-        setMainListInfo({ ...mainListInfo, ...res.data, mainPercent: Math.floor(res.data.totScoreCnt/mainListInfo.limitScore) });
+        setMainListInfo({ ...mainListInfo, ...res.data, mainPercent: Math.floor(res.data.totScoreCnt/res.data.limitScore * 100) });
       } else {
-        console.log(res);
+        setMainListInfo({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPercent: 0, imgStep: 1});
       }
     }).catch(e => console.log(e));
   };
@@ -66,7 +66,7 @@ const Tree = (props) => {
         resetStoryList();
         context.action.alert({ msg: '사연이 등록되었습니다.' });
       } else {
-        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 등록에 실패했습니다.'}` });
+        context.action.alert({ msg: `${res.code !== '99999' ? res.message : '사연 등록에 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -79,7 +79,7 @@ const Tree = (props) => {
         resetStoryList();
         context.action.alert({ msg: '사연을 삭제했습니다.' });
       } else {
-        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 삭제에 실패했습니다.'}` });
+        context.action.alert({ msg: `${res.code !== '99999' ? res.message : '사연 삭제에 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -91,7 +91,7 @@ const Tree = (props) => {
       if (res.code === '00000') {
         context.action.alert({ msg: '사연을 신고했습니다.' });
       } else {
-        context.action.alert({ msg: `${res.code !== '99999' ? message : '사연 신고 실패했습니다.'}` });
+        context.action.alert({ msg: `${res.code !== '99999' ? res.message : '사연 신고 실패했습니다.'}` });
       }
     }).catch(e => console.log(e));
   };
@@ -213,7 +213,7 @@ const Tree = (props) => {
         </button>
       </section>
       <section className="treeContents">
-        <img src={`${IMG_SERVER}/event/tree/treeContents-1.webp`} className="treeImg" />
+        <img src={`${IMG_SERVER}/event/tree/treeContents-${mainListInfo.imgStep}.webp`} className="treeImg" />
 
         {mainListInfo.list.map((row, index) => {
           return (

@@ -9,13 +9,14 @@ import Lover from './content/Lover'
 
 import './style.scss'
 import {Context} from "context";
+import moment from 'moment';
 
 const TreePage = () => {
   const context = useContext(Context);
   const history = useHistory();
   const tabMenuRef = useRef();
   const tabBtnRef = useRef();
-  const eventDuration = { end1: '2021-12-22 14:30:00', end2: '2022-01-06'};
+  const eventDuration = { end1: '2021-12-22 14:30:00', end2: '2021-12-22 15:30:00'};
   const [tabContent, setTabContent] = useState('tree') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
   const [loverSeqNo, setLoverSeqNo] = useState(1);

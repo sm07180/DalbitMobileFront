@@ -18,6 +18,7 @@ const EventComment = (props) => {
   const {token} = globalCtx;
   const history = useHistory();
   const contRef = useRef();
+  const lengthRef = useRef();
 
   const [moreState, setMoreState] = useState(-1);
   const [writeState, setWriteState] = useState(false);
@@ -41,6 +42,8 @@ const EventComment = (props) => {
       setWriteState(false);
     }
 
+    lengthRef.current.innerText = e.currentTarget.value.length;
+
     if (value.length >= maxLength) {
       globalCtx.action.toast({msg: `최대 ${maxLength}자 이내 입력 가능합니다.`})
       return;
@@ -60,6 +63,7 @@ const EventComment = (props) => {
   const contAddEvent = () => {
     // 공백 제거
     contRef.current.value = contRef.current.value.trim();
+    lengthRef.current.innerText = contRef.current.value.length;
 
     if (contRef !== undefined && contRef.current.value.length > 0) {
       setMoreState(-1);
@@ -135,6 +139,9 @@ const EventComment = (props) => {
             <div className="userNick">{globalCtx.profile.nickNm}</div>
           </div>
           <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100}/>
+          <div className="textCount">
+            <strong ref={lengthRef}>0</strong>/100
+          </div>
           <button className={`writeBtn ${writeState ? 'on' : ''}`} onClick={contAddEvent}>등록</button>
         </div>
       }

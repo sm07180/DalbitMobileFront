@@ -28,6 +28,14 @@ const Lover = (props) => {
             subTitle = '';
           }
         }
+
+        if (current.isAfter(props.eventDuration.end2)) {
+          if (pageInfo.seqNo === 2) {
+            title = '2회차';
+            subTitle = '';
+          }
+        }
+
         if (res.code === '00000') {
           setRankListInfo({ ...rankListInfo, ...res.data, title, subTitle });
         } else {
@@ -98,6 +106,13 @@ const Lover = (props) => {
     }
   };
 
+  // 자신 랭킹 이동 이벤트
+  const goMyRank = (e) => {
+    if (myRankInfo.rankNo > 0 && document.getElementsByClassName(`rankList list${myRankInfo.rankNo}`).length > 0) {
+      document.getElementsByClassName(`rankList list${myRankInfo.rankNo}`)[0].scrollIntoView();
+    }
+  };
+
   useEffect(() => {
     if (context.token.isLogin) {
       getRankUserInfo()
@@ -137,7 +152,7 @@ const Lover = (props) => {
           </button>
         </div>
         {myRankInfo && (
-          <div className="rankList my">
+          <div className="rankList my" onClick={goMyRank}>
             <div className="rankNum">
               <span>내순위</span>
               <span className="num">{myRankInfo.rankNo == 0 ? '-' : myRankInfo.rankNo}</span>
@@ -160,7 +175,7 @@ const Lover = (props) => {
             if ( rankListInfo.breakNo <= index ) return;
 
             return (
-              <div className="rankList" key={index}>
+              <div className={`rankList list${row.rankNo}`} key={index}>
                 <div className="rankNum">
                   <span className="num">{row.rankNo}</span>
                 </div>
