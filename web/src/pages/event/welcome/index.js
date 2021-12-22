@@ -50,7 +50,21 @@ export default () => {
       <section className="step">
         <div className="containerBox">
           <div className="title">
-            <img src={`${IMG_SERVER}/event/welcome/step-1.png`} alt="step 1" />
+            <img src={`${IMG_SERVER}/event/welcome/stepTitleBj-1.png`} alt="step 1" />
+          </div>
+          <div className="giftUl">
+            <div className="giftList">
+              <img src="" alt="" />
+              <span>10달</span>
+            </div>
+            <div className="giftList">
+              <img src="" alt="" />
+              <span>10달</span>
+            </div>
+            <div className="giftList">
+              <img src="" alt="" />
+              <span>10달</span>
+            </div>
           </div>
         </div>
       </section>
