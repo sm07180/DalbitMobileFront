@@ -54,16 +54,39 @@ export default () => {
           </div>
           <div className="giftUl">
             <div className="giftList">
-              <img src="" alt="" />
-              <span>10달</span>
+              <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
+              <p>10달</p>
             </div>
             <div className="giftList">
-              <img src="" alt="" />
-              <span>10달</span>
+              <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
+              <p>10달</p>
             </div>
             <div className="giftList">
-              <img src="" alt="" />
-              <span>10달</span>
+              <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
+              <p>10달</p>
+            </div>
+          </div>
+          <div className="questUl">
+            <div className="questList">
+              <p className="questText">방송 진행 1시간</p>
+              <div className="gaugeOuter">
+                <div className="gaugeInner"></div>
+              </div>
+              <p className="questCount">(30/60)</p>
+            </div>
+            <div className="questList">
+              <p className="questText">좋아요 받기 10회</p>
+              <div className="gaugeOuter">
+                <div className="gaugeInner"></div>
+              </div>
+              <p className="questCount">(120/120)</p>
+            </div>
+            <div className="questList">
+              <p className="questText">방송 진행 1시간</p>
+              <div className="gaugeOuter">
+                <div className="gaugeInner"></div>
+              </div>
+              <p className="questCount">(30/60)</p>
             </div>
           </div>
         </div>

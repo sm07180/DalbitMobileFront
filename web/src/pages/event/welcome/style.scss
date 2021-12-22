@@ -17,20 +17,21 @@
       background-color: white;
       box-sizing: border-box;
       overflow: hidden;
-      &:before {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        z-index: 0;
-        display: block;
-        content: '';
-        width: 100%;
-        height: 40%;
-        background: linear-gradient(to bottom, transparent, #e3e3e3 80%);
-        opacity: 0.6;
-      }
+      //   &:after {
+      //     position: absolute;
+      //     bottom: 0;
+      //     left: 0;
+      //     z-index: 0;
+      //     display: block;
+      //     content: '';
+      //     width: 100%;
+      //     height: 40%;
+      //     background: linear-gradient(to bottom, transparent, #e3e3e3 80%);
+      //     opacity: 0.6;
+      //   }
       .title {
         text-align: center;
+        margin-bottom: 6px;
         img {
           width: 100%;
           vertical-align: bottom;
@@ -40,13 +41,86 @@
         display: flex;
         align-items: center;
         width: 100%;
+        margin-bottom: 16px;
         .giftList {
           flex: 1;
-          border: 1px solid;
+          border: 1px solid #e2e2e2;
           margin-left: 2.22%;
           border-radius: 10px;
+          background-color: #ececec;
+          box-sizing: border-box;
           &:first-child {
             margin-left: 0;
+          }
+          img {
+            width: 100%;
+          }
+          p {
+            height: 38px;
+            line-height: 38px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+          }
+        }
+      }
+      .questUl {
+        width: 100%;
+        .questList {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          height: 28px;
+          line-height: 28px;
+          .questText {
+            flex: none;
+            width: 100px;
+            letter-spacing: -1.5px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: bold;
+            color: #444;
+          }
+          .gaugeOuter {
+            position: relative;
+            flex: 1;
+            height: 16px;
+            margin: 8px;
+            border-radius: 100px;
+            background-color: #ececec;
+            .gaugeInner {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 50%;
+              height: 100%;
+              border-radius: 100px;
+            }
+          }
+          .questCount {
+            flex: none;
+            width: 56px;
+            letter-spacing: -1.5px;
+            text-align: right;
+            font-size: 15px;
+            font-weight: 500;
+            color: #444;
+          }
+          &:nth-child(1) {
+            .gaugeInner {
+              background: linear-gradient(to right, #4816c1, #7941ff);
+            }
+          }
+          &:nth-child(2) {
+            .gaugeInner {
+              background: linear-gradient(to right, #d8224f, #ff4471);
+            }
+          }
+          &:nth-child(3) {
+            .gaugeInner {
+              background: linear-gradient(to right, #ffa023, #ffe044);
+            }
           }
         }
       }
