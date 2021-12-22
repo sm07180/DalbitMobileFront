@@ -33,11 +33,15 @@
           box-sizing: border-box;
           button {
             flex: 1;
+            width: 50%;
             background-color: #be9463;
             &:first-child {
               border-radius: 10px 0 0 10px;
               &.active {
                 background-color: #439867;
+              }
+              img {
+                width: 74.58%;
               }
             }
             &:last-child {
@@ -45,9 +49,9 @@
               &.active {
                 background-color: #ce3a3a;
               }
-            }
-            img {
-              height: 42%;
+              img {
+                width: 66.005%;
+              }
             }
           }
         }
