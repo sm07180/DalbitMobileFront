@@ -64,6 +64,8 @@ export default (props) => {
           window.location.href = '/'
         }
       })
+    } else if(url === '10') {
+      setAuthState(10)
     } else if (returntype === 'profile') {
       setAuthState(4)
     } else if (returntype === 'create') {
@@ -76,6 +78,8 @@ export default (props) => {
       return history.push(changeUrl)
     } else if (returntype === 'ageAuth') {
       setAuthState(9)
+    } else if(returntype === '') {
+      setAuthState(10)
     } else {
       checkAuth()
     }
@@ -234,6 +238,20 @@ export default (props) => {
             <div className="btn-wrap">
               <button
                 onClick={() => window.location.href = '/'}
+              >확인
+              </button>
+            </div>
+          </div>
+        )
+      case 10:
+        return (
+          <div className="auth-wrap">
+            <h5>
+              본인 인증이 완료되었습니다.
+            </h5>
+            <div className="btn-wrap">
+              <button
+                onClick={() => history.push('/event/tree')}
               >확인
               </button>
             </div>
