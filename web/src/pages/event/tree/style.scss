@@ -34,14 +34,17 @@
           button {
             flex: 1;
             background-color: #be9463;
-            &.active {
-              background-color: #439867;
-            }
             &:first-child {
               border-radius: 10px 0 0 10px;
+              &.active {
+                background-color: #439867;
+              }
             }
             &:last-child {
               border-radius: 0 10px 10px 0;
+              &.active {
+                background-color: #ce3a3a;
+              }
             }
             img {
               height: 42%;
@@ -60,6 +63,9 @@
             &:last-child {
               border-radius: 0 0 10px 0;
             }
+          }
+          ~ .signRing {
+            z-index: -1;
           }
         }
       }
@@ -118,6 +124,7 @@
         transform: scale(1);
         transform-origin: top left;
         .countBox {
+          margin-bottom: 4px;
           letter-spacing: -1px;
           font-size: 14px;
           font-weight: bold;
@@ -129,7 +136,7 @@
         .gaugeBox {
           width: 96%;
           height: 12px;
-          margin-top: 6px;
+          margin-bottom: 4px;
           border-radius: 100px;
           background-color: white;
           .geugeInner {
@@ -242,7 +249,7 @@
         height: 21%;
         border-radius: 0 0 15px 15px;
         text-align: center;
-        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+        background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
         .treeText {
           height: 72.5%;
         }
