@@ -1,6 +1,11 @@
 #tree {
   position: relative;
   width: 100%;
+  .header-wrap {
+    position: sticky;
+    top: 0px;
+    z-index: 5;
+  }
   section {
     position: relative;
     .bgImg {
@@ -52,8 +57,7 @@
         }
         &.fixed {
           position: fixed;
-          top: 0;
-          max-width: 460px;
+          top: 50px;
           width: 100%;
           margin: 0;
           button {
@@ -366,6 +370,7 @@
             line-height: 18px;
             padding: 0 6px;
             background-color: #bdbdbd;
+            border-radius: 100px;
             white-space: nowrap;
             text-align: center;
             font-size: 12px;
