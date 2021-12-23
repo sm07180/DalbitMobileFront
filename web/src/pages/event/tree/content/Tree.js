@@ -51,7 +51,7 @@ const Tree = (props) => {
           setStoryListInfo(res.data);
         }
       } else {
-        console.log(res);
+        setStoryListInfo({cnt: 0, list: [], totalPage: 0});
       }
     })
   };
@@ -189,6 +189,11 @@ const Tree = (props) => {
     }
   };
 
+  // 사연 자격 미달
+  const giftDenied = () => {
+    context.action.alert({ msg: '보상 지급 대상이 아닙니다.' });
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", scrollAddList);
     return () => {
@@ -207,7 +212,7 @@ const Tree = (props) => {
   return (
     <>
       <section className="term">
-        <img src={`${IMG_SERVER}/event/tree/treeBg-2.png`} className="bgImg" />
+        <img src={`${IMG_SERVER}/event/tree/treeBg-${(mainListInfo.step === 3 || mainListInfo.step === 2) ? '2-other' : '2'}.png`} className="bgImg" />
         <button onClick={makePopOpen}>
           <img src={`${IMG_SERVER}/event/tree/treeBtn-1.png`} />
         </button>
@@ -233,8 +238,9 @@ const Tree = (props) => {
           {
             {
               1: <img src={`${IMG_SERVER}/event/tree/treeTextStart.png`} className="treeText" alt="방송방의 좋아요와 라이브 부스트로 함께 트리를 만들어주세요!"/>,
-              2: <button  onClick={rcvPresentClick}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
-              3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(완료)" /></button>
+              2: <button onClick={rcvPresentClick}><img src={`${IMG_SERVER}/event/tree/treeBtn-on.png`} alt="선물 받기"/></button>,
+              3: <button><img src={`${IMG_SERVER}/event/tree/treeBtn-complete.png`} alt="선물 받기(완료)" /></button>,
+              4: <button onClick={giftDenied}><img src={`${IMG_SERVER}/event/tree/treeBtn-off.png`} alt="선물 받기(불가)" /></button>
             }[mainListInfo.step]
           }
         </div>

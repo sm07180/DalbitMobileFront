@@ -80,6 +80,7 @@ const EventComment = (props) => {
       setMoreState(-1)
       commentAdd(contRef.current.value)
       contRef.current.value = ''
+      lengthRef.current.innerText = contRef.current.value.length
     } else {
       globalCtx.action.toast({msg: `${contTitle}을 입력해주세요.`})
     }
@@ -164,7 +165,7 @@ const EventComment = (props) => {
       )}
       <div className="commentBox">
         <div className="totalBox">
-          {contTitle} <span>{`${totalCommentCnt}`}</span>개
+          {contTitle}<span>{`${Utility.addComma(totalCommentCnt)}`}</span>개
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
           </button>
