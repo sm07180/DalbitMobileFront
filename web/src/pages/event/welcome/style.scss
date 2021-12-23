@@ -309,14 +309,17 @@
     }
   }
   .allClear {
+    position: relative;
+    z-index: 1;
     padding: 34.445% 1.67% 40px;
     background: url('https://image.dalbitlive.com/event/welcome/allClearBg.png') center top/140% auto no-repeat,
       linear-gradient(to bottom, #febf40, #ffaa00);
     min-height: 200px;
+    border-radius: 0 0 20px 20px;
     .containerBox {
       position: relative;
       width: 100%;
-      padding: 20px 15px 26px;
+      padding: 36px 15px 26px;
       border: 3px solid #d9e7ff;
       border-radius: 15px;
       background-color: white;
@@ -326,12 +329,11 @@
         position: relative;
         width: 235px;
         height: 155px;
-        margin: 0 auto;
+        margin: 0 auto 16px;
         border-radius: 10px;
         background-color: #ececec;
         border: 1px solid #eee;
         box-sizing: border-box;
-
         .giftItem {
           position: relative;
           width: 100%;
@@ -342,22 +344,43 @@
           border-bottom-left-radius: 60% 22%;
           border-bottom: 1px solid #e2e2e2;
           background-color: white;
+          overflow: hidden;
           img {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65.24%;
           }
         }
         p {
           line-height: 18px;
-          border: 1px solid;
           padding: 10px 0;
           letter-spacing: -1.5px;
           text-align: center;
-          font-size: 16px;
+          font-size: 14px;
           font-weight: bold;
           color: #444;
+        }
+        .badge {
+          position: absolute;
+          top: -24px;
+          left: -40px;
+          width: 82px;
+          img {
+            width: 100%;
+            border-radius: 50%;
+            box-shadow: 0 1.5px 3px rgba(0, 0, 0, 0.6);
+          }
+        }
+        .charactor {
+          position: absolute;
+          bottom: -8px;
+          right: -50px;
+          width: 90px;
+          img {
+            width: 100%;
+          }
         }
       }
       .textImg {
@@ -366,6 +389,16 @@
     }
     .applyBtn {
       @include welceomeBtn;
+    }
+  }
+  .notice {
+    position: relative;
+    top: 0;
+    z-index: 0;
+    margin-top: -30px;
+    .noticeImg {
+      width: 100%;
+      vertical-align: bottom;
     }
   }
 }

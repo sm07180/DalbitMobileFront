@@ -12,6 +12,7 @@ export default () => {
   const [tabFixed, setTabFixed] = useState(false)
   const [giftCheck, setGiftCheck] = useState(-1)
   const [giftComplete, setGiftComplete] = useState(false)
+  const [noticeText, setNoticeText] = useState('off')
   const [tabContent, setTabContent] = useState('Lisen') // Lisen, Dj
 
   const stepCount = [1, 2, 3]
@@ -128,12 +129,33 @@ export default () => {
               <img src={`${IMG_SERVER}/event/welcome/allGiftSample.png`} />
             </div>
             <p>도미노 피자 포테이토 세트</p>
+            <div className="badge">
+              <img src={`${IMG_SERVER}/event/welcome/allClearBadge.png`} alt="" />
+            </div>
+            <div className="charactor">
+              <img src={`${IMG_SERVER}/event/welcome/allClearChara.png`} alt="" />
+            </div>
           </div>
           <img src={`${IMG_SERVER}/event/welcome/allClearText.png`} className="textImg" alt="" />
           <button className="applyBtn complete">
-            <img src={`${IMG_SERVER}/event/welcome/giftBtn-complete.png`} alt="선물 받기" />
+            <img src={`${IMG_SERVER}/event/welcome/applyBtn-off.png`} alt="응모 예정" />
           </button>
         </div>
+      </div>
+      <div className="notice">
+        {noticeText === 'off' ? (
+          <img
+            src={`${IMG_SERVER}/event/welcome/eventNotice-off.png`}
+            className="noticeImg"
+            onClick={() => setNoticeText('on')}
+          />
+        ) : (
+          <img
+            src={`${IMG_SERVER}/event/welcome/eventNotice-on.png`}
+            className="noticeImg"
+            onClick={() => setNoticeText('off')}
+          />
+        )}
       </div>
     </div>
   )
