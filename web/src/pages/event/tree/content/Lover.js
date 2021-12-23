@@ -25,21 +25,28 @@ const Lover = (props) => {
   const getRankListInfo = () => {
     Api.getLikeTreeRankList(pageInfo)
       .then((res) => {
-        if (res.code === '00000') {
-          const current = moment()
-          let title = '실시간'
-          let subTitle = `(${current.format('A HH:mm')} 기준)`
+        const current = moment()
+        let title = '실시간'
+        let subTitle = `(${current.format('A HH:mm')} 기준)`
 
-          if (current.isBefore('2022-01-07') && current.isAfter('2021-12-30')) {
-            if (pageInfo.seqNo === 1) {
-              title = '1회차'
-              subTitle = ''
-            }
+        if (current.isAfter(props.eventDuration.end1)) {
+          if (pageInfo.seqNo === 1) {
+            title = '1회차'
+            subTitle = ''
           }
+        }
 
+        if (current.isAfter(props.eventDuration.end2)) {
+          if (pageInfo.seqNo === 2) {
+            title = '2회차'
+            subTitle = ''
+          }
+        }
+
+        if (res.code === '00000') {
           setRankListInfo({...rankListInfo, ...res.data, title, subTitle})
         } else {
-          console.log(res.code)
+          setRankListInfo({cnt: 0, list: [], breakNo: 30, title, subTitle})
         }
       })
       .catch((e) => console.log(e))
@@ -76,9 +83,7 @@ const Lover = (props) => {
 
   // 다음 실기간 랭킹
   const nextEvent = () => {
-    const current = moment()
-    if (pageInfo.seqNo !== 2) {
-      // && current.isAfter('2021-12-30')
+    if (pageInfo.seqNo !== 2 && moment().isAfter(props.eventDuration.end1)) {
       setPageInfo({...pageInfo, seqNo: 2})
     }
   }
@@ -96,6 +101,13 @@ const Lover = (props) => {
 
     if (targetMemNo !== undefined && targetMemNo > 0) {
       history.push(`/mypage/${targetMemNo}`)
+    }
+  }
+
+  // 자신 랭킹 이동 이벤트
+  const goMyRank = (e) => {
+    if (myRankInfo.rankNo > 0 && document.getElementsByClassName(`rankList list${myRankInfo.rankNo}`).length > 0) {
+      document.getElementsByClassName(`rankList list${myRankInfo.rankNo}`)[0].scrollIntoView()
     }
   }
 
@@ -133,14 +145,14 @@ const Lover = (props) => {
             <span>{rankListInfo.subTitle}</span>
           </div>
           <button
-            className={`next ${pageInfo.seqNo !== 2 && moment().isAfter('2021-12-30') ? 'active' : 'noActive'}`}
+            className={`next ${pageInfo.seqNo !== 2 && moment().isAfter(props.eventDuration.end1) ? 'active' : 'noActive'}`}
             onClick={nextEvent}>
             다음
             <img src={`${IMG_SERVER}/event/tree/arrow.png`} />
           </button>
         </div>
         {myRankInfo && (
-          <div className="rankList my">
+          <div className="rankList my" onClick={goMyRank}>
             <div className="rankNum">
               <span>내순위</span>
               <span className="num">{myRankInfo.rankNo == 0 ? '-' : myRankInfo.rankNo}</span>
@@ -163,7 +175,7 @@ const Lover = (props) => {
             if (rankListInfo.breakNo <= index) return
 
             return (
-              <div className="rankList" key={index}>
+              <div className={`rankList list${row.rankNo}`} key={index}>
                 <div className="rankNum">
                   <span className="num">{row.rankNo}</span>
                 </div>
