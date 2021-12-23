@@ -61,11 +61,13 @@ const EventComment = (props) => {
   
   // 댓글 쓰기 이벤트
   const contAddEvent = () => {
+    if (contRef === undefined || lengthRef === undefined) return;
+
     // 공백 제거
     contRef.current.value = contRef.current.value.trim();
     lengthRef.current.innerText = contRef.current.value.length;
 
-    if (contRef !== undefined && contRef.current.value.length > 0) {
+    if (contRef.current.value.length > 0) {
       setMoreState(-1);
       commentAdd(contRef.current.value);
       contRef.current.value = '';
