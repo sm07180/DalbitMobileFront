@@ -4,6 +4,7 @@ import {IMG_SERVER, PHOTO_SERVER} from 'context/config';
 import './popup.scss';
 import Api from "context/api";
 import {Context} from "context";
+import moment from "moment";
 
 const PopupLetter = (props) => {
   const { onClose, seqNo } = props;
@@ -30,7 +31,8 @@ const PopupLetter = (props) => {
           setListInfo({cnt, list});
         }
       } else {
-        console.log(res);
+        context.action.alert({msg: `${res.code === '99994' ? '사연이 존재하지 않습니다.' : res.message}`});
+        onClose();
       }
     }).catch(e => console.log(e));
   };
@@ -40,6 +42,10 @@ const PopupLetter = (props) => {
     if (target.id === 'popup') {
       onClose();
     };
+  };
+
+  const getDateFormat = (data) => {
+    return moment(data).format('YYYY.MM.DD');
   };
 
   useEffect(() => {
@@ -73,7 +79,7 @@ const PopupLetter = (props) => {
                   </div>
                   <div className="letter">
                     {row.storyConts}
-                    <div className="date">{row.insDate}</div>
+                    <div className="date">{getDateFormat(row.ins_date)}</div>
                   </div>
                 </div>
               )

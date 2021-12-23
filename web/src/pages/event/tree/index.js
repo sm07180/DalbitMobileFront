@@ -9,12 +9,14 @@ import Lover from './content/Lover'
 
 import './style.scss'
 import {Context} from "context";
+import moment from 'moment';
 
 const TreePage = () => {
   const context = useContext(Context);
-  const history = useHistory()
-  const tabMenuRef = useRef()
-  const tabBtnRef = useRef()
+  const history = useHistory();
+  const tabMenuRef = useRef();
+  const tabBtnRef = useRef();
+  const eventDuration = { end1: '2021-12-23 11:00:00', end2: '2021-12-23 15:00:00'};
   const [tabContent, setTabContent] = useState('tree') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
   const [loverSeqNo, setLoverSeqNo] = useState(1);
@@ -38,10 +40,11 @@ const TreePage = () => {
   const tabClick = (e) => {
     const { tab } = e.currentTarget.dataset;
 
+    window.scroll(0, 0);
     if (tab === 'lover') {
       const current = moment();
 
-      if (current.isBefore('2022-01-07') && current.isAfter('2021-12-30')) {
+      if (current.isAfter(eventDuration.end1)) {
         setLoverSeqNo(2);
       }
     }
@@ -66,13 +69,13 @@ const TreePage = () => {
       <section className="tabContainer" ref={tabMenuRef}>
         <div className={`tabWrapper ${tabFixed === true ? 'fixed' : ''}`} ref={tabBtnRef}>
           <div className="tabmenu">
-            <button className={tabContent === 'tree' ? 'active' : ''} onClick={() => setTabContent('tree')}>
+            <button className={tabContent === 'tree' ? 'active' : ''} data-tab="tree" onClick={tabClick}>
               <img
                 src={`${IMG_SERVER}/event/tree/tabmenu-1-${tabContent === 'tree' ? 'on' : 'off'}.png`}
                 alt="좋아요 트리만들기!"
               />
             </button>
-            <button className={tabContent === 'lover' ? 'active' : ''} onClick={() => setTabContent('lover')}>
+            <button className={tabContent === 'lover' ? 'active' : ''} data-tab="lover" onClick={tabClick}>
               <img
                 src={`${IMG_SERVER}/event/tree/tabmenu-2-${tabContent === 'lover' ? 'on' : 'off'}.png`}
                 alt="사랑꾼 선발대회"
@@ -85,7 +88,7 @@ const TreePage = () => {
           <img src="https://image.dalbitlive.com/event/tree/signRing.png" />
         </div>
       </section>
-      {tabContent === 'tree' ? <Tree /> : <Lover seqNo={loverSeqNo}/>}
+      {tabContent === 'tree' ? <Tree /> : <Lover seqNo={loverSeqNo} eventDuration={eventDuration}/>}
     </div>
   )
 }
