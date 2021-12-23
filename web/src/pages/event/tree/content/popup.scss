@@ -52,6 +52,7 @@
         overflow: hidden;
       }
       .userId {
+        margin-top: 8px;
         font-size: 15px;
         font-weight: 700;
         letter-spacing: -1px;
@@ -83,8 +84,9 @@
     }
     .letter {
       min-height: 180px;
-      padding: 10px 30px 30px;
+      padding: 0 30px 30px;
       text-align: center;
+      word-break: break-all;
       font-size: 13px;
       font-weight: 500;
       .date {
