@@ -12,41 +12,17 @@ const Lover = (props) => {
   const context = useContext(Context)
   const history = useHistory()
   const [myRankInfo, setMyRankInfo] = useState() // 자신의 랭킹 정보
-  const [rankListInfo, setRankListInfo] = useState({
-    cnt: 0,
-    list: [],
-    breakNo: 30,
-    title: '실시간',
-    subTitle: `(${moment().format('A HH:mm')} 기준)`
-  }) // 랭킹 리스트 정보
+  const [rankListInfo, setRankListInfo] = useState({cnt: 0, list: [], breakNo: 30}) // 랭킹 리스트 정보
   const [pageInfo, setPageInfo] = useState({seqNo: props.seqNo, pageNo: 1, pagePerCnt: 500})
 
   // 사랑꾼 랭킹 리스트 가져오기
   const getRankListInfo = () => {
     Api.getLikeTreeRankList(pageInfo)
       .then((res) => {
-        const current = moment()
-        let title = '실시간'
-        let subTitle = `(${current.format('A HH:mm')} 기준)`
-
-        if (current.isAfter(props.eventDuration.end1)) {
-          if (pageInfo.seqNo === 1) {
-            title = '1회차'
-            subTitle = ''
-          }
-        }
-
-        if (current.isAfter(props.eventDuration.end2)) {
-          if (pageInfo.seqNo === 2) {
-            title = '2회차'
-            subTitle = ''
-          }
-        }
-
         if (res.code === '00000') {
-          setRankListInfo({...rankListInfo, ...res.data, title, subTitle})
+          setRankListInfo({...rankListInfo, ...res.data})
         } else {
-          setRankListInfo({cnt: 0, list: [], breakNo: 30, title, subTitle})
+          setRankListInfo({cnt: 0, list: [], breakNo: 30})
         }
       })
       .catch((e) => console.log(e))
@@ -141,8 +117,7 @@ const Lover = (props) => {
             이전
           </button>
           <div className="title">
-            <div className="titleWrap">{rankListInfo.title}</div>
-            <span>{rankListInfo.subTitle}</span>
+            <div className="titleWrap">{`${pageInfo.seqNo}회차`}</div>
           </div>
           <button
             className={`next ${pageInfo.seqNo !== 2 && moment().isAfter(props.eventDuration.end1) ? 'active' : 'noActive'}`}
