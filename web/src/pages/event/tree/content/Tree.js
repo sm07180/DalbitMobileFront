@@ -257,7 +257,7 @@ const Tree = (props) => {
       </section>
       <section className="commentContainer">
         <EventComment commentList={storyListInfo.list} totalCommentCnt={storyListInfo.cnt} commentAdd={putStoryCont} commentRpt={rptStoryCont} commentDel={delStoryCont}
-                      resetStoryList={resetStoryList} maxLength={100} contPlaceHolder={'욕설이나 도배, 타인을 비하하는 내용은 제재조치 될 수 있습니다.'}/>
+                      resetStoryList={resetStoryList} maxLength={100} contPlaceHolder={'욕설이나 도배, 타인을 비하하는 내용은 제재조치 될 수 있습니다.'} contTitle={'사연'} noResultMsg={'사연이 존재하지 않습니다.'}/>
       </section>
       {makePopInfo &&  <PopupNotice onClose={makePopClose}/>}
       {presentPopInfo.open && <PopupResult onClose={presentPopClose}/>}

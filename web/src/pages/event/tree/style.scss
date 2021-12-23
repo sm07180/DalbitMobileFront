@@ -37,11 +37,15 @@
           box-sizing: border-box;
           button {
             flex: 1;
+            width: 50%;
             background-color: #be9463;
             &:first-child {
               border-radius: 10px 0 0 10px;
               &.active {
                 background-color: #439867;
+              }
+              img {
+                width: 74.58%;
               }
             }
             &:last-child {
@@ -49,9 +53,9 @@
               &.active {
                 background-color: #ce3a3a;
               }
-            }
-            img {
-              height: 42%;
+              img {
+                width: 66.005%;
+              }
             }
           }
         }
@@ -59,6 +63,7 @@
           position: fixed;
           top: 50px;
           width: 100%;
+          max-width: 460px;
           margin: 0;
           button {
             &:first-child {
@@ -366,6 +371,7 @@
           min-width: 0;
           margin: 0 10px;
           .level {
+            flex: none;
             height: 18px;
             line-height: 18px;
             padding: 0 6px;
