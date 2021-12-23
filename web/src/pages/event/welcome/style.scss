@@ -33,6 +33,11 @@
       height: 18px;
     }
   }
+  .header-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
   .bgImg {
     width: 100%;
   }
@@ -72,7 +77,7 @@
       }
       &.fixed {
         position: fixed;
-        top: 0;
+        top: 50px;
         width: 100%;
         // max-width: 460px;
         margin: 0;
@@ -166,7 +171,6 @@
           }
           &.complete {
             .giftList {
-              pointer-events: none;
               &::after {
                 position: absolute;
                 top: 0;
@@ -312,12 +316,53 @@
     .containerBox {
       position: relative;
       width: 100%;
-      padding: 20px 13px 46px;
+      padding: 20px 15px 26px;
       border: 3px solid #d9e7ff;
       border-radius: 15px;
       background-color: white;
       box-sizing: border-box;
       overflow: hidden;
+      .giftList {
+        position: relative;
+        width: 235px;
+        height: 155px;
+        margin: 0 auto;
+        border-radius: 10px;
+        background-color: #ececec;
+        border: 1px solid #eee;
+        box-sizing: border-box;
+
+        .giftItem {
+          position: relative;
+          width: 100%;
+          padding-top: 48%;
+          border-top-right-radius: 10px;
+          border-top-left-radius: 10px;
+          border-bottom-right-radius: 60% 22%;
+          border-bottom-left-radius: 60% 22%;
+          border-bottom: 1px solid #e2e2e2;
+          background-color: white;
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+          }
+        }
+        p {
+          line-height: 18px;
+          border: 1px solid;
+          padding: 10px 0;
+          letter-spacing: -1.5px;
+          text-align: center;
+          font-size: 16px;
+          font-weight: bold;
+          color: #444;
+        }
+      }
+      .textImg {
+        width: 100%;
+      }
     }
     .applyBtn {
       @include welceomeBtn;

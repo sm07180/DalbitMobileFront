@@ -123,6 +123,13 @@ export default () => {
       </div>
       <div className="allClear">
         <div className="containerBox">
+          <div className="giftList">
+            <div className="giftItem">
+              <img src={`${IMG_SERVER}/event/welcome/allGiftSample.png`} />
+            </div>
+            <p>도미노 피자 포테이토 세트</p>
+          </div>
+          <img src={`${IMG_SERVER}/event/welcome/allClearText.png`} className="textImg" alt="" />
           <button className="applyBtn complete">
             <img src={`${IMG_SERVER}/event/welcome/giftBtn-complete.png`} alt="선물 받기" />
           </button>
