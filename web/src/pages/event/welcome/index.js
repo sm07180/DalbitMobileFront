@@ -10,7 +10,11 @@ export default () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [tabContent, setTabContent] = useState('lisen') // lisen, dj
+  const [giftCheck, setGiftCheck] = useState(-1)
+  const [giftComplete, setGiftComplete] = useState(false)
+  const [tabContent, setTabContent] = useState('Lisen') // Lisen, Dj
+
+  const stepCount = [1, 2, 3]
 
   const goBack = useCallback(() => history.goBack(), [])
 
@@ -49,157 +53,80 @@ export default () => {
       <div className="tabContainer" ref={tabMenuRef}>
         <div className={`tabWrapper ${tabFixed === true ? 'fixed' : ''}`} ref={tabBtnRef}>
           <div className="tabmenu">
-            <button className={tabContent === 'lisen' ? 'active' : ''} onClick={() => setTabContent('lisen')}>
-              <img src={`${IMG_SERVER}/event/welcome/tabBtn-1-${tabContent === 'lisen' ? 'on' : 'off'}.png`} alt="시청자 선물" />
+            <button className={tabContent === 'Lisen' ? 'active' : ''} onClick={() => setTabContent('Lisen')}>
+              <img src={`${IMG_SERVER}/event/welcome/tabBtn-1-${tabContent === 'Lisen' ? 'on' : 'off'}.png`} alt="시청자 선물" />
             </button>
-            <button className={tabContent === 'dj' ? 'active' : ''} onClick={() => setTabContent('dj')}>
-              <img src={`${IMG_SERVER}/event/welcome/tabBtn-2-${tabContent === 'dj' ? 'on' : 'off'}.png`} alt="DJ선물" />
+            <button className={tabContent === 'Dj' ? 'active' : ''} onClick={() => setTabContent('Dj')}>
+              <img src={`${IMG_SERVER}/event/welcome/tabBtn-2-${tabContent === 'Dj' ? 'on' : 'off'}.png`} alt="DJ선물" />
             </button>
           </div>
         </div>
       </div>
       <div className="step">
-        <section>
-          <div className="containerBox">
-            <div className="title">
-              <img src={`${IMG_SERVER}/event/welcome/stepTitleBj-1.png`} />
-            </div>
-            <div className="giftUl">
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-            </div>
-            <div className="questUl">
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
+        {stepCount.map((data, index) => {
+          return (
+            <section key={index}>
+              <div className="containerBox">
+                <div className="title">
+                  <img src={`${IMG_SERVER}/event/welcome/stepTitle${tabContent}-${data}.png`} />
                 </div>
-                <p className="questCount">(1/60)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">좋아요 받기 10회</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
+                <div className={`giftUl ${giftComplete === true ? 'complete' : ''}`}>
+                  <div className="giftList">
+                    <div className="giftItem">
+                      <img src={`${IMG_SERVER}/event/welcome/giftSample2.png`} alt="" />
+                    </div>
+                    <p>10달</p>
+                  </div>
+                  <div className="giftList">
+                    <div className="giftItem">
+                      <img src={`${IMG_SERVER}/event/welcome/giftSample2.png`} alt="" />
+                    </div>
+                    <p>10달</p>
+                  </div>
+                  <div className="giftList">
+                    <div className="giftItem">
+                      <img src={`${IMG_SERVER}/event/welcome/giftSample2.png`} alt="" />
+                    </div>
+                    <p>10달</p>
+                  </div>
                 </div>
-                <p className="questCount complete">(120/120)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
+                <div className="questUl">
+                  <div className="questList">
+                    <p className="questText">방송 진행 1시간</p>
+                    <div className="gaugeOuter">
+                      <div className="gaugeInner"></div>
+                    </div>
+                    <p className="questCount">(1/60)</p>
+                  </div>
+                  <div className="questList">
+                    <p className="questText">좋아요 받기 10회</p>
+                    <div className="gaugeOuter">
+                      <div className="gaugeInner"></div>
+                    </div>
+                    <p className="questCount complete">(120/120)</p>
+                  </div>
+                  <div className="questList">
+                    <p className="questText">방송 진행 1시간</p>
+                    <div className="gaugeOuter">
+                      <div className="gaugeInner"></div>
+                    </div>
+                    <p className="questCount">(59/60)</p>
+                  </div>
                 </div>
-                <p className="questCount">(59/60)</p>
+                <button className="giftBtn complete">
+                  <img src={`${IMG_SERVER}/event/welcome/giftBtn-complete.png`} alt="선물 받기" />
+                </button>
               </div>
-            </div>
-            <button className="giftBtn on">
-              <img src={`${IMG_SERVER}/event/welcome/giftBtn-on.png`} alt="선물 받기" />
-            </button>
-          </div>
-        </section>
-        <section>
-          <div className="containerBox">
-            <div className="title">
-              <img src={`${IMG_SERVER}/event/welcome/stepTitleBj-2.png`} />
-            </div>
-            <div className="giftUl">
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-            </div>
-            <div className="questUl">
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount">(1/60)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">좋아요 받기 10회</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount complete">(120/120)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount">(59/60)</p>
-              </div>
-            </div>
-            <button className="giftBtn on">
-              <img src={`${IMG_SERVER}/event/welcome/giftBtn-on.png`} alt="선물 받기" />
-            </button>
-          </div>
-        </section>
-        <section>
-          <div className="containerBox">
-            <div className="title">
-              <img src={`${IMG_SERVER}/event/welcome/stepTitleBj-3.png`} />
-            </div>
-            <div className="giftUl">
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-              <div className="giftList">
-                <img src={`${IMG_SERVER}/event/welcome/giftSample.png`} alt="" />
-                <p>10달</p>
-              </div>
-            </div>
-            <div className="questUl">
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount">(1/60)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">좋아요 받기 10회</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount complete">(120/120)</p>
-              </div>
-              <div className="questList">
-                <p className="questText">방송 진행 1시간</p>
-                <div className="gaugeOuter">
-                  <div className="gaugeInner"></div>
-                </div>
-                <p className="questCount">(59/60)</p>
-              </div>
-            </div>
-            <button className="giftBtn on">
-              <img src={`${IMG_SERVER}/event/welcome/giftBtn-on.png`} alt="선물 받기" />
-            </button>
-          </div>
-        </section>
+            </section>
+          )
+        })}
+      </div>
+      <div className="allClear">
+        <div className="containerBox">
+          <button className="applyBtn complete">
+            <img src={`${IMG_SERVER}/event/welcome/giftBtn-complete.png`} alt="선물 받기" />
+          </button>
+        </div>
       </div>
     </div>
   )
