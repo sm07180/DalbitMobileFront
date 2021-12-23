@@ -13,7 +13,7 @@ import moment from "moment";
 
 
 const EventComment = (props) => {
-  const { commentList, totalCommentCnt, commentAdd, commentRpt, commentDel, resetStoryList, contPlaceHolder, noResultMsg, maxLength } = props;
+  const { commentList, totalCommentCnt, commentAdd, commentRpt, commentDel, resetStoryList, contPlaceHolder, noResultMsg, maxLength, contTitle } = props;
   const globalCtx = useContext(Context);
   const {token} = globalCtx;
   const history = useHistory();
@@ -72,7 +72,7 @@ const EventComment = (props) => {
       commentAdd(contRef.current.value);
       contRef.current.value = '';
     } else {
-      globalCtx.action.toast({msg: '사연을 입력해주세요.'});
+      globalCtx.action.toast({msg: `${contTitle}을 입력해주세요.`});
     }
   };
 
@@ -86,7 +86,7 @@ const EventComment = (props) => {
           setMoreState(-1);
           commentDel(targetNum);
         },
-        msg: '해당 사연을 삭제하시겠습니까?\n'
+        msg: `해당 ${contTitle}을 삭제하시겠습니까?\n`
       });
     }
   };
@@ -101,7 +101,7 @@ const EventComment = (props) => {
           setMoreState(-1);
           commentRpt(targetNum);
         },
-        msg: '해당 사연을 신고하시겠습니까?\n'
+        msg: `해당 ${contTitle}을 신고하시겠습니까?\n`
       });
     }
   }
@@ -149,7 +149,7 @@ const EventComment = (props) => {
       }
       <div className="commentBox">
         <div className="totalBox">
-          댓글 <span>{`${totalCommentCnt}`}</span>개
+          {contTitle} <span>{`${totalCommentCnt}`}</span>개
           <button className="refreshBtn" onClick={refreshList}>
             <img src={`${IMG_SERVER}/main/ico_live_refresh_new_s.svg`} alt="새로고침" />
           </button>
@@ -199,6 +199,7 @@ EventComment.defaultProps = {
   noResultMsg: '아직 작성된 댓글이 없습니다.',
   commentList: [],
   maxLength: 300,
+  contTitle: '댓글'
 };
 
 export default EventComment;
