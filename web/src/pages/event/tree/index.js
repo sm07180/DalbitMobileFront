@@ -16,7 +16,7 @@ const TreePage = () => {
   const history = useHistory();
   const tabMenuRef = useRef();
   const tabBtnRef = useRef();
-  const eventDuration = { end1: '2021-12-23 11:00:00', end2: '2021-12-23 15:00:00'};
+  const eventDuration = { end1: '2021-12-23 17:00:00', end2: '2021-12-23 17:30:00'};
   const [tabContent, setTabContent] = useState('tree') // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
   const [loverSeqNo, setLoverSeqNo] = useState(1);
