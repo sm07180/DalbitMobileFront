@@ -1,6 +1,9 @@
 #tree {
   position: relative;
   width: 100%;
+  img {
+    pointer-events: none;
+  }
   .header-wrap {
     position: sticky;
     top: 0px;
