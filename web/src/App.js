@@ -100,7 +100,7 @@ const App = () => {
     //앱 업데이트 후 에이전트 받음
     //모바일 웹, PC 웹인 경우
     const createHeader = {
-      os: getDeviceOSTypeChk(), //OS_TYPE['Desktop']
+      os: OS_TYPE['Desktop'], //OS_TYPE['Desktop']
       deviceId: createDeviceUUid(),
       appVersion: '1.0.1',
       locale: 'ko',
