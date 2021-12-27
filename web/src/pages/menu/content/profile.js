@@ -220,11 +220,14 @@ export default (props) => {
         return (
           <button
             className="list"
-            onClick={() => {
+            onClick={async () => {
               if (!context.myInfo.level) {
-                return globalCtx.action.alert({
-                  msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-                })
+                const myProfile = await Api.profile({ params: { memNo: token.memNo } })
+                if(myProfile.data.level === 0) {
+                  return globalCtx.action.alert({
+                    msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+                  })
+                }
               }
 
               if (isHybrid()) {
