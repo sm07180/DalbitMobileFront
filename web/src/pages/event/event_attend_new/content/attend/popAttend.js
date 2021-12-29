@@ -9,6 +9,7 @@ export default (props) => {
   const history = useHistory()
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
+  const {eventDate} = props
 
   // reference
   const layerWrapRef = useRef()
@@ -22,6 +23,18 @@ export default (props) => {
   }
 
   const dalExp = () => {
+    let gift
+
+    if (statusList.the_day === '0' || statusList.the_day === '1' || statusList.the_day === '2' || statusList.the_day === '3') {
+      gift = '1달+10EXP'
+    } else if (statusList.the_day === '4') {
+      gift = '1달+15EXP'
+    } else {
+      gift = '2달+15EXP'
+    }
+    return gift
+  }
+  const eventDalExp = () => {
     let gift
 
     if (statusList.the_day === '0' || statusList.the_day === '1' || statusList.the_day === '2' || statusList.the_day === '3') {
@@ -63,7 +76,7 @@ export default (props) => {
           <p className="attendAlertBox__title">
             출석체크 성공!
             <br />
-            <span>{dalExp()} 지급!</span>
+            <span>{eventDate.nowDate > eventDate.endDate ? dalExp() : eventDalExp()} 지급!</span>
           </p>
           <p className="attendAlertBox__subTitle">[내 지갑]을 확인하세요!</p>
           <button type="button" onClick={closePopup}>
