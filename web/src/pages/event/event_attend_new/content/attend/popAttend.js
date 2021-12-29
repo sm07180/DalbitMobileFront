@@ -45,7 +45,6 @@ export default (props) => {
     }
     return eventGift
   }
-  console.log(statusList.the_day)
   //-------------------------------------------
   useEffect(() => {
     document.body.style.overflow = 'hidden'
