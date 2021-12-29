@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Swiper from 'react-id-swiper'
 
 export default (props) => {
-  const {setPopupDetails} = props
+  const {setPopupDetails, gganbuNumber} = props
 
   const swiperParams = {
     pagination: {
@@ -27,7 +27,13 @@ export default (props) => {
     <PopupWrap id="popupDetails">
       <Swiper {...swiperParams}>
         <div className="list">
-          <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-1.png" />
+          {gganbuNumber && gganbuNumber === '1' ? (
+            <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-1.png" />
+          ) : gganbuNumber && gganbuNumber !== '1' ? (
+            <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-1-1.png" />
+          ) : (
+            <></>
+          )}
         </div>
         <div className="list">
           <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-2.png" />
