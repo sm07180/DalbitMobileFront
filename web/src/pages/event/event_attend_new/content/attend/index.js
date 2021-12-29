@@ -4,6 +4,7 @@ import {Context} from 'context'
 import {AttendContext} from '../../attend_ctx'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
+import moment from 'moment'
 
 import './attend.scss'
 import AttendList from './attend_list'
@@ -17,6 +18,7 @@ export default function AttendTab() {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, authCheckYn} = eventAttendState
   const [popup, setPopup] = useState(false)
+  const eventDate = {nowDate: moment().format('YYYYMMDD') , endDate : '20211228'}
 
   async function fetchEventAttendDate() {
     const {result, data} = await API.postEventAttend()
@@ -32,7 +34,6 @@ export default function AttendTab() {
       eventAttendAction.setDateList([{0: {}}])
     }
   }
-
   let isAttendClick = false
   const attendDateIn = () => {
     // 부정클릭 방지
@@ -82,11 +83,6 @@ export default function AttendTab() {
       }
     }
   }
-
-  const startTime=new Date('2021-12-06T00:00');
-  const endTime=new Date('2021-12-12T00:00');
-  const current=new Date();
-
   //------------------
   useEffect(() => {
     fetchEventAttendDate()
@@ -95,9 +91,12 @@ export default function AttendTab() {
   return (
     <div className="attendTab">
       <div className="topBanner">
-        {/* <img src={`${IMG_SERVER}/event/attend/210610/event_img_01_1@2x.png`} alt=" 최대 25달 + 경험치 매일 출석 check" /> */}
-        <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 24달 + 경험치 매일 출석 check" />
-
+        {
+          eventDate.nowDate > eventDate.endDate ? 
+            <img src={`${IMG_SERVER}/event/attend/210610/event_img_01_1@2x.png`} alt=" 최대 19달 + 경험치 매일 출석 check" /> 
+          : 
+            <img src={`${IMG_SERVER}/event/attend/211203/tabAttendTop.png`} alt="기간한정 최대 24달 + 경험치 매일 출석 check" />
+        }
         {statusList.check_gift === '1' ? (
           <button type="button" className="attend" onClick={() => attendDateIn()}>
             <img src={`${IMG_SERVER}/event/attend/201019/btn_check@2x.png`} alt="출석체크 하기" />
@@ -121,11 +120,11 @@ export default function AttendTab() {
         </dl>
       </div>
 
-      <AttendList />
+      <AttendList eventDate={eventDate} />
 
       <Notice />
 
-      {popup && <AttendPop setPopup={setPopup} />}
+      {popup && <AttendPop setPopup={setPopup} eventDate={eventDate}/>}
     </div>
   )
 }
