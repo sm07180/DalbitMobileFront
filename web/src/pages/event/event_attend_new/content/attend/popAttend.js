@@ -5,11 +5,10 @@ import {useHistory} from 'react-router-dom'
 import {AttendContext} from '../../attend_ctx'
 
 export default (props) => {
-  const {setPopup} = props
+  const {setPopup, eventDate} = props
   const history = useHistory()
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
-  const {eventDate} = props
 
   // reference
   const layerWrapRef = useRef()
@@ -35,18 +34,18 @@ export default (props) => {
     return gift
   }
   const eventDalExp = () => {
-    let gift
+    let eventGift
 
     if (statusList.the_day === '0' || statusList.the_day === '1' || statusList.the_day === '2' || statusList.the_day === '3') {
-      gift = '2달+10EXP'
+      eventGift = '2달+10EXP'
     } else if (statusList.the_day === '4') {
-      gift = '2달+15EXP'
+      eventGift = '2달+15EXP'
     } else {
-      gift = '2달+15EXP'
+      eventGift = '2달+15EXP'
     }
-    return gift
+    return eventGift
   }
-
+  console.log(statusList.the_day)
   //-------------------------------------------
   useEffect(() => {
     document.body.style.overflow = 'hidden'

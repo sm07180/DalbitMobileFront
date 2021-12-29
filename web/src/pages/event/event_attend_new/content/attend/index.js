@@ -17,8 +17,8 @@ export default function AttendTab() {
   const {token} = globalCtx
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, authCheckYn} = eventAttendState
-  const [popup, setPopup] = useState(false)
-  const eventDate = {nowDate: moment().format('YYYYMMDD') , endDate : '20220102'}
+  const [popup, setPopup] = useState(true)
+  const eventDate = {nowDate: moment().format('YYYYMMDD') , endDate : '20211228'}
 
   async function fetchEventAttendDate() {
     const {result, data} = await API.postEventAttend()
@@ -34,7 +34,6 @@ export default function AttendTab() {
       eventAttendAction.setDateList([{0: {}}])
     }
   }
-
   let isAttendClick = false
   const attendDateIn = () => {
     // 부정클릭 방지
