@@ -22,12 +22,15 @@ export default function GotoMoonRanking(props) {
   const [rankingList, setRankingList] = useState([]);
 
   const totalPage = useRef(1);
-  //let totalPage = 1;
-  let pagePerCnt = 10;  
+  const myMemNo = useRef(0);
+  const pagePerCnt = useRef(10);
+  const listLength = useRef(0);  
+  const goMyRankFlag = useRef({do:false, link: ""});
+
   let todayIs = new Date;
   let todayDate = moment(todayIs).format("YYYY-MM-DD");
   let eventEnd = moment(endDate).format("YYYY-MM-DD");  
-
+  
   const gotomoonEventMyRank = async () => {
     if(moonNumber !== 0) {
       const { data, message } = await Api.gotomoonMyRank({
@@ -35,6 +38,7 @@ export default function GotoMoonRanking(props) {
       });
       if (message === "SUCCESS") {
         setMyRank(data);
+        myMemNo.current = data.mem_no;
       }
     }    
   };
@@ -44,11 +48,11 @@ export default function GotoMoonRanking(props) {
       const { data, message } = await Api.gotomoonRankingList({
         moonNo: moonNumber,
         pageNo : currentPage,
-        pagePerCnt : pagePerCnt,
+        pagePerCnt : pagePerCnt.current,
       });
       if (message === 'SUCCESS') {
-        totalPage.current = Math.ceil(data.cnt / pagePerCnt)
-  
+        totalPage.current = Math.ceil(data.cnt / pagePerCnt.current)
+        listLength.current = data.cnt;  
         if(currentPage === 1){
           setRankingList(data.list)
         }else{
@@ -84,12 +88,30 @@ export default function GotoMoonRanking(props) {
     }
   }, [moonNumber, endDate])
 
+  const goMyRankList = (event) => {
+    const link = event.target.dataset.link;
+    pagePerCnt.current = listLength.current;
+    goMyRankFlag.current = {do:true, link: link};
+    gotomoonEventRankingList(); 
+  }
+
+  useEffect(() => {
+    if(goMyRankFlag && goMyRankFlag.current && goMyRankFlag.current.do){
+      const {link} = goMyRankFlag.current;
+      
+      if(link){
+        const scrollTo = document.getElementById(link);
+        scrollTo?.scrollIntoView({ behavior: "smooth" });
+      }
+      goMyRankFlag.current = {do:false, link: ""};
+    }
+  }, [rankingList])
 
   return (
     <div id="ranking">
       <div className="myData">
         <div className="myRankWrap">
-          <div className="myRankList">
+          <div className="myRankList" data-link={myMemNo.current} onClick={goMyRankList}>
             <div className="listFront">
               <span className="listFrontText">내순위</span>
               <span className="badgeMyRank">{myRank.my_rank_no === 0 ? "-" : myRank.my_rank_no}</span>
@@ -99,7 +121,7 @@ export default function GotoMoonRanking(props) {
               ${myRank.image_profile ?
                 `https://photo.dalbitlive.com${myRank.image_profile}?120x120`
                 :
-                `https://photo.dalbitlive.com/profile_3/profile_m_200327.jpg`
+                `https://photo.dalbitlive.com/profile_3/profile_${globalCtx.profile.gender === "m" ? "m" : "f"}_200327.jpg`
               })`
               }}/>
             </div>
@@ -150,7 +172,7 @@ export default function GotoMoonRanking(props) {
                     else if(rank_num <= 30) {eventReward = 100;}
 
                     return (
-                      <div className="rankingList" key={index} onClick={() => {history.push(`/mypage/${mem_no}`)}}>
+                      <div className="rankingList" key={index} id={mem_no} onClick={() => {history.push(`/mypage/${mem_no}`)}}>
                         <div className="listFront">
                           <span className={`badgeRanking ${rank_num > 30 ? "" : "top30"}`}>{rank_num}</span>
                         </div>

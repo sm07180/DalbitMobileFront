@@ -159,6 +159,11 @@
               width: 100%;
               padding: 12px 10px;
               box-sizing: border-box;
+              cursor: pointer;
+
+              & div {
+                pointer-events: none;
+              }
 
               .listFront {
                 display: flex;
