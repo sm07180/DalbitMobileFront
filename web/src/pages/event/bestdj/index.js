@@ -53,7 +53,7 @@ export default function bestdj() {
       <div className="subContent">
           <img
           src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-top.png`}
-          alt="달빛라이브를 대표하는 12월의 베스트DJ"
+          alt="달빛라이브를 대표하는 1월의 베스트DJ"
           className="img__full"
           />
           <div className="listWrap">
