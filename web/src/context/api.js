@@ -1780,7 +1780,7 @@ export default class API {
   static getRankList = async (data) => {
     return await ajax({
       method: 'GET',
-      url: `/rank/${data.type}`,
+      url: `/rank/${data.giftSlct}`,
       params: data
     })
   }
@@ -3554,7 +3554,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/decoList',
       method: 'GET',
-      params: data,
+      params: data
     })
   }
 
@@ -3563,7 +3563,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/mainList',
       method: 'GET',
-      params: data,
+      params: data
     })
   }
 
@@ -3572,7 +3572,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/storyList',
       method: 'GET',
-      params: data,
+      params: data
     })
   }
 
@@ -3581,7 +3581,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/rankList',
       method: 'GET',
-      params: data,
+      params: data
     })
   }
 
@@ -3590,17 +3590,16 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/rankUserInfo',
       method: 'GET',
-      params: data,
+      params: data
     })
   }
-
 
   // 좋아요 트리 사연 등록
   static likeTreeStoryIns = async (data) => {
     return await ajax({
       url: '/event/likeTree/registStory',
       method: 'POST',
-      params: data,
+      params: data
     })
   }
 
@@ -3609,7 +3608,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/updateStory',
       method: 'POST',
-      params: data,
+      params: data
     })
   }
 
@@ -3618,7 +3617,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/deleteStory',
       method: 'POST',
-      params: data,
+      params: data
     })
   }
 
@@ -3627,7 +3626,7 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/reportStory',
       method: 'POST',
-      params: data,
+      params: data
     })
   }
 
@@ -3636,7 +3635,37 @@ export default class API {
     return await ajax({
       url: '/event/likeTree/reward/ins',
       method: 'POST',
-      params: data,
+      params: data
+    })
+  }
+  // WELCOME 이벤트
+  /*--- 이벤트 자격 여부 */
+  static getWelcomeAuthInfo = async () => {
+    return await ajax({
+      url: '/event/welcome/authInfo',
+      method: 'GET'
+    })
+  }
+  /*--- 이벤트 청취자 정보 */
+  static getWelcomeUserInfo = async () => {
+    return await ajax({
+      url: '/event/welcome/userInfo',
+      method: 'GET'
+    })
+  }
+  /*--- 이벤트 DJ 정보 */
+  static getWelcomeDjInfo = async () => {
+    return await ajax({
+      url: '/event/welcome/djInfo',
+      method: 'GET'
+    })
+  }
+  /*--- 이벤트 선물 받기 */
+  static postWelcomeGiftRcv = async (type, data) => {
+    return await ajax({
+      url: `/event/welcome/reqGift/${type}`,
+      method: 'POST',
+      params: data
     })
   }
 }
