@@ -87,10 +87,10 @@ const EventWelcome = () => {
       return
     }
 
-    if (tabContent.quality === 'y') {
+    if (tabContent.quality === 'n') {
       context.action.toast({
         msg: `이벤트 참여대상이 아닙니다.
-                신입회원님들을 위한 이벤트이니 양해 부탁드립니다.`
+              신입회원님들을 위한 이벤트이니 양해 부탁드립니다.`
       })
       return
     }
