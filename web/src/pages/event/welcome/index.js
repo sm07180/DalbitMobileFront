@@ -11,7 +11,7 @@ import PopupChoice from './content/PopupChoice'
 
 import './style.scss'
 
-export default () => {
+const EventWelcome = () => {
   const history = useHistory()
   const context = useContext(Context)
   const tabMenuRef = useRef()
@@ -74,7 +74,7 @@ export default () => {
       context.action.confirm({
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('5', context.authRef, context)
+          authReq('10', context.authRef, context)
         }
       })
       return
@@ -183,10 +183,8 @@ export default () => {
       <div className="step">
         {stepItemInfo.length > 0 &&
           stepItemInfo.map((data, index) => {
-            const {stepNo, giftCode, giftName, giftReqYn, itemList, dalCnt, likeCnt, memTime, maxDalCnt, maxLikeCnt, maxMemTime} =
-              data
+            const {stepNo, giftOrd, giftReqYn, itemList, dalCnt, likeCnt, memTime, maxDalCnt, maxLikeCnt, maxMemTime} = data
             const ynBtn = dalCnt >= maxDalCnt && likeCnt >= maxLikeCnt && memTime >= maxMemTime && tabContent.quality === 'y'
-            const order = 2
             return (
               <section key={index}>
                 <div className="containerBox">
@@ -204,12 +202,12 @@ export default () => {
                           <div className="giftItem">
                             <img
                               src={`${IMG_SERVER}/event/welcome/item/${
-                                index + 1 === order && giftReqYn === 'y' ? data.giftCode : giftCode
+                                index + 1 === giftOrd && giftReqYn === 'y' ? data.giftCode : giftCode
                               }.png`}
-                              alt={index + 1 === order && giftReqYn === 'y' ? data.giftName : giftName}
+                              alt={index + 1 === giftOrd && giftReqYn === 'y' ? data.giftName : giftName}
                             />
                           </div>
-                          <p>{index + 1 === order && giftReqYn === 'y' ? data.giftName : giftName}</p>
+                          <p>{index + 1 === giftOrd && giftReqYn === 'y' ? data.giftName : giftName}</p>
                         </li>
                       )
                     })}
@@ -338,3 +336,5 @@ export default () => {
     </div>
   )
 }
+
+export default EventWelcome

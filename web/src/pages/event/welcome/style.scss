@@ -54,7 +54,7 @@
             background-color: #14389d;
           }
           img {
-            height: 42%;
+            height: 21px;
           }
         }
       }
@@ -62,8 +62,10 @@
         position: fixed;
         top: 50px;
         width: 100%;
-        // max-width: 460px;
+        max-width: 460px;
         margin: 0;
+        img {
+        }
       }
     }
   }
