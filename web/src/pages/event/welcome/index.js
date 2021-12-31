@@ -74,7 +74,7 @@ const EventWelcome = () => {
       context.action.confirm({
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('11', context.authRef, context)
+          authReq('9', context.authRef, context)
         }
       })
       return
