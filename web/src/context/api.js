@@ -1780,7 +1780,7 @@ export default class API {
   static getRankList = async (data) => {
     return await ajax({
       method: 'GET',
-      url: `/rank/${data.giftSlct}`,
+      url: `/rank/${data.type}`,
       params: data
     })
   }
