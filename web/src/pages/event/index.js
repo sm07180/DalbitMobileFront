@@ -52,7 +52,6 @@ export default () => {
 
   const createContent = () => {
     let {title} = params
-    console.log(title);
     switch (title) {
       case 'thanksgiving':
         return <ThxGiving />
