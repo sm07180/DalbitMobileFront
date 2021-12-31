@@ -21,7 +21,7 @@ const EventWelcome = () => {
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
-  const [eventAuth, setEventAuth] = useState({check: false, adultYn: ''})
+  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo:''})
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: ''}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
@@ -135,9 +135,9 @@ const EventWelcome = () => {
       fetchEventAuthInfo()
       Api.self_auth_check({}).then((res) => {
         if (res.result === 'success') {
-          setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn})
+          setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
         } else {
-          setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn})
+          setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
         }
       })
     }
@@ -332,7 +332,7 @@ const EventWelcome = () => {
           />
         )}
       </div>
-      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} />}
+      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} />}
     </div>
   )
 }
