@@ -1,0 +1,42 @@
+#goodStart {
+  #popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-sizing: border-box;
+    z-index: 60;
+    .wrapper {
+      position: relative;
+      width: calc(100% - 32px);
+      max-width: 390px;
+      border-radius: 15px;
+      overflow: hidden;
+      background: #fff;
+      .title {
+        height: 52px;
+        line-height: 52px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+        letter-spacing: -1px;
+        color: #000000;
+        box-sizing: border-box;
+      }
+      ul {
+        li {
+          font-size: 14px;
+        }
+      }
+      .closeBtn {
+        display: block;
+      }
+    }
+  }
+}
