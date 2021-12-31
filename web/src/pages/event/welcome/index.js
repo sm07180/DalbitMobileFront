@@ -7,9 +7,10 @@ import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header'
-import PopupChoice from './content/PopupChoice'
+import PopupChoice from './content/popupChoice'
 
 import './style.scss'
+import PopupItems from "pages/event/welcome/content/popupItems";
 
 const EventWelcome = () => {
   const history = useHistory()
@@ -17,15 +18,15 @@ const EventWelcome = () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [giftComplete, setGiftComplete] = useState({on: false, item: -1})
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
-  const [eventAuth, setEventAuth] = useState({check: false, adultYn: ''})
+  const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo:''})
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: ''}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
-
+  const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
+  
   // 조회 API
   // 0. 이벤트 자격 여부
   const fetchEventAuthInfo = () => {
@@ -65,7 +66,6 @@ const EventWelcome = () => {
   const choicePopOpen = (e) => {
     const {targetNum} = e.currentTarget.dataset
 
-    console.log(targetNum)
     if (targetNum === undefined) {
       return
     }
@@ -74,7 +74,7 @@ const EventWelcome = () => {
       context.action.confirm({
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('10', context.authRef, context)
+          authReq('9', context.authRef, context)
         }
       })
       return
@@ -95,6 +95,7 @@ const EventWelcome = () => {
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
+
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
@@ -102,16 +103,8 @@ const EventWelcome = () => {
     }
   }
 
-  const choicePopClose = (giftSlct) => {
+  const choicePopClose = () => {
     setChoicePopInfo({...choicePopInfo, open: false})
-    setGiftComplete({...giftComplete, on: true, item: giftSlct})
-    if (clearItemInfo.giftReqYn === 'y') {
-      context.action.alert({
-        msg: `축하드립니다! 
-              ALL CLEAR 선물에 자동으로 응모되었습니다.
-              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      })
-    }
   }
 
   const tabScrollEvent = () => {
@@ -128,6 +121,30 @@ const EventWelcome = () => {
     }
   }
 
+  // 보상 결과 팝업 열기 이벤트
+  const itemPopOpen = (giftInfo) => {
+    setChoicePopInfo({ open: false, stepNo: 0, list: []})
+    setResultItemPopInfo({ open: true, giftInfo: giftInfo });
+  };
+
+  // 보상 결과 팝업 닫기
+  const itemPopClose = () => {
+    if (tabContent.name === 'Lisen') {
+      fetchEventUserInfo()
+    } else if (tabContent.name === 'Dj') {
+      fetchEventDjInfo()
+    }
+    setResultItemPopInfo({ open: false, giftInfo: {} });
+
+    if (clearItemInfo.giftReqYn === 'y') {
+      context.action.alert({
+        msg: `축하드립니다!
+              ALL CLEAR 선물에 자동으로 응모되었습니다.
+              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
+      })
+    }
+  };
+
   useEffect(() => {
     if (!context.token.isLogin) {
       history.push('/login')
@@ -135,9 +152,9 @@ const EventWelcome = () => {
       fetchEventAuthInfo()
       Api.self_auth_check({}).then((res) => {
         if (res.result === 'success') {
-          setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn})
+          setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
         } else {
-          setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn})
+          setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
         }
       })
     }
@@ -145,6 +162,8 @@ const EventWelcome = () => {
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
+
+  console.log(eventAuth)
 
   useEffect(() => {
     if (tabContent.name === 'Lisen') {
@@ -224,13 +243,13 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${memTime > maxMemTime ? '100' : (memTime / maxMemTime) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : memTime > maxMemTime ? '100' : (memTime / maxMemTime) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${memTime >= maxMemTime && 'complete'}`}>
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : memTime >= maxMemTime && 'complete'}`}>
                           (
                           {memTime > maxMemTime
-                            ? `${maxMemTime / 60}/${maxMemTime / 60}`
-                            : `${Math.floor(memTime / 60)}/${maxMemTime / 60}`}
+                            ? `${tabContent.quality === 'n' ? '0' : maxMemTime / 60}/${maxMemTime / 60}`
+                            : `${tabContent.quality === 'n' ? '0' : Math.floor(memTime / 60)}/${maxMemTime / 60}`}
                           )
                         </p>
                       </div>
@@ -246,10 +265,10 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${likeCnt > maxLikeCnt ? '100' : (likeCnt / maxLikeCnt) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : likeCnt > maxLikeCnt ? '100' : (likeCnt / maxLikeCnt) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${likeCnt >= maxLikeCnt && 'complete'}`}>
-                          ({likeCnt > maxLikeCnt ? `${maxLikeCnt}/${maxLikeCnt}` : `${likeCnt}/${maxLikeCnt}`})
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : likeCnt >= maxLikeCnt && 'complete'}`}>
+                          ({likeCnt > maxLikeCnt ? `${tabContent.quality === 'n' ? '0' : maxLikeCnt}/${maxLikeCnt}` : `${tabContent.quality === 'n' ? '0' : likeCnt}/${maxLikeCnt}`})
                         </p>
                       </div>
                     )}
@@ -264,10 +283,10 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${dalCnt > maxDalCnt ? '100' : (dalCnt / maxDalCnt) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : dalCnt > maxDalCnt ? '100' : (dalCnt / maxDalCnt) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${dalCnt >= maxDalCnt && 'complete'}`}>
-                          ({dalCnt > maxDalCnt ? `${maxDalCnt}/${maxDalCnt}` : `${dalCnt}/${maxDalCnt}`})
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : dalCnt >= maxDalCnt && 'complete'}`}>
+                          ({dalCnt > maxDalCnt ? `${tabContent.quality === 'n' ? '0' : maxDalCnt}/${maxDalCnt}` : `${tabContent.quality === 'n' ? '0' : dalCnt}/${maxDalCnt}`})
                         </p>
                       </div>
                     )}
@@ -332,7 +351,8 @@ const EventWelcome = () => {
           />
         )}
       </div>
-      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} />}
+      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} onSuccess={itemPopOpen}/>}
+      {resultItemPopInfo.open && <PopupItems onItemPopClose={itemPopClose} item={resultItemPopInfo.giftInfo} />}
     </div>
   )
 }
