@@ -13,6 +13,7 @@ import Api from 'context/api'
 import {OS_TYPE, API_SERVER, PHOTO_SERVER} from 'context/config.js'
 import {Hybrid, isHybrid} from "context/hybrid";
 import Utility from "components/lib/utility";
+import {getDeviceOSTypeChk} from '../../../common/DeviceCommon';
 
 export default () => {
   const history = useHistory();
@@ -44,19 +45,22 @@ export default () => {
       localStorage.setItem('innerChk', innerChk); //client ip
     }
   };
-  //userAgent check
-  const getDeviceOSTypeChk = () => {
-    if(typeof window ==='undefined') return;
-    const userAgent = window.navigator.userAgent;
-    let osName;
-    if(userAgent) { // return: Array or null
-      osName = userAgent.match(/(Android)/gi) || userAgent.match(/(iPhone)/gi) || userAgent.match(/(iPad)/gi) || userAgent.match(/(Windows)/gi);
+
+  //서버 이동 브릿지 호출 함수 : (로그아웃 후 서버 이동 시킴)
+  const serverChangeAction = async (host, api, photo, socketURL) => {
+    if (context.token.isLogin) {
+      const logoutInfo = await Api.member_logout();
+      if (logoutInfo.result === 'success') {
+        Hybrid('GetLogoutToken', logoutInfo.data);
+        clearInterval(context.intervalId);
+        context.action.updateToken(logoutInfo.data);
+        context.action.updateProfile(null);
+
+        Hybrid('setAppHost', {host, api, photo, socketURL});
+      }
+    } else {
+      Hybrid('setAppHost', {host, api, photo, socketURL});
     }
-    osName = osName? osName[0] : 'Windows'; // null이면 Desktop으로 세팅
-    return osName === 'Android' ? OS_TYPE['Android'] :
-      osName === 'iPhone' ? OS_TYPE['IOS'] :
-        osName === 'iPad' ? OS_TYPE['IOS'] :
-          osName === 'Windows' ? OS_TYPE['Desktop'] : OS_TYPE['Desktop'];
   };
 
   useEffect(() => {
@@ -86,7 +90,7 @@ export default () => {
                   if(osType === OS_TYPE['IOS']){ //IOS 브릿지 작업안되어서 분기처리
                     location.href = host;
                   } else { //Android
-                    Hybrid('setAppHost', {host, api, photo, socketURL});
+                    serverChangeAction(host, api, photo, socketURL); //bridge Call
                   }
                 }
               }
