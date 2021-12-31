@@ -7,7 +7,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header'
-import PopupChoice from './content/PopupChoice'
+import PopupChoice from './content/popupChoice'
 
 import './style.scss'
 

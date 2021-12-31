@@ -3549,6 +3549,95 @@ export default class API {
     })
   }
 
+  // 좋아요 트리 사연 장식리스트
+  static getLikeTreeDecoList = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/decoList',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연 메인리스트
+  static getLikeTreeMainList = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/mainList',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연리스트
+  static getLikeTreeStoryList = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/storyList',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 랭킹리스트
+  static getLikeTreeRankList = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/rankList',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 회원 랭킹 정보
+  static getLikeTreeRankUserInfo = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/rankUserInfo',
+      method: 'GET',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연 등록
+  static likeTreeStoryIns = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/registStory',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연 수정
+  static likeTreeStoryUpd = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/updateStory',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연 삭제
+  static likeTreeStoryDel = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/deleteStory',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 좋아요 트리 사연 신고
+  static likeTreeStoryRptIns = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/reportStory',
+      method: 'POST',
+      params: data
+    })
+  }
+
+  // 좋아요 선물 받기
+  static likeTreeRewardIns = async (data) => {
+    return await ajax({
+      url: '/event/likeTree/reward/ins',
+      method: 'POST',
+      params: data
+    })
+  }
   // WELCOME 이벤트
   /*--- 이벤트 자격 여부 */
   static getWelcomeAuthInfo = async () => {

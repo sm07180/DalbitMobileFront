@@ -5,10 +5,11 @@ import {IMG_SERVER} from 'context/config'
 
 import BonusPop from './popBonus'
 
-export default () => {
+export default (props) => {
   const {eventAttendState, eventAttendAction} = useContext(AttendContext)
   const {summaryList, statusList, dateList} = eventAttendState
   const [popup, setPopup] = useState(false)
+  const {eventDate} = props
 
   const createCheckIn = (check_ok) => {
     if (check_ok === 1) {
@@ -95,8 +96,8 @@ export default () => {
       6: '일요일'
     }
 
-    // const text = ['EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP15+1달', 'EXP15+2달', 'EXP15+2달']
-    const text = ['EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP15+2달', 'EXP15+2달', 'EXP15+2달']
+    const text = ['EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP10+1달', 'EXP15+1달', 'EXP15+2달', 'EXP15+2달']
+    const eventText = ['EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP10+2달', 'EXP15+2달', 'EXP15+2달', 'EXP15+2달']
 
     return (
       <>
@@ -130,7 +131,7 @@ export default () => {
                     {check_ok === 1 ? '출석성공' : check_ok === 0 ? '출석실패' : `${date_pair[index]}`}
                   </p>
 
-                  <p className="stampBoxItem__exp">{text[index]}</p>
+                  <p className="stampBoxItem__exp">{eventDate.nowDate > eventDate.endDate ? text[index] : eventText[index]}</p>
                 </li>
               )
             })}

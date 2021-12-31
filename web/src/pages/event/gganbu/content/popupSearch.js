@@ -268,7 +268,7 @@ export default (props) => {
                           {sendYn === 'n' ? (
                             <button
                               className="submit"
-                              onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm, nickName)}>
+                              onClick={(e) => acceptBtn(mem_no, 'application', context.profile.nickNm, mem_nick)}>
                               신청
                             </button>
                           ) : (
