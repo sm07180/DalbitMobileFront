@@ -104,16 +104,8 @@ const EventWelcome = () => {
     }
   }
 
-  const choicePopClose = (giftSlct) => {
+  const choicePopClose = () => {
     setChoicePopInfo({...choicePopInfo, open: false})
-    setGiftComplete({...giftComplete, on: true, item: giftSlct})
-    if (clearItemInfo.giftReqYn === 'y') {
-      context.action.alert({
-        msg: `축하드립니다! 
-              ALL CLEAR 선물에 자동으로 응모되었습니다.
-              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      })
-    }
   }
 
   const tabScrollEvent = () => {
@@ -144,6 +136,14 @@ const EventWelcome = () => {
       fetchEventDjInfo()
     }
     setResultItemPopInfo({ open: false, giftInfo: {} });
+
+    if (clearItemInfo.giftReqYn === 'y') {
+      context.action.alert({
+        msg: `축하드립니다!
+              ALL CLEAR 선물에 자동으로 응모되었습니다.
+              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
+      })
+    }
   };
 
   useEffect(() => {
@@ -175,7 +175,7 @@ const EventWelcome = () => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
-  }, [tabContent.name, giftComplete])
+  }, [tabContent.name])
 
   return (
     <div id="welcome">
