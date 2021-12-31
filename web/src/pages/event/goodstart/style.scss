@@ -96,7 +96,7 @@
       justify-content: space-between;
       width: 100%;
       padding: 0 2.78%;
-      margin-bottom: 5%;
+      margin-bottom: 8%;
       p {
         font-size: 14px;
       }
@@ -111,6 +111,7 @@
   }
   .rankContainer {
     position: relative;
+    margin-top: -5%;
     padding: 8px 10px;
     border-radius: 28px 28px 0 0;
     &.dj {
@@ -124,6 +125,7 @@
       display: flex;
       width: 100%;
       height: 40px;
+      margin-bottom: 10px;
       border-radius: 100px;
       background-color: #82684b;
       box-sizing: border-box;
@@ -161,6 +163,104 @@
       width: 76px;
       height: 22px;
       margin: 16px auto;
+    }
+    .rankUl {
+      height: 100%;
+      border-radius: 15px;
+      background-color: white;
+      overflow: hidden;
+      .rankList {
+        display: flex;
+        align-items: center;
+        height: 81px;
+        padding: 0 10px;
+        border-bottom: 1px solid #f2f2f2;
+        background-color: white;
+        box-sizing: border-box;
+        .rankNum {
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          span {
+            font-size: 12px;
+            &.num {
+              width: 100%;
+              height: 20px;
+              line-height: 20px;
+              background-color: #f15c5c;
+              border-radius: 100px;
+              text-align: center;
+              color: white;
+            }
+          }
+        }
+        .photo {
+          position: relative;
+          flex: none;
+          width: 50px;
+          height: 50px;
+          margin-left: 10px;
+          border-radius: 50%;
+          overflow: hidden;
+          img {
+            width: 100%;
+            object-fit: cover;
+          }
+        }
+        .listBox {
+          display: flex;
+          align-items: center;
+          min-width: 0;
+          margin: 0 10px;
+          .level {
+            flex: none;
+            height: 18px;
+            line-height: 18px;
+            padding: 0 6px;
+            background-color: #bdbdbd;
+            border-radius: 100px;
+            white-space: nowrap;
+            text-align: center;
+            font-size: 12px;
+            color: #fff;
+          }
+          .userNick {
+            margin-left: 3px;
+            font-size: 15px;
+            font-weight: bold;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+          }
+        }
+        .listBack {
+          flex: none;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          width: 60px;
+          margin-left: auto;
+          font-size: 14px;
+          font-weight: bold;
+          img {
+            width: 24px;
+          }
+        }
+        &.my {
+          height: 84px;
+          padding: 12px 10px;
+          border-bottom: 4px solid #f5f5f5;
+          box-sizing: border-box;
+          .rankNum .num {
+            margin-top: 4px;
+            background-color: black;
+          }
+        }
+      }
     }
   }
 }
