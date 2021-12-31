@@ -32,7 +32,7 @@ export default function Gotomoon() {
   };
 
   const gotomoonEventDate = async () => {
-    const { data, message } = await Api.gotomoonDate();
+    const { data, message } = await Api.getMoonLandInfoData();
     if (message === "SUCCESS") {
       const {moon_no, start_date, end_date, ins_date} = data[data.length - 1];
       setMoonNumber(parseInt(moon_no));

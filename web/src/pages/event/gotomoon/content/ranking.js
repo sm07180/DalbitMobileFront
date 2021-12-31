@@ -33,7 +33,7 @@ export default function GotoMoonRanking(props) {
   
   const gotomoonEventMyRank = async () => {
     if(moonNumber !== 0) {
-      const { data, message } = await Api.gotomoonMyRank({
+      const { data, message } = await Api.getMoonLandMyRank({
         moonNo: moonNumber
       });
       if (message === "SUCCESS") {
@@ -45,7 +45,7 @@ export default function GotoMoonRanking(props) {
   
   const gotomoonEventRankingList = async () => {
     if(moonNumber !== 0) {
-      const { data, message } = await Api.gotomoonRankingList({
+      const { data, message } = await Api.getMoonLandRankList({
         moonNo: moonNumber,
         pageNo : currentPage,
         pagePerCnt : pagePerCnt.current,

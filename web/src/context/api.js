@@ -3641,7 +3641,7 @@ export default class API {
   }
 
   /* 달나라 갈끄니까 이벤트 API 시작 */
-  static gotomoonDate = async (data) => {
+  static getMoonLandInfoData = async (data) => {
     return await ajax({
       url: '/event/moonLand/info/sel',
       method: 'GET',
@@ -3649,7 +3649,7 @@ export default class API {
     })
   }
 
-  static gotomoonMyRank = async (data) => {
+  static getMoonLandMyRank = async (data) => {
     const {moonNo} = data;
     return await ajax({
       url: `/event/moonLand/rank/my/sel/${moonNo}`,
@@ -3658,7 +3658,7 @@ export default class API {
     })
   }
 
-  static gotomoonRankingList = async (data) => {
+  static getMoonLandRankList = async (data) => {
     const {moonNo, pageNo, pagePerCnt} = data;
     return await ajax({
       url: `/event/moonLand/rank/list/${moonNo}/${pageNo}/${pagePerCnt}`,
