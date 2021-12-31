@@ -10,6 +10,7 @@ import Header from 'components/ui/new_header'
 import PopupChoice from './content/popupChoice'
 
 import './style.scss'
+import PopupItems from "pages/event/welcome/content/popupItems";
 
 const EventWelcome = () => {
   const history = useHistory()
@@ -25,7 +26,8 @@ const EventWelcome = () => {
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: ''}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
-
+  const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
+  
   // 조회 API
   // 0. 이벤트 자격 여부
   const fetchEventAuthInfo = () => {
@@ -65,7 +67,6 @@ const EventWelcome = () => {
   const choicePopOpen = (e) => {
     const {targetNum} = e.currentTarget.dataset
 
-    console.log(targetNum)
     if (targetNum === undefined) {
       return
     }
@@ -95,6 +96,7 @@ const EventWelcome = () => {
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
+
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
@@ -127,6 +129,22 @@ const EventWelcome = () => {
       }
     }
   }
+
+  // 보상 결과 팝업 열기 이벤트
+  const itemPopOpen = (giftInfo) => {
+    setChoicePopInfo({ open: false, stepNo: 0, list: []})
+    setResultItemPopInfo({ open: true, giftInfo: giftInfo });
+  };
+
+  // 보상 결과 팝업 닫기
+  const itemPopClose = () => {
+    if (tabContent.name === 'Lisen') {
+      fetchEventUserInfo()
+    } else if (tabContent.name === 'Dj') {
+      fetchEventDjInfo()
+    }
+    setResultItemPopInfo({ open: false, giftInfo: {} });
+  };
 
   useEffect(() => {
     if (!context.token.isLogin) {
@@ -334,7 +352,8 @@ const EventWelcome = () => {
           />
         )}
       </div>
-      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} />}
+      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} onSuccess={itemPopOpen}/>}
+      {resultItemPopInfo.open && <PopupItems onItemPopClose={itemPopClose} item={resultItemPopInfo.giftInfo} />}
     </div>
   )
 }
