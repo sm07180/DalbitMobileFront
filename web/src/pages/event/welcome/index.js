@@ -74,7 +74,7 @@ const EventWelcome = () => {
       context.action.confirm({
         msg: `본인 인증을 해주세요.`,
         callback: () => {
-          authReq('10', context.authRef, context)
+          authReq('11', context.authRef, context)
         }
       })
       return
@@ -146,6 +146,8 @@ const EventWelcome = () => {
     return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
 
+  console.log(eventAuth)
+
   useEffect(() => {
     if (tabContent.name === 'Lisen') {
       fetchEventUserInfo()
@@ -155,7 +157,7 @@ const EventWelcome = () => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
-  }, [tabContent.name])
+  }, [tabContent.name, giftComplete])
 
   return (
     <div id="welcome">

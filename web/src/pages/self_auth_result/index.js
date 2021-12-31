@@ -257,6 +257,20 @@ export default (props) => {
             </div>
           </div>
         )
+        case 11:
+          return (
+            <div className="auth-wrap">
+              <h5>
+                본인 인증이 완료되었습니다.
+              </h5>
+              <div className="btn-wrap">
+                <button
+                  onClick={() => history.push('/event/welcome')}
+                >확인
+                </button>
+              </div>
+            </div>
+          )
       default:
         return <></>
     }
