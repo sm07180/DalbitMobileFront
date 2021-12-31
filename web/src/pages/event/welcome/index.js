@@ -18,7 +18,6 @@ const EventWelcome = () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
-  const [giftComplete, setGiftComplete] = useState({on: false, item: -1})
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
@@ -244,13 +243,13 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${memTime > maxMemTime ? '100' : (memTime / maxMemTime) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : memTime > maxMemTime ? '100' : (memTime / maxMemTime) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${memTime >= maxMemTime && 'complete'}`}>
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : memTime >= maxMemTime && 'complete'}`}>
                           (
                           {memTime > maxMemTime
-                            ? `${maxMemTime / 60}/${maxMemTime / 60}`
-                            : `${Math.floor(memTime / 60)}/${maxMemTime / 60}`}
+                            ? `${tabContent.quality === 'n' ? '0' : maxMemTime / 60}/${maxMemTime / 60}`
+                            : `${tabContent.quality === 'n' ? '0' : Math.floor(memTime / 60)}/${maxMemTime / 60}`}
                           )
                         </p>
                       </div>
@@ -266,10 +265,10 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${likeCnt > maxLikeCnt ? '100' : (likeCnt / maxLikeCnt) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : likeCnt > maxLikeCnt ? '100' : (likeCnt / maxLikeCnt) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${likeCnt >= maxLikeCnt && 'complete'}`}>
-                          ({likeCnt > maxLikeCnt ? `${maxLikeCnt}/${maxLikeCnt}` : `${likeCnt}/${maxLikeCnt}`})
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : likeCnt >= maxLikeCnt && 'complete'}`}>
+                          ({likeCnt > maxLikeCnt ? `${tabContent.quality === 'n' ? '0' : maxLikeCnt}/${maxLikeCnt}` : `${tabContent.quality === 'n' ? '0' : likeCnt}/${maxLikeCnt}`})
                         </p>
                       </div>
                     )}
@@ -284,10 +283,10 @@ const EventWelcome = () => {
                         <div className="gaugeOuter">
                           <div
                             className="gaugeInner"
-                            style={{width: `${dalCnt > maxDalCnt ? '100' : (dalCnt / maxDalCnt) * 100}%`}}></div>
+                            style={{width: `${tabContent.quality === 'n' ? '0' : dalCnt > maxDalCnt ? '100' : (dalCnt / maxDalCnt) * 100}%`}}></div>
                         </div>
-                        <p className={`questCount ${dalCnt >= maxDalCnt && 'complete'}`}>
-                          ({dalCnt > maxDalCnt ? `${maxDalCnt}/${maxDalCnt}` : `${dalCnt}/${maxDalCnt}`})
+                        <p className={`questCount ${tabContent.quality === 'n' ? '' : dalCnt >= maxDalCnt && 'complete'}`}>
+                          ({dalCnt > maxDalCnt ? `${tabContent.quality === 'n' ? '0' : maxDalCnt}/${maxDalCnt}` : `${tabContent.quality === 'n' ? '0' : dalCnt}/${maxDalCnt}`})
                         </p>
                       </div>
                     )}
