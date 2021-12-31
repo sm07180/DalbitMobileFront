@@ -4,7 +4,7 @@ import {IMG_SERVER} from 'context/config'
 
 import Api from 'context/api'
 
-import PopupItems from './PopupItems'
+import PopupItems from './popupItems'
 
 import './popup.scss'
 
