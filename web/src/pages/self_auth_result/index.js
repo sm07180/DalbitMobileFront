@@ -80,6 +80,8 @@ export default (props) => {
       setAuthState(9)
     } else if(returntype === '') {
       setAuthState(10)
+    } else if(returntype === '' && url === '11') {
+      setAuthState(11)
     } else {
       checkAuth()
     }
