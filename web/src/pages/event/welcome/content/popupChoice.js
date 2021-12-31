@@ -10,7 +10,7 @@ import './popup.scss'
 
 const PopupChoice = (props) => {
   const context = useContext(Context)
-  const {onClose, stepNo, list} = props
+  const {onClose, stepNo, list, phoneNo} = props
   const [giftCheck, setGiftCheck] = useState(-1)
 
   const [itemPopInfo, setItemPopInfo] = useState({open: false, item: []})
@@ -26,15 +26,16 @@ const PopupChoice = (props) => {
   // 0. 선물 받기
   const welcomeGiftRcv = async () => {
     console.log(list[giftCheck])
-    const {giftCode, giftName, giftCont, giftDalCnt, giftStepNo, theMonth, giftSlct} = list[giftCheck]
+    const {giftCode, giftOrd, giftName, giftCont, giftDalCnt, giftStepNo, theMonth, giftSlct} = list[giftCheck]
     const param = {
       giftCode: giftCode,
       giftName: giftName,
       giftCont: giftCont,
+      giftOrdNo: giftOrd,
       giftDalCnt: giftDalCnt,
       giftStepNo: giftStepNo,
       giftTheMonth: theMonth,
-      memPhone: '01062329007'
+      memPhone: phoneNo
     }
     console.log(param)
     const res = await Api.postWelcomeGiftRcv(giftSlct, param)
@@ -63,6 +64,7 @@ const PopupChoice = (props) => {
   const itemPopClose = () => {
     setItemPopInfo({...itemPopInfo, open: false})
     onClose(giftCheck)
+    console.log(giftCheck);
   }
 
   return (
