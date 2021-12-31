@@ -150,7 +150,6 @@ export default (props) => {
       targetVal = Number(inputRef.current.value);      
     }
     const toast1 = '구슬 개수를 확인해주세요'
-    const toast2 = '베팅 가능한 최대 개수는 10개입니다'
     const rMyMarble = myMarble.rMarble
     const yMyMarble = myMarble.yMarble
     const bMyMarble = myMarble.bMarble
@@ -204,38 +203,6 @@ export default (props) => {
           setBettingVal({...bettingVal, pBetting: 0})
         }
         globalCtx.action.toast({msg: toast1})
-      } else if (targetVal > 10) {
-        inputRef.current.value = ''
-        if (thisEl === 'rMarbleRef') {
-          setSuccessVal({...successVal, rSuccess: rMyMarble})
-          setBettingVal({...bettingVal, rBetting: 0})
-        } else if (thisEl === 'yMarbleRef') {
-          setSuccessVal({...successVal, ySuccess: yMyMarble})
-          setBettingVal({...bettingVal, yBetting: 0})
-        } else if (thisEl === 'bMarbleRef') {
-          setSuccessVal({...successVal, bSuccess: bMyMarble})
-          setBettingVal({...bettingVal, bBetting: 0})
-        } else if (thisEl === 'pMarbleRef') {
-          setSuccessVal({...successVal, pSuccess: pMyMarble})
-          setBettingVal({...bettingVal, pBetting: 0})
-        }
-        globalCtx.action.toast({msg: toast2})
-      } else if (rMarbleInputVal + yMarbleInputVal + bMarbleInputVal + pMarbleInputVal > 10) {
-        inputRef.current.value = ''
-        if (thisEl === 'rMarbleRef') {
-          setSuccessVal({...successVal, rSuccess: rMyMarble})
-          setBettingVal({...bettingVal, rBetting: 0})
-        } else if (thisEl === 'yMarbleRef') {
-          setSuccessVal({...successVal, ySuccess: yMyMarble})
-          setBettingVal({...bettingVal, yBetting: 0})
-        } else if (thisEl === 'bMarbleRef') {
-          setSuccessVal({...successVal, bSuccess: bMyMarble})
-          setBettingVal({...bettingVal, bBetting: 0})
-        } else if (thisEl === 'pMarbleRef') {
-          setSuccessVal({...successVal, pSuccess: pMyMarble})
-          setBettingVal({...bettingVal, pBetting: 0})
-        }
-        globalCtx.action.toast({msg: toast2})
       } else {
         if (thisEl === 'rMarbleRef') {
           setBettingVal({...bettingVal, rBetting: targetVal})
