@@ -10,6 +10,7 @@ import Header from 'components/ui/new_header'
 import PopupChoice from './content/popupChoice'
 
 import './style.scss'
+import PopupItems from "pages/event/welcome/content/popupItems";
 
 const EventWelcome = () => {
   const history = useHistory()
@@ -25,7 +26,8 @@ const EventWelcome = () => {
   const [tabContent, setTabContent] = useState({name: 'Lisen', quality: ''}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
-
+  const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
+  
   // 조회 API
   // 0. 이벤트 자격 여부
   const fetchEventAuthInfo = () => {
@@ -65,7 +67,6 @@ const EventWelcome = () => {
   const choicePopOpen = (e) => {
     const {targetNum} = e.currentTarget.dataset
 
-    console.log(targetNum)
     if (targetNum === undefined) {
       return
     }
@@ -95,6 +96,7 @@ const EventWelcome = () => {
       return
     }
     const temp = stepItemInfo.find((row) => row.stepNo == targetNum)
+
     if (temp.dalCnt >= temp.maxDalCnt && temp.likeCnt >= temp.maxLikeCnt && temp.memTime >= temp.maxMemTime) {
       setChoicePopInfo({...choicePopInfo, open: true, stepNo: targetNum, list: temp.itemList})
     } else {
@@ -102,16 +104,8 @@ const EventWelcome = () => {
     }
   }
 
-  const choicePopClose = (giftSlct) => {
+  const choicePopClose = () => {
     setChoicePopInfo({...choicePopInfo, open: false})
-    setGiftComplete({...giftComplete, on: true, item: giftSlct})
-    if (clearItemInfo.giftReqYn === 'y') {
-      context.action.alert({
-        msg: `축하드립니다! 
-              ALL CLEAR 선물에 자동으로 응모되었습니다.
-              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
-      })
-    }
   }
 
   const tabScrollEvent = () => {
@@ -127,6 +121,30 @@ const EventWelcome = () => {
       }
     }
   }
+
+  // 보상 결과 팝업 열기 이벤트
+  const itemPopOpen = (giftInfo) => {
+    setChoicePopInfo({ open: false, stepNo: 0, list: []})
+    setResultItemPopInfo({ open: true, giftInfo: giftInfo });
+  };
+
+  // 보상 결과 팝업 닫기
+  const itemPopClose = () => {
+    if (tabContent.name === 'Lisen') {
+      fetchEventUserInfo()
+    } else if (tabContent.name === 'Dj') {
+      fetchEventDjInfo()
+    }
+    setResultItemPopInfo({ open: false, giftInfo: {} });
+
+    if (clearItemInfo.giftReqYn === 'y') {
+      context.action.alert({
+        msg: `축하드립니다!
+              ALL CLEAR 선물에 자동으로 응모되었습니다.
+              결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
+      })
+    }
+  };
 
   useEffect(() => {
     if (!context.token.isLogin) {
@@ -157,7 +175,7 @@ const EventWelcome = () => {
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
-  }, [tabContent.name, giftComplete])
+  }, [tabContent.name])
 
   return (
     <div id="welcome">
@@ -334,7 +352,8 @@ const EventWelcome = () => {
           />
         )}
       </div>
-      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} />}
+      {choicePopInfo.open && <PopupChoice onClose={choicePopClose} stepNo={choicePopInfo.stepNo} list={choicePopInfo.list} phoneNo={eventAuth.phoneNo} onSuccess={itemPopOpen}/>}
+      {resultItemPopInfo.open && <PopupItems onItemPopClose={itemPopClose} item={resultItemPopInfo.giftInfo} />}
     </div>
   )
 }

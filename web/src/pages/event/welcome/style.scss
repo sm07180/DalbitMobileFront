@@ -194,6 +194,9 @@
               letter-spacing: -1.5px;
               text-align: left;
               font-size: 14px;
+              white-space: nowrap;
+              overflow:hidden;
+              text-overflow:ellipsis;
               font-weight: bold;
               color: #444;
             }
