@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from 'react'
+import React, {useContext, useState, useRef} from 'react'
 import styled from 'styled-components'
 import Api from 'context/api'
 
@@ -42,6 +42,8 @@ export default (props) => {
     tr_add: ''
   })
 
+  const authFormRef = useRef();
+
   //본인인증 모듈 호출
   function authRequest(res) {
     var KMCIS_window
@@ -55,7 +57,7 @@ export default (props) => {
       ) != null ||
       UserAgent.match(/LG|SAMSUNG|Samsung/) != null
     ) {
-      document.authForm.target = ''
+      authFormRef.current.target = ''
     } else {
       KMCIS_window = window.open(
         '',
@@ -69,10 +71,10 @@ export default (props) => {
             ' ※ 윈도우 XP SP2 또는 인터넷 익스플로러 7 사용자일 경우에는 \n    화면 상단에 있는 팝업 차단 알림줄을 클릭하여 팝업을 허용해 주시기 바랍니다. \n\n※ MSN,야후,구글 팝업 차단 툴바가 설치된 경우 팝업허용을 해주시기 바랍니다.'
         })
       }
-      document.authForm.target = 'KMCISWindow'
+      authFormRef.current.target = 'KMCISWindow'
     }
-    document.authForm.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
-    document.authForm.submit()
+    authFormRef.current.action = 'https://www.kmcert.com/kmcis/web/kmcisReq.jsp'
+    authFormRef.current.submit()
   }
 
   //인증 요청
@@ -370,7 +372,7 @@ export default (props) => {
           동의합니다
         </button>
       </Content>
-      <form name="authForm" method="post" id="authForm" target="KMCISWindow">
+      <form ref={authFormRef} name="authForm" method="post" id="authForm" target="KMCISWindow">
         <input type="hidden" name="tr_cert" id="tr_cert" value={formState.tr_cert} readOnly />
         <input type="hidden" name="tr_url" id="tr_url" value={formState.tr_url} readOnly />
         <input type="hidden" name="tr_add" id="tr_add" value={formState.tr_add} readOnly />

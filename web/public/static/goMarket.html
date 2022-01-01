@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta charset="UTF-8">
+    <title>달빛라이브</title>
+    <script type="text/javascript">
+      function OnLoad()
+      {
+        var tmpUser=navigator.userAgent;
+        if (tmpUser.indexOf("iPhone")>0||tmpUser.indexOf("iPod")>0||tmpUser.indexOf("iPad")>0) {
+          location.href="https://apps.apple.com/kr/app/id1490208806";
+        }
+        else if(tmpUser.indexOf("Android")>0) {
+          location.href="intent://dalbitlive/#Intent;scheme=radioproject;package=kr.co.inforexseoul.radioproject;S.browser_fallback_url=market://details?id=kr.co.inforexseoul.radioproject;end";
+        }
+        else {
+          location.href="https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject";
+        }
+      }
+    </script>
+</head>
+<body onload="OnLoad()">
+</body>
+</html>

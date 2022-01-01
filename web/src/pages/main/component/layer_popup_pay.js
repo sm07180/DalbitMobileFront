@@ -4,7 +4,6 @@ import Utility from 'components/lib/utility'
 
 // static
 import CloseBtn from '../static/ic_close.svg'
-import GganbuReward from '../../event/gganbu/content/gganbuReward'
 
 import Api from 'context/api'
 
@@ -14,32 +13,9 @@ let prevGender = null
 export default (props) => {
   const {setPopup, info, setPayState} = props
   const {prdtPrice, prdtNm, phoneNo, payType, orderId, cardName, cardNum, apprno, itemCnt} = info
-  const [rewardPop, setRewardPop] = useState(false)
-  const [getMarble, setGetMarble] = useState({
-    rmarbleCnt : 0,
-    ymarbleCnt : 0,
-    bmarbleCnt : 0,
-    vmarbleCnt : 0,
-    totalmarbleCnt : 0,
-  });
-  const [chargeContent, setChargeContent] = useState("");
   const [data, setData] = useState();
-  let marbleTotleCtn = 0;
-  async function fetchPayComplete() {
-    if(prdtPrice >= 10000) {
-      marbleTotleCtn = Math.floor((Number(prdtPrice) / 10000));
-      const param = {
-        insSlct: "c",
-        marbleCnt : marbleTotleCtn,
-      };
-      const {data} = await Api.getGganbuObtainMarble(param)
-
-      setData(data);
-    }
-  }
 
   // reference
-  const gganbuGetMarble = useRef()
   const layerWrapRef = useRef()
 
   useEffect(() => {
@@ -66,22 +42,10 @@ export default (props) => {
 
   const applyClick = () => {
     setPopup();
-
-    if (data.s_return === 1) {
-      setChargeContent(`달 ${Utility.addComma(prdtPrice)}원 충전으로 \n 구슬 ${marbleTotleCtn}개가 지급되었습니다.`);
-      setRewardPop(true);
-      setGetMarble({
-        rmarbleCnt : data.rmarbleCnt,
-        ymarbleCnt : data.ymarbleCnt,
-        bmarbleCnt : data.bmarbleCnt,
-        vmarbleCnt : data.vmarbleCnt,
-        totalmarbleCnt : data.marbleCnt,
-      })
-    }
   }
 
   useEffect(() => {
-    fetchPayComplete();
+
   }, []);
 
   const createTypeResult = () => {
@@ -161,7 +125,6 @@ export default (props) => {
           </div>
         </div>
       </PopupWrap>
-      {rewardPop && <GganbuReward setRewardPop={setRewardPop} getMarble={getMarble} content={chargeContent}/>}
     </>
   )
 }
