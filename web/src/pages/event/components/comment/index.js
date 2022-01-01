@@ -14,14 +14,13 @@ import moment from "moment";
 
 const EventComment = (props) => {
   const { commentList, totalCommentCnt, commentAdd, commentRpt, commentDel, resetStoryList, contPlaceHolder, noResultMsg, maxLength } = props;
-  const globalCtx = useContext(Context)
-  const {token} = globalCtx
-  const history = useHistory()
-  const contRef = useRef()
+  const globalCtx = useContext(Context);
+  const {token} = globalCtx;
+  const history = useHistory();
+  const contRef = useRef();
 
-  const [moreState, setMoreState] = useState(-1)
-  const [refreshState, setRefreshState] = useState(false)
-  const [writeState, setWriteState] = useState(false)
+  const [moreState, setMoreState] = useState(-1);
+  const [writeState, setWriteState] = useState(false);
 
   const moreToggle = (boardIdx) => {
     if (boardIdx !== moreState) {
@@ -110,15 +109,26 @@ const EventComment = (props) => {
 
   // 시간값 계산 함수
   const getFormatting = (data) => {
-    return moment(data).format('YYYY-MM-DD');
-  }
+    const targetTime = moment(data);
+    const duration = moment.duration(moment().diff(targetTime));
+
+    if (duration.days() > 0) {
+      return targetTime.format('YYYY-MM-DD');
+    } else if (duration.hours() > 0) {
+      return `${duration.hours()} 시간 전`;
+    } else if (duration.minutes() > 0) {
+      return `${duration.minutes()} 분 전`;
+    } else {
+      return `${duration.seconds()} 초 전`;
+    }
+  };
 
   return (
     <div className="commentEventWrap">
       {globalCtx.token.isLogin &&
         <div className="addInputBox">
           <div className="userBox">
-            <div className="photo"><img src={globalCtx.profile.profImg.thumb62x62} /></div>
+            <div className="photo"><img src={globalCtx.profile.profImg.thumb62x62} alt={globalCtx.profile.nickNm}/></div>
             <div className="userNick">{globalCtx.profile.nickNm}</div>
           </div>
           <textarea placeholder={contPlaceHolder} ref={contRef} onChange={inputValueCheck} maxLength={100}/>
@@ -149,7 +159,7 @@ const EventComment = (props) => {
                         {mem_nick}
                         <span className="date"> {getFormatting(ins_date)}</span>
                       </div>
-                      <p className="msg" dangerouslySetInnerHTML={{__html: Utility.nl2br(tail_conts)}}/>
+                      <p className="msg">{tail_conts}</p>
                     </div>
                       <button className="btnMore" onClick={() => { moreToggle(idx) }}/>
                       {moreState === idx && (

@@ -19,7 +19,7 @@ const Tree = (props) => {
   const [makePopInfo, setMakePopInfo] = useState(false); // 트리 만드는 법 & 트리 완성 보상 팝업 정보
   const [presentPopInfo, setPresentPopInfo] = useState({open: false}); // 선물 팝업 정보
   const [letterPopInfo, setLetterPopInfo] = useState({open: false, seqNo: 0}); // 편지 팝업 정보
-  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPerCnt: 0}); // 메인 리스트 정보
+  const [mainListInfo, setMainListInfo] = useState({step: 0, totScoreCnt: 0, list: [], limitScore: 150000, mainPercent: 0}); // 메인 리스트 정보
   const [storyListInfo, setStoryListInfo] = useState({cnt: 0, list: [], totalPage: 0}); // 사연리스트 정보
   const [storyPageInfo, setStoryPageInfo] = useState({pageNo: 1, pagePerCnt: 30}); // 사연 검색 정보
 
@@ -36,7 +36,6 @@ const Tree = (props) => {
 
   // 사연 리스트 가져오기
   const getStoryListInfo = () => {
-    window.removeEventListener("scroll", scrollAddList);
     Api.getLikeTreeStoryList(storyPageInfo).then(res => {
       if (res.code === '00000') {
         const { cnt, list, totalPage } = res.data;
@@ -64,6 +63,7 @@ const Tree = (props) => {
     const params = {storyConts: value};
     Api.likeTreeStoryIns(params).then(res => {
       if (res.code === '00000') {
+        resetStoryList();
         context.action.alert({ msg: '사연이 등록되었습니다.' });
       } else {
         console.log(res);
@@ -89,7 +89,6 @@ const Tree = (props) => {
     const params = { storyNo: value };
     Api.likeTreeStoryRptIns(params).then(res => {
       if (res.code === '00000') {
-        resetStoryList();
         context.action.alert({ msg: '사연을 신고했습니다.' });
       } else {
         console.log(res);
@@ -165,7 +164,7 @@ const Tree = (props) => {
     setStoryPageInfo({ pageNo: 1, pagePerCnt: 30 });
   };
 
-  // 댓글 스크롤 이벤트
+  // 사연 스크롤 이벤트
   const scrollAddList = () => {
     const windowHeight =
       "innerHeight" in window
@@ -184,10 +183,11 @@ const Tree = (props) => {
 
     if (storyListInfo.totalPage > storyPageInfo.pageNo && (windowBottom >= docHeight - 300)) {;
       setStoryPageInfo({...storyPageInfo, pageNo: storyPageInfo.pageNo + 1});
+      window.removeEventListener("scroll", scrollAddList);
     } else if (storyListInfo.cnt == storyListInfo.list.length) {
       window.removeEventListener("scroll", scrollAddList);
     }
-  }
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", scrollAddList);
@@ -201,12 +201,7 @@ const Tree = (props) => {
   }, [storyPageInfo]);
 
   useEffect(() => {
-    //비로그인일때 페이지 팅김
-    if (!context.token.isLogin) {
-      history.push('/login');
-    } else {
-      getMainListInfo();
-    }
+    getMainListInfo();
   }, []);
 
   return (

@@ -303,6 +303,9 @@
           &.active {
             opacity: 1;
           }
+          &.noActive {
+            cursor: auto;
+          }
         }
       }
       .rankUl {
