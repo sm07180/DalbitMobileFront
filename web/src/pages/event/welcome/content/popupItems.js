@@ -3,7 +3,7 @@ import {IMG_SERVER} from 'context/config'
 
 export default (props) => {
   const {onItemPopClose, item} = props
-  const {giftCode, giftName} = item
+  const {giftCode, giftName, giftStepNo} = item
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
@@ -14,7 +14,7 @@ export default (props) => {
   }, [])
 
   const closePopup = () => {
-    onItemPopClose()
+    onItemPopClose(giftStepNo)
   }
   const wrapClick = (e) => {
     const target = e.target
