@@ -265,7 +265,7 @@ export default (props) => {
                         </div>
                       ) : (
                         <div className="number">
-                          <span className="rankNum">{index + 1}</span>
+                          <span className={`rankNum ${index < 30 ? "top30" : ""}`}>{index + 1}</span>
                         </div>
                       )}
                       <div className="rankBox">
