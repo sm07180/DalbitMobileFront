@@ -161,13 +161,13 @@ export default (props) => {
                 style={{cursor: 'pointer'}}
               />
               {gganbuNumber && gganbuNumber === '1' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-1.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-1.png`} />
               ) : gganbuNumber && gganbuNumber === '2' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-2.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-2.png`} />
               ) : gganbuNumber && gganbuNumber === '3' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-3.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-3.png`} />
               ) : gganbuNumber && gganbuNumber === '4' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-4.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-4.png`} />
               ) : (
                 <></>
               )}
