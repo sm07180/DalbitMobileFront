@@ -115,11 +115,10 @@ export default () => {
   }, [currentPage])
 
   const pocketOpen = () => {
-    let point = 0;
-    const modular = 10;
+    let point = Math.floor(Math.random() * 4) + 6;
     
     if(averageLevel < 30) {
-      point = Math.floor(Math.random() * 39) + 70; // 70 ~ 109
+      point =  // 70 ~ 109
       point = Math.floor(point / modular) * modular;
       setRandomPoint(point);
       setAniLevel("ani4");
@@ -169,6 +168,62 @@ export default () => {
     }
     fetchGganbuPocketOpen(point); 
   }
+
+  // const pocketOpen = () => {
+  //   let point = 0;
+  //   const modular = 10;
+    
+  //   if(averageLevel < 30) {
+  //     point = Math.floor(Math.random() * 39) + 70; // 70 ~ 109
+  //     point = Math.floor(point / modular) * modular;
+  //     setRandomPoint(point);
+  //     setAniLevel("ani4");
+  //     setTimeout(() => {      
+  //       setOpenPocket(false); 
+  //       fetchGganbuPocketPage();
+  //       setCurrentPage(1);    
+  //       fetchGganbuPocketReport();
+  //       fetchGganbuPocketPage();
+  //     }, 10000);
+  //   } else if (averageLevel < 50) {
+  //     point = Math.floor(Math.random() * 39) + 40; // 40 ~ 74
+  //     point = Math.floor(point / modular) * modular;
+  //     setRandomPoint(point);
+  //     setAniLevel("ani3");
+  //     setTimeout(() => {      
+  //       setOpenPocket(false); 
+  //       fetchGganbuPocketPage();
+  //       setCurrentPage(1);    
+  //       fetchGganbuPocketReport();
+  //       fetchGganbuPocketPage();
+  //     }, 9000);
+  //   } else if (averageLevel < 70) {
+  //     point = Math.floor(Math.random() * 29) + 30;
+  //     point = Math.floor(point / modular) * modular;
+  //     setRandomPoint(point);
+  //     setAniLevel("ani2");
+  //     setTimeout(() => {      
+  //       setOpenPocket(false); 
+  //       fetchGganbuPocketPage();
+  //       setCurrentPage(1);    
+  //       fetchGganbuPocketReport();
+  //       fetchGganbuPocketPage();
+  //     }, 8000);
+  //   } else {
+  //     point = Math.floor(Math.random() * 29) + 10;
+  //     point = Math.floor(point / modular) * modular;
+  //     setRandomPoint(point);
+  //     setAniLevel("ani1");
+  //     setTimeout(() => {      
+  //       setOpenPocket(false); 
+  //       fetchGganbuPocketPage();
+  //       setCurrentPage(1);    
+  //       fetchGganbuPocketReport();
+  //       fetchGganbuPocketPage();
+  //     }, 8000);
+  //   }
+  //   fetchGganbuPocketOpen(point); 
+  // }
 
   useEffect(() => {
     fetchGganbuPocketReport();

@@ -254,7 +254,8 @@ export default (props) => {
                     mem_nick,
                     mem_no,
                     mem_id,
-                    mem_state
+                    mem_state,
+                    tot_marble_pocket_pt,
                   } = data
                   return (
                     <div className="rankList" key={index}>
@@ -312,6 +313,10 @@ export default (props) => {
                             </>
                           )}
                         </div>
+                      </div>
+                      <div className="score">
+                        <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                        <span>{tot_marble_pocket_pt}</span>
                       </div>
                     </div>
                   )
