@@ -33,7 +33,7 @@ const PopupChoice = (props) => {
     const res = await Api.postWelcomeGiftRcv(giftSlct, param)
 
     if (res.code === '00000') {
-      onSuccess({ giftCode, giftName });
+      onSuccess({ giftCode, giftName, giftStepNo });
     } else if (res.code !== '99999') {
       context.action.toast({msg: res.message})
     } else {

@@ -128,21 +128,21 @@ const EventWelcome = () => {
   };
 
   // 보상 결과 팝업 닫기
-  const itemPopClose = () => {
+  const itemPopClose = (giftStepNo) => {
     if (tabContent.name === 'Lisen') {
       fetchEventUserInfo()
     } else if (tabContent.name === 'Dj') {
       fetchEventDjInfo()
     }
-    setResultItemPopInfo({ open: false, giftInfo: {} });
 
-    if (clearItemInfo.giftReqYn === 'y') {
+    if(giftStepNo == 3) {
       context.action.alert({
         msg: `축하드립니다!
               ALL CLEAR 선물에 자동으로 응모되었습니다.
               결과는 매월 초 공지사항에서 확인하실 수 있습니다.`
       })
     }
+    setResultItemPopInfo({ open: false, giftInfo: {} });
   };
 
   useEffect(() => {
@@ -162,8 +162,6 @@ const EventWelcome = () => {
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
-
-  console.log(eventAuth)
 
   useEffect(() => {
     if (tabContent.name === 'Lisen') {
