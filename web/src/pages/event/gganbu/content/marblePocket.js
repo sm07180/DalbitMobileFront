@@ -115,48 +115,10 @@ export default () => {
   }, [currentPage])
 
   const pocketOpen = () => {
-    let point = Math.floor(Math.random() * 4) + 6;
-    
-    if(averageLevel < 30) {
-      point =  // 70 ~ 109
-      point = Math.floor(point / modular) * modular;
-      setRandomPoint(point);
-      setAniLevel("ani4");
-      setTimeout(() => {      
-        setOpenPocket(false); 
-        fetchGganbuPocketPage();
-        setCurrentPage(1);    
-        fetchGganbuPocketReport();
-        fetchGganbuPocketPage();
-      }, 10000);
-    } else if (averageLevel < 50) {
-      point = Math.floor(Math.random() * 39) + 40; // 40 ~ 74
-      point = Math.floor(point / modular) * modular;
-      setRandomPoint(point);
-      setAniLevel("ani3");
-      setTimeout(() => {      
-        setOpenPocket(false); 
-        fetchGganbuPocketPage();
-        setCurrentPage(1);    
-        fetchGganbuPocketReport();
-        fetchGganbuPocketPage();
-      }, 9000);
-    } else if (averageLevel < 70) {
-      point = Math.floor(Math.random() * 29) + 30;
-      point = Math.floor(point / modular) * modular;
-      setRandomPoint(point);
-      setAniLevel("ani2");
-      setTimeout(() => {      
-        setOpenPocket(false); 
-        fetchGganbuPocketPage();
-        setCurrentPage(1);    
-        fetchGganbuPocketReport();
-        fetchGganbuPocketPage();
-      }, 8000);
-    } else {
-      point = Math.floor(Math.random() * 29) + 10;
-      point = Math.floor(point / modular) * modular;
-      setRandomPoint(point);
+    let point = (Math.ceil(Math.random() * 5) + 5) * 10;
+    setRandomPoint(point);
+
+    if(point === 60) {
       setAniLevel("ani1");
       setTimeout(() => {      
         setOpenPocket(false); 
@@ -165,8 +127,44 @@ export default () => {
         fetchGganbuPocketReport();
         fetchGganbuPocketPage();
       }, 8000);
-    }
-    fetchGganbuPocketOpen(point); 
+    } else if(point === 70) {
+      setAniLevel("ani1");
+      setTimeout(() => {      
+        setOpenPocket(false); 
+        fetchGganbuPocketPage();
+        setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
+      }, 8000);
+    } else if(point === 80) {
+      setAniLevel("ani2");
+      setTimeout(() => {      
+        setOpenPocket(false); 
+        fetchGganbuPocketPage();
+        setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
+      }, 8000);
+    } else if(point === 90) {
+      setAniLevel("ani3");
+      setTimeout(() => {      
+        setOpenPocket(false); 
+        fetchGganbuPocketPage();
+        setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
+      }, 9000);
+    } else if(point === 100) {
+      setAniLevel("ani4");
+      setTimeout(() => {      
+        setOpenPocket(false); 
+        fetchGganbuPocketPage();
+        setCurrentPage(1);    
+        fetchGganbuPocketReport();
+        fetchGganbuPocketPage();
+      }, 10000);
+    }  
+      fetchGganbuPocketOpen(point); 
   }
 
   // const pocketOpen = () => {
