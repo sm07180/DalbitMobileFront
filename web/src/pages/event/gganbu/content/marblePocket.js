@@ -115,7 +115,7 @@ export default () => {
   }, [currentPage])
 
   const pocketOpen = () => {
-    if(gganbuNumber === 4){
+    if(gganbuNumber === "4"){
       let point = (Math.ceil(Math.random() * 5) + 5) * 10;
       setRandomPoint(point);
   
@@ -165,7 +165,6 @@ export default () => {
           fetchGganbuPocketPage();
         }, 10000);
       }  
-
       fetchGganbuPocketOpen(point); 
     } else {
       let point = 0;
@@ -230,6 +229,7 @@ export default () => {
 
   useEffect(() => {
     fetchGganbuPocketPage();
+    fetchGganbuPocketReport();
   }, [])
 
   return (
