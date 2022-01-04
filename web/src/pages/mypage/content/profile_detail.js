@@ -476,11 +476,14 @@ export default (props) => {
       return (
         <button
           className="liveIcon"
-          onClick={() => {
+          onClick={async () => {
             if (!context.myInfo.level) {
-              return context.action.alert({
-                msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
-              })
+              const myProfile = await Api.profile({ params: { memNo: token.memNo } })
+              if(myProfile.data.level === 0) {
+                return context.action.alert({
+                  msg: '우체통은 1레벨부터 이용 가능합니다. \n 레벨업 후 이용해주세요.'
+                })
+              }
             }
             if (!profile.level) {
               return context.action.alert({

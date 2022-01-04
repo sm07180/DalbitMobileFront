@@ -52,8 +52,8 @@ export default function bestdj() {
       </Header>
       <div className="subContent">
           <img
-          src={`${IMG_SERVER}/event/bestDj/2112/bestDj_2112-top.png`}
-          alt="달빛라이브를 대표하는 12월의 베스트DJ"
+          src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-top.png`}
+          alt="달빛라이브를 대표하는 1월의 베스트DJ"
           className="img__full"
           />
           <div className="listWrap">
@@ -61,7 +61,7 @@ export default function bestdj() {
                 return (
                   <div className="list" key={index}>
                     <img
-                    src={`${IMG_SERVER}/event/bestDj/2112/bestDj_2112-user-${index + 1}.png`}
+                    src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-mem-${index + 1}.png`}
                     alt="베스트DJ"
                     className="img__full"
                     />
