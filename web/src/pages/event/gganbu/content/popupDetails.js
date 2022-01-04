@@ -39,11 +39,13 @@ export default (props) => {
           <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-2.png" />
         </div>
         {
-           gganbuNumber && gganbuNumber !== '4' &&
+            gganbuNumber && gganbuNumber === '4' ?
+            <></>
+            :
             <div className="list">
               <img src="https://image.dalbitlive.com/event/gganbu/popupDetails-3.png" />
             </div>
-        }        
+          }       
       </Swiper>
       <div className="close" onClick={closePopup}>
         <img src="https://image.dalbitlive.com/event/gganbu/popDetailClose.png" />
