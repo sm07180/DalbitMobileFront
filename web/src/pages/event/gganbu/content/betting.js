@@ -14,7 +14,6 @@ import BettingPop from './bettingPop'
 export default (props) => {
   const globalCtx = useContext(Context)
   const {tabContent, gganbuNo} = props
-
   const [currentPage, setCurrentPage] = useState(0)
   const [bettingPop, setBettingPop] = useState(false) //홀짝 베팅 팝업
   const [myMarble, setMyMarble] = useState({
@@ -174,7 +173,7 @@ export default (props) => {
     }
 
     if (typeof targetVal === 'number') {
-      if(gganbuNo === 4){
+      if(gganbuNo === "4"){
         if (targetVal <= 0) {
           inputRef.current.value = ''
           if (thisEl === 'rMarbleRef') {

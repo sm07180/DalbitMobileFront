@@ -315,7 +315,7 @@ export default (props) => {
                         </div>
                       </div>
                       {
-                         gganbuNumber === 4 ?
+                         gganbuNumber === "4" ?
                           <div className="score">
                             <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
                             <span>{tot_marble_pocket_pt}</span>
