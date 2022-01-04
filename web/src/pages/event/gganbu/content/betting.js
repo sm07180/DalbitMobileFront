@@ -150,7 +150,8 @@ export default (props) => {
       targetVal = Number(inputRef.current.value);      
     }
     const toast1 = '구슬 개수를 확인해주세요'
-    const toast2 = "베팅 가능한 최대 개수는 100개입니다";
+    const toast2 = "베팅 가능한 최대 개수는 10개입니다";
+    const toast3 = "베팅 가능한 최대 개수는 100개입니다";
     const rMyMarble = myMarble.rMarble
     const yMyMarble = myMarble.yMarble
     const bMyMarble = myMarble.bMarble
@@ -220,7 +221,7 @@ export default (props) => {
             setSuccessVal({ ...successVal, pSuccess: pMyMarble });
             setBettingVal({...bettingVal, pBetting: 0});
           }
-          globalCtx.action.toast({msg: toast2})
+          globalCtx.action.toast({msg: toast3})
         } else {
           if (thisEl === 'rMarbleRef') {
             setBettingVal({...bettingVal, rBetting: targetVal})
