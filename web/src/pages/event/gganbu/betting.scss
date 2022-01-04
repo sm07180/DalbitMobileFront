@@ -105,6 +105,9 @@
       background-position: bottom center;
       background-repeat: no-repeat;
       background-size: contain;
+      &.round4 {
+        background-image: url(https://image.dalbitlive.com/event/gganbu/marble_betting-bg-round4.png);
+      }
       .bettingWrap {
         position: absolute;
         top: 58%;

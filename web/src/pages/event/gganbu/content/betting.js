@@ -433,7 +433,7 @@ export default (props) => {
         </div>
       </div>
 
-      <div className="betting">
+      <div className={`betting ${gganbuNo === "4" && "round4"}`}>
         <div className="bettingWrap">
           <form action="" method="get">
             <div className="section">
