@@ -102,7 +102,7 @@ export default function GotoMoonRanking(props) {
       
       if(link){
         const scrollTo = document.getElementById(link);
-        scrollTo?.scrollIntoView({ behavior: "smooth" });
+        scrollTo?.scrollIntoView({ behavior: "smooth", block: "center"});
       }
       goMyRankFlag.current = {do:false, link: ""};
     }
