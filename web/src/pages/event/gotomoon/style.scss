@@ -281,13 +281,13 @@
             border-radius: 10px;
             background-position: center;
             background-repeat: no-repeat;
-            background-size: contain;
-            &.level1 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.webp);}
-            &.level2 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.webp);}
-            &.level3 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.webp);}
-            &.level4 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.webp);}
-            &.level5 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.webp);}
-            &.level6 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.webp);}
+            background-size: 100% 100%;
+            &.level1 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.webp);}
+            &.level2 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.webp);}
+            &.level3 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.webp);}
+            &.level4 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.webp);}
+            &.level5 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.webp);}
+            &.level6 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.gif), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.webp);}
 
             .scoreWrap {
               position: absolute;
