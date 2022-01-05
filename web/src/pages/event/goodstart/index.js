@@ -1,13 +1,14 @@
 import React, {useEffect, useState, useRef, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
-import {authReq} from 'pages/self_auth'
 import Utility, {isHitBottom, addComma} from 'components/lib/utility'
 import {Context} from 'context'
 
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header'
+import NoResult from 'components/ui/new_noResult'
+import EventRankList from '../components/rankList'
 import PopupNotice from './content/PopupNotice'
 
 import './style.scss'
@@ -18,12 +19,32 @@ const GoodStart = () => {
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
+  const [rankList, setRankList] = useState([])
   const [tabContent, setTabContent] = useState({name: 'dj'}) // dj, fan
   const [ranktabCnt, setRankTabCnt] = useState({name: 'all'}) // all, new
 
   const [noticePopInfo, setNoticePopInfo] = useState({open: false})
 
   // 조회 API
+  const fetchRankList = () => {
+    const param = {
+      rankSlct: 1,
+      rankType: 1,
+      page: 1,
+      records: 50,
+      rankingDate: '2022-01-05',
+      type: 'page',
+    }
+    Api.getRankList(param).then((res) => {
+      if (res.result === 'success') {
+        setRankList(res.data.list)
+      } else {
+        console.log(res.message);
+      }
+    })
+  }
+
+  console.log(rankList);
 
   // 팝업 열기 닫기 이벤트
   const popupOpen = () => {
@@ -45,7 +66,6 @@ const GoodStart = () => {
     if (tab === 'all' || tab === 'new') {
       setRankTabCnt({name: tab})
     }
-    console.log(tab)
   }
 
   const tabScrollEvent = () => {
@@ -63,18 +83,11 @@ const GoodStart = () => {
   }
 
   useEffect(() => {
-    // if (!context.token.isLogin) {
-    //   history.push('/login')
-    // } else {
-    //   fetchEventAuthInfo()
-    //   Api.self_auth_check({}).then((res) => {
-    //     if (res.result === 'success') {
-    //       setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn})
-    //     } else {
-    //       setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn})
-    //     }
-    //   })
-    // }
+    if (!context.token.isLogin) {
+      history.push('/login')
+    } else {
+      fetchRankList()
+    }
 
     window.addEventListener('scroll', tabScrollEvent)
     return () => window.removeEventListener('scroll', tabScrollEvent)
@@ -90,7 +103,54 @@ const GoodStart = () => {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }
   }, [tabContent.name])
+  
+  // 추가 컴포넌트
+  const ListContent = (props) => {
+    const {type, data} = props
+    return (
+      <>
+        {type === 'my' ? (
+          <>
+            <div className="listBox">
+              <div className="listItem">
+                <span className="userNick">{data.nickNm}</span>
+              </div>
+              <div className="listItem">
+                <div className="value">
+                  <i className="icon"></i>
+                  <span className='count'>{Utility.addComma(1000)}</span>
+                </div>
+                <div className="value">
+                  <i className="icon"></i>
+                  <span className='count'>{Utility.addComma(1000)}</span>
+                </div>
+                <div className="value">
+                  <i className="icon"></i>
+                  <span className='count'>{Utility.addComma(1000)}</span>
+                </div>
+              </div>
+            </div>
+            <div className="listBack">
+              {Utility.addComma(100000)}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="listBox">
+              <div className="listItem">
+                <em className="icon_wrap icon_male">
+                  <span className="blind">성별</span>
+                </em>
+                <span className="userNick">{data.nickNm}</span>
+              </div>
+            </div>
+          </>
+        )}
+      </>
+    )
+  }
 
+  // 페이지 시작
   return (
     <div id="goodStart">
       <Header title="이벤트" />
@@ -137,65 +197,27 @@ const GoodStart = () => {
             <img src={`${IMG_SERVER}/event/goodstart/rankTitle.png`} />
           </h1>
         )}
-
         <div className="rankUl">
-          <div className={`rankList ${context.token.isLogin ? 'my' : ''}`}>
-            <div className="rankNum">
-              <span className="num">1</span>
-            </div>
-            <div className="photo">
-              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj.png`} />
-            </div>
-            <div className="listBox">
-              <em className="icon_wrap">
-                <span className="blind">성별</span>
-              </em>
-              <span className="userNick">아이디다</span>
-            </div>
-            <div className="listBack">
-              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`} />
-              {Utility.addComma(1000000)}
-            </div>
-          </div>
-          <div className={`rankList list`}>
-            <div className="rankNum">
-              <span className="num">1</span>
-            </div>
-            <div className="photo">
-              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj.png`} />
-            </div>
-            <div className="listBox">
-              <em className="icon_wrap">
-                <span className="blind">성별</span>
-              </em>
-              <span className="userNick">아이디다</span>
-            </div>
-            <div className="listBack">
-              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`} />
-              {Utility.addComma(1000000)}
-            </div>
-          </div>
-          <div className={`rankList list`}>
-            <div className="rankNum">
-              <span className="num">1</span>
-            </div>
-            <div className="photo">
-              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj.png`} />
-            </div>
-            <div className="listBox">
-              <em className="icon_wrap">
-                <span className="blind">성별</span>
-              </em>
-              <span className="userNick">아이디다</span>
-            </div>
-            <div className="listBack">
-              <img src={`${IMG_SERVER}/event/tree/rankPoint.png`} />
-              {Utility.addComma(1000000)}
-            </div>
-          </div>
+          {tabContent.name === 'fan' ? <p className='fanSubTitle'>특별점수는 종료 후 반영되니 참고해주세요!</p> : ''}
+          <EventRankList type={'my'} rankList={context.profile} photoSize={60}>
+            <ListContent type={'my'} data={context.profile} />
+          </EventRankList>
+          {rankList.length > 0 ? 
+            <>
+              {rankList.map((data, index) => {
+                return (
+                  <EventRankList rankList={data} photoSize={60} key={index}>
+                    <ListContent data={data} />
+                  </EventRankList>
+                )
+              })}
+            </>
+            :
+            <NoResult type={'default'} text={'랭킹이 없습니다.'} />
+          }
         </div>
       </section>
-      {noticePopInfo.open === true && <PopupNotice onClose={popupClose} />}
+      {noticePopInfo.open === true && <PopupNotice onClose={popupClose} tab={tabContent.name} />}
     </div>
   )
 }
