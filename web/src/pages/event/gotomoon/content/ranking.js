@@ -5,6 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 
 import Utility, {addComma , isHitBottom} from 'components/lib/utility'
+import {PHOTO_SERVER} from 'context/config'
 
 import moment from "moment";
 import NoResult from 'components/ui/new_noResult'
@@ -119,9 +120,9 @@ export default function GotoMoonRanking(props) {
             <div className="thumbWrap">
               <div className="thumbImg" style={{backgroundImage: `url(
               ${myRank.image_profile ?
-                `https://photo.dalbitlive.com${myRank.image_profile}?120x120`
+                `${PHOTO_SERVER}${myRank.image_profile}?120x120`
                 :
-                `https://photo.dalbitlive.com/profile_3/profile_${globalCtx.profile.gender === "m" ? "m" : "f"}_200327.jpg`
+                `${PHOTO_SERVER}/profile_3/profile_${globalCtx.profile.gender === "m" ? "m" : "f"}_200327.jpg`
               })`
               }}/>
             </div>
@@ -179,9 +180,9 @@ export default function GotoMoonRanking(props) {
                         <div className="thumbWrap">
                           <div className="thumbImg" style={{backgroundImage: `url(
                             ${image_profile ?
-                              `https://photo.dalbitlive.com${image_profile}?120x120`
+                              `${PHOTO_SERVER}${image_profile}?120x120`
                               :
-                              `https://photo.dalbitlive.com/profile_3/profile_${mem_sex === "m" ? "m" : "f"}_200327.jpg`
+                              `${PHOTO_SERVER}/profile_3/profile_${mem_sex === "m" ? "m" : "f"}_200327.jpg`
                             })`}}/>
                         </div>
                         <div className="listContent">
