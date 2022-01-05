@@ -4,6 +4,7 @@
   }
   .header-wrap {
     position: sticky;
+    position: -webkit-sticky;
     top: 0;
     z-index: 5;
   }
