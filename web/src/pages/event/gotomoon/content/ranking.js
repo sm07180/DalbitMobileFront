@@ -50,14 +50,19 @@ export default function GotoMoonRanking(props) {
       scrollLock.current = true;
       const { data, message } = await Api.getMoonLandRankList({
         moonNo: moonNumber,
-        pageNo : currentPage,
+        pageNo : goMyRankFlag.current.do? 1: currentPage,
         pagePerCnt : pagePerCnt.current,
       });
       if (message === 'SUCCESS') {
         totalPage.current = Math.ceil(data.cnt / pagePerCnt.current)
-        listLength.current = data.cnt;  
-        const datas = rankingList.concat(data.list);
-        setRankingList(datas)
+        listLength.current = data.cnt;
+
+        if(goMyRankFlag.current.do){
+          setRankingList(data.list);
+        } else {
+          setRankingList(rankingList.concat(data.list));
+        }
+        
       }
       scrollLock.current = false;
     }    
@@ -145,14 +150,19 @@ export default function GotoMoonRanking(props) {
             <span className="scoreNow">{Utility.addComma(myRank.rank_pt)}</span>
             <span className="scoreGoal">/ {Utility.addComma(myRank.tot_score)}</span>
           </div>
-          <div className="rewardWrap">
-            <span className="rewardText">다음보상</span>
-            <div className="rewardBox">
-              <span className="iconDal"></span>
-              <span className="rewardVal">{myRank.next_reward}</span>
-              <span className="rewardUnit">달</span>
-            </div>
-          </div>
+          {
+            myRank.rank_step === "6" ? 
+              <div className="rewardWrap">
+                <span className="rewardText">다음보상</span>
+                <div className="rewardBox">
+                  <span className="iconDal"></span>
+                  <span className="rewardVal">{myRank.next_reward}</span>
+                  <span className="rewardUnit">달</span>
+                </div>
+              </div>
+              :
+              <></>
+          }          
         </div>
       </div>
 
