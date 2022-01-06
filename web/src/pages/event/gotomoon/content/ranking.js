@@ -27,6 +27,7 @@ export default function GotoMoonRanking(props) {
   const pagePerCnt = useRef(10);
   const listLength = useRef(0);  
   const goMyRankFlag = useRef({do:false, link: ""});
+  const scrollLock = useRef(false);
 
   let todayIs = new Date;
   let todayDate = moment(todayIs).format("YYYY-MM-DD");
@@ -46,6 +47,7 @@ export default function GotoMoonRanking(props) {
   
   const gotomoonEventRankingList = async () => {
     if(moonNumber !== 0) {
+      scrollLock.current = true;
       const { data, message } = await Api.getMoonLandRankList({
         moonNo: moonNumber,
         pageNo : currentPage,
@@ -54,18 +56,15 @@ export default function GotoMoonRanking(props) {
       if (message === 'SUCCESS') {
         totalPage.current = Math.ceil(data.cnt / pagePerCnt.current)
         listLength.current = data.cnt;  
-        if(currentPage === 1){
-          setRankingList(data.list)
-        }else{
-          const datas = rankingList.concat(data.list);
-          setRankingList(datas)
-        }
+        const datas = rankingList.concat(data.list);
+        setRankingList(datas)
       }
+      scrollLock.current = false;
     }    
   };
 
   const scrollEvtHdr = () => {
-    if (totalPage.current > currentPage && Utility.isHitBottom()) {
+    if (!scrollLock.current && totalPage.current > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
     }
   }
