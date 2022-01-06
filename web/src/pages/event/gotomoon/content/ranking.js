@@ -24,7 +24,7 @@ export default function GotoMoonRanking(props) {
 
   const totalPage = useRef(1);
   const myMemNo = useRef(0);
-  const pagePerCnt = useRef(10);
+  const pagePerCnt = useRef(30);
   const listLength = useRef(0);  
   const goMyRankFlag = useRef({do:false, link: ""});
   const scrollLock = useRef(false);
