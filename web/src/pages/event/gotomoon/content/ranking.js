@@ -62,7 +62,7 @@ export default function GotoMoonRanking(props) {
         } else {
           setRankingList(rankingList.concat(data.list));
         }
-        
+
       }
       scrollLock.current = false;
     }    
@@ -144,14 +144,14 @@ export default function GotoMoonRanking(props) {
             </div>
           </div>
         </div>
-        <div className={`aniWrap level${myRank.rank_step}`}>
+        <div className={`aniWrap level${myRank.rank_step === 0 ? "6" : myRank.rank_step}`}>
           <div className="scoreWrap">
             <span className="iconCoin"></span>
             <span className="scoreNow">{Utility.addComma(myRank.rank_pt)}</span>
             <span className="scoreGoal">/ {Utility.addComma(myRank.tot_score)}</span>
           </div>
           {
-            myRank.rank_step === "6" ? 
+            myRank.rank_step !== 0 ? 
               <div className="rewardWrap">
                 <span className="rewardText">다음보상</span>
                 <div className="rewardBox">
