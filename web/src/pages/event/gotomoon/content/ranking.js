@@ -85,24 +85,16 @@ export default function GotoMoonRanking(props) {
     }
   }, [moonNumber, endDate])
 
-  const goMyRankList = (event) => {
+  const goMyRankList = (event) => {    
     const link = event.target.dataset.link;
-    pagePerCnt.current = listLength.current;
-    goMyRankFlag.current = {do:true, link: link};
-    gotomoonEventRankingList(); 
-  }
+    setCurrentPage(Math.ceil(myRank.my_rank_no / 10));
+    totalRankingList = rankingList.slice(0, (currentPage * 10));  
 
-  useEffect(() => {
-    if(goMyRankFlag && goMyRankFlag.current && goMyRankFlag.current.do){
-      const {link} = goMyRankFlag.current;
-      
-      if(link){
-        const scrollTo = document.getElementById(link);
-        scrollTo?.scrollIntoView({ behavior: "smooth", block: "center"});
-      }
-      goMyRankFlag.current = {do:false, link: ""};
-    }
-  }, [rankingList])
+    setTimeout(() => {
+      const scrollTo = document.getElementById(link);
+      scrollTo?.scrollIntoView({ behavior: "smooth", block: "center"});
+    })  
+  }
 
   return (
     <div id="ranking">
