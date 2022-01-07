@@ -27,7 +27,6 @@ export default function GotoMoonRanking(props) {
   const pagePerCnt = useRef(30);
   const listLength = useRef(0);  
   const goMyRankFlag = useRef({do:false, link: ""});
-  const scrollLock = useRef(false);
 
   let todayIs = new Date;
   let todayDate = moment(todayIs).format("YYYY-MM-DD");
@@ -47,30 +46,27 @@ export default function GotoMoonRanking(props) {
   
   const gotomoonEventRankingList = async () => {
     if(moonNumber !== 0) {
-      scrollLock.current = true;
       const { data, message } = await Api.getMoonLandRankList({
         moonNo: moonNumber,
         pageNo : goMyRankFlag.current.do? 1: currentPage,
-        pagePerCnt : pagePerCnt.current,
+        pagePerCnt : 5000,
       });
       if (message === 'SUCCESS') {
         totalPage.current = Math.ceil(data.cnt / pagePerCnt.current)
         listLength.current = data.cnt;
-
-        if(goMyRankFlag.current.do){
-          setRankingList(data.list);
-        } else {
-          setRankingList(rankingList.concat(data.list));
-        }
-
+        setRankingList(data.list);
       }
-      scrollLock.current = false;
     }    
   };
 
+  let totalRankingList = rankingList.slice(0, (currentPage * 10));
+
   const scrollEvtHdr = () => {
-    if (!scrollLock.current && totalPage.current > currentPage && Utility.isHitBottom()) {
-      setCurrentPage(currentPage + 1)
+    if (Utility.isHitBottom()) {
+      if(currentPage <= listLength.current/10) {
+        setCurrentPage(currentPage + 1);
+        totalRankingList = rankingList.slice(0, (currentPage * 10));
+      }
     }
   }
   useLayoutEffect(() => {
@@ -78,10 +74,6 @@ export default function GotoMoonRanking(props) {
     return () => {
       window.removeEventListener('scroll', scrollEvtHdr)
     }
-  }, [currentPage])
-
-  useEffect(() => {
-    if (currentPage > 0) gotomoonEventRankingList();
   }, [currentPage])
 
   useEffect(() => {
@@ -168,10 +160,10 @@ export default function GotoMoonRanking(props) {
 
       <div className="rankingData">
         {
-          rankingList.length !== 0 ?
+          totalRankingList.length !== 0 ?
             <div className="rankingWrap">
               {
-                rankingList.map((item, index) => {
+                totalRankingList.map((item, index) => {
                     const { image_profile, mem_nick, rank_pt, rank_num, mem_sex, mem_no } = item;
                     let eventReward = 0;
                     if(rank_num === 1) {eventReward = 5000;}
@@ -182,7 +174,7 @@ export default function GotoMoonRanking(props) {
                     else if(rank_num <= 30) {eventReward = 100;}
 
                     return (
-                      <div className="rankingList" key={index} id={mem_no} onClick={() => {history.push(`/mypage/${mem_no}`)}}>
+                      <div className={`rankingList`} key={index} id={mem_no} onClick={() => {history.push(`/mypage/${mem_no}`)}}>
                         <div className="listFront">
                           <span className={`badgeRanking ${rank_num > 30 ? "" : "top30"}`}>{rank_num}</span>
                         </div>
