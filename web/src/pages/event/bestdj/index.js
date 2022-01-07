@@ -47,9 +47,7 @@ export default function bestdj() {
 
   return (
     <div id="bestDj">
-      <Header>
-        <h2 className="header-title">베스트DJ</h2>
-      </Header>
+      <Header title="베스트DJ" />
       <div className="subContent">
           <img
           src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-top.png`}
