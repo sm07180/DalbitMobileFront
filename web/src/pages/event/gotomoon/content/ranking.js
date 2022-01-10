@@ -92,7 +92,12 @@ export default function GotoMoonRanking(props) {
 
     setTimeout(() => {
       const scrollTo = document.getElementById(link);
-      scrollTo?.scrollIntoView({ behavior: "smooth", block: "center"});
+      if(scrollTo){
+        scrollTo.scrollIntoView({ behavior: "smooth", block: "center"});
+      } else {
+        setCurrentPage(1);
+        totalRankingList = rankingList.slice(0, (currentPage * 10));
+      }
     })  
   }
 
