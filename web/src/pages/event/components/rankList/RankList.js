@@ -1,10 +1,8 @@
-import React, {useState, useContext, useRef} from 'react'
+import React, {useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 
 //context
 import {Context} from 'context'
-import {IMG_SERVER, PHOTO_SERVER} from 'context/config'
-import Utility from 'components/lib/utility'
 
 // static
 import './rankList.scss'
@@ -50,6 +48,12 @@ const EventRankList = (props) => {
 			{props.children}
 		</div>
   )
+}
+
+EventRankList.defaultProps = {
+  type: '',
+	rankList: [],
+	photoSize: 50,
 }
 
 export default EventRankList

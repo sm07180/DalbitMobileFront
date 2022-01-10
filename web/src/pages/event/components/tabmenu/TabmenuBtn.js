@@ -1,0 +1,39 @@
+import React from 'react'
+import {IMG_SERVER} from 'context/config'
+
+import './tabmenu.scss'
+
+const TabmenuBtn = (props) => {
+  const {tabBtn1, tabBtn2, tab, setTab, onOff, imgNam} = props
+	
+  // 탭메뉴 이벤트
+  const tabClick = (e) => {
+    const {tab} = e.currentTarget.dataset
+
+    if (tab === tabBtn1 || tab === tabBtn2) {
+      setTab({name: tab})
+    }
+  }
+
+  // 컴포넌트 시작
+  return (
+    <>
+      <button className={tab === tabBtn1 ? 'active' : ''} data-tab={tabBtn1} onClick={tabClick}>
+        <img src={`${IMG_SERVER}/event/goodstart/${imgNam}-1${onOff === false ? '' : tab === tabBtn1 ? '-on' : '-off'}.png`} alt={tabBtn1} />
+      </button>
+      <button className={tab === tabBtn2 ? 'active' : ''} data-tab={tabBtn2} onClick={tabClick}>
+        <img src={`${IMG_SERVER}/event/goodstart/${imgNam}-2${onOff === false ? '' : tab === tabBtn2 ? '-on' : '-off'}.png`} alt={tabBtn2} />
+      </button>
+    </>
+  )
+}
+
+TabmenuBtn.defaultProps = {
+  tabBtn1: '',
+  tabBtn2: '',
+  tab: '',
+  onOff: false,
+  imgNam: 'tabBtn',
+}
+
+export default TabmenuBtn
