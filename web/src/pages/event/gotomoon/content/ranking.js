@@ -87,18 +87,17 @@ export default function GotoMoonRanking(props) {
 
   const goMyRankList = (event) => {    
     const link = event.target.dataset.link;
-    setCurrentPage(Math.ceil(myRank.my_rank_no / 10));
-    totalRankingList = rankingList.slice(0, (currentPage * 10));  
-
-    setTimeout(() => {
-      const scrollTo = document.getElementById(link);
-      if(scrollTo){
+    const scrollTo = document.getElementById(link);
+    if(scrollTo){
+      setCurrentPage(Math.ceil(myRank.my_rank_no / 10));
+      totalRankingList = rankingList.slice(0, (currentPage * 10));  
+      setTimeout(() => {
         scrollTo.scrollIntoView({ behavior: "smooth", block: "center"});
-      } else {
-        setCurrentPage(1);
-        totalRankingList = rankingList.slice(0, (currentPage * 10));
-      }
-    })  
+      })  
+    } else {
+      setCurrentPage(1);
+      totalRankingList = rankingList.slice(0, (currentPage * 10));
+    }      
   }
 
   return (
