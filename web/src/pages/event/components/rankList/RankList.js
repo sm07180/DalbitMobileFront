@@ -29,21 +29,21 @@ const EventRankList = (props) => {
 		<div className={`rankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				<span className="num">{rankList.rank}</span>
-				{rankList.upDown && <p className="rankChange">
-					{rankList.upDown === 'new' ? (
+				<span className="num">{rankList && rankList.rank_no}</span>
+				{rankList && rankList.upDown && <p className="rankChange">
+					{rankList && rankList.upDown === 'new' ? (
 						<span className="new">NEW</span>
-					) : rankList.upDown > 0 ? (
-						<span className="up">{Math.abs(rankList.upDown)}</span>
-					) : rankList.upDown < 0 ? (
-						<span className="down">{Math.abs(rankList.upDown)}</span>
+					) : rankList && rankList.upDown > 0 ? (
+						<span className="up">{Math.abs(rankList && rankList.upDown)}</span>
+					) : rankList && rankList.upDown < 0 ? (
+						<span className="down">{Math.abs(rankList && rankList.upDown)}</span>
 					) : (
-						<span>{rankList.upDown}</span>
+						<span>{rankList && rankList.upDown}</span>
 					)}
 				</p>}
 			</div>
-			<div className={`photo size${photoSize}`} onClick={goProfile} data-target-mem-no={rankList.memNo}>
-				<img src={rankList.profImg.thumb62x62} alt={rankList.nickNm} />
+			<div className={`photo size${photoSize}`} onClick={goProfile} data-target-mem-no={rankList && rankList.mem_no}>
+				<img src={rankList && rankList.profImg && rankList.profImg.thumb62x62} alt={rankList && rankList.mem_nick} />
 			</div>
 			{props.children}
 		</div>

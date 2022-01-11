@@ -3,7 +3,7 @@ import React, {useEffect, useState, useRef} from 'react'
 import './tabmenu.scss'
 
 const Tabmenu = (props) => {
-	const {tabName1, tabName2, tab} = props
+	const {tab} = props
   const tabMenuRef = useRef()
   const tabBtnRef = useRef()
   const [tabFixed, setTabFixed] = useState(false)
@@ -28,11 +28,6 @@ const Tabmenu = (props) => {
   }, [])
 
   useEffect(() => {
-    if (tab === tabName1) {
-      console.log(1)
-    } else if (tab === tabName2) {
-      console.log(2)
-    }
     if (tabFixed) {
       window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
     }

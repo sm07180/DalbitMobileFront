@@ -3658,7 +3658,7 @@ export default class API {
     })
   }
   // 신입 Dj 랭킹 (param: pageNo, pagePerCnt)
-  static likeTreeRewardIns = async (data) => {
+  static getGoodStartNewDjRank = async (data) => {
     return await ajax({
       url: '/event/goodStart/dj/new/rank',
       method: 'GET',
@@ -3666,7 +3666,7 @@ export default class API {
     })
   }
   // Fan 페이지 (fan 랭킹, 전체 회차정보)
-  static likeTreeRewardIns = async (data) => {
+  static getGoodStartFanInfo = async (data) => {
     return await ajax({
       url: '/event/goodStart/fan/page',
       method: 'GET',

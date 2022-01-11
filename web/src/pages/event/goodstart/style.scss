@@ -99,6 +99,7 @@
       button {
         width: 75px;
         height: 21px;
+        margin-left: auto;
         img {
           width: 100%;
         }
@@ -180,6 +181,34 @@
       border-radius: 15px;
       background-color: white;
       overflow: hidden;
+      &.new {
+        .rankList {
+          .rankNum {
+            .num {
+              background-color:#1d0d83;
+              &:nth-child(n + 12) {
+                background-color:#eeeeee;
+              }
+            }
+          }
+          &.my {
+            .rankNum {
+              .num {
+                background-color:#eeeeee;
+              }
+            }
+          }
+        }
+      }
+    }
+    .rankList {
+      &:nth-child(n + 17) {
+        .rankNum {
+          .num {
+            background-color:#eeeeee;
+          }
+        }
+      }
     }
     .listBox {
       display: flex;
@@ -189,6 +218,10 @@
       .listItem {
         display: flex;
         align-items: center;
+        margin-bottom:4px;
+        &:last-child {
+          margin-bottom:0;
+        }
         .level {
           flex: none;
           height: 18px;
@@ -249,6 +282,9 @@
       margin-left: auto;
       font-size: 14px;
       font-weight: bold;
+      white-space: nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
       img {
         width: 24px;
       }
