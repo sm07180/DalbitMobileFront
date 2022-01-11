@@ -181,11 +181,19 @@
       border-radius: 15px;
       background-color: white;
       overflow: hidden;
-      &.new {
+      &.fan {
         .rankList {
           .rankNum {
             .num {
               background-color:#1d0d83;
+            }
+          }
+        }
+      }
+      &.new {
+        .rankList {
+          .rankNum {
+            .num {
               &:nth-child(n + 12) {
                 background-color:#eeeeee;
               }
@@ -202,10 +210,11 @@
       }
     }
     .rankList {
-      &:nth-child(n + 17) {
+      &:nth-child(n + 18) {
         .rankNum {
           .num {
-            background-color:#eeeeee;
+            background-color:#eeeeee !important;
+            color:black;
           }
         }
       }

@@ -12,6 +12,7 @@ const EventRankList = (props) => {
 		type,
     rankList,
     photoSize,
+		listNum
   } = props
   const globalCtx = useContext(Context)
   const history = useHistory()
@@ -29,7 +30,7 @@ const EventRankList = (props) => {
 		<div className={`rankList ${type === 'my' && globalCtx.token.isLogin ? 'my' : ''}`}>
 			<div className="rankNum">
 				{type === 'my' && globalCtx.token.isLogin ? <span className='tit'>내순위</span> : <></>}
-				<span className="num">{rankList && rankList.rank_no}</span>
+				{type === 'my' ? <span className="num">{rankList && rankList.my_rank_no != 0 ? rankList.my_rank_no : '-'}</span> : <span className="num">{listNum + 1}</span>}
 				{rankList && rankList.upDown && <p className="rankChange">
 					{rankList && rankList.upDown === 'new' ? (
 						<span className="new">NEW</span>
