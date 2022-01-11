@@ -30,7 +30,7 @@ const GoodStart = () => {
   const [djRankInfo, setDjRankInfo] = useState([])
   const [tabContent, setTabContent] = useState({name: tabmenu1}) // dj, fan
   const [ranktabCnt, setRankTabCnt] = useState({name: tabmenu3}) // all, new
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [noticePopInfo, setNoticePopInfo] = useState({open: false})
 
@@ -97,17 +97,17 @@ const GoodStart = () => {
   }
   const fetchGoodStartFanInfo = () => {
     const param = {
-      pageNo: currentPage,
+      pageNo: 1,
       pagePerCnt: pagePerCnt
     }
     Api.getGoodStartFanInfo(param).then((res) => {
       if (res.code === '00000') {
-        totalPage = Math.ceil(res.data.rankDjListCnt / pagePerCnt);
+        totalPage = Math.ceil(res.data.fanRank.rankFanListCnt / pagePerCnt);
         if (currentPage > 1) {
-          setRankList(rankList.concat(res.data.fanRank))
+          setRankList(rankList.concat(res.data.fanRank.rankFanList))
         } else {
-          setRankMyList(res.data.fanRank)
-          setRankList(res.data.fanRank)
+          setRankMyList(res.data.fanRank.rankFanMyInfo)
+          setRankList(res.data.fanRank.rankFanList)
         }
       } else {
         console.log(res.message);
@@ -307,8 +307,8 @@ const GoodStart = () => {
             <img src={`${IMG_SERVER}/event/goodstart/rankTitle.png`} />
           </h1>
         )}
-        <div className={`rankUl ${ranktabCnt.name === 'new' ? 'new' : ''}`}>
-          {tabContent.name === tabmenu2 ? <p className='fanSubTitle'>특별점수는 종료 후 반영되니 참고해주세요!</p> : ''}
+        <div className={`rankUl ${ranktabCnt.name === tabmenu4 ? 'new' : ''}  ${tabContent.name === tabmenu2 ? 'fan' : ''}`}>
+          {tabContent.name === tabmenu2 ? <p className='fanSubTitle'>특별점수는 종료 후 반영되니 참고해주세요!</p> : <p></p>}
           <EventRankList type={'my'} rankList={rankMyList} photoSize={60}>
             <ListContent type={'my'} data={rankMyList} />
           </EventRankList>
@@ -316,7 +316,7 @@ const GoodStart = () => {
             <>
               {rankList.map((data, index) => {
                 return (
-                  <EventRankList rankList={data} photoSize={60} key={index}>
+                  <EventRankList rankList={data} photoSize={60} listNum={index} key={index}>
                     <ListContent data={data} />
                   </EventRankList>
                 )
