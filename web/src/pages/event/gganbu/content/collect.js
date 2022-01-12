@@ -161,13 +161,13 @@ export default (props) => {
                 style={{cursor: 'pointer'}}
               />
               {gganbuNumber && gganbuNumber === '1' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-1.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-1.png`} />
               ) : gganbuNumber && gganbuNumber === '2' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-2.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-2.png`} />
               ) : gganbuNumber && gganbuNumber === '3' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-3.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-3.png`} />
               ) : gganbuNumber && gganbuNumber === '4' ? (
-                <img src={`${IMG_SERVER}/event/gganbu/gganbuNoticeImg-on-bottom-4.png`} />
+                <img src={`${IMG_SERVER}/event/gganbu/gganbu_notice-4.png`} />
               ) : (
                 <></>
               )}
@@ -254,7 +254,8 @@ export default (props) => {
                     mem_nick,
                     mem_no,
                     mem_id,
-                    mem_state
+                    mem_state,
+                    tot_marble_pocket_pt,
                   } = data
                   return (
                     <div className="rankList" key={index}>
@@ -264,7 +265,7 @@ export default (props) => {
                         </div>
                       ) : (
                         <div className="number">
-                          <span className="rankNum">{index + 1}</span>
+                          <span className={`rankNum ${index < 30 ? "top30" : ""}`}>{index + 1}</span>
                         </div>
                       )}
                       <div className="rankBox">
@@ -313,6 +314,16 @@ export default (props) => {
                           )}
                         </div>
                       </div>
+                      {
+                         gganbuNumber === "4" ?
+                          <div className="score">
+                            <img src="https://image.dalbitlive.com/event/gganbu/iconScore.png" />
+                            <span>{tot_marble_pocket_pt}</span>
+                          </div>
+                          :
+                          <></>
+                      }
+                      
                     </div>
                   )
                 })}

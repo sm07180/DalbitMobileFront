@@ -140,6 +140,9 @@ const GlobalProvider = (props) => {
   // 깐부 데이터
   const [gganbuTab, setGganbuTab] = useState('collect')
 
+  // 달나라 갈끄니까 이벤트
+  const [gotomoonTab, setGotomoonTab] = useState('info')
+
   // 본인인증 ref
   const [authRef, setAuthRef] = useState(null)
   // 14세 미만 페이지
@@ -555,6 +558,9 @@ const GlobalProvider = (props) => {
     updateGganbuTab: (value) => {
       setGganbuTab(value)
     },
+    updateGotomoonTab: (value) => {
+      setGotomoonTab(value)
+    },
     /**
      * 내부 서버 이동시 setInterval 작동을 막기위해 clearInterval 호출에 사용함
      * @param: value : setIntervalId (number)
@@ -650,6 +656,7 @@ const GlobalProvider = (props) => {
     exitMarbleInfo,
     globalGganbuState,
     gganbuTab,
+    gotomoonTab,
     intervalId
   }
   return <Provider value={value}>{props.children}</Provider>
