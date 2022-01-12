@@ -158,7 +158,7 @@ const DjContent = () => {
   return (
     <section className="rankContainer dj">
       <div className="rankTabmenu">
-        <TabmenuBtn tabBtn1={tabmenu3} tabBtn2={tabmenu4}  tab={ranktabCnt.name}  setTab={setRankTabCnt} onOff={true} imgNam={'rankTabBtn'} />
+        <TabmenuBtn tabBtn1={tabmenu3} tabBtn2={tabmenu4}  tab={ranktabCnt.name}  setTab={setRankTabCnt} onOff={true} event={'goodstart'} imgNam={'rankTabBtn'} />
       </div>
       <div className="rankUl">
       <p></p>
