@@ -7,6 +7,8 @@ import {Context} from 'context'
 import Api from 'context/api'
 
 import Header from 'components/ui/new_header'
+import Tabmenu from '../components/tabmenu/Tabmenu'
+import TabmenuBtn from '../components/tabmenu/TabmenuBtn'
 import PopupChoice from './content/popupChoice'
 
 import './style.scss'
@@ -15,9 +17,6 @@ import PopupItems from "pages/event/welcome/content/popupItems";
 const EventWelcome = () => {
   const history = useHistory()
   const context = useContext(Context)
-  const tabMenuRef = useRef()
-  const tabBtnRef = useRef()
-  const [tabFixed, setTabFixed] = useState(false)
   const [stepItemInfo, setStepItemInfo] = useState([])
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
@@ -107,20 +106,6 @@ const EventWelcome = () => {
     setChoicePopInfo({...choicePopInfo, open: false})
   }
 
-  const tabScrollEvent = () => {
-    const tabMenuNode = tabMenuRef.current
-    const tabBtnNode = tabBtnRef.current
-    if (tabMenuNode && tabBtnNode) {
-      const tabMenuTop = tabMenuNode.offsetTop - tabBtnRef.current.clientHeight
-
-      if (window.scrollY >= tabMenuTop) {
-        setTabFixed(true)
-      } else {
-        setTabFixed(false)
-      }
-    }
-  }
-
   // 보상 결과 팝업 열기 이벤트
   const itemPopOpen = (giftInfo) => {
     setChoicePopInfo({ open: false, stepNo: 0, list: []})
@@ -158,9 +143,6 @@ const EventWelcome = () => {
         }
       })
     }
-
-    window.addEventListener('scroll', tabScrollEvent)
-    return () => window.removeEventListener('scroll', tabScrollEvent)
   }, [])
 
   useEffect(() => {
@@ -169,34 +151,15 @@ const EventWelcome = () => {
     } else if (tabContent.name === 'Dj') {
       fetchEventDjInfo()
     }
-    if (tabFixed) {
-      window.scrollTo(0, tabMenuRef.current.offsetTop - tabBtnRef.current.clientHeight)
-    }
   }, [tabContent.name])
 
   return (
     <div id="welcome">
       <Header title="이벤트" />
       <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
-      <div className="tabContainer" ref={tabMenuRef}>
-        <div className={`tabWrapper ${tabFixed === true ? 'fixed' : ''}`} ref={tabBtnRef}>
-          <div className="tabmenu">
-            <button
-              className={tabContent.name === 'Lisen' ? 'active' : ''}
-              onClick={() => setTabContent({...tabContent, name: 'Lisen'})}>
-              <img
-                src={`${IMG_SERVER}/event/welcome/tabBtn-1-${tabContent.name === 'Lisen' ? 'on' : 'off'}.png`}
-                alt="시청자 선물"
-              />
-            </button>
-            <button
-              className={tabContent.name === 'Dj' ? 'active' : ''}
-              onClick={() => setTabContent({...tabContent, name: 'Dj'})}>
-              <img src={`${IMG_SERVER}/event/welcome/tabBtn-2-${tabContent.name === 'Dj' ? 'on' : 'off'}.png`} alt="DJ선물" />
-            </button>
-          </div>
-        </div>
-      </div>
+      <Tabmenu tab={tabContent.name}>
+        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={setTabContent} event={'welcome'} onOff={true} />
+      </Tabmenu>
       <div className="step">
         {stepItemInfo.length > 0 &&
           stepItemInfo.map((data, index) => {
