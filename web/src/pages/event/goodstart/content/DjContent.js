@@ -176,7 +176,7 @@ const DjContent = () => {
           })}
         </>
         :
-        <NoResult type={'default'} text={'랭킹이 없습니다.'} />
+        <NoResult type={'default'} msg={'랭킹이 없습니다.'} />
       }
       </div>
     </section>
