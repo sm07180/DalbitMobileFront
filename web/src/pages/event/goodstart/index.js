@@ -77,7 +77,7 @@ const GoodStart = () => {
         )
       })}
       <Tabmenu tab={tabContent.name}>
-        <TabmenuBtn tabBtn1={tabmenu1} tabBtn2={tabmenu2} tab={tabContent.name} setTab={setTabContent} style={{border:'1px solid red'}} />
+        <TabmenuBtn tabBtn1={tabmenu1} tabBtn2={tabmenu2} tab={tabContent.name} setTab={setTabContent} event={'goodstart'} />
       </Tabmenu>
       <section className="bodyContainer">
         <img src={`${IMG_SERVER}/event/goodstart/bodybg-${tabContent.name === tabmenu1 ? 'dj' : 'fan'}.png`} className="bgImg" />
