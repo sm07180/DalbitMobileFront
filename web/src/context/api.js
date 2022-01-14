@@ -3695,6 +3695,40 @@ export default class API {
       params: data,
     })
   }
+  
+  /* 굿 스타트 이벤트 */
+  // Dj 페이지 (dj 랭킹, 전체 회차정보)
+  static getGoodStartDjInfo = async (data) => {
+    return await ajax({
+      url: '/event/goodStart/dj/page',
+      method: 'GET',
+      params: data,
+    })
+  }
+  // Dj 랭킹 (param: pageNo, pagePerCnt)
+  static getGoodStartDjRank = async (data) => {
+    return await ajax({
+      url: '/event/goodStart/dj/rank',
+      method: 'GET',
+      params: data,
+    })
+  }
+  // 신입 Dj 랭킹 (param: pageNo, pagePerCnt)
+  static getGoodStartNewDjRank = async (data) => {
+    return await ajax({
+      url: '/event/goodStart/dj/new/rank',
+      method: 'GET',
+      params: data,
+    })
+  }
+  // Fan 페이지 (fan 랭킹, 전체 회차정보)
+  static getGoodStartFanInfo = async (data) => {
+    return await ajax({
+      url: '/event/goodStart/fan/page',
+      method: 'GET',
+      params: data,
+    })
+  }
 }
 
 API.customHeader = null

@@ -1,6 +1,14 @@
 @import '../../../styles/variables';
 
 #bestDj {
+    .header-wrap {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 4;
+        max-width: 460px;
+    }
     .img__full {
       width: 100%;
       -webkit-user-drag: none;

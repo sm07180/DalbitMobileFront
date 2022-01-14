@@ -28,7 +28,7 @@ import Award from './award'
 import Purchase from './purchase'
 import PurchaseBenefit from './purchase_benefit'
 import PostGuide from './post_guide'
-import Gganbu from './gganbu'
+import GoodStart from './goodstart'
 import GganbuPocket from './gganbu/content/marblePocket'
 import RecommendDj from './recommend_dj'
 import RecommendDj2 from './recommend_dj2'
@@ -43,10 +43,11 @@ import Bestdj from './bestdj'
 import Championship from './championship'
 import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
-import Participant from './gganbu/content/participant'
-import MarblePocket from './gganbu/content/marblePocket'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
+// import Gganbu from './gganbu'
+// import Participant from './gganbu/content/participant'
+// import MarblePocket from './gganbu/content/marblePocket'
 
 export default () => {
   const params = useParams()
@@ -98,8 +99,8 @@ export default () => {
         return <PurchaseBenefit />
       case 'post_guide':
         return <PostGuide />
-      case 'gganbu':
-        return <Gganbu />
+      case 'goodstart':
+        return <GoodStart />
       case 'gganbuPocket':
         return <GganbuPocket />
       case 'recommend_dj':
@@ -130,14 +131,16 @@ export default () => {
         return <BroadcastRoulette />
       case 'anniversary':
         return <AnniversaryEvent />
-      case 'participant':
-        return <Participant />
-      case 'marblePocket':
-        return <MarblePocket />
       case 'welcome':
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
+      // case 'gganbu':
+      //   return <Gganbu />
+      // case 'participant':
+      //   return <Participant />
+      // case 'marblePocket':
+      //   return <MarblePocket />
       default:
         return <></>
         break

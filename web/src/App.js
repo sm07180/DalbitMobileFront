@@ -331,7 +331,7 @@ const App = () => {
     if (os === 2) {
       const appReviewYn = 'y'
       if (appReviewYn === 'y') {
-        const tempIosVersion = '1.6.3' // 이 버전 이상은 birthForm 을 감출려고 한다
+        const tempIosVersion = '1.6.5' // 이 버전 이상은 birthForm 을 감출려고 한다
         const successCallback = () => (showBirthForm = false)
 
         await Utility.compareAppVersion(tempIosVersion, successCallback, () => {})
@@ -386,7 +386,7 @@ const App = () => {
 
     globalCtx.action.updateAuthRef(authRef) // 본인인증 ref
     globalCtx.action.updateTokenRefreshSetIntervalId(id);//서버이동시 interval clear
-    // updateAppInfo();
+    updateAppInfo(); // ios 심사 (회원가입 생년월일 입력란 숨김)
   }, [])
 
   function ErrorFallback({error, resetErrorBoundary}) {

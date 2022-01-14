@@ -4,6 +4,8 @@ import {IMG_SERVER} from 'context/config'
 
 // Component
 import Header from 'components/ui/new_header.js'
+import Tabmenu from '../components/tabmenu/Tabmenu'
+import TabmenuBtn from '../components/tabmenu/TabmenuBtn'
 import Tree from './content/Tree'
 import Lover from './content/Lover'
 
@@ -17,7 +19,7 @@ const TreePage = () => {
   const tabMenuRef = useRef();
   const tabBtnRef = useRef();
   const eventDuration = { end1: '2021-12-30 23:59:59', end2: '2022-01-06 23:59:59'};
-  const [tabContent, setTabContent] = useState('tree') // tree , lover
+  const [tabContent, setTabContent] = useState({name: 'tree'}) // tree , lover
   const [tabFixed, setTabFixed] = useState(false)
   const [loverSeqNo, setLoverSeqNo] = useState(1);
 
@@ -66,28 +68,13 @@ const TreePage = () => {
       <section>
         <img src={`${IMG_SERVER}/event/tree/treeBg-1.png`} className="bgImg" />
       </section>
-      <section className="tabContainer" ref={tabMenuRef}>
-        <div className={`tabWrapper ${tabFixed === true ? 'fixed' : ''}`} ref={tabBtnRef}>
-          <div className="tabmenu">
-            <button className={tabContent === 'tree' ? 'active' : ''} data-tab="tree" onClick={tabClick}>
-              <img
-                src={`${IMG_SERVER}/event/tree/tabmenu-1-${tabContent === 'tree' ? 'on' : 'off'}.png`}
-                alt="좋아요 트리만들기!"
-              />
-            </button>
-            <button className={tabContent === 'lover' ? 'active' : ''} data-tab="lover" onClick={tabClick}>
-              <img
-                src={`${IMG_SERVER}/event/tree/tabmenu-2-${tabContent === 'lover' ? 'on' : 'off'}.png`}
-                alt="사랑꾼 선발대회"
-              />
-            </button>
-          </div>
-        </div>
+      <Tabmenu tab={tabContent.name}>
+        <TabmenuBtn tabBtn1={'tree'} tabBtn2={'lover'} tab={tabContent.name} setTab={setTabContent} imgNam={'tabmenu'} event={'tree'} onOff={true} />
         <div className="signRing">
           <img src="https://image.dalbitlive.com/event/tree/signRing.png" />
           <img src="https://image.dalbitlive.com/event/tree/signRing.png" />
         </div>
-      </section>
+      </Tabmenu>
       {tabContent === 'tree' ? <Tree /> : <Lover seqNo={loverSeqNo} eventDuration={eventDuration}/>}
     </div>
   )
