@@ -22,8 +22,15 @@ $MAINCOLOR: #8581FF;
   }
   color:$color;
 }
+
 @mixin fontCut {
   white-space:nowrap;
   text-overflow:ellipsis;
   overflow:hidden;
+}
+
+@mixin backgroundPSR {
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
 }
