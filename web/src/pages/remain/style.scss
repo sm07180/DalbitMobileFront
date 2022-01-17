@@ -1,0 +1,311 @@
+@import "components/ui/_mixin.scss";
+
+
+.cntTitle {
+  @include flex(center);
+  padding: 0 16px;
+  h2 {
+    height:28px;
+    line-height:28px;
+    letter-spacing: -1.5px;
+    @include font(20px,500,black);
+  }
+  button {
+    margin-left: auto;
+    letter-spacing: -1px;
+    @include font(13px,400,#999);
+  }
+}
+.badge {
+  flex:none;
+  height:16px;
+}
+.listRow {
+  flex:none;
+  @include flex(center);
+  min-width: 0;
+  .photo {
+    width:100%;
+    img {
+      width:100%;
+    }
+  }
+  .userNick {
+    width:100%;
+    text-align:center;
+    @include fontCut;
+  }
+}
+.listColumn {
+  flex:none;
+  @include flex(center,center,column);
+  min-width: 0;
+  .photo {
+    width:100%;
+    img {
+      width:100%;
+    }
+  }
+  .userNick {
+    width:100%;
+    text-align:center;
+    @include fontCut;
+  }
+}
+
+#remain {
+  // background-color: $MAINCOLOR;
+  font-family: 'NotoSansKR', sans-serif;
+  section {
+    position:relative;
+    margin-bottom:35px;
+  }
+  .topSwiper {
+    width:100%;
+    height:360px;
+    .photo {
+      width:100%;
+      height:360px;
+      img {
+        width:100%;
+        height:100%;
+        object-fit: cover;
+      }
+    }
+    .userNick {
+      display:none;
+    }
+    .swiper-pagination {
+      position:absolute;
+      bottom:30px;
+      left: auto;
+      right:0;
+      z-index:1;
+      display:inline-block;
+      width:auto;
+      height:20px;
+      line-height:20px;
+      padding:0 8px 0 12px;
+      border-radius:100px 0 0 100px;
+      background-color:rgba(0,0,0,.4);
+      letter-spacing: -1px;
+      @include font(13px,400,#fff);
+    }
+    .swiper-notification {
+      display:none;
+    }
+    .info {
+      position:absolute;
+      bottom:0;
+      left:0;
+      width:100%;
+      padding: 25px 16px 18px;
+      background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
+      @include flex(flex-start,center,column);
+      .badge {
+        display:inline-block;
+        height:16px;
+        background-color:#FF41EC;
+      }
+      .title {
+        width:68%;
+        @include font(20px,500,#fff);
+      }
+      .nick {
+        opacity:.7;
+        @include font(15px,400,#fff);
+      }
+    }
+  }
+  .favorites {
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:auto;
+        margin-right:10px;
+        &:last-child {
+          margin-right:28px;
+        }
+        .listColumn {
+          width:68px;
+          .photo {
+            background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom,#B620FF,#FF41EC) !important;
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            overflow:hidden;
+            @include border(transparent,50%,2px);
+            img {
+              @include border(#fff,50%,3px);
+            }
+          }
+          p {
+            @include font(12px,400,#303030);
+          }
+        }
+      }
+    }
+  }
+  .top10 {
+    .cntTitle {
+      margin-bottom:12px;
+      .tabmenu {
+        @include flex(center);
+        height:20px;
+        margin-left:12px;
+        li {
+          position:relative;
+          padding: 0 8px;
+          @include font(14px,400,#666);
+          &.active {
+            font-weight:500;
+            color:#B620FF;
+          }
+          &:after {
+            position:absolute;
+            top:5px;
+            right:0;
+            display:block;
+            content:'';
+            width:1px;
+            height:10px;
+            background-color:#ccc;
+          }
+          &:last-child:after {
+            display:none;
+          }
+        }
+      }
+    }
+    .swiper-container {
+      .swiper-wrapper {
+        padding-left:16px;
+        .swiper-slide {
+          width:auto;
+          margin-right:10px;
+          &:last-child {
+            margin-right:28px;
+          }
+          .listColumn {
+            width:102px;
+            .photo {
+              height:136px;
+              margin-bottom:6px;
+              background-position:center;
+              background-size:cover;
+              background-repeat:no-repeat;
+              border-radius:8px;
+              overflow:hidden;
+              img {
+                height:100%;
+                object-fit: cover;
+              }
+              &:after {
+                display:block;
+                content:"1";
+                width:30px;
+                height:40px;
+              }
+            }
+            p {
+              @include font(15px,400,#303030);
+            }
+          }
+        }
+      }
+    }
+  }
+  .daldungs {
+    .cntTitle {
+      margin-bottom:12px;
+    }
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:auto;
+        margin-right:8px;
+        &:last-child {
+          margin-right:28px;
+        }
+        .listColumn {
+          position:relative;
+          width:102px;
+          border-radius:8px;
+          overflow:hidden;
+          .photo {
+            height:150px;
+            @include backgroundPSR;
+            img {
+              height:100%;
+              object-fit: cover;
+            }
+          }
+          p {
+            position:absolute;
+            bottom:0;
+            padding:24px 8px 8px;
+            background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
+            @include font(13px,500,#fff);
+          }
+        }
+      }
+    }
+  }
+  .liveView {
+    .cntTitle {
+      margin-bottom:8px;
+    }
+    .tabmenu {
+      @include flex(center);
+      padding:0 16px;
+      li {
+        flex:1;
+        height:40px;
+        line-height:40px;
+        border-bottom:2px solid #F2F2F2;
+        text-align:center;
+        @include font(16px,500,#ACACAC);
+        &.active {
+          color:#202020;
+          border-bottom-color:#202020;
+        }
+      }
+    }
+    .liveListWrap {
+      padding: 16px;
+      .listRow {
+        height:110px;
+        margin-bottom:12px;
+        .photo {
+          width:110px;
+          height:110px;
+          border-radius:8px;
+          overflow:hidden;
+          img {
+            width:100%;
+          }
+        }
+      }
+      .info {
+        @include flex($fd:column);
+        height:100%;
+        margin-left:16px;
+        .listItem {
+          min-height:16px;
+          margin-bottom:2px;
+          &:last-child {
+            margin-top: auto;
+          }
+          .title {
+            @include font(15px,700,#303030);
+          }
+          .nickNm {
+            @include font(13px,400,#666);
+          }
+          .state {
+            @include font(13px,400,#999);
+          }
+        }
+      }
+    }
+  }
+}
