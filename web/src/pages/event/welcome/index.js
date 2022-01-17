@@ -21,7 +21,7 @@ const EventWelcome = () => {
   const [clearItemInfo, setClearItemInfo] = useState([])
   const [noticeText, setNoticeText] = useState('off')
   const [eventAuth, setEventAuth] = useState({check: false, adultYn: '', phoneNo:''})
-  const [tabContent, setTabContent] = useState({name: 'Lisen', quality: ''}) // Lisen, Dj
+  const [tabContent, setTabContent] = useState({name: 'Lisen', quality: 'n', userQuality: 'n', djQuality: 'n'}) // Lisen, Dj
 
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
   const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
@@ -33,9 +33,9 @@ const EventWelcome = () => {
       if (res.code === '00000') {
         const {djQuality, userQuality} = res.data
         if (tabContent.name === 'Lisen') {
-          setTabContent({...tabContent, quality: userQuality})
+          setTabContent({...tabContent, userQuality, djQuality, quality: userQuality})
         } else {
-          setTabContent({...tabContent, quality: djQuality})
+          setTabContent({...tabContent, userQuality, djQuality, quality: djQuality})
         }
       }
     })
@@ -130,16 +130,27 @@ const EventWelcome = () => {
     setResultItemPopInfo({ open: false, giftInfo: {} });
   };
 
+  // 상단 메뉴 탭 클릭 이벤트
+  const handleClick = (value) => {
+    if (tabContent.name !== value.name) {
+      setTabContent({
+        ...tabContent,
+        name: value.name,
+        quality: (value.name === 'Lisen' ? tabContent.userQuality : tabContent.djQuality),
+      })
+    }
+  };
+
   useEffect(() => {
     if (!context.token.isLogin) {
       history.push('/login')
     } else {
-      fetchEventAuthInfo()
+      fetchEventAuthInfo();
       Api.self_auth_check({}).then((res) => {
         if (res.result === 'success') {
           setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
         } else {
-          setEventAuth({...eventAuth, check: false, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
+          setEventAuth({...eventAuth, check: false })
         }
       })
     }
@@ -158,7 +169,7 @@ const EventWelcome = () => {
       <Header title="이벤트" />
       <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
       <Tabmenu tab={tabContent.name}>
-        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={setTabContent} event={'welcome'} onOff={true} />
+        <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} />
       </Tabmenu>
       <div className="step">
         {stepItemInfo.length > 0 &&
