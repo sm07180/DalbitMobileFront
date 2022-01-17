@@ -45,6 +45,7 @@ import BroadcastRoulette from './broadcast_roulette'
 import AnniversaryEvent from './anniversary'
 import Welcome from './welcome'
 import Gotomoon from './gotomoon'
+import DallaClip from './dallaClip'
 // import Gganbu from './gganbu'
 // import Participant from './gganbu/content/participant'
 // import MarblePocket from './gganbu/content/marblePocket'
@@ -135,6 +136,8 @@ export default () => {
         return <Welcome />
       case 'gotomoon':
         return <Gotomoon />
+      case 'dallaClip':
+        return <DallaClip />
       // case 'gganbu':
       //   return <Gganbu />
       // case 'participant':
