@@ -1,17 +1,26 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
+import ListColumn from './components/ListColumn'
+import ListRow from './components/ListRow'
 
 import './style.scss'
 
 const topTabmenu = ['DJ','FAN','LOVER']
+const liveTabmenu = ['전체','VIDEO','RADIO','신입DJ']
 
 const Remain = () => {
+  const history = useHistory()
   const [myStar, setMyStar] = useState([])
   const [djRank, setDjRank] = useState([])
   const [fanRank, setFanRank] = useState([])
+  const [recommendList, setRecommendList] = useState([])
+  const [bannerList, setBannerList] = useState([])
+  const [liveList, setLiveList] = useState([])
   const [topRankType, setTopRankType] = useState({name: topTabmenu[0]})
+  const [liveListType, setLiveListType] = useState({name: liveTabmenu[0]})
 
   // 조회 API
   const fetchMainInfo = () => {
@@ -20,21 +29,36 @@ const Remain = () => {
         setMyStar(res.data.myStar)
         setDjRank(res.data.djRank)
         setFanRank(res.data.fanRank)
-      } else {
-        console.log(res.message);
+        setRecommendList(res.data.recommend)
       }
     })
   }
 
   const fetchBannerInfo = () => {
     const param = {
-      position: 1
+      position: 9
     }
     Api.getBanner(param).then((res) => {
       if (res.result === 'success') {
-        setMyStar(res.data.myStar)
-      } else {
-        console.log(res.message);
+        setBannerList(res.data)
+      }
+    })
+  }
+
+  const fetchLiveInfo = () => {
+    const param = {
+      page: 1,
+      mediaType: liveListType.name === 'VIDEO' ? 'v' : liveListType.name === 'RADIO' ? 'a' : '',
+      records: 20,
+      roomType: '',
+      searchType: 1,
+      gender: '',
+      djType: ''
+    }
+    Api.broad_list(param).then((res) => {
+      console.log(liveListType.name);
+      if (res.result === 'success') {
+        setLiveList(res.data.list)
       }
     })
   }
@@ -46,24 +70,40 @@ const Remain = () => {
   }, [])
 
   useEffect(() => {
-    if (topRankType.name === 'DJ') {
-      // setTopRankType({...topRankType, data: djRank})
-    }
-  }, [topRankType.name])
+    fetchLiveInfo()
+  }, [liveListType.name])
 
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
   }
+  const swiperRecommend = {
+    loop: true,
+    autoplay: {
+      delay: 9500,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction'
+    }
+  }
 
   // 컴포넌트
   const CntTitle = (props) => {
-    const {title,children} = props
+    const {title,more,children} = props
+
+    const onMoreClick = () => {
+      history.push(`/${more}`)
+    }
+
     return (
       <div className="cntTitle">
         <h2>{title}</h2>
         {children}
-        <button>더보기</button>
+        {more &&
+          <button onClick={onMoreClick}>더보기</button>
+        }
       </div>
     )
   }
@@ -79,86 +119,62 @@ const Remain = () => {
     }
 
     return (
-      <li className={param.tabname === param.item ? 'active' : ''} data-tab-target={param.item} onClick={tabClick}>{param.item}</li>
+      <li className={param.tab === param.item ? 'active' : ''} data-tab-target={param.item} onClick={tabClick}>{param.item}</li>
     )
   }
 
-  const ListRow = (props) => {
-    const {list} = props
-    return (
-      <>
-        {list && list.map((item, index) => {
-          return(
-            <div className="listRow" key={index}>
-              <div className="photo" style={{backgroundImage:`url('${item.profImg.thumb62x62}')`}}>
-                <img src={item.profImg.thumb62x62} alt={item.nickNm} />
-              </div>
-              {children}
-            </div>
-          )
-        })}
-      </>
-    )
-  }
-
-  const ListColumn = (props) => {
-    const {list,type,children} = props
+  const Badge = (props) => {
+    const {content} = props
+    
     return (
       <React.Fragment>
-        {type === 'swiper' ?
-          <>
-            <Swiper {...swiperParams}>
-              {list && list.map((item, index) => {
-                return(
-                  <div className="listColumn" key={index}>
-                    <div className="photo" style={{backgroundImage:`url('${item.profImg.thumb62x62}')`}}>
-                      <img src={item.profImg.thumb62x62} alt={item.nickNm} />
-                    </div>
-                    <p>{item.nickNm}</p>
-                    {children}
-                  </div>
-                )
-              })}
-            </Swiper>
-          </>
-          :
-          <>
-            {list && list.map((list, index) => {
-              return(
-                <div className="listColumn" key={index}>
-                  <div className="photo" style={{backgroundImage:`url('${list && list.profImg && list.profImg.thumb62x62}')`}}>
-                    <img src={list && list.profImg && list.profImg.thumb62x62} alt={list && list.nickNm} />
-                  </div>
-                  <p>{list && list.nickNm}</p>
-                </div>
-              )
-            })}
-          </>
-        }
+        <span className='badge'>special</span>
       </React.Fragment>
     )
   }
-  ListColumn.defaultProps = {
-    list: [],
-    type: ''
-  }
-  
+
   // 페이지 시작
   return (
     <div id="remain">
       <section className='topSwiper'>
-        <img src={djRank && djRank.profImg && djRank.profImg.thumb62x62} />
+        {recommendList && recommendList.length > 0 &&
+          <Swiper {...swiperRecommend}>
+            {recommendList.map((list, index) => {
+              return (
+                <div key={index}>
+                  <ListColumn list={list}>
+                    <div className='info'>
+                      <Badge content={list} />
+                      <span className="title">{list.title}</span>
+                      <span className="nick">{list.nickNm}</span>
+                    </div>
+                  </ListColumn>
+                </div>
+              )
+            })}
+          </Swiper>
+        }
       </section>
       <section className='favorites'>
-        <ListColumn list={djRank} type={'swiper'} />
+        {djRank && djRank.length > 0 &&
+          <Swiper {...swiperParams}>
+            {djRank.map((list, index) => {
+              return (
+                <div key={index}>
+                  <ListColumn list={list} />
+                </div>
+              )
+            })}
+          </Swiper>
+        }
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP10'}>
+        <CntTitle title={'일간 TOP10'} more={'rank'}>
           <ul className="tabmenu">
             {topTabmenu.map((data,index) => {
               const param = {
                 item: data,
-                tabname: topRankType.name,
+                tab: topRankType.name,
                 setTab: setTopRankType
               }
               return (
@@ -167,22 +183,44 @@ const Remain = () => {
             })}
           </ul>
         </CntTitle>
-        {topTabmenu.map((data,index) => {
+        {topTabmenu.map((tabmenu, index) => {
           const param = {
             initData: topRankType.name === topTabmenu[0] ? djRank : topRankType.name === topTabmenu[1] ? fanRank : topRankType.name === topTabmenu[2] ? djRank : ''
           }
           return (
             <React.Fragment key={index}>
-              {data === topRankType.name &&
-                <ListColumn list={param.initData} type={'swiper'} />
+              {tabmenu === topRankType.name && 
+                <>
+                  {param.initData && param.initData.length > 0 && 
+                    <Swiper {...swiperParams}>
+                      {param.initData.map((list, index) => {
+                        return (
+                          <div key={index}>
+                            <ListColumn list={list} />
+                          </div>
+                        )
+                      })}
+                    </Swiper>
+                  }
+                </>
               }
             </React.Fragment>
           )
         })}
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-        <ListColumn list={fanRank} type={'swiper'} />
+        <CntTitle title={'방금 착륙한 NEW 달둥스'} more={'clip'} />
+        {fanRank && fanRank.length > 0 &&
+          <Swiper {...swiperParams}>
+            {fanRank.map((list,index) => {
+              return (
+                <div key={index}>
+                  <ListColumn list={list} key={index} />
+                </div>
+              )
+            })}
+          </Swiper>
+        }
       </section>
       <section className='banner'>
         <ul className='bannerWrap'>
@@ -196,7 +234,45 @@ const Remain = () => {
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
-        
+        <ul className="tabmenu">
+          {liveTabmenu.map((data,index) => {
+            const param = {
+              item: data,
+              tab: liveListType.name,
+              setTab: setLiveListType
+            }
+            return (
+              <TabBtn param={param} key={index} />
+            )
+          })}
+        </ul>
+        <div className="liveListWrap">
+          {liveList.map((list,index) => {
+            return (
+              <ListRow list={list} key={index}>
+                <div className='info'>
+                  <div className="listItem">
+                    <Badge content={list} />
+                  </div>
+                  <div className="listItem">
+                    <span className='title'>{list.title}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className='gender'>{list.bjGender}</span>
+                    <span className="nickNm">{list.bjNickNm}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className="state">
+                      {list.totalCnt}
+                      {list.entryCnt}
+                      {list.likeCnt}
+                    </span>
+                  </div>
+                </div>
+              </ListRow>
+            )
+          })}
+        </div>
       </section>
     </div>
   )
