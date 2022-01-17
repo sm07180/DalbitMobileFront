@@ -1,0 +1,36 @@
+/* 
+  @color
+*/
+$MAINCOLOR: #8581FF;
+
+@mixin flex ($ai: null,$jc: null,$fd: null) {    
+  display:flex;
+  align-items:$ai;
+  justify-content:$jc;
+  flex-direction:$fd;
+}
+
+@mixin border ($color: inherit,$radius:null,$size: 1px) {
+  border: $size solid $color;
+  border-radius:$radius;
+}
+
+@mixin font ($size: null,$weight: 400,$color: inherit) {
+  font: {
+    size: $size;
+    weight: $weight;
+  }
+  color:$color;
+}
+
+@mixin fontCut {
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  overflow:hidden;
+}
+
+@mixin backgroundPSR {
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat;
+}
