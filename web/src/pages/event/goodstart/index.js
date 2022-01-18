@@ -13,6 +13,8 @@ import DjContent from './content/DjContent'
 import FanContent from './content/FanContent'
 import PopupNotice from './content/PopupNotice'
 
+import PopupExp from '../../mypage/content/layer_popup_exp'
+
 import './style.scss'
 
 const tabmenu1 = 'dj'
@@ -25,6 +27,10 @@ const GoodStart = () => {
   const [tabContent, setTabContent] = useState({name: tabmenu1}) // dj, fan
 
   const [noticePopInfo, setNoticePopInfo] = useState({open: false})
+  const [popupExp, setPopupExp] = useState(false)
+
+  const nowDate = moment().format('YYMMDD')
+  const changeDate = '220120'
 
   let pagePerCnt = 50;
   // 조회 API
@@ -49,6 +55,10 @@ const GoodStart = () => {
 
   const popupClose = () => {
     setNoticePopInfo({...noticePopInfo, open: false})
+  }
+
+  const popupExpOpen = () => {
+    setPopupExp(true)
   }
 
   // 페이지 셋팅
@@ -80,7 +90,22 @@ const GoodStart = () => {
         <TabmenuBtn tabBtn1={tabmenu1} tabBtn2={tabmenu2} tab={tabContent.name} setTab={setTabContent} event={'goodstart'} />
       </Tabmenu>
       <section className="bodyContainer">
-        <img src={`${IMG_SERVER}/event/goodstart/bodybg-${tabContent.name === tabmenu1 ? 'dj' : 'fan'}.png`} className="bgImg" />
+        {nowDate >= changeDate ? 
+          <>
+            {tabContent.name === tabmenu1 ? 
+              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj.png`} className="bgImg" />
+              : 
+              <>
+                <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-1.png`} className="bgImg" />
+                <button className='fanBtn' onClick={popupExpOpen}>
+                  <img src={`${IMG_SERVER}/event/goodstart/body-fanBtn.png`} />
+                </button>
+              </>
+            }
+          </>
+          :
+          <img src={`${IMG_SERVER}/event/goodstart/bodybg-${tabContent.name === tabmenu1 ? 'dj' : 'fan'}.png`} className="bgImg" />
+        }
         <div className="notice">
           <button onClick={popupOpen}>
             <img src={`${IMG_SERVER}/event/goodstart/noticeBtn.png`} alt="유의사항" />
@@ -90,6 +115,7 @@ const GoodStart = () => {
 			{tabContent.name === tabmenu1 && <DjContent />}
       {tabContent.name === tabmenu2 && <FanContent />}
       {noticePopInfo.open === true && <PopupNotice onClose={popupClose} tab={tabContent.name} />}
+      {popupExp === true && <PopupExp setPopupExp={setPopupExp} />}
     </div>
   )
 }
