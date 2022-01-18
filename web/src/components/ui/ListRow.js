@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../style.scss'
+import './listRow.scss'
 
 const ListRow = (props) => {
   const {list, children} = props

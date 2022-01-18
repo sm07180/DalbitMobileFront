@@ -1,6 +1,6 @@
 import React from 'react'
 
-import '../style.scss'
+import './listColumn.scss'
 
 const ListColumn = (props) => {
   const {list, children} = props

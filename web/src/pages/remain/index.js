@@ -3,8 +3,10 @@ import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
-import ListColumn from './components/ListColumn'
-import ListRow from './components/ListRow'
+import Reheader from 'components/ui/header/Reheader'
+import CntTitle from 'components/ui/CntTitle'
+import ListColumn from 'components/ui/ListColumn'
+import ListRow from 'components/ui/ListRow'
 
 import './style.scss'
 
@@ -90,24 +92,6 @@ const Remain = () => {
   }
 
   // 컴포넌트
-  const CntTitle = (props) => {
-    const {title,more,children} = props
-
-    const onMoreClick = () => {
-      history.push(`/${more}`)
-    }
-
-    return (
-      <div className="cntTitle">
-        <h2>{title}</h2>
-        {children}
-        {more &&
-          <button onClick={onMoreClick}>더보기</button>
-        }
-      </div>
-    )
-  }
-
   const TabBtn = (props) => {
     const {param} = props
 
@@ -136,6 +120,7 @@ const Remain = () => {
   // 페이지 시작
   return (
     <div id="remain">
+      <Reheader title={'라이브'} type={'noBack'} />
       <section className='topSwiper'>
         {recommendList && recommendList.length > 0 &&
           <Swiper {...swiperRecommend}>
@@ -143,11 +128,13 @@ const Remain = () => {
               return (
                 <div key={index}>
                   <ListColumn list={list}>
-                    <div className='info'>
-                      <Badge content={list} />
-                      <span className="title">{list.title}</span>
-                      <span className="nick">{list.nickNm}</span>
-                    </div>
+                    {list.nickNm !== 'banner' &&
+                      <div className='info'>
+                        <Badge content={list} />
+                        <span className="title">{list.title}</span>
+                        <span className="nick">{list.nickNm}</span>
+                      </div>
+                    }
                   </ListColumn>
                 </div>
               )

@@ -1,0 +1,36 @@
+@import "../_mixin.scss";
+
+header {
+  position:relative;
+  z-index:10000;
+  @include flex(center);
+  height:48px;
+  width:100%;
+  padding-left: 16px;
+  .title {
+    @include flex(center,center);
+    height:100%;
+    @include font(24px,700,#202020);
+  }
+  &.fixed {
+    position:fixed;
+    top:0;
+    left:0;
+  }
+  &.sticky {
+    position:sticky;
+    top:0;
+    left:0;
+  }
+  &.back {
+    padding:4px;
+    .title {
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      pointer-events: none;
+      @include font(18px,500,#202020);
+    }
+  }
+}
