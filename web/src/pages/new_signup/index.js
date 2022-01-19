@@ -664,7 +664,7 @@ export default (props) => {
     })
     if (result === 'success') {
       //adbrix, firebase 이벤트 호출
-      await Utility.addAdsData('CompleteRegistration', "", '1.6.9', '1.6.3');
+      await Utility.addAdsData('CompleteRegistration', {}, '1.6.9', '1.6.3');
 
       context.action.alert({
         callback: () => {
