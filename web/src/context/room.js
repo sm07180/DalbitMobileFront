@@ -334,7 +334,7 @@ export const RoomJoin = async (obj) => {
       const cmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
       const updateAosVer = '1.8.2';
       const updateIosVer = '1.6.6';
-      await Utility.addAdsData(cmd, {}, updateAosVer, updateIosVer);
+      await Utility.addAdsData(cmd, "", updateAosVer, updateIosVer);
 
       return true
     }
