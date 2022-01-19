@@ -18,7 +18,6 @@ import NoService from './pages/no_service/index'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
-import {getDeviceOSTypeChk} from './common/DeviceCommon';
 
 const App = () => {
   const globalCtx = useContext(Context)
