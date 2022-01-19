@@ -313,13 +313,14 @@ export const RoomJoin = async (obj) => {
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
-      Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
-      //TODO:Facebook,Firebase 이벤트 호출 추후 앱 배포 되면 삭
-      try {
-        fbq('track', 'RoomJoin')
-        firebase.analytics().logEvent('RoomJoin')
-        kakaoPixel('114527450721661229').viewCart('RoomJoin')
-      } catch (e) {}
+      // Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
+
+      // RoomJoin 이벤트 (회원 비회원 분리)
+      const cmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
+      const updateAosVer = '1.8.2';
+      const updateIosVer = '1.6.6';
+      await Utility.addAdsData(cmd, {}, updateAosVer, updateIosVer);
+
       return true
     }
   }

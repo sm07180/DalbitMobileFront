@@ -5,7 +5,7 @@
  */
 
 //---------------------------------------------------------------------
-import {isHybrid, Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid, isAndroid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
 import moment from 'moment'
@@ -377,6 +377,7 @@ export default class Utility {
     }
   }
 
+  // 생년월일 -> 만나이
   static birthToAmericanAge = (birth) => {
     // age: YYYYMMDD
     const birthYear = parseInt(birth.substring(0, 4))
@@ -400,5 +401,34 @@ export default class Utility {
     min = Math.floor(time / 60)
 
     return `${hour}시간 ${min}분`
+  }
+
+  // firebase, adbrix, facebook 이벤트 요청
+  static addAdsData = async (cmd, value, aosAppVer, iosAppVer) => {
+    const successCallback = () => {
+      const firebaseDataArray = [
+        { type : "firebase", key : cmd, value },
+        { type : "adbrix", key : cmd, value },
+        { type : "facebook", key : cmd, value },
+      ];
+      Hybrid('eventTracking', {service :  firebaseDataArray})
+    };
+    const failCallback = () => {
+      try {
+        fbq('track', cmd)
+        firebase.analytics().logEvent(cmd)
+      } catch (e) {}
+    }
+
+    if(isHybrid()) {
+      if(typeof aosAppVer === 'undefined' && typeof iosAppVer === 'undefined') {
+        successCallback();
+      }else {
+        const targetVersion = isAndroid() ? aosAppVer : iosAppVer; // 강업 버전
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      }
+    }else {
+      failCallback();
+    }
   }
 }
