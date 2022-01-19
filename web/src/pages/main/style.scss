@@ -211,6 +211,13 @@
       margin: 0 16px;
       border-radius:8px;
       background-color:#765ED5;
+      overflow:hidden;
+      img {
+        width:100%;
+        height:100%;
+        vertical-align: bottom;
+        object-fit: cover;
+      }
     }
     .swiper-pagination {
       @include swiperPagination;
@@ -218,9 +225,16 @@
       cursor:pointer;
       &:after {
         content:"모두보기";
-        display:inline-block;
-        margin-left:4px;
       }
+    }
+    .bannerMore {
+      @include position-bottom-right(10px,16px);
+      z-index: 1;
+      margin-left:4px;
+      padding:0;
+      padding-right:8px;
+      border-radius:0;
+      @include font(12px,400,white);
     }
   }
   .liveView {

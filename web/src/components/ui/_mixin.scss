@@ -3,6 +3,31 @@
 */
 $MAINCOLOR: #8581FF;
 
+@mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
+  position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
+}
+@mixin position-vertical ($left: null,$right: null) {
+  position:absolute;transform:translateY(-50%);top:50%;left:$left;right:$right;
+}
+@mixin position-center ($left: null,$top: null) {
+  position:absolute;transform:translate(-50%,-50%);left:50%;top:50%;
+}
+@mixin position-top-left ($top: 0,$left: 0,$trans: null) {
+  position:absolute;top:$top;left:$left;transform: $trans;
+}
+@mixin position-top-right ($top: 0,$right: 0,$trans: null) {
+  position:absolute;top:$top;right:$right;transform: $trans;
+}
+@mixin position-bottom-left ($bottom: 0,$left: 0,$trans: null) {
+  position:absolute;bottom:$bottom;left:$left;transform: $trans;
+}
+@mixin position-bottom-right ($bottom: 0,$right: 0,$trans: null) {
+  position:absolute;bottom:$bottom;right:$right;transform: $trans;
+}
+@mixin position-fixed ($top: 0,$left: 0,$bottom: 0,$right: 0) {
+  position:fixed;top:$top;left:$left;bottom:$bottom;right:$right;
+}
+
 @mixin flex ($ai: null,$jc: null,$fd: null) {    
   display:flex;
   align-items:$ai;
@@ -33,4 +58,18 @@ $MAINCOLOR: #8581FF;
   background-position:center;
   background-size:cover;
   background-repeat:no-repeat;
+}
+
+@mixin swiperPagination {
+  position:absolute;
+  left:auto;
+  right:0;
+  width:auto;
+  height:20px;
+  line-height:20px;
+  padding:0 8px 0 10px;
+  border-radius:100px 0 0 100px;
+  letter-spacing: -1px;
+  @include font(12px,400,white);
+  background-color:rgba(0,0,0,.4);
 }

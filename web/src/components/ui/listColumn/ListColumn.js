@@ -10,7 +10,7 @@ const ListColumn = (props) => {
       <div className="listColumn">
         <div className="photo">
           {list.nickNm !== 'banner' ? 
-            <img src={list.profImg.thumb190x190} alt={list.nickNm} />
+            <img src={list && list.profImg && list.profImg.thumb190x190} alt={list.nickNm} />
             :
             <img src={list.bannerUrl} alt={list.nickNm} />
           }

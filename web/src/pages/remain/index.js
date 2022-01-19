@@ -3,17 +3,18 @@ import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Swiper from 'react-id-swiper'
-import Reheader from 'components/ui/header/Reheader'
+import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/CntTitle'
-import ListColumn from 'components/ui/ListColumn'
+import ListColumn from 'components/ui/listColumn/ListColumn'
 import ListRow from 'components/ui/ListRow'
+import TabBtn from './components/TabBtn'
 
 import './style.scss'
 
 const topTabmenu = ['DJ','FAN','LOVER']
 const liveTabmenu = ['전체','VIDEO','RADIO','신입DJ']
 
-const Remain = () => {
+const ReMainPage = () => {
   const history = useHistory()
   const [myStar, setMyStar] = useState([])
   const [djRank, setDjRank] = useState([])
@@ -82,7 +83,19 @@ const Remain = () => {
   const swiperRecommend = {
     loop: true,
     autoplay: {
-      delay: 9500,
+      delay: 10000,
+      disableOnInteraction: false
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      type: 'fraction'
+    }
+  }
+  const swiperBanner = {
+    slidesPerView: 'auto',
+    loop: true,
+    autoplay: {
+      delay: 10000,
       disableOnInteraction: false
     },
     pagination: {
@@ -92,21 +105,6 @@ const Remain = () => {
   }
 
   // 컴포넌트
-  const TabBtn = (props) => {
-    const {param} = props
-
-    const tabClick = (e) => {
-      const {tabTarget} = e.currentTarget.dataset
-      if (tabTarget === param.item) {
-        param.setTab({name: tabTarget})
-      }
-    }
-
-    return (
-      <li className={param.tab === param.item ? 'active' : ''} data-tab-target={param.item} onClick={tabClick}>{param.item}</li>
-    )
-  }
-
   const Badge = (props) => {
     const {content} = props
     
@@ -120,7 +118,7 @@ const Remain = () => {
   // 페이지 시작
   return (
     <div id="remain">
-      <Reheader title={'라이브'} type={'noBack'} />
+      <Header title={'라이브'} type={'noBack'} />
       <section className='topSwiper'>
         {recommendList && recommendList.length > 0 &&
           <Swiper {...swiperRecommend}>
@@ -209,15 +207,11 @@ const Remain = () => {
           </Swiper>
         }
       </section>
-      <section className='banner'>
-        <ul className='bannerWrap'>
-          <li>
-            <img src="" />
-          </li>
-          <li>
-            <img src="" />
-          </li>
-        </ul>
+      <section className='bannerWrap'>
+        <Swiper {...swiperBanner}>
+          <div></div>
+          <div></div>
+        </Swiper>
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
@@ -265,4 +259,4 @@ const Remain = () => {
   )
 }
 
-export default Remain
+export default ReMainPage
