@@ -276,7 +276,7 @@
         margin-top: 15px;
         .rank {
           flex: none;
-          @include flex(center, center);
+          @include flex(center, center, column);
           width: 40px;
           @include font(16px,600,#333);
           box-sizing: border-box;

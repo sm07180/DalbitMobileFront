@@ -17,16 +17,6 @@ export default function login(props) {
   const globalCtx = useContext(Context)
   const {token} = globalCtx
 
-  // const createContent = () => {
-  //   const category = params instanceof Object ? params['type'] : ''
-  //   // url dividing
-  //   if (category === 'phone') {
-  //     return <LoginForm props={props} />
-  //   } else {
-  //     return <LoginSns />
-  //   }
-  // }
-
   return (
     <Switch>
       {token && token.isLogin ? (
