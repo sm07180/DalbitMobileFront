@@ -13,6 +13,7 @@ import Message from 'pages/common/message'
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const Remain = React.lazy(() => import('pages/remain'))
+const RenewalRanking = React.lazy(() => import('pages/renewalRanking'))
 const Ranking = React.lazy(() => import('pages/ranking_renewal'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
@@ -80,6 +81,7 @@ export default () => {
         <Route exact path="/remain" component={Remain} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
+        <Route exact path="/renewalRanking" component={RenewalRanking} />
         <Route exact path="/rank/:type" component={RankingGuide} />
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
