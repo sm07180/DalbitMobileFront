@@ -6,10 +6,6 @@ const ListRow = (props) => {
   const {list, children, rank, badge, title, nick, data, gender} = props
   
   const [dataList, setDataList] = useState([])
-
-  function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-  }
   
   useEffect(() => {
     setDataList(data.split(" "));  
