@@ -93,7 +93,7 @@ const GoodStart = () => {
         {nowDate >= changeDate ? 
           <>
             {tabContent.name === tabmenu1 ? 
-              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj.png`} className="bgImg" />
+              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj-1.png`} className="bgImg" />
               : 
               <>
                 <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-1.png`} className="bgImg" />
