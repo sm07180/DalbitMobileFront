@@ -41,334 +41,339 @@
       }
     }
   }
-
-  .cntTitle {
-    @include flex(center);
-    width: 100%;;
-    h2 {
-      height:28px;
-      line-height:28px;
-      letter-spacing: -1.5px;
-      @include font(20px,500,black);
-      .point {
-        @include font(20px, 600, #FF27C0);
+  
+  .content {
+    position: relative;
+    @include flex(center, center, column);
+    .cntTitle {
+      @include flex(center);
+      width: 100%;;
+      h2 {
+        height:28px;
+        line-height:28px;
+        letter-spacing: -1.5px;
+        @include font(20px,500,black);
+        .point {
+          @include font(20px, 600, #FF27C0);
+        }
+      }
+      button {
+        margin-left: auto;
+        letter-spacing: -1px;
+        @include font(13px,400,#999);
       }
     }
-    button {
+    
+    .more {
       margin-left: auto;
-      letter-spacing: -1px;
-      @include font(13px,400,#999);
+      @include font(12px, 500, #999999);
+      cursor: pointer;
+      &.white {
+        color: #FFFFFF;
+      }
     }
-  }
   
-  .more {
-    margin-left: auto;
-    @include font(12px, 500, #999999);
-    cursor: pointer;
-    &.white {
-      color: #FFFFFF;
-    }
-  }
-
-  .rankingTop {
-    position: relative;
-    @include flex(flex-start, flex-start, column);
-    width: 100%;
-    height: 410px;
-    padding: 15px;
-    border-bottom: 60px solid #FAF1FF;
-    background-color: #B620FE;
-    &::before {
-      position: absolute;
-      bottom: 50px; left: -30px;
-      content: "TOP10";
-      @include font(40px,900,#C44CFE);
-      transform: rotate(-90deg);
-      letter-spacing: -2px;
-    }
-    .timeChart {
-      font-size: 24px;
-      font-weight: 600;
-      color: #FFFFFF;
-      line-height: 40px;
-    }
-    .countDown {
-      @include flex(center, center);
-      width: 100px;
-      margin-top: 8px;
-      padding: 2px 0;
-      @include font(16px,600,#fff);
-      background-color: #1A1A1A;
-      letter-spacing: 2px;
-    }
-    .timeRank {
-      position: absolute;
-      top: 180px; left: 0;
+  
+    .rankingTop {
+      position: relative;
+      @include flex(flex-start, flex-start, column);
       width: 100%;
-      .swiper-container {
-        padding-left: 80px;
-        .swiper-slide {
-          width:auto;
-          margin-right:10px;
-          &:last-child {
-            margin-right:28px;
-          }
-          .cardList {
-            position: relative;
-            flex:none;
-            @include flex(center,center,column);
-            width:150px;
-            height:200px;
-            border-radius:8px;
-            overflow: hidden;
-            &::after {
-              content: "";
-              position: absolute;
-              top: 0; left: 0; right: 0; bottom: 0;
-              width: 100%; height: 100%;
-              border-radius:8px;
-              background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
+      height: 410px;
+      padding: 15px;
+      border-bottom: 60px solid #FAF1FF;
+      background-color: #B620FE;
+      &::before {
+        position: absolute;
+        bottom: 50px; left: -30px;
+        content: "TOP10";
+        @include font(40px,900,#C44CFE);
+        transform: rotate(-90deg);
+        letter-spacing: -2px;
+      }
+      .timeChart {
+        font-size: 24px;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 40px;
+      }
+      .countDown {
+        @include flex(center, center);
+        width: 100px;
+        margin-top: 8px;
+        padding: 2px 0;
+        @include font(16px,600,#fff);
+        background-color: #1A1A1A;
+        letter-spacing: 2px;
+      }
+      .timeRank {
+        position: absolute;
+        top: 180px; left: 0;
+        width: 100%;
+        .swiper-container {
+          padding-left: 80px;
+          .swiper-slide {
+            width:auto;
+            margin-right:10px;
+            &:last-child {
+              margin-right:28px;
             }
-            .rankWrap {
-              position: absolute;
-              top: 0px; left: 10px;
+            .cardList {
+              position: relative;
+              flex:none;
               @include flex(center,center,column);
-              .rank {
-                position: relative;
-                @include flex(center,center);
-                width: 30px; height: 30px;
-                background-color: #3AFF47;
-                @include font(24px,600,#333);
-                margin-bottom: 10px;
-                &::after {
-                  content: "";
-                  position: absolute;
-                  bottom: -25px; left: 0;
-                  width: 100%;
-                  border: 15px solid transparent;
-                  border-top: 10px solid #3AFF47;
-                  box-sizing: border-box;
+              width:150px;
+              height:200px;
+              border-radius:8px;
+              overflow: hidden;
+              &::after {
+                content: "";
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                width: 100%; height: 100%;
+                border-radius:8px;
+                background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
+              }
+              .rankWrap {
+                position: absolute;
+                top: 0px; left: 10px;
+                @include flex(center,center,column);
+                .rank {
+                  position: relative;
+                  @include flex(center,center);
+                  width: 30px; height: 30px;
+                  background-color: #3AFF47;
+                  @include font(24px,600,#333);
+                  margin-bottom: 10px;
+                  &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: -25px; left: 0;
+                    width: 100%;
+                    border: 15px solid transparent;
+                    border-top: 10px solid #3AFF47;
+                    box-sizing: border-box;
+                  }
+                }
+                .live {
+                  @include font(14px,600,#FF26C0);
                 }
               }
-              .live {
-                @include font(14px,600,#FF26C0);
-              }
-            }
-            .photo {
-              width:100%;
-              height:100%;
-              background-position:center;
-              background-size:cover;
-              background-repeat:no-repeat;
-              overflow:hidden;
-              img {
+              .photo {
                 width:100%;
                 height:100%;
-                object-fit: cover;
+                background-position:center;
+                background-size:cover;
+                background-repeat:no-repeat;
+                overflow:hidden;
+                img {
+                  width:100%;
+                  height:100%;
+                  object-fit: cover;
+                }
+              }
+              .userNick {
+                position: absolute;
+                bottom: 0; left: 0; right: 0;
+                width:100%;
+                padding: 10px;
+                @include font(12px,500,#fff);
+                @include fontCut;
+                z-index: 1;
+                box-sizing: border-box;
               }
             }
-            .userNick {
-              position: absolute;
-              bottom: 0; left: 0; right: 0;
-              width:100%;
-              padding: 10px;
-              @include font(12px,500,#fff);
-              @include fontCut;
-              z-index: 1;
-              box-sizing: border-box;
-            }
           }
         }
       }
     }
-  }
-
-  .myRank {
-    position: relative;
-    @include flex(center, center, column);
-    width: 100%;
-    padding: 20px 15px;
-    box-sizing: border-box;
-    .tabmenu {
-      @include flex(center, space-around);
-      width: 100%;
-      margin-top:12px;
-      li {
-        position:relative;
-        @include font(12px,600,#ccc);
-        &.active {
-          @include font(12px,600,#333);
-          &::after {
-            content: "";
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 120%;
-            height: 15px;
-            transform: translate(-50%, -20%) skew(-15deg);
-            background-color: #FFE5F7;
-            z-index: -1;
-          }
-        }        
-      }
-    }
-    .myData {
-      @include flex(center, center);
-      width: calc(100% + 30px);
-      padding: 15px 0;
-      margin-top:20px;
-      background-color: #FFF8FD;
-      .dataWrap {
-        position: relative;
-        @include flex(center, center, column);
-        width: 30%;
-        &::after {
-          content: "";
-          position: absolute;
-          top: 10px; right: 0;
-          width: 1px; height: 30px;
-          background-color: #dddddd;
-        }
-        &:last-child::after {
-          content: none;
-        }
-        .rankCategory {
-          @include font(12px,600,#999);
-        }
-        .rankData {
-          margin-top: 10px;
-          @include font(16px,900,#333);
-        }
-      }
-    }    
-  }
-  .rankList {
-    position: relative;
-    @include flex(center, center, column);
-    width: 100%;
-    padding: 20px 15px;
-    box-sizing: border-box;
-    .tabmenu {
-      @include flex(center, space-around);
-      width: 100%;
-      margin-top:6px;
-      li {
-        position:relative;
-        flex: 1;
-        @include flex(center, center);
-        padding: 10px;
-        border-bottom: 2px solid #ccc;
-        @include font(16px,600,#ccc);
-        &.active {
-          @include font(16px,600,#333);   
-          border-bottom: 2px solid #333;       
-        }        
-      }
-    }
-    .listWrap {
+  
+    .myRank {
       position: relative;
       @include flex(center, center, column);
       width: 100%;
-      .listRow {
-        flex:none;
-        @include flex(center);
-        min-width: 0;
+      padding: 20px 15px;
+      box-sizing: border-box;
+      .tabmenu {
+        @include flex(center, space-around);
         width: 100%;
-        margin-top: 15px;
-        .rank {
-          flex: none;
-          @include flex(center, center);
-          width: 40px;
-          @include font(16px,600,#333);
-          box-sizing: border-box;
-        }
-        .photo {
-          flex: none;
-          width:60px;
-          border-radius: 50%;
-          img {
-            width:100%;
-            border-radius: 50%;
-          }
-        }
-        .listContent {
-          flex: 1;
-          padding: 0 10px;
-          @include flex(center, center, column);
-          overflow: hidden;        
-          .listItem {
-            @include flex(center);
-            width: 100%;
-            span {
-              display: block;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              overflow: hidden;
+        margin-top:12px;
+        li {
+          position:relative;
+          @include font(12px,600,#ccc);
+          &.active {
+            @include font(12px,600,#333);
+            &::after {
+              content: "";
+              position: absolute;
+              top: 50%; left: 50%;
+              width: 120%;
+              height: 15px;
+              transform: translate(-50%, -20%) skew(-15deg);
+              background-color: #FFE5F7;
+              z-index: -1;
             }
-            .gender {
-              flex: none;
-              margin-right: 4px;
-              &.female {
-                display: inline-block;
-                width: 14px; height: 14px;
-                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_female' transform='translate(-259 -1931)'%3E%3Cg id='사각형_2008' data-name='사각형 2008' transform='translate(259 1931)' fill='none' stroke='%23ff927b' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath id='패스_6836' data-name='패스 6836' d='M402.731,322.425a5,5,0,1,0-2.517,0v1.356H397.73V326.3h2.483v4.66h2.517V326.3h2.483v-2.517h-2.483Zm-3.742-4.834a2.483,2.483,0,1,1,2.483,2.483A2.486,2.486,0,0,1,398.989,317.592Z' transform='translate(-128.473 1623.887)' fill='%23ff927b'/%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center;
-                background-size: contain;
-              }
-              &.male {
-                display: inline-block;
-                width: 14px; height: 14px;
-                background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_male' transform='translate(-261 -1931)'%3E%3Cg id='사각형_2008' data-name='사각형 2008' transform='translate(261 1931)' fill='none' stroke='%238989eb' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath id='패스_6837' data-name='패스 6837' d='M318.97,320.273v-4.822l2.229,2.229,1.739-1.738-5.2-5.2-5.2,5.2,1.739,1.738,2.229-2.229v4.822a4.885,4.885,0,1,0,2.459,0Zm-1.229,7.147a2.425,2.425,0,1,1,2.426-2.425A2.428,2.428,0,0,1,317.74,327.42Z' transform='translate(-42.74 1624.211)' fill='%238989eb'/%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center;
-                background-size: contain;
-              }
-            }
-            .userNick {
-              width:100%;
-              text-align:center;
-              @include fontCut;
-            }
-            .mainText {
-              @include font(15px,600,#303030);
-            }
-            .subText {
-              @include font(13px,400,#666666);
-            }
-          }
-          .dataGroup {
-            @include flex(center);
-            span {
-              margin-right: 4px;
-            }
-            .dataIcon {
-              padding-left: 16px;
-              @include font(13px,400,#999999);
-              line-height: 18px;
-              background-position: left center;
-              background-repeat: no-repeat;
-              background-size: 16px 16px;
-              &.fanPoint {
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='people_g_s' transform='translate(0.4 0.4)' opacity='0.8'%3E%3Crect id='사각형_21' data-name='사각형 21' width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg id='그룹_15284' data-name='그룹 15284' transform='translate(9 4)'%3E%3Cpath id='패스_3947' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23bdbdbd' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3Cg id='그룹_9365' data-name='그룹 9365' transform='translate(5 6)'%3E%3Cpath id='패스_3947-2' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23757575' stroke='%23757575' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-              }
-              &.giftPoint {
-                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='person_g_s' transform='translate(0.4 0.4)'%3E%3Crect id='사각형_21' data-name='사각형 21' width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg id='그룹_9365' data-name='그룹 9365' transform='translate(7 6)'%3E%3Cpath id='패스_3947' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23999' stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-              }
-              &.goodPoint {
-                background-image: url("data:image/svg+xml,%3Csvg id='like_w_s' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect id='사각형_41' data-name='사각형 41' width='32' height='32' fill='none'/%3E%3Cg id='패스_440' data-name='패스 440' transform='translate(2.379 0.505)' fill='%23999'%3E%3Cpath d='M 13.53221607208252 23.95034599304199 L 5.371310710906982 15.30375099182129 C 3.362286567687988 13.08795833587646 3.337609767913818 9.457889556884766 5.317023754119873 7.2098708152771 C 6.260463714599609 6.138480663299561 7.567953586578369 5.524000644683838 8.904223442077637 5.524000644683838 C 10.65652370452881 5.524000644683838 12.25654411315918 6.526401042938232 13.18428325653076 8.20542049407959 L 13.53439331054688 8.839051246643066 L 13.88450336456299 8.20542049407959 C 14.81225395202637 6.526401042938232 16.41227340698242 5.524000644683838 18.16456413269043 5.524000644683838 C 20.95358276367188 5.524000644683838 23.22091293334961 8.080961227416992 23.22091293334961 11.22390079498291 C 23.22195243835449 12.74783420562744 22.6676139831543 14.23354339599609 21.69987869262695 15.3010721206665 L 13.53221607208252 23.95034599304199 Z' stroke='none'/%3E%3Cpath d='M 13.53229331970215 23.36765480041504 L 21.40605926513672 15.02960777282715 C 22.30631446838379 14.03502082824707 22.82189178466797 12.64860725402832 22.82091331481934 11.22390079498291 C 22.82091331481934 8.301530838012695 20.73301315307617 5.92400074005127 18.16456413269043 5.92400074005127 C 16.56003379821777 5.92400074005127 15.09089374542236 6.849190711975098 14.2346134185791 8.398880958557129 L 13.53439331054688 9.666120529174805 L 12.83417415618896 8.398870468139648 C 11.97790336608887 6.849190711975098 10.50876331329346 5.92400074005127 8.904223442077637 5.92400074005127 C 7.664853572845459 5.92400074005127 6.497503757476807 6.474550724029541 5.617233753204346 7.474210739135742 C 3.768874406814575 9.573375701904297 3.7907874584198 12.96217250823975 5.66503381729126 15.03218173980713 L 13.53229331970215 23.36765480041504 M 13.53214359283447 24.53302001953125 L 5.077683448791504 15.57540130615234 C 2.930533647537231 13.21056079864502 2.902353763580322 9.346920967102051 5.0168137550354 6.945530891418457 C 6.042483806610107 5.780760765075684 7.44235372543335 5.124001026153564 8.904223442077637 5.124001026153564 C 10.79100322723389 5.124001026153564 12.54254341125488 6.216920852661133 13.53439331054688 8.011970520019531 C 14.52654361724854 6.216396331787109 16.28009986877441 5.123039722442627 18.16664695739746 5.124000549316406 C 21.17865753173828 5.124000549316406 23.62091445922852 7.85501766204834 23.62091445922852 11.22390079498291 C 23.62203407287598 12.85886096954346 23.03481292724609 14.42576122283936 21.99336433410645 15.57288074493408 L 13.53214359283447 24.53302001953125 Z' stroke='none' fill='%23999'/%3E%3C/g%3E%3C/svg%3E%0A");
-              }
-            }
-          }
-        }
-        .listBack {
-          flex: none;
-          @include flex(center, center);
-
-          .liveTag {
-            @include flex(center, center);
-            width: 60px; height: 30px;
-            @include font(14px,900,#FFF);
-            border-radius: 100px;
-            background: linear-gradient(to right, #FD25C1 0%, #B620FF 100%);
-          }
+          }        
         }
       }
-    }    
-  }
+      .myData {
+        @include flex(center, center);
+        width: calc(100% + 30px);
+        padding: 15px 0;
+        margin-top:20px;
+        background-color: #FFF8FD;
+        .dataWrap {
+          position: relative;
+          @include flex(center, center, column);
+          width: 30%;
+          &::after {
+            content: "";
+            position: absolute;
+            top: 10px; right: 0;
+            width: 1px; height: 30px;
+            background-color: #dddddd;
+          }
+          &:last-child::after {
+            content: none;
+          }
+          .rankCategory {
+            @include font(12px,600,#999);
+          }
+          .rankData {
+            margin-top: 10px;
+            @include font(16px,900,#333);
+          }
+        }
+      }    
+    }
+    .rankList {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      padding: 20px 15px;
+      box-sizing: border-box;
+      .tabmenu {
+        @include flex(center, space-around);
+        width: 100%;
+        margin-top:6px;
+        li {
+          position:relative;
+          flex: 1;
+          @include flex(center, center);
+          padding: 10px;
+          border-bottom: 2px solid #ccc;
+          @include font(16px,600,#ccc);
+          &.active {
+            @include font(16px,600,#333);   
+            border-bottom: 2px solid #333;       
+          }        
+        }
+      }
+      .listWrap {
+        position: relative;
+        @include flex(center, center, column);
+        width: 100%;
+        .listRow {
+          flex:none;
+          @include flex(center);
+          min-width: 0;
+          width: 100%;
+          margin-top: 15px;
+          .rank {
+            flex: none;
+            @include flex(center, center, column);
+            width: 40px;
+            @include font(16px,600,#333);
+            box-sizing: border-box;
+          }
+          .photo {
+            flex: none;
+            width:60px;
+            border-radius: 50%;
+            img {
+              width:100%;
+              border-radius: 50%;
+            }
+          }
+          .listContent {
+            flex: 1;
+            padding: 0 10px;
+            @include flex(center, center, column);
+            overflow: hidden;        
+            .listItem {
+              @include flex(center);
+              width: 100%;
+              span {
+                display: block;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+              }
+              .gender {
+                flex: none;
+                margin-right: 4px;
+                &.female {
+                  display: inline-block;
+                  width: 14px; height: 14px;
+                  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_female' transform='translate(-259 -1931)'%3E%3Cg id='사각형_2008' data-name='사각형 2008' transform='translate(259 1931)' fill='none' stroke='%23ff927b' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath id='패스_6836' data-name='패스 6836' d='M402.731,322.425a5,5,0,1,0-2.517,0v1.356H397.73V326.3h2.483v4.66h2.517V326.3h2.483v-2.517h-2.483Zm-3.742-4.834a2.483,2.483,0,1,1,2.483,2.483A2.486,2.486,0,0,1,398.989,317.592Z' transform='translate(-128.473 1623.887)' fill='%23ff927b'/%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center;
+                  background-size: contain;
+                }
+                &.male {
+                  display: inline-block;
+                  width: 14px; height: 14px;
+                  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_male' transform='translate(-261 -1931)'%3E%3Cg id='사각형_2008' data-name='사각형 2008' transform='translate(261 1931)' fill='none' stroke='%238989eb' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath id='패스_6837' data-name='패스 6837' d='M318.97,320.273v-4.822l2.229,2.229,1.739-1.738-5.2-5.2-5.2,5.2,1.739,1.738,2.229-2.229v4.822a4.885,4.885,0,1,0,2.459,0Zm-1.229,7.147a2.425,2.425,0,1,1,2.426-2.425A2.428,2.428,0,0,1,317.74,327.42Z' transform='translate(-42.74 1624.211)' fill='%238989eb'/%3E%3C/g%3E%3C/svg%3E%0A") no-repeat center;
+                  background-size: contain;
+                }
+              }
+              .userNick {
+                width:100%;
+                text-align:center;
+                @include fontCut;
+              }
+              .mainText {
+                @include font(15px,600,#303030);
+              }
+              .subText {
+                @include font(13px,400,#666666);
+              }
+            }
+            .dataGroup {
+              @include flex(center);
+              span {
+                margin-right: 4px;
+              }
+              .dataIcon {
+                padding-left: 16px;
+                @include font(13px,400,#999999);
+                line-height: 18px;
+                background-position: left center;
+                background-repeat: no-repeat;
+                background-size: 16px 16px;
+                &.fanPoint {
+                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='people_g_s' transform='translate(0.4 0.4)' opacity='0.8'%3E%3Crect id='사각형_21' data-name='사각형 21' width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg id='그룹_15284' data-name='그룹 15284' transform='translate(9 4)'%3E%3Cpath id='패스_3947' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23bdbdbd' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3Cg id='그룹_9365' data-name='그룹 9365' transform='translate(5 6)'%3E%3Cpath id='패스_3947-2' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23757575' stroke='%23757575' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                }
+                &.giftPoint {
+                  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='person_g_s' transform='translate(0.4 0.4)'%3E%3Crect id='사각형_21' data-name='사각형 21' width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg id='그룹_9365' data-name='그룹 9365' transform='translate(7 6)'%3E%3Cpath id='패스_3947' data-name='패스 3947' d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23999' stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+                }
+                &.goodPoint {
+                  background-image: url("data:image/svg+xml,%3Csvg id='like_w_s' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Crect id='사각형_41' data-name='사각형 41' width='32' height='32' fill='none'/%3E%3Cg id='패스_440' data-name='패스 440' transform='translate(2.379 0.505)' fill='%23999'%3E%3Cpath d='M 13.53221607208252 23.95034599304199 L 5.371310710906982 15.30375099182129 C 3.362286567687988 13.08795833587646 3.337609767913818 9.457889556884766 5.317023754119873 7.2098708152771 C 6.260463714599609 6.138480663299561 7.567953586578369 5.524000644683838 8.904223442077637 5.524000644683838 C 10.65652370452881 5.524000644683838 12.25654411315918 6.526401042938232 13.18428325653076 8.20542049407959 L 13.53439331054688 8.839051246643066 L 13.88450336456299 8.20542049407959 C 14.81225395202637 6.526401042938232 16.41227340698242 5.524000644683838 18.16456413269043 5.524000644683838 C 20.95358276367188 5.524000644683838 23.22091293334961 8.080961227416992 23.22091293334961 11.22390079498291 C 23.22195243835449 12.74783420562744 22.6676139831543 14.23354339599609 21.69987869262695 15.3010721206665 L 13.53221607208252 23.95034599304199 Z' stroke='none'/%3E%3Cpath d='M 13.53229331970215 23.36765480041504 L 21.40605926513672 15.02960777282715 C 22.30631446838379 14.03502082824707 22.82189178466797 12.64860725402832 22.82091331481934 11.22390079498291 C 22.82091331481934 8.301530838012695 20.73301315307617 5.92400074005127 18.16456413269043 5.92400074005127 C 16.56003379821777 5.92400074005127 15.09089374542236 6.849190711975098 14.2346134185791 8.398880958557129 L 13.53439331054688 9.666120529174805 L 12.83417415618896 8.398870468139648 C 11.97790336608887 6.849190711975098 10.50876331329346 5.92400074005127 8.904223442077637 5.92400074005127 C 7.664853572845459 5.92400074005127 6.497503757476807 6.474550724029541 5.617233753204346 7.474210739135742 C 3.768874406814575 9.573375701904297 3.7907874584198 12.96217250823975 5.66503381729126 15.03218173980713 L 13.53229331970215 23.36765480041504 M 13.53214359283447 24.53302001953125 L 5.077683448791504 15.57540130615234 C 2.930533647537231 13.21056079864502 2.902353763580322 9.346920967102051 5.0168137550354 6.945530891418457 C 6.042483806610107 5.780760765075684 7.44235372543335 5.124001026153564 8.904223442077637 5.124001026153564 C 10.79100322723389 5.124001026153564 12.54254341125488 6.216920852661133 13.53439331054688 8.011970520019531 C 14.52654361724854 6.216396331787109 16.28009986877441 5.123039722442627 18.16664695739746 5.124000549316406 C 21.17865753173828 5.124000549316406 23.62091445922852 7.85501766204834 23.62091445922852 11.22390079498291 C 23.62203407287598 12.85886096954346 23.03481292724609 14.42576122283936 21.99336433410645 15.57288074493408 L 13.53214359283447 24.53302001953125 Z' stroke='none' fill='%23999'/%3E%3C/g%3E%3C/svg%3E%0A");
+                }
+              }
+            }
+          }
+          .listBack {
+            flex: none;
+            @include flex(center, center);
+  
+            .liveTag {
+              @include flex(center, center);
+              width: 60px; height: 30px;
+              @include font(14px,900,#FFF);
+              border-radius: 100px;
+              background: linear-gradient(to right, #FD25C1 0%, #B620FF 100%);
+            }
+          }
+        }
+      }    
+    }
+  }  
 }

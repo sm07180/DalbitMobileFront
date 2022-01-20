@@ -1,5 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
+import BadgeList from 'common/badge_list'
+
 import '../style.scss'
 
 const ListRow = (props) => {
@@ -20,11 +22,16 @@ const ListRow = (props) => {
       <div className='listContent'>
         { badge &&
           <div className='listItem'>
+            {list.liveBadgeList.map((item, index) => {
+              return (
+                <BadgeList list={item} />
+              )
+            })}
           </div>
         }
         { title &&
           <div className='listItem'>
-            <span className="mainText"></span>
+            <span className="mainText">{list.title}</span>
           </div>
         }
         { nick &&

@@ -133,98 +133,100 @@ const RenewalRanking = () => {
         </div>
       </Header>
 
-      <section className='rankingTop'>
-        <div className='more white'>더보기</div>
-        <div className='timeChart'>
-          <div>DJ 실시간</div>
-          <div>타임 차트<span className=''></span></div>
-        </div>
-        <div className='countDown'>
-          00:00:00
-        </div>
-        <div className='timeRank'>
-          {timeDjRank && timeDjRank.length > 0 &&    
-            <Swiper {...swiperTimeDjRank}>
-                {timeDjRank.map((list, index) => {
+      <div className='content'>
+        <section className='rankingTop'>
+          <div className='more white'>더보기</div>
+          <div className='timeChart'>
+            <div>DJ 실시간</div>
+            <div>타임 차트<span className=''></span></div>
+          </div>
+          <div className='countDown'>
+            00:00:00
+          </div>
+          <div className='timeRank'>
+            {timeDjRank && timeDjRank.length > 0 &&    
+              <Swiper {...swiperTimeDjRank}>
+                  {timeDjRank.map((list, index) => {
+                    return (
+                      <div key={index}>
+                        <CardList list={list} isRanking={true}/>
+                      </div>
+                    )
+                  })}
+              </Swiper>
+            }
+          </div>
+        </section>
+
+        <section className='myRank'>
+          <CntTitle point={`${myProfile.nickNm}`} title={'님의 순위는?'} more={'rank'}/>
+          <ul className="tabmenu">
+            {rankTabmenu.map((data,index) => {
+              const param = {
+                item: data,
+                tab: rankTabName.name,
+                type: "rank",
+                setTab: setRankTabName,
+                index: index,
+              }
+              return (
+                <TabBtn param={param} key={index} />
+              )
+            })}
+          </ul>
+          <div className='myData'>
+            <div className='dataWrap'>
+              <span className='rankCategory'>DJ</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
+            <div className='dataWrap'>
+              <span className='rankCategory'>FAN</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
+            <div className='dataWrap'>
+              <span className='rankCategory'>LOVER</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
+          </div>
+        </section>
+
+        <section className='rankList'>
+          <CntTitle title={'DAY FAN / LOVER'} more={'rank'}/>
+          <ul className="tabmenu">
+            {dayTabmenu.map((data,index) => {
+              const param = {
+                item: data,
+                tab: dayTabName.name,
+                type: "day",
+                setTab: setDayTabName,
+                index: index,
+              }
+              return (
+                <TabBtn param={param} key={index} />
+              )
+            })}
+          </ul>
+          <div className='listWrap'>
+            { dateType !== 3 ?
+                timeFanRank.map((list, index) => {
                   return (
-                    <div key={index}>
-                      <CardList list={list} isRanking={true}/>
-                    </div>
+                    <ListRow list={list} key={index} rank={true} nick={true} gender={true} data={"fanPoint giftPoint"}>
+                      {list.roomNo && <div className='liveTag'>LIVE</div>}                    
+                    </ListRow>
                   )
-                })}
-            </Swiper>
-          }
-        </div>
-      </section>
-
-      <section className='myRank'>
-        <CntTitle point={`${myProfile.nickNm}`} title={'님의 순위는?'} more={'rank'}/>
-        <ul className="tabmenu">
-          {rankTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: rankTabName.name,
-              type: "rank",
-              setTab: setRankTabName,
-              index: index,
+                })
+              :
+                timeLoverRank.map((list, index) => {
+                  return (
+                    <ListRow list={list} key={index} rank={true} nick={true} gender={true} data={"goodPoint"}>
+                      {list.roomNo && <div className='liveTag'>LIVE</div>}                    
+                    </ListRow>
+                  )
+                })
             }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-        </ul>
-        <div className='myData'>
-          <div className='dataWrap'>
-            <span className='rankCategory'>DJ</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-          </div>
-          <div className='dataWrap'>
-            <span className='rankCategory'>FAN</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-          </div>
-          <div className='dataWrap'>
-            <span className='rankCategory'>LOVER</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-          </div>
-        </div>
-      </section>
-
-      <section className='rankList'>
-        <CntTitle title={'DAY FAN / LOVER'} more={'rank'}/>
-        <ul className="tabmenu">
-          {dayTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: dayTabName.name,
-              type: "day",
-              setTab: setDayTabName,
-              index: index,
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-        </ul>
-        <div className='listWrap'>
-          { dateType !== 3 ?
-              timeFanRank.map((list, index) => {
-                return (
-                  <ListRow list={list} key={index} rank={true} nick={true} gender={true} data={"fanPoint giftPoint"}>
-                    {list.roomNo && <div className='liveTag'>LIVE</div>}                    
-                  </ListRow>
-                )
-              })
-            :
-              timeLoverRank.map((list, index) => {
-                return (
-                  <ListRow list={list} key={index} rank={true} nick={true} gender={true} data={"goodPoint"}>
-                    {list.roomNo && <div className='liveTag'>LIVE</div>}                    
-                  </ListRow>
-                )
-              })
-          }
-        </div>        
-      </section>
+          </div>        
+        </section>
+      </div>      
     </div>
   )
 }
