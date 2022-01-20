@@ -1,210 +1,386 @@
 import React, {useEffect, useState, useContext} from 'react'
 
 import Swiper from 'react-id-swiper'
+import Header from 'components/ui/new_header'
+import HotClipList from './components/hotClipList'
+import ClipList from './components/clipList'
 
 import './dallaClip.scss'
 
-const swiperParams = {
-  loop: true,
-  spaceBetween: 8,
-}
 
-export default function dallaClip() {
 
+const DallaClip = () => {
+  // 스와이퍼 params
+  const swiperParams = {
+    slidesPerView: 'auto',
+  }
+
+  const likeSubjectLists = [
+    {
+      icon : '🎤',
+      name : '커버/노래'
+    },
+    {
+      icon : '🌱',
+      name : '힐링'
+    },
+    {
+      icon : '🎼',
+      name : '작사/작곡'
+    },
+    {
+      icon : '🤧',
+      name : '고민/사연'
+    },
+    {
+      icon : '💃',
+      name : '성우'
+    },
+    {
+      icon : '📺',
+      name : '더빙'
+    },
+  ]
+  const hotClipLists = [
+    {
+      rank : '1',
+      title : '제목1',
+      name : '유저닉네임1'
+    },
+    {
+      rank : '2',
+      title : '제목2',
+      name : '유저닉네임2'
+    },
+    {
+      rank : '3',
+      title : '제목3',
+      name : '유저닉네임3'
+    }
+  ]
+  const clipLists = [
+    {
+      title : '클립제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ',
+      name : '유저이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ'
+    },
+    {
+      title : 'Dali Van Pissaco',
+      name : '립밥이 필요할 때'
+    },
+    {
+      title : '짝사랑 고민 사연',
+      name : '이지금'
+    },
+    {
+      title : '카페에서 편하게ㅡㅡㅡㅡㅡㅡㅡㅡ',
+      name : '달디의 편한 갬성'
+    },
+    {
+      title : '안녕하세요',
+      name : '달디의 편한 갬성'
+    },
+  ]
+  
   return (
     <div id="dallaClip">
-      <div className="header">
-        클립
-        <div className="headerRight">
-          <div className="headerRightIcon">
-            1
-          </div>
-          <div className="headerRightIcon">
-            2
-          </div>
-          <div className="headerRightIcon">
-            3
-          </div>
-        </div>
-      </div>
-      <section>
+      <Header title="클립"></Header>
+      <section className='hotClipWrap'>
         <div className="title" style={{marginTop:'17px'}}>
           지금, 핫한 클립을 한눈에!
           <div className="titleMore">더보기</div>
         </div>
-        <div className="content">
-            <div className="hotClipBox">
-              <div className="hotClip">
-                <div className="hotClipImg"></div>
-                <div className="hotClipData">
-                  <div className="hotClipRank">1</div>
-                  <div className="hotClipTitle">
-                    <span className="hotClipSubject">커버/노래</span>
-                    클립 제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-                  </div>
-                  <div className="hotClipSubTit">
-                    클립내용설명 서브타이틀?
-                  </div>
+        <Swiper {...swiperParams}>
+          <div className="hotClipBox">
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <img className="hotClipRank" src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" alt="" />
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                 </div>
-              </div>
-              <div className="hotClip">
-                <div className="hotClipImg"></div>
-                <div className="hotClipData">
-                  <div className="hotClipRank">2</div>
-                  <div className="hotClipTitle">
-                    <span className="hotClipSubject">작사/작곡</span>
-                    IU - BBIbbi
-                  </div>
-                  <div className="hotClipSubTit">
-                    이 선 넘으면 정색이야
-                  </div>
-                </div>
-              </div>
-              <div className="hotClip">
-                <div className="hotClipImg"></div>
-                <div className="hotClipData">
-                  <div className="hotClipRank">3</div>
-                  <div className="hotClipTitle">
-                    <span className="hotClipSubject">ASMR</span>
-                    IU - 조각집 cover.
-                  </div>
-                  <div className="hotClipSubTit">
-                    기운팍팍 목요일
-                  </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
                 </div>
               </div>
             </div>
-        </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="hotClipBox">
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="hotClipBox">
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+            <div className="hotClip">
+              <div className="hotClipImg"></div>
+              <div className="hotClipData">
+                <div className="hotClipRank">1</div>
+                <div className="hotClipTitle">
+                  <span className="hotClipSubject">커버/노래</span>
+                  제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+                <div className="hotClipSubTit">
+                  이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* <div className="hotClipBox">
+            {hotClipLists.map((hotClipList, index)=>{
+              return(
+                <div key={index}>
+                  <HotClipList hotClipList={hotClipList} />
+                </div>
+              )
+            })}
+          </div> */}
+        </Swiper>
       </section>
-      <section>
-        <div className="content">
-          <Swiper {...swiperParams}>
-           <div className="bestClipBox">
-             <div className="bestClipTitle">1월 2주차 베스트 클립</div>
-             <div className="bestClipSubTit">올 한해를 돌아보는 클립들</div>
-           </div>
-           <div className="bestClipBox">
-             <div className="bestClipTitle">2월 2주차 베스트 클립</div>
-             <div className="bestClipSubTit">올 한해를 돌아보는 클립들</div>
-           </div>
-          </Swiper>
-        </div>
+      
+      <section className='bannerWrap'>
+        <Swiper {...swiperParams}>
+          <div className="bannerBox">
+            <div className="bannerItem"></div>
+          </div>
+          <div className="bannerBox">
+            <div className="bannerItem"></div>
+          </div>
+          <div className="bannerBox">
+            <div className="bannerItem"></div>
+          </div>
+        </Swiper>
       </section>
-      <section>
+      <section className="clipListWrap">
         <div className="title">
           <span className="userName">징꾸</span>님의 클립서랍
         </div>
-        <div className="content">
-           <div className="subTitle">
-             최근 들은 클립
-             <div className="titleMore">더보기</div>
-           </div>
-           <div className="clipDrawerWrap">
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">클립제목ㅡㅡㅡㅡㅡㅡㅡ</div>
-               <div className="clipDrawerUser">유저이름ㅡㅡㅡㅡㅡㅡㅡㅡ</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Dali van Picasso</div>
-               <div className="clipDrawerUser">립밤이 필요할 때</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Weekend</div>
-               <div className="clipDrawerUser">오늘도 라이브</div>
-             </div>
-           </div>
-           <div className="subTitle">
-             좋아요 한 클립
-             <div className="titleMore">더보기</div>
-           </div>
-           <div className="clipDrawerWrap">
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">클립제목ㅡㅡㅡㅡㅡㅡㅡ</div>
-               <div className="clipDrawerUser">유저이름ㅡㅡㅡㅡㅡㅡㅡㅡ</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Dali van Picasso</div>
-               <div className="clipDrawerUser">립밤이 필요할 때</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Weekend</div>
-               <div className="clipDrawerUser">오늘도 라이브</div>
-             </div>
-           </div>
+        <div className="subTitle">
+          최근 들은 클립
+          <div className="titleMore">더보기</div>
         </div>
+        <Swiper {...swiperParams}>
+          {clipLists.map((clipList, index)=>{
+            return(
+              <div key={index}>
+                <ClipList clipList={clipList} key={index}></ClipList>
+              </div>
+            )
+          })}
+        </Swiper>
+        <div className="subTitle" style={{marginTop:'16px'}}>
+          좋아요 한 클립
+          <div className="titleMore">더보기</div>
+        </div>
+        <Swiper {...swiperParams}>
+          {clipLists.map((clipList, index)=>{
+            return(
+              <div key={index}>
+                <ClipList clipList={clipList}></ClipList>
+              </div>
+            )
+          })}
+        </Swiper>
       </section>
-      <section>
+      <section className="bannerClipWrap">
         <div className="title">
           방금 떠오른 클립
           <div className="titleMore">더보기</div>
         </div>
-        <div className="content">
-           
-        </div>
+        <Swiper {...swiperParams}>
+          <div className="bannerClipBox">
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+                <div className="bannerClipName">이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+          </div>
+          <div className="bannerClipBox">
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+                <div className="bannerClipName">이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+          </div>
+          <div className="bannerClipBox">
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+                <div className="bannerClipName">이름ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+            <div className="bannerClip">
+              <div className="bannerClipImg"></div>
+              <div className="bannerClipContent">
+                <div className="bannerClipTitle">제목</div>
+                <div className="bannerClipName">이름</div>
+              </div>
+            </div>
+          </div>
+        </Swiper>
       </section>
-      <section>
+      <section className='likeSubWrap'>
         <div className="title">
           좋아하는 주제를 골라볼까요?
           <div className="titleMore">더보기</div>
         </div>
-        <div className="content">
-           <div className="likeSubWrap">
-             <div className="likeSub">
-               <p>🎤</p>
-               <p>커버/노래</p>
-             </div>
-             <div className="likeSub">
-               <p>💃</p>
-               <p>성우</p>
-             </div>
-             <div className="likeSub">
-               <p>🌱</p>
-               <p>힐링</p>
-             </div>
-             <div className="likeSub">
-               <p>🎼</p>
-               <p>작사/작곡</p>
-             </div>
-             <div className="likeSub">
-               <p>🤧</p>
-               <p>고민/사연</p>
-             </div>
-           </div>
-        </div>
+        <Swiper {...swiperParams}>
+          {likeSubjectLists.map((list, index)=>{
+            return(
+              <div className="likeSubWrap" key={index}>
+                <div className="likeSub">
+                  <p>{list.icon}</p>
+                  <p>{list.name}</p>
+                </div>
+              </div>
+            )
+          })}
+        </Swiper>
       </section>
-      <section>
+      <section className="clipListWrap">
         <div className="title">
           고민 / 사연은 어떠세요?
           <div className="titleMore">새로고침</div>
         </div>
-        <div className="content">
-        <div className="clipDrawerWrap">
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">클립제목ㅡㅡㅡㅡㅡㅡㅡ</div>
-               <div className="clipDrawerUser">유저이름ㅡㅡㅡㅡㅡㅡㅡㅡ</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Dali van Picasso</div>
-               <div className="clipDrawerUser">립밤이 필요할 때</div>
-             </div>
-             <div className="clipDrawer">
-               <div className="clipDrawerPhoto"></div>
-               <div className="clipDrawerTitle">Weekend</div>
-               <div className="clipDrawerUser">오늘도 라이브</div>
-             </div>
-           </div>
-        </div>
+        <Swiper {...swiperParams}>
+          {clipLists.map((clipList, index)=>{
+            return(
+              <div key={index}>
+                <ClipList clipList={clipList}></ClipList>
+              </div>
+            )
+          })}
+        </Swiper>
       </section>
     </div>
   )
 }
 
-
+export default DallaClip
