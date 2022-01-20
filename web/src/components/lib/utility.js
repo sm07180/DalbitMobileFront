@@ -404,7 +404,7 @@ export default class Utility {
   }
 
   // firebase, adbrix, facebook 이벤트 요청
-  static addAdsData = async (cmd, value, aosAppVer, iosAppVer) => {
+  static addAdsData = async (cmd, value, aosAppVer, iosAppVer, succFunc, failFunc) => {
     const successCallback = () => {
       const firebaseDataArray = [
         { type : "firebase", key : cmd, value },
@@ -412,11 +412,13 @@ export default class Utility {
         { type : "facebook", key : cmd, value },
       ];
       Hybrid('eventTracking', {service :  firebaseDataArray})
+      if(typeof succFunc === 'function') succFunc();
     };
     const failCallback = () => {
       try {
         fbq('track', cmd)
         firebase.analytics().logEvent(cmd)
+        if(typeof failFunc === 'function') failFunc()
       } catch (e) {}
     }
 
