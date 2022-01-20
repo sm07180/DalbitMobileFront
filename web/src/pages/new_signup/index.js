@@ -675,7 +675,7 @@ export default (props) => {
         , {}
         , '1.6.9'
         , '1.6.3'
-        , lowVerFunc
+        , () => {}
         , adbrixByPc
       );
 
