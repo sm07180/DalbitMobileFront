@@ -9,6 +9,7 @@ const TabBtn = (props) => {
     const {tabTarget} = e.currentTarget.dataset
     if (tabTarget === param.item) {
       param.setTab({name: tabTarget})
+      param.setPage(0)
     }
   }
 

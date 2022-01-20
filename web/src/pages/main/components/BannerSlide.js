@@ -7,7 +7,7 @@ const BannerSlide = (props) => {
   const {data} = props
   const history = useHistory()
   
-  const [bannerShow, setBannerShow] = useState(true)
+  const [bannerShow, setBannerShow] = useState(false)
 
   const swiperBanner = {
     slidesPerView: 'auto',

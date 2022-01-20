@@ -1,9 +1,10 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useLayoutEffect, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
+import Utility from 'components/lib/utility'
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/CntTitle'
+import CntTitle from 'components/ui/cntTitle/CntTitle'
 
 //components
 import Tabmenu from './components/Tabmenu'
@@ -30,6 +31,7 @@ const MainPage = () => {
   const [topRankType, setTopRankType] = useState({name: topTabmenu[0]})
   const [liveListType, setLiveListType] = useState({name: liveTabmenu[0]})
   const [headerFixed, setHeaderFixed] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0)
  
   // 조회 API
   const fetchMainInfo = () => {
@@ -51,25 +53,33 @@ const MainPage = () => {
     })
   }
 
+  let totalPage = 1
+  let pagePerCnt = 20
   const fetchLiveInfo = () => {
     const params = {
-      page: 1,
+      page: currentPage,
       mediaType: liveListType.name === 'VIDEO' ? 'v' : liveListType.name === 'RADIO' ? 'a' : '',
-      records: 20,
+      records: pagePerCnt,
       roomType: '',
       searchType: 1,
       gender: '',
-      djType: ''
+      djType: liveListType.name === '신입DJ' ? 3 : ''
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
-        setLiveList(res.data.list)
+        totalPage = Math.ceil(res.data.paging.total / pagePerCnt)
+        if (currentPage > 1) {
+          setLiveList(liveList.concat(res.data.list))
+        } else {
+          setLiveList(res.data.list)
+        }
       }
     })
   }
 
   // scroll
   const scrollEvent = () => {
+    // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current
     const headerNode = headerRef.current
 
@@ -81,12 +91,18 @@ const MainPage = () => {
         setHeaderFixed(false)
       }
     }
+
+    // 스크롤시 추가 리스트
+    if (totalPage > currentPage && Utility.isHitBottom()) {
+      setCurrentPage(currentPage + 1)
+    }
   }
 
   useEffect(() => {
+    if (currentPage === 0) setCurrentPage(1)
     window.addEventListener('scroll', scrollEvent)
     return () => window.removeEventListener('scroll', scrollEvent)
-  }, [])
+  }, [currentPage])
 
   // 페이지 셋팅
   useEffect(() => {
@@ -95,8 +111,8 @@ const MainPage = () => {
   }, [])
 
   useEffect(() => {
-    fetchLiveInfo()
-  }, [liveListType.name])
+    if (currentPage > 0) fetchLiveInfo()
+  }, [currentPage, liveListType.name])
  
   // 페이지 시작
   return (
@@ -114,7 +130,7 @@ const MainPage = () => {
         <MainSlide data={recommendList} />
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={djRank} />
+        <SwiperList data={myStar} />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP10'} more={'rank'}>
@@ -142,7 +158,7 @@ const MainPage = () => {
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
-        <Tabmenu data={liveTabmenu} tab={liveListType.name} setTab={setLiveListType} />
+        <Tabmenu data={liveTabmenu} tab={liveListType.name} setTab={setLiveListType} setPage={setCurrentPage} />
         <LiveView data={liveList} />
       </section>
     </div>
