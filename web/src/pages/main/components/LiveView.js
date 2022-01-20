@@ -1,31 +1,43 @@
 import React from 'react'
-import Swiper from 'react-id-swiper'
 
 // components
-import ListColumn from 'components/ui/listColumn/ListColumn'
+import BadgeItems from 'components/ui/badgeItems/BadgeItems'
+import ListRow from 'components/ui/listRow/ListRow'
 
-const Daldungs = (props) => {
+const LiveView = (props) => {
   const {data} = props
-
-  const swiperParams = {
-    slidesPerView: 'auto',
-  }
 
   return (
     <>
-    {data && data.length > 0 &&
-      <Swiper {...swiperParams}>
-        {data.map((list,index) => {
-          return (
-            <div key={index}>
-              <ListColumn list={list} key={index} />
+    <div className="liveListWrap">
+      {data.map((list,index) => {
+        return (
+          <ListRow list={list} key={index}>
+            <div className='info'>
+              <div className="listItem">
+                <BadgeItems content={list.liveBadgeList} />
+              </div>
+              <div className="listItem">
+                <span className='title'>{list.title}</span>
+              </div>
+              <div className="listItem">
+                <span className='gender'>{list.bjGender}</span>
+                <span className="nickNm">{list.bjNickNm}</span>
+              </div>
+              <div className="listItem">
+                <span className="state">
+                  {list.totalCnt}
+                  {list.entryCnt}
+                  {list.likeCnt}
+                </span>
+              </div>
             </div>
-          )
-        })}
-      </Swiper>
-    }
+          </ListRow>
+        )
+      })}
+    </div>
     </>
   )
 }
 
-export default Daldungs
+export default LiveView

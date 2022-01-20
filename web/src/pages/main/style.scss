@@ -1,10 +1,56 @@
 @import "components/ui/_mixin.scss";
 
 #remain {
+  // max-width:480px;
+  // margin: 0 auto;
+  // border-left:1px solid #ddd;
+  // border-right:1px solid #ddd;
   // background-color: $MAINCOLOR;
   // font-family: 'NotoSansKR', sans-serif;
-  header {
-    @include position-fixed;
+  .headerWrap1 {
+    position:fixed;
+    z-index:10000;
+    width:100%;
+    header {
+      text-indent:-99999px;
+      .buttonGroup {
+        @include flex(center);
+        margin-left:auto;
+        button {
+          width:40px;
+          height:40px;
+          &.ranking {
+            background:url("https://image.dalbitlive.com/main/dalla/ico_ranking.png") center/cover no-repeat;
+          }
+          &.message {
+            background:url("https://image.dalbitlive.com/main/dalla/ico_message.png") center/cover no-repeat;
+          }
+          &.alarm {
+            background:url("https://image.dalbitlive.com/main/dalla/ico_alarm.png") center/cover no-repeat;
+          }
+        }
+      }
+    }
+    &.fixed {
+      header {
+        text-indent: 0;
+        background-color:white;
+        border-bottom:1px solid #eee;
+        .buttonGroup {
+          button {
+            &.ranking {
+              background-image:url("https://image.dalbitlive.com/main/dalla/ico_ranking_black.png");
+            }
+            &.message {
+              background-image:url("https://image.dalbitlive.com/main/dalla/ico_message_black.png");
+            }
+            &.alarm {
+              background-image:url("https://image.dalbitlive.com/main/dalla/ico_alarm_black.png");
+            }
+          }
+        }
+      }
+    }
   }
   section {
     position:relative;
@@ -208,14 +254,18 @@
     }
   }
   .bannerWrap {
-    .swiper-slide {
+    .bannerList {
       position:relative;
       width:calc(100% - 32px);
       height:0;
       margin: 0 16px;
+      margin-top:10px;
       padding-top:20.002%;
       border-radius:8px;
       overflow:hidden;
+      &:first-child {
+        margin-top:0;
+      }
       img {
         @include position-top-left;
         width:100%;
@@ -224,22 +274,32 @@
         object-fit: cover;
       }
     }
+    .swiper-slide {
+      margin-top:0;
+    }
     .swiper-pagination {
       @include swiperPagination;
       right:16px;
       cursor:pointer;
       &:after {
         content:"모두보기";
+        margin-left:4px;
       }
     }
     .bannerMore {
       @include position-bottom-right(10px,16px);
       z-index: 1;
+      width:54px;
+      height:20px;
       margin-left:4px;
       padding:0;
       padding-right:8px;
       border-radius:0;
       @include font(12px,400,white);
+      &.isShow {
+        right:0;
+        background-color:black;
+      }
     }
   }
   .liveView {
@@ -279,9 +339,11 @@
       }
       .info {
         @include flex($fd:column);
+        min-width:0;
         height:100%;
         margin-left:16px;
         .listItem {
+          @include flex(center);
           min-height:16px;
           margin-bottom:2px;
           &:last-child {
@@ -289,9 +351,11 @@
           }
           .title {
             @include font(15px,700,#303030);
+            @include fontCut;
           }
           .nickNm {
             @include font(13px,400,#666);
+            @include fontCut;
           }
           .state {
             @include font(13px,400,#999);

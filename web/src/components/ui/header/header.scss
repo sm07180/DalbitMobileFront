@@ -7,6 +7,7 @@ header {
   height:48px;
   width:100%;
   padding-left: 16px;
+  padding-right: 6px;
   .title {
     @include flex(center,center);
     height:100%;
