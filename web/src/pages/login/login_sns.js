@@ -13,7 +13,6 @@ import googleLogo from './static/google_logo.svg'
 import kakaoLogo from './static/kakao_logo.svg'
 import naverLogo from './static/naver_logo.svg'
 import phoneLogo from './static/phone_logo.svg'
-import logoW from './static/logo_w_no_symbol.svg'
 import Utility from 'components/lib/utility'
 
 export default function login_sns({props}) {
@@ -93,117 +92,46 @@ export default function login_sns({props}) {
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
         </button>
       ) : (
-        <button className="btnHome" onClick={() => history.push('/')}>
-          둘러보기
-        </button>
+        <button className="btnHome" onClick={() => history.push('/')}></button>
       )}
       <div className="loginForm">
-        <h1
+        <div className="loginLogo"
           onClick={() => {
             if (!webview) {
               window.location.href = '/'
             }
           }}>
-          {/* <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" /> */}
-          <img src={logoW} alt="달빛라이브" />
-        </h1>
-        <p className="loginForm__msg">
-          레벨업하면 <span>최대 10,000원</span>
-          <br />
-          상당의 달 지급
-        </p>
+          <p>내 손안의 핫한 라이브</p>
+          <img src="https://image.dalbitlive.com/dalla/logo/dalla_logo-black.png" alt="DALLA" />
+        </div>
 
         {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
           <div className="socialLogin">
-            {moreSection === false &&
-              (customHeader['os'] === OS_TYPE['IOS'] ? (
-                <>
-                  <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                    <img className="icon" src={kakaoLogo} /> <span>카카오로 계속하기</span>
-                  </button>
-                  <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                    <img className="icon" src={appleLogo} /> <span>Apple로 계속하기</span>
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                    <img className="icon" src={kakaoLogo} /> <span>카카오로 계속하기</span>
-                  </button>
-                  <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                    <img className="icon" src={googleLogo} /> <span>구글로 계속하기</span>
-                  </button>
-                </>
-              ))}
-            {moreSection === true && (
-              <div className={`moreAnimation ${customHeader['os'] === OS_TYPE.IOS && 'ios'}`}>
-                <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-                  <img className="icon" src={kakaoLogo} /> <span>카카오로 계속하기</span>
-                </button>
-                {customHeader['os'] === OS_TYPE.IOS ? (
-                  <>
-                    <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                      <img className="icon" src={appleLogo} /> <span>Apple로 계속하기</span>
-                    </button>
-                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                      <img className="icon" src={googleLogo} /> <span>구글로 계속하기</span>
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-                      <img className="icon" src={googleLogo} /> <span>구글로 계속하기</span>
-                    </button>
-                    <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-                      <img className="icon" src={appleLogo} /> <span>Apple로 계속하기</span>
-                    </button>
-                  </>
-                )}
-
-                <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-                  <img className="icon" src={naverLogo} /> <span>네이버로 계속하기</span>
-                </button>
-                <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-                  <img className="icon" src={facebookLogo} /> <span>페이스북으로 계속하기</span>
-                </button>
-
-                <button className="social-phone-btn" onClick={() => setLoginPop(true)}>
-                  <img className="icon" src={phoneLogo} /> <span>전화번호로 계속하기</span>
-                </button>
-              </div>
-            )}
-            {moreSection === false && (
-              <button className="social-more-btn" onClick={() => setMoreSection(true)}>
-                <span>다른 방법으로 계속하기</span>
-              </button>
-            )}
-
-            {appleAlert && (
-              <div className="apple-alert">
-                OS를 최신 버전으로 업데이트해 주세요.
-                <br />
-                만약 OS업데이트 후에도 로그인이 안 될 경우
-                <br />
-                앱을 재설치하신 뒤 휴대폰을 재부팅한 후<br />
-                로그인을 시도해 주세요.
-              </div>
-            )}
+            <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png" />
+              <span>구글로 계속하기</span>
+            </button>
+            <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" />
+              <span>페이스북으로 계속하기</span>
+            </button>
+            <button className="social-phone-btn" onClick={() => setLoginPop(true)}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" />
+              <span>휴대폰번호로 계속하기</span>
+            </button>
+            <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png" />
+              <span>네이버로 계속하기</span>
+            </button>
+            <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" />
+              <span>apple로 계속하기</span>
+            </button>
+            <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" /> <span>카카오로 계속하기</span>
+            </button>
           </div>
         )}
-
-        <div className="link-wrap">
-          <span onClick={() => history.push('/signup')}>
-            <div className="link-text">회원가입</div>
-          </span>
-          {!webview && (
-            <>
-              <div className="bar" />
-              <a href="/service">
-                <div className="link-text yellow">고객센터</div>
-              </a>
-            </>
-          )}
-        </div>
 
         {loginPop && <LoginForm setLoginPop={setLoginPop} props={props} />}
       </div>

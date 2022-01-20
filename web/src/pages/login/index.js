@@ -25,7 +25,6 @@ export default function login(props) {
         <Layout status="no_gnb">
           <div id="loginPage">
             <LoginSns props={props} />
-            {/* {createContent()} */}
           </div>
         </Layout>
       )}

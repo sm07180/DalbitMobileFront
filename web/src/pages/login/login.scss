@@ -1,27 +1,27 @@
 @import '../../styles/variables';
+@import "components/ui/_mixin.scss";
 
 #loginPage {
-  display: flex;
   position: relative;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background: url('https://image.dalbitlive.com/images/login/login_bg.png') no-repeat;
-  background-size: cover;
+  @include flex(center, center);
+  height: 100vh;
+  background-color: #fff;
 
   .btnHome {
     position: absolute;
-    top: 5%;
-    right: 15%;
-    color: $white;
-    font-size: 16px;
+    top: 4px;
+    left: 4px;
+    display: inline-block;
+    width: 40px; height: 40px;
+    background-image: url(https://image.dalbitlive.com/svg/icon_back_black.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 36px 36px;
   }
 
   .loginForm {
     position: relative;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    @include flex(center, center, column);
     overflow: hidden;
     width: 100%;
     min-height: 455px;
@@ -29,6 +29,98 @@
     min-height: 455px;
     text-align: center;
     box-sizing: border-box;
+
+    .loginLogo {
+      @include flex(center, center, column);
+      margin-bottom: 30%;
+      p {
+        @include font(16px, 400, #202328);
+        margin-bottom: 8px;
+      }
+      img {
+        width: 180px;
+      }
+    }
+
+    .socialLogin {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+
+      button {
+        @include flex(center, center);
+        width: 100%;
+        height: 48px;
+        padding: 6px 16px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        border: 1px solid #CBD0D5;
+        @include font(15px, 400, #202020);
+        box-sizing: border-box;
+
+        &:last-child {
+          margin-bottom: 0px;
+        }
+
+        img {
+          display: inline-block;
+          width: 30px; height: 30px;
+        }
+        span {
+          flex: 1;
+          line-height: 36px;
+        }
+      }
+
+      .social-apple-btn {
+        background-color: $black;
+        color: #FFF;
+        border: none;
+      }
+
+      .social-kakao-btn {
+        background-color: #f9e000;
+        color: #381e1f;
+        border: none;
+      }
+
+      .social-more-btn {
+        background-color: $white;
+        color: $greishBrown;
+      }
+
+      .moreAnimation {
+        position: relative;
+        width: 100%;
+        margin-top: 10px;
+        animation: iosMoreAnim 0.8s;
+        overflow: hidden;
+
+        &.ios {
+          animation: iosMoreAnim 0.8s;
+        }
+      }
+
+      @keyframes moreAnim {
+        0% {
+          height: 90px;
+        }
+
+        100% {
+          height: 300px;
+        }
+      }
+
+      @keyframes iosMoreAnim {
+        0% {
+          height: 140px;
+        }
+
+        100% {
+          height: 300px;
+        }
+      }
+    }
 
     h1 {
       // margin-bottom: auto;
@@ -130,96 +222,7 @@
         background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
       }
     }
-
-    .socialLogin {
-      padding: 8px 10%;
-      text-align: center;
-
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 40px;
-        border-radius: 25px;
-        color: $white;
-        font-size: 14px;
-        font-weight: $bold;
-
-        & + button {
-          margin-top: 10px;
-        }
-
-        span {
-          font-weight: $bold;
-        }
-      }
-
-      .social-apple-btn {
-        background-color: $black;
-      }
-
-      .social-facebook-btn {
-        background-color: $white;
-        color: #4064ad;
-      }
-
-      .social-naver-btn {
-        background-color: #2db400;
-      }
-
-      .social-kakao-btn {
-        background-color: #f9e000;
-        color: #381e1f;
-      }
-
-      .social-google-btn {
-        background-color: $white;
-        color: $greishBrown;
-      }
-
-      .social-phone-btn {
-        background-color: $white;
-        color: $primary;
-      }
-      .social-more-btn {
-        background-color: $white;
-        color: $greishBrown;
-      }
-
-      .moreAnimation {
-        position: relative;
-        overflow: hidden;
-        // content-visibility: auto;
-        height: 300px;
-        margin-top: 10px;
-        animation: iosMoreAnim 0.8s;
-
-        &.ios {
-          animation: iosMoreAnim 0.8s;
-        }
-      }
-
-      @keyframes moreAnim {
-        0% {
-          height: 90px;
-        }
-
-        100% {
-          height: 300px;
-        }
-      }
-
-      @keyframes iosMoreAnim {
-        0% {
-          height: 140px;
-        }
-
-        100% {
-          height: 300px;
-        }
-      }
-    }
+    
 
     .apple-alert {
       width: 100%;
