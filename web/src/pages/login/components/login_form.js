@@ -5,10 +5,11 @@ import {Context} from 'context'
 import Api from 'context/api'
 import qs from 'query-string'
 
+import Header from './header'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
-import logoW from './static/logo_w_no_symbol.svg'
-import backW from './static/back_w.svg'
+import logoW from '../static/logo_w_no_symbol.svg'
+import backW from '../static/back_w.svg'
 
 export default function login_form({props, setLoginPop}) {
   const globalCtx = useContext(Context)
@@ -244,30 +245,17 @@ export default function login_form({props, setLoginPop}) {
   }
 
   return (
-    <div id="layerPopup" onClick={closePopupDim}>
-      <div className="layerContainer">
-        <button className="btnClose" onClick={closePopup}>
-          닫기
-        </button>
-        <div className="layerContent loginPopup" onClick={(e) => e.stopPropagation()}>
-          <h2
-            className="loginPopup__logoBox"
-            onClick={() => {
-              if (!webview) {
-                window.location.href = '/'
-              }
-            }}>
-            <img src={logoW} alt="달빛라이브" />
-            {/* <img className="logo" src="https://image.dalbitlive.com/images/login/login_img.png" /> */}
-          </h2>
-          <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-          <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-          <div className="input-wrap">
+    <div id="appLogin" onClick={closePopupDim}>
+      <div className="loginContainer">
+        <Header title="로그인" leftCtn="backBtn"/>
+        <div className="content" onClick={(e) => e.stopPropagation()}>
+          <div className="inputWrap">
             <input
               ref={inputPhoneRef}
               type="number"
+              className='loginInput'
               // autoComplete="off"
-              placeholder="전화번호"
+              placeholder="휴대폰 번호"
               value={phoneNum}
               onChange={changePhoneNum}
               onKeyDown={(e) => {
@@ -290,28 +278,20 @@ export default function login_form({props, setLoginPop}) {
             <input
               ref={inputPasswordRef}
               type="password"
+              className='loginInput'
               // autoComplete="new-password"
               placeholder="비밀번호"
               value={password}
               onChange={changePassword}
             />
-            <button className="login-btn" onClick={clickLoginBtn}>
+            <button className={`loginBtn ${phoneNum && password ? "active" : "" }`} onClick={clickLoginBtn}>
               로그인
             </button>
           </div>
 
-          <div className="link-wrap">
-            <a href="/password">
-              <div className="link-text">비밀번호 변경</div>
-            </a>
-            <div className="bar" />
-            <a href="/signup">
-              <div className="link-text">회원가입</div>
-            </a>
-            <div className="bar" />
-            <a href="/service">
-              <div className="link-text yello">고객센터</div>
-            </a>
+          <div className="linkWrap">  
+            <div className="linkText" onClick={}>회원가입</div>          
+            <div className="linkText" onClick={() => history.push('/password')}>비밀번호 재설정</div>
           </div>
         </div>
       </div>

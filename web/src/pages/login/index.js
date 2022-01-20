@@ -3,9 +3,8 @@ import {Context} from 'context'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
-import LoginForm from './login_form'
-import LoginSns from './login_sns'
-import './login.scss'
+import LoginSns from './components/login_sns'
+import './style.scss'
 
 import qs from 'query-string'
 import React, {useContext} from 'react'

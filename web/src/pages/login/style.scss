@@ -9,8 +9,8 @@
 
   .btnHome {
     position: absolute;
-    top: 4px;
-    left: 4px;
+    top: 5px;
+    left: 10px;
     display: inline-block;
     width: 40px; height: 40px;
     background-image: url(https://image.dalbitlive.com/svg/icon_back_black.svg);
@@ -120,153 +120,113 @@
           height: 300px;
         }
       }
-    }
-
-    h1 {
-      // margin-bottom: auto;
-      margin-bottom: 16px;
-      cursor: pointer;
-
-      img {
-        display: block;
-        // width: 100px;
-        margin: 0 auto;
-      }
-    }
-
-    &__msg {
-      margin-bottom: auto;
-      font-size: 20px;
-      line-height: 25px;
-      font-weight: $light;
-      color: $white;
-      letter-spacing: -1px;
-      span {
-        font-weight: $bold;
-      }
-    }
-
-    .header {
-      position: absolute;
-      width: 100%;
-      top: 20px;
-      left: 0;
-      .inner {
-        display: flex;
-        padding: 0 45px;
-      }
-
-      .close-btn {
-        width: 40px;
-        height: 40px;
-      }
-
-      h1 {
-        margin-left: auto;
-        font-size: 20px;
-        font-weight: bold;
-        color: $white;
-        line-height: 40px;
-      }
-    }
-
-    .logo {
-      display: block;
-      margin: 0 auto;
-      padding-bottom: 20px;
-      width: 126px;
-    }
-
-    .logo_text {
-      width: 126px;
-      display: block;
-      margin: 0 auto;
-    }
-
-    .link-wrap {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .link-text {
-        color: $white;
-        font-size: 14px;
-        font-weight: bold;
-
-        &.yellow {
-          color: #febd56;
-        }
-      }
-
-      .bar {
-        width: 1px;
-        height: 12px;
-        background-color: $white;
-        margin: 0 9px;
-        opacity: 0.2;
-      }
-    }
-
-    .signupButton {
-      a {
-        display: block;
-        margin: 20px auto 0px auto;
-        width: 260px;
-        height: 48px;
-        line-height: 48px;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        border-radius: 28px;
-        color: $white;
-        background: linear-gradient(90deg, #ec455f 14%, #febd56 87%);
-      }
-    }
-    
-
-    .apple-alert {
-      width: 100%;
-      border-radius: 17px;
-      margin: 0 0 10px;
-      padding: 8px 0;
-      background-color: $black;
-      text-align: center;
-      color: #ffd500;
-      font-size: 12px;
-      letter-spacing: -1.5px;
-      white-space: nowrap;
-    }
+    }    
   }
 
-  #layerPopup {
+  #appLogin {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: #fff;
     z-index: 60;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center;   
 
-    .btnClose {
-      position: absolute;
-      top: -40px;
-      right: 0px;
-      width: 32px;
-      height: 32px;
-      text-indent: -9999px;
-      background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
-    }
-
-    .layerContainer {
+    .loginContainer {
       position: relative;
-      // width: 100%;
-      min-width: 320px;
-      max-width: 360px;
-      border-radius: 16px;
+      width: 100%;
+      height: 100vh;
       box-sizing: border-box;
+      .header {
+        position: relative;
+        @include flex(center, space-between);
+        width: 100%; height: 50px;
+        padding: 0 10px;
+        background-color: #fff;
+        box-sizing: border-box;
+        .leftCtn {
+          position: relative;
+          @include flex(center, center);
+          button {
+            display: inline-block;
+            width: 40px; height: 40px;
+          }
+        }
+        .headerTitle {
+          position: absolute;
+          top: 0; left: 0;
+          @include flex(center, center);
+          width: 100%; height: 100%;
+          @include font(18px, 500, #202020);
+          pointer-events: none;
+        }
+      }
+
+      .content {
+        position: relative;
+        @include flex(center, flex-start, column);
+        width: 100%;
+        height: 100%;
+        padding: 40px 24px;
+        .inputWrap {
+          width: 100%;
+          input {
+            margin-bottom: 12px;
+            &:last-child {
+              margin-bottom: 0px;
+            }
+          }
+        }
+        .loginInput {
+          position: relative;
+          width: 100%;
+          height: 50px;
+          padding: 12px 20px;
+          border-radius: 8px;
+          background-color: #F6F6F6;
+          box-sizing: border-box;
+          &::placeholder {
+            @include font(16px, 400, #999999);
+          }
+        }
+
+        .loginBtn {
+          @include flex(center, center);
+          width: 100%;
+          height: 48px;
+          border-radius: 8px;
+          @include font(16px, 600, #ffffff);
+          background-color: #E3E3E3;
+          &.active {
+            background-color: #000000;
+          }
+        }
+        .linkWrap {
+          margin-top: 35px;
+          @include flex(center, center);
+          .linkText {
+            position: relative;
+            display: inline-block;
+            padding: 4px 16px;
+            @include font(14px, 400, #666666);
+            &::after {
+              content: "";
+              position: absolute;
+              top:8px; right: 0;
+              display: inline-block;
+              width: 1px; height: 12px;
+              background-color: #666666;
+            }
+            &:last-child::after {
+              content: none;
+            }
+          }
+        }
+      }
+
 
       .loginPopup {
         position: relative;
