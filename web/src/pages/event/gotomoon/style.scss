@@ -1,0 +1,547 @@
+#goToMoon {
+  .img_full {
+    width: 100%;
+  }
+  .header-wrap {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    z-index: 5;
+  }
+  .page {
+    position: relative;
+    width: 100%;
+    &Content {
+      position: relative;
+      width: 100%;
+      margin-top: -50px;
+      .tabWrap {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        &.fixed {
+          position: fixed;
+          top: 50px;
+          width: 100%;
+          z-index: 100;
+          box-shadow: 0px 3px 4px rgba($color: #000000, $alpha: 0.2);
+          & > .tabMenu {
+            border-radius: 0;
+          }
+        }
+        .tabMenu {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 14px 0;
+          border-radius: 20px 20px 0 0;
+          cursor: pointer;
+          &:first-child{background-color: #fff;}
+          &:last-child{background-color: #7637F1;}
+          .titleImg {
+            width: auto;
+            height: 22px;
+          }
+        }
+      }
+
+      #topInfo {
+        position: relative;
+        width: 100%;
+
+        .eventSchedule {
+          position: absolute;
+          top: 3.5%;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 80%;
+          border: 2px solid #7637F1;
+          border-radius: 100px;
+          padding: 5px 0;
+          font-size: 2.5vh;
+          font-weight: 700;
+          letter-spacing: -1px;
+          color: #232323;
+        }
+      }
+
+      #ranking{
+        position: relative;
+        width: 100%;
+        min-height: 50vh;
+        background-color: #7637F1;
+
+        .navWrap {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100%;
+          height: 80px;
+          padding: 15px;
+          box-sizing: border-box;
+          .navBtn {
+            display: flex;
+            align-items: center;
+            &.disable {
+              opacity: 0.5;
+              pointer-events: none;
+              .navBtnText {
+                font-size: 15px;
+                font-weight: 500;
+                color: #fff;
+              }
+            }
+            .navBtnText {
+              font-size: 15px;
+              font-weight: 700;
+              color: #fff;
+            }
+            .iconArrowLeft {
+              display: inline-block;
+              width: 24px; height: 24px;
+              margin-right: 4px;
+              background-image: url(https://image.dalbitlive.com/event/gotomoon/iconArrowLeft.png);
+              background-position: center;
+              background-size: contain;
+              background-repeat: no-repeat;
+            }
+            .iconArrowRight {
+              display: inline-block;
+              width: 24px; height: 24px;
+              margin-left: 4px;
+              background-image: url(https://image.dalbitlive.com/event/gotomoon/iconArrowRight.png);
+              background-position: center;
+              background-size: contain;
+              background-repeat: no-repeat;
+            }
+          }
+          .navTitle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            flex: 1;
+            .navTitleMain {
+              font-size: 18px;
+              font-weight: 700;
+              color: #fff;
+            }
+            .navTitleSub {
+              font-size: 14px;
+              font-weight: 700;
+              color: #fff;
+              opacity: 0.7;
+            }
+          }
+        }
+
+        .myData {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 100%;
+          padding: 15px 10px;
+          box-sizing: border-box;          
+
+          .myRankWrap {
+            width: 100%;
+            border-radius: 10px;
+            background-color: #fff;
+            .myRankList {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              padding: 12px 10px;
+              box-sizing: border-box;
+              cursor: pointer;
+
+              & div {
+                pointer-events: none;
+              }
+
+              .listFront {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-right: 15px;
+                .listFrontText {
+                  font-size: 12px;
+                  font-weight: 500;
+                  color: #757575;
+                  margin-bottom: 4px;
+                }
+                .badgeMyRank {
+                  display: inline-block;
+                  width: 40px; height: 20px;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #fff;
+                  line-height: 20px;
+                  text-align: center;
+                  border-radius: 100px;
+                  background-color: #000000;
+                }
+              }
+
+              .thumbWrap {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-right: 10px;
+                .thumbImg {
+                  display: block;
+                  width: 50px; height: 50px;
+                  border-radius: 50%;
+                  border: 1px solid #eee;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;
+                  image-rendering: -webkit-optimize-contrast;
+                }
+              }
+
+              .listContent {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                flex: 1;
+                overflow: hidden;
+
+                .listRow {
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+
+                  .badgeGroup {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 4px;
+                  }
+                  .badgeMyLevel {
+                    display: inline-block;
+                    padding: 0 6px;
+                    background-color: #BDBDBD;
+                    font-size: 12px;
+                    font-weight: 500;
+                    color: #fff;
+                    border-radius: 100px;
+                  }
+                  .nickName {
+                    display: block;
+                    font-size: 15px;
+                    font-weight: 500;
+                    color: #000000;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  }
+                }
+              }
+              .listBack {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 80px;
+                .iconCoin{
+                  display: inline-block;
+                  width: 30px; height: 30px;
+                  background-image: url(https://image.dalbitlive.com/event/gotomoon/event_gotomoon-coin.png);
+                  background-position: center;
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                }
+                .coinScore {
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: #0E0E14;
+                }
+              }
+            }
+          }
+
+          .aniWrap {
+            position: relative;
+            width: 100%;
+            padding-bottom: 60.61%;
+            margin-top: 10px;
+            border: 2px solid #fff;
+            border-radius: 10px;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            &.level1 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.gif);}
+            &.level2 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.gif);}
+            &.level3 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.gif);}
+            &.level4 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.gif);}
+            &.level5 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.gif);}
+            &.level6 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.webp), url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.gif);}
+
+            .scoreWrap {
+              position: absolute;
+              top: 10px; left: 10px;
+              padding: 1px 4px;
+              display: flex;
+              align-items: center;
+              border-radius: 100px;
+              background-color: #2B2B2B;
+              .iconCoin{
+                display: inline-block;
+                width: 18px; height: 18px;
+                background-image: url(https://image.dalbitlive.com/event/gotomoon/event_gotomoon-coin.png);
+                background-position: center;
+                background-size: contain;
+                background-repeat: no-repeat;
+              }
+              .scoreNow {
+                font-size: 12px;
+                font-weight: 700;
+                color: #fff;
+                line-height: 18px;
+              }
+              .scoreGoal {
+                font-size: 11px;
+                font-weight: 700;
+                color: #FFDD40;
+                margin-left: 2px;
+                line-height: 18px;
+              }
+            }
+            .rewardWrap {
+              position: absolute;
+              bottom: 10px; left: 10px;
+              padding: 4px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-direction: column;
+              border-radius: 5px;
+              background-color: #7637F1;
+              .rewardText {
+                font-size: 12px;
+                font-weight: 500;
+                color: #fff;
+                line-height: 16px;
+                margin-bottom: 2px;
+              }
+              .rewardBox {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 2px 12px;
+                border: 1px solid #8168E5;
+                border-radius: 4px;
+                background-color: #3B1C87;
+                .iconDal{
+                  display: inline-block;
+                  width: 14px; height: 14px;
+                  margin-right: 4px;
+                  background-image: url(https://image.dalbitlive.com/event/gotomoon/iconDal.png);
+                  background-position: center;
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                }
+                .rewardVal {
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #fff;
+                }
+                .rewardUnit {
+                  font-size: 9px;
+                  font-weight: 900;
+                  color: #fff;
+                  margin-left: 2px;
+                }
+              }
+            }
+          }
+        }
+
+        .rankingData {
+          position: relative;
+          width: 100%;
+          padding: 15px;
+          border-radius: 30px 30px 0 0;
+          background-color: #EEEEEE;
+          box-sizing: border-box;
+          .rankingWrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            
+            .rankingList {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              padding: 18px 10px;
+              box-sizing: border-box;
+              border-bottom: 1px solid #F2F2F2;
+              cursor: pointer;
+              &:last-child {
+                border-bottom: none;
+              }
+
+              .listFront {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-right: 15px;
+                .badgeRanking {
+                  display: inline-block;
+                  width: 40px; height: 20px;
+                  font-size: 12px;
+                  font-weight: 700;
+                  color: #000000;
+                  line-height: 20px;
+                  text-align: center;
+                  border-radius: 100px;
+                  background-color: #EEEEEE;
+                  &.top30 {
+                    color: #fff;
+                    background-color: #7637F1;
+                    &::after {
+                      content: "위";
+                      font-weight: 500;
+                    }
+                  }
+                }
+              }
+
+              .thumbWrap {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                margin-right: 10px;
+                .thumbImg {
+                  display: block;
+                  width: 50px; height: 50px;
+                  border-radius: 50%;
+                  border: 1px solid #eee;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;
+                  image-rendering: -webkit-optimize-contrast;
+                }
+              }
+
+              .listContent {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                flex: 1;
+                overflow: hidden;
+
+                .listRow {
+                  display: flex;
+                  align-items: center;
+                  width: 100%;
+                  margin-top: 6px;
+
+                  &:first-child{
+                    margin-top: 0px;
+                  }
+                  .provide {
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #7637F1;
+                    line-height: 20px;
+                    border-radius: 100px;
+                    border: 1px solid #7637F1;
+                    padding: 0px 6px;
+                    letter-spacing: -1px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    strong {
+                      font-weight: 700;
+                      margin-right: 2px;
+                    }
+                  }
+                  .badgeGroup {
+                    display: flex;
+                    align-items: center;
+                    margin-right: 4px;
+                    & > span {
+                      margin-right: 4px;
+                      &:last-child {
+                        margin-right: 0px;
+                      }
+                    }
+                    .badgeFemale {
+                      display: inline-block;
+                      width: 24px; height: 16px;
+                      background-image: url(https://image.dalbitlive.com/svg/gender_w_w.svg);
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      background-position: 0 0;                      
+                      text-indent: -9999px;
+                    }
+                    .badgeMale {
+                      display: inline-block;
+                      width: 24px; height: 16px;
+                      background-image: url(https://image.dalbitlive.com/svg/gender_m_w.svg);
+                      background-size: contain;
+                      background-repeat: no-repeat;
+                      background-position: 0 0;                      
+                      text-indent: -9999px;
+                    }
+                  }
+                  .nickName {
+                    display: block;
+                    font-size: 15px;
+                    font-weight: 500;
+                    color: #000000;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    overflow: hidden;
+                  }
+                }
+              }
+              .listBack {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                width: 80px;
+                .iconCoin{
+                  display: inline-block;
+                  width: 30px; height: 30px;
+                  background-image: url(https://image.dalbitlive.com/event/gotomoon/event_gotomoon-coin.png);
+                  background-position: center;
+                  background-size: contain;
+                  background-repeat: no-repeat;
+                }
+                .coinScore {
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: #0E0E14;
+                }
+              }
+            }
+          }
+        }
+      }
+    }    
+  }
+}
+
