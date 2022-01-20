@@ -665,13 +665,17 @@ export default (props) => {
     if (result === 'success') {
       //adbrix, firebase 이벤트 호출
       const adbrixByPc = () => Hybrid('adbrixEvent', data.adbrixData);
+      const lowVerFunc = () => {
+        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6'; // 1.6.9 ~ 1.8.2 / 1.6.3 ~ 1.6.5
+        Utility.compareAppVersion(targetVersion, () => {}, adbrixByPc);
+      }
 
       await Utility.addAdsData(
         'CompleteRegistration'
         , {}
         , '1.6.9'
         , '1.6.3'
-        , () => {}
+        , lowVerFunc
         , adbrixByPc
       );
 
@@ -679,7 +683,7 @@ export default (props) => {
         callback: () => {
           //애드브릭스 이벤트 전달 => native에서 처리
           // if (data.adbrixData != '' && data.adbrixData != 'init') {
-            // Hybrid('adbrixEvent', data.adbrixData)
+            Hybrid('adbrixEvent', data.adbrixData)
             // if (__NODE_ENV === 'dev') {
               // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
             // }
