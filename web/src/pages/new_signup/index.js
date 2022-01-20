@@ -664,7 +664,16 @@ export default (props) => {
     })
     if (result === 'success') {
       //adbrix, firebase 이벤트 호출
-      await Utility.addAdsData('CompleteRegistration', {}, '1.6.9', '1.6.3');
+      const adbrixByPc = () => Hybrid('adbrixEvent', data.adbrixData);
+
+      await Utility.addAdsData(
+        'CompleteRegistration'
+        , {}
+        , '1.6.9'
+        , '1.6.3'
+        , () => {}
+        , adbrixByPc
+      );
 
       context.action.alert({
         callback: () => {
