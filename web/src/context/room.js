@@ -328,13 +328,19 @@ export const RoomJoin = async (obj) => {
       sessionStorage.setItem('room_no', roomNo)
       Utility.setCookie('listen_room_no', roomNo)
       Hybrid('RoomJoin', data)
-      // Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
 
       // RoomJoin 이벤트 (회원 비회원 분리)
       const cmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
       const updateAosVer = '1.8.2';
       const updateIosVer = '1.6.6';
-      await Utility.addAdsData(cmd, {}, updateAosVer, updateIosVer);
+      await Utility.addAdsData(
+        cmd
+        , {}
+        , updateAosVer
+        , updateIosVer
+        , () => {}
+        , () => Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
+      );
 
       return true
     }
