@@ -1,16 +1,16 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/CntTitle'
-import ListRow from 'components/ui/ListRow'
 
 //components
 import Tabmenu from './components/Tabmenu'
 import MainSlide from './components/MainSlide'
 import BannerSlide from './components/BannerSlide'
 import SwiperList from './components/SwiperList'
+import LiveView from './components/LiveView'
 
 import './style.scss'
 
@@ -19,6 +19,8 @@ const liveTabmenu = ['전체','VIDEO','RADIO','신입DJ']
 
 const MainPage = () => {
   const history = useHistory()
+  const headerRef = useRef()
+  const overRef = useRef()
   const [myStar, setMyStar] = useState([])
   const [djRank, setDjRank] = useState([])
   const [fanRank, setFanRank] = useState([])
@@ -27,6 +29,7 @@ const MainPage = () => {
   const [liveList, setLiveList] = useState([])
   const [topRankType, setTopRankType] = useState({name: topTabmenu[0]})
   const [liveListType, setLiveListType] = useState({name: liveTabmenu[0]})
+  const [headerFixed, setHeaderFixed] = useState(false)
  
   // 조회 API
   const fetchMainInfo = () => {
@@ -65,6 +68,26 @@ const MainPage = () => {
     })
   }
 
+  // scroll
+  const scrollEvent = () => {
+    const overNode = overRef.current
+    const headerNode = headerRef.current
+
+    if (overNode && headerNode) {
+      const overTop = overNode.offsetTop - headerNode.clientHeight
+      if (window.scrollY >= overTop) {
+        setHeaderFixed(true)
+      } else {
+        setHeaderFixed(false)
+      }
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener('scroll', scrollEvent)
+    return () => window.removeEventListener('scroll', scrollEvent)
+  }, [])
+
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
@@ -74,26 +97,23 @@ const MainPage = () => {
   useEffect(() => {
     fetchLiveInfo()
   }, [liveListType.name])
-
-  // 컴포넌트
-  const Badge = (props) => {
-    const {content} = props
-    
-    return (
-      <React.Fragment>
-        <span className='badge'>special</span>
-      </React.Fragment>
-    )
-  }
  
   // 페이지 시작
   return (
     <div id="remain">
-      <Header title={'라이브'} type={'noBack'} />
+      <div className={`headerWrap1 ${headerFixed === true ? 'fixed' : ''}`} ref={headerRef}>
+        <Header title={'라이브'} type={'noBack'}>
+          <div className="buttonGroup">
+            <button className='ranking'></button>
+            <button className='message'></button>
+            <button className='alarm'></button>
+          </div>
+        </Header>
+      </div>
       <section className='topSwiper'>
         <MainSlide data={recommendList} />
       </section>
-      <section className='favorites'>
+      <section className='favorites' ref={overRef}>
         <SwiperList data={djRank} />
       </section>
       <section className='top10'>
@@ -119,38 +139,11 @@ const MainPage = () => {
       </section>
       <section className='bannerWrap'>
         <BannerSlide data={bannerList} />
-        <button className="bannerMore"></button>
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
         <Tabmenu data={liveTabmenu} tab={liveListType.name} setTab={setLiveListType} />
-        <div className="liveListWrap">
-          {liveList.map((list,index) => {
-            return (
-              <ListRow list={list} key={index}>
-                <div className='info'>
-                  <div className="listItem">
-                    <Badge content={list} />
-                  </div>
-                  <div className="listItem">
-                    <span className='title'>{list.title}</span>
-                  </div>
-                  <div className="listItem">
-                    <span className='gender'>{list.bjGender}</span>
-                    <span className="nickNm">{list.bjNickNm}</span>
-                  </div>
-                  <div className="listItem">
-                    <span className="state">
-                      {list.totalCnt}
-                      {list.entryCnt}
-                      {list.likeCnt}
-                    </span>
-                  </div>
-                </div>
-              </ListRow>
-            )
-          })}
-        </div>
+        <LiveView data={liveList} />
       </section>
     </div>
   )

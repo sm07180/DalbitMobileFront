@@ -3,6 +3,9 @@
 #remain {
   // background-color: $MAINCOLOR;
   // font-family: 'NotoSansKR', sans-serif;
+  header {
+    @include position-fixed;
+  }
   section {
     position:relative;
     margin-bottom:35px;
@@ -206,13 +209,15 @@
   }
   .bannerWrap {
     .swiper-slide {
+      position:relative;
       width:calc(100% - 32px);
-      height:76px;
+      height:0;
       margin: 0 16px;
+      padding-top:20.002%;
       border-radius:8px;
-      background-color:#765ED5;
       overflow:hidden;
       img {
+        @include position-top-left;
         width:100%;
         height:100%;
         vertical-align: bottom;
