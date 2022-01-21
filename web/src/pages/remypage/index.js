@@ -59,27 +59,23 @@ const Remypage = () => {
             </div>
           </section>
           <section className='mydalDetail'>
-            <div className="detail">
-              <div className="title">달상세내역</div>
-              <div className="dalCount">100달</div>
-            </div>
+            <div className="dalCount">100달</div>
             <div className="buttonWrap">
               <button>내 지갑</button>
               <button className='charge'>충전하기</button>
             </div>
           </section>
           <section className="myMenu">
-            <div className="btnGroup">
-              <button>클립</button>
-              <button>리포트</button>
-              <button>이벤트</button>
-            </div>
             <div className="btnList">
+              <button>리포트</button>
+              <button>클립</button>
               <button>설정</button>
               <button>공지사항</button>
-              <button>FAQ</button>
-              <button>운영정책</button>
               <button>고객센터</button>
+            </div>
+            <div className="versionInfo">
+              <span className="title">버전정보</span>
+              <span className="version">현재 버전 1.8.1</span>
             </div>
           </section>
           <button className='logout'>로그아웃</button>

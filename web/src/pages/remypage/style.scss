@@ -5,7 +5,7 @@
   height:100%;
   .myInfo {
     @include flex;
-    padding:16px 16px 12px;
+    padding:16px 16px 14px;
     .textWrap {
       @include flex($fd:column);
       @include font(19px,400,black);
@@ -53,28 +53,31 @@
     }
   }
   .mydalDetail {
-    @include flex;
-    margin:0 16px;
-    padding: 12px 16px 14px 19px;
+    @include flex(center);
+    height:80px;
+    margin:0 16px 16px;
+    padding: 0 16px 0 19px;
     border-radius:8px;
-    box-shadow:0 1.5px 5px rgba(0,0,0,.08);
-    .detail {
-      flex:1;
-      .title {
-        margin-bottom:8px;
-        @include font(12px,400,#999);
-      }
-      .dalCount {
-        height:30px;
-        line-height:30px;
-        @include font(20px,500,black);
+    background-color: #FFECF2;
+    .dalCount {
+      @include flex(center);
+      height:30px;
+      line-height:30px;
+      @include font(20px,500,black);
+      &:before {
+        display:inline-block;
+        content:"";
+        width:20px;
+        height:20px;
+        margin-right:4px;
+        background:url("#{$IMGSERVER}/mypage/dalla/icon_dal.png") center/cover no-repeat;
       }
     }
     .buttonWrap {
       @include flex(center);
       height:30px;
       line-height:30px;
-      margin-top:auto;
+      margin-left:auto;
       button {
         position:relative;
         height:100%;
@@ -82,7 +85,7 @@
         letter-spacing: -1px;
         @include font(14px,400,black);
         &.charge {
-          @include font(14px,700,#9020FF);
+          font-weight:700;
           &:before {
             position:absolute;
             bottom:6px;
@@ -90,26 +93,16 @@
             content:'';
             width:1px;
             height:15px;
-            background-color:#E5E5E5;
+            background-color:#777;
           }
         }
       }
     }
   }
   .myMenu {
-    .btnGroup {
-      @include flex;
-      padding:10px 16px;
-      border-bottom:8px solid #F2F2F2;
-      button {
-        flex:1;
-        height:80px;
-        letter-spacing: -1px;
-        @include font(14px,400,black);
-      }
-    }
     .btnList {
       @include flex($fd:column);
+      border-bottom:8px solid #F2F2F2;
       button {
         flex:1;
         @include flex(center,space-between);
@@ -125,6 +118,17 @@
           width:20px;height:20px;
           background-color:#ddd;
         }
+      }
+    }
+    .versionInfo {
+      @include flex(center,space-between);
+      height:55px;
+      padding:0 16px;
+      .title {
+        @include font(15px,400,#999);
+      }
+      .version {
+        @include font(13px,400,#333);
       }
     }
   }
