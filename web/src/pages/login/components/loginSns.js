@@ -6,7 +6,7 @@ import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
-import LoginForm from './login_form'
+import LoginForm from './loginForm'
 import appleLogo from '../static/apple_logo.svg'
 import facebookLogo from '../static/facebook_logo.svg'
 import googleLogo from '../static/google_logo.svg'
@@ -86,34 +86,30 @@ export default function login_sns({props}) {
   }
 
   return (
-    <>
+    <div id="loginPage">
       {webview === 'new' ? (
         <button className="btnHome" onClick={() => Hybrid('CloseLayerPopup')}>
           <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-        </button>
+        </button> 
       ) : (
-        <button className="btnHome" onClick={() => history.push('/')}></button>
+        <button className="btnHome" onClick={() => history.push('/login')}></button>
       )}
       <div className="loginForm">
-        <div className="loginLogo"
-          onClick={() => {
-            if (!webview) {
-              window.location.href = '/'
-            }
-          }}>
-          <p>내 손안의 핫한 라이브</p>
-          <img src="https://image.dalbitlive.com/dalla/logo/dalla_logo-black.png" alt="DALLA" />
-        </div>
+        <div className='loginStart'>시작하기</div>
 
         {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
           <div className="socialLogin">
             <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
               <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png" />
               <span>구글로 계속하기</span>
+            </button>            
+            <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" />
+              <span>카카오로 계속하기</span>
             </button>
-            <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" />
-              <span>페이스북으로 계속하기</span>
+            <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" />
+              <span>apple로 계속하기</span>
             </button>
             <button className="social-phone-btn" onClick={() => setLoginPop(true)}>
               <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" />
@@ -123,18 +119,15 @@ export default function login_sns({props}) {
               <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png" />
               <span>네이버로 계속하기</span>
             </button>
-            <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" />
-              <span>apple로 계속하기</span>
-            </button>
-            <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" /> <span>카카오로 계속하기</span>
-            </button>
+            <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
+              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" />
+              <span>페이스북으로 계속하기</span>
+            </button>    
           </div>
         )}
 
         {loginPop && <LoginForm setLoginPop={setLoginPop} props={props} />}
       </div>
-    </>
+    </div>
   )
 }
