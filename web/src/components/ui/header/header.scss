@@ -1,5 +1,11 @@
 @import "../_mixin.scss";
 
+@mixin headerBtn($icoImg) {
+  width:40px;
+  height:40px;
+  background:url("#{$IMGSERVER}/common/header/#{$icoImg}.png") center/cover no-repeat;  
+}
+
 header {
   position:relative;
   z-index:10000;
@@ -32,6 +38,27 @@ header {
       width:100%;
       pointer-events: none;
       @include font(18px,500,#202020);
+    }
+  }
+  .buttonGroup {
+    @include flex(center);
+    margin-left:auto;
+    button {
+      &.ranking {
+        @include headerBtn(icoRank-b);
+      }
+      &.message {
+        @include headerBtn(icoMessage-b);
+      }
+      &.alarm {
+        @include headerBtn(icoAlarm-b);
+      }
+      &.store {
+        @include headerBtn(icoStore-b);
+      }
+      &.search {
+        @include headerBtn(icoSearch-b);
+      }
     }
   }
 }

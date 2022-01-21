@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import Header from '../../components/ui/header/Header'
 
-import Myprofile from './contents/Myprofile'
+import Profile from './contents/profile'
 
 import './style.scss'
 
@@ -16,17 +16,7 @@ const Remypage = () => {
   const {token, profile} = context
 
   //useState
-  const [profileInfo, setProfileInfo] = useState()
-  const [myProfile, setMyProfile] = useState(true)
-
-  // 조회 API
-  const fetchProfileInfo = (memNo) => {
-    Api.profile({params: {memNo: memNo}}).then((res) => {
-      if (res.result === 'success') {
-        setProfileInfo(res.data)
-      }
-    })
-  }
+  const [myProfile, setMyProfile] = useState(false)
 
   const openMyprofile = () => {
     setMyProfile(true)
@@ -36,12 +26,10 @@ const Remypage = () => {
   useEffect(() => {
     if (!token.isLogin) {
       history.push('/login')
-    } else {
-      fetchProfileInfo(token.memNo)
     }
-  }, [token.memNo])
+  }, [])
 
-  const data = profileInfo
+  const data = profile
 
   // 페이지 시작
   return (
@@ -53,6 +41,10 @@ const Remypage = () => {
             <div className="textWrap">
               <p className='text'><strong>{data.nickNm}</strong>님<br/>
               오늘 즐거운 방송해볼까요?</p>
+              <div className="info">
+                <span className='level'>Lv{data.level}</span>
+                <span className='userId'>{data.memId}</span>
+              </div>
               <div className="count">
                 <i>팬</i>
                 <span>{data.fanCnt}</span>
@@ -93,7 +85,7 @@ const Remypage = () => {
           <button className='logout'>로그아웃</button>
         </div>
       }
-      {myProfile === true && <Myprofile />}
+      {myProfile === true && <Profile />}
     </React.Fragment>
   )
 }

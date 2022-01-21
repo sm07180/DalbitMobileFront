@@ -28,8 +28,8 @@ const MainPage = () => {
   const [recommendList, setRecommendList] = useState([])
   const [bannerList, setBannerList] = useState([])
   const [liveList, setLiveList] = useState([])
-  const [topRankType, setTopRankType] = useState({name: topTabmenu[0]})
-  const [liveListType, setLiveListType] = useState({name: liveTabmenu[0]})
+  const [topRankType, setTopRankType] = useState(topTabmenu[0])
+  const [liveListType, setLiveListType] = useState(liveTabmenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
  
@@ -58,12 +58,12 @@ const MainPage = () => {
   const fetchLiveInfo = () => {
     const params = {
       page: currentPage,
-      mediaType: liveListType.name === 'VIDEO' ? 'v' : liveListType.name === 'RADIO' ? 'a' : '',
+      mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
       records: pagePerCnt,
       roomType: '',
       searchType: 1,
       gender: '',
-      djType: liveListType.name === '신입DJ' ? 3 : ''
+      djType: liveListType === '신입DJ' ? 3 : ''
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
@@ -112,19 +112,13 @@ const MainPage = () => {
 
   useEffect(() => {
     if (currentPage > 0) fetchLiveInfo()
-  }, [currentPage, liveListType.name])
+  }, [currentPage, liveListType])
  
   // 페이지 시작
   return (
     <div id="remain">
-      <div className={`headerWrap1 ${headerFixed === true ? 'fixed' : ''}`} ref={headerRef}>
-        <Header title={'라이브'} type={'noBack'}>
-          <div className="buttonGroup">
-            <button className='ranking'></button>
-            <button className='message'></button>
-            <button className='alarm'></button>
-          </div>
-        </Header>
+      <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
+        <Header title={'라이브'} type={'noBack'} />
       </div>
       <section className='topSwiper'>
         <MainSlide data={recommendList} />
@@ -134,15 +128,15 @@ const MainPage = () => {
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP10'} more={'rank'}>
-          <Tabmenu data={topTabmenu} tab={topRankType.name} setTab={setTopRankType} />
+          <Tabmenu data={topTabmenu} tab={topRankType} setTab={setTopRankType} />
         </CntTitle>
         {topTabmenu.map((tabmenu, index) => {
           const param = {
-            initData: topRankType.name === topTabmenu[0] ? djRank : topRankType.name === topTabmenu[1] ? fanRank : topRankType.name === topTabmenu[2] ? djRank : ''
+            initData: topRankType === topTabmenu[0] ? djRank : topRankType === topTabmenu[1] ? fanRank : topRankType === topTabmenu[2] ? djRank : ''
           }
           return (
             <React.Fragment key={index}>
-              {tabmenu === topRankType.name && 
+              {tabmenu === topRankType && 
                 <SwiperList data={param.initData} />
               }
             </React.Fragment>
@@ -158,7 +152,7 @@ const MainPage = () => {
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
-        <Tabmenu data={liveTabmenu} tab={liveListType.name} setTab={setLiveListType} setPage={setCurrentPage} />
+        <Tabmenu data={liveTabmenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage} />
         <LiveView data={liveList} />
       </section>
     </div>

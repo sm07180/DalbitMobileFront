@@ -21,6 +21,26 @@ export default (props) => {
         </button>
       )}
       <h1 className="title">{title}</h1>
+      {title === '라이브' && 
+        <div className="buttonGroup">
+          <button className='ranking'></button>
+          <button className='message'></button>
+          <button className='alarm'></button>
+        </div>
+      }
+      {title === '클립' && 
+        <div className="buttonGroup">
+          <button className='search'></button>
+          <button className='alarm'></button>
+        </div>
+      }
+      {title === 'MY' && 
+        <div className="buttonGroup">
+          <button className='store'></button>
+          <button className='search'></button>
+          <button className='alarm'></button>
+        </div>
+      }
       {children}
     </header>
   )

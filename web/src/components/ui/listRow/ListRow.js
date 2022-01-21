@@ -8,7 +8,13 @@ const ListRow = (props) => {
   return (
     <div className="listRow">
       <div className="photo">
-        <img src={list && list.bjProfImg && list.bjProfImg.thumb190x190} alt={list.nickNm} />
+        {list.bjProfImg ? 
+          <img src={list && list.bjProfImg && list.bjProfImg.thumb190x190} alt={list.nickNm} />
+          : list.profImg ?
+          <img src={list && list.profImg && list.profImg.thumb190x190} alt={list.nickNm} />
+          :
+          <></>
+        }
       </div>
       {children}
     </div>

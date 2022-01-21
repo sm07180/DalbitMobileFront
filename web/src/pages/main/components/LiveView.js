@@ -13,7 +13,7 @@ const LiveView = (props) => {
       {data.map((list,index) => {
         return (
           <ListRow list={list} key={index}>
-            <div className='info'>
+            <div className='listContent'>
               <div className="listItem">
                 <BadgeItems content={list.liveBadgeList} />
               </div>

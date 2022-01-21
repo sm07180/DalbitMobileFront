@@ -13,41 +13,29 @@
     width:100%;
     header {
       text-indent:-99999px;
-      .buttonGroup {
-        @include flex(center);
-        margin-left:auto;
-        button {
-          width:40px;
-          height:40px;
-          &.ranking {
-            background:url("https://image.dalbitlive.com/main/dalla/ico_ranking.png") center/cover no-repeat;
-          }
-          &.message {
-            background:url("https://image.dalbitlive.com/main/dalla/ico_message.png") center/cover no-repeat;
-          }
-          &.alarm {
-            background:url("https://image.dalbitlive.com/main/dalla/ico_alarm.png") center/cover no-repeat;
-          }
-        }
+      .ranking {
+        background-image:url("#{$IMGSERVER}/common/header/icoRank-w.png");
+      }
+      .message {
+        background-image:url("#{$IMGSERVER}/common/header/icoMessage-w.png");
+      }
+      .alarm {
+        background-image:url("#{$IMGSERVER}/common/header/icoAlarm-w.png");
       }
     }
-    &.fixed {
+    &.isShow {
       header {
         text-indent: 0;
-        background-color:white;
         border-bottom:1px solid #eee;
-        .buttonGroup {
-          button {
-            &.ranking {
-              background-image:url("https://image.dalbitlive.com/main/dalla/ico_ranking_black.png");
-            }
-            &.message {
-              background-image:url("https://image.dalbitlive.com/main/dalla/ico_message_black.png");
-            }
-            &.alarm {
-              background-image:url("https://image.dalbitlive.com/main/dalla/ico_alarm_black.png");
-            }
-          }
+        background-color:white;
+        .ranking {
+          background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");
+        }
+        .message {
+          background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");
+        }
+        .alarm {
+          background-image:url("#{$IMGSERVER}/common/header/icoAlarm-b.png");
         }
       }
     }
@@ -337,7 +325,7 @@
           }
         }
       }
-      .info {
+      .listContent {
         @include flex($fd:column);
         min-width:0;
         height:100%;

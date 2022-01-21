@@ -7,7 +7,6 @@ const TerserPlugin = require('terser-webpack-plugin')
 const webpack = require('webpack')
 const fs = require('fs')
 
-//https://devm-parksm.dalbitlive.com:463
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),

@@ -10,8 +10,21 @@
       @include flex($fd:column);
       @include font(19px,400,black);
       .text {
-        margin-bottom:16px;
+        margin-bottom:6px;
         letter-spacing: -1px;
+      }
+      .info {
+        margin-bottom:12px;
+        .level {
+          margin-right:4px;
+          padding:0 6px;
+          border-radius:100px;
+          background-color:black;
+          @include font(12px,500,white);
+        }
+        .userId {
+          @include font(12px,400,black);
+        }
       }
       .count {
         height:20px;

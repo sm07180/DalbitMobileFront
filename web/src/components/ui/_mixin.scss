@@ -2,6 +2,7 @@
   @color
 */
 $MAINCOLOR: #8581FF;
+$IMGSERVER: unquote("https://image.dalbitlive.com");
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -73,3 +74,4 @@ $MAINCOLOR: #8581FF;
   @include font(12px,400,white);
   background-color:rgba(0,0,0,.4);
 }
+
