@@ -830,7 +830,8 @@ export default (props) => {
                         }
                       })
                     } else {
-                      globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
+                      globalCtx.globalAction.setBroadClipDim(true);
+                      // globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 1)
                     }
                   } else {
                     if (!broadcastBtnActive) {

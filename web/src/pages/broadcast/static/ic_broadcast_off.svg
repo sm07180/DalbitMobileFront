@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_sign_off" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-1{stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.2px}
+        </style>
+    </defs>
+    <g id="그룹_9679" data-name="그룹 9679" transform="translate(-273 -632)">
+        <g id="Vector_Smart_Object8" data-name="Vector Smart Object8" transform="translate(275.2 636)">
+            <g id="Vector_Smart_Object8-2" data-name="Vector Smart Object8" transform="translate(1)">
+                <path id="패스_3948" d="M6.018 14.939H4.331V4.7s1.687.01 1.687 0" class="cls-1" data-name="패스 3948" transform="translate(-3.331 -4.703)"/>
+                <path id="선_53" d="M7.699 0H0" class="cls-1" data-name="선 53" transform="translate(3.708 4.894)"/>
+                <path id="패스_3949" d="M17.626 7.484l2.222 2.925-2.222 2.925 2.222-2.925" class="cls-1" data-name="패스 3949" transform="translate(-8.209 -5.514)"/>
+            </g>
+        </g>
+        <path id="사각형_471" d="M0 0h18v18H0z" class="cls-2" data-name="사각형 471" transform="translate(273 632)"/>
+    </g>
+</svg>

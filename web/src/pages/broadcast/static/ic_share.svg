@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_share" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-1{stroke:#212121;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.2px}
+        </style>
+    </defs>
+    <path id="패스_407" d="M5.161 8.735a1.8 1.8 0 1 1 0-2.55 1.8 1.8 0 0 1 0 2.55zm6.452 4.289a1.8 1.8 0 1 1 1.8-1.8 1.8 1.8 0 0 1-1.8 1.8zm0-7.727a1.8 1.8 0 1 1 1.8-1.8 1.8 1.8 0 0 1-1.8 1.803zM5.594 8.111L10 10.39zm4.375-3.768L5.544 6.626z" class="cls-1" data-name="패스 407" transform="translate(.417 1.609)"/>
+    <path id="사각형_221" d="M0 0h18v18H0z" class="cls-2" data-name="사각형 221"/>
+</svg>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="8" fill="#632beb"/>
+    <text fill="#fff" font-family="NotoSansKR-Regular, Noto Sans KR" font-size="9px" letter-spacing="-0.025em" transform="translate(6 12)">
+        <tspan x="0" y="0">F</tspan>
+    </text>
+</svg>

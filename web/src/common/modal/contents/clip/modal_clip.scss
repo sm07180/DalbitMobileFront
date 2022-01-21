@@ -1,0 +1,43 @@
+@import "../../../../asset/scss/common/variables";
+#modal_clipUpload {
+  display: flex;
+  flex-direction: column;
+  .clipBtn {
+    margin-bottom: 50px;
+    text-align: center;
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 84px;
+      height: 84px;
+      box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.25);
+      background-color: #632beb;
+      border-radius: 50%;
+      margin: 0 auto;
+
+      &:before {
+        display: block;
+        content: "";
+        width: 36px;
+        height: 36px;
+        background: url("./static/clip_record.svg");
+      }
+    }
+    &__upload {
+      &.upload {
+        &:before {
+          background: url("./static/clip_upload.svg");
+        }
+      }
+    }
+    span {
+      display: block;
+      margin-top: 14px;
+      font-size: 18px;
+      font-weight: $bold;
+      letter-spacing: -0.45px;
+      color: #fff;
+    }
+  }
+}

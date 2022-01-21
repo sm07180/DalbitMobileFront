@@ -1,0 +1,48 @@
+@import "../../../../../asset/scss/common/variables";
+#mini_game {
+  padding: 20px 8px;
+  .title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: $bold;
+  }
+
+  .mini_game_list {
+    margin-top: 20px;
+
+    & > .mini_game_item:not(:first-child) {
+      margin-top: 10px;
+    }
+
+    .mini_game_item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 9px;
+      border: 1px solid $lightGray;
+      border-radius: 24px;
+      box-sizing: border-box;
+      cursor: pointer;
+
+      .thumb_box {
+        width: 56px;
+        height: 56px;
+        margin-right: 8px;
+        padding: 8px;
+        background-color: $lighterGray;
+        border-radius: 12px;
+        box-sizing: border-box;
+
+        & > img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      .content {
+        font-size: 16px;
+        font-weight: $bold;
+      }
+    }
+  }
+}

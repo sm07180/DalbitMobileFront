@@ -1,0 +1,324 @@
+@import "../../../../../asset/scss/common/variables";
+
+#roulette {
+  display: flex;
+  flex-direction: column;
+  width: 100%; height: 100%;
+  padding: 20px 17px;
+  box-sizing: border-box;
+  .notice_wrap {
+    font-size: 14px;
+    font-weight: $regular;
+  }
+
+  .scroll-wrap {
+    & .scroll-inner.windows {
+      position: relative;
+      max-height: 100%;
+      margin-bottom: 0;
+      overflow-x: auto;
+    }
+  }
+
+  .price_wrap {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    margin-top: 22px;
+    .title {
+      font-weight: $bold;
+      color: $primary;
+
+      .caption {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-left: 4px;
+        border: 1px solid $lightGray;
+        border-radius: 50%;
+        font-weight: $bold;
+        box-sizing: border-box;
+      }
+    }
+    .checkbox_wrap {
+      display: flex;
+
+      & > :first-child {
+        margin-right: 14px;
+      }
+    }
+
+    .caption_layer {
+      display: flex;
+      position: absolute;
+      align-items: flex-start;
+      top: 30px;
+      width: 233px;
+      background-color: $black;
+      border-radius: 12px;
+      font-size: 12px;
+      color: $white;
+      z-index: 1;
+
+      & > span {
+        padding: 12px 0 12px 12px;
+      }
+    }
+  }
+
+  .dalbit_input {
+    & > input {
+      width: 100%;
+      margin-top: 13px;
+      padding: 13px 16px;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: $gray;
+      }
+    }
+  }
+
+  .option_wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin: 33px 0 16px;
+    overflow: hidden;
+    .option_title {
+      font-size: 14px;
+      font-weight: 500;
+      color: #000000;
+    }
+    .option_item {
+      &:not(:first-child) {
+        margin-top: 20px;
+      }
+      position: relative;
+      font-size: 16px;
+      font-weight: $bold;
+      & > p {
+        span {
+          margin-left: 5px;
+          color: $primary;
+        }
+      }
+
+      & > input {
+        width: 100%;
+        margin-top: 10px;
+        padding: 13px 16px;
+        border: 1px solid $lightGray;
+        border-radius: 12px;
+        box-sizing: border-box;
+
+        &::placeholder {
+          color: $gray;
+        }
+      }
+
+      & > button {
+        position: absolute;
+        top: 40px;
+        right: 5px;
+        padding: 6px 17px;
+        background-color: $primary;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: $regular;
+        color: $white;
+        box-sizing: border-box;
+      }
+    }
+  }
+
+  .autoCreate {
+    width: 100%;
+    padding: 15px 20px;
+    margin-top: 21px;
+    box-sizing: border-box;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    background: #FBFBFB;
+    &Info {
+      font-size: 14px;
+      font-weight: 400;
+      color: #000000;
+    }
+  }
+
+  .btnWrap {
+    margin-top: auto;
+    .btn {
+      font-size: 18px;
+      &.icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $white;
+        border: 1px solid $primary;
+        color: $primary;
+        &::before {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background-image: url("../../..//static/ic_plus.svg");
+          content: "";
+        }
+        &.isDisable {
+          // background: $mediumGray;
+          border: 1px solid $mediumGray;
+          color: $mediumGray;
+          &::before {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-image: url("../../..//static/ic_plus_disable.svg");
+            content: "";
+          }
+        }
+      }
+    }
+
+    & > button:last-child {
+      margin-left: 4px;
+    }
+  }
+
+  .rouletteTab {
+    &Wrap {
+      display: flex;
+      align-items: center;
+    }
+    &Menu {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 40px;
+      border: 1px solid #E0E0E0;
+      margin-bottom: 15px;
+      font-size: 16px;
+      font-weight: 500;
+      color: #616161;
+      cursor: pointer;
+      &:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+      &:last-child {
+        border-radius: 0 10px 10px 0;
+      }
+      &.active {
+        border: none;
+        font-size: 16px;
+        font-weight: 700;
+        color: #fff;
+        background: #632BEB;
+      }
+    }
+  }
+  .winLog {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 11px;
+    overflow: hidden;
+    &_title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #632BEB;
+    }
+    &_count {
+      font-size: 16px;
+      font-weight: 400;
+      color: #632BEB;
+    }
+    &_wrap {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    &_list {
+      display: flex;
+      width: 100%;
+      padding: 13px 16px;
+      margin-bottom: 10px;
+      border: 1px solid #E0E0E0;
+      border-radius: 10px;
+      box-sizing: border-box;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    &_photo {
+      display: flex;
+      align-items: flex-start;
+      margin-right: 16px;
+    }
+    &_thumb {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background-position: center;
+      background-size: cover;
+      overflow: hidden;
+    }
+    &_content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    &_row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      overflow: hidden;
+      &:first-child {
+        margin-bottom: 6px;
+      }
+    }
+    &_nick {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000000;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &_subTitle {
+      margin-right: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000000;
+    }
+    &_winTitle {
+      flex: 1;
+      display: block;
+      font-size: 14px;
+      font-weight: 400;
+      color: #000000;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+    &_roulettePrice {
+      font-size: 14px;
+      font-weight: 400;
+      color: #000000;
+      & > span {
+        font-size: 14px;
+        font-weight: 400;
+        color: #632BEB;
+      }
+    }
+  }
+}

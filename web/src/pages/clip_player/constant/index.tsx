@@ -1,0 +1,17 @@
+export enum tabType {
+  PROFILE,
+  GIFT_GIVE,
+  PLAY_LIST,
+  REPLY,
+  GIFT_RANK,
+  REPORT,
+  GIFT_LIST,
+  FAN_RANK_MY,
+  FAN_RANK_USER,
+  SPECIALDJLIST,
+}
+
+export const DECLARATION_TAB = {
+  BLACK: 0,
+  DECLARATION: 1,
+};

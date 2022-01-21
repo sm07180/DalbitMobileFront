@@ -11,7 +11,8 @@ const fs = require('fs')
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    API_SERVER_URL: JSON.stringify('https://devm-gonetpower.dalbitlive.com:463'),
+    CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
     PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
@@ -20,6 +21,7 @@ const ENV_URL = {
   stage: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
     PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
@@ -27,6 +29,7 @@ const ENV_URL = {
   },
   real: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    CHAT_SOCKET_URL: JSON.stringify("sv.dalbitlive.com"),
     API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitlive.com'),
@@ -51,7 +54,7 @@ module.exports = (_, options) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx)$/,
+          test: /\.(js|jsx|ts|tsx)$/,
           exclude: /(node_modules)|(dist)/,
           use: {
             loader: 'babel-loader',
@@ -74,7 +77,7 @@ module.exports = (_, options) => {
           ]
         },
         {
-          test: /\.scss$/,
+          test: /\.(css|scss)$/,
           use: ['style-loader', 'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
@@ -99,7 +102,7 @@ module.exports = (_, options) => {
     },
 
     resolve: {
-      extensions: ['*', '.js', '*.jsx'],
+      extensions: ['*', '.js', '*.jsx', '.ts', '.tsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
     },
 
@@ -124,7 +127,8 @@ module.exports = (_, options) => {
         __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
         __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL'],
         __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL'],
-        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL']
+        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL'],
+        __CHAT_SOCKET_URL: ENV_URL[env]["CHAT_SOCKET_URL"],
       })
     ]
   }
@@ -172,6 +176,5 @@ module.exports = (_, options) => {
             ]
     }
   }
-
   return config
 }

@@ -1,0 +1,133 @@
+@import "../../../asset/scss/common/variables";
+
+.layerSettingWrap {
+  padding: 30px 12px 12px 12px;
+  background-color: $white;
+  h3 {
+    padding-bottom: 20px;
+    text-align: center;
+  }
+  .title {
+    margin: 20px 0 0;
+    font-size: 12px;
+    & > span:first-child {
+      font-size: 14px;
+    }
+  }
+
+  textarea {
+    width: 326px;
+    height: 100px;
+    margin: 8px 0;
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: $bold;
+    line-height: 24px;
+    resize: none;
+    box-sizing: border-box;
+    &::placeholder {
+      font-size: 14px;
+      color: #bdbdbd;
+      line-height: 22px;
+    }
+
+    &:disabled {
+      border: 1px solid $lightGray;
+      background-color: #f5f5f5;
+    }
+  }
+  .buttonWrap {
+    height: 32px;
+    font-size: 14px;
+    line-height: 16px;
+    &__delete {
+      width: 60px;
+      height: 32px;
+      border: 1px solid #757575;
+      border-radius: 8px;
+    }
+
+    &__cancel {
+      width: 60px;
+      height: 32px;
+      background-color: #757575;
+      border-radius: 8px;
+      color: #fff;
+      float: right;
+      margin-right: 4px;
+    }
+
+    &__add {
+      width: 60px;
+      height: 32px;
+      background-color: $primary;
+      border-radius: 8px;
+      color: #fff;
+      float: right;
+
+      &.disabled {
+        background-color: $mediumGray;
+      }
+    }
+  }
+
+  .contentsWrap {
+    margin-top: 20px;
+    & > p {
+      margin-bottom: 8px;
+      font-size: 16px;
+      font-weight: $bold;
+      line-height: 18px;
+      & > span {
+        margin-left: 8px;
+        font-weight: $regular;
+        color: $primary;
+      }
+    }
+
+    & > button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 14px 8px 14px 16px;
+      margin-bottom: 4px;
+      background-color: #fff;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 16px;
+      letter-spacing: -0.35px;
+      text-align: left;
+      white-space: break-spaces;
+      word-break: break-all;
+      &.on::after {
+        display: inline-block;
+        width: 24px;
+        min-width: 24px;
+        height: 24px;
+        min-height: 24px;
+        background: url(../../../common/layerpopup/static/radio_on.svg);
+        content: "";
+      }
+      &::after {
+        display: inline-block;
+        width: 24px;
+        min-width: 24px;
+        height: 24px;
+        min-height: 24px;
+        background: url(../../../common/layerpopup/static/radio_off.svg);
+        content: "";
+      }
+    }
+  }
+  .btnWrap {
+    margin-top: 40px;
+    .btn_cancel {
+      border: 1px solid $primary;
+      background: none;
+      color: $primary;
+    }
+  }
+}

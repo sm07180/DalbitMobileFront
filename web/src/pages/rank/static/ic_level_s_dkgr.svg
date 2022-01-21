@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_level_s_dkgr" width="16" height="16" viewBox="0 0 16 16">
+    <path id="사각형_5692" fill="none" d="M0 0H16V16H0z" data-name="사각형 5692"/>
+    <g id="그룹_16831" data-name="그룹 16831" transform="translate(1 2.4)">
+        <path id="패스_10887" fill="#757575" d="M101.643 46.427a.486.486 0 0 0 .514 0l5.478-2.871a.579.579 0 0 0 .265-.495v-9.993a.547.547 0 0 0-.522-.568H96.422a.547.547 0 0 0-.522.568v9.993a.579.579 0 0 0 .265.495z" data-name="패스 10887" transform="translate(-94.9 -33.5)"/>
+        <path id="다각형_6" fill="#fff" d="M4.3 0l1.183 3.043 3.117.242-2.387 2.123.745 3.192L4.3 6.869 1.642 8.6l.744-3.192L0 3.285l3.117-.242z" data-name="다각형 6" transform="translate(2.7 .6)"/>
+    </g>
+</svg>

@@ -19,8 +19,12 @@ import NoService from './pages/no_service/index'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {getDeviceOSTypeChk} from './common/DeviceCommon';
+import {CHAT_CONFIG} from "constant/define";
+import {ChatSocketHandler} from "common/realtime/chat_socket";
+import {MailboxContext} from "context/mailbox_ctx";
 
 const App = () => {
+  const { mailboxAction } = useContext(MailboxContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
@@ -28,6 +32,11 @@ const App = () => {
 
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+
+  const {
+    chatInfo,
+    mailChatInfo,
+  } = globalCtx.globalState;
 
   const isJsonString = (str) => {
     try {
@@ -114,13 +123,39 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
+  function initChantInfo(authToken, memNo) {
+    const socketUser = {
+      authToken,
+      memNo,
+      locale: CHAT_CONFIG.locale.ko_KR,
+      roomNo: null,
+    };
+    if (
+        globalCtx.globalAction.dispatchChatInfo &&
+        globalCtx.globalAction.dispatchMailChatInfo
+    ) {
+      const chatInfo = new ChatSocketHandler(socketUser);
+      // chatInfo.setSplashData(globalState.splashData);
+      //deep copy chatInfo
+      let cloneMailInfo = Object.assign(
+          Object.create(Object.getPrototypeOf(chatInfo)),
+          chatInfo
+      );
+
+      globalCtx.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+      globalCtx.globalAction.dispatchMailChatInfo({
+        type: "init",
+        data: cloneMailInfo,
+      });
+    }
+  }
   async function fetchData() {
     // Renew token
     const tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-
+      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
@@ -274,6 +309,7 @@ const App = () => {
         globalCtx.action.updateRoomType(roomType)
       }
       globalCtx.action.updateSplash(data)
+      globalCtx.globalAction.setSplashData(data);
       globalCtx.action.updateUseMailbox(useMailBox)
     } else {
       Api.error_log({
@@ -433,6 +469,17 @@ const App = () => {
       )
     }
   }
+
+  useEffect(() => {
+    if (chatInfo !== null) {
+      chatInfo.setGlobalAction(globalCtx.globalAction);
+      chatInfo.setMailboxAction(mailboxAction);
+    }
+    if (mailChatInfo !== null) {
+      mailChatInfo.setGlobalAction(globalCtx.globalAction);
+      mailChatInfo.setMailboxAction(mailboxAction);
+    }
+  }, [chatInfo, mailChatInfo]);
 
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>

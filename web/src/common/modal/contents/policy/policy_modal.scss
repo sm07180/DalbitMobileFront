@@ -1,0 +1,312 @@
+.fanListWrapper {
+  position: relative;
+  border-radius: 10px;
+}
+.fanlist-modal {
+  position: relative;
+}
+.closeBtn {
+  position: absolute;
+  right: 0;
+  top: -36px;
+  width: 36px;
+  height: 36px;
+  background: url("../../static/ic_close.svg");
+}
+
+.termsWrap {
+  padding: 12px 30px 40px 16px;
+  background-color: white;
+  font-size: 14px;
+  line-height: 1.56;
+  h3 {
+    margin-top: 10px;
+  }
+
+  .desc {
+    margin-top: 10px;
+    strong {
+      display: block;
+      margin-top: 3px;
+    }
+  }
+  .bold {
+    font-weight: 500;
+  }
+}
+
+.operating {
+  ol {
+    li {
+      position: relative;
+      padding-left: 17px;
+      line-height: 22px;
+
+      span {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
+  }
+  ol.depth1 {
+    margin-top: 20px;
+  }
+  ol.depth2 {
+    & > li {
+      margin-top: 16px;
+      padding-left: 20px;
+      color: #616161;
+    }
+  }
+  ol.depth3 {
+    margin-top: 6px;
+    li {
+      color: #616161;
+    }
+  }
+  ol.depth4 {
+    margin-bottom: 5px;
+    li {
+      padding-left: 9px;
+      color: #616161;
+    }
+  }
+
+  table.content {
+    margin: 30px 0 8px 0;
+    padding: 0;
+    border-top: 1px solid #632beb;
+    caption {
+      display: none;
+    }
+    * {
+      color: #424242;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    th,
+    td {
+      padding: 15px 5px;
+      border-bottom: 1px solid #e0e0e0;
+      border-right: 1px solid #e0e0e0;
+    }
+
+    thead {
+      th {
+        background: #f5f5f5;
+      }
+      th:last-child {
+        border-right: 0;
+      }
+    }
+
+    tbody {
+      td:last-child {
+        border-right: 0;
+      }
+    }
+
+    th.right-border,
+    td.right-border {
+      border-right: 1px solid #e0e0e0;
+    }
+  }
+
+  span.table-txt {
+    display: block;
+    font-size: 14px;
+    color: #9e9e9e;
+    text-align: right;
+  }
+}
+
+.privacy {
+  ol {
+    li {
+      position: relative;
+      padding-left: 15px;
+    }
+    li:before {
+      position: absolute;
+      left: 0;
+    }
+  }
+  ol.depth1 {
+    margin-top: 20px;
+    counter-reset: depth1;
+    & > li {
+      margin-top: 20px;
+      padding-left: 26px;
+    }
+    & > li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
+      counter-increment: depth1;
+      content: counter(depth1) ".";
+    }
+
+    .block {
+      display: block;
+      margin-top: 10px;
+    }
+
+    &.no-space {
+      padding: 0px;
+      li {
+        margin-top: 0;
+      }
+    }
+
+    .lineBox {
+      margin-top: 15px;
+      padding: 10px;
+      box-sizing: border-box;
+      border: 1px solid #eee;
+      display: inline-block;
+      line-height: 22px;
+      color: #616161;
+      font-size: 13px;
+
+      b {
+        display: block;
+        margin-bottom: 12px;
+      }
+    }
+  }
+  ol.depth2 {
+    padding-left: 10px;
+    margin-top: 10px;
+    list-style-type: hangul;
+
+    & > li {
+      margin-top: 10px;
+      padding-left: 0;
+      color: #616161;
+    }
+    li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
+    }
+  }
+  ol.depth3 {
+    margin-top: 5px;
+    margin-left: -5px;
+
+    li {
+      color: #616161;
+      text-align: left !important;
+    }
+    li:before {
+      left: -8px;
+    }
+    &.depth-info {
+      margin-left: 0;
+    }
+  }
+}
+.depth-info {
+  b {
+    display: block;
+    margin-bottom: 7px;
+  }
+  p {
+    padding: 7px;
+    font-size: 14px;
+  }
+  display: block;
+  margin-top: 20px;
+  padding: 15px;
+  ul {
+    margin-top: 5px;
+    display: block;
+  }
+  li {
+    list-style: none;
+  }
+  ol.depth2-line {
+    & > li:before {
+      display: block;
+      width: 20px;
+      text-align: right;
+      counter-increment: depth1;
+      position: absolute;
+      left: -8px;
+      content: "-";
+    }
+  }
+
+  ol.depth2-number {
+    li {
+      padding: 0px;
+    }
+  }
+}
+
+.service {
+  ol {
+    li {
+      position: relative;
+      padding-left: 15px;
+    }
+    li:before {
+      position: absolute;
+      left: 0;
+    }
+  }
+  ol.depth1 {
+    margin-top: 14px;
+    counter-reset: depth1;
+    & > li {
+      padding-left: 26px;
+      margin-top: 12px;
+      color: #616161;
+    }
+    li:before {
+      width: 20px;
+      text-align: right;
+      counter-increment: depth1;
+      content: counter(depth1) ".";
+    }
+  }
+  ol.depth2 {
+    margin-left: -17px;
+    counter-reset: depth2;
+    & > li {
+      padding-left: 26px;
+      margin-top: 6px;
+      color: #616161;
+    }
+    li:before {
+      width: 20px;
+      text-align: right;
+      counter-increment: depth2;
+      content: counter(depth2) ")";
+    }
+  }
+  ol.depth3 {
+    margin-top: 6px;
+    margin-left: -15px;
+    counter-reset: depth3;
+    li {
+      color: #616161;
+    }
+    li:before {
+      counter-increment: depth3;
+      content: counter(depth3);
+    }
+  }
+  ol.depth4 {
+    margin-left: -15px;
+    li {
+      color: #616161;
+    }
+    li:before {
+      left: 4px;
+      content: "-";
+    }
+  }
+}
