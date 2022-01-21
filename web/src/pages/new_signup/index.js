@@ -665,13 +665,10 @@ export default (props) => {
     if (result === 'success') {
       //adbrix, firebase 이벤트 호출
       const adbrixByPc = () => Hybrid('adbrixEvent', data.adbrixData);
-      const lowVerFunc = () => {
-        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6'; // 1.6.9 ~ 1.8.2 / 1.6.3 ~ 1.6.5
-        Utility.compareAppVersion(targetVersion, () => {}, adbrixByPc);
-      }
 
       await Utility.addAdsData(
         'CompleteRegistration'
+        , 'CompleteRegistration'
         , {}
         , '1.6.9'
         , '1.6.3'
