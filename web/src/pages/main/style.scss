@@ -218,13 +218,11 @@
           margin-right:28px;
         }
         .listColumn {
-          position:relative;
           width:102px;
           border-radius:8px;
           overflow:hidden;
           .photo {
             height:150px;
-            @include backgroundPSR;
             img {
               height:100%;
               object-fit: cover;

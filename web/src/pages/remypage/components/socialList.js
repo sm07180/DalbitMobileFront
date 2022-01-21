@@ -55,9 +55,9 @@ const SocialList = (props) => {
           </div>
         }
         <div className="info">
-          <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon.png`} alt="좋아요" /></i>
+          <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-g.png`} alt="좋아요" /></i>
           <span>123</span>
-          <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon.png`} alt="댓글" /></i>
+          <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-g.png`} alt="댓글" /></i>
           <span>321</span>
         </div>
       </div>

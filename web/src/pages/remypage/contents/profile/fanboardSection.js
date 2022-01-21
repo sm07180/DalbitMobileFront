@@ -6,7 +6,7 @@ import Swiper from 'react-id-swiper'
 // global components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
-import SocialList from '../components/socialList'
+import SocialList from '../../components/socialList'
 
 const fanboardTabmenu = ['전체','내댓글']
 

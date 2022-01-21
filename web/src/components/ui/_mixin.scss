@@ -61,6 +61,10 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
   background-repeat:no-repeat;
 }
 
+@mixin BGIMG($address) {
+  background:url("#{$IMGSERVER}/#{$address}") center/cover no-repeat;
+}
+
 @mixin swiperPagination {
   position:absolute;
   left:auto;

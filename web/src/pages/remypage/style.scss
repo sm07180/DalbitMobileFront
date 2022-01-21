@@ -70,7 +70,7 @@
         width:20px;
         height:20px;
         margin-right:4px;
-        background:url("#{$IMGSERVER}/mypage/dalla/icon_dal.png") center/cover no-repeat;
+        @include BGIMG('mypage/dalla/icon_dal.png');
       }
     }
     .buttonWrap {
@@ -116,7 +116,7 @@
           display:inline-block;
           content:'';
           width:20px;height:20px;
-          background-color:#ddd;
+          @include BGIMG('common/icoArrow-r.png');
         }
       }
     }

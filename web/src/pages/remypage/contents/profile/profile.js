@@ -6,9 +6,9 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
-import TopSwiper from '../components/topSwiper'
-import ProfileCard from '../components/profileCard'
-import TotalInfo from '../components/totalInfo'
+import TopSwiper from '../../components/topSwiper'
+import ProfileCard from '../../components/profileCard'
+import TotalInfo from '../../components/totalInfo'
 // contents
 import FeedSection from './feedSection'
 import FanboardSection from './fanboardSection'
@@ -24,7 +24,7 @@ const Myprofile = () => {
   const context = useContext(Context)
   const {token, profile} = context
   
-  const [socialType, setSocialType] = useState(socialTabmenu[1])
+  const [socialType, setSocialType] = useState(socialTabmenu[2])
 
   // 페이지 시작
   return (

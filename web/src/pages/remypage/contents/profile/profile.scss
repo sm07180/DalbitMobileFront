@@ -168,6 +168,8 @@
     .clipSection {
       .subArea {
         @include flex(center);
+        height:25px;
+        margin-bottom:16px;
         padding:0 16px;
         .title {
           letter-spacing: -1px;
@@ -177,6 +179,52 @@
           margin-left:auto;
           letter-spacing: -1px;
           @include font(13px,400,#666);
+        }
+      }
+      .clipContent {
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap:8px;
+        padding:0 16px;
+        .listColumn {
+          border-radius:8px;
+          overflow:hidden;
+          &:before {
+            @include position-center;
+            display:block;
+            content:"";
+            width:100%;height:100%;
+            background-color:rgba(0,0,0,.1);
+          }
+          p {
+            display:none;
+          }
+          .title {
+            @include position-bottom-left;
+            width:100%;
+            padding:24px 0 10px 10px;
+            background:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
+            text-align:left;
+            @include font(14px,700,white);
+          }
+          .info {
+            @include position-top-right(10px,10px);
+            @include font(12px,400,white);
+            i {
+              display:inline-block;
+              width:16px;
+              height:16px;
+              margin-left:16px;
+              img {
+                width:100%;
+                vertical-align: bottom;
+              }
+            }
+            span {
+              line-height:16px;
+              margin-left:2px;
+            }
+          }
         }
       }
     }

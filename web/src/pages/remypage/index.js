@@ -5,7 +5,7 @@ import {Context} from 'context'
 import Api from 'context/api'
 import Header from '../../components/ui/header/Header'
 
-import Profile from './contents/profile'
+import Profile from './contents/profile/profile'
 
 import './style.scss'
 
@@ -16,7 +16,7 @@ const Remypage = () => {
   const {token, profile} = context
 
   //useState
-  const [myProfile, setMyProfile] = useState(false)
+  const [myProfile, setMyProfile] = useState(true)
 
   const openMyprofile = () => {
     setMyProfile(true)
