@@ -1,0 +1,127 @@
+@import "components/ui/_mixin.scss";
+
+#remypage {
+  @include flex($fd:column);
+  height:100%;
+  .myInfo {
+    @include flex;
+    padding:16px 16px 12px;
+    .textWrap {
+      @include flex($fd:column);
+      @include font(19px,400,black);
+      .text {
+        margin-bottom:16px;
+        letter-spacing: -1px;
+      }
+      .count {
+        height:20px;
+        line-height:20px;
+        @include font(14px,400,#878787);
+        i {
+          margin-right:4px;
+          font-style:normal;
+          letter-spacing: -1px;
+        }
+        span {
+          margin-right:16px;
+          @include font(14px,500,black);
+        }
+      }
+    }
+    .photo {
+      width:75px;
+      height:75px;
+      margin-left:auto;
+      img {
+        width:100%;
+        border-radius:50%;
+        object-fit: cover;
+      }
+    }
+  }
+  .mydalDetail {
+    @include flex;
+    margin:0 16px;
+    padding: 12px 16px 14px 19px;
+    border-radius:8px;
+    box-shadow:0 1.5px 5px rgba(0,0,0,.08);
+    .detail {
+      flex:1;
+      .title {
+        margin-bottom:8px;
+        @include font(12px,400,#999);
+      }
+      .dalCount {
+        height:30px;
+        line-height:30px;
+        @include font(20px,500,black);
+      }
+    }
+    .buttonWrap {
+      @include flex(center);
+      height:30px;
+      line-height:30px;
+      margin-top:auto;
+      button {
+        position:relative;
+        height:100%;
+        padding:0 8px;
+        letter-spacing: -1px;
+        @include font(14px,400,black);
+        &.charge {
+          @include font(14px,700,#9020FF);
+          &:before {
+            position:absolute;
+            bottom:6px;
+            left:0;
+            content:'';
+            width:1px;
+            height:15px;
+            background-color:#E5E5E5;
+          }
+        }
+      }
+    }
+  }
+  .myMenu {
+    .btnGroup {
+      @include flex;
+      padding:10px 16px;
+      border-bottom:8px solid #F2F2F2;
+      button {
+        flex:1;
+        height:80px;
+        letter-spacing: -1px;
+        @include font(14px,400,black);
+      }
+    }
+    .btnList {
+      @include flex($fd:column);
+      button {
+        flex:1;
+        @include flex(center,space-between);
+        height:55px;
+        line-height:55px;
+        padding:0 16px;
+        text-align:left;
+        letter-spacing: -1px;
+        @include font(14px,400,#202020);
+        &:after {
+          display:inline-block;
+          content:'';
+          width:20px;height:20px;
+          background-color:#ddd;
+        }
+      }
+    }
+  }
+  button.logout {
+    width:256px;
+    height:45px;
+    line-height:45px;
+    margin: auto auto 30px;
+    background-color:#F6F6F6;
+    @include font(14px,500,black);
+    border-radius:100px;
+  }
+}

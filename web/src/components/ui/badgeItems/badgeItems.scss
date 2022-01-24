@@ -1,0 +1,24 @@
+@import "components/ui/_mixin.scss";
+
+.badgeItem {
+  flex:none;
+  @include flex(center);
+  height:16px;
+  margin-left:2px;
+  @include font(11px,400,white);
+  &.img {
+    @include flex(center,center);
+    width:auto;
+    height:auto;
+    padding:0 5px 0 3px;
+    border-radius:100px;
+    box-sizing: border-box;
+    img {
+      width:16px;
+      height:16px;
+    }
+  }
+  &:first-child {
+    margin-left:0;
+  }
+}

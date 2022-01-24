@@ -16,6 +16,7 @@ import Alert from "common/alert";
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
+const ReMyPage = React.lazy(() => import('pages/remypage'))
 const Ranking = React.lazy(() => import('pages/ranking_renewal'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
@@ -81,97 +82,98 @@ const Mailbox = React.lazy(() => import("pages/mailbox"));
 
 const Router = () => {
   return (
-      <React.Suspense
-          fallback={
-            <div className="loading">
-              <span></span>
-            </div>
-          }>
-        <Common />
-        <ScrollToTop />
-        <Message />
-        <Switch>
-          <Route exact path="/" component={Main} />
-          <Route exact path="/menu/:category" component={Menu} />
-          <Route exact path="/rank" component={Ranking} />
-          <Route exact path="/rank/:type" component={RankingGuide} />
-          <Route exact path="/event/:title" component={Event} />
-          <Route exact path="/event/:title/:type" component={Event} />
-          <Route exact path="/event_proofshot" component={Proofshot} />
-          <Route exact path="/event_package" component={Package} />
-          <Route exact path="/event_knowHow" component={EventKnowHow} />
-          <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
-          <Route exact path="/event_knowHow/:title/:num" component={EventKnowHow} />
-          <Route exact path="/pay" component={Pay} />
-          <Route exact path="/pay/:title" component={Pay} />
-          <Route exact path="/exchange" component={Exchange} />
-          <Route exact path="/live" component={Live} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/login/:type" component={Login} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/password" component={Password} />
-          <Route exact path="/selfauth" component={SelfAuth} />
-          <Route exact path="/legalauth" component={LegalAuth} />
-          <Route exact path="/selfauth_result" component={SelfAuthResult} />
-          <Route exact path="/mypage/:memNo" component={MyPage} />
-          <Route exact path="/mypage/:memNo/:category" component={MyPage} />
-          <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
-          <Route exact path="/level" component={LevelInfo} />
-          <Route exact path="/private" component={MySetting} />
-          <Route exact path="/customer/" component={Customer} />
-          <Route exact path="/customer/:title" component={Customer} />
-          <Route exact path="/customer/:title/:num" component={Customer} />
-          <Route exact path="/setting" component={Setting} />
-          <Route exact path="/secession" component={Secession} />
-          <Route exact path="/navigator" component={Navigator} />
-          <Route exact path="/agree" component={Agree} />
-          <Route exact path="/agree/:title" component={Agree} />
-          <Route exact path="/temp_page" component={TempPage} />
-          <Route exact path="/money_exchange" component={MoneyExchange} />
-          <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
-          <Route exact path="/event_page" component={EventPage} />
-          <Route exact path="/event_pc_service" component={EventPcService} />
-          <Route exact path="/attend_event" component={AttendEvent} />
-          <Route exact path="/attend_event/:title" component={AttendEvent} />
-          <Route exact path="/event_rising" component={EventRising} />
-          <Route exact path="/service" component={Service} />
-          <Route exact path="/no_service" component={NoService} />
-          <Route exact path="/error" component={ErrorPage} />
-          <Route exact path="/pc_open" component={PcOpen} />
-          <Route exact path="/clip_open" component={ClipOpen} />
-          <Route exact path="/clip" component={Clip} />
-          <Route exact path="/clip_rank" component={ClipRank} />
-          <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
-          <Route exact path="/clip_recommend" component={ClipRecommend} />
-          <Route exact path="/redirect" component={TempLogin} />
-          <Route exact path="/clip/tip" component={ClipTip} />
-          <Route exact path="/redirect" component={TempLogin} />
-          <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
-          <Route exact path="/clip/play_list" component={ClipPlayList} />
-          <Route exact path="/ImageEditor" component={ImageEditor} />
-          <Route exact path="/story" component={Story} />
-          <Route exact path="/story/:roomNo" component={Story} />
+    <React.Suspense
+      fallback={
+        <div className="loading">
+          <span></span>
+        </div>
+      }>
+      <Common />
+      <ScrollToTop />
+      <Message />
+      <Switch>
+        <Route exact path="/" component={Main} />
+        <Route exact path="/remypage/:memNo" component={ReMyPage} />
+        <Route exact path="/remypage/:memNo/:category" component={ReMyPage} />
+        <Route exact path="/menu/:category" component={Menu} />
+        <Route exact path="/rank" component={Ranking} />
+        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/event/:title" component={Event} />
+        <Route exact path="/event/:title/:type" component={Event} />
+        <Route exact path="/event_proofshot" component={Proofshot} />
+        <Route exact path="/event_package" component={Package} />
+        <Route exact path="/event_knowHow" component={EventKnowHow} />
+        <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
+        <Route exact path="/event_knowHow/:title/:num" component={EventKnowHow} />
+        <Route exact path="/pay" component={Pay} />
+        <Route exact path="/pay/:title" component={Pay} />
+        <Route exact path="/exchange" component={Exchange} />
+        <Route exact path="/live" component={Live} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/login/:type" component={Login} />
+        <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/password" component={Password} />
+        <Route exact path="/selfauth" component={SelfAuth} />
+        <Route exact path="/legalauth" component={LegalAuth} />
+        <Route exact path="/selfauth_result" component={SelfAuthResult} />
+        <Route exact path="/mypage/:memNo" component={MyPage} />
+        <Route exact path="/mypage/:memNo/:category" component={MyPage} />
+        <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        <Route exact path="/level" component={LevelInfo} />
+        <Route exact path="/private" component={MySetting} />
+        <Route exact path="/customer/" component={Customer} />
+        <Route exact path="/customer/:title" component={Customer} />
+        <Route exact path="/customer/:title/:num" component={Customer} />
+        <Route exact path="/setting" component={Setting} />
+        <Route exact path="/secession" component={Secession} />
+        <Route exact path="/navigator" component={Navigator} />
+        <Route exact path="/agree" component={Agree} />
+        <Route exact path="/agree/:title" component={Agree} />
+        <Route exact path="/temp_page" component={TempPage} />
+        <Route exact path="/money_exchange" component={MoneyExchange} />
+        <Route exact path="/money_exchange_result" component={MoneyExchangeResult} />
+        <Route exact path="/event_page" component={EventPage} />
+        <Route exact path="/event_pc_service" component={EventPcService} />
+        <Route exact path="/attend_event" component={AttendEvent} />
+        <Route exact path="/attend_event/:title" component={AttendEvent} />
+        <Route exact path="/event_rising" component={EventRising} />
+        <Route exact path="/service" component={Service} />
+        <Route exact path="/no_service" component={NoService} />
+        <Route exact path="/error" component={ErrorPage} />
+        <Route exact path="/pc_open" component={PcOpen} />
+        <Route exact path="/clip_open" component={ClipOpen} />
+        <Route exact path="/clip" component={Clip} />
+        <Route exact path="/clip_rank" component={ClipRank} />
+        <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
+        <Route exact path="/clip_recommend" component={ClipRecommend} />
+        <Route exact path="/redirect" component={TempLogin} />
+        <Route exact path="/clip/tip" component={ClipTip} />
+        <Route exact path="/redirect" component={TempLogin} />
+        <Route exact path="/clip/:clipNo/reply" component={ClipReply} />
+        <Route exact path="/clip/play_list" component={ClipPlayList} />
+        <Route exact path="/ImageEditor" component={ImageEditor} />
+        <Route exact path="/story" component={Story} />
+        <Route exact path="/story/:roomNo" component={Story} />
 
+        {/*  www 클립 라우터  */}
+        <Route exact path="/clip_recoding" component={ClipRecoding}  />
+        <Route exact path="/clip_upload" component={ClipUpload} />
+        <Route exact path="/clip/:clipNo" component={ClipPlayer} />
 
-          {/*  www 클립 라우터  */}
-          <Route exact path="/clip_recoding" component={ClipRecoding}  />
-          <Route exact path="/clip_upload" component={ClipUpload} />
-          <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+        {/*  www 방송 청취 및 세팅  */}
+        <Route exact path="/broadcast/:roomNo" component={Broadcast} />
+        <Route exact path="/broadcast_setting" component={BroadcastSetting} />
 
-          {/*  www 방송 청취 및 세팅  */}
-          <Route exact path="/broadcast/:roomNo" component={Broadcast} />
-          <Route exact path="/broadcast_setting" component={BroadcastSetting} />
+        {/*  www 우체통관련  */}
+        <Route exact path="/mailbox" component={Mailbox} />
+        <Route exact path="/mailbox/:category" component={Mailbox} />
+        <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
 
-          {/*  www 우체통관련  */}
-          <Route exact path="/mailbox" component={Mailbox} />
-          <Route exact path="/mailbox/:category" component={Mailbox} />
-          <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
-
-          <Redirect to="/error" />
-        </Switch>
         <Route path="/modal/:type" component={Modal} />
-        <Alert />
-      </React.Suspense>
+        <Redirect to="/error" />
+      </Switch>
+      <Alert />
+    </React.Suspense>
   )
 };
 export default Router
