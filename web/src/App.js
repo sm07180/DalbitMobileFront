@@ -22,6 +22,8 @@ import {getDeviceOSTypeChk} from './common/DeviceCommon';
 import {CHAT_CONFIG} from "constant/define";
 import {ChatSocketHandler} from "common/realtime/chat_socket";
 import {MailboxContext} from "context/mailbox_ctx";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsLoading} from "redux/actions/common";
 
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
@@ -29,10 +31,17 @@ const App = () => {
   App.context = () => context
   //본인인증
   const authRef = useRef()
-
+  const common = useSelector((state)=>state.common);
+  const dispatch = useDispatch();
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
-
+  useEffect(()=>{
+    if(!common.isLoading){
+      dispatch(setIsLoading())
+    }else{
+      console.log(common)
+    }
+  },[common.isLoading])
   const {
     chatInfo,
     mailChatInfo,

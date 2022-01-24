@@ -369,9 +369,22 @@ export default function GNB() {
       document.removeEventListener("self-auth", updateDispatch);
     };
   }, []);
+  const [ pcMenuState , setPcMenuState ] = useState(false);
+  useEffect(()=>{
+    if( location.pathname.indexOf("/broadcast") > -1
+        || location.pathname.indexOf("/clip_recoding") > -1
+        || location.pathname.indexOf("/clip_upload") > -1
+        || location.pathname.indexOf("/clip/") > -1
+        || location.pathname.indexOf("/mailbox") > -1
+    ){
+      setPcMenuState(true);
+    }else{
+      setPcMenuState(false);
+    }
+  })
   return (
     <>
-      <header id="gnb">
+      {pcMenuState && <header id="gnb">
         <div className="gnbBox">
           <h1>
             <NavLink
@@ -549,7 +562,7 @@ export default function GNB() {
               ))}
           </div>
         </div>
-      </header>
+      </header>}
       {globalState.broadClipDim && (
         <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">

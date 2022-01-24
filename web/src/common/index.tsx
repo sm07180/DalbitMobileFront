@@ -43,7 +43,7 @@ export default function Common() {
   })
   return (
     <>
-      {pcMenuState && <GNB />}
+      <GNB />
       {pcMenuState && <Guide />}
       {!broadcastPage && !mailboxChatting && <Player mode={"broadcast"} />}
       {clipPlayer !== null && clipInfo && !clipPlayerPage && !mailboxChatting && (
@@ -53,7 +53,7 @@ export default function Common() {
       {globalState.multiViewer.show && <MultiImageViewer />}
       {/* {makeFooter()} */}
       {toastStatus.status === true && <ToastUI />}
-      {true ||realtimeBroadStatus !== null && realtimeBroadStatus.status === true && <RealTimeBroadUI />}
+      {realtimeBroadStatus !== null && realtimeBroadStatus.status === true && <RealTimeBroadUI />}
     </>
   );
 }

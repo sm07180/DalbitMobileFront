@@ -16,15 +16,17 @@ import 'styles/reset.scss'
 import 'styles/common.scss'
 import 'styles/swiper.scss'
 
-import { GlobalProvider as GlobalProviderWWW } from "context";
 import { BroadcastProvider as BroadcastProviderWWW } from "context/broadcast_ctx";
 import { MailboxProvider as MailboxProviderWWW } from "context/mailbox_ctx";
 import { ModalProvider as ModalProviderWWW } from "context/modal_ctx";
 import { RankProvider  as RankProviderWWW} from "context/rank_ctx";
 import { ClipRankProvider  as ClipRankProviderWWW} from "context/clip_rank_ctx";
+import { Provider } from 'react-redux';
+import store from "redux/store";
 
 ReactDOM.render(
   <BrowserRouter>
+    <Provider store={store}>
       <GlobalProvider>
           <RankProvider>
               <MailboxProviderWWW>
@@ -40,6 +42,7 @@ ReactDOM.render(
             </MailboxProviderWWW>
           </RankProvider>
       </GlobalProvider>
+    </Provider>
   </BrowserRouter>,
   document.getElementById('root')
 )

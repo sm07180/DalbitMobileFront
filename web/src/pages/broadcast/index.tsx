@@ -22,19 +22,17 @@ export default function Broadcast() {
 
   const { roomInfo, flipIsLeft } = broadcastState;
   return (
-      <Layout status={'no_gnb'}>
-        <BroadcastLayerProvider>
+      <BroadcastLayerProvider>
           <GuestProvider>
-            <div id="broadcast-page">
-              <div
-                className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
-                  "reverse"} ${broadcastState.isWide && "wide"} `}
-              >
-                <SideWrapper />
+              <div id="broadcast-page">
+                  <div
+                      className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
+                      "reverse"} ${broadcastState.isWide && "wide"} `}
+                  >
+                      <SideWrapper />
+                  </div>
               </div>
-            </div>
           </GuestProvider>
-        </BroadcastLayerProvider>
-      </Layout>
+      </BroadcastLayerProvider>
   );
 }
