@@ -2,7 +2,6 @@ import React, {useEffect, useState, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
-import Swiper from 'react-id-swiper'
 // global components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components

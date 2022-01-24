@@ -58,6 +58,90 @@ const FeedSection = (props) => {
               </div>
             </div>
           </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="feedBox">
+              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
+              <div className="info">
+                <span className="time">3시간 전</span>
+                <div className="thumb">
+                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
+                  <span className="count">+3</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </Swiper>
       </div>
       <SocialList data={data} picture={true}/>

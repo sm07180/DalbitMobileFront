@@ -5,15 +5,17 @@ import {Context} from 'context'
 import Api from 'context/api'
 import Header from '../../components/ui/header/Header'
 
-import Profile from './contents/profile/profile'
+import Profile from './contents/profileEdit/profileEdit'
 
 import './style.scss'
 
-const Remypage = () => {
+const Remypage = (props) => {
   const history = useHistory()
   //context
   const context = useContext(Context)
   const {token, profile} = context
+
+  let {memNo, category, addpage} = useParams()
 
   //useState
   const [myProfile, setMyProfile] = useState(true)

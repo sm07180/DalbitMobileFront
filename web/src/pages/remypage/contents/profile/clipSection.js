@@ -5,8 +5,6 @@ import {IMG_SERVER} from 'context/config'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
-// components
-import SocialList from '../../components/socialList'
 
 const ClipSection = (props) => {
   //context

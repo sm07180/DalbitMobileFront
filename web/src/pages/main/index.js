@@ -116,7 +116,7 @@ const MainPage = () => {
  
   // 페이지 시작
   return (
-    <div id="remain">
+    <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title={'라이브'} type={'noBack'} />
       </div>

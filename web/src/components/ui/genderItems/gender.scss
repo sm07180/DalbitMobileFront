@@ -1,0 +1,10 @@
+@import "components/ui/_mixin.scss";
+
+.gender {
+  .male {
+    @include BGIMG('common/icon/icoFemale.png');
+  }
+  .female {
+    @include BGIMG('common/icon/icoFemale.png');
+  }
+}
