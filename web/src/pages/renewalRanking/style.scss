@@ -7,7 +7,6 @@
     @include flex(center, space-between);
     width: 100%; height: 50px;
     padding: 0 10px;
-    border-bottom: 1px solid #eee;
     background-color: #fff;
     box-sizing: border-box;
     .leftCtn {
@@ -52,7 +51,7 @@
       letter-spacing: -1.5px;
       @include font(20px,500,black);
       .point {
-        @include font(20px, 600, #FF27C0);
+        @include font(20px, 600, #FF3C7B);
       }
     }
     button {
@@ -64,10 +63,10 @@
   
   .more {
     margin-left: auto;
-    @include font(12px, 500, #999999);
+    @include font(12px, 400, #999999);
     cursor: pointer;
-    &.white {
-      color: #FFFFFF;
+    &.black {
+      color : #202020;
     }
   }
 
@@ -78,21 +77,21 @@
     width: 100%;
     height: 410px;
     padding: 15px;
-    border-bottom: 60px solid #FAF1FF;
-    background-color: #B620FE;
+    border-bottom: 60px solid #FFD8E5;
     &::before {
       position: absolute;
-      bottom: 50px; left: -30px;
+      bottom: 40px; left: -40px;
       content: "TOP10";
-      @include font(40px,900,#C44CFE);
+      @include font(55px,900,#FFD8E5);
       transform: rotate(-90deg);
       letter-spacing: -2px;
     }
     .timeChart {
-      font-size: 24px;
-      font-weight: 600;
-      color: #FFFFFF;
+      font-size: 28px;
+      font-weight: 500;
+      color: #202020;
       line-height: 40px;
+      letter-spacing: -1px;
     }
     .countDown {
       @include flex(center, center);
@@ -104,11 +103,21 @@
       letter-spacing: 2px;
     }
     .timeRank {
-      position: absolute;
-      top: 180px; left: 0;
-      width: 100%;
+      position: relative;
+      width: calc(100% + 30px);
+      margin: 30px 0 0 -15px;
+      &::after {
+        content: "";
+        position: absolute;
+        top: -110px; right: 10px;
+        width: 170px; height: 150px;
+        background-image: url("https://image.dalbitlive.com/dalla/character/character_ranking.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
       .swiper-container {
-        padding-left: 80px;
+        padding-left: 60px;
         .swiper-slide {
           width:auto;
           margin-right:10px;
@@ -135,25 +144,18 @@
               position: absolute;
               top: 0px; left: 10px;
               @include flex(center,center,column);
+              width: 35px; height: 42px;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='70' height='84' viewBox='0 0 70 84'%3E%3Cdefs%3E%3ClinearGradient id='linear-gradient' x1='0.5' x2='0.5' y2='1' gradientUnits='objectBoundingBox'%3E%3Cstop offset='0' stop-color='%23ff3c7b'/%3E%3Cstop offset='1' stop-color='%23ff8565'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(21362 -11975)'%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21356 11979)' fill='url(%23linear-gradient)'/%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21362 11975)' fill='%23202020'/%3E%3C/g%3E%3C/svg%3E%0A");
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: contain;
               .rank {
-                position: relative;
-                @include flex(center,center);
-                width: 30px; height: 30px;
-                background-color: #3AFF47;
-                @include font(24px,600,#333);
-                margin-bottom: 10px;
-                &::after {
-                  content: "";
-                  position: absolute;
-                  bottom: -25px; left: 0;
-                  width: 100%;
-                  border: 15px solid transparent;
-                  border-top: 10px solid #3AFF47;
-                  box-sizing: border-box;
-                }
-              }
-              .live {
-                @include font(14px,600,#FF26C0);
+                width: 100%; height: 100%;
+                @include font(24px,600,#FFF);
+                margin-left: -8px;
+                letter-spacing: -1px;
+                text-align: center;
+                font-style: italic;
               }
             }
             .photo {
@@ -169,16 +171,24 @@
                 object-fit: cover;
               }
             }
-            .userNick {
+            .infoWrap {
               position: absolute;
               bottom: 0; left: 0; right: 0;
+              @include flex(flex-start, center, column);
               width:100%;
               padding: 10px;
-              @include font(12px,500,#fff);
-              @include fontCut;
-              z-index: 1;
               box-sizing: border-box;
-            }
+              z-index: 1;
+              .livetag {
+                @include font(12px,700,#FE3C7B);
+                margin-bottom: 2px;
+              }
+              .userNick {
+                width: 100%;
+                @include font(12px,500,#fff);
+                @include fontCut;
+              }
+            }            
           }
         }
       }
@@ -191,57 +201,54 @@
     width: 100%;
     padding: 20px 15px;
     box-sizing: border-box;
-    .tabmenu {
-      @include flex(center, space-around);
+    .myDataContent {
+      @include flex(center, center, column);
       width: 100%;
-      margin-top:12px;
-      li {
-        position:relative;
-        @include font(12px,600,#ccc);
-        &.active {
-          @include font(12px,600,#333);
+      margin-top: 12px;
+      padding: 15px 20px;
+      border-radius: 16px;
+      background-color: #F6F6F6;
+      box-sizing: border-box;
+
+      .tabmenu {
+        @include flex(center, space-around);
+        width: 100%;
+        li {
+          position:relative;
+          @include font(12px,600,#ccc);
+          &.active {
+            @include font(12px,600,#333);
+          }        
+        }
+      }
+      .myData {
+        @include flex(center, space-between);
+        width: 100%;
+        margin-top:20px;
+        .dataWrap {
+          position: relative;
+          @include flex(center, center, column);
+          width: 30%;
           &::after {
             content: "";
             position: absolute;
-            top: 50%; left: 50%;
-            width: 120%;
-            height: 15px;
-            transform: translate(-50%, -20%) skew(-15deg);
-            background-color: #FFE5F7;
-            z-index: -1;
+            top: 10px; right: 0;
+            width: 1px; height: 30px;
+            background-color: #dddddd;
           }
-        }        
-      }
-    }
-    .myData {
-      @include flex(center, center);
-      width: calc(100% + 30px);
-      padding: 15px 0;
-      margin-top:20px;
-      background-color: #FFF8FD;
-      .dataWrap {
-        position: relative;
-        @include flex(center, center, column);
-        width: 30%;
-        &::after {
-          content: "";
-          position: absolute;
-          top: 10px; right: 0;
-          width: 1px; height: 30px;
-          background-color: #dddddd;
+          &:last-child::after {
+            content: none;
+          }
+          .rankCategory {
+            @include font(12px,600,#999);
+          }
+          .rankData {
+            margin-top: 10px;
+            @include font(16px,900,#333);
+          }
         }
-        &:last-child::after {
-          content: none;
-        }
-        .rankCategory {
-          @include font(12px,600,#999);
-        }
-        .rankData {
-          margin-top: 10px;
-          @include font(16px,900,#333);
-        }
-      }
-    }    
+      }  
+    }      
   }
   .rankList {
     position: relative;

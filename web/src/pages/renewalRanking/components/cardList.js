@@ -11,7 +11,6 @@ const CardList = (props) => {
         {isRanking &&
           <div className='rankWrap'>
             <div className='rank'>{list.rank}</div>
-            {list.roomNo && <div className='live'>LIVE</div>}
           </div>
         }
         <div className="photo">
@@ -21,7 +20,10 @@ const CardList = (props) => {
             <img src={list.bannerUrl} alt={list.nickNm} />
           }
         </div>
-        <div className='userNick'>{list.nickNm}</div>
+        <div className='infoWrap'>
+          {list.roomNo && <div className='livetag'>LIVE</div>}
+          <div className='userNick'>{list.nickNm}</div>
+        </div>
       </div>
     </React.Fragment>
   )

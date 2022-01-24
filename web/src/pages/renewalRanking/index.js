@@ -133,10 +133,10 @@ const RankPage = () => {
         </div>
       </Header>
       <section className='rankingTop'>
-        <div className='more white'>더보기</div>
+        <div className='more black'>더보기</div>
         <div className='timeChart'>
           <div>DJ 실시간</div>
-          <div>타임 차트<span className=''></span></div>
+          <div><strong>타임</strong> 차트<span className=''></span></div>
         </div>
         <div className='countDown'>
           00:00:00
@@ -158,34 +158,36 @@ const RankPage = () => {
 
       <section className='myRank'>
         <CntTitle point={`${myProfile.nickNm}`} title={'님의 순위는?'} more={'rank'}/>
-        <ul className="tabmenu">
-          {rankTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: rankTabName.name,
-              type: "rank",
-              setTab: setRankTabName,
-              index: index,
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-        </ul>
-        <div className='myData'>
-          <div className='dataWrap'>
-            <span className='rankCategory'>DJ</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+        <div className='myDataContent'>
+          <ul className="tabmenu">
+            {rankTabmenu.map((data,index) => {
+              const param = {
+                item: data,
+                tab: rankTabName.name,
+                type: "rank",
+                setTab: setRankTabName,
+                index: index,
+              }
+              return (
+                <TabBtn param={param} key={index} />
+              )
+            })}
+          </ul>
+          <div className='myData'>
+            <div className='dataWrap'>
+              <span className='rankCategory'>DJ</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
+            <div className='dataWrap'>
+              <span className='rankCategory'>FAN</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
+            <div className='dataWrap'>
+              <span className='rankCategory'>LOVER</span>
+              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
+            </div>
           </div>
-          <div className='dataWrap'>
-            <span className='rankCategory'>FAN</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-          </div>
-          <div className='dataWrap'>
-            <span className='rankCategory'>LOVER</span>
-            <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-          </div>
-        </div>
+        </div>        
       </section>
 
       <section className='rankList'>
