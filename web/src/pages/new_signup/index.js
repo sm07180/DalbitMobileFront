@@ -12,6 +12,7 @@ import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
 //components
 import Layout from 'pages/common/layout/new_layout'
 import DatePicker from './content/datepicker'
+import SignField from './components/signField'
 
 //static
 import IcoProfile from './static/ico-profil.svg'
@@ -19,6 +20,8 @@ import IcoCamera from './static/ico-camera.svg'
 import IcoCheckOn from './static/checkbox_on.svg'
 import IcoCheckOff from './static/checkbox_off.svg'
 import IcoArrow from './static/arrow.svg'
+
+import './style.scss'
 
 let intervalId = null
 let setTime = 300
@@ -36,6 +39,7 @@ export default (props) => {
     auth: false
   })
   const [termOpen, setTermOpen] = useState(true)
+  const [step, setStep] = useState(1);
 
   //SNS 회원가입 셋팅
   let snsInfo = qs.parse(location.search)
@@ -277,8 +281,10 @@ export default (props) => {
         check: false,
         text: '인증번호(가) 일치하지 않습니다.'
       })
+      console.log("asdad");
     }
   }
+
   const startAuthTimer = () => {
     clearInterval(intervalId)
     setTime = 300
@@ -729,6 +735,10 @@ export default (props) => {
     validateTerm()
   }
 
+  const phoneCertification = () => {
+    setStep(step + 1);
+  }
+
   useEffect(() => {
     const validateKey = Object.keys(validate)
     //ios 이슈 수정
@@ -756,40 +766,38 @@ export default (props) => {
   }, [])
 
   return (
-    <Layout status="no_gnb" header="회원가입">
-      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-      <Content>
-        {/* 휴대폰 본인인증 -------------------------------------------------------- */}
-        {memType === 'p' && (
-          <>
+    <div id='sign'>
+      {
+        step === 1 &&
+          <SignField title="번호를 입력해주세요." btnFunction={phoneCertification}>
             <InputItem button={true} validate={validate.memId.check}>
-              <div className="layer">
-                <label htmlFor="memId">휴대폰 번호</label>
+              {validate.memId.text && <p className="helpText">{validate.memId.text}</p>}
+              <div className="inputRow">
                 <input
                   type="tel"
                   ref={memIdRef}
                   id="memId"
+                  className="inputfield"
                   name="memId"
-                  placeholder="휴대폰 번호를 입력해주세요"
+                  placeholder="휴대폰 번호"
                   maxLength={11}
                   autoComplete="off"
                   value={memId}
                   onChange={(e) => dispatch(e.target)}
                 />
-                <button disabled={!btnState.memId} onClick={fetchSmsReq}>
+                <button className={`certificationBtn ${btnState.memId ? "active" : ""}`} disabled={!btnState.memId} onClick={fetchSmsReq}>
                   인증요청
                 </button>
               </div>
-              {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
             </InputItem>
             <InputItem button={true} validate={validate.auth.check}>
-              <div className="layer">
-                <label htmlFor="auth">인증번호</label>
+              {validate.auth.text && <p className="helpText">{validate.auth.text}</p>}
+              <div className="inputRow">
                 <input
                   type="number"
                   ref={authRef}
                   id="auth"
+                  className="inputfield"
                   name="auth"
                   placeholder="인증번호를 입력해주세요"
                   autoComplete="off"
@@ -798,125 +806,272 @@ export default (props) => {
                   disabled={true}
                 />
                 <span className="timer">{timeText}</span>
-                <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
-                  인증확인
-                </button>
               </div>
-              {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
             </InputItem>
-          </>
-        )}
-
-        {/* 프로필 사진 ---------------------------------------------------------- */}
-        <ProfileUpload
-          imgUrl={profImgUrl ? (profImgUrl.includes('http') ? `${profImgUrl}` : `${PHOTO_SERVER}${profImgUrl}`) : ''}
-          // imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''}
-          className={memType !== 'p' && 'top'}>
-          <label htmlFor="profileImg">
-            <div></div>
-            <span>클릭 이미지 파일 추가</span>
-          </label>
-          <input
-            type="file"
-            id="profileImg"
-            accept="image/jpg, image/jpeg, image/png"
-            onChange={(e) => {
-              uploadSingleFile(e)
-            }}
-          />
-          <p className="img-text">프로필 사진을 등록 해주세요</p>
-        </ProfileUpload>
-
-        {/* 닉네임 ---------------------------------------------------------- */}
-        <InputItem button={false} validate={validate.nickNm.check}>
-          <div className="layer">
-            <label htmlFor="nickNm">닉네임</label>
-            <input
-              type="text"
-              id="nickNm"
-              name="nickNm"
-              placeholder="최대 20자까지 입력"
-              autoComplete="off"
-              maxLength={20}
-              value={nickNm}
-              onChange={(e) => dispatch(e.target)}
-            />
-          </div>
-          {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
-        </InputItem>
-
-        {/* 생년월일 ---------------------------------------------------------- */}
-        {context.appInfo.showBirthForm &&
-          <>
-            <InputItem button={false} validate={validate.birth.check}>
-              <div className="layer">
-                <label htmlFor="birth">생년월일</label>
-                <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
-              </div>
-              {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
-            </InputItem>
-            <AgeGuidance />
-          </>
-        }
-
-        {/* 비밀번호 ---------------------------------------------------------- */}
-        {memType === 'p' && (
-          <>
-            <InputItem button={false} validate={validate.loginPwd.check}>
-              <div className="layer">
-                <label htmlFor="loginPwd">비밀번호</label>
+          </SignField>
+      }
+      {        
+        step === 2 &&
+          <SignField title="닉네임을 설정해주세요." btnFunction={phoneCertification}>
+            <InputItem button={false} validate={validate.nickNm.check}>
+              {validate.nickNm.text && <p className="helpText">{validate.nickNm.text}</p>}
+              <div className="inputRow">
                 <input
-                  type="password"
-                  id="loginPwd"
-                  name="loginPwd"
-                  placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+                  type="text"
+                  id="nickNm"
+                  className="inputfield"
+                  name="nickNm"
+                  placeholder="2~20자 한글/영문/숫자"
                   autoComplete="off"
                   maxLength={20}
-                  value={loginPwd}
+                  value={nickNm}
                   onChange={(e) => dispatch(e.target)}
                 />
               </div>
-              {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
             </InputItem>
-            <InputItem button={false} validate={validate.loginPwdCheck.check}>
-              <div className="layer">
-                <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+          </SignField>
+      }
+      {        
+        step === 3 &&
+          <SignField title="비밀번호를 설정해주세요." btnFunction={phoneCertification}>
+            {memType === 'p' && (
+               <>
+                 <InputItem button={false} validate={validate.loginPwd.check}>
+                   {validate.loginPwd.text && <p className="helpText">{validate.loginPwd.text}</p>}
+                   <div className="inputRow">
+                     <input
+                       type="password"
+                       id="loginPwd"
+                       className="inputfield"
+                       name="loginPwd"
+                       placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상"
+                       autoComplete="off"
+                       maxLength={20}
+                       value={loginPwd}
+                       onChange={(e) => dispatch(e.target)}
+                     />
+                   </div>
+                 </InputItem>
+                 <InputItem button={false} validate={validate.loginPwdCheck.check}>
+                   {validate.loginPwdCheck.text && <p className="helpText">{validate.loginPwdCheck.text}</p>}
+                   <div className="inputRow">
+                     <input
+                       type="password"
+                       id="loginPwdCheck"
+                       className="inputfield"
+                       name="loginPwdCheck"
+                       placeholder="비밀번호 다시 입력"
+                       autoComplete="off"
+                       maxLength={20}
+                       value={loginPwdCheck}
+                       onChange={(e) => dispatch(e.target)}
+                     />
+                   </div>
+                 </InputItem>
+               </>
+             )}
+          </SignField>
+      }
+      {        
+        step === 4 &&
+          <SignField title={`소셜 로그인 정보를\n입력해주세요.`} btnFunction={phoneCertification}>
+            <InputItem button={false} validate={validate.nickNm.check}>
+              {validate.nickNm.text && <p className="helpText">{validate.nickNm.text}</p>}
+              <div className="inputRow">
                 <input
-                  type="password"
-                  id="loginPwdCheck"
-                  name="loginPwdCheck"
-                  placeholder="비밀번호를 한번 더 입력해주세요"
+                  type="text"
+                  id="nickNm"
+                  className="inputfield"
+                  name="nickNm"
+                  placeholder="소셜닉네임"
                   autoComplete="off"
                   maxLength={20}
-                  value={loginPwdCheck}
+                  value={nickNm}
                   onChange={(e) => dispatch(e.target)}
                 />
               </div>
-              {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
-            </InputItem>
-          </>
-        )}
+              <ProfileUpload
+                imgUrl={profImgUrl ? (profImgUrl.includes('http') ? `${profImgUrl}` : `${PHOTO_SERVER}${profImgUrl}`) : ''}
+                // imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''}
+                className={memType !== 'p' && 'top'}>
+                <label htmlFor="profileImg">
+                  <div></div>
+                  <span>클릭 이미지 파일 추가</span>
+                </label>
+                <input
+                  type="file"
+                  id="profileImg"
+                  accept="image/jpg, image/jpeg, image/png"
+                  onChange={(e) => {
+                    uploadSingleFile(e)
+                  }}
+                />
+              </ProfileUpload>
+            </InputItem>            
+          </SignField>  
+      }
+    </div>
+    // <Layout status="no_gnb" header="회원가입">
+    //   <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+    //   <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+    //   <Content>
+    //     {/* 휴대폰 본인인증 -------------------------------------------------------- */}
+    //     {memType === 'p' && (
+    //       <>
+    //         <InputItem button={true} validate={validate.memId.check}>
+    //           <div className="layer">
+    //             <label htmlFor="memId">휴대폰 번호</label>
+    //             <input
+    //               type="tel"
+    //               ref={memIdRef}
+    //               id="memId"
+    //               name="memId"
+    //               placeholder="휴대폰 번호를 입력해주세요"
+    //               maxLength={11}
+    //               autoComplete="off"
+    //               value={memId}
+    //               onChange={(e) => dispatch(e.target)}
+    //             />
+    //             <button disabled={!btnState.memId} onClick={fetchSmsReq}>
+    //               인증요청
+    //             </button>
+    //           </div>
+    //           {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
+    //         </InputItem>
+    //         <InputItem button={true} validate={validate.auth.check}>
+    //           <div className="layer">
+    //             <label htmlFor="auth">인증번호</label>
+    //             <input
+    //               type="number"
+    //               ref={authRef}
+    //               id="auth"
+    //               name="auth"
+    //               placeholder="인증번호를 입력해주세요"
+    //               autoComplete="off"
+    //               value={auth}
+    //               onChange={(e) => dispatch(e.target)}
+    //               disabled={true}
+    //             />
+    //             <span className="timer">{timeText}</span>
+    //             <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
+    //               인증확인
+    //             </button>
+    //           </div>
+    //           {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+    //         </InputItem>
+    //       </>
+    //     )}
 
-        {/* 성별 ---------------------------------------------------------- */}
-        {/* <GenderInput gender={gender}>
-          <button className="male" value="m" onClick={genderBtnHandle}>
-            남자
-            <img src={IcoMale} />
-          </button>
-          <button className="female" value="f" onClick={genderBtnHandle}>
-            여자
-            <img src={IcoFemale} />
-          </button>
-        </GenderInput> */}
+    //     {/* 프로필 사진 ---------------------------------------------------------- */}
+    //     <ProfileUpload
+    //       imgUrl={profImgUrl ? (profImgUrl.includes('http') ? `${profImgUrl}` : `${PHOTO_SERVER}${profImgUrl}`) : ''}
+    //       // imgUrl={profImgUrl ? `${PHOTO_SERVER}${profImgUrl}` : ''}
+    //       className={memType !== 'p' && 'top'}>
+    //       <label htmlFor="profileImg">
+    //         <div></div>
+    //         <span>클릭 이미지 파일 추가</span>
+    //       </label>
+    //       <input
+    //         type="file"
+    //         id="profileImg"
+    //         accept="image/jpg, image/jpeg, image/png"
+    //         onChange={(e) => {
+    //           uploadSingleFile(e)
+    //         }}
+    //       />
+    //       <p className="img-text">프로필 사진을 등록 해주세요</p>
+    //     </ProfileUpload>
 
-        {/* 약관 ---------------------------------------------------------- */}
-        <TermsInput openState={termOpen}>{createTermsItem()}</TermsInput>
+    //     {/* 닉네임 ---------------------------------------------------------- */}
+    //     <InputItem button={false} validate={validate.nickNm.check}>
+    //       <div className="layer">
+    //         <label htmlFor="nickNm">닉네임</label>
+    //         <input
+    //           type="text"
+    //           id="nickNm"
+    //           name="nickNm"
+    //           placeholder="최대 20자까지 입력"
+    //           autoComplete="off"
+    //           maxLength={20}
+    //           value={nickNm}
+    //           onChange={(e) => dispatch(e.target)}
+    //         />
+    //       </div>
+    //       {validate.nickNm.text && <p className="help-text">{validate.nickNm.text}</p>}
+    //     </InputItem>
 
-        <button className="join-btn" onClick={signUp}>
-          회원가입
-        </button>
-      </Content>
-    </Layout>
+    //     {/* 생년월일 ---------------------------------------------------------- */}
+    //     {context.appInfo.showBirthForm &&
+    //       <>
+    //         <InputItem button={false} validate={validate.birth.check}>
+    //           <div className="layer">
+    //             <label htmlFor="birth">생년월일</label>
+    //             <DatePicker id="birth" name="birth" value={birth} change={birthChange} />
+    //           </div>
+    //           {validate.birth.text && <p className="help-text">{validate.birth.text}</p>}
+    //         </InputItem>
+    //         <AgeGuidance />
+    //       </>
+    //     }
+
+    //     {/* 비밀번호 ---------------------------------------------------------- */}
+    //     {memType === 'p' && (
+    //       <>
+    //         <InputItem button={false} validate={validate.loginPwd.check}>
+    //           <div className="layer">
+    //             <label htmlFor="loginPwd">비밀번호</label>
+    //             <input
+    //               type="password"
+    //               id="loginPwd"
+    //               name="loginPwd"
+    //               placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+    //               autoComplete="off"
+    //               maxLength={20}
+    //               value={loginPwd}
+    //               onChange={(e) => dispatch(e.target)}
+    //             />
+    //           </div>
+    //           {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
+    //         </InputItem>
+    //         <InputItem button={false} validate={validate.loginPwdCheck.check}>
+    //           <div className="layer">
+    //             <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+    //             <input
+    //               type="password"
+    //               id="loginPwdCheck"
+    //               name="loginPwdCheck"
+    //               placeholder="비밀번호를 한번 더 입력해주세요"
+    //               autoComplete="off"
+    //               maxLength={20}
+    //               value={loginPwdCheck}
+    //               onChange={(e) => dispatch(e.target)}
+    //             />
+    //           </div>
+    //           {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+    //         </InputItem>
+    //       </>
+    //     )}
+
+    //     {/* 성별 ---------------------------------------------------------- */}
+    //     {/* <GenderInput gender={gender}>
+    //       <button className="male" value="m" onClick={genderBtnHandle}>
+    //         남자
+    //         <img src={IcoMale} />
+    //       </button>
+    //       <button className="female" value="f" onClick={genderBtnHandle}>
+    //         여자
+    //         <img src={IcoFemale} />
+    //       </button>
+    //     </GenderInput> */}
+
+    //     {/* 약관 ---------------------------------------------------------- */}
+    //     <TermsInput openState={termOpen}>{createTermsItem()}</TermsInput>
+
+    //     <button className="join-btn" onClick={signUp}>
+    //       회원가입
+    //     </button>
+    //   </Content>
+    // </Layout>
   )
 }
 
@@ -928,6 +1083,9 @@ const AgeGuidance = () => {
     </p>
   )
 }
+const InputItem = styled.section`
+
+`
 
 const Content = styled.section`
   padding: 12px 16px;
@@ -950,124 +1108,8 @@ const Content = styled.section`
     color: #632beb;
   }
 `
-
-const InputItem = styled.div`
-  & + & {
-    margin-top: 4px;
-  }
-  .layer {
-    position: relative;
-    height: 58px;
-    letter-spacing: -0.5px;
-    z-index: 1;
-    &.birth {
-      height: auto;
-      padding: 2px 0;
-    }
-
-    label {
-      display: block;
-      position: relative;
-      padding-top: 11px;
-      color: #000;
-      font-size: 12px;
-      line-height: 12px;
-      text-indent: 16px;
-      z-index: 1;
-    }
-
-    input {
-      display: block;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: ${(props) => (props.button ? 'calc(100% - 106px)' : 'calc(100% - 28px)')};
-      padding: ${(props) => (props.button ? '22px 90px 2px 15px' : '22px 12px 2px 15px')};
-      border-radius: 12px;
-      border: 1px solid;
-      border-color: ${(props) => (props.validate ? '#e0e0e0' : '#ec455f')};
-      background: #fff;
-      height: 32px;
-      font-size: 16px;
-      font-weight: 800;
-      line-height: 32px;
-      box-sizing: content-box;
-    }
-
-    input:focus {
-      border-color: #000;
-    }
-
-    input::placeholder {
-      font-size: 14px;
-      color: #bdbdbd;
-      font-weight: 400;
-      letter-spacing: -0.5px;
-    }
-
-    input:disabled {
-      background: #fff;
-      color: #9e9e9e;
-      opacity: 1;
-    }
-
-    input:focus {
-      &::after {
-        display: block;
-        width: 100%;
-        height: 100%;
-        border: 1px solid #000;
-        border-radius: 12px;
-        content: '';
-      }
-    }
-
-    .timer {
-      position: absolute;
-      right: 98px;
-      top: 28px;
-      font-size: 14px;
-      font-weight: bold;
-      color: #ec455f;
-      z-index: 1;
-    }
-
-    button {
-      display: inline-block;
-      position: absolute;
-      right: 4px;
-      bottom: 4px;
-      height: 32px;
-      padding: 0 10px;
-      border-radius: 9px;
-      background: ${COLOR_MAIN};
-      color: #fff;
-      line-height: 32px;
-      letter-spacing: -0.5px;
-
-      :disabled {
-        background: #bdbdbd;
-      }
-    }
-  }
-
-  .help-text {
-    display: block;
-    position: relative;
-    margin-top: -17px;
-    padding: 23px 12px 7px 12px;
-    border-radius: 12px;
-    color: #fff;
-    font-size: 11px;
-    line-height: 14px;
-    background: #9e9e9e;
-    text-align: center;
-    z-index: 0;
-  }
-`
-
 const ProfileUpload = styled.div`
-  margin: 20px 0 16px 0;
+  margin-bottom: 24px;
   text-align: center;
   &.top {
     margin-top: 10px;
@@ -1081,7 +1123,7 @@ const ProfileUpload = styled.div`
     width: 72px;
     height: 72px;
     border-radius: 50%;
-    border: 1px solid ${COLOR_MAIN};
+    border: 1px solid #202020;
     background: url(${(props) => (props.imgUrl ? props.imgUrl : IcoProfile)}) no-repeat center center / cover;
     background-size: ${(props) => (props.imgUrl ? 'cover' : '73px 73px')};
   }
@@ -1100,8 +1142,8 @@ const ProfileUpload = styled.div`
     span {
       display: block;
       position: absolute;
-      bottom: -4px;
-      right: -13px;
+      bottom: -5px;
+      right: -5px;
       width: 30px;
       height: 30px;
       background: url(${IcoCamera}) no-repeat center / cover;

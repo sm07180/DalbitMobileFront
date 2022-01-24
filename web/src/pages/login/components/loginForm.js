@@ -11,7 +11,7 @@ import BottomSlide from './bottomSlide'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
-export default function login_form({props, setLoginPop}) {
+export default function loginForm({props, setLoginPop}) {
   const globalCtx = useContext(Context)
   const history = useHistory()
 

@@ -7,6 +7,8 @@ import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
 import LoginForm from './loginForm'
+import Header from './header'
+
 import appleLogo from '../static/apple_logo.svg'
 import facebookLogo from '../static/facebook_logo.svg'
 import googleLogo from '../static/google_logo.svg'
@@ -15,7 +17,7 @@ import naverLogo from '../static/naver_logo.svg'
 import phoneLogo from '../static/phone_logo.svg'
 import Utility from 'components/lib/utility'
 
-export default function login_sns({props}) {
+export default function loginSns({props}) {
   const history = useHistory()
   const globalCtx = useContext(Context)
 
@@ -87,13 +89,7 @@ export default function login_sns({props}) {
 
   return (
     <div id="loginPage">
-      {webview === 'new' ? (
-        <button className="btnHome" onClick={() => Hybrid('CloseLayerPopup')}>
-          <img src="https://image.dalbitlive.com/svg/close_w_l.svg" alt="close" />
-        </button> 
-      ) : (
-        <button className="btnHome" onClick={() => history.push('/login')}></button>
-      )}
+      <Header leftCtn="backBtn"></Header>
       <div className="loginForm">
         <div className='loginStart'>시작하기</div>
 

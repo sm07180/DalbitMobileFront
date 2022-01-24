@@ -1,16 +1,15 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
+import React, {Children, useContext, useEffect, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 // context
 import {Context} from 'context'
 import Api from 'context/api'
-import qs from 'query-string'
 
 import Header from './header'
 import {Hybrid, isHybrid} from 'context/hybrid'
 import Utility from 'components/lib/utility'
 
-export default function bottomSlide({props, setSlidePop, children}) {
-  const [popOpen, setPopOpen] = useState(true);
+export default function signField(props) {
+  const {title, children, btnFunction} = props
 
   const closePopup = () => {
     setPopOpen(false)
@@ -33,10 +32,17 @@ export default function bottomSlide({props, setSlidePop, children}) {
   }, [])
 
   return (
-    <div id="bottomSlide" onClick={closePopupDim}>
-      <div className={`slideLayer ${popOpen ? "slideUp" : "slideDown"}`}>
-        {children}
+    <div className='signField'>
+      <Header leftCtn="backBtn"></Header>
+      <div className='signContent'>
+        <div className='signInfo'>{title}</div>
+        <form>
+          <div className='inputWrap'>
+            {children}
+          </div>
+          <button className='signBtn' onClick={btnFunction}>완료</button>
+        </form>
       </div>
-    </div>
+    </div>    
   )
 }
