@@ -46,7 +46,13 @@ export default (props) => {
         }
        </div>
       }
-      {props.title && <h2 className={`headerTitle${props.title.length > 18 ? ' isLong' : ''}`}>{props.title}</h2>}
+      {
+        props.title &&
+          <h2 className={`headerTitle${props.title.length > 18 ? ' isLong' : ''}`}>
+            {props.title}
+            {props.dropdown &&<span className='optionSelect'></span>}
+          </h2>
+      }
       {props.children}
     </div>
   )

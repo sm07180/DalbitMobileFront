@@ -7,6 +7,7 @@ import Swiper from 'react-id-swiper'
 import CardList from './components/cardList'
 import Header from './components/header'
 import ListRow from './components/listRow'
+import BottomSlide from './components/bottomSlide'
 
 import './style.scss'
 
@@ -17,6 +18,8 @@ const RankPage = () => {
   const rankTabmenu = ['오늘','이번주','이번달', '올해']
   const dayTabmenu = ['FAN','LOVER']
 
+  const [slidePop, setSlidePop] = useState(false)
+  const [select , setSelect] = useState("time")
   const [rankSlctType, setRankSlctType] = useState(1)
   const [dateType, setDateType] = useState(1)
   const [timeDjRank, setTimeDjRank] = useState([])
@@ -124,6 +127,26 @@ const RankPage = () => {
 
   }, [dateType, rankSlctType])
 
+  // 기능
+  const selectChart = () => {
+    setSlidePop(true);
+  }
+  const chartSelect = (e) => {
+    let text = e.currentTarget.innerText;
+    if(text === "타임"){
+      setSelect("time")
+    } else if(text === "오늘") {
+      setSelect("today")
+    } else if(text === "이번주") {
+      setSelect("thisweek")
+    } else if(text === "이번달") {
+      setSelect("thismonth")
+    } else if(text === "올해") {
+      setSelect("thisyear")
+    }
+    setSlidePop(false);
+  }
+
   // 페이지 시작
   return (
     <div id="renewalRanking">
@@ -134,9 +157,18 @@ const RankPage = () => {
       </Header>
       <section className='rankingTop'>
         <div className='more black'>더보기</div>
-        <div className='timeChart'>
+        <div className='timeChart' onClick={selectChart}>
           <div>DJ 실시간</div>
-          <div><strong>타임</strong> 차트<span className=''></span></div>
+          <div>
+            <strong>
+              {select === "time" && "타임"}
+              {select === "today" && "일간"}
+              {select === "thisweek" && "주간"}
+              {select === "thismonth" && "월간"}
+              {select === "thisyear" && "연간"}
+            </strong>
+            차트<span className='optionSelect'></span>
+          </div>
         </div>
         <div className='countDown'>
           00:00:00
@@ -225,7 +257,26 @@ const RankPage = () => {
               })
           }
         </div>        
+      </section>      
+      <section className='rankingBottom'>
+          <p>
+            달라의 숨막히는 순위 경쟁<br/>
+            랭커에 도전해보세요! 
+          </p>
+          <a>랭킹순위 전체보기</a>
       </section>
+
+      {slidePop &&
+        <BottomSlide setSlidePop={setSlidePop}> 
+          <div className='selectWrap'>
+            <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
+            <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
+            <div className={`selectOption ${select === "thisweek" ? "active" : ""}`} onClick={chartSelect}>이번주</div>
+            <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
+            <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
+          </div>
+        </BottomSlide>      
+      }
     </div>      
   )
 }
