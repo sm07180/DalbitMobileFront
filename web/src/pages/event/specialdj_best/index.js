@@ -105,9 +105,9 @@ export default function SpecialDjBest() {
         <div className="tab_wrap support">
           <div className="support_box padding">
             <img src={`${IMG_SERVER}/event/specialdj/common/img_cont01.png`} alt="스페셜 DJ 설명" />
-            <button onClick={() => setConditionPop(true)} className="btn_pick_more">
+            {/* <button onClick={() => setConditionPop(true)} className="btn_pick_more">
               <img src={`${IMG_SERVER}/event/specialdj/common/btn_check.png`} alt="선발 요건 확인하기" />
-            </button>
+            </button> */}
           </div>
           <div className="support_box">
             <h3 className="tit">
