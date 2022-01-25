@@ -664,7 +664,7 @@ export default (props) => {
     })
     if (result === 'success') {
       const cmd = 'CompleteRegistration';
-      const successCallback = async () => { // appVer 이상
+      const successCallback = () => { // appVer 이상
         Utility.addAdsData(cmd);
       };
       const failCallback = async () => { // appVer 미만
