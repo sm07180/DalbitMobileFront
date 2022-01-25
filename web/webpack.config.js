@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
+const LoadablePlugin = require('@loadable/webpack-plugin');
 const webpack = require('webpack')
 const fs = require('fs')
 
@@ -77,11 +78,15 @@ module.exports = (_, options) => {
           ]
         },
         {
-          test: /\.(css|scss)$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          test: /\.(css)$/,
+          use: [MiniCssExtractPlugin.loader,'style-loader', 'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
-
+        {
+          test: /\.(scss|sass)$/,
+          exclude: /\.module\.(scss|sass)$/,
+          use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader',  'sass-loader']
+        },
         {
           // images css에서 background-image 속성 loader
           test: /\.(jpe?g|png|gif|svg|ico)$/,
@@ -107,6 +112,7 @@ module.exports = (_, options) => {
     },
 
     plugins: [
+      new LoadablePlugin(), new MiniCssExtractPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
@@ -160,20 +166,19 @@ module.exports = (_, options) => {
       })
     )
 
+    let isDev = env === 'dev';
     config.optimization = {
-      minimize: env === 'dev' ? false : true,
+      minimize: !isDev,
       minimizer:
-        env === 'dev'
-          ? []
-          : [
-              new TerserPlugin({
-                terserOptions: {
-                  compress: {
-                    drop_console: true
-                  }
+        isDev ? [] : [
+            new TerserPlugin({
+              terserOptions: {
+                compress: {
+                  drop_console: true
                 }
-              })
-            ]
+              }
+            })
+          ]
     }
   }
   return config

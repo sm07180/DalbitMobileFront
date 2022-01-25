@@ -318,8 +318,8 @@ const App = () => {
         globalCtx.action.updateRoomType(roomType)
       }
       globalCtx.action.updateSplash(data)
-      globalCtx.globalAction.setSplashData(data);
       globalCtx.action.updateUseMailbox(useMailBox)
+      globalCtx.globalAction.setSplashData(data);
     } else {
       Api.error_log({
         data: {

@@ -25,24 +25,24 @@ import { Provider } from 'react-redux';
 import store from "redux/store";
 
 ReactDOM.render(
-  <BrowserRouter>
     <Provider store={store}>
-      <GlobalProvider>
-          <RankProvider>
-              <MailboxProviderWWW>
-                  <BroadcastProviderWWW>
-                      <RankProviderWWW>
-                          <ClipRankProviderWWW>
-                            <ModalProviderWWW>
-                                <App />
-                            </ModalProviderWWW>
-                        </ClipRankProviderWWW>
-                    </RankProviderWWW>
-                </BroadcastProviderWWW>
-            </MailboxProviderWWW>
-          </RankProvider>
-      </GlobalProvider>
-    </Provider>
-  </BrowserRouter>,
+      <BrowserRouter>
+          <GlobalProvider>
+              <RankProvider>
+                  <MailboxProviderWWW>
+                      <BroadcastProviderWWW>
+                          <RankProviderWWW>
+                              <ClipRankProviderWWW>
+                                <ModalProviderWWW>
+                                    <App />
+                                </ModalProviderWWW>
+                            </ClipRankProviderWWW>
+                        </RankProviderWWW>
+                    </BroadcastProviderWWW>
+                </MailboxProviderWWW>
+              </RankProvider>
+          </GlobalProvider>
+      </BrowserRouter>
+    </Provider>,
   document.getElementById('root')
 )
