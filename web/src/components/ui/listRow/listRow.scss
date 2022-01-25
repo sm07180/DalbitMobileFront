@@ -1,0 +1,19 @@
+@import "components/ui/_mixin.scss";
+
+.listRow {
+  flex:none;
+  @include flex(center);
+  min-width: 0;
+  .photo {
+    flex:none;
+    width:100%;
+    img {
+      width:100%;
+    }
+  }
+  .userNick {
+    width:100%;
+    text-align:center;
+    @include fontCut;
+  }
+}

@@ -1,15 +1,16 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {Context} from "context";
 
 import Swiper from 'react-id-swiper'
 import Header from 'components/ui/new_header'
+import CntTitle from 'components/ui/cntTitle/CntTitle'
 import HotClipList from './components/hotClipList'
 import ClipList from './components/clipList'
 
 import './dallaClip.scss'
 
-
-
-const DallaClip = () => {
+const ClipPage = () => {
+  const context = useContext(Context);
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
@@ -82,13 +83,10 @@ const DallaClip = () => {
   ]
   
   return (
-    <div id="dallaClip">
+    <div id="clipPage">
       <Header title="클립"></Header>
       <section className='hotClipWrap'>
-        <div className="title" style={{marginTop:'17px'}}>
-          지금, 핫한 클립을 한눈에!
-          <div className="titleMore">더보기</div>
-        </div>
+        <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/'} />
         <Swiper {...swiperParams}>
           <div className="hotClipBox">
             <div className="hotClip">
@@ -239,9 +237,7 @@ const DallaClip = () => {
         </Swiper>
       </section>
       <section className="clipListWrap">
-        <div className="title">
-          <span className="userName">징꾸</span>님의 클립서랍
-        </div>
+        <CntTitle title={`${context.profile.nickNm}님의 클립서랍`} />
         <div className="subTitle">
           최근 들은 클립
           <div className="titleMore">더보기</div>
@@ -250,7 +246,7 @@ const DallaClip = () => {
           {clipLists.map((clipList, index)=>{
             return(
               <div key={index}>
-                <ClipList clipList={clipList} key={index}></ClipList>
+                <ClipList clipList={clipList} />
               </div>
             )
           })}
@@ -263,7 +259,7 @@ const DallaClip = () => {
           {clipLists.map((clipList, index)=>{
             return(
               <div key={index}>
-                <ClipList clipList={clipList}></ClipList>
+                <ClipList clipList={clipList} />
               </div>
             )
           })}
@@ -383,4 +379,4 @@ const DallaClip = () => {
   )
 }
 
-export default DallaClip
+export default ClipPage

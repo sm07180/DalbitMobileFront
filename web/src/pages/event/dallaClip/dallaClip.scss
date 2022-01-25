@@ -1,6 +1,6 @@
 @import '../../../styles/variables';
 
-#dallaClip{
+#clipPage{
   position:relative;
   width: 100%;
   font-family: 'Noto Sans KR', sans-serif;
@@ -8,21 +8,11 @@
     position: relative;
     margin-bottom: 35px;
     &:last-child{margin-bottom: 0;}
-    .title{
+    h2{
       display: flex;
       align-items: center;
-      width: 100%;
       font-size: 20px;
       font-weight: 500;
-      padding: 0 16px;
-      margin-bottom: 15px;
-      &More{
-        width: 50px;
-        margin-left: auto;
-        font-size: 13px;
-        color: #999;
-        text-align: right;
-      }
       .userName{
         font-weight: bold;
       }
@@ -43,19 +33,22 @@
     }
   }
   .hotClipWrap{
-    .hotClip{
+    .listWrap{
+      border:1px solid;
       display: flex;
       align-items: center;
       position: relative;
       width: 100%;
       margin-bottom: 12px;
       &:last-child{margin-bottom: 0;}
-      &Img{
-        width: 112px;
-        height: 112px;
-        border-radius:  8px;
-        background-color: #999;
-        flex: none;
+      .listRow {
+        .photo {
+          width: 112px;
+          height: 112px;
+          border-radius:  8px;
+          background-color: #999;
+          flex: none;
+        }
       }
       &Box{
         display: flex;
@@ -121,6 +114,11 @@
     }
   }
   .clipListWrap{
+    h2 {
+      font-size:20px;
+      font-weight:500;
+      color:black;
+    }
     .swiper-wrapper {
       padding-left:16px;
       .swiper-slide {
