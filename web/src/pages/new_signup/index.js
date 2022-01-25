@@ -664,19 +664,28 @@ export default (props) => {
     })
     if (result === 'success') {
       const cmd = 'CompleteRegistration';
-      const successCallback = () => { // appVer 이상
-        Utility.oldAddAdsData(cmd);
+      const successCallback = async () => { // appVer 이상
+        Utility.addAdsData(cmd);
       };
-      const failCallback = () => { // appVer 미만
-        try {
-          firebase.analytics().logEvent(cmd)
-          Hybrid('adbrixEvent', data.adbrixData);
-          fbq('track', cmd)
-        } catch (e) {}
+      const failCallback = async () => { // appVer 미만
+        const successCallback2 = () => {
+          Utility.oldAddAdsData(cmd);
+        }
+
+        const failCallback2 = () => {
+          try {
+            firebase.analytics().logEvent(cmd)
+            Hybrid('adbrixEvent', data.adbrixData);
+            fbq('track', cmd)
+          } catch (e) {}
+        }
+
+        const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
+        await Utility.compareAppVersion(targetVersion, successCallback2, failCallback2);
       }
 
       if(isHybrid()) {
-        const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
+        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6';
         await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
       }else {
         failCallback();
