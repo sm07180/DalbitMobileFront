@@ -17,8 +17,4 @@ const ListColumn = (props) => {
   )
 }
 
-ListColumn.defaultProps = {
-  photo: [],
-}
-
 export default ListColumn

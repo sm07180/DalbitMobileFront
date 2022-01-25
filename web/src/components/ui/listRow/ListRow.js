@@ -15,8 +15,4 @@ const ListRow = (props) => {
   )
 }
 
-ListRow.defaultProps = {
-  list: [],
-}
-
 export default ListRow

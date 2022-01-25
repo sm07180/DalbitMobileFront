@@ -144,132 +144,136 @@ export default () => {
 
   return (
     <>
-      {webview !== 'new' && <Header title="무통장(계좌이체)" />}
+      {webview !== 'new' && <Header title="무통장 입금(계좌이체)" />}
       <Content className={webview ? 'new' : ''}>
-        <div className="contentBox">
-          <div className="input-wrap">
-            <div>입금정보</div>
-            <p>
-              {Number(prdtPrice).toLocaleString()}원<span>(부가세포함)</span>
-            </p>
-          </div>
-          <div className="input-wrap">
-            <div>입금은행</div>
-            <p>국민은행</p>
-          </div>
-          <div className="input-wrap">
-            <div>입금자명</div>
-            <input type="text" id="name" name="name" value={name} onChange={inputHandle} placeholder="입금자명을 입력해주세요." />
-          </div>
-          <div className="input-wrap">
-            <div>휴대폰 번호</div>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={phone}
-              onChange={inputHandle}
-              placeholder="숫자만 입력해주세요."
-            />
-          </div>
-      
-          <div className="input-wrap">
-            <div>현금영수증</div>
-            <div className="receipt-btn-wrap">
-              <button className={receiptCode === 'n' ? 'on' : ''} onClick={() => setReceiptCode('n')}>
-                신청안함
-              </button>
-              <button className={receiptCode === 'i' ? 'on' : ''} onClick={() => setReceiptCode('i')}>
-                소득공제용
-              </button>
-              <button className={receiptCode === 'b' ? 'on' : ''} onClick={() => setReceiptCode('b')}>
-                지출증빙용
-              </button>
-            </div>
-            {receiptCode === 'i' && (
-              <input type="tel" id={iValType} name="receiptPhone" value={receiptPhone} onChange={inputHandle} placeholder='주민번호 또는 휴대폰 번호를 입력해주세요.'/>
-            )}
-            {receiptCode === 'b' && (
-                <input type="tel" id="receiptBiz" name="receiptBiz" value={receiptBiz} onChange={inputHandle} placeholder='사업자번호를 입력해주세요.'/>
-            )}
-          </div>
-
-          <div className="btn-wrap">
-            <button onClick={clickDepositButton}>입금계좌 받기</button>
-          </div>
-          <div className="info-wrap">
-            <h5>
-              무통장 입금 안내
-            </h5>
-            <p>
-              심야시간 무통장 입금이 지연될 경우{' '}
-              <strong onClick={() => history.push('/pay/bank_info')}>은행별 점검시간을 확인</strong>하세요.
-            </p>
-            <p>매월 말에서 1일 자정시간은 거래량이 급증하여 이체처리가 지연 될 수 있습니다.</p>
-            <p>
-              시스템 점검시간으로 이체가 지연되는 경우 다른 결제 수단을 이용 하시면 보다 신속하게 달 충전을 완료 할 수 있습니다.
-            </p>
-            <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
-          </div>
+        <div className="input-wrap">
+          <label>입금금액</label>
+          <p>
+            {Number(prdtPrice).toLocaleString()}원<span>(부가세포함)</span>
+          </p>
         </div>
-        <div className="contentBox inspection">
-          <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
+        <div className="input-wrap">
+          <label>입금은행</label>
+          <p>국민은행</p>
+        </div>
+        <div className="input-wrap">
+          <label>입금자명</label>
+          <input type="text" id="name" name="name" value={name} onChange={inputHandle} placeholder="입금자명을 입력해주세요" />
+        </div>
+        <div className="input-wrap">
+          <label>휴대폰 번호</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            value={phone}
+            onChange={inputHandle}
+            placeholder="휴대폰 번호를 입력해주세요"
+          />
+        </div>
+
+        <h5 className="sub-title">현금영수증</h5>
+        <div className="receipt-btn-wrap">
+          <button className={receiptCode === 'n' ? 'on' : ''} onClick={() => setReceiptCode('n')}>
+            신청안함
+          </button>
+          <button className={receiptCode === 'i' ? 'on' : ''} onClick={() => setReceiptCode('i')}>
+            소득공제용
+          </button>
+          <button className={receiptCode === 'b' ? 'on' : ''} onClick={() => setReceiptCode('b')}>
+            지출증빙용
+          </button>
+        </div>
+
+        <div className="receipt">
+          {receiptCode === 'i' && (
+            <div className="item">
+              <select onChange={iValTypeHandle}>
+                <option value="social">주민번호</option>
+                <option value="phone">휴대폰번호</option>
+              </select>
+              {iValType === 'social' && (
+                <input type="tel" id={iValType} name="receiptSocial" value={receiptSocial} onChange={inputHandle} />
+              )}
+              {iValType === 'phone' && (
+                <input type="tel" id={iValType} name="receiptPhone" value={receiptPhone} onChange={inputHandle} />
+              )}
+            </div>
+          )}
+          {receiptCode === 'b' && (
+            <div className="item">
+              <label htmlFor="receiptBiz">사업자번호</label>
+              <input type="tel" id="receiptBiz" name="receiptBiz" value={receiptBiz} onChange={inputHandle} />
+            </div>
+          )}
+        </div>
+
+        <div className="btn-wrap">
+          <button onClick={clickDepositButton}>입금계좌 받기</button>
+        </div>
+
+        <div className="info-wrap">
+          <h5>
+            무통장 입금 안내
+            <button onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
+          </h5>
+          <p>
+            심야시간 무통장 입금이 지연될 경우{' '}
+            <strong onClick={() => history.push('/pay/bank_info')}>은행별 점검시간을 확인</strong>하세요.
+          </p>
+          <p>매월 말에서 1일 자정시간은 거래량이 급증하여 이체처리가 지연 될 수 있습니다.</p>
+          <p>
+            시스템 점검시간으로 이체가 지연되는 경우 다른 결제 수단을 이용 하시면 보다 신속하게 달 충전을 완료 할 수 있습니다.
+          </p>
+          <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
         </div>
       </Content>
     </>
   )
 }
 const Content = styled.div`
-  font-family: 'Noto Sans KR', sans-serif;
-  .contentBox{
-    padding: 0 16px 15px;
-    background:#fff;
-    &.inspection{
-      border-top:1px solid #f5f5f5;
-      padding-top:15px;
-    }
-  }
   .input-wrap {
-    display:flex;
-    flex-direction:column;
     position: relative;
-    margin-top:15px;
-    div{
-      font-size:13px;
-      font-weight:400;
-      color:#666;
+    margin-top: 4px;
+    label {
+      display: block;
+      position: absolute;
+      left: 15px;
+      top: 15px;
+      font-size: 12px;
+      color: #000;
+      z-index: 1;
     }
     input {
       width: 100%;
-      height: 50px;
-      padding: 0 15px;
-      background: #f6f6f6;
-      border-radius: 16px;
-      font-weight: 500;
+      height: 44px;
+      padding: 0 10px 0 92px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      font-weight: bold;
       color: #000;
-      margin-top: 6px;
     }
-    // input:focus {
-    //   border: 1px solid #000;
-    // }
+    input:focus {
+      border: 1px solid #000;
+    }
     input::placeholder {
-      font-size: 15px;
-      font-weight:400;
-      color: #999;
+      font-size: 14px;
+      color: #bdbdbd;
     }
     p {
       width: 100%;
-      height: 50px;
-      line-height: 50px;
-      padding: 0 15px;
-      background: #f6f6f6;
-      border-radius: 16px;
-      font-size: 15px;
-      font-weight: 500;
+      height: 44px;
+      line-height: 42px;
+      padding: 0 10px 0 92px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: bold;
       color: #000;
-      margin-top:6px
       span {
-        font-size:13px;
+        font-weight: normal;
       }
     }
   }
@@ -317,55 +321,64 @@ const Content = styled.div`
   }
 
   min-height: calc(100vh - 40px);
+  padding: 6px 16px;
+  background: #eeeeee;
+  padding-bottom: 30px;
   &.new {
     min-height: 100%;
   }
 
   .sub-title {
     padding-top: 15px;
-    font-size: 13px;
-    font-weight: 400;
-    color: #666;
+    font-size: 16px;
+    font-weight: 900;
+    color: #000;
   }
 
   .receipt-btn-wrap {
     display: flex;
     padding-top: 8px;
     button {
-      display:flex;
-      justify-content:center;
-      align-items:center;
       position: relative;
-      height: 37px;
-      font-size: 13px;
-      font-weight: 400;
-      color: #000;
-      border:1px solid #e3e3e3;
-      border-radius: 18px;
-      padding:0 15px;
-      margin-right:4px;
+      width: 33.7%;
+      height: 44px;
+      margin-left: -1px;
+      border: 1px solid #e0e0e0;
+      background: #f5f5f5;
+      font-size: 14px;
+      color: #bdbdbd;
+      font-weight: bold;
+    }
+    button:first-child {
+      margin-left: 0;
+      border-top-left-radius: 12px;
+      border-bottom-left-radius: 12px;
+    }
+    button:last-child {
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
     }
     button.on {
-      color: #fff;
-      background: #000;
+      border: 1px solid #632beb;
+      color: #632beb;
+      background: #fff;
       z-index: 2;
-      font-weight:500;
     }
   }
 
   .btn-wrap {
-    margin-top:20px;
+    padding-top: 32px;
     button {
       width: 100%;
-      height: 48px;
-      border-radius: 16px;
+      height: 44px;
+      border-radius: 12px;
       color: #fff;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      background: #FF3C7B;
+      background: #632beb;
     }
     button:disabled {
-      background: rgba(255,60,123,0.2);
+      background: #757575;
     }
   }
 
@@ -373,21 +386,32 @@ const Content = styled.div`
     margin-top: 22px;
     h5 {
       display: flex;
-      position:relative;
       margin-bottom: 8px;
-      padding-left: 20px;
-      color: #FF3C7B;
+      padding-left: 16px;
+      background: url(${icoNotice}) no-repeat left center;
+      color: #424242;
       font-size: 12px;
-      font-weight:500;
-      &::after{
-        content:"";
-        position:absolute;
-        top:50%;
-        left:2px;
-        transform:translateY(-50%);
-        width:16px;
-        height:16px;
-        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
+      font-weight: bold;
+      span {
+        display: inline-block;
+        margin-left: auto;
+        color: ${COLOR_MAIN};
+        font-weight: 800;
+        strong {
+          padding-right: 4px;
+          color: #000;
+        }
+      }
+
+      button {
+        display: inline-block;
+        height: 20px;
+        padding: 0 8px;
+        margin-left: auto;
+        color: #fff;
+        background-color: #000;
+        border-radius: 18px;
+        font-size: 11px;
       }
     }
     p {
@@ -396,7 +420,12 @@ const Content = styled.div`
       color: #757575;
       font-size: 12px;
       line-height: 20px;
-      letter-spacing: -0.8px
+
+      strong {
+        color: #424242;
+        text-decoration: underline;
+        cursor: pointer;
+      }
       &::before {
         position: absolute;
         left: 6px;
@@ -406,26 +435,6 @@ const Content = styled.div`
         background: #757575;
         content: '';
       }
-      strong {
-        color: #424242;
-        text-decoration: underline;
-        cursor: pointer;
-      }
     }
   }
-  .inspectionTime{
-    display: flex;
-    justify-content:center;
-    align-items:center;
-    height: 30px;
-    margin-left: auto;
-    font-size: 13px;
-    font-weight:500;
-    color: #666;
-    border:1px solid #e3e3e3;
-    border-radius: 18px;
-    padding:0 13px;
-  }
 `
-
-
