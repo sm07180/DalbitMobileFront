@@ -1,8 +1,9 @@
 import React from 'react'
 import Swiper from 'react-id-swiper'
 
-// components
+// global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
+import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 
 const MainSlide = (props) => {
   const {data} = props
@@ -26,15 +27,17 @@ const MainSlide = (props) => {
           {data.map((list, index) => {
             return (
               <div key={index}>
-                <ListColumn list={list}>
-                  {list.nickNm !== 'banner' &&
+                {list.bannerUrl && list.nickNm === "banner" ?
+                  <ListColumn photo={list.bannerUrl} />
+                  :
+                  <ListColumn photo={list.profImg.thumb500x500}>
                     <div className='info'>
-                      {/* <Badge content={list} /> */}
+                      <BadgeItems content={list.liveBadgeList} />
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>
                     </div>
-                  }
-                </ListColumn>
+                  </ListColumn>
+                }
               </div>
             )
           })}

@@ -4,7 +4,7 @@ import {Context} from 'context'
 
 import Swiper from 'react-id-swiper'
 // components
-import SocialList from '../../components/socialList'
+import SocialList from '../../components/SocialList'
 
 const FeedSection = (props) => {
   //context

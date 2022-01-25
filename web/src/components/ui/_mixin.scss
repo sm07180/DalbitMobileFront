@@ -55,6 +55,12 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
   overflow:hidden;
 }
 
+@mixin fontLineCut($value: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $value;
+  -webkit-box-orient: vertical;
+}
+
 @mixin backgroundPSR {
   background-position:center;
   background-size:cover;

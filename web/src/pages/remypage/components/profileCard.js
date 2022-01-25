@@ -1,5 +1,8 @@
 import React from 'react'
 
+// global components
+import LevelItems from 'components/ui/levelItems/LevelItems'
+import GenderItems from 'components/ui/genderItems/GenderItems'
 import FrameItems from 'components/ui/frameItems/FrameItems'
 
 import './profileCard.scss'
@@ -16,8 +19,8 @@ const ProfileCard = (props) => {
         </div>
         <div className="info">
           <div className="item">
-            <span className='level'>lv.{data.level}</span>
-            <span className='gender'>{data.gender}</span>
+            <LevelItems data={data.level} />
+            <GenderItems data={data.gender} size={18} />
             <span className='nick'>{data.nickNm}</span>
           </div>
           <div className="item">

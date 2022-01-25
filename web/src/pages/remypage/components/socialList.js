@@ -22,7 +22,7 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      <ListRow list={data}>
+      <ListRow photo={data}>
         <div className="listContent">
           <div className="nick">{data.nickNm}</div>
           <div className="time">3시간전</div>

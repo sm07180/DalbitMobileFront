@@ -18,7 +18,9 @@ const SwiperList = (props) => {
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <ListColumn list={list} key={index} />
+              <ListColumn photo={list.profImg.thumb150x150}>
+                <p className='userNick'>{list.nickNm}</p>
+              </ListColumn>
             </div>
           )
         })}

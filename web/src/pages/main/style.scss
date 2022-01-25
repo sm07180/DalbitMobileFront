@@ -75,9 +75,6 @@
         object-fit: cover;
       }
     }
-    .userNick {
-      display:none;
-    }
     .swiper-pagination {
       @include swiperPagination;
       bottom:30px;
@@ -120,6 +117,7 @@
         .listColumn {
           width:68px;
           .photo {
+            margin-bottom:2px;
             background-image: linear-gradient(#fff, #fff), linear-gradient(to bottom,#B620FF,#FF41EC) !important;
             background-origin: border-box;
             background-clip: content-box, border-box;
@@ -131,6 +129,7 @@
           }
           p {
             @include font(12px,400,#303030);
+            @include fontCut;
           }
         }
       }
@@ -181,9 +180,6 @@
             .photo {
               height:136px;
               margin-bottom:6px;
-              background-position:center;
-              background-size:cover;
-              background-repeat:no-repeat;
               border-radius:8px;
               overflow:hidden;
               img {
@@ -199,6 +195,7 @@
             }
             p {
               @include font(15px,400,#303030);
+              @include fontCut;
             }
           }
         }
@@ -233,7 +230,9 @@
             bottom:0;
             padding:24px 8px 8px;
             background-image:linear-gradient(to bottom,transparent,rgba(0,0,0,.5));
+            text-align:left;
             @include font(13px,500,#fff);
+            @include fontCut;
           }
         }
       }

@@ -67,7 +67,9 @@ const MainPage = () => {
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
-        totalPage = Math.ceil(res.data.paging.total / pagePerCnt)
+        if (res.data.paging !== undefined) {
+          totalPage = Math.ceil(res.data.paging.total / pagePerCnt)
+        }
         if (currentPage > 1) {
           setLiveList(liveList.concat(res.data.list))
         } else {

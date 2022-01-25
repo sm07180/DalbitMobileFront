@@ -6,10 +6,10 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // global components
 import Header from 'components/ui/header/Header'
-import Gender from 'components/ui/genderItems/gender'
+import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
-import TopSwiper from '../../components/topSwiper'
-import InputItems from '../../components/inputItems'
+import TopSwiper from '../../components/TopSwiper'
+import InputItems from '../../components/InputItems'
 // contents
 
 import './profileEdit.scss'
@@ -33,11 +33,11 @@ const ProfileEdit = () => {
       </Header>
       <section className='topSwiper'>
         {true ? 
-        <TopSwiper data={profile} />
-        :
-        <div className="nonePhoto">
-          <i><img src="https://image.dalbitlive.com/mypage/dalla/coverNone.png" alt="" /></i>
-        </div>
+          <TopSwiper data={profile} />
+          :
+          <div className="nonePhoto">
+            <i><img src="https://image.dalbitlive.com/mypage/dalla/coverNone.png" alt="" /></i>
+          </div>
         }
       </section>
       <section className="insertPhoto">
@@ -103,7 +103,7 @@ const ProfileEdit = () => {
           </InputItems>
           <InputItems title={'성별'}>
             <div className="innerBox">
-              <Gender data={profile} size={18} />
+              <GenderItems data={profile.gender} size={18} />
               {profile.gender === 'm' ? 
                 <span className='text'>남자</span>
                 :

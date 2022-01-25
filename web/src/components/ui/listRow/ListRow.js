@@ -3,18 +3,12 @@ import React from 'react'
 import './listRow.scss'
 
 const ListRow = (props) => {
-  const {list, children} = props
+  const {photo, children} = props
 
   return (
     <div className="listRow">
       <div className="photo">
-        {list.bjProfImg ? 
-          <img src={list && list.bjProfImg && list.bjProfImg.thumb190x190} alt={list.nickNm} />
-          : list.profImg ?
-          <img src={list && list.profImg && list.profImg.thumb190x190} alt={list.nickNm} />
-          :
-          <></>
-        }
+          <img src={photo} />
       </div>
       {children}
     </div>

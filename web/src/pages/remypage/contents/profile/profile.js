@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
 
@@ -6,9 +6,9 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
-import TopSwiper from '../../components/topSwiper'
-import ProfileCard from '../../components/profileCard'
-import TotalInfo from '../../components/totalInfo'
+import TopSwiper from '../../components/TopSwiper'
+import ProfileCard from '../../components/ProfileCard'
+import TotalInfo from '../../components/TotalInfo'
 // contents
 import FeedSection from './feedSection'
 import FanboardSection from './fanboardSection'
@@ -23,13 +23,19 @@ const Myprofile = () => {
   //context
   const context = useContext(Context)
   const {token, profile} = context
+  const tabMenuRef = useRef();
+  const myprofileRef = useRef();
   
-  const [socialType, setSocialType] = useState(socialTabmenu[2])
+  const [socialType, setSocialType] = useState(socialTabmenu[0])
 
   // 페이지 시작
   return (
-    <div id="myprofile">
-      <Header title={`${profile.nickNm}`} type={'back'} />
+    <div id="myprofile" ref={myprofileRef}>
+      <Header title={`${profile.nickNm}`} type={'back'}>
+        <div className="buttonGroup">
+          <button className='editBtn'>수정</button>
+        </div>
+      </Header>
       <section className='topSwiper'>
         <TopSwiper data={profile} />
       </section>
@@ -40,7 +46,7 @@ const Myprofile = () => {
         <TotalInfo data={profile} />
       </section>
       <section className="socialWrap">
-        <ul className="tabmenu">
+        <ul className="tabmenu" ref={tabMenuRef}>
           {socialTabmenu.map((data,index) => {
             const param = {
               item: data,

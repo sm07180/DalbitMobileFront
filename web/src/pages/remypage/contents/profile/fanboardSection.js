@@ -5,7 +5,7 @@ import {Context} from 'context'
 // global components
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
-import SocialList from '../../components/socialList'
+import SocialList from '../../components/SocialList'
 
 const fanboardTabmenu = ['전체','내댓글']
 
