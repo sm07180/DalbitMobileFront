@@ -1,6 +1,7 @@
 @import "components/ui/_mixin.scss";
 
 .listColumn {
+  position:relative;
   flex:none;
   @include flex(center,center,column);
   min-width: 0;
