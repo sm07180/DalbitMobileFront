@@ -71,9 +71,16 @@ $errorMsg : #FF1919;
             @include flex(center);
             width: 100%; height: 50px;
             padding: 12px 20px;
-            border-radius: 4px;
-            background-color: #F6F6F6;
+            border-radius: 16px;
+            background: #F6F6F6;
             box-sizing: border-box;
+            &.check {
+              padding: 12px 40px 12px 20px;
+              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg transform='translate(-402 -449)'%3E%3Cg transform='translate(402 449)' fill='%23fff' stroke='%23707070' stroke-width='1' opacity='0'%3E%3Crect width='60' height='60' stroke='none'/%3E%3Crect x='0.5' y='0.5' width='59' height='59' fill='none'/%3E%3C/g%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(47.047 -16747.137) rotate(45)'/%3E%3C/g%3E%3C/svg%3E%0A") #F6F6F6;
+              background-position: 95% 10px;
+              background-repeat: no-repeat;
+              background-size: 30px 30px;         
+            }
           }
           .helpText {
             width: 100%;
@@ -88,12 +95,13 @@ $errorMsg : #FF1919;
             @include flex(center, center);
             width: 90px; height: 42px;
             margin-left: 8px;
-            border-radius: 4px;
+            border-radius: 16px;
             border: 1px solid #D9D9DB;
             @include font(16px, 500, #BFBFC7);
             box-sizing: border-box;
             &.active {
               background-color: #000000;
+              color: #fff;
             }
           }
         }
@@ -101,7 +109,7 @@ $errorMsg : #FF1919;
           @include flex(center, center);
           width: 100%;
           height: 48px;
-          border-radius: 4px;
+          border-radius: 16px;
           @include font(16px, 700, #ffffff);
           background: $btnDisable;
           &.active {

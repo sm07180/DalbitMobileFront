@@ -777,7 +777,7 @@ export default (props) => {
                   type="tel"
                   ref={memIdRef}
                   id="memId"
-                  className="inputfield"
+                  className={`inputfield ${auth ? "check" : ""}`}
                   name="memId"
                   placeholder="휴대폰 번호"
                   maxLength={11}
@@ -799,13 +799,12 @@ export default (props) => {
                   id="auth"
                   className="inputfield"
                   name="auth"
-                  placeholder="인증번호를 입력해주세요"
+                  placeholder="인증 번호 4자리"
                   autoComplete="off"
                   value={auth}
                   onChange={(e) => dispatch(e.target)}
                   disabled={true}
                 />
-                <span className="timer">{timeText}</span>
               </div>
             </InputItem>
           </SignField>
