@@ -51,5 +51,7 @@ header {
     &.store {@include headerBtn(icoStore-b);}
     &.search {@include headerBtn(icoSearch-b);}
     &.back {@include headerBtn(icoBack-b);}
+    &.play {@include headerBtn(icoPlay-b);}
+    &.shuffle {@include headerBtn(icoShuffle-b);}
   }
 }

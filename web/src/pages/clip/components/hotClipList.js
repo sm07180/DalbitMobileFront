@@ -1,26 +1,68 @@
 import React from 'react'
 
-import '../dallaClip.scss'
+import Swiper from 'react-id-swiper'
+// global components
+import ListRow from 'components/ui/listRow/ListRow'
 
 const HotClipList = (props) => {
-
-  const {hotClipList} = props
+  const {data} = props
+  
+  const swiperParams = {
+    slidesPerView: 'auto',
+  }
 
   return (
     <>
-      <div className="hotClip">
-        <div className="hotClipImg"></div>
-        <div className="hotClipData">
-          <div className="hotClipRank">{hotClipList.rank}</div>
-          <div className="hotClipTitle">
-            <span className="hotClipSubject">커버/노래</span>
-            {hotClipList.title}
-          </div>
-          <div className="hotClipSubTit">
-            {hotClipList.name}
-          </div>
-        </div>
-      </div>
+      <Swiper {...swiperParams}>
+        {data.map((list,index) => {
+          return (
+            <div key={index}>
+              <ListRow photo={list.bgImg.thumb120x120}>
+                <div className='listContent'>
+                  <div className="listItem">
+                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                  </div>
+                  <div className="listItem">
+                    <span className="subject">{list.subjectName}</span>
+                    <span className='title'>{list.title}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className='nick'>{list.nickName}</span>
+                  </div>
+                </div>
+              </ListRow>
+              <ListRow photo={list.bgImg.thumb120x120}>
+                <div className='listContent'>
+                  <div className="listItem">
+                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                  </div>
+                  <div className="listItem">
+                    <span className="subject">{list.subjectName}</span>
+                    <span className='title'>{list.title}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className='nick'>{list.nickName}</span>
+                  </div>
+                </div>
+              </ListRow>
+              <ListRow photo={list.bgImg.thumb120x120}>
+                <div className='listContent'>
+                  <div className="listItem">
+                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                  </div>
+                  <div className="listItem">
+                    <span className="subject">{list.subjectName}</span>
+                    <span className='title'>{list.title}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className='nick'>{list.nickName}</span>
+                  </div>
+                </div>
+              </ListRow>
+            </div>
+          )
+        })}
+      </Swiper>
     </>
   )
 }

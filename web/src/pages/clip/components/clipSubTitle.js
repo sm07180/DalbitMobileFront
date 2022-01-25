@@ -1,7 +1,5 @@
 import React from 'react'
 
-import '../dallaClip.scss'
-
 const ClipSubTitle = (props) => {
   const {title,more,children} = props
 

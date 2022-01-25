@@ -16,7 +16,7 @@ const LiveView = (props) => {
             <ListRow photo={list.bjProfImg.thumb100x100}>
               <div className='listContent'>
                 <div className="listItem">
-                  <BadgeItems content={list.liveBadgeList} />
+                  <BadgeItems data={list.liveBadgeList} />
                 </div>
                 <div className="listItem">
                   <span className='title'>{list.title}</span>
