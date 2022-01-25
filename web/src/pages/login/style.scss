@@ -64,7 +64,7 @@ $btnDisable : #FFD8E4;
     .loginBtn {
       @include flex(center, center);
       width: 50%; height: 48px;
-      border-radius: 4px;
+      border-radius: 16px;
       @include font(15px, 500, #FFFFFF);
       background: $btnActive;
       &:active {
@@ -116,7 +116,7 @@ $btnDisable : #FFD8E4;
         height: 48px;
         padding: 6px 16px;
         margin-bottom: 8px;
-        border-radius: 8px;
+        border-radius: 16px;
         border: 1px solid #CBD0D5;
         @include font(15px, 400, #202020);
         box-sizing: border-box;
@@ -248,7 +248,7 @@ $btnDisable : #FFD8E4;
           width: 100%;
           height: 50px;
           padding: 12px 20px;
-          border-radius: 8px;
+          border-radius: 16px;
           background-color: #F6F6F6;
           box-sizing: border-box;
           &::placeholder {
@@ -260,7 +260,7 @@ $btnDisable : #FFD8E4;
           @include flex(center, center);
           width: 100%;
           height: 48px;
-          border-radius: 8px;
+          border-radius: 16px;
           @include font(16px, 700, #ffffff);
           background: $btnDisable;
           &.active {
@@ -458,7 +458,7 @@ $btnDisable : #FFD8E4;
       @include flex(center, center);
       width: 100%;
       height: 48px;
-      border-radius: 8px;
+      border-radius: 16px;
       background: $btnDisable;
       @include font(16px, 700, #FFFFFF);
       &.active {

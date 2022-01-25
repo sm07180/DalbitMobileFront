@@ -339,14 +339,14 @@ export default function loginForm({props, setLoginPop}) {
                 <label className="inputLabel">
                   <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                   <span className="checkIcon"></span>
-                  <p className="checkinfo">[필수] 만 14세 이상입니다.</p>
+                  <p className="checkinfo">(필수) 만 14세 이상입니다.</p>
                 </label>
               </div>
               <div className="agreeList">
                 <label className="inputLabel">
                   <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                   <span className="checkIcon"></span>
-                  <p className="checkinfo">[필수] 이용약관</p>
+                  <p className="checkinfo">(필수) 이용약관</p>
                   <button className='policyBtn'>보기</button>
                 </label>
               </div>
@@ -354,7 +354,7 @@ export default function loginForm({props, setLoginPop}) {
                 <label className="inputLabel">
                   <input type="checkbox" className="blind" name="checkList" onChange={checkSelectAll}/>
                   <span className="checkIcon"></span>
-                  <p className="checkinfo">[필수] 개인정보 취급 방침</p>
+                  <p className="checkinfo">(필수) 개인정보 취급 방침</p>
                   <button className='policyBtn'>보기</button>
                 </label>
               </div>
