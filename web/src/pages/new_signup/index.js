@@ -663,24 +663,30 @@ export default (props) => {
       }
     })
     if (result === 'success') {
-      //adbrix, firebase 이벤트 호출
-      const adbrixByPc = () => Hybrid('adbrixEvent', data.adbrixData);
+      const cmd = 'CompleteRegistration';
+      const successCallback = () => { // appVer 이상
+        Utility.oldAddAdsData(cmd);
+      };
+      const failCallback = () => { // appVer 미만
+        try {
+          firebase.analytics().logEvent(cmd)
+          Hybrid('adbrixEvent', data.adbrixData);
+          fbq('track', cmd)
+        } catch (e) {}
+      }
 
-      await Utility.addAdsData(
-        'CompleteRegistration'
-        , 'CompleteRegistration'
-        , {}
-        , '1.6.9'
-        , '1.6.3'
-        , () => {}
-        , adbrixByPc
-      );
+      if(isHybrid()) {
+        const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      }else {
+        failCallback();
+      }
 
       context.action.alert({
         callback: () => {
           //애드브릭스 이벤트 전달 => native에서 처리
           // if (data.adbrixData != '' && data.adbrixData != 'init') {
-            Hybrid('adbrixEvent', data.adbrixData)
+          //   Hybrid('adbrixEvent', data.adbrixData)
             // if (__NODE_ENV === 'dev') {
               // alert(JSON.stringify('adbrix in dev:' + JSON.stringify(data.adbrixData)));
             // }

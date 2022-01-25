@@ -404,33 +404,22 @@ export default class Utility {
   }
 
   // firebase, adbrix, facebook 이벤트 요청
-  static addAdsData = async (cmd, failCmd, value, aosAppVer, iosAppVer, succFunc, failFunc) => {
-    const successCallback = () => { // appVer 이상
-      const firebaseDataArray = [
-        { type : "firebase", key : cmd, value },
-        { type : "adbrix", key : cmd, value },
-        { type : "facebook", key : cmd, value },
-      ];
-      Hybrid('eventTracking', {service :  firebaseDataArray})
-      if(typeof succFunc === 'function') succFunc();
-    };
-    const failCallback = () => { // appVer 미만
-      try {
-        fbq('track', failCmd)
-        firebase.analytics().logEvent(failCmd)
-        if(typeof failFunc === 'function') failFunc()
-      } catch (e) {}
-    }
+  static addAdsData = async (cmd) => {
+    const firebaseDataArray = [
+      { type : "firebase", key : cmd, value }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "adbrix", key : cmd, value },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "facebook", key : cmd, value }, // aos: 1.8.2, ios: 1.6.6 추가 (facebook)
+    ];
+    Hybrid('eventTracking', {service: firebaseDataArray})
+  }
 
-    if(isHybrid()) {
-      if(typeof aosAppVer === 'undefined' && typeof iosAppVer === 'undefined') {
-        successCallback();
-      }else {
-        const targetVersion = isAndroid() ? aosAppVer : iosAppVer; // 강업 버전
-        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
-      }
-    }else {
-      failCallback();
-    }
+  // firebase, adbrix, facebook 이벤트 요청
+  static oldAddAdsData = async (cmd) => {
+    const firebaseDataArray = [
+      { type : "firebase", key : cmd, value }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "adbrix", key : cmd, value },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+    ];
+    Hybrid('eventTracking', {service: firebaseDataArray})
+    fbq('track', cmd)
   }
 }

@@ -16,7 +16,7 @@ import React, {useEffect, useState, useContext} from 'react'
 
 //context
 import Api from 'context/api'
-import {Hybrid} from 'context/hybrid'
+import {Hybrid, isAndroid, isHybrid} from 'context/hybrid'
 import {Context} from 'context'
 
 import {OS_TYPE} from 'context/config.js'
@@ -331,28 +331,41 @@ export const RoomJoin = async (obj) => {
 
       // RoomJoin 이벤트 (회원 비회원 분리)
       const newRoomJoinCmd = Room.context.token.isLogin ? 'Room_Join_regit' : 'Room_Join_unregit';
-      const roomJoinCmd = 'RoomJoin';
-      const updateAosVer = '1.8.2';
-      const updateIosVer = '1.6.6';
-      const succFunc = () => {
-        // RoomJoin 이벤트도 쌓는다고 함
-        const firebaseDataArray = [
-          { type : "firebase", key : roomJoinCmd, value },
-          { type : "adbrix", key : roomJoinCmd, value },
-          { type : "facebook", key : roomJoinCmd, value },
-        ];
-        Hybrid('eventTracking', {service :  firebaseDataArray})
+      const oldRoomJoinCmd = 'RoomJoin';
+      const successCallback = () => { // 새 버전에서는 'Room_Join_regit' : 'Room_Join_unregit'으로 나뉘고 RoomJoin도 보내준다
+        Utility.addAdsData(newRoomJoinCmd);
+        Utility.addAdsData(oldRoomJoinCmd);
+      };
+
+      const failCallback = async () => { // appVer 미만
+        try {
+          const succCallback2 = () => { // appVer 이상
+            Utility.oldAddAdsData(oldRoomJoinCmd);
+          };
+
+          const failCallback2 = () => {
+            try {
+              firebase.analytics().logEvent(oldRoomJoinCmd)
+              Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}})
+              fbq('track', oldRoomJoinCmd)
+            } catch (e) {}
+          }
+
+          if(isHybrid()) {
+            const targetVersion = isAndroid() ? '1.6.9' : '1.6.3';
+            await Utility.compareAppVersion(targetVersion, succCallback2, failCallback2);
+          }else {
+            failCallback2();
+          }
+        } catch (e) {}
       }
-      const failFunc = () => Hybrid('adbrixEvent', {eventName: 'roomJoin', attr: {}});
-      await Utility.addAdsData(
-        newRoomJoinCmd
-        , roomJoinCmd
-        , {}
-        , updateAosVer
-        , updateIosVer
-        , succFunc
-        , failFunc
-      );
+
+      if(isHybrid()) {
+        const targetVersion = isAndroid() ? '1.8.2' : '1.6.6';
+        await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+      }else {
+        failCallback();
+      }
 
       return true
     }
