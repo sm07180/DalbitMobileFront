@@ -16,10 +16,9 @@ import {
   getRoomType,
   postImage,
   getBroadcastSetting,
-  modifyBroadcastSetting,
 } from "common/api";
 // others
-import { HostRtc, UserType } from "common/realtime/rtc_socket";
+import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
 import { GlobalContext } from "context";
 import { ModalContext } from "context/modal_ctx";
@@ -28,7 +27,7 @@ import "./broadcast_setting.scss";
 // lib
 import getDecibel from "./lib/getDecibel";
 import { BroadcastContext } from "../../context/broadcast_ctx";
-import LayerCopyright from "common/layerpopup/contents/copyright";
+import LayerCopyright from "../../common/layerpopup/contents/copyright";
 import LayerTitle from "./content/title";
 import LayerWelcome from "./content/welcome";
 import Layout from "common/layout";
@@ -51,6 +50,7 @@ type State = {
   welcomeMsgChange: string;
   imageType: number;
   mediaType: string;
+  platFormType:string;
 };
 
 //action type
@@ -63,7 +63,8 @@ type Action =
   | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
   | { type: "SET_IMAGETYPE"; imageType: number }
   | { type: "SET_MEDIATYPE"; mediaType: string }
-  | { type: "SET_VIDEOSTATE"; videoState: boolean };
+  | { type: "SET_VIDEOSTATE"; videoState: boolean }
+  | { type: "SET_PLATFORM"; platFormType: string };
 
 //broad Reducer
 function reducer(state: State, action: Action) {
@@ -82,6 +83,11 @@ function reducer(state: State, action: Action) {
       return {
         ...state,
         entryType: action.entryType,
+      };
+    case "SET_PLATFORM":
+      return {
+        ...state,
+        platFormType: action.platFormType,
       };
     case "SET_ROOMTYPE":
       return {
@@ -143,6 +149,7 @@ export default function BroadcastSetting() {
     welcomeMsgChange: "",
     imageType: IMAGE_TYPE.PROFILE,
     mediaType: BROAD_TYPE.AUDIO,
+    platFormType:""
   });
 
   // audio stream state
@@ -169,6 +176,10 @@ export default function BroadcastSetting() {
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
     dispatch({ type: "SET_ENTRY", entryType: access_type });
+  }, []);
+
+  const setPlatForm = useCallback((platform_type: string) => {
+    dispatch({ type: "SET_PLATFORM", platFormType: platform_type });
   }, []);
 
   const setRoomType = useCallback(
@@ -296,6 +307,7 @@ export default function BroadcastSetting() {
         djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
         djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
         mediaType: state.mediaType,
+        platform:state.platFormType
       };
 
       const { result, data, message, code } = await broadcastCreate(createInfo);
@@ -347,10 +359,10 @@ export default function BroadcastSetting() {
           }
         } catch (e) {}
 
-        const res = await modifyBroadcastSetting({
-          djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
-          djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
-        });
+        // const res = await modifyBroadcastSetting({
+        // djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
+        // djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
+        // });
 
         history.push(`/broadcast/${roomNo}`);
       } else if (result === "fail") {
@@ -378,7 +390,7 @@ export default function BroadcastSetting() {
         const exit = await broadcastExit({ roomNo });
 
         if (exit.result === "success") {
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
           if (chatInfo && chatInfo !== null) {
             chatInfo.privateChannelDisconnect();
           }
@@ -478,7 +490,7 @@ export default function BroadcastSetting() {
       initDeviceAudioStream();
     }
 
-    let audioCheckerId: number | null | any  = null;
+    let audioCheckerId: number | null = null;
 
     const audioCtx = (() => {
       const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -604,7 +616,7 @@ export default function BroadcastSetting() {
               rtcInfo.stop();
               globalAction.dispatchRtcInfo &&
                 globalAction.dispatchRtcInfo({ type: "empty" });
-              sessionStorage.removeItem("room_no");
+              rtcSessionClear();
             }
           },
           cancelCallback: () => {
@@ -724,6 +736,30 @@ export default function BroadcastSetting() {
               <div id="localVideoSection"></div>
             </>
           )}
+          {/*아고라 와우자 분기값 셋팅 테스트용*/}
+  {/*        <div className="title">참여서버</div>
+          <ul className="access">
+            {PlatForm.map(
+              (item: { name: string; id: string }, idx: number) => {
+                return (
+                  <li
+                    key={idx}
+                    onClick={() => {
+                      setPlatForm(item.id);
+                    }}
+                    className={
+                      state.platFormType == item.id
+                        ? "access__list active"
+                        : "access__list"
+                    }
+                  >
+                    {item.name}
+                  </li>
+                );
+              }
+            )}
+          </ul>*/}
+
 
           {/* 입장제한 라디오박스영역 */}
           <div className="title">입장제한</div>
@@ -920,6 +956,21 @@ enum ACCESS_TYPE {
   FAN = 1,
   ADULT = 2,
 }
+enum PLATFORM_TYPE {
+  AGORA = "agora",
+  WOWZA = "wowza",
+}
+const PlatForm=[
+  {
+    id: PLATFORM_TYPE.AGORA,
+    name: "아고라",
+  },
+  {
+    id: PLATFORM_TYPE.WOWZA,
+    name: "와우자",
+  },
+
+]
 
 const AccessList = [
   {

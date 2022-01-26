@@ -6,7 +6,7 @@ import { DalbitScroll } from "common/ui/dalbit_scroll";
 // constant
 import { tabType } from "pages/broadcast/constant";
 
-import LayerCopyright from "common/layerpopup/contents/copyright";
+import LayerCopyright from "../../../../common/layerpopup/contents/copyright";
 import styled from "styled-components";
 
 type State = {

@@ -780,7 +780,13 @@ export async function modifyBroadcastSetting(data: {
   djListenerOut?: boolean;
   listenerIn?: boolean;
   listenerOut?: boolean;
+  djTtsSound?: boolean | null;
+  djNormalSound?: boolean | null;
+  ttsSound?: boolean;
+  normalSound?: boolean;
   listenOpen?: number;
+  bjMemNo?: string | null;
+  roomNo?: string | null;
 }): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/broadcast/setting/edit", data);
 }

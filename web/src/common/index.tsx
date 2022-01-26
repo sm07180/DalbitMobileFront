@@ -8,26 +8,34 @@ import "../asset/scss/index.scss";
 import Footer from "./footer";
 import GNB from "./gnb";
 import Guide from "./guide";
-import Player from "./player";
 import ToastUI from "./toast";
 import RealTimeBroadUI from "./realtime_broad";
 import ImageViewer from "./image_viewer";
 import MultiImageViewer from "./multi_image_viewer";
+import PipPlayer from "./pip/index";
+import Player from "./player";
 
 export default function Common() {
   const { globalState, globalAction } = useContext(GlobalContext);
-  const { toastStatus, clipPlayer, clipInfo, realtimeBroadStatus } = globalState;
+  const { toastStatus, realtimeBroadStatus } = globalState;
+  const { clipPlayer, clipInfo } = globalState;
   const { setImgViewerPath } = globalAction;
   const location = useLocation();
 
   const broadcastPage = window.location.pathname.startsWith("/broadcast");
   const clipPlayerPage = window.location.pathname.startsWith("/clip/");
+  const clipMain = window.location.pathname.startsWith("/clip");
+  const searchPage = window.location.pathname.startsWith("/search");
+  const rankPage = window.location.pathname.startsWith("/rank");
+  const storyPage = window.location.pathname.startsWith("/story");
+  const eventPage = window.location.pathname.startsWith("/event_list");
+  const specialdjPage = window.location.pathname.startsWith("/event_specialdj");
   const mailboxChatting = window.location.pathname.startsWith("/mailbox");
+  const event = window.location.pathname.startsWith("/event");
 
   useEffect(() => {
     globalAction.setMultiViewer?.({ show: false }); // when location change set multiviewer hide
   }, [location]);
-
   const [ pcMenuState , setPcMenuState ] = useState(false);
   useEffect(()=>{
     if( location.pathname.indexOf("/broadcast") > -1
@@ -45,10 +53,7 @@ export default function Common() {
     <>
       <GNB />
       {pcMenuState && <Guide />}
-      {!broadcastPage && !mailboxChatting && <Player mode={"broadcast"} />}
-      {clipPlayer !== null && clipInfo && !clipPlayerPage && !mailboxChatting && (
-        <Player clipInfo={clipInfo} clipPlayer={clipPlayer} mode={"clip"} />
-      )}
+      <PipPlayer/>
       {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} setImgViewerPath={setImgViewerPath} />}
       {globalState.multiViewer.show && <MultiImageViewer />}
       {/* {makeFooter()} */}

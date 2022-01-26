@@ -5,12 +5,12 @@ type AlertStatusType = {
   width?: number;
   height?: number;
   title?:
-    | string
-    | {
-        text?: string;
-        color?: string;
-        border?: string;
-      };
+      | string
+      | {
+    text?: string;
+    color?: string;
+    border?: string;
+  };
   titleStyle?: {
     [key: string]: any;
   };
@@ -84,6 +84,7 @@ type chatAnimationType = {
   memNo: string;
   ttsItemInfo?: any;
   isTTSItem?: boolean;
+  soundOffLocationFlag?: string | null;
 };
 
 type userCountType = {
@@ -177,6 +178,11 @@ type roomInfoType = {
   useGuest: boolean;
   miniGameList: Array<any>;
   useFilter: boolean;
+  /* Agora */
+  platform:string;
+  agoraAppId:string;
+  agoraToken:string;
+  agoraAccount:string;
 
   /* Wowza */
   webRtcAppName: string;

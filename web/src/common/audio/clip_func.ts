@@ -1,5 +1,5 @@
 // others
-import { UserType } from "common/realtime/rtc_socket";
+import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // Server Api
 import { broadcastExit } from "common/api";
 
@@ -16,7 +16,7 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
           const roomNo = rtcInfo!.getRoomNo();
           const { result } = await broadcastExit({ roomNo });
           if (result === "success") {
-            sessionStorage.removeItem("room_no");
+            rtcSessionClear();
             if (chatInfo && chatInfo !== null) {
               chatInfo.privateChannelDisconnect();
               if (rtcInfo !== null) rtcInfo!.stop();
@@ -38,11 +38,11 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
   } else {
     if (!globalState.baseData.isLogin) {
       clipTable
-        ? history.push({
+          ? history.push({
             pathname: "/login",
             state: "/clip_recommend",
           })
-        : history.push("/login");
+          : history.push("/login");
     } else {
       // history.push(`/clip/${clipNo}`);
       history.push({
@@ -55,7 +55,7 @@ export function ClipPlayerJoin(clipNo: string, gtx, history, clipTable?: boolean
 
 export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
   const { globalState, globalAction } = gtx;
-  const { clipInfo, clipPlayer } = globalState;
+  const { clipInfo, clipPlayer, rtcInfo } = globalState;
   if (clipInfo !== null) {
     globalAction.setAlertStatus!({
       status: true,
@@ -88,16 +88,20 @@ export function RoomValidateFromClip(roomNo, gtx, history, nickNm?, listener?) {
         if (listener === "listener") {
           history.push(`/broadcast/${roomNo}`);
         } else {
-          globalAction.setAlertStatus &&
+          const listenRoomNo = rtcInfo && rtcInfo.roomInfo.roomNo;
+          if(rtcInfo !== null && listenRoomNo !== roomNo) { // 방송 청취중이며 다른방 입장 시도
+            globalAction.setAlertStatus &&
             globalAction.setAlertStatus({
               status: true,
               type: "confirm",
-              content:
-                nickNm === "noName" ? `방송방에 입장하시겠습니까?` : `<b>${nickNm}</b> 님의 <br/> 방송방에 입장하시겠습니까?`,
+              content: '현재 청취 중인 방송이 있습니다. \n 방송에 입장하시겠습니까?',
               callback: () => {
                 history.push(`/broadcast/${roomNo}`);
               },
             });
+          }else {
+            history.push(`/broadcast/${roomNo}`);
+          }
         }
       } else {
         if (globalState.checkAdmin === true && globalState.baseData.isLogin) {

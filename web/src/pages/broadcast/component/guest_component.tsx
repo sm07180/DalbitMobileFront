@@ -469,7 +469,7 @@ function GuestComponent(props) {
       const stream = await setStream();
       setAudioStream(stream);
     }
-    let audioCheckerId: number | null  | any = null;
+    let audioCheckerId: number | null = null;
 
     if (audioStream === null && micCheck === true && micState === false) {
       initDeviceAudioStream();
@@ -600,7 +600,7 @@ function GuestComponent(props) {
     if (guestState.guestStatus.end === true || guestState.guestStatus.exit === true) {
       if (guestInfo !== null) {
         Object.keys(guestInfo).forEach((v) => {
-          guestInfo[v].stop?.();
+          guestInfo[v].stop();
           if (v === globalState.baseData.memNo) {
             guestInfo[v].socketDisconnect();
           }

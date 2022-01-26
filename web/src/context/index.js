@@ -1152,6 +1152,7 @@ const GlobalProvider = (props) => {
     setMailBlockUser,
     setMultiViewer : action.updateMultiViewer,
     setIsMailboxOn,
+    setAgeData,
     setbestDjData : setBestDjData,
     setAuthFormRef,
     setNoServiceInfo,

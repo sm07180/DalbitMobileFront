@@ -14,7 +14,6 @@ function BroadcastEndByListener() {
   const history = useHistory();
 
   const { globalAction } = useContext(GlobalContext);
-
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const [summary, setSummary] = useState<{ [key: string]: any } | null>(null);

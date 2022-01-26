@@ -15,24 +15,23 @@ import { MediaType } from "./constant";
 
 // others
 import "./index.scss";
-import Layout from "../../common/layout";
 
 export default function Broadcast() {
   const { broadcastState } = useContext(BroadcastContext);
 
   const { roomInfo, flipIsLeft } = broadcastState;
   return (
-      <BroadcastLayerProvider>
-          <GuestProvider>
-              <div id="broadcast-page">
-                  <div
-                      className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
-                      "reverse"} ${broadcastState.isWide && "wide"} `}
-                  >
-                      <SideWrapper />
-                  </div>
-              </div>
-          </GuestProvider>
-      </BroadcastLayerProvider>
+    <BroadcastLayerProvider>
+      <GuestProvider>
+        <div id="broadcast-page">
+          <div
+            className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
+              "reverse"} ${broadcastState.isWide && "wide"} `}
+          >
+            <SideWrapper />
+          </div>
+        </div>
+      </GuestProvider>
+    </BroadcastLayerProvider>
   );
 }

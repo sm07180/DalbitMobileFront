@@ -16,8 +16,22 @@ import MicAlarmClose from "common/static/image/mic_alarm_close.png";
 
 type chatUserInfoType = { authToken: string; memNo: string; locale: string; roomNo: string | null };
 
+// 로그인한 유저 방송 설정 타입 (방장 or 유저)
+export type userBroadcastSettingType = {
+  djTtsSound?: boolean | null;
+  djNormalSound?: boolean | null;
+  djListenerIn?: boolean;
+  djListenerOut?: boolean;
+  listenerIn?: boolean;
+  listenerOut?: boolean;
+  liveBadgeView?: boolean;
+  ttsSound?: boolean;
+  normalSound?: boolean;
+};
+
 import { MediaType } from "pages/broadcast/constant";
 import { getCookie } from "common/utility/cookie";
+import {rtcSessionClear} from "./rtc_socket";
 
 export class ChatSocketHandler {
   public socket: any;
@@ -52,8 +66,15 @@ export class ChatSocketHandler {
   public chatCnt: number;
 
   public broadcastStateChange: any;
+  public postErrorState : boolean
+
+  // 로그인한 유저의 방송 설정 (패킷 받을때 설정에 맞게 대응하기 위함)
+  // set 하는 곳 : /mypage/broadcast/setting, /mypage/broadcast/setting/edit
+  // 사용되는 기능 : tts, sound 아이템 on/off, 외 방송설정
+  public userSettingObj: userBroadcastSettingType | null = null;
 
   constructor(userInfo: chatUserInfoType, reConnectHandler?: any) {
+    this.postErrorState =  (window as any)?.postErrorState;
     this.socket = null;
     this.chatUserInfo = userInfo;
     this.roomOwner = false;
@@ -106,6 +127,10 @@ export class ChatSocketHandler {
 
   setBroadcastStateClear(){
     this.broadcastStateChange = {};
+  }
+
+  setUserSettingObj(obj: userBroadcastSettingType) {
+    this.userSettingObj = obj;
   }
 
   setUserInfo(userInfo: chatUserInfoType) {
@@ -236,6 +261,8 @@ export class ChatSocketHandler {
     this.isConnect = true;
     this.socket = socketClusterClient.connect(options);
     this.socket.on(CHAT_CONFIG.event.socket.CONNECT, (msg: string) => {
+      (window as any).postErrorState = false;
+      this.postErrorState = false;
       callback({ error: false, cmd: CHAT_CONFIG.event.socket.CONNECT, msg: msg });
     });
     this.socket.on(CHAT_CONFIG.event.socket.ERROR, (errorCode: number) => {
@@ -248,15 +275,18 @@ export class ChatSocketHandler {
         });
       }
 
-      this.reConnect.reConnect();
-
-      postErrorSave({
-        os: "pc",
-        appVer: "pc",
-        dataType: NODE_ENV,
-        commandType: window.location.pathname,
-        desc: "CHAT_SOCKET_ERROR" + errorCode,
-      });
+      //this.reConnect.reConnect();
+      if(!this.postErrorState){
+        this.postErrorState = true;
+        (window as any).postErrorState = true;
+        postErrorSave({
+          os: "pc",
+          appVer: "pc",
+          dataType: NODE_ENV,
+          commandType: window.location.pathname,
+          desc: "CHAT_SOCKET_ERROR" + errorCode,
+        });
+      }
     });
     this.socket.on(CHAT_CONFIG.event.socket.CLOSE, (errorCode: number) => {
       this.disconnected(true);
@@ -477,19 +507,17 @@ export class ChatSocketHandler {
             // 방송방
             if (this.msgListWrapRef !== null) {
               const msgListWrapElem = this.msgListWrapRef.current;
-
               const chatMsgElement = (data: any) => {
                 const { cmd } = data;
-
                 switch (cmd) {
                   case "time": {
                     return null;
                   }
                   case "chatEnd": {
+                    console.log('들어오냐', this.chatUserInfo, this.rtcInfo);
                     if (this.chatUserInfo["roomNo"] !== null) {
                       this.destroy({ isdestroySocket: false, destroyChannelName: this.chatUserInfo["roomNo"] });
                     }
-
                     if (
                       this.rtcInfo &&
                       this.rtcInfo !== null &&
@@ -521,7 +549,7 @@ export class ChatSocketHandler {
                       }
 
                       this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
-                      sessionStorage.removeItem("room_no");
+                      rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
                         if (this.broadcastLayerAction && this.broadcastLayerAction.dispatchDimLayer) {
@@ -545,7 +573,6 @@ export class ChatSocketHandler {
                       //   // this.history.push("/");
                       // });
                     }
-
                     return null;
                   }
 
@@ -564,7 +591,7 @@ export class ChatSocketHandler {
                       this.rtcInfo.stop && this.rtcInfo.stop();
                       this.globalAction.dispatchRtcInfo({ type: "empty" });
                       this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
-                      sessionStorage.removeItem("room_no");
+                      rtcSessionClear();
 
                       if (this.history.location.pathname.match("/broadcast/")) {
                         if (this.broadcastLayerAction && this.broadcastLayerAction.dispatchDimLayer) {
@@ -733,7 +760,9 @@ export class ChatSocketHandler {
                         return boost.find((item: any) => item.itemNo === itemNo);
                       }
                     })();
-                    const isTTSItem = typeof reqGiftImg.ttsText !== 'undefined' && reqGiftImg.ttsText !== "";
+                    let isTTSItem = typeof reqGiftImg.ttsText !== 'undefined' && reqGiftImg.ttsText !== "";
+                    let isSoundItem = true;
+
                     const ttsItemInfo = {
                       showAlarm: true,
                       isPlaying: true,
@@ -744,6 +773,27 @@ export class ChatSocketHandler {
                       duration: reqGiftImg.ttsData ? reqGiftImg.ttsData.duration * 1000 : 0,
                     }
 
+                    // 방장 tts, sound 아이템 설정에 따라서 토스트 메시지 출력
+                    // 청취자인 경우 본인의 설정(tts, sound)이 true일때만 토스트 문구 출력 조건
+                    // 방장의 조건에 따른 출력하기 조건
+                    if(this.roomOwner || ( (!this.roomOwner && lottieData?.ttsUseYn === 'y' && isTTSItem && this.userSettingObj?.ttsSound) ||
+                        (!this.roomOwner && lottieData?.soundFileUrl && this.userSettingObj?.normalSound) )) {
+                      if ((lottieData?.ttsUseYn === 'y' && isTTSItem && this.roomInfo?.djTtsSound === false) ||
+                          (lottieData?.soundFileUrl && this.roomInfo?.djNormalSound === false)) {
+                        this.globalAction?.callSetToastStatus && this.globalAction.callSetToastStatus({
+                          status: true,
+                          message: 'DJ설정으로 소리가 나오지 않습니다'
+                        });
+                      }
+                    }
+                    // tts : 방장설정이 off이면 재생 x, on이면 청취자 개인설정에 따라 재생
+                    if ( ((!this.roomOwner && this.userSettingObj?.ttsSound === false) || this.roomInfo?.djTtsSound === false ) || (this.roomOwner && this.userSettingObj?.djTtsSound === false) ){
+                      isTTSItem = false;
+                    }
+                    // sound : 방장설정이 off이면 재생 x, on이면 청취자 개인설정에 따라 재생
+                    if( ((!this.roomOwner && this.userSettingObj?.normalSound === false) || this.roomInfo?.djNormalSound === false ) || (this.roomOwner && this.userSettingObj?.djNormalSound === false) ) {
+                      isSoundItem = false;
+                    }
                     if(memNo === this.chatUserInfo.memNo && isTTSItem && (reqGiftImg.ttsData && reqGiftImg.ttsData.error)) {
                       console.log('chat_socket : ', reqGiftImg.ttsData.error);
                       this.globalAction.callSetToastStatus({
@@ -773,6 +823,7 @@ export class ChatSocketHandler {
                         }
                       } else {
                         if (this.broadcastAction !== null && this.broadcastAction.dispatchChatAnimation) {
+
                           this.broadcastAction.dispatchChatAnimation({
                             type: "start",
                             data: {
@@ -781,12 +832,13 @@ export class ChatSocketHandler {
                               height,
                               duration: duration * 1000 * repeatCnt,
                               location,
+                              soundOffLocationFlag: soundFileUrl? (!isSoundItem? 'soundOffLocation': '') : '',
                               count,
                               isCombo,
                               userNickname,
                               userImage,
                               webpUrl,
-                              soundFileUrl,
+                              soundFileUrl : isSoundItem? soundFileUrl : '',
                               itemNo,
                               memNo,
                               ttsItemInfo,
@@ -1671,6 +1723,10 @@ export class ChatSocketHandler {
                     if (noticeDisplay && reqRoomState.mediaOn === false && reqRoomState.isGuest === false) {
                       noticeDisplay.style.display = "block";
 
+                      const player = document.getElementById("local-player");
+                      if(player){
+                        player.classList.add("hidden");;
+                      }
                       const elem = document.createElement("div");
                       elem.id = "isMediaNotice";
                       elem.textContent = data.recvMsg.msg;
@@ -1698,7 +1754,10 @@ export class ChatSocketHandler {
 
                     if (noticeDisplay && reqRoomState.mediaOn === true && reqRoomState.isGuest === false) {
                       const alarmMsg = document.getElementById("isMediaNotice");
-
+                      let player = document.getElementById("local-player");
+                      if(player){
+                        player.classList.remove("hidden");;
+                      }
                       if (alarmMsg) {
                         noticeDisplay.removeChild(alarmMsg);
                       }
@@ -1902,6 +1961,27 @@ export class ChatSocketHandler {
                     }
                     return null;
                   }
+                  case "reqDjSetting": { // 방장 dj가 방송 설정을 변경했습니다. ( djTtsSound, djNormalSound )
+                    const {dj_normal_sound, dj_tts_sound, text} = data?.reqDjSetting?.inOut;
+
+                    if (dj_normal_sound !== 'undefined' && dj_tts_sound !== 'undefined') {
+                      //방장 설정 정보 세팅
+                      const djSetting = {djNormalSound: dj_normal_sound, djTtsSound: dj_tts_sound};
+                      if(this.broadcastAction?.dispatchRoomInfo){
+                        this.setRoomInfo({...this.roomInfo, ...djSetting});
+                        this.broadcastAction.dispatchRoomInfo({type:'broadcastSettingUpdate', data: djSetting});
+
+                        this.globalAction && text && !this.roomOwner &&
+                        this.globalAction.callSetToastStatus({
+                          status: true,
+                          message: text,
+                        });
+                      } else {
+                        console.error('reqDjSetting => this.broadcastAction.dispatchRoomInfo : null');
+                      }
+                    }
+                    return null;
+                  }
                   default:
                     return null;
                 }
@@ -1939,12 +2019,11 @@ export class ChatSocketHandler {
                   this.history
                 ) {
                   this.privateChannelDisconnect();
-                  this.rtcInfo.stop && this.rtcInfo.stop();
+                  this.rtcInfo?.stop();
                   this.globalAction.dispatchRtcInfo({ type: "empty" });
                   this.globalAction.setIsShowPlayer && this.globalAction.setIsShowPlayer(false);
-                  sessionStorage.removeItem("room_no");
-
-                  if (this.history.location.pathname.match("/broadcast/")) {
+                  rtcSessionClear();
+                  if (window.location.pathname.match("/broadcast/")) {
                     if (this.broadcastLayerAction && this.broadcastLayerAction.dispatchDimLayer) {
                       this.broadcastLayerAction.dispatchDimLayer({
                         type: "BROAD_END",

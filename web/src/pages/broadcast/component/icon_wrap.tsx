@@ -33,8 +33,9 @@ import Volume from "./volume";
 import SettingWrap from "./setting_wrap";
 
 // Type
-import { UserType } from "common/realtime/rtc_socket";
+import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import { tabType, MediaType } from "pages/broadcast/constant";
+import { userBroadcastSettingType } from "common/realtime/chat_socket";
 
 // Static
 import MsgIcon from "../static/ic_message.svg";
@@ -58,7 +59,7 @@ import VideoFlipIcon from "../static/ic_mirrormode_m.svg";
 import VideoEffectIcon from "../static/ic_videoeffect_m.svg";
 import MiniGameIcon from "../static/ic_roulette_g.svg";
 
-const IconWrap = (props: {
+export const IconWrap = (props: {
   roomOwner: boolean | null;
   roomNo: string;
   roomInfo: roomInfoType;
@@ -73,11 +74,11 @@ const IconWrap = (props: {
   const { rtcInfo, baseData, guestInfo, chatInfo } = globalState;
 
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { rightTabType, likeClicked, msgShortCut, chatFreeze } = broadcastState;
+  const { rightTabType, likeClicked, msgShortCut, chatFreeze, settingObj } = broadcastState;
 
   const { guestState } = useContext(GuestContext);
 
-  const { dispatchDimLayer } = useContext(BroadcastLayerContext);
+  const { layer, dispatchLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const [toggles, setToggles] = useState<{
     more: boolean;
@@ -92,9 +93,6 @@ const IconWrap = (props: {
   });
   const [settingMore, setSettingMore] = useState<boolean>(false);
 
-  const [settingObj, setSettingObj] = useState<{
-    [type: string]: boolean;
-  } | null>(null);
   const [heartActive, setHeartActive] = useState<boolean>(false);
   const [micActive, setMicActive] = useState<boolean>(roomInfo.isMic);
   const [videoActive, setVideoActive] = useState<boolean>(roomInfo.isVideo);
@@ -142,6 +140,8 @@ const IconWrap = (props: {
       if (rtcInfo !== null && rtcInfo.userType === UserType.LISTENER) {
         if (rtcInfo.audioTag) {
           rtcInfo.audioTag.volume = value;
+          //tts, sound 아이템에 사운드 볼륨적용하기
+          broadcastAction?.setSoundVolume && broadcastAction.setSoundVolume(value);
         }
       }
 
@@ -156,7 +156,7 @@ const IconWrap = (props: {
         });
       }
     },
-    [rtcInfo, guestInfo]
+    [rtcInfo, guestInfo, broadcastAction]
   );
 
   const sendShortCut = (idx: number) => {
@@ -240,7 +240,6 @@ const IconWrap = (props: {
 
   const broadcastOffClick = useCallback(() => {
     // togglController();
-
     if (globalAction.setAlertStatus) {
       globalAction.setAlertStatus({
         status: true,
@@ -255,15 +254,13 @@ const IconWrap = (props: {
             if (roomNo && chatInfo !== null) {
               chatInfo.privateChannelDisconnect();
             }
-
             if (rtcInfo !== null) {
               rtcInfo.socketDisconnect();
               rtcInfo.stop();
-              globalAction.dispatchRtcInfo &&
-                globalAction.dispatchRtcInfo({ type: "empty" });
+              globalAction.dispatchRtcInfo({ type: "empty" });
               disconnectGuest();
-
-              sessionStorage.removeItem("room_no");
+              await rtcInfo.leave();
+              rtcSessionClear();
               if (roomOwner === true) {
                 dispatchDimLayer({
                   type: "BROAD_END",
@@ -273,33 +270,9 @@ const IconWrap = (props: {
                   },
                 });
               } else {
-                globalAction.setExitMarbleInfo &&
-                  globalAction.setExitMarbleInfo({
-                    ...globalState.exitMarbleInfo,
-                    rMarbleCnt: data.getMarbleInfo.rMarbleCnt,
-                    yMarbleCnt: data.getMarbleInfo.yMarbleCnt,
-                    bMarbleCnt: data.getMarbleInfo.bMarbleCnt,
-                    vMarbleCnt: data.getMarbleInfo.vMarbleCnt,
-                    isBjYn: data.getMarbleInfo.isBjYn,
-                    marbleCnt: data.getMarbleInfo.marbleCnt,
-                    pocketCnt: data.getMarbleInfo.pocketCnt,
-                  });
-                if (
-                  (globalState.exitMarbleInfo &&
-                    globalState.exitMarbleInfo.marbleCnt > 0) ||
-                  (globalState.exitMarbleInfo &&
-                    globalState.exitMarbleInfo.pocketCnt > 0)
-                ) {
-                  globalAction.setExitMarbleInfo &&
-                    globalAction.setExitMarbleInfo({
-                      ...globalState.exitMarbleInfo,
-                      showState: true,
-                    });
-                }
-
                 setTimeout(() => {
-                  history.push("/");
-                });
+                history.push("/");
+              });
               }
             }
           }
@@ -314,7 +287,7 @@ const IconWrap = (props: {
 
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
-          guestInfo[v].stop?.();
+          guestInfo[v].stop();
           globalAction.dispatchGuestInfo!({
             type: "EMPTY",
           });
@@ -337,7 +310,7 @@ const IconWrap = (props: {
     }
   };
 
-  const broadcastVideoController = async () => {
+/*  const broadcastVideoController = async () => {
     if (!broadcastState.isTTSPlaying) {
       if (!videoActive) {
         await startBroadcastVideo();
@@ -345,18 +318,23 @@ const IconWrap = (props: {
         await stopBroadcastVideo();
       }
     }
-  };
+  };*/
 
   const stopBroadcastVideo = useCallback(async () => {
     const result = await callModifyBroadcastState({
       mediaState: "video",
       mediaOn: false,
     });
-
+    console.log("stopBroadcastVideo",result)
     if (result === true) {
       setVideoActive(false);
 
       if (rtcInfo !== null) {
+        let player = document.getElementById("local-player");
+        if(player){
+          player.classList.add("hidden");
+        }
+        rtcInfo.videoMute(true);
         rtcInfo.setBroadState(false);
       }
     }
@@ -371,12 +349,17 @@ const IconWrap = (props: {
     if (result) {
       setVideoActive(true);
       if (rtcInfo !== null) {
+        let player = document.getElementById("local-player");
+        if(player){
+          player.classList.remove("hidden");;
+        }
+        rtcInfo.videoMute(false);
         rtcInfo.setBroadState(true);
       }
-
       const noticeDisplay = document.getElementById("broadcast-notice-display");
 
       const mediaAlarm = document.getElementById("isMediaNotice");
+
 
       if (noticeDisplay && mediaAlarm) {
         noticeDisplay.removeChild(mediaAlarm);
@@ -458,7 +441,7 @@ const IconWrap = (props: {
   };
 
   useEffect(() => {
-    let timeoutId: number | null | any = null;
+    let timeoutId: number | null = null;
     if (baseData.isLogin === true && likeClicked === true) {
       timeoutId = setTimeout(() => {
         setHeartActive(true);
@@ -529,6 +512,44 @@ const IconWrap = (props: {
     }
   }, [broadcastState.isTTSPlaying]);
 
+  /** 설정 팝업을 띄운상태에서 선물팝업 띄운경우 끄기 */
+  // TTS, 사운드 아이템 on/off 설정
+  useEffect(() => {
+    if(layer && layer?.status && layer?.type && layer.status && layer.type === 'GIFT'){
+        togglController();
+    }
+  },[layer]);
+
+
+  useEffect(() => {
+    if(layer && layer?.status && layer?.type && layer.status && layer.type === 'GIFT') { // 선물 팝업이 떴을때
+      /** 선물팝업 띄운상태에서 설정 메뉴 띄운경우 끄기 */
+      if (toggles && (toggles.more || toggles.msg || toggles.volume || toggles.video)) {
+        dispatchLayer({type: "INIT"});
+      }
+    }
+  },[toggles]);
+
+  /** 현재 로그인한 유저의 방송설정 정보를 chatSocket에 set하기 (req
+   * chatInfo (chat_socket) 재갱신 시 chatInfo 객체내에 방송 설정 값이 없다면 =>
+   * chatInfo객체에 broadcastSettingObj 유저 방송 설정정보 다시 저장*/
+  useEffect(() => {
+    //chatInfo가 갱신되어 유저의 방송설정값이 없는 경우만!
+    if(settingObj && Object.keys(settingObj).length) {
+      chatInfo?.setUserSettingObj && chatInfo.setUserSettingObj(settingObj);
+    }
+  },[chatInfo, settingObj]);
+
+  //설정값이 바뀔 때 broadcastState에 저장하는 함수
+  const setSettingObj = (param) => {
+    //설정 값 global State에 저장
+    if(broadcastAction?.setSettingObj) {
+      broadcastAction.setSettingObj(param);
+    } else {
+      console.error('icon_wrap.tsx => broadcastAction.setSettingObj null')
+    }
+  };
+
   useEffect(() => {
     const clickEv = (e) => {
       togglController();
@@ -537,21 +558,21 @@ const IconWrap = (props: {
     const fetchBroadcastSetting = async () => {
       const { result, data } = await getBroadcastSetting();
       if (result === "success") {
-        const {
-          djListenerIn,
-          djListenerOut,
-          listenerIn,
-          listenerOut,
-          liveBadgeView,
-        } = data;
+        const {djListenerIn, djListenerOut, listenerIn, listenerOut, liveBadgeView, ttsSound, normalSound,
+          djTtsSound, djNormalSound} = data;
 
-        setSettingObj({
-          djListenerIn,
-          djListenerOut,
-          listenerIn,
-          listenerOut,
-          liveBadgeView,
-        });
+        const settingObj = {
+          djListenerIn: data?.djListenerIn ?? true,
+          djListenerOut: data?.djListenerOut ?? true,
+          listenerIn: data?.listenerIn ?? true,
+          listenerOut: data?.listenerOut ?? true,
+          liveBadgeView: data?.liveBadgeView ?? true,
+          djTtsSound: data?.djTtsSound ?? true,
+          djNormalSound: data?.djNormalSound ?? true,
+          ttsSound: data?.ttsSound ?? true,
+          normalSound: data?.normalSound ?? true
+        };
+        setSettingObj(settingObj);
       }
     };
 

@@ -1,17 +1,16 @@
 // React
-import React, { useRef, useState, useContext, useEffect } from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 
 // Context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
 
-import { MediaType } from "../constant";
+import {MediaType} from "../constant";
 
 // Component
-import { DalbitScroll, ScrollObject } from "common/ui/dalbit_scroll";
+import {DalbitScroll, ScrollObject} from "common/ui/dalbit_scroll";
 
 // Module
-
 // static
 import scrollDownArrowIcon from "../static/scroll_down.svg";
 
@@ -86,6 +85,20 @@ const MsgListWrap = (props: {
         scrollBottomCallback={() => setScrollUpStatus(false)}
         lenCheck={chatCount}
         onHoverBarVisible={true}
+        // intervalCallback={() => {
+        //   const msgListWrapElem = msgListWrapRef.current;
+        //   const lottieDisplayElem = lottieDisplayRef.current;
+        //   if (msgListWrapElem && lottieDisplayElem) {
+        //     const chatInnerWrap = msgListWrapElem.parentNode;
+        //     if (chatInnerWrap !== null) {
+        //       const scrollInnerWrap = chatInnerWrap.parentNode as HTMLElement;
+        //       if (scrollInnerWrap !== null) {
+        //         const lottieDisplayBottom = -scrollInnerWrap.scrollTop;
+        //         lottieDisplayElem.style.bottom = `${lottieDisplayBottom}px`;
+        //       }
+        //     }
+        //   }
+        // }}
       >
         <div
           className="chat-inner-wrap"

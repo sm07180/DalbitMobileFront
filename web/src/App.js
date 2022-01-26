@@ -2,7 +2,7 @@
  * @file App.js
  * @brief React 최초실행시토큰검증및 필수작업
  */
-import React, {useMemo, useState, useEffect, useContext, useRef} from 'react'
+import React, {useContext, useEffect, useMemo, useRef, useState} from 'react'
 import {ErrorBoundary} from 'react-error-boundary'
 import 'styles/errorstyle.scss'
 
@@ -18,7 +18,6 @@ import NoService from './pages/no_service/index'
 
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
-import {getDeviceOSTypeChk} from './common/DeviceCommon';
 import {CHAT_CONFIG} from "constant/define";
 import {ChatSocketHandler} from "common/realtime/chat_socket";
 import {MailboxContext} from "context/mailbox_ctx";
@@ -404,6 +403,37 @@ const App = () => {
 
     // Renew all initial data
     fetchData()
+
+/*
+    if (sessionStorage.getItem("clip") !== null) {
+      const data = JSON.parse(sessionStorage.getItem("clip")!);
+      let newClipPlayer = clipPlayer;
+      if (clipPlayer === null) newClipPlayer = new ClipPlayerHandler(data);
+      newClipPlayer!.setGlobalAction(globalAction);
+      if (
+          data.file.url === newClipPlayer?.clipAudioTag?.src &&
+          data.clipNo !== newClipPlayer!.clipNo
+    ) {
+        newClipPlayer?.init(data.file.url);
+        newClipPlayer!.restart();
+      } else {
+        newClipPlayer?.init(data.file.url);
+      }
+      newClipPlayer?.clipNoUpdate(data.clipNo);
+
+      globalAction.dispatchClipPlayer!({ type: "init", data: newClipPlayer });
+      globalAction.dispatchClipInfo!({
+        type: "add",
+        data: { ...data, ...{ isPaused: true } },
+      });
+    }
+
+    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+    if (sessionAgoraRtc !== null) {
+      const data = JSON.parse(sessionAgoraRtc);
+      const dispatchRtcInfo = getArgoraRtc(data);
+      globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+    }*/
   }, [])
 
   useEffect(() => {

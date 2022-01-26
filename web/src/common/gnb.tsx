@@ -15,7 +15,7 @@ import { GlobalContext } from "context";
 import { MailboxContext } from "context/mailbox_ctx";
 import { RankContext } from "context/rank_ctx";
 // others
-import { HostRtc, UserType } from "common/realtime/rtc_socket";
+import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 import { checkIsMailboxNew } from "common/api";
 import { openMailboxBanAlert } from "common/mailbox/mail_func";
 // static
@@ -25,10 +25,12 @@ import searchIcon from "./static/ico_search_g.svg";
 import storeIcon from "./static/ic_store_g.svg";
 import alarmIcon from "./static/alarm_g.svg";
 import { MediaType } from "pages/broadcast/constant";
-//import {authReq} from "../pages/self_auth/content/self_auth";
+// import {authReq} from "../pages/self_auth/content/self_auth";
+import {authReq} from 'pages/self_auth'
 
 export default function GNB() {
-  const { globalState, globalAction } = useContext(GlobalContext);
+  const context = useContext(GlobalContext);
+  const { globalState, globalAction } = context;
   const { baseData, userProfile, clipPlayer, chatInfo, rtcInfo, alarmStatus, alarmMoveUrl, isMailboxOn } = globalState;
   const { mailboxAction, mailboxState } = useContext(MailboxContext);
   const { isMailboxNew } = mailboxState;
@@ -59,9 +61,11 @@ export default function GNB() {
             title: "본인인증을 완료해주세요",
             content: `방송하기, 클립 녹음, 클립 업로드를 하기 위해 본인인증을 완료해주세요.`,
             callback: () => {
-              //authReq("9", globalState.authFormRef)
+              // TODO : 본인인증 연결필요
+              authReq('9', context.authRef, context);
             },
           });
+          
         }else {
           globalAction.setAlertStatus &&
           globalAction.setAlertStatus({
@@ -98,49 +102,49 @@ export default function GNB() {
         }
         if (rtcInfo !== null && rtcInfo.getPeerConnectionCheck()) {
           return (
-            globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "confirm",
-              content: `현재 ${rtcInfo.userType === UserType.HOST ? "방송" : "청취"} 중인 방송방이 있습니다. ${msgText}`,
-              callback: () => {
-                if (chatInfo !== null && rtcInfo !== null) {
-                  chatInfo.privateChannelDisconnect();
-                  rtcInfo.socketDisconnect();
-                  rtcInfo.stop();
-                  globalAction.dispatchRtcInfo && globalAction.dispatchRtcInfo({ type: "empty" });
-                  sessionStorage.removeItem("room_no");
-                }
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
+                status: true,
+                type: "confirm",
+                content: `현재 ${rtcInfo.userType === UserType.HOST ? "방송" : "청취"} 중인 방송방이 있습니다. ${msgText}`,
+                callback: () => {
+                  if (chatInfo !== null && rtcInfo !== null) {
+                    chatInfo.privateChannelDisconnect();
+                    rtcInfo.socketDisconnect();
+                    rtcInfo.stop();
+                    globalAction.dispatchRtcInfo && globalAction.dispatchRtcInfo({ type: "empty" });
+                    rtcSessionClear();
+                  }
 
-                scrollToTop();
-                if ("broadcast_setting" === category) {
-                  checkBroadcast(category);
-                } else {
-                  globalAction.setBroadClipDim!(false);
-                  history.push(`/${category}`);
-                }
-              },
-            })
+                  scrollToTop();
+                  if ("broadcast_setting" === category) {
+                    checkBroadcast(category);
+                  } else {
+                    globalAction.setBroadClipDim!(false);
+                    history.push(`/${category}`);
+                  }
+                },
+              })
           );
         }
         if (clipPlayer !== null) {
           return (
-            globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              type: "confirm",
-              content: `현재 재생 중인 클립이 있습니다. ${msgText}`,
-              callback: () => {
-                clipPlayer.clipExit();
-                scrollToTop();
-                if ("broadcast_setting" === category) {
-                  checkBroadcast(category);
-                } else {
-                  globalAction.setBroadClipDim!(false);
-                  history.push(`/${category}`);
-                }
-              },
-            })
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
+                status: true,
+                type: "confirm",
+                content: `현재 재생 중인 클립이 있습니다. ${msgText}`,
+                callback: () => {
+                  clipPlayer.clipExit();
+                  scrollToTop();
+                  if ("broadcast_setting" === category) {
+                    checkBroadcast(category);
+                  } else {
+                    globalAction.setBroadClipDim!(false);
+                    history.push(`/${category}`);
+                  }
+                },
+              })
           );
         }
 
@@ -163,20 +167,20 @@ export default function GNB() {
           chatInfo.privateChannelDisconnect();
           if (rtcInfo !== null) rtcInfo!.stop();
           globalAction.dispatchRtcInfo!({ type: "empty" });
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
         }
         globalAction.setBroadClipDim!(false);
         history.push(`/${category}`);
       } else {
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "confirm",
-            content: exitRes.message,
-            callback: () => {
-              globalAction.setBroadClipDim!(false);
-            },
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: exitRes.message,
+          callback: () => {
+            globalAction.setBroadClipDim!(false);
+          },
+        });
       }
     };
 
@@ -206,103 +210,103 @@ export default function GNB() {
       if (code === "1") {
         // 진행중인 방송 존재
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "confirm",
-            content: message,
-            confirmText: "방송종료",
-            cancelCallback: () => {
-              globalAction.setBroadClipDim!(false);
-            },
-            callback: () => {
-              roomExit(data.roomNo);
-            },
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: message,
+          confirmText: "방송종료",
+          cancelCallback: () => {
+            globalAction.setBroadClipDim!(false);
+          },
+          callback: () => {
+            roomExit(data.roomNo);
+          },
+        });
       } else if (code === "2") {
         //비정상된 방이 있음 => 이어하기와 동일하게 수정
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "confirm",
-            content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
-            subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
-            subcontStyle: { color: `#e84d70` },
-            confirmCancelText: "이어서 방송하기",
-            confirmText: "새로 방송하기",
-            // 이어서방송하기
-            cancelCallback: () => {
-              (async function() {
-                const infoRes = await broadcastNomalize({ roomNo: data.roomNo });
-                if (infoRes.result === "success") {
-                  broadcastMove(infoRes.data);
-                } else {
-                  globalAction.setAlertStatus &&
-                    globalAction.setAlertStatus({
-                      status: true,
-                      type: "alert",
-                      content: infoRes.message,
-                      callback: () => {
-                        globalAction.setBroadClipDim!(false);
-                      },
-                    });
-                }
-              })();
-            },
-            // 새로방송하기
-            callback: () => {
-              roomExit(data.roomNo);
-            },
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
+          subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
+          subcontStyle: { color: `#e84d70` },
+          confirmCancelText: "이어서 방송하기",
+          confirmText: "새로 방송하기",
+          // 이어서방송하기
+          cancelCallback: () => {
+            (async function() {
+              const infoRes = await broadcastNomalize({ roomNo: data.roomNo });
+              if (infoRes.result === "success") {
+                broadcastMove(infoRes.data);
+              } else {
+                globalAction.setAlertStatus &&
+                globalAction.setAlertStatus({
+                  status: true,
+                  type: "alert",
+                  content: infoRes.message,
+                  callback: () => {
+                    globalAction.setBroadClipDim!(false);
+                  },
+                });
+              }
+            })();
+          },
+          // 새로방송하기
+          callback: () => {
+            roomExit(data.roomNo);
+          },
+        });
       } else if (code === "C100") {
         // 이어하기 가능
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "confirm",
-            content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
-            subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
-            subcontStyle: { color: `#e84d70` },
-            confirmCancelText: "이어서 방송하기",
-            confirmText: "새로 방송하기",
-            //이어서방송하기
-            cancelCallback: () => {
-              (async function() {
-                const continueRes = await broadcastContinue();
-                if (continueRes.result === "success") {
-                  broadcastMove(continueRes.data);
-                } else {
-                  globalAction.setAlertStatus &&
-                    globalAction.setAlertStatus({
-                      status: true,
-                      type: "alert",
-                      content: continueRes.message,
-                      callback: () => {
-                        globalAction.setBroadClipDim!(false);
-                      },
-                    });
-                }
-              })();
-            },
-            //새로방송하기
-            callback: () => {
-              globalAction.setBroadClipDim!(false);
-              history.push(`/${category}`);
-            },
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          type: "confirm",
+          content: "2시간 이내에 방송진행 내역이 있습니다. \n방송을 이어서 하시겠습니까?",
+          subcont: "※ 이어서 하면 모든 방송데이터(방송시간,청취자,좋아요,부스터,선물)를 유지한 상태로 만들어집니다.",
+          subcontStyle: { color: `#e84d70` },
+          confirmCancelText: "이어서 방송하기",
+          confirmText: "새로 방송하기",
+          //이어서방송하기
+          cancelCallback: () => {
+            (async function() {
+              const continueRes = await broadcastContinue();
+              if (continueRes.result === "success") {
+                broadcastMove(continueRes.data);
+              } else {
+                globalAction.setAlertStatus &&
+                globalAction.setAlertStatus({
+                  status: true,
+                  type: "alert",
+                  content: continueRes.message,
+                  callback: () => {
+                    globalAction.setBroadClipDim!(false);
+                  },
+                });
+              }
+            })();
+          },
+          //새로방송하기
+          callback: () => {
+            globalAction.setBroadClipDim!(false);
+            history.push(`/${category}`);
+          },
+        });
       } else {
         globalAction.setBroadClipDim!(false);
         history.push(`/${category}`);
       }
     } else {
       globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "alert",
-          content: message,
-          callback: () => {
-            globalAction.setBroadClipDim!(false);
-          },
-        });
+      globalAction.setAlertStatus({
+        status: true,
+        type: "alert",
+        content: message,
+        callback: () => {
+          globalAction.setBroadClipDim!(false);
+        },
+      });
     }
   };
 
@@ -349,11 +353,11 @@ export default function GNB() {
         mailboxAction.setIsMailboxNew && mailboxAction.setIsMailboxNew(data.isNew);
       } else {
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: message,
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          type: "alert",
+          content: message,
+        });
       }
     };
     if (globalState.baseData.isLogin) {
@@ -369,6 +373,7 @@ export default function GNB() {
       document.removeEventListener("self-auth", updateDispatch);
     };
   }, []);
+
   const [ pcMenuState , setPcMenuState ] = useState(false);
   useEffect(()=>{
     if( location.pathname.indexOf("/broadcast") > -1

@@ -1,40 +1,38 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useContext,
-  useCallback,
-  useMemo,
-  useLayoutEffect,
-} from "react";
-import { useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useLayoutEffect, useRef, useState,} from "react";
+import {useHistory} from "react-router-dom";
 import styled from "styled-components";
-import { useLastLocation } from "react-router-last-location";
+import {useLastLocation} from "react-router-last-location";
 
 // context
-import { GlobalContext } from "context";
-import { BroadcastContext } from "context/broadcast_ctx";
-import { GuestContext } from "context/guest_ctx";
+import {GlobalContext} from "context";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {GuestContext} from "context/guest_ctx";
 
 // constant
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 
 // component
 import ChatHeaderWrap from "../component/chat_header_wrap";
 import ChatInputWrap from "../component/chat_input_wrap";
 import ChatListWrap from "../component/chat_list_wrap";
 import RandomMsgWrap from "../component/random_msg_wrap";
-import MoonLandAnimationComponent from "../component/moon_land_animation_component";
 
 // others
 import LottiePlayer from "lottie-web";
-import {UserType, ListenerRtc, HostRtc, rtcSessionClear} from "common/realtime/rtc_socket";
-import { createElement } from "lib/create_element";
+import {
+  AgoraHostRtc,
+  AgoraListenerRtc,
+  HostRtc,
+  ListenerRtc,
+  rtcSessionClear,
+  UserType
+} from "common/realtime/rtc_socket";
+import {createElement} from "lib/create_element";
 import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import {broadcastExit} from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -125,7 +123,7 @@ function audioTimeout(
 
         if (lottieDisplayElem.children.length === 0) {
           broadcastAction.dispatchChatAnimation &&
-            broadcastAction.dispatchChatAnimation({ type: "end" });
+          broadcastAction.dispatchChatAnimation({ type: "end" });
         }
       } else {
         audio.volume = volume / 10;
@@ -134,7 +132,7 @@ function audioTimeout(
   }, duration);
 }
 
-export default function LeftSide(props: {
+export default function LeftSideAgora(props: {
   roomOwner: boolean;
   roomNo: string;
   roomInfo: roomInfoType;
@@ -154,7 +152,7 @@ export default function LeftSide(props: {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { baseData, chatInfo, rtcInfo, tooltipStatus, guestInfo } = globalState;
   const { broadcastState, broadcastAction } = useContext(BroadcastContext);
-  const { chatAnimation, comboAnimation, chatFreeze, soundVolume } = broadcastState;
+  const { chatAnimation, comboAnimation, chatFreeze } = broadcastState;
   const { guestState, guestAction } = useContext(GuestContext);
   const { guestConnectStatus } = guestState;
 
@@ -173,7 +171,8 @@ export default function LeftSide(props: {
   const [animPlayState, setAnimPlayState] = useState(false);
   const [audioPlayState, setAudioPlayState] = useState(false);
   const [ttsAnimationQueue, setTTSAnimationQueue] = useState<Array<any>>([]);
-
+  type AType = {host: AgoraHostRtc | null, listener: AgoraListenerRtc | null};
+  const [agoraRtc, setAgoraRtc] = useState<AType>({host: null, listener: null})
   // temp variable
 
   const displayWrapRef = useRef<HTMLDivElement>(null);
@@ -195,15 +194,14 @@ export default function LeftSide(props: {
         roomInfo.webRtcStreamName,
         roomNo,
         {
-          isVideo: roomInfo.mediaType === MediaType.VIDEO,
+          isVideo: false,
         }
       );
       rtcInfo.setRoomInfo(roomInfo);
 
       rtcInfo.setDisplayWrapRef(displayWrapRef);
-
-      globalAction.dispatchRtcInfo &&
-        globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
+      console.log("broadcastPlayAsListener")
+      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
     }
   }, [roomInfo]);
 
@@ -214,7 +212,7 @@ export default function LeftSide(props: {
       roomInfo.webRtcStreamName
     ) {
       const videoConstraints = {
-        isVideo: roomInfo.mediaType === MediaType.VIDEO ? true : false,
+        isVideo: false,
         videoFrameRate: roomInfo.videoFrameRate,
         videoResolution: roomInfo.videoResolution,
       };
@@ -229,8 +227,8 @@ export default function LeftSide(props: {
         videoConstraints
       );
       rtcInfo.setRoomInfo(roomInfo);
-      globalAction.dispatchRtcInfo &&
-        globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
+      console.log("broadcastPublishAsHost")
+      globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
       setPlayBtnStatus(false);
     }
   }, [rtcInfo, roomInfo]);
@@ -261,7 +259,6 @@ export default function LeftSide(props: {
     setAudioPlayState(false);
   };
 
-  // todo tts, SoundItem volume 적용하기
   const playAnimation = (playData) => {
     const {
       ttsItemInfo,
@@ -272,7 +269,7 @@ export default function LeftSide(props: {
       soundFileUrl,
     } = playData;
     ttsAudio = new Audio();
-    ttsAudio.volume = soundVolume;
+    ttsAudio.volume = 1;
     ttsAudio.src = isTTSItem ? ttsItemInfo.fileUrl : soundFileUrl;
     ttsAudio.play();
     ttsAudio.loop = false;
@@ -310,7 +307,7 @@ export default function LeftSide(props: {
 
       if (lottieDisplayElem && lottieDisplayElem.children.length === 0) {
         broadcastAction.dispatchChatAnimation &&
-          broadcastAction.dispatchChatAnimation({ type: "end" });
+        broadcastAction.dispatchChatAnimation({ type: "end" });
       }
 
       setAnimPlayState(false);
@@ -468,78 +465,116 @@ export default function LeftSide(props: {
     return () =>
       ttsAudio && ttsAudio.removeEventListener("ended", audioEndEvent);
   }, [ttsAudio]);
+  //방장 비디오 셋팅
+  useEffect(()=>{
+    if(roomInfo.platform === "wowza"){
+      return;
+    }
+
+    if(agoraRtc.host || agoraRtc.listener){// rtc 1번만 생성하기
+      return;
+    }
+    if(!roomInfo.agoraToken){
+      console.log(`left_side_agora not found agoraToken`)
+      return;
+    }
+    const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
+    const host = new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, videoConstraints);
+    const listener = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
+    const dispatchRtcInfo = roomOwner ? host : listener;
+    dispatchRtcInfo.setRoomInfo(roomInfo);
+    dispatchRtcInfo.join(roomInfo).then(()=>{
+      globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+      sessionStorage.setItem("agora_rtc", JSON.stringify(dispatchRtcInfo));
+    });
+
+    setAgoraRtc({...agoraRtc, ...dispatchRtcInfo});
+
+    // return(()=>{
+    //    if(listener){
+    //      listener.leave();
+    //      globalAction.dispatchRtcInfo({ type: "empty"});
+    //    }
+    // })
+  },[])
+
+  useEffect(()=>{
+    // Set rtcinfo in chat instance.
+    if (chatInfo !== null) {
+        chatInfo.setRtcInfo(rtcInfo);
+    }
+  },[rtcInfo])
+
+
 
   useEffect(() => {
-    if (rtcInfo !== null) {
-      // for dj host, audio publishing - refresh case
-      rtcInfo.setDisplayWrapRef(displayWrapRef);
+    if(roomInfo.platform === "wowza"){
+      if (rtcInfo !== null) {
+        // for dj host, audio publishing - refresh case
+        rtcInfo.setDisplayWrapRef(displayWrapRef);
 
-      rtcInfo.initVideoTag();
+        rtcInfo.initVideoTag();
 
-      if (roomOwner === true) {
-        if (lastLocation === null) {
-          initInterval(() => {
-            if (rtcInfo.getWsConnectionCheck()) {
-              setConnectedStatus(false);
-              rtcInfo.publish();
-              setPlayBtnStatus(false);
-              return true;
-            }
-            return false;
-          });
-        } else {
-          initInterval(() => {
-            if (rtcInfo.getWsConnectionCheck()) {
-              setConnectedStatus(false);
-              rtcInfo.publish();
-              setPlayBtnStatus(false);
-              return true;
-            }
-            return false;
-          });
-        }
-      } else if (roomOwner === false) {
-        // for listener, audio playing
-        if (lastLocation !== null) {
-          if (rtcInfo.userType === UserType.LISTENER) {
-            rtcInfo.setDisplayWrapRef(displayWrapRef);
-            rtcInfo.initVideoTag();
+        if (roomOwner === true) {
+          if (lastLocation === null) {
             initInterval(() => {
-              if (rtcInfo.getPeerConnectionCheck()) {
-                rtcInfo.playMediaTag();
+              if (rtcInfo.getWsConnectionCheck()) {
                 setConnectedStatus(false);
+                rtcInfo.publish();
+                setPlayBtnStatus(false);
+                return true;
+              }
+              return false;
+            });
+          } else {
+            initInterval(() => {
+              if (rtcInfo.getWsConnectionCheck()) {
+                setConnectedStatus(false);
+                rtcInfo.publish();
+                setPlayBtnStatus(false);
                 return true;
               }
               return false;
             });
           }
-        } else {
-          initInterval(() => {
-            if (rtcInfo.getPeerConnectionCheck()) {
+        } else if (roomOwner === false) {
+          // for listener, audio playing
+          if (lastLocation !== null) {
+            if (rtcInfo.userType === UserType.LISTENER) {
               rtcInfo.setDisplayWrapRef(displayWrapRef);
-              setConnectedStatus(false);
-              setPlayBtnStatus(true);
-              return true;
+              rtcInfo.initVideoTag();
+              initInterval(() => {
+                if (rtcInfo.getPeerConnectionCheck()) {
+                  rtcInfo.playMediaTag();
+                  setConnectedStatus(false);
+                  return true;
+                }
+                return false;
+              });
             }
-            return false;
-          });
+          } else {
+            initInterval(() => {
+              if (rtcInfo.getPeerConnectionCheck()) {
+                rtcInfo.setDisplayWrapRef(displayWrapRef);
+                setConnectedStatus(false);
+                setPlayBtnStatus(true);
+                return true;
+              }
+              return false;
+            });
+          }
+        }
+
+      } else {
+        if (roomOwner) {
+          setPlayBtnStatus(true);
+          setConnectedStatus(false);
         }
       }
 
-      // Set rtcinfo in chat instance.
-      if (chatInfo !== null) {
-        chatInfo.setRtcInfo(rtcInfo);
-      }
-    } else {
-      if (roomOwner) {
-        setPlayBtnStatus(true);
-        setConnectedStatus(false);
-      }
     }
-
     return () => {
       // During signaling, leave the room.
-
       if (
         rtcInfo !== null &&
         rtcInfo.getPeerConnectionCheck() === false &&
@@ -547,7 +582,7 @@ export default function LeftSide(props: {
       ) {
         rtcInfo.socketDisconnect();
         globalAction.dispatchRtcInfo &&
-          globalAction.dispatchRtcInfo({ type: "empty" });
+        globalAction.dispatchRtcInfo({ type: "empty" });
       }
     };
   }, [rtcInfo]);
@@ -636,7 +671,6 @@ export default function LeftSide(props: {
     }
   }, [ttsAnimationQueue]);
 
-  //ttsItem, soundItem, webp, lottie Item 출력시키는 Effect
   useEffect(() => {
     let comboIdx = 0;
 
@@ -665,7 +699,6 @@ export default function LeftSide(props: {
             memNo,
             ttsItemInfo,
             isTTSItem,
-            soundOffLocationFlag
           } = chatAnimation;
 
           const animationWrapElem = document.createElement("div");
@@ -710,7 +743,7 @@ export default function LeftSide(props: {
           } else if (soundFileUrl && soundFileUrl !== "") {
             soundAnimationQueue.push(chatAnimation);
             if (soundAnimationQueue.length === 1) {
-              audio.volume = soundVolume;
+              audio.volume = 1;
               audio.src = soundFileUrl;
               audio.play();
               audio.loop = true;
@@ -721,7 +754,7 @@ export default function LeftSide(props: {
                 webpImg.setAttribute("src", webpUrl);
                 webpImg.setAttribute(
                   "style",
-                  "position: absolute; object-fit: contain; width: inherit; height: inherit;"
+                  "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
                 );
 
                 animationWrapElem.appendChild(webpImg);
@@ -746,7 +779,7 @@ export default function LeftSide(props: {
               const AudioInterval = setInterval(() => {
                 if (audio.paused) {
                   clearInterval(AudioInterval);
-                  audio.volume = soundVolume;
+                  audio.volume = 1;
                   audio.src = soundFileUrl;
                   audio.play();
                   audio.loop = true;
@@ -769,7 +802,7 @@ export default function LeftSide(props: {
                       path: url,
                     });
                   }
-                  try {
+
                   audioTimeout(
                     soundAnimationQueue[0].duration,
                     lottieAnimation,
@@ -777,7 +810,6 @@ export default function LeftSide(props: {
                     animationWrapElem,
                     broadcastAction
                   );
-                  }catch(e){console.log(e)}
                 }
               }, 100);
             }
@@ -795,30 +827,6 @@ export default function LeftSide(props: {
                 webpImg.setAttribute(
                   "style",
                   "position: absolute; left: 35%; object-fit: contain; height: inherit; width: 50px;"
-                );
-              } else if(location === 'midTop') {  // 달나라 미션 달성시 애니메이션
-
-                try {
-                  const leftSide = document.querySelector("#display");//leftSide 영역의 marginTop값 계산
-                  if(lottieDisplayElem && leftSide) {
-                    const lottieEl = lottieDisplayElem.getBoundingClientRect();
-                    const topCalc = lottieEl.top - leftSide.getBoundingClientRect().top;
-                    const leftCalc = (lottieEl.width/2) - 180; // 180 : (webp width/2)
-                    webpImg.setAttribute(
-                      "style",
-                      `z-index: 9999; position: absolute; object-fit: contain; width: 360px; height: 540px; top: -${topCalc}px; left:${leftCalc}px`
-                    );
-                  }
-                } catch (e) {
-                  webpImg.setAttribute(
-                    "style",
-                    `position: absolute; object-fit: contain; width: 360px; height: 540px; top: 20px; left:50%`
-                  );
-                }
-              } else if(soundOffLocationFlag === 'soundOffLocation') {  //sound Item 정책 꼬여서 분기 조건 추가 soundOffLocationFlag
-                webpImg.setAttribute(
-                  "style",
-                  "position: absolute; object-fit: contain; width: inherit; height: inherit;"
                 );
               } else {
                 webpImg.setAttribute(
@@ -848,7 +856,7 @@ export default function LeftSide(props: {
 
               if (lottieDisplayElem.children.length === 0) {
                 broadcastAction.dispatchChatAnimation &&
-                  broadcastAction.dispatchChatAnimation({ type: "end" });
+                broadcastAction.dispatchChatAnimation({ type: "end" });
               }
 
               animationCount -= 1;
@@ -867,19 +875,6 @@ export default function LeftSide(props: {
       }
     }
   }, [chatAnimation]);
-
-  //tts, sound Item에 사운드 볼륨을 적용시키는 Effect 
-  //볼륨 조절은 icon_wrap.tsx 컴포넌트에서 함
-  useEffect(() => {
-    if (typeof soundVolume === 'number') {
-      if(audio && typeof audio?.volume === 'number') {
-        audio.volume = soundVolume;
-      }
-      if(ttsAudio && typeof ttsAudio?.volume === 'number') {
-        ttsAudio.volume = soundVolume;
-      }
-    }
-  },[soundVolume]);
 
   const createComboElem = ({ url, userImage, userNickname, _idx }) => {
     const animationWrapElem = document.createElement("div");
@@ -1210,9 +1205,10 @@ export default function LeftSide(props: {
   return (
     <div
       className={`left-side ${roomInfo.mediaType === MediaType.VIDEO &&
-        "video"} ${broadcastState.isWide && "wide"}`}
+      "video"} ${broadcastState.isWide && "wide"}`}
       id="display"
     >
+      <div id="local-player" className="player"/>
       <div
         className="chat-display"
         ref={displayWrapRef}
@@ -1224,25 +1220,25 @@ export default function LeftSide(props: {
       >
 
         {broadcastState.ttsActionInfo.showAlarm &&
-          <div className="ttsLayer">
-            <div className="user">
-              <img src="https://image.dalbitlive.com/broadcast/ico_speaker-layer.png" />
-              {broadcastState.ttsActionInfo.nickNm}
-            </div>
-            <span>{broadcastState.ttsActionInfo.ttsText}</span>
+        <div className="ttsLayer">
+          <div className="user">
+            <img src="https://image.dalbitlive.com/broadcast/ico_speaker-layer.png" />
+            {broadcastState.ttsActionInfo.nickNm}
           </div>
+          <span>{broadcastState.ttsActionInfo.ttsText}</span>
+        </div>
         }
 
-        {roomInfo !== null &&
-          roomInfo.mediaType === MediaType.VIDEO &&
-          roomOwner === true && (
-            <canvas
-              id="deepar-canvas"
-              onContextMenu={(e) => {
-                e.preventDefault();
-              }}
-            ></canvas>
-          )}
+{/*        {roomInfo !== null &&
+        roomInfo.mediaType === MediaType.VIDEO &&
+        roomOwner === true && (
+          <canvas
+            id="deepar-canvas"
+            onContextMenu={(e) => {
+              e.preventDefault();
+            }}
+          ></canvas>
+        )}*/}
 
         {chatFreeze === true && (
           <Lottie
@@ -1278,11 +1274,7 @@ export default function LeftSide(props: {
 
         {/* {((chatAnimation !== null && chatAnimation.status === true) ||
           (comboAnimation !== null && comboAnimation.status === true)) && ( */}
-        <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" >
-          {/* 달나라 갈꺼야 - 포인트 애니메이션 출현 컴포넌트 */}
-          <MoonLandAnimationComponent roomOwner={roomOwner} roomInfo={roomInfo} chatInfo={chatInfo}
-                                      isWide={broadcastState.isWide}/>
-        </LottieDisplayStyled>
+        <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" />
         {/* )} */}
 
         <NoticeDisplayStyled id="broadcast-notice-display"></NoticeDisplayStyled>
@@ -1291,29 +1283,29 @@ export default function LeftSide(props: {
         {tooltipStatus.status === true && <TooltipUI />}
 
         {rtcInfo !== null &&
-          rtcInfo.attendClicked === false &&
-          !roomOwner &&
-          rtcInfo.roomInfo?.isAttendCheck === false && (
-            <StampIconWrapStyled
-              className="stamp_icon_wrap"
-              onClick={() => {
-                rtcInfo.attendClicked = true;
-                history.push("/event/attend_event");
+        rtcInfo.attendClicked === false &&
+        !roomOwner &&
+        rtcInfo.roomInfo?.isAttendCheck === false && (
+          <StampIconWrapStyled
+            className="stamp_icon_wrap"
+            onClick={() => {
+              rtcInfo.attendClicked = true;
+              history.push("/event/attend_event");
+            }}
+          >
+            {/* <img src="https://image.dalbitlive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
+            <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: StampIcon,
               }}
-            >
-              {/* <img src="https://image.dalbitlive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
-              <Lottie
-                options={{
-                  loop: true,
-                  autoplay: true,
-                  animationData: StampIcon,
-                }}
-                isClickToPauseDisabled={true}
-                width={42}
-                height={42}
-              />
-            </StampIconWrapStyled>
-          )}
+              isClickToPauseDisabled={true}
+              width={42}
+              height={42}
+            />
+          </StampIconWrapStyled>
+        )}
         <RandomMsgWrap
           roomInfo={roomInfo}
           roomOwner={roomOwner}
@@ -1358,11 +1350,11 @@ export default function LeftSide(props: {
         </PlayBtnDisplayStyled>
       )}
 
-      {roomInfo.mediaType === MediaType.VIDEO && (
+{/*      {roomInfo.mediaType === MediaType.VIDEO && (
         <ConnectedStatusStyled>
           <div className="title">잠시만 기다려주세요.</div>
         </ConnectedStatusStyled>
-      )}
+      )}*/}
     </div>
   );
 }

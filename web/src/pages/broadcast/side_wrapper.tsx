@@ -5,7 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { broadcastAllExit, broadcastExit, broadcastJoin, broadcastInfoNew, selfAuthCheck } from "common/api";
 
 // others
-import { HostRtc, UserType } from "common/realtime/rtc_socket";
+import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 
 // context
 import { GlobalContext } from "context";
@@ -16,6 +16,7 @@ import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 import ChatSide from "./content/chat_side";
 import LeftSide from "./content/left_side";
 import RightSide from "./content/right_side";
+import Agora from "./content/left_side_agora"
 
 import LayerSwitchRendered from "./component/layer_switch_rendered";
 
@@ -46,7 +47,7 @@ export default function SideWrapper() {
 
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
-          guestInfo[v].stop?.();
+          guestInfo[v].stop();
           globalAction.dispatchGuestInfo!({
             type: "EMPTY",
           });
@@ -65,26 +66,6 @@ export default function SideWrapper() {
       setSplashData(globalState.splashData);
     }
 
-    async function fetchSelfAuth() {
-      const { result } = await selfAuthCheck();
-      if (result === "success") {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: "20세 이상만 입장할 수 있는 방송입니다.",
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          });
-      } else {
-        globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            content: "20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.",
-            callback: () => history.push("/mysetting"),
-            cancelCallback: () => history.push("/"),
-          });
-      }
-    }
 
     async function broadcastJoinConfirm() {
       globalAction.setAlertStatus &&
@@ -126,7 +107,7 @@ export default function SideWrapper() {
             globalAction.dispatchRtcInfo!({ type: "empty" });
           }
           disconnectGuest();
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
         }
         setTimeout(() => {
           broadcastJoinAction();
@@ -140,7 +121,7 @@ export default function SideWrapper() {
           }
           disconnectGuest();
         }
-        sessionStorage.removeItem("room_no");
+        rtcSessionClear();
         globalAction.setAlertStatus &&
           globalAction.setAlertStatus({
             status: true,
@@ -151,7 +132,7 @@ export default function SideWrapper() {
           });
       }
     }
-
+    //청취자 입장
     async function broadcastJoinAction() {
       const { result, data, code, message } = await broadcastJoin({ roomNo, shadow: globalState.shadowAdmin });
       if (result === "success") {
@@ -160,7 +141,6 @@ export default function SideWrapper() {
           ...data,
           currentMemNo: globalState.baseData.isLogin === true ? globalState.baseData.memNo : "",
         };
-
         const { isFreeze, isExtend, isLike, bjMemNo, fanRank, likes, rank, miniGameList } = roomInfo;
 
         setRoomOwner(baseData.memNo === bjMemNo ? true : false);
@@ -221,7 +201,7 @@ export default function SideWrapper() {
           broadcastJoinConfirm();
         } else if (code === "-6") {
           // 20세 이상
-          fetchSelfAuth();
+          authCheck();
         } else if (code === "-8") {
           // Host Join case
           globalAction.setAlertStatus &&
@@ -262,7 +242,7 @@ export default function SideWrapper() {
             disconnectGuest();
             globalAction.dispatchRtcInfo!({ type: "empty" });
           }
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
           globalAction.setAlertStatus &&
             globalAction.setAlertStatus({
               status: true,
@@ -274,7 +254,7 @@ export default function SideWrapper() {
         }
       }
     }
-
+    //방장 입장.
     async function broadcastInit() {
       /*
        * 기존 룸조인 => 방장일때 정보조회
@@ -282,6 +262,7 @@ export default function SideWrapper() {
        * 정보의 auth로 처리(chatInfo, rtcInfo 널이나 언디파인드 확인)
        * */
       const newRoomInfo = await broadcastInfoNew({ roomNo });
+
       if (newRoomInfo.result === "success") {
         // 방 정보 설정
         const roomInfo = {
@@ -289,7 +270,7 @@ export default function SideWrapper() {
           currentMemNo: globalState.baseData.isLogin === true ? globalState.baseData.memNo : "",
           broadState: newRoomInfo.data.state === 2 ? false : true,
         };
-
+        console.log("broadcastInit====>",roomInfo)
         const { auth, fanRank, likes, rank, isExtend, isFreeze, isLike, miniGameList } = roomInfo;
         setRoomOwner(auth === 3 ? true : false);
         broadcastAction.dispatchRealTimeValue &&
@@ -370,12 +351,14 @@ export default function SideWrapper() {
 
     (async () => {
       // await getSplashData();
-
+      console.log("async 374")
       if (rtcInfo === null || rtcInfo.userType === UserType.LISTENER) {
         if (rtcInfo !== null) {
+          console.log("async 378")
           rtcInfo.socketDisconnect();
           // rtcInfo.stop();
         }
+        console.log("async 382")
         broadcastInit();
       } else if (rtcInfo !== null && rtcInfo.userType === UserType.HOST) {
         const { roomInfo } = rtcInfo;
@@ -383,7 +366,7 @@ export default function SideWrapper() {
         setFetching(true);
         if (roomInfo !== null) {
           const roomOwner = baseData.memNo === roomInfo.bjMemNo;
-          if (rtcInfo.getRoomNo() !== roomNo) {
+          if (rtcInfo?.roomInfo?.roomNo !== roomNo) {
             if (globalAction.setAlertStatus) {
               globalAction.setAlertStatus({
                 status: true,
@@ -394,7 +377,7 @@ export default function SideWrapper() {
                 cancelCallback: () => history.goBack(),
               });
             }
-          } else if (rtcInfo.getRoomNo() === roomNo) {
+          } else if (rtcInfo?.roomInfo?.roomNo === roomNo) {
             broadcastInit();
           }
         }
@@ -493,14 +476,21 @@ export default function SideWrapper() {
         />
       )}
 
-      {roomOwner !== null && broadcastState.roomInfo !== null && fetching ? (
-        <LeftSide
-          roomOwner={roomOwner}
-          roomNo={roomNo}
-          roomInfo={broadcastState.roomInfo}
-          forceChatScrollDown={forceChatScrollDown}
-          setForceChatScrollDown={setForceChatScrollDown}
+      {(roomOwner !== null && broadcastState.roomInfo !== null && fetching) ? (
+        <Agora
+        roomOwner={roomOwner}
+        roomNo={roomNo}
+        roomInfo={broadcastState.roomInfo}
+        forceChatScrollDown={forceChatScrollDown}
+        setForceChatScrollDown={setForceChatScrollDown}
         />
+        // <LeftSide
+        //   roomOwner={roomOwner}
+        //   roomNo={roomNo}
+        //   roomInfo={broadcastState.roomInfo}
+        //   forceChatScrollDown={forceChatScrollDown}
+        //   setForceChatScrollDown={setForceChatScrollDown}
+        // />
       ) : (
         <div className="temp-left-side"></div>
       )}
@@ -519,3 +509,26 @@ export default function SideWrapper() {
     </>
   );
 }
+
+export const authCheck = async () => {
+  const history = useHistory();
+  const { globalState, globalAction } = useContext(GlobalContext);
+
+  const { result } = await selfAuthCheck();
+  if (result === "success") {
+    globalAction.setAlertStatus({
+      status: true,
+      content: "20세 이상만 입장할 수 있는 방송입니다.",
+      callback: () => history.push("/"),
+      cancelCallback: () => history.push("/"),
+    });
+  } else {
+    globalAction.setAlertStatus({
+      status: true,
+      content: "20세 이상만 입장할 수 있는 방송입니다. 본인인증 후 이용해주세요.",
+      callback: () => history.push("/mysetting"),
+      cancelCallback: () => history.push("/"),
+    });
+  }
+}
+

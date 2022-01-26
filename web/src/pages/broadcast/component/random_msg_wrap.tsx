@@ -97,7 +97,7 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
             break;
           case RandomMsgType.EVENT:
             callback = () => {
-              history.push("/pay/store");
+              history.push("/store");
             };
             break;
           default:
