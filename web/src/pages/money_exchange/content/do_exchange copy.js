@@ -499,6 +499,19 @@ export default function DoExchange({state, dispatch}) {
 
     fetchMainPopupData('11')
 
+    // context.action.alert({
+    //   className: 'mobile',
+    //   title: '추석 연휴 기간 환전신청 및 지급 안내',
+    //   msg: `<p style="line-height:1.7">추석 연휴 기간 환전처리 일정을 안내드립니다.\n
+    //   -----------------------------------------------------------\n
+    //   <strong>◎ 환전 신청</strong> : 2020.9/29(화)~10/4(일)
+    //   <strong>◎ 승인 처리 및 입금</strong> : 2020.10/5(월) 당일 영업시간 지급\n
+    //   <strong>※ 이 점 참고해 주세요!!</strong>
+    //    1. 9/29(화) 환전 신청건의 승인일자인 9/30(수)은\n 비 영업일인 관계로 10/5(월) 처리 됩니다.
+    //    2.  환전 승인 및 입금은 10/5(월) 순차적으로 모두 처리가 완료될 예정입니다.\n
+    //   -----------------------------------------------------------\n
+    //   2020.10/5(월) 이후 신청 건은 기존 처리일정과 같이 다음날 정상적으로 처리되어 지급됩니다.</p>`
+    // })
     const checkAutoState = async () => {
       const {result, data} = await Api.getDalAutoExchange()
       if (result === 'success') {
@@ -534,65 +547,46 @@ export default function DoExchange({state, dispatch}) {
     }
   }, [recent])
   return (
-    <div className="doExchange">
-      <Header title="내 지갑" />
-      <section className="tabWrap">
-        <div className="tabBox">
-          <button>
-            달 내역
-          </button>
-          <button>
-            별 내역
-          </button>
-          <button className="active">
-            환전
-          </button>
-        </div>
-      </section>
-      <section className="exchangeWrap">
-        <button className='infoBtn'
-          onClick={() => {
-            context.action.updatePopup('GUIDANCE')
-          }}>
-          <span>환전안내</span>
-        </button>
-        <div className="amountBox">
-          <span></span>
-          <div>보유 별</div>
-          <div className='counter'><span>개</span></div>
-        </div>
-        <div className="infoBox">
-
-        </div>
-        <div className="amountBox"></div>
-      </section>
-      <div className="doExchange__contents">
+    <div className="doExchangeWrap">
+      <Header title="환전하기" />
+      <div className="doExchangeWrap__contents">
         <div>
+          <div className="doExchangeWrap__contentsHeader">
+            <div>환전 정보</div>
+            <div
+              className="doExchangeWrap__contentsHeader--info"
+              onClick={() => {
+                context.action.updatePopup('GUIDANCE')
+              }}>
+              <span className="doExchangeWrap__contentsHeader--icon" />
+              <span>환전안내</span>
+            </div>
+          </div>
           {badgeSpecial > 0 && (
-            <div className="doExchange__special">
-              <p className="doExchange__special--title">DJ님은 스페셜 DJ 입니다.</p>
-              <p className="doExchange__special--point">환전 실수령액이 5% 추가 됩니다.</p>
+            <div className="doExchangeWrap__special">
+              <p className="doExchangeWrap__special--title">DJ님은 스페셜 DJ 입니다.</p>
+              <p className="doExchangeWrap__special--point">환전 실수령액이 5% 추가 됩니다.</p>
             </div>
           )}
         </div>
-        <div className="doExchange__star">
-          <div className="doExchange__star--box">
-            <div className="doExchange__star--title">보유 별</div>
-            <div className="doExchange__star--value">{Number(currentByeol).toLocaleString()}</div>
+        <div className="doExchangeWrap__star">
+          <div className="doExchangeWrap__star--box">
+            <div className="doExchangeWrap__star--title">보유 별</div>
+            <div className="doExchangeWrap__star--value">{Number(currentByeol).toLocaleString()}</div>
           </div>
           <div
-            className="doExchange__star--arrow"
+            className="doExchangeWrap__star--arrow"
             onClick={() => {
               formDispatch({type: 'byeol', val: currentByeol})
             }}></div>
-          <div className="doExchange__star--box doExchange__star--box--input">
-            <div className="doExchange__star--title">환전 신청 별</div>
-            <div className="doExchange__star--value">
+          <div className="doExchangeWrap__star--box doExchangeWrap__star--box--input">
+            <div className="doExchangeWrap__star--title">환전 신청 별</div>
+            <div className="doExchangeWrap__star--value">
               <input value={Number(formData.byeolCnt).toLocaleString()} onChange={(e) => handleChange(e.target.value)} />
             </div>
           </div>
         </div>
-        <div className="doExchange__star--caption">
+        <div className="doExchangeWrap__star--caption">
           <div>*</div>
           <div>
             별은 570개 이상이어야 환전 신청이 가능하며,
@@ -600,7 +594,7 @@ export default function DoExchange({state, dispatch}) {
           </div>
         </div>
         {/* <button
-          className={`doExchange__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
+          className={`doExchangeWrap__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
           onClick={() => {
             fnExchangeCalc()
           }}>
@@ -608,14 +602,14 @@ export default function DoExchange({state, dispatch}) {
         </button> */}
         <div className="top__btn--wrap">
           <button
-            className={`doExchange__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
+            className={`doExchangeWrap__star--button ${exchangeCalc.basicCash <= 0 && 'active'}`}
             onClick={() => {
               fnExchangeCalc()
             }}>
             환전 계산하기
           </button>
           <button
-            className={`doExchange__star--button active`}
+            className={`doExchangeWrap__star--button active`}
             onClick={() => {
               history.push('/exchange')
             }}>
@@ -646,7 +640,7 @@ export default function DoExchange({state, dispatch}) {
             }}
           />
         )}
-        <div className="doExchange__contentsHeader">
+        <div className="doExchangeWrap__contentsHeader">
           {radioCheck === 1 ? '최근 입금 정보' : radioCheck === 2 ? '내 계좌 관리' : '신규 입금 정보'}
           {radioCheck === 2 && (
             <button className="plusBtn" onClick={() => setAddPopup(true)}>
