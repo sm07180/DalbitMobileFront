@@ -146,7 +146,7 @@ export default () => {
     <>
       {webview !== 'new' && <Header title="무통장(계좌이체)" />}
       <Content className={webview ? 'new' : ''}>
-        <div className="contentBox">
+        <section className="deposit">
           <div className="input-wrap">
             <div>입금정보</div>
             <p>
@@ -211,23 +211,23 @@ export default () => {
             </p>
             <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
           </div>
-        </div>
-        <div className="contentBox inspection">
-          <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
-        </div>
+        </section>
+        <section className="inspection">
+            <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
+        </section>
       </Content>
     </>
   )
 }
 const Content = styled.div`
   font-family: 'Noto Sans KR', sans-serif;
-  .contentBox{
+  section{
     padding: 0 16px 15px;
     background:#fff;
-    &.inspection{
-      border-top:1px solid #f5f5f5;
-      padding-top:15px;
-    }
+  }
+  .inspection{
+    border-top:1px solid #f5f5f5;
+    padding-top:15px;
   }
   .input-wrap {
     display:flex;

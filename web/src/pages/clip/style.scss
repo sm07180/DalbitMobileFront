@@ -60,6 +60,9 @@
         .listItem {
           display:flex;
           align-items:center;
+          &:first-child {
+            height:70px;
+          }
           .rankNm {
             height:36px;
             margin-left:2px;
@@ -68,13 +71,15 @@
           .subject{
             flex-shrink: 0;
             margin-right: 5px;
-            @include font(14px,400,#B620FE);
+            @include font(12px,400,#666666);
           }
           .title{
+            line-height:24px;
             @include font(15px,700,#202020);
             @include fontCut;
           }
           .nick{
+            line-height:18px;
             @include font(13px,400,#999);
             @include fontCut;
           }

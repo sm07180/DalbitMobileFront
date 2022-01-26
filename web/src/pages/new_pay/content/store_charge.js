@@ -153,7 +153,7 @@ export default (props) => {
     <>
       <Header title="스토어" />
       <Content>
-        <div className="contentBox">
+        <section className="store">
           <div className="dalWrap">
             <label>내가 보유한 달</label>
             <span>{mydal.toLocaleString()}</span>
@@ -174,19 +174,19 @@ export default (props) => {
               결제하기
             </button>
           </div>
-        </div>
+        </section>
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
       </Content>
     </>
   )
 }
 
-const Content = styled.section`
+const Content = styled.div`
   min-height: calc(100vh - 40px);
   background: #eeeeee;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 500;
-  .contentBox{
+  section{
     position:relative;
     width:100%;
     background:#fff;

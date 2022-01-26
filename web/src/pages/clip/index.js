@@ -27,7 +27,7 @@ const ClipPage = () => {
   const [newClipInfo, setNewClipInfo] = useState([])
   const [hotClipInfo, setHotClipInfo] = useState({})
 
-  const [detail, setDetail] = useState(true)
+  const [detail, setDetail] = useState(false)
 
   // 조회 Api
   /* 핫 클립 */

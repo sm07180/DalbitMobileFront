@@ -99,6 +99,46 @@ export default (props) => {
   const returnCoinImg = (t) => {
     return t === 'dal' ? dalCoinIcon : byeolCoinIcon
   }
+  // async function fetchData(next) {
+  //   currentPage = next ? ++currentPage : currentPage
+  //   const response = await Api.mypage_wallet_inquire({
+  //     coinType,
+  //     walletType,
+  //     page: currentPage,
+  //     records: 15
+  //   })
+  //   if (response.result === 'success') {
+  //     setSearching(false)
+  //     const {list, dalTotCnt, byeolTotCnt, paging} = response.data
+  //     if (coinType === 'dal') {
+  //       setTotalCoin(dalTotCnt)
+  //     } else if (coinType === 'byeol') {
+  //       setTotalCoin(byeolTotCnt)
+  //     }
+  //     if (response.code === '0') {
+  //       if (next !== 'next') {
+  //         setListDetailed(false)
+  //       }
+  //       moreState = false
+  //     } else {
+  //       if (next) {
+  //         moreState = true
+  //         setNextList(response.data.list)
+  //       } else {
+  //         setListDetailed(response.data.list)
+  //         fetchData('next')
+  //       }
+  //     }
+  //   } else {
+  //   }
+  // }
+
+  //재조회 및 초기조회
+  // useEffect(() => {
+  //   currentPage = 1
+  //   fetchData()
+  // }, [coinType, walletType, page])
+  //스크롤 콘켓
   // 환전취소
   async function cancelExchangeFetch() {
     const {result, data, message} = await Api.postExchangeCancel({
@@ -334,47 +374,7 @@ export default (props) => {
   }, [showFilter])
 
   return (
-    <WalletPage>
-      <Header>
-        <h2 className="header-title">내지갑</h2>
-        <div className="current-value" onClick={() => {history.push('/pay/store')}}>
-          {totalCoin !== null && Number(totalCoin).toLocaleString()}
-        </div>
-      </Header>
-      <section className="tabWrap">
-        <div className="tabBox">
-          <button
-            className={formState.coinType === 'dal' ? 'active' : ''}
-            onClick={() => {
-              changeCoinTypeClick('dal')
-            }}>
-            달 내역
-          </button>
-          <button
-            className={formState.coinType === 'byeol' ? 'active' : ''}
-            onClick={() => {
-              changeCoinTypeClick('byeol')
-            }}>
-            별 내역
-          </button>
-          <button
-            className="exchange"
-            onClick={() => {
-              checkSelfAuth()
-            }}>
-            환전
-          </button>
-        </div>
-      </section>
-      <List
-        walletData={listDetailed}
-        returnCoinText={returnCoinText}
-        isFiltering={isFiltering}
-        setShowFilter={setShowFilter}
-        totalCnt={totalCnt}
-        formState={formState}
-        setCancelExchange={setCancelExchange}
-      />
+    <div>
       {showFilter && formState.filterList.length > 0 && (
         <div
           id="wallet_layer"
@@ -384,55 +384,265 @@ export default (props) => {
           <WalletPop formState={formState} formDispatch={formDispatch} setShowFilter={setShowFilter} />
         </div>
       )}
-    </WalletPage>
+
+      {/* 공통타이틀 */}
+      <Header title="내 지갑" />
+      <Wrap>
+        <TitleWrap>
+          <CoinTypeBtn
+            className={formState.coinType === 'dal' ? 'active' : ''}
+            onClick={() => {
+              changeCoinTypeClick('dal')
+            }}>
+            달
+          </CoinTypeBtn>
+          <CoinTypeBtn
+            className={formState.coinType === 'byeol' ? 'active' : ''}
+            onClick={() => {
+              changeCoinTypeClick('byeol')
+            }}>
+            별
+          </CoinTypeBtn>
+        </TitleWrap>
+
+        <CoinCountingView>
+          <CoinCurrentStatus className={formState.coinType === 'dal' ? 'active' : ''}>
+            <span className="text">{`현재 보유 ${returnCoinText(formState.coinType)}:`}</span>
+            <span className="current-value">
+              {totalCoin !== null && Number(totalCoin).toLocaleString()}
+              {formState.coinType === 'byeol' ? <em>별</em> : <em>달</em>}
+            </span>
+          </CoinCurrentStatus>
+
+          <div>
+            {formState.coinType === 'dal' ? (
+              <>
+                {context.customHeader['os'] === OS_TYPE['IOS'] ? (
+                  <CoinChargeBtn
+                    onClick={() => {
+                      webkit.messageHandlers.openInApp.postMessage('')
+                    }}>
+                    충전하기
+                  </CoinChargeBtn>
+                ) : (
+                  <CoinChargeBtn
+                    onClick={() => {
+                      history.push('/pay/store')
+                    }}>
+                    충전하기
+                  </CoinChargeBtn>
+                )}
+              </>
+            ) : (
+              <>
+                {
+                  <CoinChargeBtn
+                    className={context.customHeader['os'] === OS_TYPE['IOS'] ? ' exchange ios' : ' exchange'}
+                    onClick={() => {
+                      if (context.customHeader['os'] === OS_TYPE['IOS']) {
+                        async function fetchTokenShort() {
+                          const res = await Api.getTokenShort()
+                          if (res.result === 'success') {
+                            Hybrid(
+                              'openUrl',
+                              'https://' + location.hostname + '/mypage/' + res.data.memNo + '/wallet?ppTT=' + res.data.authToken
+                            )
+                          } else {
+                            context.action.alert({
+                              msg: res.message
+                            })
+                          }
+                        }
+                        fetchTokenShort()
+                      } else {
+                        history.push('/exchange')
+                      }
+                    }}>
+                    달교환
+                  </CoinChargeBtn>
+                }
+                {context.customHeader['os'] !== OS_TYPE['IOS'] ? (
+                  <CoinChargeBtn
+                    className="exchange"
+                    onClick={() => {
+                      checkSelfAuth()
+                    }}>
+                    환전하기
+                  </CoinChargeBtn>
+                ) : (
+                  context.customHeader['os'] === OS_TYPE['IOS'] &&
+                  totalCoin >= 570 && (
+                    <CoinChargeBtn
+                      className="exchange"
+                      onClick={() => {
+                        checkSelfAuth()
+                      }}>
+                      환전하기
+                    </CoinChargeBtn>
+                  )
+                )}
+              </>
+            )}
+          </div>
+        </CoinCountingView>
+        <List
+          walletData={listDetailed}
+          returnCoinText={returnCoinText}
+          isFiltering={isFiltering}
+          setShowFilter={setShowFilter}
+          totalCnt={totalCnt}
+          formState={formState}
+          setCancelExchange={setCancelExchange}
+        />
+      </Wrap>
+    </div>
   )
 }
 //styled-------------------------------------------------------------------------------
-const WalletPage = styled.div`
-  position: relative;
-  min-height: 100vh;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 500;
-  color:#000;
-  background:#fff;
-  section{
-    position:relative;
+const CoinChargeBtn = styled.button`
+  color: #fff;
+  background-color: #632beb;
+  box-sizing: border-box;
+  font-size: 16px;
+  width: auto;
+  padding: 0 8px;
+  height: 36px;
+  line-height: 36px;
+  border-radius: 12px;
+  font-size: 16px;
+  letter-spacing: normal;
+  text-align: center;
+  color: #ffffff;
+  &.white-btn {
+    border: 1px solid #632beb;
+    background-color: #fff;
+    color: #632beb;
+    margin-right: 12px;
   }
-  .current-value {
-    position:absolute;
-    right:16px;
-    top:50%;
-    transform:translateY(-50%);
-    height:26px;
-    line-height:26px;
-    font-size: 12px;
-    font-weight: 400;
-    border:1px solid #d6d6d6;
-    border-radius:13px;
-    padding:0 9px 0 15px;
+  &.exchange {
+    display: inline-block;
+    flex-direction: inherit;
+    margin-top: 0 !important;
+    margin-left: 4px;
+    background: #632beb;
   }
-  .tabBox{
-    display: flex;
-    align-items: center;
-    width:100%;
-    height:42px;
-    margin-bottom: 8px;
-    padding:0 16px;
-    button{
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      font-size: 16px;
-      color: #acacac;
-      background-color: #ffffff;
-      border-bottom:2px solid #f2f2f2;
-      &.active {
-        font-weight:600;
-        color:#000;
-        border-bottom: solid 2px #202020;
-      }
+  &.gray {
+    background-color: #757575;
+  }
+`
+const CoinCurrentStatus = styled.div`
+  display: flex;
+  justify-content: left;
+  align-items: left;
+  flex-direction: row;
+  user-select: none;
+  width: calc(100% - 160px);
+  &.active {
+    width: calc(100% - 80px);
+  }
+  .text {
+    color: #9e9e9e;
+    font-size: 16px;
+    letter-spacing: -0.4px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      display: none;
     }
   }
-  
+  .coin-img {
+    width: 44px;
+    margin-left: 20px;
+
+    @media (max-width: ${WIDTH_MOBILE}) {
+      width: 36px;
+      margin-left: 0;
+      margin-right: 3px;
+    }
+  }
+  .current-value {
+    padding-left: 15px;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 22px;
+    text-align: left;
+    color: #000000;
+    > em {
+      font-size: 20px;
+      font-weight: normal;
+      font-style: normal;
+      letter-spacing: normal;
+      color: #9e9e9e;
+      margin-left: 6px;
+      line-height: 22px;
+    }
+  }
+`
+const CoinCountingView = styled.div`
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding: 11px 6px;
+  background-color: #fff;
+  box-sizing: border-box;
+`
+const CoinTypeBtn = styled.button`
+  position: relative;
+  width: 80px;
+  height: 36px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  line-height: 36px;
+  margin-right: 2px;
+  font-size: 16px;
+  letter-spacing: normal;
+  text-align: center;
+  color: #000;
+  border: solid 1px #e0e0e0;
+  background-color: #ffffff;
+  &.active {
+    border: solid 1px #632beb;
+    background-color: #632beb;
+    color: #ffffff;
+  }
+`
+const TitleWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 8px;
+  align-items: center;
+  /* margin: 20px 0 10px 0; */
+
+  .text {
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    color: #632beb;
+  }
+`
+// 탑 공통 타이틀 스타일
+const TopWrap = styled.div`
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid ${COLOR_MAIN};
+  align-items: center;
+  margin-top: 24px;
+  padding-bottom: 12px;
+  button:nth-child(1) {
+    width: 24px;
+    height: 24px;
+    background: url(${IMG_SERVER}/images/api/btn_back.png) no-repeat center center / cover;
+  }
+  .title {
+    width: calc(100% - 24px);
+    color: ${COLOR_MAIN};
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+`
+const Wrap = styled.div`
+  padding: 12px 16px;
 `

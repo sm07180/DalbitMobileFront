@@ -48,7 +48,7 @@ export default () => {
     <>
       {webview !== 'new' && <Header title="무통장 입금(계좌이체)" />}
       <Content className={webview ? 'new' : ''}>
-        <div className="contentBox">
+        <section className="depositWait">
           <div className="top-info">
             <p className="title">
               <span>{phoneWithHypen}</span>(으)로
@@ -84,7 +84,7 @@ export default () => {
           <div className="btn-wrap">
             <button onClick={handleClick}>확인</button>
           </div>
-        </div>
+        </section>
       </Content>
     </>
   )
@@ -97,7 +97,7 @@ const Content = styled.div`
   &.new {
     min-height: 100%;
   }
-  .contentBox{
+  section{
     padding: 0 16px 15px;
     background:#fff;
   }
