@@ -5,10 +5,10 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 
 import {convertDateFormat, calcDateFormat} from 'components/lib/dalbit_moment'
-//components
+// global components
 import Layout from 'pages/common/layout'
-import ListRow from 'components/ui/listRow/listRow'
-import Header from './header'
+import Header from 'components/ui/header/Header'
+import ListRow from 'components/ui/listRow/ListRow'
 //static
 import '../style.scss'
 
@@ -25,9 +25,8 @@ export default (props) => {
 
   const [rankList, setRankList] = useState([])
   const [topRankList, setTopRankList] = useState([])
-  const [historyList, setHistoryList] = useState([]);
+  const [historyList, setHistoryList] = useState([])
 
-  
   let historyArray = [];
 
   // 스와이퍼
