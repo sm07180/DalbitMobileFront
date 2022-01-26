@@ -1,6 +1,7 @@
 @import "components/ui/_mixin.scss";
 
 em.gender {
+  flex-shrink:0;
   &.male {
     @include BGIMG('common/icon/icoMale.png');
   }

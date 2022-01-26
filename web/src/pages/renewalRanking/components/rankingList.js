@@ -7,7 +7,7 @@ import Swiper from 'react-id-swiper'
 import {convertDateFormat, calcDateFormat} from 'components/lib/dalbit_moment'
 //components
 import Layout from 'pages/common/layout'
-import ListRow from './listRow'
+import ListRow from 'components/ui/listRow/listRow'
 import Header from './header'
 //static
 import '../style.scss'
@@ -261,7 +261,7 @@ export default (props) => {
             {              
               rankList.map((list, index) => {
                 return (
-                  <ListRow list={list} key={index} rank={true} nick={true} gender={true} data={"fanPoint giftPoint"}>
+                  <ListRow photo={list} key={index}>
                     {list.roomNo && <div className='liveTag'>LIVE</div>}                    
                   </ListRow>
                 )

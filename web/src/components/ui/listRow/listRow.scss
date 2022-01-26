@@ -13,9 +13,4 @@
       object-fit: cover;
     }
   }
-  .userNick {
-    width:100%;
-    text-align:center;
-    @include fontCut;
-  }
 }

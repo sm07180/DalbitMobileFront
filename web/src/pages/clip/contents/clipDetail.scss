@@ -123,18 +123,22 @@
           margin-right: 15px;
         }
       }
-      .heart{
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      button {
+        @include flex(center,center);
         width: 28px;
         height: 28px;
-        background: #F6F6F6;
-        border-radius: 100%;
         margin-left: auto;
-        img{
-          width: 16px;
-          height: 16px;
+        &.heart{
+          background: #F6F6F6;
+          border-radius: 100%;
+          img{
+            width: 16px;
+          }
+        }
+        &.trash {
+          img {
+            width:15px;
+          }
         }
       }
     }

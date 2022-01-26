@@ -42,6 +42,7 @@ const NoticePage = () => {
               <TabBtn param={param} key={index} />
             )
           })}
+          <div className="underline"></div>
         </ul>
         {noticeType === noticeTabmenu[0] && <Allim data={profile} />}
         {noticeType === noticeTabmenu[1] && <Post data={profile} />}

@@ -20,7 +20,7 @@ const HotClipList = (props) => {
               <ListRow photo={list.bgImg.thumb120x120}>
                 <div className='listContent'>
                   <div className="listItem">
-                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                    <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
                   </div>
                   <div className="listItem">
                     <span className="subject">{list.subjectName}</span>
@@ -34,7 +34,7 @@ const HotClipList = (props) => {
               <ListRow photo={list.bgImg.thumb120x120}>
                 <div className='listContent'>
                   <div className="listItem">
-                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                    <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
                   </div>
                   <div className="listItem">
                     <span className="subject">{list.subjectName}</span>
@@ -48,7 +48,7 @@ const HotClipList = (props) => {
               <ListRow photo={list.bgImg.thumb120x120}>
                 <div className='listContent'>
                   <div className="listItem">
-                    <img className='rankNm' src="https://image.dalbitlive.com/clip/dalla/hotClipRank1.png" />
+                    <img className='rankNm' src={`https://image.dalbitlive.com/clip/dalla/number-${index + 1}.png`} />
                   </div>
                   <div className="listItem">
                     <span className="subject">{list.subjectName}</span>
