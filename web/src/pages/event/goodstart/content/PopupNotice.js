@@ -1,4 +1,5 @@
 import React, {useEffect} from 'react'
+import moment from 'moment'
 
 import './popup.scss'
 
@@ -27,12 +28,51 @@ const PopupNotice = (props) => {
           <li>DJ 부분 종합/신인은 중복 수상 안됩니다. (높은 상품(달/현금 구분없음) 순위 인정, 선택 불가). </li>
           <li>결과는 공지사항을 통해 발표하며, 당첨자 관련 서류는 문자를 통해 별도 안내드립니다.</li>
           <li>달을 제외한 경품의 제세공과금(22%)은 본인 부담입니다.</li>
-          <li>경품 공지가격 안내<br/>
-              1) 아이패드 프로 12.9형 : 150만원<br/>
-              2) 나이키X사카이 베이퍼와플 : 80만원<br/>
-              2) 삼성 비스포크 무선청소기 : 60만원<br/>
-              4) 노스페이스 에코 눕시 자켓 패딩 : 30만원
-          </li>
+          {data.map((data, index) => {
+            const {start_date, end_date, good_no} = data
+            const eventStart = Number(moment(start_date).format('YYMMDD')) <= Number(moment().format('YYMMDD'))
+            const eventEnd = Number(moment(end_date).format('YYMMDD')) < Number(moment().format('YYMMDD'))
+            return (
+              <React.Fragment key={index}>
+                {eventStart === true && eventEnd !== true &&
+                  <>
+                    {good_no === '2' && 
+                    <li>경품 공지가격 안내<br/>
+                      1&#41; 아이패드 프로 12.9형 : 150만원<br/>
+                      2&#41; 나이키X사카이 베이퍼와플 : 80만원<br/>
+                      2&#41; 삼성 비스포크 무선청소기 : 60만원<br/>
+                      4&#41; 노스페이스 에코 눕시 자켓 패딩 : 30만원
+                    </li>
+                    }
+                    {good_no === '3' && 
+                    <li>경품 공지가격 안내<br/>
+                      1&#41; 삼성전자 4K UHD QLED TV : 155만원<br/>
+                      2&#41; 스웨터 멀티 컬러 울 스웨터 : 99만원<br/>
+                      3&#41; 애플워치 나이키+ 7 : 50만원<br/>
+                      4&#41; 나이키 에어 줌 알파플라이 넥스트% 플라이니트 : 34만원
+                    </li>
+                    }
+                    {good_no === '4' && 
+                    <li>경품 공지가격 안내<br/>
+                      1&#41; Apple 2020 맥북 에어 13 : 150만원<br/>
+                      2&#41; LG 스탠바이미 : 110만원<br/>
+                      3&#41; 캐논 EOS M200 : 51만원<br/>
+                      4&#41; 소니 WH-1000M4 : 36만원
+                    </li>
+                    }
+                    {good_no === '5' && 
+                    <li>경품 공지가격 안내<br/>
+                      1&#41; 톰브라운 21FW MKA326A Y3001 415 스티치 니트 : 145만원<br/>
+                      2&#41; Apple 아이폰 13 mini : 95만원<br/>
+                      3&#41; 뉴발란스 992 그레이 : 49만원<br/>
+                      4&#41; 삼성 스마트 모니터 68.6 cm : 34만원
+                    </li>
+                    }
+                  </>
+                }
+              </React.Fragment>
+            )
+          })}
           <li>
             경품 대신 현금 지급이 가능하며, 현금 지급을 원할 시 메일(help@dalbitlive.com)로 당첨자 서류와 함께 [현금 입금 희망]
             내용을 남겨주시면 이벤트 서류 확인 후 제세공과금(22%)을 제외한 금액이 입금됩니다.

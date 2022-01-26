@@ -29,9 +29,6 @@ const GoodStart = () => {
   const [noticePopInfo, setNoticePopInfo] = useState({open: false})
   const [popupExp, setPopupExp] = useState(false)
 
-  const nowDate = moment().format('YYMMDD')
-  const changeDate = '220120'
-
   let pagePerCnt = 50;
   // 조회 API
   const fetchGoodStartDjInfo = () => {
@@ -90,21 +87,28 @@ const GoodStart = () => {
         <TabmenuBtn tabBtn1={tabmenu1} tabBtn2={tabmenu2} tab={tabContent.name} setTab={setTabContent} event={'goodstart'} />
       </Tabmenu>
       <section className="bodyContainer">
-        {nowDate >= changeDate ? 
+        {tabContent.name === tabmenu1 ? 
           <>
-            {tabContent.name === tabmenu1 ? 
-              <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj-1.png`} className="bgImg" />
-              : 
-              <>
-                <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-1.png`} className="bgImg" />
-                <button className='fanBtn' onClick={popupExpOpen}>
-                  <img src={`${IMG_SERVER}/event/goodstart/body-fanBtn.png`} />
-                </button>
-              </>
-            }
+            {djRankInfo && djRankInfo.map((data, index) => {
+              const {start_date, end_date, good_no} = data
+              const eventStart = Number(moment(start_date).format('YYMMDD')) <= Number(moment().format('YYMMDD'))
+              const eventEnd = Number(moment(end_date).format('YYMMDD')) < Number(moment().format('YYMMDD'))
+              return (
+                <React.Fragment key={index}>
+                  {eventStart === true && eventEnd !== true &&
+                    <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj-${good_no - 1}.png`} className="bgImg" />
+                  }
+                </React.Fragment>
+              )
+            })}
           </>
           :
-          <img src={`${IMG_SERVER}/event/goodstart/bodybg-${tabContent.name === tabmenu1 ? 'dj' : 'fan'}.png`} className="bgImg" />
+          <>
+            <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-1.png`} className="bgImg" />
+            <button className='fanBtn' onClick={popupExpOpen}>
+              <img src={`${IMG_SERVER}/event/goodstart/body-fanBtn.png`} />
+            </button>
+          </>
         }
         <div className="notice">
           <button onClick={popupOpen}>
@@ -114,7 +118,7 @@ const GoodStart = () => {
       </section>
 			{tabContent.name === tabmenu1 && <DjContent />}
       {tabContent.name === tabmenu2 && <FanContent />}
-      {noticePopInfo.open === true && <PopupNotice onClose={popupClose} tab={tabContent.name} />}
+      {noticePopInfo.open === true && <PopupNotice onClose={popupClose} tab={tabContent.name} data={djRankInfo} />}
       {popupExp === true && <PopupExp setPopupExp={setPopupExp} />}
     </div>
   )
