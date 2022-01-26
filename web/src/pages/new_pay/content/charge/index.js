@@ -403,7 +403,7 @@ export default (props) => {
     <>
       {webview !== 'new' && <Header title="달 충전하기" />}
       <Content className={webview}>
-        <div className="contentBox">
+        <section className="history">
           <h2>구매 내역</h2>
           <div className="fieldWrap">
             <div className="field">
@@ -453,8 +453,8 @@ export default (props) => {
               </p>
             </div>
           </div>
-        </div>
-        <div className="contentBox method">
+        </section>
+        <section className="method">
           <h2>
             결제 수단
           </h2>
@@ -469,10 +469,10 @@ export default (props) => {
             <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
             <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
           </div>
-        </div>
-        <div className="contentBox inquiry">
+        </section>
+        <section className="inquiry">
           결제문의{phoneCallWrap()}
-        </div>
+        </section>
         <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"></form>
         {bankPop && <BankTimePopup setBankPop={setBankPop} bankFormData={bankFormData} />}
         {popupData.length > 0 && <LayerPopupWrap data={popupData} setData={setPopupData} />}
@@ -490,25 +490,9 @@ const Content = styled.div`
   &.new {
     min-height: 100%;
   }
-  .contentBox{
+  section{
     padding: 0 16px 15px;
     background:#fff;
-    &.method{
-      margin-top:9px;
-    }
-    &.inquiry{
-      margin-top:1px;
-      padding-top: 15px;
-      text-align: center;
-      font-size:14px;
-      color:#666;
-      span{
-        font-size:16px;
-        font-weight:600;
-        color:#000;
-        margin-left: 4px
-      }
-    }
   }
   h2 {
     padding: 19px 0 8px 0;
@@ -536,7 +520,22 @@ const Content = styled.div`
       }
     }
   }
-
+  .method{
+    margin-top:9px;
+  }
+  .inquiry{
+    margin-top:1px;
+    padding-top: 15px;
+    text-align: center;
+    font-size:14px;
+    color:#666;
+    span{
+      font-size:16px;
+      font-weight:600;
+      color:#000;
+      margin-left: 4px
+    }
+  }
   .fieldWrap{
     display: flex;
     flex-direction: column;

@@ -33,180 +33,155 @@ export default (props) => {
   }
   return (
     <ListContainer>
-      <TopArea>
-        <span className="title">
-          <span className="main">{`${returnCoinText(formState.coinType)} 상세내역`}</span>
-          <span className="sub">최근 6개월</span>
-        </span>
-      </TopArea>
-      <SelectWrap
-        onClick={() => {
-          setShowFilter(true)
-        }}>
-        <button>
-          <img src={ArrowDownIcon} />
-          {isFiltering === false ? '전체 내역' : formState.coinType === 'byeol' ? '별내역' : '달내역'}({totalCnt}건)
-        </button>
-      </SelectWrap>
-      <ListWrap>
+      <section className="optionWrap">
+        <div className="option">
+          <div className="selectBox"
+            onClick={() => {
+              setShowFilter(true)
+            }}>
+            <button>
+              {isFiltering === false ? '전체' : formState.coinType === 'byeol' ? '별내역' : '달내역'}
+              <img src={ArrowDownIcon} />
+            </button>
+          </div>
+          <span className="sub">최근 6개월 이내</span>
+        </div>
+      </section>
+      <section className="listWrap">
         {Array.isArray(walletData) ? (
           walletData.map((data, index) => {
             const {contents, type, dalCnt, byeolCnt, updateDt, exchangeIdx} = data
             return (
               <div className="list" key={index}>
-                <span className={`how-to-get type-${type}`}>{/* {selectWalletTypeData[walletType]['text']} */}</span>
-                <span className="detail">
-                  {contents}
-                  {exchangeIdx > 0 ? (
-                    <button className="exchangeCancelBtn" onClick={() => exchangeCancel(exchangeIdx)}>
-                      취소
-                    </button>
-                  ) : (
-                    ''
-                  )}
-                </span>
+                <div className="detail">
+                  <div className="contentBox">
+                    {contents}
+                    {exchangeIdx > 0 ? (
+                      <button className="exchangeCancelBtn" onClick={() => exchangeCancel(exchangeIdx)}>
+                        취소하기
+                      </button>
+                    ) : (
+                      ''
+                    )}
+                    <span className="privateBtn">몰래</span>
+                  </div>
+                  <span className="date">{timeFormat(updateDt)}</span>
+                </div>
                 <span className="type">
                   {formState.coinType === 'dal' ? dalCnt : byeolCnt}
-                  <em>{returnCoinText(formState.coinType)}</em>
                 </span>
-                <span className="date">{timeFormat(updateDt)}</span>
+                
               </div>
             )
           })
         ) : (
           <NoResult />
         )}
-      </ListWrap>
+      </section>
     </ListContainer>
   )
 }
 
-const SearchList = styled.div`
-  .search-list {
-    height: 40px;
-    border-radius: 8px;
-    background-color: #eee;
-    margin: 8px 0;
-  }
-`
-
-const ListWrap = styled.div`
-  margin-top: 8px;
-  .list {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-    height: 44px;
-    padding: 10px 8px;
-    user-select: none;
-    margin-bottom: 1px;
-    background-color: #fff;
-    border-radius: 12px;
-    span {
-      transform: skew(-0.03deg);
-    }
-
-    .how-to-get {
-      margin-left: 4px;
-      font-size: 12px;
-      line-height: 17px;
-      color: #fff;
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-
-      &.type-1 {
-        background: url(${PurchaseIcon}) no-repeat center center / cover;
-      }
-      &.type-2 {
-        background: url(${GiftPinkIcon}) no-repeat center center / cover;
-      }
-      &.type-3 {
-        background: url(${ExchangeIcon}) no-repeat center center / cover;
-      }
-      &.type-4 {
-        background: url(${MoneyIcon}) no-repeat center center / cover;
-      }
-    }
-    .detail {
-      width: calc(100% - 118px);
-      text-align: left;
-      padding-left: 8px;
-      font-size: 14px;
-      letter-spacing: -0.35px;
-      font-weight: 600;
-      text-align: left;
-      color: #000000;
-      .exchangeCancelBtn {
-        width: 36px;
-        height: 20px;
-        margin-left: 4px;
-        border-radius: 18px;
-        background-color: #000;
-        font-size: 11px;
-        font-weight: 500;
-        line-height: 20px;
-        text-align: center;
-        color: #fff;
-      }
-    }
-    .type {
-      line-height: 18px;
-      width: 65px;
-      color: #424242;
-      font-size: 14px;
-      font-weight: 600;
-      text-align: right;
-      color: #000000;
-      > em {
-        line-height: 18px;
-        margin-left: 2px;
-        font-size: 12px;
-        font-weight: normal;
-        font-style: normal;
-        letter-spacing: normal;
-        color: #9e9e9e;
-      }
-    }
-    .date {
-      margin-left: auto;
-      width: 44px;
-      padding-right: 3px;
-      font-size: 12px;
-      line-height: 18px;
-      color: #757575;
-      text-align: right;
-    }
-
-    &.title {
-      margin-top: 18px;
-      color: #632beb;
-      font-size: 14px;
-      letter-spacing: -0.35px;
-      border-color: #bdbdbd;
-      border-top: 1px solid #632beb;
-
-      .how-to-get {
-        border: none;
+const ListContainer = styled.div`
+  position: relative;
+  margin-top: 19px;
+  .option{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top: 11px;
+    padding:0 16px;
+    height:28px;
+    .selectBox{
+      font-size:15px;
+      font-weight:400;
+      & > button {
+        display: flex;
+        align-items: center;
         font-size: 14px;
+        font-weight: bold;
       }
+    }
+    span {
+      font-size: 13px;
+      font-weight: 400;
+      color: #666;
+    }
+  }
+  .listWrap{
+    .list {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width:100%;
+      height: 65px;
+      text-align: center;
+      border-bottom: 1px solid #f5f5f5;
+      padding: 0 16px;
       .detail {
-        text-align: center;
-        padding-left: 0;
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+        width: calc(100% - 100px);
+        flex:none;
+        font-size: 15px;
+        font-weight: 500;
+        .contentBox{
+          dispaly:flex;
+          align-items:center;
+          .exchangeCancelBtn {
+            width:55px
+            height: 22px;
+            margin-left: 4px;
+            border-radius: 11px;
+            background-color: #FF3C7B;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+          }
+          .privateBtn{
+            height:16px;
+            line-height:16px;
+            background:#999999;
+            border-radius:20px;
+            font-size:12px;
+            color:#fff;
+            text-align:center;
+            margin-left:4px;
+            padding:0 4px;
+          }
+        }
+      }
+      .type {
+        font-size: 17px;
+        color: #000000;
+        margin-left:auto;
+      }
+      .date {
+        font-size: 12px;
+        color: #707070;
       }
 
-      .how-to-get,
-      .detail,
-      .type,
-      .date {
+      &.title {
+        margin-top: 18px;
         color: #632beb;
-        font-size: 16px;
-        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        border-color: #bdbdbd;
+        border-top: 1px solid #632beb;
+
+        .how-to-get {
+          border: none;
+          font-size: 14px;
+        }
+        .detail {
+          text-align: center;
+          padding-left: 0;
+        }
       }
     }
   }
+  
 
   .no-list {
     display: flex;
@@ -219,60 +194,7 @@ const ListWrap = styled.div`
       display: block;
     }
   }
-`
-
-const TopArea = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-
-  .title {
-    width: 100%;
-    .main {
-      font-size: 16px;
-      line-height: 18px;
-      font-weight: 800;
-      letter-spacing: normal;
-      text-align: left;
-      color: #000000;
-    }
-    .sub {
-      margin-left: 10px;
-      font-size: 16px;
-      line-height: 18px;
-      font-weight: 400;
-      letter-spacing: normal;
-      text-align: left;
-      color: #bdbdbd;
-      float: right;
-    }
-  }
-
-  .table__select {
-  }
-`
-
-const SelectWrap = styled.div`
-  display: flex;
-  align-items: center;
-  height: 44px;
-  margin-top: 11px;
-  padding: 0 8px;
-  background-color: #fff;
-  border-radius: 12px;
-  & > button {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: bold;
-  }
-`
-
-const ListContainer = styled.div`
-  position: relative;
-  margin-top: 19px;
-
+  
   .mypage-wallet-select-box {
     z-index: 1;
     top: 0;
@@ -292,19 +214,4 @@ const ListContainer = styled.div`
     background: url(${ArrowDownIcon}) no-repeat center center / cover;
     z-index: 3;
   }
-`
-const Selector = styled.select`
-  width: 56px;
-  text-align: right;
-  position: relative;
-  background-color: transparent;
-  font-size: 14px;
-  font-weight: 600;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.14;
-  letter-spacing: normal;
-  text-align: left;
-  color: #000000;
-  z-index: 4;
 `
