@@ -18,6 +18,7 @@ const RenewalRankingList = React.lazy(() => import('pages/renewalRanking/compone
 const Ranking = React.lazy(() => import('pages/ranking_renewal'))
 const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
 const MyPage = React.lazy(() => import('pages/mypage'))
+const ReSearch = React.lazy(() => import('pages/research'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 const Pay = React.lazy(() => import('pages/new_pay'))
@@ -81,6 +82,7 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/remypage/:memNo" component={ReMyPage} />
         <Route exact path="/remypage/:memNo/:category" component={ReMyPage} />
+        <Route exact path="/search" component={ReSearch} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/renewalRanking" component={RenewalRanking} />
