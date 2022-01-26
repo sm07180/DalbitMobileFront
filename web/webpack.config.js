@@ -77,14 +77,9 @@ module.exports = (_, options) => {
           ]
         },
         {
-          test: /\.(css)$/,
-          use: [MiniCssExtractPlugin.loader,'style-loader', 'css-loader', 'sass-loader'],
+          test: /\.(css|scss|sass)$/,
+          use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
           exclude: /node_modules/
-        },
-        {
-          test: /\.(scss|sass)$/,
-          exclude: /\.module\.(scss|sass)$/,
-          use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader',  'sass-loader']
         },
         {
           // images css에서 background-image 속성 loader

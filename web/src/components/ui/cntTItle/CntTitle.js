@@ -1,10 +1,11 @@
 import React from 'react'
 
 import './cntTitle.scss'
+import {useHistory} from "react-router-dom";
 
 const CntTitle = (props) => {
   const {title,more,children} = props
-
+  const history = useHistory();
   const onMoreClick = () => {
     history.push(`/${more}`)
   }

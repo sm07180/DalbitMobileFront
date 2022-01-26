@@ -384,7 +384,7 @@ export default function GNB() {
   })
   return (
     <>
-      {pcMenuState && <header id="gnb">
+      {pcMenuState && <div id="gnb">
         <div className="gnbBox">
           <h1>
             <NavLink
@@ -562,7 +562,7 @@ export default function GNB() {
               ))}
           </div>
         </div>
-      </header>}
+      </div>}
       {globalState.broadClipDim && (
         <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">
