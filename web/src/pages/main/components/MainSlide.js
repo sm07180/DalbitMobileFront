@@ -32,7 +32,7 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.profImg.thumb500x500}>
                     <div className='info'>
-                      <BadgeItems content={list.liveBadgeList} />
+                      <BadgeItems data={list.liveBadgeList} />
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>
                     </div>

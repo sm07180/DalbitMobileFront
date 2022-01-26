@@ -26,8 +26,20 @@ export default (props) => {
       }
       {title === '클립' && 
         <div className="buttonGroup">
-          <button className='search'></button>
+          <button className='message'></button>
           <button className='alarm'></button>
+        </div>
+      }
+      {title === '좋아요한 클립' && 
+        <div className="buttonGroup">
+          <button className='play'></button>
+          <button className='shuffle'></button>
+        </div>
+      }
+      {title === '최근 들은 클립' && 
+        <div className="buttonGroup">
+          <button className='play'></button>
+          <button className='shuffle'></button>
         </div>
       }
       {title === 'MY' && 

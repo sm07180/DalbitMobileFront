@@ -1,0 +1,47 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="82.42" height="68.448" viewBox="0 0 82.42 68.448">
+    <defs>
+        <style>
+            .prefix__cls-1,.prefix__cls-2,.prefix__cls-9{fill:#ffe83e}.prefix__cls-1,.prefix__cls-2,.prefix__cls-8{stroke:#ffb95c}.prefix__cls-1,.prefix__cls-8{stroke-miterlimit:10}.prefix__cls-2,.prefix__cls-8{stroke-linecap:round}.prefix__cls-2{stroke-linejoin:round}.prefix__cls-4{fill:#ffb64d}.prefix__cls-5{fill:#ffc545}.prefix__cls-6{fill:#322}.prefix__cls-8{fill:none;stroke-width:2px}.prefix__cls-10{fill:#fff}
+        </style>
+    </defs>
+    <g id="prefix__그룹_15155" data-name="그룹 15155" transform="translate(-113.566 -930.833)">
+        <g id="prefix__그룹_15154" data-name="그룹 15154" transform="translate(114.068 931.333)">
+            <path id="prefix__왼발" d="M-198.034 165.335c5.535-3.028 8.489-5.9 7.247-9.008-1.667-2.9-5.752-2.37-11.561.091-5.061 2.143-9.889 5.589-8.013 9.379 1.807 3.823 7.505 2.176 12.327-.462z" class="prefix__cls-1" transform="translate(225.797 -100.606)"/>
+            <path id="prefix__오른발" d="M-113.429 165.335c-5.535-3.028-8.489-5.9-7.247-9.008 1.668-2.9 5.752-2.37 11.561.091 5.061 2.143 9.889 5.589 8.014 9.379-1.808 3.823-7.506 2.176-12.328-.462z" class="prefix__cls-1" transform="translate(168.686 -100.606)"/>
+            <g id="prefix__머리_copy" data-name="머리 copy" transform="translate(10.081)">
+                <circle id="prefix__머리" cx="30.858" cy="30.858" r="30.858" class="prefix__cls-2"/>
+                <path id="prefix__패스_7126" d="M-134.561 107.73c16.035-1.071 28.7-13.973 28.7-29.734a28.872 28.872 0 0 0-1.291-8.552 105.9 105.9 0 0 1-.816 12.382l-.061.007c.129.715-4.439 20.146-26.532 25.897z" data-name="패스 7126" transform="translate(167.256 -46.616)" style="fill:#ffca5f"/>
+                <g id="prefix__Layer_30" data-name="Layer 30" transform="translate(7.133 3.058)">
+                    <ellipse id="prefix__타원_503" cx="3.876" cy="2.274" class="prefix__cls-4" data-name="타원 503" rx="3.876" ry="2.274" transform="rotate(-34.518 10.648 -9.322)"/>
+                    <ellipse id="prefix__타원_504" cx="2.605" cy="1.529" class="prefix__cls-4" data-name="타원 504" rx="2.605" ry="1.529" transform="rotate(-52.63 12.522 6.19)"/>
+                    <ellipse id="prefix__타원_505" cx="1.618" cy=".949" class="prefix__cls-4" data-name="타원 505" rx="1.618" ry=".949" transform="rotate(-45 10.428 -.584)"/>
+                </g>
+            </g>
+            <g id="prefix__이목구비_copy" data-name="이목구비 copy" transform="translate(23.185 20.74)">
+                <circle id="prefix__타원_506" cx="4.119" cy="4.119" r="4.119" class="prefix__cls-5" data-name="타원 506" transform="translate(0 6.883)"/>
+                <circle id="prefix__타원_507" cx="4.119" cy="4.119" r="4.119" class="prefix__cls-5" data-name="타원 507" transform="translate(27.81 6.638)"/>
+                <ellipse id="prefix__타원_508" cx="1.573" cy="2.805" class="prefix__cls-6" data-name="타원 508" rx="1.573" ry="2.805" transform="translate(5.092)"/>
+                <ellipse id="prefix__타원_509" cx="1.573" cy="2.805" class="prefix__cls-6" data-name="타원 509" rx="1.573" ry="2.805" transform="translate(27.048)"/>
+                <g id="prefix__그룹_15153" data-name="그룹 15153" transform="translate(12.211 7.304)">
+                    <path id="prefix__패스_7128" d="M0 0a11.357 11.357 0 0 0 10.8 0" data-name="패스 7128" transform="rotate(180 5.398 .693)" style="stroke:#322;fill:none;stroke-linecap:round;stroke-miterlimit:10"/>
+                </g>
+                <path id="prefix__패스_7129" d="M-146.887 97.7a14.5 14.5 0 0 0 6.217 1.4" class="prefix__cls-8" data-name="패스 7129" transform="translate(161.989 -85.322)"/>
+                <path id="prefix__패스_7130" d="M-114.056 79.244a8.958 8.958 0 0 1 5.6-1.082" class="prefix__cls-8" data-name="패스 7130" transform="translate(141.113 -72.819)"/>
+                <path id="prefix__패스_7131" d="M-174.489 79.244a8.958 8.958 0 0 0-5.6-1.082" class="prefix__cls-8" data-name="패스 7131" transform="translate(183.098 -72.819)"/>
+            </g>
+            <g id="prefix__오른팔" transform="translate(61.844 24.738)">
+                <path id="prefix__패스_7132" d="M-58.393 89.229a6.285 6.285 0 0 0-2.141-4.586 1.826 1.826 0 0 0 .739-1.035V83.6a.743.743 0 0 0-.023-.315 1.294 1.294 0 0 0-.686-.934l-.018-.008c-.032-.016-.062-.029-.091-.042a3.322 3.322 0 0 0-.372-.137c-.046-.014-.092-.027-.14-.038h-.009l-.041-.009-.027-.006a4.721 4.721 0 0 0-1.066-.06 4.091 4.091 0 0 0-.822.086 12.076 12.076 0 0 0-4.087 1.682c-2.457-.8-5.157-1.358-5.157-1.358l-3.2 5.6a35.917 35.917 0 0 1 4.786 1.393 5.992 5.992 0 0 0 6.01 5.433c3.416.069 6.538-2.465 6.345-5.658z" class="prefix__cls-2" data-name="패스 7132" transform="translate(77.959 -79.363)"/>
+                <path id="prefix__패스_7136" d="M.641 7.259c.229 1.525-.686 2.059-1.983.915A3.016 3.016 0 0 1-2.3 4.78c.343-.763.229-3.394 1.678-4.843s2.364-3.47 4.271-2.479 3.2-.953 1.487.877S4.035.471 3.653 1.577.641 7.259.641 7.259z" class="prefix__cls-9" data-name="패스 7136" transform="translate(2.489 2.805)"/>
+            </g>
+            <g id="prefix__왼팔" transform="translate(0 26.449)">
+                <path id="prefix__패스_7134" d="M-252.019 89.229a6.286 6.286 0 0 1 2.141-4.586 1.825 1.825 0 0 1-.739-1.035V83.6a.737.737 0 0 1 .023-.315 1.293 1.293 0 0 1 .686-.934l.018-.008c.032-.016.062-.029.091-.042a3.326 3.326 0 0 1 .373-.137c.046-.014.092-.027.14-.038h.009l.041-.009.027-.006a4.72 4.72 0 0 1 1.066-.06 4.1 4.1 0 0 1 .822.086 12.075 12.075 0 0 1 4.087 1.682c2.457-.8 5.157-1.358 5.157-1.358l3.2 5.6a35.9 35.9 0 0 0-4.786 1.393 5.993 5.993 0 0 1-6.011 5.433c-3.417.069-6.534-2.465-6.345-5.658z" class="prefix__cls-2" data-name="패스 7134" transform="translate(252.027 -81.074)"/>
+                <path id="prefix__패스_7135" d="M-211.619 86.389l-1.477-4.107-2.428-2.893-1.35.415.212.6a1.186 1.186 0 0 1 .395 1.039l-.01.212.43.084 2.349 4.176-.188-.04-.077-.07-.483.091-.4-.091v.516a.791.791 0 0 1 .319 1.062l.941-.222.013-.011a9.437 9.437 0 0 0 1.247-.172c.061-.063.507-.589.507-.589z" class="prefix__cls-9" data-name="패스 7135" transform="translate(229.675 -79.389)"/>
+            </g>
+        </g>
+        <path id="prefix__패스_7137" d="M1.249 0c.677.858 1.325 1.423 1.325 2.6s-.651 1.671-1.325 1.671S0 3.782 0 2.6A3.7 3.7 0 0 1 1.249 0z" class="prefix__cls-10" data-name="패스 7137" transform="rotate(36 -1403.706 688.046)"/>
+        <path id="prefix__패스_7140" d="M1.249 4.271c.677-.858 1.325-1.423 1.325-2.6S1.923 0 1.249 0 0 .489 0 1.668a3.7 3.7 0 0 0 1.249 2.603z" class="prefix__cls-10" data-name="패스 7140" transform="rotate(144 -67.59 508.849)"/>
+        <path id="prefix__패스_7138" d="M2.31 0c1.253 1.587 2.452 2.633 2.452 4.815S3.557 7.9 2.31 7.9 0 7 0 4.815A6.84 6.84 0 0 1 2.31 0z" class="prefix__cls-10" data-name="패스 7138" transform="rotate(36 -1411.243 684.577)"/>
+        <path id="prefix__패스_7139" d="M2.311 7.9c1.252-1.586 2.451-2.631 2.451-4.813S3.557 0 2.31 0 0 .9 0 3.087A6.84 6.84 0 0 0 2.311 7.9z" class="prefix__cls-10" data-name="패스 7139" transform="rotate(144 -65.874 513.114)"/>
+    </g>
+</svg>

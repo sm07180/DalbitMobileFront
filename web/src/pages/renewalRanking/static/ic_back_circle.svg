@@ -1,0 +1,18 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__back_circle_g" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10;stroke-width:1.5px}
+        </style>
+    </defs>
+    <g id="prefix__ic_arrow_refresh" transform="rotate(180 18 18)">
+        <g id="prefix__타원_248" data-name="타원 248" transform="rotate(180 18 18)" style="fill:#424242;stroke:#292929;opacity:.6">
+            <circle cx="18" cy="18" r="18" style="stroke:none"/>
+            <circle cx="18" cy="18" r="17.5" style="fill:none"/>
+        </g>
+        <g id="prefix__그룹_141" data-name="그룹 141" transform="rotate(180 143.475 157.505)">
+            <path id="prefix__선_58" d="M8.38 0L0 7.9" class="prefix__cls-2" data-name="선 58" transform="translate(263.5 289.25)"/>
+            <path id="prefix__선_59" d="M0 0L8.38 7.9" class="prefix__cls-2" data-name="선 59" transform="translate(263.5 297.16)"/>
+        </g>
+    </g>
+</svg>
