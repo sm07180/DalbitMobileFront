@@ -59,19 +59,19 @@
       @include swiperPagination;
     }
     .info {
-      @include font(12px,400,#6B6B6B);
+      @include flex(center);
       i {
         display:inline-block;
-        width:16px;
-        height:16px;
-        img {
-          width:100%;
-          vertical-align: bottom;
-        }
+        width:20px;height:20px;
+        &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
+        &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
+        &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
       }
       span {
-        line-height:16px;
-        padding: 0 8px 0 4px;
+        height:20px;
+        line-height:18px;
+        margin-right:8px;
+        @include font(13px,400,#6B6B6B);
       }
     }
   }

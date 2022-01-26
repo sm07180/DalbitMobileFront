@@ -18,6 +18,7 @@
     }
   }
   .socialWrap {
+    padding-bottom:40px;
     .tabmenu {
       @include flex(center);
       padding: 0 8px;
@@ -180,6 +181,11 @@
           margin-left:auto;
           letter-spacing: -1px;
           @include font(13px,400,#666);
+          &:before {
+            content:"";
+            display:inline-block;
+            width:20px;height:20px;
+          }
         }
       }
     }
@@ -227,20 +233,19 @@
           }
           .info {
             @include position-top-right(10px,10px);
-            @include font(12px,400,white);
+            @include flex(center);
             i {
               display:inline-block;
-              width:16px;
-              height:16px;
+              width:16px;height:16px;
               margin-left:16px;
-              img {
-                width:100%;
-                vertical-align: bottom;
-              }
+              &.like {@include BGIMG('mypage/dalla/like_icon-w.png');}
+              &.comment {@include BGIMG('mypage/dalla/comment_icon-w.png');}
             }
             span {
-              line-height:16px;
+              height:16px;
+              line-height:14px;
               margin-left:2px;
+              @include font(12px,400,white);
             }
           }
         }

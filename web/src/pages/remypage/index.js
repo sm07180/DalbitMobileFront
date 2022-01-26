@@ -11,6 +11,8 @@ import MydalDetail from './components/MydalDetail'
 import MyMenu from './components/MyMenu'
 // contents
 import Profile from './contents/profile/profile'
+import ProfileWrite from './contents/profile/profileWrite'
+import ProfileDetail from './contents/profile/profileDetail'
 import ProfileEdit from './contents/profileEdit/profileEdit'
 import Notice from './contents/notice/notice'
 
@@ -70,7 +72,7 @@ const Remypage = (props) => {
           <button className='logout'>로그아웃</button>
         </div>
       }
-      {myProfile === true && <Notice />}
+      {myProfile === true && <Profile />}
     </React.Fragment>
   )
 }

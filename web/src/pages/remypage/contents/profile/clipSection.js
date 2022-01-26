@@ -17,33 +17,33 @@ const ClipSection = (props) => {
     <div className="clipSection">
       <div className="subArea">
         <div className="title">내클립</div>
-        <button>최신순</button>
+        <button className='filter'>최신순</button>
       </div>
       <div className="clipContent">
-        <ListColumn list={data}>
+        <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-w.png`} alt="좋아요" /></i>
+            <i className='like'></i>
             <span>123</span>
-            <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-w.png`} alt="댓글" /></i>
+            <i className='comment'></i>
             <span>321</span>
           </div>
         </ListColumn>
-        <ListColumn list={data}>
+        <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-w.png`} alt="좋아요" /></i>
+            <i className='like'></i>
             <span>123</span>
-            <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-w.png`} alt="댓글" /></i>
+            <i className='comment'></i>
             <span>321</span>
           </div>
         </ListColumn>
-        <ListColumn list={data}>
+        <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-w.png`} alt="좋아요" /></i>
+            <i className='like'></i>
             <span>123</span>
-            <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-w.png`} alt="댓글" /></i>
+            <i className='comment'></i>
             <span>321</span>
           </div>
         </ListColumn>
