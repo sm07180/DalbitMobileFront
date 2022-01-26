@@ -4,7 +4,7 @@ import moment from 'moment'
 import './popup.scss'
 
 const PopupNotice = (props) => {
-  const {onClose, tab} = props
+  const {onClose, tab, data} = props
 
   useEffect(() => {
     document.body.style.overflow = 'hidden'
