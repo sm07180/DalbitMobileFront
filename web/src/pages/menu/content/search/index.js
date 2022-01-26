@@ -328,6 +328,7 @@ export default (props) => {
       <div className="controllerWrap">
         <div className={`controller ${focus ? 'focus' : ''}`}>
           <form onSubmit={handleSubmit}>
+            <button type="submit" className="controller__submitBtn" disabled={btnAccess} />
             <input
               type="text"
               name="query"
@@ -337,7 +338,6 @@ export default (props) => {
               className="controller__submitInput"
               ref={IputEl}
             />
-            <button type="submit" className="controller__submitBtn" disabled={btnAccess} />
           </form>
         </div>
       </div>

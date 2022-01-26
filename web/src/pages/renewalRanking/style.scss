@@ -53,19 +53,6 @@ $errorMsg : #FF1919;
       color: #202020;
       pointer-events: none;
     }
-    .rightCtn {
-      position: relative;
-      @include flex(center, center);
-      button {
-        display: inline-block;
-        width: 40px; height: 40px;
-      }
-      .benefits {
-        font-size: 16px;
-        font-weight: 400;
-        color: #666666;
-      }
-    }
   }
   .cntTitle {
     width:100%;

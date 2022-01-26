@@ -8,7 +8,7 @@
 
 html,
 body {
-  font-family: 'NotoSansKR', sans-serif;
+  font-family: "Roboto", "Noto Sans CJK KR", sans-serif;
   font-size: 16px;
   font-weight: 400;
   -webkit-text-size-adjust: none;
@@ -19,7 +19,7 @@ body {
 
 pre,
 textarea {
-  font-family: sans-serif;
+  font-family: "Roboto", "Noto Sans CJK KR";
 }
 textarea {
   outline: none;
@@ -93,7 +93,7 @@ input {
 
 //2020-02-03 나눔스퀘어 때문에 input type이 패스워드 일때 표시 안되는 문제 해결 방안 코드
 input[type='password'] {
-  font-family: sans-serif;
+  font-family: "Roboto", "Noto Sans CJK KR";
 }
 
 /*input number pc에서 화살표 지우기*/
@@ -105,12 +105,14 @@ input::-webkit-inner-spin-button {
 }
 /* Firefox */
 input[type='number'] {
+  font-family: "Roboto", "Noto Sans CJK KR";
   -moz-appearance: textfield;
 }
 
 /*IOS input reset*/
 input,
 textarea {
+  font-family: "Roboto", "Noto Sans CJK KR";
   -webkit-appearance: none;
   -webkit-border-radius: 0;
   border-radius: 0;
