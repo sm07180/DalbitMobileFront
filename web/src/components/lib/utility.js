@@ -5,7 +5,7 @@
  */
 
 //---------------------------------------------------------------------
-import {isHybrid, Hybrid} from 'context/hybrid'
+import {isHybrid, Hybrid, isAndroid} from 'context/hybrid'
 import {clipJoinApi} from 'pages/common/clipPlayer/clip_func'
 import Api from 'context/api'
 import moment from 'moment'
@@ -377,6 +377,7 @@ export default class Utility {
     }
   }
 
+  // 생년월일 -> 만나이
   static birthToAmericanAge = (birth) => {
     // age: YYYYMMDD
     const birthYear = parseInt(birth.substring(0, 4))
@@ -400,5 +401,25 @@ export default class Utility {
     min = Math.floor(time / 60)
 
     return `${hour}시간 ${min}분`
+  }
+
+  // firebase, adbrix, facebook 이벤트 요청
+  static addAdsData = (cmd) => {
+    const firebaseDataArray = [
+      { type : "firebase", key : cmd, value: {} }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "adbrix", key : cmd, value: {} },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "facebook", key : cmd, value: {} }, // aos: 1.8.2, ios: 1.6.6 추가 (facebook)
+    ];
+    Hybrid('eventTracking', {service: firebaseDataArray})
+  }
+
+  // firebase, adbrix, facebook 이벤트 요청
+  static oldAddAdsData = (cmd) => {
+    const firebaseDataArray = [
+      { type : "firebase", key : cmd, value: {} }, // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+      { type : "adbrix", key : cmd, value: {} },   // aos: 1.6.9, ios: 1.6.3 (firebase, adbrix)
+    ];
+    Hybrid('eventTracking', {service: firebaseDataArray})
+    fbq('track', cmd)
   }
 }
