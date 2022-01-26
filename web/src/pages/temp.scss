@@ -1,48 +1,42 @@
 @font-face {
-  font-family: 'NotoSans CJK KR';
-  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Bold.woff2')
-  format('woff2'),
+  font-family: 'Roboto';
+  src: url('https://image.dalbitlive.com/assets/font/Roboto-Bold.woff2') format('woff2'),
+       url('https://image.dalbitlive.com/assets/font/Roboto-Bold.woff') format('woff');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('https://image.dalbitlive.com/assets/font/Roboto-Medium.woff2') format('woff2'),
+       url('https://image.dalbitlive.com/assets/font/Roboto-Medium.woff') format('woff');
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  src: url('https://image.dalbitlive.com/assets/font/Roboto-Regular.woff2') format('woff2'),
+       url('https://image.dalbitlive.com/assets/font/Roboto-Regular.woff') format('woff');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Noto Sans CJK KR';
+  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Bold.woff2') format('woff2'),
        url('https://image.dalbitlive.com/assets/font/NotoSans-Bold.woff') format('woff');
   font-weight: 700;
 }
 
 @font-face {
-  font-family: 'NotoSans CJK KR';
-  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Medium.woff2')
-  format('woff2'),
+  font-family: 'Noto Sans CJK KR';
+  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Medium.woff2') format('woff2'),
        url('https://image.dalbitlive.com/assets/font/NotoSans-Medium.woff') format('woff');
   font-weight: 500;
 }
 
 @font-face {
-  font-family: 'NotoSans CJK KR';
-  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Regular.woff2')
-  format('woff2'),
+  font-family: 'Noto Sans CJK KR';
+  src: url('https://image.dalbitlive.com/assets/font/NotoSans-Regular.woff2') format('woff2'),
        url('https://image.dalbitlive.com/assets/font/NotoSans-Regular.woff') format('woff');
-  font-weight: 400;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('https://image.dalbitlive.com/assets/font/Robogo-Bold.woff2')
-  format('woff2'),
-       url('https://image.dalbitlive.com/assets/font/Robogo-Bold.woff') format('woff');
-  font-weight: 700;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('https://image.dalbitlive.com/assets/font/Robogo-Medium.woff2')
-  format('woff2'),
-       url('https://image.dalbitlive.com/assets/font/Robogo-Medium.woff') format('woff');
-  font-weight: 500;
-}
-
-@font-face {
-  font-family: 'Roboto';
-  src: url('https://image.dalbitlive.com/assets/font/Robogo-Regular.woff2')
-  format('woff2'),
-       url('https://image.dalbitlive.com/assets/font/Robogo-Regular.woff') format('woff');
   font-weight: 400;
 }
 

@@ -6,7 +6,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import ListRow from 'components/ui/listRow/listRow'
+import ListRow from 'components/ui/listRow/ListRow'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 // components

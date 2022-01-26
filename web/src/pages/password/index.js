@@ -12,6 +12,9 @@ import {Hybrid, isHybrid} from 'context/hybrid'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
+import SignField from './components/signField'
+
+import './style.scss'
 
 let intervalId = null
 let setTime = 300
@@ -278,127 +281,136 @@ export default (props) => {
     }
   }, [validate.loginPwdCheck])
 
-  return (
-    <Layout status="no_gnb" header="비밀번호 변경">
-      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-      <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
-      <Content>
-        {/* 휴대폰 본인인증 -------------------------------------------------------- */}
-        <InputItem button={true} validate={validate.memId.check}>
-          <div className="layer">
-            <label htmlFor="memId">휴대폰 번호</label>
-            <input
-              type="tel"
-              ref={memIdRef}
-              id="memId"
-              name="memId"
-              placeholder="휴대폰 번호를 입력해주세요"
-              maxLength={11}
-              autoComplete="off"
-              value={memId}
-              onChange={(e) => dispatch(e.target)}
-            />
-            <button disabled={!btnState.memId} onClick={fetchSmsReq}>
-              인증요청
-            </button>
-          </div>
-          {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
-        </InputItem>
-        <InputItem button={true} validate={validate.auth.check}>
-          <div className="layer">
-            <label htmlFor="auth">인증번호</label>
-            <input
-              type="number"
-              ref={authRef}
-              id="auth"
-              name="auth"
-              placeholder="인증번호를 입력해주세요"
-              autoComplete="off"
-              value={auth}
-              onChange={(e) => dispatch(e.target)}
-              disabled={true}
-            />
-            <span className="timer">{timeText}</span>
-            <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
-              인증확인
-            </button>
-          </div>
-          {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
-        </InputItem>
+  
+  const phoneCertification = () => {
+    setStep(step + 1);
+  }
 
-        {/* 비밀번호 ---------------------------------------------------------- */}
+  return (
+    <div id='passwordSetting'>
+      <SignField title={"새로운 비밀번호를\n설정해주세요."} btnFunction={phoneCertification}>
         <InputItem button={false} validate={validate.loginPwd.check}>
-          <div className="layer">
-            <label htmlFor="loginPwd">비밀번호</label>
+          {validate.loginPwd.text && <p className="helpText">{validate.loginPwd.text}</p>}
+          <div className="inputRow">
             <input
               type="password"
               id="loginPwd"
+              className="inputfield"
               name="loginPwd"
-              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+              placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상"
               autoComplete="off"
               maxLength={20}
               value={loginPwd}
               onChange={(e) => dispatch(e.target)}
             />
           </div>
-          {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
         </InputItem>
         <InputItem button={false} validate={validate.loginPwdCheck.check}>
-          <div className="layer">
-            <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+          {validate.loginPwdCheck.text && <p className="helpText">{validate.loginPwdCheck.text}</p>}
+          <div className="inputRow">
             <input
               type="password"
               id="loginPwdCheck"
+              className="inputfield"
               name="loginPwdCheck"
-              placeholder="비밀번호를 한번 더 입력해주세요"
+              placeholder="비밀번호 다시 입력"
               autoComplete="off"
               maxLength={20}
               value={loginPwdCheck}
               onChange={(e) => dispatch(e.target)}
             />
           </div>
-          {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
         </InputItem>
+      </SignField>
+    </div>
+    // <Layout status="no_gnb" header="비밀번호 변경">
+    //   <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+    //   <input type="password" style={{width: '0px', padding: '0px', position: 'absolute'}} />
+    //   <Content>
+    //     {/* 휴대폰 본인인증 -------------------------------------------------------- */}
+    //     <InputItem button={true} validate={validate.memId.check}>
+    //       <div className="layer">
+    //         <label htmlFor="memId">휴대폰 번호</label>
+    //         <input
+    //           type="tel"
+    //           ref={memIdRef}
+    //           id="memId"
+    //           name="memId"
+    //           placeholder="휴대폰 번호를 입력해주세요"
+    //           maxLength={11}
+    //           autoComplete="off"
+    //           value={memId}
+    //           onChange={(e) => dispatch(e.target)}
+    //         />
+    //         <button disabled={!btnState.memId} onClick={fetchSmsReq}>
+    //           인증요청
+    //         </button>
+    //       </div>
+    //       {validate.memId.text && <p className="help-text">{validate.memId.text}</p>}
+    //     </InputItem>
+    //     <InputItem button={true} validate={validate.auth.check}>
+    //       <div className="layer">
+    //         <label htmlFor="auth">인증번호</label>
+    //         <input
+    //           type="number"
+    //           ref={authRef}
+    //           id="auth"
+    //           name="auth"
+    //           placeholder="인증번호를 입력해주세요"
+    //           autoComplete="off"
+    //           value={auth}
+    //           onChange={(e) => dispatch(e.target)}
+    //           disabled={true}
+    //         />
+    //         <span className="timer">{timeText}</span>
+    //         <button disabled={!btnState.auth} onClick={fetchSmsCheck}>
+    //           인증확인
+    //         </button>
+    //       </div>
+    //       {validate.auth.text && <p className="help-text">{validate.auth.text}</p>}
+    //     </InputItem>
 
-        <button className="submit-btn" onClick={passwordModify}>
-          비밀번호 변경
-        </button>
-      </Content>
-    </Layout>
+    //     {/* 비밀번호 ---------------------------------------------------------- */}
+    //     <InputItem button={false} validate={validate.loginPwd.check}>
+    //       <div className="layer">
+    //         <label htmlFor="loginPwd">비밀번호</label>
+    //         <input
+    //           type="password"
+    //           id="loginPwd"
+    //           name="loginPwd"
+    //           placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상 조합"
+    //           autoComplete="off"
+    //           maxLength={20}
+    //           value={loginPwd}
+    //           onChange={(e) => dispatch(e.target)}
+    //         />
+    //       </div>
+    //       {validate.loginPwd.text && <p className="help-text">{validate.loginPwd.text}</p>}
+    //     </InputItem>
+    //     <InputItem button={false} validate={validate.loginPwdCheck.check}>
+    //       <div className="layer">
+    //         <label htmlFor="loginPwdCheck">비밀번호 확인</label>
+    //         <input
+    //           type="password"
+    //           id="loginPwdCheck"
+    //           name="loginPwdCheck"
+    //           placeholder="비밀번호를 한번 더 입력해주세요"
+    //           autoComplete="off"
+    //           maxLength={20}
+    //           value={loginPwdCheck}
+    //           onChange={(e) => dispatch(e.target)}
+    //         />
+    //       </div>
+    //       {validate.loginPwdCheck.text && <p className="help-text">{validate.loginPwdCheck.text}</p>}
+    //     </InputItem>
+
+    //     <button className="submit-btn" onClick={passwordModify}>
+    //       비밀번호 변경
+    //     </button>
+    //   </Content>
+    // </Layout>
   )
 }
-
-const Content = styled.section`
-  padding: 12px 16px;
-  background: #eeeeee;
-  .submit-btn {
-    width: 100%;
-    height: 44px;
-    margin-top: 32px;
-    border-radius: 12px;
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 44px;
-    background: ${COLOR_MAIN};
-  }
-  .birthText {
-    padding: 3px 0 5px 5px;
-    font-size: 12px;
-    letter-spacing: -0.3px;
-    color: #e84d6f;
-    &::before {
-      display: inline-block;
-      margin-top: 7px;
-      vertical-align: top;
-      margin-right: 4px;
-      width: 2px;
-      height: 2px;
-      background: #e84d6f;
-      content: '';
-    }
-  }
-`
 
 const InputItem = styled.div`
   & + & {
