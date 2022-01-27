@@ -1,21 +1,20 @@
 import React from 'react'
 
-export default function ExchangeRepply() {
+export default function MakeRepplyWrap({state, inspection, recentCheck, recentInfo}) {
   return (
     <>
-      <div className="repplyBox">
-        <div className="listRow">
-          <div className="title">예금주</div>
-          <div className="inputBox">
-            <div className="text">홍길동</div>
+      <div className={`formData ${recentInfo !== '' ? 'recent' : ''}`}>
+        <div className="formData__list formData__list--disabled">
+          <div className="formData__title">예금주</div>
+          <div className="formData__input">
+            <div className="formData__input--disable">{recentInfo !== '' ? recentInfo.accountName : state.accountName || ''}</div>
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">은행</div>
-          <div className="inputBox select">
-            <div className="text">
-              은행명
-              {/* {recentInfo === ''
+        <div className="formData__list formData__list--disabled">
+          <div className="formData__title">은행</div>
+          <div className="formData__input">
+            <div className="formData__input--disable">
+              {recentInfo === ''
                 ? bankList.findIndex((v) => {
                     return v.value == state.bankCode
                   }) !== -1
@@ -33,30 +32,44 @@ export default function ExchangeRepply() {
                       return v.value == recentInfo.bankCode
                     })
                   ].text
-                : ''} */}
+                : ''}
             </div>
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">계좌번호</div>
-          <div className="inputBox">
-            <input type="num" placeholder='계좌번호를 입력해주세요 (숫자)'/>
+        <div className="formData__list formData__list--disabled">
+          <div className="formData__title">계좌번호</div>
+          <div className="formData__input">
+            <div className="formData__input--disable">{recentInfo !== '' ? recentInfo.accountNo : state.accountNo}</div>
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">주민등록번호</div>
-          <div className="inputBox">
-            <input type="num" maxLength={6} placeholder='앞 6자리'></input>
-            <span className="line">-</span>
-            <input type="password" maxLength={7} placeholder='뒤 7자리'></input>
-          </div>
-        </div>
-        <div className="listRow">
-          <div className="title">전화번호</div>
-          <div className="inputBox">
-            <input type="tel" placeholder='계좌번호를 입력해주세요 (숫자)'/>
-          </div>
-        </div>
+        {!recentCheck && (
+          <>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">주민등록번호</div>
+              <div className="formData__input">
+                <span className="formData__input">{state.socialNo || ''}</span>
+                <span className="formData__input--line">-</span>
+                <span className="formData__input">*******</span>
+              </div>
+            </div>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">전화번호</div>
+              <div className="formData__input">
+                <div className="formData__input--disable">{state.phoneNo || ''}</div>
+              </div>
+            </div>
+            <div className="formData__list formData__list--disabled">
+              <div className="formData__title">주소</div>
+              <div className="formData__input--address">
+                <div className="formData__input--disable">{state.address1 || ''}</div>
+                {state.address2 && <div className="formData__input--disable formData__input--address--mt">{state.address2}</div>}
+              </div>
+            </div>
+          </>
+        )}
+        <button className="doExchangeButton active" onClick={() => inspection(1)}>
+          환전 신청하기
+        </button>
       </div>
     </>
   )

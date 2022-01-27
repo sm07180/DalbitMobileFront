@@ -7,6 +7,23 @@ import DalbitCheckbox from 'components/ui/dalbit_checkbox'
 
 // import DalbitSelectBox from 'common/ui/dalbit_selectbox'
 
+// const selectReducer = (state, action) => {
+//   switch (action.type) {
+//     case 'open':
+//       return {
+//         ...state,
+//         isOpen: !state.isOpen
+//       }
+//     case 'select':
+//       return {
+//         ...state,
+//         selectIdx: action.idx || 0
+//       }
+
+//     default:
+//       throw new Error()
+//   }
+// }
 
 export default function MakeFormWrap({state, dispatch, inspection, bank}) {
   // const [selectState, selectDispatch] = useReducer(selectReducer, initVal)
@@ -123,21 +140,21 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
         </button>
       </div>
       <div className="formData">
-        <div className="listRow">
-          <div className="title">예금주</div>
-          <div className="inputBox">
+        <div className="formData__list">
+          <div className="formData__title">예금주</div>
+          <div className="formData__input">
             <input
               type="text"
               value={state.name}
-              className="inputBox--text"
+              className="formData__input--text"
               onChange={(e) => validateName(e, {type: 'name', val: e.target.value})}
             />
           </div>
         </div>
 
-        <div className="listRow">
-          <div className="title">은행</div>
-          <div className={`${open && 'on'} inputBox select`}>
+        <div className="formData__list">
+          <div className="formData__title">은행</div>
+          <div className={`${open && 'on'} formData__input formData__input--select`}>
             {bank !== null && (
               <select
                 onChange={(e) => {
@@ -152,78 +169,90 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
                 })}
               </select>
             )}
+            {/* <DalbitSelectBox
+              state={selectState}
+              dispatch={selectDispatch}
+              styling={{selectBordercolor: '#bdbdbd', iconColor: '#757575', selectFontColor: '#616161'}}
+            /> */}
           </div>
         </div>
 
-        <div className="listRow">
-          <div className="title">계좌번호</div>
-          <div className="inputBox">
+        <div className="formData__list">
+          <div className="formData__title">계좌번호</div>
+          <div className="formData__input">
             <input
               type="tel"
               value={state.account}
+              className="formData__input--text"
               onChange={(e) => dispatch({type: 'account', val: e.target.value})}
               placeholder="계좌번호를 입력해주세요 (숫자)"
             />
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">주민등록번호</div>
-          <div className="inputBox social">
+        <div className="formData__list">
+          <div className="formData__title">주민등록번호</div>
+          <div className="formData__input formData__input--social">
             <input
               type="tel"
               value={state.fSocialNo}
+              className="formData__input--text"
               onChange={(e) => dispatch({type: 'fSocial', val: e.target.value})}
               placeholder="앞 6자리"
             />
-            <span className="line">-</span>
+            <span className="formData__input--line">-</span>
             <input
               type="password"
               value={state.bSocialNo}
               id="bsocialNo"
+              className="formData__input--text"
               onChange={(e) => dispatch({type: 'bSocial', val: e.target.value})}
               placeholder="뒤 7자리"
             />
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">전화번호</div>
-          <div className="inputBox">
+        <div className="formData__list">
+          <div className="formData__title">전화번호</div>
+          <div className="formData__input">
             <input
               type="tel"
               value={state.phone}
+              className="formData__input--text"
               onChange={(e) => dispatch({type: 'phone', val: e.target.value})}
               placeholder="숫자만 입력해주세요"
             />
           </div>
         </div>
-        <div className="listRow listRow--file">
-          <div className="title">우편번호</div>
-          <div className="inputBox" onClick={(e) => searchAddr(e)}>
+        <div className="formData__list formData__list--disabled formData__list--file">
+          <div className="formData__title">우편번호</div>
+          <div className="formData__input" onClick={(e) => searchAddr(e)}>
             <input
               type="text"
+              className="formData__input--text adressBg"
               disabled={true}
               value={state.zoneCode}
               placeholder="주소검색 해주세요."
             />
-            <button>주소검색</button>
+            <button className="formData__input--button">주소검색</button>
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">주소</div>
-          <div className="inputBox">
+        <div className="formData__list formData__list--disabled">
+          <div className="formData__title">주소</div>
+          <div className="formData__input">
             <input
               type="text"
               value={state.fAddress}
+              className="formData__input--text adressBg"
               disabled={true}
               placeholder="자동 입력됩니다."
             />
           </div>
         </div>
-        <div className="listRow">
-          <div className="title">상세주소</div>
-          <div className="inputBox">
+        <div className="formData__list">
+          <div className="formData__title">상세주소</div>
+          <div className="formData__input">
             <input
               type="text"
+              className="formData__input--text"
               placeholder="상세주소를 입력해주세요"
               onChange={(e) => {
                 dispatch({type: 'bAddress', val: e.target.value})
@@ -231,33 +260,35 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
             />
           </div>
         </div>
-        <div className="listRow listRow--disabled listRow--file">
-          <div className="title">신분증사본</div>
-          <div className="inputBox">
-            <label htmlFor="id-upload-text" className="label">
+        <div className="formData__list formData__list--disabled formData__list--file">
+          <div className="formData__title">신분증사본</div>
+          <div className="formData__input">
+            <label htmlFor="id-upload-text" className="formData__input--label">
               <span>{state.files[0] !== false ? state.files[0].name : '등록해주세요'}</span>
-              <button>찾아보기</button>
+              <span className="formData__input--button">찾아보기</span>
             </label>
             <input
               type="file"
               name="idcard"
               id="id-upload-text"
+              className="formData__input--text"
               placeholder="신분증사본을 첨부해주세요"
               onChange={(e) => uploadSingleFile(e, 0)}
             />
           </div>
         </div>
-        <div className="listRow listRow--file">
-          <div className="title">통장사본</div>
-          <div className="inputBox">
-            <label htmlFor="bankbook-upload-text" className="label">
+        <div className="formData__list formData__list--disabled formData__list--file">
+          <div className="formData__title">통장사본</div>
+          <div className="formData__input">
+            <label htmlFor="bankbook-upload-text" className="formData__input--label">
               <span>{state.files[1] !== false ? state.files[1].name : '등록해주세요'}</span>
-              <button>찾아보기</button>
+              <span className="formData__input--button">찾아보기</span>
             </label>
             <input
               type="file"
               name="bankbook"
               id="bankbook-upload-text"
+              className="formData__input--text"
               placeholder="통장사본을 첨부해주세요"
               onChange={(e) => uploadSingleFile(e, 1)}
             />
@@ -265,43 +296,42 @@ export default function MakeFormWrap({state, dispatch, inspection, bank}) {
         </div>
         {state.consent && (
           <>
-            <div className="listRow listRow--disabled listRow--file">
-              <div className="title">부모동의 사본</div>
-              <div className="inputBox">
-                <label htmlFor="consent-upload-text" className="inputBox--label">
+            <div className="formData__list formData__list--disabled formData__list--file">
+              <div className="formData__title">부모동의 사본</div>
+              <div className="formData__input">
+                <label htmlFor="consent-upload-text" className="formData__input--label">
                   <span>{state.files[2] !== false ? state.files[2].name : '등록해주세요'}</span>
-                  <span className="button">찾아보기</span>
+                  <span className="formData__input--button">찾아보기</span>
                 </label>
                 <input
                   type="file"
                   name="consent"
                   id="consent-upload-text"
+                  className="formData__input--text"
                   placeholder="통장사본을 첨부해주세요"
                   onChange={(e) => uploadSingleFile(e, 2)}
                 />
               </div>
             </div>
-            <div className="listRow--caption">
+            <div className="formData__list--caption">
               <span>가족관계 증명서 또는 주민등록 등본 사본을 등록해주세요.</span>
               <span className="point">부모님의 주민번호 앞 6자리가 명확히 확인되어야 합니다.</span>
             </div>
           </>
         )}
-        <section className="privacyWrap">
-          <div className="privacy">
-            <div>
-              <DalbitCheckbox status={state.check} callback={() => dispatch({type: 'check', val: !state.check})} />
-            </div>
-            <div className="privacy__text">
-              <div className="privacy__text--title">개인정보 수집 동의</div>
-              <div className="privacy__text--explain">
-                회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된
-                개인정보는 확인 후 폐기 처리합니다.)
-              </div>
+
+        <div className="privacy">
+          <div>
+            <DalbitCheckbox status={state.check} callback={() => dispatch({type: 'check', val: !state.check})} />
+          </div>
+          <div className="privacy__text">
+            <div className="privacy__text--title">개인정보 수집 및 이용에 동의합니다.</div>
+            <div className="privacy__text--explain">
+              회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된
+              개인정보는 확인 후 폐기 처리합니다.)
             </div>
           </div>
-        </section>
-        
+        </div>
 
         <button className="doExchangeButton active" onClick={() => inspection(0)}>
           환전 신청하기
