@@ -15,7 +15,7 @@ import './dalCharge.scss'
 
 const paymentMethod = ['계좌 간편결제','무통장(계좌이체)','신용/체크카드','휴대폰','카카오페이(머니)','카카오페이(카드)','페이코','티머니/캐시비','문화상품권','해피머니상품권']
 
-const StorePage = () => {
+const DalCharge = () => {
   const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
@@ -84,11 +84,11 @@ const StorePage = () => {
         <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
         <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
       </section>
-      <section className="inquiry">
+      <section className="bottomInfo">
         결제문의 <span>1522-0251</span>
       </section>
     </div>
   )
 }
 
-export default StorePage
+export default DalCharge

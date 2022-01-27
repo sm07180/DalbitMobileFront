@@ -1,0 +1,86 @@
+@import "components/ui/_mixin.scss";
+
+#bankTransfer {
+  section{
+    padding: 0 16px 15px;
+    background:#fff;
+  }
+  .infoInput {
+    @include flex($fd:column);
+    .tabmenuWrap {
+      position: relative;
+      @include flex($fd:column);
+      .title {
+        margin-bottom:4px;
+        @include font(13px,400,#666);
+      }
+      .tabmenu {
+        display: flex;
+        li {
+          position: relative;
+          @include flex(center,center);
+          height:36px;
+          line-height:34px;
+          margin-right:4px;
+          padding:0 15px;
+          @include border(#e3e3e3,18px);
+          @include font(13px,400,rgb(10, 10, 10));
+          &.active {
+            border-color:black;
+            background: black;
+            @include font(13px,500,white);
+          }
+        }
+      }
+    }
+  }
+  .noticeInfo {
+    padding:20px 16px 30px;
+    h3 {
+      position:relative;
+      @include flex;
+      margin-bottom: 8px;
+      padding-left: 20px;
+      @include font(12px,400,#FF3C7B);
+      &::after{
+        content:"";
+        @include position-vertical;
+        left:2px;
+        width:16px;
+        height:16px;
+        background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
+      }
+    }
+    p {
+      position: relative;
+      padding-left: 16px;
+      line-height: 20px;
+      letter-spacing: -0.8px;
+      @include font(12px,400,#757575);
+      &::before {
+        @include position-top-left(9px,6px);
+        content: '';
+        width: 2px;height: 2px;
+        background: #757575;
+      }
+    }
+  }
+  .bottomInfo{
+    border-top:1px solid #f5f5f5;
+    padding-top:15px;
+    .inspectionTime{
+      display: flex;
+      justify-content:center;
+      align-items:center;
+      height: 30px;
+      margin-left: auto;
+      @include font(13px,500,#666);
+      font-size: 13px;
+      font-weight:500;
+      color: #666;
+      border:1px solid #e3e3e3;
+      border-radius: 18px;
+      padding:0 13px;
+    }
+  }
+}

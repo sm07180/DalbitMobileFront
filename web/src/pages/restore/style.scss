@@ -96,11 +96,7 @@
       }
     }
   }
-  button.charge {
+  .submitBtn {
     margin:auto 16px 50px;
-    line-height: 48px;
-    border-radius: 16px;
-    background: #FF3C7B;
-    @include font(15px,bold,white);
   }
 }

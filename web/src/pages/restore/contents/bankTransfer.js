@@ -6,16 +6,14 @@ import Utility from 'components/lib/utility'
 
 // global components
 import Header from 'components/ui/header/Header'
-import CntTitle from 'components/ui/cntTitle/CntTitle'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import InputItems from 'components/ui/inputItems/InputItems'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
 // css
-import './dalCharge.scss'
+import './bankTransfer.scss'
 
-const paymentMethod = ['계좌 간편결제','무통장(계좌이체)','신용/체크카드','휴대폰','카카오페이(머니)','카카오페이(카드)','페이코','티머니/캐시비','문화상품권','해피머니상품권']
-
-const StorePage = () => {
+const BankTransfer = () => {
   const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
@@ -32,63 +30,47 @@ const StorePage = () => {
   },[])
 
   return (
-    <div id="dalCharge">
-      <Header title="달 충전하기" position="sticky" type="back" />
-      <section className="purchaseInfo">
-        <CntTitle title="구매내역" />
-        <div className="infoBox">
-          <div className="infoList">
-            <div className="title">구매상품</div>
-            <p>{Utility.addComma(11000)} <strong>개</strong></p>
-          </div>
-          {true && (
-            <div className="infoList">
-              <div className="title">추가지급</div>
-              <p>{Utility.addComma(500)} <strong>개</strong></p>
-            </div>
-          )}
-          <div className="infoList">
-            <div className="title">상품수량</div>
-            <p className="quantity">
-              <button className="minus">-</button>
-              <span>5</span>
-              <button className="plus">+</button>
-            </p>
-          </div>
-          <div className="infoList">
-            <div className="title">총</div>
-            <p>{Utility.addComma(1100000)} <strong>원</strong></p>
-          </div>
+    <div id="bankTransfer">
+      <Header title="무통장(계좌이체)" position="sticky" type="back" />
+      <section className="infoInput">
+        <InputItems title="입금정보">
+          <p> 원<span>(부가세포함)</span></p>
+        </InputItems>
+        <InputItems title="입금은행">
+          <p>국민은행</p>
+        </InputItems>
+        <InputItems title="입금자명">
+          <input type="text" maxLength="15" placeholder="입금자명을 입력해주세요." />
+        </InputItems>
+        <InputItems title="입금자명">
+          <input type="tel" maxLength="15" placeholder="숫자만 입력해주세요." />
+        </InputItems>
+        <div className="tabmenuWrap">
+          <div className="title">현금영수증</div>
+          <ul className="tabmenu">
+            <li className='active'>신청안함</li>
+            <li>소득공제용</li>
+            <li>지출증빙용</li>
+          </ul>
         </div>
-        <div className="infoBox" style={{marginTop:'10px'}}>
-          <div className="infoList">
-            <div className='title'>결제금액</div>
-            <p>{Utility.addComma(1100000)} <strong>원</strong></p>
-          </div>
-        </div>
-      </section>
-      <section className="paymentMethod">
-        <CntTitle title="결제수단" />
-        <div className="selectWrap">
-          {paymentMethod.map((data,index) => {
-            return (
-              <div className={`selectItem ${Number(select) === index && 'active'}`} onClick={onSelectMethod} data-target-index={index} key={index}>{data}</div>
-            )
-          })}
-        </div>
+        <InputItems>
+          <input type="number" maxLength="20" placeholder="주민번호 또는 휴대폰 번호를 입력해주세요." />
+        </InputItems>
+        <SubmitBtn text="입금계좌 받기" />
       </section>
       <section className="noticeInfo">
-        <h3>유의사항</h3>
-        <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
-        <p>달 보유/구매/선물 내역은 내지갑에서 확인할 수 있습니다.</p>
-        <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
-        <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
+        <h3>무통장 입금 안내</h3>
+        <p>심야시간 무통장 입금이 지연될 경우
+          <strong onClick={() => history.push('/pay/bank_info')}>은행별 점검시간을 확인</strong>하세요.</p>
+        <p>매월 말에서 1일 자정시간은 거래량이 급증하여 이체처리가 지연 될 수 있습니다.</p>
+        <p>시스템 점검시간으로 이체가 지연되는 경우 다른 결제 수단을 이용 하시면 보다 신속하게 달 충전을 완료 할 수 있습니다.</p>
+        <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
       </section>
-      <section className="inquiry">
-        결제문의 <span>1522-0251</span>
+      <section className="bottomInfo">
+          <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
       </section>
     </div>
   )
 }
 
-export default StorePage
+export default BankTransfer
