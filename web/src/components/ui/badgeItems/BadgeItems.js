@@ -1,13 +1,12 @@
-// React
 import React from 'react'
 
 import './badgeItems.scss'
 
 const BadgeItems = (props) => {
-  const {content} = props
+  const {data} = props
   return (
     <>
-      {content && content.map((list, index) => {
+      {data.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
           <React.Fragment key={index}>

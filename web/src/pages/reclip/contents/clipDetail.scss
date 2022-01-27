@@ -1,0 +1,146 @@
+@import "components/ui/_mixin.scss";
+
+#clipDetail {
+  position:relative;
+  width: 100%;
+  font-family: 'Noto Sans KR', sans-serif;
+  section{
+    position: relative;
+  }
+  .filterWrap {
+    padding-top:10px;
+    .tabmenu {
+      @include flex(center);
+      margin-bottom:12px;
+      .swiper-wrapper {
+        padding-left:16px;
+      }
+      .swiper-slide {
+        width:auto;
+        &:last-child {
+          margin-right:32px;
+        }
+      }
+      li {
+        flex: none;
+        line-height:36px;
+        margin-right:4px;
+        padding: 0 15px;
+        border-radius: 100px;
+        background: #f6f6f6;
+        @include font(13px,400,#acacac);
+        &.active{
+          @include font(13px,500,white);
+          background: #202020;
+        }
+      }
+    }
+    .filterGroup {
+      @include flex($jc:flex-end);
+      padding: 0 16px;
+      box-sizing: border-box;
+      .filterBtn {
+        position:relative;
+        @include flex;
+        @include font(13px,400,#202020);
+        margin-left: 12px;
+        .arrowDown{
+          width: 20px;
+          height: 20px;
+          @include BGIMG('clip/dalla/ico_arrowDown.png');
+        }
+        .arrowUp{
+          width: 20px;
+          height: 20px;
+          @include BGIMG('clip/dalla/ico_arrowUp.png');
+        }
+        .option{
+          @include position-top-right(24px,0);
+          @include flex($fd:column);
+          width: 124px;
+          border-radius: 8px;
+          box-shadow: 1px 1px 20px rgba(0,0,0,0.16);
+          background: #fff;
+          z-index: 5;
+          li {
+            @include flex(center);
+            line-height: 40px;
+            padding-left: 28px;
+            border-bottom: 1px solid #f6f6f6;
+            letter-spacing: -0.5px;
+            text-align:left;
+            &:last-child{
+              border-bottom: 0;
+            }
+            &.checked{
+              padding-left:8px;
+              &:before {
+                display:inline-block;
+                content:"";
+                width: 16px;
+                height: 16px;
+                margin-right:4px;
+                @include BGIMG('clip/dalla/ico_check.png');
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .detailList{
+    padding:12px 16px 30px;
+    .listRow{
+      margin-bottom:12px;
+      .photo{
+        width: 72px;
+        height: 72px;
+        margin-right: 12px;
+        img {
+          border-radius: 16px;
+        }
+      }
+      .listInfo{
+        width: calc(100% - 152px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+      }
+      .listItem{
+        @include flex(center);
+        .title{
+          width: 100%;
+          @include font(14px,500);
+          @include fontCut;
+        }
+        .nickNm{
+          margin-left:4px;
+          @include font(13px,400,#666);
+          @include fontCut;
+        }
+        .cnt{
+          @include font(11px,400,#999);
+          margin-right: 15px;
+        }
+      }
+      button {
+        @include flex(center,center);
+        width: 28px;
+        height: 28px;
+        margin-left: auto;
+        &.heart{
+          background: #F6F6F6;
+          border-radius: 100%;
+          img{
+            width: 16px;
+          }
+        }
+        &.trash {
+          img {
+            width:15px;
+          }
+        }
+      }
+    }
+  }
+}

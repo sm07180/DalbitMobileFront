@@ -1,0 +1,214 @@
+@import "components/ui/_mixin.scss";
+
+#clipPage{
+  position:relative;
+  padding-bottom:80px;
+  font-family: 'Noto Sans KR', sans-serif;
+  section{
+    position: relative;
+    margin-bottom: 35px;
+  }
+  .cntTitle{
+    margin-bottom: 15px;
+  }
+  .subTitle{
+    @include flex(center);
+    width: 100%;
+    margin:16px 0 8px;
+    padding: 0 16px;
+    h3 {
+      @include font(18px,500,#202020);
+    }
+    button{
+      margin-left: auto;
+      letter-spacing: -1px;
+      @include font(13px,400,#999);
+    }
+  }
+  .hotClipWrap{
+    padding-top:18px;
+    .swiper-slide{
+      @include flex($fd:column);
+      padding: 0 16px;
+      transition:all .1s ease-out;
+      &.swiper-slide-active {
+        width:calc(100% - 28px);
+        padding-right:16px;
+        padding-left:auto;
+      }
+      &:last-child{
+        width:100%;
+      }
+    }
+    .listRow {
+      margin-bottom:12px;
+      &:last-child {
+        margin-bottom:0;
+      }
+      .photo{
+        width: 112px;
+        height: 112px;
+        img {
+          border-radius:16px;
+        }
+      }
+      .listContent {
+        flex:1;
+        @include flex($fd:column);
+        min-width:0;
+        margin-left:16px;
+        .listItem {
+          display:flex;
+          align-items:center;
+          &:first-child {
+            height:70px;
+          }
+          .rankNm {
+            height:36px;
+            margin-left:2px;
+            object-fit: contain;
+          }
+          .subject{
+            flex-shrink: 0;
+            margin-right: 5px;
+            @include font(12px,400,#666666);
+          }
+          .title{
+            line-height:24px;
+            @include font(15px,700,#202020);
+            @include fontCut;
+          }
+          .nick{
+            line-height:18px;
+            @include font(13px,400,#999);
+            @include fontCut;
+          }
+        }
+      }
+    }
+  }
+  .bannerWrap {
+    .bannerBox {
+      width:calc(100% - 32px);
+      padding-left:16px;
+      box-sizing: border-box;
+      &:last-child {
+        width:calc(100% - 16px);
+        margin-right:16px;  
+      }
+      .bannerItem {
+        width: 100%;
+        height: 100px;
+        background-color:#999;
+        border-radius: 4px;
+      }
+    }
+  }
+  .clipDrawer, .clipList {
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:100px;
+        margin-right: 12px;
+        &:last-child {
+          margin-right: 32px;
+        }
+      }
+    }
+    .listColumn{
+      .photo{
+        img {
+          border-radius: 16px
+        }
+      }
+      .title{
+        width:100%;
+        margin-top: 2px;
+        @include font(14px,500,#202020);
+        @include fontCut;
+      }
+      .nick{
+        width:100%;
+        @include font(12px,400,#666);
+        @include fontCut;
+      }
+    }
+  }
+  .likeSubWrap{
+    .swiper-wrapper {
+      padding-left:16px;
+      .swiper-slide {
+        width:auto;
+        margin-right: 4px;
+        &:last-child {
+          margin-right: 32px;
+        }
+      }
+    }
+    .likeSub{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: none;
+      min-width: 80px;
+      height: 80px;
+      border: 1px solid #d9d9d9;
+      border-radius: 20px;
+      padding: 0 23px;
+      &Wrap{
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+  .nowClipWrap{
+    .swiper-slide {
+      @include flex($fd:column);
+      padding: 0 0 0 16px;
+      transition:all .1s ease-out;
+      &.swiper-slide-active {
+        width:calc(100% - 28px);
+      }
+      &:last-child{
+        width:100%;
+        padding-right:16px;
+      }
+    }
+    .listWrap {
+      background-color:#666;
+      background-size:cover;
+      background-position:center;
+      background-blend-mode:screen;
+      margin-bottom:8px;
+      padding:8px;
+      border-radius:8px;
+      &:last-child{
+        margin-bottom: 0;
+      }
+      .listRow {
+        .photo {
+          width:50px;
+          height:50px;
+          img {
+            border-radius:16px;
+          }
+        }
+        .listContent{
+          flex:1;
+          @include flex($fd:column);
+          min-width:0;
+          margin-left:12px;
+          .title{
+            @include font(16px,500,#202020);
+            @include fontCut;
+          }
+          .nick{
+            @include font(12px,400,#666);
+            @include fontCut;
+          }
+        }
+      }
+    }
+  }
+}

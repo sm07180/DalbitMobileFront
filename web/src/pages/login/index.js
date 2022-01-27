@@ -1,43 +1,52 @@
-// context
+import React, {useContext} from 'react'
 import {Context} from 'context'
+import {useParams, useHistory, Redirect, Switch} from 'react-router-dom'
 
 //components
 import Layout from 'pages/common/layout/new_layout'
-import LoginForm from './login_form'
-import LoginSns from './login_sns'
-import './login.scss'
+import LoginSns from './components/loginSns'
+import './style.scss'
 
 import qs from 'query-string'
-import React, {useContext} from 'react'
-import {useParams} from 'react-router-dom'
-import {Redirect, Switch} from 'react-router-dom'
 
 export default function login(props) {
-  const params = useParams()
+  const {type} = useParams()
   const globalCtx = useContext(Context)
+  const history = useHistory()
   const {token} = globalCtx
 
-  // const createContent = () => {
-  //   const category = params instanceof Object ? params['type'] : ''
-  //   // url dividing
-  //   if (category === 'phone') {
-  //     return <LoginForm props={props} />
-  //   } else {
-  //     return <LoginSns />
-  //   }
-  // }
+  const login = () => {    
+    history.push('/login/sns')
+  }
 
   return (
     <Switch>
       {token && token.isLogin ? (
         <Redirect to={'/'} />
       ) : (
-        <Layout status="no_gnb">
-          <div id="loginPage">
-            <LoginSns props={props} />
-            {/* {createContent()} */}
-          </div>
-        </Layout>
+        <>
+          {
+            !type ? 
+              <Layout status="no_gnb">
+                <div id="loginPage">
+                  <div className='loginMain'>
+                    <div className='logo'>
+                      <img src='https://image.dalbitlive.com/dalla/logo/dalla_logo.png' alt='dalla'/>
+                    </div>
+                    <div className='textWrap'>
+                      <p className='mainText'>달라에서 매일<br/>재미있는 라이브를 즐겨보아요!</p>
+                      <p className='subText'>로그인 후 이용할 수 있습니다.</p>
+                    </div>
+                    <button className='loginBtn' onClick={login}>로그인</button>
+                  </div>
+                </div>
+              </Layout>
+              :
+              <>              
+                  <LoginSns props={props} />
+              </>
+          }
+        </>       
       )}
     </Switch>
   )

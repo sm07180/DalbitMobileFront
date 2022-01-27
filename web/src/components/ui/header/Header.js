@@ -1,26 +1,22 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
+// components
+import TitleButton from './TitleButton';
+// css
 import './header.scss'
 
-import closeBtn from '../ic_back.svg'
-
 export default (props) => {
-  const {title, type, children} = props
+  const {title, type, children, position} = props
   const history = useHistory()
 
-  const goBack = () => {
-    return history.goBack()
-  }
+  const goBack = () => history.goBack();
 
   return (
-    <header className={`${type ? type : ''}`}>
-      {type === 'back' && (
-        <button className="close" onClick={goBack}>
-          <img src={closeBtn} alt="뒤로가기" />
-        </button>
-      )}
-      <h1 className="title">{title}</h1>
+    <header className={`${type ? type : ''} ${position ? position : ''}`}>
+      {type === 'back' && <button className="back" onClick={goBack} />}
+      {title && <h1 className="title">{title}</h1>}
+      {/* <TitleButton title={title} /> */}
       {children}
     </header>
   )
