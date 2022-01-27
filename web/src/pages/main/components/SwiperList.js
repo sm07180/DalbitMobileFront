@@ -5,7 +5,7 @@ import Swiper from 'react-id-swiper'
 import ListColumn from 'components/ui/listColumn/ListColumn'
 
 const SwiperList = (props) => {
-  const {data} = props
+  const {data, profImgName} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -13,12 +13,12 @@ const SwiperList = (props) => {
 
   return (
     <>
-    {data && data.length > 0 &&
+    {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <ListColumn photo={list.profImg.thumb150x150}>
+              <ListColumn photo={list[profImgName].thumb150x150}>
                 <p className='userNick'>{list.nickNm}</p>
               </ListColumn>
             </div>

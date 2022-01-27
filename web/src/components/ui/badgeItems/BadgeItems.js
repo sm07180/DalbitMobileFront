@@ -6,7 +6,7 @@ const BadgeItems = (props) => {
   const {data} = props
   return (
     <>
-      {data && data.map((list, index) => {
+      {data.map((list, index) => {
         const {icon, startColor, endColor, text} = list
         return (
           <React.Fragment key={index}>
