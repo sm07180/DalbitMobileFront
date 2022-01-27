@@ -26,7 +26,7 @@ export const SearchButton = () => {
 const TitleButton = (props) => {
   const history = useHistory();
   switch (props.title) {
-    case '라이브':
+    case '메인':
       return (
         <div className="buttonGroup">
           <RankingButton history={history} />

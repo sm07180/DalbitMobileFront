@@ -21,10 +21,13 @@ const SwiperList = (props) => {
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <ListColumn photo={list[profImgName].thumb150x150}>
-                {list.rank && <div className={`rank-${list.rank}`}></div>}
+              <div className="listColumn">
+                <div className="photo">
+                  <img src={list[profImgName].thumb150x150} />
+                  {list.rank && <div className={`rank-${list.rank}`}></div>}
+                </div>
                 <p className='userNick'>{list.nickNm}</p>
-              </ListColumn>
+              </div>
             </div>
           )
         })}
