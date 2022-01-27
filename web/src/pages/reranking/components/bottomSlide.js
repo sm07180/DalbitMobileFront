@@ -1,13 +1,4 @@
-import React, {useContext, useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-// context
-import {Context} from 'context'
-import Api from 'context/api'
-import qs from 'query-string'
-
-import Header from './header'
-import {Hybrid, isHybrid} from 'context/hybrid'
-import Utility from 'components/lib/utility'
+import React, {useEffect, useState} from 'react'
 
 export default function bottomSlide({props, setSlidePop, children}) {
   const [popOpen, setPopOpen] = useState(true);

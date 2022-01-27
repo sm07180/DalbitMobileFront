@@ -14,8 +14,8 @@ const CardList = (props) => {
   }
 
   return (
-    <React.Fragment>
-      {data && data.length > 0 &&    
+    <div className='chartSwiper'>
+      {data && data.length > 0 &&  
         <Swiper {...swiperParams}>
             {data.map((list, index) => {
               return (
@@ -34,7 +34,7 @@ const CardList = (props) => {
             })}
         </Swiper>
       }
-    </React.Fragment>
+    </div>
   )
 }
 

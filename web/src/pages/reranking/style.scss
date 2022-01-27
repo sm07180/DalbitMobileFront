@@ -1,0 +1,420 @@
+@import "components/ui/_mixin.scss";
+
+$btnActive : #FF3C7B;
+$btnDisable : #FFD8E4;
+$errorMsg : #FF1919;
+
+@mixin tabMenuUnderline($value) {
+  $nav-length: $value;
+  $nav-width: calc(100% / #{$nav-length});
+  li {
+    flex:1;
+    text-align:center;
+    @for $i from 1 through $nav-length {
+      &:nth-child(#{$i}) {
+        &.active {
+          ~ .underline {
+            left: calc(100% / #{$nav-length} * #{$i - 1});
+          }
+        }
+      } 
+    }
+  }
+  .underline {
+    @include position-bottom-left;
+    width:$nav-width;
+    transition:all .1s ease-in-out;
+  }
+}
+
+#renewalRanking {
+  header {
+    .benefits {
+      display: inline-block;
+      width: 40px; height: 40px;
+    }
+  }
+  .cntTitle {
+    width:100%;
+    padding:0;
+    .point {
+      order:-1;
+      letter-spacing: -1px;
+      @include font(20px, 600, #FF3C7B);
+    }
+  }
+  .rankingTop {
+    $gradient: (rgba(#FF3C7B,.8),rgba(#FF3F78,.8),rgba(#FF4971,.8),rgba(#FF8565,.8));
+    position: relative;
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    height: 410px;
+    padding: 15px;
+    border-bottom: 60px solid;
+    border-image: linear-gradient(to right, nth($gradient,1), nth($gradient,2), nth($gradient,3), nth($gradient,4));
+    border-image-slice: 1;
+    &::before {
+      @include position-bottom-left(40px,-40px);
+      content: "TOP10";
+      @include font(55px,900,#FF3C7B);
+      transform: rotate(-90deg);
+      letter-spacing: -2px;
+      opacity: .24;
+    }
+    .title {
+      line-height: 40px;
+      letter-spacing: -1.5px;
+      @include font(28px,500,#202020);
+      & > div {
+        @include flex(center);
+      }
+      .optionSelect {
+        display: inline-block;
+        width: 27px;
+        height: 28px;
+        @include BGIMG('ranking/dalla/titleArrow-b.png');
+      }
+    }
+    .countDown {
+      @include flex(center, center);
+      width: 100px;
+      margin-top: 8px;
+      padding: 2px 0;
+      border-radius:8px;
+      background-color: #1A1A1A;
+      letter-spacing: 2px;
+      @include font(16px,600,#fff);
+    }
+    .chartSwiper {
+      position: relative;
+      width: calc(100% + 30px);
+      margin: 30px 0 0 -15px;
+      &::after {
+        content: "";
+        @include position-top-right(-100px,10px);
+        width: 170px; height: 150px;
+        @include BGIMG('dalla/character/character_ranking.png');
+      }
+      .swiper-container {
+        padding-left: 60px;
+        .swiper-slide {
+          width:auto;
+          margin-right:10px;
+          &:last-child {
+            margin-right:16px;
+          }
+          .listRow {
+            position: relative;
+            flex:none;
+            @include flex(center,center,column);
+            width:150px;
+            height:200px;
+            border-radius:8px;
+            overflow: hidden;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0; left: 0; right: 0; bottom: 0;
+              width: 100%; height: 100%;
+              border-radius:8px;
+              background:linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
+            }
+            .photo {
+              height:100%;
+              img {
+                height:100%;
+                object-fit: cover;
+              }
+            }
+            .rankWrap {
+              @include position-top-left(0,10px);
+              @include flex(center,center,column);
+              width: 35px; height: 42px;
+              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='70' height='84' viewBox='0 0 70 84'%3E%3Cdefs%3E%3ClinearGradient id='linear-gradient' x1='0.5' x2='0.5' y2='1' gradientUnits='objectBoundingBox'%3E%3Cstop offset='0' stop-color='%23ff3c7b'/%3E%3Cstop offset='1' stop-color='%23ff8565'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(21362 -11975)'%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21356 11979)' fill='url(%23linear-gradient)'/%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21362 11975)' fill='%23202020'/%3E%3C/g%3E%3C/svg%3E%0A");
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: contain;
+              .rank {
+                width: 100%; height: 100%;
+                margin-left: -8px;
+                letter-spacing: -1px;
+                text-align: center;
+                font-style: italic;
+                @include font(24px,600,#FFF);
+              }
+            }
+            .infoWrap {
+              position: absolute;
+              bottom: 0; left: 0; right: 0;
+              @include flex(flex-start, center, column);
+              width:100%;
+              padding: 10px;
+              box-sizing: border-box;
+              z-index: 1;
+              .livetag {
+                @include font(12px,700,#FE3C7B);
+                margin-bottom: 2px;
+              }
+              .userNick {
+                width: 100%;
+                @include font(12px,500,#fff);
+                @include fontCut;
+              }
+            } 
+          }
+        }
+      }
+    }
+  }
+
+  .myRanking {
+    position: relative;
+    @include flex(center, center, column);
+    width: 100%;
+    padding: 20px 15px;
+    box-sizing: border-box;
+    .cntTitle {
+      margin-bottom:15px;
+    }
+    .tabmenu {
+      $nav-length: 4;
+      $nav-width: calc(100% / #{$nav-length});
+      position:relative;
+      @include flex(center);
+      width: 100%;
+      @include tabMenuUnderline(4);
+      li {
+        @include font(12px,500,#ccc);
+        &.active {
+          @include font(12px,700,#333);
+        }
+      }
+      .underline {
+        @include position-bottom-left(-16px,0);
+        height:22px;
+        border-radius:100px;
+        background-color:#FF3C7B;
+        transform:scale(18.18%);
+      }
+    }
+    .rankBox {
+      @include flex(center, space-between);
+      width: 100%;
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 16px;
+      background-color: #F6F6F6;
+      li {
+        position: relative;
+        flex: 1;
+        @include flex(center,center,column);
+        &::after {
+          content: "";
+          @include position-top-right(10px);
+          width: 1px; height: 30px;
+          background-color: #dddddd;
+        }
+        &:last-child::after {
+          content: none;
+        }
+        .rankCategory {
+          @include font(12px,600,#999);
+        }
+        .rankData {
+          margin-top: 10px;
+          @include font(16px,900,#333);
+        }
+      }
+    }    
+  }
+  .dailyRankList {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    .cntTitle {
+      padding:0 15px;
+    }
+    .tabmenu {
+      position: relative;
+      @include flex(center, space-around);
+      margin:6px 15px 0;
+      box-sizing:border-box;
+      @include tabMenuUnderline(2);
+      li {
+        height:42px;
+        line-height:40px;
+        border-bottom: 2px solid #ccc;
+        @include font(16px,500,#ccc);
+        &.active {
+          @include font(16px,700,#333);
+        }
+      }
+      .underline {
+        height:2px;
+        background-color:#202020;
+      }
+    }
+    .listWrap {
+      position: relative;
+      @include flex(center, flex-start, column);
+      height: 380px;
+      padding:15px 15px 0;
+      overflow: auto;
+      .listRow {
+        flex:none;
+        @include flex(center);
+        width: 100%;
+        min-width: 0;
+        margin-bottom: 15px;
+        .rank {
+          order:-1;
+          flex: none;
+          @include flex(flex-start, center, column);
+          width: 28px;
+          @include font(16px,600,#333);
+        }
+        .photo {
+          flex: none;
+          width:60px;
+          border-radius: 50%;
+          img {
+            width:100%;
+            border-radius: 50%;
+          }
+        }
+        .listContent {
+          flex: 1;
+          padding: 0 16px;
+          @include flex(center, center, column);
+          overflow: hidden;        
+          .listItem {
+            @include flex(center);
+            width: 100%;
+            + .listItem {
+              margin-top:4px;
+            }
+            span {
+              display: block;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              overflow: hidden;
+            }
+            .nick {
+              line-height:20px;
+              margin-left:4px;
+              @include font(16px,500,#202020);
+              @include fontCut;
+            }
+            i {
+              height:16px;
+              line-height:14px;
+              margin-right:8px;
+              padding-left:16px;
+              font-style:normal;
+              @include font(12px,400,#8B8B8B);
+              @mixin ICONIMG($value) {
+                @include BGIMG('#{$value}');
+                background-position: left center;
+                background-size:16px;
+              }
+              &.heart {@include ICONIMG('common/icon/icoheart.png');}
+              &.person {@include ICONIMG('common/icon/icoperson.png');}
+              &.star {@include ICONIMG('common/icon/icostar.png');}
+              &.time {@include ICONIMG('common/icon/icotime.png');}
+              &.ppyong {
+                height:18px;line-height:16px;
+                padding:0 8px 0 18px;
+                border-radius:100px;
+                @include ICONIMG('common/icon/icoppyong.png');
+                @include font(12px,500,#666);
+                background-color:#F6F6F6;
+              }
+            }
+          }
+        }
+        .listBack {
+          flex: none;
+          @include flex(center, center);
+          width:60px;
+          .badgeLive {
+            width:60px;height:28px;
+            @include BGIMG('ranking/dalla/badgeLive.png');
+          }
+        }
+      }
+    }
+  }
+  .rankingBottom {
+    position: relative;
+    @include flex(flex-start, center, column);
+    width: 100%;
+    padding: 23px 16px;
+    box-sizing: border-box;
+    background-color: #1A1A1A;
+    background: url("https://image.dalbitlive.com/dalla/character/character_rankingBottom.png") #1a1a1a no-repeat;
+    background-position: 95% 5%;
+    background-size: 35%;
+    p {
+      @include font(18px, 500, #FFFFFF);
+      letter-spacing: -1px;
+    }
+    button {
+      margin-top: 8px;
+      @include font(13px, 500, #FF8E3E);
+      letter-spacing: -1px;
+    }
+  }
+}
+
+#bottomSlide {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  @include flex(flex-end);
+  background-color: rgba($color: #000000, $alpha: 0.7);
+  z-index: 100;
+  .slideLayer {
+    position: relative;
+    @include flex(center, flex-start, column);
+    width: 100%;
+    padding: 30px 28px 42px;
+    border-radius: 30px 30px 0 0;
+    background-color: #fff;
+    &.slideUp {
+      animation: bottomSlideUp .4s ease forwards; 
+    }
+    &.slideDown {
+      animation: bottomSlideDown .4s ease forwards; 
+    }
+
+    .selectWrap {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      .selectOption {
+        width: 100%;
+        text-align: center;
+        @include font(16px, 400, #202020);
+        line-height: 55px;
+        &.active {
+          @include font(16px, 700, #FF3C7B);
+        }
+      }
+    }
+  }  
+  @keyframes bottomSlideUp {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+  }
+  @keyframes bottomSlideDown {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100%);
+    }
+  }
+}

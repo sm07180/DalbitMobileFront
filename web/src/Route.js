@@ -12,13 +12,17 @@ import Message from 'pages/common/message'
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
-const ReMyPage = React.lazy(() => import('pages/remypage'))
-const RenewalRanking = React.lazy(() => import('pages/renewalRanking'))
-const RenewalRankingList = React.lazy(() => import('pages/renewalRanking/components/rankingList'))
-const Ranking = React.lazy(() => import('pages/ranking_renewal'))
-const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
-const MyPage = React.lazy(() => import('pages/mypage'))
+
+const Clip = React.lazy(() => import('pages/reclip'))
+const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const ClipReply = React.lazy(() => import('pages/clip_reply'))
+const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
+
+const Ranking = React.lazy(() => import('pages/reranking'))
+const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
 const ReSearch = React.lazy(() => import('pages/research'))
+
+const MyPage = React.lazy(() => import('pages/remypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 const Pay = React.lazy(() => import('pages/new_pay'))
@@ -62,10 +66,6 @@ const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result
 const Service = React.lazy(() => import('pages/service'))
 const NoService = React.lazy(() => import('pages/no_service'))
 
-const Clip = React.lazy(() => import('pages/clip'))
-const ClipReply = React.lazy(() => import('pages/clip_reply'))
-const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
-
 const Story = React.lazy(() => import('pages/story'))
 
 export default () => {
@@ -80,14 +80,10 @@ export default () => {
       <Message />
       <Switch>
         <Route exact path="/" component={Main} />
-        <Route exact path="/remypage/:memNo" component={ReMyPage} />
-        <Route exact path="/remypage/:memNo/:category" component={ReMyPage} />
-        <Route exact path="/search" component={ReSearch} />
         <Route exact path="/menu/:category" component={Menu} />
+        <Route exact path="/search" component={ReSearch} />
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/renewalRanking" component={RenewalRanking} />
-        <Route exact path="/renewalRanking/:type" component={RenewalRankingList} />
-        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/rank/:type" component={RankingDetail} />
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
         <Route exact path="/event_proofshot" component={Proofshot} />
@@ -133,6 +129,7 @@ export default () => {
         <Route exact path="/pc_open" component={PcOpen} />
         <Route exact path="/clip_open" component={ClipOpen} />
         <Route exact path="/clip" component={Clip} />
+        <Route exact path="/clip/detail" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
         <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
         <Route exact path="/clip_recommend" component={ClipRecommend} />
