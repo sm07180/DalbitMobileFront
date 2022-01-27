@@ -1,36 +1,12 @@
 import React, {useContext} from 'react'
 import styled from 'styled-components'
 
-import {WIDTH_MOBILE} from 'context/config'
-
-import NoResult from 'components/ui/noResult'
-// svg
 // context
-import {Context} from 'context'
-import PurchaseIcon from '../../static/ic_purchase_yellow.svg'
-import GiftPinkIcon from '../../static/ic_gift_pink.svg'
-import ExchangeIcon from '../../static/ic_exchange_purple.svg'
 import ArrowDownIcon from '../../static/ic_arrow_down_gray.svg'
-import MoneyIcon from '../../static/money_blue.svg'
 
 export default (props) => {
-  const context = useContext(Context)
-  const {formState, walletData, returnCoinText, totalCnt, isFiltering, setShowFilter, setCancelExchange} = props
+  const {setShowFilter} = props
 
-  const timeFormat = (strFormatFromServer) => {
-    let date = strFormatFromServer.slice(0, 8)
-    date = [date.slice(4, 6), date.slice(6)].join('.')
-    return `${date}`
-  }
-
-  const exchangeCancel = (exchangeIdx) => {
-    context.action.confirm({
-      msg: '환전신청을 취소하시겠습니까?',
-      callback: () => {
-        setCancelExchange(exchangeIdx)
-      }
-    })
-  }
   return (
     <ListContainer>
       <section className="optionWrap">
@@ -40,7 +16,7 @@ export default (props) => {
               setShowFilter(true)
             }}>
             <button>
-              {isFiltering === false ? '전체' : formState.coinType === 'byeol' ? '별내역' : '달내역'}
+              전체
               <img src={ArrowDownIcon} />
             </button>
           </div>
@@ -48,35 +24,37 @@ export default (props) => {
         </div>
       </section>
       <section className="listWrap">
-        {Array.isArray(walletData) ? (
-          walletData.map((data, index) => {
-            const {contents, type, dalCnt, byeolCnt, updateDt, exchangeIdx} = data
-            return (
-              <div className="list" key={index}>
-                <div className="detail">
-                  <div className="contentBox">
-                    {contents}
-                    {exchangeIdx > 0 ? (
-                      <button className="exchangeCancelBtn" onClick={() => exchangeCancel(exchangeIdx)}>
-                        취소하기
-                      </button>
-                    ) : (
-                      ''
-                    )}
-                    <span className="privateBtn">몰래</span>
-                  </div>
-                  <span className="date">{timeFormat(updateDt)}</span>
-                </div>
-                <span className="type">
-                  {formState.coinType === 'dal' ? dalCnt : byeolCnt}
-                </span>
-                
-              </div>
-            )
-          })
-        ) : (
-          <NoResult />
-        )}
+        <div className="list">
+          <div className="content">
+            <div className="item">굿스타트 이벤트 2위</div>
+            <div className="item date">22.01.03</div>
+          </div>
+          <div className="quantity">+7,000</div>
+        </div>
+        <div className="list">
+          <div className="content">
+            <div className="item">
+              환전신청
+              <button className="exchangeCancelBtn">
+                취소하기
+              </button>
+            </div>
+            <div className="item date">22.01.03</div>
+          </div>
+          <div className="quantity minous">-7,000</div>
+        </div>
+        <div className="list">
+          <div className="content">
+            <div className="item">
+              선물 "소라게" <span className="divider"></span> 계란노른자
+              <span className="privateBdg">
+                몰래
+              </span>
+            </div>
+            <div className="item date">22.01.03</div>
+          </div>
+          <div className="quantity minous">-7,000</div>
+        </div>
       </section>
     </ListContainer>
   )
@@ -118,7 +96,7 @@ const ListContainer = styled.div`
       text-align: center;
       border-bottom: 1px solid #f5f5f5;
       padding: 0 16px;
-      .detail {
+      .content {
         display:flex;
         flex-direction:column;
         align-items:flex-start;
@@ -126,9 +104,19 @@ const ListContainer = styled.div`
         flex:none;
         font-size: 15px;
         font-weight: 500;
-        .contentBox{
-          dispaly:flex;
+        .item{
+          display:flex;
           align-items:center;
+          &.date {
+            font-size: 12px;
+            color: #707070;
+          }
+          .divider{
+            width:1px;
+            height:14px;
+            background:#000;
+            margin:0 5px;
+          }
           .exchangeCancelBtn {
             width:55px
             height: 22px;
@@ -139,7 +127,7 @@ const ListContainer = styled.div`
             text-align: center;
             color: #fff;
           }
-          .privateBtn{
+          .privateBdg{
             height:16px;
             line-height:16px;
             background:#999999;
@@ -152,66 +140,15 @@ const ListContainer = styled.div`
           }
         }
       }
-      .type {
+      .quantity {
         font-size: 17px;
         color: #000000;
         margin-left:auto;
-      }
-      .date {
-        font-size: 12px;
-        color: #707070;
-      }
-
-      &.title {
-        margin-top: 18px;
-        color: #632beb;
-        font-size: 14px;
-        letter-spacing: -0.35px;
-        border-color: #bdbdbd;
-        border-top: 1px solid #632beb;
-
-        .how-to-get {
-          border: none;
-          font-size: 14px;
-        }
-        .detail {
-          text-align: center;
-          padding-left: 0;
+        &.minous{
+          color:#999
+          font-weight:400;
         }
       }
     }
-  }
-  
-
-  .no-list {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    min-height: 400px;
-
-    img {
-      display: block;
-    }
-  }
-  
-  .mypage-wallet-select-box {
-    z-index: 1;
-    top: 0;
-    right: 0;
-
-    @media (max-width: ${WIDTH_MOBILE}) {
-      top: -8px;
-    }
-  }
-  .arrowBtn {
-    display: block;
-    position: absolute;
-    top: -1px;
-    right: 0;
-    width: 24px;
-    height: 24px;
-    background: url(${ArrowDownIcon}) no-repeat center center / cover;
-    z-index: 3;
   }
 `
