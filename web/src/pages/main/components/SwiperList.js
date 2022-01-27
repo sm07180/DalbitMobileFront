@@ -8,7 +8,7 @@ import Swiper from 'react-id-swiper'
 import './swiperList.scss'
 
 const SwiperList = (props) => {
-  const {data} = props
+  const {data, profImgName} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -16,18 +16,15 @@ const SwiperList = (props) => {
 
   return (
     <>
-    {data && data.length > 0 &&
+    {data.length > 0 &&
       <Swiper {...swiperParams}>
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <div className='listColumn'>
-                <div className="photo">
-                  <img src={list.profImg.thumb150x150} />
-                  {list.rank && <div className={`rank-${list.rank}`}></div>}
-                </div>
+              <ListColumn photo={list[profImgName].thumb150x150}>
+                {list.rank && <div className={`rank-${list.rank}`}></div>}
                 <p className='userNick'>{list.nickNm}</p>
-              </div>
+              </ListColumn>
             </div>
           )
         })}

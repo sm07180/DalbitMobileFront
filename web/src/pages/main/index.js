@@ -16,40 +16,43 @@ import LiveView from './components/LiveView'
 
 import './style.scss'
 
-const topTabmenu = ['DJ','FAN','LOVER']
-const liveTabmenu = ['전체','VIDEO','RADIO','신입DJ']
+const topTenTabMenu = ['DJ','FAN','LOVER']
+const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
+const mainLink = {
+  rankingPage: 'rank'
+  , clipPage: 'clip'
+}
 
 const MainPage = () => {
   const history = useHistory()
   const headerRef = useRef()
   const overRef = useRef()
   const [myStar, setMyStar] = useState([])
-  const [djRank, setDjRank] = useState([])
-  const [fanRank, setFanRank] = useState([])
+  const [topTenData, setTopTenData] = useState({DJ: [], FAN: [], LOVER: []});
   const [recommendList, setRecommendList] = useState([])
   const [bannerList, setBannerList] = useState([])
   const [liveList, setLiveList] = useState([])
-  const [topRankType, setTopRankType] = useState(topTabmenu[0])
-  const [liveListType, setLiveListType] = useState(liveTabmenu[0])
+  const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
+  const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
+  const [daldoongs, setDaldoongs] = useState([]);
  
   // 조회 API
   const fetchMainInfo = () => {
-    Api.main_init_data().then((res) => {
+    Api.main_init_data_v2().then((res) => {
       if (res.result === 'success') {
-        setMyStar(res.data.myStar)
-        setDjRank(res.data.djRank)
-        setFanRank(res.data.fanRank)
-        setRecommendList(res.data.recommend)
-      }
-    })
-  }
-
-  const fetchBannerInfo = (value) => {
-    Api.getBanner({params: {position: value}}).then((res) => {
-      if (res.result === 'success') {
-        setBannerList(res.data)
+        const data = res.data;
+        console.log(data);
+        setRecommendList(data.topBanner);
+        setMyStar(data.myStar);
+        setTopTenData({
+          DJ: data.dayRanking.djRank,
+          FAN: data.dayRanking.fanRank,
+          LOVER: []
+        });
+        setBannerList(data.centerBanner);
+        setDaldoongs(data.newBjList);
       }
     })
   }
@@ -110,7 +113,6 @@ const MainPage = () => {
   // 페이지 셋팅
   useEffect(() => {
     fetchMainInfo()
-    fetchBannerInfo('9')
   }, [])
 
   useEffect(() => {
@@ -127,35 +129,24 @@ const MainPage = () => {
         <MainSlide data={recommendList} />
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={myStar} />
+        <SwiperList data={myStar} profImgName="profImg" />
       </section>
       <section className='top10'>
-        <CntTitle title={'일간 TOP10'} more={'rank'}>
-          <Tabmenu data={topTabmenu} tab={topRankType} setTab={setTopRankType} />
+        <CntTitle title={'일간 TOP10'} more={mainLink['rankingPage']}>
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} />
         </CntTitle>
-        {topTabmenu.map((tabmenu, index) => {
-          const param = {
-            initData: topRankType === topTabmenu[0] ? djRank : topRankType === topTabmenu[1] ? fanRank : topRankType === topTabmenu[2] ? djRank : ''
-          }
-          return (
-            <React.Fragment key={index}>
-              {tabmenu === topRankType && 
-                <SwiperList data={param.initData} />
-              }
-            </React.Fragment>
-          )
-        })}
+        <SwiperList data={topTenData[topRankType]} profImgName="profImg" />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} more={'clip'} />
-        <SwiperList data={fanRank} />
+        <CntTitle title={'방금 착륙한 NEW 달둥스'} more={mainLink['clipPage']} />
+        <SwiperList data={daldoongs} profImgName="bj_profileImageVo" />
       </section>
       <section className='bannerWrap'>
         <BannerSlide data={bannerList} />
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
-        <Tabmenu data={liveTabmenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage} />
+        <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage} />
         <LiveView data={liveList} />
       </section>
       <Navigation />

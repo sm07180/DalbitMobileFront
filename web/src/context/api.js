@@ -111,6 +111,10 @@ export default class API {
     return await ajax({url: '/main', method: 'GET'})
   }
 
+  static main_init_data_v2 = async () => {
+    return await ajax({url: '/v2/main/page', method: 'GET'})
+  }
+
   /**
    * @brief 방송방 리스트 (익명 로그인일때 프로시저 memLogin:0 추가)
    * @method "GET"
