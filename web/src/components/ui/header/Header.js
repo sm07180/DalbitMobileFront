@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useHistory} from 'react-router-dom'
 
 // components
@@ -7,7 +7,7 @@ import TitleButton from './TitleButton';
 import './header.scss'
 
 export default (props) => {
-  const {title, type, position, children} = props
+  const {title, type, children, position} = props
   const history = useHistory()
 
   const goBack = () => history.goBack();
