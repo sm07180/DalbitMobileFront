@@ -1,8 +1,10 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import './header.scss'
+// components
 import TitleButton from './TitleButton';
+// css
+import './header.scss'
 
 export default (props) => {
   const {title, type, position, children} = props
