@@ -138,7 +138,7 @@ export default (props) => {
           searching === "ing" ?
             <SearchHistory/>
           :
-            <SearchResult/>            
+            <SearchResult searchResult={searchVal}/>            
         }   
       </div>
     </div>

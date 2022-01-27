@@ -38,10 +38,12 @@ export default (props) => {
    setSearchVal("");
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();  
+  const handleSubmit = (e) => {
+    let inputVal = e.currentTarget.childNodes[0].value;
+    e.preventDefault();  
     document.getElementById('searchInput').blur();
     setSearching("enter");
+    setSearchVal(inputVal);
   }
 
   return (
