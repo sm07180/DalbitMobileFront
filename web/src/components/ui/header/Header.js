@@ -4,7 +4,7 @@ import {useHistory} from 'react-router-dom'
 import './header.scss'
 
 export default (props) => {
-  const {title, type, children} = props
+  const {title, type, position, children} = props
   const history = useHistory()
 
   const goBack = () => {
@@ -12,12 +12,12 @@ export default (props) => {
   }
 
   return (
-    <header className={`${type ? type : ''}`}>
+    <header className={`${type ? type : ''} ${position ? position : ''}`}>
       {type === 'back' && (
         <button className="back" onClick={goBack}></button>
       )}
-      <h1 className="title">{title}</h1>
-      {title === '라이브' && 
+      {title && <h1 className="title">{title}</h1>}
+      {title === '메인' && 
         <div className="buttonGroup">
           <button className='ranking'></button>
           <button className='message'></button>

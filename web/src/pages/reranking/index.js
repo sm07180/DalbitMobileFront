@@ -1,38 +1,35 @@
 import React, {useState, useEffect, useContext} from 'react'
 import {useHistory} from 'react-router-dom'
 import {Context} from 'context'
+import moment from 'moment'
 
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import ListRow from 'components/ui/listRow/ListRow'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
-import GenderItems from 'components/ui/genderItems/GenderItems'
 // components
-import CardList from './components/cardList'
+import Tabmenu from './components/Tabmenu'
+import ChartSwiper from './components/ChartSwiper'
+import MyRanking from './components/MyRanking'
+import RankingList from './components/RankingList'
 import BottomSlide from './components/bottomSlide'
 
 import './style.scss'
 
 const RankPage = () => {
   const history = useHistory()
-  const context = useContext(Context)
 
   const rankTabmenu = ['오늘','이번주','이번달', '올해']
   const dayTabmenu = ['FAN','LOVER']
 
   const [slidePop, setSlidePop] = useState(false)
   const [select , setSelect] = useState("time")
-  const [rankSlctType, setRankSlctType] = useState(1)
-  const [dateType, setDateType] = useState(1)
   const [timeDjRank, setTimeDjRank] = useState([])
   const [timeFanRank, setTimeFanRank] = useState([])
   const [timeLoverRank, setTimeLoverRank] = useState([])
-  const [myProfile, setMyProfile] = useState([])
-  const [myData, setMyData] = useState([])
-  const [rankTabName, setRankTabName] = useState(rankTabmenu[0])
-  const [dayTabName, setDayTabName] = useState(dayTabmenu[0])
+  const [myRank, setMyRank] = useState([])
+  const [rankTabType, setRankTabType] = useState(rankTabmenu[0])
+  const [dayTabType, setDayTabType] = useState(dayTabmenu[0])
 
   
   // API 호출
@@ -59,13 +56,13 @@ const RankPage = () => {
       }
     });
     if (result === "success") {
-      setMyData(data);
+      setMyRank(data);
       if(dateType === 1){
         setTimeDjRank(data.list)  
       } else if(dateType === 2) {
         setTimeFanRank(data.list)     
       } else if(dateType === 3) {
-        setTimeLoverRank(data.list)   
+        setTimeLoverRank(data.list)
       }
     }
   }
@@ -74,16 +71,20 @@ const RankPage = () => {
   useEffect(() => {
     fetchTimeRank()
     fetchRankData()
-    fetchRankData(2, 1)
-    setMyProfile(context.profile)
   }, [])
 
   useEffect(() => {
-    fetchRankData(dateType, rankSlctType)
-
-  }, [dateType, rankSlctType])
+    if (dayTabType === dayTabmenu[0]) {
+      fetchRankData(2, 1)
+    } else if (dayTabType === dayTabmenu[1]) {
+      fetchRankData(3, 1)
+    }
+  }, [dayTabType])
 
   // 기능
+  const clickDetailOpen = () => {
+    history.push('/rank/rankDetail')
+  }
   const selectChart = () => {
     setSlidePop(true);
   }
@@ -113,7 +114,7 @@ const RankPage = () => {
       </Header>
       <section className='rankingTop'>
         <CntTitle more={'/'} />
-        <div className='timeChart' onClick={selectChart}>
+        <div className='title' onClick={selectChart}>
           <div>DJ 실시간</div>
           <div>
             <strong>
@@ -126,105 +127,38 @@ const RankPage = () => {
             차트<span className='optionSelect'></span>
           </div>
         </div>
-        <div className='countDown'>
-          00/00/00
-        </div>
-        <div className='timeRank'>
-          <CardList data={timeDjRank} />
-        </div>
+        <div className='countDown'>00:00:00</div>
+        <ChartSwiper data={timeDjRank} />
       </section>
-      <section className='myRank'>
+      <section className='myRanking'>
         <CntTitle title={'님의 순위는?'}>
           <div className="point">찡구</div>
         </CntTitle>
-        <ul className="tabmenu">
-          {rankTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: rankTabName,
-              setTab: setRankTabName,
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-          <div className="underline"></div>
-        </ul>
-        <div className='myDataContent'>
-          <div className='myData'>
-            <div className='dataWrap'>
-              <span className='rankCategory'>DJ</span>
-              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-            </div>
-            <div className='dataWrap'>
-              <span className='rankCategory'>FAN</span>
-              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-            </div>
-            <div className='dataWrap'>
-              <span className='rankCategory'>LOVER</span>
-              <span className='rankData'>{myData.myRank !== 0 ? myData.myRank : "-"}</span>
-            </div>
-          </div>
-        </div>        
+        <Tabmenu data={rankTabmenu} tab={rankTabType} setTab={setRankTabType} />
+        <MyRanking data={myRank} />
       </section>
-      <section className='rankList'>
+      <section className='dailyRankList'>
         <CntTitle title={'일간 FAN / LOVER'} more={'rank'}/>
-        <ul className="tabmenu">
-          {dayTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: dayTabName,
-              setTab: setDayTabName,
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
-          <div className="underline"></div>
-        </ul>
+        <Tabmenu data={dayTabmenu} tab={dayTabType} setTab={setDayTabType} />
         <div className='listWrap'>
-          { dateType !== 3 ?
-            timeFanRank.map((list, index) => {
-              return (
-                <ListRow photo={list.profImg.thumb88x88} key={index}>
-                  <div className="rank">{list.rank}</div>
-                  <div className='listContent'>
-                    <div className='listItem'>
-                      <GenderItems data={list.gender} />
-                      <span className="nick">{list.nickNm}</span>
-                    </div>
-                    <div className='listItem'>
-                      <i className="star">123</i>
-                      <i className="time">123</i>
-                    </div>
-                  </div>
-                  <div className="listBack">
-                    {list.roomNo && <div className='liveTag'></div>}                    
-                  </div>
-                </ListRow>
-              )
-            })
-          :
-            timeLoverRank.map((list, index) => {
-              return (
-                <ListRow photo={list.profImg.thumb88x88} key={index}>
-                  <div className="rank">{list.rank}</div>
-                  <div className='listContent'>
-                    <div className='listItem'>
-                      <GenderItems data={list.gender} />
-                      <span className="nick">{list.nickNm}</span>
-                    </div>
-                    <div className='listItem'>
-                      <i className="star">123</i>
-                      <i className="time">123</i>
-                    </div>
-                  </div>
-                  <div className="listBack">
-                    {list.roomNo && <div className='liveTag'></div>}                    
-                  </div>
-                </ListRow>
-              )
-            })
+          {dayTabType === dayTabmenu[0] ?
+            <RankingList data={timeFanRank}>
+              <div className='listItem'>
+                <i className="star">123</i>
+                <i className="time">123</i>
+              </div>
+            </RankingList>
+            : dayTabType === dayTabmenu[1] ?
+            <RankingList data={timeLoverRank}>
+              <div className='listItem'>
+                <i className="ppyong">123</i>
+                <i className="heart">123</i>
+              </div>
+            </RankingList>
+            : 
+            <>
+              <p>순위가 없습니다.</p>
+            </>
           }
         </div>        
       </section>      
@@ -233,9 +167,8 @@ const RankPage = () => {
             달라의 숨막히는 순위 경쟁<br/>
             랭커에 도전해보세요! 
           </p>
-          <a>랭킹순위 전체보기</a>
+          <button onClick={clickDetailOpen}>랭킹순위 전체보기</button>
       </section>
-
       {slidePop &&
         <BottomSlide setSlidePop={setSlidePop}> 
           <div className='selectWrap'>

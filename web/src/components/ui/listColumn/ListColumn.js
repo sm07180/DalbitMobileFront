@@ -3,7 +3,7 @@ import React from 'react'
 import './listColumn.scss'
 
 const ListColumn = (props) => {
-  const {photo, children} = props
+  const {photo, addContents, children} = props
 
   return (
     <React.Fragment>

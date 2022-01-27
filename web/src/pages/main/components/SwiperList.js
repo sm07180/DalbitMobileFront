@@ -1,8 +1,11 @@
 import React from 'react'
+
 import Swiper from 'react-id-swiper'
 
+// global components
 // components
-import ListColumn from 'components/ui/listColumn/ListColumn'
+// css
+import './swiperList.scss'
 
 const SwiperList = (props) => {
   const {data} = props
@@ -18,9 +21,13 @@ const SwiperList = (props) => {
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <ListColumn photo={list.profImg.thumb150x150}>
+              <div className='listColumn'>
+                <div className="photo">
+                  <img src={list.profImg.thumb150x150} />
+                  {list.rank && <div className={`rank-${list.rank}`}></div>}
+                </div>
                 <p className='userNick'>{list.nickNm}</p>
-              </ListColumn>
+              </div>
             </div>
           )
         })}

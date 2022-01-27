@@ -19,7 +19,7 @@ const ClipReply = React.lazy(() => import('pages/clip_reply'))
 const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 
 const Ranking = React.lazy(() => import('pages/reranking'))
-const RankingGuide = React.lazy(() => import('pages/ranking_renewal/components/guide/rank_guide'))
+const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
 
 const MyPage = React.lazy(() => import('pages/remypage'))
 const Menu = React.lazy(() => import('pages/menu'))
@@ -81,7 +81,7 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/rank" component={Ranking} />
-        <Route exact path="/rank/:type" component={RankingGuide} />
+        <Route exact path="/rank/:type" component={RankingDetail} />
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
         <Route exact path="/event_proofshot" component={Proofshot} />
