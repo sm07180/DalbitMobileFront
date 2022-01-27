@@ -107,7 +107,7 @@ const RankPage = () => {
   // 페이지 시작
   return (
     <div id="renewalRanking">
-      <Header title="랭킹" type={'back'}>
+      <Header title={'랭킹'} type={'back'}>
         <div className='buttonGroup'>
           <button className='benefits'>혜택</button>
         </div>

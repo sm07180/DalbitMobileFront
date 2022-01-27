@@ -55,6 +55,10 @@ const TitleButton = (props) => {
           <button className='shuffle' />
         </div>
       )
+    case '랭킹':
+      return (
+        <></>
+      )
     case 'MY':
       return (
         <div className="buttonGroup">

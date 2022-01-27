@@ -16,7 +16,7 @@ export default (props) => {
     <header className={`${type ? type : ''} ${position ? position : ''}`}>
       {type === 'back' && <button className="back" onClick={goBack} />}
       {title && <h1 className="title">{title}</h1>}
-      <TitleButton title={title} />
+      {/* <TitleButton title={title} /> */}
       {children}
     </header>
   )
