@@ -10,6 +10,10 @@ import Navigator from './pages/navigator'
 
 import Message from 'pages/common/message'
 
+import Common from "common";
+import Modal from "common/modal";
+import Alert from "common/alert";
+
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 const ReMyPage = React.lazy(() => import('pages/remypage'))
@@ -67,7 +71,18 @@ const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 
 const Story = React.lazy(() => import('pages/story'))
 
-export default () => {
+
+
+
+const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
+const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
+const ClipPlayer = React.lazy(() => import("pages/clip_player"));
+
+const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
+const Mailbox = React.lazy(() => import("pages/mailbox"));
+
+const Router = () => {
   return (
     <React.Suspense
       fallback={
@@ -75,6 +90,7 @@ export default () => {
           <span></span>
         </div>
       }>
+      <Common />
       <ScrollToTop />
       <Message />
       <Switch>
@@ -142,8 +158,26 @@ export default () => {
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
+
+        {/*  www 클립 라우터  */}
+        <Route exact path="/clip_recoding" component={ClipRecoding}  />
+        <Route exact path="/clip_upload" component={ClipUpload} />
+        <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+
+        {/*  www 방송 청취 및 세팅  */}
+        <Route exact path="/broadcast/:roomNo" component={Broadcast} />
+        <Route exact path="/broadcast_setting" component={BroadcastSetting} />
+
+        {/*  www 우체통관련  */}
+        <Route exact path="/mailbox" component={Mailbox} />
+        <Route exact path="/mailbox/:category" component={Mailbox} />
+        <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
+
+        <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
       </Switch>
+      <Alert />
     </React.Suspense>
   )
-}
+};
+export default Router

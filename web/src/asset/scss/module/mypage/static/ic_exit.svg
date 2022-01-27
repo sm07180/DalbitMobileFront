@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="forced_exit" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-1{stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.1px}
+        </style>
+    </defs>
+    <g id="그룹_19796" transform="translate(-244 -622)">
+        <g id="ic_forced_exit" transform="translate(244 622)">
+            <g id="그룹_19795" transform="translate(1.472 .816)">
+                <g id="Vector_Smart_Object8" transform="translate(3.926 4.934)">
+                    <path id="패스_3948" d="M6.586 17.2H4.331V4.7s2.255.012 2.255 0" class="cls-1" transform="translate(-4.331 -4.703)"/>
+                    <path id="선_53" d="M10.293 0L0 0" class="cls-1" transform="translate(3.602 5.977)"/>
+                    <path id="패스_3949" d="M17.626 7.484L20.6 10.8l-2.97 3.317L20.6 10.8" class="cls-1" transform="translate(-6.392 -4.85)"/>
+                </g>
+            </g>
+            <path id="Color_Overlay" d="M0 14.45V0s2.381.012 2.381 0v14.45zm16.433-7.54L13.3 11.037zm0 0zM13.3 2.78l3.137 4.13zm3.133 4.13zm-11.2 0z" class="cls-2" transform="translate(3.925 4.935)"/>
+            <path id="사각형_471" d="M0 0H24V24H0z" class="cls-2"/>
+        </g>
+    </g>
+</svg>

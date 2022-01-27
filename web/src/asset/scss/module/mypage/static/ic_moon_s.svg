@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_moon_s" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <linearGradient id="prefix__linear-gradient" x1=".233" x2=".738" y1=".078" y2=".944" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fdad2b"/>
+            <stop offset=".181" stop-color="#fca82d"/>
+            <stop offset=".383" stop-color="#fa9a34"/>
+            <stop offset=".596" stop-color="#f6843f"/>
+            <stop offset=".814" stop-color="#f1654e"/>
+            <stop offset="1" stop-color="#ec455f"/>
+        </linearGradient>
+        <linearGradient id="prefix__linear-gradient-2" x1=".774" x2=".279" y1="-.526" y2="1.026" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fde065" stop-opacity=".541"/>
+            <stop offset=".156" stop-color="#fde16a" stop-opacity=".522"/>
+            <stop offset=".33" stop-color="#fde479" stop-opacity=".467"/>
+            <stop offset=".513" stop-color="#fde992" stop-opacity=".38"/>
+            <stop offset=".703" stop-color="#fef0b5" stop-opacity=".255"/>
+            <stop offset=".895" stop-color="#fef9e2" stop-opacity=".098"/>
+            <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="prefix__clip-path">
+            <path id="prefix__패스_4109" d="M68.126 41.389a3.833 3.833 0 1 1 .675-7.606 5.987 5.987 0 1 0 2.383 6.084 3.827 3.827 0 0 1-3.058 1.522z" class="prefix__cls-1" data-name="패스 4109" transform="translate(-59.333 -32.667)"/>
+        </clipPath>
+        <style>
+            .prefix__cls-1{fill:none}.prefix__cls-6{stroke:none}
+        </style>
+    </defs>
+    <g id="prefix__그룹_10265" data-name="그룹 10265" transform="translate(3.001 3.224)">
+        <g id="prefix__달">
+            <g id="prefix__그룹_9725" data-name="그룹 9725">
+                <g id="prefix__패스_4107" fill="url(#prefix__linear-gradient)" stroke-linejoin="round" data-name="패스 4107" transform="translate(-59.333 -32.667)">
+                    <path d="M65.32 44.89c-3.44 0-6.237-2.797-6.237-6.236 0-3.44 2.798-6.237 6.237-6.237 1.31 0 2.564.402 3.626 1.162l-.19.45c-.21-.038-.423-.057-.63-.057-1.976 0-3.583 1.608-3.583 3.583 0 1.976 1.607 3.584 3.583 3.584 1.132 0 2.174-.519 2.858-1.423l.445.201c-.285 1.385-1.047 2.647-2.144 3.551-1.113.918-2.52 1.423-3.965 1.423z" class="prefix__cls-6"/>
+                    <path fill="#ee5556" d="M65.32 44.64c2.89 0 5.303-2.048 5.864-4.773-.7.924-1.81 1.522-3.058 1.522-2.117 0-3.833-1.717-3.833-3.834s1.716-3.833 3.833-3.833c.23 0 .455.022.675.06-.981-.702-2.183-1.115-3.481-1.115-3.307 0-5.987 2.68-5.987 5.987 0 3.306 2.68 5.987 5.987 5.987m0 .5c-3.577 0-6.487-2.91-6.487-6.487s2.91-6.487 6.487-6.487c1.363 0 2.667.418 3.772 1.209.19.136.26.385.17.6-.08.188-.263.306-.461.306-.03 0-.059-.002-.088-.007-.197-.035-.394-.053-.587-.053-1.838 0-3.333 1.495-3.333 3.333s1.495 3.334 3.333 3.334c1.053 0 2.022-.483 2.66-1.324.096-.128.245-.198.398-.198.07 0 .14.014.206.044.213.097.33.328.283.556-.296 1.441-1.088 2.753-2.23 3.694-1.156.954-2.62 1.48-4.123 1.48z"/>
+                </g>
+                <g id="prefix__그룹_9724" data-name="그룹 9724">
+                    <g id="prefix__그룹_9723" clip-path="url(#prefix__clip-path)" data-name="그룹 9723">
+                        <path id="prefix__패스_4108" fill="url(#prefix__linear-gradient-2)" d="M29.83 10.333c-.625.083-5.5 6.414-5.5 6.414l.5 5.289 13.2-10.308-3.665-.9z" data-name="패스 4108" transform="translate(-26.52 -11.728)"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -3,7 +3,6 @@ import moment from 'moment'
 
 export default (props) => {
   const {round, setRoundTitle} = props
-  const [rankingInterval, setRankingInterval] = useState(null)
   const [rankingCountDownInfo, setRankingCountDownInfo] = useState({
     roundIndex: -1,
     showTimeYn: 'n',
@@ -83,21 +82,16 @@ export default (props) => {
     if (rankingCountDownInfo.showTimeYn === 'y') {
       const {roundIndex} = timerInfo()
       const end = round[roundIndex].end
-
-      setRankingInterval(
-        setInterval(() => {
+      const rankingInterval = setInterval(() => {
           const nowTime = moment().format('HHmmss')
           const remainTime = timeDiff(end, nowTime)
           const timerForm = toTime(remainTime)
           const {roundIndex, showTimeYn} = timerInfo()
-
           if (showTimeYn === 'n') {
             clearInterval(rankingInterval)
           }
-
           setRankingCountDownInfo({...rankingCountDownInfo, /*roundIndex,*/ showTimeYn, timerForm})
-        }, 1000)
-      )
+      }, 1000)
       return () => {
         if (rankingInterval) {
           clearInterval(rankingInterval)

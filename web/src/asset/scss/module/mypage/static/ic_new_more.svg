@@ -1,0 +1,11 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__morelist_g" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#bdbdbd}
+        </style>
+    </defs>
+    <circle id="prefix__타원_248" cx="2" cy="2" r="2" class="prefix__cls-2" data-name="타원 248" transform="translate(10 4)"/>
+    <circle id="prefix__타원_249" cx="2" cy="2" r="2" class="prefix__cls-2" data-name="타원 249" transform="translate(10 10)"/>
+    <circle id="prefix__타원_250" cx="2" cy="2" r="2" class="prefix__cls-2" data-name="타원 250" transform="translate(10 16)"/>
+</svg>

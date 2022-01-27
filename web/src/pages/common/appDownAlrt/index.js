@@ -7,7 +7,7 @@ import {OS_TYPE} from 'context/config'
 
 import './index.scss'
 
-export default (props) => {
+const appDownAlrt = (props) => {
   const context = useContext(Context)
   const [osCheck, setOsCheck] = useState(-1)
 
@@ -40,57 +40,58 @@ export default (props) => {
 
   //---------------------------------------------------------------------
   return (
-    <div className="appDownloadPopup">
-      <div className="appDownloadPopup__content">
-        <div className="appDownloadPopup__monnImg"></div>
+      <div className="appDownloadPopup">
+        <div className="appDownloadPopup__content">
+          <div className="appDownloadPopup__monnImg"></div>
 
-        <b>
-          {pageName == 1 ? (
-            '방송방 생성 및 클립 등록을 '
-          ) : pageName == 2 ? (
-            '방송방 청취를 '
-          ) : pageName == 3 ? (
-            '클립 등록을 '
-          ) : pageName == 4 ? (
-            '클립 청취를 '
-          ) : pageName == 5 ? (
-            '우체통 이용을 '
+          <b>
+            {pageName == 1 ? (
+                '방송방 생성 및 클립 등록을 '
+            ) : pageName == 2 ? (
+                '방송방 청취를 '
+            ) : pageName == 3 ? (
+                '클립 등록을 '
+            ) : pageName == 4 ? (
+                '클립 청취를 '
+            ) : pageName == 5 ? (
+                '우체통 이용을 '
+            ) : (
+                <></>
+            )}
+            위해
+            <br /> 달빛라이브 어플을 설치하신 후<br /> 이용해 주세요.
+          </b>
+
+          <p>
+            달빛라이브 어플을 설치하시면
+            <br />
+            더욱 다양한 편의기능을
+            <br />
+            이용하실 수 있습니다.
+          </p>
+          {osCheck === OS_TYPE['Android'] ? (
+              <button
+                  className="androidIcon"
+                  onClick={() => {
+                    appCheckDwon()
+                    context.action.updatePopupVisible(false)
+                  }}>
+                달빛 라이브 어플 설치하기
+              </button>
+          ) : osCheck === OS_TYPE['IOS'] ? (
+              <button
+                  className="iosIcon"
+                  onClick={() => {
+                    iosbutton()
+                    context.action.updatePopupVisible(false)
+                  }}>
+                달빛 라이브 어플 설치하기
+              </button>
           ) : (
-            <></>
+              ''
           )}
-          위해
-          <br /> 달빛라이브 어플을 설치하신 후<br /> 이용해 주세요.
-        </b>
-
-        <p>
-          달빛라이브 어플을 설치하시면
-          <br />
-          더욱 다양한 편의기능을
-          <br />
-          이용하실 수 있습니다.
-        </p>
-        {osCheck === OS_TYPE['Android'] ? (
-          <button
-            className="androidIcon"
-            onClick={() => {
-              appCheckDwon()
-              context.action.updatePopupVisible(false)
-            }}>
-            달빛 라이브 어플 설치하기
-          </button>
-        ) : osCheck === OS_TYPE['IOS'] ? (
-          <button
-            className="iosIcon"
-            onClick={() => {
-              iosbutton()
-              context.action.updatePopupVisible(false)
-            }}>
-            달빛 라이브 어플 설치하기
-          </button>
-        ) : (
-          ''
-        )}
+        </div>
       </div>
-    </div>
   )
-}
+};
+export default appDownAlrt

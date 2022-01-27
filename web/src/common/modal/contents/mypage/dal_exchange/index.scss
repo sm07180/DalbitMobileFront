@@ -1,0 +1,100 @@
+@import "../../../../../asset/scss/common/variables";
+.dalExchangeWrap {
+  position: relative;
+  background-color: #fff;
+  width: 340px;
+  min-height: 300px;
+  padding: 0 5px 10px 5px;
+  border-radius: 8px;
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 49px;
+    padding: 0px 10px;
+    & > h1 {
+      font-size: 18px;
+      text-align: center;
+    }
+  }
+
+  &__byeol {
+    display: flex;
+    justify-content: flex-end;
+    &--icon {
+      width: 24px;
+      height: 24px;
+      display: inline-block;
+      background: url("./static/ic_star_l.svg") no-repeat center;
+      background-size: contain;
+    }
+  }
+
+  &__list {
+    display: inline-block;
+    padding-top: 30px;
+    text-align: center;
+    .wrap {
+      display: inline-block;
+      width: 105px;
+      cursor: pointer;
+      text-align: center;
+      margin: 0 3px;
+      & > p {
+        margin-top: 6px;
+        border-radius: 8px;
+        font-size: 18px;
+        color: #424242;
+        font-weight: $bold;
+        line-height: 44px;
+        background: #fff;
+      }
+      &.on > p {
+        color: #fff;
+        background: rgb(254, 172, 44);
+      }
+    }
+    .item-wrap {
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #f5f5f5;
+      background: #f5f5f5;
+      img {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      p {
+        color: #757575;
+        font-size: 14px;
+        transform: skew(-0.03deg);
+      }
+      p + p {
+        padding-top: 8px;
+      }
+    }
+
+    .on .item-wrap {
+      background: #fff;
+      border: 1px solid rgb(254, 172, 44);
+      p {
+        color: rgb(254, 172, 44);
+        font-weight: $bold;
+      }
+    }
+  }
+
+  &__btn {
+    display: block;
+    width: 100%;
+    margin: 10px auto 0px auto;
+    border-radius: 5px;
+    background: #632beb;
+    color: #fff;
+    line-height: 50px;
+    &:disabled {
+      background: #bdbdbd;
+      color: #fff;
+    }
+  }
+}

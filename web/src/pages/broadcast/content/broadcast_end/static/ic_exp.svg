@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36">
+    <rect width="34" height="20" fill="#febd56" rx="10" transform="translate(1 8)"/>
+    <text fill="#fff" font-family="NanumSquareB, NanumSquare" font-size="14px" letter-spacing="-0.025em" transform="translate(30.5 22)">
+        <tspan x="-25.48" y="0">EXP</tspan>
+    </text>
+</svg>

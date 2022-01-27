@@ -19,6 +19,7 @@ import SimpleMessageIcon from '../static/message.svg'
 import SimpleMessageIconW from '../static/message_w.svg'
 // components
 import NoResult from 'components/ui/new_noResult'
+import {ClipPlayerJoin} from "common/audio/clip_func";
 //flag
 let currentPage = 1
 let timer
@@ -143,7 +144,20 @@ export default (props) => {
                   }
                 })
               } else {
-                globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
+                const nowPage = getPageFormIdx(idx);
+                const playListInfoData = {
+                  slctType: context.clipMainSort,
+                  dateType: context.clipMainDate,
+                  subjectType: clipTypeActive,
+                  page: nowPage,
+                  records: 100
+                };
+                sessionStorage.setItem(
+                    "clipPlayListInfo",
+                    JSON.stringify(playListInfoData)
+                );
+                ClipPlayerJoin(clipNo,globalCtx,history);
+                //globalCtx.action.updatePopup('APPDOWN', 'appDownAlrt', 4)
               }
             } else {
               fetchDataPlay(clipNo, idx)

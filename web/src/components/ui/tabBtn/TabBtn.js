@@ -10,7 +10,6 @@ const TabBtn = (props) => {
     if (tabTarget === param.item) {
       param.setTab(tabTarget)
       if (param.setPage) {
-        console.log('11');
         param.setPage(0)
       }
     }

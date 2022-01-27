@@ -1,0 +1,83 @@
+@import "../../../../../asset/scss/common/variables";
+#GuestWrap {
+  padding: 0 3%;
+  .title {
+    padding: 13px 0 16px 0;
+    border-bottom: 1px solid $lightGray;
+    font-size: 18px;
+    font-weight: $bold;
+    line-height: 18px;
+    text-align: center;
+  }
+  .guestListWrap {
+    padding: 10px 0;
+
+    .guestItem {
+      display: flex;
+      position: relative;
+      margin-top: 12px;
+      .thumb {
+        position: relative;
+        margin-right: 12px;
+        .thumbImg {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+        }
+        .fanIcon {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+        }
+      }
+
+      .nicknameWrap {
+        align-self: center;
+        max-width: 250px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        & > img {
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+
+        & > p {
+          font-size: 12px;
+          line-height: 20px;
+          color: $greishGray;
+        }
+      }
+
+      .btn {
+        position: absolute;
+        right: 0;
+        top: 8px;
+        height: 26px;
+        padding: 0 17px;
+        border-radius: 13px;
+        font-size: 12px;
+        &--guest {
+          background-color: $red;
+          color: $white;
+        }
+
+        &--apply {
+          border: 1px solid $primary;
+          color: $primary;
+        }
+
+        &--invite {
+          padding: 0 12px;
+          border: 1px solid $greishGray;
+          color: $greishGray;
+        }
+
+        &--listener {
+          border: 1px solid $red;
+          color: $red;
+        }
+      }
+    }
+  }
+}

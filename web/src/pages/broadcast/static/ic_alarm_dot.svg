@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_alarm_dot" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-2{stroke:#fff;stroke-miterlimit:10;stroke-width:1.2px}.cls-3{fill:#feac2b}
+        </style>
+    </defs>
+    <g id="ic_alarm">
+        <path id="사각형_445" d="M0 0h24v24H0z" class="cls-1" data-name="사각형 445"/>
+        <g id="그룹_9466" data-name="그룹 9466" transform="translate(5 2.641)">
+            <path id="선_91" d="M0 0h6.703" class="cls-2" data-name="선 91" transform="translate(3.964 13.596)"/>
+            <path id="패스_4093" d="M16.723 17.035h3.066a.8.8 0 0 0 .668-1.346l-1.713-1.723V9.611A4.722 4.722 0 0 0 15.6 5.2C11.708 3.781 8 6.317 8 9.633v4.334l-1.714 1.722a.8.8 0 0 0 .668 1.346h3.066" class="cls-2" data-name="패스 4093" transform="translate(-6.056 -3.439)"/>
+            <path id="패스_4094" d="M9.291 15.845a3.426 3.426 0 1 0 6.7 0" class="cls-2" data-name="패스 4094" transform="translate(-5.327 -2.249)"/>
+        </g>
+    </g>
+    <circle id="타원_75" cx="2" cy="2" r="2" class="cls-3" data-name="타원 75" transform="translate(20)"/>
+</svg>

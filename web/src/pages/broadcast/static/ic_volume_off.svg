@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_volume_off" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#fff;stroke-width:1.5px;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <g id="prefix__그룹_9709" data-name="그룹 9709" transform="translate(-159.928 -318.5)">
+        <path id="prefix__패스_4291" d="M175.729 327.82l-4.166 3.564h-2.6a2.336 2.336 0 0 0-2.034 2.55v4.466a2.336 2.336 0 0 0 2.034 2.549h2.6l4.166 3.564c.964.825 2.271-.041 2.271-1.5v-13.688c0-1.464-1.307-2.33-2.271-1.505z" data-name="패스 4291" style="stroke-miterlimit:10;stroke:#fff;stroke-width:1.5px;fill:none"/>
+        <g id="prefix__그룹_133" data-name="그룹 133">
+            <path id="prefix__선_7" d="M0 0L6 6" class="prefix__cls-2" data-name="선 7" transform="translate(182 333.167)"/>
+            <path id="prefix__선_8" d="M6 0L0 6" class="prefix__cls-2" data-name="선 8" transform="translate(182 333.167)"/>
+        </g>
+    </g>
+    <path id="prefix__사각형_570" d="M0 0H36V36H0z" data-name="사각형 570" style="fill:none"/>
+</svg>

@@ -1,0 +1,133 @@
+@import "../../../../asset/scss/common/variables";
+
+#broadcast_progress_modal {
+  position: relative;
+  width: 240px;
+  padding: 0 16px;
+  background-color: black;
+  border-radius: 12px;
+  color: $white;
+
+  .header {
+    display: flex;
+    padding: 20px 0;
+    font-size: 14px;
+    white-space: pre-wrap;
+    button {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex: 1;
+    }
+  }
+
+  .contents {
+    &__row {
+      display: flex;
+      padding: 4px 0;
+      &--title {
+        display: inline-block;
+        width: 80px;
+        font-size: 12px;
+        font-weight: $light;
+      }
+    }
+    margin-bottom: 12px;
+  }
+
+  .btnClose {
+    position: absolute;
+    top: -40px;
+    right: 0px;
+    width: 32px;
+    height: 32px;
+    text-indent: -9999px;
+    background: url(https://image.dalbitlive.com/svg/close_w_l.svg) no-repeat 0 0;
+  }
+}
+
+#broadcast_help_modal {
+  background-color: $white;
+  border-radius: 20px;
+  color: $black;
+  border: 1px solid $greishBrown;
+
+  &.layerContainer {
+    min-width: 300px;
+  }
+
+  .full_moon {
+    text-align: center;
+    & > div {
+      margin-top: 32px;
+      p {
+        font-weight: $bold;
+      }
+
+      span {
+        font-weight: $light;
+      }
+    }
+
+    button {
+      width: 100%;
+      margin: 24px 0 12px 0;
+      padding: 12px 0;
+      background-color: $primary;
+      border-radius: 12px;
+      color: $white;
+      font-size: 18px;
+      font-weight: $bold;
+    }
+  }
+
+  .contents {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 4px;
+    text-align: center;
+    &__top {
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    &__how {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      margin: 22px 0 0 0;
+
+      border-radius: 20px;
+      border: 1px solid $primary;
+
+      &--header {
+        position: absolute;
+        width: 112px;
+        top: -10px;
+        left: calc(50% - 61px);
+        background-color: $white;
+        color: $primary;
+        font-size: 14px;
+        font-weight: $bold;
+      }
+
+      &--text {
+        margin-top: 22px;
+        font-size: 14px;
+        white-space: pre-wrap;
+      }
+
+      &--caption {
+        margin: 12px 0;
+        color: $gray;
+        font-size: 12px;
+        font-weight: $light;
+      }
+    }
+  }
+}

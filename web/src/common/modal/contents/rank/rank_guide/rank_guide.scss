@@ -1,0 +1,240 @@
+@import "../../../../../asset/scss/common/variables";
+#ranking-pageModal {
+  background-color: $white;
+  .rankGuideWrap {
+    padding-bottom: 18px;
+    letter-spacing: -0.3px;
+
+    .btn-close {
+      position: absolute;
+    }
+  }
+  .guideTab {
+    padding: 12px 16px 8px 16px;
+  }
+
+  .benefitTop {
+    padding: 16px 0;
+    text-align: center;
+    background-color: $primary;
+    color: $white;
+    letter-spacing: -0.35px;
+    font-size: 14px;
+
+    &__title {
+      margin-bottom: 6px;
+      color: $yellow;
+      font-weight: $bold;
+    }
+  }
+
+  .tableNotice {
+    padding: 20px;
+    font-size: 12px;
+    color: $black;
+  }
+
+  .tableBox {
+    margin-top: 24px;
+    padding: 0 16px;
+
+    &__title {
+      position: relative;
+      margin-bottom: 12px;
+      letter-spacing: -0.8px;
+      font-weight: $bold;
+
+      &--lastTitle {
+        font-size: 16px;
+      }
+
+      &--sub {
+        display: block;
+        font-weight: $bold;
+        line-height: 16px;
+        font-size: 12px;
+        color: #9e9e9e;
+      }
+
+      &--option {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-weight: $bold;
+        font-size: 12px;
+        color: #9e9e9e;
+      }
+
+      img {
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
+      }
+
+      span {
+        color: #ec455f;
+      }
+    }
+
+    table {
+      th {
+        padding: 6px 0;
+        border-top: 1px solid $primary;
+        border-bottom: 1px solid $primary;
+        font-size: 12px;
+        font-weight: $regular;
+        color: $primary;
+        letter-spacing: -0.3px;
+      }
+
+      td {
+        height: 37px;
+        line-height: 37px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 12px;
+        text-align: center;
+        color: $greishBrown;
+        font-weight: $bold;
+
+        &.rank {
+          font-weight: $bold;
+        }
+
+        &.category {
+          color: #757575;
+        }
+
+        &.random {
+          padding: 8px 0;
+          background-color: #f5f5f5;
+          line-height: 18px;
+
+          span {
+            font-weight: $regular;
+          }
+        }
+
+        &.note {
+          background-color: #f5f5f5;
+          line-height: 22px;
+          font-weight: $regular;
+
+          i {
+            font-weight: $bold;
+            font-style: normal;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .conditionBox {
+      display: flex;
+      justify-content: space-between;
+
+      .conditionItem {
+        overflow: hidden;
+        width: 30%;
+        border: 1px solid $primary;
+        text-align: center;
+        border-radius: 12px;
+
+        &__title {
+          height: 28px;
+          font-size: 12px;
+          line-height: 28px;
+          letter-spacing: -0.3px;
+          color: $white;
+          background-color: $primary;
+        }
+        &__content {
+          width: 50%;
+          height: 60px;
+          margin: 0 auto;
+          display: table-cell;
+          vertical-align: middle;
+          font-size: 13px;
+          line-height: 18px;
+          letter-spacing: -0.33px;
+          color: $greishBrown;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .noticeBox {
+    padding: 28px 16px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+
+    &__title {
+      color: $greishBrown;
+      font-weight: $bold;
+    }
+
+    &__item {
+      color: #757575;
+      padding-left: 12px;
+    }
+  }
+}
+
+#rankPopupWrap {
+  width: 300px;
+  padding: 20px 10px;
+  background-color: $white;
+  .title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+    font-size: 16px;
+    font-weight: $bold;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #757575;
+
+    p {
+      text-align: center;
+      line-height: 24px;
+
+      &.topBox {
+        line-height: 26px;
+        font-weight: $bold;
+      }
+
+      &.middleBox {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #616161;
+
+        span {
+          font-weight: $bold;
+          &.colorRed {
+            color: #ec455f;
+          }
+        }
+      }
+    }
+
+    & > span {
+      text-align: center;
+    }
+  }
+
+  & > button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 10px 0;
+    background-color: $primary;
+    color: white;
+    border-radius: 12px;
+  }
+}

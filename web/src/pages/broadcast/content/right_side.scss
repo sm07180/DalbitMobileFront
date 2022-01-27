@@ -1,0 +1,2932 @@
+@import "../../../asset/scss/common/global";
+@import "../content/right_content/listeners.scss";
+@import "../content/right_content/live_list.scss";
+
+#broadcast-page {
+  // common
+  .right-side {
+    width: 362px;
+    min-width: 362px;
+    height: 100%;
+
+    .tabBox {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      border-bottom: 1px solid $primary;
+
+      .btnTab {
+        display: inline-block;
+        width: 25%;
+        height: 50px;
+        margin-right: -1px;
+        line-height: 50px;
+        font-size: 16px;
+        text-align: center;
+        color: $darkGray;
+        background-color: $white;
+        border: 1px solid $lightGray;
+        border-bottom: 0;
+        cursor: pointer;
+        &:first-child {
+          border-radius: 10px 0 0 0;
+        }
+
+        &:last-child {
+          margin-right: 0;
+          border-radius: 0 10px 0 0;
+        }
+        &:hover,
+        &--active {
+          color: $white;
+          background-color: $primary;
+          border: 1px solid $primary;
+        }
+      }
+    }
+    .tabContent {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 55px);
+      background-color: $white;
+      border-radius: 0 0 10px 10px;
+    }
+    .subTitle {
+      position: relative;
+      margin: 20px 0 10px;
+      font-size: 14px;
+      font-weight: $bold;
+      color: $darkGray;
+    }
+    .tabTitle {
+      position: relative;
+      width: 100%;
+      height: 56px;
+      line-height: 56px;
+      font-size: 18px;
+      text-align: center;
+      &__back {
+        // position: absolute;
+        // width: 24px;
+        // height: 24px;
+        // left: 15px;
+        // top: 18px;
+        // cursor: pointer;
+        // background: url(https://image.dalbitlive.com/svg/ic_back.svg);
+        // 버튼
+        &::before {
+          left: 12px;
+          top: 16px;
+          content: "";
+          position: absolute;
+          width: 24px;
+          height: 24px;
+          cursor: pointer;
+          background: url(https://image.dalbitlive.com/svg/ic_pc_tab_arrow_new_back.svg)
+            center;
+        }
+      }
+    }
+  }
+  .scroll-inner.macintosh {
+    width: 100%;
+  }
+
+  .chatInputWrap {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    height: 66px;
+    padding: 0 16px 0 8px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    background-color: #212121;
+    &.fixed {
+      z-index: 11;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: -1;
+    }
+
+    .moreVideo {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      bottom: 112px;
+      left: 166px;
+      opacity: 1;
+      animation: moreAction linear 0.1s 1;
+
+      .icon {
+        margin-top: 8px;
+        background-color: $lighterGray;
+        border-radius: 50%;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+    }
+
+    .more-display {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      bottom: 70px;
+      right: 16px;
+      opacity: 1;
+      animation: moreAction linear 0.15s 1;
+      z-index: 4;
+
+      .icon {
+        position: relative;
+        margin-top: 8px;
+        background: $white;
+        border-radius: 50%;
+
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &.active {
+          background-color: $primary;
+        }
+
+        &.snow {
+          background-color: #5ac4fb;
+        }
+      }
+
+      &.video {
+        bottom: 112px;
+        animation: moreActionVideo linear 0.15s 1;
+
+        .icon {
+          background-color: $lighterGray;
+
+          &.active {
+            background-color: $primary;
+          }
+
+          &.snow {
+            background-color: #5ac4fb;
+          }
+        }
+      }
+    }
+
+    .setting-more-display {
+      position: absolute;
+      width: 146px;
+      right: 50px;
+      bottom: -39px;
+      border-radius: 12px;
+      background-color: black;
+      font-size: 14px;
+      color: white;
+
+      &.listener {
+        bottom: 74px;
+      }
+
+      &.listener.video {
+        bottom: 170px;
+      }
+
+      & > div {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 8px;
+
+        span {
+          flex: 1;
+        }
+
+        .toggle-button {
+          width: 40px;
+          height: 24px;
+          background: url(../static/ic_alarmtoggleoff_s.svg) no-repeat;
+          background-size: contain;
+
+          &.on {
+            background: url(../static/ic_alarmtoggleon.svg) no-repeat;
+            background-size: contain;
+          }
+        }
+      }
+
+      &::after {
+        position: absolute;
+        right: -6px;
+        top: 50%;
+        width: 6px;
+        height: 10px;
+        margin-top: -5px;
+        background: url("../static/img_arrow_b.svg") no-repeat;
+        background-size: contain;
+        content: "";
+      }
+    }
+
+    .lottie-wrap {
+      cursor: pointer;
+    }
+
+    .gift-input-wrap {
+      position: relative;
+      flex: 1;
+
+      input[type="text"] {
+        width: 100%;
+        height: 36px;
+        padding: 12px;
+        border: none;
+        box-sizing: border-box;
+        border-radius: 18px;
+        background-color: #fff;
+        outline: none;
+      }
+
+      textarea {
+        width: 100%;
+        height: 36px;
+        padding: 8px 12px;
+        border: none;
+        box-sizing: border-box;
+        overflow: hidden;
+        border-radius: 18px;
+        background-color: #fff;
+        outline: none;
+      }
+
+      .emoji-icon {
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+      }
+    }
+
+    .icon-wrap {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .icon {
+        margin: 0 5px;
+        cursor: pointer;
+
+        &.more {
+          transform: rotate(90deg);
+        }
+      }
+
+      &__msgContainer {
+        display: none;
+        position: absolute;
+        bottom: 81px;
+        right: 16px;
+        width: fit-content;
+        color: #212121;
+        font-size: 14px;
+
+        &--text {
+          height: 32px;
+          padding: 0 11px;
+          line-height: 32px;
+          background-color: #dbdbdb;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+        & > div:not(:last-child) {
+          margin-right: 2px;
+        }
+        &.on {
+          display: flex;
+        }
+
+        &.video {
+          bottom: 115px;
+        }
+
+        &--setting {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 32px;
+          height: 32px;
+          padding: 0;
+          background-color: #dbdbdb;
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .giftPopupWrap {
+    position: absolute;
+    bottom: 74px;
+    left: 16px;
+    width: 100%;
+    max-width: 362px;
+    padding: 0 12px;
+    background-color: $white;
+    border: 1px solid $lightGray;
+    border-radius: 10px;
+    box-sizing: border-box;
+    box-shadow: 0 1px 15px 0 rgba(0, 0, 0, 0.2);
+
+    //방송방 받은 선물내역 별도 스타일 적용
+    .tabTitle {
+      padding-top: 16px;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .desc {
+      padding: 24px 0 20px;
+      font-size: 14px;
+      text-align: center;
+      background: $white;
+      color: $darkGray;
+    }
+    .subInfo {
+      display: flex;
+      flex-direction: column;
+      border-radius: 10px;
+      background: #f4f4f4;
+      margin-top: 10px;
+      padding: 16px 0;
+      .subItem {
+        &__box {
+          display: flex;
+          justify-content: space-between;
+        }
+        &__text {
+          display: flex;
+          flex: 1;
+          justify-content: center;
+          align-items: center;
+          font-size: 14px;
+          color: #9e9e9e;
+          letter-spacing: -0.35px;
+
+          // cursor: pointer;
+        }
+        &__line {
+          width: 1px;
+          height: 16px;
+          background: #e0e0e0;
+          margin-top: 6px;
+        }
+        &__number {
+          margin-left: 16px;
+          font-size: 20px;
+          color: #632beb;
+          letter-spacing: -0.5px;
+          font-weight: $bold;
+        }
+      }
+    }
+
+    .giftInfo {
+      .selectGiftUser {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin: 15px 0 10px;
+      }
+      .selectUser {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 49%;
+        height: 56px;
+        padding: 5px 5px;
+        color: $greishBrown;
+        background: $white;
+        opacity: 0.7;
+        border: 1px solid $mediumGray;
+        border-radius: 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+        &:hover,
+        &.active {
+          opacity: 1;
+          border: 1px solid $primary;
+        }
+        &.guest {
+          &:hover {
+            border: 1px solid #00c3cb;
+          }
+        }
+
+        &.active-guest {
+          opacity: 1;
+          border: 1px solid #00c3cb;
+        }
+        img {
+          display: inline-block;
+          width: 36px;
+          height: 36px;
+          margin-left: 3px;
+          margin-top: -8px;
+          border-radius: 36px;
+        }
+        &__role {
+          display: inline-block;
+          position: absolute;
+          left: 8px;
+          bottom: 5px;
+          width: 36px;
+          height: 14px;
+          line-height: 14px;
+          font-size: 9px;
+          text-align: center;
+          color: $white;
+          border-radius: 14px;
+          &--dj {
+            background: $primary;
+          }
+          &--guest {
+            background: $emerald;
+          }
+        }
+        &__nickNm {
+          display: block;
+          width: 120px;
+          font-size: 14px;
+        }
+      }
+    }
+
+    .myLelvel {
+      display: flex;
+      align-items: center;
+      margin: 10px 0 18px;
+
+      strong {
+        display: inline-block;
+        width: 100px;
+        font-size: 18px;
+        color: $primary;
+      }
+
+      .graph {
+        flex: 1;
+        position: relative;
+        width: 100%;
+        height: 14px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 14px;
+
+        .fill {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          padding-right: 10px;
+          background: #632beb;
+          text-align: right;
+          line-height: 1.2;
+          color: #fff;
+          font-size: 10px;
+          border-radius: 14px;
+          box-sizing: border-box;
+        }
+      }
+    }
+    .myDal {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      line-height: 1.2;
+
+      .myAcount {
+        display: flex;
+        width: 100%;
+        &__line {
+          display: flex;
+          position: relative;
+          width: 50%;
+          line-height: 26px;
+          p {
+            width: calc(100% - 50px);
+            padding: 0 8px 0 20px;
+            box-sizing: border-box;
+            text-align: right;
+            font-size: 14px;
+            font-weight: bold;
+            color: #000;
+          }
+          &:first-child p {
+            background: url(../static/ic_moon_s.svg) no-repeat left 5px;
+          }
+          &:last-child p {
+            background: url(../static/ic_star_s.svg) no-repeat 8px 3px;
+          }
+          button {
+            margin-top: 5px;
+            width: 40px;
+            height: 18px;
+            padding-top: 2px;
+            vertical-align: top;
+            text-indent: -9999px;
+            &.charge {
+              background: url("../static/ic_charge.svg") no-repeat;
+            }
+            &.exchange {
+              position: relative;
+              background: url("../static/ic_exchange.svg") no-repeat;
+            }
+          }
+          &:last-child::before {
+            display: inline-block;
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 1px;
+            height: 10px;
+            background: #757575;
+            content: "";
+          }
+        }
+      }
+
+      strong {
+        flex: 1;
+        color: #919191;
+      }
+      &__cash {
+        display: inline-block;
+        margin-right: 6px;
+        font-weight: $bold;
+        color: $black;
+      }
+      .btn__charge {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        width: 15px;
+        height: 15px;
+        margin-top: 2px;
+        border: 1px solid $primary;
+        border-radius: 15px;
+        position: relative;
+        &::before {
+          content: "+";
+          font-size: 18px;
+          line-height: 18px;
+          color: $primary;
+          position: absolute;
+          bottom: 0px;
+        }
+      }
+    }
+
+    .giftCategory {
+      margin: 10px 0 20px;
+      .btn__category {
+        position: relative;
+        display: inline-block;
+        min-width: 60px;
+        height: 30px;
+        margin-left: 3px;
+        line-height: 30px;
+        font-size: 14px;
+        text-align: center;
+        color: $greishBrown;
+        background: $lightGray;
+        border-radius: 8px;
+        &:first-child {
+          margin-left: 0;
+        }
+        &:hover,
+        &--active {
+          color: $white;
+          background: $darkGray;
+        }
+        .ico__new {
+          display: inline-block;
+          content: "";
+          position: absolute;
+          top: -6px;
+          right: -3px;
+          width: 10px;
+          height: 10px;
+          background: $red;
+          color: $white;
+          font-size: 10px;
+          text-align: center;
+          line-height: 10px;
+          padding: 2px 2px;
+          border-radius: 10px;
+        }
+      }
+    }
+
+    .scroll-wrap {
+      width: 100%;
+      height: 200px;
+    }
+
+    .giftList {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .giftItem {
+      position: relative;
+      width: 22%;
+      margin: 6px 3% 6px 0;
+      text-align: center;
+      cursor: pointer;
+      &::before {
+        display: none;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba($black, 0.5);
+        border-radius: 10px;
+      }
+      // &:hover,
+      &.giftItem--active {
+        .clickCnt {
+          display: block;
+        }
+        &::before {
+          display: block;
+        }
+      }
+      .item {
+        width: 70px;
+        height: 70px;
+      }
+
+      .sound-item {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+      }
+
+      .ico__new {
+        position: absolute;
+        top: 5px;
+        left: 0;
+        width: 32px;
+        height: 16px;
+        img {
+          width: 100%;
+        }
+      }
+      .ico__speaker {
+        position: absolute;
+        top: 3px;
+        right: 0;
+        width: 20px;
+        height: 20px;
+        img {
+          width: 100%;
+        }
+      }
+      .price {
+        display: inline-block;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: 600;
+        &--dal {
+          &::before {
+            display: inline-block;
+            content: "";
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            background: url(https://image.dalbitlive.com/images/api/ic_moon_s.png)
+              no-repeat 0 0;
+            font-size: 11px;
+            font-weight: $bold;
+          }
+        }
+      }
+      .clickCnt {
+        display: none;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        padding-top: 30px;
+        color: $white;
+        font-size: 24px;
+        font-weight: $bold;
+        text-align: center;
+        box-sizing: border-box;
+        user-select: none;
+        &::before {
+          display: inline-block;
+          content: "";
+          background: url(https://image.dalbitlive.com/images/api/ic_multiplication@2x.png)
+            no-repeat center center;
+          width: 10px;
+          height: 10px;
+          margin-right: 5px;
+          vertical-align: middle;
+        }
+      }
+
+      &:nth-child(4n) {
+        margin-right: 0;
+      }
+    }
+
+    .giftTtsCategory {
+      display: flex;
+      align-items: center;
+      padding-top: 10px;
+      span {
+        font-size: 13px;
+        font-weight: 500;
+        margin-right: 16px;
+      }
+      .ttsList {
+        width: 58px;
+        height: 24px;
+        margin-right: 4px;
+        font-size: 12px;
+        color: #424242;
+        border: 1px solid #e6e6e6;
+        border-radius: 100px;
+        background: #f8f8f8;
+        &.active {
+          color: #fff;
+          background: #212121;
+          border: none;
+        }
+      }
+    }
+    .giftTTSinput {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 32px;
+      margin-top: 4px;
+      padding-right: 8px;
+      background: #f5f5f5;
+      border-radius: 8px;
+      box-sizing: border-box;
+      img {
+        width: 22px;
+        height: 18px;
+        margin: 0 10px 0 16px;
+        image-rendering: -webkit-optimize-contrast;
+      }
+      input {
+        flex: 1;
+        height: 100%;
+      }
+    }
+
+    .giftBtnBox {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin: 8px 0 13px;
+
+      button {
+        display: block;
+        height: 48px;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 10px;
+      }
+      .btn__secret {
+        width: 38%;
+        border: 1px solid $mediumGray;
+        color: $mediumGray;
+      }
+      .btn__send {
+        width: 60%;
+        background: $primary;
+        color: $white;
+      }
+    }
+
+    // 받은 선물 리스트
+    .receivedGiftList {
+      width: 100%;
+      margin-top: 10px;
+      padding-right: 16px;
+      box-sizing: border-box;
+    }
+    .receivedGiftItem {
+      width: 100%;
+      padding: 5px 0;
+      display: flex;
+      flex-direction: row;
+      box-sizing: border-box;
+      .thumb {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 40px;
+      }
+      .user {
+        flex: 1;
+        width: 100%;
+        margin: 0;
+        padding-left: 8px;
+        color: $greishBrown;
+
+        .nickNm {
+          width: 100%;
+          @include multi-ellipsis(1);
+          white-space: normal;
+        }
+        em {
+          display: block;
+          color: $mediumGray;
+        }
+      }
+      .ico {
+        display: inline-block;
+        width: 40px;
+        height: 20px;
+        margin: 4px 4px 0 0;
+        line-height: 20px;
+        font-size: 11px;
+        text-align: center;
+        color: $white;
+        background: #fdad2b;
+        border-radius: 20px;
+      }
+      .item {
+        width: 80px;
+        text-align: right;
+        color: $mediumGray;
+        .itemNm {
+          font-size: 14px;
+          @include multi-ellipsis(1);
+        }
+        em {
+          display: block;
+          font-size: 14px;
+          color: $greishBrown;
+        }
+      }
+    }
+  }
+
+  .move-down-btn {
+    position: absolute;
+    left: 50%;
+    margin-left: -58px;
+    bottom: 10px;
+    width: 116px;
+    height: 32px;
+    z-index: 2;
+
+    .inner {
+      position: relative;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #000;
+      background-color: #fff;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+
+      img.icon {
+        margin-left: 4px;
+      }
+    }
+
+    &.video {
+      bottom: 115px;
+    }
+  }
+
+  .chat-side {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // overflow: hidden;
+    min-width: 362px;
+    background-color: $white;
+    border-radius: 10px;
+
+    .chat-msg-wrap {
+      height: calc(100vh - 145px);
+
+      .chat-inner-wrap {
+        width: 93%;
+        padding: 12px;
+      }
+    }
+
+    &.video {
+      width: 362px;
+
+      .msg-list-wrap {
+        font-size: 14px;
+        line-height: 20px;
+
+        .req-good-likes {
+          padding-bottom: 16px;
+          color: #a08aee;
+        }
+
+        .system-start-msg,
+        .connect-wrap,
+        .guest-wrap {
+          padding-bottom: 16px;
+          color: #999;
+          line-height: 20px;
+          white-space: pre-wrap;
+        }
+
+        .minigame_msg_wrap {
+          display: flex;
+          margin-bottom: 16px;
+          padding: 5px;
+          background-color: rgba(242, 74, 134, 0.1);
+          border-radius: 10px;
+          .minigame_image {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+            background-color: $white;
+            border-radius: 10px;
+
+            .icon_image {
+              &::before {
+                display: block;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 36px;
+                height: 36px;
+                background: url("../static/ic_roulette.svg") no-repeat;
+                background-size: contain;
+                transform: translate(-50%, -50%);
+                content: "";
+              }
+            }
+          }
+
+          .text {
+            font-size: 14px;
+          }
+        }
+
+        .msg-wrap {
+          .nickname-msg-wrap {
+            margin-bottom: 16px;
+
+            &::after {
+              content: "";
+              display: block;
+              clear: both;
+            }
+
+            .msg-image {
+              display: flex;
+              align-items: center;
+              padding: 5px;
+              border-radius: 10px;
+              background-color: #f5f5f5;
+              box-sizing: border-box;
+
+              &.guest {
+                background-color: rgba(0, 193, 200, 0.1);
+              }
+
+              .icon-image {
+                width: 40px;
+                min-width: 40px;
+                height: 40px;
+                margin-right: 6px;
+                border-radius: 10px;
+                background-size: cover;
+                background-color: #fff;
+              }
+            }
+
+            .nickname-wrap {
+              display: flex;
+              float: left;
+              align-items: center;
+              margin-right: 4px;
+              color: $primary;
+              &.video {
+                padding: 8px 0 0px 10px;
+              }
+
+              &::after {
+                content: ":";
+              }
+
+              .label {
+                display: inline-block;
+                font-size: 10px;
+                color: $white;
+                line-height: 16px;
+                height: 16px;
+                margin-right: 3px;
+                vertical-align: middle;
+
+                &.new-listener {
+                  padding: 0 6px;
+                  border-radius: 10px;
+                  background-color: rgba(69, 147, 236, 1);
+                }
+                &.none {
+                  display: none;
+                }
+                &.bj {
+                  padding: 0 6px;
+                  border-radius: 10px;
+                  background: $primary;
+
+                  &.new {
+                    background-color: rgba(69, 147, 236, 1);
+                  }
+                }
+                &.manager {
+                  padding: 0 6px;
+                  border-radius: 10px;
+                  background: #fdad2b;
+                }
+              }
+
+              .liveBadgeWrap {
+                display: inline-block;
+                position: relative;
+                height: 16px;
+                margin-right: 3px;
+                border-radius: 10px;
+                vertical-align: middle;
+                cursor: pointer;
+                line-height: 11px;
+
+                .badgeBg {
+                  width: 100%;
+                  opacity: 0.8;
+                  height: 100%;
+                  position: absolute;
+                  border-radius: 10px;
+                }
+
+                .badgeIcon {
+                  display: inline-block;
+                  position: absolute;
+                  top: 0;
+                  left: 4px;
+                  width: 16px;
+                  height: 16px;
+                  background-size: 16px 16px;
+                }
+                .badgeText {
+                  display: block;
+                  position: relative;
+                  font-size: 10px;
+                  color: $white;
+                  line-height: 16px;
+                  height: 16px;
+                  margin-right: 3px;
+                  padding: 0 6px 0 22px;
+                }
+              }
+            }
+            .msg {
+              word-break: break-all;
+              white-space: pre-wrap;
+            }
+          }
+        }
+      }
+
+      .chatInputWrap {
+        height: 105px;
+        padding: 0 12px 8px 12px;
+        border-top: 1px solid #e2e2e2;
+        box-sizing: border-box;
+
+        &::before {
+          display: none;
+        }
+
+        .lottie-wrap {
+          order: 1;
+        }
+
+        .gift-input-wrap {
+          flex: auto;
+          order: 3;
+        }
+
+        .icon-wrap {
+          order: 2;
+        }
+      }
+
+      .giftPopupWrap {
+        bottom: 117px;
+      }
+
+      .giftPopupWrap {
+        left: 0;
+      }
+    }
+  }
+  .mydalBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 18px;
+    margin-bottom: 12px;
+
+    &__ptext {
+      font-size: 14px;
+      letter-spacing: -0.35px;
+      text-align: left;
+      color: $black;
+    }
+    &__dalWrap {
+      display: flex;
+      align-items: center;
+    }
+    &__dalCnt {
+      margin-right: 6px;
+      font-size: 16px;
+      font-weight: $bold;
+      letter-spacing: -0.4px;
+      color: $greishBrown;
+    }
+    &__chargeIcon {
+      width: 44px;
+      height: 20px;
+      background: url("https://image.dalbitlive.com/svg/ic_charge_m.svg");
+    }
+  }
+  .giftBox {
+    padding: 0 8px;
+
+    // 달 선물
+    &__subTitle {
+      padding: 22px 0px 23px 0px;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: -0.4px;
+      color: $black;
+      background: $lighterGray;
+      border-radius: 12px;
+      text-align: center;
+      span {
+        color: $mediumGray;
+        &.nickNm {
+          font-weight: $bold;
+          color: $primary;
+        }
+        &.reportMsg {
+          display: block;
+          text-align: center;
+        }
+      }
+    }
+
+    &__userMsg {
+      font-size: 16px;
+      letter-spacing: -0.35px;
+      text-align: center;
+      color: $black;
+      strong {
+        display: inline-block;
+        margin-right: 4px;
+        color: $primary;
+      }
+    }
+
+    .dalList {
+      display: flex;
+      flex-flow: wrap;
+      .btn__price {
+        width: calc((100% - 12px) / 4);
+        height: 32px;
+        margin-bottom: 4px;
+        margin-right: 4px;
+        font-size: 14px;
+        font-weight: $bold;
+        background: $white;
+        border-radius: 12px;
+        border: 1px solid $lightGray;
+        &:nth-child(4n) {
+          margin-right: 0;
+        }
+        &:nth-child(n + 4) {
+          margin-bottom: 0px;
+        }
+        &--active {
+          border: 1px solid $primary;
+          color: $primary;
+          font-weight: $bold;
+        }
+      }
+    }
+
+    &__warnnigMsg {
+      margin-top: 4px;
+      font-size: 12px;
+      letter-spacing: -0.3px;
+      text-align: left;
+      color: $darkGray;
+    }
+    .input__text {
+      width: 100%;
+      height: 44px;
+      border: 1px solid $lightGray;
+      background: #fff;
+      border-radius: 12px;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-top: 10px;
+
+      font-size: 16px;
+      font-weight: $bold;
+      color: $black;
+      line-height: 1.14;
+      box-sizing: border-box;
+
+      &::placeholder {
+        color: $greishGray;
+        font-size: 14px;
+        font-weight: $bold;
+      }
+
+      &:focus {
+        border-color: $black;
+      }
+    }
+    .btnWrap {
+      margin-top: 28px;
+    }
+  }
+  // 프로필
+  .infoWrap {
+    display: flex;
+    flex-direction: column;
+
+    .desc {
+      padding: 20px 0 10px;
+      font-size: 14px;
+      text-align: center;
+      background: $white;
+      border-top: 1px solid $lighterGray;
+      color: $darkGray;
+    }
+    &.gifView {
+      //방송방 받은 선물내역 별도 스타일 적용
+      .desc {
+        padding: 20px 0 10px;
+        font-size: 14px;
+        text-align: center;
+        background: $white;
+        border-top: 1px solid $lighterGray;
+        color: $darkGray;
+      }
+    }
+
+    .infoItem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      position: relative;
+      .badgeWrap {
+        overflow: hidden;
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        .swiper-wrapper {
+          display: flex;
+          width: 300%;
+        }
+        .fan-badge {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 60px;
+          height: 28px;
+          padding: 0 12px 0 8px;
+          margin-left: 4px;
+          font-size: 14px;
+          font-stretch: normal;
+          font-style: normal;
+          line-height: 1;
+          letter-spacing: -0.35px;
+          text-align: left;
+          color: $white;
+          border-radius: 20px;
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+
+        .fan-badge img {
+          height: 26px;
+        }
+        .fan-badge span {
+          display: inline-block;
+          margin-left: 4px;
+          vertical-align: middle;
+          line-height: 2.2;
+          color: $white;
+        }
+      }
+
+      .btn__report {
+        width: 36px;
+        height: 36px;
+        position: absolute;
+        left: 25px;
+        top: 38px;
+        background: url(https://image.dalbitlive.com/svg/block_w_l.svg) center
+          no-repeat;
+        opacity: 0.5;
+        cursor: pointer;
+      }
+      &__img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        width: 94px;
+        height: 94px;
+        margin: 20px 0 25px;
+        border-radius: 50%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+      &__frame {
+        width: 128px;
+        height: 128px;
+        display: block;
+        position: absolute;
+        top: 2px;
+        cursor: pointer;
+      }
+      &__level {
+        margin-bottom: 7px;
+        font-size: 16px;
+        color: $greishBrown;
+        letter-spacing: -0.35px;
+        padding-right: 16px;
+      }
+      &__title {
+        font-size: 20px;
+        letter-spacing: -0.5px;
+        font-weight: $bold;
+        color: $greishBrown;
+      }
+      &__subId {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 12px;
+        font-size: 16px;
+        color: #9e9e9e;
+        letter-spacing: -0.4px;
+
+        .badge {
+          margin-left: 5px;
+          color: #fff;
+          font-size: 12px;
+          border-radius: 10px;
+          padding: 1px 4px;
+
+          &.special {
+            background-color: #ec455f;
+          }
+          &.new {
+            background-color: rgba(69, 147, 236, 1);
+          }
+        }
+      }
+    }
+
+    .rankItem {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 25px;
+      &__text {
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        color: #9e9e9e;
+        margin-right: 22px;
+      }
+      &__imgBox {
+        display: flex;
+      }
+      &__list {
+        width: 36px;
+        height: 36px;
+        position: relative;
+        margin-right: 4px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        border-radius: 36px;
+        cursor: pointer;
+        &::after {
+          content: "";
+          position: absolute;
+          right: 0px;
+          bottom: 0px;
+          width: 12px;
+          height: 12px;
+          background: url(https://image.dalbitlive.com/images/api/ic_gold.png);
+        }
+        &:nth-child(2) {
+          &::after {
+            content: "";
+            background: url(https://image.dalbitlive.com/images/api/ic_silver.png);
+          }
+        }
+        &:nth-child(3) {
+          &::after {
+            content: "";
+            background: url(https://image.dalbitlive.com/images/api/ic_bronze.png);
+          }
+        }
+      }
+      &__more {
+        width: 36px;
+        height: 36px;
+        background: url(https://image.dalbitlive.com/svg/ic_circlemore.svg);
+      }
+    }
+    .managerOut {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0 5px;
+      &__box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex: 1;
+        cursor: pointer;
+        height: 64px;
+      }
+      &__icon {
+        width: 24px;
+        height: 24px;
+        margin-top: 8px;
+        margin-bottom: 6px;
+
+        &--manager {
+          background: url(https://image.dalbitlive.com/svg/ic_manager.svg);
+        }
+        &--out {
+          background: url(https://image.dalbitlive.com/svg/ic_forced.svg);
+        }
+      }
+      &__line {
+        width: 1px;
+        height: 32px;
+        background: #e0e0e0;
+        margin-top: 15px;
+      }
+      &__text {
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        color: #9e9e9e;
+      }
+    }
+    .profileBtnBox {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 10px;
+      button {
+        display: block;
+        // flex: 1;
+        width: 49%;
+        height: 48px;
+        text-align: center;
+        font-size: 14px;
+        border-radius: 10px;
+      }
+      .btn__gift {
+        background: $primary;
+        color: $white;
+      }
+    }
+  }
+  .reportWrap {
+    width: 328px;
+    padding: 0 24px 16px;
+
+    &.noPadding {
+      width: 100%;
+      padding: 0px;
+    }
+    &__textareaWrap {
+      position: relative;
+      margin-top: 12px;
+    }
+    &__textarea {
+      width: 100%;
+      font-size: 14px;
+      color: $black;
+      min-height: 120px;
+      padding: 12px;
+      box-sizing: border-box;
+      border-radius: 12px;
+      background-color: $white;
+      outline: none;
+      border: none;
+      resize: none;
+      font-weight: $bold;
+      &::placeholder {
+        font-family: inherit;
+        color: #626262;
+        font-weight: $light;
+        font-size: 14px;
+        font-weight: $regular;
+      }
+    }
+    &__textareaCount {
+      display: block;
+      padding-bottom: 14px;
+      width: 100%;
+      font-size: 12px;
+      color: $darkGray;
+      text-align: right;
+      b {
+        color: #000;
+      }
+    }
+
+    .declarationWrap {
+      padding: 16px;
+      // background: $lighterGray;
+      .reportList {
+        border: solid 1px $lightGray;
+        box-sizing: border-box;
+        border-radius: 12px;
+        height: 44px;
+        margin-bottom: 4px;
+        background: $white;
+        font-size: 14px;
+        font-weight: $bold;
+        width: calc(50% - 2px);
+        margin-right: 4px;
+
+        &:nth-child(2n) {
+          margin-right: 0px;
+        }
+
+        &:nth-child(5n) {
+          width: 100%;
+          margin-bottom: 0px;
+          margin-right: 0px;
+        }
+
+        &--on {
+          border: 1px solid $primary;
+          color: $primary;
+          font-weight: $bold;
+        }
+      }
+      .reportMsg {
+        margin: 12px 0 16px 0;
+        color: $darkGray;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        text-align: left;
+        transform: skew(-0.03deg);
+      }
+    }
+    .blackWrap {
+      padding: 16px;
+      background: $white;
+    }
+
+    &__title {
+      height: 20px;
+    }
+    .blockButton {
+      display: flex;
+      border-bottom: solid 1px $lightGray;
+      align-items: center;
+
+      button {
+        width: 50%;
+        height: 52px;
+        font-size: 18px;
+        color: $black;
+        text-align: center;
+        position: relative;
+        line-height: 52px;
+        font-weight: $bold;
+        text-align: center;
+
+        i {
+          position: absolute;
+          width: 100%;
+          height: 1px;
+          background: $primary;
+          left: 0px;
+          bottom: 0px;
+          margin: 0px;
+          padding: 0px;
+          display: none;
+        }
+
+        &.on {
+          color: $primary;
+          i {
+            display: block;
+          }
+        }
+      }
+    }
+
+    .buttonWrap {
+      width: 100%;
+      position: absolute;
+
+      bottom: 0px;
+      display: flex;
+      padding-top: 16px;
+
+      text-align: center;
+      button {
+        flex: 1;
+        padding: 5px 0;
+        color: #fff;
+        height: 44px;
+        border-radius: 12px;
+        background-color: $primary;
+        font-size: 18px;
+        &:nth-child(odd) {
+          margin-right: 4px;
+          background: #757575;
+        }
+      }
+    }
+
+    .alertText {
+      position: relative;
+      margin-top: 24px;
+      height: 365px;
+      text-align: center;
+      h3 {
+        font-size: 24px;
+        margin-top: 34px;
+        margin-bottom: 4px;
+        color: $black;
+        display: block;
+      }
+      b {
+        font-size: 18px;
+        margin-bottom: 28px;
+        color: $black;
+        display: block;
+      }
+
+      img {
+        display: block;
+        margin: auto;
+        padding-bottom: 30px;
+      }
+
+      span {
+        display: block;
+        font-size: 14px;
+        color: #424242;
+        line-height: 22px;
+        padding-bottom: 12px;
+      }
+
+      p {
+        display: block;
+        font-size: 12px;
+        color: #9e9e9e;
+        line-height: 20px;
+        margin-bottom: 14px;
+      }
+    }
+  }
+  // boost
+  .boostWrap {
+    display: flex;
+    overflow: auto;
+    width: 100%;
+    height: 100%;
+    padding: 20px 3% 0 3%;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    box-sizing: border-box;
+    border-top: 1px solid $lighterGray;
+    .title {
+      margin-bottom: 4px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: $greishBrown;
+    }
+    .rank {
+      margin-bottom: 10px;
+      font-size: 24px;
+      color: $gray;
+      em {
+        color: $primary;
+        font-weight: $bold;
+      }
+    }
+    .img {
+      text-align: center;
+      img {
+        width: 200px;
+        height: 160px;
+      }
+      .status {
+        position: relative;
+        width: 150px;
+        margin: -20px auto 0;
+        padding: 8px 16px;
+        font-size: 14px;
+        font-weight: $bold;
+        line-height: 1.2;
+        background: $white;
+        border: 1px solid $red;
+        color: $red;
+        border-radius: 16px;
+        box-sizing: border-box;
+        &--active {
+          width: 100%;
+          background: $red;
+          color: $white;
+        }
+      }
+    }
+    .boost {
+      width: 100%;
+      text-align: center;
+      &__desc {
+        margin-top: 16px;
+        margin-bottom: 4px;
+        font-size: 14px;
+        line-height: 1.4;
+        color: $greishBrown;
+        .alert {
+          margin-top: 5px;
+          color: $red;
+          font-weight: $bold;
+        }
+        .caption {
+          margin-top: 12px;
+          font-size: 12px;
+          color: $greishBrown;
+        }
+      }
+      &__bjhave {
+        margin-top: 24px;
+        border: 1px solid $mediumGray;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 40px;
+      }
+      &__nohave {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 40px;
+        margin-top: 12px;
+        padding: 0 8px;
+        border: 1px solid $mediumGray;
+        border-radius: 12px;
+      }
+      &__cnt {
+        font-weight: 600;
+        font-size: 16px;
+      }
+      &__totalCnt {
+        position: relative;
+        font-weight: 600;
+        font-size: 16px;
+        &::before {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          margin-top: -4px;
+          margin-right: 2px;
+          background: url(https://image.dalbitlive.com/images/api/ic_moon_s@2x.png)
+            no-repeat center;
+          background-size: 18px 18px;
+          vertical-align: middle;
+          content: "";
+        }
+      }
+      &__minusBtn {
+        width: 24px;
+        height: 24px;
+        background: url(https://image.dalbitlive.com/svg/ico_minus_p.svg)
+          no-repeat center center / cover;
+        &.notActive {
+          background: url(https://image.dalbitlive.com/svg/ico_minus_g.svg)
+            no-repeat center center / cover;
+        }
+      }
+      &__plusBtn {
+        width: 24px;
+        height: 24px;
+        background: url(https://image.dalbitlive.com/svg/ico_add_p.svg)
+          no-repeat center center / cover;
+        &.notActive {
+          background: url(https://image.dalbitlive.com/svg/ico_add_g.svg)
+            no-repeat center center / cover;
+        }
+      }
+    }
+    .btn__boost {
+      display: block;
+      width: 100%;
+      height: 48px;
+      color: $white;
+      font-size: 16px;
+      text-align: center;
+      background-color: $primary;
+      border-radius: 10px;
+
+      &.item {
+        margin-top: 8px;
+      }
+
+      .ico {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        background: url(https://image.dalbitlive.com/images/api/ic_moon_s@2x.png)
+          no-repeat center;
+        background-size: 18px 18px;
+        vertical-align: middle;
+      }
+    }
+  }
+  .noticeContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  //noticeForm
+  .noticeContainer{
+    flex:1;
+    display:flex;
+    flex-direction: column;
+  }
+  .noticeForm {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    padding: 0 3%;
+    box-sizing: border-box;
+    .scroll-wrap {
+      flex: 1;
+    }
+    &__explain {
+      margin: 18px auto;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.14;
+      letter-spacing: -0.35px;
+      color: #616161;
+    }
+    &__textArea {
+      width: 100%;
+      min-height: 180px;
+      padding: 20px 76px 20px 20px;
+      box-sizing: border-box;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: -0.4px;
+      text-align: left;
+      font-family: inherit;
+      color: $greishBrown;
+      outline: none;
+      border: none;
+      resize: none;
+      word-break: break-all;
+      white-space: pre-line;
+      margin: 0;
+      &::placeholder {
+        font-size: 16px;
+        line-height: 1.25;
+        letter-spacing: -0.4px;
+        text-align: left;
+        color: $mediumGray;
+      }
+    }
+    &__alarmMsg {
+      margin: 12px auto;
+      font-size: 14px;
+      line-height: 1.14;
+      letter-spacing: -0.35px;
+      text-align: center;
+      color: $mediumGray;
+    }
+    &__msgCount {
+      position: absolute;
+      right: 10px;
+      bottom: 98px;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.35px;
+      text-align: left;
+      color: $mediumGray;
+    }
+    &__registBtn {
+      width: 100%;
+      height: 48px;
+      border-radius: 10px;
+      background-color: $primary;
+      color: #fff;
+      font-size: 16px;
+      letter-spacing: -0.4px;
+      text-align: center;
+    }
+    &__btnWrap {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      margin: 20px 0;
+      button {
+        width: 49%;
+        height: 48px;
+        border: 1px solid $primary;
+        border-radius: 10px;
+        font-size: 16px;
+        letter-spacing: -0.4px;
+        text-align: center;
+      }
+      &__cancelBtn {
+        color: $primary;
+      }
+      &__modifyBtn {
+        background-color: $primary;
+        color: #fff;
+      }
+    }
+  }
+  .storyForm {
+    position: relative;
+    width: 100%;
+    padding: 0 3%;
+    box-sizing: border-box;
+
+    &__explain {
+      margin: 18px auto;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.14;
+      letter-spacing: -0.35px;
+      color: #616161;
+    }
+    &__textArea {
+      width: 100%;
+      min-height: 180px;
+      padding: 20px 76px 20px 20px;
+      box-sizing: border-box;
+      background-color: #f5f5f5;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.25;
+      letter-spacing: -0.4px;
+      text-align: left;
+      font-family: inherit;
+      color: $greishBrown;
+      outline: none;
+      border: none;
+      resize: none;
+      &::placeholder {
+        font-size: 16px;
+        line-height: 1.25;
+        letter-spacing: -0.4px;
+        text-align: left;
+        color: $mediumGray;
+      }
+    }
+    &__msgCount {
+      position: absolute;
+      right: 20px;
+      bottom: 78px;
+      font-size: 14px;
+      line-height: 1.43;
+      letter-spacing: -0.35px;
+      text-align: left;
+      color: $mediumGray;
+    }
+    &__registBtn {
+      width: 100%;
+      height: 48px;
+      margin-top: 16px;
+      border-radius: 10px;
+      background-color: $primary;
+      color: #fff;
+      font-size: 16px;
+      letter-spacing: -0.4px;
+      text-align: center;
+    }
+  }
+  .storyWrap {
+    height: 100%;
+    .scroll-wrap {
+      height: calc(100% - 105px);
+    }
+    &__list {
+      width: 360px;
+      margin-top: 8px;
+    }
+    &__innerList {
+      margin-bottom: 12px;
+      border-bottom: 1px solid #eee;
+    }
+    &__header {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      flex-direction: row;
+    }
+    &__profImg {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    &__title {
+      flex: 1;
+      overflow: hidden;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-left: 8px;
+      font-size: 16px;
+      font-weight: $bold;
+      text-align: left;
+      color: $greishBrown;
+    }
+    &__deleteWrap {
+      margin-left: 4px;
+      &__dater {
+        margin-right: 8px;
+        font-size: 14px;
+        text-align: right;
+        color: #9e9e9e;
+      }
+      &__cancel {
+        width: 44px;
+        height: 24px;
+        color: $primary;
+        border-radius: 10px;
+        border: solid 1px $primary;
+      }
+    }
+    &__contentsBox {
+      width: 100%;
+      padding: 18px 70px 18px 18px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      background-color: #f5f5f5;
+      min-height: 114px;
+      font-size: 14px;
+      letter-spacing: -0.35px;
+      text-align: left;
+      font-family: inherit;
+      word-break: break-all;
+      white-space: pre-line;
+    }
+    &__timer {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      margin-top: 8px;
+      width: 100%;
+      height: 40px;
+      box-sizing: border-box;
+      border-radius: 20px;
+      background-color: #f5f5f5;
+      &__count {
+        margin-left: auto;
+        font-size: 14px;
+        font-weight: $bold;
+        color: #ec455f;
+      }
+      &__refresh {
+        width: 18px;
+        height: 18px;
+        background: url(../static/ic_refresh.svg);
+        cursor: pointer;
+      }
+      &__date {
+        margin-left: 6px;
+        font-size: 14px;
+        letter-spacing: -0.35px;
+        text-align: left;
+        color: $mediumGray;
+      }
+    }
+  }
+  // no result
+  .noResult {
+    height: 393px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  // button
+  .btn__fan {
+    font-size: 13px;
+    text-align: center;
+    color: $mediumGray;
+    border: 1px solid $mediumGray;
+    transition: all 0.2s ease-in;
+
+    &:hover {
+      color: $darkGray;
+      border: 1px solid $darkGray;
+    }
+    &--active {
+      color: $primary;
+      border: 1px solid $primary;
+      &:hover {
+        color: $primary;
+        border: 1px solid $primary;
+      }
+    }
+  }
+  .msgContents {
+    height: 100%;
+    padding: 0 8px;
+    font-size: 14px;
+    margin-top: 14px;
+
+    .scroll-wrap {
+      height: 100%;
+    }
+
+    &__wrap {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 24px;
+    }
+
+    .msgContentsWrap {
+      margin-top: 20px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 16px;
+      font-weight: $bold;
+      &--title {
+        width: 32px;
+        padding: 12px 22px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+        font-size: 16px;
+      }
+      &--count {
+        margin-left: 8px;
+        color: $primary;
+        font-weight: $regular;
+      }
+      &--buttonWrap {
+        display: flex;
+        flex: 1;
+        justify-content: flex-end;
+      }
+      &--button {
+        padding: 8px 17px;
+        color: #fff;
+        background-color: $primary;
+        border: 1px solid $primary;
+        border-radius: 13px;
+        font-size: 14px;
+        font-weight: $light;
+      }
+    }
+
+    &__contents {
+      display: flex;
+      margin-bottom: 4px;
+      padding: 13px 16px;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      & > span {
+        min-width: 56px;
+        font-size: 12px;
+        line-height: 24px;
+      }
+
+      & > input {
+        width: 100%;
+        font-size: 16px;
+        font-weight: $bold;
+        line-height: 18px;
+      }
+
+      &--inputTitle {
+        line-height: 18px;
+      }
+
+      & > textarea {
+        width: 270px;
+        height: 24px;
+        border: 0px;
+        font-size: 16px;
+        font-weight: $bold;
+        line-height: 24px;
+        resize: none;
+        overflow-y: hidden;
+        word-break: break-all;
+      }
+
+      &--title {
+        line-height: 24px;
+      }
+    }
+
+    &__textarea {
+      & > textarea {
+        width: -webkit-fill-available;
+        padding: 20px;
+        background-color: #f5f5f5;
+        border-radius: 10px;
+      }
+    }
+  }
+
+  .settingWrap {
+    padding: 0 8px;
+    display: flex;
+    height: 100%;
+    .wrap {
+      display: flex;
+      flex-direction: column;
+      height: inherit;
+      padding: 16px 0;
+      .title {
+        font-size: 18px;
+        &__subText {
+          margin-top: 5px;
+          font-size: 12px;
+          color: $mediumGray;
+          letter-spacing: -0.3px;
+          font-weight: $light;
+          float: right;
+        }
+      }
+
+      .accessListWrap {
+        display: flex;
+        margin: 16px 0 30px 0;
+        & > button {
+          flex: 1;
+          padding: 11px 20px;
+          border: 1px solid #e0e0e0;
+          border-right: 0px;
+          font-size: 16px;
+          color: $mediumGray;
+          &.on {
+            color: white;
+            background-color: #e0e0e0;
+          }
+        }
+        & > button:last-child {
+          border-right: 1px solid #e0e0e0;
+        }
+      }
+
+      .roomTypeListWrap {
+        margin: 16px 0 30px 0;
+        & > button {
+          display: inline-block;
+          margin: 0 10px 14px 0;
+          padding: 10px 17px;
+          border: 1px solid #e0e0e0;
+          border-radius: 20px;
+          color: #757575;
+          font-size: 14px;
+          &.on {
+            border: 1px solid $primary;
+            color: $primary;
+          }
+        }
+      }
+
+      .imageTypeWrap {
+        display: flex;
+        margin: 16px 0 30px 0;
+        & > button {
+          flex: 1;
+          padding: 11px 20px;
+          border: 1px solid $lightGray;
+          color: $greishGray;
+
+          &.on {
+            border: 1px solid $primary;
+            color: $primary;
+          }
+        }
+      }
+
+      .photo {
+        input {
+          display: none;
+        }
+        &__img {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 36px;
+          width: 100%;
+          font-size: 12px;
+          color: $mediumGray;
+        }
+        &__margin {
+          margin-left: 6px;
+        }
+      }
+      .bgUploader {
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+      .bgLabel {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 264px;
+        cursor: pointer;
+
+        &:before {
+          content: "사진등록";
+          font-size: 12px;
+          letter-spacing: -0.3px;
+          text-align: center;
+          color: $mediumGray;
+        }
+        &:after {
+          content: "";
+          width: 36px;
+          height: 36px;
+          background: url("../static/ico_camera_w.svg");
+          margin-left: 6px;
+        }
+
+        &--active {
+          align-items: flex-end;
+          justify-content: initial;
+          &:before {
+            position: absolute;
+            bottom: 23px;
+            left: calc(50% - 24px);
+            transform: translateX(-50%);
+            color: #fff;
+            z-index: 4;
+          }
+          &:after {
+            position: absolute;
+            bottom: 16px;
+            left: calc(50% + 18px);
+            transform: translateX(-50%);
+            // background: url("../static/ico_camera_w.svg");
+            z-index: 4;
+          }
+        }
+      }
+      .fakeBox {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        opacity: 0.6;
+        background-color: $black;
+        z-index: 3;
+      }
+      .inputBox {
+        margin: 16px 0 30px 0;
+
+        &.boxWrap {
+          background-color: #f5f5f5;
+          border-radius: 12px;
+        }
+        .buttonBox {
+          display: flex;
+          align-items: center;
+          position: relative;
+          padding: 12px;
+
+          & > button {
+            position: absolute;
+            width: 40px;
+            height: 24px;
+            right: 12px;
+            background: url(../static/ic_alarmtoggleoff.svg) no-repeat;
+            background-size: contain;
+            &.on {
+              background: url(../static/ic_alarmtoggleon.svg) no-repeat;
+              background-size: contain;
+            }
+          }
+        }
+      }
+      .input {
+        width: 100%;
+        padding: 16px 20px;
+        box-sizing: border-box;
+        color: #333;
+        border: none;
+        font-size: 16px;
+        letter-spacing: -0.4;
+        border-radius: 10px;
+        background: #f5f5f5;
+
+        input::-webkit-input-placeholder {
+          color: #9e9e9e;
+        }
+        input:-ms-input-placeholder {
+          color: #9e9e9e;
+        }
+        textarea::-webkit-input-placeholder {
+          color: #9e9e9e;
+        }
+        textarea:-ms-input-placeholder {
+          color: #9e9e9e;
+        }
+      }
+      .textNumber {
+        text-align: right;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        color: $mediumGray;
+
+        &__padding {
+          padding-bottom: 3px;
+        }
+      }
+      .textarea {
+        width: 100%;
+        padding: 16px 20px;
+        box-sizing: border-box;
+        color: #333;
+        border: none;
+        min-height: 110px;
+        font-size: 16px;
+        letter-spacing: -0.35px;
+        border-radius: 10px;
+        background: #f5f5f5;
+        resize: none;
+        outline: none;
+
+        input::-webkit-input-placeholder {
+          color: #9e9e9e;
+        }
+        input:-ms-input-placeholder {
+          color: #9e9e9e;
+        }
+        textarea::-webkit-input-placeholder {
+          color: #9e9e9e;
+        }
+        textarea:-ms-input-placeholder {
+          color: #9e9e9e;
+        }
+      }
+      .notice {
+        display: flex;
+        margin-left: auto;
+        width: 90px;
+        color: #a0a0a0;
+        height: 16px;
+        margin-top: 40px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        padding-left: 22px;
+        background: url(https://image.dalbitlive.com/svg/ic_mark.svg) center
+          left no-repeat;
+        font-size: 12px;
+      }
+      .button {
+        width: 100%;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-size: 16px;
+        font-weight: $bold;
+        border: none;
+        border-radius: 10px;
+        background: $mediumGray;
+        &--active {
+          background: #632beb;
+        }
+      }
+    }
+  }
+
+  .emoticonWrap {
+    height: 100%;
+    .scroll-wrap {
+      height: calc(100% - 92px);
+    }
+    &__category {
+      padding: 12px 15px 8px 15px;
+      background-color: #e0e0e0;
+
+      & > button {
+        width: 78px;
+        height: 32px;
+        margin: 0 4px 4px 0;
+        border-radius: 12px;
+        background-color: #fff;
+
+        &.on {
+          background-color: #632beb;
+          color: #fff;
+        }
+      }
+    }
+    &__emoticon {
+      display: inline-flex;
+      width: 100%;
+      flex-flow: wrap;
+      margin-top: 12px;
+      & > button {
+        flex: 1;
+        min-width: fit-content;
+        margin: 0 5px 10px 5px;
+        padding: 10px 15px;
+        border: 1px solid #cfcfcf;
+        border-radius: 20px;
+        cursor: pointer;
+        &:hover {
+          background-color: #cfcfcf;
+        }
+      }
+    }
+  }
+
+  .fanRankBox {
+    position: relative;
+    &__backBtn {
+      left: 12px;
+      top: 16px;
+      content: "";
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      text-indent: -9999px;
+      background: url(https://image.dalbitlive.com/svg/ic_pc_tab_arrow_new_back.svg)
+        center;
+    }
+  }
+
+  .tabWrap {
+    display: flex;
+
+    &__tab {
+      width: 50%;
+      height: 52px;
+      text-align: center;
+      line-height: 52px;
+      font-size: 18px;
+      font-weight: $bold;
+      cursor: pointer;
+
+      &--active {
+        color: #632beb;
+        border-bottom: 1px solid #632beb;
+        font-weight: $bold;
+      }
+    }
+  }
+
+  .innerTabWrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    line-height: 40px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #e0e0e0;
+
+    &__guide {
+      position: absolute;
+      top: 8px;
+      right: 16px;
+    }
+
+    &__tab {
+      padding: 0 5px;
+      font-size: 16px;
+      cursor: pointer;
+
+      &--active {
+        color: #632beb;
+        font-weight: $bold;
+        border-bottom: 1px solid #632beb;
+      }
+    }
+  }
+
+  .fanListWrapper {
+    border-radius: 0;
+    height: calc(100vh - 260px);
+  }
+
+  .rankitem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+
+    .rankitemWrap {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 66px);
+      cursor: pointer;
+    }
+
+    .thumbBox {
+      position: relative;
+      width: 40px;
+      height: 40px;
+      margin-right: 12px;
+
+      &__thumb {
+        width: 100%;
+        border-radius: 50%;
+      }
+
+      &__rank {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: 16px;
+        height: 16px;
+        background: rgba(0, 0, 0, 0.3);
+        color: #fff;
+        font-size: 9px;
+        text-align: center;
+        border-radius: 50%;
+      }
+
+      &__medalIcon {
+        width: 20px;
+        position: absolute;
+        top: -6px;
+        left: -6px;
+      }
+    }
+
+    .textBox {
+      width: calc(100% - 52px);
+
+      &__nick {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        word-wrap: normal;
+        margin-bottom: 3px;
+        font-weight: $bold;
+        font-size: 14px;
+      }
+
+      &__dal {
+        font-size: 14px;
+        color: #424242;
+      }
+    }
+
+    .btn__fan {
+      min-width: 64px;
+      height: 26px;
+      border-radius: 26px;
+      margin-left: auto;
+      line-height: 26px;
+      cursor: pointer;
+    }
+  }
+  // 스디히스토리
+  .historyWrap {
+    padding: 0 3%;
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid #bdbdbd;
+      height: 97px;
+      border-radius: 16px;
+      &.isSpecial {
+        border-color: #ec455f;
+      }
+    }
+    &__badge {
+      top: 0;
+      left: 16px;
+      position: absolute;
+    }
+    &__info {
+      width: 240px;
+      text-align: center;
+      color: #000;
+      font-size: 16px;
+      font-weight: $bold;
+
+      &__nick {
+        display: inline-block;
+        max-width: 200px;
+        color: #632beb;
+        vertical-align: bottom;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    &__tableTitle {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: $bold;
+      text-align: center;
+      color: #000;
+    }
+    &__tableWrap {
+      margin-top: 16px;
+      table {
+        th {
+          padding: 5px 0;
+          border-top: 1px solid #632beb;
+          border-bottom: 1px solid #632beb;
+          font-size: 12px;
+          text-align: center;
+          color: #632beb;
+        }
+        tr {
+          width: 50%;
+        }
+        td {
+          padding: 10px 0;
+          text-align: center;
+          font-size: 13px;
+          border-bottom: 1px solid #e0e0e0;
+          letter-spacing: -0.5px;
+          &.date {
+            color: #757575;
+          }
+          p {
+            width: calc(100% - 33px);
+            text-align: left;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            word-wrap: normal;
+          }
+        }
+      }
+    }
+  }
+  // 스디 뱃지
+  .checkBadge {
+    position: absolute;
+    top: 0;
+    left: 12px;
+    cursor: pointer;
+    .specialIcon {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      width: 54px;
+      height: 51px;
+      background: url("https://image.dalbitlive.com/svg/ico_specialdj_on.png")
+        no-repeat center;
+      background-size: cover;
+      &__count {
+        position: absolute;
+        top: 12px;
+        font-weight: $bold;
+        font-style: normal;
+        color: #ec455f;
+        font-size: 11px;
+        letter-spacing: -0.28px;
+      }
+      &.prev {
+        background: url("https://image.dalbitlive.com/svg/ico_specialdj_off.png")
+          no-repeat center;
+      }
+    }
+  }
+
+  .effectList {
+    padding: 20px 15px;
+    .effectItem {
+      position: relative;
+      margin-right: 13px;
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+
+      p {
+        margin: 16px 0 30px 0;
+        font-size: 16px;
+        color: $greishBrown;
+      }
+
+      &.active {
+        .imageDim {
+          position: absolute;
+          width: 100px;
+          height: 100px;
+          top: 0;
+          left: 0;
+          background-color: rgba($primary, 0.5);
+          border: 2px solid $primary;
+          border-radius: 20px;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+
+        p {
+          font-weight: $bold;
+        }
+      }
+    }
+  }
+}
+
+@keyframes moreAction {
+  0% {
+    bottom: -20px;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 70px;
+    opacity: 1;
+  }
+}
+
+@keyframes moreActionVideo {
+  0% {
+    bottom: -20px;
+    opacity: 0;
+  }
+
+  100% {
+    bottom: 112px;
+    opacity: 1;
+  }
+}

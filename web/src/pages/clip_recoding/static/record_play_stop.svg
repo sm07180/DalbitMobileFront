@@ -1,0 +1,42 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="pause_purple_l" width="100" height="102" viewBox="0 0 100 102">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_1789" fill="#757575" d="M0 0H40V80H0z" data-name="사각형 1789" transform="translate(1156 206)"/>
+        </clipPath>
+        <filter id="타원_224" width="98" height="98" x="1" y="4" filterUnits="userSpaceOnUse">
+            <feOffset dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-opacity=".161"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-6{fill:none}.cls-5{fill:#fff}
+        </style>
+    </defs>
+    <g id="그룹_13308" data-name="그룹 13308" transform="translate(-1506 -688)">
+        <g id="그룹_13307" data-name="그룹 13307">
+            <g id="그룹_13282" data-name="그룹 13282" transform="translate(213 299)">
+                <g id="그룹_13283" data-name="그룹 13283">
+                    <g filter="url(#타원_224)" transform="translate(1293 389)">
+                        <circle id="타원_224-2" cx="40" cy="40" r="40" fill="#632beb" data-name="타원 224" transform="translate(10 10)"/>
+                    </g>
+                    <g id="마스크_그룹_2" clip-path="url(#clip-path)" data-name="마스크 그룹 2" transform="translate(187 193)">
+                        <g id="타원_225" fill="none" stroke="#723ef2" stroke-width="2px" data-name="타원 225" transform="translate(1116 206)">
+                            <circle cx="40" cy="40" r="40" stroke="none"/>
+                            <circle cx="40" cy="40" r="39" class="cls-6"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g id="그룹_13306" data-name="그룹 13306" transform="translate(737 -11.333)">
+                <g id="그룹_13277" data-name="그룹 13277" transform="translate(812 736)">
+                    <rect id="사각형_1786" width="5" height="26" class="cls-5" data-name="사각형 1786" rx="2.5" transform="translate(-1 .333)"/>
+                    <rect id="사각형_1787" width="5" height="26" class="cls-5" data-name="사각형 1787" rx="2.5" transform="translate(10 .333)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+    <path id="사각형_6124" d="M0 0H100V100H0z" class="cls-6" data-name="사각형 6124"/>
+</svg>

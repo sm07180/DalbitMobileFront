@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="18" viewBox="0 0 40 18">
+    <g>
+        <rect width="40" height="18" fill="#ec455f" rx="9"/>
+        <text fill="#fff" font-family="NanumSquareB, NanumSquare" font-size="10px" letter-spacing="-0.025em" transform="translate(8 12)">
+            <tspan x="0" y="0">충전</tspan>
+        </text>
+        <path fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M7729.75 3701l3 3-3 3" transform="translate(-7700.75 -3695)"/>
+    </g>
+</svg>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="reply_g" width="16" height="16" viewBox="0 0 16 16">
+    <defs>
+        <style>
+            .cls-3{stroke:#fff;stroke-linecap:round;stroke-linejoin:round;fill:#fff}
+        </style>
+    </defs>
+    <rect id="사각형_41" width="16" height="16" fill="#757575" data-name="사각형 41" rx="8"/>
+    <g id="그룹_13941" data-name="그룹 13941" transform="translate(4.2 4.167)">
+        <path id="패스_6856" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M425.21 430.171v8.722l1.61-2.365h5.929v-6.358z" data-name="패스 6856" transform="translate(-425.21 -430.171)"/>
+        <path id="선_152" d="M0 0L4.319 0" class="cls-3" data-name="선 152" transform="translate(1.61 2.22)"/>
+        <path id="선_153" d="M0 0L4.319 0" class="cls-3" data-name="선 153" transform="translate(1.61 4.138)"/>
+    </g>
+</svg>

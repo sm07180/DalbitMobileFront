@@ -1,0 +1,44 @@
+@import "../../../../asset/scss/common/variables";
+#broadcast-modal {
+  width: 460px;
+  height: 180px;
+  background-color: #fff;
+  border-radius: 20px;
+  position: relative;
+  h2 {
+    font-size: 20px;
+    padding-top: 50px;
+    text-align: center;
+  }
+  .cancel {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: url("./close.svg") center no-repeat;
+  }
+  .adminBtn {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    button {
+      margin-right: 10px;
+      width: 200px;
+      height: 48px;
+      border-radius: 10px;
+      color: #424242;
+      font-size: 18px;
+      font-weight: $bold;
+      background-color: #fff;
+      border: 2px solid #632beb;
+      &:last-child {
+        background-color: #632beb;
+        border: 2px solid #632beb;
+        color: #fff;
+      }
+    }
+  }
+}
