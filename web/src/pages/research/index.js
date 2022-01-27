@@ -14,6 +14,7 @@ import './style.scss'
 export default (props) => {  
   const [searchVal, setSearchVal] = useState('') // 검색 value 값
   const [searching, setSearching] = useState('noValue');
+  const [cancelBtn, setCancelBtn] = useState(false);
 
   const [djSearch, setDjSearch] = useState('') 
   const [liveSearch, setLiveSearch] = useState('') 
@@ -54,6 +55,40 @@ export default (props) => {
   const swiperParams = {
     slidesPerView: 'auto',
     spaceBetween: 12
+  }  
+
+  const onChange = (e) => {
+    setSearchVal(e.target.value);
+    if(e.target.value){
+      setSearching("ing");
+    } else {
+      setSearching("noValue");
+    }
+  }
+
+  const focusIn = () => {
+    setCancelBtn(true);
+  }
+
+  const focusOut = () => {
+    setCancelBtn(false);
+    document.getElementById('searchInput').value = "";
+    setSearching("noValue");
+    setSearchVal("");
+  }
+
+  const removeValue = () => {
+   document.getElementById('searchInput').value = "";
+   setSearching("noValue");
+   setSearchVal("");
+  }
+
+  const handleSubmit = (e) => {
+    let inputVal = e.currentTarget.childNodes[0].value;
+    e.preventDefault();  
+    document.getElementById('searchInput').blur();
+    setSearching("enter");
+    setSearchVal(inputVal);
   }
 
   useEffect(() => {
@@ -67,7 +102,23 @@ export default (props) => {
 
   return (
     <div id="search">
-      <Header title={"검색"} setSearchVal={setSearchVal} setSearching={setSearching}></Header>
+      <Header title={"검색"}>
+        <div className="searchField">
+          <form className='searchForm' onSubmit={handleSubmit}>
+            <input
+              type="text"
+              className='searchInput'
+              id='searchInput'
+              placeholder='닉네임, 방송, 클립을 입력해주세요.'
+              onChange={onChange}
+              onFocus={focusIn}
+              onBlur={focusOut}
+            />
+            {searching && <button className='removeValue' onClick={removeValue}/>}
+          </form>
+          {cancelBtn && <button className='searchCancel' onClick={removeValue}>취소</button>}
+        </div>
+      </Header>
       <div className='content'>
         {
           searching === "noValue" ?
