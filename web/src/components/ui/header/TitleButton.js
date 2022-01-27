@@ -56,8 +56,10 @@ const TitleButton = (props) => {
         </div>
       )
     case '랭킹':
-      return (
-        <></>
+      return (        
+        <div className='buttonGroup'>
+          <button className='benefits'>혜택</button>
+        </div>
       )
     case 'MY':
       return (
@@ -66,6 +68,10 @@ const TitleButton = (props) => {
           <SearchButton />
           <AlarmButton />
         </div>
+      )
+    default :
+      return (
+        <></>
       )
   }
 }

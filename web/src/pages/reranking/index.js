@@ -23,7 +23,9 @@ const RankPage = () => {
   const dayTabmenu = ['FAN','LOVER']
 
   const [slidePop, setSlidePop] = useState(false)
-  const [select , setSelect] = useState("time")
+  const [popupOpen, setPopupOpen] = useState(false)
+  const [select , setSelect] = useState("today")
+  const [daySetting , setDaySetting] = useState("")
   const [timeDjRank, setTimeDjRank] = useState([])
   const [timeFanRank, setTimeFanRank] = useState([])
   const [timeLoverRank, setTimeLoverRank] = useState([])
@@ -71,6 +73,8 @@ const RankPage = () => {
   useEffect(() => {
     fetchTimeRank()
     fetchRankData()
+    let today = new Date;
+    setDaySetting(moment(today).format('YY/MM/DD'))
   }, [])
 
   useEffect(() => {
@@ -89,29 +93,35 @@ const RankPage = () => {
     setSlidePop(true);
   }
   const chartSelect = (e) => {
+    let today = new Date;
     let text = e.currentTarget.innerText;
     if(text === "타임"){
       setSelect("time")
+      setDaySetting(moment(today).format('hh:mm:ss'))
     } else if(text === "오늘") {
       setSelect("today")
+      setDaySetting(moment(today).format('hh:mm:ss'))
     } else if(text === "이번주") {
       setSelect("thisweek")
+      setDaySetting(moment(today).format('DD/hh:mm'))
     } else if(text === "이번달") {
       setSelect("thismonth")
+      setDaySetting(moment(today).format('MM/DD'))
     } else if(text === "올해") {
       setSelect("thisyear")
+      setDaySetting(moment(today).format('YYYY'))
     }
     setSlidePop(false);
+  }
+
+  const criteriaPop = () => {
+    setPopupOpen(true);
   }
 
   // 페이지 시작
   return (
     <div id="renewalRanking">
-      <Header title={'랭킹'} type={'back'}>
-        <div className='buttonGroup'>
-          <button className='benefits'>혜택</button>
-        </div>
-      </Header>
+      <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
         <CntTitle more={'/'} />
         <div className='title' onClick={selectChart}>
@@ -127,7 +137,12 @@ const RankPage = () => {
             차트<span className='optionSelect'></span>
           </div>
         </div>
-        <div className='countDown'>00:00:00</div>
+        <div className='countDown'>{daySetting}</div>
+        <div className='criteria'>
+          <div className='relative'>
+            <div className='clickArea' onClick={criteriaPop}/>
+          </div>
+        </div>
         <ChartSwiper data={timeDjRank} />
       </section>
       <section className='myRanking'>
@@ -179,6 +194,10 @@ const RankPage = () => {
             <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
           </div>
         </BottomSlide>      
+      }
+      {popupOpen &&
+        <>
+        </>
       }
     </div>      
   )
