@@ -26,7 +26,7 @@ export const SearchButton = () => {
 const TitleButton = (props) => {
   const history = useHistory();
   switch (props.title) {
-    case '라이브':
+    case '메인':
       return (
         <div className="buttonGroup">
           <RankingButton history={history} />
@@ -55,6 +55,10 @@ const TitleButton = (props) => {
           <button className='shuffle' />
         </div>
       )
+    case '랭킹':
+      return (
+        <></>
+      )
     case 'MY':
       return (
         <div className="buttonGroup">
@@ -63,6 +67,8 @@ const TitleButton = (props) => {
           <AlarmButton />
         </div>
       )
+    default:
+      return <></>
   }
 }
 

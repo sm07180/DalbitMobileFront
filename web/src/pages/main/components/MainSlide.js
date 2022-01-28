@@ -45,7 +45,7 @@ const MainSlide = (props) => {
 
   return (
     <>
-      {data.length > 0 &&
+      {data && data.length > 0 &&
         <Swiper {...swiperParams}>
           {data.map((list, index) => {
             return (

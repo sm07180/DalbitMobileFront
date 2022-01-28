@@ -3,13 +3,14 @@ import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
+// global components
 import Header from 'components/ui/header/Header'
+import Navigation from 'components/ui/navigation/Navigation'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-
-//components
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+// components
 import Tabmenu from './components/Tabmenu'
 import MainSlide from './components/MainSlide'
-import BannerSlide from './components/BannerSlide'
 import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
 
@@ -114,7 +115,7 @@ const MainPage = () => {
   return (
     <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title={'라이브'} type={'noBack'} />
+        <Header title={'메인'} />
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner} />
@@ -138,13 +139,14 @@ const MainPage = () => {
         <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" />
       </section>
       <section className='bannerWrap'>
-        <BannerSlide data={mainState.centerBanner} />
+        <BannerSlide />
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />
         <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage} />
         <LiveView data={liveList} />
       </section>
+      <Navigation />
     </div>
   )
 }

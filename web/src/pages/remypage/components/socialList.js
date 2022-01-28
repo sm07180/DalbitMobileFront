@@ -22,7 +22,7 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      <ListRow photo={data}>
+      <ListRow photo={data.profImg.thumb50x50}>
         <div className="listContent">
           <div className="nick">{data.nickNm}</div>
           <div className="time">3시간전</div>
@@ -55,9 +55,9 @@ const SocialList = (props) => {
           </div>
         }
         <div className="info">
-          <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-g.png`} alt="좋아요" /></i>
+          <i className='like active'></i>
           <span>123</span>
-          <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-g.png`} alt="댓글" /></i>
+          <i className='comment'></i>
           <span>321</span>
         </div>
       </div>
