@@ -7,12 +7,13 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
+import BottomSlide from 'components/ui/bottomSlide/BottomSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
 import MyRanking from './components/MyRanking'
 import RankingList from './components/RankingList'
-import BottomSlide from './components/bottomSlide'
 
 import './style.scss'
 
@@ -75,6 +76,8 @@ const RankPage = () => {
     fetchRankData()
     let today = new Date;
     setDaySetting(moment(today).format('YY/MM/DD'))
+
+    console.log(timeFanRank);
   }, [])
 
   useEffect(() => {
@@ -123,7 +126,7 @@ const RankPage = () => {
     <div id="renewalRanking">
       <Header title={'랭킹'} type={'back'}/>
       <section className='rankingTop'>
-        <CntTitle more={'/'} />
+        <CntTitle more={'/rank/dj'} />
         <div className='title' onClick={selectChart}>
           <div>DJ 실시간</div>
           <div>
@@ -153,21 +156,21 @@ const RankPage = () => {
         <MyRanking data={myRank} />
       </section>
       <section className='dailyRankList'>
-        <CntTitle title={'일간 FAN / LOVER'} more={'rank'}/>
+        <CntTitle title={'일간 FAN / LOVER'} more={`${dayTabType === "FAN" ? "/rank/fan" : "/rank/lover"}`}/>
         <Tabmenu data={dayTabmenu} tab={dayTabType} setTab={setDayTabType} />
         <div className='listWrap'>
           {dayTabType === dayTabmenu[0] ?
             <RankingList data={timeFanRank}>
               <div className='listItem'>
-                <i className="star">123</i>
-                <i className="time">123</i>
+                <DataCnt type={"starCnt"} value={timeFanRank.starCnt ? timeLoverRank.starCnt : "123"}/>
+                <DataCnt type={"listenPoint"} value={timeFanRank.listenPoint ? timeLoverRank.listenPoint : "123"}/>
               </div>
             </RankingList>
             : dayTabType === dayTabmenu[1] ?
             <RankingList data={timeLoverRank}>
               <div className='listItem'>
-                <i className="ppyong">123</i>
-                <i className="heart">123</i>
+                <DataCnt type={"cupid"} value={timeLoverRank.djNickNm ? timeLoverRank.djNickNm : "테스트"}/>
+                <DataCnt type={"djGoodPoint"} value={timeLoverRank.djGoodPoint ? timeLoverRank.djGoodPoint : "123"}/>
               </div>
             </RankingList>
             : 

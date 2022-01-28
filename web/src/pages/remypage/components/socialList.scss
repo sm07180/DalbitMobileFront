@@ -60,18 +60,12 @@
     }
     .info {
       @include flex(center);
-      i {
-        display:inline-block;
-        width:20px;height:20px;
-        &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
-        &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
-        &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
-      }
-      span {
-        height:20px;
-        line-height:18px;
-        margin-right:8px;
-        @include font(13px,400,#6B6B6B);
+      .dataCnt {
+        height: 20px;
+        padding-left: 24px;
+        line-height: 20px;
+        @include font(13px, 400, #6B6B6B);
+        background-size: 20px 20px;
       }
     }
   }

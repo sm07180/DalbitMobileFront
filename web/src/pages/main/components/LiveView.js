@@ -4,6 +4,7 @@ import React from 'react'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/new_noResult'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 const LiveView = (props) => {
   const {data} = props
@@ -32,12 +33,14 @@ const LiveView = (props) => {
                   </div>
                   <div className="listItem">
                     <span className="state">
-                      <i className='totallistener'></i>
-                      {list.totalCnt}
-                      <i className='listener'></i>
-                      {list.entryCnt}
-                      <i className='like'></i>
-                      {list.likeCnt}
+                      <DataCnt type={"totalCnt"} value={list.totalCnt ? list.totalCnt : "123"}/>
+                      <DataCnt type={"entryCnt"} value={list.entryCnt ? list.entryCnt : "123"}/>
+                      {
+                        list.boostCnt > 0 ?
+                          <DataCnt type={"boostCnt"} value={list.boostCnt ? list.boostCnt : "123"}/>
+                        :
+                          <DataCnt type={"likeCnt"} value={list.likeCnt ? list.likeCnt : "123"}/>
+                      }
                     </span>
                   </div>
                 </div>
