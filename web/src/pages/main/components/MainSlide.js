@@ -22,10 +22,9 @@ const MainSlide = (props) => {
       type: 'fraction'
     },
     on:{
-      click: (e) => {
-        console.log(e);
-        if(e.type === 'touchend') {
-          const paths = e.path || e.composedPath();
+      click: (swiper, event) => {
+        if(event.type === 'touchend') {
+          const paths = event.path || event.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {
             if(dom.dataset && dom.dataset.swiperIndex) {
