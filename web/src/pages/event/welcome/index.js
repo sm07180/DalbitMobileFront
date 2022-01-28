@@ -3,6 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {IMG_SERVER} from 'context/config'
 import {authReq} from 'pages/self_auth'
 import {Context} from 'context'
+import moment from 'moment'
 
 import Api from 'context/api'
 
@@ -26,6 +27,9 @@ const EventWelcome = () => {
   const [choicePopInfo, setChoicePopInfo] = useState({open: false, stepNo: 0, list: []})
   const [resultItemPopInfo, setResultItemPopInfo] = useState({ open: false, giftInfo : {} }); // 아이템 보상 결과 팝업
   
+  const nowTime = moment().format('YYMMDD')
+  const eStartTime = '220201'
+
   // 조회 API
   // 0. 이벤트 자격 여부
   const fetchEventAuthInfo = () => {
@@ -167,7 +171,11 @@ const EventWelcome = () => {
   return (
     <div id="welcome">
       <Header title="이벤트" />
+      {nowTime >= eStartTime ?
+      <img src={`${IMG_SERVER}/event/welcome/welcomeTop-2.png`} className="bgImg" />
+      :
       <img src={`${IMG_SERVER}/event/welcome/welcomeTop.png`} className="bgImg" />
+      }
       <Tabmenu tab={tabContent.name}>
         <TabmenuBtn tabBtn1={'Lisen'} tabBtn2={'Dj'} tab={tabContent.name} setTab={handleClick} event={'welcome'} onOff={true} />
       </Tabmenu>
