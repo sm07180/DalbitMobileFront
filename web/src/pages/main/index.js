@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useLayoutEffect, useRef} from 'react'
+import React, {useEffect, useState, useRef, useCallback} from 'react'
 import {useHistory} from 'react-router-dom'
 
 import Api from 'context/api'
@@ -15,6 +15,10 @@ import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
 
 import './style.scss'
+import {useDispatch, useSelector} from "react-redux";
+import {setMainData, setMainLiveList} from "redux/actions/main";
+
+import {ILiveListParam} from 'redux/types/mainType';
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -22,44 +26,28 @@ const mainLink = {
   rankingPage: 'rank'
   , clipPage: 'clip'
 }
+let totalPage = 1
+let pagePerCnt = 1
 
 const MainPage = () => {
   const history = useHistory()
   const headerRef = useRef()
   const overRef = useRef()
-  const [myStar, setMyStar] = useState([])
   const [topTenData, setTopTenData] = useState({DJ: [], FAN: [], LOVER: []});
-  const [recommendList, setRecommendList] = useState([])
-  const [bannerList, setBannerList] = useState([])
   const [liveList, setLiveList] = useState([])
   const [topRankType, setTopRankType] = useState(topTenTabMenu[0])
   const [liveListType, setLiveListType] = useState(liveTabMenu[0])
   const [headerFixed, setHeaderFixed] = useState(false)
   const [currentPage, setCurrentPage] = useState(0)
-  const [daldoongs, setDaldoongs] = useState([]);
+
+  const dispatch = useDispatch();
+  const mainState = useSelector((state) => state.main);
+  const liveList2 = useSelector(state => state.live);
 
   // 조회 API
-  const fetchMainInfo = () => {
-    Api.main_init_data_v2().then((res) => {
-      if (res.result === 'success') {
-        const data = res.data;
-        console.log(data);
-        setRecommendList(data.topBanner);
-        setMyStar(data.myStar);
-        setTopTenData({
-          DJ: data.dayRanking.djRank,
-          FAN: data.dayRanking.fanRank,
-          LOVER: []
-        });
-        setBannerList(data.centerBanner);
-        setDaldoongs(data.newBjList);
-      }
-    })
-  }
+  const fetchMainInfo = () => dispatch(setMainData());
 
-  let totalPage = 1
-  let pagePerCnt = 20
-  const fetchLiveInfo = () => {
+  const fetchLiveInfo = useCallback(() => {
     const params = {
       page: currentPage,
       mediaType: liveListType === 'VIDEO' ? 'v' : liveListType === 'RADIO' ? 'a' : '',
@@ -71,20 +59,24 @@ const MainPage = () => {
     }
     Api.broad_list({params}).then((res) => {
       if (res.result === 'success') {
+        const data = res.data;
         if (res.data.paging !== undefined) {
-          totalPage = Math.ceil(res.data.paging.total / pagePerCnt)
+          totalPage = Math.ceil(data.paging.total / pagePerCnt)
         }
         if (currentPage > 1) {
-          setLiveList(liveList.concat(res.data.list))
+          const listConcat = liveList2.list.concat(data.list);
+          dispatch(setMainLiveList({list: listConcat, paging: data.paging}));
+          setLiveList(liveList.concat(data.list))
         } else {
-          setLiveList(res.data.list)
+          dispatch(setMainLiveList(data.list));
+          setLiveList(data.list)
         }
       }
     })
-  }
+  }, [currentPage, liveListType]);
 
   // scroll
-  const scrollEvent = () => {
+  const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
     const overNode = overRef.current
     const headerNode = headerRef.current
@@ -102,12 +94,12 @@ const MainPage = () => {
     if (totalPage > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
     }
-  }
+  }, [currentPage]);
 
   useEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
-    window.addEventListener('scroll', scrollEvent)
-    return () => window.removeEventListener('scroll', scrollEvent)
+    document.addEventListener('scroll', scrollEvent)
+    return () => document.removeEventListener('scroll', scrollEvent)
   }, [currentPage])
 
   // 페이지 셋팅
@@ -126,20 +118,25 @@ const MainPage = () => {
         <Header title={'메인'} />
       </div>
       <section className='topSwiper'>
-        <MainSlide data={recommendList} />
+        <MainSlide data={mainState.topBanner} />
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={myStar} profImgName="profImg" />
+        <SwiperList data={mainState.myStar} profImgName="profImg" />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP10'} more={mainLink['rankingPage']}>
           <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} />
         </CntTitle>
-        <SwiperList data={topTenData[topRankType]} profImgName="profImg" />
+        <SwiperList
+          data={topRankType === 'DJ' ? mainState.dayRanking.djRank
+            : topRankType === 'FAN' ? mainState.dayRanking.fanRank
+              : mainState.dayRanking.loverRank}
+          profImgName="profImg"
+        />
       </section>
       <section className='daldungs'>
         <CntTitle title={'방금 착륙한 NEW 달둥스'} more={mainLink['clipPage']} />
-        <SwiperList data={daldoongs} profImgName="bj_profileImageVo" />
+        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" />
       </section>
       <section className='bannerWrap'>
         <BannerSlide />
