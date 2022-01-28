@@ -19,6 +19,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 
 import {ILiveListParam} from 'redux/types/mainType';
+import Layout from "common/layout";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -94,7 +95,7 @@ const MainPage = () => {
     if (totalPage > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
     }
-  }, [currentPage]);
+  })
 
   useEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
@@ -113,6 +114,7 @@ const MainPage = () => {
  
   // 페이지 시작
   return (
+    <Layout>
     <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title={'메인'} />
@@ -148,6 +150,7 @@ const MainPage = () => {
       </section>
       <Navigation />
     </div>
+    </Layout>
   )
 }
  

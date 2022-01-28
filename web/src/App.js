@@ -298,8 +298,6 @@ const App = () => {
       const data = memberRdx.data
       globalCtx.action.updateProfile(data)
       globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
-    } else {
-      globalCtx.action.updateProfile(false)
     }
   },[memberRdx])
 
@@ -432,6 +430,7 @@ const App = () => {
     }*/
   }, [])
 
+
   useEffect(() => {
     if (globalCtx.token) {
       if (globalCtx.token.isLogin) {
@@ -441,7 +440,7 @@ const App = () => {
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false})
       }
     }
-  }, [globalCtx.profile, location.pathname])
+  }, [globalCtx.profile, globalCtx.token, location.pathname])
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {

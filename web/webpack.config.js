@@ -11,7 +11,7 @@ const fs = require('fs')
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devm-gonetpower.dalbitlive.com:463'),
+    API_SERVER_URL: JSON.stringify('devapi.dalbitlive.com'),
     CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
@@ -78,7 +78,7 @@ module.exports = (_, options) => {
         },
         {
           test: /\.(css|scss|sass)$/,
-          use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+          use: ['style-loader', /*MiniCssExtractPlugin.loader, */'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
         {
@@ -106,7 +106,7 @@ module.exports = (_, options) => {
     },
 
     plugins: [
-      new LoadablePlugin(), new MiniCssExtractPlugin(),
+      //new LoadablePlugin(), new MiniCssExtractPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
