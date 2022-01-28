@@ -85,16 +85,27 @@ $errorMsg : #FF1919;
       letter-spacing: 2px;
       @include font(16px,600,#fff);
     }
+    .criteria {
+      @include position-top-right(50%,10px);
+      transform: translateY(-60%);
+      width: 170px; height: 150px;
+      @include BGIMG('dalla/character/character_ranking.png');
+      .relative {
+        position: relative;
+        .clickArea {
+          position: absolute;
+          top: 0; left: 0;
+          width: 45%;
+          padding-bottom: 20%;
+          cursor: pointer;
+        }
+      }
+    }
     .chartSwiper {
       position: relative;
       width: calc(100% + 30px);
       margin: 30px 0 0 -15px;
-      &::after {
-        content: "";
-        @include position-top-right(-100px,10px);
-        width: 170px; height: 150px;
-        @include BGIMG('dalla/character/character_ranking.png');
-      }
+      z-index: 3;
       .swiper-container {
         padding-left: 60px;
         .swiper-slide {
@@ -130,7 +141,7 @@ $errorMsg : #FF1919;
               @include position-top-left(0,10px);
               @include flex(center,center,column);
               width: 35px; height: 42px;
-              background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='70' height='84' viewBox='0 0 70 84'%3E%3Cdefs%3E%3ClinearGradient id='linear-gradient' x1='0.5' x2='0.5' y2='1' gradientUnits='objectBoundingBox'%3E%3Cstop offset='0' stop-color='%23ff3c7b'/%3E%3Cstop offset='1' stop-color='%23ff8565'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg transform='translate(21362 -11975)'%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21356 11979)' fill='url(%23linear-gradient)'/%3E%3Cpath d='M0,0H64V59.94L32.374,80,0,59.94Z' transform='translate(-21362 11975)' fill='%23202020'/%3E%3C/g%3E%3C/svg%3E%0A");
+              @include BGIMG('ranking/dalla/rankingTag-topDJ.png');
               background-position: center;
               background-repeat: no-repeat;
               background-size: contain;
@@ -231,13 +242,11 @@ $errorMsg : #FF1919;
     position: relative;
     width: 100%;
     box-sizing: border-box;
-    .cntTitle {
-      padding:0 15px;
-    }
+    padding: 20px 15px;
     .tabmenu {
       position: relative;
       @include flex(center, space-around);
-      margin:6px 15px 0;
+      margin-top: 6px;
       box-sizing:border-box;
       @include tabMenuUnderline(2);
       li {
@@ -257,15 +266,13 @@ $errorMsg : #FF1919;
     .listWrap {
       position: relative;
       @include flex(center, flex-start, column);
-      height: 380px;
-      padding:15px 15px 0;
       overflow: auto;
       .listRow {
         flex:none;
         @include flex(center);
         width: 100%;
         min-width: 0;
-        margin-bottom: 15px;
+        margin-top: 15px;
         .rank {
           order:-1;
           flex: none;
@@ -304,32 +311,7 @@ $errorMsg : #FF1919;
               margin-left:4px;
               @include font(16px,500,#202020);
               @include fontCut;
-            }
-            i {
-              height:16px;
-              line-height:14px;
-              margin-right:8px;
-              padding-left:16px;
-              font-style:normal;
-              @include font(12px,400,#8B8B8B);
-              @mixin ICONIMG($value) {
-                @include BGIMG('#{$value}');
-                background-position: left center;
-                background-size:16px;
-              }
-              &.heart {@include ICONIMG('common/icon/icoheart.png');}
-              &.person {@include ICONIMG('common/icon/icoperson.png');}
-              &.star {@include ICONIMG('common/icon/icostar.png');}
-              &.time {@include ICONIMG('common/icon/icotime.png');}
-              &.ppyong {
-                height:18px;line-height:16px;
-                padding:0 8px 0 18px;
-                border-radius:100px;
-                @include ICONIMG('common/icon/icoppyong.png');
-                @include font(12px,500,#666);
-                background-color:#F6F6F6;
-              }
-            }
+            }            
           }
         }
         .listBack {
@@ -353,7 +335,7 @@ $errorMsg : #FF1919;
     background-color: #1A1A1A;
     background: url("https://image.dalbitlive.com/dalla/character/character_rankingBottom.png") #1a1a1a no-repeat;
     background-position: 95% 5%;
-    background-size: 35%;
+    background-size: auto 120%;
     p {
       @include font(18px, 500, #FFFFFF);
       letter-spacing: -1px;
@@ -362,59 +344,6 @@ $errorMsg : #FF1919;
       margin-top: 8px;
       @include font(13px, 500, #FF8E3E);
       letter-spacing: -1px;
-    }
-  }
-}
-
-#bottomSlide {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  @include flex(flex-end);
-  background-color: rgba($color: #000000, $alpha: 0.7);
-  z-index: 100;
-  .slideLayer {
-    position: relative;
-    @include flex(center, flex-start, column);
-    width: 100%;
-    padding: 30px 28px 42px;
-    border-radius: 30px 30px 0 0;
-    background-color: #fff;
-    &.slideUp {
-      animation: bottomSlideUp .4s ease forwards; 
-    }
-    &.slideDown {
-      animation: bottomSlideDown .4s ease forwards; 
-    }
-
-    .selectWrap {
-      position: relative;
-      @include flex(center, center, column);
-      width: 100%;
-      .selectOption {
-        width: 100%;
-        text-align: center;
-        @include font(16px, 400, #202020);
-        line-height: 55px;
-        &.active {
-          @include font(16px, 700, #FF3C7B);
-        }
-      }
-    }
-  }  
-  @keyframes bottomSlideUp {
-    0% {
-        transform: translateY(100%);
-    }
-    100% {
-        transform: translateY(0);
-    }
-  }
-  @keyframes bottomSlideDown {
-    0% {
-        transform: translateY(0);
-    }
-    100% {
-        transform: translateY(100%);
     }
   }
 }

@@ -12,74 +12,12 @@
     background-repeat: no-repeat;
     background-size: contain;
     &.male {
-      background-image: url("data:image/svg+xml,%3Csvg id='ico_male' xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg fill='none' stroke='%238989eb' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath d='M318.97,320.273v-4.822l2.229,2.229,1.739-1.738-5.2-5.2-5.2,5.2,1.739,1.738,2.229-2.229v4.822a4.885,4.885,0,1,0,2.459,0Zm-1.229,7.147a2.425,2.425,0,1,1,2.426-2.425A2.428,2.428,0,0,1,317.74,327.42Z' transform='translate(-303.74 -306.789)' fill='%238989eb'/%3E%3C/svg%3E%0A");
+      background-image: url("https://image.dalbitlive.com/common/icon/icoMale.png");
     }
     &.female {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg id='ico_female' transform='translate(-259 -1931)'%3E%3Cg transform='translate(259 1931)' fill='none' stroke='%23ff927b' stroke-width='2'%3E%3Crect width='28' height='28' rx='14' stroke='none'/%3E%3Crect x='1' y='1' width='26' height='26' rx='13' fill='none'/%3E%3C/g%3E%3Cpath d='M402.731,322.425a5,5,0,1,0-2.517,0v1.356H397.73V326.3h2.483v4.66h2.517V326.3h2.483v-2.517h-2.483Zm-3.742-4.834a2.483,2.483,0,1,1,2.483,2.483A2.486,2.486,0,0,1,398.989,317.592Z' transform='translate(-128.473 1623.887)' fill='%23ff927b'/%3E%3C/g%3E%3C/svg%3E%0A");
+      background-image: url("https://image.dalbitlive.com/common/icon/icoFemale.png");
     }
   }
-
-  .newFanCtn {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='people_g_s' transform='translate(0.4 0.4)' opacity='0.8'%3E%3Crect width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg transform='translate(9 4)'%3E%3Cpath d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23bdbdbd' stroke='%23bdbdbd' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3Cg transform='translate(5 6)'%3E%3Cpath  d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23757575' stroke='%23757575' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-  .totalCtn {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='person_g_s' transform='translate(0.4 0.4)'%3E%3Crect width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg transform='translate(7 6)'%3E%3Cpath d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23999' stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-  .likeCtn {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg id='heart' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CclipPath id='clip-path'%3E%3Crect width='32' height='32' transform='translate(-8 -3)' fill='none'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg transform='translate(8 3)' clip-path='url(%23clip-path)'%3E%3Cpath d='M9.991,18.712C-5.177,9.08,1.378,2,1.578,1.787l0,0c.058-.069.118-.138.179-.2a4.945,4.945,0,0,1,8.245,1.614,4.945,4.945,0,0,1,8.246-1.614c.062.066.122.135.18.2l0,0c.2.209,6.721,7.293-8.447,16.925' transform='translate(-2 3.644)' fill='%23999'/%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-  .fanCnt {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32.8' height='32.8' viewBox='0 0 32.8 32.8'%3E%3Cg id='person_g_s' transform='translate(0.4 0.4)'%3E%3Crect width='32' height='32' fill='none' stroke='%23707070' stroke-width='0.8' opacity='0'/%3E%3Cg transform='translate(7 6)'%3E%3Cpath d='M12.806,15.685a5.057,5.057,0,1,1,5.005-5.057A5.031,5.031,0,0,1,12.806,15.685Zm0,0q7.667,0,8.946,8.427H3.858Q5.136,15.684,12.806,15.685Z' transform='translate(-3.858 -5.571)' fill='%23999' stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='0.8'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-  .replyCnt {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg id='message_g_s' xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath id='message_g_s-2' data-name='message_g_s' d='M14045.972-3503.548a8.592,8.592,0,0,1-1.931-5.509c0-4.945,3.862-8.948,10-8.948s10,4,10,8.948-3.865,8.947-10,8.947a12.823,12.823,0,0,1-2.511-.242l-5.931,2.833ZM14058.238-3509.057Zm-4.187,0h-.009Zm-4.192,0h-.011Z' transform='translate(-14038.041 3524.005)' fill='%23999'/%3E%3Crect width='32' height='32' fill='%23fff' opacity='0'/%3E%3C/svg%3E%0A");
-  }
-  .goodCnt {
-    flex: none;
-    display: inline-block;
-    padding-left: 16px;
-    @include font(13px, 400, #999999);
-    background-position: left center;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-image: url("data:image/svg+xml,%3Csvg id='heart' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='32' height='32' viewBox='0 0 32 32'%3E%3Cdefs%3E%3CclipPath id='clip-path'%3E%3Crect width='32' height='32' transform='translate(-8 -3)' fill='none'/%3E%3C/clipPath%3E%3C/defs%3E%3Cg transform='translate(8 3)' clip-path='url(%23clip-path)'%3E%3Cpath d='M9.991,18.712C-5.177,9.08,1.378,2,1.578,1.787l0,0c.058-.069.118-.138.179-.2a4.945,4.945,0,0,1,8.245,1.614,4.945,4.945,0,0,1,8.246-1.614c.062.066.122.135.18.2l0,0c.2.209,6.721,7.293-8.447,16.925' transform='translate(-2 3.644)' fill='%23999'/%3E%3C/g%3E%3C/svg%3E%0A");
-  }
-
 
   Header {
     align-items: flex-start;
@@ -101,7 +39,7 @@
         height: 40px;
         padding: 5px 30px 5px 40px;
         border-radius: 8px;
-        background: url("data:image/svg+xml,%3Csvg id='Vrstva_92' data-name='Vrstva 92' xmlns='http://www.w3.org/2000/svg' width='35.768' height='35.768' viewBox='0 0 35.768 35.768'%3E%3Cg %3E%3Cg fill='none' stroke='%23acacac' stroke-width='2.5'%3E%3Ccircle cx='14.571' cy='14.571' r='14.571' stroke='none'/%3E%3Ccircle cx='14.571' cy='14.571' r='13.321' fill='none'/%3E%3C/g%3E%3Cline x2='9.714' y2='9.714' transform='translate(24.286 24.286)' fill='none' stroke='%23acacac' stroke-linecap='round' stroke-width='2.5'/%3E%3C/g%3E%3C/svg%3E%0A") #F6F6F6 no-repeat;
+        background: url("https://image.dalbitlive.com/common/icon/icon-search.png") #F6F6F6 no-repeat;
         background-position: 12px center;
         background-size: 18px 18px;
         .searchInput {
@@ -116,7 +54,7 @@
           display: inline-block;
           width: 14px; height: 14px;
           border-radius: 50%;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cg transform='translate(-564 -234)'%3E%3Ccircle cx='14' cy='14' r='14' transform='translate(564 234)' fill='%23acacac'/%3E%3Cg  transform='translate(-3162.443 1403)'%3E%3Crect width='17.998' height='1.8' rx='0.9' transform='translate(3733.444 -1149.273) rotate(-45)' fill='%23fff'/%3E%3Crect width='17.998' height='1.8' rx='0.9' transform='translate(3746.169 -1148.001) rotate(-135)' fill='%23fff'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+          background-image: url("https://image.dalbitlive.com/common/input/input-removeValue.png");
           background-repeat: no-repeat;
           background-position: center;
           background-size: contain;
@@ -234,7 +172,7 @@
           top: 6px; right: 6px;
           display: inline-block;
           width: 20px; height: 20px;
-          background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='40' height='40' viewBox='0 0 40 40'%3E%3Cdefs%3E%3Cfilter id='합치기_7' x='0.5' y='7.5' width='38.998' height='29.869' filterUnits='userSpaceOnUse'%3E%3CfeOffset dy='2' input='SourceAlpha'/%3E%3CfeGaussianBlur stdDeviation='1.5' result='blur'/%3E%3CfeFlood flood-opacity='0.302'/%3E%3CfeComposite operator='in' in2='blur'/%3E%3CfeComposite in='SourceGraphic'/%3E%3C/filter%3E%3C/defs%3E%3Cg id='ico_video' transform='translate(-201 -2218)' opacity='0.9'%3E%3Crect id='사각형_11639' data-name='사각형 11639' width='40' height='40' transform='translate(201 2218)' fill='%23fff' opacity='0'/%3E%3Cg id='그룹_35293' data-name='그룹 35293' transform='translate(-85 18)'%3E%3Cg id='그룹_34916' data-name='그룹 34916' transform='translate(290.999 2210)'%3E%3Cg transform='matrix(1, 0, 0, 1, -5, -10)' filter='url(%23합치기_7)'%3E%3Cpath id='합치기_7-2' data-name='합치기 7' d='M-7386,82.869a2,2,0,0,1-2-2V64a2,2,0,0,1,2-2h18.173a2,2,0,0,1,2,2V67.87l4.817-2.81A2,2,0,0,1-7358,66.786v11.3a2,2,0,0,1-3.007,1.726l-4.817-2.81v3.87a2,2,0,0,1-2,2Zm5.605-13.354v5.839a1,1,0,0,0,1,1,.987.987,0,0,0,.449-.108l5.815-2.918a.984.984,0,0,0,.55-.894.984.984,0,0,0-.55-.894l-5.815-2.92a1,1,0,0,0-.449-.108A1,1,0,0,0-7380.393,69.516Z' transform='translate(7393 -52)' fill='%23fff'/%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E%0A");
+          background-image: url("https://image.dalbitlive.com/common/broadcast/broadcastType-video.png");
           background-size: contain;
           background-position: center;
           background-repeat: no-repeat;

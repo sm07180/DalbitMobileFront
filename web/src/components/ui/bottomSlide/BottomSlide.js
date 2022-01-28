@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react'
 
+import './bottomSlide.scss'
+
 export default function bottomSlide({props, setSlidePop, children}) {
   const [popOpen, setPopOpen] = useState(true);
 
