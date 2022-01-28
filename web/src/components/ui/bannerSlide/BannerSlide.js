@@ -1,6 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useHistory} from 'react-router-dom'
 
+import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 // css
 import './bannerSlide.scss'
@@ -8,8 +9,20 @@ import './bannerSlide.scss'
 const BannerSlide = (props) => {
   const {data} = props
   const history = useHistory()
-  
+  const [bannerList, setBannerList] = useState([])
   const [bannerShow, setBannerShow] = useState(false)
+
+  const fetchBannerInfo = (arg) => {
+    Api.getBanner({
+      params: {
+        position: arg
+      }
+    }).then((res) => {
+      if (res.result === 'success') {
+        setBannerList(res.data);
+      }
+    })
+  }
 
   const swiperBanner = {
     slidesPerView: 'auto',
@@ -46,13 +59,17 @@ const BannerSlide = (props) => {
     history.push(value)
   }
 
+  useEffect(() => {
+    fetchBannerInfo(9)
+  },[])
+
   return (
     <div id="banner">
       {bannerShow === false ?
         <>
-          {data && data.length > 0 &&
+          {bannerList && bannerList.length > 0 &&
             <Swiper {...swiperBanner}>
-              {data.map((list,index) => {
+              {bannerList.map((list,index) => {
                 return (
                   <div key={index}>
                     <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />
@@ -65,7 +82,7 @@ const BannerSlide = (props) => {
         </>
         :
         <>
-          {data.map((list,index) => {
+          {bannerList.map((list,index) => {
             return (
               <div className='bannerList' key={index}>
                 <img src={list.bannerUrl} data-target-url={list.linkUrl} alt={list.title} />

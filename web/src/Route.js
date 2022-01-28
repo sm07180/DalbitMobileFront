@@ -25,6 +25,9 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const MyPage = React.lazy(() => import('pages/remypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
+
+const Store = React.lazy(() => import('pages/restore'))
+
 const Pay = React.lazy(() => import('pages/new_pay'))
 const Exchange = React.lazy(() => import('pages/exchange'))
 const Customer = React.lazy(() => import('pages/customer'))
@@ -82,15 +85,15 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
+        
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
+        
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
-        <Route exact path="/event_proofshot" component={Proofshot} />
-        <Route exact path="/event_package" component={Package} />
-        <Route exact path="/event_knowHow" component={EventKnowHow} />
-        <Route exact path="/event_knowHow/:title" component={EventKnowHow} />
-        <Route exact path="/event_knowHow/:title/:num" component={EventKnowHow} />
+
+        <Route exact path="/store" component={Store} />
+
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
