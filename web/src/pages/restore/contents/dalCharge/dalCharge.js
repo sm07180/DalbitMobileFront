@@ -7,8 +7,9 @@ import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
-import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
+import PopSlide from '../../components/PopSlide'
 // contents
 // css
 import './dalCharge.scss'
@@ -18,14 +19,17 @@ const paymentMethod = ['계좌 간편결제','무통장(계좌이체)','신용/�
 const DalCharge = () => {
   const context = useContext(Context);
   const [select, setSelect] = useState(3);
+  const [popSlide, setPopSlide] = useState(false);
 
   // 조회 Api
 
-  // 결재단위 셀렉트
+  //-- 동작 함수
+  // 결제수단 선택
   const onSelectMethod = (e) => {
     const {targetIndex} = e.currentTarget.dataset
     
     setSelect(targetIndex)
+    setPopSlide(!popSlide)
   }
 
   useEffect(() => {
@@ -87,6 +91,17 @@ const DalCharge = () => {
       <section className="bottomInfo">
         결제문의 <span>1522-0251</span>
       </section>
+      {popSlide === true &&
+        <PopSlide setPopSlide={setPopSlide}>
+          <div className='title'>인증 정보를 확인해주세요!</div>
+          <div className="infoBox">
+            <p className='name'>홍길동</p>
+            <p className='phoneNum'>010-111-2222</p>
+          </div>
+          <p className='text'></p>
+          <SubmitBtn text="다음" />
+        </PopSlide>
+      }
     </div>
   )
 }

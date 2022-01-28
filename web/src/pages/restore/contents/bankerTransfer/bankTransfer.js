@@ -50,7 +50,7 @@ const BankTransfer = () => {
         <InputItems>
           <input type="number" maxLength="20" placeholder="주민번호 또는 휴대폰 번호를 입력해주세요." />
         </InputItems>
-        <SubmitBtn text="입금계좌 받기" />
+        <SubmitBtn text="입금계좌 받기" state="disabled" />
       </section>
       <section className="noticeInfo">
         <h3>무통장 입금 안내</h3>
