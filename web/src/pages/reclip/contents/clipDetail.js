@@ -73,8 +73,14 @@ const ClipDetail = (props) => {
                   <span className="nickNm">{list.nickName}</span>
                 </div>
                 <div className="listItem">
-                  <div className="cnt">{list.replyCnt}</div>
-                  <div className="cnt">{list.goodCnt}</div>
+                  <div className="cnt">
+                    <span className="comment"></span>
+                    {list.replyCnt}
+                    </div>
+                  <div className="cnt">
+                    <span className="like"></span>
+                    {list.goodCnt}
+                  </div>
                 </div>
               </div>
               <button className="heart" onClick={clickLikeOnoff}>

@@ -3,58 +3,49 @@ import React from 'react'
 export default function ExchangeRepply() {
   return (
     <>
-      <div className="repplyBox">
+      <div className="formBox repply">
         <div className="listRow">
           <div className="title">예금주</div>
           <div className="inputBox">
-            <div className="text">홍길동</div>
+            <div>홍길동</div>
           </div>
         </div>
         <div className="listRow">
           <div className="title">은행</div>
-          <div className="inputBox select">
-            <div className="text">
-              은행명
-              {/* {recentInfo === ''
-                ? bankList.findIndex((v) => {
-                    return v.value == state.bankCode
-                  }) !== -1
-                  ? bankList[
-                      bankList.findIndex((v) => {
-                        return v.value == state.bankCode
-                      })
-                    ].text
-                  : ''
-                : bankList.findIndex((v) => {
-                    return v.value == recentInfo.bankCode
-                  }) !== -1
-                ? bankList[
-                    bankList.findIndex((v) => {
-                      return v.value == recentInfo.bankCode
-                    })
-                  ].text
-                : ''} */}
+          <div className="inputBox">
+            <div>
+              **은행
             </div>
           </div>
         </div>
         <div className="listRow">
           <div className="title">계좌번호</div>
           <div className="inputBox">
-            <input type="num" placeholder='계좌번호를 입력해주세요 (숫자)'/>
+            <div>1234567890</div>
           </div>
         </div>
         <div className="listRow">
           <div className="title">주민등록번호</div>
           <div className="inputBox">
-            <input type="num" maxLength={6} placeholder='앞 6자리'></input>
+            <div>000101</div>
             <span className="line">-</span>
-            <input type="password" maxLength={7} placeholder='뒤 7자리'></input>
+            <div>*******</div>
           </div>
         </div>
         <div className="listRow">
           <div className="title">전화번호</div>
           <div className="inputBox">
-            <input type="tel" placeholder='계좌번호를 입력해주세요 (숫자)'/>
+            <div>0109876543</div>
+          </div>
+        </div>
+        <div className="listRow">
+          <div className="title">주소</div>
+          <div className="inputBox">
+            <div>
+              광주광역시 서구 치평동 상무대로 773
+              <br />
+              4층 주식회사 여보야
+            </div>
           </div>
         </div>
       </div>

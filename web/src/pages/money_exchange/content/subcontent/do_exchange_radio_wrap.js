@@ -4,7 +4,7 @@ export default function ExchangeRadio() {
   return (
     <div className="radioLabelBox">
       <label
-        className='left on'
+        className='active'
         htmlFor="r1">
         신규 정보
       </label>
@@ -15,7 +15,7 @@ export default function ExchangeRadio() {
         최근 계좌
       </label>
       <label
-        className='right'
+        className=''
         htmlFor="r3">
         내 계좌
       </label>

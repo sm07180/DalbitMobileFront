@@ -6,6 +6,7 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import ExchangeReceipt from './subcontent/do_exchange_calc'
 import ExchangeRadio from './subcontent/do_exchange_radio_wrap'
+import ExchangeForm from './subcontent/do_exchange_form'
 import ExchangeRepply from './subcontent/do_exchange_repply'
 
 const DoExchange = () => {
@@ -47,8 +48,8 @@ const DoExchange = () => {
         <div className="infoBox">
             {/* {badgeSpecial > 0 && (
               <>
-                <p className="doExchange__special--title">DJ님은 스페셜 DJ 입니다.</p>
-                <p className="doExchange__special--point">환전 실수령액이 5% 추가 됩니다.</p>
+                <p className="special">DJ님은 스페셜 DJ 입니다.</p>
+                <p className="special">환전 실수령액이 5% 추가 됩니다.</p>
               </>
             )} */}
             <p>별은 570개 이상이어야 환전 신청이 가능합니다</p>
@@ -79,23 +80,18 @@ const DoExchange = () => {
       </section>
       <section className="formWrap">
         <ExchangeRadio />
-        <div className="doExchange__contentsHeader">
-          신규 입금 정보
-          {/* 신규 입금 정보 / 최근 입금 정보 / 내 계좌 관리 */}
+        <div className="title">
+          입금 정보
+          {/* 입금 정보 / 최근 입금 정보 / 내 계좌 관리 */}
           {/* <button className="plusBtn">
             계좌추가
           </button> */}
         </div>
+        {/* <ExchangeForm /> */}
         <ExchangeRepply />
-        {/* {radioCheck === 2 && (
-          <MakeAddWrap
-            addList={addList}
-            setSettingPopup={setSettingPopup}
-            setModifyInfo={setModifyInfo}
-            setRecent={setRecent}
-            setRecentCheck={setRecentCheck}
-          />
-        )} */}
+      </section>
+      <section className="bottomWrap">
+        <button className="">환전 신청하기</button>
       </section>
     </div>
   )

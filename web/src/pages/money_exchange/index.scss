@@ -1,27 +1,28 @@
+@import "../../components/ui/_mixin.scss";
+
 #exchangePage{
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 500;
   color:#000;
   .doExchange {
     position:relative;
+    header{
+      .title{
+        justify-content: center;
+      }
+    }
     section{
       position:relative;
       padding:0 16px;
       margin-bottom: 28px;
     }
     .currentValue {
-      display: flex;
-      align-items: center;
-      position:absolute;
-      right:16px;
-      top:50%;
-      transform:translateY(-50%);
+      @include flex(center);
+      @include position-top-right(50%, 16px, translateY(-50%));
+      @include font(12px, 400);
+      @include border(#d6d6d6, 13px);
       height:26px;
       line-height:26px;
-      font-size: 12px;
-      font-weight: 400;
-      border:1px solid #d6d6d6;
-      border-radius:13px;
       padding:0 9px 0 7px;
       .iconDal{
         display: block;
@@ -30,290 +31,7 @@
         background: url('https://image.dalbitlive.com/mypage/dalla/icon_dal.png') no-repeat center / 10px 10px;
       }
     }
-    .tabWrap{
-      margin-bottom: 0;
-      .tabBox{
-        display: flex;
-        align-items: center;
-        width:100%;
-        height:42px;
-        margin-bottom: 8px;
-        button{
-          position: relative;
-          width: 100%;
-          height: 100%;
-          text-align: center;
-          font-size: 16px;
-          color: #acacac;
-          background-color: #ffffff;
-          border-bottom:2px solid #f2f2f2;
-          &.active {
-            font-weight:600;
-            color:#000;
-            border-bottom: solid 2px #202020;
-          }
-        }
-      }
-    }
-    .exchangeWrap{
-      .noticeBtn{
-        width:68px;
-        height:26px;
-        font-size:12px;
-        font-weight: 400;
-        border:1px solid #d6d6d6;
-        border-radius:13px;
-        text-align:center;
-        margin: 12px 0 15px;
-      }
-      .amountBox{
-        display:flex;
-        align-items:center;
-        width:100%;
-        height:75px;
-        background:#f8f8f8;
-        border-radius:16px;
-        padding: 0 15px;
-        font-size:13px;
-        .iconStar{
-          flex: none;
-          width: 25px;
-          height: 25px;
-          background: url('https://image.dalbitlive.com/mypage/dalla/icon_star.png') no-repeat center / contain;
-          margin-right: 5px;
-        }
-        .title{flex:none;}
-        .counter{
-          height: 31px;
-          display: flex;
-          align-items: flex-end;
-          margin-left:auto;
-          &.disabled{color: #999;}
-          .num{
-            width: 100%;
-            font-size:24px;
-            text-align: right;
-            &::placeholder{color:#000}
-          }
-          .unit{
-            font-size: 15px;
-            font-weight: 600;
-            margin: 0 0 4px 4px;
-          }
-        }
-      }
-      .infoBox{
-        display: flex;
-        flex-direction: column;
-        margin-left:15px;
-        padding: 12px 0 12px 8px;
-        border-left:1px solid #dcdcdc;
-        p{
-          position: relative;
-          font-size: 12px;
-          font-weight: 400;
-          &:after{
-            content:"";
-            position: absolute;
-            top: 50%;
-            left: -10.5px;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 4px;
-            border-radius: 100%;
-            background: #D6D6D6;
-          }
-        }
-      }
-      .btnBox{
-        padding: 0 12px;
-        display: flex;
-        button{
-          width: 100%;
-          height: 48px;
-          border:1px solid #FF3C7B;
-          border-radius: 16px;
-          font-size:16px;
-          font-weight: 600;
-          color: #FF3C7B;
-          margin: 15px 8px 0 0;
-          letter-spacing: -0.5px;
-          &:last-child{margin-right: 0;}
-        }
-        .exchange{
-          background: #FF3C7B;
-          color:#fff;
-        }
-      }
-    }
-    .receiptWrap{
-      .receiptBox{
-        display: flex;
-        flex-direction: column;
-        padding: 10px 15px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.24);
-        .listRow{
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          height: 36px;
-          &:last-child{
-            border-top: 1px solid #ececec;
-          }
-          .title{
-            font-size:13px;
-            font-weight: 400;
-            color: #999;
-            &.total{
-              font-size:13px;
-              color:#000;
-            }
-          }
-          .value{
-            font-size:16px;
-            &.total{
-              color: #FF3C7B;
-            }
-          }
-        }
-      }
-    }
-    .formWrap{
-      .radioLabelBox {
-        display: flex;
-        margin-bottom: 12px;
-        label {
-          flex: 1;
-          height: 50px;
-          line-height: 50px;
-          border: 1px solid #e3e3e3;
-          box-sizing: border-box;
-          font-weight: 400;
-          font-size: 14px;
-          color: #acacac;
-          text-align: center;
-          &.on {
-            color: #FF3C7B;
-            border: 1px solid #FF3C7B;
-            background-color: #fff;
-          }
-          &.left {
-            border-radius: 16px 0 0 16px;
-          }
-          &.right {
-            border-radius: 0 16px 16px 0;
-          }
-        }
-        & > input {
-          display: none;
-        }
-      }
-      .repplyBox{
-        display: flex;
-        flex-direction: column;
-        .listRow{
-          display: flex;
-          align-items: center;
-          height: 44px;
-          margin-bottom: 5 px;
-          padding: 0 15px;
-          background-color: #f8f8f8;
-          border-radius: 16px;
-          overflow: hidden;
-          margin-bottom: 5px;
-          .title{
-            min-width: 88px;
-            font-size: 12px;
-            font-weight: 400;
-          }
-          .inputBox{
-            display: flex;
-            flex: 1;
-            font-size: 15px;
-            font-weight: 500;
-            input {
-              width: 100%;
-              &::placeholder{
-                font-size: 15px;
-                font-weight: 400;
-                color: #999;
-              }
-            }
-            &.select {
-              select {
-                width: 100%;
-                color: #999;
-                font-weight: 400;
-              }
-              &::after {
-                position: absolute;
-                width: 12px;
-                height: 12px;
-                right: 24px;
-                transform: translate(-50%, 0%) rotate(-135deg);
-                border-left: 2px solid #bdbdbd;
-                border-top: 2px solid #bdbdbd;
-                content: '';
-              }
-            }
-            &.social {
-              display: flex;
-              input {
-                width: 50%;
-              }
-            }
-    
-            .line {
-              margin: 0 10px;
-            }
-    
-            button {
-              min-width: 70px;
-              height: 32px;
-              background-color: #000;
-              border-radius: 16px;
-              font-size: 14px;
-              font-weight: 400;
-              color: white;
-            }
-    
-            .label {
-              display: flex;
-              flex: 1;
-              align-items: center;
-              font-size: 14px;
-    
-              & > span:first-child {
-                display: inline-block;
-                flex: 1;
-                align-items: center;
-                width: 134px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                color: #bdbdbd;
-              }
-              & > span:last-child {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                margin-left: auto;
-              }
-            }
-          }
-        }
-      }
-    }
-    input[type='file'] {
-      display: none;
-    }
-
-    &__contents {
-      padding: 16px;
-      background-color: #eeeeee;
-    }
-
-    &__contentsHeader {
+    .title {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -332,171 +50,277 @@
           background: url(./static/plus.svg);
         }
       }
-      &--info {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        flex: 1;
-        font-size: 12px;
-        font-weight: normal;
-      }
-      &--icon {
-        display: inline-block;
-        width: 12px;
-        height: 12px;
-        margin-right: 4px;
-        background: url('./static/ic_notice.svg') no-repeat center;
-      }
     }
-
-    &__special {
-      margin-bottom: 9px;
-      padding: 16px 0;
-      background: #fff;
-      border: 1px solid #ec455f;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
-      line-height: 20px;
-      &--title {
-        color: #ec455f;
-      }
-    }
-
-    .top__btn--wrap {
-      position: relative;
-      display: flex;
-      button:first-child {
-        width: 43.5%;
-      }
-      button:nth-child(2) {
-        margin-left: auto;
-        width: 55%;
-      }
-      .auto-exchange-pop {
-        position: absolute;
-        padding: 12px 65px 12px 12px;
-        right: 0;
-        top: 52px;
-        background: #757575;
-        border-radius: 12px;
-        font-size: 12px;
-        line-height: 18px;
-
-        opacity: 0;
-        transition: opacity 0.2s ease-in-out;
-        &.on {
-          opacity: 1;
-          z-index: 1;
-        }
-        &.off {
-          opacity: 0;
-          z-index: -1;
-        }
-        p {
-          color: #fff;
-          font-weight: normal;
-        }
-        button {
-          position: absolute;
-          right: 4px;
-          top: 4px;
-          width: auto;
-        }
-      }
-    }
-
-    &__star {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 9px;
-
-      &--box {
-        flex: 1;
-        padding: 9px 16px;
-        border: 1px solid #e0e0e0;
-        border-radius: 12px;
-        &--input {
-          margin-left: 16px;
-          background-color: #fff;
-        }
-      }
-      &--arrow {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background: url('./static/arrow_right_w.svg') no-repeat center;
-        background-color: #632beb;
-      }
-      &--title {
-        margin-bottom: 7px;
-        font-size: 12px;
-      }
-
-      &--value {
-        font-size: 16px;
-        font-weight: bold;
-        & > input {
+    .tabWrap{
+      margin-bottom: 0;
+      .tabBox{
+        @include flex(center);
+        width:100%;
+        height:42px;
+        margin-bottom: 8px;
+        button{
+          @include font(16px, 500, #acacac);
+          position: relative;
           width: 100%;
-          ::placeholder {
-            color: #bdbdbd;
+          height: 100%;
+          text-align: center;
+          background-color: #ffffff;
+          border-bottom:2px solid #f2f2f2;
+        &.active {
+            @include font(16px, 600, #000);
+            border-bottom: solid 2px #202020;
           }
-        }
-      }
-
-      &--caption {
-        display: flex;
-        margin-bottom: 16px;
-        font-size: 12px;
-        color: #757575;
-        line-height: 1.67;
-        & > div:first-child {
-          margin-right: 8px;
         }
       }
     }
-    
-
-    
-
-    .formData {
-      &.recent {
-        min-height: 400px;
+    .exchangeWrap{
+      .noticeBtn{
+        @include font(12px);
+        @include border(#d6d6d6, 13px);
+        width:68px;
+        height:26px;
+        text-align:center;
+        margin: 12px 0 15px;
       }
-      .listRow{
-        
-      }
-      .title{
-      }
-      
-      &List {
-        &--caption {
+      .amountBox{
+        @include flex(center);
+        width:100%;
+        height:75px;
+        background:#f8f8f8;
+        border-radius:16px;
+        padding: 0 15px;
+        font-size:13px;
+        &.active{
+          background: #FFF5F8;
+          .num{color: #FF3C7B;}
+          .unit{color: #FF3C7B;}
+        }
+        .iconStar{
+          @include BGIMG('mypage/dalla/icon_star.png');
+          flex: none;
+          width: 25px;
+          height: 25px;
+          margin-right: 5px;
+        }
+        .title{flex:none;}
+        .counter{
+          height: 31px;
           display: flex;
-          flex-direction: column;
-          justify-content: center;
-          font-size: 12px;
-          color: #757575;
-          line-height: 18px;
-          letter-spacing: -0.3px;
-          & > span {
-            text-align: center;
+          align-items: flex-end;
+          margin-left:auto;
+          &.disabled{color: #999;}
+          .num{
+            width: 100%;
+            font-size:24px;
+            text-align: right;
+            &::placeholder{color:#000}
           }
-
-          .point {
-            color: #ec455f;
+          .unit{
+            @include font(15px, 600);
+            margin: 0 0 4px 4px;
           }
         }
-
-        &--file {
-          padding: 0 8px 0 16px;
-
-          .formData__input--button {
-            height: 33px;
-            margin: 8px 0;
+      }
+      .infoBox{
+        display: flex;
+        flex-direction: column;
+        margin-left:15px;
+        padding: 12px 0 12px 8px;
+        border-left:1px solid #dcdcdc;
+        p{
+          @include font(12px);
+          position: relative;
+          &:after{
+            @include position-top-left(50%,-10.5px,translateY(-50%));
+            content:"";
+            width: 4px;
+            height: 4px;
+            border-radius: 100%;
+            background: #D6D6D6;
           }
+          &.special{
+            @include font(14px, 600 , #FF3C7B);
+          }
+        }
+      }
+      .btnBox{
+        padding: 0 12px;
+        display: flex;
+        button{
+          @include font(16px, 600 , #FF3C7B);
+          @include border(#FF3C7B, 16px);
+          width: 100%;
+          height: 48px;
+          margin: 15px 8px 0 0;
+          letter-spacing: -0.5px;
+          &:last-child{margin-right: 0;}
+        }
+        .exchange{
+          background: #FF3C7B;
+          color:#fff;
+        }
+      }
+    }
+    .receiptWrap{
+      .receiptBox{
+        display: flex;
+        flex-direction: column;
+        padding: 10px 15px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.24);
+        .listRow{
+          @include flex(center, space-between);
+          height: 36px;
+          &:last-child{
+            border-top: 1px solid #ececec;
+          }
+          .title{
+            @include font(13px, 400, #999);
+            &.total{
+              @include font(13px, 400, #000);
+            }
+          }
+          .value{
+            font-size:16px;
+            &.total{
+              color: #FF3C7B;
+            }
+          }
+        }
+      }
+    }
+    .formWrap{
+      .radioLabelBox {
+        display: flex;
+        margin-bottom: 12px;
+        label {
+          @include font(13px, 400, #acacac);
+          height: 36px;
+          line-height: 36px;
+          padding: 0 15px;
+          background: #f6f6f6;
+          border-radius: 18px;
+          margin-right: 4px;
+          &.active {
+            @include font(13px, 500, #fff);
+            background: #000;
+          }
+        }
+        & > input {
+          display: none;
+        }
+      }
+      .formBox{
+        display: flex;
+        flex-direction: column;
+        &.repply{
+          .listRow{
+            .inputBox{
+              div{
+                @include font(15px, 500, #000);
+              }
+            }
+          }
+        }
+        .listRow{
+          @include flex(center);
+          min-height: 50px;
+          overflow: hidden;
+          margin-bottom: 8px;
+          .title{
+            @include font(12px);
+            min-width: 88px;
+          }
+          .inputBox{
+            @include flex(center);
+            @include font(15px, 500);
+            flex: 1;
+            height: 100%;
+            box-sizing: border-box;
+            input {
+              @include flex(center);
+              position:relative;
+              width: 100%;
+              height: 100%;
+              background: #F6F6F6;
+              border-radius: 16px;
+              padding: 0 15px;
+              &::placeholder{
+                @include font(15px, 400, #999);
+              }
+              &:focus{
+                background: #fff;
+                border: 1px solid #FF3C7B;
+              }
+            }
+            div{
+              @include flex(center);
+              @include font(15px, 400, #999);
+              width: 100%;
+              min-height: 50px;
+              background: #F6F6F6;
+              border-radius: 16px;
+              padding: 13px 15px;
+            }
+            button{
+              @include flex(center);
+              @include font(14px, 400, #FF3C7B);
+              @include border( #FF3C7B, 16px);
+              flex: none;
+              height: 36px;
+              padding: 0 13px;
+              margin-left: 8px;
+            }
+            select {
+              &::after {
+                @include position-top-right(50%, 24px, translate(-50%, -50%) rotate(-135deg));
+                width: 12px;
+                height: 12px;
+                border-left: 2px solid #bdbdbd;
+                border-top: 2px solid #bdbdbd;
+                content: '';
+              }
+            }
+            .line {
+              margin: 0 5px;
+            }
+          }
+        }
+      }
+      .privacyBox{
+        .privacyTit{
+          @include font(16px, 500);
+          display: flex;
+          align-items: center;
+          margin-bottom: 8px;
+          .checkboxLabel{
+            @include flex(center);
+            margin-right: 8px;
+            > input:checked ~ .checkbox__btn {
+              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 18'%3E%3Cpath fill='%23fff' d='M8.319 15.353L0 6.882l2.6-2.647 8.32 8.471L23.4 0 26 2.647 10.92 18z'/%3E%3C/svg%3E")
+                      center no-repeat,
+              #FF3C7B;
+              background-size: 50%, cover;
+            }
+            .checkboxBtn{
+              flex: none;
+              display: inline-block;
+              width: 23px;
+              height: 23px;
+              border-radius: 100%;
+              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 18'%3E%3Cpath fill='%23fff' d='M8.319 15.353L0 6.882l2.6-2.647 8.32 8.471L23.4 0 26 2.647 10.92 18z'/%3E%3C/svg%3E")
+                      center no-repeat,
+                  #ddd;
+              background-size: 50%, cover;
+            }
+          }
+          .highlight{
+            @include font(12px, 600, #FF3C7B);
+            margin-left: 4px;
+          }
+        }
+        p{
+          @include font(12px, 400);
+          letter-spacing: -0.5px;
         }
       }
     }
@@ -520,19 +344,17 @@
         }
       }
     }
-    
-
-    .doExchangeButton {
-      width: 100%;
-      margin-top: 32px;
-      padding: 12px 0;
-      border-radius: 16px;
-      background-color: #757575;
-      font-size: 18px;
-      color: #fff;
-
-      &.active {
-        background-color: #FF3C7B;
+    .bottomWrap{
+      button{
+        @include font(16px, 600, #fff);
+        width: 100%;
+        height: 48px;
+        background: #FF3C7B;
+        border-radius: 16px;
+        margin-bottom: 28px;
+        &.disabled{
+          background:rgba(255,60,123,0.2);
+        }
       }
     }
     #layer {
@@ -547,120 +369,6 @@
         background-color: black;
         z-index: 2;
         font-size: 16px;
-      }
-    }
-  }
-  .resultWrap {
-    &__header {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      height: 49px;
-      padding: 0px 10px;
-      border-bottom: 1px solid #dedede;
-
-      &__title {
-        font-size: 18px;
-        text-align: center;
-      }
-      &__button {
-        &--back {
-          width: 36px;
-          position: absolute;
-          top: 6px;
-          left: 10px;
-        }
-      }
-    }
-    &__content {
-      padding: 0 16px;
-      letter-spacing: -0.35px;
-    }
-    &__title {
-      padding: 24px 0 8px;
-      font-size: 16px;
-      line-height: 1.25;
-      color: #632beb;
-      border-bottom: 1px solid #632beb;
-    }
-
-    &__list {
-      display: flex;
-      height: 40px;
-      align-items: center;
-      font-size: 14px;
-      font-weight: 600;
-      border-bottom: 1px solid #e0e0e0;
-      &__text {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-left: auto;
-
-        &--purple {
-          display: flex;
-          margin-right: 2px;
-          color: #632beb;
-          font-size: 20px;
-        }
-      }
-      &__notice {
-        margin-top: 20px;
-        font-size: 14px;
-        line-height: 20px;
-        text-align: center;
-        margin-bottom: 32px;
-      }
-    }
-    .resultButton {
-      width: 100%;
-      margin-top: 32px;
-      padding: 12px 0;
-      border-radius: 12px;
-      background-color: #632beb;
-      font-size: 18px;
-      color: #fff;
-    }
-  }
-
-  .AddData {
-    min-height: 400px;
-    position: relative;
-    .accountItem {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      border-radius: 12px;
-      margin-top: 4px;
-      padding: 9px 16px;
-      border: solid 1px #e0e0e0;
-      background-color: #fff;
-      &:first-child {
-        margin-top: 0;
-      }
-      &__name {
-        font-size: 12px;
-        font-weight: normal;
-        text-align: left;
-        color: #000;
-      }
-      &__bankInfo {
-        margin-top: 4px;
-        font-size: 16px;
-        font-weight: 800;
-        text-align: left;
-        color: #000000;
-      }
-      .settingBtn {
-        position: absolute;
-        display: block;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 8px;
-        width: 50px;
-        height: 50px;
-        background: url(./static/setting.svg) no-repeat center center / 24px;
       }
     }
   }

@@ -29,7 +29,7 @@ const MySetting = React.lazy(() => import('pages/mysetting'))
 const Store = React.lazy(() => import('pages/restore'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const Exchange = React.lazy(() => import('pages/exchange'))
+const Exchange = React.lazy(() => import('pages/reExchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
