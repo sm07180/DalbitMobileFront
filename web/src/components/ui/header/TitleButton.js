@@ -67,6 +67,8 @@ const TitleButton = (props) => {
           <AlarmButton />
         </div>
       )
+    default:
+      return <></>
   }
 }
 

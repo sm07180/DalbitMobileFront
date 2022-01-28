@@ -142,7 +142,7 @@ const MainPage = () => {
         <SwiperList data={daldoongs} profImgName="bj_profileImageVo" />
       </section>
       <section className='bannerWrap'>
-        <BannerSlide data={bannerList} />
+        <BannerSlide />
       </section>
       <section className='liveView'>
         <CntTitle title={'🚀 지금 라이브 중!'} />

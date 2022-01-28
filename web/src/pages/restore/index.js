@@ -10,8 +10,8 @@ import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
-import DalCharge from './contents/dalCharge'
-import BankTransfer from './contents/bankTransfer'
+import DalCharge from './contents/dalCharge/dalCharge'
+import BankTransfer from './contents/bankerTransfer/bankTransfer'
 // css
 import './style.scss'
 

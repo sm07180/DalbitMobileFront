@@ -9,32 +9,28 @@ import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
+import Tabmenu from '../../components/Tabmenu'
 // contents
+import BankResult from './bankResult'
 // css
 import './bankTransfer.scss'
 
+const receiptTabmenu = ['신청안함','소득공제용','지출증빙용']
+
 const BankTransfer = () => {
   const context = useContext(Context);
-  const [select, setSelect] = useState(3);
+  const [receiptTabType, setReceiptTabType] = useState(receiptTabmenu[0]);
 
-  // 조회 Api
-
-  // 결재단위 셀렉트
-  const onSelectMethod = (e) => {
-    const {targetIndex} = e.currentTarget.dataset
-    
-    setSelect(targetIndex)
-  }
-
-  useEffect(() => {
-  },[])
+  const [bankResult, setBankResult] = useState(true);
 
   return (
     <div id="bankTransfer">
       <Header title="무통장(계좌이체)" position="sticky" type="back" />
+      {bankResult === false ?
+      <>
       <section className="infoInput">
         <InputItems title="입금정보">
-          <p> 원<span>(부가세포함)</span></p>
+          <p>{Utility.addComma(33000)} 원<span>(부가세포함)</span></p>
         </InputItems>
         <InputItems title="입금은행">
           <p>국민은행</p>
@@ -48,9 +44,7 @@ const BankTransfer = () => {
         <div className="tabmenuWrap">
           <div className="title">현금영수증</div>
           <ul className="tabmenu">
-            <li className='active'>신청안함</li>
-            <li>소득공제용</li>
-            <li>지출증빙용</li>
+            <Tabmenu data={receiptTabmenu} tab={receiptTabType} setTab={setReceiptTabType} />
           </ul>
         </div>
         <InputItems>
@@ -69,6 +63,10 @@ const BankTransfer = () => {
       <section className="bottomInfo">
           <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
       </section>
+      </>
+      :
+      <BankResult />
+      }
     </div>
   )
 }
