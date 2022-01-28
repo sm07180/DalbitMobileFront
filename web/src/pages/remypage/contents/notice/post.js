@@ -37,7 +37,6 @@ const Post = (props) => {
 
   useEffect(() => {
     fetchPostInfo()
-    console.log(postNoticeIdx);
   },[])
 
   // 페이지 시작

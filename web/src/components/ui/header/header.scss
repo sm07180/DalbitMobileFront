@@ -23,11 +23,13 @@ header {
     position:fixed;
     top:0;
     left:0;
+    background-color:white;
   }
   &.sticky {
     position:sticky;
     top:0;
     left:0;
+    background-color:white;
   }
   &.back {
     padding:4px;

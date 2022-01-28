@@ -2,7 +2,9 @@ import React from 'react'
 
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
-import ListRow from 'components/ui/listRow/ListRow'
+import GenderItems from 'components/ui/genderItems/GenderItems'
+import NoResult from 'components/ui/new_noResult'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 const LiveView = (props) => {
   const {data} = props
@@ -10,33 +12,45 @@ const LiveView = (props) => {
   return (
     <>
     <div className="liveListWrap">
-      {data.map((list,index) => {
-        return (
-          <div key={index}>
-            <ListRow photo={list.bjProfImg.thumb100x100}>
-              <div className='listContent'>
-                <div className="listItem">
-                  <BadgeItems data={list.liveBadgeList} />
+      {data && data.length > 0 ?
+        <>
+          {data.map((list,index) => {
+            return (
+              <div className="listRow" key={index}>
+                <div className="photo">
+                  <img src={list.bjProfImg.thumb100x100} alt="" />
                 </div>
-                <div className="listItem">
-                  <span className='title'>{list.title}</span>
-                </div>
-                <div className="listItem">
-                  <span className='gender'>{list.bjGender}</span>
-                  <span className="nickNm">{list.bjNickNm}</span>
-                </div>
-                <div className="listItem">
-                  <span className="state">
-                    {list.totalCnt}
-                    {list.entryCnt}
-                    {list.likeCnt}
-                  </span>
+                <div className='listContent'>
+                  <div className="listItem">
+                    <BadgeItems data={list.liveBadgeList} />
+                  </div>
+                  <div className="listItem">
+                    <span className='title'>{list.title}</span>
+                  </div>
+                  <div className="listItem">
+                    <GenderItems data={list.bjGender} />
+                    <span className="nickNm">{list.bjNickNm}</span>
+                  </div>
+                  <div className="listItem">
+                    <span className="state">
+                      <DataCnt type={"totalCnt"} value={list.totalCnt ? list.totalCnt : "123"}/>
+                      <DataCnt type={"entryCnt"} value={list.entryCnt ? list.entryCnt : "123"}/>
+                      {
+                        list.boostCnt > 0 ?
+                          <DataCnt type={"boostCnt"} value={list.boostCnt ? list.boostCnt : "123"}/>
+                        :
+                          <DataCnt type={"likeCnt"} value={list.likeCnt ? list.likeCnt : "123"}/>
+                      }
+                    </span>
+                  </div>
                 </div>
               </div>
-            </ListRow>
-          </div>
-        )
-      })}
+            )
+          })}
+        </>
+        :
+        <NoResult text={'리스트가 없습니다.'} />
+      }
     </div>
     </>
   )

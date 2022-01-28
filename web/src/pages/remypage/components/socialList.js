@@ -4,6 +4,7 @@ import {IMG_SERVER} from 'context/config'
 import Swiper from 'react-id-swiper'
 // global components
 import ListRow from 'components/ui/listRow/ListRow'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import './socialList.scss'
 
@@ -22,7 +23,7 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      <ListRow photo={data}>
+      <ListRow photo={data.profImg.thumb50x50}>
         <div className="listContent">
           <div className="nick">{data.nickNm}</div>
           <div className="time">3시간전</div>
@@ -55,10 +56,8 @@ const SocialList = (props) => {
           </div>
         }
         <div className="info">
-          <i><img src={`${IMG_SERVER}/mypage/dalla/like_icon-g.png`} alt="좋아요" /></i>
-          <span>123</span>
-          <i><img src={`${IMG_SERVER}/mypage/dalla/comment_icon-g.png`} alt="댓글" /></i>
-          <span>321</span>
+          <DataCnt type={`${data.likeYn === " y" ? "rcvLikeCnt active" : "rcvLikeCnt"}`} value={data.rcvLikeCnt ? data.rcvLikeCnt : "123"}/>
+          <DataCnt type={"tailCnt"} value={data.tailCnt ? data.tailCnt : "123"}/>
         </div>
       </div>
     </div>

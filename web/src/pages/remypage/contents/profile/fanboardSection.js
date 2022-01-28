@@ -35,7 +35,7 @@ const FanboardSection = (props) => {
       </ul>
       <div className="subArea">
         <div className="title">전체 2,222</div>
-        <button>최신순</button>
+        <button className='filter'>최신순</button>
       </div>
       <SocialList data={data} />
     </div>

@@ -3,17 +3,15 @@ import React from 'react'
 import './listColumn.scss'
 
 const ListColumn = (props) => {
-  const {photo, children} = props
+  const {photo, children, index} = props
 
   return (
-    <React.Fragment>
-      <div className="listColumn">
-        <div className="photo">
-          <img src={photo} />
-        </div>
-        {children}
+    <div className="listColumn" data-swiper-index={index}>
+      <div className="photo">
+        <img src={photo} alt="" />
       </div>
-    </React.Fragment>
+      {children}
+    </div>
   )
 }
 

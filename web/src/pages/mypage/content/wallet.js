@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useContext, useReducer, useCallback} from 'react'
 import styled from 'styled-components'
 import {useHistory} from 'react-router-dom'
-import {Hybrid} from 'context/hybrid'
 import Api from 'context/api'
 
 // context
@@ -9,23 +8,18 @@ import {Context} from 'context'
 import {OS_TYPE} from 'context/config.js'
 
 // component
-import Paging from 'components/ui/paging.js'
 import List from '../component/wallet/list.js'
 
 // static
 import dalCoinIcon from '../component/images/ic_moon_l@2x.png'
 import byeolCoinIcon from '../component/images/ic_star_l@2x.png'
-import {COLOR_MAIN, COLOR_POINT_Y, COLOR_POINT_P, PHOTO_SERVER} from 'context/color'
-import {WIDTH_MOBILE, IMG_SERVER} from 'context/config'
 import Header from '../component/header.js'
-import paging from 'components/ui/paging.js'
 import WalletPop from '../component/wallet/wallet_pop'
 
 import '../index.scss'
 
 // concat
 
-let timer
 const reducer = (state, action) => {
   switch (action.type) {
     case 'page':
@@ -74,31 +68,12 @@ export default (props) => {
     filterList: [],
     allChecked: true
   })
-  const [totalPage, setTotalPage] = useState(1)
-  const [totalCoin, setTotalCoin] = useState(null)
   const [listDetailed, setListDetailed] = useState([]) // listDetailed: false -> Not found case
   const [showFilter, setShowFilter] = useState(false)
   const [isFiltering, setIsFiltering] = useState(false)
   const [totalCnt, setTotalCnt] = useState(0)
   const [cancelExchange, setCancelExchange] = useState(null)
-  const [coinType, setCoinType] = useState('dal') // type 'dal', 'byeol'
 
-  const changeCoinTypeClick = (type) => {
-    formDispatch({
-      type: 'type',
-      val: type
-    })
-  }
-
-  const returnCoinText = useCallback(
-    (t) => {
-      return t === 'dal' ? '달' : '별'
-    },
-    [formState.coinType]
-  )
-  const returnCoinImg = (t) => {
-    return t === 'dal' ? dalCoinIcon : byeolCoinIcon
-  }
   // 환전취소
   async function cancelExchangeFetch() {
     const {result, data, message} = await Api.postExchangeCancel({
@@ -124,79 +99,6 @@ export default (props) => {
       })
     }
   }
-  const checkSelfAuth = async () => {
-    //2020_10_12 환전눌렀을때 본인인증 나이 제한 없이 모두 가능
-    let myBirth
-    const baseYear = new Date().getFullYear() - 11
-    const myInfoRes = await Api.mypage()
-    if (myInfoRes.result === 'success') {
-      myBirth = myInfoRes.data.birth.slice(0, 4)
-    }
-
-    async function fetchSelfAuth() {
-      const res = await Api.self_auth_check({})
-      if (res.result === 'success') {
-        if (res.data.company === '기타') {
-          return context.action.alert({
-            msg: `휴대폰 본인인증을 받지 않은 경우\n환전이 제한되는 점 양해부탁드립니다`
-          })
-        }
-        const {parentsAgreeYn, adultYn} = res.data
-        if (parentsAgreeYn === 'n' && adultYn === 'n') return history.push('/selfauth_result')
-        if (myBirth > baseYear) {
-          return context.action.alert({
-            msg: `만 14세 미만 미성년자 회원은\n서비스 이용을 제한합니다.`
-          })
-        } else {
-          history.push('/money_exchange')
-        }
-      } else if (res.result === 'fail' && res.code === '0') {
-        history.push('/selfauth')
-      } else {
-        context.action.alert({
-          msg: res.message
-        })
-      }
-    }
-    fetchSelfAuth()
-    // history.push('/money_exchange')
-  }
-
-  //콘켓 쇼모어 이벤트
-
-  useEffect(() => {
-    //스크롤 이벤트
-    let fetching = false
-
-    const scrollEvtHdr = (event) => {
-      if (timer) window.clearTimeout(timer)
-      timer = window.setTimeout(function () {
-        //스크롤
-        const windowHeight = 'innerHeight' in window ? window.innerHeight : document.documentElement.offsetHeight
-        const body = document.body
-        const html = document.documentElement
-        const docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight)
-        const windowBottom = windowHeight + window.pageYOffset
-        const diff = docHeight / 3
-        if (totalPage > formState.currentPage && windowBottom >= docHeight - diff) {
-          // showMoreList()
-          if (!fetching) {
-            formDispatch({
-              type: 'page',
-              val: formState.currentPage + 1
-            })
-          }
-        }
-      }, 50)
-    }
-
-    window.addEventListener('scroll', scrollEvtHdr)
-    return () => {
-      window.removeEventListener('scroll', scrollEvtHdr)
-      fetching = true
-    }
-  }, [totalPage, formState])
-
   async function getMyPageNewWallet() {
     const newFanBoard = await Api.getMyPageNewWallet()
     let mypageNewStg = localStorage.getItem('mypageNew')
@@ -325,55 +227,34 @@ export default (props) => {
     }
   }, [formState.filterList, formState.allChecked])
 
-  useEffect(() => {
-    if (showFilter) {
-      document.body.style.overflowY = 'hidden'
-    } else {
-      document.body.style.overflowY = ''
-    }
-  }, [showFilter])
-
   return (
     <WalletPage>
       <Header>
         <h2 className="header-title">내지갑</h2>
-        <div className="current-value" onClick={() => {history.push('/pay/store')}}>
-          {totalCoin !== null && Number(totalCoin).toLocaleString()}
+        <div className="currentValue" onClick={() => {history.push('/pay/store')}}>
+          <i className='iconDal'></i>
+          {/* <i className='iconStar'></i> */}
+          1,234
         </div>
       </Header>
       <section className="tabWrap">
         <div className="tabBox">
-          <button
-            className={formState.coinType === 'dal' ? 'active' : ''}
-            onClick={() => {
-              changeCoinTypeClick('dal')
-            }}>
+          <button className="active">
             달 내역
           </button>
-          <button
-            className={formState.coinType === 'byeol' ? 'active' : ''}
-            onClick={() => {
-              changeCoinTypeClick('byeol')
-            }}>
+          <button className="">
             별 내역
           </button>
-          <button
-            className="exchange"
+          <button className=""
             onClick={() => {
-              checkSelfAuth()
+              history.push('/money_exchange')
             }}>
             환전
           </button>
         </div>
       </section>
       <List
-        walletData={listDetailed}
-        returnCoinText={returnCoinText}
-        isFiltering={isFiltering}
         setShowFilter={setShowFilter}
-        totalCnt={totalCnt}
-        formState={formState}
-        setCancelExchange={setCancelExchange}
       />
       {showFilter && formState.filterList.length > 0 && (
         <div
@@ -398,7 +279,9 @@ const WalletPage = styled.div`
   section{
     position:relative;
   }
-  .current-value {
+  .currentValue {
+    display:flex;
+    align-items:center;
     position:absolute;
     right:16px;
     top:50%;
@@ -409,7 +292,19 @@ const WalletPage = styled.div`
     font-weight: 400;
     border:1px solid #d6d6d6;
     border-radius:13px;
-    padding:0 9px 0 15px;
+    padding:0 9px 0 7px;
+    .iconDal{
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('https://image.dalbitlive.com/mypage/dalla/icon_dal.png') no-repeat center / 10px 10px;
+    }
+    .iconStar{
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('https://image.dalbitlive.com/mypage/dalla/icon_star.png') no-repeat center / contain;
+    }
   }
   .tabBox{
     display: flex;

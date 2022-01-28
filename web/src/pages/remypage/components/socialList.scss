@@ -59,19 +59,13 @@
       @include swiperPagination;
     }
     .info {
-      @include font(12px,400,#6B6B6B);
-      i {
-        display:inline-block;
-        width:16px;
-        height:16px;
-        img {
-          width:100%;
-          vertical-align: bottom;
-        }
-      }
-      span {
-        line-height:16px;
-        padding: 0 8px 0 4px;
+      @include flex(center);
+      .dataCnt {
+        height: 20px;
+        padding-left: 24px;
+        line-height: 20px;
+        @include font(13px, 400, #6B6B6B);
+        background-size: 20px 20px;
       }
     }
   }
