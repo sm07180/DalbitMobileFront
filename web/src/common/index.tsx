@@ -14,8 +14,9 @@ import ImageViewer from "./image_viewer";
 import MultiImageViewer from "./multi_image_viewer";
 import PipPlayer from "./pip/index";
 import Player from "./player";
+import Navigation from "./navigation";
 
-export default function Common() {
+const common = () => {
   const { globalState, globalAction } = useContext(GlobalContext);
   const { toastStatus, realtimeBroadStatus } = globalState;
   const { clipPlayer, clipInfo } = globalState;
@@ -50,15 +51,16 @@ export default function Common() {
     }
   })
   return (
-    <>
-      <GNB />
-      {pcMenuState && <Guide />}
-      <PipPlayer/>
-      {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} setImgViewerPath={setImgViewerPath} />}
-      {globalState.multiViewer.show && <MultiImageViewer />}
-      {/* {makeFooter()} */}
-      {toastStatus.status === true && <ToastUI />}
-      {realtimeBroadStatus !== null && realtimeBroadStatus.status === true && <RealTimeBroadUI />}
-    </>
+      <>
+        <Navigation />
+        {pcMenuState && <Guide />}
+        <PipPlayer/>
+        {globalState.imgViewerPath !== ""  && <ImageViewer path={globalState.imgViewerPath} setImgViewerPath={setImgViewerPath} />}
+        {globalState.multiViewer.show && <MultiImageViewer />}
+        {/* {makeFooter()} */}
+        {toastStatus.status === true && <ToastUI />}
+        {realtimeBroadStatus !== null && realtimeBroadStatus.status === true && <RealTimeBroadUI />}
+      </>
   );
-}
+};
+export default common

@@ -14,6 +14,7 @@ import SwiperList from './components/SwiperList'
 import LiveView from './components/LiveView'
 
 import './style.scss'
+import Layout from "common/layout";
 
 const topTabmenu = ['DJ','FAN','LOVER']
 const liveTabmenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -118,6 +119,7 @@ const MainPage = () => {
  
   // 페이지 시작
   return (
+    <Layout>
     <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
         <Header title={'라이브'} type={'noBack'} />
@@ -158,6 +160,7 @@ const MainPage = () => {
         <LiveView data={liveList} />
       </section>
     </div>
+      </Layout>
   )
 }
  

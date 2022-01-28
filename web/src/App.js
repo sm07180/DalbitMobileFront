@@ -23,6 +23,7 @@ import {ChatSocketHandler} from "common/realtime/chat_socket";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
+import {getMemberProfile} from "redux/actions/member";
 
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
@@ -30,17 +31,12 @@ const App = () => {
   App.context = () => context
   //본인인증
   const authRef = useRef()
-  const common = useSelector((state)=>state.common);
+
   const dispatch = useDispatch();
+  const memberRdx = useSelector((state)=> state.member);
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
-  useEffect(()=>{
-    if(!common.isLoading){
-      dispatch(setIsLoading())
-    }else{
-      console.log(common)
-    }
-  },[common.isLoading])
+
   const {
     chatInfo,
     mailChatInfo,
@@ -235,20 +231,6 @@ const App = () => {
         }
       }
       if (tokenInfo.data && tokenInfo.data.isLogin) {
-        const fetchProfile = async () => {
-          const myProfile = await Api.profile({
-            params: {
-              memNo: tokenInfo.data.memNo
-            }
-          })
-          if (myProfile.result === 'success') {
-            const data = myProfile.data
-            globalCtx.action.updateProfile(data)
-            globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
-          } else {
-            globalCtx.action.updateProfile(false)
-          }
-        }
         const myInfoRes = async () => {
           const res = await Api.mypage()
           if (res.result === 'success') {
@@ -263,7 +245,11 @@ const App = () => {
             globalCtx.action.updateAdminChecker(false)
           }
         }
-        fetchProfile()
+        dispatch(getMemberProfile({
+          memNo:tokenInfo.data.memNo,
+          authToken:tokenInfo.data.authToken,
+          isLogin:tokenInfo.data.isLogin
+        }))
         myInfoRes()
         fetchAdmin()
       } else {
@@ -306,6 +292,16 @@ const App = () => {
       })
     }
   }
+
+  useEffect(()=>{
+    if(memberRdx.isLogin && memberRdx.data !== null){
+      const data = memberRdx.data
+      globalCtx.action.updateProfile(data)
+      globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
+    } else {
+      globalCtx.action.updateProfile(false)
+    }
+  },[memberRdx])
 
   //SPLASH Room
   async function fetchSplash() {

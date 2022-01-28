@@ -37,6 +37,11 @@ const Layout = (props) => {
           {children}
           {makeFooter}
         </div>
+        <div className={`rightContent`}>
+          <div className={"subContent"}>
+            asdsads
+          </div>
+        </div>
       </div>
     </div>
   );
