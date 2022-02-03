@@ -11,11 +11,12 @@ import LevelUp from "../content/level_up_layer";
 import FullMoon from "../content/broadcast_moon_layer/moon_layer";
 import RouletteLayer from "../content/roulette_layer";
 import MoonLandPop from "../content/moon_land_pop";
+import {useHistory} from "react-router-dom";
 
 
 export default () => {
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
-
+  const history = useHistory()
   const SwitchRendered = useCallback(() => {
     switch (dimLayer.type) {
       case "BROAD_END":
@@ -45,16 +46,19 @@ export default () => {
   }, [dimLayer]);
 
   return (
-    <div
-      id="modal"
-      onClick={(e) => {
-        e.stopPropagation();
-        dispatchDimLayer({
-          type: "INIT",
-        });
-      }}
-    >
-      <SwitchRendered />
-    </div>
+      <div
+          id="modal"
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatchDimLayer({
+              type: "INIT",
+            });
+            if(dimLayer.type === "BROAD_END"){
+              history.push("/");
+            }
+          }}
+      >
+        <SwitchRendered />
+      </div>
   );
 };

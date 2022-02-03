@@ -24,9 +24,40 @@ import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
 import {getMemberProfile} from "redux/actions/member";
+import {getArgoraRtc, getWowzaRtc} from "common/realtime/rtc_socket";
+import {BroadcastContext} from "context/broadcast_ctx";
+import {ClipPlayerHandler} from "common/audio/clip_player";
+import {getProfile, getTokenAndMemno, postAdmin} from "common/api";
+import {removeAllCookieData} from "common/utility/cookie";
+
+function setNativeClipInfo(isJsonString, globalCtx) {
+  const nativeClipInfo = Utility.getCookie('clip-player-info')
+  if (nativeClipInfo) {
+    if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeClipInfo)
+      globalCtx.action.updateClipState(true)
+      globalCtx.action.updateClipPlayerState(parsed.playerState)
+      globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
+      globalCtx.action.updatePlayer(true)
+    }
+  }
+}
+
+function setNativePlayInfo(isJsonString, globalCtx) {
+  const nativeInfo = Utility.getCookie('native-player-info')
+  if (nativeInfo) {
+    if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
+      const parsed = JSON.parse(nativeInfo)
+      globalCtx.action.updatePlayer(true)
+      globalCtx.action.updateMediaPlayerStatus(true)
+      globalCtx.action.updateNativePlayer(parsed)
+    }
+  }
+}
 
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
+  const { broadcastAction } = useContext(BroadcastContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
@@ -161,23 +192,15 @@ const App = () => {
       globalCtx.action.updateToken(tokenInfo.data)
       initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
-        //
         if (customHeader['isFirst'] === 'Y') {
           Hybrid('GetLoginToken', tokenInfo.data)
 
-          if (
-            sessionStorage.getItem('room_no') === undefined ||
-            sessionStorage.getItem('room_no') === null ||
-            sessionStorage.getItem('room_no') === ''
-          ) {
+          const roomNo = sessionStorage.getItem('room_no');
+          const clipInfo = sessionStorage.getItem('clip_info');
+          if ( roomNo === undefined || roomNo === null || roomNo=== '') {
             Utility.setCookie('native-player-info', '', -1)
           }
-
-          if (
-            sessionStorage.getItem('clip_info') === undefined ||
-            sessionStorage.getItem('clip_info') === null ||
-            sessionStorage.getItem('clip_info') === ''
-          ) {
+          if ( clipInfo === undefined || clipInfo === null || clipInfo === '' ) {
             Utility.setCookie('clip-player-info', '', -1)
           }
 
@@ -200,26 +223,8 @@ const App = () => {
 
           // ?webview=new 형태로 이루어진 player종료
         }
-        const nativeInfo = Utility.getCookie('native-player-info')
-        if (nativeInfo) {
-          if (isJsonString(nativeInfo) && window.location.href.indexOf('webview=new') === -1) {
-            const parsed = JSON.parse(nativeInfo)
-            globalCtx.action.updatePlayer(true)
-            globalCtx.action.updateMediaPlayerStatus(true)
-            globalCtx.action.updateNativePlayer(parsed)
-          }
-        }
-
-        const nativeClipInfo = Utility.getCookie('clip-player-info')
-        if (nativeClipInfo) {
-          if (isJsonString(nativeClipInfo) && window.location.href.indexOf('webview=new') === -1) {
-            const parsed = JSON.parse(nativeClipInfo)
-            globalCtx.action.updateClipState(true)
-            globalCtx.action.updateClipPlayerState(parsed.playerState)
-            globalCtx.action.updateClipPlayerInfo({bgImg: parsed.bgImg, title: parsed.title, nickname: parsed.nickname})
-            globalCtx.action.updatePlayer(true)
-          }
-        }
+        setNativePlayInfo(isJsonString, globalCtx);
+        setNativeClipInfo(isJsonString, globalCtx);
 
         const appIsFirst = Utility.getCookie('appIsFirst')
 
@@ -395,47 +400,72 @@ const App = () => {
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
+    async function baseSetting(globalCtx) {
+      const globalAction = globalCtx.globalAction;
+      const globalState = globalCtx.globalState;
+
+      const item = sessionStorage.getItem("clip");
+      if (item !== null) {
+        const data = JSON.parse(item);
+        let newClipPlayer = globalState.clipPlayer;
+        if (newClipPlayer === null) {
+          newClipPlayer = new ClipPlayerHandler(data)
+        };
+        newClipPlayer.setGlobalAction?.(globalAction);
+        const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+        const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
+        if ( fileUrlBoolean && clipNoBoolean ) {
+          newClipPlayer?.init(data.file.url);
+          newClipPlayer?.restart();
+        } else {
+          newClipPlayer?.init(data.file.url);
+        }
+        newClipPlayer?.clipNoUpdate(data.clipNo);
+
+        globalAction.dispatchClipPlayer?.({ type: "init", data: newClipPlayer });
+        globalAction.dispatchClipInfo?.({
+          type: "add",
+          data: { ...data, ...{ isPaused: true } },
+        });
+      }
+      const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+      if (sessionWowzaRtc !== null) {
+        const data = JSON.parse(sessionWowzaRtc);
+        const dispatchRtcInfo = getWowzaRtc(data);
+        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+      }
+
+      const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+      if (sessionAgoraRtc !== null) {
+        const data = JSON.parse(sessionAgoraRtc);
+        const dispatchRtcInfo = getArgoraRtc(data);
+        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+      }
+
+      const broadcastData = sessionStorage.getItem("broadcast_data");
+      if (broadcastData !== null) {
+        const data = JSON.parse(broadcastData);
+        broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+      }
+    }
+    baseSetting(globalCtx)
+
+
     // Renew all initial data
     fetchData()
 
-/*
-    if (sessionStorage.getItem("clip") !== null) {
-      const data = JSON.parse(sessionStorage.getItem("clip")!);
-      let newClipPlayer = clipPlayer;
-      if (clipPlayer === null) newClipPlayer = new ClipPlayerHandler(data);
-      newClipPlayer!.setGlobalAction(globalAction);
-      if (
-          data.file.url === newClipPlayer?.clipAudioTag?.src &&
-          data.clipNo !== newClipPlayer!.clipNo
-    ) {
-        newClipPlayer?.init(data.file.url);
-        newClipPlayer!.restart();
-      } else {
-        newClipPlayer?.init(data.file.url);
-      }
-      newClipPlayer?.clipNoUpdate(data.clipNo);
 
-      globalAction.dispatchClipPlayer!({ type: "init", data: newClipPlayer });
-      globalAction.dispatchClipInfo!({
-        type: "add",
-        data: { ...data, ...{ isPaused: true } },
-      });
-    }
-
-    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-    if (sessionAgoraRtc !== null) {
-      const data = JSON.parse(sessionAgoraRtc);
-      const dispatchRtcInfo = getArgoraRtc(data);
-      globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-    }*/
   }, [])
 
 
   useEffect(() => {
     if (globalCtx.token) {
       if (globalCtx.token.isLogin) {
-        if (globalCtx.noServiceInfo.passed) return
-        ageCheck()
+        if (globalCtx.noServiceInfo.passed){
+          return;
+        } else if(globalCtx.profile){
+          ageCheck()
+        }
       } else if (!globalCtx.token.isLogin) {
         globalCtx.action.updateNoServiceInfo({...globalCtx.noServiceInfo, americanAge: 0, showPageYn: 'n', passed: false})
       }
@@ -515,21 +545,19 @@ const App = () => {
     }
   }, [chatInfo, mailChatInfo]);
 
+  useEffect(() => {
+    if (chatInfo !== null && globalCtx.globalState.splashData !== null) {
+      chatInfo.setSplashData(globalCtx.globalState.splashData);
+    }
+  }, [chatInfo, globalCtx.globalState.splashData]);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
-        ready ? (
-          <>
-            <Interface />
-            <Route />
-          </>
-        ) : (
-          <>
-            <div className="loading">
-              <span></span>
-            </div>
-          </>
-        )
+        <>
+          <Interface />
+          <Route />
+        </>
       ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
         <>
           <NoService />

@@ -15,6 +15,7 @@ import MultiImageViewer from "./multi_image_viewer";
 import PipPlayer from "./pip/index";
 import Player from "./player";
 import Navigation from "./navigation";
+import {isDesktop, isDesktopViewRouter} from "../lib/agent";
 
 const common = () => {
   const { globalState, globalAction } = useContext(GlobalContext);
@@ -38,18 +39,10 @@ const common = () => {
     globalAction.setMultiViewer?.({ show: false }); // when location change set multiviewer hide
   }, [location]);
   const [ pcMenuState , setPcMenuState ] = useState(false);
+
   useEffect(()=>{
-    if( location.pathname.indexOf("/broadcast") > -1
-        || location.pathname.indexOf("/clip_recoding") > -1
-        || location.pathname.indexOf("/clip_upload") > -1
-        || location.pathname.indexOf("/clip/") > -1
-        || location.pathname.indexOf("/mailbox") > -1
-    ){
-      setPcMenuState(true);
-    }else{
-      setPcMenuState(false);
-    }
-  })
+    setPcMenuState(isDesktopViewRouter());
+  },[])
   return (
       <>
         <Navigation />

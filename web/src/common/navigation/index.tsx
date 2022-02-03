@@ -30,6 +30,7 @@ import { MediaType } from "pages/broadcast/constant";
 import {authReq} from 'pages/self_auth'
 import './navigation.scss'
 import styled from "styled-components";
+import {isDesktopViewRouter} from "../../lib/agent";
 
 const Navigation = () => {
   const context = useContext(GlobalContext);
@@ -379,17 +380,8 @@ const Navigation = () => {
 
   const [ pcMenuState , setPcMenuState ] = useState(false);
   useEffect(()=>{
-    if( location.pathname.indexOf("/broadcast") > -1
-        || location.pathname.indexOf("/clip_recoding") > -1
-        || location.pathname.indexOf("/clip_upload") > -1
-        || location.pathname.indexOf("/clip/") > -1
-        || location.pathname.indexOf("/mailbox") > -1
-    ){
-      setPcMenuState(true);
-    }else{
-      setPcMenuState(true);
-    }
-  })
+    setPcMenuState(isDesktopViewRouter());
+  },[])
   return (
       <>
         {pcMenuState &&

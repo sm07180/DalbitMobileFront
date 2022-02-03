@@ -85,15 +85,11 @@ const ClipPlayer = React.lazy(() => import("pages/clip_player"));
 const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
+const MoveToAlert = React.lazy(() => import( "common/alert/MoveToAlert"));
 
 const Router = () => {
   return (
-    <React.Suspense
-      fallback={
-        <div className="loading">
-          <span></span>
-        </div>
-      }>
+    <React.Suspense fallback={false}>
       <Common />
       <ScrollToTop />
       <Message />
@@ -179,6 +175,7 @@ const Router = () => {
         <Redirect to="/error" />
       </Switch>
       <Alert />
+      <MoveToAlert />
     </React.Suspense>
   )
 };

@@ -69,32 +69,32 @@ export default function SideWrapper() {
 
     async function broadcastJoinConfirm() {
       globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          type: "confirm",
-          content: `이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?`,
-          callback: () => {
-            const callResetListen = async () => {
-              const { result, message } = await broadcastAllExit();
-              if (result === "success") {
-                setTimeout(() => {
-                  broadcastInit();
-                }, 700);
-              } else {
-                globalAction.setAlertStatus &&
-                  globalAction.setAlertStatus({
-                    status: true,
-                    title: "알림",
-                    content: `${message}`,
-                    callback: () => history.push("/"),
-                    cancelCallback: () => history.push("/"),
-                  });
-              }
-            };
-            callResetListen();
-          },
-          cancelCallback: () => history.push("/"),
-        });
+      globalAction.setAlertStatus({
+        status: true,
+        type: "confirm",
+        content: `이미 로그인 된 기기가 있습니다.\n방송 입장 시 기존기기의 연결이 종료됩니다.\n그래도 입장하시겠습니까?`,
+        callback: () => {
+          const callResetListen = async () => {
+            const { result, message } = await broadcastAllExit();
+            if (result === "success") {
+              setTimeout(() => {
+                broadcastInit();
+              }, 700);
+            } else {
+              globalAction.setAlertStatus &&
+              globalAction.setAlertStatus({
+                status: true,
+                title: "알림",
+                content: `${message}`,
+                callback: () => history.push("/"),
+                cancelCallback: () => history.push("/"),
+              });
+            }
+          };
+          callResetListen();
+        },
+        cancelCallback: () => history.push("/"),
+      });
     }
 
     async function broadcastExitAction(exitRoomNo) {
@@ -123,13 +123,13 @@ export default function SideWrapper() {
         }
         rtcSessionClear();
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${message}`,
-            callback: () => history.push("/"),
-            cancelCallback: () => history.push("/"),
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          title: "알림",
+          content: `${message}`,
+          callback: () => history.push("/"),
+          cancelCallback: () => history.push("/"),
+        });
       }
     }
     //청취자 입장
@@ -145,18 +145,20 @@ export default function SideWrapper() {
 
         setRoomOwner(baseData.memNo === bjMemNo ? true : false);
         broadcastAction.dispatchRealTimeValue &&
-          broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
+        broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
         broadcastAction.dispatchRoomInfo &&
-          broadcastAction.dispatchRoomInfo({
-            type: "reset",
-            data: roomInfo,
-          });
+        broadcastAction.dispatchRoomInfo({
+          type: "reset",
+          data: roomInfo,
+        });
+        sessionStorage.setItem("broadcast_data", JSON.stringify(roomInfo));
+
         broadcastAction.setChatFreeze!(isFreeze);
         broadcastAction.setExtendTimeOnce!(isExtend);
         broadcastAction.setUserCount &&
-          broadcastAction.setUserCount((prev) => {
-            return { ...prev, history: roomInfo.entryCnt };
-          });
+        broadcastAction.setUserCount((prev) => {
+          return { ...prev, history: roomInfo.entryCnt };
+        });
 
         chatInfo && chatInfo.setChatFreeze(isFreeze);
         chatInfo?.setRoomInfo(roomInfo);
@@ -205,36 +207,36 @@ export default function SideWrapper() {
         } else if (code === "-8") {
           // Host Join case
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          });
         } else if (code === "-14") {
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: `${message}`,
-              callback: () => {
-                history.push(`/self_auth/self?type=adultJoin`);
-              },
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${message}`,
+            callback: () => {
+              history.push(`/self_auth/self?type=adultJoin`);
+            },
+          });
         } else if (code === "-99") {
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: `${message}`,
-              callback: () => {
-                history.push({
-                  pathname: "/login",
-                  state: `/broadcast/${roomNo}`,
-                });
-              },
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${message}`,
+            callback: () => {
+              history.push({
+                pathname: "/login",
+                state: `/broadcast/${roomNo}`,
+              });
+            },
+          });
         } else {
           if (chatInfo && chatInfo !== null) {
             chatInfo.privateChannelDisconnect();
@@ -244,13 +246,13 @@ export default function SideWrapper() {
           }
           rtcSessionClear();
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: `${message}`,
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${message}`,
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          });
         }
       }
     }
@@ -270,22 +272,21 @@ export default function SideWrapper() {
           currentMemNo: globalState.baseData.isLogin === true ? globalState.baseData.memNo : "",
           broadState: newRoomInfo.data.state === 2 ? false : true,
         };
-        console.log("broadcastInit====>",roomInfo)
         const { auth, fanRank, likes, rank, isExtend, isFreeze, isLike, miniGameList } = roomInfo;
         setRoomOwner(auth === 3 ? true : false);
         broadcastAction.dispatchRealTimeValue &&
-          broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
-        broadcastAction.dispatchRoomInfo &&
-          broadcastAction.dispatchRoomInfo({
-            type: "reset",
-            data: roomInfo,
-          });
+        broadcastAction.dispatchRealTimeValue({ type: "setLikeFanRank", data: { fanRank, likes, rank } });
+        // broadcastAction.dispatchRoomInfo &&
+        //   broadcastAction.dispatchRoomInfo({
+        //     type: "reset",
+        //     data: roomInfo,
+        //   });
         broadcastAction.setExtendTimeOnce!(isExtend);
         broadcastAction.setChatFreeze!(isFreeze);
         broadcastAction.setUserCount &&
-          broadcastAction.setUserCount((prev) => {
-            return { ...prev, history: roomInfo.entryCnt };
-          });
+        broadcastAction.setUserCount((prev) => {
+          return { ...prev, history: roomInfo.entryCnt };
+        });
         chatInfo && chatInfo.setChatFreeze(isFreeze);
         chatInfo?.setRoomInfo(roomInfo);
         chatInfo?.setBroadcastLayerAction({ dispatchLayer, dispatchDimLayer });
@@ -320,13 +321,13 @@ export default function SideWrapper() {
         } else if (newRoomInfo.code === "-8") {
           // Host Join case
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: "해당 방송은 다른 기기에서 DJ로 방송 중이므로 청취자로 입장할 수 없습니다.",
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          });
         } else if (newRoomInfo.code + "" === "-3") {
           //해당방 회원 아님 룸조인 처리
           const listenRoomNo = sessionStorage.getItem("room_no");
@@ -338,27 +339,24 @@ export default function SideWrapper() {
           }
         } else {
           globalAction.setAlertStatus &&
-            globalAction.setAlertStatus({
-              status: true,
-              title: "알림",
-              content: `${newRoomInfo.message}`,
-              callback: () => history.push("/"),
-              cancelCallback: () => history.push("/"),
-            });
+          globalAction.setAlertStatus({
+            status: true,
+            title: "알림",
+            content: `${newRoomInfo.message}`,
+            callback: () => history.push("/"),
+            cancelCallback: () => history.push("/"),
+          });
         }
       }
     }
 
     (async () => {
       // await getSplashData();
-      console.log("async 374")
       if (rtcInfo === null || rtcInfo.userType === UserType.LISTENER) {
         if (rtcInfo !== null) {
-          console.log("async 378")
           rtcInfo.socketDisconnect();
           // rtcInfo.stop();
         }
-        console.log("async 382")
         broadcastInit();
       } else if (rtcInfo !== null && rtcInfo.userType === UserType.HOST) {
         const { roomInfo } = rtcInfo;
@@ -463,50 +461,51 @@ export default function SideWrapper() {
   // } else {
   //   return <></>;
   // }
+  // console.log("broadcastState====>",broadcastState.roomInfo)
   return (
-    <>
-      {roomOwner !== null && broadcastState.roomInfo !== null && (
-        <RightSide
-          splashData={splashData}
-          roomOwner={roomOwner}
-          roomNo={roomNo}
-          roomInfo={broadcastState.roomInfo}
-          forceChatScrollDown={forceChatScrollDown}
-          setForceChatScrollDown={setForceChatScrollDown}
-        />
-      )}
+      <>
+        {roomOwner !== null && broadcastState.roomInfo !== null && (
+            <RightSide
+                splashData={splashData}
+                roomOwner={roomOwner}
+                roomNo={roomNo}
+                roomInfo={broadcastState.roomInfo}
+                forceChatScrollDown={forceChatScrollDown}
+                setForceChatScrollDown={setForceChatScrollDown}
+            />
+        )}
 
-      {(roomOwner !== null && broadcastState.roomInfo !== null && fetching) ? (
-        <Agora
-        roomOwner={roomOwner}
-        roomNo={roomNo}
-        roomInfo={broadcastState.roomInfo}
-        forceChatScrollDown={forceChatScrollDown}
-        setForceChatScrollDown={setForceChatScrollDown}
-        />
-        // <LeftSide
-        //   roomOwner={roomOwner}
-        //   roomNo={roomNo}
-        //   roomInfo={broadcastState.roomInfo}
-        //   forceChatScrollDown={forceChatScrollDown}
-        //   setForceChatScrollDown={setForceChatScrollDown}
-        // />
-      ) : (
-        <div className="temp-left-side"></div>
-      )}
+        {(roomOwner !== null && broadcastState.roomInfo !== null && fetching) ? (
+            <Agora
+                roomOwner={roomOwner}
+                roomNo={roomNo}
+                roomInfo={broadcastState.roomInfo}
+                forceChatScrollDown={forceChatScrollDown}
+                setForceChatScrollDown={setForceChatScrollDown}
+            />
+            // <LeftSide
+            //   roomOwner={roomOwner}
+            //   roomNo={roomNo}
+            //   roomInfo={broadcastState.roomInfo}
+            //   forceChatScrollDown={forceChatScrollDown}
+            //   setForceChatScrollDown={setForceChatScrollDown}
+            // />
+        ) : (
+            <div className="temp-left-side"></div>
+        )}
 
-      {broadcastState.roomInfo?.mediaType === MediaType.VIDEO && (
-        <ChatSide
-          forceChatScrollDown={forceChatScrollDown}
-          setForceChatScrollDown={setForceChatScrollDown}
-          roomOwner={roomOwner}
-          roomNo={roomNo}
-          roomInfo={broadcastState.roomInfo}
-        />
-      )}
+        {broadcastState.roomInfo?.mediaType === MediaType.VIDEO && (
+            <ChatSide
+                forceChatScrollDown={forceChatScrollDown}
+                setForceChatScrollDown={setForceChatScrollDown}
+                roomOwner={roomOwner}
+                roomNo={roomNo}
+                roomInfo={broadcastState.roomInfo}
+            />
+        )}
 
-      {dimLayer.status === true && <LayerSwitchRendered />}
-    </>
+        {dimLayer.status === true && <LayerSwitchRendered />}
+      </>
   );
 }
 

@@ -1,7 +1,7 @@
-import React, {createContext, useReducer, useState} from "react";
+import React, { createContext, useReducer, useState } from "react";
 
 // constant
-import {tabType} from "pages/broadcast/constant";
+import { tabType } from "pages/broadcast/constant";
 import {userBroadcastSettingType} from "../common/realtime/chat_socket";
 
 type StateType = {
@@ -107,6 +107,7 @@ const roomInfoReducer = (state: roomInfoType, action: { type: string; data?: any
 
   switch (type) {
     case "broadcastSettingUpdate": {
+      console.log('@@ broadcastSettingUpdate', data)
       return {
         ...state,
         ...action.data,

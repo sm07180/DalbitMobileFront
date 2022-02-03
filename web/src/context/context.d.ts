@@ -1,4 +1,9 @@
 /** global context type */
+type MoveToAlertType = {
+  state: 'ready' | 'moved';
+  dest: string;
+  alertStatus: AlertStatusType;
+};
 type AlertStatusType = {
   status: boolean;
   type?: string;
@@ -204,6 +209,8 @@ type roomInfoType = {
   isVideo: boolean;
   isMic: boolean;
 
+  // 웰컴 이벤트 객체
+  eventInfoMap?: { imgURL ?: string; pageLink ?: string; positionX ?: number; positionY ?: number; visible : boolean;} | null;
   // state: boolean;
 
   // bjMemNo: string;

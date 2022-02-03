@@ -233,6 +233,13 @@ const initialData = {
     alertStatus: {
       status: false,
     },
+    moveToAlert: {
+      state: 'ready',
+      dest: '',
+      alertStatus: {
+        status: false
+      }
+    },
     toastStatus: {
       status: false,
     },
@@ -470,6 +477,9 @@ const GlobalProvider = (props) => {
   );
   const [alertStatus, setAlertStatus] = useState(
       initialData.globalState.alertStatus
+  );
+  const [moveToAlert, setMoveToAlert] = useState(
+      initialData.globalState.moveToAlert
   );
   const [toastStatus, callSetToastStatus] = useState(
       initialData.globalState.toastStatus
@@ -1077,6 +1087,7 @@ const GlobalProvider = (props) => {
   const globalState = {
     baseData,
     alertStatus,
+    moveToAlert,
     tooltipStatus,
     toastStatus,
     layerStatus,
@@ -1121,6 +1132,7 @@ const GlobalProvider = (props) => {
   const globalAction = {
     setBaseData,
     setAlertStatus,
+    setMoveToAlert,
     setTooltipStatus,
     callSetToastStatus,
     setUserProfile,
