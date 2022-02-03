@@ -19,14 +19,17 @@ import './style.scss'
 
 const SignUpPage = () => {
   const context = useContext(Context)
-  const [textLog, setTextLog] = useState('error')
+  const [textLog, setTextLog] = useState('error')  // success, error
   const [step, setStep] = useState(1);
 
   const temp = (e) => {
-    console.log('test');
-    const nodeElement = e.target.perentsNode
+    const prevElement = e.target.parentNode;
     if (textLog === 'error') {
-      nodeElement.classList.add('error')
+      prevElement.classList.add('error')
+      e.target.nextSibling.innerHTML = '휴대폰 번호 형식에 맞게 입력해 주세요.'
+    }
+    if (textLog === 'success') {
+      prevElement.classList.add('success')
     }
   }
 
@@ -34,7 +37,7 @@ const SignUpPage = () => {
     if (step < 4) {
       setStep(step + 1);
     } else {
-      setStep(0)
+      setStep(1)
     }
   }
 
@@ -52,7 +55,6 @@ const SignUpPage = () => {
               maxLength={11}
               autoComplete="off"
             />
-            {textLog && <p className='textLog'>휴대폰 번호 형식에 맞게 입력해주세요.</p>}
           </InputItems>
           <InputItems>
             <input

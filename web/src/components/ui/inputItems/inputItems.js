@@ -26,6 +26,7 @@ const InputItems = (props) => {
             {button &&
               <button className='inputBtn' onClick={onClick}>{button}</button>
             }
+            {onClick && <p className='textLog'></p>}
           </>
         }
         {type === 'textarea' &&
