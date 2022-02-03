@@ -32,8 +32,11 @@ const MySetting = React.lazy(() => import('pages/mysetting'))
 
 const Store = React.lazy(() => import('pages/restore'))
 
-const Pay = React.lazy(() => import('pages/new_pay'))
+const Wallet = React.lazy(() => import('pages/remypage/contents/wallet/wallet.js'))
 const Exchange = React.lazy(() => import('pages/reExchange'))
+const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
+
+const Pay = React.lazy(() => import('pages/new_pay'))
 const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
@@ -67,7 +70,6 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
-const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
@@ -100,6 +102,8 @@ export default () => {
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
+        
+        <Route exact path="/wallet" component={Wallet} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />

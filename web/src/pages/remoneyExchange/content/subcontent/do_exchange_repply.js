@@ -1,9 +1,11 @@
 import React from 'react'
 
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+
 export default function ExchangeRepply() {
   return (
     <>
-      <div className="formBox repply">
+      <div className="formBox">
         <div className="listRow">
           <div className="title">예금주</div>
           <div className="inputBox">
@@ -49,6 +51,7 @@ export default function ExchangeRepply() {
           </div>
         </div>
       </div>
+      <SubmitBtn text={'환전 신청하기'} />
     </>
   )
 }

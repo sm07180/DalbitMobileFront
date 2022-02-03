@@ -29,14 +29,16 @@ const BankTransfer = () => {
 
   return (
     <section className="bankResult">
-      <div className="result">
-        <p className="title">
-          <span>01030965957</span>(으)로<br />
-          가상계좌 정보를 발송했습니다!
-        </p>
-        <p>
-          24시간 내 해당계좌로 입금하시면 <br /> 달 충전이 완료됩니다.
-        </p>
+      <div className="top-info">
+        <div className="result">
+          <p className="title">
+            <span>01030965957</span>(으)로<br />
+            가상계좌 정보를 발송했습니다!
+          </p>
+          <p>
+            24시간 내 해당계좌로 입금하시면 <br /> 달 충전이 완료됩니다.
+          </p>
+        </div>
       </div>
       <div className="receiptBoard">
         <div className="text-wrap">

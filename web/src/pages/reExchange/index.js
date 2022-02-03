@@ -1,43 +1,67 @@
-/**
- * @file /exchange/index.js
- * @brief 달 교환 페이지
- */
-import React, {useContext} from 'react'
-import styled from 'styled-components'
-import _ from 'lodash'
-//layout
-import Layout from 'pages/common/layout'
-//context
-import {Context} from 'context'
-import {COLOR_MAIN, COLOR_POINT_P} from 'context/color'
-import {IMG_SERVER, WIDTH_TABLET_S, WIDTH_PC_S, WIDTH_TABLET, WIDTH_MOBILE, WIDTH_MOBILE_S} from 'context/config'
+import React, {useEffect, useState, useContext} from 'react'
+import {Context} from "context";
 
-//components
-import Contents from './content'
+import Api from 'context/api'
+import Utility from 'components/lib/utility'
+
+// global components
 import Header from 'components/ui/header/Header'
-// import Header from 'components/ui/new_header.js'
+import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
-export default (props) => {
-  //---------------------------------------------------------------------
-  //context
-  const context = useContext(Context)
-  const {profile} = context
-  //---------------------------------------------------------------------
+// css
+import './style.scss'
+
+const dalPrice = [
+  {dal: 30,price:50},
+  {dal: 120,price:200},
+  {dal: 180,price:300},
+  {dal: 300,price:500},
+  {dal: 600,price:1000},
+  {dal: 3000,price:5000},
+]
+
+const StorePage = () => {
+  const context = useContext(Context);
+  const [select, setSelect] = useState(3);
+
+  // 조회 Api
+
+  // 결재단위 셀렉트
+  const onSelectDal = (e) => {
+    const {targetIndex} = e.currentTarget.dataset
+    
+    setSelect(targetIndex)
+  }
+
   return (
-    <Layout {...props} status="no_gnb">
-      <Content>
-        <Header type={'back'} title="달 교환" />
-        {/* 교환아이템 */}
-        <Contents {...props} />
-      </Content>
-    </Layout>
+    <div id="storePage">
+      <Header title={'달교환'} position="sticky" type="back" />
+      <section className="myhaveDal">
+        <div className="title">내가 보유한 별</div>
+        <span>12345</span>
+      </section>
+      <section className="storeDalList">
+        {dalPrice && dalPrice.map((data,index) => {
+          return (
+            <div className={`item ${Number(select) === index && 'active'}`} data-target-index={index} onClick={onSelectDal} key={index}>
+              <div className="itemIcon"></div>
+              <div className="dal">{`${Utility.addComma(data.dal)}`}</div>
+              {data.bonus !== undefined && <div className='bonus'>{`+${Utility.addComma(data.bonus)}`}</div>}
+              <div className="price">{`${Utility.addComma(data.price)}`} 별</div>
+            </div>
+          )
+        })}
+      </section>
+      <SubmitBtn text="교환하기" />
+      <section className="noticeInfo">
+        <h3>유의사항</h3>
+        <p>달교환은 최소 50별 이상부터 가능합니다.</p>
+        <p>별을 달로 교환할 경우 교환달로 아이템 선물이 가능합니다.</p>
+        <p>별을 달로 교환할 경우 1exp를 획득할 수 있습니다.</p>
+      </section>
+    </div>
   )
 }
-//---------------------------------------------------------------------
-const Content = styled.section`
-  min-height: 300px;
-  height: 100%;
-  margin: 0 auto;
-  padding: 0 0 120px 0;
-  background: #eeeeee;
-`
+
+export default StorePage

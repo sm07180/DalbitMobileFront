@@ -1,0 +1,232 @@
+@import "components/ui/_mixin.scss";
+
+#walletPage{
+  position: relative;
+  min-height: 100vh;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 500;
+  color:#000;
+  background:#fff;
+  section{
+    position:relative;
+  }
+  .currentValue {
+    display:flex;
+    align-items:center;
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+    height:26px;
+    line-height:26px;
+    font-size: 12px;
+    font-weight: 400;
+    border:1px solid #d6d6d6;
+    border-radius:13px;
+    padding:0 9px 0 7px;
+    .iconDal{
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('https://image.dalbitlive.com/mypage/dalla/icon_dal.png') no-repeat center / 10px 10px;
+    }
+    .iconStar{
+      display: block;
+      width: 18px;
+      height: 18px;
+      background: url('https://image.dalbitlive.com/mypage/dalla/icon_star.png') no-repeat center / contain;
+    }
+  }
+  .tabBox{
+    display: flex;
+    align-items: center;
+    width:100%;
+    height:42px;
+    margin-bottom: 8px;
+    padding:0 16px;
+    button{
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      font-size: 16px;
+      color: #acacac;
+      background-color: #ffffff;
+      border-bottom:2px solid #f2f2f2;
+      &.active {
+        font-weight:600;
+        color:#000;
+        border-bottom: solid 2px #202020;
+      }
+    }
+  }
+  .listWrap{
+    position: relative;
+    margin-top: 19px;
+    .option{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top: 11px;
+      padding:0 16px;
+      height:28px;
+      .selectBox{
+        font-size:15px;
+        font-weight:400;
+        & > button {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          font-weight: bold;
+          .arrowDownIcon{
+            @include BGIMG('mypage/dalla/drop_down_icon.png');
+            width: 20px;
+            height:20px;
+            margin-left: 3px;
+          }
+        }
+      }
+      span {
+        font-size: 13px;
+        font-weight: 400;
+        color: #666;
+      }
+    }
+    .listBox{
+      .list {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width:100%;
+        height: 65px;
+        text-align: center;
+        border-bottom: 1px solid #f5f5f5;
+        padding: 0 16px;
+        .content {
+          display:flex;
+          flex-direction:column;
+          align-items:flex-start;
+          width: calc(100% - 100px);
+          flex:none;
+          font-size: 15px;
+          font-weight: 500;
+          .item{
+            display:flex;
+            align-items:center;
+            &.date {
+              font-size: 12px;
+              color: #707070;
+            }
+            .divider{
+              width:1px;
+              height:14px;
+              background:#000;
+              margin:0 5px;
+            }
+            .exchangeCancelBtn {
+              width:55px;
+              height: 22px;
+              margin-left: 4px;
+              border-radius: 11px;
+              background-color: #FF3C7B;
+              font-size: 12px;
+              text-align: center;
+              color: #fff;
+            }
+            .privateBdg{
+              height:16px;
+              line-height:16px;
+              background:#999999;
+              border-radius:20px;
+              font-size:12px;
+              color:#fff;
+              text-align:center;
+              margin-left:4px;
+              padding:0 4px;
+            }
+          }
+        }
+        .quantity {
+          font-size: 17px;
+          color: #000000;
+          margin-left:auto;
+          &.minous{
+            color:#999;
+            font-weight:400;
+          }
+        }
+      }
+    }
+  }
+}
+#walletPop {
+  width: 328px;
+  height: auto;
+  background-color: #fff;
+  border-radius: 20px;
+
+  .title {
+    padding: 16px 0;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 21px;
+    text-align: center;
+  }
+
+  .contents {
+    min-height: 441px;
+    padding: 12px 16px;
+    background-color: #eee;
+
+    &__buttonWrap {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      width: 100%;
+      margin-bottom: 8px;
+      border-radius: 12px;
+      background-color: #fff;
+      & > button {
+        display: flex;
+        align-items: center;
+        padding: 6px 10px;
+        text-align: left;
+
+        & > span {
+          margin-left: 10px;
+          font-size: 14px;
+        }
+      }
+
+      & > button:not(:last-child) {
+        border-bottom: 1px solid #eee;
+      }
+    }
+  }
+
+  .buttonWrap {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 16px 16px 16px;
+    background-color: #eee;
+    border-radius: 0 0 20px 20px;
+    & > button {
+      width: 100%;
+      height: 44px;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 18px;
+      line-height: 21px;
+      text-align: center;
+    }
+
+    & > button:first-child {
+      margin-right: 4px;
+      background-color: #757575;
+    }
+
+    & > button:last-child {
+      background-color: #632beb;
+    }
+  }
+}
