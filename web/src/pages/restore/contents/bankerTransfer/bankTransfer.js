@@ -61,7 +61,7 @@ const BankTransfer = () => {
         <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
       </section>
       <section className="bottomInfo">
-          <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
+        <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
       </section>
       </>
       :

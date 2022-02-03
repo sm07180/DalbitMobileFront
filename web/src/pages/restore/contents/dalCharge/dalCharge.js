@@ -29,7 +29,9 @@ const DalCharge = () => {
     const {targetIndex} = e.currentTarget.dataset
     
     setSelect(targetIndex)
-    setPopSlide(!popSlide)
+    if (Number(targetIndex) === 1) {
+      setPopSlide(!popSlide)
+    }
   }
 
   useEffect(() => {
@@ -98,7 +100,12 @@ const DalCharge = () => {
             <p className='name'>홍길동</p>
             <p className='phoneNum'>010-111-2222</p>
           </div>
-          <p className='text'></p>
+          <p className='text'>
+          안전한 계좌 정보 등록을 위해 한번 더<br/>
+          본인인증을 해주셔야 합니다.<br/>
+          추가 인증 시에는 반드시 위의 회원정보와 일치해야 합니다.<br/>
+          추가 인증은 딱 1회만 진행됩니다.
+          </p>
           <SubmitBtn text="다음" />
         </PopSlide>
       }

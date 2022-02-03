@@ -15,7 +15,12 @@
     height:50px;
     margin-bottom:16px;
     border-radius:16px;
+    border:1px solid #F6F6F6;
     background-color:#F6F6F6;
+    &.focus {
+      border-color:#FF3C7B;
+      background-color:white;
+    }
     input {
       flex:1;
       margin:0 16px;
