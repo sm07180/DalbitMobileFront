@@ -80,38 +80,20 @@
           color: #FF3C7B;
         }
       }
-      
-      &.more {
-        overflow: hidden;
-        height: 144px;
-        transition: height 0.3s ease-in-out;
-      }
-      &.more button:nth-child(1) {
-        width: calc(50% - 2px);
-      }
-      &.more.false {
-        height: 0px;
-      }
-      &.more.true {
-        height: 144px;
-      }
     }
   }
   .noticeInfo {
     padding:20px 16px 30px;
     h3 {
       position:relative;
-      display: flex;
+      @include flex;
       margin-bottom: 8px;
       padding-left: 20px;
-      color: #FF3C7B;
-      font-size: 12px;
+      @include font(12px,400,#FF3C7B);
       &::after{
         content:"";
-        position:absolute;
-        top:50%;
+        @include position-vertical;
         left:2px;
-        transform:translateY(-50%);
         width:16px;
         height:16px;
         background:url("https://image.dalbitlive.com/store/dalla/ico_info.png") no-repeat left / contain;
@@ -131,7 +113,7 @@
       }
     }
   }
-  .inquiry{
+  .bottomInfo{
     @include flex(center,center);
     height:58px;
     margin-top:auto;

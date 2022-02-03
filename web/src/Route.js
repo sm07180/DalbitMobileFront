@@ -20,9 +20,13 @@ const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
-const ReSearch = React.lazy(() => import('pages/research'))
 
 const MyPage = React.lazy(() => import('pages/remypage'))
+
+const ReSearch = React.lazy(() => import('pages/research'))
+
+const ReSetting = React.lazy(() => import('pages/resetting'))
+
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 
@@ -88,6 +92,9 @@ export default () => {
         
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
+
+        <Route exact path="/setting" component={ReSetting} />
+        <Route exact path="/setting/:type" component={ReSetting} />
         
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />

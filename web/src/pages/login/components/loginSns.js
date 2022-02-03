@@ -9,12 +9,6 @@ import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
 import LoginForm from './loginForm'
 import Header from './header'
 
-import appleLogo from '../static/apple_logo.svg'
-import facebookLogo from '../static/facebook_logo.svg'
-import googleLogo from '../static/google_logo.svg'
-import kakaoLogo from '../static/kakao_logo.svg'
-import naverLogo from '../static/naver_logo.svg'
-import phoneLogo from '../static/phone_logo.svg'
 import Utility from 'components/lib/utility'
 
 export default function loginSns({props}) {
@@ -96,27 +90,27 @@ export default function loginSns({props}) {
         {(globalCtx.nativeTid == '' || globalCtx.nativeTid == 'init') && (
           <div className="socialLogin">
             <button className="social-google-btn" onClick={() => fetchSocialData('google')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-google.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-google.png" />
               <span>구글로 계속하기</span>
             </button>            
             <button className="social-kakao-btn" onClick={() => fetchSocialData('kakao')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-kakao.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-kakao.png" />
               <span>카카오로 계속하기</span>
             </button>
             <button className="social-apple-btn" onClick={() => fetchSocialData('apple')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-apple.png" />
               <span>apple로 계속하기</span>
             </button>
             <button className="social-phone-btn" onClick={() => setLoginPop(true)}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-phone.png" />
               <span>휴대폰번호로 계속하기</span>
             </button>
             <button className="social-naver-btn" onClick={() => fetchSocialData('naver')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-naver.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-naver.png" />
               <span>네이버로 계속하기</span>
             </button>
             <button className="social-facebook-btn" onClick={() => fetchSocialData('facebook')}>
-              <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-facebook.png" />
+              <img className="icon" src="https://image.dalbitlive.com/login/dalla/login-facebook.png" />
               <span>페이스북으로 계속하기</span>
             </button>    
           </div>

@@ -234,18 +234,12 @@
           .info {
             @include position-top-right(10px,10px);
             @include flex(center);
-            i {
-              display:inline-block;
-              width:16px;height:16px;
-              margin-left:16px;
-              &.like {@include BGIMG('mypage/dalla/like_icon-w.png');}
-              &.comment {@include BGIMG('mypage/dalla/comment_icon-w.png');}
-            }
-            span {
-              height:16px;
-              line-height:14px;
-              margin-left:2px;
-              @include font(12px,400,white);
+            .dataCnt {
+              @include font(12px, 400, #FFF);
+              margin-right: 16px;
+              &:last-child{ margin-right: 0;}
+              &.goodCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-clipGoodCnt.png");}
+              &.replyCnt {background-image: url("https://image.dalbitlive.com/common/dataCnt/dataIcon-clipReplyCnt.png");}
             }
           }
         }

@@ -4,6 +4,7 @@ import Api from 'context/api'
 
 import TabBtn from 'components/ui/tabBtn/TabBtn.js'
 import ListRow from 'components/ui/listRow/ListRow'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 export default (props) => {
   const {searchResult} = props
@@ -104,7 +105,7 @@ export default (props) => {
                                   {/* 원래 UID가 들어가야 하나 API에서 값을 주고 있지 않아 임시로 memNo로 삼입 함 */}
                                 </div>
                                 <div className="listItem dataCtn">
-                                  <span className='fanCnt'>{list.fanCnt}</span>
+                                  <DataCnt type={"fanCnt"} value={list.fanCnt}/>
                                 </div>
                               </div>
                             </ListRow>     
@@ -156,9 +157,9 @@ export default (props) => {
                                   <span className="nickNm">{list.bjNickNm}</span>
                                 </div>
                                 <div className="listItem dataCtn">
-                                  <span className='newFanCtn'>{list.newFanCnt}</span>
-                                  <span className='totalCtn'>{list.totalCnt}</span>
-                                  <span className='likeCtn'>{list.likeCnt}</span>
+                                  <DataCnt type={"totalCnt"} value={list.totalCnt}/>
+                                  <DataCnt type={"newFanCnt"} value={list.newFanCnt}/>
+                                  <DataCnt type={"likeCnt"} value={list.likeCnt}/>
                                 </div>
                               </div>
                             </ListRow>     
@@ -210,8 +211,8 @@ export default (props) => {
                                   <span className="nickNm">{list.nickName}</span>
                                 </div>
                                 <div className="listItem dataCtn">
-                                  <span className='replyCnt'>{list.replyCnt}</span>
-                                  <span className='goodCnt'>{list.goodCnt}</span>
+                                  <DataCnt type={"replyCnt"} value={list.replyCnt}/>
+                                  <DataCnt type={"goodCnt"} value={list.goodCnt}/>
                                 </div>
                               </div>
                             </ListRow>     

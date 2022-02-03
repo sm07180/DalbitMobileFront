@@ -7,10 +7,11 @@ import Utility from 'components/lib/utility'
 // global components
 import Header from 'components/ui/header/Header'
 import BannerSlide from 'components/ui/bannerSlide/BannerSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
-import DalCharge from './contents/dalCharge'
-import BankTransfer from './contents/bankTransfer'
+import DalCharge from './contents/dalCharge/dalCharge'
+import BankTransfer from './contents/bankerTransfer/bankTransfer'
 // css
 import './style.scss'
 
@@ -44,7 +45,7 @@ const StorePage = () => {
       <div id="storePage">
         <Header title={'스토어'} position="sticky" type="back" />
         <section className="myhaveDal">
-          <div className='title'>내가 보유한 달</div>
+          <div className="title">내가 보유한 달</div>
           <span>12345</span>
         </section>
         <section className="bannerWrap">
@@ -62,7 +63,7 @@ const StorePage = () => {
             )
           })}
         </section>
-        <button className="charge">결제하기</button>
+        <SubmitBtn text="결제하기" />
       </div>
       }
       {orderPage === true && <BankTransfer />}
