@@ -8,10 +8,10 @@
 
 header {
   position:relative;
-  z-index:10000;
+  z-index:$HEADER-ZINDEX;
   @include flex(center);
-  height:48px;
   width:100%;
+  height:$HEADER-HEIGHT;
   padding-left: 16px;
   padding-right: 6px;
   .title {

@@ -66,7 +66,7 @@ const StorePage = () => {
         <SubmitBtn text="결제하기" />
       </div>
       }
-      {orderPage === true && <BankTransfer />}
+      {orderPage === true && <DalCharge />}
     </>
   )
 }

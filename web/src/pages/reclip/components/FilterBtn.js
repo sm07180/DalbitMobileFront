@@ -20,7 +20,7 @@ const FilterBtn = (props) => {
   return (
     <button className="filterBtn" onClick={openFilterGroup}>
       {filterTextType}
-      <span className="arrowDown"></span>
+      <span className={filterOpen ? 'arrowUp' : 'arrowDown'}></span>
       {filterOpen &&
         <ul className="option">
           {data.map((list,index) => {

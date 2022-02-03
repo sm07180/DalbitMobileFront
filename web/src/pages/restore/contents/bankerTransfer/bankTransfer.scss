@@ -1,13 +1,9 @@
 @import "components/ui/_mixin.scss";
 
 #bankTransfer {
-  section{
-    padding: 0 16px 15px;
-    background:#fff;
-  }
   .infoInput {
     @include flex($fd:column);
-    padding-top:12px;
+    padding:12px 16px 0;
     .inputBox {
       p {
         @include font(15px,500,#303030);
@@ -93,71 +89,64 @@
       padding:0 13px;
     }
   }
-  
   .bankResult{
-    section{
-      padding: 0 16px 15px;
-    }
-    .top-info {
-      margin:50px 0 47px 0;
+    @include flex($fd:column);
+    min-height:calc(100vh - #{$HEADER-HEIGHT});
+    .resultText {
+      padding:52px 0 48px;
       text-align: center;
-      .title{
-        font-size:22px;
+      .title {
         line-height:30px;
-        color:#000;
+        @include font(22px,400,black);
         span {
           color: #FF3C7B;
         }
       }
-      p {
-        font-size: 13px;
-        line-height: 20px;
-        font-weight:400;
-        color:#666
-      }
-      p + p {
+      .subTitle {
         margin-top: 6px;
-        color: #757575;
+        line-height: 20px;
+        @include font(13px,400,#666);
       }
     }
-    .receiptBoard{
+    .receiptBoard {
+      @include flex($fd:column);
       width:100%;
-      padding:0 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.24);
-      background: url('https://image.dalbitlive.com/store/dalla/receiptBoard.png') no-repeat center / contain;
-      .text-wrap {
-        display: flex;
-        align-items:center;
-        height:36px;
-        margin-top: 4px;
+      max-width:480px;
+      margin:0 auto;
+      &:before {
+        content:"";
+        display:inline-block;
+        height:20px;
+        @include BGIMG("store/dalla/receiptTop.png");
+        background-size:100% 20px;
+      }
+      &:after {
+        content:"";
+        display:inline-block;
+        height:20px;
+        @include BGIMG("store/dalla/receiptBottom.png");
+        background-size:100% 20px;
+      }
+      .receiptList {
+        @include flex;
+        line-height:36px;
+        padding:0 10%;
+        @include BGIMG("store/dalla/receiptBody.png");
+        background-repeat:repeat-y;
         span {
-          font-size:13px;
-          font-weight:400;
-          color:#999999;
+          @include font(13px,400,#999);
         }
         p {
-          font-size:15px;
-          font-weight:500;
           margin-left: auto;
-          color: #000;
+          @include font(15px,500,black);
         }
-        .highlight{
+        .point{
           color:#FF3C7B;
         }
       }
     }
-    
-    .btn-wrap {
-      padding-top: 32px;
-      button {
-        width: 100%;
-        height: 44px;
-        border-radius: 12px;
-        color: #fff;
-        font-size: 18px;
-        font-weight: bold;
-        background: #ff3c7b;
-      }
+    .submitBtn {
+      margin:30px 16px;
     }
   }
 }
