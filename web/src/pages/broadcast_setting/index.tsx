@@ -755,6 +755,7 @@ export default function BroadcastSetting() {
 
   return (
       <>
+        <Layout>
           <div className="broadcastSetting">
             <div className="headerTitle">방송설정</div>
             <div className="title">마이크 연결 상태</div>
@@ -1060,6 +1061,7 @@ export default function BroadcastSetting() {
             {popupTitle && <LayerTitle setPopupState={setPopupState} />}
             {popupWelcome && <LayerWelcome setPopupState={setPopupState} />}
           </div>
+        </Layout>
       </>
   );
 }
