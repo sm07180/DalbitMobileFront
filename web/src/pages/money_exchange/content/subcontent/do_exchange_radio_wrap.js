@@ -1,22 +1,25 @@
 import React from 'react'
 
-export default function ExchangeRadio() {
+export default function MakeRadioWrap({radioCheck, handleEv}) {
   return (
-    <div className="radioLabelBox">
+    <div className="radioLabelWrap">
       <label
-        className='active'
-        htmlFor="r1">
+        className={`radioLabelWrap__label radioLabelWrap__label--left ${radioCheck === 0 ? 'on' : ''}`}
+        htmlFor="r1"
+        onClick={() => handleEv(0)}>
         신규 정보
       </label>
       <input type="radio" id="r1" name="rr" />
       <label
-        className=''
-        htmlFor="r2">
+        className={`radioLabelWrap__label radioLabelWrap__label ${radioCheck === 1 ? 'on' : ''}`}
+        htmlFor="r2"
+        onClick={() => handleEv(1)}>
         최근 계좌
       </label>
       <label
-        className=''
-        htmlFor="r3">
+        className={`radioLabelWrap__label radioLabelWrap__label--right ${radioCheck === 2 ? 'on' : ''}`}
+        htmlFor="r3"
+        onClick={() => handleEv(2)}>
         내 계좌
       </label>
       <input type="radio" id="r2" name="rr" />

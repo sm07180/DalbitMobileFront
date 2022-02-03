@@ -63,7 +63,7 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
-const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
+const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
