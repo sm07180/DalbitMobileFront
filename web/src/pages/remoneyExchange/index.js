@@ -45,8 +45,8 @@ export default function MoneyExchange(props) {
     <>
       {auth && (
         <div id="exchangePage">
-          {/* <DoExchange /> */}
-          <Result />
+          <DoExchange />
+          {/* <Result /> */}
         </div>
       )}
       <Message />
