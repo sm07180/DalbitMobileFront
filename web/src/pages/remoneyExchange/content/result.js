@@ -1,74 +1,36 @@
 import React from 'react'
 import {useHistory} from 'react-router-dom'
 
-import BackBtn from '../static/ic_back.svg'
-export default function Result({state, dispatch}) {
-  const history = useHistory()
-  const {byeol, realCash, accountName, accountNo, bankCode} = state.data
+import Header from 'components/ui/header/Header'
+
+import ExchangeReceipt from './subcontent/do_exchange_calc'
+
+const exchangeResult =() => {
   return (
-    <div className="resultWrap">
-      <div className="resultWrap__header">
-        <img
-          src={BackBtn}
-          className="doExchangeWrap__header--button"
-          onClick={() => {
-            history.push('/menu/profile')
-          }}
-        />
-        <h3 className="resultWrap__header__title">환전하기</h3>
-      </div>
-
-      <div className="resultWrap__content">
-        <h2 className="resultWrap__title">환전신청 완료</h2>
-        <div className="resultWrap__list">
-          환전 신청 별 <div className="resultWrap__list__text">{Number(byeol).toLocaleString()}</div>
+    <div className="exchangeResult">
+      <Header type={'back'} title={'환전하기'}></Header>
+      <section className="titleWrap">
+        <div className="title">
+          <span>환전 신청 완료</span> 되었습니다!
         </div>
-        <div className="resultWrap__list">
-          환전 실수령액{' '}
-          <div className="resultWrap__list__text">
-            <div className="resultWrap__list__text resultWrap__list__text--purple">{Number(realCash).toLocaleString()}</div>원
-          </div>
-        </div>
-        <div className="resultWrap__list">
-          예금주 <div className="resultWrap__list__text">{accountName}</div>
-        </div>
-        <div className="resultWrap__list">
-          입금 예정 은행{' '}
-          <div className="resultWrap__list__text">
-            {bankList.findIndex((v) => {
-              return v.value === bankCode
-            }) !== -1
-              ? bankList[
-                  bankList.findIndex((v) => {
-                    return v.value === bankCode
-                  })
-                ].text
-              : '은행명'}
-          </div>
-        </div>
-        <div className="resultWrap__list">
-          계좌번호 <div className="resultWrap__list__text">{accountNo}</div>
-        </div>
-
-        <div className="resultWrap__list__notice">
-          위의 내용으로 환전 신청이 완료되었습니다.
-          <br />
-          실제 입금까지는 최대 2~3일 소요될 예정입니다.
-          <br />
+        <div className="subTit">
+          실제 입금까지는 최대 2-3일 소요될 예정입니다.
+          <br/>
           관련 문의는 고객센터로 부탁드립니다.
-          <br />
         </div>
-        <button
-          className="resultButton"
-          onClick={() => {
-            history.push('/menu/profile')
-          }}>
-          확인
-        </button>
-      </div>
+      </section>
+      <section className="receiptWrap">
+        <ExchangeReceipt type={'result'}/>
+      </section>
+      <section className="bottomWrap">
+        <button>확인</button>
+      </section>
     </div>
   )
 }
+
+export default exchangeResult
+
 const bankList = [
   {text: '은행명', value: '0'},
   {text: '경남은행', value: '39'},

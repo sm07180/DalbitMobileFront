@@ -1,33 +1,13 @@
 import React, {useReducer, useEffect, useState, useContext} from 'react'
 import DoExchange from './content/do_exchange'
-import Result from '../money_exchange/content/result'
+import Result from '../remoneyExchange/content/result'
 import Message from 'pages/common/message'
 import Api from 'context/api'
 import {Context} from 'context'
 import './index.scss'
 
-function exchangeReducer(state, action) {
-  switch (action.type) {
-    case 'status':
-      return {
-        ...state,
-        status: action.value
-      }
-    case 'result':
-      return {
-        ...state,
-        status: 2,
-        data: action.value
-      }
-    default:
-      throw new Error()
-  }
-}
-
 export default function MoneyExchange(props) {
   const context = useContext(Context)
-  const [exchangeState, exchangeDispatch] = useReducer(exchangeReducer, {status: 0})
-
   const [auth, setAuth] = useState(false)
   useEffect(() => {
     async function fetchSelfAuth() {
@@ -65,8 +45,8 @@ export default function MoneyExchange(props) {
     <>
       {auth && (
         <div id="exchangePage">
-          {exchangeState.status === 0 && <DoExchange state={exchangeState} dispatch={exchangeDispatch} />}
-          {exchangeState.status === 2 && <Result state={exchangeState} dispatch={exchangeDispatch} />}
+          {/* <DoExchange /> */}
+          <Result />
         </div>
       )}
       <Message />

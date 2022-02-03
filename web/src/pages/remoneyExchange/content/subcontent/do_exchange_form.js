@@ -42,10 +42,9 @@ export default function ExchangeForm() {
         <div className="listRow">
           <div className="title">우편번호</div>
           <div className="inputBox">
-            <input
-              type="text"
-              placeholder="주소검색 해주세요."
-            />
+            <div>
+              주소검색 해주세요
+            </div>
             <button>주소검색</button>
           </div>
         </div>

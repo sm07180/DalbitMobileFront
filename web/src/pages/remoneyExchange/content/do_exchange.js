@@ -87,8 +87,8 @@ const DoExchange = () => {
             계좌추가
           </button> */}
         </div>
-        {/* <ExchangeForm /> */}
-        <ExchangeRepply />
+        <ExchangeForm />
+        {/* <ExchangeRepply /> */}
       </section>
       <section className="bottomWrap">
         <button className="">환전 신청하기</button>
