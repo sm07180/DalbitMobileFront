@@ -73,6 +73,10 @@ const ClipPage = () => {
 
   const likeSubjectLists = [
     {
+      icon : '🎵',
+      name : '전체보기'
+    },
+    {
       icon : '🎤',
       name : '커버/노래'
     },
@@ -95,6 +99,14 @@ const ClipPage = () => {
     {
       icon : '📺',
       name : '더빙'
+    },
+    {
+      icon : '😄',
+      name : '수다/대화'
+    },
+    {
+      icon : '🎧',
+      name : 'ASMR'
     },
   ]
   

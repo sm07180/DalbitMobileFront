@@ -18,16 +18,20 @@ const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
 
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
-const ReSearch = React.lazy(() => import('pages/research'))
 
 const MyPage = React.lazy(() => import('pages/remypage'))
+
+const ReSearch = React.lazy(() => import('pages/research'))
+
+const ReSetting = React.lazy(() => import('pages/resetting'))
+
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
 
 const Store = React.lazy(() => import('pages/restore'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const Exchange = React.lazy(() => import('pages/exchange'))
+const Exchange = React.lazy(() => import('pages/reExchange'))
 const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
@@ -67,7 +71,7 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
-const MoneyExchange = React.lazy(() => import('pages/money_exchange'))
+const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
@@ -92,6 +96,9 @@ export default () => {
         
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
+
+        <Route exact path="/setting" component={ReSetting} />
+        <Route exact path="/setting/:type" component={ReSetting} />
         
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />

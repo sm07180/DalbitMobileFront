@@ -5,6 +5,7 @@ import {IMG_SERVER} from 'context/config'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 const ClipSection = (props) => {
   //context
@@ -23,28 +24,22 @@ const ClipSection = (props) => {
         <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i className='like'></i>
-            <span>123</span>
-            <i className='comment'></i>
-            <span>321</span>
+            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
+            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
           </div>
         </ListColumn>
         <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i className='like'></i>
-            <span>123</span>
-            <i className='comment'></i>
-            <span>321</span>
+            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
+            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
           </div>
         </ListColumn>
         <ListColumn photo={data.profImg.thumb336x336}>
           <div className="title">제목</div>
           <div className="info">
-            <i className='like'></i>
-            <span>123</span>
-            <i className='comment'></i>
-            <span>321</span>
+            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
+            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
           </div>
         </ListColumn>
       </div>

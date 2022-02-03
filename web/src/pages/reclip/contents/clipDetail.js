@@ -6,6 +6,7 @@ import Header from 'components/ui/header/Header'
 import ListRow from 'components/ui/listRow/ListRow'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import GenderItems from 'components/ui/genderItems/GenderItems'
+import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
 import FilterBtn from '../components/FilterBtn'
 
@@ -73,8 +74,8 @@ const ClipDetail = (props) => {
                   <span className="nickNm">{list.nickName}</span>
                 </div>
                 <div className="listItem">
-                  <div className="cnt">{list.replyCnt}</div>
-                  <div className="cnt">{list.goodCnt}</div>
+                  <DataCnt type={"replyCnt"} value={list.replyCnt ? list.replyCnt : "123"}/>
+                  <DataCnt type={"goodCnt"} value={list.goodCnt ? list.replyCnt : "123"}/>
                 </div>
               </div>
               <button className="heart" onClick={clickLikeOnoff}>
