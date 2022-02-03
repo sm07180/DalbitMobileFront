@@ -4,15 +4,13 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
-const LoadablePlugin = require('@loadable/webpack-plugin');
 const webpack = require('webpack')
 const fs = require('fs')
 
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devm-gonetpower.dalbitlive.com:463'),
-    CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
+    API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
     PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
@@ -21,7 +19,6 @@ const ENV_URL = {
   stage: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
-    CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
     PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
@@ -29,7 +26,6 @@ const ENV_URL = {
   },
   real: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    CHAT_SOCKET_URL: JSON.stringify("sv.dalbitlive.com"),
     API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://photo.dalbitlive.com'),
@@ -54,7 +50,7 @@ module.exports = (_, options) => {
     module: {
       rules: [
         {
-          test: /\.(js|jsx|ts|tsx)$/,
+          test: /\.(js|jsx)$/,
           exclude: /(node_modules)|(dist)/,
           use: {
             loader: 'babel-loader',
@@ -77,10 +73,11 @@ module.exports = (_, options) => {
           ]
         },
         {
-          test: /\.(css|scss|sass)$/,
-          use: ['style-loader', /*MiniCssExtractPlugin.loader, */'css-loader', 'sass-loader'],
+          test: /\.scss$/,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
           exclude: /node_modules/
         },
+
         {
           // images css에서 background-image 속성 loader
           test: /\.(jpe?g|png|gif|svg|ico)$/,
@@ -101,12 +98,11 @@ module.exports = (_, options) => {
     },
 
     resolve: {
-      extensions: ['*', '.js', '*.jsx', '.ts', '.tsx'],
+      extensions: ['*', '.js', '*.jsx'],
       modules: [path.resolve(__dirname, './src'), 'node_modules']
     },
 
     plugins: [
-      //new LoadablePlugin(), new MiniCssExtractPlugin(),
       new HtmlWebPackPlugin({
         template: './public/index.html', // public/index.html 파일을 읽는다.
         filename: 'index.html', // output으로 출력할 파일은 index.html 이다.
@@ -127,8 +123,7 @@ module.exports = (_, options) => {
         __STATIC_PHOTO_SERVER_URL: ENV_URL[env]['STATIC_PHOTO_SERVER_URL'],
         __USER_PHOTO_SERVER_URL: ENV_URL[env]['USER_PHOTO_SERVER_URL'],
         __PAY_SERVER_URL: ENV_URL[env]['PAY_SERVER_URL'],
-        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL'],
-        __CHAT_SOCKET_URL: ENV_URL[env]["CHAT_SOCKET_URL"],
+        __SOCIAL_URL: ENV_URL[env]['SOCIAL_URL']
       })
     ]
   }
@@ -160,20 +155,22 @@ module.exports = (_, options) => {
       })
     )
 
-    let isDev = env === 'dev';
     config.optimization = {
-      minimize: !isDev,
+      minimize: env === 'dev' ? false : true,
       minimizer:
-        isDev ? [] : [
-            new TerserPlugin({
-              terserOptions: {
-                compress: {
-                  drop_console: true
+        env === 'dev'
+          ? []
+          : [
+              new TerserPlugin({
+                terserOptions: {
+                  compress: {
+                    drop_console: true
+                  }
                 }
-              }
-            })
-          ]
+              })
+            ]
     }
   }
+
   return config
 }
