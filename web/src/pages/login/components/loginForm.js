@@ -128,7 +128,7 @@ export default function loginForm({props, setLoginPop}) {
           if (props.location.state) {
             return (window.location.href = `/${props.location.state.state}`)
           }
-          return props.history.push('/')
+          // return props.history.push('/')
         }
       } else if (loginInfo.result === 'fail') {
         if (loginInfo.code === '-1') {

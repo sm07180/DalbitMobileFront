@@ -15,8 +15,8 @@ const initialState:IMainLiveList = {
 
 const live = createReducer<IMainLiveList,MainActions>(initialState,{
   "main/SET_MAIN_LIVE_LIST": (state,{payload}) => {
-    console.log('live state2 : ', state)
-    console.log('live payload2 : ', payload)
+    console.log('live state : ', state)
+    console.log('live payload : ', payload)
     return {...payload}
   }
 });

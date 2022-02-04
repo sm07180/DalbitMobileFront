@@ -17,8 +17,8 @@ const initialState:IMainState = {
 
 const main = createReducer<IMainState,MainActions>(initialState,{
   "main/SET_MAIN_DATA_SUCCESS": (state,{payload}) => {
-    console.log('redux state : ', state)
-    console.log('redux payload : ', payload)
+    console.log('main state : ', state)
+    console.log('main payload : ', payload)
     return {...payload}
   }
 });

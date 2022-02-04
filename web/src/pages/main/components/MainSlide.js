@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
-import MovePage from "components/module/MovePage";
 
 const MainSlide = (props) => {
   const {data} = props
@@ -31,11 +30,11 @@ const MainSlide = (props) => {
               swiperIndex = dom.dataset.swiperIndex;
               const target = data[parseInt(swiperIndex)];
               if(target.nickNm === 'banner' && target.roomType === 'link') {
-                MovePage({url: target.roomNo, history});
+                history.push(target.roomNo);
               }else {
-                MovePage({url: '/rank', history});
+                // 방송방으로 이동
+                history.push('/rank');
               }
-              console.log(data[parseInt(swiperIndex)])
             }
           })
         }

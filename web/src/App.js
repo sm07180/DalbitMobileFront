@@ -24,6 +24,7 @@ import {ChatSocketHandler} from "common/realtime/chat_socket";
 import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
+import Navigation from "components/ui/navigation/Navigation";
 
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
@@ -35,6 +36,8 @@ const App = () => {
   const dispatch = useDispatch();
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+  const [isFooterPage, setIsFooterPage] = useState(false);
+
   useEffect(()=>{
     if(!common.isLoading){
       dispatch(setIsLoading())
@@ -386,6 +389,15 @@ const App = () => {
     globalCtx.action.updateAppInfo({os, version, showBirthForm})
   }
 
+  const isFooter = () => {
+    if(!isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage'];
+      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
+
+      setIsFooterPage(isFooterPage);
+    }
+  }
+
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
       setReady(true)
@@ -416,6 +428,10 @@ const App = () => {
       }
     }
   }, [globalCtx.profile, location.pathname])
+
+  useEffect(() => {
+    isFooter();
+  }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -497,6 +513,7 @@ const App = () => {
           <>
             <Interface />
             <Route />
+            {isFooterPage && <Navigation />}
           </>
         ) : (
           <>

@@ -4,7 +4,7 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import React from 'react'
+import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
@@ -13,6 +13,8 @@ import Message from 'pages/common/message'
 import Common from "common";
 import Modal from "common/modal";
 import Alert from "common/alert";
+import {Context} from "context";
+import {route} from "express/lib/router";
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
@@ -29,6 +31,8 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const MyPage = React.lazy(() => import('pages/remypage'))
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
+
+const Profile = React.lazy(() => import('pages/profile'))
 
 const Store = React.lazy(() => import('pages/restore'))
 
@@ -87,6 +91,7 @@ const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index
 const Mailbox = React.lazy(() => import("pages/mailbox"));
 
 const Router = () => {
+  const context = useContext(Context);
   return (
     <React.Suspense
       fallback={
@@ -121,9 +126,22 @@ const Router = () => {
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-        <Route exact path="/mypage/:memNo" component={MyPage} />
+        <Route exact path={["/mypage", "/mypage/:memNo"]} component={MyPage} />
+        <Route exact path="/myProfile" component={Profile} />
+        <Route exact path="/profile/:memNo" main={Profile}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(myMemNo === targetMemNo) {
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }else {
+                   return <Route component={Profile} />
+                 }
+               }}
+        />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />

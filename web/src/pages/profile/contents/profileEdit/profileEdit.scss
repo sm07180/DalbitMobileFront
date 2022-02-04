@@ -1,0 +1,133 @@
+@import "components/ui/_mixin.scss";
+
+#profileEdit {
+  position:relative;
+  header {
+    position:fixed;
+    border-bottom:1px solid #D3D3D3;
+    background-color:white;
+    .saveBtn {
+      width:40px;height:40px;
+      margin-left:auto;
+    }
+  }
+  .nonePhoto {
+    @include flex(center,center);
+    width:100%;
+    height:360px;
+    background-color:#F2F2F2;
+    i {
+      img {
+        width:100%;
+        height:21px;
+      }
+    }
+  }
+  .insertPhoto {
+    .insertBtn {
+      position:relative;
+      height:0;
+      .photo {
+        @include position-center;
+        z-index: 1;
+        width:90px;
+        height:90px;
+        border-radius:50%;
+        background-color:#D6D6D6;
+        img {
+          width:100%;
+          border-radius:50%;
+        }
+      }
+      button {
+        @include position-bottom-right;
+        width:27px;
+        height:27px;
+        img {
+          width:100%;
+        }
+      }
+    }
+    .coverPhoto {
+      padding:60px 0 16px;
+      border-bottom:1px solid #DEDEDE;
+      .title {
+        line-height:20px;
+        margin-bottom:8px;
+        padding:0 16px;
+        letter-spacing: -1px;
+        @include font(14px,400,black);
+        small {
+          @include font(12px,400,#666);
+        }
+      }
+      .swiper-wrapper {
+        padding-left:16px;
+      }
+      .swiper-slide {
+        width:auto;
+        &:last-child {
+          margin-right:32px;
+        }
+        .photo {
+          width:76px;
+          height:76px;
+          border-radius:16px;
+          background-color:#F2F2F2;
+          img {
+            width:100%;
+            border-radius:16px;
+          }
+        }
+        button {
+          width:76px;
+          height:76px;
+          border-radius:16px;
+          background:#F2F2F2;
+          @include font(20px,400,#666);
+        }
+      }
+    }
+  }
+  .editInfo {
+    padding:12px 16px 24px;
+    .inputGroup {
+      @include flex;
+      .inputItems {
+        flex:1;
+        &:last-child {
+          flex-grow: 0;
+          flex-basis: 25.61%;
+          margin-left:10px;
+        }
+        .inputBox {
+          button {
+            flex-shrink: 0;
+            margin-right:16px;
+            &.inputDel {
+              width:20px;
+              height:20px;
+              @include BGIMG('common/inputDel.png');
+            }
+            &.inputChange {
+              letter-spacing: -1px;
+              @include font(14px,400,#666);
+            }
+          }
+          .innerBox {
+            @include flex(center,center);
+            width:100%;
+            height:100%;
+            .text {
+              margin-left:4px;
+              @include font(15px,400,#202020);
+            }
+          }
+        }
+      }
+    }
+  }
+  .passwordEdit {
+    padding:12px 16px 24px;
+  }
+}
