@@ -4,11 +4,17 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import React from 'react'
+import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
 import Message from 'pages/common/message'
+
+import Common from "common";
+import Modal from "common/modal";
+import Alert from "common/alert";
+import {Context} from "context";
+import {route} from "express/lib/router";
 
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
@@ -27,6 +33,8 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
+
+const Profile = React.lazy(() => import('pages/profile'))
 
 const Store = React.lazy(() => import('pages/restore'))
 
@@ -81,7 +89,19 @@ const NoService = React.lazy(() => import('pages/no_service'))
 
 const Story = React.lazy(() => import('pages/story'))
 
-export default () => {
+
+
+
+const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
+const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
+const ClipPlayer = React.lazy(() => import("pages/clip_player"));
+
+const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
+const Mailbox = React.lazy(() => import("pages/mailbox"));
+
+const Router = () => {
+  const context = useContext(Context);
   return (
     <React.Suspense
       fallback={
@@ -89,6 +109,7 @@ export default () => {
           <span></span>
         </div>
       }>
+      <Common />
       <ScrollToTop />
       <Message />
       <Switch>
@@ -121,9 +142,22 @@ export default () => {
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-        <Route exact path="/mypage/:memNo" component={MyPage} />
+        <Route exact path={["/mypage", "/mypage/:memNo"]} component={MyPage} />
+        <Route exact path="/myProfile" component={Profile} />
+        <Route exact path="/profile/:memNo" main={Profile}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(myMemNo === targetMemNo) {
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }else {
+                   return <Route component={Profile} />
+                 }
+               }}
+        />
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />
@@ -160,8 +194,26 @@ export default () => {
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
+
+        {/*  www 클립 라우터  */}
+        <Route exact path="/clip_recoding" component={ClipRecoding}  />
+        <Route exact path="/clip_upload" component={ClipUpload} />
+        <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+
+        {/*  www 방송 청취 및 세팅  */}
+        <Route exact path="/broadcast/:roomNo" component={Broadcast} />
+        <Route exact path="/broadcast_setting" component={BroadcastSetting} />
+
+        {/*  www 우체통관련  */}
+        <Route exact path="/mailbox" component={Mailbox} />
+        <Route exact path="/mailbox/:category" component={Mailbox} />
+        <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
+
+        <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
       </Switch>
+      <Alert />
     </React.Suspense>
   )
-}
+};
+export default Router

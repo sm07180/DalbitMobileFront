@@ -19,15 +19,36 @@ import NoService from './pages/no_service/index'
 import Api from 'context/api'
 import {OS_TYPE} from 'context/config.js'
 import {getDeviceOSTypeChk} from './common/DeviceCommon';
+import {CHAT_CONFIG} from "constant/define";
+import {ChatSocketHandler} from "common/realtime/chat_socket";
+import {MailboxContext} from "context/mailbox_ctx";
+import {useDispatch, useSelector} from "react-redux";
+import {setIsLoading} from "redux/actions/common";
+import Navigation from "components/ui/navigation/Navigation";
 
 const App = () => {
+  const { mailboxAction } = useContext(MailboxContext);
   const globalCtx = useContext(Context)
   App.context = () => context
   //본인인증
   const authRef = useRef()
-
+  const common = useSelector((state)=>state.common);
+  const dispatch = useDispatch();
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+  const [isFooterPage, setIsFooterPage] = useState(false);
+
+  useEffect(()=>{
+    if(!common.isLoading){
+      dispatch(setIsLoading())
+    }else{
+      console.log(common)
+    }
+  },[common.isLoading])
+  const {
+    chatInfo,
+    mailChatInfo,
+  } = globalCtx.globalState;
 
   const isJsonString = (str) => {
     try {
@@ -114,13 +135,39 @@ const App = () => {
     return Utility.getCookie('authToken')
   }, [])
 
+  function initChantInfo(authToken, memNo) {
+    const socketUser = {
+      authToken,
+      memNo,
+      locale: CHAT_CONFIG.locale.ko_KR,
+      roomNo: null,
+    };
+    if (
+        globalCtx.globalAction.dispatchChatInfo &&
+        globalCtx.globalAction.dispatchMailChatInfo
+    ) {
+      const chatInfo = new ChatSocketHandler(socketUser);
+      // chatInfo.setSplashData(globalState.splashData);
+      //deep copy chatInfo
+      let cloneMailInfo = Object.assign(
+          Object.create(Object.getPrototypeOf(chatInfo)),
+          chatInfo
+      );
+
+      globalCtx.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+      globalCtx.globalAction.dispatchMailChatInfo({
+        type: "init",
+        data: cloneMailInfo,
+      });
+    }
+  }
   async function fetchData() {
     // Renew token
     const tokenInfo = await Api.getToken()
     if (tokenInfo.result === 'success') {
       globalCtx.action.updateCustomHeader(customHeader)
       globalCtx.action.updateToken(tokenInfo.data)
-
+      initChantInfo(tokenInfo.data.authToken, tokenInfo.data.memNo);
       if (isHybrid()) {
         //
         if (customHeader['isFirst'] === 'Y') {
@@ -275,6 +322,7 @@ const App = () => {
       }
       globalCtx.action.updateSplash(data)
       globalCtx.action.updateUseMailbox(useMailBox)
+      globalCtx.globalAction.setSplashData(data);
     } else {
       Api.error_log({
         data: {
@@ -341,6 +389,15 @@ const App = () => {
     globalCtx.action.updateAppInfo({os, version, showBirthForm})
   }
 
+  const isFooter = () => {
+    if(!isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage'];
+      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
+
+      setIsFooterPage(isFooterPage);
+    }
+  }
+
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
       setReady(true)
@@ -371,6 +428,10 @@ const App = () => {
       }
     }
   }, [globalCtx.profile, location.pathname])
+
+  useEffect(() => {
+    isFooter();
+  }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -434,6 +495,17 @@ const App = () => {
     }
   }
 
+  useEffect(() => {
+    if (chatInfo !== null) {
+      chatInfo.setGlobalAction(globalCtx.globalAction);
+      chatInfo.setMailboxAction(mailboxAction);
+    }
+    if (mailChatInfo !== null) {
+      mailChatInfo.setGlobalAction(globalCtx.globalAction);
+      mailChatInfo.setMailboxAction(mailboxAction);
+    }
+  }, [chatInfo, mailChatInfo]);
+
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
@@ -441,6 +513,7 @@ const App = () => {
           <>
             <Interface />
             <Route />
+            {isFooterPage && <Navigation />}
           </>
         ) : (
           <>

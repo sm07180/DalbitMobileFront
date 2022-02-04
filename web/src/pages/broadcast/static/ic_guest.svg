@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="39" height="16" viewBox="0 0 39 16">
+    <path fill="#00c3cb" d="M7.8 0h23.4A7.9 7.9 0 0 1 39 8a7.9 7.9 0 0 1-7.8 8H7.8A7.9 7.9 0 0 1 0 8a7.9 7.9 0 0 1 7.8-8z"/>
+    <text fill="#fff" font-family="NanumSquareR, NanumSquare" font-size="10px" letter-spacing="-0.025em" transform="translate(6 11)">
+        <tspan x="0" y="0">게스트</tspan>
+    </text>
+</svg>

@@ -1,0 +1,308 @@
+@import "../../../../asset/scss/common/global";
+
+#goToMoonLayer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .layerWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 300px;
+    padding: 20px 12px;
+    border-radius: 10px;
+    background-color: white;
+    box-sizing: border-box;
+    .closeBtn {
+      position: absolute;
+      top: -50px;
+      right: 0px;
+      width: 36px;
+      height: 36px;
+      background-image: url("./static/ic_close.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      text-indent: -9999px;
+      cursor: pointer;
+    }
+    .topimg {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translate(-50%, -50%);
+      display: inline-block;
+      width: 50px; height: 62px;
+      background-image: url(https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-topImg.png);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+    .title {
+      margin-top: 20px;
+    }
+    .itemSection {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      margin-top: 14px;
+      .itemWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        .itemList {
+          position: relative;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          width: 66px; height: 90px;
+          border-radius: 10px;
+          background-color: #101010;
+          cursor: pointer;
+          .itemImg {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+          }
+          .itemPrice {
+            display: flex;
+            align-items: center;
+            .iconDal {
+              display: inline-block;
+              width: 18px; height: 18px;
+              margin-right: 2px;
+              background-image: url(https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-dal.png);
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: contain;
+            }
+            .dalPrice {
+              font-size: 12px;
+              font-weight: 700;
+              color: #fff;
+              line-height: 18px;
+            }
+          }
+          &.complete {
+            pointer-events: none;
+            &::after {
+              content: "";
+              position: absolute;
+              top: 0; left: 0;
+              width: 100%;
+              height: 100%;
+              display: block;
+              background-image: url(https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-complete.png);
+              background-position: center;
+              background-repeat: no-repeat;
+              background-size: contain;
+              pointer-events: none;
+            }
+          }
+        }
+      }
+      .itemInfo {
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #424242;
+        strong {
+          font-weight: 700;
+          color: #7637F1;
+        }
+      }
+    }
+
+    .myRank {
+      position: relative;
+      width: 100%;
+      margin-top: 14px;
+      .myRankData {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        margin-bottom: 8px;
+        .myRankText {
+          font-size: 14px;
+          font-weight: 700;
+          color: #000000;
+          margin-right: 4px;
+        }
+        .myRankBadge {
+          display: inline-block;
+          padding: 0 10px;
+          border-radius: 100px;
+          background-color: #000000;
+          font-size: 14px;
+          font-weight: 700;
+          color: #fff;
+          line-height: 20px;
+          &::after {
+            content: "위";
+          }
+        }
+      }
+      .myRankAni {
+        position: relative;
+        width: 100%;
+        padding-bottom: 60.60%;
+        border-radius: 10px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        &.level1 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel1.webp);}
+        &.level2 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel2.webp);}
+        &.level3 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel3.webp);}
+        &.level4 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel4.webp);}
+        &.level5 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel5.webp);}
+        &.level6 {background-image: url(https://image.dalbitlive.com/event/gotomoon/ani/aniLevel6.webp);}
+
+        .scoreWrap {
+          position: absolute;
+          top: 8px; left: 8px;
+          padding: 0px 6px;
+          display: flex;
+          align-items: center;
+          border-radius: 100px;
+          background-color: #2B2B2B;
+          .iconCoin{
+            display: inline-block;
+            width: 14px; height: 14px;
+            background-image: url(https://image.dalbitlive.com/event/gotomoon/event_gotomoon-coin.png);
+            background-position: center;
+            background-size: contain;
+            background-repeat: no-repeat;
+          }
+          .scoreNow {
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 18px;
+          }
+          .scoreGoal {
+            font-size: 12px;
+            font-weight: 700;
+            color: #FFDD40;
+            margin-left: 4px;
+            line-height: 18px;
+          }
+        }
+        .rewardWrap {
+          position: absolute;
+          bottom: 8px; left: 8px;
+          padding: 2px 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          border-radius: 5px;
+          background-color: #7637F1;
+          .rewardText {
+            font-size: 12px;
+            font-weight: 500;
+            color: #fff;
+            line-height: 18px;
+            margin-bottom: 2px;
+          }
+          .rewardBox {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2px 9px;
+            border: 1px solid #8168E5;
+            border-radius: 100px;
+            background-color: #3B1C87;
+            .iconDal{
+              display: inline-block;
+              width: 12px; height: 12px;
+              margin-right: 2px;
+              background-image: url(https://image.dalbitlive.com/event/gotomoon/iconDal.png);
+              background-position: center;
+              background-size: contain;
+              background-repeat: no-repeat;
+            }
+            .rewardVal {
+              font-size: 12px;
+              font-weight: 700;
+              color: #fff;
+            }
+            .rewardUnit {
+              font-size: 11px;
+              font-weight: 500;
+              color: #fff;
+              margin-left: 2px;
+            }
+          }
+        }
+      }
+    }
+    .aniSwitch {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 100%;
+      .switchWrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 8px;
+        .switchTitle {
+          font-size: 15px;
+          font-weight: 700;
+          color: #000000;
+        }
+        .switchBtn {
+          position: relative;
+          width: 50px;
+          height: 30px;
+          border-radius: 100px;
+          background: rgba($color: #787880, $alpha: 0.16);
+          transition: .2s cubic-bezier(.5,0,.5,1);
+          cursor: pointer;
+          &.on {
+            background: #632BEB;
+            &::after {
+              transform: translate(20px);
+            }
+          }
+          &::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 3px 1px rgba($color: #000000, $alpha: 0.06);
+            transition: .3s cubic-bezier(.5,0,.5,1);
+          }
+        }
+      }
+      .switchInfo {
+        width: 100%;
+        font-size: 12px;
+        font-weight: 400;
+        color: #424242;
+        margin-top: 2px;
+      }
+    }
+  }
+}

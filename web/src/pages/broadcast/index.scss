@@ -1,0 +1,744 @@
+@import "../../asset/scss/common/variables";
+
+#broadcast-page {
+  background-color: $lighterGray;
+
+  .temp {
+    padding: 0 90px;
+
+    .filterGuideWrap {
+      display: flex;
+      align-items: center;
+      text-align: center;
+
+      .filterGuide:not(:first-child) {
+        margin-left: 10px;
+      }
+
+      & > canvas {
+        object-fit: cover;
+      }
+    }
+
+    img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+    }
+
+    input[type="range"] {
+      background-color: gray;
+    }
+
+    .controller_wrap {
+      display: flex;
+
+      .controller {
+        display: flex;
+        flex-direction: column;
+
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
+  }
+
+  .broadcastWrap {
+    display: flex;
+    justify-content: space-between;
+    width: 1398px;
+    height: 100vh;
+    padding: 20px 90px;
+    margin: 0 auto;
+    box-sizing: border-box;
+
+    &.video {
+      // 기존코드
+      width: 1392px;
+      justify-content: center;
+      &.wide {
+        width: 100%;
+      }
+    }
+
+    &.reverse {
+      flex-direction: row-reverse;
+    }
+  }
+
+  .left-side {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    width: 836px;
+    height: 100%;
+    border-radius: 10px;
+    align-self: flex-start;
+    background-color: $black;
+    &.video {
+      width: 480px;
+      margin: 0px 10px;
+      min-width: 480px;
+
+      &.wide {
+        width: 100%;
+      }
+
+      video {
+        object-fit: contain;
+        height: 100%;
+
+        &::-webkit-media-controls-panel {
+          display: none;
+        }
+      }
+
+      canvas {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        z-index: 2;
+      }
+
+      #deepar-canvas {
+        position: absolute;
+        opacity: 0;
+      }
+    }
+
+    //common
+    .liveBadgeWrap {
+      display: inline-block;
+      position: relative;
+      height: 16px;
+      margin-right: 3px;
+      border-radius: 10px;
+      vertical-align: middle;
+      cursor: pointer;
+      line-height: 11px;
+
+      .badgeBg {
+        width: 100%;
+        opacity: 0.8;
+        height: 100%;
+        position: absolute;
+        border-radius: 10px;
+      }
+
+      .badgeIcon {
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 4px;
+        width: 16px;
+        height: 16px;
+        background-size: 16px 16px;
+      }
+      .badgeText {
+        display: block;
+        position: relative;
+        font-size: 10px;
+        color: $white;
+        line-height: 16px;
+        height: 16px;
+        margin-right: 3px;
+        padding: 0 6px 0 22px;
+      }
+    }
+
+    .chat-display {
+      position: relative;
+      height: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      .broadcast-video {
+        position: absolute;
+        // left: 50%;
+        // transform: translate(-50%);
+        width: 100%;
+        z-index: 2;
+      }
+
+      .broadcast-video-host {
+        position: absolute;
+        // left: 50%;
+        // transform: translate(-50%);
+        opacity: 0;
+        width: 100%;
+      }
+
+      .broadcast-video-guest {
+        overflow: hidden;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        height: 40%;
+        border-radius: 10px;
+        z-index: 3;
+      }
+
+      .chat-msg-wrap {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: calc(100% - 178px);
+        min-width: 300px;
+        box-sizing: border-box;
+        // background: rgba($black, 0.4);
+
+        .scroll-bar-wrap {
+          width: 14px;
+          .scroll-bar {
+            width: 8px;
+            margin: 0 auto;
+            background-color: gray;
+          }
+        }
+
+        .chat-inner-wrap {
+          width: 100%;
+          box-sizing: border-box;
+          padding: 8px 13px;
+          padding-bottom: 0px;
+
+          .msg-list-wrap {
+            .minigame_msg_wrap {
+              display: flex;
+              justify-content: center;
+              margin-bottom: 16px;
+              padding: 5px;
+              background-color: rgba(242, 74, 134, 0.5);
+              border-radius: 10px;
+              color: $white;
+              text-align: center;
+
+              .text {
+                font-size: 14px;
+              }
+            }
+
+            .system-start-msg {
+              color: $white;
+              padding: 20px 44px;
+              font-weight: $bold;
+              background-color: rgba($black, 0.4);
+              white-space: pre-wrap;
+              border-radius: 36px;
+              /*margin: 16px 0;*/
+            }
+
+            .req-good-likes {
+              margin: 4px 0;
+              background-color: rgba($black, 0.4);
+              color: $white;
+              font-size: 14px;
+              padding: 7px;
+              border-radius: 36px;
+              text-align: center;
+              /*margin-bottom: 20px;*/
+            }
+
+            .msg-wrap {
+              display: flex;
+              flex-direction: row;
+              /*margin-bottom: 16px;*/
+
+              // normal msg pattern
+              .profile-img {
+                position: relative;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                cursor: pointer;
+                margin-top: 14px;
+
+                &.fan::after {
+                  width: 12px;
+                  height: 12px;
+                  position: absolute;
+                  bottom: 0;
+                  right: 0;
+                  color: $white;
+                  background: $primary;
+                  content: "F";
+                  font-size: 10px;
+                  text-align: center;
+                  border-radius: 50%;
+                }
+              }
+
+              .live-rank-profile {
+                width: 36px;
+                height: 60px;
+                position: relative;
+
+                .profile-img {
+                  margin-top: 14px;
+                  margin-left: 2px;
+                  width: 32px;
+                  height: 32px;
+                }
+
+                .live-rank-frame {
+                  position: absolute;
+                  left: 0;
+                  top: 0;
+                  width: 36px;
+                  height: 60px;
+                  background-size: 36px 60px;
+
+                  &.fan::after {
+                    width: 12px;
+                    height: 12px;
+                    position: absolute;
+                    bottom: 10px;
+                    right: 0;
+                    color: $white;
+                    background: $primary;
+                    content: "F";
+                    font-size: 10px;
+                    text-align: center;
+                    border-radius: 50%;
+                  }
+                }
+              }
+
+              .nickname-msg-wrap {
+                width: calc(100% - 46px);
+                margin-left: 10px;
+                margin-top: 14px;
+
+                .nickname-wrap {
+                  line-height: 16px;
+                  margin-top: -2px;
+                  margin-bottom: 3px;
+                  .label {
+                    display: inline-block;
+                    font-size: 10px;
+                    color: $white;
+                    line-height: 16px;
+                    height: 16px;
+                    margin-right: 3px;
+                    vertical-align: middle;
+
+                    &.new-listener {
+                      padding: 0 6px;
+                      border-radius: 10px;
+                      background-color: rgba(69, 147, 236, 1);
+                    }
+                    &.none {
+                      display: none;
+                    }
+                    &.bj {
+                      padding: 0 6px;
+                      border-radius: 10px;
+                      background: $primary;
+
+                      &.new {
+                        background-color: rgba(69, 147, 236, 1);
+                      }
+                    }
+                    &.manager {
+                      padding: 0 6px;
+                      border-radius: 10px;
+                      background: #fdad2b;
+                    }
+                  }
+                  .none {
+                    display: none;
+                  }
+
+                  .fanbadge {
+                    display: inline-block;
+                    position: relative;
+                    font-size: 10px;
+                    color: $white;
+                    line-height: 16px;
+                    height: 16px;
+                    margin-right: 3px;
+                    padding: 0 6px 0 22px;
+                    border-radius: 10px;
+                    vertical-align: middle;
+                    span {
+                      display: inline-block;
+                      position: absolute;
+                      top: 0;
+                      left: 4px;
+                      width: 16px;
+                      height: 16px;
+                      background-size: 16px 16px;
+                    }
+                  }
+                  .badgeList {
+                    display: inline-block;
+                    width: 28px;
+                    height: 16px;
+                    margin-right: 3px;
+                    line-height: 16px;
+                    line-height: 16px;
+                    position: relative;
+                    background-size: 28px 16px;
+                    vertical-align: middle;
+                  }
+                  .nickname {
+                    padding-left: 2px;
+                    line-height: 16px;
+                    color: $white;
+                    font-size: 12px;
+                  }
+                }
+
+                .msg {
+                  display: inline-block;
+                  word-break: break-word;
+                  white-space: pre-wrap;
+                  color: $white;
+                  box-sizing: border-box;
+                  font-size: 14px;
+                  background-color: rgba(0, 0, 0, 0.3);
+                  border-radius: 12px;
+                  padding: 8px 10px;
+                  margin-right: 10px;
+                }
+
+                .msg-image {
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+
+                  .icon-image {
+                    width: 50px;
+                    height: 50px;
+                    margin-right: 5px;
+                    background-color: $white;
+                    border-radius: 10px;
+                    background-size: contain;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                  }
+                  .text {
+                    min-width: 70px;
+                    height: 50px;
+                    border-radius: 10px;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    line-height: 41px;
+                    //kjo 수정
+                    font-size: 14px;
+                    color: white;
+                    padding: 5px 10px;
+                    box-sizing: border-box;
+                    .bold {
+                      font-weight: $bold;
+                    }
+                  }
+                  .guest-text {
+                    min-width: 70px;
+                    height: 50px;
+                    border-radius: 10px;
+                    background-color: rgba(0, 214, 222, 0.5);
+                    //kjo 수정
+                    font-size: 14px;
+                    color: white;
+                    padding: 5px 10px;
+                    box-sizing: border-box;
+                    .bold {
+                      font-weight: $bold;
+                    }
+                  }
+                }
+              }
+            }
+            //kjo 수정
+            .connect-wrap {
+              display: flex;
+              align-items: center;
+              padding: 5px 0;
+              color: white;
+              text-align: center;
+              .connect-line-left {
+                flex: 1;
+                height: 1px;
+                margin: 0 6px 0 12px;
+                background-color: white;
+              }
+              .connect-line-right {
+                flex: 1;
+                height: 1px;
+                margin: 0 12px 0 6px;
+                background-color: white;
+              }
+            }
+
+            .guest-wrap {
+              margin: 4px 0;
+              background-color: rgba(99, 43, 235, 0.4);
+              color: #fff;
+              font-size: 14px;
+              padding: 7px;
+              border-radius: 36px;
+              text-align: center;
+              margin-bottom: 20px;
+            }
+          }
+        }
+
+        &.video {
+          background: none;
+        }
+      }
+
+      .setting-more-display {
+        position: absolute;
+        width: 146px;
+        right: 64px;
+        bottom: 170px;
+        border-radius: 12px;
+        background-color: black;
+        font-size: 14px;
+        color: white;
+
+        &.listener {
+          bottom: 74px;
+        }
+
+        & > div {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 8px;
+
+          span {
+            flex: 1;
+          }
+
+          .toggle-button {
+            width: 40px;
+            height: 24px;
+            background: url(./static/ic_alarmtoggleoff_s.svg) no-repeat;
+            background-size: contain;
+
+            &.on {
+              background: url(./static/ic_alarmtoggleon.svg) no-repeat;
+              background-size: contain;
+            }
+          }
+        }
+
+        &::after {
+          position: absolute;
+          right: -6px;
+          top: 50%;
+          width: 6px;
+          height: 10px;
+          margin-top: -5px;
+          background: url("./static/img_arrow_b.svg") no-repeat;
+          background-size: contain;
+          content: "";
+        }
+      }
+      .randomMsgWrap {
+        position: absolute;
+        width: max-content;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 16px;
+        bottom: 10px;
+        z-index: 10;
+        background-color: $white;
+        font-size: 14px;
+        border-radius: 10px;
+        button {
+          height: 24px;
+          margin-left: 8px;
+          padding: 0 14px;
+          border-radius: 12px;
+          background-color: $primary;
+          color: $white;
+          font-size: 12px;
+        }
+      }
+
+      .ttsLayer {
+        position: absolute;
+        top: 183px;
+        left: 13px;
+        width: 240px;
+        padding: 10px 16px;
+        background: black;
+        border-radius: 10px;
+        box-sizing: border-box;
+        font-size: 12px;
+        color: white;
+        z-index: 4;
+        .user {
+          display: flex;
+          align-items: center;
+          margin-bottom: 3px;
+          font-size: 13px;
+          font-weight: 500;
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 6px;
+          }
+        }
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .itemCoin {
+        position: absolute;
+        top: 634px;
+        width: 80px;
+        height: 80px;
+        z-index: 500;
+        pointer-events: none;
+        &.basicCoin {
+            background-image: url("https://image.dalbitlive.com/broadcast/event/gotomoon/basic_coin.png");
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        &.goldenCoin {
+          background-image: url("https://image.dalbitlive.com/broadcast/event/gotomoon/golden_coin.png");
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          cursor: pointer;
+          pointer-events: auto;
+        }
+        &.characterCoin {
+          background-image: url("https://image.dalbitlive.com/broadcast/event/gotomoon/character_coin.png");
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          cursor: pointer;
+          pointer-events: auto;
+        }
+        &.rotateLeft {
+            animation: rotateLeft 4s linear infinite;
+        }
+        &.rotateRight {
+            animation: rotateRight 4s linear infinite;
+        }
+        &Wrap {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+        &Num {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 25px;
+          font-weight: 700;
+          color: #fff;
+            padding-left: 20px;
+            text-shadow: 2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000, -2px 2px 0 #000, 2px 0px 0 #000, 0px 2px 0 #000, -2px 0px 0 #000, 0px -2px 0 #000;
+            &::before {
+                content: "+";
+                position:absolute;
+                transform:translateY(-50%);
+                top:50%;left:0px;
+            }
+        }
+        &Webp {
+          position: absolute;
+          top: 50%; left: 50%;
+          transform: translate(-50%, -50%);
+          width: 120px; height: 120px;
+          background-size: contain;
+          background-position: center;
+          background-repeat: no-repeat;
+          pointer-events: none;
+        }         
+      }
+    }
+  }
+}
+
+@keyframes comboCount {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.8);
+  }
+}
+
+@keyframes rotateLeft {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(-360deg);
+  }
+}
+@keyframes rotateRight {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
+@keyframes show {
+  0% {
+      transform: translateX(120%);
+      display: none;
+  }
+  100% {
+      transform: translateX(0);
+      display: block;
+  }
+}
+@keyframes hide {
+  0% {
+      transform: translateX(0);
+      display: block;
+  }
+  100% {
+      transform: translateX(-120%);
+      display: none;
+  }
+}
+
+@keyframes broadcastTopShow {
+  0% {
+      transform: translateX(120%);
+  }
+  100% {
+      transform: translateX(0);
+  }
+}
+@keyframes broadcastTopHide {
+  0% {
+      transform: translateX(0);
+  }
+  100% {
+      transform: translateX(120%);
+  }
+}

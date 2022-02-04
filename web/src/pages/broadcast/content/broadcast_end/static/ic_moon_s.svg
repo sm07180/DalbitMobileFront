@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_moon_s" width="20" height="20" viewBox="0 0 20 20">
+    <defs>
+        <linearGradient id="linear-gradient" x1=".233" x2=".738" y1=".078" y2=".944" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fdad2b"/>
+            <stop offset=".181" stop-color="#fca82d"/>
+            <stop offset=".383" stop-color="#fa9a34"/>
+            <stop offset=".596" stop-color="#f6843f"/>
+            <stop offset=".814" stop-color="#f1654e"/>
+            <stop offset="1" stop-color="#ec455f"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1=".774" x2=".279" y1="-.526" y2="1.026" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fde065" stop-opacity=".541"/>
+            <stop offset=".156" stop-color="#fde16a" stop-opacity=".522"/>
+            <stop offset=".33" stop-color="#fde479" stop-opacity=".467"/>
+            <stop offset=".513" stop-color="#fde992" stop-opacity=".38"/>
+            <stop offset=".703" stop-color="#fef0b5" stop-opacity=".255"/>
+            <stop offset=".895" stop-color="#fef9e2" stop-opacity=".098"/>
+            <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="clip-path">
+            <path id="패스_9566" d="M154.06 50.777a4.386 4.386 0 1 1 .772-8.7 6.849 6.849 0 1 0 2.727 6.961 4.379 4.379 0 0 1-3.499 1.739z" class="cls-1" transform="translate(-144 -40.798)"/>
+        </clipPath>
+        <style>
+            .cls-1{fill:none}
+        </style>
+    </defs>
+    <g id="그룹_17177" transform="translate(-8189 -8264)">
+        <g id="그룹_15853" transform="translate(8191.8 8266.6)">
+            <g id="그룹_15850">
+                <path id="패스_9563" fill="url(#linear-gradient)" d="M149.517 53.333a7.017 7.017 0 1 1 4.08-12.727.168.168 0 0 1-.1.3h-.029a4.218 4.218 0 1 0-.743 8.37 4.188 4.188 0 0 0 3.365-1.675.168.168 0 0 1 .3.135 7.04 7.04 0 0 1-6.873 5.597z" transform="translate(-142.332 -39.13)"/>
+                <path id="패스_9564" fill="#ee5556" stroke="#ee5556" stroke-width="0.15px" d="M148.185 38.133a6.819 6.819 0 0 1 3.982 1.276 4.386 4.386 0 1 0 2.727 6.961 6.85 6.85 0 1 1-6.709-8.237m0-.335a7.184 7.184 0 1 0 7.037 8.64.335.335 0 0 0-.6-.27 4.051 4.051 0 1 1-3.231-6.493 4.09 4.09 0 0 1 .713.064.329.329 0 0 0 .059.005.335.335 0 0 0 .195-.608 7.136 7.136 0 0 0-4.177-1.339z" transform="translate(-141 -37.798)"/>
+            </g>
+            <g id="그룹_15852" transform="translate(.335 .335)">
+                <g id="그룹_15851" clip-path="url(#clip-path)">
+                    <path id="패스_9565" fill="url(#linear-gradient-2)" d="M127.895 26.508c-.715.1-6.29 7.338-6.29 7.338l.572 6.052L137.282 28.1l-4.193-1.024z" transform="translate(-124.107 -28.104)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

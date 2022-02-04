@@ -1,0 +1,21 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" width="55" height="27" viewBox="0 0 55 27">
+    <defs>
+        <style>
+            .prefix__cls-5{fill:none}.prefix__cls-4{stroke:none}
+        </style>
+    </defs>
+    <g id="prefix__label_live" transform="translate(0 3)">
+        <text id="prefix__LIVE" transform="translate(26 16.3)" style="font-size:13px;font-family:NanumSquareB,NanumSquare;letter-spacing:-.025em;fill:#ec455f">
+            <tspan x="-13.033" y="0">LIVE</tspan>
+        </text>
+        <g id="prefix__사각형_1712" data-name="사각형 1712" style="stroke:#ec455f;fill:none">
+            <rect width="52" height="24" class="prefix__cls-4" rx="12"/>
+            <rect width="51" height="23" x=".5" y=".5" class="prefix__cls-5" rx="11.5"/>
+        </g>
+        <g id="prefix__타원_97" data-name="타원 97" transform="translate(44)" style="stroke:#fff;stroke-width:3px;fill:#ec455f">
+            <circle cx="4" cy="4" r="4" class="prefix__cls-4"/>
+            <circle cx="4" cy="4" r="5.5" class="prefix__cls-5"/>
+        </g>
+    </g>
+</svg>

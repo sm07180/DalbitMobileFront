@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="hint_b_s" width="12" height="12" viewBox="0 0 12 12">
+    <circle id="타원_76" cx="6" cy="6" r="6" fill="#424242" data-name="타원 76"/>
+    <text id="_" fill="#fff" data-name="!" font-family="NanumSquareEB, NanumSquare" font-size="7px" letter-spacing="-0.02em" transform="translate(4.88 8)">
+        <tspan x="0" y="0">!</tspan>
+    </text>
+</svg>

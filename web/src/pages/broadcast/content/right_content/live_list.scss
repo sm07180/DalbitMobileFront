@@ -1,0 +1,229 @@
+@import "../../../../asset/scss/common/global";
+
+// 청취자
+#broadcast-page {
+  // 라이브
+  .liveWrap {
+    padding: 0 8px;
+    height: 100%;
+    .scroll-wrap {
+      height: calc(100% - 78px);
+    }
+
+    // 라이브 정렬부분
+    .sortBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 12px;
+      margin: 20px 0;
+      height: 40px;
+      font-size: 14px;
+      border-radius: 40px;
+      background: #f5f5f5;
+      .btn__reload {
+        flex: 1;
+        text-align: left;
+        color: $mediumGray;
+        &::before {
+          display: inline-block;
+          width: 18px;
+          height: 18px;
+          margin-right: 3px;
+          vertical-align: middle;
+          cursor: pointer;
+          content: "";
+          background: url(https://image.dalbitlive.com/images/api/ic_refresh.png) no-repeat 0 0;
+        }
+      }
+      .selectBox {
+        width: 120px;
+        z-index: 1;
+      }
+      .selectModule {
+        .select {
+          padding: 0 24px 0 0;
+          justify-content: flex-end;
+          border: 0;
+          &::after {
+            width: 18px;
+            height: 18px;
+            margin-top: -7px;
+            right: 0;
+            border: 0;
+            transform: none;
+            background: url(https://image.dalbitlive.com/images/api/ic_arrow_down_color.png) no-repeat center right;
+          }
+        }
+        .open {
+          &::after {
+            top: 40%;
+          }
+        }
+        .optionBox {
+          width: calc(100% - 10px);
+          padding: 10px 0;
+          top: 30px;
+          right: 0;
+          height: auto;
+          border: 1px solid $lightGray;
+        }
+        .option {
+          display: inline-block;
+          text-align: center;
+          height: 30px;
+          padding: 5px 0px;
+          font-size: 14px;
+          background: $white;
+          &:hover {
+            color: $black;
+            background: #f0f0f0;
+          }
+        }
+      }
+    }
+    // 라이브 리스트
+    .liveItem {
+      display: flex;
+      align-items: center;
+      padding: 20px 0px;
+      border-top: 1px solid $lightGray;
+      box-sizing: border-box;
+      cursor: pointer;
+      &:first-child {
+        border-top: 0;
+        padding-top: 0;
+      }
+      .thumb {
+        position: relative;
+        display: inline-block;
+        width: 112px;
+        height: 112px;
+        margin-left: 9px;
+        transition: all 0.2s ease-in;
+        .thumb_dj {
+          width: 100%;
+          height: 100%;
+          background-color: $lightGray;
+          border-radius: 112px;
+        }
+        .djImg {
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 44px;
+          height: 44px;
+          border-radius: 44px;
+        }
+        .icon_wrap {
+          position: absolute;
+          left: -9px;
+          top: 0;
+        }
+        .icons {
+          position: absolute;
+          left: -9px;
+          top: 0;
+          span {
+            display: block;
+            margin-top: 2px;
+            width: 50px;
+            height: 20px;
+            line-height: 20px;
+            font-size: 9px;
+            text-align: center;
+            color: $white;
+            border-radius: 20px;
+            &:first-child {
+              margin-top: 0;
+            }
+          }
+          &__recommend {
+            background: $red;
+          }
+          &__new {
+            background: rgba(69, 147, 236, 1);
+          }
+        }
+        .thumb_guest {
+          overflow: hidden;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 44px;
+          height: 44px;
+          border-radius: 100%;
+          border: 2px solid $white;
+          img {
+            width: 100%;
+          }
+        }
+      }
+      .info {
+        width: calc(100% - 135px);
+        margin-left: 16px;
+        .type,
+        .title,
+        .nickName {
+          display: block;
+        }
+        .type {
+          font-size: 12px;
+          color: $primary;
+        }
+        .title {
+          font-size: 16px;
+          color: $greishBrown;
+          @include multi-ellipsis(1);
+        }
+        .nickName {
+          margin-top: 7px;
+          font-size: 14px;
+          color: #9e9e9e;
+          @include multi-ellipsis(1);
+        }
+        .cnt {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          flex: 1;
+          margin-top: 7px;
+          padding-right: 10px;
+          font-size: 14px;
+          color: $darkGray;
+          span {
+            &::before {
+              display: inline-block;
+              content: "";
+              width: 24px;
+              height: 24px;
+              vertical-align: -11px;
+              margin-right: 3px;
+              background-size: 24px 24px;
+            }
+          }
+          .cnt_now {
+            &::before {
+              background: url(https://image.dalbitlive.com/svg/ico_hit_g.svg) no-repeat 0 0;
+            }
+          }
+          .cnt_boost {
+            &::before {
+              background: url(https://image.dalbitlive.com/svg/like_r_m.svg) no-repeat 0 0;
+            }
+          }
+          .cnt_likes {
+            &::before {
+              background: url(https://image.dalbitlive.com/svg/line_hearts_s.svg) no-repeat 0 0;
+            }
+          }
+          .cnt_people {
+            &::before {
+              background: url(https://image.dalbitlive.com/svg/people_g_s.svg) no-repeat 0 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}

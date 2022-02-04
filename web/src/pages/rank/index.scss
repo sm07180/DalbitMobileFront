@@ -1,0 +1,2236 @@
+@import "../../asset/scss/common/variables";
+
+#ranking-page {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  min-height: 100vh;
+
+  .respansiveBox {
+    padding: 0 16px;
+  }
+
+  img {
+    vertical-align: middle;
+  }
+
+  .benefitSize {
+    position: absolute;
+    bottom: 10px;
+    left: 16px;
+    display: inline-block;
+    vertical-align: top;
+    cursor: pointer;
+  }
+
+  .hallOfFame {
+    position: absolute;
+    bottom: 10px;
+    right: 16px;
+    vertical-align: top;
+    cursor: pointer;
+  }
+
+  .guideIconBox {
+    position: absolute;
+    top: 102px;
+    right: 16px;
+    cursor: pointer;
+  }
+
+  .renewalBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px 16px;
+    text-align: right;
+    color: $darkGray;
+    font-size: 12px;
+    background-color: $lighterGray;
+
+    & > span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    & > img {
+      margin-left: 5px;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+  }
+
+  .header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #d2d2d2;
+    padding: 14px 0;
+    box-sizing: border-box;
+    padding: 12px 16px;
+
+    &__title {
+      font-size: 18px;
+      letter-spacing: -0.45px;
+      font-weight: $bold;
+    }
+
+    &__btnBack {
+      display: block;
+      width: 36px;
+      position: absolute;
+      top: 6px;
+      left: 2%;
+    }
+  }
+
+  .rankTop3Box {
+    padding: 0 16px;
+    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+    &.realTime {
+      padding-bottom: 18px;
+      background-color: #632beb;
+      background-image: none;
+    }
+  }
+
+  .likeTopBox {
+    position: relative;
+    padding: 0 16px;
+    background-image: linear-gradient(to bottom, #632beb, #632beb 58%, #ffa7b4);
+  }
+
+  .rankTopBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background: #eee;
+
+    &__update {
+      font-size: 12px;
+      color: #424242;
+      display: flex;
+      align-items: center;
+    }
+    &__img {
+      margin-left: 4px;
+    }
+  }
+
+  .rankTab {
+    display: flex;
+    width: 100%;
+    &__btn {
+      flex: 1;
+      height: 32px;
+      margin-right: 2px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: solid 1px #e0e0e0;
+      background-color: $white;
+      font-size: 16px;
+      &--active {
+        border-color: #632beb;
+        background-color: #632beb;
+        color: $white;
+      }
+    }
+
+    &__specialBtn {
+      height: 32px;
+      margin-right: 2px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: solid 1px $red;
+      background-color: $white;
+      color: $red;
+      font-size: 16px;
+      &--active {
+        background-color: $red;
+        color: $white;
+      }
+      float: right;
+    }
+    // :last-child {
+    //   height: 32px;
+    //   padding: 0px 1px;
+    // }
+  }
+
+  .todayList {
+    height: 36px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+
+    &__btn {
+      margin: 0 10px;
+      height: 36px;
+      font-size: 16px;
+      color: #000;
+      &--active {
+        border-bottom: 1px solid #632beb;
+        color: #632beb;
+        font-weight: $bold;
+      }
+    }
+  }
+
+  .detailView {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 56px;
+    padding: 0px 10px;
+    background: $primary;
+    color: $white;
+
+    .subDay {
+      font-size: 12px;
+      color: #616161;
+    }
+
+    .title {
+      position: relative;
+      font-size: 16px;
+      font-weight: $bold;
+
+      .titleWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      span {
+        display: block;
+        font-size: 12px;
+        text-align: center;
+        color: $white;
+        font-weight: $regular;
+        opacity: 0.7;
+      }
+    }
+
+    .prevButton {
+      font-size: 14px;
+      font-weight: $bold;
+      color: $white;
+      background: url("https://image.dalbitlive.com/svg/20200806/arrow_left_b.svg") left center no-repeat;
+      padding-left: 24px;
+      opacity: 0.5;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+    .nextButton {
+      font-size: 14px;
+      font-weight: $bold;
+      color: $white;
+      padding-right: 24px;
+      background: url("https://image.dalbitlive.com/svg/20200806/arrow_right_b.svg") right center no-repeat;
+      opacity: 0.5;
+
+      &.active {
+        opacity: 1;
+      }
+    }
+
+    &.isSpecial {
+      color: $primary;
+      background-color: #eee;
+
+      .prevButton {
+        background: url("https://image.dalbitlive.com/svg/20200806/arrow_left_b_on.svg") left center no-repeat;
+        color: $black;
+      }
+      .nextButton {
+        background: url("https://image.dalbitlive.com/svg/20200806/arrow_right_b_on.svg") right center no-repeat;
+        color: $black;
+      }
+    }
+  }
+
+  .monthlyDJ{
+    display: flex;
+    align-items: center;
+    border:1px solid #febd56;
+    border-radius: 10px;
+    padding: 5px 16px 5px 20px;
+    &Wrap{
+      background:#632beb;
+      width:100%;
+      padding:10px 16px 0 16px;
+      box-sizing: border-box;
+    }
+    &__content{
+      font-size: 13px;
+      color:#fff;
+      &Wrap{
+         display: flex;
+        flex-direction: column;
+        letter-spacing: -1px;
+        width: 100%;
+      }
+      &-title{
+        font-size:15px;
+        font-weight: bold;
+        color:#febd56;
+      }
+    }
+    .btn{
+      flex:none;
+      position:relative;
+      width:64px;
+      height:28px;
+      line-height: 28px;
+      border-radius: 15px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color:#3e2974;
+      background-color: #febd56;
+      margin-left:auto;
+      cursor:pointer;
+    }
+    &__tooltip{
+      position:absolute;
+      top:35px;
+      right:-17px;
+      width:290px;
+      line-height:normal;
+      text-align:left;
+      padding:11px 14px;
+      border-radius:10px;
+      color:#fff;
+      font-size:12px;
+      font-weight:400;
+      background:#000;
+      z-index:1;
+      &-strong{
+        color:#febd56;
+        font-weight:500;
+      }
+      &-btnClose{
+        position:absolute;
+        top:6px; right:6px;
+        width:20px;
+        height:20px;
+        border-radius:50%;
+        background:#fff;
+      }
+    }
+  }
+
+  .myRanking {
+    position: relative;
+
+    &.profileBox {
+      background: $white;
+      border-radius: 16px;
+      margin-bottom: 18px;
+
+      .profileWrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        padding: 8px 0;
+        cursor: pointer;
+      }
+
+      .nickNameBox {
+        width: calc(100% - 20px);
+        margin-bottom: 4px;
+      }
+
+      &--fixed {
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        z-index: 3;
+      }
+    }
+
+    &__rank {
+      min-width: 64px;
+      text-align: center;
+
+      &--title {
+        font-size: 12px;
+        line-height: 13px;
+        color: #757575;
+      }
+
+      &--now {
+        width: 40px;
+        height: 20px;
+        margin: 6px auto 5px auto;
+        border-radius: 12px;
+        background-color: #000000;
+        color: $white;
+        font-weight: $bold;
+        font-size: 12px;
+        line-height: 20px;
+      }
+
+      &--point {
+        padding-top: 12px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        color: #424242;
+      }
+
+      &--ranking {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 20px;
+        margin: 0 auto 4px auto;
+        border-radius: 12px;
+        background-color: #eee;
+        font-size: 12px;
+        font-weight: $bold;
+      }
+
+      &--text {
+        padding-top: 9px;
+        font-size: 12px;
+        line-height: 15px;
+        white-space: pre-wrap;
+      }
+    }
+
+    &__content {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 70px);
+
+      .infoBox {
+        width: 100%;
+
+        .likeDetailWrap {
+          width: calc(100% - 10px);
+        }
+      }
+
+      .nickNameBox {
+        width: 65%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .profileBox + .resetPointBox {
+    margin-top: -10px;
+  }
+
+  .resetPointBox {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 36px;
+    margin-bottom: 12px;
+    padding: 0 6px 0 8px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.1);
+    box-sizing: border-box;
+    font-size: 13px;
+    color: $white;
+
+    p {
+      img {
+        width: 24px;
+        margin-top: -2px;
+        margin-right: 3px;
+      }
+      span {
+        display: inline-block;
+        margin-left: 10px;
+        color: $mediumGray;
+      }
+    }
+
+    button {
+      width: 87px;
+      height: 26px;
+      border-radius: 14px;
+      background-color: $yellow;
+      font-size: 12px;
+      letter-spacing: -0.3px;
+
+      img {
+        width: 20px;
+        margin-top: -2px;
+      }
+    }
+
+    &.apply {
+      span {
+        color: $yellow;
+      }
+
+      button {
+        background-color: $greishBrown;
+        color: $white;
+      }
+    }
+  }
+
+  .rankingChange {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    font-size: 12px;
+    font-weight: $bold;
+    margin-bottom: 4px;
+
+    &__up {
+      color: #eb2828;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 1px;
+        background: url("./static/ico-ranking-up@2x.png") no-repeat;
+        background-size: 100%;
+        background-position: 0px 1px;
+      }
+
+      &--profile {
+        color: #ff8282;
+        font-size: 12px;
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+
+          margin-right: 1px;
+          background: url("./static/ico-ranking-profile-up@2x.png") no-repeat;
+          background-size: 100%;
+          background-position: 0px 1px;
+        }
+      }
+    }
+
+    &__down {
+      color: #375cf1;
+
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-right: 1px;
+        background: url("./static/ico-ranking-down@2x.png") no-repeat;
+        background-size: 100%;
+        background-position: 0px 1px;
+      }
+
+      &--profile {
+        color: #56d6fe;
+        font-size: 12px;
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+
+          margin-right: 1px;
+          background: url("./static/ico-ranking-profile-down@2x.png") no-repeat;
+          background-size: 100%;
+          background-position: 0px 1px;
+        }
+      }
+    }
+
+    &__new {
+      color: #ff9c00;
+      text-transform: uppercase;
+    }
+
+    &__stop {
+      &::before {
+        content: "";
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        margin-top: 2px;
+        margin-right: 1px;
+        background: url("./static/ico-ranking-stop@2x.png") no-repeat;
+        background-size: 100%;
+      }
+
+      .textIndent {
+        display: inline-block;
+        overflow: hidden;
+        text-indent: -10000px;
+      }
+    }
+  }
+
+  .thumbBox {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    margin-right: 6px;
+    min-width: 60px;
+
+    &__pic {
+      width: 71%;
+      border-radius: 50%;
+      width: 100%;
+    }
+  }
+  .profileImage {
+    position: relative;
+  }
+  .infoBox {
+    padding: 0 10px 0 6px;
+    width: 100%;
+    &-weekly {
+      justify-content: center;
+      .profileBox {
+        width: 50%;
+        flex-direction: column;
+      }
+    }
+  }
+
+  .rankingList {
+    display: flex;
+    margin-bottom: 4px;
+    align-items: center;
+    position: relative;
+    padding: 12px 0;
+    background-color: $white;
+    border-radius: 16px;
+    cursor: pointer;
+
+    .thumbBox {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      margin-right: 6px;
+      min-width: 60px;
+
+      // &__frame {
+      //   position: absolute;
+      //   top: -21px;
+      //   left: 50%;
+      //   width: 62px;
+      //   height: 82px;
+      //   transform: translateX(-50%);
+
+      //   &--4rd {
+      //     background: url(https://image.dalbitlive.com/ranking/fanrf4_n@3x.png) no-repeat center center;
+      //     background-size: 100%;
+      //   }
+
+      //   &--5rd {
+      //     background: url(https://image.dalbitlive.com/ranking/fanrf5_n@3x.png) no-repeat center center;
+      //     background-size: 100%;
+      //   }
+      // }
+    }
+
+    .nickNameBox {
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    .countBox {
+      padding-left: 0;
+    }
+
+    .myRanking__rank--point {
+      padding-top: 0px;
+    }
+
+    .myRanking__img {
+      margin-right: 2px;
+    }
+
+    .liveBox {
+      top: 4px;
+      right: 4px;
+    }
+  }
+
+  .levelBox {
+    display: inline-block;
+    padding: 0 10px;
+    border-radius: 13px;
+    font-size: 11px;
+    line-height: 16px;
+    letter-spacing: -1px;
+    text-align: center;
+    color: #ffffff;
+
+    &__lv0 {
+      background-color: #9e9e9e;
+    }
+
+    &__lv1 {
+      background-color: #faa118;
+    }
+
+    &__lv2 {
+      background-color: #5dc62a;
+    }
+
+    &__lv3 {
+      background-color: #4692e9;
+    }
+
+    &__lv4 {
+      background-color: #f54640;
+    }
+
+    &__lv5 {
+      background-image: linear-gradient(to right, #7f18ff, #f52d5b 51%, #ffbf03);
+    }
+  }
+
+  .countBox {
+    //랭킹 마이, dj, fan, level 고통 사용
+    padding-left: 15px;
+
+    i.icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 1px;
+      display: inline-block;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0.8;
+      text-indent: -9999px;
+      vertical-align: -2px;
+
+      &--point {
+        background-image: url(https://image.dalbitlive.com/svg/ico_point.svg);
+      }
+      &--people {
+        background-image: url(https://image.dalbitlive.com/svg/people_g_s.svg);
+      }
+      &--like {
+        background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+      }
+      &--time {
+        background-image: url(https://image.dalbitlive.com/svg/time_g_s.svg);
+      }
+      &--star {
+        background-image: url(https://image.dalbitlive.com/svg/ico_star.svg);
+      }
+      &--fan {
+        background-image: url(https://image.dalbitlive.com/svg/ico_fan.svg);
+      }
+    }
+
+    &__item {
+      margin-right: 10px;
+      font-size: 12px;
+      letter-spacing: -0.3px;
+      color: #424242;
+      vertical-align: middle;
+
+      img {
+        opacity: 0.8;
+      }
+    }
+
+    &--profile {
+      display: flex;
+      flex-direction: column;
+      padding-left: 0px;
+    }
+
+    &__block {
+      display: flex;
+      margin-bottom: 2px;
+    }
+  }
+
+  .nickNameBox {
+    align-items: center;
+    flex-direction: column;
+    margin-top: 8px;
+    font-size: 16px;
+    color: #242424;
+    font-weight: $bold;
+
+    .nickNameImg {
+      display: flex;
+      align-content: center;
+      margin-top: 4px;
+
+      &__level {
+        display: inline-block;
+        height: 16px;
+        padding: 0 10px;
+        border-radius: 10px;
+        background-color: $mediumGray;
+        font-size: 12px;
+        line-height: 16px;
+        letter-spacing: -0.3px;
+        color: $white;
+        text-align: center;
+        font-weight: $light;
+      }
+    }
+
+    .genderBox {
+      display: inline-block;
+      text-indent: -10000px;
+      background-size: 100%;
+      vertical-align: middle;
+
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background-image: url("./static/ico-male@2x.png");
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background-image: url("./static/ico-female@2x.png");
+        margin-left: 2px;
+      }
+    }
+  }
+
+  .medalBox {
+    position: absolute;
+    top: 0;
+    left: 8px;
+    font-size: 12px;
+    letter-spacing: -0.3px;
+    text-align: center;
+    font-weight: $bold;
+
+    .medal {
+      background-size: 100%;
+      text-indent: -10000px;
+    }
+
+    &--top1 {
+      width: 40px;
+      height: 50px;
+      background: url(./static/ico-medal-gold@2x.png);
+    }
+
+    &--top2 {
+      width: 32px;
+      height: 40px;
+      background: url(./static/ico-medal-silver@2x.png);
+    }
+
+    &--top3 {
+      width: 32px;
+      height: 40px;
+      background: url(./static/ico-medal-bronze@2x.png);
+    }
+  }
+
+  .liveBox {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 10px;
+    line-height: 14px;
+    letter-spacing: -0.25px;
+    text-align: center;
+    color: #ec455f;
+    font-weight: $bold;
+
+    &__img {
+      width: 28px;
+      cursor: pointer;
+    }
+  }
+
+  .userRanking {
+    position: relative;
+
+    &.bottomList {
+      width: 100%;
+      background-color: #eee;
+      padding: 16px;
+      position: relative;
+      border-radius: 20px;
+      margin-top: -20px;
+      box-sizing: border-box;
+    }
+
+    &.likeList {
+      margin-top: 0;
+    }
+
+    .TopBox {
+      display: flex;
+      width: 328px;
+      height: 290px;
+      margin: 0 auto;
+      background: url(https://image.dalbitlive.com/ranking/podium@3x.png) bottom;
+      background-repeat: no-repeat;
+      background-size: 100%;
+
+      &.isSpPoint {
+        height: 340px;
+      }
+
+      &.isLabel {
+        height: 330px;
+      }
+      &__item {
+        position: relative;
+
+        .spPoint {
+          position: relative;
+          margin: 0 auto;
+          padding: 7px 28px 8px 13px;
+          width: fit-content;
+          border-radius: 14px;
+          color: $white;
+          font-size: 12px;
+          background-position: 2px 2px;
+          background-size: 28px;
+          background-repeat: no-repeat;
+          cursor: pointer;
+
+          .arrowIcon {
+            position: absolute;
+            top: 12px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+
+            img {
+              width: 100%;
+            }
+          }
+
+          &::before {
+            display: inline-block;
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            margin-left: -3px;
+            width: 7px;
+            height: 5px;
+            background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+          }
+        }
+
+        .labelDj,
+        .labelFan {
+          position: relative;
+          margin: 0 auto;
+          padding: 0 6px 0 2px;
+          height: 34px;
+          line-height: 34px;
+          width: fit-content;
+          border-radius: 14px;
+          color: #fff;
+          font-size: 12px;
+          box-sizing: border-box;
+
+          img {
+            display: inline-block;
+            margin-top: -2px;
+            width: 28px;
+          }
+
+          &::before {
+            display: inline-block;
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            margin-left: -3px;
+            width: 7px;
+            height: 5px;
+            background-image: url(https://image.dalbitlive.com/ranking/balloon_edge@3x.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+          }
+        }
+
+        .TopBoxThumb {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          cursor: pointer;
+
+          &__pic {
+            position: relative;
+            border-radius: 50%;
+            width: 100%;
+          }
+
+          &__deco {
+            position: absolute;
+            left: 50%;
+            bottom: -15px;
+            text-align: center;
+            z-index: 1;
+          }
+
+          &::after {
+            content: "";
+            white-space: pre;
+            display: block;
+            position: absolute;
+          }
+        }
+
+        .nickNameBox {
+          position: absolute;
+          width: 80%;
+          margin-left: 10%;
+          text-align: center;
+          font-size: 12px;
+          color: $white;
+          height: 35px;
+
+          &__nick {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+
+            &--noLive {
+              overflow: hidden;
+              display: -webkit-box;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
+              line-height: 15px;
+            }
+          }
+
+          &__live {
+            display: block;
+            margin-top: 4px;
+          }
+        }
+
+        &:nth-of-type(1) {
+          width: 112px;
+          order: 2;
+
+          .spPoint {
+            background-color: rgba(0, 0, 0, 0.5);
+
+            &::after {
+              content: "스페셜 DJ\A가산점+1.5";
+              white-space: pre;
+            }
+          }
+
+          .labelDj {
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .labelFan {
+            margin-top: 2px;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &__pic {
+              width: 88px;
+            }
+
+            &__deco {
+              &.dj {
+                width: 84px;
+                margin-left: -42px;
+                bottom: -17px;
+              }
+
+              &.fan {
+                width: 58px;
+                margin-left: -29px;
+                bottom: -17px;
+              }
+            }
+
+            &.dj {
+              &::after {
+                top: -30px;
+                left: 9px;
+                width: 94px;
+                height: 122px;
+                background: url(https://image.dalbitlive.com/ranking/djrf1@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -30px;
+                left: 9px;
+                width: 94px;
+                height: 122px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf1@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickNameBox {
+            bottom: 60px;
+          }
+        }
+        &:nth-of-type(2) {
+          width: 108px;
+          order: 1;
+
+          .spPoint {
+            margin-top: 50px;
+            background-color: rgba(0, 0, 0, 0.4);
+
+            &::after {
+              content: "스페셜 DJ\A가산점+0.5";
+              white-space: pre;
+            }
+          }
+
+          .labelDj {
+            margin-top: 52px;
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+          .labelFan {
+            margin-top: 54px;
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+
+          .TopBoxThumb {
+            bottom: 140px;
+
+            &__pic {
+              width: 72px;
+            }
+
+            &__deco {
+              &.dj {
+                width: 70px;
+                margin-left: -35px;
+                bottom: -15px;
+              }
+
+              &.fan {
+                width: 36px;
+                margin-left: -18px;
+              }
+            }
+
+            &.dj {
+              &::after {
+                top: -25px;
+                left: 16px;
+                width: 76px;
+                height: 99px;
+                background: url(https://image.dalbitlive.com/ranking/djrf2@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -25px;
+                left: 16px;
+                width: 76px;
+                height: 99px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf2@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickNameBox {
+            bottom: 40px;
+
+            &__live {
+              img {
+                width: 20px;
+              }
+            }
+          }
+        }
+
+        &:nth-of-type(3) {
+          width: 108px;
+          order: 3;
+
+          .spPoint {
+            margin-top: 78px;
+            background-color: rgba(0, 0, 0, 0.3);
+
+            &::after {
+              content: "스페셜 DJ\A가산점+0.3";
+              white-space: pre;
+            }
+          }
+
+          .labelDj {
+            margin-top: 78px;
+            background-color: rgba(0, 0, 0, 0.3);
+          }
+          .labelFan {
+            margin-top: 78px;
+            background-color: rgba(0, 0, 0, 0.3);
+          }
+
+          .TopBoxThumb {
+            bottom: 130px;
+
+            &__pic {
+              width: 60px;
+            }
+
+            &__deco {
+              &.dj {
+                width: 56px;
+                margin-left: -28px;
+              }
+
+              &.fan {
+                width: 34px;
+                margin-left: -17px;
+              }
+            }
+
+            &.dj {
+              &::after {
+                top: -23px;
+                left: 21px;
+                width: 66px;
+                height: 86px;
+                background: url(https://image.dalbitlive.com/ranking/djrf3@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+
+            &.fan {
+              &::after {
+                top: -23px;
+                left: 21px;
+                width: 66px;
+                height: 86px;
+                background: url(https://image.dalbitlive.com/ranking/fanrf3@3x.png) no-repeat;
+                background-size: 100%;
+              }
+            }
+          }
+
+          .nickNameBox {
+            bottom: 35px;
+
+            &__live {
+              img {
+                width: 20px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .TopBoxLike {
+      display: flex;
+      width: 328px;
+      height: 290px;
+      margin: 0 auto;
+
+      &__item {
+        position: relative;
+
+        .TopBoxThumb {
+          position: absolute;
+          width: 100%;
+          text-align: center;
+          z-index: 1;
+          cursor: pointer;
+
+          &__pic {
+            position: relative;
+            border-radius: 50%;
+            width: 100%;
+          }
+
+          &::after {
+            content: "";
+            white-space: pre;
+            display: block;
+            position: absolute;
+          }
+        }
+
+        .nickNameBox {
+          position: absolute;
+          bottom: 147px;
+          width: 100%;
+          padding: 0 5%;
+          z-index: 0;
+          box-sizing: border-box;
+
+          &__nick {
+            overflow: hidden;
+            width: 100%;
+            padding: 0 5%;
+            height: 26px;
+            border-radius: 20px;
+            background-color: #fff;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            word-wrap: normal;
+            line-height: 26px;
+            text-align: center;
+            font-size: 12px;
+            box-sizing: border-box;
+
+            // &--noLive {
+            //   overflow: hidden;
+            //   display: -webkit-box;
+            //   -webkit-line-clamp: 2;
+            //   -webkit-box-orient: vertical;
+            //   line-height: 15px;
+            // }
+          }
+
+          &__live {
+            display: block;
+            margin-top: 4px;
+          }
+        }
+
+        .cupidBox {
+          position: absolute;
+          bottom: 40px;
+          width: 100%;
+          height: 86px;
+          padding: 0 3%;
+          box-sizing: border-box;
+
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 76px;
+            left: 42%;
+            width: 20px;
+            height: 20px;
+            background: url(https://image.dalbitlive.com/ranking/ico_like_red_m.svg);
+          }
+
+          .cupidItem {
+            padding: 20px 7px 7px 7px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 11px;
+
+            .thumbBox {
+              width: 100%;
+              height: 36px;
+              text-align: center;
+              cursor: pointer;
+
+              img {
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
+              }
+            }
+
+            .nickName {
+              overflow: hidden;
+              width: 100%;
+              margin-top: 6px;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              word-wrap: normal;
+            }
+          }
+        }
+
+        &:nth-of-type(1) {
+          width: 112px;
+          order: 2;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -29px;
+              left: 11px;
+              width: 94px;
+              height: 122px;
+              background: url(https://image.dalbitlive.com/ranking/likewf1@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 88px;
+            }
+          }
+        }
+
+        &:nth-of-type(2) {
+          width: 108px;
+          order: 1;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -30px;
+              left: 16px;
+              width: 76px;
+              height: 104px;
+              background: url(https://image.dalbitlive.com/ranking/likewf2@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 72px;
+            }
+          }
+        }
+
+        &:nth-of-type(3) {
+          width: 108px;
+          order: 3;
+
+          .TopBoxThumb {
+            bottom: 170px;
+
+            &::after {
+              top: -23px;
+              left: 21px;
+              width: 66px;
+              height: 86px;
+              background: url(https://image.dalbitlive.com/ranking/likewf3@2x.png) no-repeat;
+              background-size: 100%;
+            }
+
+            &__pic {
+              width: 60px;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .specialDj {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    padding: 0 8px;
+    margin-left: 4px;
+    border-radius: 10px;
+    background-color: #ec455f;
+    font-size: 12px;
+    line-height: 1;
+    color: $white;
+    font-weight: $light;
+    font-style: normal;
+  }
+
+  .specialBox {
+    span {
+      display: block;
+      width: 44px;
+      height: 22px;
+      background-color: $lighterGray;
+      border-radius: 14px;
+      font-weight: $bold;
+      font-size: 14px;
+      text-align: center;
+      letter-spacing: -0.3px;
+      line-height: 22px;
+      &.new {
+        background-color: #febd56;
+        color: $white;
+        font-size: 11px;
+      }
+      &.on {
+        background-color: $primary;
+        color: $white;
+      }
+    }
+    &-pick {
+      span {
+        width: 56px;
+      }
+    }
+  }
+
+  .b .levelListWrap {
+    padding: 0 16px 16px 16px;
+    background-color: $lighterGray;
+  }
+
+  .levelListBox {
+    display: flex;
+    align-items: center;
+    position: relative;
+    height: 108px;
+    padding: 4px 12px;
+    background-color: $white;
+    margin-bottom: 4px;
+    border-radius: 16px;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+
+    .thumbBox {
+      width: 100px;
+      height: 100px;
+      margin-right: 8px;
+      min-width: 100px;
+      text-align: center;
+
+      &__pic {
+        margin-top: 13px;
+        width: 74px;
+      }
+
+      &__frame {
+        position: absolute;
+        left: 50%;
+        width: 100px;
+        transform: translateX(-50%);
+      }
+    }
+
+    .fanGoodBox {
+      color: #ec455f;
+      font-size: 14px;
+
+      i.icon {
+        width: 22px;
+        height: 22px;
+        display: inline-block;
+        text-indent: -9999px;
+
+        &--whiteLike {
+          background-image: url(https://image.dalbitlive.com/svg/like_w_s.svg);
+          background-size: 22px;
+        }
+      }
+
+      & img {
+        width: 22px;
+        height: 22px;
+      }
+
+      & span {
+        line-height: 24px;
+        letter-spacing: -0.4px;
+      }
+    }
+
+    .nickNameBox {
+      margin-top: 0;
+      font-size: 14px;
+    }
+
+    .genderBox {
+      display: inline-flex;
+      background-size: 100%;
+      vertical-align: middle;
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      .male {
+        background: url(https://image.dalbitlive.com/svg/gender_m_w.svg) center no-repeat;
+        margin-left: 2px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+      }
+
+      .female {
+        background: url(https://image.dalbitlive.com/svg/gender_w_w.svg) center no-repeat;
+        margin-left: 2px;
+        width: 24px;
+        height: 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+        text-indent: -9999px;
+      }
+    }
+
+    .bestFanBox {
+      display: flex;
+      height: 18px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #632beb;
+      align-items: center;
+
+      i.icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        display: inline-block;
+        background-position: center;
+        opacity: 0.8;
+        text-indent: -9999px;
+
+        &--like {
+          background-image: url(https://image.dalbitlive.com/svg/ico_like_g_s.svg);
+        }
+      }
+      &__label {
+        margin-right: 4px;
+        padding: 0 8px;
+        height: 16px;
+        color: #757575;
+        background-color: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      &__nickname {
+        max-width: 55%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+        cursor: pointer;
+      }
+      &__icon {
+        color: #424242;
+        word-spacing: -5px;
+      }
+    }
+
+    .countBox {
+      height: 18px;
+      margin-top: 4px;
+      padding-left: 0px;
+      font-size: 12px;
+      & > span {
+        margin-right: 6px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        word-spacing: -3px;
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .liveBox {
+      top: 12px;
+      right: 12px;
+    }
+
+    &__levelBox {
+      position: relative;
+      margin-right: 4px;
+      &--levelText {
+        position: absolute;
+        bottom: 22px;
+        left: 15px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: $bold;
+        line-height: 21px;
+      }
+      &--rankText {
+        width: 40px;
+        height: 20px;
+        border-radius: 12px;
+        background-color: #616161;
+        color: $white;
+        text-align: center;
+        font-size: 12px;
+        font-weight: $bold;
+        line-height: 21px;
+      }
+      &--rank {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-width: 44px;
+        height: 22px;
+        margin-right: 10px;
+        background-color: #616161;
+        border-radius: 14px;
+        font-weight: $bold;
+        font-size: 16px;
+        color: $white;
+        text-align: center;
+      }
+      &--updown {
+        font-size: 12px;
+        font-weight: $bold;
+        text-align: center;
+        &__up {
+          color: #eb2828;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 1px;
+            background: url("./static/ico-ranking-up@2x.png") no-repeat;
+            background-size: 100%;
+            background-position: 0px 1px;
+          }
+        }
+
+        &__down {
+          color: #375cf1;
+
+          &::before {
+            content: "";
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 1px;
+            background: url("./static/ico-ranking-down@2x.png") no-repeat;
+            background-size: 100%;
+            background-position: 0px 1px;
+          }
+        }
+
+        &__new {
+          display: block;
+          height: 12px;
+          color: #ff9c00;
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+
+  .rewordBox {
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 18px;
+    padding: 18px 0;
+    border-radius: 16px;
+    border: solid 2px #febd56;
+
+    &__top {
+      color: $white;
+      font-size: 22px;
+      letter-spacing: -0.55px;
+      font-weight: $bold;
+      line-height: 22px;
+      text-align: center;
+
+      span {
+        display: inline-block;
+        display: block;
+        margin-top: 4px;
+        font-size: 14px;
+        font-weight: $bold;
+        color: #febd56;
+      }
+    }
+
+    &__btnGet {
+      position: absolute;
+      right: 11px;
+      top: 14px;
+      width: 56px;
+      height: 56px;
+      border-radius: 30px;
+      background-color: #ec455f;
+      line-height: 18px;
+      font-weight: $bold;
+      color: $white;
+    }
+
+    &__character1 {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  .btnMore {
+    position: absolute;
+    right: 4px;
+    height: 100%;
+    text-align: right;
+  }
+
+  .specialPage {
+    min-height: calc(100vh - 100px);
+    padding: 0px 16px 20px;
+    background: $lighterGray;
+    .notice {
+      margin-bottom: 4px;
+      padding: 9px 0px;
+      line-height: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      border: 1px solid $primary;
+      background: $white;
+      color: $primary;
+      border-radius: 16px;
+      box-sizing: border-box;
+    }
+    .specialText {
+      margin-bottom: 4px;
+      padding: 11px 0;
+      background-color: $primary;
+      color: $white;
+      font-size: 14px;
+      text-align: center;
+      border-radius: 16px;
+    }
+  }
+
+  .likeDetailWrap {
+    width: calc(100% - 140px);
+    .likeListDetail {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      .nickNameBox {
+        flex: 1;
+        margin-top: 0;
+        margin-bottom: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        word-wrap: normal;
+      }
+    }
+
+    .fanGoodBox {
+      color: #ec455f;
+      font-size: 14px;
+
+      & img {
+        width: 22px;
+        height: 22px;
+      }
+
+      & span {
+        line-height: 24px;
+        letter-spacing: -0.4px;
+      }
+    }
+
+    .nickNameBox {
+      padding-left: 5px;
+      font-size: 14px;
+    }
+
+    .genderBox {
+      display: inline-flex;
+      padding-left: 5px;
+      background-size: 100%;
+      vertical-align: middle;
+      &.korea-m {
+        margin-left: 2px;
+        border: 1px solid;
+      }
+
+      &.gender-m {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+
+      &.gender-f {
+        width: 24px;
+        height: 16px;
+        background: url(./static/ico-male@2x.png) no-repeat;
+        background-size: contain;
+        margin-left: 2px;
+      }
+    }
+
+    .bestFanBox {
+      display: flex;
+      height: 18px;
+      margin-top: 4px;
+      font-size: 12px;
+      color: #632beb;
+      align-items: center;
+      &__label {
+        margin-right: 4px;
+        padding: 0 8px;
+        height: 16px;
+        color: #757575;
+        background-color: #eee;
+        border-radius: 20px;
+        font-size: 12px;
+        line-height: 16px;
+      }
+
+      &__nickname {
+        max-width: 55%;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+        cursor: pointer;
+      }
+      &__icon {
+        color: #424242;
+        word-spacing: -5px;
+      }
+    }
+
+    .countBox {
+      height: 18px;
+      margin-top: 4px;
+      padding-left: 5px;
+      font-size: 12px;
+      & > span {
+        margin-right: 6px;
+        font-size: 12px;
+        letter-spacing: -0.3px;
+        word-spacing: -3px;
+        & > img {
+          width: 16px;
+          height: 16px;
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .liveBox {
+      top: 12px;
+      right: 12px;
+    }
+  }
+
+  .rankGuideWrap {
+    padding-bottom: 18px;
+    letter-spacing: -0.3px;
+
+    .btn-close {
+      position: absolute;
+    }
+  }
+  .guideTab {
+    padding: 12px 16px 8px 16px;
+  }
+
+  .benefitTop {
+    padding: 16px 0;
+    text-align: center;
+    background-color: $primary;
+    color: $white;
+    letter-spacing: -0.35px;
+    font-size: 14px;
+
+    &__title {
+      margin-bottom: 6px;
+      color: $yellow;
+      font-weight: $bold;
+    }
+  }
+
+  .tableNotice {
+    padding: 20px;
+    font-size: 12px;
+    color: $black;
+  }
+
+  .tableBox {
+    margin-top: 24px;
+    padding: 0 16px;
+
+    &__title {
+      position: relative;
+      margin-bottom: 12px;
+      letter-spacing: -0.4px;
+      font-weight: $bold;
+
+      &--lastTitle {
+        font-size: 16px;
+      }
+
+      &--sub {
+        display: block;
+        font-weight: $bold;
+        line-height: 16px;
+        font-size: 12px;
+        color: #9e9e9e;
+      }
+
+      &--option {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-weight: $bold;
+        font-size: 12px;
+        color: #9e9e9e;
+      }
+    }
+
+    table {
+      th {
+        padding: 6px 0;
+        border-top: 1px solid $primary;
+        border-bottom: 1px solid $primary;
+        font-size: 12px;
+        font-weight: $regular;
+        color: $primary;
+        letter-spacing: -0.3px;
+      }
+
+      td {
+        height: 37px;
+        line-height: 37px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 12px;
+        text-align: center;
+        color: $greishBrown;
+        font-weight: $bold;
+
+        &.rank {
+          font-weight: $bold;
+        }
+
+        &.category {
+          color: #757575;
+        }
+
+        &.random {
+          padding: 8px 0;
+          background-color: #f5f5f5;
+          line-height: 18px;
+
+          span {
+            font-weight: $regular;
+          }
+        }
+
+        &.note {
+          background-color: #f5f5f5;
+          line-height: 22px;
+          font-weight: $regular;
+
+          i {
+            font-weight: $bold;
+            font-style: normal;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    .conditionBox {
+      display: flex;
+      justify-content: space-between;
+
+      .conditionItem {
+        overflow: hidden;
+        width: 30%;
+        border: 1px solid $primary;
+        text-align: center;
+        border-radius: 12px;
+
+        &__title {
+          height: 28px;
+          font-size: 12px;
+          line-height: 28px;
+          letter-spacing: -0.3px;
+          color: $white;
+          background-color: $primary;
+        }
+        &__content {
+          width: 50%;
+          height: 60px;
+          margin: 0 auto;
+          display: table-cell;
+          vertical-align: middle;
+          font-size: 13px;
+          line-height: 18px;
+          letter-spacing: -0.33px;
+          color: $greishBrown;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .noticeBox {
+    padding: 28px 16px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+
+    &__title {
+      color: $greishBrown;
+      font-weight: $bold;
+    }
+
+    &__item {
+      color: #757575;
+      padding-left: 12px;
+    }
+  }
+
+  .guidePopWrap {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    color: #757575;
+    padding-bottom: 16px;
+
+    p {
+      text-align: center;
+      line-height: 24px;
+
+      &.topBox {
+        line-height: 26px;
+        font-weight: $bold;
+        color: #000;
+      }
+
+      &.middleBox {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #616161;
+
+        span {
+          font-weight: $bold;
+          &.colorRed {
+            color: #ec455f;
+          }
+        }
+      }
+    }
+
+    & > span {
+      text-align: center;
+    }
+  }
+
+  .speicalPointPop {
+    .topBox {
+      margin-bottom: 20px;
+      border: 1px solid #bdbdbd;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      line-height: 22px;
+      font-weight: 500;
+
+      span {
+        color: #632beb;
+      }
+    }
+
+    .table {
+      font-size: 12px;
+
+      &__th {
+        display: flex;
+        justify-content: space-between;
+        padding: 7px 0;
+        color: #632beb;
+        border-top: 1px solid #632beb;
+        border-bottom: 1px solid #632beb;
+
+        span {
+          display: block;
+          width: 30%;
+          text-align: center;
+
+          &:nth-of-type(2) {
+            width: 40%;
+          }
+        }
+      }
+
+      li {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #e0e0e0;
+        padding: 12px 0;
+        color: #424242;
+
+        span {
+          display: block;
+          width: 30%;
+          text-align: center;
+
+          &:nth-of-type(2) {
+            width: 40%;
+          }
+        }
+      }
+    }
+
+    .noteBox {
+      margin-top: 20px;
+      padding-bottom: 20px;
+      line-height: 18px;
+      font-size: 12px;
+      color: #424242;
+      letter-spacing: -0.3px;
+      text-align: center;
+    }
+  }
+
+  .resetPopWrap {
+    text-align: center;
+
+    & > p {
+      padding-top: 15px;
+    }
+
+    .warning {
+      padding: 16px 0 10px 0;
+      color: $red;
+    }
+
+    .notice {
+      padding: 16px 0;
+      font-size: 12px;
+      color: $greishGray;
+      line-height: 20px;
+      text-align: left;
+    }
+  }
+}

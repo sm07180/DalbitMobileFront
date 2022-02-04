@@ -5,11 +5,10 @@ import {Context} from 'context'
 const store = useContext(Context)
 
  */
-import React, {useState, useContext, createContext} from 'react'
+import React, {useState, useContext, createContext, useReducer} from 'react'
 //context
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import use from 'pages/setting/content/use'
 
 //Context
 const Context = createContext()
@@ -18,10 +17,314 @@ const {Provider} = Context
 //
 import {convertDateFormat} from 'components/lib/dalbit_moment'
 import {convertMonday} from 'pages/common/rank/rank_fn'
+import {CHAT_MAX_COUNT} from "pages/broadcast/constant";
 
+const layerStatusReducer = (state, action) => {
+  switch (action) {
+    case "openRightSideUser": {
+      return { ...state, rightSide: true, rightSideType: "user" };
+    }
+    case "openRightSideNav": {
+      return { ...state, rightSide: true, rightSideType: "nav" };
+    }
+    case "openRightSideAlarm": {
+      return { ...state, rightSide: true, rightSideType: "alarm" };
+    }
+    case "closeRightSide": {
+      return { ...state, rightSide: false };
+    }
+    case "openSearchSide": {
+      return { ...state, searchSide: true };
+    }
+    case "closeSearchSide": {
+      return { ...state, searchSide: false };
+    }
+    case "closeAllSide": {
+      return { ...state, rightSide: false, searchSide: false };
+    }
+    default: {
+      throw new Error("No Action~");
+    }
+  }
+};
+
+const rtcInfoReducer = (
+    state,
+    action
+) => {
+  const { type, data } = action;
+
+  switch (type) {
+    case "init": {
+      return data;
+    }
+    case "empty": {
+      return null;
+    }
+    default: {
+      throw new Error("Rtc Info No Action~");
+    }
+  }
+};
+
+const chatInfoReducer = (
+    state,
+    action
+) => {
+  const { type, data } = action;
+
+  switch (type) {
+    case "init": {
+      return data;
+    }
+    default: {
+      throw new Error("Chat Info No Action");
+    }
+  }
+};
+
+const guestInfoReducer = (state, action) => {
+  const { type, data } = action;
+
+  switch (type) {
+    case "INIT": {
+      return {
+        [data.memNo]: data.RTC,
+      };
+    }
+
+    case "ADD": {
+      return {
+        ...state,
+        [data.memNo]: data.RTC,
+      };
+    }
+
+    case "REMOVE": {
+      if (state[data.memNo]) {
+        delete state[data.memNo];
+      }
+
+      if (Object.keys(state).length === 0) {
+        return null;
+      } else {
+        return {
+          ...state,
+        };
+      }
+    }
+
+    case "EMPTY": {
+      return null;
+    }
+
+    default: {
+      return state;
+    }
+  }
+};
+
+const chatDataReducer = (
+    state,
+    action
+) => {
+  const { type, data } = action;
+
+  switch (type) {
+    case "add": {
+      const sliced = (() => {
+        if (state.length >= CHAT_MAX_COUNT) {
+          return state.splice(CHAT_MAX_COUNT);
+        }
+        return state;
+      })();
+
+      const concated = sliced.concat(data);
+      return concated;
+    }
+    case "empty": {
+      return [];
+    }
+    default: {
+      throw new Error("type is none");
+    }
+  }
+};
+
+const clipPlayerReducer = (
+    state,
+    action
+) => {
+  const { type, data } = action;
+  switch (type) {
+    case "init": {
+      return data;
+    }
+    case "empty": {
+      return null;
+    }
+    default: {
+      throw new Error("Rtc Info No Action~");
+    }
+  }
+};
+
+const clipInfoReducer = (state, action) => {
+  const { type, data } = action;
+  switch (type) {
+    case "add":
+      return { ...state, ...data };
+    case "empty":
+      return null;
+    default:
+      throw new Error("type is none");
+  }
+};
+
+const clipPlayListReducer = (
+    state,
+    action
+) => {
+  const { type, data } = action;
+  switch (type) {
+    case "init": {
+      return state;
+    }
+    case "add": {
+      state = [];
+      return state.concat(data);
+    }
+    case "empty": {
+      return [];
+    }
+    default: {
+      throw new Error("type is none");
+    }
+  }
+};
+
+const clipPlayListTabReducer = (state,action) => {
+  const { type, data } = action;
+  switch (type) {
+    case "init": {
+      return state;
+    }
+    case "add": {
+      state = [];
+      return state.concat(data);
+    }
+    case "empty": {
+      return [];
+    }
+    default: {
+      throw new Error("type is none");
+    }
+  }
+};
+
+const initialData = {
+  globalState: {
+    status: false,
+    baseData: {
+      authToken: null,
+      isLogin: false,
+      memNo: "",
+    },
+    alertStatus: {
+      status: false,
+    },
+    toastStatus: {
+      status: false,
+    },
+
+    tooltipStatus: {
+      status: false,
+    },
+    userProfile: null,
+    layerStatus: {
+      rightSide: false,
+      rightSideType: "user",
+      searchSide: false,
+    },
+    rtcInfo: null,
+    chatInfo: null,
+    mailChatInfo: null,
+    guestInfo: {
+      type: "EMPTY",
+    },
+    splashData: null,
+    // splashData: null,
+    currentChatData: [],
+    clipPlayer: null,
+    broadClipDim: false,
+    clipInfo: null,
+    checkDev: false,
+    checkAdmin: false,
+    shadowAdmin: 0,
+    imgViewerPath: "",
+    isShowPlayer: false,
+    clipPlayList: [],
+    clipPlayListTab: [],
+    clipPlayMode: "normal",
+    urlInfo: "",
+    broadcastAdminLayer: {
+      status: false,
+      roomNo: "",
+      nickNm: "",
+    },
+    inBroadcast: false,
+    alarmStatus: false,
+    alarmMoveUrl: "",
+    realtimeBroadStatus: {
+      status: false,
+      message: "",
+      roomNo: "",
+      type: "",
+      time: "",
+      nickNm: "",
+      memNo: "",
+    },
+    mailBlockUser: {
+      memNo: "",
+      blackMemNo: "",
+    },
+    dateState: convertDateFormat(convertMonday(), "YYYY-MM-DD"),
+    multiViewer: { show: false },
+    isMailboxOn: true,
+    bestDjData: [],
+    ageData: 14,
+    authFormRef: null,
+    noServiceInfo: {
+      showPageYn: "",
+      americanAge: 0,
+      limitAge: 14,
+      passed: false,
+    },
+    userReportInfo: {
+      memNo: "",
+      memNick: "",
+      showState: false,
+    },
+    exitMarbleInfo: {
+      rMarbleCnt: 0,
+      yMarbleCnt: 0,
+      bMarbleCnt: 0,
+      vMarbleCnt: 0,
+      isBjYn: "",
+      marbleCnt: 0,
+      pocketCnt: 0,
+      showState: false,
+    },
+    globalGganbuState: -1,
+    gganbuTab: "collect",
+    gotomoonTab: "info",
+  },
+  globalAction: {},
+};
 const GlobalProvider = (props) => {
   //initalize
   const DAY_COOKIE_PERIOD = 100
+
   //state
   //---------------------------------------------------------------------
   const [state, setState] = useState({
@@ -162,6 +465,115 @@ const GlobalProvider = (props) => {
   //서버이동시 토큰갱신 setInterval 제거용
   const [intervalId, setIntervalId] = useState(null);
 
+  const [baseData, setBaseData] = useState(
+      initialData.globalState.baseData
+  );
+  const [alertStatus, setAlertStatus] = useState(
+      initialData.globalState.alertStatus
+  );
+  const [toastStatus, callSetToastStatus] = useState(
+      initialData.globalState.toastStatus
+  );
+  const [tooltipStatus, setTooltipStatus] = useState(
+      initialData.globalState.tooltipStatus
+  );
+  const [userProfile, setUserProfile] = useState(
+      initialData.globalState.userProfile
+  );
+  const [layerStatus, dispatchLayerStatus] = useReducer(
+      layerStatusReducer,
+      initialData.globalState.layerStatus
+  );
+  const [rtcInfo, dispatchRtcInfo] = useReducer(
+      rtcInfoReducer,
+      initialData.globalState.rtcInfo
+  );
+  const [chatInfo, dispatchChatInfo] = useReducer(
+      chatInfoReducer,
+      initialData.globalState.chatInfo
+  );
+  const [mailChatInfo, dispatchMailChatInfo] = useReducer(
+      chatInfoReducer,
+      initialData.globalState.mailChatInfo
+  );
+  const [guestInfo, dispatchGuestInfo] = useReducer(
+      guestInfoReducer,
+      initialData.globalState.guestInfo
+  );
+  const [splashData, setSplashData] = useState(
+      initialData.globalState.splashData
+  );
+  const [currentChatData, dispatchCurrentChatData] = useReducer(
+      chatDataReducer,
+      initialData.globalState.currentChatData
+  );
+  const [clipPlayer, dispatchClipPlayer] = useReducer(
+      clipPlayerReducer,
+      initialData.globalState.clipPlayer
+  );
+  const [broadClipDim, setBroadClipDim] = useState(
+      initialData.globalState.broadClipDim
+  );
+  const [clipInfo, dispatchClipInfo] = useReducer(
+      clipInfoReducer,
+      initialData.globalState.clipInfo
+  );
+  const [checkDev, setCheckDev] = useState(
+      initialData.globalState.checkDev
+  );
+  const [checkAdmin, setCheckAdmin] = useState(
+      initialData.globalState.checkAdmin
+  );
+  const [shadowAdmin, setShadowAdmin] = useState(
+      initialData.globalState.shadowAdmin
+  );
+  const [imgViewerPath, setImgViewerPath] = useState(
+      initialData.globalState.imgViewerPath
+  );
+  const [isShowPlayer, setIsShowPlayer] = useState(
+      initialData.globalState.isShowPlayer
+  );
+  const [clipPlayList, dispatchClipPlayList] = useReducer(
+      clipPlayListReducer,
+      initialData.globalState.clipPlayList
+  );
+  const [clipPlayListTab, dispatchClipPlayListTab] = useReducer(
+      clipPlayListTabReducer,
+      initialData.globalState.clipPlayListTab
+  );
+  const [clipPlayMode, setClipPlayMode] = useState(
+      initialData.globalState.clipPlayMode
+  );
+  const [urlInfo, setUrlInfo] = useState(initialData.globalState.urlInfo);
+  const [broadcastAdminLayer, setBroadcastAdminLayer] = useState(
+      initialData.globalState.broadcastAdminLayer
+  );
+  const [inBroadcast, setInBroadcast] = useState(
+      initialData.globalState.inBroadcast
+  );
+  const [alarmStatus, setAlarmStatus] = useState(
+      initialData.globalState.alarmStatus
+  );
+  const [alarmMoveUrl, setAlarmMoveUrl] = useState(
+      initialData.globalState.alarmMoveUrl
+  );
+  const [realtimeBroadStatus, setRealtimeBroadStatus] = useState(initialData.globalState.realtimeBroadStatus);
+  const [mailBlockUser, setMailBlockUser] = useState(
+      initialData.globalState.mailBlockUser
+  );
+  const [ageData, setAgeData] = useState(
+      initialData.globalState.ageData
+  );
+  const [authFormRef, setAuthFormRef] = useState(
+      initialData.globalState.authFormRef
+  );
+  const [userReportInfo, setUserReportInfo] = useState({
+    memNo: "",
+    memNick: "",
+    showState: false,
+  });
+
+
   const action = {
     updateState: (obj) => {
       setState((state) => ({...state, ...obj}))
@@ -216,6 +628,7 @@ const GlobalProvider = (props) => {
         Utility.setCookie('authToken', '', -1)
         Utility.setCookie('authToken', authToken, DAY_COOKIE_PERIOD)
         setToken({...obj, isOAuth})
+        setBaseData(obj)
       } else {
         Api.setAuthToken(null)
         Utility.setCookie('authToken', '', -1)
@@ -241,6 +654,7 @@ const GlobalProvider = (props) => {
       setNativePlayer({...obj})
     },
     updateProfile: (profile) => {
+      setUserProfile(profile);
       setProfile(profile)
     },
     //팝업컨텐츠
@@ -659,6 +1073,100 @@ const GlobalProvider = (props) => {
     gotomoonTab,
     intervalId
   }
-  return <Provider value={value}>{props.children}</Provider>
+
+  const globalState = {
+    baseData,
+    alertStatus,
+    tooltipStatus,
+    toastStatus,
+    layerStatus,
+    rtcInfo,
+    chatInfo,
+    mailChatInfo,
+    guestInfo,
+    splashData,
+    userProfile,
+    currentChatData,
+    clipPlayer,
+    broadClipDim,
+    clipInfo,
+    checkDev,
+    checkAdmin,
+    shadowAdmin,
+    imgViewerPath,
+    isShowPlayer,
+    clipPlayList,
+    clipPlayListTab,
+    clipPlayMode,
+    urlInfo,
+    broadcastAdminLayer,
+    inBroadcast,
+    alarmStatus,
+    alarmMoveUrl,
+    realtimeBroadStatus,
+    dateState,
+    mailBlockUser,
+    multiViewer,
+    isMailboxOn,
+    bestDjData,
+    ageData,
+    authFormRef,
+    noServiceInfo,
+    userReportInfo,
+    exitMarbleInfo,
+    globalGganbuState,
+    gganbuTab,
+    gotomoonTab
+  };
+  const globalAction = {
+    setBaseData,
+    setAlertStatus,
+    setTooltipStatus,
+    callSetToastStatus,
+    setUserProfile,
+    setBroadClipDim,
+    setSplashData,
+    dispatchLayerStatus,
+    dispatchRtcInfo,
+    dispatchChatInfo,
+    dispatchMailChatInfo,
+    dispatchGuestInfo,
+    dispatchCurrentChatData,
+    dispatchClipPlayer,
+    dispatchClipInfo,
+    setCheckDev,
+    setCheckAdmin,
+    setShadowAdmin,
+    setImgViewerPath,
+    setIsShowPlayer,
+    dispatchClipPlayList,
+    dispatchClipPlayListTab,
+    setClipPlayMode,
+    setUrlInfo,
+    setBroadcastAdminLayer,
+    setInBroadcast,
+    setAlarmStatus,
+    setAlarmMoveUrl,
+    setRealtimeBroadStatus,
+    setDateState,
+    setMailBlockUser,
+    setMultiViewer : action.updateMultiViewer,
+    setIsMailboxOn,
+    setbestDjData : setBestDjData,
+    setAuthFormRef,
+    setNoServiceInfo,
+    setUserReportInfo,
+    setExitMarbleInfo,
+    setGlobalGganbuState,
+    setGganbuTab,
+    setGotomoonTab,
+  };
+  const bundle = {
+    ...value,
+    globalState : globalState,
+    globalAction : globalAction,
+  };
+  return <Provider value={bundle}>{props.children}</Provider>
 }
-export {Context, GlobalProvider}
+let GlobalContext = Context
+export {Context,  GlobalContext, GlobalProvider}

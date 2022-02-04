@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.91" height="17" viewBox="0 0 22.91 17">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:none;stroke:#000;stroke-width:.7px;stroke-linejoin:round;stroke-miterlimit:10}
+        </style>
+    </defs>
+    <g id="prefix__ic_guide" transform="translate(-1 -1)">
+        <g id="prefix__사각형_2025" data-name="사각형 2025" transform="translate(1 1)" style="stroke:#000;stroke-width:.7px;fill:none">
+            <rect width="22.91" height="17" rx="2" style="stroke:none"/>
+            <rect width="22.21" height="16.3" x=".35" y=".35" rx="1.65" style="fill:none"/>
+        </g>
+        <path id="prefix__패스_6864" d="M30.487 18.744L25 21.487V16z" class="prefix__cls-2" data-name="패스 6864" transform="translate(-15.13 -9.77)"/>
+        <path id="prefix__선_130" d="M0 0L0.739 0" class="prefix__cls-2" data-name="선 130" transform="translate(20.217 15.413)"/>
+        <path id="prefix__선_131" d="M0 0L0.739 0" class="prefix__cls-2" data-name="선 131" transform="translate(18.739 15.413)"/>
+        <path id="prefix__선_132" d="M0 0L14.043 0" class="prefix__cls-2" data-name="선 132" transform="translate(3.957 15.413)"/>
+        <path id="prefix__선_133" d="M0 0L0 2.957" class="prefix__cls-2" data-name="선 133" transform="translate(6.913 13.935)"/>
+    </g>
+</svg>

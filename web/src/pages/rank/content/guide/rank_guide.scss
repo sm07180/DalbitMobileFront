@@ -1,0 +1,308 @@
+@import "../../../../asset/scss/common/variables";
+
+#ranking-guide-page {
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #d2d2d2;
+    padding: 14px 0;
+    box-sizing: border-box;
+    padding: 12px 16px;
+    background-color: #fff;
+
+    &__title {
+      font-size: 18px;
+      letter-spacing: -0.45px;
+      font-weight: $bold;
+    }
+
+    &__btnBack {
+      display: block;
+      width: 36px;
+      position: absolute;
+      top: 6px;
+      left: 2%;
+    }
+  }
+  .rankGuideWrap {
+    padding-bottom: 40px;
+  }
+
+  .rankGuideTab {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background-color: #eee;
+
+    &__btn {
+      width: 33%;
+      height: 32px;
+      padding: 0 12px;
+      border-radius: 12px;
+      border: solid 1px #e0e0e0;
+      background-color: #fff;
+      font-size: 16px;
+      box-sizing: border-box;
+
+      &.active {
+        border-color: $primary;
+        background-color: $primary;
+        color: #fff;
+      }
+    }
+  }
+  .guideTab {
+    padding: 12px 16px 8px 16px;
+  }
+
+  .benefitTop {
+    padding: 16px 0;
+    text-align: center;
+    background-color: #632beb;
+    color: #fff;
+    letter-spacing: -0.35px;
+    font-size: 14px;
+
+    &__title {
+      margin-bottom: 6px;
+      color: #febd56;
+      font-weight: $bold;
+      img {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .tableNotice {
+    padding: 20px;
+    font-size: 12px;
+    color: #333;
+  }
+
+  .tableBox {
+    margin-top: 24px;
+    padding: 0 16px;
+
+    &__title {
+      position: relative;
+      margin-bottom: 12px;
+      letter-spacing: -0.8px;
+      font-weight: $bold;
+
+      &--lastTitle {
+        font-size: 16px;
+      }
+
+      &--sub {
+        display: block;
+        line-height: 18px;
+        font-size: 12px;
+        color: #9e9e9e;
+        margin-top: 4px;
+      }
+
+      &--option {
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 12px;
+        color: #9e9e9e;
+      }
+
+      img {
+        vertical-align: middle;
+        margin-top: -4px;
+        margin-right: 2px;
+      }
+    }
+
+    &__notice {
+      margin: 8px 0 24px;
+      font-size: 12px;
+      line-height: 18px;
+      letter-spacing: -0.3px;
+      color: #424242;
+    }
+
+    table {
+      th {
+        padding: 6px 0;
+        border-top: 1px solid #632beb;
+        border-bottom: 1px solid #632beb;
+        font-size: 12px;
+        font-weight: normal;
+        color: #632beb;
+        letter-spacing: -0.8px;
+      }
+
+      td {
+        height: 36px;
+        padding: 4px 0;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 12px;
+        text-align: center;
+        color: #424242;
+        font-weight: $bold;
+
+        img {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        &.rank {
+          font-weight: $bold;
+        }
+
+        .likeInfo {
+          width: auto;
+          padding: 0 10px;
+          max-height: 82px;
+          margin: 0 auto;
+        }
+
+        .badge {
+          display: inline-block;
+          width: 89px;
+          height: 26px;
+          line-height: 26px;
+          border-radius: 20px;
+          background-color: #22b5b0;
+          font-size: 11px;
+          color: #fff;
+
+          &.djWeek {
+            background-color: #00869b;
+          }
+
+          &.fanDay {
+            background-color: #1eaae8;
+          }
+
+          &.fanWeek {
+            background-color: #0e71c8;
+          }
+
+          &.likeWeek {
+            background-color: #ff378d;
+            letter-spacing: -1px;
+
+            img {
+              margin-right: 0;
+            }
+          }
+
+          img {
+            margin-top: -2px;
+            margin-right: 4px;
+          }
+        }
+
+        .effect {
+          background-image: linear-gradient(98deg, #eeff00 8%, #00ffba 102%);
+          border-radius: 10px;
+          padding: 2px;
+          box-sizing: border-box;
+
+          p {
+            background-color: #666;
+            border-radius: 10px;
+            color: #fff;
+            text-align: left;
+            line-height: 18px;
+            padding: 4px 9px;
+            box-sizing: border-box;
+          }
+        }
+      }
+
+      tr.special {
+        td {
+          color: #ec455f;
+          border-color: #ec455f;
+          border-top: 1px solid #ec455f;
+
+          &:first-child {
+            border-left: 1px solid #ec455f;
+          }
+
+          &:last-child {
+            border-right: 1px solid #ec455f;
+          }
+        }
+      }
+
+      tr.signature {
+        td {
+          img {
+            vertical-align: bottom;
+          }
+        }
+      }
+
+      tr.frame {
+        td {
+          padding: 20px 0;
+        }
+      }
+    }
+
+    .conditionBox {
+      display: flex;
+      justify-content: space-between;
+
+      .conditionItem {
+        overflow: hidden;
+        width: 30%;
+        border: 1px solid #632beb;
+        text-align: center;
+        border-radius: 12px;
+
+        &__title {
+          height: 28px;
+          font-size: 12px;
+          line-height: 28px;
+          letter-spacing: -0.3px;
+          color: #ffffff;
+          background-color: #632beb;
+        }
+        &__content {
+          width: 50%;
+          height: 60px;
+          margin: 0 auto;
+          display: table-cell;
+          vertical-align: middle;
+          font-size: 13px;
+          line-height: 18px;
+          letter-spacing: -0.33px;
+          color: #424242;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .noticeBox {
+    padding: 28px 16px;
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: -0.3px;
+
+    &__title {
+      color: #424242;
+      font-weight: $bold;
+    }
+
+    &__item {
+      color: #757575;
+      padding-left: 12px;
+    }
+  }
+
+  .memo {
+    margin-top: 16px;
+    color: $greishGray;
+    font-size: 12px;
+  }
+}

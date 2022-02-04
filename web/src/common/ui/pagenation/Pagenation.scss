@@ -1,0 +1,50 @@
+.pagenation-wrap {
+  display: flex;
+  margin-top: 20px;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+  .left {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+    cursor: pointer;
+    border: 0;
+    background: url("./static/ic_prev.svg") no-repeat center;
+  }
+
+  .right {
+    display: flex;
+    width: 30px;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4px;
+    cursor: pointer;
+    border: 0;
+    background: url("./static/ic_next.svg") no-repeat center;
+  }
+
+  .page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0e0e0;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    margin: 0 4px;
+    user-select: none;
+    cursor: pointer;
+    &.active {
+      color: #fff;
+      border-color: #632beb;
+      background-color: #632beb;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+    <defs>
+        <clipPath id="lcl6tvfofa">
+            <circle cx="120" cy="120" r="120" fill="none" transform="translate(440.617 1253.223)"/>
+        </clipPath>
+    </defs>
+    <g>
+        <g clip-path="url(#lcl6tvfofa)" transform="translate(-440.617 -1253.223)">
+            <g>
+                <g>
+                    <path fill="#c7d7fe" d="M500.694 1269.223a119.947 119.947 0 0 0-60.017 103.924h120.017z"/>
+                    <path fill="#fef7d5" d="M680.71 1373.146a120.124 120.124 0 0 0-60.01-103.937l-60.008 103.937z"/>
+                    <path fill="#f2e1ff" d="M560.694 1373.146l60.006-103.937a119.952 119.952 0 0 0-120.008.014z"/>
+                    <path fill="#fff" d="M560.694 1373.146H440.677a120.125 120.125 0 0 0 60.008 103.937z"/>
+                    <path fill="#d0f4ee" d="M680.71 1373.146H560.694l60 103.923a119.949 119.949 0 0 0 60.016-103.923z"/>
+                    <path fill="#ffded5" d="M500.685 1477.084a119.948 119.948 0 0 0 120.009-.015l-60-103.923z"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
