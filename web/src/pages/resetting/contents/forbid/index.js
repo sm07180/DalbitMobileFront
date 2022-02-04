@@ -1,14 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
 
 // global components
 import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-
-import SwitchList from '../../components/switchList'
+import InputItems from 'components/ui/inputItems/InputItems'
 
 import '../../style.scss'
-import InputItems from 'pages/remypage/components/InputItems'
 
 const SettingForbid = () => {
 
@@ -17,6 +14,9 @@ const SettingForbid = () => {
       <Header position={'sticky'} title={'금지어 관리'} type={'back'}/>
       <div className='subContent'>
         <section className="">
+          <InputItems type={'text'} button={'삭제'}>
+            <input type="text" />
+          </InputItems>
           <InputItems type={'text'} button={'저장'}>
             <input type="text" />
           </InputItems>
