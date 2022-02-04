@@ -1,5 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
-import {useHistory} from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import {
   broadcastCheck,
   broadcastContinue,
@@ -17,10 +17,17 @@ import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // static
+import broadText from "./static/bc_t.png";
+import searchIcon from "./static/ico_search_g.svg";
+import storeIcon from "./static/ic_store_g.svg";
+import alarmIcon from "./static/alarm_g.svg";
 import LayerPopupCommon from "../common/layerpopup/index";
 import {MediaType} from "pages/broadcast/constant";
 // import {authReq} from "../pages/self_auth/content/self_auth";
 import {authReq} from 'pages/self_auth'
+import {IMG_SERVER} from "../constant/define";
+import {openMailboxBanAlert} from "./mailbox/mail_func";
+import {isDesktop} from "../lib/agent";
 
 export default function GNB() {
   const context = useContext(GlobalContext);
@@ -368,21 +375,188 @@ export default function GNB() {
     };
   }, []);
 
-  const [ pcMenuState , setPcMenuState ] = useState(false);
-  useEffect(()=>{
-    if( location.pathname.indexOf("/broadcast") > -1
-        || location.pathname.indexOf("/clip_recoding") > -1
-        || location.pathname.indexOf("/clip_upload") > -1
-        || location.pathname.indexOf("/clip/") > -1
-        || location.pathname.indexOf("/mailbox") > -1
-    ){
-      setPcMenuState(true);
-    }else{
-      setPcMenuState(false);
-    }
-  })
   return (
     <>
+      { isDesktop() && 
+      <header id="gnb">
+        <div className="gnbBox">
+          <h1>
+            <NavLink
+                to={`/`}
+                onClick={() => {
+                  scrollToTop();
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                }}
+                title="달빛라이브"
+            >
+              <img src={`${IMG_SERVER}/ani/webp/main/gnb_logo.gif`} alt="logo" width={80} height={80} />
+              {/* <Lottie
+                options={{
+                  loop: true,
+                  autoplay: true,
+                  animationData: gnbLogo,
+                }}
+                width={80}
+                height={80}
+              />*/}
+            </NavLink>
+          </h1>
+
+          <button
+              className="gnbBox__liveBtn"
+              onClick={() => {
+                if (baseData.isLogin === true) {
+                  scrollToTop();
+                  return globalAction.setBroadClipDim!(true);
+                } else {
+                  return history.push("/login");
+                }
+              }}
+          >
+            {/* <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: broadBtn,
+              }}
+              width={48}
+              height={48}
+            /> */}
+
+            <img src={`${IMG_SERVER}/ani/webp/main/gnb_broadcast.gif`} alt="방송하기" width={48} height={48} />
+            <span>
+              <img src={broadText} alt="방송하기" />
+            </span>
+          </button>
+
+          <div className="navWrap">
+            <NavLink
+                to={`/`}
+                className="navItem"
+                activeClassName={"navItem__active"}
+                onClick={() => {
+                  scrollToTop();
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                }}
+                exact
+                title="메인 이동"
+            ></NavLink>
+            <NavLink to={`/clip`} className="navItem" activeClassName={"navItem__active"} title="클립페이지 이동"></NavLink>
+            {/* <NavLink to={`/rank`} className="navItem" activeClassName={"navItem__active"} title="랭킹페이지 이동"></NavLink> */}
+            <NavLink
+                to={"/rank"}
+                className="navItem"
+                activeClassName={"navItem__active"}
+                title="랭킹페이지 이동"
+                onClick={() => {
+                  rankAction.formDispatch!({
+                    type: "PAGE_TYPE",
+                    val: "ranking",
+                  });
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                }}
+            ></NavLink>
+            <NavLink
+                to={`${baseData.isLogin === true ? `/mypage/${globalState.baseData.memNo}` : "/mypage"}`}
+                className="navItem"
+                activeClassName={"navItem__active"}
+                onClick={() => {
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                }}
+                title="마이페이지 이동"
+            ></NavLink>
+          </div>
+
+          <div className="etcWrap">
+            <button
+                type="button"
+                className="etcWrap__icon"
+                onClick={() => {
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                  if (baseData.isLogin === true) {
+                    if (alarmMoveUrl === "") {
+                      history.push(`/alarm`);
+                    } else {
+                      history.push(`${alarmMoveUrl}`);
+                    }
+                  } else {
+                    history.push("/login");
+                  }
+                }}
+            >
+              {alarmStatus === true ? (
+                  // <Lottie
+                  //   options={{
+                  //     loop: true,
+                  //     autoplay: true,
+                  //     animationData: alarmIconDot,
+                  //   }}
+                  //   width={40}
+                  //   height={40}
+                  //   />
+                  <img src={`${IMG_SERVER}/ani/webp/main/gnb_alarm_g.webp`} alt="alarm active" width={40} height={40} />
+              ) : (
+                  <img src={alarmIcon} width={40} height={40} alt="alarm" />
+              )}
+            </button>
+
+            <button
+                type="button"
+                onClick={() => {
+                  history.push("/search");
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                }}
+                className="etcWrap__icon"
+            >
+              <img src={searchIcon} width={40} height={40} alt="search" />
+            </button>
+            <button
+                type="button"
+                onClick={() => {
+                  sessionStorage.setItem("isBeforeMailbox", "N");
+                  if (baseData.isLogin === true) {
+                    return history.push("/store");
+                  } else {
+                    return history.push("/login");
+                  }
+                }}
+                className="etcWrap__icon"
+            >
+              <img src={storeIcon} width={36} height={36} alt="store" />
+            </button>
+            {/* <button type="button" onClick={() => showLayerPopup()} className="etcWrap__icon">
+              Layer
+            </button> */}
+
+            {/* 우체통 아이콘 추가 */}
+            {mailboxState.useMailbox &&
+                (isMailboxNew ? (
+                    <button
+                        onClick={() => {
+                          sessionStorage.setItem("isBeforeMailbox", "N");
+                          history.push("/mailbox");
+                        }}
+                        className="etcWrap__icon"
+                    >
+                      <img src={`${IMG_SERVER}/svg/ico_postbox_g_on.svg`} alt="mail box" />
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => {
+                          openMailboxBanAlert({ userProfile, globalAction, history });
+                        }}
+                        className="etcWrap__icon"
+                    >
+                      {!isMailboxOn && baseData.isLogin ? (
+                          <img src={`${IMG_SERVER}/svg/postbox_w_off.svg`} alt="mail box" />
+                      ) : (
+                          <img src={`${IMG_SERVER}/svg/ico_postbox_g.svg`} alt="mail box" />
+                      )}
+                    </button>
+                ))}
+          </div>
+        </div>
+      </header>}
       {globalState.broadClipDim && (
         <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">

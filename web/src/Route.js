@@ -92,6 +92,7 @@ const Story = React.lazy(() => import('pages/story'))
 
 
 
+const MainWWW = React.lazy(() => import("pages/main_www"));
 const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
 const ClipPlayer = React.lazy(() => import("pages/clip_player"));

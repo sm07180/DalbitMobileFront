@@ -241,7 +241,7 @@ export default function LeftSide(props: {
 
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
-          guestInfo[v].stop();
+          guestInfo[v].stop?.();
           globalAction.dispatchGuestInfo!({
             type: "EMPTY",
           });

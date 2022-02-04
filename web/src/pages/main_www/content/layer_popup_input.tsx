@@ -7,7 +7,7 @@ import { GlobalContext } from "context";
 import moment from "moment";
 import Calendar from "react-calendar";
 // css
-import "react-calendar/dist/Calendar.css";
+//import "react-calendar/dist/Calendar.css";
 import "../../../asset/scss/module/calendar.scss";
 
 import IcoFemale from "../static/ico_female.svg";

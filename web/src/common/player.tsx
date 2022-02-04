@@ -304,7 +304,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
 
       if (guestInfoKeyArray.length > 0) {
         guestInfoKeyArray.forEach((v) => {
-          guestInfo[v].stop();
+          guestInfo[v].stop?.();
           globalAction.dispatchGuestInfo!({
             type: "EMPTY",
           });

@@ -572,11 +572,19 @@ const App = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
+        ready ? (
         <>
           <Interface />
           <Route />
           {isFooterPage && <Navigation />}
         </>
+        ) : (
+          <>
+            <div className="loading">
+              <span></span>
+            </div>
+          </>
+      )
       ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
         <>
           <NoService />

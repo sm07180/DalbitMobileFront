@@ -49,7 +49,7 @@ const ajax = async (method: string, path: string, data?: dataType) => {
   const createDeviceUUid = () => {
     var dt = new Date().getTime();
     var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(
-      c
+        c
     ) {
       var r = (dt + Math.random() * 16) % 16 | 0;
       dt = Math.floor(dt / 16);
@@ -182,43 +182,43 @@ export async function getMypageNew(data: dataType): Promise<responseType> {
     targetMemNo: data.data,
   };
   if (
-    mypageNewStg !== undefined &&
-    mypageNewStg !== null &&
-    mypageNewStg !== ""
+      mypageNewStg !== undefined &&
+      mypageNewStg !== null &&
+      mypageNewStg !== ""
   ) {
     mypageNewStg = JSON.parse(mypageNewStg);
     if (
-      mypageNewStg.fanBoard !== undefined &&
-      mypageNewStg.fanBoard !== null &&
-      mypageNewStg.fanBoard !== ""
+        mypageNewStg.fanBoard !== undefined &&
+        mypageNewStg.fanBoard !== null &&
+        mypageNewStg.fanBoard !== ""
     ) {
       mypageNew.fanBoard = mypageNewStg.fanBoard;
     }
     if (
-      mypageNewStg.dal !== undefined &&
-      mypageNewStg.dal !== null &&
-      mypageNewStg.dal !== ""
+        mypageNewStg.dal !== undefined &&
+        mypageNewStg.dal !== null &&
+        mypageNewStg.dal !== ""
     ) {
       mypageNew.dal = mypageNewStg.dal;
     }
     if (
-      mypageNewStg.byeol !== undefined &&
-      mypageNewStg.byeol !== null &&
-      mypageNewStg.byeol !== ""
+        mypageNewStg.byeol !== undefined &&
+        mypageNewStg.byeol !== null &&
+        mypageNewStg.byeol !== ""
     ) {
       mypageNew.byeol = mypageNewStg.byeol;
     }
     if (
-      mypageNewStg.notice !== undefined &&
-      mypageNewStg.notice !== null &&
-      mypageNewStg.notice !== ""
+        mypageNewStg.notice !== undefined &&
+        mypageNewStg.notice !== null &&
+        mypageNewStg.notice !== ""
     ) {
       mypageNew.notice = mypageNewStg.notice.join(",");
     }
     if (
-      mypageNewStg.qna !== undefined &&
-      mypageNewStg.qna !== null &&
-      mypageNewStg.qna !== ""
+        mypageNewStg.qna !== undefined &&
+        mypageNewStg.qna !== null &&
+        mypageNewStg.qna !== ""
     ) {
       mypageNew.qna = mypageNewStg.qna.join(",");
     }
@@ -261,7 +261,7 @@ export async function getRankReward(data: dataType): Promise<responseType> {
 }
 
 export async function postRandomboxReward(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/rank/randombox", data);
 }
@@ -512,8 +512,8 @@ export async function postFreezeRoom(data: {
 }
 
 export async function broadcastSummary(
-  data: { roomNo: string },
-  type: string
+    data: { roomNo: string },
+    type: string
 ): Promise<responseType> {
   return await ajax(Method.GET, `/broad/summary/${type}`, data);
 }
@@ -599,7 +599,7 @@ export async function getFanBoardList(data: dataType): Promise<responseType> {
 }
 
 export async function postFanBoardRegist(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/profile/board", data);
 }
@@ -613,7 +613,7 @@ export async function deleteFanBoard(data: dataType): Promise<responseType> {
 }
 
 export async function postFanBoardModify(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/profile/board/edit", data);
 }
@@ -627,43 +627,43 @@ export async function postMypageNotice(data: dataType): Promise<responseType> {
 }
 
 export async function deleteMypageNotice(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.DELETE, "/mypage/notice", data);
 }
 
 export async function modifyMypageNotice(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/edit", data);
 }
 
 export async function getMypageNoticeReply(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/reply/list", data);
 }
 
 export async function insertMypageNoticeReply(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/reply/add", data);
 }
 
 export async function modifyMypageNoticeReply(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/reply/edit", data);
 }
 
 export async function deleteMypageNoticeReply(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/reply/delete", data);
 }
 
 export async function postMypageNoticeReadCnt(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/notice/read", data);
 }
@@ -677,7 +677,7 @@ export async function MypageWalletByeol(data: dataType): Promise<responseType> {
 }
 
 export async function getMypageWalletList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/mypage/wallet/list", data);
 }
@@ -822,7 +822,7 @@ export async function getCustomerNotice(data: dataType): Promise<responseType> {
 }
 
 export async function getCustomerNoticeDetail(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/center/notice/detail", data);
 }
@@ -832,13 +832,13 @@ export async function getCustomerFaq(data: dataType): Promise<responseType> {
 }
 
 export async function getCustomerFaqDetail(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/center/faq/detail", data);
 }
 
 export async function getCustomerQnaList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/center/qna/list", data);
 }
@@ -981,19 +981,19 @@ export async function getBanner(data: dataType): Promise<responseType> {
 
 //event
 export async function postEventRisingLive(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/rising/live", data);
 }
 
 export async function getPackageEventStateCheck(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/cam/check", data);
 }
 
 export async function getPackageEventWrite(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/cam/apply", data);
 }
@@ -1003,7 +1003,7 @@ export async function event_specialdj(data: dataType): Promise<responseType> {
 }
 
 export async function event_specialdj_upload(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/specialDj/request", data);
 }
@@ -1017,73 +1017,73 @@ export async function postEventAttendIn(data: dataType): Promise<responseType> {
 }
 
 export async function postEventAttendGift(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/attendance/random/gift", data);
 }
 
 export async function getEventAttendCheck(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/attendance/check", data);
 }
 
 export async function getEventRouletteCoupon(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/roulette/coupon", data);
 }
 
 export async function getEventRouletteCouponHistory(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/roulette/coupon/history", data);
 }
 
 export async function getEventRouletteInfo(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/roulette/info", data);
 }
 
 export async function getEventRouletteStart(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/roulette/start", data);
 }
 
 export async function getEventRouletteWin(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/roulette/win", data);
 }
 
 export async function getEventRouletteApply(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/roulette/apply", data);
 }
 
 export async function postEventRoulettePhone(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/roulette/phone", data);
 }
 
 export async function postEventAttendInput(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/phone/input", data);
 }
 
 export async function getEventAttendWinList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/gifticon/win/list", data);
 }
 
 export async function getEventAttendLunarDate(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/lunar/date", data);
 }
@@ -1113,56 +1113,56 @@ export async function knowhow_modify(data: dataType): Promise<responseType> {
 }
 
 export async function postEventOneYearCheck(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/dal/check", data);
 }
 
 export async function postEventOneYearInsert(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/dal/ins", data);
 }
 
 export async function postEventOneYearComment(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/tail/list", data);
 }
 
 export async function postEventOneYearCommentInsert(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/tail/ins", data);
 }
 
 export async function postEventOneYearCommentUpdate(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/tail/upd", data);
 }
 
 export async function postEventOneYearCommentDelete(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/oneYear/tail/del", data);
 }
 
 //인증샷 이벤트
 export async function event_proofshot_list(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/photo/list", data);
 }
 
 export async function event_proofshot_detail(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/photo/detail", data);
 }
 
 export async function eventPackageJoinCheck(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/004/apply", data);
 }
@@ -1172,19 +1172,19 @@ export async function eventPackageWrite(data: dataType): Promise<responseType> {
 }
 
 export async function event_proofshot_insert(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/photo/insert", data);
 }
 
 export async function event_proofshot_update(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/photo/update", data);
 }
 
 export async function event_proofshot_dellete(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/photo/delete", data);
 }
@@ -1243,19 +1243,19 @@ export async function getLatestList(data: dataType): Promise<responseType> {
 }
 
 export async function getClipRankingList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/clip/rank", data);
 }
 
 export async function getClipRankingDayPop(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/clip/day/pop", data);
 }
 
 export async function getClipRankingWeekPop(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/clip/week/pop", data);
 }
@@ -1317,7 +1317,7 @@ export async function postClipReplyAdd(data: dataType): Promise<responseType> {
 }
 
 export async function postClipReplyDelete(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/clip/reply/delete", data);
 }
@@ -1330,17 +1330,17 @@ export async function eventTimeCheck(data: dataType): Promise<responseType> {
   return await ajax(Method.POST, "/event/timeEvent/info", data);
 }
 export async function eventJoinlevelPopup(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/join/check", data);
 }
 export async function eventJoinlevelDetail(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/join/detail", data);
 }
 export async function eventJoinlevelReward(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/join/reward", data);
 }
@@ -1355,7 +1355,7 @@ export async function getClipShare(data: dataType): Promise<responseType> {
 }
 
 export async function getSpecialDjHistory(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/specialDj/history", data);
 }
@@ -1380,8 +1380,8 @@ export async function getChooseokBonus(): Promise<responseType> {
 }
 //search
 export async function getSearchList(
-  data: dataType,
-  type: string
+    data: dataType,
+    type: string
 ): Promise<responseType> {
   return await ajax(Method.GET, `/search/${type}`, data);
 }
@@ -1393,22 +1393,22 @@ export async function getMemberSearch(data: dataType): Promise<responseType> {
 }
 //환전 리뉴얼
 export async function getExchangeSearchAccount(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/member/exchange/account/list", data);
 }
 export async function postExchangeAddAccount(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/member/exchange/account/add", data);
 }
 export async function postExchangeEditAccount(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/member/exchange/account/edit", data);
 }
 export async function postExchangeDeleteAccount(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/member/exchange/account/delete", data);
 }
@@ -1449,7 +1449,7 @@ export async function certificationCheck(): Promise<newResponseType> {
 }
 // 달 교환
 export async function postDalAutoExchange(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/auto/change", data);
 }
@@ -1458,7 +1458,7 @@ export async function getDalAutoExchange(): Promise<responseType> {
 }
 // 환전취소
 export async function postExchangeCancel(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mypage/exchange/cancel", data);
 }
@@ -1521,7 +1521,7 @@ export async function postEventComment(data: dataType): Promise<responseType> {
 }
 
 export async function deleteEventComment(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.DELETE, "/event/reply", data);
 }
@@ -1545,12 +1545,12 @@ export async function getAwardHonors(data: dataType): Promise<responseType> {
 
 // mailbox
 export async function getMailboxChatList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/mailbox/chat/list", data);
 }
 export async function getMailboxChatTargetList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/mailbox/chat/target/list", data);
 }
@@ -1565,7 +1565,7 @@ export async function mailChatSend(data: dataType): Promise<responseType> {
   return await ajax(Method.POST, "/mailbox/chat/send", data);
 }
 export async function mailChatPrevChatting(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/mailbox/chat/msg", data);
 }
@@ -1583,7 +1583,7 @@ export async function getChatImageList(data: dataType): Promise<responseType> {
   return await ajax(Method.GET, "/mailbox/chat/image/list", data);
 }
 export async function postChatImageDelete(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mailbox/chat/image/delete", data);
 }
@@ -1630,7 +1630,7 @@ export async function getMoonRiseRank(data: dataType): Promise<responseType> {
   return await ajax(Method.POST, "/event/fullmoon/rank", data);
 }
 export async function PostMailboxChatUse(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/mailbox/chat/use", data);
 }
@@ -1644,13 +1644,13 @@ export async function getChampionship(data: dataType): Promise<responseType> {
 }
 
 export async function getChampionshipPoint(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/championship/point", data);
 }
 
 export async function postChampionshipGift(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/championship/gift", data);
 }
@@ -1664,7 +1664,7 @@ export async function getRaffleEventTotalInfo(): Promise<responseType> {
 }
 
 export async function putEnterRaffleEvent(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/raffle/enter", data);
 }
@@ -1709,13 +1709,13 @@ export async function miniGameEnd(data: dataType): Promise<responseType> {
 }
 
 export async function getRouletteWinList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/broad/game/win/list", data);
 }
 
 export async function getHistoryMiniGame(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/broad/game/history/select", data);
 }
@@ -1801,7 +1801,7 @@ export async function parentCertChk(): Promise<newResponseType> {
 
 // 깐부 이벤트 API
 export async function gganbuMarbleGather(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/gganbu/marble/gather", data);
 }
@@ -1835,7 +1835,7 @@ export async function postGganbuList(data: dataType): Promise<responseType> {
 }
 
 export async function postGganbuReportList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/gganbu/report/list", data);
 }
@@ -1845,37 +1845,37 @@ export async function getGganbuPocket(data: dataType): Promise<responseType> {
 }
 
 export async function getGganbuPocketOpen(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/gganbu/pocket/open", data);
 }
 
 export async function getGganbuPocketReport(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/gganbu/pocket/report/list", data);
 }
 
 export async function getGganbuObtainMarble(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, "/event/gganbu/marble/ins", data);
 }
 
 export async function getGganbuBettingList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/gganbu/betting/list", data);
 }
 
 export async function getGganbuBettingData(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/gganbu/betting/stat/sel", data);
 }
 
 export async function getGganbuMarbleBettingPage(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.GET, "/event/gganbu/marble/betting", data);
 }
@@ -1906,8 +1906,8 @@ export async function getWelcomeDjInfo(): Promise<responseType> {
 }
 /*--- 이벤트 선물 받기 */
 export async function postWelcomeGiftRcv(
-  type: string,
-  data: dataType
+    type: string,
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, `/event/welcome/reqGift/${type}`, data);
 }
@@ -1918,30 +1918,35 @@ export async function getMoonLandInfoData(
 }
 
 export async function getMoonLandMyRank(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   const {moonNo} = data;
   return await ajax(Method.GET, `/event/moonLand/rank/my/sel/${moonNo}`);
 }
 
 export async function getMoonLandRankList(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   const {moonNo, pageNo, pagePerCnt} = data;
   return await ajax(Method.GET, `/event/moonLand/rank/list/${moonNo}/${pageNo}/${pagePerCnt}`);
 }
 
 export async function getMoonLandMissionSel(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   const {roomNo} = data;
   return await ajax(Method.GET, `/event/moonLand/mission/sel?roomNo=${roomNo}`);
 }
 
 export async function setMoonLandScore(
-  data: dataType
+    data: dataType
 ): Promise<responseType> {
   return await ajax(Method.POST, `/event/moonLand/score`, data);
+}
+
+//방송방 웰컴 페이지 이동 버튼 클릭시 (하루 한번만 띄울때 쓰는 체크값 업데이트)
+export async function welcomeEventDayCheckerUpdate(): Promise<responseType> {
+  return await ajax(Method.POST, '/event/welcome/chkInfoUpd');
 }
 
 /*--- 굿 스타트 이벤트 */
