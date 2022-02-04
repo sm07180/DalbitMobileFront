@@ -15,7 +15,7 @@ import CloseBtn from "../images/ic_player_close_btn.svg";
 import PlayIcon from "../static/ic_play.svg";
 import PauseIcon from "../static/ic_pause.svg";
 import {PlayerAudioStyled, thumbInlineStyle} from "./PlayerStyle";
-import {initHostRtc, initListenerRtc} from "./BroadCastPlayer";
+
 
 const BroadCastAudioPlayer = ()=>{
   const history = useHistory();
@@ -105,30 +105,30 @@ const BroadCastAudioPlayer = ()=>{
   }
 
   return (
-      <PlayerAudioStyled style={{ display: isShowPlayer ? "" : "none" }}>
-        <div className="inner-player" onClick={playerBarClickEvent}>
-          <div className="info-wrap">
-            <div className="equalizer">
-              <p>{`LIVE`}</p>
-            </div>
-            <div className="thumb" style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)} onClick={(e) => e.stopPropagation()}>
-              {
-                  rtcInfo?.userType !== UserType.HOST &&
-                  <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
-              }
-            </div>
-            <div className="room-info">
-              <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
-              <p>{rtcInfo?.roomInfo?.title}</p>
-            </div>
-            <div className="counting"/>
+    <PlayerAudioStyled style={{ display: isShowPlayer ? "" : "none" }}>
+      <div className="inner-player" onClick={playerBarClickEvent}>
+        <div className="info-wrap">
+          <div className="equalizer">
+            <p>{`LIVE`}</p>
           </div>
-          {
+          <div className="thumb" style={thumbInlineStyle(rtcInfo?.roomInfo?.bjProfImg)} onClick={(e) => e.stopPropagation()}>
+            {
               rtcInfo?.userType !== UserType.HOST &&
-              <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-          }
+              <img onClick={imgClickHandler} src={mute ? PlayIcon : PauseIcon} className="playToggle__play" alt={"thumb img"}/>
+            }
+          </div>
+          <div className="room-info">
+            <p className="title">{`${rtcInfo?.roomInfo?.bjNickNm}`}</p>
+            <p>{rtcInfo?.roomInfo?.title}</p>
+          </div>
+          <div className="counting"/>
         </div>
-      </PlayerAudioStyled>
+        {
+          rtcInfo?.userType !== UserType.HOST &&
+          <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+        }
+      </div>
+    </PlayerAudioStyled>
   )
 }
 

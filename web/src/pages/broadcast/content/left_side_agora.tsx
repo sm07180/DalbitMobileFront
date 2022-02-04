@@ -108,11 +108,11 @@ const comboTimerGroup = {
 };
 
 function audioTimeout(
-    duration,
-    lottieAnimation,
-    lottieDisplayElem,
-    animationWrapElem,
-    broadcastAction
+  duration,
+  lottieAnimation,
+  lottieDisplayElem,
+  animationWrapElem,
+  broadcastAction
 ) {
   setTimeout(() => {
     const audioInterval = setInterval(() => {
@@ -173,12 +173,12 @@ export default function LeftSideAgora(props: {
 
   const [playBtnStatus, setPlayBtnStatus] = useState<boolean>(false);
   const [connectedStatus, setConnectedStatus] = useState<boolean>(
-      (() => {
-        if (rtcInfo !== null && rtcInfo.getPeerConnectionCheck()) {
-          return false;
-        }
-        return true;
-      })()
+    (() => {
+      if (rtcInfo !== null && rtcInfo.getPeerConnectionCheck()) {
+        return false;
+      }
+      return true;
+    })()
   );
 
   const [animPlayState, setAnimPlayState] = useState(false);
@@ -198,19 +198,19 @@ export default function LeftSideAgora(props: {
 
   const broadcastPlayAsListener = useCallback(() => {
     if (
-        roomInfo.webRtcUrl &&
-        roomInfo.webRtcAppName &&
-        roomInfo.webRtcStreamName
+      roomInfo.webRtcUrl &&
+      roomInfo.webRtcAppName &&
+      roomInfo.webRtcStreamName
     ) {
       const rtcInfo = new ListenerRtc(
-          UserType.LISTENER,
-          roomInfo.webRtcUrl,
-          roomInfo.webRtcAppName,
-          roomInfo.webRtcStreamName,
-          roomNo,
-          {
-            isVideo: false,
-          }
+        UserType.LISTENER,
+        roomInfo.webRtcUrl,
+        roomInfo.webRtcAppName,
+        roomInfo.webRtcStreamName,
+        roomNo,
+        {
+          isVideo: false,
+        }
       );
       rtcInfo.setRoomInfo(roomInfo);
       rtcInfo.setDisplayWrapRef(displayWrapRef);
@@ -223,9 +223,9 @@ export default function LeftSideAgora(props: {
 
   const broadcastPublishAsHost = useCallback(() => {
     if (
-        roomInfo.webRtcUrl &&
-        roomInfo.webRtcAppName &&
-        roomInfo.webRtcStreamName
+      roomInfo.webRtcUrl &&
+      roomInfo.webRtcAppName &&
+      roomInfo.webRtcStreamName
     ) {
       const videoConstraints = {
         isVideo: false,
@@ -234,13 +234,13 @@ export default function LeftSideAgora(props: {
       };
 
       const rtcInfo = new HostRtc(
-          UserType.HOST,
-          roomInfo.webRtcUrl,
-          roomInfo.webRtcAppName,
-          roomInfo.webRtcStreamName,
-          roomNo,
-          false,
-          videoConstraints
+        UserType.HOST,
+        roomInfo.webRtcUrl,
+        roomInfo.webRtcAppName,
+        roomInfo.webRtcStreamName,
+        roomNo,
+        false,
+        videoConstraints
       );
       rtcInfo.setRoomInfo(roomInfo);
       globalAction.dispatchRtcInfo({ type: "init", data: rtcInfo });
@@ -294,8 +294,8 @@ export default function LeftSideAgora(props: {
       const webpImg = document.createElement("img");
       webpImg.setAttribute("src", webpUrl);
       webpImg.setAttribute(
-          "style",
-          "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
+        "style",
+        "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
       );
       animationWrapElem.appendChild(webpImg);
     } else {
@@ -415,13 +415,13 @@ export default function LeftSideAgora(props: {
         if (chatInfo.privateChannelHandle === null) {
           initInterval(() => {
             if (
-                chatInfo.socket != null &&
-                chatInfo.socket.getState() === "open" &&
-                chatInfo.chatUserInfo.roomNo !== null
+              chatInfo.socket != null &&
+              chatInfo.socket.getState() === "open" &&
+              chatInfo.chatUserInfo.roomNo !== null
             ) {
               chatInfo.binding(
-                  chatInfo.chatUserInfo.roomNo,
-                  (roomNo: string) => {}
+                chatInfo.chatUserInfo.roomNo,
+                (roomNo: string) => {}
               );
               return true;
             }
@@ -454,9 +454,9 @@ export default function LeftSideAgora(props: {
       if (rtcInfo === null && roomOwner === false) {
         broadcastPlayAsListener();
       } else if (
-          chatInfo !== null &&
-          rtcInfo !== null &&
-          rtcInfo.userType === UserType.LISTENER
+        chatInfo !== null &&
+        rtcInfo !== null &&
+        rtcInfo.userType === UserType.LISTENER
       ) {
         // rtc listener new room logic
         if (roomNo !== rtcInfo.getRoomNo()) {
@@ -464,12 +464,12 @@ export default function LeftSideAgora(props: {
           chatInfo.privateChannelDisconnect();
           initInterval(() => {
             if (
-                chatInfo.socket.getState() === "open" &&
-                chatInfo.chatUserInfo.roomNo !== null
+              chatInfo.socket.getState() === "open" &&
+              chatInfo.chatUserInfo.roomNo !== null
             ) {
               chatInfo.binding(
-                  chatInfo.chatUserInfo.roomNo,
-                  (roomNo: string) => {}
+                chatInfo.chatUserInfo.roomNo,
+                (roomNo: string) => {}
               );
               return true;
             }
@@ -524,7 +524,7 @@ export default function LeftSideAgora(props: {
   useEffect(() => {
     ttsAudio && ttsAudio.addEventListener("ended", audioEndEvent);
     return () =>
-        ttsAudio && ttsAudio.removeEventListener("ended", audioEndEvent);
+      ttsAudio && ttsAudio.removeEventListener("ended", audioEndEvent);
   }, [ttsAudio]);
   //방장 비디오 셋팅
   useEffect(()=>{
@@ -540,9 +540,9 @@ export default function LeftSideAgora(props: {
       return;
     }
     const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
-    const host = new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, videoConstraints);
-    const listener = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
-    const dispatchRtcInfo:AgoraHostRtc|AgoraListenerRtc = roomOwner ? host : listener;
+    const dispatchRtcInfo:AgoraHostRtc|AgoraListenerRtc = roomOwner ?
+      new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, videoConstraints)
+      : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
     dispatchRtcInfo.setRoomInfo(roomInfo);
     dispatchRtcInfo.join(roomInfo).then(()=>{
       globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
@@ -552,28 +552,28 @@ export default function LeftSideAgora(props: {
   },[]);
 
   useEffect(()=>{
-    if(roomInfo.platform === "agora"){
-      return;
-    }
-
-    if(wowzaRtc.host || wowzaRtc.listener){// rtc 1번만 생성하기
-      return;
-    }
-
-    const hostVideoConstraints = {
-      isVideo: roomInfo.mediaType === MediaType.VIDEO,
-      videoFrameRate: roomInfo.videoFrameRate,
-      videoResolution: roomInfo.videoResolution,
-    };
-    const listenerVideoConstraints = {
-      isVideo: roomInfo.mediaType === MediaType.VIDEO,
-    }
-    const host = new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, hostVideoConstraints);
-    const listener = new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, listenerVideoConstraints);
-    const dispatchRtcInfo:HostRtc|ListenerRtc = roomOwner ? host : listener;
-    dispatchRtcInfo.setRoomInfo(roomInfo);
-    sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-    setWowzaRtc({...wowzaRtc, ...dispatchRtcInfo});
+    // if(roomInfo.platform === "agora"){
+    //   return;
+    // }
+    //
+    // if(wowzaRtc.host || wowzaRtc.listener){// rtc 1번만 생성하기
+    //   return;
+    // }
+    //
+    // const hostVideoConstraints = {
+    //   isVideo: roomInfo.mediaType === MediaType.VIDEO,
+    //   videoFrameRate: roomInfo.videoFrameRate,
+    //   videoResolution: roomInfo.videoResolution,
+    // };
+    // const listenerVideoConstraints = {
+    //   isVideo: roomInfo.mediaType === MediaType.VIDEO,
+    // }
+    // const dispatchRtcInfo:HostRtc|ListenerRtc = roomOwner ?
+    //   new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, hostVideoConstraints)
+    //   : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, listenerVideoConstraints);
+    // dispatchRtcInfo.setRoomInfo(roomInfo);
+    // sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+    // setWowzaRtc({...wowzaRtc, ...dispatchRtcInfo});
   },[])
 
   useEffect(() => {
@@ -594,7 +594,7 @@ export default function LeftSideAgora(props: {
   useEffect(()=>{
     // Set rtcinfo in chat instance.
     if (chatInfo !== null) {
-      chatInfo.setRtcInfo(rtcInfo);
+        chatInfo.setRtcInfo(rtcInfo);
     }
   },[rtcInfo])
 
@@ -669,9 +669,9 @@ export default function LeftSideAgora(props: {
     return () => {
       // During signaling, leave the room.
       if (
-          rtcInfo !== null &&
-          rtcInfo.getPeerConnectionCheck() === false &&
-          roomChanged === true
+        rtcInfo !== null &&
+        rtcInfo.getPeerConnectionCheck() === false &&
+        roomChanged === true
       ) {
         rtcInfo.socketDisconnect();
         globalAction.dispatchRtcInfo &&
@@ -846,8 +846,8 @@ export default function LeftSideAgora(props: {
                 const webpImg = document.createElement("img");
                 webpImg.setAttribute("src", webpUrl);
                 webpImg.setAttribute(
-                    "style",
-                    "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
+                  "style",
+                  "position: absolute; object-fit: contain; width: inherit; height: inherit; z"
                 );
 
                 animationWrapElem.appendChild(webpImg);
@@ -862,11 +862,11 @@ export default function LeftSideAgora(props: {
               }
 
               audioTimeout(
-                  soundAnimationQueue[0].duration,
-                  lottieAnimation,
-                  lottieDisplayElem,
-                  animationWrapElem,
-                  broadcastAction
+                soundAnimationQueue[0].duration,
+                lottieAnimation,
+                lottieDisplayElem,
+                animationWrapElem,
+                broadcastAction
               );
             } else {
               const AudioInterval = setInterval(() => {
@@ -881,8 +881,8 @@ export default function LeftSideAgora(props: {
                     const webpImg = document.createElement("img");
                     webpImg.setAttribute("src", webpUrl);
                     webpImg.setAttribute(
-                        "style",
-                        "position: absolute; object-fit: contain; width: inherit; height: inherit;"
+                      "style",
+                      "position: absolute; object-fit: contain; width: inherit; height: inherit;"
                     );
 
                     animationWrapElem.appendChild(webpImg);
@@ -897,11 +897,11 @@ export default function LeftSideAgora(props: {
                   }
 
                   audioTimeout(
-                      soundAnimationQueue[0].duration,
-                      lottieAnimation,
-                      lottieDisplayElem,
-                      animationWrapElem,
-                      broadcastAction
+                    soundAnimationQueue[0].duration,
+                    lottieAnimation,
+                    lottieDisplayElem,
+                    animationWrapElem,
+                    broadcastAction
                   );
                 }
               }, 100);
@@ -912,19 +912,19 @@ export default function LeftSideAgora(props: {
               webpImg.setAttribute("src", webpUrl);
               // webpImg.setAttribute("style", "position: absolute; object-fit: contain; width: inherit; height: inherit;");
               if (
-                  location === "midLeft" &&
-                  isCombo === true &&
-                  duration &&
-                  count
+                location === "midLeft" &&
+                isCombo === true &&
+                duration &&
+                count
               ) {
                 webpImg.setAttribute(
-                    "style",
-                    "position: absolute; left: 35%; object-fit: contain; height: inherit; width: 50px;"
+                  "style",
+                  "position: absolute; left: 35%; object-fit: contain; height: inherit; width: 50px;"
                 );
               } else {
                 webpImg.setAttribute(
-                    "style",
-                    "position: absolute; object-fit: contain; width: 100%; height: inherit;"
+                  "style",
+                  "position: absolute; object-fit: contain; width: 100%; height: inherit;"
                 );
               }
 
@@ -1000,8 +1000,8 @@ export default function LeftSideAgora(props: {
     const webpImg = document.createElement("img");
     webpImg.setAttribute("src", url);
     webpImg.setAttribute(
-        "style",
-        "position: absolute; left: 163px; object-fit: contain; height: inherit; width: 50px;"
+      "style",
+      "position: absolute; left: 163px; object-fit: contain; height: inherit; width: 50px;"
     );
 
     animationWrapElem.appendChild(webpImg);
@@ -1014,21 +1014,21 @@ export default function LeftSideAgora(props: {
 
   const findFalsyComboxIdx = () => {
     if (
-        !comboActiveQueue[0] ||
-        (comboActiveQueue[0] instanceof Object &&
-            comboActiveQueue[0].status === false)
+      !comboActiveQueue[0] ||
+      (comboActiveQueue[0] instanceof Object &&
+        comboActiveQueue[0].status === false)
     ) {
       return 0;
     } else if (
-        !comboActiveQueue[1] ||
-        (comboActiveQueue[1] instanceof Object &&
-            comboActiveQueue[1].status === false)
+      !comboActiveQueue[1] ||
+      (comboActiveQueue[1] instanceof Object &&
+        comboActiveQueue[1].status === false)
     ) {
       return 1;
     } else if (
-        !comboActiveQueue[2] ||
-        (comboActiveQueue[2] instanceof Object &&
-            comboActiveQueue[2].status === false)
+      !comboActiveQueue[2] ||
+      (comboActiveQueue[2] instanceof Object &&
+        comboActiveQueue[2].status === false)
     ) {
       return 2;
     } else {
@@ -1059,12 +1059,12 @@ export default function LeftSideAgora(props: {
   useEffect(() => {
     if (comboAnimation !== null && comboAnimation.status === true) {
       const itemNo = comboAnimation.itemNo!,
-          memNo = comboAnimation.memNo!,
-          repeatCnt = comboAnimation.repeatCnt!,
-          duration = comboAnimation.duration!,
-          userImage = comboAnimation.userImage!,
-          userNickname = comboAnimation.userNickname!,
-          url = comboAnimation.url!;
+        memNo = comboAnimation.memNo!,
+        repeatCnt = comboAnimation.repeatCnt!,
+        duration = comboAnimation.duration!,
+        userImage = comboAnimation.userImage!,
+        userNickname = comboAnimation.userNickname!,
+        url = comboAnimation.url!;
       if (lottieDisplayRef !== null) {
         const lottieDisplayElem = lottieDisplayRef.current;
 
@@ -1073,8 +1073,8 @@ export default function LeftSideAgora(props: {
         });
 
         if (
-            comboActiveQueue[_idx] instanceof Object &&
-            comboActiveQueue[_idx].status === true
+          comboActiveQueue[_idx] instanceof Object &&
+          comboActiveQueue[_idx].status === true
         ) {
           comboActiveQueue[_idx] = {
             ...comboActiveQueue[_idx],
@@ -1130,9 +1130,9 @@ export default function LeftSideAgora(props: {
                       comboActiveQueue[this.idx].callback();
                     } else {
                       if (
-                          comboActiveQueue.every((v) => {
-                            return !v.status;
-                          })
+                        comboActiveQueue.every((v) => {
+                          return !v.status;
+                        })
                       ) {
                         broadcastAction.dispatchComboAnimation!({
                           type: "end",
@@ -1182,61 +1182,61 @@ export default function LeftSideAgora(props: {
                 comboTimerGroup[`comboInterval_${__idx}`] = setInterval(() => {
                   if (this.prevCnt < this.repeatCnt) {
                     this.comboCountingText.textContent = String(
-                        this.prevCnt + 1
+                      this.prevCnt + 1
                     );
                   }
                   if (this.prevCnt === this.repeatCnt) {
                     if (comboTimerGroup[`comboInterval_${this.idx}`])
                       clearInterval(
-                          comboTimerGroup[`comboInterval_${this.idx}`]
+                        comboTimerGroup[`comboInterval_${this.idx}`]
                       );
                     this.comboCountingText.textContent = String(this.prevCnt);
                     this.playing = false;
                     comboTimerGroup[`comboTimer_${this.idx}`] = setTimeout(
-                        () => {
-                          if (this.elem && lottieDisplayElem) {
-                            lottieDisplayElem.removeChild(this.elem);
-                            this.elem = null;
-                          }
-                          this.status = false;
-                          if (comboWaitingQueue.length > 0) {
-                            const {
-                              animationWrapElem: cloneAni,
-                              comboCountingText: cloneText,
-                            } = createComboElem({
-                              url: comboWaitingQueue[0].url,
-                              userImage: comboWaitingQueue[0].userImage,
-                              userNickname: comboWaitingQueue[0].userNickname,
-                              _idx: this.idx,
+                      () => {
+                        if (this.elem && lottieDisplayElem) {
+                          lottieDisplayElem.removeChild(this.elem);
+                          this.elem = null;
+                        }
+                        this.status = false;
+                        if (comboWaitingQueue.length > 0) {
+                          const {
+                            animationWrapElem: cloneAni,
+                            comboCountingText: cloneText,
+                          } = createComboElem({
+                            url: comboWaitingQueue[0].url,
+                            userImage: comboWaitingQueue[0].userImage,
+                            userNickname: comboWaitingQueue[0].userNickname,
+                            _idx: this.idx,
+                          });
+
+                          lottieDisplayElem.appendChild(cloneAni);
+
+                          comboActiveQueue[this.idx] = {
+                            ...comboWaitingQueue[0],
+                            idx: this.idx,
+                            comboCountingText: cloneText,
+                            elem: cloneAni,
+                            status: true,
+                            callback: this.callback,
+                          };
+
+                          comboWaitingQueue.shift();
+
+                          comboActiveQueue[this.idx].callback();
+                        } else {
+                          if (
+                            comboActiveQueue.every((v) => {
+                              return !v.status;
+                            })
+                          ) {
+                            broadcastAction.dispatchComboAnimation!({
+                              type: "end",
                             });
-
-                            lottieDisplayElem.appendChild(cloneAni);
-
-                            comboActiveQueue[this.idx] = {
-                              ...comboWaitingQueue[0],
-                              idx: this.idx,
-                              comboCountingText: cloneText,
-                              elem: cloneAni,
-                              status: true,
-                              callback: this.callback,
-                            };
-
-                            comboWaitingQueue.shift();
-
-                            comboActiveQueue[this.idx].callback();
-                          } else {
-                            if (
-                                comboActiveQueue.every((v) => {
-                                  return !v.status;
-                                })
-                            ) {
-                              broadcastAction.dispatchComboAnimation!({
-                                type: "end",
-                              });
-                            }
                           }
-                        },
-                        this.duration
+                        }
+                      },
+                      this.duration
                     );
                   }
                   this.prevCnt++;
@@ -1282,7 +1282,7 @@ export default function LeftSideAgora(props: {
     if (roomInfo.mediaType === MediaType.VIDEO && leftSide) {
       if (displayWrapRef.current !== null) {
         leftSide.style.maxWidth = displayWrapRef.current.style.maxWidth =
-            displayWrapRef.current.offsetHeight * 0.75 + "px";
+          displayWrapRef.current.offsetHeight * 0.75 + "px";
       }
     }
   }, [displayWrapRef.current?.offsetHeight]);
@@ -1296,33 +1296,33 @@ export default function LeftSideAgora(props: {
   }, [displayWrapRef.current?.offsetWidth]);
 
   return (
+    <div
+      className={`left-side ${roomInfo.mediaType === MediaType.VIDEO &&
+      "video"} ${broadcastState.isWide && "wide"}`}
+      id="display"
+    >
+      <div id="local-player" className="player"/>
       <div
-          className={`left-side ${roomInfo.mediaType === MediaType.VIDEO &&
-          "video"} ${broadcastState.isWide && "wide"}`}
-          id="display"
+        className="chat-display"
+        ref={displayWrapRef}
+        style={
+          roomInfo !== null
+            ? { backgroundImage: `url(${roomInfo.bgImg.url})` }
+            : {}
+        }
       >
-        <div id="local-player" className="player"/>
-        <div
-            className="chat-display"
-            ref={displayWrapRef}
-            style={
-              roomInfo !== null
-                  ? { backgroundImage: `url(${roomInfo.bgImg.url})` }
-                  : {}
-            }
-        >
 
-          {broadcastState.ttsActionInfo.showAlarm &&
-              <div className="ttsLayer">
-                <div className="user">
-                  <img src="https://image.dalbitlive.com/broadcast/ico_speaker-layer.png" />
-                  {broadcastState.ttsActionInfo.nickNm}
-                </div>
-                <span>{broadcastState.ttsActionInfo.ttsText}</span>
-              </div>
-          }
+        {broadcastState.ttsActionInfo.showAlarm &&
+        <div className="ttsLayer">
+          <div className="user">
+            <img src="https://image.dalbitlive.com/broadcast/ico_speaker-layer.png" />
+            {broadcastState.ttsActionInfo.nickNm}
+          </div>
+          <span>{broadcastState.ttsActionInfo.ttsText}</span>
+        </div>
+        }
 
-          {/*        {roomInfo !== null &&
+{/*        {roomInfo !== null &&
         roomInfo.mediaType === MediaType.VIDEO &&
         roomOwner === true && (
           <canvas
@@ -1333,122 +1333,122 @@ export default function LeftSideAgora(props: {
           ></canvas>
         )}*/}
 
-          {chatFreeze === true && (
-              <Lottie
-                  options={{
-                    loop: true,
-                    autoplay: true,
-                    animationData: LottieFreeze,
-                  }}
-                  style={{
-                    position: "absolute",
-                    zIndex: 2,
-                  }}
-                  // isClickToPauseDisabled={true}
-                  width={"100%"}
-                  height={"100%"}
-              />
-          )}
-
-          <ChatHeaderWrap
-              roomOwner={roomOwner}
-              roomNo={roomNo}
-              roomInfo={roomInfo}
-              guestConnectStatus={guestConnectStatus}
-              displayWrapRef={displayWrapRef}
+        {chatFreeze === true && (
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: LottieFreeze,
+            }}
+            style={{
+              position: "absolute",
+              zIndex: 2,
+            }}
+            // isClickToPauseDisabled={true}
+            width={"100%"}
+            height={"100%"}
           />
-          {broadcastState.roomInfo?.mediaType === MediaType.AUDIO && (
-              <ChatListWrap
-                  roomInfo={roomInfo}
-                  forceChatScrollDown={forceChatScrollDown}
-                  setForceChatScrollDown={setForceChatScrollDown}
-              />
-          )}
+        )}
 
-          {/* {((chatAnimation !== null && chatAnimation.status === true) ||
+        <ChatHeaderWrap
+          roomOwner={roomOwner}
+          roomNo={roomNo}
+          roomInfo={roomInfo}
+          guestConnectStatus={guestConnectStatus}
+          displayWrapRef={displayWrapRef}
+        />
+        {broadcastState.roomInfo?.mediaType === MediaType.AUDIO && (
+          <ChatListWrap
+            roomInfo={roomInfo}
+            forceChatScrollDown={forceChatScrollDown}
+            setForceChatScrollDown={setForceChatScrollDown}
+          />
+        )}
+
+        {/* {((chatAnimation !== null && chatAnimation.status === true) ||
           (comboAnimation !== null && comboAnimation.status === true)) && ( */}
-          <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" />
-          {/* )} */}
+        <LottieDisplayStyled ref={lottieDisplayRef} id="chat-animation" />
+        {/* )} */}
 
-          <NoticeDisplayStyled id="broadcast-notice-display"></NoticeDisplayStyled>
+        <NoticeDisplayStyled id="broadcast-notice-display"></NoticeDisplayStyled>
 
-          {/* 방송 툴팁 Component */}
-          {tooltipStatus.status === true && <TooltipUI />}
+        {/* 방송 툴팁 Component */}
+        {tooltipStatus.status === true && <TooltipUI />}
 
-          {rtcInfo !== null &&
-              rtcInfo.attendClicked === false &&
-              !roomOwner &&
-              rtcInfo.roomInfo?.isAttendCheck === false && (
-                  <StampIconWrapStyled
-                      className="stamp_icon_wrap"
-                      onClick={() => {
-                        rtcInfo.attendClicked = true;
-                        history.push("/event/attend_event");
-                      }}
-                  >
-                    {/* <img src="https://image.dalbitlive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
-                    <Lottie
-                        options={{
-                          loop: true,
-                          autoplay: true,
-                          animationData: StampIcon,
-                        }}
-                        isClickToPauseDisabled={true}
-                        width={42}
-                        height={42}
-                    />
-                  </StampIconWrapStyled>
-              )}
-          <RandomMsgWrap
-              roomInfo={roomInfo}
-              roomOwner={roomOwner}
-              roomNo={roomNo}
-          />
-        </div>
-
-        {roomInfo.mediaType === MediaType.AUDIO && (
-            <ChatInputWrap
-                roomNo={roomNo}
-                roomInfo={roomInfo}
-                roomOwner={roomOwner}
-                setForceChatScrollDown={setForceChatScrollDown}
+        {rtcInfo !== null &&
+        rtcInfo.attendClicked === false &&
+        !roomOwner &&
+        rtcInfo.roomInfo?.isAttendCheck === false && (
+          <StampIconWrapStyled
+            className="stamp_icon_wrap"
+            onClick={() => {
+              rtcInfo.attendClicked = true;
+              history.push("/event/attend_event");
+            }}
+          >
+            {/* <img src="https://image.dalbitlive.com/main/stamp.webp" width={42} height={42} alt="출석도장" /> */}
+            <Lottie
+              options={{
+                loop: true,
+                autoplay: true,
+                animationData: StampIcon,
+              }}
+              isClickToPauseDisabled={true}
+              width={42}
+              height={42}
             />
+          </StampIconWrapStyled>
         )}
+        <RandomMsgWrap
+          roomInfo={roomInfo}
+          roomOwner={roomOwner}
+          roomNo={roomNo}
+        />
+      </div>
 
-        {playBtnStatus === true && (
-            <PlayBtnDisplayStyled
-                onClick={() => {
-                  if (roomOwner) {
-                    if (rtcInfo !== null) {
-                      if (rtcInfo.getPeerConnectionCheck()) {
-                        setPlayBtnStatus(false);
-                        rtcInfo.publish();
-                      }
-                    } else {
-                      broadcastPublishAsHost();
-                    }
-                  } else {
-                    if (rtcInfo !== null && rtcInfo.audioTag) {
-                      if (rtcInfo.getPeerConnectionCheck()) {
-                        setPlayBtnStatus(false);
-                        rtcInfo.playMediaTag();
-                      }
-                    } else {
-                      broadcastPlayAsListener();
-                    }
-                  }
-                }}
-            >
-              <img src={playBtn} />
-            </PlayBtnDisplayStyled>
-        )}
+      {roomInfo.mediaType === MediaType.AUDIO && (
+        <ChatInputWrap
+          roomNo={roomNo}
+          roomInfo={roomInfo}
+          roomOwner={roomOwner}
+          setForceChatScrollDown={setForceChatScrollDown}
+        />
+      )}
 
-        {/*      {roomInfo.mediaType === MediaType.VIDEO && (
+      {playBtnStatus === true && (
+        <PlayBtnDisplayStyled
+          onClick={() => {
+            if (roomOwner) {
+              if (rtcInfo !== null) {
+                if (rtcInfo.getPeerConnectionCheck()) {
+                  setPlayBtnStatus(false);
+                  rtcInfo.publish();
+                }
+              } else {
+                broadcastPublishAsHost();
+              }
+            } else {
+              if (rtcInfo !== null && rtcInfo.audioTag) {
+                if (rtcInfo.getPeerConnectionCheck()) {
+                  setPlayBtnStatus(false);
+                  rtcInfo.playMediaTag();
+                }
+              } else {
+                broadcastPlayAsListener();
+              }
+            }
+          }}
+        >
+          <img src={playBtn} />
+        </PlayBtnDisplayStyled>
+      )}
+
+{/*      {roomInfo.mediaType === MediaType.VIDEO && (
         <ConnectedStatusStyled>
           <div className="title">잠시만 기다려주세요.</div>
         </ConnectedStatusStyled>
       )}*/}
-      </div>
+    </div>
   );
 }
 

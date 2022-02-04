@@ -114,13 +114,13 @@ export class RtcSocketHandler {
   private displayWrapRef: any;
 
   constructor(
-      type: UserType,
-      socketUrl: string,
-      appName: string,
-      streamName: string,
-      roomNo: string,
-      isMono: boolean = false,
-      videoConstraints: any = null
+    type: UserType,
+    socketUrl: string,
+    appName: string,
+    streamName: string,
+    roomNo: string,
+    isMono: boolean = false,
+    videoConstraints: any = null
   ) {
     this.userType = type;
     this.roomInfo = null;
@@ -146,10 +146,10 @@ export class RtcSocketHandler {
           }
         }, 5000);
       } else if (
-          this.peerConnection &&
-          (this.peerConnection.connectionState === "disconnected" ||
-              this.peerConnection.connectionState === "closed" ||
-              this.peerConnection.connectionState === "failed")
+        this.peerConnection &&
+        (this.peerConnection.connectionState === "disconnected" ||
+          this.peerConnection.connectionState === "closed" ||
+          this.peerConnection.connectionState === "failed")
       ) {
         postErrorSave({
           os: "pc",
@@ -157,14 +157,14 @@ export class RtcSocketHandler {
           dataType: NODE_ENV,
           commandType: window.location.pathname,
           desc:
-              "WOWZA CONNECTION ERROR " +
-              this.peerConnection.connectionState +
-              " | " +
-              this.appName +
-              " |" +
-              this.streamName +
-              " |" +
-              this.roomNo,
+            "WOWZA CONNECTION ERROR " +
+            this.peerConnection.connectionState +
+            " | " +
+            this.appName +
+            " |" +
+            this.streamName +
+            " |" +
+            this.roomNo,
         });
 
         if (this.userType === UserType.HOST) {
@@ -393,9 +393,9 @@ export const rtcSessionClear = ()=>{
 export const getArgoraRtc = (rtcInfo:AgoraHostRtc|AgoraListenerRtc)=>{
   const roomInfo = rtcInfo.roomInfo as roomInfoType;
   const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
-  const host = new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints);
-  const listener = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
-  const returnRTC = rtcInfo.userType === UserType.HOST ? host : listener;
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+    new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
+    : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
   returnRTC.setRoomInfo(roomInfo);
   return returnRTC;
 }
@@ -409,9 +409,9 @@ export const getWowzaRtc = (rtcInfo:HostRtc|ListenerRtc)=>{
   const listenerVideoConstraints = {
     isVideo: roomInfo.mediaType === MediaType.VIDEO,
   }
-  const host = new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints);
-  const listener = new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
-  const returnRTC = rtcInfo.userType === UserType.HOST ? host : listener;
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+    new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
+    : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
   returnRTC.setRoomInfo(roomInfo);
   return returnRTC;
 }
@@ -432,13 +432,13 @@ export class HostRtc extends RtcSocketHandler {
   private isPublish = false;
 
   constructor(
-      type: UserType,
-      socketUrl: string,
-      appName: string,
-      streamName: string,
-      roomNo: string,
-      isMono: boolean = false,
-      videoConstraints: any = null
+    type: UserType,
+    socketUrl: string,
+    appName: string,
+    streamName: string,
+    roomNo: string,
+    isMono: boolean = false,
+    videoConstraints: any = null
   ) {
     super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
     this.socketConnect();
@@ -457,8 +457,8 @@ export class HostRtc extends RtcSocketHandler {
         });
       });
       if (
-          micDeivceExist === false ||
-          (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
+        micDeivceExist === false ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
       ) {
         postErrorSave({
           os: "pc",
@@ -473,8 +473,8 @@ export class HostRtc extends RtcSocketHandler {
           this.stop();
         }
       } else if (
-          micDeivceExist === true ||
-          (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
+        micDeivceExist === true ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
       ) {
         if (this.audioStream === null) {
           if (this.getWsConnectionCheck()) {
@@ -705,11 +705,11 @@ export class HostRtc extends RtcSocketHandler {
             const enhanceData = {
               audioBitrate: audioBitrate,
               videoBitrate:
-                  this.videoConstraints !== null && this.videoConstraints.isVideo
-                      ? this.userType === UserType.GUEST
-                          ? 500
-                          : videoBitrate
-                      : undefined,
+                this.videoConstraints !== null && this.videoConstraints.isVideo
+                  ? this.userType === UserType.GUEST
+                  ? 500
+                  : videoBitrate
+                  : undefined,
               videoFrameRate: this.videoConstraints !== null && this.videoConstraints.videoFrameRate,
             };
             sdpData.sdp = this.enhanceSDP(sdpData.sdp, enhanceData);
@@ -812,40 +812,40 @@ export class HostRtc extends RtcSocketHandler {
             if (rtpmapID !== null) {
               let match = rtpmapID[2].toLowerCase();
               if (
-                  "vp9".localeCompare(match) == 0 ||
-                  "vp8".localeCompare(match) == 0 ||
-                  "h264".localeCompare(match) == 0 ||
-                  "red".localeCompare(match) == 0 ||
-                  "ulpfec".localeCompare(match) == 0 ||
-                  "rtx".localeCompare(match) == 0
+                "vp9".localeCompare(match) == 0 ||
+                "vp8".localeCompare(match) == 0 ||
+                "h264".localeCompare(match) == 0 ||
+                "red".localeCompare(match) == 0 ||
+                "ulpfec".localeCompare(match) == 0 ||
+                "rtx".localeCompare(match) == 0
               ) {
                 if (enhanceData.videoBitrate !== undefined) {
                   sdpStrRet +=
-                      "\r\na=fmtp:" +
-                      rtpmapID[1] +
-                      " x-google-min-bitrate=" +
-                      enhanceData.videoBitrate +
-                      ";x-google-max-bitrate=" +
-                      enhanceData.videoBitrate;
+                    "\r\na=fmtp:" +
+                    rtpmapID[1] +
+                    " x-google-min-bitrate=" +
+                    enhanceData.videoBitrate +
+                    ";x-google-max-bitrate=" +
+                    enhanceData.videoBitrate;
                 }
               }
 
               if (
-                  "opus".localeCompare(match) == 0 ||
-                  "isac".localeCompare(match) == 0 ||
-                  "g722".localeCompare(match) == 0 ||
-                  "pcmu".localeCompare(match) == 0 ||
-                  "pcma".localeCompare(match) == 0 ||
-                  "cn".localeCompare(match) == 0
+                "opus".localeCompare(match) == 0 ||
+                "isac".localeCompare(match) == 0 ||
+                "g722".localeCompare(match) == 0 ||
+                "pcmu".localeCompare(match) == 0 ||
+                "pcma".localeCompare(match) == 0 ||
+                "cn".localeCompare(match) == 0
               ) {
                 if (enhanceData.audioBitrate !== undefined) {
                   sdpStrRet +=
-                      "\r\na=fmtp:" +
-                      rtpmapID[1] +
-                      " x-google-min-bitrate=" +
-                      enhanceData.audioBitrate +
-                      ";x-google-max-bitrate=" +
-                      enhanceData.audioBitrate;
+                    "\r\na=fmtp:" +
+                    rtpmapID[1] +
+                    " x-google-min-bitrate=" +
+                    enhanceData.audioBitrate +
+                    ";x-google-max-bitrate=" +
+                    enhanceData.audioBitrate;
                 }
               }
             }
@@ -870,21 +870,21 @@ export class HostRtc extends RtcSocketHandler {
       constraints.audio.echoCancellation = false;
     }
     await navigator.mediaDevices
-        .getUserMedia(constraints)
-        .then((stream) => {
-          if (this.audioStream === null) {
-            this.audioStream = stream;
-          }
-          if (this.videoStream === null && this.videoConstraints !== null && this.videoConstraints.isVideo) {
-            this.videoStream = stream;
-            this.initVideoTag();
-          } else if (this.videoStream !== null && this.videoConstraints !== null && this.videoConstraints.isVideo) {
-            this.initVideoTag();
-          }
-        })
-        .catch((e) => {
-          // alert(e);
-        });
+      .getUserMedia(constraints)
+      .then((stream) => {
+        if (this.audioStream === null) {
+          this.audioStream = stream;
+        }
+        if (this.videoStream === null && this.videoConstraints !== null && this.videoConstraints.isVideo) {
+          this.videoStream = stream;
+          this.initVideoTag();
+        } else if (this.videoStream !== null && this.videoConstraints !== null && this.videoConstraints.isVideo) {
+          this.initVideoTag();
+        }
+      })
+      .catch((e) => {
+        // alert(e);
+      });
   }
 
   private removeAudioStream() {
@@ -1003,7 +1003,7 @@ export class ListenerRtc extends RtcSocketHandler {
 
   constructor(type: UserType, socketUrl: string, appName: string, streamName: string, roomNo: string, videoConstraints: any) {
     super(type, socketUrl, appName, streamName, roomNo, false, videoConstraints);
-
+    // debugger
     this.socketConnect();
     this.audioTag.muted = true;
   }
@@ -1206,16 +1206,16 @@ export class ListenerRtc extends RtcSocketHandler {
 
   private enhanceSDP(sdpStr: string) {
     return sdpStr
-        .split(/\r\n/)
-        .map((sdpLine) => {
-          if (sdpLine.includes("profile-level-id")) {
-            if (sdpLine.includes("640029")) {
-              sdpLine = sdpLine.replace("640029", "42E01F");
-            }
+      .split(/\r\n/)
+      .map((sdpLine) => {
+        if (sdpLine.includes("profile-level-id")) {
+          if (sdpLine.includes("640029")) {
+            sdpLine = sdpLine.replace("640029", "42E01F");
           }
-          return sdpLine;
-        })
-        .join("\r\n");
+        }
+        return sdpLine;
+      })
+      .join("\r\n");
   }
 }
 
@@ -1238,13 +1238,13 @@ export class AgoraHostRtc extends RtcSocketHandler{
   private isPublish = false;
 
   constructor(
-      type: UserType,
-      socketUrl: string,
-      appName: string,
-      streamName: string,
-      roomNo: string,
-      isMono: boolean = false,
-      videoConstraints: any = null
+    type: UserType,
+    socketUrl: string,
+    appName: string,
+    streamName: string,
+    roomNo: string,
+    isMono: boolean = false,
+    videoConstraints: any = null
   ) {
     super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
     this.socketConnect();
@@ -1262,8 +1262,8 @@ export class AgoraHostRtc extends RtcSocketHandler{
         });
       });
       if (
-          micDeivceExist === false ||
-          (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
+        micDeivceExist === false ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
       ) {
         postErrorSave({
           os: "pc",
@@ -1278,8 +1278,8 @@ export class AgoraHostRtc extends RtcSocketHandler{
           this.stop();
         }
       } else if (
-          micDeivceExist === true ||
-          (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
+        micDeivceExist === true ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
       ) {
         if (this.audioStream === null) {
           if (this.getWsConnectionCheck()) {
@@ -1302,48 +1302,48 @@ export class AgoraHostRtc extends RtcSocketHandler{
 
   }
   async join(roomInfo) {
-    try {
-      if(client.connectionState === 'CONNECTED'){
-        client.remoteUsers.forEach(user=>{
-          if(user.hasVideo){
-            user.videoTrack?.play(`local-player`,{mirror:false})
-          }
-        })
-        await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
-        localTracks.videoTrack.play("local-player",{mirror:false});
-        // await client.publish(Object.values(localTracks));
-      }else{
-        await client.setClientRole("host");
-        let micId:any = sessionStorage.getItem("mic");
-        let camId:any = sessionStorage.getItem("cam");
-        let uid = await client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null);
-        [localTracks.audioTrack, localTracks.videoTrack] = await Promise.all([
-          //AgoraRTC.createMicrophoneAudioTrack({encoderConfig: 'high_quality_stereo'}),
-          AgoraRTC.createMicrophoneAudioTrack({
-            encoderConfig: {
-              sampleRate: 48000,
-              stereo: true,
-              bitrate: 192,
-            },
-            microphoneId:micId?.replaceAll("\"","")
-          }),
-          AgoraRTC.createCameraVideoTrack({ encoderConfig: {
-              width: 1280,
-              // Specify a value range and an ideal value
-              height: { ideal: 720, min: 720, max: 1280 },
-              frameRate: 24,
-              bitrateMin: 1130, bitrateMax: 2000,
-            },cameraId:camId?.replaceAll("\"","")})
-        ]);
-        await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
-        localTracks.videoTrack.play("local-player",{mirror:false});
-        // publish local tracks to channel
-        await client.publish(Object.values(localTracks));
-        console.log("publish success");
+      try {
+        if(client.connectionState === 'CONNECTED'){
+          client.remoteUsers.forEach(user=>{
+            if(user.hasVideo){
+              user.videoTrack?.play(`local-player`,{mirror:false})
+            }
+          })
+          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
+          localTracks.videoTrack.play("local-player",{mirror:false});
+          // await client.publish(Object.values(localTracks));
+        }else{
+          await client.setClientRole("host");
+          let micId:any = sessionStorage.getItem("mic");
+          let camId:any = sessionStorage.getItem("cam");
+          let uid = await client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null);
+          [localTracks.audioTrack, localTracks.videoTrack] = await Promise.all([
+            //AgoraRTC.createMicrophoneAudioTrack({encoderConfig: 'high_quality_stereo'}),
+            AgoraRTC.createMicrophoneAudioTrack({
+              encoderConfig: {
+                sampleRate: 48000,
+                stereo: true,
+                bitrate: 192,
+              },
+              microphoneId:micId?.replaceAll("\"","")
+            }),
+            AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+                width: 1280,
+                // Specify a value range and an ideal value
+                height: { ideal: 720, min: 720, max: 1280 },
+                frameRate: 24,
+                bitrateMin: 1130, bitrateMax: 2000,
+              },cameraId:camId?.replaceAll("\"","")})
+          ]);
+          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
+          localTracks.videoTrack.play("local-player",{mirror:false});
+          // publish local tracks to channel
+          await client.publish(Object.values(localTracks));
+          console.log("publish success");
+        }
+      } catch (err) {
+        console.error(err)
       }
-    } catch (err) {
-      console.error(err)
-    }
   }
   async stop() {
     Object.keys(localTracks).forEach(trackName => {
@@ -1564,148 +1564,6 @@ export class AgoraListenerRtc extends RtcSocketHandler{
     if (this.getDisplayListWrapRef() && this.getDisplayListWrapRef().current) {
       this.getDisplayListWrapRef().current.prepend(this.videoTag);
     }
-  }
-
-  private sendPlayGetOffer = () => {
-    const message = {
-      direction: "play",
-      command: "getOffer",
-      streamInfo: this.getStreamInfo(),
-    };
-    this.socketSendMsg(message);
-  };
-
-  socketConnect() {
-    if (this.wsConnection === null) {
-      this.wsConnection = new WebSocket(this.socketUrl);
-      this.wsConnection.binaryType = "arraybuffer";
-      this.wsConnection.onopen = () => {
-        this.peerConnection = new RTCPeerConnection();
-        this.peerConnection.onconnectionstatechange = this.connectionStateChange;
-
-        this.peerConnection.ontrack = (e) => {
-          this.audioTag.srcObject = e.streams[0];
-
-          if (this.videoConstraints.isVideo) {
-            this.videoStream = e.streams[0];
-
-            this.initVideoTag();
-          }
-        };
-
-        this.sendPlayGetOffer();
-      };
-
-      this.wsConnection.onmessage = async (msg) => {
-        const format = JSON.parse(msg.data);
-        const {command, status, streamInfo, iceCandidates} = format;
-
-        if (status === StatusType.READY || status === StatusType.NO_STREAM) {
-          this.retryCount++;
-          if (reTryTimer) clearTimeout(reTryTimer);
-          reTryTimer = setTimeout(this.sendPlayGetOffer, 3500);
-        } else if (status === StatusType.DENIED_STREAM) {
-          // todo status 여기로 들어옴 계속
-          if (this.retryCount == 1) {
-            const msgData = SystemStartMsg({
-              type: "div",
-              text: "미디어 서버 접속 중입니다.\n소리가 들리지 않아도 잠시만 기다려 주세요.",
-              className: "system-start-msg",
-            });
-            if (this.getMsgListWrapRef()) {
-              const msgListWrapElem = this.getMsgListWrapRef().current;
-              if (msgListWrapElem && msgListWrapElem.current && msgData !== null) {
-                msgListWrapElem.current.appendChild(msgData);
-              }
-            }
-          }
-          this.retryCount++;
-          if (reTryTimer) clearTimeout(reTryTimer);
-          reTryTimer = setTimeout(this.sendPlayGetOffer, 1000);
-        } else if (status === StatusType.OK) {
-          if (reTryTimer) clearTimeout(reTryTimer);
-          if (streamInfo) {
-            this.sessionId = streamInfo.sessionId;
-          }
-          if (format && format.hasOwnProperty("sdp")) {
-            const sdpData = format.sdp;
-
-            sdpData.sdp = this.enhanceSDP(sdpData.sdp);
-            sdpData.sdp = sdpData.sdp.replace("OPUS/48000/1", "OPUS/48000/2");
-            if (this.peerConnection) {
-              await this.peerConnection.setRemoteDescription(new RTCSessionDescription(sdpData));
-              const config = await this.peerConnection.createAnswer();
-              this.gotDescription(config);
-            }
-          }
-          if (iceCandidates && Array.isArray(iceCandidates)) {
-            iceCandidates.forEach((value) => {
-              const ice = new RTCIceCandidate(value);
-              this.peerConnection && this.peerConnection.addIceCandidate(ice);
-            });
-          }
-
-          if (command === "sendResponse") {
-            // initInterval(() => {
-            //   if (this.getPeerConnectionCheck()) {
-            //     if (this.videoTag !== null) {
-            //       this.videoTag.play();
-            //     }
-            //     return true;
-            //   }
-
-            //   return false;
-            // });
-            this.socketDisconnect();
-          }
-        } else {
-          // TODO 기존 wowza 로직 ㅜㅜ 어떻게 처리해야할지..
-          // this.stop();
-        }
-      };
-
-      this.wsConnection.onclose = () => {
-        if (reTryTimer) clearTimeout(reTryTimer);
-        this.wsConnection = null;
-      };
-      this.wsConnection.onerror = () => {
-        if (reTryTimer) clearTimeout(reTryTimer);
-        this.wsConnection = null;
-      };
-    }
-  }
-
-  private async gotDescription(description: any) {
-    // For stereo mix
-    if (this.userType !== UserType.HOST) {
-      description.sdp = description.sdp.replace("useinbandfec=1", "useinbandfec=1; stereo=1; maxaveragebitrate=510000");
-    }
-    // this.peerConnection && (await this.peerConnection.setLocalDescription(description));
-
-    this.peerConnection &&
-    this.peerConnection.setLocalDescription(description).then(() => {
-      const message = {
-        direction: "play",
-        command: "sendResponse",
-        streamInfo: this.getStreamInfo(),
-        sdp: description,
-      };
-      this.socketSendMsg(message);
-    });
-  }
-
-  private enhanceSDP(sdpStr: string) {
-    return sdpStr
-        .split(/\r\n/)
-        .map((sdpLine) => {
-          if (sdpLine.includes("profile-level-id")) {
-            if (sdpLine.includes("640029")) {
-              sdpLine = sdpLine.replace("640029", "42E01F");
-            }
-          }
-          return sdpLine;
-        })
-        .join("\r\n");
   }
 
 }

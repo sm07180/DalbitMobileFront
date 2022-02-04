@@ -631,7 +631,7 @@ function GuestComponent(props) {
   }, [micState, audioStream]);
 
   useEffect(() => {
-    if (guestInfo !== null && Object.keys(guestInfo).length > 0) {
+    if (guestInfo && guestInfo !== null && Object.keys(guestInfo).length > 0) {
       if (guestInfo[globalState.baseData.memNo]) {
         initInterval(() => {
           if (guestInfo[globalState.baseData.memNo].getPeerConnectionCheck()) {
@@ -642,16 +642,17 @@ function GuestComponent(props) {
         });
       } else {
         const a = Object.keys(guestInfo)[0];
+        if(guestInfo[a] && guestInfo[a] !== "EMPTY" ){
+          guestInfo[a].setDisplayWrapRef(displayWrapRef);
 
-        guestInfo[a].setDisplayWrapRef?.(displayWrapRef);
-
-        initInterval(() => {
-          if (guestInfo[a].getPeerConnectionCheck?.()) {
-            setGuestConnectStatus(true);
-            return true;
-          }
-          return false;
-        });
+          initInterval(() => {
+            if (guestInfo[a].getPeerConnectionCheck()) {
+              setGuestConnectStatus(true);
+              return true;
+            }
+            return false;
+          });
+        }
       }
     }
   }, [guestInfo]);

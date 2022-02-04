@@ -46,19 +46,19 @@ export default () => {
   }, [dimLayer]);
 
   return (
-      <div
-          id="modal"
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatchDimLayer({
-              type: "INIT",
-            });
-            if(dimLayer.type === "BROAD_END"){
-              history.push("/");
-            }
-          }}
-      >
-        <SwitchRendered />
-      </div>
+    <div
+      id="modal"
+      onClick={(e) => {
+        e.stopPropagation();
+        dispatchDimLayer({
+          type: "INIT",
+        });
+        if(dimLayer.type === "BROAD_END"){
+          history.push("/");
+        }
+      }}
+    >
+      <SwitchRendered />
+    </div>
   );
 };

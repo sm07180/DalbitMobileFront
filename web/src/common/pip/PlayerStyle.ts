@@ -273,11 +273,37 @@ export const PlayerVideoStyled = styled.div`
     position: absolute;
     top: 0;
     right: 0;
+    z-index: 10;
   }
-  
-  .player {
-    height: 100%;
+`;
+export const NoticeDisplayStyled = styled.div`
+  position: absolute;
+  width: calc(100% - 26px);
+  top: 100px;
+  left: 13px;
+  & > div {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 36px;
+    padding: 6px 12px;
+    align-items: center;
+    background-color: rgb(236, 69, 95);
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+
+    .close-img {
+      position: absolute;
+      top: 9px;
+      right: 18px;
+      cursor: pointer;
+    }
   }
+  z-index: 3;
 `;
 export const thumbInlineStyle = (target)=>{
   return { backgroundImage: `url(${target["thumb120x120"]})` };

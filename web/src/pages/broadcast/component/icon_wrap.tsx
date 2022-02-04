@@ -259,7 +259,7 @@ export const IconWrap = (props: {
               rtcInfo.stop();
               globalAction.dispatchRtcInfo({ type: "empty" });
               disconnectGuest();
-              await rtcInfo.leave();
+              await rtcInfo.stop();
               rtcSessionClear();
               if (roomOwner === true) {
                 dispatchDimLayer({
@@ -325,16 +325,12 @@ export const IconWrap = (props: {
       mediaState: "video",
       mediaOn: false,
     });
-    console.log("stopBroadcastVideo",result)
     if (result === true) {
       setVideoActive(false);
 
       if (rtcInfo !== null) {
-        let player = document.getElementById("local-player");
-        if(player){
-          player.classList.add("hidden");
-        }
         rtcInfo.videoMute(true);
+        rtcInfo.audioMute(true);
         rtcInfo.setBroadState(false);
       }
     }
@@ -349,11 +345,8 @@ export const IconWrap = (props: {
     if (result) {
       setVideoActive(true);
       if (rtcInfo !== null) {
-        let player = document.getElementById("local-player");
-        if(player){
-          player.classList.remove("hidden");;
-        }
         rtcInfo.videoMute(false);
+        rtcInfo.audioMute(false);
         rtcInfo.setBroadState(true);
       }
       const noticeDisplay = document.getElementById("broadcast-notice-display");

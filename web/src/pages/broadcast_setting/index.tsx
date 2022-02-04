@@ -67,17 +67,17 @@ let currentCam; // the camera you are using
 
 //action type
 type Action =
-    | { type: "SET_MICSTATE"; micState: boolean }
-    | { type: "SET_ENTRY"; entryType: number }
-    | { type: "SET_ROOMTYPE"; roomType: string }
-    | { type: "SET_BGCHANGE"; bgChange: string }
-    | { type: "SET_TITLECHANGE"; titleChange: string }
-    | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
-    | { type: "SET_IMAGETYPE"; imageType: number }
-    | { type: "SET_MEDIATYPE"; mediaType: string }
-    | { type: "SET_VIDEOSTATE"; videoState: boolean }
-    | { type: "SET_PLATFORM"; platFormType: string }
-    | { type: "SET_CAMFORM"; camFormType: string };
+  | { type: "SET_MICSTATE"; micState: boolean }
+  | { type: "SET_ENTRY"; entryType: number }
+  | { type: "SET_ROOMTYPE"; roomType: string }
+  | { type: "SET_BGCHANGE"; bgChange: string }
+  | { type: "SET_TITLECHANGE"; titleChange: string }
+  | { type: "SET_WELCOMEMSG"; welcomeMsgChange: string }
+  | { type: "SET_IMAGETYPE"; imageType: number }
+  | { type: "SET_MEDIATYPE"; mediaType: string }
+  | { type: "SET_VIDEOSTATE"; videoState: boolean }
+  | { type: "SET_PLATFORM"; platFormType: string }
+  | { type: "SET_CAMFORM"; camFormType: string };
 
 
 //broad Reducer
@@ -190,9 +190,9 @@ export default function BroadcastSetting() {
 
   // dispatch function
   const setMicState = (status: boolean) =>
-      dispatch({ type: "SET_MICSTATE", micState: status });
+    dispatch({ type: "SET_MICSTATE", micState: status });
   const setVideoState = (status: boolean) =>
-      dispatch({ type: "SET_VIDEOSTATE", videoState: status });
+    dispatch({ type: "SET_VIDEOSTATE", videoState: status });
 
   const setEntry = useCallback((access_type: ACCESS_TYPE) => {
     dispatch({ type: "SET_ENTRY", entryType: access_type });
@@ -207,18 +207,18 @@ export default function BroadcastSetting() {
   }, []);
 
   const setRoomType = useCallback(
-      (value) =>
-          dispatch({
-            type: "SET_ROOMTYPE",
-            roomType: value,
-          }),
-      []
+    (value) =>
+      dispatch({
+        type: "SET_ROOMTYPE",
+        roomType: value,
+      }),
+    []
   );
   const setBgChange = (value) =>
-      dispatch({
-        type: "SET_BGCHANGE",
-        bgChange: value,
-      });
+    dispatch({
+      type: "SET_BGCHANGE",
+      bgChange: value,
+    });
   const setTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (value.length > 20) return;
@@ -378,13 +378,13 @@ export default function BroadcastSetting() {
         };
 
         const newRtcInfo = new HostRtc(
-            UserType.HOST,
-            webRtcUrl,
-            webRtcAppName,
-            webRtcStreamName,
-            roomNo,
-            false,
-            videoConstraints
+          UserType.HOST,
+          webRtcUrl,
+          webRtcAppName,
+          webRtcStreamName,
+          roomNo,
+          false,
+          videoConstraints
         );
         newRtcInfo.setRoomInfo(roomInfo);
         globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
@@ -409,14 +409,14 @@ export default function BroadcastSetting() {
       } else if (result === "fail") {
         if (code === "-6") {
           return (
-              globalAction.setAlertStatus &&
-              globalAction.setAlertStatus({
-                status: true,
-                content: message,
-                callback: () => {
-                  history.push("/self_auth/self?type=create");
-                },
-              })
+            globalAction.setAlertStatus &&
+            globalAction.setAlertStatus({
+              status: true,
+              content: message,
+              callback: () => {
+                history.push("/self_auth/self?type=create");
+              },
+            })
           );
         }
         globalAction.setAlertStatus &&
@@ -485,27 +485,27 @@ export default function BroadcastSetting() {
 
   const setStream = useCallback(async () => {
     navigator.mediaDevices.removeEventListener(
-        "devicechange",
-        detectStreamDevice
+      "devicechange",
+      detectStreamDevice
     );
     navigator.mediaDevices.addEventListener("devicechange", detectStreamDevice);
 
     const stream = await navigator.mediaDevices
-        .getUserMedia(constraint)
-        .then((stream) => {
-          return stream;
-        })
-        .catch((e) => {
-          return null;
-        });
+      .getUserMedia(constraint)
+      .then((stream) => {
+        return stream;
+      })
+      .catch((e) => {
+        return null;
+      });
 
     return stream;
   }, [videoStream, audioStream]);
 
   const removeStream = useCallback(async () => {
     navigator.mediaDevices.removeEventListener(
-        "devicechange",
-        detectStreamDevice
+      "devicechange",
+      detectStreamDevice
     );
     audioStream?.getTracks().forEach((track) => track.stop());
     setAudioGauge(0);
@@ -514,8 +514,8 @@ export default function BroadcastSetting() {
 
   const removeVideoStream = useCallback(async () => {
     navigator.mediaDevices.removeEventListener(
-        "devicechange",
-        detectStreamDevice
+      "devicechange",
+      detectStreamDevice
     );
     videoStream?.getTracks().forEach((track) => track.stop());
     setVideoState(false);
@@ -647,7 +647,7 @@ export default function BroadcastSetting() {
       initDeivce();*/
     }
     if (
-        state.mediaType === BROAD_TYPE.VIDEO
+      state.mediaType === BROAD_TYPE.VIDEO
     ) {
       /* if (
          document.getElementById("localVideoSection") &&
@@ -664,14 +664,14 @@ export default function BroadcastSetting() {
        setVideoState(true);*/
     } else {
       if (
-          document.getElementById("localVideoSection") &&
-          document.getElementById("localVideoSection")!.children.length > 0
+        document.getElementById("localVideoSection") &&
+        document.getElementById("localVideoSection")!.children.length > 0
       ) {
         document
-            .getElementById("localVideoSection")
-            ?.removeChild(
-                document.getElementById("localVideoSection")!.childNodes[0]
-            );
+          .getElementById("localVideoSection")
+          ?.removeChild(
+            document.getElementById("localVideoSection")!.childNodes[0]
+          );
       }
     }
   }, [videoStream, state.mediaType]);
@@ -684,7 +684,7 @@ export default function BroadcastSetting() {
         type: "confirm",
         title: "알림",
         content: `현재 ${
-            rtcInfo.userType === UserType.HOST ? "하고" : "듣고"
+          rtcInfo.userType === UserType.HOST ? "하고" : "듣고"
         } 있던 방송을 종료하시겠습니까?`,
         callback: () => {
           if (chatInfo !== null && rtcInfo !== null) {
@@ -713,8 +713,8 @@ export default function BroadcastSetting() {
 
   useEffect(() => {
     if (
-        modalState.broadcastOption.title !== "" &&
-        modalState.broadcastOption.title
+      modalState.broadcastOption.title !== "" &&
+      modalState.broadcastOption.title
     ) {
       dispatch({
         type: "SET_TITLECHANGE",
@@ -722,8 +722,8 @@ export default function BroadcastSetting() {
       });
     }
     if (
-        modalState.broadcastOption.welcome !== "" &&
-        modalState.broadcastOption.welcome
+      modalState.broadcastOption.welcome !== "" &&
+      modalState.broadcastOption.welcome
     ) {
       dispatch({
         type: "SET_WELCOMEMSG",
@@ -754,30 +754,30 @@ export default function BroadcastSetting() {
   }
 
   return (
-      <>
-        <Layout>
-          <div className="broadcastSetting">
-            <div className="headerTitle">방송설정</div>
-            <div className="title">마이크 연결 상태</div>
-            <div className="mikeCheck">
-              <div
-                  className={
-                    state.micState ? "mikeIcon" : "mikeIcon mikeIcon__noSound"
-                  }
-              >
-                <div className="mikeIcon__button"></div>
-              </div>
-              <div className="mikeLine">
-                <div
-                    className="mikeLine__onBackground"
-                    style={{ width: `${audioGauge}%` }}
-                >
-                  <div className="mikeLine__button"></div>
-                </div>
-              </div>
-
+    <>
+      <Layout>
+        <div className="broadcastSetting">
+          <div className="headerTitle">방송설정</div>
+          <div className="title">마이크 연결 상태</div>
+          <div className="mikeCheck">
+            <div
+              className={
+                state.micState ? "mikeIcon" : "mikeIcon mikeIcon__noSound"
+              }
+            >
+              <div className="mikeIcon__button"></div>
             </div>
-            {/*<ul id={"micList"} className="access">
+            <div className="mikeLine">
+              <div
+                className="mikeLine__onBackground"
+                style={{ width: `${audioGauge}%` }}
+              >
+                <div className="mikeLine__button"></div>
+              </div>
+            </div>
+
+          </div>
+          {/*<ul id={"micList"} className="access">
             {mics.map((item, index) => {
               return(
                 <li
@@ -796,41 +796,41 @@ export default function BroadcastSetting() {
               )
             })}
           </ul>*/}
-            {/* 방송 타입 */}
-            <div className="title">음성/영상 설정</div>
-            <ul className="access">
-              <li
-                  onClick={() => {
-                    setMediaType(BROAD_TYPE.AUDIO);
-                  }}
-                  className={
-                    state.mediaType == BROAD_TYPE.AUDIO
-                        ? "access__list active"
-                        : "access__list"
-                  }
-              >
-                라디오
-              </li>
-              <li
-                  onClick={() => {
-                    setMediaType(BROAD_TYPE.VIDEO);
-                  }}
-                  className={
-                    state.mediaType == BROAD_TYPE.VIDEO
-                        ? "access__list active"
-                        : "access__list"
-                  }
-              >
-                보이는 라디오
-              </li>
-            </ul>
+          {/* 방송 타입 */}
+          <div className="title">음성/영상 설정</div>
+          <ul className="access">
+            <li
+              onClick={() => {
+                setMediaType(BROAD_TYPE.AUDIO);
+              }}
+              className={
+                state.mediaType == BROAD_TYPE.AUDIO
+                  ? "access__list active"
+                  : "access__list"
+              }
+            >
+              라디오
+            </li>
+            <li
+              onClick={() => {
+                setMediaType(BROAD_TYPE.VIDEO);
+              }}
+              className={
+                state.mediaType == BROAD_TYPE.VIDEO
+                  ? "access__list active"
+                  : "access__list"
+              }
+            >
+              보이는 라디오
+            </li>
+          </ul>
 
-            {state.mediaType === BROAD_TYPE.VIDEO && (
-                <>
-                  <div className="title">음성/영상 상태</div>
-                  {/*<div id="localVideoSection"/>*/}
-                  <div id="pre-local-player"/>
-                  {/*<ul id={"camList"} className="access">
+          {state.mediaType === BROAD_TYPE.VIDEO && (
+            <>
+              <div className="title">음성/영상 상태</div>
+              {/*<div id="localVideoSection"/>*/}
+              <div id="pre-local-player"/>
+              {/*<ul id={"camList"} className="access">
                 {cams.map((item, index) => {
                   return(
                     <li
@@ -849,10 +849,10 @@ export default function BroadcastSetting() {
                   )
                 })}
               </ul>*/}
-                </>
-            )}
-            {/*아고라 와우자 분기값 셋팅 테스트용*/}
-            {/*        <div className="title">참여서버</div>
+            </>
+          )}
+          {/*아고라 와우자 분기값 셋팅 테스트용*/}
+          {/*        <div className="title">참여서버</div>
           <ul className="access">
             {PlatForm.map(
               (item: { name: string; id: string }, idx: number) => {
@@ -876,193 +876,193 @@ export default function BroadcastSetting() {
           </ul>*/}
 
 
-            {/* 입장제한 라디오박스영역 */}
-            <div className="title">입장제한</div>
-            <ul className="access">
-              {AccessList.map(
-                  (item: { name: string; id: number }, idx: number) => {
+          {/* 입장제한 라디오박스영역 */}
+          <div className="title">입장제한</div>
+          <ul className="access">
+            {AccessList.map(
+              (item: { name: string; id: number }, idx: number) => {
+                return (
+                  <li
+                    key={idx}
+                    onClick={() => {
+                      setEntry(item.id);
+                      if (item.id === ACCESS_TYPE.ADULT) {
+                        if (globalAction.callSetToastStatus) {
+                          globalAction.callSetToastStatus({
+                            status: true,
+                            message: "20세 이상 청취 하실 수 있습니다",
+                          });
+                        }
+                      }
+                    }}
+                    className={
+                      state.entryType == item.id
+                        ? "access__list active"
+                        : "access__list"
+                    }
+                  >
+                    {item.name}
+                  </li>
+                );
+              }
+            )}
+          </ul>
+
+          {/* 방송주제 라디오박스영역 */}
+          {globalState.splashData?.roomType.length > 0 && (
+            <>
+              <div className="title">방송주제</div>
+              <ul className="category">
+                {globalState.splashData?.roomType.map(
+                  (item: { cdNm: string; value: string }, idx: number) => {
                     return (
-                        <li
-                            key={idx}
-                            onClick={() => {
-                              setEntry(item.id);
-                              if (item.id === ACCESS_TYPE.ADULT) {
-                                if (globalAction.callSetToastStatus) {
-                                  globalAction.callSetToastStatus({
-                                    status: true,
-                                    message: "20세 이상 청취 하실 수 있습니다",
-                                  });
-                                }
-                              }
-                            }}
-                            className={
-                              state.entryType == item.id
-                                  ? "access__list active"
-                                  : "access__list"
-                            }
-                        >
-                          {item.name}
-                        </li>
+                      <li
+                        key={idx}
+                        onClick={() => {
+                          setRoomType(item.value);
+                        }}
+                        className={
+                          state.roomType == item.value
+                            ? "category__list category__list--active"
+                            : "category__list"
+                        }
+                      >
+                        {item.cdNm}
+                      </li>
                     );
                   }
-              )}
-            </ul>
-
-            {/* 방송주제 라디오박스영역 */}
-            {globalState.splashData?.roomType.length > 0 && (
-                <>
-                  <div className="title">방송주제</div>
-                  <ul className="category">
-                    {globalState.splashData?.roomType.map(
-                        (item: { cdNm: string; value: string }, idx: number) => {
-                          return (
-                              <li
-                                  key={idx}
-                                  onClick={() => {
-                                    setRoomType(item.value);
-                                  }}
-                                  className={
-                                    state.roomType == item.value
-                                        ? "category__list category__list--active"
-                                        : "category__list"
-                                  }
-                              >
-                                {item.cdNm}
-                              </li>
-                          );
-                        }
-                    )}
-                  </ul>
-                </>
-            )}
-            {/* 백그라운드 사진업로드 영역 */}
-            <div className="title">
-              사진 등록{" "}
-              <span className="title__subText">
+                )}
+              </ul>
+            </>
+          )}
+          {/* 백그라운드 사진업로드 영역 */}
+          <div className="title">
+            사진 등록{" "}
+            <span className="title__subText">
               방송 배경 이미지를 등록해주세요.
             </span>
-            </div>
-            <div
-                className="photo"
-                style={{
-                  backgroundImage: `url(${broadBg})`,
-                  backgroundSize: "cover",
-                }}
-            >
-              <label
-                  htmlFor="profileImg"
-                  className={broadBg !== "" ? "bgLabel bgLabel--active" : "bgLabel"}
-              ></label>
-              <input
-                  type="file"
-                  id="profileImg"
-                  accept="image/jpg, image/jpeg, image/png, image/gif"
-                  onChange={BgImageUpload}
-                  className="bgUploader"
-              />
-              {broadBg !== "" && <div className="fakeBox" />}
-            </div>
-
-            {/* 스디 실시간 LIVE 사진 노출 영역*/}
-            {globalState.userProfile && globalState.userProfile.badgeSpecial > 0 && (
-                <>
-                  <div className="title">실시간 LIVE 사진 노출</div>
-                  <ul className="access">
-                    {ImageList.map(
-                        (item: { name: string; id: number }, idx: number) => {
-                          return (
-                              <li
-                                  key={item.id}
-                                  onClick={() => {
-                                    dispatch({
-                                      type: "SET_IMAGETYPE",
-                                      imageType: item.id,
-                                    });
-                                  }}
-                                  className={`access__list ${state.imageType ===
-                                  item.id && "active"}`}
-                              >
-                                {item.name}
-                              </li>
-                          );
-                        }
-                    )}
-                  </ul>
-                </>
-            )}
-
-            {/* 방송제목 영역 */}
-            <div className="title">
-              방송 제목
-              <button
-                  onClick={() => {
-                    setPopupState(true);
-                    setPopupTitle(true);
-                  }}
-              />
-            </div>
-            <div className="inputBox">
-              <input
-                  ref={titleInputRef}
-                  className="input"
-                  placeholder="제목을 입력해주세요 (3~20자 이내)"
-                  onChange={(e) => setTitleChange(e)}
-                  value={state.titleChange}
-              />
-              <p className="textNumber">{state.titleChange.length}/20</p>
-            </div>
-
-            {/* 인사말 영역 */}
-            <div className="title">
-              인사말
-              <button
-                  onClick={() => {
-                    setPopupState(true);
-                    setPopupWelcome(true);
-                  }}
-              />
-            </div>
-            <div className="inputBox">
-            <textarea
-                className="textarea"
-                placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.&#13;&#10;(10 ~ 100자 이내)"
-                value={state.welcomeMsgChange}
-                onChange={(e) => setWelcomeMsg(e)}
-            ></textarea>
-              <p className="textNumber textNumber__padding">
-                {state.welcomeMsgChange.length}/100
-              </p>
-            </div>
-            <div
-                className="notice"
-                onClick={() => {
-                  setPopupState(true);
-                  setPopupCopyright(true);
-                }}
-            >
-              저작권 주의사항
-            </div>
-            <button
-                onClick={onSubmit}
-                className={
-                  state.titleChange.length > 2 &&
-                  state.micState === true &&
-                  (state.mediaType === MediaType.AUDIO ||
-                      (state.mediaType === MediaType.VIDEO &&
-                          state.videoState === true))
-                      ? "button button--active"
-                      : "button"
-                }
-            >
-              방송하기
-            </button>
-
-            {popupCopyright && <LayerCopyright setPopupState={setPopupState} />}
-            {popupTitle && <LayerTitle setPopupState={setPopupState} />}
-            {popupWelcome && <LayerWelcome setPopupState={setPopupState} />}
           </div>
-        </Layout>
-      </>
+          <div
+            className="photo"
+            style={{
+              backgroundImage: `url(${broadBg})`,
+              backgroundSize: "cover",
+            }}
+          >
+            <label
+              htmlFor="profileImg"
+              className={broadBg !== "" ? "bgLabel bgLabel--active" : "bgLabel"}
+            ></label>
+            <input
+              type="file"
+              id="profileImg"
+              accept="image/jpg, image/jpeg, image/png, image/gif"
+              onChange={BgImageUpload}
+              className="bgUploader"
+            />
+            {broadBg !== "" && <div className="fakeBox" />}
+          </div>
+
+          {/* 스디 실시간 LIVE 사진 노출 영역*/}
+          {globalState.userProfile && globalState.userProfile.badgeSpecial > 0 && (
+            <>
+              <div className="title">실시간 LIVE 사진 노출</div>
+              <ul className="access">
+                {ImageList.map(
+                  (item: { name: string; id: number }, idx: number) => {
+                    return (
+                      <li
+                        key={item.id}
+                        onClick={() => {
+                          dispatch({
+                            type: "SET_IMAGETYPE",
+                            imageType: item.id,
+                          });
+                        }}
+                        className={`access__list ${state.imageType ===
+                        item.id && "active"}`}
+                      >
+                        {item.name}
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
+            </>
+          )}
+
+          {/* 방송제목 영역 */}
+          <div className="title">
+            방송 제목
+            <button
+              onClick={() => {
+                setPopupState(true);
+                setPopupTitle(true);
+              }}
+            />
+          </div>
+          <div className="inputBox">
+            <input
+              ref={titleInputRef}
+              className="input"
+              placeholder="제목을 입력해주세요 (3~20자 이내)"
+              onChange={(e) => setTitleChange(e)}
+              value={state.titleChange}
+            />
+            <p className="textNumber">{state.titleChange.length}/20</p>
+          </div>
+
+          {/* 인사말 영역 */}
+          <div className="title">
+            인사말
+            <button
+              onClick={() => {
+                setPopupState(true);
+                setPopupWelcome(true);
+              }}
+            />
+          </div>
+          <div className="inputBox">
+            <textarea
+              className="textarea"
+              placeholder="청취자가 방송방에 들어올 때 자동 인사말을 입력해보세요.&#13;&#10;(10 ~ 100자 이내)"
+              value={state.welcomeMsgChange}
+              onChange={(e) => setWelcomeMsg(e)}
+            ></textarea>
+            <p className="textNumber textNumber__padding">
+              {state.welcomeMsgChange.length}/100
+            </p>
+          </div>
+          <div
+            className="notice"
+            onClick={() => {
+              setPopupState(true);
+              setPopupCopyright(true);
+            }}
+          >
+            저작권 주의사항
+          </div>
+          <button
+            onClick={onSubmit}
+            className={
+              state.titleChange.length > 2 &&
+              state.micState === true &&
+              (state.mediaType === MediaType.AUDIO ||
+                (state.mediaType === MediaType.VIDEO &&
+                  state.videoState === true))
+                ? "button button--active"
+                : "button"
+            }
+          >
+            방송하기
+          </button>
+
+          {popupCopyright && <LayerCopyright setPopupState={setPopupState} />}
+          {popupTitle && <LayerTitle setPopupState={setPopupState} />}
+          {popupWelcome && <LayerWelcome setPopupState={setPopupState} />}
+        </div>
+      </Layout>
+    </>
   );
 }
 

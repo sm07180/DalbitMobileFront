@@ -85,7 +85,7 @@ export class ChatSocketHandler {
     this.broadcastAction = null;
 
     this.reConnect =
-        reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
+      reConnectHandler === undefined || reConnectHandler == null ? new ReConnectChat(this.chatUserInfo) : reConnectHandler;
 
     this.publicChannelNo = "";
     this.publicChannelHandle = null;
@@ -208,25 +208,25 @@ export class ChatSocketHandler {
   addMsgElement(msgElem: any) {
     try { //에러 나서 해둠
 
-      this.chatCnt = this.chatCnt + 1;
-      if (this.msgListWrapRef !== null) {
-        const msgListWrapElem = this.msgListWrapRef.current;
-        if (msgListWrapElem && msgElem !== null) {
-          if (msgListWrapElem.children.length === 2000) {
-            msgListWrapElem.removeChild(msgListWrapElem.children[0]);
-          }
+    this.chatCnt = this.chatCnt + 1;
+    if (this.msgListWrapRef !== null) {
+      const msgListWrapElem = this.msgListWrapRef.current;
+      if (msgListWrapElem && msgElem !== null) {
+        if (msgListWrapElem.children.length === 2000) {
+          msgListWrapElem.removeChild(msgListWrapElem.children[0]);
+        }
 
-          if (this.chatCnt === 2000) {
-            this.chatCnt = 0;
-          }
+        if (this.chatCnt === 2000) {
+          this.chatCnt = 0;
+        }
 
-          msgListWrapElem.appendChild(msgElem);
+        msgListWrapElem.appendChild(msgElem);
 
-          if (this.broadcastAction !== null && this.broadcastAction.setChatCount) {
-            this.broadcastAction.setChatCount(this.chatCnt);
-          }
+        if (this.broadcastAction !== null && this.broadcastAction.setChatCount) {
+          this.broadcastAction.setChatCount(this.chatCnt);
         }
       }
+    }
     }catch(e){
       console.log('error catch', e);
     }
@@ -502,7 +502,7 @@ export class ChatSocketHandler {
                 }
                 case "reqMailBoxImageChatDelete": {
                   this.mailboxAction.dispathImgSliderInfo &&
-                  this.mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: reqMailBoxImageChatDelete.msgIdx });
+                    this.mailboxAction.dispathImgSliderInfo({ type: "addDeletedImg", data: reqMailBoxImageChatDelete.msgIdx });
                   return null;
                 }
               }
@@ -522,13 +522,13 @@ export class ChatSocketHandler {
                       this.destroy({ isdestroySocket: false, destroyChannelName: this.chatUserInfo["roomNo"] });
                     }
                     if (
-                        this.rtcInfo &&
-                        this.rtcInfo !== null &&
-                        this.globalAction &&
-                        this.globalAction.setAlertStatus &&
-                        this.globalAction.dispatchRtcInfo &&
-                        this.globalAction.dispatchGuestInfo &&
-                        this.history
+                      this.rtcInfo &&
+                      this.rtcInfo !== null &&
+                      this.globalAction &&
+                      this.globalAction.setAlertStatus &&
+                      this.globalAction.dispatchRtcInfo &&
+                      this.globalAction.dispatchGuestInfo &&
+                      this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
@@ -540,10 +540,10 @@ export class ChatSocketHandler {
                       this.globalAction.dispatchRtcInfo({ type: "empty" });
 
                       if (
-                          this.guestAction &&
-                          this.guestAction.dispatchStatus &&
-                          this.guestAction.setNewApplyGuest &&
-                          this.guestAction.setGuestConnectStatus
+                        this.guestAction &&
+                        this.guestAction.dispatchStatus &&
+                        this.guestAction.setNewApplyGuest &&
+                        this.guestAction.setGuestConnectStatus
                       ) {
                         this.guestAction.dispatchStatus({ type: "INIT" });
                         this.guestAction.setNewApplyGuest(false);
@@ -583,11 +583,11 @@ export class ChatSocketHandler {
                       this.destroy({ isdestroySocket: false, destroyChannelName: this.chatUserInfo["roomNo"] });
                     }
                     if (
-                        this.rtcInfo !== null &&
-                        this.globalAction &&
-                        this.globalAction.setAlertStatus &&
-                        this.globalAction.dispatchRtcInfo &&
-                        this.history
+                      this.rtcInfo !== null &&
+                      this.globalAction &&
+                      this.globalAction.setAlertStatus &&
+                      this.globalAction.dispatchRtcInfo &&
+                      this.history
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
@@ -696,12 +696,12 @@ export class ChatSocketHandler {
                               msgBorder &&
                               msgBorder.msgBorderSrtColor &&
                               msgBorder.msgBorderEndColor
-                                  ? {
+                                ? {
                                     type: "div",
                                     className: "nickname-wrap video",
                                     children: this.setChatUser(user),
                                   }
-                                  : {
+                                : {
                                     type: "div",
                                     className: "nickname-wrap",
                                     children: this.setChatUser(user),
@@ -711,18 +711,18 @@ export class ChatSocketHandler {
                                 type: "div",
                                 text: msg,
                                 style:
-                                    msgBorder && msgBorder.msgBorderSrtColor && msgBorder.msgBorderEndColor
-                                        ? {
-                                          backgroundImage: `url('data:image/svg+xml;utf8,<svg   xmlns="http://www.w3.org/2000/svg" ><defs><linearGradient id="Gradient" x1="0" x2="100" y1="0" y2="0" gradientTransform="rotate(2)" gradientUnits="userSpaceOnUse"><stop stop-color="${msgBorder.msgBorderSrtColor.replaceAll(
-                                              "#",
-                                              "%23"
-                                          )}" offset="0.08"/><stop stop-color="${msgBorder.msgBorderEndColor.replaceAll(
-                                              "#",
-                                              "%23"
-                                          )}" offset="1.02"/></linearGradient></defs><rect x="2" y="2" width="100%" height="100%" style="height:calc(100% - 4px);width:calc(100% - 4px)" rx="10" ry="10" stroke-width="2" fill="transparent" stroke="url(%23Gradient)"/></svg>')`,
-                                          padding: `8px 10px`,
-                                        }
-                                        : {},
+                                  msgBorder && msgBorder.msgBorderSrtColor && msgBorder.msgBorderEndColor
+                                    ? {
+                                        backgroundImage: `url('data:image/svg+xml;utf8,<svg   xmlns="http://www.w3.org/2000/svg" ><defs><linearGradient id="Gradient" x1="0" x2="100" y1="0" y2="0" gradientTransform="rotate(2)" gradientUnits="userSpaceOnUse"><stop stop-color="${msgBorder.msgBorderSrtColor.replaceAll(
+                                          "#",
+                                          "%23"
+                                        )}" offset="0.08"/><stop stop-color="${msgBorder.msgBorderEndColor.replaceAll(
+                                          "#",
+                                          "%23"
+                                        )}" offset="1.02"/></linearGradient></defs><rect x="2" y="2" width="100%" height="100%" style="height:calc(100% - 4px);width:calc(100% - 4px)" rx="10" ry="10" stroke-width="2" fill="transparent" stroke="url(%23Gradient)"/></svg>')`,
+                                        padding: `8px 10px`,
+                                      }
+                                    : {},
                                 className: "msg",
                               },
                             ],
@@ -901,11 +901,11 @@ export class ChatSocketHandler {
                             className: "nickname-msg-wrap",
                             children: [
                               this.roomInfo?.mediaType === MediaType.VIDEO
-                                  ? // this.rtcInfo?.getMediaType()
+                                ? // this.rtcInfo?.getMediaType()
                                   {
                                     type: "span",
                                   }
-                                  : {
+                                : {
                                     type: "div",
                                     className: "nickname-wrap",
                                     children: this.setChatUser(user),
@@ -924,9 +924,9 @@ export class ChatSocketHandler {
                                         callback: (e) => {
                                           e.stopPropagation();
                                           if (
-                                              this.broadcastLayerAction &&
-                                              this.broadcastLayerAction !== null &&
-                                              this.broadcastLayerAction.dispatchLayer
+                                            this.broadcastLayerAction &&
+                                            this.broadcastLayerAction !== null &&
+                                            this.broadcastLayerAction.dispatchLayer
                                           ) {
                                             if (this.roomOwner === false) {
                                               if (itemType === "items") {
@@ -1084,7 +1084,7 @@ export class ChatSocketHandler {
                     }
                     return null;
                   }
-                    //kjo 방송방 수정하기 수정
+                  //kjo 방송방 수정하기 수정
                   case "reqRoomChangeInfo": {
                     const { reqRoomChangeInfo } = data;
 
@@ -1140,13 +1140,13 @@ export class ChatSocketHandler {
                   case "reqGrant": {
                     const { recvMsg } = data;
                     this.broadcastAction.dispatchRoomInfo &&
-                    this.broadcastAction.dispatchRoomInfo({
-                      type: "grantRefresh",
-                      data: {
-                        auth: parseInt(recvMsg.msg),
-                        memNo: data.chat.memNo,
-                      },
-                    });
+                      this.broadcastAction.dispatchRoomInfo({
+                        type: "grantRefresh",
+                        data: {
+                          auth: parseInt(recvMsg.msg),
+                          memNo: data.chat.memNo,
+                        },
+                      });
 
                     return null;
                   }
@@ -1155,10 +1155,10 @@ export class ChatSocketHandler {
                     const { auth } = user;
 
                     if (
-                        this.roomOwner === false &&
-                        data.reqKickOut.revMemNo === this.chatUserInfo.memNo &&
-                        this.globalAction &&
-                        this.globalAction.setAlertStatus
+                      this.roomOwner === false &&
+                      data.reqKickOut.revMemNo === this.chatUserInfo.memNo &&
+                      this.globalAction &&
+                      this.globalAction.setAlertStatus
                     ) {
                       this.privateChannelDisconnect();
                       this.rtcInfo.stop && this.rtcInfo.stop();
@@ -1264,7 +1264,7 @@ export class ChatSocketHandler {
                       // }
                     }
                   }
-                    //kjo 방송방 bjReConnect 추가
+                  //kjo 방송방 bjReConnect 추가
                   case "bjReconnect": {
                     const { count, user, recvMsg } = data;
                     if (this.broadcastAction !== null && this.broadcastAction.setUserCount) {
@@ -1424,7 +1424,7 @@ export class ChatSocketHandler {
                     const msg = JSON.parse(recvMsg.msg);
 
                     switch (msg.mode) {
-                        // 게스트 초대
+                      // 게스트 초대
                       case 1:
                         if (user.memNo === this.chatUserInfo.memNo || this.roomOwner === true) {
                           if (this.guestAction !== null && this.guestAction.dispatchStatus) {
@@ -1434,7 +1434,7 @@ export class ChatSocketHandler {
                           }
                         }
                         return null;
-                        // 초대 취소
+                      // 초대 취소
                       case 2:
                         if (user.memNo === this.chatUserInfo.memNo || this.roomOwner === true) {
                           if (this.guestAction !== null && this.guestAction.dispatchStatus) {
@@ -1444,7 +1444,7 @@ export class ChatSocketHandler {
                           }
                         }
                         return null;
-                        // 초대 수락
+                      // 초대 수락
                       case 3:
                         if (this.roomOwner === true || user.memNo === this.chatUserInfo.memNo) {
                           if (this.guestAction !== null && this.guestAction.dispatchStatus) {
@@ -1454,7 +1454,7 @@ export class ChatSocketHandler {
                           }
                         }
                         return null;
-                        // 초대 거절
+                      // 초대 거절
                       case 4:
                         if (this.roomOwner === true) {
                           if (this.globalAction !== null && this.globalAction.callSetToastStatus) {
@@ -1484,7 +1484,7 @@ export class ChatSocketHandler {
                           }
                         }
                         return null;
-                        // 게스트 신청
+                      // 게스트 신청
                       case 5:
                         if (this.roomOwner === true) {
                           if (this.guestAction !== null && this.guestAction.dispatchStatus) {
@@ -1512,7 +1512,7 @@ export class ChatSocketHandler {
                           }
                         }
                         return null;
-                        // 게스트 신청 취소
+                      // 게스트 신청 취소
                       case 7:
                         if (this.roomOwner === true || user.memNo === this.chatUserInfo.memNo) {
                           if (this.guestAction !== null && this.guestAction.dispatchStatus) {
@@ -1523,7 +1523,7 @@ export class ChatSocketHandler {
                         }
 
                         return null;
-                        // 게스트 방송연결
+                      // 게스트 방송연결
                       case 8:
                         if (this.guestAction !== null && this.guestAction.dispatchStatus) {
                           this.guestAction.dispatchStatus({
@@ -1532,9 +1532,9 @@ export class ChatSocketHandler {
                         }
 
                         this.broadcastAction.dispatchRoomInfo &&
-                        this.broadcastAction.dispatchRoomInfo({
-                          type: "refresh",
-                        });
+                          this.broadcastAction.dispatchRoomInfo({
+                            type: "refresh",
+                          });
 
                         return NormalMsgFormat({
                           type: "div",
@@ -1555,7 +1555,7 @@ export class ChatSocketHandler {
                             },
                           ],
                         });
-                        // 게스트 퇴장(종료)
+                      // 게스트 퇴장(종료)
                       case 6:
                         if (this.guestAction !== null && this.guestAction.dispatchStatus) {
                           this.guestAction.dispatchStatus({
@@ -1589,7 +1589,7 @@ export class ChatSocketHandler {
                             },
                           ],
                         });
-                        // 게스트 비정상 종료
+                      // 게스트 비정상 종료
                       case 9:
                         if (this.guestAction !== null && this.guestAction.dispatchStatus) {
                           this.guestAction.dispatchStatus({
@@ -1696,9 +1696,9 @@ export class ChatSocketHandler {
 
                         setTimeout(() => {
                           if (
-                              this.broadcastLayerAction &&
-                              this.broadcastLayerAction !== null &&
-                              this.broadcastLayerAction.dispatchDimLayer
+                            this.broadcastLayerAction &&
+                            this.broadcastLayerAction !== null &&
+                            this.broadcastLayerAction.dispatchDimLayer
                           ) {
                             this.broadcastLayerAction.dispatchDimLayer({
                               type: "FULL_MOON",
@@ -1729,7 +1729,7 @@ export class ChatSocketHandler {
                     const closeImg = document.createElement("img");
                     const player = document.getElementById("local-player");
                     let msgYn = false; // 메시지 표출 여부 값;
-
+                    
                     if (!noticeDisplay) return;
                     noticeDisplay.innerHTML = ''; // 기존 알림 삭제
 
@@ -1752,7 +1752,7 @@ export class ChatSocketHandler {
 
                     // 영상 OFF일때 메시지 삭제
                     if (reqRoomState.mediaOn) return;
-
+                    
                     // 새로운 알림 DOM 생성 및 이벤트 부여
                     elem.id = "isMediaNotice";
                     elem.textContent = data.recvMsg.msg;
@@ -1774,12 +1774,12 @@ export class ChatSocketHandler {
                     const { reqMiniGameAdd } = data;
 
                     this.broadcastAction !== null &&
-                    this.broadcastAction.setMiniGameInfo &&
-                    this.broadcastAction.setMiniGameInfo({
-                      status: true,
-                      gameNo: MiniGameType.ROLUTTE,
-                      ...reqMiniGameAdd,
-                    });
+                      this.broadcastAction.setMiniGameInfo &&
+                      this.broadcastAction.setMiniGameInfo({
+                        status: true,
+                        gameNo: MiniGameType.ROLUTTE,
+                        ...reqMiniGameAdd,
+                      });
 
                     return null;
                   }
@@ -1788,19 +1788,19 @@ export class ChatSocketHandler {
                     const { reqMiniGameEdit } = data;
 
                     this.broadcastAction !== null &&
-                    this.broadcastAction.setMiniGameInfo &&
-                    this.broadcastAction.setMiniGameInfo({
-                      status: true,
-                      gameNo: MiniGameType.ROLUTTE,
-                      ...reqMiniGameEdit,
-                    });
+                      this.broadcastAction.setMiniGameInfo &&
+                      this.broadcastAction.setMiniGameInfo({
+                        status: true,
+                        gameNo: MiniGameType.ROLUTTE,
+                        ...reqMiniGameEdit,
+                      });
 
                     this.globalAction !== null &&
-                    this.globalAction.callSetToastStatus &&
-                    this.globalAction.callSetToastStatus({
-                      status: true,
-                      message: reqMiniGameEdit.msg,
-                    });
+                      this.globalAction.callSetToastStatus &&
+                      this.globalAction.callSetToastStatus({
+                        status: true,
+                        message: reqMiniGameEdit.msg,
+                      });
 
                     return null;
                   }
@@ -1810,53 +1810,53 @@ export class ChatSocketHandler {
                     const { nickName, winOpt } = reqMiniGameStart;
 
                     this.broadcastLayerAction &&
-                    this.broadcastLayerAction.dispatchDimLayer({
-                      type: "ROULETTE",
-                    });
+                      this.broadcastLayerAction.dispatchDimLayer({
+                        type: "ROULETTE",
+                      });
 
                     this.broadcastAction !== null &&
-                    this.broadcastAction.setMiniGameResult &&
-                    this.broadcastAction.setMiniGameResult({
-                      status: true,
-                      gameNo: MiniGameType.ROLUTTE,
-                      ...reqMiniGameStart,
-                    });
+                      this.broadcastAction.setMiniGameResult &&
+                      this.broadcastAction.setMiniGameResult({
+                        status: true,
+                        gameNo: MiniGameType.ROLUTTE,
+                        ...reqMiniGameStart,
+                      });
 
                     setTimeout(() => {
                       this.addMsgElement(
-                          NormalMsgFormat({
-                            type: "div",
-                            className: "minigame_msg_wrap",
-                            children: [
-                              {
-                                type: "div",
-                                className: "minigame_image",
-                                children: [
-                                  {
-                                    type: "div",
-                                    className: "icon_image",
-                                  },
-                                ],
-                              },
-                              {
-                                type: "div",
-                                className: "text",
-                                children: [
-                                  {
-                                    type: "span",
-                                    text: `${nickName}님`,
-                                  },
-                                  {
-                                    type: "br",
-                                  },
-                                  {
-                                    type: "span",
-                                    text: `${winOpt} 당첨입니다.`,
-                                  },
-                                ],
-                              },
-                            ],
-                          })
+                        NormalMsgFormat({
+                          type: "div",
+                          className: "minigame_msg_wrap",
+                          children: [
+                            {
+                              type: "div",
+                              className: "minigame_image",
+                              children: [
+                                {
+                                  type: "div",
+                                  className: "icon_image",
+                                },
+                              ],
+                            },
+                            {
+                              type: "div",
+                              className: "text",
+                              children: [
+                                {
+                                  type: "span",
+                                  text: `${nickName}님`,
+                                },
+                                {
+                                  type: "br",
+                                },
+                                {
+                                  type: "span",
+                                  text: `${winOpt} 당첨입니다.`,
+                                },
+                              ],
+                            },
+                          ],
+                        })
                       );
                     }, 5000);
 
@@ -1899,10 +1899,10 @@ export class ChatSocketHandler {
                     const { reqMiniGameEnd } = data;
 
                     this.broadcastAction !== null &&
-                    this.broadcastAction.setMiniGameInfo &&
-                    this.broadcastAction.setMiniGameInfo({
-                      status: false,
-                    });
+                      this.broadcastAction.setMiniGameInfo &&
+                      this.broadcastAction.setMiniGameInfo({
+                        status: false,
+                      });
 
                     return null;
                   }
@@ -2005,11 +2005,11 @@ export class ChatSocketHandler {
                 }
 
                 if (
-                    this.rtcInfo !== null &&
-                    this.globalAction &&
-                    this.globalAction.setAlertStatus &&
-                    this.globalAction.dispatchRtcInfo &&
-                    this.history
+                  this.rtcInfo !== null &&
+                  this.globalAction &&
+                  this.globalAction.setAlertStatus &&
+                  this.globalAction.dispatchRtcInfo &&
+                  this.history
                 ) {
                   this.privateChannelDisconnect();
                   this.rtcInfo?.stop();
@@ -2118,12 +2118,12 @@ export class ChatSocketHandler {
   }
   //우체통 메세지 전송
   sendSocketMessageMail(
-      channelName: string,
-      command: string,
-      chatType: number,
-      os: number,
-      message: string,
-      callback: (status: boolean) => void
+    channelName: string,
+    command: string,
+    chatType: number,
+    os: number,
+    message: string,
+    callback: (status: boolean) => void
   ) {
     const messageJSon = {
       cmd: command,
@@ -2386,11 +2386,11 @@ export class ChatSocketHandler {
             type: "click",
             callback: () => {
               val.tipMsg &&
-              this.globalAction &&
-              this.globalAction.callSetToastStatus!({
-                status: true,
-                message: val.tipMsg,
-              });
+                this.globalAction &&
+                this.globalAction.callSetToastStatus!({
+                  status: true,
+                  message: val.tipMsg,
+                });
             },
           },
         ],
@@ -2544,19 +2544,19 @@ export class ReConnectChat {
         this.reTryCnt++;
         const chatInfo = new ChatSocketHandler(this.chatUserInfo, this);
         this.globalAction &&
-        this.globalAction.dispatchChatInfo &&
-        this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
+          this.globalAction.dispatchChatInfo &&
+          this.globalAction.dispatchChatInfo({ type: "init", data: chatInfo });
       } else {
         if (this.isRetryFinish == false) {
           this.globalAction.setAlertStatus &&
-          this.globalAction.setAlertStatus({
-            status: true,
-            type: "alert",
-            content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
-            callback: () => {
-              window.location.href = "/";
-            },
-          });
+            this.globalAction.setAlertStatus({
+              status: true,
+              type: "alert",
+              content: `네트워크 접속이 원할하지 않습니다.\n다시 이용해주시기 바랍니다.`,
+              callback: () => {
+                window.location.href = "/";
+              },
+            });
         }
         this.isRetryFinish = true;
       }

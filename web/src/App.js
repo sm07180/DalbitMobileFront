@@ -29,6 +29,7 @@ import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
+import {isDesktop} from "lib/agent";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -54,6 +55,58 @@ function setNativePlayInfo(isJsonString, globalCtx) {
     }
   }
 }
+
+
+const baseSetting = async (globalCtx, broadcastAction) => {
+  const globalAction = globalCtx.globalAction;
+  const globalState = globalCtx.globalState;
+
+  const item = sessionStorage.getItem("clip");
+  if (item !== null) {
+    const data = JSON.parse(item);
+    let newClipPlayer = globalState.clipPlayer;
+    if (newClipPlayer === null) {
+      newClipPlayer = new ClipPlayerHandler(data)
+    };
+    newClipPlayer.setGlobalAction?.(globalAction);
+    const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
+    const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
+    if ( fileUrlBoolean && clipNoBoolean ) {
+      newClipPlayer?.init(data.file.url);
+      newClipPlayer?.restart();
+    } else {
+      newClipPlayer?.init(data.file.url);
+    }
+    newClipPlayer?.clipNoUpdate(data.clipNo);
+
+    globalAction.dispatchClipPlayer?.({ type: "init", data: newClipPlayer });
+    globalAction.dispatchClipInfo?.({
+      type: "add",
+      data: { ...data, ...{ isPaused: true } },
+    });
+  }
+  const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+  if (sessionWowzaRtc !== null) {
+    const data = JSON.parse(sessionWowzaRtc);
+    const dispatchRtcInfo = getWowzaRtc(data);
+    globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+  }
+
+  const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+  if (sessionAgoraRtc !== null) {
+    const data = JSON.parse(sessionAgoraRtc);
+    const dispatchRtcInfo = getArgoraRtc(data);
+    globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+  }
+
+  const broadcastData = sessionStorage.getItem("broadcast_data");
+  if (broadcastData !== null) {
+    const data = JSON.parse(broadcastData);
+    broadcastAction.dispatchRoomInfo({type: "reset", data: data});
+  }
+}
+
+
 
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
@@ -262,7 +315,9 @@ const App = () => {
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
       }
-
+      if(isDesktop()){
+        baseSetting(globalCtx, broadcastAction);
+      }
       //모든 처리 완료
     } else {
       const yesterDay = (() => {
@@ -390,6 +445,9 @@ const App = () => {
     }
   }, [globalCtx.splash, globalCtx.token, globalCtx.profile])
 
+
+
+
   useEffect(() => {
     fetchSplash()
     // set header (custom-header, authToken)
@@ -400,55 +458,6 @@ const App = () => {
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
-    async function baseSetting(globalCtx) {
-      const globalAction = globalCtx.globalAction;
-      const globalState = globalCtx.globalState;
-
-      const item = sessionStorage.getItem("clip");
-      if (item !== null) {
-        const data = JSON.parse(item);
-        let newClipPlayer = globalState.clipPlayer;
-        if (newClipPlayer === null) {
-          newClipPlayer = new ClipPlayerHandler(data)
-        };
-        newClipPlayer.setGlobalAction?.(globalAction);
-        const fileUrlBoolean = data.file.url === newClipPlayer?.clipAudioTag?.src;
-        const clipNoBoolean = data.clipNo !== newClipPlayer?.clipNo;
-        if ( fileUrlBoolean && clipNoBoolean ) {
-          newClipPlayer?.init(data.file.url);
-          newClipPlayer?.restart();
-        } else {
-          newClipPlayer?.init(data.file.url);
-        }
-        newClipPlayer?.clipNoUpdate(data.clipNo);
-
-        globalAction.dispatchClipPlayer?.({ type: "init", data: newClipPlayer });
-        globalAction.dispatchClipInfo?.({
-          type: "add",
-          data: { ...data, ...{ isPaused: true } },
-        });
-      }
-      const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
-      if (sessionWowzaRtc !== null) {
-        const data = JSON.parse(sessionWowzaRtc);
-        const dispatchRtcInfo = getWowzaRtc(data);
-        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-      }
-
-      const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-      if (sessionAgoraRtc !== null) {
-        const data = JSON.parse(sessionAgoraRtc);
-        const dispatchRtcInfo = getArgoraRtc(data);
-        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-      }
-
-      const broadcastData = sessionStorage.getItem("broadcast_data");
-      if (broadcastData !== null) {
-        const data = JSON.parse(broadcastData);
-        broadcastAction.dispatchRoomInfo({type: "reset", data: data});
-      }
-    }
-    baseSetting(globalCtx)
 
 
     // Renew all initial data

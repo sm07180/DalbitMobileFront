@@ -34,7 +34,7 @@ import Lottie from "react-lottie";
 
 // static
 import TooltipUI from "common/tooltip";
-import { broadcastExit } from "common/api";
+import { broadcastExit, welcomeEventDayCheckerUpdate } from "common/api";
 
 import playBtn from "../static/ic_circle_play.svg";
 import StampIcon from "../static/stamp.json";
@@ -1290,10 +1290,12 @@ export default function LeftSide(props: {
         {/* 방송 툴팁 Component */}
         {tooltipStatus.status === true && <TooltipUI />}
 
+        {/* 출석체크 버튼 */}
         {rtcInfo !== null &&
           rtcInfo.attendClicked === false &&
           !roomOwner &&
-          rtcInfo.roomInfo?.isAttendCheck === false && (
+          rtcInfo.roomInfo?.isAttendCheck === false &&
+          (!roomInfo?.eventInfoMap?.visible) &&
             <StampIconWrapStyled
               className="stamp_icon_wrap"
               onClick={() => {
@@ -1313,7 +1315,21 @@ export default function LeftSide(props: {
                 height={42}
               />
             </StampIconWrapStyled>
-          )}
+          }
+
+        {/* 웰컴이벤트 버튼 */}
+        {roomInfo?.eventInfoMap?.visible &&
+          <FloatingIconWrapStyled
+            className="floating_icon_wrap"
+            onClick={async () => {
+              const {data, code, message} = await welcomeEventDayCheckerUpdate();
+              console.log('welcomeEventDayCheckerUpdate=>', data, code, message);
+              history.push("/event/welcome");
+            }}
+          >
+            <img src="https://image.dalbitlive.com/event/welcome/floatingBtn.png" alt="신입 WELCOME 이벤트" />
+          </FloatingIconWrapStyled>
+        }
         <RandomMsgWrap
           roomInfo={roomInfo}
           roomOwner={roomOwner}
@@ -1373,6 +1389,21 @@ const StampIconWrapStyled = styled.div`
   bottom: 16px;
   cursor: pointer;
   z-index: 3;
+`;
+
+const FloatingIconWrapStyled = styled.div`
+  position: absolute;
+  right: 13px;
+  bottom: 16px;
+  cursor: pointer;
+  z-index: 3;
+  width : 70px;
+  height : 70px;
+  
+  img{
+    width:100%;
+    height:100%;
+  }
 `;
 
 const ConnectedStatusStyled = styled.div`

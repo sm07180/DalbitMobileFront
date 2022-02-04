@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from "react"
-import {GlobalContext} from "../../context";
-import BroadCastPlayer, {disconnectGuest} from "./BroadCastPlayer";
+import {GlobalContext} from "context";
+import BroadCastPlayer from "./BroadCastPlayer";
 import ClipAudioPlayer from "./ClipAudioPlayer";
 import {rtcSessionClear, UserType} from "../realtime/rtc_socket";
 import {broadcastExit, broadcastInfoNew, broadcastJoin} from "../api";
@@ -134,7 +134,7 @@ const PipPlayer = () =>{
       return <BroadCastPlayer />;
     }
   }else if(clipInfo){
-    if(!clipPlayer && !clipPlayerPage && !mailboxChatting){
+    if(clipPlayer && !clipPlayerPage && !mailboxChatting){
       return <ClipAudioPlayer/>;
     }
   }

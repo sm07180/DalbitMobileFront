@@ -48,7 +48,7 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
   // fetch data
   const page = 1;
   const records = 1000;
-  const fetchData = useCallback(async function() {
+  const fetchData = async function() {
     const { result, data, message } = await getBroadcastListeners({ roomNo, page, records });
 
     if (result === "success" && data.hasOwnProperty("list")) {
@@ -61,24 +61,29 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
       setGuestList(guestFilter);
 
       broadcastAction.setUserCount &&
-        broadcastAction.setUserCount((prev) => {
-          return { ...prev, current: data.list.length };
-        });
+      broadcastAction.setUserCount((prev) => {
+        return { ...prev, current: data.list.length };
+      });
     } else {
       if (result === "fail") {
         globalAction.setAlertStatus &&
-          globalAction.setAlertStatus({
-            status: true,
-            title: "알림",
-            content: `${message}`,
-            callback: () => history.push("/"),
-          });
+        globalAction.setAlertStatus({
+          status: true,
+          title: "알림",
+          content: `${message}`,
+          callback: () => history.push("/"),
+        });
       }
     }
-  }, []);
-
+  };
+  const [init , setInit] = useState(false)
   useEffect(() => {
-    fetchData();
+    if(!init){
+      setInit(true);
+      fetchData().then(()=>{
+        setInit(false);
+      });
+    }
   }, [broadcastState.roomInfo]);
   return (
     <>

@@ -1,16 +1,22 @@
-import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
-import {useHistory} from "react-router-dom";
+import React, {
+  useContext,
+  useEffect,
+  useState,
+  useMemo,
+  useCallback
+} from "react";
+import { useHistory } from "react-router-dom";
 
 // api
 import {getProfile, getTTSActorList, postSendGift} from "common/api";
 // component
-import {DalbitScroll} from "common/ui/dalbit_scroll";
+import { DalbitScroll } from "common/ui/dalbit_scroll";
 
 // ctx
-import {GlobalContext} from "context";
-import {BroadcastContext} from "context/broadcast_ctx";
-import {BroadcastLayerContext} from "context/broadcast_layer_ctx";
-import {GuestContext} from "context/guest_ctx";
+import { GlobalContext } from "context";
+import { BroadcastContext } from "context/broadcast_ctx";
+import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
+import { GuestContext } from "context/guest_ctx";
 
 import SoundIcon from "../../static/ic_sound_badge.svg";
 import {ttsActorCookieNaming, ttsContentMaxLength} from "constant";
