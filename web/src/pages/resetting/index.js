@@ -7,11 +7,8 @@ import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
 import Forbid from './contents/forbid'
-<<<<<<< HEAD
 import Broadcast from './contents/broadcast'
-=======
 import Manager from './contents/manager'
->>>>>>> origin/mainPage
 
 
 import './style.scss'
