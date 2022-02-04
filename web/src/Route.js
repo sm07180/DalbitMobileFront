@@ -122,6 +122,7 @@ const Router = () => {
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
+        <Route exact path="/setting/:type/:category" component={ReSetting} />
         
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
