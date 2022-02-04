@@ -1,0 +1,30 @@
+@import "components/ui/_mixin.scss";
+
+#popSlide {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  @include flex(flex-end);
+  background-color: rgba($color: #000, $alpha: 0.7);
+  z-index: $POPUP-ZINDEX;
+  .slideLayer {
+    position: relative;
+    @include flex(center, flex-start, column);
+    width:100%;
+    border-radius: 30px 30px 0 0;
+    background-color: white;
+    &.slideUp {
+      animation: popSlideUp .4s ease forwards; 
+    }
+    &.slideDown {
+      animation: popSlideDown .4s ease forwards; 
+    }
+  }  
+  @keyframes popSlideUp {
+    0% {transform: translateY(100%);}
+    100% {transform: translateY(0);}
+  }
+  @keyframes popSlideDown {
+    0% {transform: translateY(0);}
+    100% {transform: translateY(100%);}
+  }
+}

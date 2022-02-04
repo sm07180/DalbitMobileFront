@@ -1,45 +1,17 @@
-@import '../../styles/variables';
 @import "components/ui/_mixin.scss";
 
 $btnActive : #FF3C7B;
 $btnDisable : #FFD8E4;
 
 #loginPage {
-  .header {
-    position: relative;
-    @include flex(center, space-between);
-    width: 100%; height: 50px;
-    padding: 0 10px;
-    background-color: #fff;
-    box-sizing: border-box;
-    .leftCtn {
-      position: relative;
-      @include flex(center, center);
-      button {
-        display: inline-block;
-        width: 40px; height: 40px;
-      }
-    }
-    .headerTitle {
-      position: absolute;
-      top: 0; left: 0;
-      @include flex(center, center);
-      width: 100%; height: 100%;
-      @include font(18px, 500, #202020);
-      pointer-events: none;
-    }
-  }
-
   .loginMain {
     position: relative;
-    width: 100%;
-    height: 100vh;
+    width: 100%;height: 100vh;
     padding: 30% 7%;
-    background-image: url(https://image.dalbitlive.com/dalla/login/login_bg.png);
+    background-image: url("https://image.dalbitlive.com/dalla/login/login_bg.png");
     background-position: top center;
     background-repeat: repeat-y;
     background-size: 100% auto;
-    box-sizing: border-box;
     .logo {
       display: inline-block;
       width: 40%;
@@ -74,57 +46,30 @@ $btnDisable : #FFD8E4;
         background: lighten($btnActive, 2%);
       }
     }
-  }  
-
-  .btnHome {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-    display: inline-block;
-    width: 40px; height: 40px;
-    background-image: url(https://image.dalbitlive.com/svg/icon_back_black.svg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 36px 36px;
-    z-index: 2;
   }
-
-  .loginForm {
-    position: relative;
-    @include flex(center, flex-start, column);
-    overflow: hidden;
-    width: 100%;
-    height: calc(100vh - 50px);
-    padding: 12% 5%;
-    min-height: 455px;
-    text-align: center;
-    box-sizing: border-box;
-
-    .loginStart {
-      @include font(24px, 700, #202328);
+  .loginSns {
+    padding-top:36px;
+    .title {
       margin-bottom: 36px;
+      text-align:center;
+      @include font(24px, 700, #202328);
     }
-
     .socialLogin {
       position: relative;
       @include flex(center, center, column);
       width: 100%;
-
+      padding: 0 7%;
+      text-align: center;
       button {
         @include flex(center, center);
         width: 100%;
         height: 48px;
-        padding: 6px 16px;
         margin-bottom: 8px;
+        padding: 6px 16px;
         border-radius: 16px;
         border: 1px solid #CBD0D5;
         @include font(15px, 400, #202020);
         box-sizing: border-box;
-
-        &:last-child {
-          margin-bottom: 0px;
-        }
-
         img {
           display: inline-block;
           width: 30px; height: 30px;
@@ -134,259 +79,52 @@ $btnDisable : #FFD8E4;
           line-height: 36px;
         }
       }
-
-      .social-apple-btn {
-        background-color: $black;
+      .appleBtn {
+        background-color: black;
         color: #FFF;
         border: none;
       }
-
-      .social-kakao-btn {
+      .kakaoBtn {
         background-color: #f9e000;
         color: #381e1f;
         border: none;
       }
-
-      .social-more-btn {
-        background-color: $white;
-        color: $greishBrown;
-      }
-
-      .moreAnimation {
-        position: relative;
-        width: 100%;
-        margin-top: 10px;
-        animation: iosMoreAnim 0.8s;
-        overflow: hidden;
-
-        &.ios {
-          animation: iosMoreAnim 0.8s;
-        }
-      }
-
-      @keyframes moreAnim {
-        0% {
-          height: 90px;
-        }
-
-        100% {
-          height: 300px;
-        }
-      }
-
-      @keyframes iosMoreAnim {
-        0% {
-          height: 140px;
-        }
-
-        100% {
-          height: 300px;
-        }
-      }
-    }    
+    }
   }
-
-  #appLogin {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    z-index: 60;
-    display: flex;
-    justify-content: center;
-    align-items: center;   
-
-    .loginContainer {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      box-sizing: border-box;
-      .header {
+  .loginForm {
+    position: relative;
+    width:100%;
+    padding: 40px 24px;
+    .submitBtn {
+      width:100%;
+    }
+    .linkWrap {
+      margin-top: 35px;
+      @include flex(center, center);
+      .linkText {
         position: relative;
-        @include flex(center, space-between);
-        width: 100%; height: 50px;
-        padding: 0 10px;
-        background-color: #fff;
-        box-sizing: border-box;
-        .leftCtn {
-          position: relative;
-          @include flex(center, center);
-          button {
-            display: inline-block;
-            width: 40px; height: 40px;
-          }
+        display: inline-block;
+        padding: 4px 16px;
+        @include font(14px, 400, #666666);
+        &::after {
+          content: "";
+          @include position-top-right(9px,0);
+          display: inline-block;
+          width: 1px; height: 12px;
+          background-color: #666666;
         }
-        .headerTitle {
-          position: absolute;
-          top: 0; left: 0;
-          @include flex(center, center);
-          width: 100%; height: 100%;
-          @include font(18px, 500, #202020);
-          pointer-events: none;
-        }
-      }
-
-      .content {
-        position: relative;
-        @include flex(center, flex-start, column);
-        width: 100%;
-        height: 100%;
-        padding: 40px 24px;
-        .inputWrap {
-          width: 100%;
-          input {
-            margin-bottom: 12px;
-            &:last-child {
-              margin-bottom: 0px;
-            }
-          }
-        }
-        .loginInput {
-          position: relative;
-          width: 100%;
-          height: 50px;
-          padding: 12px 20px;
-          border-radius: 16px;
-          background-color: #F6F6F6;
-          box-sizing: border-box;
-          &::placeholder {
-            @include font(16px, 400, #999999);
-          }
-        }
-
-        .loginBtn {
-          @include flex(center, center);
-          width: 100%;
-          height: 48px;
-          border-radius: 16px;
-          @include font(16px, 700, #ffffff);
-          background: $btnDisable;
-          &.active {
-            background: $btnActive;
-          }
-        }
-        .linkWrap {
-          margin-top: 35px;
-          @include flex(center, center);
-          .linkText {
-            position: relative;
-            display: inline-block;
-            padding: 4px 16px;
-            @include font(14px, 400, #666666);
-            &::after {
-              content: "";
-              position: absolute;
-              top:9px; right: 0;
-              display: inline-block;
-              width: 1px; height: 12px;
-              background-color: #666666;
-            }
-            &:last-child::after {
-              content: none;
-            }
-          }
-        }
-      }
-
-
-      .loginPopup {
-        position: relative;
-        padding: 20% 10%;
-        text-align: center;
-        color: $white;
-        background: url('https://image.dalbitlive.com/main/common/bg_login.svg') no-repeat;
-        background-size: cover;
-        border-radius: 16px;
-
-        &__logoBox {
-          padding-bottom: 28px;
-          text-align: center;
-
-          img {
-            display: block;
-            width: 130px;
-            margin: 0 auto;
-          }
-        }
-
-        .input-wrap {
-          margin: 0 auto;
-          padding-bottom: 16px;
-
-          input {
-            display: block;
-            border: 1px solid $white;
-            width: 100%;
-            height: 24px;
-            padding: 23px 24px;
-            line-height: 24px;
-            border-radius: 25px;
-            color: $white;
-            font-size: 16px;
-            font-weight: 700;
-            letter-spacing: -0.4px;
-            background: none;
-            border-color: rgba(255, 255, 255, 0.5);
-          }
-
-          :focus {
-            border-color: rgba(255, 255, 255, 1);
-          }
-          input::placeholder {
-            color: $white;
-            font-size: 14px;
-            font-weight: 400;
-          }
-          input[type='password'] {
-            margin-top: 8px;
-            &::placeholder {
-              color: $white;
-              font-size: 14px;
-              font-weight: 400;
-            }
-          }
-          .login-btn {
-            display: block;
-            margin-top: 8px;
-            width: 100%;
-            height: 48px;
-            line-height: 48px;
-            background-color: rgba(255, 255, 255, 0.8);
-            color: $primary;
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: -0.5px;
-            border-radius: 25px;
-          }
+        &:last-child::after {
+          content: none;
         }
       }
     }
   }
-
-  #bottomSlide {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    @include flex(flex-end);
-    background-color: rgba($color: #000000, $alpha: 0.5);
+  #popSlide {
     .slideLayer {
-      position: relative;
-      @include flex(center, flex-start, column);
-      width: 100%;
       padding: 30px 28px 42px;
-      border-radius: 30px 30px 0 0;
-      background-color: #fff;
-      &.slideUp {
-        animation: bottomSlideUp .4s ease forwards; 
-      }
-      &.slideDown {
-        animation: bottomSlideDown .4s ease forwards; 
-      }
-
-      .slideHeader {
-        @include font(18px, 700, #202328);
+      .title {
         margin-bottom: 30px;
+        @include font(18px, 700, #202328);
       }
       .agreeWrap {
         position: relative;
@@ -443,8 +181,8 @@ $btnDisable : #FFD8E4;
             background-repeat: no-repeat;
             background-size: cover;              
           }  
-          .blind:checked +  .checkIcon{
-            background-image: url("https://image.dalbitlive.com/common/input/checkbox-active.png");
+          .blind:checked + .checkIcon{
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46' viewBox='0 0 46 46'%3E%3Cg transform='translate(16705 545)'%3E%3Ccircle cx='23' cy='23' r='23' transform='translate(-16705 -545)' fill='%23ff3c7b'/%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(-17066.953 -17746.57) rotate(45)' fill='%23fff'/%3E%3C/g%3E%3C/svg%3E ");
           }
           .policyBtn {
             margin-left: auto;
@@ -453,36 +191,11 @@ $btnDisable : #FFD8E4;
           }
         }        
       }
-    }
-    .submitBtn {
-      @include flex(center, center);
-      width: 100%;
-      height: 48px;
-      border-radius: 16px;
-      background: $btnDisable;
-      @include font(16px, 700, #FFFFFF);
-      &.active {
-        background: $btnActive;
-      }
-    }
-    @keyframes bottomSlideUp {
-      0% {
-          transform: translateY(100%);
-      }
-      100% {
-          transform: translateY(0);
-      }
-    }
-    @keyframes bottomSlideDown {
-      0% {
-          transform: translateY(0);
-      }
-      100% {
-          transform: translateY(100%);
+      .submitBtn {
+        width:100%;
       }
     }
   }
-
   #login {
     width: 100%;
     height: 100%;

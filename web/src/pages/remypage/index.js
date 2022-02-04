@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
-import {useHistory, Switch, Route, useParams} from 'react-router-dom'
+import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
 import Api from 'context/api'
@@ -35,7 +35,7 @@ const Remypage = (props) => {
 
 
   //useState
-  const [myProfile, setMyProfile] = useState(true)
+  const [myProfile, setMyProfile] = useState(false)
 
   const openMyprofile = () => {
     setMyProfile(true)
