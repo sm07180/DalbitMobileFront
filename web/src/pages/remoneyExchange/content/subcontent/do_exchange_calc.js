@@ -6,51 +6,51 @@ const ExchangeReceipt = (props) => {
   return (
     <>
       {type !== 'result' ? 
-        <div className="receiptBox">
-          <div className="listRow">
-            <div className="title">환전 신청 금액</div>
-            <div className="value">KRW 180,000</div>
+        <div className="receiptBoard">
+          <div className="text-wrap">
+            <span>환전 신청 금액</span>
+            <p>KRW 180,000</p>
           </div>
-          {/* <div className="listRow">
-            <div className="title">스페셜DJ 혜택(+5%)</div>
-            <div className="value">+</div>
+          {/* <div className="text-wrap">
+            <span>스페셜DJ 혜택(+5%)</span>
+            <p>+</p>
           </div> */}
-          <div className="listRow">
-            <div className="title">원천징수세액</div>
-            <div className="value">-5,940</div>
+          <div className="text-wrap">
+            <span>원천징수세액</span>
+            <p>-5940</p>
           </div>
-          <div className="listRow">
-            <div className="title">이체수수료</div>
-            <div className="value">-500</div>
+          <div className="text-wrap">
+            <span>이체 수수료</span>
+            <p>-500</p>
           </div>
-          <div className="listRow borderT">
-            <div className="title total">환전 예상 금액</div>
-            <div className="value total">KRW 173,560</div>
+          <div className="text-wrap total">
+            <span>환전 예상 금액</span>
+            <p className="highlight">KRW 175360</p>
           </div>
         </div>
        :
-        <div className="receiptBox">
-          <div className="listRow">
-            <div className="title">환전 신청 별</div>
-            <div className="value">3,000</div>
+        <div className="receiptBoard">
+          <div className="text-wrap">
+            <span>환전 신청 별</span>
+            <p>3,000</p>
           </div>
-          <div className="listRow">
-            <div className="title">환전 실수령액</div>
-            <div className="value">
-              <span>173,560</span>원
-            </div>
+          <div className="text-wrap">
+            <span>환전 실수령액</span>
+            <p>
+              <span className="highlight">173,560</span>원
+            </p>
           </div>
-          <div className="listRow">
-            <div className="title">예금주</div>
-            <div className="value">홍길동</div>
+          <div className="text-wrap">
+            <span>예금주</span>
+            <p>홍길동</p>
           </div>
-          <div className="listRow">
-            <div className="title">입금 예정 은행</div>
-            <div className="value">KB 국민은행</div>
+          <div className="text-wrap">
+            <span>입금 예정 은행</span>
+            <p>KB 국민은행</p>
           </div>
-          <div className="listRow">
-            <div className="title">계좌번호</div>
-            <div className="value">12313-123123-123123123</div>
+          <div className="text-wrap">
+            <span>계좌번호</span>
+            <p>12313-123123-123123123</p>
           </div>
         </div>
        }
