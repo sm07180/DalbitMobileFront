@@ -12,12 +12,10 @@ const SignField = (props) => {
         <h2>{title}</h2>
         <h3>{subTitle}</h3>
       </div>
-      <form>
-        <div className='inputWrap'>
-          {children}
-        </div>
-        <SubmitBtn text="다음" onClick={onClick} />
-      </form>
+      <div className='inputWrap'>
+        {children}
+      </div>
+      <SubmitBtn text="다음" onClick={onClick} />
     </section>
   )
 }
