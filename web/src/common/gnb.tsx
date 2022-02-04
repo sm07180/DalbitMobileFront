@@ -1,30 +1,24 @@
-import React, {useContext, useEffect, useState, useCallback} from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import React, {useCallback, useContext, useEffect, useState} from "react";
+import {useHistory} from "react-router-dom";
 import {
   broadcastCheck,
   broadcastContinue,
   broadcastExit,
-  broadcastNomalize, certificationCheck,
+  broadcastNomalize,
+  certificationCheck,
+  checkIsMailboxNew,
   selfAuthCheck
 } from "common/api";
-import { IMG_SERVER } from "constant/define";
-import Lottie from "react-lottie";
 
 // context
-import { GlobalContext } from "context";
-import { MailboxContext } from "context/mailbox_ctx";
-import { RankContext } from "context/rank_ctx";
+import {GlobalContext} from "context";
+import {MailboxContext} from "context/mailbox_ctx";
+import {RankContext} from "context/rank_ctx";
 // others
 import {HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
-import { checkIsMailboxNew } from "common/api";
-import { openMailboxBanAlert } from "common/mailbox/mail_func";
 // static
 import LayerPopupCommon from "../common/layerpopup/index";
-import broadText from "./static/bc_t.png";
-import searchIcon from "./static/ico_search_g.svg";
-import storeIcon from "./static/ic_store_g.svg";
-import alarmIcon from "./static/alarm_g.svg";
-import { MediaType } from "pages/broadcast/constant";
+import {MediaType} from "pages/broadcast/constant";
 // import {authReq} from "../pages/self_auth/content/self_auth";
 import {authReq} from 'pages/self_auth'
 
@@ -389,15 +383,6 @@ export default function GNB() {
   })
   return (
     <>
-      {pcMenuState && <div style={{top: '0px',
-        left: '0px',
-        width: '100%',
-        height: '68px',
-        transform:' matrix(-1, 0, 0, -1, 0, 0)',
-        background: '#FFFFFF 0% 0% no-repeat padding-box',
-        opacity: 1
-      }}>
-      </div>}
       {globalState.broadClipDim && (
         <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">

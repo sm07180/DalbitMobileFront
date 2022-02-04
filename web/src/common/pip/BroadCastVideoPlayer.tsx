@@ -3,7 +3,7 @@ import React, {useContext, useEffect, useRef, useState,} from "react";
 import {useHistory} from "react-router-dom";
 import {IMG_SERVER} from "constant/define";
 
-import {PlayerVideoStyled, NoticeDisplayStyled} from "./PlayerStyle";
+import {NoticeDisplayStyled, PlayerVideoStyled} from "./PlayerStyle";
 // others
 import {rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 
@@ -117,50 +117,45 @@ const BroadCastVideoPlayer = ()=>{
     ref:displayWrapRef,
     onClick:playerBarClickEvent
   }
-  if(false){
-    return <></>;
-  }else{
-    return(
-      <div id={"broadcast-page"}>
-        <div className="left-side">
-          <PlayerVideoStyled {...playerVideoStyledProps}>
-            <div id="local-player" className="player"/>
-            <div className="chat-display" ref={displayWrapRef} style={{ backgroundImage: `url(${rtcInfo?.roomInfo?.bgImg.url})` }}>
-              <NoticeDisplayStyled id="broadcast-notice-display"/>
-            </div>
-            {/*{*/}
-            {/*  rtcInfo &&*/}
-            {/*  <div onClick={toggleClick} className="playToggle__play">*/}
-            {/*    <div className="playBox">*/}
-            {/*      <img src={`${IMG_SERVER}/broadcast/ico_circle_play_l.svg`} alt="play"/>*/}
-            {/*      <br />*/}
-            {/*      <p>방송이 일시정지 되었습니다.</p>*/}
-            {/*    </div>*/}
-            {/*  </div>*/}
-            {/*}*/}
-            {/*{*/}
-            {/*  rtcInfo?.userType === UserType.HOST &&*/}
-            {/*  <canvas id="deepar-canvas" onContextMenu={(e) => {e.preventDefault();}}/>*/}
-            {/*}*/}
-            {
-              (!rtcInfo || !rtcInfo?.getPeerConnectionCheck()) &&
-              <div className="playToggle__play auto">
-                <div className="playBox">
-                  <img src={`${IMG_SERVER}/broadcast/ico_loading_l.svg`} alt="play"/>
-                </div>
+  return(
+    <div id={"broadcast-page"}>
+      <div className="left-side">
+        <PlayerVideoStyled {...playerVideoStyledProps}>
+          <div id="local-player" className="player"/>
+          <div className="chat-display" ref={displayWrapRef} style={{ backgroundImage: `url(${rtcInfo?.roomInfo?.bgImg.url})` }}>
+            <NoticeDisplayStyled id="broadcast-notice-display"/>
+          </div>
+          {/*{*/}
+          {/*  rtcInfo &&*/}
+          {/*  <div onClick={toggleClick} className="playToggle__play">*/}
+          {/*    <div className="playBox">*/}
+          {/*      <img src={`${IMG_SERVER}/broadcast/ico_circle_play_l.svg`} alt="play"/>*/}
+          {/*      <br />*/}
+          {/*      <p>방송이 일시정지 되었습니다.</p>*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*}*/}
+          {/*{*/}
+          {/*  rtcInfo?.userType === UserType.HOST &&*/}
+          {/*  <canvas id="deepar-canvas" onContextMenu={(e) => {e.preventDefault();}}/>*/}
+          {/*}*/}
+          {
+            (!rtcInfo || !rtcInfo?.getPeerConnectionCheck()) &&
+            <div className="playToggle__play auto">
+              <div className="playBox">
+                <img src={`${IMG_SERVER}/broadcast/ico_loading_l.svg`} alt="play"/>
               </div>
-            }
-            {
-              rtcInfo?.userType === UserType.LISTENER &&
-              <img src={`${IMG_SERVER}/broadcast/ico_close_w_m.svg`} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
-            }
+            </div>
+          }
+          {
+            rtcInfo?.userType === UserType.LISTENER &&
+            <img src={`${IMG_SERVER}/broadcast/ico_close_w_m.svg`} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
+          }
 
-          </PlayerVideoStyled>
-        </div>
+        </PlayerVideoStyled>
       </div>
-    )
-  }
-
+    </div>
+  )
 }
 
 export default BroadCastVideoPlayer;
