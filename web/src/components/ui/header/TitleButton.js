@@ -1,26 +1,25 @@
 import React from 'react';
 import {useHistory} from "react-router-dom";
-import MovePage from '../../module/MovePage';
 
 export const RankingButton = ({history}) => {
-  return <button className='ranking' onClick={() => MovePage({url: '/rank', history})} />
+  return <button className='ranking' onClick={() => history.push('/rank')} />
 }
 
-export const MessageButton = () => {
+export const MessageButton = ({history}) => {
   // 레벨 체크(1레벨 이상),
   return <button className='message' onClick={() => history.push('/')} />
 }
 
-export const AlarmButton = () => {
-  return <button className='alarm' onClick={() => MovePage('alarm', '/menu/alarm')} />
+export const AlarmButton = ({history}) => {
+  return <button className='alarm' onClick={() => history.push('/menu/alarm')} />
 }
 
-export const StoreButton = () => {
-  return <button className='store' onClick={() => MovePage('store', '/pay/store')} />
+export const StoreButton = ({history}) => {
+  return <button className='store' onClick={() => history.push('/pay/store')} />
 }
 
-export const SearchButton = () => {
-  return <button className='search' onClick={() => MovePage('search', '/menu/search')} />
+export const SearchButton = ({history}) => {
+  return <button className='search' onClick={() => history.push('/menu/search')} />
 }
 
 const TitleButton = (props) => {
@@ -30,15 +29,15 @@ const TitleButton = (props) => {
       return (
         <div className="buttonGroup">
           <RankingButton history={history} />
-          <MessageButton />
-          <AlarmButton />
+          <MessageButton history={history} />
+          <AlarmButton history={history} />
         </div>
       )
     case '클립':
       return (
         <div className="buttonGroup">
-          <MessageButton />
-          <AlarmButton />
+          <MessageButton history={history} />
+          <AlarmButton history={history} />
         </div>
       )
     case '좋아요한 클립':
@@ -64,9 +63,9 @@ const TitleButton = (props) => {
     case 'MY':
       return (
         <div className="buttonGroup">
-          <StoreButton />
-          <SearchButton />
-          <AlarmButton />
+          <StoreButton history={history} />
+          <SearchButton history={history} />
+          <AlarmButton history={history} />
         </div>
       )
     default :

@@ -1,53 +1,8 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from '../actions/main';
+import { MediaType, IImageVo, Gender, ILiveBadgeList } from './commonType';
 
 export type MainActions = ActionType<typeof actions>;
-
-type Gender = "" | "m" | "f";
-type MediaType = "a" | "v"; // a: 라디오 | v: 비디오
-
-export interface IImageVo {
-  path: string;
-  thumb50x50: string;
-  thumb62x62: string;
-  thumb80x80: string;
-  thumb88x88: string;
-  thumb100x100: string;
-  thumb120x120: string;
-  thumb150x150: string;
-  thumb190x190: string;
-  thumb292x292: string;
-  thumb336x336: string;
-  thumb500x500: string;
-  thumb700x700: string;
-  url: string;
-}
-
-interface ILiveBadgeList {
-  badgeCnt: number;
-  bgAlpha: number;
-  bgImg: string;
-  borderColor: string;
-  chatImg: string;
-  chatImgHeight: number;
-  chatImgWidth: number;
-  endColor: string;
-  enterAni: string;
-  enterBgImg: string;
-  explainMsg: string;
-  frameAni: string;
-  frameChat: string;
-  frameTop: string;
-  icon: string;
-  image: string;
-  imageSmall: string;
-  msgBorderEndColor: string;
-  msgBorderSrtColor: string;
-  startColor: string;
-  text: string;
-  textColor: string;
-  tipMsg: string;
-}
 
 interface IMoonCheck {
   moonStep: number;
@@ -145,7 +100,24 @@ interface IFanRank {
 }
 
 interface ILoverRank {
-
+  badgeSpecial: number;
+  fan: number;
+  gender: Gender;
+  gift: number;
+  grade: string;
+  holder: string;
+  isSpecial: boolean;
+  level: number;
+  listen: number;
+  listenRoomNo: string;
+  liveBadgeList: Array<ILiveBadgeList>;
+  memId: string;
+  memNo: string;
+  nickNm: string;
+  profImg: IImageVo;
+  rank: number;
+  roomNo: string;
+  upDown: string;
 }
 
 interface IDayRanking {

@@ -30,6 +30,7 @@ import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
 import {isDesktop} from "lib/agent";
+import Navigation from "components/ui/navigation/Navigation";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
   const nativeClipInfo = Utility.getCookie('clip-player-info')
@@ -107,7 +108,6 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 }
 
 
-
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
@@ -120,6 +120,7 @@ const App = () => {
   const memberRdx = useSelector((state)=> state.member);
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
+  const [isFooterPage, setIsFooterPage] = useState(false);
 
   const {
     chatInfo,
@@ -439,6 +440,15 @@ const App = () => {
     globalCtx.action.updateAppInfo({os, version, showBirthForm})
   }
 
+  const isFooter = () => {
+    if(!isHybrid()) {
+      const pages = ['/', '/clip', '/search', '/mypage'];
+      const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
+
+      setIsFooterPage(isFooterPage);
+    }
+  }
+
   useEffect(() => {
     if (globalCtx.splash !== null && globalCtx.token !== null && globalCtx.token.memNo && globalCtx.profile !== null) {
       setReady(true)
@@ -458,14 +468,9 @@ const App = () => {
     Api.setCustomHeader(JSON.stringify(customHeader))
     Api.setAuthToken(authToken)
 
-
-
     // Renew all initial data
     fetchData()
-
-
   }, [])
-
 
   useEffect(() => {
     if (globalCtx.token) {
@@ -480,6 +485,10 @@ const App = () => {
       }
     }
   }, [globalCtx.profile, globalCtx.token, location.pathname])
+
+  useEffect(() => {
+    isFooter();
+  }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
   useEffect(() => {
@@ -566,6 +575,7 @@ const App = () => {
         <>
           <Interface />
           <Route />
+          {isFooterPage && <Navigation />}
         </>
       ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
         <>
