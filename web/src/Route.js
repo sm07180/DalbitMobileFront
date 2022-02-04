@@ -15,8 +15,6 @@ const Main = React.lazy(() => import('pages/main'))
 
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
-const ClipReply = React.lazy(() => import('pages/clip_reply'))
-const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
@@ -41,6 +39,8 @@ const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
 
+const ClipReply = React.lazy(() => import('pages/clip_reply'))
+const ClipTip = React.lazy(() => import('pages/clip/fileload_tip'))
 const LevelInfo = React.lazy(() => import('pages/level'))
 const Setting = React.lazy(() => import('pages/setting'))
 const EventPage = React.lazy(() => import('pages/event_page'))
@@ -57,8 +57,12 @@ const ClipRecommend = React.lazy(() => import('pages/clip/components/clip_recomm
 const ClipRank = React.lazy(() => import('pages/clip_rank'))
 const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
+
 const Login = React.lazy(() => import('pages/login'))
-const SignUp = React.lazy(() => import('pages/new_signup'))
+const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
+const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+
+const SignUp = React.lazy(() => import('pages/resignup'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
@@ -110,7 +114,8 @@ export default () => {
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/login/:type" component={Login} />
+        <Route exact path="/login/sns" component={LoginSns} />
+        <Route exact path="/login/form" component={LoginForm} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />

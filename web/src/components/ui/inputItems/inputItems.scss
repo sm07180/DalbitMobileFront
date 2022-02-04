@@ -1,7 +1,33 @@
 @import "components/ui/_mixin.scss";
 .inputItems {
+  position:relative;
   @include flex(center);
   flex-wrap:wrap;
+  margin-bottom:16px;
+  &.success {
+    .inputBox {
+      &:after {
+        content:"";
+        @include position-vertical;
+        right:4px;
+        width:30px;height:30px;
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg transform='translate(-402 -449)'%3E%3Cg transform='translate(402 449)' fill='%23fff' stroke='%23707070' stroke-width='1' opacity='0'%3E%3Crect width='60' height='60' stroke='none'/%3E%3Crect x='0.5' y='0.5' width='59' height='59' fill='none'/%3E%3C/g%3E%3Cpath d='M12453,11916.979h-10v-4h10v-20h4v24Z' transform='translate(47.047 -16747.137) rotate(45)'/%3E%3C/g%3E%3C/svg%3E%0A");
+        // background-position: 95% 10px;
+        // background-repeat: no-repeat;
+        background-size: 30px 30px;
+      }
+    }
+  }
+  &.error {
+    .inputBox {
+      border-color:#FFF1F1;
+      background-color:#FFF1F1;
+    }
+    .textLog {
+      display:block;
+      color:#FF1919;
+    }
+  }
   .title {
     flex:none;
     width:100%;
@@ -13,20 +39,19 @@
     flex:1;
     @include flex(center);
     height:50px;
-    margin-bottom:16px;
     border-radius:16px;
+    border:1px solid #F6F6F6;
     background-color:#F6F6F6;
+    &.focus {
+      border-color:#FF3C7B;
+      background-color:white;
+    }
     input {
       flex:1;
       margin:0 16px;
       @include font(15px,400,#202020);
       &::placeholder {
         color:#999;
-      }
-      &:focus {
-        &::placeholder {
-          color:#F6F6F6;
-        }
       }
     }
     button {
@@ -47,7 +72,6 @@
     width:64px;
     height:42px;
     margin-left:8px;
-    margin-bottom:16px;
     border-radius:16px;
     background-color:#202020;
     letter-spacing: -1px;
@@ -71,5 +95,13 @@
       text-align:right;
       @include font(14px,400,#666);
     }
+  }
+  .textLog {
+    display:none;
+    width: 100%;
+    margin-top:6px;
+    white-space: nowrap;
+    text-indent:8px;
+    font-size:12px;
   }
 }

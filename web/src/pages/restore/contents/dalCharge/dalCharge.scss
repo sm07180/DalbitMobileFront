@@ -124,4 +124,33 @@
       margin-left: 4px;
     }
   }
+  #popSlide {
+    .slideLayer {
+      @include flex($fd:column);
+      padding:35px 28px 40px;
+      .title {
+        margin-bottom:15px;
+        @include font(22px,bold,#202020);
+      }
+      .infoBox {
+        width:100%;
+        margin-bottom:18px;
+        padding:18px 0 20px;
+        border-radius:16px;
+        background-color:#F8F8F8;
+        text-align:center;
+        @include font(19px,500,#303030);
+      }
+      .text {
+        line-height:18px;
+        letter-spacing: -1px;
+        text-align:center;
+        @include font(13px,400,#43464A);
+      }
+      .submitBtn {
+        width:100%;
+        margin-top:20px;
+      }
+    }
+  }
 }

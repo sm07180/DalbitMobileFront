@@ -50,7 +50,7 @@ const BankTransfer = () => {
         <InputItems>
           <input type="number" maxLength="20" placeholder="주민번호 또는 휴대폰 번호를 입력해주세요." />
         </InputItems>
-        <SubmitBtn text="입금계좌 받기" />
+        <SubmitBtn text="입금계좌 받기" state="disabled" />
       </section>
       <section className="noticeInfo">
         <h3>무통장 입금 안내</h3>
@@ -61,7 +61,7 @@ const BankTransfer = () => {
         <p>정기점검 일정은 당행 사정에 따라 변경될 수 있습니다.</p>
       </section>
       <section className="bottomInfo">
-          <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
+        <button className='inspectionTime' onClick={() => history.push('/pay/bank_info')}>은행별 점검시간 확인</button>
       </section>
       </>
       :
