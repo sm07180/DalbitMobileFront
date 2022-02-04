@@ -65,9 +65,7 @@ const Remypage = (props) => {
   }
 
   // 프로필 페이지로 이동
-  const goProfile = () => {
-
-  }
+  const goProfile = () => history.push('/myProfile');
 
   // 페이지 셋팅
   useEffect(() => {
