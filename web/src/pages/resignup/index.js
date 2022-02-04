@@ -2,11 +2,6 @@ import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
 import styled from 'styled-components'
 
 import {Context} from 'context'
-import Api from 'context/api'
-import qs from 'query-string'
-import Utility from 'components/lib/utility'
-import {PHOTO_SERVER} from 'context/config'
-import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -19,7 +14,7 @@ import './style.scss'
 
 const SignUpPage = () => {
   const context = useContext(Context)
-  const [textLog, setTextLog] = useState('error')  // success, error
+  const [textLog, setTextLog] = useState('success')  // success, error
   const [step, setStep] = useState(1);
 
   const temp = (e) => {
