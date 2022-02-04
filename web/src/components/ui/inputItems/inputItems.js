@@ -16,15 +16,15 @@ const InputItems = (props) => {
 
   return (
     <>
+      {title && <div className="title">{title}</div>}
       <div className={`inputItems`}>
-        {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
             <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               {children}
             </div>
             {button &&
-              <button className='inputBtn' onClick={onClick}>{button}</button>
+              <button className={`inputBtn`} onClick={onClick}>{button}</button>
             }
             {onClick && <p className='textLog'></p>}
           </>
