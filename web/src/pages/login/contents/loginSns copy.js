@@ -6,7 +6,7 @@ import Api from 'context/api'
 import qs from 'query-string'
 import {OS_TYPE} from 'context/config.js'
 import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
-import LoginForm from './loginForm'
+import DidLogin from './didLogin'
 import Header from './header'
 
 import appleLogo from '../static/apple_logo.svg'
@@ -122,7 +122,7 @@ export default function loginSns({props}) {
           </div>
         )}
 
-        {loginPop && <LoginForm setLoginPop={setLoginPop} props={props} />}
+        {loginPop && <DidLogin setLoginPop={setLoginPop} props={props} />}
       </div>
     </div>
   )

@@ -56,10 +56,9 @@ const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
 const Login = React.lazy(() => import('pages/login'))
-const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
-const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
-
-const SignUp = React.lazy(() => import('pages/resignup'))
+const Start = React.lazy(() => import('pages/login/contents/start'))
+const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
+const SignUp = React.lazy(() => import('pages/signup'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
@@ -93,26 +92,22 @@ export default () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-        
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
-
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
         <Route exact path="/setting/:type/:category" component={ReSetting} />
-        
+
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
-
         <Route exact path="/store" component={Store} />
-
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/login/sns" component={LoginSns} />
-        <Route exact path="/login/form" component={LoginForm} />
+        <Route exact path="/login/start" component={Start} />
+        <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
