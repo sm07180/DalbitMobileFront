@@ -5,6 +5,7 @@ import {useHistory, useParams} from 'react-router-dom'
 import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
+import Forbid from './contents/forbid'
 
 
 import './style.scss'
@@ -62,7 +63,7 @@ const SettingPage = () => {
           <>방송/청취 설정</>
         :
         settingType === "forbid" ?
-          <>금지어 관리</>
+          <Forbid />
         :
         settingType === "manager" ?
           <>매니저 관리</>
