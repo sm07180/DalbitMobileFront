@@ -8,7 +8,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import SwitchList from '../../components/switchList'
 
 import '../../style.scss'
-import InputItems from 'pages/remypage/components/InputItems'
+import InputItems from 'components/ui/inputItems/InputItems'
 
 const SettingForbid = () => {
 
