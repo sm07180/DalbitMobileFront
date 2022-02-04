@@ -4,11 +4,11 @@ import {useHistory, useParams} from 'react-router-dom'
 // global components
 import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+import InputItems from 'components/ui/inputItems/InputItems'
 
 import SwitchList from '../../components/switchList'
 
 import '../../style.scss'
-import InputItems from 'pages/remypage/components/InputItems'
 
 const SettingForbid = () => {
 
