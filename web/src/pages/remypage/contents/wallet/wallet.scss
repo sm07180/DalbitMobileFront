@@ -17,6 +17,7 @@
         display: inline-block;
         width: 18px;
         height: 18px;
+        margin-right:4px;
         &.iconDal{
           @include BGIMG("mypage/dalla/icon_dal.png");
           background-size:12px;
@@ -77,41 +78,42 @@
       .listContent {
         @include flex($fd:column);
         .listItem {
-          display:flex;
-          align-items:center;
+          @include flex(center);
           .historyText {
+            line-height: 22px;
             @include font(15px,500);
-            .otherUserNick {
-              position:relative;
-              &:before {
-                content:"";
-                width:1px;
-                height:14px;
-                background-color:black;
-                margin:0 5px;
-              }
+          }
+          .otherUserNick {
+            position:relative;
+            line-height: 22px;
+            @include font(15px,500);
+            &:before {
+              // position: absolute;
+              content:"";
+              display:inline-block;
+              width:1px;
+              height:14px;
+              margin:0 5px;
+              background-color:black;
             }
           }
           .exCancelBtn {
             width:55px;
-            height: 22px;
+            line-height: 22px;
             margin-left: 4px;
-            border-radius: 11px;
+            border-radius: 100px;
             background-color: #FF3C7B;
-            font-size: 12px;
             text-align: center;
-            color: #fff;
+            @include font(12px,400,white);
           }
           .privateBdg{
-            height:16px;
             line-height:16px;
-            background:#999999;
-            border-radius:20px;
-            font-size:12px;
-            color:#fff;
-            text-align:center;
             margin-left:4px;
             padding:0 4px;
+            border-radius:20px;
+            background-color:#999;
+            text-align:center;
+            @include font(12px,400,white);
           }
         }
         .historyDate {
@@ -119,29 +121,65 @@
         }
       }
       .quantity {
-        font-size: 17px;
-        color: #000000;
         margin-left:auto;
+        padding-left:8px;
+        @include font(17px,500,black);
         &.minous{
-          color:#999;
-          font-weight:400;
+          @include font(17px,400,#999);
         }
       }
     }
   }
 }
-#walletPop {
-  width: 328px;
-  height: auto;
-  background-color: #fff;
-  border-radius: 20px;
-
-  .title {
-    padding: 16px 0;
-    font-size: 18px;
-    font-weight: bold;
-    line-height: 21px;
-    text-align: center;
+#popSlide {
+  .walletHistoryCheck {
+    width:100%;
+    padding-top:20px;
+    .title {
+      line-height: 48px;
+      text-align: center;
+      @include font(18px,bold);
+    }
+    .listWrap {
+      width:100%;
+      .listAll {
+        .infoCheckList {
+          margin:0 28px;
+          padding: 12px 0;
+          border-bottom:1px solid #F2F2F2;
+          @include font(16px,500,#212429);
+        }
+      }
+      .historyScroll {
+        height:370px;
+        padding:12px 28px;
+        overflow-y:auto;
+        .infoCheckList {
+          height:40px;
+          @include font(14px,400,#666);
+        }
+      }
+    }
+    .buttonGroup {
+      @include flex(center);
+      height:112px;
+      padding:0 12px;
+      button {
+        flex:1;
+        line-height:46px;
+        margin:0 4px;
+        border-radius:16px;
+        &.cancel {
+          @include border(#D5D5D5);
+          @include font(16px,500,#666);
+        }
+        &.apply {
+          background-color:#FF3C7B;
+          @include border(#FF3C7B);
+          @include font(16px,500,white);
+        }
+      }
+    }
   }
 
   .contents {
