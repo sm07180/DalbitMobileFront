@@ -9,7 +9,7 @@ import './style.scss'
 
 
 const PasswordChange = () => {
-  const [btnActive, setBtnActive] = useState(false)
+  const [btnActive, setBtnActive] = useState("")
   const [phoneNumVal, setPhoneNumVal] = useState("")
   const [pinNumVal, setPinNumVal] = useState("")
   const [passwordVal, setPasswordVal] = useState("")
@@ -20,7 +20,7 @@ const PasswordChange = () => {
     var text = e.target.value;
     var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
     if (regPhone.test(text) === true) {
-      console.log("complete");
+      setBtnActive("active")
     }
   }
 
@@ -49,7 +49,7 @@ const PasswordChange = () => {
         <form>
           <div className='sectionWrap'>
             <div className='section'>
-              <InputItems button="인증요청" title={"휴대폰 번호"}>
+              <InputItems button="인증요청" title={"휴대폰 번호"} btnClass={btnActive}>
                 <input
                   type="tel"
                   id="memId"

@@ -27,6 +27,10 @@
           margin-bottom: 0px;
           .inputBtn {
             width: 84px;
+            background-color: #E3E3E3;
+            &.active {              
+              background-color: #FF3C7B;
+            }
           }
         }
       }

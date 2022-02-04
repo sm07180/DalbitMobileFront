@@ -8,7 +8,7 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 import SwitchList from '../../components/switchList'
 
 import '../../style.scss'
-import InputItems from 'pages/remypage/components/InputItems'
+// import InputItems from 'pages/remypage/components/InputItems'
 
 const SettingForbid = () => {
 
@@ -17,9 +17,9 @@ const SettingForbid = () => {
       <Header position={'sticky'} title={'금지어 관리'} type={'back'}/>
       <div className='subContent'>
         <section className="">
-          <InputItems type={'text'} button={'저장'}>
+          {/* <InputItems type={'text'} button={'저장'}>
             <input type="text" />
-          </InputItems>
+          </InputItems> */}
         </section>
         <SubmitBtn text={'금지어 추가 +'}/>
         <section className="noticeInfo">
