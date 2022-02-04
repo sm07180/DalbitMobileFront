@@ -118,7 +118,7 @@ export type Member = {
 export type LoginToken  = {
   isLogin : boolean
   authToken : string
-  memNo : number
+  memNo : string
 }
 
 export type MemberState = LoginToken & {

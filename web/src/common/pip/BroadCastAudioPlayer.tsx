@@ -73,7 +73,7 @@ const BroadCastAudioPlayer = ()=>{
       globalAction.setExitMarbleInfo({...exitMarbleInfo, showState: true});
     }
     if (guestInfo !== null) {
-      guestInfo[Object.keys(guestInfo)[0]].stop();
+      guestInfo[Object.keys(guestInfo)[0]].stop?.();
       globalAction.dispatchGuestInfo({ type: "EMPTY" });
     }
     if (chatInfo && chatInfo.privateChannelHandle !== null) {

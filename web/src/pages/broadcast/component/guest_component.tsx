@@ -357,10 +357,11 @@ function GuestComponent(props) {
       });
     } else if (guestInfo !== null && guestInfo[globalState.baseData.memNo]) {
       const key = Object.keys(guestInfo)[0];
+      if(guestInfo[key] && guestInfo[key] !== "EMPTY" ) {
+        guestInfo[key].setDisplayWrapRef(displayWrapRef);
 
-      guestInfo[key].setDisplayWrapRef(displayWrapRef);
-
-      guestInfo[key].initVideoTag();
+        guestInfo[key].initVideoTag();
+      }
     }
   };
 
@@ -600,7 +601,7 @@ function GuestComponent(props) {
     if (guestState.guestStatus.end === true || guestState.guestStatus.exit === true) {
       if (guestInfo !== null) {
         Object.keys(guestInfo).forEach((v) => {
-          guestInfo[v].stop();
+          guestInfo[v].stop?.();
           if (v === globalState.baseData.memNo) {
             guestInfo[v].socketDisconnect();
           }

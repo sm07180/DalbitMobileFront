@@ -77,7 +77,7 @@ const BroadCastPlayer = ()=> {
 
         if (guestInfo) {
           Object.keys(guestInfo).forEach((v) => {
-            guestInfo[v].stop();
+            guestInfo[v].stop?.();
           });
           globalAction.dispatchGuestInfo({type: "EMPTY"});
         }

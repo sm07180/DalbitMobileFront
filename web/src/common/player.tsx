@@ -568,7 +568,7 @@ export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?:
               if (globalState.guestInfo !== null) {
                 globalState.guestInfo[
                   Object.keys(globalState.guestInfo)[0]
-                ].stop();
+                ].stop?.();
                 globalAction.dispatchGuestInfo!({
                   type: "EMPTY",
                 });
