@@ -1,159 +1,130 @@
 @import "components/ui/_mixin.scss";
 
 #walletPage{
-  position: relative;
-  min-height: 100vh;
-  font-family: 'Noto Sans KR', sans-serif;
-  font-weight: 500;
-  color:#000;
-  background:#fff;
   section{
-    position:relative;
+    position: relative;
   }
-  .currentValue {
-    display:flex;
-    align-items:center;
-    position:absolute;
-    right:16px;
-    top:50%;
-    transform:translateY(-50%);
-    height:26px;
-    line-height:26px;
-    font-size: 12px;
-    font-weight: 400;
-    border:1px solid #d6d6d6;
-    border-radius:13px;
-    padding:0 9px 0 7px;
-    .iconDal{
-      display: block;
-      width: 18px;
-      height: 18px;
-      background: url('https://image.dalbitlive.com/mypage/dalla/icon_dal.png') no-repeat center / 10px 10px;
-    }
-    .iconStar{
-      display: block;
-      width: 18px;
-      height: 18px;
-      background: url('https://image.dalbitlive.com/mypage/dalla/icon_star.png') no-repeat center / contain;
+  header {
+    .payCount {
+      @include flex(center);
+      line-height:24px;
+      padding:0 9px 0 7px;
+      @include border(#d6d6d6,100px);
+      span {
+        @include font(12px,400);
+      }
+      i {
+        display: inline-block;
+        width: 18px;
+        height: 18px;
+        &.iconDal{
+          @include BGIMG("mypage/dalla/icon_dal.png");
+          background-size:12px;
+        }
+        &.iconStar{
+          @include BGIMG("mypage/dalla/icon_star.png");
+        }
+      }
     }
   }
-  .tabBox{
-    display: flex;
-    align-items: center;
-    width:100%;
-    height:42px;
-    margin-bottom: 8px;
+  .tabmenu {
+    @include flex(center);
+    margin-bottom: 16px;
     padding:0 16px;
-    button{
-      position: relative;
-      width: 100%;
-      height: 100%;
+    li {
+      flex:1;
+      line-height:40px;
       text-align: center;
-      font-size: 16px;
-      color: #acacac;
       background-color: #ffffff;
       border-bottom:2px solid #f2f2f2;
+      @include font(16px,500,#acacac);
       &.active {
-        font-weight:600;
-        color:#000;
+        @include font(16px,bold,#202020);
         border-bottom: solid 2px #202020;
       }
     }
   }
-  .listWrap{
-    position: relative;
-    margin-top: 19px;
-    .option{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top: 11px;
-      padding:0 16px;
-      height:28px;
-      .selectBox{
-        font-size:15px;
-        font-weight:400;
-        & > button {
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-          font-weight: bold;
-          .arrowDownIcon{
-            @include BGIMG('mypage/dalla/drop_down_icon.png');
-            width: 20px;
-            height:20px;
-            margin-left: 3px;
-          }
+  .optionWrap {
+    @include flex(center,space-between);
+    height:28px;
+    margin-bottom:12px;
+    padding:0 16px;
+    .selectBox{
+      font-size:15px;
+      font-weight:400;
+      button {
+        @include flex(center);
+        @include font(14px,bold);
+        .arrowDownIcon{
+          @include BGIMG('mypage/dalla/drop_down_icon.png');
+          width: 20px;
+          height:20px;
+          margin-left: 3px;
         }
-      }
-      span {
-        font-size: 13px;
-        font-weight: 400;
-        color: #666;
       }
     }
-    .listBox{
-      .list {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width:100%;
-        height: 65px;
-        text-align: center;
-        border-bottom: 1px solid #f5f5f5;
-        padding: 0 16px;
-        .content {
+    .sub {
+      @include font(13px,400,#666);
+    }
+  }
+  .listWrap {
+    .listRow {
+      @include flex(center);
+      width:100%;
+      height: 65px;
+      border-bottom: 1px solid #f5f5f5;
+      padding: 0 16px;
+      .listContent {
+        @include flex($fd:column);
+        .listItem {
           display:flex;
-          flex-direction:column;
-          align-items:flex-start;
-          width: calc(100% - 100px);
-          flex:none;
-          font-size: 15px;
-          font-weight: 500;
-          .item{
-            display:flex;
-            align-items:center;
-            &.date {
-              font-size: 12px;
-              color: #707070;
+          align-items:center;
+          .historyText {
+            @include font(15px,500);
+            .otherUserNick {
+              position:relative;
+              &:before {
+                content:"";
+                width:1px;
+                height:14px;
+                background-color:black;
+                margin:0 5px;
+              }
             }
-            .divider{
-              width:1px;
-              height:14px;
-              background:#000;
-              margin:0 5px;
-            }
-            .exchangeCancelBtn {
-              width:55px;
-              height: 22px;
-              margin-left: 4px;
-              border-radius: 11px;
-              background-color: #FF3C7B;
-              font-size: 12px;
-              text-align: center;
-              color: #fff;
-            }
-            .privateBdg{
-              height:16px;
-              line-height:16px;
-              background:#999999;
-              border-radius:20px;
-              font-size:12px;
-              color:#fff;
-              text-align:center;
-              margin-left:4px;
-              padding:0 4px;
-            }
+          }
+          .exCancelBtn {
+            width:55px;
+            height: 22px;
+            margin-left: 4px;
+            border-radius: 11px;
+            background-color: #FF3C7B;
+            font-size: 12px;
+            text-align: center;
+            color: #fff;
+          }
+          .privateBdg{
+            height:16px;
+            line-height:16px;
+            background:#999999;
+            border-radius:20px;
+            font-size:12px;
+            color:#fff;
+            text-align:center;
+            margin-left:4px;
+            padding:0 4px;
           }
         }
-        .quantity {
-          font-size: 17px;
-          color: #000000;
-          margin-left:auto;
-          &.minous{
-            color:#999;
-            font-weight:400;
-          }
+        .historyDate {
+          @include font(12px,400,#707070);
+        }
+      }
+      .quantity {
+        font-size: 17px;
+        color: #000000;
+        margin-left:auto;
+        &.minous{
+          color:#999;
+          font-weight:400;
         }
       }
     }
