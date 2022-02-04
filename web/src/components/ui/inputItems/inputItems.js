@@ -24,7 +24,7 @@ const InputItems = (props) => {
               {children}
             </div>
             {button &&
-              <button className={`inputBtn ${btnClass && btnClass}`} onClick={onClick}>{button}</button>
+              <button type="button" className={`inputBtn ${btnClass && btnClass}`} onClick={onClick}>{button}</button>
             }
             {onClick && <p className='textLog'></p>}
           </>
