@@ -1,6 +1,22 @@
 @import "components/ui/_mixin.scss";
 
 #setting {
+  .inputText {
+    flex: 1;
+    @include flex(center);
+    height: 50px;
+    padding: 0 15px;
+    border-radius: 16px;
+    background-color: #F6F6F6;
+    @include font(15px, 400, #303030);
+    &::placeholder {
+      @include font(15px, 400, #999999);
+    }
+    &:focus {
+      background-color: #FFFFFF;
+      border: 1px solid #FF3C7B;
+    }
+  }
   .inputLabel {
     @include flex(center);
     cursor: pointer;
@@ -218,6 +234,7 @@
       }
     }
   }
+
   .subContent {
     position: relative;
     width: 100%;
@@ -301,6 +318,70 @@
       position: relative;
       @include flex(flex-start, flex-start, column);
       width: 100%;
+    }
+
+    .listWrap {
+      position: relative;
+      @include flex(flex-start, flex-start, column);
+      width: 100%;
+      margin-top: 20px;
+      .list {
+        position: relative;
+        @include flex(flex-start, flex-start, column);
+        width: 100%;
+        .listHead {
+          @include flex(center);
+          width: 100%;
+          margin-bottom: 6px;
+          .titleWrap {
+            flex: 1;
+            @include flex(center);
+            .listIndex {
+              flex: none;
+              display: inline-block;
+              width: 20px; height: 20px;
+              line-height: 18px;
+              text-align: center;
+              border: 1px solid #202020;
+              border-radius: 50%;
+              @include font(16px, 500, #202020);
+            }
+            .listTitle {
+              @include font(20px, 500, #202020);
+              margin-left: 4px;
+            }
+          }
+          .saveBtn {
+            flex: none;
+            display: inline-block;
+            height: 32px;
+            padding: 0 20px;
+            background-color: rgba($color: #FF3C7B, $alpha: 0.2);
+            @include font(13px, 500, #FFFFFF);
+            border-radius: 100px;
+            box-sizing: border-box;
+            &.active {
+              background-color: #FF3C7B;
+              cursor: pointer;
+            }
+          }
+        }
+        .listContent {
+          position: relative;
+          @include flex(flex-start, flex-start, column);
+          width: 100%;
+          .listRow {
+            position: relative;
+            @include flex(center);
+            width: 100%;
+            .category {
+              width: 50px;
+              @include font(13px, 400, #303030);
+            }
+          }
+        }
+      }
+
     }
   }
 }

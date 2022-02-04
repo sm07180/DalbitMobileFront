@@ -5,6 +5,8 @@ import {useHistory, useParams} from 'react-router-dom'
 import Header from 'components/ui/header/Header'
 
 import Title from './title'
+import Greeting from './greeting'
+import Message from './message'
 
 import '../../style.scss'
 
@@ -61,10 +63,10 @@ const SettingBroadcast = () => {
           <Title/>
         :
         settingCategory === "greeting" ?
-          <>DJ 인사말</>
+          <Greeting/>
         :
         settingCategory === "message" ?
-          <>퀵 메시지</>
+          <Message/>
         :
         settingCategory === "infoOpen" ?
           <>방송 청취 정보 공개</>

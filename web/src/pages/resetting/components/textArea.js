@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react'
 import '../style.scss'
 
 const TextArea = (props) => {
-  const { max, titleList, setTitleList, titleSelect, setTitleSelect } = props;
+  const { max, list, setList, select, setSelect } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
   const [textareaState, setTextareaState] = useState("default");
@@ -32,10 +32,10 @@ const TextArea = (props) => {
   }
 
   const submit = () => {
-    if(titleList.length < 3){
+    if(list.length < 3){
       document.querySelector('textarea[name="textarea"]').value = "";
       setValueCount(0);
-      setTitleList(titleList.concat(textvalue))
+      setList(list.concat(textvalue))
     } else {
       disable();
     }    
@@ -43,13 +43,13 @@ const TextArea = (props) => {
 
   const removeList = () => {
     let textAreaValue = document.querySelector('textarea[name="textarea"]').value;
-    let selectIndex = titleList.indexOf(textAreaValue);
-    setTitleList(titleList.splice(selectIndex));
+    let selectIndex = list.indexOf(textAreaValue);
+    setList(list.splice(selectIndex));
 
     document.querySelector('input[name="radioBox"]:checked').parentNode.parentNode.remove();
     document.querySelector('textarea[name="textarea"]').value = "";    
     
-    setTitleSelect({
+    setSelect({
       state: false,
       val: "",
     });
@@ -57,8 +57,8 @@ const TextArea = (props) => {
   }
   
   useEffect(() => {
-    document.querySelector('textarea[name="textarea"]').value = titleSelect.val;
-  }, [titleSelect])
+    document.querySelector('textarea[name="textarea"]').value = select.val;
+  }, [select])
 
   return (
     <div className='inputTextArea'>
@@ -77,10 +77,10 @@ const TextArea = (props) => {
       </div>
       <div className='btnSection'>
         <div className='leftBtn'>
-          {titleSelect.state && <button className='deleteBtn'onClick={removeList}>삭제</button>}
+          {select.state && <button className='deleteBtn'onClick={removeList}>삭제</button>}
         </div>
         <div className='rightBtn'>
-          {titleSelect.state && <button className='cancelBtn'>취소</button>}          
+          {select.state && <button className='cancelBtn'>취소</button>}          
           <button className={`submitBtn ${valueCount > 0 && "active"}`} onClick={submit}>등록</button>
         </div>
       </div>
