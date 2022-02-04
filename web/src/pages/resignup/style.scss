@@ -66,6 +66,7 @@ $errorMsg : #FF1919;
         width: 30px;
         height: 30px;
         text-indent: -9999px;
+        @include BGIMG("/common/input/input-photo.png");
       }
     }
 

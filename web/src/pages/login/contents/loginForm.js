@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import {useHistory} from 'react-router-dom'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -11,6 +12,7 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 import '../style.scss'
 
 const LoginForm = () => {
+  const history = useHistory()
   const [btnActive, setBtnActive] = useState(false)
   const [slidePop, setSlidePop] = useState(false)
 
@@ -45,6 +47,10 @@ const LoginForm = () => {
     }
   }
 
+  const onClick = () => {
+    history.push('/signup');
+  };
+
   return (
     <div id='loginPage'>
       <Header title="로그인" type="back" />
@@ -61,9 +67,9 @@ const LoginForm = () => {
             placeholder="비밀번호"
           />
         </InputItems>
-        <SubmitBtn text="로그인" onClick={signPop} />
+        <SubmitBtn text="로그인" />
         <div className="linkWrap">  
-          <div className="linkText">회원가입</div>          
+          <div className="linkText" onClick={signPop}>회원가입</div>          
           <div className="linkText">비밀번호 재설정</div>
         </div>
       </section>
@@ -104,7 +110,7 @@ const LoginForm = () => {
               </div>
             </div>						
 					</div>
-          <SubmitBtn text="다음" state={!btnActive && 'disabled'} />
+          <SubmitBtn text="다음" state={!btnActive && 'disabled'} onClick={onClick}/>
         </PopSlide>      
       }
     </div>

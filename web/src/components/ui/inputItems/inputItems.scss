@@ -3,6 +3,7 @@
   position:relative;
   @include flex(center);
   flex-wrap:wrap;
+  width: 100%;
   margin-bottom:16px;
   &.success {
     .inputBox {
@@ -73,9 +74,12 @@
     height:42px;
     margin-left:8px;
     border-radius:16px;
-    background-color:#202020;
+    background-color:#FF3C7B;
     letter-spacing: -1px;
     @include font(14px,500,white);
+    &.disable {
+      background-color:#E3E3E3;
+    }
   }
   .textareaBox {
     width:100%;
