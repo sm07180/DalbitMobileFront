@@ -1,5 +1,4 @@
-import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
 
 // global components
 import Header from 'components/ui/header/Header.js'
@@ -7,7 +6,6 @@ import Header from 'components/ui/header/Header.js'
 import Tabmenu from '../../components/Tabmenu.js'
 import HistoryList from './HistoryList.js'
 // contents
-import WalletPop from './wallet_pop'
 // css
 
 import './wallet.scss'
@@ -16,8 +14,6 @@ const walletTabmenu = ['달 내역', '별 내역', '환전']
 
 const WalletPage = (props) => {
   const [walletType, setWalletType] = useState(walletTabmenu[0])
-
-  const [showFilter, setShowFilter] = useState(false)
 
   return (
     <div id="walletPage">
@@ -41,13 +37,11 @@ const WalletPage = (props) => {
         }
       </Header>
       <Tabmenu data={walletTabmenu} tab={walletType} setTab={setWalletType} />
-      <section className="optionWrap">
-        <div className="selectBox">
-          <button>전체<i className="arrowDownIcon" /></button>
-        </div>
-        <div className="sub">최근 6개월 이내</div>
-      </section>
-      <HistoryList />
+      {walletType !== walletTabmenu[2] ?
+        <HistoryList />
+        :
+        <></>
+      }
     </div>
   )
 }
