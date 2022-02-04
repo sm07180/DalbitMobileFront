@@ -1,4 +1,5 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -8,6 +9,11 @@ import Header from 'components/ui/header/Header'
 import '../style.scss'
 
 const LoginSns = () => {
+  const history = useHistory()
+  const loginFormOpen = () => {
+    history.push('/login/form');
+  };
+
   return (
     <div id="loginPage">
       <Header type="back" />
@@ -26,7 +32,7 @@ const LoginSns = () => {
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-apple.png" />
             <span>apple로 계속하기</span>
           </button>
-          <button className="phoneBtn">
+          <button className="phoneBtn" onClick={loginFormOpen}>
             <img className="icon" src="https://image.dalbitlive.com/dalla/login/login_logo-phone.png" />
             <span>휴대폰번호로 계속하기</span>
           </button>
