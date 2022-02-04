@@ -26,6 +26,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
 import Navigation from "components/ui/navigation/Navigation";
 
+import './styles/navigation.scss'
+
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const globalCtx = useContext(Context)
