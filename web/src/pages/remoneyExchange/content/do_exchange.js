@@ -9,11 +9,12 @@ import ExchangeForm from './subcontent/do_exchange_form'
 import ExchangeRepply from './subcontent/do_exchange_repply'
 import ExchangeMyAccount from './subcontent/do_exchange_myAccount'
 
+
 const DoExchange = () => {
   const history = useHistory()
+  const [depositType, setDepositType] = useState(depositOption[0])
 
   const depositOption =['신규 정보','최근 계좌','내 계좌']
-  const [depositType, setDepositType] = useState(depositOption[0])
   const TabPage=()=>{
     if(depositType === depositOption[0]){
       return(<ExchangeForm/>)

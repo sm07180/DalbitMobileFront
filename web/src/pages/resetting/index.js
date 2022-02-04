@@ -7,7 +7,11 @@ import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
 import Forbid from './contents/forbid'
+<<<<<<< HEAD
 import Broadcast from './contents/broadcast'
+=======
+import Manager from './contents/manager'
+>>>>>>> origin/mainPage
 
 
 import './style.scss'
@@ -61,7 +65,7 @@ const SettingPage = () => {
                 </div>
                 <div className='menuList' onClick={() => {golink("alarmUser")}}>
                   <div className='menuName'>알림받기 설정 회원 관리</div>
-                  <span className='arrow'></span>                  
+                  <span className='arrow'></span>
                 </div>
               </div>
             </div>
@@ -77,7 +81,7 @@ const SettingPage = () => {
           <Forbid />
         :
         settingType === "manager" ?
-          <>매니저 관리</>
+          <Manager />
         :
         settingType === "blockList" ?
           <>차단회원 관리</>
