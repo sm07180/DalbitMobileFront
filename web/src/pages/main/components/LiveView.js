@@ -10,7 +10,6 @@ const LiveView = (props) => {
   const {data} = props
 
   return (
-    <>
     <div className="liveListWrap">
       {data && data.length > 0 ?
         <>
@@ -35,11 +34,10 @@ const LiveView = (props) => {
                     <span className="state">
                       <DataCnt type={"totalCnt"} value={list.totalCnt ? list.totalCnt : "123"}/>
                       <DataCnt type={"entryCnt"} value={list.entryCnt ? list.entryCnt : "123"}/>
-                      {
-                        list.boostCnt > 0 ?
-                          <DataCnt type={"boostCnt"} value={list.boostCnt ? list.boostCnt : "123"}/>
+                      {list.boostCnt > 0 ?
+                        <DataCnt type={"boostCnt"} value={list.boostCnt ? list.boostCnt : "123"}/>
                         :
-                          <DataCnt type={"likeCnt"} value={list.likeCnt ? list.likeCnt : "123"}/>
+                        <DataCnt type={"likeCnt"} value={list.likeCnt ? list.likeCnt : "123"}/>
                       }
                     </span>
                   </div>
@@ -52,7 +50,6 @@ const LiveView = (props) => {
         <NoResult text={'리스트가 없습니다.'} />
       }
     </div>
-    </>
   )
 }
 

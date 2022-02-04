@@ -119,8 +119,21 @@
           @include fontCut;
         }
         .cnt{
+          @include flex(center);
           @include font(11px,400,#999);
           margin-right: 15px;
+          .comment{
+            display: inline-block;
+            width:16px;
+            height: 16px;
+            background: url('https://image.dalbitlive.com/clip/dalla/comment.png') no-repeat center / contain;
+          }
+          .like{
+            display: inline-block;
+            width:16px;
+            height: 16px;
+            background: url('https://image.dalbitlive.com/clip/dalla/heartOff.png') no-repeat center / contain;
+          }
         }
       }
       button {
