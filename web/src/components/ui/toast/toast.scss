@@ -1,0 +1,41 @@
+@import "components/ui/_mixin.scss";
+
+#toast {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  @include flex(center, center);
+  width: 90%;
+  padding: 8px; 
+  border-radius: 16px;
+  background-color: #202020;
+  &.up {
+    animation: toastUp 0.2s linear forwards;
+  }
+  &.down {
+    animation: toastDown 0.2s linear forwards;
+  }
+  p {
+    @include font(16px, 400, #fff);
+  }  
+}
+@keyframes toastUp {
+  0% {
+    bottom: 0;
+    opacity: 0;
+  }
+  100% {
+    bottom: 5%;
+    opacity: 1;
+  }
+}
+@keyframes toastDown {
+  0% {
+    bottom: 5%;
+    opacity: 1;
+  }
+  100% {
+    bottom: 0;
+    opacity: 0;
+  }
+}
