@@ -260,4 +260,20 @@
       }
     } 
   }
+  #popSlide {
+    .selectWrap {
+      position: relative;
+      @include flex(center, center, column);
+      width: 100%;
+      .selectOption {
+        width: 100%;
+        text-align: center;
+        @include font(16px, 400, #202020);
+        line-height: 55px;
+        &.active {
+          @include font(16px, 700, #FF3C7B);
+        }
+      }
+    }
+  }
 }

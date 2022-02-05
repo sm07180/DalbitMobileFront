@@ -8,7 +8,7 @@ import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-import Message from 'pages/common/message'
+import Popup from 'components/ui/popup'
 
 import Common from "common";
 import Modal from "common/modal";
@@ -111,7 +111,7 @@ const Router = () => {
       }>
       <Common />
       <ScrollToTop />
-      <Message />
+      <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />

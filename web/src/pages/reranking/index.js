@@ -8,7 +8,7 @@ import Api from 'context/api'
 import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
-import BottomSlide from 'components/ui/bottomSlide/BottomSlide'
+import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
@@ -23,7 +23,7 @@ const RankPage = () => {
   const rankTabmenu = ['오늘','이번주','이번달', '올해']
   const dayTabmenu = ['FAN','LOVER']
 
-  const [slidePop, setSlidePop] = useState(false)
+  const [popSlide, setPopSlide] = useState(false)
   const [popupOpen, setPopupOpen] = useState(false)
   const [select , setSelect] = useState("today")
   const [daySetting , setDaySetting] = useState("")
@@ -93,7 +93,7 @@ const RankPage = () => {
     history.push('/rank/rankDetail')
   }
   const selectChart = () => {
-    setSlidePop(true);
+    setPopSlide(true);
   }
   const chartSelect = (e) => {
     let today = new Date;
@@ -114,7 +114,7 @@ const RankPage = () => {
       setSelect("thisyear")
       setDaySetting(moment(today).format('YYYY'))
     }
-    setSlidePop(false);
+    setPopSlide(false);
   }
 
   const criteriaPop = () => {
@@ -187,8 +187,8 @@ const RankPage = () => {
           </p>
           <button onClick={clickDetailOpen}>랭킹순위 전체보기</button>
       </section>
-      {slidePop &&
-        <BottomSlide setSlidePop={setSlidePop}> 
+      {popSlide &&
+        <PopSlide setPopSlide={setPopSlide}> 
           <div className='selectWrap'>
             <div className={`selectOption ${select === "time" ? "active" : ""}`} onClick={chartSelect}>타임</div>
             <div className={`selectOption ${select === "today" ? "active" : ""}`} onClick={chartSelect}>오늘</div>
@@ -196,7 +196,7 @@ const RankPage = () => {
             <div className={`selectOption ${select === "thismonth" ? "active" : ""}`} onClick={chartSelect}>이번달</div>
             <div className={`selectOption ${select === "thisyear" ? "active" : ""}`} onClick={chartSelect}>올해</div>
           </div>
-        </BottomSlide>      
+        </PopSlide>      
       }
       {popupOpen &&
         <>
