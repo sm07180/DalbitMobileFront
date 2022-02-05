@@ -20,7 +20,12 @@
         cursor: pointer;
         .menuName {
           flex: 1;
+          @include flex(center);
           @include font(15px, 500, #303030);
+          span {
+            margin-left: 8px;
+            @include font(13px, 400, #999999);
+          }
         }
         .arrow {
           display: inline-block;
