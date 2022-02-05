@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import './inputItems.scss'
 
 const InputItems = (props) => {
-  const {title,type,button,onClick,children} = props
+  const {title,type,button,onClick,btnClass,children} = props
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode
@@ -24,7 +24,7 @@ const InputItems = (props) => {
               {children}
             </div>
             {button &&
-              <button className={`inputBtn`} onClick={onClick}>{button}</button>
+              <button type="button" className={`inputBtn ${btnClass && btnClass}`} onClick={onClick}>{button}</button>
             }
             {onClick && <p className='textLog'></p>}
           </>
@@ -37,10 +37,6 @@ const InputItems = (props) => {
       </div>
     </>
   )
-}
-
-InputItems.defaultProps = {
-  type: 'text',
 }
 
 export default InputItems

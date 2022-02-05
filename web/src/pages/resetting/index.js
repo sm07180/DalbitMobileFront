@@ -1,11 +1,13 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
+import {Context} from "context";
 
 // global components
 import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
 import Forbid from './contents/forbid'
+import Broadcast from './contents/broadcast'
 import Manager from './contents/manager'
 
 
@@ -14,11 +16,20 @@ import './style.scss'
 const SettingPage = () => {
   const params = useParams();
   const settingType = params.type;
+  const context = useContext(Context)
+  const {token} = context
   let history = useHistory()
 
   const golink = (path) => {
     history.push("/setting/" + path);
   }
+
+  useEffect(() => {
+    if (!token.isLogin) {
+      history.push('/login');
+    }
+  }, [])
+
 
   // 페이지 시작
   return (
@@ -61,7 +72,7 @@ const SettingPage = () => {
           <Push/>
         :
         settingType === "broadcast" ?
-          <>방송/청취 설정</>
+          <Broadcast/>
         :
         settingType === "forbid" ?
           <Forbid />

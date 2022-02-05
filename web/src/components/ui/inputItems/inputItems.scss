@@ -1,10 +1,10 @@
-@import "components/ui/_mixin.scss";
+@import "../_mixin.scss";
+
 .inputItems {
   position:relative;
   @include flex(center);
   flex-wrap:wrap;
   width: 100%;
-  margin-bottom:16px;
   &.success {
     .inputBox {
       &:after {
@@ -49,6 +49,7 @@
     }
     input {
       flex:1;
+      width:100%;
       margin:0 16px;
       @include font(15px,400,#202020);
       &::placeholder {

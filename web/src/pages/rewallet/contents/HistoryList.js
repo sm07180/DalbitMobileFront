@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react'
+import Utility ,{addComma} from 'components/lib/utility'
 
 import Api from 'context/api'
 
 // global components
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
-import CheckList from '../../components/CheckList'
+import CheckList from '../components/CheckList'
 
 const HistoryList = (props) => {
   const [slidePop, setSlidePop] = useState(false)
@@ -42,7 +43,7 @@ const HistoryList = (props) => {
             <div className="historyText">굿스타트 이벤트 2위</div>
             <div className="historyDate">22.01.03</div>
           </div>
-          <div className="quantity">+7,000</div>
+          <div className="quantity">+{Utility.addComma(7000)}</div>
         </div>
         <div className="listRow">
           <div className="listContent">
@@ -52,7 +53,7 @@ const HistoryList = (props) => {
             </div>
             <div className="historyDate">22.01.03</div>
           </div>
-          <div className="quantity minous">-7,000</div>
+          <div className="quantity minous">-{Utility.addComma(7000)}</div>
         </div>
         <div className="listRow">
           <div className="listContent">
@@ -63,7 +64,7 @@ const HistoryList = (props) => {
             </div>
             <div className="historyDate">22.01.03</div>
           </div>
-          <div className="quantity minous">-7,000</div>
+          <div className="quantity minous">-{Utility.addComma(7000)}</div>
         </div>
       </section>
       {slidePop &&
@@ -74,15 +75,14 @@ const HistoryList = (props) => {
               <div className="listAll">
                 <CheckList text="전체">
                   <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
-                  (29건)
+                  ({Utility.addComma(1100)}건)
                 </CheckList>
               </div>
               <div className="historyScroll">
                 {historyInfo.map((data,index) => {
                   return (
                     <CheckList text={data.text} key={index}>
-                      <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
-                      ({data.cnt}건)
+                      <input type="checkbox" className="blind" name={`check-${index}`} /> ({Utility.addComma(data.cnt)}건)
                     </CheckList>
                   )
                 })}

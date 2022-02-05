@@ -10,7 +10,7 @@ $HEADER-HEIGHT: 48px;
 // z-inde 관리
 $NAVIGATION-ZINDEX: 10000;
 $HEADER-ZINDEX: 10000;
-$POPUP-ZINDEX: 50000;
+$POPUP-ZINDEX: 30000;
 $ALERT-ZINDEX: 90000;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
