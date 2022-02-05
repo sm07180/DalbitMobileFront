@@ -5,9 +5,9 @@ import React, {useState, useEffect} from 'react'
 import Header from 'components/ui/header/Header'
 import SwitchList from '../../../components/switchList'
 
-import './style.scss'
+import './infoOpen.scss'
 
-const infoOpen = () => {
+const InfoOpen = () => {
   const [checkState, setCheckState] = useState(false);
 
   const switchAction = (e) => {
@@ -51,4 +51,4 @@ const infoOpen = () => {
   )
 }
 
-export default infoOpen
+export default InfoOpen

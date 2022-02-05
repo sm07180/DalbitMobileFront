@@ -8,7 +8,7 @@ import Toast from 'components/ui/toast/Toast'
 
 import SwitchList from '../../components/switchList'
 
-import './style.scss'
+import './push.scss'
 
 const SettingPush = () => {
   const tabList = ['무음','소리','진동'];
