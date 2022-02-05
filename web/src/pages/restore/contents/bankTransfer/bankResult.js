@@ -5,11 +5,12 @@ import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
 // global components
+import Header from 'components/ui/header/Header'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
 // css
-import './bankTransfer.scss'
+import './bankResult.scss'
 
 const BankTransfer = () => {
   const context = useContext(Context);
@@ -27,6 +28,7 @@ const BankTransfer = () => {
   },[])
 
   return (
+    <>
     <section className="bankResult">
       <div className="resultText">
         <div className="title">
@@ -61,6 +63,7 @@ const BankTransfer = () => {
       </div>
       <SubmitBtn text="확인" />
     </section>
+    </>
   )
 }
 

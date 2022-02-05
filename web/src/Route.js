@@ -17,28 +17,39 @@ import {Context} from "context";
 import {route} from "express/lib/router";
 
 // import Main from 'pages/main'
+//----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
-
+// 클립
 const Clip = React.lazy(() => import('pages/reclip'))
 const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
-
+// 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
-
+// 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
-
+// 검색
 const ReSearch = React.lazy(() => import('pages/research'))
-
+// 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
+// 프로필
+const Profile = React.lazy(() => import('pages/profile'))
+// 스토어
+const Store = React.lazy(() => import('pages/restore'))
+const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+// 내지갑
+const Wallet = React.lazy(() => import('pages/rewallet'))
+const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
+const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 로그인
+const Login = React.lazy(() => import('pages/login'))
+const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
+const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+// 회원가입
+const SignUp = React.lazy(() => import('pages/resignup'))
+//----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
-
-const Profile = React.lazy(() => import('pages/profile'))
-
-const Store = React.lazy(() => import('pages/restore'))
-
-const Wallet = React.lazy(() => import('pages/rewallet'))
 const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 
@@ -66,11 +77,7 @@ const ClipRank = React.lazy(() => import('pages/clip_rank'))
 const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
-const Login = React.lazy(() => import('pages/login'))
-const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
-const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
 
-const SignUp = React.lazy(() => import('pages/resignup'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
@@ -88,9 +95,6 @@ const Service = React.lazy(() => import('pages/service'))
 const NoService = React.lazy(() => import('pages/no_service'))
 
 const Story = React.lazy(() => import('pages/story'))
-
-
-
 
 const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
 const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
@@ -128,8 +132,11 @@ const Router = () => {
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
+        <Route exact path="/store/dalcharge" component={DalCharge} />
         
         <Route exact path="/wallet" component={Wallet} />
+        <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
+        <Route exact path="/wallet/result" component={ExchangeResult} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />

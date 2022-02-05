@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 // global components
 // components
@@ -7,12 +7,18 @@ import React from 'react'
 import './checkList.scss'
 
 const CheckList = (props) => {
-  const {text,children} = props
+  const {text,name,children} = props
+  const [btnActive,setBtnActive] = useState(false)
+  
+  const onCheckSelect = () => {
+    setBtnActive(!btnActive)
+  }
 
   return (
     <>
       <div className="infoCheckList">
         <label className="inputLabel">
+          <input type="checkbox" className="blind" />
           <span className="checkIcon"></span>
           <p className="checkinfo">{text}</p>
           {children}
