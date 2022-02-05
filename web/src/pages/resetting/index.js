@@ -9,6 +9,8 @@ import Push from './contents/push'
 import Forbid from './contents/forbid'
 import Broadcast from './contents/broadcast'
 import Manager from './contents/manager'
+import BlackList from './contents/blackList'
+import AlarmUser from './contents/alarmUser'
 
 
 import './style.scss'
@@ -56,7 +58,7 @@ const SettingPage = () => {
                   <div className='menuName'>매니저 관리</div>
                   <span className='arrow'></span>                  
                 </div>
-                <div className='menuList' onClick={() => {golink("blockList")}}>
+                <div className='menuList' onClick={() => {golink("blackList")}}>
                   <div className='menuName'>차단회원 관리</div>
                   <span className='arrow'></span>                  
                 </div>
@@ -80,10 +82,10 @@ const SettingPage = () => {
         settingType === "manager" ?
           <Manager />
         :
-        settingType === "blockList" ?
-          <>차단회원 관리</>
+        settingType === "blackList" ?
+          <BlackList />
         :
-          <>알림받기 설정 회원 관리</>
+          <AlarmUser />
       }
    </div>
   )
