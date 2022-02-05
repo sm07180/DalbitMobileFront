@@ -5,7 +5,7 @@ import Header from 'components/ui/header/Header'
 import TextArea from '../../../components/textArea'
 import RadioList from '../../../components/radioList'
 
-import './style.scss'
+import './title.scss'
 
 const BroadcastTitle = () => {
   const [titleLength, setTitleLength] = useState(2)

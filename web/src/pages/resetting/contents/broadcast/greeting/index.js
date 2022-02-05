@@ -5,7 +5,7 @@ import Header from 'components/ui/header/Header'
 import TextArea from '../../../components/textArea'
 import RadioList from '../../../components/radioList'
 
-import './style.scss'
+import './greeting.scss'
 
 const Greeting = () => {
   const [greetingLength, setGreetingLength] = useState(2)

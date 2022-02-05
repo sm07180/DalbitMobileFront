@@ -56,10 +56,7 @@ const LoginForm = () => {
       <Header title="로그인" type="back" />
       <section className="loginForm">
         <InputItems>
-          <input
-            type="number"
-            placeholder="휴대폰 번호"
-          />
+          <input type="number" placeholder="휴대폰 번호"/>
         </InputItems>
         <InputItems>
           <input

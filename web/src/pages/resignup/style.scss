@@ -24,7 +24,10 @@ $errorMsg : #FF1919;
       }
     }
     .inputWrap {
-      margin-bottom: 32px;
+      margin-bottom: 32px;      
+      .inputItems {
+        margin-bottom: 12px;
+      }
     }
     .submitBtn {
       width:100%;

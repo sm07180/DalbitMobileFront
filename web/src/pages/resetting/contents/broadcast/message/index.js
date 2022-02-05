@@ -5,7 +5,7 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 
-import './style.scss'
+import './message.scss'
 
 const Message = () => {
   const [messageList, setMessageList] = useState([]);

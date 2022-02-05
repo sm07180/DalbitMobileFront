@@ -10,7 +10,7 @@ import Message from './message'
 import InfoOpen from './infoOpen'
 import InOutMessage from './inOutMessage'
 
-import './style.scss'
+import './broadcast.scss'
 
 const SettingBroadcast = () => {
   const params = useParams();

@@ -104,7 +104,7 @@ const SignUpPage = () => {
       {step === 4 &&
         <SignField title={`소셜 로그인 정보를\n입력해주세요.`} onClick={nextStep}>
           <div className="profileUpload">
-            <label for="profileImg">
+            <label htmlFor="profileImg">
               <div></div>
               <span>클릭 이미지 파일 추가</span>
             </label>
