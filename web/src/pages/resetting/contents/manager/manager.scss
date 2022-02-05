@@ -1,0 +1,61 @@
+@import "components/ui/_mixin.scss";
+
+#setting #manager{
+  section{position: relative;}
+  .counterWrap{
+    margin-bottom: 10px;
+    div{
+      @include font(20px, 500);
+      span{
+        color: #FF3C7B;
+      }
+    }
+  }
+  .managerWrap{
+    display: flex;
+    flex-direction: column;
+    .listRow{
+      margin-bottom: 16px;
+      .photo{
+        width: 63px;
+        height: 63px;
+        border-radius: 100%;
+        margin-right: 16px;
+        overflow: hidden;
+      }
+      .listInfo{
+        width: calc(100% - 163px);
+        margin-right: 8px;
+        div{
+          @include fontCut;
+        }
+      }
+      button{
+        @include font(14px,500,#666);
+        @include border(#d8d8d8, 18px);
+        flex: none;
+        width: 76px;
+        line-height: 36px;
+      }
+    }
+  }
+  .tabmenu {
+    @include flex(center);
+    margin-bottom: 16px;
+    li {
+      flex:1;
+      line-height:40px;
+      text-align: center;
+      background-color: #ffffff;
+      border-bottom:2px solid #f2f2f2;
+      @include font(16px,500,#acacac);
+      &.active {
+        @include font(16px,bold,#202020);
+        border-bottom: solid 2px #202020;
+      }
+    }
+  }
+  .noResult{
+    @include font(14px,400,#999);
+  }
+}
