@@ -39,8 +39,4 @@ const InputItems = (props) => {
   )
 }
 
-InputItems.defaultProps = {
-  type: 'text',
-}
-
 export default InputItems

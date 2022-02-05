@@ -38,7 +38,7 @@ const Profile = React.lazy(() => import('pages/profile'))
 
 const Store = React.lazy(() => import('pages/restore'))
 
-const Wallet = React.lazy(() => import('pages/remypage/contents/wallet/wallet.js'))
+const Wallet = React.lazy(() => import('pages/rewallet'))
 const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 
