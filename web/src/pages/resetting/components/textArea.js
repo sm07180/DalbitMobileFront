@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 // global components
-import '../style.scss'
+import './textArea.scss'
 
 const TextArea = (props) => {
   const { max, list, setList, select, setSelect } = props;

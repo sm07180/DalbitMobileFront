@@ -5,7 +5,7 @@ import Header from 'components/ui/header/Header'
 import TextArea from '../../../components/textArea'
 import RadioList from '../../../components/radioList'
 
-import '../../../style.scss'
+import './style.scss'
 
 const Greeting = () => {
   const [greetingLength, setGreetingLength] = useState(2)
@@ -29,7 +29,7 @@ const Greeting = () => {
 
   // 페이지 시작
   return (
-    <>
+    <div id="greeting">
       <Header position={'sticky'} title={'DJ 인사말'} type={'back'}/>
       <div className='subContent'>
         <div className='section'>
@@ -52,7 +52,7 @@ const Greeting = () => {
           </div>
         }        
       </div>
-    </>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 
 // global components
-import '../style.scss'
+import './radioList.scss'
 
 const RadioList = (props) => {
   const {title, clickEvent} = props

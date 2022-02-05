@@ -5,7 +5,7 @@ import Header from 'components/ui/header/Header'
 import TextArea from '../../../components/textArea'
 import RadioList from '../../../components/radioList'
 
-import '../../../style.scss'
+import './style.scss'
 
 const BroadcastTitle = () => {
   const [titleLength, setTitleLength] = useState(2)
@@ -29,7 +29,7 @@ const BroadcastTitle = () => {
 
   // 페이지 시작
   return (
-    <>
+    <div id="title">
       <Header position={'sticky'} title={'방송 제목'} type={'back'}/>
       <div className='subContent'>
         <div className='section'>
@@ -52,7 +52,7 @@ const BroadcastTitle = () => {
           </div>
         }        
       </div>
-    </>
+    </div>
   )
 }
 

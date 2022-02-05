@@ -7,8 +7,10 @@ import Header from 'components/ui/header/Header'
 import Title from './title'
 import Greeting from './greeting'
 import Message from './message'
+import InfoOpen from './infoOpen'
+import InOutMessage from './inOutMessage'
 
-import '../../style.scss'
+import './style.scss'
 
 const SettingBroadcast = () => {
   const params = useParams();
@@ -24,7 +26,7 @@ const SettingBroadcast = () => {
     <>
       {
         !settingCategory ?
-        <>
+        <div id="broadcast">
           <Header position={'sticky'} title={'방송/청취 설정'} type={'back'}/>
           <div className='content'>
             <div className='menuWrap'>
@@ -57,7 +59,7 @@ const SettingBroadcast = () => {
               </div>
             </div>
           </div>
-        </>        
+        </div>        
         :
         settingCategory === "title" ?
           <Title/>
@@ -69,12 +71,10 @@ const SettingBroadcast = () => {
           <Message/>
         :
         settingCategory === "infoOpen" ?
-          <>방송 청취 정보 공개</>
+          <InfoOpen/>
         :
-        settingCategory === "inOutMessage" ?
-          <>배지 / 입·퇴장 메시지</>
-        :
-          <></>
+        settingCategory === "inOutMessage" &&
+          <InOutMessage/>
       }      
     </>
   )

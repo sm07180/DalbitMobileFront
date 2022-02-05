@@ -5,10 +5,11 @@ import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
 
-import '../../../style.scss'
+import './style.scss'
 
 const Message = () => {
   const [messageList, setMessageList] = useState([]);
+  const [btnActive, setBtnActive] = useState(false);
 
   async function fetchMessage() {
     const res = await Api.member_broadcast_shortcut({
@@ -16,18 +17,23 @@ const Message = () => {
     })
     if (res.result === 'success') {
       setMessageList(res.data.list);
-      console.log(res.data.list);
+    }
+  }
+
+  const valueChange = (e) => {
+    let val = e.target.value;
+    if(val !== "") {
+      setBtnActive(true)
     }
   }
 
   useEffect(() => {
     fetchMessage()
-    console.log(messageList);
   }, [])
   
   // 페이지 시작
   return (
-    <>
+    <div id="message">
       <Header position={'sticky'} title={'퀵 메시지'} type={'back'}/>
       <div className='subContent'>
           <p className='topText'>명령어는 2자, 내용은 최대 200자까지 입력 가능</p>
@@ -41,16 +47,16 @@ const Message = () => {
                         <span className='listIndex'>{item.orderNo}</span>
                         <span className='listTitle'>퀵 메시지</span>
                       </div>
-                      <button className='saveBtn'>저장</button>
+                      <button className={`saveBtn ${btnActive && 'active'}`}>저장</button>
                     </div>
                     <div className='listContent'>
                       <div className='listRow'>
                         <div className='category'>명령어</div>
-                        <input type="text" className='inputText' defaultValue={item.order}/>
+                        <input type="text" className='inputText' name="order" onChange={valueChange} defaultValue={item.order}/>
                       </div>
                       <div className='listRow'>
                         <div className='category'>내용</div>
-                        <input type="text" className='inputText' defaultValue={item.text}/>
+                        <input type="text" className='inputText' name="text" onChange={valueChange} defaultValue={item.text}/>
                       </div>
                     </div>
                   </div>
@@ -59,7 +65,7 @@ const Message = () => {
             }            
           </div>
       </div>
-    </>
+    </div>
   )
 }
 
