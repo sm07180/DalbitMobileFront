@@ -1,22 +1,12 @@
 @import "components/ui/_mixin.scss";
 
-#setting #manager{
+#setting #alarmUser{
   .subContent{
     position: relative;
     width: 100%;
     padding: 16px;
     box-sizing: border-box;  
     section{position: relative;}
-    .counterWrap{
-      margin-bottom: 10px;
-      div{
-        @include font(20px, 500);
-        span{
-          color: #FF3C7B;
-          margin-left: 8px;
-        }
-      }
-    }
     .listWrap{
       display: flex;
       flex-direction: column;
@@ -35,7 +25,7 @@
           .listItem{
             @include fontCut;
             .nickNm{@include font(12px, 400);}
-            .memId{@include font(12px, 400, #a4a4a4);}
+            .regDt{@include font(12px, 400, #a4a4a4);}
           }
         }
         button{
@@ -54,40 +44,34 @@
         }
       }
     }
-    .inputWrap{
-      margin-bottom: 19px;
-      .inputBox{
-        @include flex(center);
-        position: relative;
-        width: 100%;
-        height: 50px;
-        background: #f6f6f6;
-        border-radius: 16px;
-        padding: 0 16px;
-        input[type="text"]{
-          @include font(15px,400);
-        }
-        .icon{
-          @include BGIMG('setting/ico_search.png');
-          width: 28px;
-          height: 28px;
-          margin-left: auto;
+    .noticeInfoWrap {
+      padding:20px 16px 30px;
+      h3 {
+        @include flex;
+        @include font(12px,500,#FF3C7B);
+        position:relative;
+        margin-bottom: 8px;
+        padding-left: 20px;
+        &::after{
+          content:"";
+          @include position-vertical;
+          left:2px;
+          width:16px;
+          height:16px;
+          background:url("https://image.dalbitlive.com/setting/forbid/ico_info.png") no-repeat left / contain;
         }
       }
-    }
-    .tabmenu {
-      @include flex(center);
-      margin-bottom: 16px;
-      li {
-        flex:1;
-        line-height:40px;
-        text-align: center;
-        background-color: #ffffff;
-        border-bottom:2px solid #f2f2f2;
-        @include font(16px,500,#acacac);
-        &.active {
-          @include font(16px,bold,#202020);
-          border-bottom: solid 2px #202020;
+      p {
+        position: relative;
+        padding-left: 16px;
+        line-height: 20px;
+        letter-spacing: -0.8px;
+        @include font(12px,400,#757575);
+        &::before {
+          @include position-top-left(9px,6px);
+          content: '';
+          width: 2px;height: 2px;
+          background: #757575;
         }
       }
     }

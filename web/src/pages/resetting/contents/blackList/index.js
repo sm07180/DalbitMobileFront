@@ -14,7 +14,7 @@ import Tabmenu from '../../components/Tabmenu.js'
 import FilterBtn from '../../components/FilterBtn.js'
 
 import '../../style.scss'
-import './manager.scss'
+import './blackList.scss'
 
 const tabmenu = ['관리', '등록'] 
 const searchList = [
@@ -33,36 +33,36 @@ const searchList = [
 ]
 const filter= ['전체','닉네임','ID']
 
-const SettingManager = () => {
+const Settingblack = () => {
   const [tabType, setTabType] = useState(tabmenu[0])
-  const [managerList, setManagerList] = useState([])
+  const [blackList, setblackList] = useState([])
 
-  const getManagerList = () =>{
-    Api.mypage_manager_list({}).then((res) =>{
+  const getblackList = () =>{
+    Api.mypage_black_list({}).then((res) =>{
       if (res.result === 'success'){
-        setManagerList(res.data.list)
+        setblackList(res.data.list)
       }
     })
   }
   
   useEffect(() => {
-    getManagerList()
+    getblackList()
   }, [])
 
   return (
-    <div id="manager">
-      <Header position={'sticky'} title={'매니저 관리'} type={'back'}/>
+    <div id="black">
+      <Header position={'sticky'} title={'차단회원 관리'} type={'back'}/>
       <div className='subContent'>
         <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
         {tabType === tabmenu[0] ? (
           <>
             <section className="counterWrap">
-              <div>등록 된 매니저<span>{managerList.length}</span></div>
+              <div>차단 회원<span>{blackList.length}</span></div>
             </section>
             <section className="listWrap">
-              {managerList.length > 0 ? (
+              {blackList.length > 0 ? (
                 <>
-                  {managerList.map((item, index)=>{
+                  {blackList.map((item, index)=>{
                     const {nickNm, memId, profImg} = item
                     return(
                       <ListRow photo={profImg.thumb80x80} key={index}>
@@ -82,7 +82,7 @@ const SettingManager = () => {
                 </>
               ) : (
                 <>
-                  <div className="noResult">등록된 고정 매니저가 없습니다.</div> 
+                  <div className="noResult">등록한 차단회원이 없습니다.</div> 
                 </>
               )}
             </section>
@@ -133,4 +133,4 @@ const SettingManager = () => {
   )
 }
 
-export default SettingManager
+export default Settingblack

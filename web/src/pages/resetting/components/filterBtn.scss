@@ -1,0 +1,50 @@
+@import 'components/ui/_mixin.scss';
+
+.filterBtn {
+  position:relative;
+  @include flex(center, space-between);
+  @include font(13px,400,#202020);
+  width: 59px;
+  margin-right: 8px;
+  .arrowDown{
+    width: 20px;
+    height: 20px;
+    @include BGIMG('clip/dalla/ico_arrowDown.png');
+  }
+  .arrowUp{
+    width: 20px;
+    height: 20px;
+    @include BGIMG('clip/dalla/ico_arrowUp.png');
+  }
+  .option{
+    @include position-top-left(24px,-15px);
+    @include flex($fd:column);
+    width: 124px;
+    border-radius: 8px;
+    box-shadow: 1px 1px 20px rgba(0,0,0,0.16);
+    background: #fff;
+    z-index: 5;
+    li {
+      @include flex(center);
+      line-height: 40px;
+      padding-left: 28px;
+      border-bottom: 1px solid #f6f6f6;
+      letter-spacing: -0.5px;
+      text-align:left;
+      &:last-child{
+        border-bottom: 0;
+      }
+      &.checked{
+        padding-left:8px;
+        &:before {
+          display:inline-block;
+          content:"";
+          width: 16px;
+          height: 16px;
+          margin-right:4px;
+          @include BGIMG('clip/dalla/ico_check.png');
+        }
+      }
+    }
+  }
+}
