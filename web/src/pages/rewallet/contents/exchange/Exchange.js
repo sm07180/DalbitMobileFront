@@ -2,11 +2,18 @@ import React, {useState, useEffect} from 'react'
 import Utility ,{addComma} from 'components/lib/utility'
 
 // global components
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
-import DepositInfo from '../components/DepositInfo'
+import Tabmenu from '../../components/Tabmenu'
 // contents
+import DepositInfo from './DepositInfo'
+import NewlyAccount from './NewlyAccount'
+import MyAccount from './MyAccount'
+
+const depositTabmenu =['신규 정보','최근 계좌','내 계좌']
 
 const Exchange = (props) => {
+  const [depositType,setDepositType] = useState(depositTabmenu[2])
 
   return (
     <>
@@ -67,7 +74,17 @@ const Exchange = (props) => {
         <p className="point">KRW {Utility.addComma(173560)}</p>
       </div>
     </section>
-    <DepositInfo />
+    <section className="depositInfo">
+      <h2>입금 정보</h2>
+      <Tabmenu data={depositTabmenu} tab={depositType} setTab={setDepositType} />
+      {depositType === depositTabmenu[0] ?
+        <DepositInfo />
+        : depositType === depositTabmenu[1] ?
+        <NewlyAccount />
+        :
+        <MyAccount />
+      }
+    </section>
     </>
   )
 }

@@ -7,7 +7,7 @@ import Header from 'components/ui/header/Header.js'
 import Tabmenu from './components/Tabmenu.js'
 // contents
 import HistoryList from './contents/HistoryList.js'
-import Exchange from './contents/Exchange'
+import Exchange from './contents/exchange/Exchange'
 // css
 
 import './style.scss'
