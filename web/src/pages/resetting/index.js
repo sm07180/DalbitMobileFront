@@ -1,10 +1,16 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
+import {Context} from "context";
 
 // global components
 import Header from 'components/ui/header/Header'
 
 import Push from './contents/push'
+import Forbid from './contents/forbid'
+import Broadcast from './contents/broadcast'
+import Manager from './contents/manager'
+import BlackList from './contents/blackList'
+import AlarmUser from './contents/alarmUser'
 
 
 import './style.scss'
@@ -12,11 +18,20 @@ import './style.scss'
 const SettingPage = () => {
   const params = useParams();
   const settingType = params.type;
+  const context = useContext(Context)
+  const {token} = context
   let history = useHistory()
 
   const golink = (path) => {
     history.push("/setting/" + path);
   }
+
+  useEffect(() => {
+    if (!token.isLogin) {
+      history.push('/login');
+    }
+  }, [])
+
 
   // 페이지 시작
   return (
@@ -43,13 +58,13 @@ const SettingPage = () => {
                   <div className='menuName'>매니저 관리</div>
                   <span className='arrow'></span>                  
                 </div>
-                <div className='menuList' onClick={() => {golink("blockList")}}>
+                <div className='menuList' onClick={() => {golink("blackList")}}>
                   <div className='menuName'>차단회원 관리</div>
                   <span className='arrow'></span>                  
                 </div>
                 <div className='menuList' onClick={() => {golink("alarmUser")}}>
                   <div className='menuName'>알림받기 설정 회원 관리</div>
-                  <span className='arrow'></span>                  
+                  <span className='arrow'></span>
                 </div>
               </div>
             </div>
@@ -59,18 +74,18 @@ const SettingPage = () => {
           <Push/>
         :
         settingType === "broadcast" ?
-          <>방송/청취 설정</>
+          <Broadcast/>
         :
         settingType === "forbid" ?
-          <>금지어 관리</>
+          <Forbid />
         :
         settingType === "manager" ?
-          <>매니저 관리</>
+          <Manager />
         :
-        settingType === "blockList" ?
-          <>차단회원 관리</>
+        settingType === "blackList" ?
+          <BlackList />
         :
-          <>알림받기 설정 회원 관리</>
+          <AlarmUser />
       }
    </div>
   )

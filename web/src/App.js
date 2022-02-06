@@ -108,6 +108,8 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 }
 
 
+import './styles/navigation.scss'
+
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
@@ -290,6 +292,20 @@ const App = () => {
         }
       }
       if (tokenInfo.data && tokenInfo.data.isLogin) {
+        const fetchProfile = async () => {
+          const myProfile = await Api.profile({
+            params: {
+              memNo: tokenInfo.data.memNo
+            }
+          })
+          if (myProfile.result === 'success') {
+            const data = myProfile.data
+            globalCtx.action.updateProfile(data)
+            globalCtx.action.updateIsMailboxOn(data.isMailboxOn)
+          } else {
+            globalCtx.action.updateProfile(false)
+          }
+        }
         const myInfoRes = async () => {
           const res = await Api.mypage()
           if (res.result === 'success') {
@@ -455,9 +471,6 @@ const App = () => {
     }
   }, [globalCtx.splash, globalCtx.token, globalCtx.profile])
 
-
-
-
   useEffect(() => {
     fetchSplash()
     // set header (custom-header, authToken)
@@ -573,18 +586,18 @@ const App = () => {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
-        <>
-          <Interface />
-          <Route />
-          {isFooterPage && <Navigation />}
-        </>
+          <>
+            <Interface />
+            <Route />
+            {isFooterPage && <Navigation />}
+          </>
         ) : (
           <>
             <div className="loading">
               <span></span>
             </div>
           </>
-      )
+        )
       ) : globalCtx.noServiceInfo.showPageYn === 'y' ? (
         <>
           <NoService />

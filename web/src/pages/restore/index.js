@@ -1,4 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
+import {useHistory} from 'react-router-dom'
 import {Context} from "context";
 
 import Api from 'context/api'
@@ -11,7 +12,6 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 // components
 // contents
 import DalCharge from './contents/dalCharge/dalCharge'
-import BankTransfer from './contents/bankerTransfer/bankTransfer'
 // css
 import './style.scss'
 
@@ -25,10 +25,11 @@ const dalPrice = [
 ]
 
 const StorePage = () => {
+  const history = useHistory()
   const context = useContext(Context);
   const [select, setSelect] = useState(3);
 
-  const [orderPage, setOrderPage] = useState(true);
+  const [orderPage, setOrderPage] = useState(false);
 
   // 조회 Api
 
@@ -38,15 +39,18 @@ const StorePage = () => {
     
     setSelect(targetIndex)
   }
+  // Submit 버튼 클릭
+  const onClickSubmit = () => {
+    history.push('/store/dalcharge')
+  }
 
   return (
     <>
-    {orderPage === false &&
       <div id="storePage">
         <Header title={'스토어'} position="sticky" type="back" />
         <section className="myhaveDal">
           <div className="title">내가 보유한 달</div>
-          <span>12345</span>
+          <span className="dal">{Utility.addComma(12345)}</span>
         </section>
         <section className="bannerWrap">
           <BannerSlide />
@@ -56,17 +60,15 @@ const StorePage = () => {
             return (
               <div className={`item ${Number(select) === index && 'active'}`} data-target-index={index} onClick={onSelectDal} key={index}>
                 <div className="itemIcon"></div>
-                <div className="dal">{`${Utility.addComma(data.dal)}`}</div>
+                <div className="dal">{Utility.addComma(data.dal)}</div>
                 {data.bonus !== undefined && <div className='bonus'>{`+${Utility.addComma(data.bonus)}`}</div>}
                 <div className="price">{`￦${Utility.addComma(data.price)}`}</div>
               </div>
             )
           })}
         </section>
-        <SubmitBtn text="결제하기" />
+        <SubmitBtn text="결제하기" onClick={onClickSubmit} />
       </div>
-      }
-      {orderPage === true && <DalCharge />}
     </>
   )
 }

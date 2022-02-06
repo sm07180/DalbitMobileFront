@@ -1,0 +1,82 @@
+@import "components/ui/_mixin.scss";
+
+#setting #alarmUser{
+  .subContent{
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;  
+    section{position: relative;}
+    .listWrap{
+      display: flex;
+      flex-direction: column;
+      .listRow{
+        margin-bottom: 16px;
+        .photo{
+          width: 63px;
+          height: 63px;
+          border-radius: 100%;
+          margin-right: 16px;
+          overflow: hidden;
+        }
+        .listInfo{
+          width: calc(100% - 163px);
+          margin-right: 8px;
+          .listItem{
+            @include fontCut;
+            .nickNm{@include font(12px, 400);}
+            .regDt{@include font(12px, 400, #a4a4a4);}
+          }
+        }
+        button{
+          flex: none;
+          width: 76px;
+          line-height: 36px;
+          border-radius: 18px;
+          &.delete{
+            @include font(14px,500,#666);
+            border: 1px solid #d8d8d8;
+          }
+          &.add{
+            @include font(14px,500,white);
+            background: black;
+          }
+        }
+      }
+    }
+    .noticeInfoWrap {
+      padding:20px 16px 30px;
+      h3 {
+        @include flex;
+        @include font(12px,500,#FF3C7B);
+        position:relative;
+        margin-bottom: 8px;
+        padding-left: 20px;
+        &::after{
+          content:"";
+          @include position-vertical;
+          left:2px;
+          width:16px;
+          height:16px;
+          background:url("https://image.dalbitlive.com/setting/forbid/ico_info.png") no-repeat left / contain;
+        }
+      }
+      p {
+        position: relative;
+        padding-left: 16px;
+        line-height: 20px;
+        letter-spacing: -0.8px;
+        @include font(12px,400,#757575);
+        &::before {
+          @include position-top-left(9px,6px);
+          content: '';
+          width: 2px;height: 2px;
+          background: #757575;
+        }
+      }
+    }
+    .noResult{
+      @include font(14px,400,#999);
+    }
+  }
+}
