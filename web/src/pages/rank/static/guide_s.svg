@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="guide_s" width="24" height="24" viewBox="0 0 24 24">
+    <g id="hint" transform="translate(.333 .333)">
+        <g id="타원_142" fill="#fff" stroke="#e0e0e0" data-name="타원 142" transform="translate(-.333 -.333)">
+            <circle cx="12" cy="12" r="12" stroke="none"/>
+            <circle cx="12" cy="12" r="11.5" fill="none"/>
+        </g>
+        <text id="_" data-name="?" font-family="NanumSquareEB, NanumSquare" font-size="14px" transform="translate(7.667 15.667)">
+            <tspan x="0" y="0">?</tspan>
+        </text>
+    </g>
+</svg>

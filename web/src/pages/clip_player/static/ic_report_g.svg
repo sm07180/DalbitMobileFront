@@ -1,0 +1,22 @@
+
+<svg xmlns="http://www.w3.org/2000/svg" id="report_g" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#757575;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <g id="Vector_Smart_Object5" data-name="Vector Smart Object5" transform="translate(10.242 9.254)">
+        <g id="그룹_9369" data-name="그룹 9369">
+            <g id="그룹_9368" data-name="그룹 9368" transform="translate(.637 3.449)">
+                <path id="패스_3952" d="M14.489 15.485a3.827 3.827 0 0 1 1.267.231v-4.86A4.763 4.763 0 0 0 11 6.08a4.763 4.763 0 0 0-4.751 4.776v4.86a3.823 3.823 0 0 1 1.267-.231z" class="cls-1" data-name="패스 3952" transform="translate(-3.644 -6.08)"/>
+                <path id="패스_3953" d="M15.024 18.355a3.827 3.827 0 0 0-1.267-.231H6.788a3.823 3.823 0 0 0-1.267.231 3.882 3.882 0 0 0-2.609 3.666h14.721a3.882 3.882 0 0 0-2.609-3.666z" class="cls-1" data-name="패스 3953" transform="translate(-2.912 -8.719)"/>
+            </g>
+            <path id="선_59" d="M0 0L0.867 0.234" class="cls-1" data-name="선 59" transform="translate(0 5.054)"/>
+            <path id="선_60" d="M0 0L0.635 0.638" class="cls-1" data-name="선 60" transform="translate(2.846 1.435)"/>
+            <path id="선_61" d="M0.867 0L0 0.234" class="cls-1" data-name="선 61" transform="translate(15.109 5.054)"/>
+            <path id="선_62" d="M0.635 0L0 0.638" class="cls-1" data-name="선 62" transform="translate(12.471 1.435)"/>
+            <path id="선_63" d="M0 0L0 0.903" class="cls-1" data-name="선 63" transform="translate(7.998)"/>
+        </g>
+    </g>
+    <path id="사각형_439" fill="none" d="M0 0H36V36H0z" data-name="사각형 439"/>
+</svg>

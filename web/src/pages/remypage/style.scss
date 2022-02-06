@@ -1,4 +1,4 @@
-@import "components/ui/_mixin.scss";
+@import "../../components/ui/mixin";
 
 #remypage {
   @include flex($fd:column);

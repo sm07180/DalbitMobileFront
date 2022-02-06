@@ -1,5 +1,7 @@
 import React from 'react'
 
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+
 export default function ExchangeForm() {
 
   return (
@@ -94,6 +96,7 @@ export default function ExchangeForm() {
           회사는 환전의 목적으로 회원 동의 하에 관계 법령에서 정하는 바에 따라 개인정보를 수집할 수 있습니다. (수집된 개인정보는 확인 후 폐기 처리 합니다.)
         </p>
       </div>
+      <SubmitBtn text={'환전 신청하기'} />
     </>
   )
 }

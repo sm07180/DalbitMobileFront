@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="close_w_m" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_11329" d="M0 0h32v32H0z" class="cls-1"/>
+        </clipPath>
+        <filter id="패스_9483-2" width="34" height="34" x=".001" y=".003" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="1"/>
+            <feGaussianBlur result="blur" stdDeviation="2.5"/>
+            <feFlood flood-opacity=".2"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <style>
+            .cls-1{fill:none}
+        </style>
+    </defs>
+    <path id="사각형_11328" d="M0 0h32v32H0z" class="cls-1"/>
+    <g id="마스크_그룹_78" clip-path="url(#clip-path)">
+        <g id="그룹_15657" transform="translate(7.001 7.003)">
+            <g filter="url(#패스_9483-2)" transform="translate(-7 -7)">
+                <path id="패스_9483-2-2" fill="#fff" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M10.5 68.063a9 9 0 1 0-9-9 9 9 0 0 0 9 9z" transform="translate(5.5 -43.06)"/>
+            </g>
+            <path id="패스_4296" fill="none" stroke="#757575" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.3px" d="M9.69 58.253l3.583-3.583-3.583 3.583-3.583-3.583zm0 0l-3.583 3.583 3.583-3.583 3.583 3.582z" transform="translate(-.699 -49.265)"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,140 @@
+@import "../../../asset/scss/common/variables";
+.modal_login {
+  .loginForm {
+    width: 400px;
+    height: auto;
+    min-height: 480px;
+    padding: 50px 40px;
+    margin: 0 auto;
+    text-align: center;
+    background: #fff;
+    border-radius: 10px;
+
+    &__logo {
+      padding: 0 0 40px;
+      > img {
+        width: 200px;
+        height: 48px;
+      }
+    }
+
+    &__input {
+      position: relative;
+      width: 100%;
+      border: 1px solid #e5e5e5;
+      padding: 0 16px;
+      color: #000;
+      font-size: 16px;
+      line-height: 48px;
+      outline: none;
+      transform: skew(-0.03deg);
+      cursor: auto;
+      box-sizing: border-box;
+
+      &:focus {
+        border: 1px solid #632beb;
+        color: #444444;
+        z-index: 2;
+      }
+    }
+
+    &__input + &__input {
+      margin-top: 14px;
+      box-sizing: border-box;
+    }
+
+    &__button {
+      width: 100%;
+      margin-top: 14px;
+      color: $white;
+      font-size: 20px;
+      font-weight: $bold;
+      line-height: 64px;
+      background: #632beb;
+      border: 0;
+    }
+
+    .loginToolBox {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+
+    .loginAuto {
+      label {
+        display: flex;
+
+        span {
+          display: inline-block;
+          margin-left: 10px;
+          line-height: 24px;
+        }
+      }
+    }
+
+    .loginLink {
+      text-align: right;
+
+      &__item {
+        display: inline-block;
+        color: #632beb;
+      }
+
+      &__item:nth-of-type(2)::before {
+        display: inline-block;
+        width: 1px;
+        height: 12px;
+        content: "";
+        margin: 0px 10px -1px;
+        background: rgb(133, 86, 246);
+      }
+    }
+
+    .line-wrap {
+      margin-top: 30px;
+      text-align: center;
+
+      .social-apple-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 25px;
+        border: solid 1px #000000;
+        background-color: #000000;
+        margin-right: 12px;
+      }
+
+      .social-facebook-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 25px;
+        border: solid 1px #4064ad;
+        background-color: #ffffff;
+        margin-right: 12px;
+      }
+
+      .social-naver-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 25px;
+        background-color: #2db400;
+        margin-right: 12px;
+      }
+
+      .social-kakao-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 25px;
+        background-color: #f9e000;
+        margin-right: 12px;
+      }
+
+      .social-google-btn {
+        width: 48px;
+        height: 48px;
+        border-radius: 25px;
+        border: solid 1px #4285f4;
+        background-color: #ffffff;
+      }
+    }
+  }
+}

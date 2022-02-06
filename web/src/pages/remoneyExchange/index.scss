@@ -102,7 +102,7 @@
           height: 25px;
           margin-right: 5px;
         }
-        .title{flex:none;}
+        p{flex:none;}
         .counter{
           height: 31px;
           display: flex;
@@ -162,42 +162,39 @@
       }
     }
     .formWrap{
-      .radioLabelBox {
-        display: flex;
-        margin-bottom: 12px;
-        label {
-          @include font(13px, 400, #acacac);
-          height: 36px;
-          line-height: 36px;
+      .tabmenu {
+        @include flex(center);
+        margin-bottom:20px;
+        li {
+          flex: none;
+          line-height:36px;
+          margin-right:4px;
           padding: 0 15px;
+          border-radius: 100px;
           background: #f6f6f6;
-          border-radius: 18px;
-          margin-right: 4px;
-          &.active {
-            @include font(13px, 500, #fff);
-            background: #000;
+          @include font(13px,400,#acacac);
+          &.active{
+            @include font(13px,500,white);
+            background: #202020;
           }
-        }
-        & > input {
-          display: none;
         }
       }
       .formBox{
         display: flex;
         flex-direction: column;
-        &.repply{
-          .listRow{
-            .inputBox{
-              div{
-                @include font(15px, 500, #000);
-              }
-            }
+        &.empty{
+          justify-content: center;
+          align-items: center;
+          padding: 110px 0;
+          p{
+            @include font(15px, 500);
           }
         }
         .listRow{
           @include flex(center);
           overflow: hidden;
           margin-bottom: 8px;
+          &:last-child{margin-bottom: 0;}
           .title{
             @include font(12px);
             min-width: 88px;
@@ -258,8 +255,40 @@
             }
           }
         }
+        .accountList{
+          @include flex(center);
+          width: 100%;
+          height: 64px;
+          border-radius: 16px;
+          background: #f8f8f8;
+          padding: 0 16px;
+          margin-bottom: 8px;
+          &:last-child{margin-bottom: 0;}
+          &.active{
+            border: 1px solid #FF3C7B;
+            background: #fff;
+            color: #FF3C7B;
+          }
+          .content{
+            display: flex;
+            flex-direction: column;
+            .name{
+              @include font(15px, 500);
+            }
+            .account{
+              @include font(12px, 400);
+            }
+          }
+          .iconEdit{
+            @include BGIMG('store/dalla/icoGear-g.png');
+            width: 24px;
+            height: 24px;
+            margin-left: auto;
+          }
+        }
       }
       .privacyBox{
+        margin-top: 35px;
         .privacyTit{
           @include font(16px, 500);
           display: flex;
@@ -269,10 +298,9 @@
             @include flex(center);
             margin-right: 8px;
             > input:checked ~ .checkbox__btn {
-              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 18'%3E%3Cpath fill='%23fff' d='M8.319 15.353L0 6.882l2.6-2.647 8.32 8.471L23.4 0 26 2.647 10.92 18z'/%3E%3C/svg%3E")
-                      center no-repeat,
-              #FF3C7B;
-              background-size: 50%, cover;
+              @include BGIMG('store/dalla/icoCheck-w.png');
+              background-color: #FF3C7B;
+              background-size: 12px auto;
             }
             .checkboxBtn{
               flex: none;
@@ -280,10 +308,9 @@
               width: 23px;
               height: 23px;
               border-radius: 100%;
-              background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 18'%3E%3Cpath fill='%23fff' d='M8.319 15.353L0 6.882l2.6-2.647 8.32 8.471L23.4 0 26 2.647 10.92 18z'/%3E%3C/svg%3E")
-                      center no-repeat,
-                  #ddd;
-              background-size: 50%, cover;
+              @include BGIMG('store/dalla/icoCheck-w.png');
+              background-color: #ddd;
+              background-size: 12px auto;
             }
           }
           .highlight{
@@ -294,6 +321,21 @@
         p{
           @include font(12px, 400);
           letter-spacing: -0.5px;
+        }
+      }
+      .submitBtn{
+        width: 100%;
+        margin: 45px 0;
+      }
+      .addAccountBtn{
+        @include flex(center,center);
+        @include font(12px, 400, #666);
+        @include border(#d6d6d6,14px);
+        width: 84px;
+        height: 36px;
+        margin-top: 15px;
+        &.haveList{
+          margin-left: auto;
         }
       }
     }
@@ -380,29 +422,33 @@
     }
   }
   .receiptWrap{
-    .receiptBox{
-      display: flex;
-      flex-direction: column;
-      padding: 10px 15px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.24);
-      .listRow{
-        @include flex(center, space-between);
-        height: 36px;
-        &.borderT{
-          border-top: 1px solid #ececec;
+    .receiptBoard{
+      width:100%;
+      padding:0 15px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.24);
+      background: url('https://image.dalbitlive.com/store/dalla/receiptBoard.png') no-repeat center / contain;
+      .text-wrap {
+        display: flex;
+        align-items:center;
+        height:36px;
+        margin-top: 4px;
+        &.total{
+          border-top: 1px solid #f6f6f6;
+          span{color: #303030;}
         }
-        .title{
-          @include font(13px, 400, #999);
-          &.total{
-            @include font(13px, 400, #000);
-          }
+        span {
+          font-size:13px;
+          font-weight:400;
+          color:#999999;
         }
-        .value{
+        p {
           font-size:15px;
-          &.total{
-            color: #FF3C7B;
-          }
-          span{color: #FF3C7B;}
+          font-weight:500;
+          margin-left: auto;
+          color: #000;
+        }
+        .highlight{
+          color:#FF3C7B;
         }
       }
     }

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+    <g transform="translate(-844 -664)">
+        <circle cx="6" cy="6" r="6" fill="#424242" transform="translate(844 664)"/>
+        <text fill="#fff" font-family="NanumSquareEB, NanumSquare" font-size="7px" letter-spacing="-0.025em" transform="translate(850 672)">
+            <tspan x="-1.12" y="0">!</tspan>
+        </text>
+    </g>
+</svg>

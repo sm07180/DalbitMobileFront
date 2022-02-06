@@ -1,0 +1,129 @@
+@import "../../asset/scss/common/global";
+
+#alert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 999;
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+
+    .btnClose {
+      width: 36px;
+      height: 36px;
+      background: url("#{$IMG_SERVER}/svg/ic_close_m.svg") center no-repeat;
+      cursor: pointer;
+      margin-left: auto;
+      text-indent: -9999px;
+    }
+
+    .wrapperBg {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 300px;
+      padding: 16px 12px;
+      border-radius: 10px;
+      text-align: center;
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    .title {
+      display: block;
+      width: 100%;
+      font-weight: $bold;
+      font-size: 20px;
+      text-align: center;
+      &.border-default {
+        padding-bottom: 14px;
+        border-bottom: 1px solid $lightGray;
+      }
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      padding: 22px 20px 34px 20px;
+      font-size: 16px;
+      letter-spacing: -0.35px;
+      line-height: 24px;
+      .contentText {
+        word-break: break-all;
+      }
+    }
+    .subCont {
+      display: block;
+      margin-top: 3px;
+      font-size: 12px;
+      line-height: 1.2;
+      &.isBold {
+        font-weight: $bold;
+      }
+    }
+    .btn {
+      width: 100%;
+      height: 44px;
+      font-size: 18px;
+      border-radius: 12px;
+      color: $white;
+      font-weight: $bold;
+      text-align: center;
+      background-color: $primary;
+      &.btn_cancel {
+        width: 49%;
+        background-color: $greishGray;
+      }
+      &.btn_ok {
+        width: 49%;
+        &.isDisable {
+          background: $mediumGray;
+        }
+      }
+    }
+
+    &.boost {
+      .title {
+        margin: 4px 0 16px 0;
+      }
+
+      .content {
+        padding: 24px 0;
+        border-top: 1px solid #e0e0e0;
+        font-size: 13px;
+
+        .subCont {
+          font-size: 11px;
+          word-break: break-all;
+          white-space: pre-wrap;
+        }
+      }
+
+      .btn-wrap {
+        .cancel {
+          border: 0px;
+          background-color: #757575;
+          color: #fff;
+        }
+      }
+    }
+    .btnWrap {
+      margin-top: 0;
+    }
+  }
+
+  .boost_wrapper {
+  }
+}

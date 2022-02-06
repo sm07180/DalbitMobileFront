@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__live" width="20" height="20" viewBox="0 0 20 20">
+    <defs>
+        <style>
+            .prefix__cls-4{fill:none;stroke:#fff;stroke-linecap:round;stroke-miterlimit:10}
+        </style>
+    </defs>
+    <g id="prefix__사각형_3168" data-name="사각형 3168" style="stroke:#707070;opacity:0;fill:#fff">
+        <path d="M0 0H20V20H0z" style="stroke:none"/>
+        <path d="M0.5 0.5H19.5V19.5H0.5z" style="fill:none"/>
+    </g>
+    <g id="prefix__그룹_15313" data-name="그룹 15313" transform="translate(-69 -576)">
+        <path id="prefix__패스_4136" d="M10 0A10 10 0 1 1 0 10 10 10 0 0 1 10 0z" data-name="패스 4136" transform="translate(69 576)" style="fill:#ec455f"/>
+        <g id="prefix__그룹_15266" data-name="그룹 15266" transform="rotate(-90 332.212 258.788)">
+            <ellipse id="prefix__타원_115" cx="1.25" cy="1.249" data-name="타원 115" rx="1.25" ry="1.249" transform="translate(0 4.828)" style="fill:#fff"/>
+            <path id="prefix__패스_4144" d="M0 0a3.366 3.366 0 0 1 0 4.51" class="prefix__cls-4" data-name="패스 4144" transform="translate(3.758 3.711)"/>
+            <path id="prefix__패스_4145" d="M0 0a6.723 6.723 0 0 1 0 8.925" class="prefix__cls-4" data-name="패스 4145" transform="translate(5.462 1.503)"/>
+            <path id="prefix__패스_4146" d="M0 0a8.685 8.685 0 0 1 0 11.932" class="prefix__cls-4" data-name="패스 4146" transform="translate(7.432)"/>
+        </g>
+    </g>
+</svg>

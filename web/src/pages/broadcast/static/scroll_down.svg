@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_new_down" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .cls-2{fill:none;stroke:#000;stroke-linecap:round;stroke-width:1.2px;stroke-linejoin:round}
+        </style>
+    </defs>
+    <path id="사각형_446" fill="none" d="M0 0H18V18H0z" data-name="사각형 446"/>
+    <g id="그룹_15166" data-name="그룹 15166" transform="translate(4.2 5.5)">
+        <g id="그룹_9456" data-name="그룹 9456">
+            <path id="선_5" d="M0 0L4.715 4.491" class="cls-2" data-name="선 5"/>
+            <path id="선_6" d="M4.715 0L0 4.491" class="cls-2" data-name="선 6" transform="translate(4.715)"/>
+        </g>
+        <path id="선_148" fill="none" stroke="#000" stroke-linecap="round" stroke-width="1.2px" d="M0 0L9.5 0" data-name="선 148" transform="translate(0 7)"/>
+    </g>
+</svg>

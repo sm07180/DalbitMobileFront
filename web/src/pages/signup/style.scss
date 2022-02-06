@@ -23,13 +23,11 @@ $errorMsg : #FF1919;
         @include font(14px, 400, #999);
       }
     }
-    form {
-      .inputWrap {
-        margin-bottom: 32px;
-      }
-      .submitBtn {
-        width:100%;
-      }
+    .inputWrap {
+      margin-bottom: 32px;
+    }
+    .submitBtn {
+      width:100%;
     }
   }
   .profileUpload {

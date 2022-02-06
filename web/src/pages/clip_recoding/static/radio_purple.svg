@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="checkbox_purple" width="24" height="24" viewBox="0 0 24 24">
+    <defs>
+        <style>
+            .cls-2{fill:#fff}
+        </style>
+    </defs>
+    <rect id="사각형_2053" width="24" height="24" fill="#632beb" data-name="사각형 2053" rx="4"/>
+    <g id="그룹_14931" data-name="그룹 14931" transform="translate(-16 -363)">
+        <rect id="사각형_2054" width="2" height="10" class="cls-2" data-name="사각형 2054" rx="1" transform="rotate(-45 461.215 162.443)"/>
+        <rect id="사각형_2055" width="2" height="12" class="cls-2" data-name="사각형 2055" rx="1" transform="rotate(-135 92.508 184.736)"/>
+    </g>
+</svg>

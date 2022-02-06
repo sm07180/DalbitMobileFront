@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="270" height="270" viewBox="0 0 270 270">
+    <defs>
+        <filter id="타원_1567" width="258" height="258" x="6" y="9" filterUnits="userSpaceOnUse">
+            <feOffset dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-opacity=".161"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="타원_1562" width="249" height="249" x="10.5" y="10.5" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur result="blur-2" stdDeviation="1.5"/>
+            <feFlood flood-color="#ab5dfb" flood-opacity=".69"/>
+            <feComposite in2="blur-2" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="타원_1606" width="270" height="270" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset/>
+            <feGaussianBlur result="blur-3" stdDeviation="4"/>
+            <feFlood flood-opacity=".702"/>
+            <feComposite in2="blur-3" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <linearGradient id="linear-gradient" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#c387ff"/>
+            <stop offset="1" stop-color="#9457f9"/>
+        </linearGradient>
+        <linearGradient id="linear-gradient-2" x1=".5" x2=".5" y2="1" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#8540ff"/>
+            <stop offset="1" stop-color="#4e09c2"/>
+        </linearGradient>
+        <style>
+            .cls-3{fill:none}.cls-5{fill:#f7ff00}.cls-6{fill:#fff}
+        </style>
+    </defs>
+    <g id="ic_roulette" transform="translate(-1047 -962)">
+        <g id="그룹_34268" transform="translate(726 -228)">
+            <g id="그룹_34260" transform="translate(-489.117 763.489)">
+                <circle id="타원_1561" cx="133" cy="133" r="133" fill="#652beb" transform="translate(812.117 428.511)"/>
+                <g transform="translate(810.12 426.51)" style="mix-blend-mode:color-dodge;isolation:isolate" filter="url(#타원_1562)">
+                    <circle id="타원_1562-2" cx="120" cy="120" r="120" fill="url(#linear-gradient)" opacity="0.2" transform="translate(15 15)"/>
+                </g>
+                <circle id="타원_1563" cx="115.894" cy="115.894" r="115.894" class="cls-3" transform="translate(830.287 446.17)"/>
+                <circle id="타원_1469" cx="4" cy="4" r="4" class="cls-5" transform="rotate(180 411.558 282.755)"/>
+                <circle id="타원_1592" cx="4" cy="4" r="4" class="cls-5" transform="rotate(180 537.558 282.756)"/>
+                <circle id="타원_1593" cx="4" cy="4" r="4" class="cls-6" transform="rotate(-150 486.25 139.789)"/>
+                <circle id="타원_1594" cx="4" cy="4" r="4" class="cls-6" transform="rotate(-150 612.25 173.55)"/>
+                <circle id="타원_1595" cx="4" cy="4" r="4" class="cls-5" transform="rotate(-120 572.498 -25.295)"/>
+                <circle id="타원_1596" cx="4" cy="4" r="4" class="cls-5" transform="rotate(-120 698.498 47.451)"/>
+                <circle id="타원_1598" cx="4" cy="4" r="4" class="cls-6" transform="rotate(-90 816.314 -124.803)"/>
+                <circle id="타원_1612" cx="4" cy="4" r="4" class="cls-6" transform="rotate(-90 690.314 -250.803)"/>
+                <circle id="타원_1599" cx="4" cy="4" r="4" class="cls-5" transform="rotate(-60 894.377 -641.395)"/>
+                <circle id="타원_1600" cx="4" cy="4" r="4" class="cls-5" transform="rotate(-60 1020.377 -423.157)"/>
+                <circle id="타원_1601" cx="4" cy="4" r="4" class="cls-6" transform="translate(1050.237 494.511)"/>
+                <circle id="타원_1602" cx="4" cy="4" r="4" class="cls-6" transform="rotate(-30 1577.889 -1238.274)"/>
+            </g>
+            <g filter="url(#타원_1606)" transform="translate(321 1190)">
+                <circle id="타원_1606-2" cx="123" cy="123" r="123" fill="url(#linear-gradient-2)" transform="translate(12 12)"/>
+            </g>
+        </g>
+    </g>
+</svg>

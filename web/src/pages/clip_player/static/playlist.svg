@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="playlist" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-1{fill:#9e9e9e;stroke:#9e9e9e;stroke-width:.2px}
+        </style>
+    </defs>
+    <g id="_-_13_" data-name="- (13)" transform="translate(4 4)">
+        <path id="패스_7190" d="M234.158 115.391a.718.718 0 0 0-1.436 0v7.309a3.628 3.628 0 1 0 1.436 2.89v-.007zm-3.629 12.39a2.193 2.193 0 1 1 2.193-2.2 2.2 2.2 0 0 1-2.193 2.2z" class="cls-1" data-name="패스 7190" transform="translate(-216.038 -109.183)"/>
+        <path id="패스_7191" d="M123.54 121.508h7.716a.718.718 0 0 0 0-1.436h-7.716a.718.718 0 1 0 0 1.436z" class="cls-1" data-name="패스 7191" transform="translate(-116.942 -114.324)"/>
+        <path id="패스_7192" d="M123.54 184.422h7.716a.718.718 0 1 0 0-1.436h-7.716a.718.718 0 1 0 0 1.436z" class="cls-1" data-name="패스 7192" transform="translate(-116.942 -174.226)"/>
+        <path id="패스_7193" d="M127.29 245.9h-3.75a.718.718 0 1 0 0 1.436h3.75a.718.718 0 1 0 0-1.436z" class="cls-1" data-name="패스 7193" transform="translate(-116.942 -234.127)"/>
+        <path id="패스_7194" d="M125.744 308.813h-2.2a.718.718 0 0 0 0 1.436h2.2a.718.718 0 0 0 0-1.436z" class="cls-1" data-name="패스 7194" transform="translate(-116.942 -294.03)"/>
+        <path id="패스_7195" d="M12 0a12 12 0 1 0 12 12A11.994 11.994 0 0 0 12 0zm0 22.564A10.564 10.564 0 1 1 22.564 12 10.576 10.576 0 0 1 12 22.564z" class="cls-1" data-name="패스 7195"/>
+    </g>
+    <path id="사각형_6119" fill="none" d="M0 0H32V32H0z" data-name="사각형 6119"/>
+</svg>
