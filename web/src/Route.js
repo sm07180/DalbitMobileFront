@@ -150,7 +150,10 @@ const Router = () => {
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-        <Route exact path={["/mypage", "/mypage/:memNo"]} component={MyPage} />
+        <Route exact path="/mypage" component={MyPage} />
+        <Route exact path="/mypage/:memNo" main={MyPage}
+               render={() => <Redirect to={{ pathname: '/mypage' }} />}
+        />
         <Route exact path="/myProfile" component={Profile} />
         <Route exact path="/profile/:memNo" main={Profile}
                render={({ match}) => {

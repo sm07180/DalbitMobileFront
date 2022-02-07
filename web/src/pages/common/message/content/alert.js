@@ -64,9 +64,9 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      <button className="btnClose">
+      {/*<button className="btnClose">
         <img src={`${IMG_SERVER}/images/api/close_w_l.svg`} onClick={btnClose} />
-      </button>
+      </button>*/}
       <div className="wrap-message">
         {/* 타이틀 */}
         {__NODE_ENV === 'dev' && context.message.title && context.message.className !== 'mobile' && (
