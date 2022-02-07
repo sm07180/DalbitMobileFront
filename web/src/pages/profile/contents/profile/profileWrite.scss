@@ -66,6 +66,14 @@
           background-color:#F6F6F6;
           border-radius:16px;
         }
+        .cancelBtn {
+          @include position-top-right;
+          @include flex(center,center);
+          width:20px;height:20px;
+          line-height:18px;
+          border-radius:50%;
+          @include BGIMG("profile/insertDel.png");
+        }
       }
       .submitBtn {
         width:100%;
