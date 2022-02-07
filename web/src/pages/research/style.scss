@@ -189,7 +189,15 @@
   }
   .liveResult {
     .listRow {
+      align-items: normal;
       margin-bottom:12px;
+      .listItem:nth-child(3) {
+        margin-top: auto;
+      }
+      .title {
+        @include fontLineCut();
+        overflow: hidden;
+      }
       .photo {
         width:112px;
         height:112px;
@@ -199,6 +207,7 @@
       }
       .listContent {
         margin-left:16px;
+        padding: 5px 0;
       }
     }
   }
@@ -214,6 +223,13 @@
       }
       .listContent {
         margin-left:12px;
+        overflow: hidden;
+        .listItem {
+          margin-top: 4px;
+        }
+        .title {
+          @include fontCut();
+        }
       }
     }
   }

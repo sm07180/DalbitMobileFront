@@ -64,7 +64,7 @@ const ResultCnt = (props) => {
                     </div>                            
                     <div className="listItem">
                       <GenderItems data={list.gender} />
-                      <span className="nickNm">{list.bjNickNm}</span>
+                      <span className="nickNm">{list.nickName}</span>
                     </div>
                     <div className="listItem dataCtn">
                       <DataCnt type={"newFanCnt"} value={list.newFanCnt}/>
