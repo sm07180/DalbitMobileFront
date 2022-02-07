@@ -19,7 +19,7 @@ const Exchange = (props) => {
     <>
     <section className="doExchange">
       <button className='noticeBtn'>
-        <span>환전안내</span>
+        <span className="noticeIcon">?</span>환전이 궁금하시다면?
       </button>
       <div className="amountBox">
         <i className="iconStar"></i>

@@ -15,7 +15,7 @@ const MyAccount = (props) => {
   const {profile} = context
 
   const [accountInfo, setAccountInfo] = useState(true)
-  const [slidePop, setSlidePop] = useState(true)
+  const [slidePop, setSlidePop] = useState(false)
   const [modifySlidePop, setModifySlidePop] = useState(true)
 
   // 계좌 추가/수정
@@ -70,17 +70,17 @@ const MyAccount = (props) => {
               <div className="formBox">
                 <div className="listRow">
                   <InputItems title="예금주">
-                    <div className="text">홍길동</div>
+                    <input type="text" placeholder=""/>
                   </InputItems>
                 </div>
                 <div className="listRow">
                   <InputItems title="은행">
-                    <div className="text">광주은행</div>
+                    <div className="select">은행선택</div>
                   </InputItems>
                 </div>
                 <div className="listRow">
                   <InputItems title="계좌번호">
-                    <div className="text">222222-33-4444444</div>
+                    <input type="number" placeholder=""/>
                   </InputItems>
                 </div>
               </div>
