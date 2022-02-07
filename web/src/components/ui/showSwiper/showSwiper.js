@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
@@ -13,7 +13,7 @@ const ShowSwiper = (props) => {
     pagination: {
       el: '.showSwiper-pagination',
       type: 'fraction'
-    }
+    },
   }
 
   const clickPopClose = (e) => {
@@ -23,25 +23,38 @@ const ShowSwiper = (props) => {
     }
   }
 
+  useEffect(() => {
+    if (data.profImgList.length > 1) {
+      const swiper = document.querySelector('#popShowSwiper .swiper-container').swiper;
+      swiper.update();
+      swiper.slideTo(0);
+    }
+  }, [data]);
+
   return (
     <div id="popShowSwiper">
-      <div className="buttonGroup">
-        <button>대표 사진</button>
-        <button>삭제</button>
-      </div>
-      <Swiper {...swiperParams}>
-        <div>
-          <div className="photo">
-            <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
+      {data.profImgList.length > 1 ?
+        <Swiper {...swiperParams}>
+          {data.profImgList.map((item, index) => {
+            return (
+              <div key={index}>
+                <div className="photo">
+                  <img src={item.profImg.thumb500x500} alt="" />
+                </div>
+              </div>
+            )
+          })}
+        </Swiper>
+        : data.profImgList.length === 1 &&
+        (
+          <div>
+            <div className="photo">
+              <img src={data.profImgList[0].profImg.thumb500x500} alt="" />
+            </div>
           </div>
-        </div>
-        <div>
-          <div className="photo">
-            <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
-          </div>
-        </div>
-      </Swiper>
-      <button className='popClose' onClick={clickPopClose}></button>
+        )
+      }
+      <button className='popClose' onClick={clickPopClose} />
     </div>
   )
 }
