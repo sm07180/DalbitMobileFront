@@ -482,28 +482,6 @@ export default () => {
         const {url, info} = event.detail
         history.push(url, {...info, type: 'native-navigator'})
         break
-      case 'native-footer': //-----------------------Native navigator
-        // live, clip, rank, my
-        switch(event.detail.type) {
-          case 'live':
-            history.push('/');
-            break;
-          case 'clip':
-            history.push('/clip');
-            break;
-          case 'rank':
-            history.push('/rank');
-            break;
-          case 'my':
-            if(context.token.isLogin) {
-              history.push(`/mypage/${context.profile.memNo}`);
-            }else {
-              history.push('/login');
-            }
-            break;
-          default:
-        }
-        break
       case 'native-player-show': //---------------------Native player-show (IOS)
         //(BJ)일경우 방송하기:방송중
         if (_.hasIn(event.detail, 'auth') && event.detail.auth === 3) {
@@ -794,6 +772,20 @@ export default () => {
         context.action.updateIsMailboxOn(event.detail.isMailboxOn)
         break
 
+      case 'native-footer': // native footer 이동
+        const type = event.detail.type;
+        let pushUrl = '';
+        if(type === 'live') {
+          pushUrl = '/'
+        }else if(type === 'clip') {
+          pushUrl = '/clip'
+        }else if(type === 'search') {
+          pushUrl = '/search'
+        }else if(type === 'my') {
+          pushUrl = '/mypage'
+        }
+        history.push(pushUrl);
+        break;
       default:
         break
     }
@@ -1094,13 +1086,11 @@ export default () => {
     document.addEventListener('mailbox-state', update)
     document.addEventListener('mailbox-use-state', update)
 
-    document.addEventListener('native-footer', update) //완료
+    /* native footer */
+    document.addEventListener('native-footer', update)
+
     return () => {
       /*----native----*/
-      document.removeEventListener('native-footer', update) //완료
-
-
-
       document.addEventListener('native-push-foreground', update) //완료
       document.removeEventListener('native-navigator', update)
       document.removeEventListener('native-player-show', update)
@@ -1137,8 +1127,8 @@ export default () => {
       document.removeEventListener('mailbox-state', update)
       document.removeEventListener('mailbox-use-state', update)
 
-
-
+      /* native footer */
+      document.removeEventListener('native-footer', update)
     }
   }, [])
 

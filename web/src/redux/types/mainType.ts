@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from '../actions/main';
-import { MediaType, IImageVo, Gender, ILiveBadgeList } from './commonType';
+import { MediaType, IImageVo, Gender, ILiveBadgeList, IPaging } from './commonType';
 
 export type MainActions = ActionType<typeof actions>;
 
@@ -288,25 +288,6 @@ interface ILiveList {
   title: string;
   totalCnt: number;
   welcomMsg: string;
-}
-
-interface IPaging {
-  next: number;
-  page: number;
-  prev: number;
-  records: number;
-  total: number;
-  totalPage: number;
-}
-
-export interface ILiveListParam {
-  page: number;
-  mediaType: MediaType;
-  records: number;
-  roomType: string;
-  searchType: number;
-  gender: Gender;
-  djType: string;
 }
 
 

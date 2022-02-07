@@ -9,8 +9,7 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 import './socialList.scss'
 
 const SocialList = (props) => {
-  const {data,picture} = props
-  
+  const {profileData, list} = props
   // 스와이퍼
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -23,48 +22,60 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      <ListRow photo={data.profImg.thumb50x50}>
-        <div className="listContent">
-          <div className="nick">{data.nickNm}</div>
-          <div className="time">3시간전</div>
-        </div>
-        <button className='more'>
-          <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-          <div className="isMore">
-            <button>수정하기</button>
-            <button>삭제하기</button>
-            <button>차단/신고하기</button>
-          </div>
-        </button>
-      </ListRow>
-      <div className="socialContent">
-        <div className="text">
-          일주년 일부 방송 끝!<br/>
-          신년이기도 하고 1일이라 바쁘신 분들도 많으실텐데<br/>
-          와주신 모든 분들 너무 감사합니다!<br/>
-          내일 오후에는 정규 시간, 룰렛으로  만나요 : )
-        </div>
-        {picture &&
-          <div className="swiperPhoto">
-            <Swiper {...swiperFeeds}>
-              <div>
-                <div className="photo">
-                  <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
-                </div>
+      {list.map((item) => {
+        return (
+          <React.Fragment key={item.noticeIdx}>
+            <ListRow photo={profileData.profImg ? profileData.profImg.thumb50x50 : ""}>
+              <div className="listContent">
+                <div className="nick">{item.nickName}</div>
+                <div className="time">{item.writeDate}</div>
               </div>
-              <div>
-                <div className="photo">
-                  <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
+              <button className='more'>
+                <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+                <div className="isMore">
+                  <button>수정하기</button>
+                  <button>삭제하기</button>
+                  <button>차단/신고하기</button>
                 </div>
+              </button>
+            </ListRow>
+            <div className="socialContent">
+              <div className="text">
+                {item.contents}
               </div>
-            </Swiper>
-          </div>
-        }
-        <div className="info">
-          <DataCnt type={`${data.likeYn === " y" ? "rcvLikeCnt active" : "rcvLikeCnt"}`} value={data.rcvLikeCnt ? data.rcvLikeCnt : "123"}/>
-          <DataCnt type={"tailCnt"} value={data.tailCnt ? data.tailCnt : "123"}/>
-        </div>
-      </div>
+              {item.photoInfoList.length > 1 ?
+                <div className="swiperPhoto">
+                  <Swiper {...swiperFeeds}>
+                    {item.photoInfoList.map((photo) => {
+                      return (
+                        <div>
+                          <div className="photo">
+                            <img src={photo.profImg.thumb500x500} alt="" />
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </Swiper>
+                </div>
+                : !item.profImg.isDefaultImg ?
+                  <div className="swiperPhoto">
+                    <div className="photo">
+                      <img src={item.profImg.thumb190x190} alt="" />
+                    </div>
+                  </div>
+                  : <></>
+              }
+
+              <div className="info">
+                {/*<DataCnt type={`${list.likeYn === "y" ? "rcvLikeCnt active" : "rcvLikeCnt"}`}
+                         value={list.rcv_like_cnt ? list.rcv_like_cnt : 0}/>*/}
+                <DataCnt type={"readCnt"} value={item.readCnt ? item.readCnt : 0} />
+                <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0} />
+              </div>
+            </div>
+          </React.Fragment>
+        )
+      })}
     </div>
   )
 }

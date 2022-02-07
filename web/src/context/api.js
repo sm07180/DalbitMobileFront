@@ -1264,6 +1264,10 @@ export default class API {
     return await ajax({url: `/mypage/notice`, method: 'GET', params})
   }
 
+  static mypage_notice_sel = async (params) => {
+    return await ajax({url: `/mypage/notice/sel`, method: 'GET', params});
+  }
+
   /**
    * @breif 마이페이지 지갑 내역 조회
    * @method "GET"
