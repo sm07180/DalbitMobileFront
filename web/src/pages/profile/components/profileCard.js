@@ -8,13 +8,13 @@ import FrameItems from 'components/ui/frameItems/FrameItems'
 import './profileCard.scss'
 
 const ProfileCard = (props) => {
-  const {data} = props
+  const {data, isMyProfile, openShowSlide} = props
 
   return (
     <div className="cardWrap">
       <div className="userInfo">
-        <div className="photo">
-          <img src={data && data.profImg && data.profImg.thumb500x500} alt="" />
+        <div className="photo" onClick={openShowSlide}>
+          {data.profImg && <img src={data.profImg.thumb500x500} alt="" /> }
           <FrameItems content={data} />
         </div>
         <div className="info">
@@ -42,10 +42,12 @@ const ProfileCard = (props) => {
           <i>좋아요</i>
         </div>
       </div>
-      <div className="buttonWrap">
-        <button>선물하기</button>
-        <button className='addFan'>팬등록</button>
-      </div>
+      {!isMyProfile &&
+        <div className="buttonWrap">
+          <button>선물하기</button>
+          <button className='addFan'>팬등록</button>
+        </div>
+      }
     </div>
   )
 }

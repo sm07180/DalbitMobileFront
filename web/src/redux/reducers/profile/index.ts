@@ -57,7 +57,6 @@ const initialState: IProfileState = {
 
 const profile = createReducer<IProfileState,ProfileActions>(initialState,{
   "profile/SET_PROFILE_DATA": (state, {payload}) => {
-    console.log("SET_PROFILE_DATA state:", state)
     console.log("SET_PROFILE_DATA payload:", payload)
     return {...payload}
   }
