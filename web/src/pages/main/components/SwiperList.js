@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
@@ -17,6 +17,14 @@ const SwiperList = (props) => {
   }
 
   const goProfile = memNo => history.push(`/profile/${memNo}`);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      const swiper = document.querySelector('.top10 .swiper-container').swiper;
+      swiper.update();
+      swiper.slideTo(0);
+    }
+  }, [data]);
 
   return (
     <>

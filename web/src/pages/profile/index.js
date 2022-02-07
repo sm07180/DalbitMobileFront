@@ -16,7 +16,7 @@ import ClipSection from './contents/profile/clipSection'
 
 import './index.scss'
 import {useDispatch, useSelector} from "react-redux";
-import {setProfileData} from "redux/actions/profile";
+import {setProfileData, setProfileFeedData} from "redux/actions/profile";
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const socialTabmenu = ['피드','팬보드','클립']
@@ -36,13 +36,13 @@ const Profile = () => {
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
+  const feedData = useSelector(state => state.feed);
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
     let targetMemNo = params.memNo ? params.memNo : context.profile.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
-      console.log('res', res);
       if(res.code === '0') {
         dispatch(setProfileData(res.data))
       }else {
@@ -53,6 +53,35 @@ const Profile = () => {
       }
     })
   };
+
+  /* 피드 데이터 호출 */
+  const getFeedData = () => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      pageNo: 1,
+      pagePerCnt: 9999,
+      topFix: 0,
+    }
+    Api.mypage_notice_sel(apiParams).then(res => {
+      if (res.result === 'success') {
+        const data = res.data;
+        dispatch(setProfileFeedData({
+          feedList: data.list,
+          fixCnt: data.fixCnt,
+          paging: data.paging,
+          scrollPaging: {
+            ...feedData.scrollPaging,
+            pageNo: 1,
+            currentCnt: data.list.length,
+          }
+        }));
+      } else {
+        context.action.alert({
+          msg: message
+        })
+      }
+    })
+  }
 
   /* 프로필 이동 */
   const goProfile = memNo => {
@@ -74,9 +103,15 @@ const Profile = () => {
     setShowSlide({...showSlide, open:true})
   }
 
+  /* 프로필 상단 데이터 */
   useEffect(() => {
     getProfileData();
   }, [history.location.pathname]);
+
+  /* 피드 데이터 */
+  useEffect(() => {
+    getFeedData();
+  }, [])
 
   useEffect(() => {
     setIsMyProfile(!params.memNo);
@@ -114,9 +149,9 @@ const Profile = () => {
               <TabBtn param={param} key={index} />
             )
           })}
-          <button>등록</button>
+          {isMyProfile && <button>등록</button>}
         </ul>
-        {socialType === socialTabmenu[0] && <FeedSection data={profileData} />}
+        {socialType === socialTabmenu[0] && <FeedSection profileData={profileData} feedData={feedData} />}
         {socialType === socialTabmenu[1] && <FanboardSection data={profileData} />}
         {socialType === socialTabmenu[2] && <ClipSection data={profileData} />}
 

@@ -13,10 +13,17 @@ const ProfileCard = (props) => {
   return (
     <div className="cardWrap">
       <div className="userInfo">
-        <div className="photo" onClick={openShowSlide}>
-          {data.profImg && <img src={data.profImg.thumb500x500} alt="" /> }
-          <FrameItems content={data} />
-        </div>
+        {data.profImg && (data.profImg.isDefaultImg ?
+            <div className="photo">
+              <img src={data.profImg.thumb500x500} alt="" />
+              <FrameItems content={data} />
+            </div>
+            :
+            <div className="photo" onClick={openShowSlide}>
+              <img src={data.profImg.thumb500x500} alt="" />
+              <FrameItems content={data} />
+            </div>
+        )}
         <div className="info">
           <div className="item">
             <LevelItems data={data.level} />

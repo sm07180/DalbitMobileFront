@@ -1,6 +1,6 @@
 import { ActionType } from 'typesafe-actions';
 import * as actions from '../actions/profile';
-import { Gender, IImageVo, ILiveBadgeList } from "./commonType";
+import { Gender, IImageVo, ILiveBadgeList, IPaging } from "./commonType";
 
 export type ProfileActions = ActionType<typeof actions>;
 
@@ -49,6 +49,20 @@ interface IFanBadgeData {
   chatImgWidth: number;
   chatImgHeight: number;
   badgeCnt: number;
+}
+
+interface IFeedData {
+  contents: string;
+  imagePath: string;
+  isTop: boolean;
+  nickNm: string;
+  noticeIdx: number;
+  profImg: IImageVo | null;
+  readCnt: number;
+  replyCnt: number;
+  title: string;
+  writeDt: string;
+  writeTs: number;
 }
 
 /* 프로필 상단 데이터 */
@@ -104,4 +118,16 @@ export interface IProfileState {
   specialDjCnt: number;
   starCnt: number;
   wasSpecial: boolean;
+}
+
+/* 피드 */
+export interface IProfileFeedState {
+  feedList: Array<IFeedData>,
+  fixCnt: number;
+  paging: IPaging,
+  scrollPaging: {
+    pageNo: number;
+    pagePerCnt: number;
+    currentCnt: number;
+  }
 }

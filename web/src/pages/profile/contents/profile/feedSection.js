@@ -1,5 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, {useContext} from 'react'
 import {Context} from 'context'
 
 import Swiper from 'react-id-swiper'
@@ -7,6 +6,8 @@ import Swiper from 'react-id-swiper'
 import SocialList from '../../components/SocialList'
 
 const FeedSection = (props) => {
+  const { profileData, feedData } = props;
+  const { feedList, fixCnt, scrollPaging } = feedData;
   //context
   const context = useContext(Context)
   const {token, profile} = context
@@ -20,130 +21,36 @@ const FeedSection = (props) => {
 
   return (
     <div className="feedSection">
+      {fixCnt > 0 &&
       <div className="fixFeed">
         <div className="title">
-          <div className="text">{data.nickNm}님이 고정함</div>
+          <div className="text">{profileData.nickNm}님이 고정함</div>
           <button>더보기</button>
         </div>
         <Swiper {...swiperParams}>
-          <div>
-            <div className="feedBox">
-              <div className="text">하단 thumb이 있을때 두번째 줄까지 말줄임합니다. ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
+          {feedList.map((item, index) => {
+            if(fixCnt <= index) return <></>;
+            return (
+              <div key={item.noticeIdx}>
+                <div className="feedBox">
+                  <div className={`text ${item.profImg.path ? '' : 'add'}`}>{item.contents}</div>
+                  <div className="info">
+                    <span className="time">{item.writeDate}</span>
+                    {item.profImg.path &&
+                      <div className="thumb">
+                        <img src={item.profImg.thumb50x50} alt="" />
+                        <span className="count">${`+${item.photoInfoList.length}`}</span>
+                      </div>
+                    }
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className={`text ${true ? 'add' : ''}`}>하단 thumb이 없을때 4번째줄까지 나와야합니다. 희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="feedBox">
-              <div className="text">희희희ㅣㅇ 오늘은 휴방입니다 ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ...</div>
-              <div className="info">
-                <span className="time">3시간 전</span>
-                <div className="thumb">
-                  <img src={data && data.profImg && data.profImg.thumb50x50} alt="" />
-                  <span className="count">+3</span>
-                </div>
-              </div>
-            </div>
-          </div>
+            )
+          })}
         </Swiper>
       </div>
+
+      }
       <SocialList data={data} picture={true}/>
     </div>
   )
