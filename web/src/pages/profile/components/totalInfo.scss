@@ -4,11 +4,39 @@
   padding: 16px 16px 20px;
   border-bottom:8px solid #F2F2F2;
   .badgeInfo {
-    @include flex(center);
+    @include flex(flex-start);
     height:20px;
     margin-bottom:16px;
+    padding:1px 0;
     @include font(11px);
-    background-color:#eee;
+    overflow:hidden;
+    &.isOpen {
+      height:auto;
+    }
+    .title {
+      flex-shrink: 0;
+      width:20px;
+      height:20px;
+      text-indent:-99999px;
+      @include BGIMG("/profile/badge_icon.png");
+    }
+    .badgeGroup {
+      flex:1;
+      @include flex(center);
+      flex-wrap:wrap;
+      .badge {
+        display: inline-block;
+        margin:1px 4px;
+        padding:0 12px;
+        background-color:gold;
+      }
+    }
+    button {
+      flex-shrink: 0;
+      width:20px;height:20px;
+      text-indent:-99999px;
+      @include BGIMG("profile/drop_down_icon.png");
+    }
   }
   .rankInfo {
     @include flex;
@@ -19,7 +47,7 @@
       height:58px;
       margin-right:5px;
       padding: 12px 10px 12px 8px;
-      border-radius:5px;
+      border-radius:16px;
       background-color: #F8F8F8;
       &:last-child {
         flex-grow: 0;
@@ -56,11 +84,11 @@
         }
         .badge {
           @include position-top-left(-3px,-3px);
-          width:16px;
-          height:16px;
+          width:18px;
+          height:18px;
           line-height:14px;
-          @include border(white,50%);
-          background-color:black;
+          @include border(white,50%,2px);
+          background-color:#FE3C7B;
           text-align:center;
           @include font(10px,500,white);
         }
@@ -69,8 +97,11 @@
   }
   .comment {
     .title {
+      height:16px;
       margin-bottom:4px;
-      @include font(12px);
+      img {
+        height:100%;
+      }
     }
     .text {
       letter-spacing: -1px;

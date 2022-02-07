@@ -1,0 +1,33 @@
+@import "components/ui/_mixin.scss";
+
+#setting #title {
+  section {
+    position: relative;
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    padding:0 16px;
+    margin-bottom: 30px;
+    &.titleInpuBox {
+      padding-top:15px;
+    }
+    .topText {
+      width: 100%;
+      @include font(13px, 400, #666666);
+      margin-bottom: 6px;
+    }      
+    .sectionTitle {
+      width: 100%;
+      @include font(20px, 500, #202020);
+      margin-bottom: 10px;
+      .point {
+        margin-left: 4px;
+        @include font(20px, 500, #FF3C7B);
+      }
+    }
+    .radioWrap {
+      position: relative;
+      @include flex(flex-start, flex-start, column);
+      width: 100%;        
+    }
+  }
+}

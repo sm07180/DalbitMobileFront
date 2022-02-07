@@ -20,9 +20,9 @@ const InputItems = (props) => {
         {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
-            <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+            <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               {children}
-            </div>
+            </label>
             {button &&
               <button type="button" className='inputBtn' onClick={onClick}>{button}</button>
             }
@@ -30,9 +30,9 @@ const InputItems = (props) => {
           </>
         }
         {type === 'textarea' &&
-          <div className="textareaBox">
+          <label className="textareaBox" onFocus={onFocus} onBlur={onBlur}>
             {children}
-          </div>
+          </label>
         }
       </div>
     </>

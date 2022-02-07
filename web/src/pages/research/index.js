@@ -7,9 +7,9 @@ import CntTitle from 'components/ui/cntTitle/CntTitle'
 import InputItems from 'components/ui/inputItems/InputItems'
 // component
 import SwiperList from './components/swiperList'
-import SearchHistory from './components/searchHistory'
-import SearchResult from './components/searchResult'
 // contents
+import SearchHistory from './contents/searchHistory'
+import SearchResult from './contents/searchResult'
 // scss
 import './style.scss'
 

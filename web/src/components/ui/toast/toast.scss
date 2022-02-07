@@ -16,7 +16,9 @@
     animation: toastDown 0.2s linear forwards;
   }
   p {
+    text-align: center;
     @include font(16px, 400, #fff);
+    white-space: pre;
   }  
 }
 @keyframes toastUp {
