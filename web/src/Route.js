@@ -33,6 +33,7 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -169,6 +170,9 @@ const Router = () => {
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
+        
+        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />

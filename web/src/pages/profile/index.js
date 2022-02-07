@@ -3,8 +3,10 @@ import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 
 import Api from 'context/api'
+// global components
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
+import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
@@ -33,6 +35,7 @@ const Profile = () => {
   const [showSlide, setShowSlide] = useState({open: false});
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
+  const [popSlide, setPopSlide] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -69,6 +72,11 @@ const Profile = () => {
     }
   }
 
+  /* 헤더 더보기 버튼 클릭 */
+  const openMoreList = () => {
+    setPopSlide(true)
+  }
+
   /* 프로필 사진 확대 */
   const openShowSlide = () => {
     setShowSlide({...showSlide, open:true})
@@ -82,6 +90,9 @@ const Profile = () => {
     setIsMyProfile(!params.memNo);
   }, []);
 
+  // 임시 변수
+  let isIos = true
+
   // 페이지 시작
   return (
     <div id="myprofile" ref={myprofileRef}>
@@ -89,6 +100,11 @@ const Profile = () => {
         {isMyProfile &&
           <div className="buttonGroup">
             <button className='editBtn'>수정</button>
+          </div>
+        }
+        {!isMyProfile &&
+          <div className="buttonGroup">
+            <button className='moreBtn' onClick={openMoreList}>더보기</button>
           </div>
         }
       </Header>
@@ -122,6 +138,16 @@ const Profile = () => {
 
         {showSlide.open === true && <ShowSwiper data={profileData} popClose={setShowSlide} />}
       </section>
+      {popSlide &&
+        <PopSlide setPopSlide={setPopSlide}>
+          <section className='profileMore'>
+            <div className="moreList">메세지</div>
+            <div className="moreList">방송 알림 OFF</div>
+            {isIos && <div className="moreList">팬 취소하기</div>}
+            <div className="moreList">차단/신고</div>
+          </section>
+        </PopSlide>
+      }
     </div>
   )
 }
