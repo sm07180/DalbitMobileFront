@@ -56,13 +56,15 @@ const Profile = () => {
 
   /* 프로필 이동 */
   const goProfile = memNo => {
-    if(isMyProfile) {
-      if(context.profile.memNo !== memNo) {
-        history.push(`/profile/${memNo}`)
-      }
-    }else {
-      if(params.memNo !== memNo) {
-        history.push(`/profile/${memNo}`)
+    if(memNo) {
+      if(isMyProfile) {
+        if(context.profile.memNo !== memNo) {
+          history.push(`/profile/${memNo}`)
+        }
+      }else {
+        if(params.memNo !== memNo) {
+          history.push(`/profile/${memNo}`)
+        }
       }
     }
   }

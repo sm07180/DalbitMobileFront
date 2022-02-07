@@ -37,16 +37,20 @@ const TotalInfo = (props) => {
             })}
           </div>
         </div>
-        {data.cupidProfImg &&
-          <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
-            <div className="title">
-              <img src={`${IMG_SERVER}/mypage/dalla/infoTitle-2.png`} alt="" />
-            </div>
-            <div className="photo">
-              <img src={data.cupidProfImg.thumb62x62} alt="" />
-            </div>
+        <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
+          <div className="title">
+            <img src={`${IMG_SERVER}/mypage/dalla/infoTitle-2.png`} alt="" />
           </div>
-        }
+          {data.cupidProfImg && data.cupidProfImg.path ?
+            <div className="photo">
+              <img src={data.cupidProfImg.thumb62x62} alt=""/>
+            </div>
+            :
+            <div className="photo">
+              <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+            </div>
+          }
+        </div>
       </div>
       <div className="comment">
         <div className="title">COMMENT</div>
