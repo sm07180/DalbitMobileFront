@@ -9,6 +9,7 @@ import Header from 'components/ui/header/Header'
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 import PopSlide from 'components/ui/popSlide/PopSlide'
+import LayerPopup from 'components/ui/layerPopup/LayerPopup'
 // components
 import Tabmenu from './components/Tabmenu'
 import ChartSwiper from './components/ChartSwiper'
@@ -24,7 +25,7 @@ const RankPage = () => {
   const dayTabmenu = ['FAN','LOVER']
 
   const [popSlide, setPopSlide] = useState(false)
-  const [popupOpen, setPopupOpen] = useState(false)
+  const [popup, setPopup] = useState(false)
   const [select , setSelect] = useState("today")
   const [daySetting , setDaySetting] = useState("")
   const [timeDjRank, setTimeDjRank] = useState([])
@@ -118,7 +119,7 @@ const RankPage = () => {
   }
 
   const criteriaPop = () => {
-    setPopupOpen(true);
+    setPopup(true);
   }
 
   // 페이지 시작
@@ -198,9 +199,36 @@ const RankPage = () => {
           </div>
         </PopSlide>      
       }
-      {popupOpen &&
-        <>
-        </>
+      {popup &&
+        <LayerPopup setPopup={setPopup}>
+          <div className='popTitle'>선정 기준</div>
+          <div className='standardWrap'>
+            <div className='standardList'>
+              <div className='popSubTitle'>DJ 랭킹</div>
+              <div className='popText'>
+                받은 별, 청취자 수, 받은 좋아요<br/>
+                (부스터 포함)의 종합 순위입니다.
+              </div>
+            </div>
+            <div className='standardList'>
+              <div className='popSubTitle'>DJ 랭킹</div>
+              <div className='popText'>
+                받은 별, 청취자 수, 받은 좋아요<br/>
+                (부스터 포함)의 종합 순위입니다.
+              </div>
+            </div>
+            <div className='standardList'>
+              <div className='popSubTitle'>DJ 랭킹</div>
+              <div className='popText'>
+                받은 별, 청취자 수, 받은 좋아요<br/>
+                (부스터 포함)의 종합 순위입니다.
+              </div>
+            </div>
+          </div>
+          <div className='popInfo'>
+            <span>CUPID</span>(큐피드)는 랭커로부터 가장 많은<br/>좋아요 (부스터 포함)를 받은 유저입니다.
+          </div>
+        </LayerPopup>
       }
     </div>      
   )
