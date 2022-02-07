@@ -4,10 +4,10 @@ import React, {useState, useEffect} from 'react'
 import './radioList.scss'
 
 const RadioList = (props) => {
-  const {title, clickEvent} = props
+  const {title, listIndex, clickEvent} = props
 
   return (
-    <label className='radioList' onClick={clickEvent}>
+    <label className='radioList' data-target-index={listIndex} onClick={clickEvent}>
       <div className='titleWrap'>
         <span className='title'>{title}</span>
       </div>

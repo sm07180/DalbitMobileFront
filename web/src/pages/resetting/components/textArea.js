@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from 'react'
 
 // global components
+import InputItems from 'components/ui/inputItems/InputItems'
+// css
 import './textArea.scss'
 
 const TextArea = (props) => {
-  const { max, list, setList, select, setSelect } = props;
+  const { list, setList, select, setSelect } = props;
   const [valueCount, setValueCount] = useState(0);
   const [textvalue, setTextValue] = useState("");
-  const [textareaState, setTextareaState] = useState("default");
+  const [textareaState, setTextareaState] = useState("");
 
+  let max = 20
   const textChange = (e) => {
     let textVal = e.target.value;
     if(textVal.length > max) {      
@@ -18,14 +21,6 @@ const TextArea = (props) => {
       setTextValue(textVal);
     } 
   }
-
-  const focusIn = () => {
-    setTextareaState("focus")
-  }
-
-  const focusOut = () => {
-    setTextareaState("default")
-  }
   
   const disable = () => {
     setTextareaState("disable")
@@ -33,48 +28,41 @@ const TextArea = (props) => {
 
   const submit = () => {
     if(list.length < 3){
-      document.querySelector('textarea[name="textarea"]').value = "";
-      setValueCount(0);
       setList(list.concat(textvalue))
+      setTextValue("");
+      setValueCount(0);
     } else {
       disable();
-    }    
+    }
   }
 
   const removeList = () => {
-    let textAreaValue = document.querySelector('textarea[name="textarea"]').value;
-    let selectIndex = list.indexOf(textAreaValue);
-    setList(list.splice(selectIndex));
-
-    document.querySelector('input[name="radioBox"]:checked').parentNode.parentNode.remove();
-    document.querySelector('textarea[name="textarea"]').value = "";    
-    
     setSelect({
       state: false,
       val: "",
+      index:-1,
     });
-
+    setList(list.splice(select.index));
   }
   
   useEffect(() => {
-    document.querySelector('textarea[name="textarea"]').value = select.val;
-  }, [select])
+    console.log(list);
+  }, [list])
 
   return (
-    <div className='inputTextArea'>
-      <div className={`textSection ${textareaState && textareaState}`}>
-        <textarea
+    <div className={`inputTextArea ${textareaState}`}>
+      <InputItems type="textarea">
+        <input
+          type="text"
           placeholder='내용을 입력해주세요.'
           onChange={textChange}
-          onBlur={focusOut}
-          onFocus={focusIn}
-          name='textarea'
+          value={textvalue}
         />
         <div className='textCount'>
           <span>{valueCount}</span>
           <span>/{max}</span>
         </div>
-      </div>
+      </InputItems>
       <div className='btnSection'>
         <div className='leftBtn'>
           {select.state && <button className='deleteBtn'onClick={removeList}>삭제</button>}
