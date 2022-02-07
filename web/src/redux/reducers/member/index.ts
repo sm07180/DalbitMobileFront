@@ -5,7 +5,7 @@ export const initialState:MemberState = {
   data : null,
   isLogin : false,
   authToken : "",
-  memNo : 0
+  memNo : ""
 }
 
 const member = createReducer<MemberState,MemberActions>(initialState,{

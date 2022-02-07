@@ -1730,7 +1730,7 @@ export class ChatSocketHandler {
                     const player = document.getElementById("local-player");
                     let msgYn = false; // 메시지 표출 여부 값;
                     
-                    if (!noticeDisplay) return;
+                    if (!noticeDisplay) return null;
                     noticeDisplay.innerHTML = ''; // 기존 알림 삭제
 
                     // 영상 소리 제거, 화면 제거 또는 살리기
@@ -1751,7 +1751,7 @@ export class ChatSocketHandler {
                     }
 
                     // 영상 OFF일때 메시지 삭제
-                    if (reqRoomState.mediaOn) return;
+                    if (reqRoomState.mediaOn) return null;
                     
                     // 새로운 알림 DOM 생성 및 이벤트 부여
                     elem.id = "isMediaNotice";

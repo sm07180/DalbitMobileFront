@@ -475,7 +475,7 @@ export default function GNB() {
                   sessionStorage.setItem("isBeforeMailbox", "N");
                   if (baseData.isLogin === true) {
                     if (alarmMoveUrl === "") {
-                      history.push(`/alarm`);
+                      history.push('/menu/alarm');
                     } else {
                       history.push(`${alarmMoveUrl}`);
                     }

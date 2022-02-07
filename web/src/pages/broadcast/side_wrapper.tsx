@@ -14,7 +14,7 @@ import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // content
 import ChatSide from "./content/chat_side";
-import LeftSide from "./content/left_side";
+// import LeftSide from "./content/left_side";
 import RightSide from "./content/right_side";
 import Agora from "./content/left_side_agora"
 

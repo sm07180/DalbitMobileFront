@@ -27,7 +27,7 @@ import {getMemberProfile} from "redux/actions/member";
 import {getArgoraRtc, getWowzaRtc} from "common/realtime/rtc_socket";
 import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
-import {getProfile, getTokenAndMemno, postAdmin} from "common/api";
+import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
 import {isDesktop} from "lib/agent";
 import Navigation from "components/ui/navigation/Navigation";
@@ -93,7 +93,7 @@ const baseSetting = async (globalCtx, broadcastAction) => {
       ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
           ? JSON.parse(sessionAgoraRtc) : undefined;
 
-  if(sessionRtc?.roomInfo?.bjMemNo === memNo){
+  if(sessionRtc?.roomInfo?.bjMemNo === globalState.baseData.memNo){
     if(!globalState.rtcInfo){
       if (sessionWowzaRtc !== null) {
         const data = JSON.parse(sessionWowzaRtc);
@@ -119,6 +119,7 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 
 import './styles/navigation.scss'
 
+let alarmCheckIntervalId = 0;
 const App = () => {
   const { mailboxAction } = useContext(MailboxContext);
   const { broadcastAction } = useContext(BroadcastContext);
@@ -136,6 +137,7 @@ const App = () => {
   const {
     chatInfo,
     mailChatInfo,
+    alarmStatus,
   } = globalCtx.globalState;
 
   const isJsonString = (str) => {
@@ -343,6 +345,7 @@ const App = () => {
       }
       if(isDesktop()){
         baseSetting(globalCtx, broadcastAction);
+        globalCtx.globalAction?.setAlarmStatus?.(false);
       }
       //모든 처리 완료
     } else {
@@ -378,6 +381,41 @@ const App = () => {
       })
     }
   }
+
+  useEffect(() => {
+    async function alarmCheck() {
+      let memNoParams = memberRdx.memNo ? memberRdx.memNo : "";
+      const { result, data, message } = await getMypageNew({
+        data: memNoParams,
+      });
+      if (result === "success") {
+        if (data.newCnt > 0) {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          globalCtx.globalAction.setAlarmStatus?.(true);
+          globalCtx.globalAction.setAlarmMoveUrl?.(data.moveUrl);
+        } else {
+          if (alarmCheckIntervalId) {
+            clearInterval(alarmCheckIntervalId);
+          }
+          alarmCheckIntervalId = setInterval(alarmCheck, 60000);
+          globalCtx.globalAction.setAlarmStatus?.(false);
+          globalCtx.globalAction.setAlarmMoveUrl?.("");
+        }
+      }
+    }
+
+    if(isDesktop()) {
+      if (memberRdx.isLogin === true) {
+        alarmCheck();
+      } else {
+        globalCtx.globalAction.setAlarmStatus?.(false);
+        globalCtx.globalAction.setAlarmMoveUrl?.("");
+      }
+    }
+    return () => {};
+  }, [memberRdx.isLogin, alarmStatus]);
 
   useEffect(()=>{
     if(memberRdx.isLogin && memberRdx.data !== null){

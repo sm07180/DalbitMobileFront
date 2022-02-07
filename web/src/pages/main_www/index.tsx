@@ -424,7 +424,7 @@ export default function Main() {
       switch (type) {
         case "alarm":
           if (globalState.alarmMoveUrl === "") {
-            history.push(`/alarm`);
+            history.push('/menu/alarm');
           } else {
             history.push(`${globalState.alarmMoveUrl}`);
           }
