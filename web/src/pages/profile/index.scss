@@ -14,6 +14,9 @@
         &.editBtn {
           @include BGIMG('common/header/icoEdit-b.png');
         }
+        &.moreBtn {
+          @include BGIMG('common/header/icoMore-b.png');
+        }
       }
     }
   }
@@ -31,21 +34,11 @@
         }
       }
       button {
-        width:52px;
-        height:30px;
-        line-height:30px;
+        width:40px;
+        height:40px;
         margin-left:auto;
-        letter-spacing: -1px;
-        white-space: nowrap;
-        text-align:center;
-        @include font(13px,400,#666);
-        &:before {
-          display:inline-block;
-          content:"+";
-          line-height:1.1;
-          margin-right:2px;
-          font-size:16px;
-        }
+        text-indent:-9999px;
+        @include BGIMG("profile/sectionEdit.png");
       }
     }
     .feedSection {
@@ -69,7 +62,7 @@
               content:"";
               width:18px;
               height:18px;
-              background:url("#{$IMGSERVER}/mypage/dalla/bookmark.png") center/cover no-repeat;
+              @include BGIMG("profile/bookmark.png");
             }
           }
           button {
@@ -243,6 +236,19 @@
             }
           }
         }
+      }
+    }
+  }
+  #popSlide {
+    .profileMore {
+      @include flex($fd:column);
+      width:100%;
+      padding:20px 0 32px;
+      .moreList {
+        flex:1;
+        line-height:55px;
+        text-align:center;
+        @include font(16px,400,#202020);
       }
     }
   }

@@ -1,0 +1,51 @@
+@import "components/ui/_mixin.scss";
+
+#layerPop {  
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  @include flex(center, center, column);
+  background: rgba(0, 0, 0, 0.7);
+  z-index: $POPUP-ZINDEX;
+  .popLayer {
+    position: relative;
+    @include flex(flex-start, flex-start, column);
+    .popContent {
+      @include flex(center, center, column);
+      width: 312px; min-height: 175px;
+      padding: 16px 16px 30px;
+      border-radius: 24px;
+      background: #fff;
+      box-sizing: border-box;
+      flex: 1;      
+    }
+    .closeWrap {
+      @include flex(center);
+      width: 100%;
+      margin-top: 20px;
+      .dontShowLabel {
+        flex: 1;
+        position: relative;
+        @include flex(center, center);
+        width: 100%;
+        .dontShow {
+          position: absolute;
+          left: 0; top: 0;
+          width: 0px; height: 0px;
+        }
+        .dontShowBtn {
+          flex: 1;
+          @include flex(center, center);
+          @include font(16px, 500, #FFFFFF);             
+        }
+      }
+      .close {
+        flex: 1;
+        @include flex(center, center);
+        @include font(16px, 500, #FFFFFF);        
+      }
+    }
+  }
+}

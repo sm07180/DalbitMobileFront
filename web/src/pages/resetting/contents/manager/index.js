@@ -5,33 +5,17 @@ import Api from 'context/api'
 
 // global components
 import Header from 'components/ui/header/Header'
-import ListRow from 'components/ui/listRow/ListRow'
-import GenderItems from 'components/ui/genderItems/GenderItems'
-import InputItems from 'components/ui/inputItems/InputItems'
 
 // components
-import Tabmenu from '../../components/Tabmenu.js'
-import FilterBtn from '../../components/FilterBtn.js'
+import Tabmenu from '../../components/Tabmenu'
+import FilterBtn from '../../components/FilterBtn'
+import SettingList from '../../components/SettingList'
 
 import '../../style.scss'
 import './manager.scss'
 
-const tabmenu = ['관리', '등록'] 
-const searchList = [
-  {
-    nickNm: '달사랑해',
-    memId: 'hgehdms9512'
-  },
-  {
-    nickNm: '달사랑해2',
-    memId: 'hgehdms95122'
-  },
-  {
-    nickNm: '달사랑해3',
-    memId: 'hgehdms95123'
-  },
-]
-const filter= ['전체','닉네임','ID']
+const tabmenu = ['관리', '등록']
+const filter = ['전체','닉네임','ID']
 
 const SettingManager = () => {
   const [tabType, setTabType] = useState(tabmenu[0])
@@ -63,20 +47,10 @@ const SettingManager = () => {
               {managerList.length > 0 ? (
                 <>
                   {managerList.map((item, index)=>{
-                    const {nickNm, memId, profImg} = item
                     return(
-                      <ListRow photo={profImg.thumb80x80} key={index}>
-                        <div className="listInfo">
-                          <div className="listItem">
-                            <GenderItems/>
-                            <span className="nickNm">{nickNm}</span>
-                          </div>
-                          <div className="listItem">
-                            <span className="memId">{memId}</span>
-                          </div>
-                        </div>
+                      <SettingList data={item} key={index}>
                         <button className="delete">해제</button>
-                      </ListRow>
+                      </SettingList>
                       )
                   })}
                 </>
@@ -100,22 +74,13 @@ const SettingManager = () => {
               <div>검색 결과<span>1</span></div>
             </section>
             <section className="listWrap">
-              {searchList.length > 0 ? (
+              {managerList.length > 0 ? (
                 <>
-                  {searchList.map((list, index)=>{
+                  {managerList.map((list, index)=>{
                     return(
-                      <ListRow key={index}>
-                        <div className="listInfo">
-                          <div className="listItem">
-                            <GenderItems/>
-                            <span className="nickNm">{list.nickNm}</span>
-                          </div>
-                          <div className="listItem">
-                            <span className="memId">{list.memId}</span>
-                          </div>
-                        </div>
+                      <SettingList data={list} key={index}>
                         <button className="add">등록</button>
-                      </ListRow>
+                      </SettingList>
                       )
                   })}
                 </>

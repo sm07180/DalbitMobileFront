@@ -52,11 +52,9 @@
     margin-bottom:12px;
     padding:0 16px;
     .selectBox{
-      font-size:15px;
-      font-weight:400;
       button {
         @include flex(center);
-        @include font(14px,bold);
+        @include font(15px,400);
         .arrowDownIcon{
           @include BGIMG('mypage/dalla/drop_down_icon.png');
           width: 20px;
@@ -136,11 +134,18 @@
     position:relative;
     padding: 0 16px 30px;
     .noticeBtn {
-      width:68px;
-      height:26px;
+      @include flex(center);
       margin-bottom:16px;
-      @include font(12px);
-      @include border(#d6d6d6, 100px);
+      @include font(12px,400,#303030);
+      .noticeIcon{
+        @include flex(center,center);
+        width: 20px;
+        height: 20px;
+        @include font(11px,500,#fff);
+        background: #666;
+        border-radius: 100%;
+        margin-right: 4px;
+      }
     }
     .amountBox {
       @include flex(center);
@@ -248,7 +253,7 @@
         height: 48px;
         margin-right: 8px;
         letter-spacing: -0.5px;
-        @include font(16px, 600 , #FF3C7B);
+        @include font(16px, 500 , #FF3C7B);
         @include border(#FF3C7B, 16px);
         &:last-child{margin-right: 0;}
         &.exchange{
@@ -382,7 +387,7 @@
               display: inline-block;
               width:20px;height:20px;
               margin-left:auto;
-              background-color:red;
+              @include BGIMG('wallet/ico_arrowDown.png')
             }
           }
           .value {
@@ -546,7 +551,7 @@
     .title {
       line-height: 48px;
       text-align: center;
-      @include font(18px,bold);
+      @include font(16px,bold,#202020);
     }
     .listWrap {
       width:100%;

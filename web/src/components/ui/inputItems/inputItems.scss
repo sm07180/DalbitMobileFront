@@ -88,6 +88,10 @@
     @include border(#E2E2E2,16px);
     background-color:white;
     overflow: hidden;
+    &.focus {
+      border-color:#FF3C7B;
+      background-color:white;
+    }
     textarea {
       width:100%;
       @include font(15px,400,#202020);

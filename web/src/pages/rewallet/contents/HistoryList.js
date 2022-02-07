@@ -40,8 +40,10 @@ const HistoryList = (props) => {
       <section className='listWrap'>
         <div className="listRow">
           <div className="listContent">
-            <div className="historyText">굿스타트 이벤트 2위</div>
-            <div className="historyDate">22.01.03</div>
+            <div className="listItem">
+              <div className="historyText">굿스타트 이벤트 2위</div>
+              <div className="historyDate">22.01.03</div>
+            </div>
           </div>
           <div className="quantity">+{Utility.addComma(7000)}</div>
         </div>
@@ -73,7 +75,7 @@ const HistoryList = (props) => {
             <div className='title'>달 사용/획득</div>
             <div className="listWrap">
               <div className="listAll">
-                <CheckList text="전체">
+                <CheckList text="전체내역">
                   <input type="checkbox" className="blind" name="checkListAll" />&nbsp;
                   ({Utility.addComma(1100)}건)
                 </CheckList>

@@ -8,10 +8,11 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
 $HEADER-HEIGHT: 48px;
 
 // z-inde 관리
+$ALERT-ZINDEX: 90000;
+$POPUP-ZINDEX: 30000;
 $NAVIGATION-ZINDEX: 10000;
 $HEADER-ZINDEX: 10000;
-$POPUP-ZINDEX: 30000;
-$ALERT-ZINDEX: 90000;
+$MORE-ZINDEX: 5000;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -242,7 +243,7 @@ $ALERT-ZINDEX: 90000;
           @include font(15px,500,black);
         }
         .point{
-          color:#FF3C7B;
+          @include font(15px,500,#FF3C7B);
         }
       }
     }

@@ -3,6 +3,7 @@
 .searchResultWrap {
   padding:0 16px;
   .listRow {
+    @include flex(center);
     width: 100%;
     &:last-child {
       margin-bottom: 0px;

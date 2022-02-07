@@ -50,12 +50,11 @@ const TopSwiper = (props) => {
             </div>
           </div>
           :
-          /* default 이미지 필요 */
           <div
             style={{
               width:'100%',
               height:'360px',
-              backgroundImage: `url("https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?490x360"`
+              // backgroundImage: `url("https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?490x360"`
             }}
           />
       }

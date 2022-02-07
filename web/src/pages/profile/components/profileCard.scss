@@ -30,11 +30,13 @@
         }
       }
       .info {
+        min-width:0;
         .item {
           @include flex(center);
           letter-spacing: -1px;
           .nick {
             @include font(17px,500,black);
+            @include fontCut;
           }
           .userid {
             letter-spacing: -.5px;
