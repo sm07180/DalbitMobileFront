@@ -449,15 +449,31 @@ export default function LeftSideAgora(props: {
   useEffect(() => {
     animationCount = 0;
     animationQueue = [];
-    if (roomNo && roomInfo !== null && chatInfo !== null) {
-      // rtc listener init logic
-      if (rtcInfo === null && roomOwner === false) {
-        broadcastPlayAsListener();
-      } else if (
-        chatInfo !== null &&
-        rtcInfo !== null &&
-        rtcInfo.userType === UserType.LISTENER
-      ) {
+    resetAnimation();
+
+    if (!roomNo || !roomInfo || !chatInfo) {
+      return;
+    }
+
+    if(!roomOwner){
+      if (!rtcInfo) {
+        if(roomInfo.platform === "wowza"){
+          broadcastPlayAsListener();
+        }else{
+          if(!roomInfo.agoraToken){
+            console.log(`left_side_agora not found agoraToken`)
+            return;
+          }
+          const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
+          const dispatchRtcInfo = new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
+          dispatchRtcInfo.setRoomInfo(roomInfo);
+          dispatchRtcInfo.join(roomInfo).then(()=>{
+            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          });
+          setAgoraRtc({...agoraRtc, ...dispatchRtcInfo});
+        }
+      }else{
         // rtc listener new room logic
         if (roomNo !== rtcInfo.getRoomNo()) {
           roomChanged = true;
@@ -480,20 +496,6 @@ export default function LeftSideAgora(props: {
           disconnectGuest();
           setConnectedStatus(true);
           broadcastPlayAsListener();
-        }
-      } else if (rtcInfo !== null && rtcInfo.userType === UserType.HOST) {
-        // rtc host init logic
-        if (rtcInfo.getPeerConnectionCheck()) {
-          setConnectedStatus(false);
-        } else {
-          initInterval(() => {
-            if (rtcInfo.getWsConnectionCheck()) {
-              setConnectedStatus(false);
-              rtcInfo.publish();
-              return true;
-            }
-            return false;
-          });
         }
       }
     }
@@ -526,55 +528,6 @@ export default function LeftSideAgora(props: {
     return () =>
       ttsAudio && ttsAudio.removeEventListener("ended", audioEndEvent);
   }, [ttsAudio]);
-  //방장 비디오 셋팅
-  useEffect(()=>{
-    if(roomInfo.platform === "wowza"){
-      return;
-    }
-
-    if(agoraRtc.host || agoraRtc.listener){// rtc 1번만 생성하기
-      return;
-    }
-    if(!roomInfo.agoraToken){
-      console.log(`left_side_agora not found agoraToken`)
-      return;
-    }
-    const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
-    const dispatchRtcInfo:AgoraHostRtc|AgoraListenerRtc = roomOwner ?
-      new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, videoConstraints)
-      : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, videoConstraints);
-    dispatchRtcInfo.setRoomInfo(roomInfo);
-    dispatchRtcInfo.join(roomInfo).then(()=>{
-      globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-      sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-    });
-    setAgoraRtc({...agoraRtc, ...dispatchRtcInfo});
-  },[]);
-
-  useEffect(()=>{
-    // if(roomInfo.platform === "agora"){
-    //   return;
-    // }
-    //
-    // if(wowzaRtc.host || wowzaRtc.listener){// rtc 1번만 생성하기
-    //   return;
-    // }
-    //
-    // const hostVideoConstraints = {
-    //   isVideo: roomInfo.mediaType === MediaType.VIDEO,
-    //   videoFrameRate: roomInfo.videoFrameRate,
-    //   videoResolution: roomInfo.videoResolution,
-    // };
-    // const listenerVideoConstraints = {
-    //   isVideo: roomInfo.mediaType === MediaType.VIDEO,
-    // }
-    // const dispatchRtcInfo:HostRtc|ListenerRtc = roomOwner ?
-    //   new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, false, hostVideoConstraints)
-    //   : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomNo, listenerVideoConstraints);
-    // dispatchRtcInfo.setRoomInfo(roomInfo);
-    // sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
-    // setWowzaRtc({...wowzaRtc, ...dispatchRtcInfo});
-  },[])
 
   useEffect(() => {
     if (typeof broadcastState.soundVolume === 'number') {

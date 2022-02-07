@@ -18,7 +18,7 @@ import {
   getBroadcastSetting, broadcastInfoNew,
 } from "common/api";
 // others
-import {AgoraHostRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
+import {AgoraHostRtc, AgoraListenerRtc, HostRtc, rtcSessionClear, UserType} from "common/realtime/rtc_socket";
 // context
 import { GlobalContext } from "context";
 import { ModalContext } from "context/modal_ctx";
@@ -355,57 +355,55 @@ export default function BroadcastSetting() {
 
       const { result, data, message, code } = await broadcastCreate(createInfo);
       if (result === "success") {
-        // 방 정보 설정
-        const roomInfo = {
-          ...data,
-          micState: true,
-        };
+        if(data.platform === "wowza"){
+          // 방 정보 설정
+          const videoConstraints = {
+            isVideo: data.mediaType === MediaType.VIDEO,
+            videoFrameRate: data.videoFrameRate,
+            videoResolution: data.videoResolution,
+          };
+          const newRtcInfo = new HostRtc(
+              UserType.HOST,
+              data.webRtcUrl,
+              data.webRtcAppName,
+              data.webRtcStreamName,
+              data.roomNo,
+              false,
+              videoConstraints
+          );
+          newRtcInfo.setRoomInfo({...data, micState: true,});
+          newRtcInfo.publish();
+          globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:newRtcInfo.roomInfo, userType:newRtcInfo.userType}));
+          sessionStorage.setItem("room_no", data.roomNo);
+          broadcastAction.setExtendTime!(false);
+          try {
+            if (window.fbq) window.fbq("track", "RoomMake");
+            if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
+          } catch (e) {}
 
-        const {
-          webRtcUrl,
-          webRtcAppName,
-          webRtcStreamName,
-          roomNo,
-          mediaType,
-          videoFrameRate,
-          videoResolution,
-        } = roomInfo;
-
-        const videoConstraints = {
-          isVideo: mediaType === MediaType.VIDEO ? true : false,
-          videoFrameRate,
-          videoResolution,
-        };
-
-        const newRtcInfo = new HostRtc(
-          UserType.HOST,
-          webRtcUrl,
-          webRtcAppName,
-          webRtcStreamName,
-          roomNo,
-          false,
-          videoConstraints
-        );
-        newRtcInfo.setRoomInfo(roomInfo);
-        globalAction.dispatchRtcInfo({ type: "init", data: newRtcInfo });
-        sessionStorage.setItem("room_no", roomNo);
-        broadcastAction.setExtendTime!(false);
-
-        // 방이 생성되었을때
-        try {
-          if (window.fbq) {
-            window.fbq("track", "RoomMake");
+          history.replace(`/broadcast/${data.roomNo}`);
+        }else if (data.platform === "agora"){
+          if(!data.agoraToken){
+            console.log(`broadcast_setting not found agoraToken`)
+            return;
           }
-          if (window.firebase) {
-            window.firebase.analytics().logEvent("RoomMake");
-          }
-        } catch (e) {}
+          const videoConstraints = { isVideo: data.mediaType === MediaType.VIDEO };
+          const dispatchRtcInfo = new AgoraHostRtc(UserType.HOST, data.webRtcUrl, data.webRtcAppName, data.webRtcStreamName, data.roomNo, false, videoConstraints);
+          dispatchRtcInfo.setRoomInfo(data);
+          dispatchRtcInfo.join(data).then(()=>{
+            globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          });
+          try {
+            if (window.fbq) window.fbq("track", "RoomMake");
+            if (window.firebase) window.firebase.analytics().logEvent("RoomMake");
+          } catch (e) {}
 
-        // const res = await modifyBroadcastSetting({
-        // djListenerIn: broadcastOptionMsg.djListenerIn ? true : false,
-        // djListenerOut: broadcastOptionMsg.djListenerOut ? true : false,
-        // });
-        history.replace(`/broadcast/${roomNo}`);
+          history.replace(`/broadcast/${data.roomNo}`);
+        }else{
+          console.log(`broadcast_setting platform error ...`, data.platform)
+        }
       } else if (result === "fail") {
         if (code === "-6") {
           return (

@@ -122,8 +122,8 @@ const RandomMsgWrap = (props: { roomOwner: boolean; roomInfo: roomInfoType; room
             msg: "",
             status: false,
           });
-        }, [runningTime * 1000]);
-      }, [conditionTime * 1000]);
+        }, runningTime * 1000);
+      }, conditionTime * 1000);
     }
   }, []);
 

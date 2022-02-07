@@ -394,8 +394,8 @@ export const getArgoraRtc = (rtcInfo:AgoraHostRtc|AgoraListenerRtc)=>{
   const roomInfo = rtcInfo.roomInfo as roomInfoType;
   const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
   const returnRTC = rtcInfo.userType === UserType.HOST ?
-    new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
-    : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
+      new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
+      : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
   returnRTC.setRoomInfo(roomInfo);
   return returnRTC;
 }
@@ -410,8 +410,8 @@ export const getWowzaRtc = (rtcInfo:HostRtc|ListenerRtc)=>{
     isVideo: roomInfo.mediaType === MediaType.VIDEO,
   }
   const returnRTC = rtcInfo.userType === UserType.HOST ?
-    new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
-    : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
+      new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
+      : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
   returnRTC.setRoomInfo(roomInfo);
   return returnRTC;
 }
@@ -1247,7 +1247,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
     videoConstraints: any = null
   ) {
     super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
-    this.socketConnect();
+    //this.socketConnect();
     this.detectDevice = async () => {
       let videoDeviceExist;
       let micDeivceExist: boolean = false;
@@ -1388,7 +1388,7 @@ export class AgoraListenerRtc extends RtcSocketHandler{
 
   constructor(type: UserType, socketUrl: string, appName: string, streamName: string, roomNo: string, videoConstraints: any) {
     super(type, socketUrl, appName, streamName, roomNo, false, videoConstraints);
-    this.socketConnect();
+    // this.socketConnect();
     this.audioTag.muted = true;
   }
 

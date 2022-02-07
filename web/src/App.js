@@ -87,17 +87,26 @@ const baseSetting = async (globalCtx, broadcastAction) => {
     });
   }
   const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
-  if (sessionWowzaRtc !== null) {
-    const data = JSON.parse(sessionWowzaRtc);
-    const dispatchRtcInfo = getWowzaRtc(data);
-    globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-  }
-
   const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-  if (sessionAgoraRtc !== null) {
-    const data = JSON.parse(sessionAgoraRtc);
-    const dispatchRtcInfo = getArgoraRtc(data);
-    globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+
+  const sessionRtc = sessionWowzaRtc
+      ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+          ? JSON.parse(sessionAgoraRtc) : undefined;
+
+  if(sessionRtc?.roomInfo?.bjMemNo === memNo){
+    if(!globalState.rtcInfo){
+      if (sessionWowzaRtc !== null) {
+        const data = JSON.parse(sessionWowzaRtc);
+        const dispatchRtcInfo = getWowzaRtc(data);
+        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+      }
+
+      if (sessionAgoraRtc !== null) {
+        const data = JSON.parse(sessionAgoraRtc);
+        const dispatchRtcInfo = getArgoraRtc(data);
+        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+      }
+    }
   }
 
   const broadcastData = sessionStorage.getItem("broadcast_data");
