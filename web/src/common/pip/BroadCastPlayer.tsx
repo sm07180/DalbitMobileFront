@@ -36,13 +36,30 @@ const BroadCastPlayer = ()=> {
     if(!chatInfo){
       return;
     }
-    if (chatInfo.privateChannelHandle === null) {
-      if (
-        chatInfo.socket != null &&
-        chatInfo.socket.getState() === "open" &&
-        chatInfo.chatUserInfo.roomNo !== null
-      ) {
-        chatInfo.binding(chatInfo.chatUserInfo.roomNo, (roomNo: string) => {});
+    // if(!chatInfo.chatUserInfo.roomNo){
+    //   chatInfo.setRoomNo(rtcInfo?.roomInfo?.roomNo)
+    // }
+
+    if(rtcInfo?.roomInfo?.mediaType === MediaType.VIDEO){
+      if (chatInfo.privateChannelHandle === null) {
+        if (
+            chatInfo.socket != null &&
+            chatInfo.socket.getState() === "open" &&
+            chatInfo.chatUserInfo.roomNo !== null
+        ) {
+          chatInfo.binding(chatInfo.chatUserInfo.roomNo, (roomNo: string) => {});
+        }
+      }
+    }else{
+      if (chatInfo.privateChannelHandle === null) {
+        if (
+            chatInfo.socket != null &&
+            chatInfo.socket.getState() === "open" &&
+            chatInfo.chatUserInfo.roomNo !== null
+        ) {
+          chatInfo.binding(chatInfo.chatUserInfo.roomNo, (roomNo: string) => {
+          });
+        }
       }
     }
   }, [chatInfo]);

@@ -24,7 +24,7 @@ import {MailboxContext} from "context/mailbox_ctx";
 import {useDispatch, useSelector} from "react-redux";
 import {setIsLoading} from "redux/actions/common";
 import {getMemberProfile} from "redux/actions/member";
-import {getArgoraRtc, getWowzaRtc} from "common/realtime/rtc_socket";
+import {getArgoraRtc, getWowzaRtc, rtcSessionClear} from "common/realtime/rtc_socket";
 import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
@@ -86,28 +86,6 @@ const baseSetting = async (globalCtx, broadcastAction) => {
       data: { ...data, ...{ isPaused: true } },
     });
   }
-  const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
-  const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
-
-  const sessionRtc = sessionWowzaRtc
-      ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
-          ? JSON.parse(sessionAgoraRtc) : undefined;
-
-  if(sessionRtc?.roomInfo?.bjMemNo === globalState.baseData.memNo){
-    if(!globalState.rtcInfo){
-      if (sessionWowzaRtc !== null) {
-        const data = JSON.parse(sessionWowzaRtc);
-        const dispatchRtcInfo = getWowzaRtc(data);
-        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-      }
-
-      if (sessionAgoraRtc !== null) {
-        const data = JSON.parse(sessionAgoraRtc);
-        const dispatchRtcInfo = getArgoraRtc(data);
-        globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
-      }
-    }
-  }
 
   const broadcastData = sessionStorage.getItem("broadcast_data");
   if (broadcastData !== null) {
@@ -136,6 +114,7 @@ const App = () => {
 
   const {
     chatInfo,
+    rtcInfo,
     mailChatInfo,
     alarmStatus,
   } = globalCtx.globalState;
@@ -531,6 +510,44 @@ const App = () => {
     // Renew all initial data
     fetchData()
   }, [])
+
+
+  useEffect(()=>{
+    if(!memberRdx.memNo || !chatInfo){
+      return;
+    }
+    const sessionWowzaRtc = sessionStorage.getItem("wowza_rtc");
+    const sessionAgoraRtc = sessionStorage.getItem("agora_rtc");
+
+    const sessionRtc = sessionWowzaRtc
+        ? JSON.parse(sessionWowzaRtc) : sessionAgoraRtc
+            ? JSON.parse(sessionAgoraRtc) : undefined;
+
+    if(sessionRtc?.roomInfo?.bjMemNo === memberRdx.memNo){
+      if(!rtcInfo){
+        if(sessionWowzaRtc){
+          const data = JSON.parse(sessionWowzaRtc);
+          const dispatchRtcInfo = getWowzaRtc(data);
+          // dispatchRtcInfo.setDisplayWrapRef(displayWrapRef);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          globalCtx.globalAction.dispatchRtcInfo({ type: "init", data: dispatchRtcInfo });
+          sessionStorage.setItem("wowza_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+        }
+        if(sessionAgoraRtc){
+          const data = JSON.parse(sessionAgoraRtc);
+          const dispatchRtcInfo = getArgoraRtc(data);
+          chatInfo.setRoomNo(dispatchRtcInfo.roomInfo?.roomNo)
+          dispatchRtcInfo.join(dispatchRtcInfo.roomInfo).then(()=>{
+            globalCtx.globalAction.dispatchRtcInfo({type: "init", data: dispatchRtcInfo});
+            sessionStorage.setItem("agora_rtc", JSON.stringify({roomInfo:dispatchRtcInfo.roomInfo, userType:dispatchRtcInfo.userType}));
+          })
+        }
+      }
+    }else{
+      rtcSessionClear();
+    }
+  }, [memberRdx.memNo, chatInfo])
+
 
   useEffect(() => {
     if (globalCtx.token) {

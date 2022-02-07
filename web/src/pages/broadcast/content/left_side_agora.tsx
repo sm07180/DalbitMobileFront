@@ -475,32 +475,36 @@ export default function LeftSideAgora(props: {
         }
       }else{
         // rtc listener new room logic
-        if (roomNo !== rtcInfo.getRoomNo()) {
-          roomChanged = true;
-          chatInfo.privateChannelDisconnect();
-          initInterval(() => {
-            if (
-              chatInfo.socket.getState() === "open" &&
-              chatInfo.chatUserInfo.roomNo !== null
-            ) {
-              chatInfo.binding(
-                chatInfo.chatUserInfo.roomNo,
-                (roomNo: string) => {}
-              );
-              return true;
-            }
-            return false;
-          });
+        if(roomInfo.platform === "wowza"){
+          if (roomNo !== rtcInfo.getRoomNo()) {
+            roomChanged = true;
+            chatInfo.privateChannelDisconnect();
+            initInterval(() => {
+              if (
+                  chatInfo.socket.getState() === "open" &&
+                  chatInfo.chatUserInfo.roomNo !== null
+              ) {
+                chatInfo.binding(
+                    chatInfo.chatUserInfo.roomNo,
+                    (roomNo: string) => {}
+                );
+                return true;
+              }
+              return false;
+            });
 
-          rtcInfo.stop();
-          disconnectGuest();
-          setConnectedStatus(true);
-          broadcastPlayAsListener();
+            rtcInfo.stop();
+            disconnectGuest();
+            setConnectedStatus(true);
+            broadcastPlayAsListener();
+          }
+        }else{
+          rtcInfo?.join(rtcInfo?.roomInfo)
         }
       }
+    }else{
+      rtcInfo?.join(rtcInfo?.roomInfo)
     }
-
-    resetAnimation();
 
     return () => {
       comboWaitingQueue = [];
@@ -1368,7 +1372,7 @@ export default function LeftSideAgora(props: {
         />
       )}
 
-      {playBtnStatus === true && (
+      {roomInfo.mediaType === MediaType.VIDEO && playBtnStatus === true && (
         <PlayBtnDisplayStyled
           onClick={() => {
             if (roomOwner) {

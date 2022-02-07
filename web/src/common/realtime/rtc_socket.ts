@@ -1286,7 +1286,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
             // console.log('@@@ not yet join 1')
             this.publish();
           } else {
-            this.socketConnect();
+            // this.socketConnect();
             initInterval(() => {
               if (this.getWsConnectionCheck()) {
                 // console.log('@@@ not yet join 2')
@@ -1312,7 +1312,7 @@ export class AgoraHostRtc extends RtcSocketHandler{
           await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
           localTracks.videoTrack.play("local-player",{mirror:false});
           // await client.publish(Object.values(localTracks));
-        }else{
+        }else if(client.connectionState === 'DISCONNECTED'){
           await client.setClientRole("host");
           let micId:any = sessionStorage.getItem("mic");
           let camId:any = sessionStorage.getItem("cam");
@@ -1444,7 +1444,7 @@ export class AgoraListenerRtc extends RtcSocketHandler{
          * - `false`: The remote user is not sending an audio track.
          */
         // client.subscribe({uid:client.uid, hasAudio}，"video");
-      }else{
+      }else if(client.connectionState === 'DISCONNECTED'){
         await client.setClientRole("audience", {level: 1});
         client.on("user-published", this.handleUserPublished);
         client.on("user-unpublished", this.handleUserUnpublished);
