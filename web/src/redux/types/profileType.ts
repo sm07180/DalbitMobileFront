@@ -123,6 +123,7 @@ export interface IProfileState {
 /* 피드 */
 export interface IProfileFeedState {
   feedList: Array<IFeedData>,
+  fixedFeedList: Array<IFeedData>,
   fixCnt: number;
   paging: IPaging,
   scrollPaging: {

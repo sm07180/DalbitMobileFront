@@ -3,6 +3,7 @@ import { IProfileFeedState, ProfileActions } from "../../types/profileType";
 
 const initialState: IProfileFeedState = {
   feedList: [],
+  fixedFeedList: [],
   fixCnt: 0,
   paging: {
     next: 0,

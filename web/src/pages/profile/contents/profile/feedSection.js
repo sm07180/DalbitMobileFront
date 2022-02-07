@@ -7,7 +7,7 @@ import SocialList from '../../components/SocialList'
 
 const FeedSection = (props) => {
   const { profileData, feedData } = props;
-  const { feedList, fixCnt, scrollPaging } = feedData;
+  const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
   //context
   const context = useContext(Context)
   const {token, profile} = context
@@ -28,18 +28,19 @@ const FeedSection = (props) => {
           <button>더보기</button>
         </div>
         <Swiper {...swiperParams}>
-          {feedList.map((item, index) => {
-            if(fixCnt <= index) return <></>;
+          {fixedFeedList.map((item) => {
             return (
               <div key={item.noticeIdx}>
                 <div className="feedBox">
-                  <div className={`text ${item.profImg.path ? '' : 'add'}`}>{item.contents}</div>
+                  <div className={`text ${item.profImg.isDefaultImg ? 'add' : ''}`}>{item.title}</div>
                   <div className="info">
                     <span className="time">{item.writeDate}</span>
-                    {item.profImg.path &&
+                    {!item.profImg.isDefaultImg &&
                       <div className="thumb">
                         <img src={item.profImg.thumb50x50} alt="" />
-                        <span className="count">${`+${item.photoInfoList.length}`}</span>
+                        {item.photoInfoList.length > 1 &&
+                          <span className="count">{`+${item.photoInfoList.length -1}`}</span>
+                        }
                       </div>
                     }
                   </div>
@@ -49,9 +50,8 @@ const FeedSection = (props) => {
           })}
         </Swiper>
       </div>
-
       }
-      <SocialList data={data} picture={true}/>
+      <SocialList profileData={profileData} list={feedList} picture={true}/>
     </div>
   )
 }

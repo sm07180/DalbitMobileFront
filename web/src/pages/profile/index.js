@@ -70,7 +70,8 @@ const Profile = () => {
         const data = res.data;
         dispatch(setProfileFeedData({
           feedList: data.list,
-          fixCnt: data.fixCnt,
+          fixedFeedList: data.fixList,
+          fixCnt: data.fixList.length,
           paging: data.paging,
           scrollPaging: {
             ...feedData.scrollPaging,
