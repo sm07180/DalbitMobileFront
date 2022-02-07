@@ -7,7 +7,7 @@ import {convertDateFormat, calcDateFormat} from 'components/lib/dalbit_moment'
 // global components
 import Header from 'components/ui/header/Header'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
-import BottomSlide from 'components/ui/bottomSlide/BottomSlide'
+import PopSlide from 'components/ui/popSlide/PopSlide'
 
 // components
 import Tabmenu from '../components/Tabmenu'
@@ -16,7 +16,7 @@ import RankingList from '../components/RankingList'
 //static
 import './rankingDetail.scss'
 
-export default (props) => {
+const RankDetailPage = () => {
   const params = useParams()
   let history = useHistory()
   const rankingListType = params.type
@@ -25,7 +25,7 @@ export default (props) => {
   const [rankType, setRankType] = useState(1);
   const [historySetting, setHistorySetting] = useState(1);
 
-  const [slidePop, setSlidePop] = useState(false);  
+  const [popSlide, setPopSlide] = useState(false);  
   const [select, setSelect] = useState("");  
 
   const [tabList, setTabList] = useState([]);
@@ -99,8 +99,8 @@ export default (props) => {
     console.log(calcDateFormat(new Date(),  -Number(historySetting)));
   }, [historySetting])
 
-  const bottomSlide = () => {
-    setSlidePop(true);
+  const popSlideOpen = () => {
+    setPopSlide(true);
   }
   const optionSelect = (e) => {
     let text = e.currentTarget.innerText;
@@ -114,13 +114,13 @@ export default (props) => {
       setSelect("LOVER")
       history.push('../rank/lover')
     }
-    setSlidePop(false);
+    setPopSlide(false);
   }
 
   return (
     <div id="rankingList">
       <Header position={'sticky'} type={'back'}>
-        <h1 className='title'>{subTitle}<span className='optionSelect' onClick={bottomSlide}></span></h1>
+        <h1 className='title'>{subTitle}<span className='optionSelect' onClick={popSlideOpen}></span></h1>
         <div className='buttonGroup'>
           <button className='benefits'>혜택</button>
         </div>
@@ -145,15 +145,17 @@ export default (props) => {
         </div>
       </div>
 
-      {slidePop &&
-        <BottomSlide setSlidePop={setSlidePop}> 
+      {popSlide &&
+        <PopSlide setPopSlide ={setPopSlide}> 
           <div className='selectWrap'>
             <div className={`selectOption ${select === "DJ" ? "active" : ""}`} onClick={optionSelect}>DJ</div>
             <div className={`selectOption ${select === "FAN" ? "active" : ""}`} onClick={optionSelect}>FAN</div>
             <div className={`selectOption ${select === "LOVER" ? "active" : ""}`} onClick={optionSelect}>LOVER</div>
           </div>
-        </BottomSlide>      
+        </PopSlide>      
       }
     </div>
   )
 }
+
+export default RankDetailPage

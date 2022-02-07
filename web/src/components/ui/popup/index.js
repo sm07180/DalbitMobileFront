@@ -2,18 +2,20 @@
  *
  */
 import React, {useContext} from 'react'
-import styled from 'styled-components'
 //context
 import {Context} from 'context'
 //components
 import Utility from 'components/lib/utility'
-import Alert from './content/Alert'
+import Alert from './content/alert'
 import AlertNoClose from './content/alert_no_close'
 import Confirm from './content/confirm'
 import ConfirmAdmin from './content/confirm_admin'
 import Toast from './content/toast'
+import LayerPop from './content/layerPop'
 
-export default (props) => {
+import './popup.scss'
+
+const Popup = (props) => {
   //---------------------------------------------------------------------
   //context
   const context = useContext(Context)
@@ -21,6 +23,18 @@ export default (props) => {
   /**
    * @brief 로그인,이벤트처리핸들러
    */
+
+  const closePopupDim = (e) => {
+    const target = e.target;
+    
+    if (target.id === "popup") {
+      if (context.message.btnCloseCallback !== undefined) {
+        context.message.btnCloseCallback()
+      }
+      context.action.layerPop({visible: false})
+    }
+  };
+
 
   //makeContents
   const makeContents = (visible) => {
@@ -31,47 +45,48 @@ export default (props) => {
       case true:
         if (type === 'alert')
           return (
-            <Message>
+            <div id="popup" onClick={closePopupDim}>
               <Alert />
-            </Message>
+            </div>
           )
         if (type === 'alert_no_close')
           return (
-            <Message>
+            <div id="popup" onClick={closePopupDim}>
               <AlertNoClose />
-            </Message>
+            </div>
           )
         if (type === 'confirm')
           return (
-            <Message>
+            <div id="popup" onClick={closePopupDim}>
               <Confirm />
-            </Message>
+            </div>
           )
         if (type === 'confirm_admin')
           return (
-            <Message>
+            <div id="popup" onClick={closePopupDim}>
               <ConfirmAdmin />
-            </Message>
+            </div>
           )
-        if (type === 'toast') return <Toast />
-
+        if (type === 'toast')
+          return (
+            <Toast />
+          )
+        if (type === 'layerPop')
+          return (
+            <div id="popup" onClick={closePopupDim}>
+              <LayerPop />
+            </div>
+          )
       case false:
         break
     }
   }
   //---------------------------------------------------------------------
-  return <React.Fragment>{visible && makeContents(visible)}</React.Fragment>
+  return (
+    <React.Fragment>
+      {visible && makeContents(visible)}
+    </React.Fragment>
+  )
 }
-//---------------------------------------------------------------------
-const Message = styled.section`
-  display: flex;
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.7);
-  z-index: 120;
-`
+
+export default Popup
