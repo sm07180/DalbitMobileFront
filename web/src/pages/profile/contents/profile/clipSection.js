@@ -18,7 +18,6 @@ const ClipSection = (props) => {
     <div className="clipSection">
       <div className="subArea">
         <div className="title">내클립</div>
-        <button className='filter'>최신순</button>
       </div>
       <div className="clipContent">
         <ListColumn photo={data.profImg.thumb336x336}>

@@ -1,0 +1,16 @@
+@import "components/ui/_mixin.scss";
+
+#setting #forbid{
+  .inputWrap{
+    padding:16px 16px 12px;
+    .inputItems{
+      margin-bottom: 8px;
+      &:last-child{margin-bottom: 0;}
+    }
+  }
+  .submitBtn{
+    width:100%;
+    margin-top:20px;
+  }
+  @include noticeInfo;
+}

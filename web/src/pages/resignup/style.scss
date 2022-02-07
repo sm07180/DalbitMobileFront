@@ -24,7 +24,10 @@ $errorMsg : #FF1919;
       }
     }
     .inputWrap {
-      margin-bottom: 32px;
+      margin-bottom: 32px;      
+      .inputItems {
+        margin-bottom: 12px;
+      }
     }
     .submitBtn {
       width:100%;
@@ -66,6 +69,7 @@ $errorMsg : #FF1919;
         width: 30px;
         height: 30px;
         text-indent: -9999px;
+        @include BGIMG("/common/input/input-photo.png");
       }
     }
 

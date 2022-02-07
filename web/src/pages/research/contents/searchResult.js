@@ -4,8 +4,8 @@ import Api from 'context/api'
 // global components
 import CntTitle from 'components/ui/cntTitle/CntTitle'
 // components
-import Tabmenu from './Tabmenu'
-import ResultCnt from './ResultCnt'
+import Tabmenu from '../components/Tabmenu'
+import ResultCnt from '../components/ResultCnt'
 // css
 
 const tabmenu = ['전체','DJ','라이브', '클립']

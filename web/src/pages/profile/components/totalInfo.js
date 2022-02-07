@@ -1,23 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import './totalInfo.scss'
 
 const TotalInfo = (props) => {
   const {data, goProfile} = props
+  const [openBadge,setOpenBadge] = useState(false);
+
+  // 
+  const onOpenBdage = () => {
+    setOpenBadge(!openBadge)
+  }
 
   return (
     <>
-      <div className="badgeInfo">
-        <span className='badge'>{data.grade}</span>
-        <span className='badge'>뱃지1</span>
-        <span className='badge'>뱃지2</span>
-        <span className='badge'>뱃지3</span>
+      <div className={`badgeInfo ${openBadge && 'isOpen'}`}>
+        <div className="title">뱃지</div>
+        <div className="badgeGroup">
+          <span className='badge'>{data.grade}</span>
+          <span className='badge'>뱃지1</span>
+          <span className='badge'>뱃지2</span>
+          <span className='badge'>뱃지3</span>
+          <span className='badge'>뱃지4</span>
+          <span className='badge'>뱃지5</span>
+          <span className='badge'>뱃지6</span>
+          <span className='badge'>뱃지7</span>
+        </div>
+        <button onClick={onOpenBdage}>열기/닫기</button>
       </div>
       <div className="rankInfo">
         <div className="box">
           <div className="title">
-            <img src={`${IMG_SERVER}/mypage/dalla/infoTitle-1.png`} />
+            <img src={`${IMG_SERVER}/profile/infoTitle-1.png`} />
           </div>
           <div className="photoGroup">
             {data.fanRank.map((item, index) => {
@@ -39,7 +53,7 @@ const TotalInfo = (props) => {
         </div>
         <div className="box" onClick={() => goProfile(data.cupidMemNo)}>
           <div className="title">
-            <img src={`${IMG_SERVER}/mypage/dalla/infoTitle-2.png`} alt="" />
+            <img src={`${IMG_SERVER}/profile/infoTitle-2.png`} alt="" />
           </div>
           {data.cupidProfImg && data.cupidProfImg.path ?
             <div className="photo">
@@ -53,7 +67,9 @@ const TotalInfo = (props) => {
         </div>
       </div>
       <div className="comment">
-        <div className="title">COMMENT</div>
+        <div className="title">
+          <img src={`${IMG_SERVER}/profile/comment_title.png`} alt="" />
+        </div>
         <div className="text">
           {data.profMsg}
         </div>

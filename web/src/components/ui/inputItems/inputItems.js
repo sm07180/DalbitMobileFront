@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import './inputItems.scss'
 
 const InputItems = (props) => {
-  const {title,type,button,onClick,children} = props
+  const {title,type,button,onClick,btnClass,children} = props
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode
@@ -16,23 +16,23 @@ const InputItems = (props) => {
 
   return (
     <>
+      {title && <div className="title">{title}</div>}
       <div className={`inputItems`}>
-        {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
-            <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+            <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               {children}
-            </div>
+            </label>
             {button &&
-              <button className='inputBtn' onClick={onClick}>{button}</button>
+              <button type="button" className={`inputBtn ${btnClass && btnClass}`} onClick={onClick}>{button}</button>
             }
             {onClick && <p className='textLog'></p>}
           </>
         }
         {type === 'textarea' &&
-          <div className="textareaBox">
+          <label className="textareaBox" onFocus={onFocus} onBlur={onBlur}>
             {children}
-          </div>
+          </label>
         }
       </div>
     </>
