@@ -30,16 +30,16 @@ const ProfileWrite = () => {
         <div className="textCount"><span>0</span> / 1000</div>
         <div className="insertGroup">
           <div className="title">사진 첨부<span>(최대 1장)</span></div>
-          {true ?
-          <label>
-            <input type="file" className='blind' />
-            <button className='insertBtn'>+</button>
-          </label>
-          : 
-          <label>
-            <div className="insertPicture"></div>
-            <button></button>
-          </label>
+          {false ?
+            <label>
+              <input type="file" className='blind' />
+              <button className='insertBtn'>+</button>
+            </label>
+            : 
+            <label>
+              <div className="insertPicture"></div>
+              <button className="cancelBtn"></button>
+            </label>
           }
           <SubmitBtn text="등록" />
         </div>
