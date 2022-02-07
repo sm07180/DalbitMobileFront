@@ -20,9 +20,9 @@ const InputItems = (props) => {
       <div className={`inputItems`}>
         {type === 'text' &&
           <>
-            <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+            <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               {children}
-            </div>
+            </label>
             {button &&
               <button type="button" className={`inputBtn ${btnClass && btnClass}`} onClick={onClick}>{button}</button>
             }
@@ -30,9 +30,9 @@ const InputItems = (props) => {
           </>
         }
         {type === 'textarea' &&
-          <div className="textareaBox">
+          <label className="textareaBox" onFocus={onFocus} onBlur={onBlur}>
             {children}
-          </div>
+          </label>
         }
       </div>
     </>
@@ -40,7 +40,7 @@ const InputItems = (props) => {
 }
 
 InputItems.defaultProps = {
-  type:"text",
+  type: 'text',
 }
 
 export default InputItems

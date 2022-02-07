@@ -19,7 +19,7 @@ const myMenuItem = [
   {menuNm: '고객센터'},
 ]
 
-const Remypage = (props) => {
+const Remypage = () => {
   const history = useHistory()
   //context
   const context = useContext(Context)

@@ -28,8 +28,13 @@ const SocialList = (props) => {
           <div className="nick">{data.nickNm}</div>
           <div className="time">3시간전</div>
         </div>
-        <button>
+        <button className='more'>
           <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
+          <div className="isMore">
+            <button>수정하기</button>
+            <button>삭제하기</button>
+            <button>차단/신고하기</button>
+          </div>
         </button>
       </ListRow>
       <div className="socialContent">

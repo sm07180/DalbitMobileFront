@@ -64,9 +64,6 @@ export default (props) => {
   //---------------------------------------------------------------------
   return (
     <Alert>
-      {/*<button className="btnClose">
-        <img src={`${IMG_SERVER}/images/api/close_w_l.svg`} onClick={btnClose} />
-      </button>*/}
       <div className="wrap-message">
         {/* 타이틀 */}
         {__NODE_ENV === 'dev' && context.message.title && context.message.className !== 'mobile' && (
@@ -129,11 +126,11 @@ const Alert = styled.section`
     border-bottom: 1px solid #e0e0e0;
     color: #000;
 
-    /* &.mobile {
+    &.mobile {
       font-size: 14px;
       font-weight: bold;
       padding-bottom: 10px;
-    } */
+    }
   }
   /* 메시지 */
   .msg {
@@ -153,11 +150,11 @@ const Alert = styled.section`
     transform: skew(-0.03deg);
     color: #000;
 
-    /* &.mobile {
+    &.mobile {
       font-size: 13px;
       padding: 10px 0 0 0;
       text-align: left;
-    } */
+    }
   }
 
   .remsg {

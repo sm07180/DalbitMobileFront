@@ -5,10 +5,12 @@ import {useHistory, useParams} from 'react-router-dom'
 import Header from 'components/ui/header/Header'
 import TabBtn from 'components/ui/tabBtn/TabBtn'
 import Toast from 'components/ui/toast/Toast'
+// components
+import Tabmenu from '../../components/Tabmenu'
 
 import SwitchList from '../../components/switchList'
 
-import './style.scss'
+import './push.scss'
 
 const SettingPush = () => {
   const tabList = ['무음','소리','진동'];
@@ -36,8 +38,6 @@ const SettingPush = () => {
     const switchAll = document.querySelector('input[name="switchAll"]');
     const thisParent = e.currentTarget.closest('.switchList');
     const title = thisParent.querySelector('.title').innerText;
-
-    console.log(title);
     
     if(e.target.name === "switchAll") {
       switchs.forEach((checkbox) => {
@@ -69,18 +69,7 @@ const SettingPush = () => {
       <div className='subContent'>
         <div className='tabWrap'>
           <p className='topText'>메시지 알림</p>
-          <ul className="tabmenu">
-            {tabList.map((data,index) => {
-              const param = {
-                item: data,
-                tab: tabType,
-                setTab: setTabType,
-              }
-              return (
-                <TabBtn param={param} key={index} />
-              )
-            })}
-          </ul>
+          <Tabmenu data={tabList} tab={tabType} setTab={setTabType} />
         </div>
         <div className='switchWrap'>
           <SwitchList title={"전체 알림 수신"} mark={false} allSwitch={true} action={switchControl}/>

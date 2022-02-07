@@ -8,7 +8,7 @@ import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-import Message from 'pages/common/message'
+import Popup from 'components/ui/popup'
 
 import Common from "common";
 import Modal from "common/modal";
@@ -33,6 +33,7 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -115,7 +116,7 @@ const Router = () => {
       }>
       <Common />
       <ScrollToTop />
-      <Message />
+      <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
@@ -150,7 +151,10 @@ const Router = () => {
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-        <Route exact path={["/mypage", "/mypage/:memNo"]} component={MyPage} />
+        <Route exact path="/mypage" component={MyPage} />
+        <Route exact path="/mypage/:memNo" main={MyPage}
+               render={() => <Redirect to={{ pathname: '/mypage' }} />}
+        />
         <Route exact path="/myProfile" component={Profile} />
         <Route exact path="/profile/:memNo" main={Profile}
                render={({ match}) => {
@@ -166,6 +170,9 @@ const Router = () => {
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
+        
+        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
         <Route exact path="/customer/" component={Customer} />
