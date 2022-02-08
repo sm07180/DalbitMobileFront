@@ -45,10 +45,12 @@ const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/Ex
 const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
-const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
+const LoginStart = React.lazy(() => import('pages/login/contents/start'))
 const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
 // 회원가입
-const SignUp = React.lazy(() => import('pages/resignup'))
+const SignUp = React.lazy(() => import('pages/signup'))
+const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
 //----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
@@ -123,7 +125,7 @@ const Router = () => {
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-        
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
 
@@ -132,13 +134,13 @@ const Router = () => {
         <Route exact path="/setting/:type/:category" component={ReSetting} />
 
         <Route exact path="/honor" component={ReHonor} />
-        
+
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
-        
+
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
@@ -148,9 +150,11 @@ const Router = () => {
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/login/sns" component={LoginSns} />
+        <Route exact path="/login/start" component={LoginStart} />
         <Route exact path="/login/form" component={LoginForm} />
+        <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/socialSignUp" component={SocialSignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
@@ -174,7 +178,7 @@ const Router = () => {
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
-        
+
         <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
 
         <Route exact path="/level" component={LevelInfo} />
