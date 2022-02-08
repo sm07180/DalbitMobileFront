@@ -8,7 +8,8 @@ import Utility from "components/lib/utility";
 import {Context} from "context";
 import {useHistory} from "react-router-dom";
 import Header from "components/ui/header/Header";
-
+import InputItems from "components/ui/inputItems/inputItems";
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 const SocialSignUp = (props) => {
 
@@ -38,16 +39,15 @@ const SocialSignUp = (props) => {
         </div>
 
         <div className='inputWrap'>
-          <div className={`inputItems`}>
+          <InputItems type="text">
             <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               <input type="text" id="nickNm" name="nickNm" placeholder="소셜닉네임" autoComplete="off" maxLength={20}/>
             </div>
-          </div>
+          </InputItems>
         </div>
-        <button type={"button"} className={`submitBtn`} onClick={() => {
+        <SubmitBtn text="완료" onClick={() => {
           console.log("다음")
-        }}>완료
-        </button>
+        }}/>
       </section>
     </div>
   );
