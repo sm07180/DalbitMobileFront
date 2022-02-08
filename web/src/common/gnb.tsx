@@ -27,7 +27,7 @@ import {MediaType} from "pages/broadcast/constant";
 import {authReq} from 'pages/self_auth'
 import {IMG_SERVER} from "../constant/define";
 import {openMailboxBanAlert} from "./mailbox/mail_func";
-import {isDesktop} from "../lib/agent";
+import {useSelector} from "react-redux";
 
 export default function GNB() {
   const context = useContext(GlobalContext);
@@ -39,6 +39,7 @@ export default function GNB() {
   const { rankState, rankAction } = useContext(RankContext);
   const { formState } = rankState;
   const history = useHistory();
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
 
   const [showLayer, setShowLayer] = useState(false);
   const [popupState, setPopupState] = useState<boolean>(false);
@@ -377,7 +378,7 @@ export default function GNB() {
 
   return (
     <>
-      { isDesktop() && 
+      { isDesktop &&
       <header id="gnb">
         <div className="gnbBox">
           <h1>

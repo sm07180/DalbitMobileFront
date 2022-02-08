@@ -29,7 +29,6 @@ import {BroadcastContext} from "context/broadcast_ctx";
 import {ClipPlayerHandler} from "common/audio/clip_player";
 import {getMypageNew, getProfile, getTokenAndMemno, postAdmin} from "common/api";
 import {removeAllCookieData} from "common/utility/cookie";
-import {isDesktop} from "lib/agent";
 import Navigation from "components/ui/navigation/Navigation";
 
 function setNativeClipInfo(isJsonString, globalCtx) {
@@ -112,6 +111,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const memberRdx = useSelector((state)=> state.member);
+  const isDesktop = useSelector((state)=> state.common.isDesktop)
   const [ready, setReady] = useState(false)
   const AGE_LIMIT = globalCtx.noServiceInfo.limitAge
   const [isFooterPage, setIsFooterPage] = useState(false);
@@ -326,7 +326,7 @@ const App = () => {
         globalCtx.action.updateMyInfo(false)
         globalCtx.action.updateAdminChecker(false)
       }
-      if(isDesktop()){
+      if(isDesktop){
         baseSetting(globalCtx, broadcastAction);
         globalCtx.globalAction?.setAlarmStatus?.(false);
       }
@@ -389,7 +389,7 @@ const App = () => {
       }
     }
 
-    if(isDesktop()) {
+    if(isDesktop) {
       if (memberRdx.isLogin === true) {
         alarmCheck();
       } else {
@@ -650,14 +650,13 @@ const App = () => {
     }
   }, [chatInfo, globalCtx.globalState.splashData]);
 
-  let isPcDesktop = isDesktop();
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
           <>
             <Interface />
-            { isPcDesktop &&
+            { isDesktop &&
                <Layout>
                  <Common />
                     <Route />
@@ -665,7 +664,7 @@ const App = () => {
                  <MoveToAlert />
                </Layout>
             }
-            { !isPcDesktop &&
+            { !isDesktop &&
                 <Route />
             }
             {isFooterPage && <Navigation />}
