@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import {IMG_SERVER} from 'context/config'
 
 import Swiper from 'react-id-swiper'
@@ -10,6 +10,8 @@ import './socialList.scss'
 
 const SocialList = (props) => {
   const {profileData, list} = props
+  const moreRef = useRef([]);
+
   // 스와이퍼
   const swiperFeeds = {
     slidesPerView: 'auto',
@@ -20,9 +22,15 @@ const SocialList = (props) => {
     }
   }
 
+  const moreBoxClick = (index) => {
+    console.log(index);
+    console.log(moreRef.current[index])
+    moreRef.current[index].style.display = 'none';
+  }
+
   return (
     <div className="socialList">
-      {list.map((item) => {
+      {list.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx}>
             <ListRow photo={profileData.profImg ? profileData.profImg.thumb50x50 : ""}>
@@ -30,9 +38,9 @@ const SocialList = (props) => {
                 <div className="nick">{item.nickName}</div>
                 <div className="time">{item.writeDate}</div>
               </div>
-              <button className='more'>
+              <button className='more' onClick={() => moreBoxClick(index)}>
                 <img src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-                <div className="isMore">
+                <div ref={(el) => moreRef.current[index] = el} className="isMore">
                   <button>수정하기</button>
                   <button>삭제하기</button>
                   <button>차단/신고하기</button>

@@ -69,11 +69,11 @@ const Profile = () => {
       if (res.result === 'success') {
         const data = res.data;
         dispatch(setProfileFeedData({
-          feedList: data.list,
-          fixedFeedList: data.fixList,
-          fixCnt: data.fixList.length,
-          paging: data.paging,
-          scrollPaging: {
+          feedList: data.list, // 피드(고정 피드 제외)
+          fixedFeedList: data.fixList, // 고정 피드
+          fixCnt: data.fixList.length, // 고정 피드 개수
+          paging: data.paging, // 호출한 페이지 정보
+          scrollPaging: { // 스크롤 페이징 정보
             ...feedData.scrollPaging,
             pageNo: 1,
             currentCnt: data.list.length,

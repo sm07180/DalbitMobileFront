@@ -51,7 +51,7 @@ const FeedSection = (props) => {
         </Swiper>
       </div>
       }
-      <SocialList profileData={profileData} list={feedList} picture={true}/>
+      <SocialList profileData={profileData} list={feedList} />
     </div>
   )
 }
