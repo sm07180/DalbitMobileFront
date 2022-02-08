@@ -65,15 +65,15 @@ export default function ListenerList(props: { roomInfo: any; roomOwner: boolean;
         return { ...prev, current: data.list.length };
       });
     } else {
-      if (result === "fail") {
-        globalAction.setAlertStatus &&
-        globalAction.setAlertStatus({
-          status: true,
-          title: "알림",
-          content: `${message}`,
-          callback: () => history.push("/"),
-        });
-      }
+      // if (result === "fail") {
+      //   globalAction.setAlertStatus &&
+      //   globalAction.setAlertStatus({
+      //     status: true,
+      //     title: "알림",
+      //     content: `${message}`,
+      //     callback: () => history.push("/"),
+      //   });
+      // }
     }
   };
   const [init , setInit] = useState(false)

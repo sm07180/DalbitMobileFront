@@ -117,11 +117,15 @@ const BroadCastVideoPlayer = ()=>{
     ref:displayWrapRef,
     onClick:playerBarClickEvent
   }
+  // fixme 스타일 잡히면 제거
+  const localPlayerStyledProps = {
+    style: {height: "100%"}
+  }
   return(
     <div id={"broadcast-page"}>
       <div className="left-side">
         <PlayerVideoStyled {...playerVideoStyledProps}>
-          <div id="local-player" className="player"/>
+          <div id="local-player" className="player" {...localPlayerStyledProps} />
           <div className="chat-display" ref={displayWrapRef} style={{ backgroundImage: `url(${rtcInfo?.roomInfo?.bgImg.url})` }}>
             <NoticeDisplayStyled id="broadcast-notice-display"/>
           </div>
