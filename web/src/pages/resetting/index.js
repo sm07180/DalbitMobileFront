@@ -1,18 +1,11 @@
-import React, {useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from "context";
 
 // global components
 import Header from 'components/ui/header/Header'
-// components
-import MenuList from './components/MenuList'
-// contents
+
 import Push from './contents/push'
-import Forbid from './contents/forbid'
 import Broadcast from './contents/broadcast'
-import Manager from './contents/manager'
-import BlackList from './contents/blackList'
-import AlarmUser from './contents/alarmUser'
 
 
 import './style.scss'
@@ -20,39 +13,48 @@ import './style.scss'
 const SettingPage = () => {
   const params = useParams();
   const settingType = params.type;
-  const context = useContext(Context)
-  const {token} = context
+  let history = useHistory()
 
-  const menuListInfo = [
-    {text:'Push알림 설정', path: '/setting/push'},
-    {text:'방송/청취 설정', path: '/setting/broadcast'},
-    {text:'금지어 관리', path: '/setting/forbid'},
-    {text:'매니저 관리', path: '/setting/manager'},
-    {text:'차단회원 관리', path: '/setting/blackList'},
-    {text:'알림받기 설정 회원 관리', path: '/setting/alarmUser'},
-  ]
-  
-  useEffect(() => {
-    // if (!token.isLogin) {
-    //   history.push('/login');
-    // }
-  }, [])
-
+  const golink = (path) => {
+    history.push("/setting/" + path);
+  }
 
   // 페이지 시작
   return (
-   <div id='setting'>
-      {!settingType ?
-        <>
-          <Header position="sticky" title="설정" type="back"/>
-          <div className='menuWrap'>
-            {menuListInfo.map((list,index) => {
-              return (
-                <MenuList text={list.text} path={list.path} key={index} />
-              )
-            })}
-          </div>
-        </>
+   <div id='setting'>     
+      {
+        !settingType ?
+          <>
+            <Header position={'sticky'} title={'설정'} type={'back'}/>
+            <div className='content'>
+              <div className='menuWrap'>
+                <div className='menuList' onClick={() => {golink("push")}}>
+                  <div className='menuName'>Push알림 설정</div>
+                  <span className='arrow'></span>                  
+                </div>
+                <div className='menuList' onClick={() => {golink("broadcast")}}>
+                  <div className='menuName'>방송/청취 설정</div>
+                  <span className='arrow'></span>                  
+                </div>
+                <div className='menuList' onClick={() => {golink("forbid")}}>
+                  <div className='menuName'>금지어 관리</div>
+                  <span className='arrow'></span>                  
+                </div>
+                <div className='menuList' onClick={() => {golink("manager")}}>
+                  <div className='menuName'>매니저 관리</div>
+                  <span className='arrow'></span>                  
+                </div>
+                <div className='menuList' onClick={() => {golink("blockList")}}>
+                  <div className='menuName'>차단회원 관리</div>
+                  <span className='arrow'></span>                  
+                </div>
+                <div className='menuList' onClick={() => {golink("alarmUser")}}>
+                  <div className='menuName'>알림받기 설정 회원 관리</div>
+                  <span className='arrow'></span>                  
+                </div>
+              </div>
+            </div>
+          </>
         :
         settingType === "push" ?
           <Push/>
@@ -61,15 +63,15 @@ const SettingPage = () => {
           <Broadcast/>
         :
         settingType === "forbid" ?
-          <Forbid />
+          <>금지어 관리</>
         :
         settingType === "manager" ?
-          <Manager />
+          <>매니저 관리</>
         :
-        settingType === "blackList" ?
-          <BlackList />
+        settingType === "blockList" ?
+          <>차단회원 관리</>
         :
-          <AlarmUser />
+          <>알림받기 설정 회원 관리</>
       }
    </div>
   )
