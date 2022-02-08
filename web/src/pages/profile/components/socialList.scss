@@ -23,11 +23,12 @@
         @include font(12px,400,#999);
       }
     }
-    button.more {
+    div.moreBtn {
       position:relative;
       width:30px;
       height:30px;
       margin-left:auto;
+      cursor: pointer;
       img {
         width:100%;
       }

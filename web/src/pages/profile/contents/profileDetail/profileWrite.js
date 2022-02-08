@@ -37,7 +37,9 @@ const ProfileWrite = () => {
             </label>
             : 
             <label>
-              <div className="insertPicture"></div>
+              <div className="insertPicture">
+                <img src="https://devphoto2.dalbitlive.com/profile_0/21187670400/20210825130810973619.jpeg?62x62" alt="" />
+              </div>
               <button className="cancelBtn"></button>
             </label>
           }

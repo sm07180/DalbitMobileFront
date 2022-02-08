@@ -11,11 +11,13 @@ import PopSlide from 'components/ui/popSlide/PopSlide'
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
+import Tabmenu from './components/Tabmenu'
+import PopRelation from './components/popRelation/PopRelation'
 // contents
-import FeedSection from './contents/profile/feedSection'
-import FanboardSection from './contents/profile/fanboardSection'
-import ClipSection from './contents/profile/clipSection'
-
+import FeedSection from './contents/profileDetail/feedSection'
+import FanboardSection from './contents/profileDetail/fanboardSection'
+import ClipSection from './contents/profileDetail/clipSection'
+//css
 import './index.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
@@ -23,7 +25,7 @@ import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
-const Profile = () => {
+const ProfilePage = () => {
   const history = useHistory()
   //context
   const context = useContext(Context)
@@ -36,6 +38,8 @@ const Profile = () => {
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
+  const [popRelation, setPopRelation] = useState(false);
+  const [openRelationType, setOpenRelationType] = useState('');
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -82,6 +86,13 @@ const Profile = () => {
     setShowSlide({...showSlide, open:true})
   }
 
+  /* 팬랭킹, 팬 관리, 스타 관리 */
+  const openPopRelation = (e) => {
+    const {targetType} = e.currentTarget.dataset
+    setOpenRelationType(targetType)
+    setPopRelation(true)
+  }
+
   useEffect(() => {
     getProfileData();
   }, [history.location.pathname]);
@@ -112,12 +123,13 @@ const Profile = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopRelation={openPopRelation} />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
+        {/* <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} /> */}
         <ul className="tabmenu" ref={tabMenuRef}>
           {socialTabmenu.map((data,index) => {
             const param = {
@@ -148,8 +160,13 @@ const Profile = () => {
           </section>
         </PopSlide>
       }
+      {popRelation &&
+        <PopSlide setPopSlide={setPopRelation}>
+          <PopRelation type={openRelationType} />
+        </PopSlide>
+      }
     </div>
   )
 }
 
-export default Profile
+export default ProfilePage

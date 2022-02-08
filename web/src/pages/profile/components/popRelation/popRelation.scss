@@ -1,0 +1,74 @@
+@import "components/ui/_mixin.scss";
+
+#popSlide {
+  .slideLayer {
+    padding: 24px 0 0;
+  }
+  .relationList {
+    width:100%;
+    > .tabmenu {
+      margin-bottom:20px;
+      padding:0 16px;
+      @include tabmenuStyle-1;
+    }
+    .listContainer {
+      > .tabmenu {
+        margin-bottom: 16px;
+        padding:0 16px;
+        @include subTabmenuStyle-1;
+      }
+      .listWrap {
+        height:424px;
+        padding:0 16px;
+        overflow-y:auto;
+        .listRow {
+          position:relative;
+          margin-bottom:12px;
+          .photo {
+            width:58px;
+            height:58px;
+            margin:0 8px 0 3px;
+            img {
+              width:100%;
+              border-radius: 50%;
+            }
+          }
+          .rank {
+            @include position-top-left;
+            @include flex(center,center);
+            width:18px;
+            height:18px;
+            border-radius:50%;
+            background-image:linear-gradient(to bottom,#FF3C7B,#FF8565);
+            @include font(11px,500,white);
+          }
+          .listContent {
+            min-width:0;
+            .nick {
+              @include font(13px,500,#303030);
+              @include fontCut;
+            }
+            .like {
+              @include font(12px,400,#999);
+            }
+          }
+          .back {
+            margin-left:auto;
+            button {
+              width:76px;
+              line-height: 34px;
+              background-color: $MAINCOLOR;
+              @include border($MAINCOLOR,100px);
+              @include font(14px,500,white);
+              &.isFan {
+                background-color: white;
+                @include border(#E3E3E3,100px);
+                @include font(14px,500,#303030);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
