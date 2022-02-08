@@ -1372,7 +1372,7 @@ export default function LeftSideAgora(props: {
         />
       )}
 
-      {roomInfo.mediaType === MediaType.VIDEO && playBtnStatus === true && (
+      {roomInfo.mediaType === MediaType.AUDIO && playBtnStatus === true && (
         <PlayBtnDisplayStyled
           onClick={() => {
             if (roomOwner) {

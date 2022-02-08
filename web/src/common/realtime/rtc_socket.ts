@@ -1389,7 +1389,7 @@ export class AgoraListenerRtc extends RtcSocketHandler{
   constructor(type: UserType, socketUrl: string, appName: string, streamName: string, roomNo: string, videoConstraints: any) {
     super(type, socketUrl, appName, streamName, roomNo, false, videoConstraints);
     // this.socketConnect();
-    this.audioTag.muted = true;
+    //this.audioTag.muted = true;
   }
 
 
