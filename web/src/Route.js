@@ -46,7 +46,8 @@ const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
 const LoginStart = React.lazy(() => import('pages/login/contents/start'))
-const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+// TODO : 로그인폼 copy.js 로 되어있어서 에러상황이라 일단주석
+// const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
 const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
 // 회원가입
 const SignUp = React.lazy(() => import('pages/signup'))
@@ -152,7 +153,7 @@ const Router = () => {
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
         <Route exact path="/login/start" component={LoginStart} />
-        <Route exact path="/login/form" component={LoginForm} />
+        {/*<Route exact path="/login/form" component={LoginForm} />*/}
         <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
         <Route exact path="/socialSignUp" component={SocialSignUp} />
