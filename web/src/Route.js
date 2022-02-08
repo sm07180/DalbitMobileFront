@@ -24,6 +24,25 @@ const MyPage = React.lazy(() => import('pages/remypage'))
 const ReSearch = React.lazy(() => import('pages/research'))
 
 const ReSetting = React.lazy(() => import('pages/resetting'))
+// 명예의 전당
+const ReHonor = React.lazy(() => import('pages/rehonor'))
+// 프로필
+const Profile = React.lazy(() => import('pages/profile'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
+// 스토어
+const Store = React.lazy(() => import('pages/restore'))
+const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+// 내지갑
+const Wallet = React.lazy(() => import('pages/rewallet'))
+const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
+const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 로그인
+const Login = React.lazy(() => import('pages/login'))
+const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
+const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+// 회원가입
+const SignUp = React.lazy(() => import('pages/resignup'))
+//----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
@@ -97,6 +116,8 @@ export default () => {
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
         <Route exact path="/setting/:type/:category" component={ReSetting} />
+
+        <Route exact path="/honor" component={ReHonor} />
 
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
