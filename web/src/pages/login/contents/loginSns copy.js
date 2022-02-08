@@ -56,6 +56,8 @@ export default function loginSns({props}) {
         }
       })
 
+      consoel.log(res);
+      return
       if (res.status === 200) {
         const redirectUrl = await res.text()
         return (window.location.href = `${redirectUrl}`)

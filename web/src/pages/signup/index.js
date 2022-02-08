@@ -1,68 +1,42 @@
-import React, {useState, useEffect, useContext, useReducer, useRef} from 'react'
-import styled from 'styled-components'
+import React, {useState, useContext, useEffect} from 'react'
 
-import {Context} from 'context'
-import Api from 'context/api'
-import qs from 'query-string'
-import Utility from 'components/lib/utility'
-import {PHOTO_SERVER} from 'context/config'
-import {Hybrid, isHybrid, isAndroid} from 'context/hybrid'
-
-// global components
 import Header from 'components/ui/header/Header'
-import InputItems from 'components/ui/inputItems/InputItems'
-// components
-import SignField from './components/signField'
-// contents
-// css
+import PhoneAuth from "./components/phoneAuth";
+import NickNameSetting from "./components/nickNameSetting";
+import PasswordSetting from "./components/passwordSetting";
+
 import './style.scss'
+import Api from "context/api";
+import qs from "query-string";
+import {Hybrid, isAndroid, isHybrid} from "context/hybrid";
+import Utility from "components/lib/utility";
+import {Context} from "context";
+import {useHistory} from "react-router-dom";
 
 const SignUpPage = () => {
   const context = useContext(Context)
+  const history = useHistory();
   const [step, setStep] = useState(1);
+  const {webview, redirect} = qs.parse(location.search);
 
   const [signForm, setSignForm] = useState({
-    phoneNum:"01083490706",
+    phoneNum:"",
     requestNum:"",
+    CMID:"",
     nickName:"",
     password:"",
-    passwordCheck:""
+    passwordCheck:"",
+    memType : "p"
   })
-  const phoneNumRef = useRef(null)
-  const requestNumRef = useRef(null)
 
+  useEffect(() => {
+    try {
+      fbq('track', 'Lead')
+      firebase.analytics().logEvent('Lead')
+      kakaoPixel('114527450721661229').participation()
+    } catch (e) {}
+  }, [])
 
-  const smsRequest = (e) => {
-    const rgEx = /(01[0123456789])(\d{4}|\d{3})\d{4}$/g
-    const prevElement = e.target.parentNode;
-
-    if (!rgEx.test(signForm.phoneNum)) {
-      prevElement.classList.add('error')
-      e.target.nextSibling.innerHTML = '휴대폰 번호 형식에 맞게 입력해 주세요.'
-    }else{
-      prevElement.classList.add('success')
-      sendSms().then()
-    }
-  }
-
-  const sendSms = async () => {
-
-    const {result, data, message, code} = await Api.sms_request({
-      data: {phoneNo: signForm.phoneNum, authType: 0}
-    })
-    console.log(result, data, message, code);
-    if (result === 'success') {
-      phoneNumRef.current.disabled = true
-      requestNumRef.current.disabled = false
-      console.log("success")
-    } else {
-      context.action.alert({msg: message})
-    }
-  }
-  const nextStep = () => {
-    console.log(signForm);
-    step < 4 ? setStep(step +1) : setStep(1)
-  }
 
   const onChange = (e) => {
     const { value, name } = e.target;
@@ -72,75 +46,111 @@ const SignUpPage = () => {
     });
   };
 
-  //닉네임 체크
-  const validateNickname = (e) => {
 
-    if (signForm.nickName.length < 2 || signForm.nickName.length > 20) {
-      const prevElement = e.target.sibling;
-      prevElement.classList.add('error')
-
-      console.log(prevElement);
-      e.target.nextSibling.innerHTML = '휴대폰 번호 형식에 맞게 입력해 주세요.'
-
-      // return setValidate({name: 'nickNm', check: false, text: '닉네임은 2~20자 이내로 입력해주세요.'})
-    } else {
-      const {result, code} = Api.nickName_check({params: {nickNm: signForm.nickName}})
-      if (result === 'success' && code === '1') {
-        // return setValidate({name: 'nickNm', check: true})
-      } else if (result === 'fail') {
-        if (code === '0') {
-          // return setValidate({name: 'nickNm', check: false, text: '닉네임 중복입니다.'})
-        } else {
-          // return setValidate({name: 'nickNm', check: false, text: '사용 불가능한 닉네임 입니다.'})
-        }
+  //1. 회원가입
+  async function signUp() {
+    const nativeTid = context.nativeTid == null || context.nativeTid == 'init' ? '' : context.nativeTid
+    const {result, data, message} = await Api.member_join({
+      data: {
+        memType: signForm.memType, memId: signForm.phoneNum, memPwd: signForm.password, nickNm: signForm.nickName,
+        birth: '', term1: 'y', term2: 'y', term3: 'y', term4: 'y', term5: 'y',
+        profImg: '', profImgRacy: 3, nativeTid: nativeTid, os: context.customHeader.os
       }
+    })
+    console.log(result, data, message);
+    if (result === 'success') {
+      //Facebook,Firebase 이벤트 호출
+      addAdsData();
+
+      context.action.alert({
+        callback: () => {
+          //애드브릭스 이벤트 전달
+          if (data.adbrixData != '' && data.adbrixData != 'init') {
+            Hybrid('adbrixEvent', data.adbrixData)
+          }
+          loginFetch()
+        },
+        msg: '회원가입 기념으로 달 1개를 선물로 드립니다.\n달라 즐겁게 사용하세요.'
+      })
+    } else {
+      context.action.alert({
+        msg: message
+      })
+      context.action.updateLogin(false)
     }
   }
+
+  //3. 로그인
+  async function loginFetch() {
+    const loginInfo = await Api.member_login({
+      data: {
+        memType: signForm.memType,
+        memId: signForm.phoneNum,
+        memPwd: signForm.password
+      }
+    })
+
+    if (loginInfo.result === 'success') {
+      const {memNo} = loginInfo.data
+
+      context.action.updateToken(loginInfo.data)
+      const profileInfo = await Api.profile({params: {memNo}})
+      if (profileInfo.result === 'success') {
+        if (isHybrid()) {
+          if (webview && webview === 'new') {
+            Hybrid('GetLoginTokenNewWin', loginInfo.data)
+          } else {
+            Hybrid('GetLoginToken', loginInfo.data)
+          }
+        }
+
+        if (redirect) {
+          const decodedUrl = decodeURIComponent(redirect)
+          return (window.location.href = decodedUrl)
+        }
+        context.action.updateProfile(profileInfo.data)
+        return history.push('/event/recommend_dj2')
+      }
+    } else if (loginInfo.result === 'fail') {
+      context.action.alert({
+        title: '로그인 실패',
+        msg: `${loginInfo.message}`
+      })
+    }
+  }
+
+  //2. 애드브릭스
+  const addAdsData = async () => {
+    const targetVersion = isAndroid() ? '1.6.9' : '1.6.3'; // 이 버전 이상으로 강업되면 예전버전 지우기
+    const successCallback = () => {
+      const firebaseDataArray = [
+        { type : "firebase", key : "CompleteRegistration", value : {} },
+        { type : "adbrix", key : "CompleteRegistration", value : {} },
+      ];
+      kakaoPixel('114527450721661229').completeRegistration()
+      Hybrid('eventTracking', {service :  firebaseDataArray})
+    };
+
+    const failCallback = () => {
+      fbq('track', 'CompleteRegistration')
+      firebase.analytics().logEvent('CompleteRegistration')
+      kakaoPixel('114527450721661229').completeRegistration()
+    }
+
+    if(isHybrid()) {
+      await Utility.compareAppVersion(targetVersion, successCallback, failCallback);
+    }else {
+      failCallback();
+    }
+  }
+
 
   return (
     <div id='signPage'>
       <Header type="back" />
-      {step === 1 &&
-        <SignField title="번호를 입력해주세요." onClick={nextStep}>
-          <InputItems button="인증요청" onClick={smsRequest} logYn={"y"}>
-            <input type="tel" name={"phoneNum"} value={signForm.phoneNum} onChange={onChange} placeholder="휴대폰 번호" maxLength={11} autoComplete="off" ref={phoneNumRef}/>
-          </InputItems>
-          <InputItems>
-            <input type="number" name={"requestNum"} value={signForm.requestNum} onChange={onChange} placeholder="인증 번호 6자리" autoComplete="off" ref={requestNumRef} disabled={true} />
-          </InputItems>
-        </SignField>
-      }
-      {step === 2 &&
-        <SignField title="닉네임을 설정해주세요." onClick={validateNickname}>
-          <InputItems logYn={"y"}>
-            <input type="text" name={"nickName"} value={signForm.nickName} onChange={onChange} placeholder="2~20자 한글/영문/숫자" autoComplete="off" maxLength={20}/>
-          </InputItems>
-        </SignField>
-      }
-      {step === 3 &&
-        <SignField title="비밀번호를 설정해주세요." subTitle="닉네임은 언제든지 변경할 수 있어요!" onClick={nextStep}>
-          <InputItems>
-            <input type="password" name="password" value={signForm.password} onChange={onChange} placeholder="8~20자 영문/숫자/특수문자 중 2가지 이상" autoComplete="off" maxLength={20}/>
-          </InputItems>
-          <InputItems>
-            <input type="password" name="passwordCheck" value={signForm.passwordCheck}  onChange={onChange} placeholder="비밀번호 다시 입력" autoComplete="off" maxLength={20}/>
-          </InputItems>
-        </SignField>
-      }
-      {step === 4 &&
-        <SignField title={`소셜 로그인 정보를\n입력해주세요.`} onClick={nextStep}>
-          <div className="profileUpload">
-            <label for="profileImg">
-              <div></div>
-              <span>클릭 이미지 파일 추가</span>
-            </label>
-            <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png"/>
-          </div>
-          <InputItems>
-              <input type="text" id="nickNm" name="nickNm" placeholder="소셜닉네임" autoComplete="off" maxLength={20}/>
-          </InputItems>
-        </SignField>
-      }
+      {step === 1 && <PhoneAuth signForm={signForm} onChange={onChange} setSignForm={setSignForm} setStep={setStep}/>}
+      {step === 2 && <NickNameSetting signForm={signForm}  onChange={onChange} setSignForm={setSignForm} setStep={setStep}/>}
+      {step === 3 && <PasswordSetting signForm={signForm} onChange={onChange} sighUp={signUp}/>}
     </div>
   )
 }

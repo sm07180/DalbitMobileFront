@@ -55,6 +55,8 @@ const Start = (props) => {
           'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
         }
       })
+
+      console.log(res);
       if (res.status === 200) {
         const redirectUrl = await res.text()
         return (window.location.href = `${redirectUrl}`)
