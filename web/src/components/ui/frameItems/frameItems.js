@@ -4,13 +4,13 @@ import React from 'react'
 import './frameItems.scss'
 
 const FrameItems = (props) => {
-  const {content} = props
+  const {content, frameBg } = props
   return (
     <>
       {content.holder !== '' || content.holderBg !== '' ?
         <>
           <div className="frame" style={{backgroundImage:`url('${content.holder}')`}}></div>
-          <div className="frameBg" style={{backgroundImage:`url('${content.holderBg}')`}}></div>
+          {frameBg && <div className="frameBg" style={{backgroundImage:`url('${content.holderBg}')`}}></div>}
         </>
         :
         <></>
