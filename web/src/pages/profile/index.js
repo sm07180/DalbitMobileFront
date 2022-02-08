@@ -5,14 +5,14 @@ import {Context} from 'context'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
 import Tabmenu from './components/Tabmenu'
-import PopRelation from './components/popRelation/PopRelation'
+import FanStarLike from './components/popSlide/FanStarLike'
+import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
 import FanboardSection from './contents/profileDetail/fanboardSection'
@@ -21,7 +21,6 @@ import ClipSection from './contents/profileDetail/clipSection'
 import './index.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
-import ShowSwiper from "components/ui/showSwiper/showSwiper";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
@@ -38,7 +37,7 @@ const ProfilePage = () => {
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
-  const [popRelation, setPopRelation] = useState(false);
+  const [popFanStarLike, setPopFanStarLike] = useState(false);
   const [openRelationType, setOpenRelationType] = useState('');
 
   const dispatch = useDispatch();
@@ -86,11 +85,11 @@ const ProfilePage = () => {
     setShowSlide({...showSlide, open:true})
   }
 
-  /* 팬랭킹, 팬 관리, 스타 관리 */
+  /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
   const openPopRelation = (e) => {
     const {targetType} = e.currentTarget.dataset
     setOpenRelationType(targetType)
-    setPopRelation(true)
+    setPopFanStarLike(true)
   }
 
   useEffect(() => {
@@ -129,21 +128,10 @@ const ProfilePage = () => {
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
-        {/* <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} /> */}
-        <ul className="tabmenu" ref={tabMenuRef}>
-          {socialTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: socialType,
-              setTab: setSocialType,
-              // setPage: setPage
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
+        <div className="tabmenuWrap">
+          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />  
           <button>등록</button>
-        </ul>
+        </div>
         {socialType === socialTabmenu[0] && <FeedSection data={profileData} />}
         {socialType === socialTabmenu[1] && <FanboardSection data={profileData} />}
         {socialType === socialTabmenu[2] && <ClipSection data={profileData} />}
@@ -160,9 +148,9 @@ const ProfilePage = () => {
           </section>
         </PopSlide>
       }
-      {popRelation &&
-        <PopSlide setPopSlide={setPopRelation}>
-          <PopRelation type={openRelationType} />
+      {popFanStarLike &&
+        <PopSlide setPopSlide={setPopFanStarLike}>
+          <FanStarLike type={openRelationType} isMyProfile={isMyProfile} />
         </PopSlide>
       }
     </div>

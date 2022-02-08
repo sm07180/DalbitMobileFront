@@ -28,7 +28,7 @@ const ProfileDetail = () => {
   // 페이지 시작
   return (
     <div id="profileDetail">
-      <Header type={'back'}>
+      <Header type="back">
         <div className="buttonGroup">
           <div className='moreBtn'>
             <img src={`${IMG_SERVER}/common/header/icoMore-b.png`} alt="" />
