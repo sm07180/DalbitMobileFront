@@ -31,6 +31,8 @@ const MyPage = React.lazy(() => import('pages/remypage'))
 const ReSearch = React.lazy(() => import('pages/research'))
 // 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
+// 명예의 전당
+const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
@@ -130,12 +132,14 @@ const Router = () => {
         <Route exact path="/setting/:type" component={ReSetting} />
         <Route exact path="/setting/:type/:category" component={ReSetting} />
 
+        <Route exact path="/honor" component={ReHonor} />
+
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
-
+        
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
