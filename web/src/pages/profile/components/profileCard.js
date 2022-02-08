@@ -19,7 +19,7 @@ const ProfileCard = (props) => {
               <FrameItems content={data} />
             </div>
             :
-            <div className="photo" onClick={openShowSlide}>
+            <div className="photo" onClick={() => openShowSlide(data.profImgList)}>
               <img src={data.profImg.thumb500x500} alt="" />
               <FrameItems content={data} />
             </div>

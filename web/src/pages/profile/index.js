@@ -1,7 +1,7 @@
 import React, {useEffect, useState, useContext, useRef} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
-
+import './index.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
@@ -15,11 +15,11 @@ import TotalInfo from './components/TotalInfo'
 import FeedSection from './contents/profile/feedSection'
 import FanboardSection from './contents/profile/fanboardSection'
 import ClipSection from './contents/profile/clipSection'
-
-import './index.scss'
-import {useDispatch, useSelector} from "react-redux";
-import {setProfileData, setProfileFeedData} from "redux/actions/profile";
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
+// redux
+import {useDispatch, useSelector} from "react-redux";
+import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
+import {profileClipDefaultState, profileFanBoardDefaultState, profileFeedDefaultState} from "redux/types/profileType";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
@@ -27,12 +27,12 @@ const Profile = () => {
   const history = useHistory()
   //context
   const context = useContext(Context)
-  const {token, profile} = context
   const tabMenuRef = useRef();
   const myprofileRef = useRef();
   const params = useParams();
 
-  const [showSlide, setShowSlide] = useState({open: false});
+  const [showSlide, setShowSlide] = useState(false);
+  const [imgList, setImgList] = useState([]);
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
@@ -40,6 +40,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
   const feedData = useSelector(state => state.feed);
+  const fanBoardData = useSelector(state => state.fanBoard);
+  const clipData = useSelector(state => state.profileClip);
 
   /* 프로필 데이터 호출 */
   const getProfileData = () => {
@@ -81,8 +83,39 @@ const Profile = () => {
         }));
       } else {
         context.action.alert({
-          msg: message
+          msg: res.message
         })
+      }
+    })
+  }
+
+  /* 팬보드 데이터 */
+  const getFanBoardData = () => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      page: 1,
+      records: 9999
+    }
+    Api.mypage_fanboard_list({params: apiParams}).then(res => {
+      if (res.result === 'success') {
+        const data= res.data;
+        dispatch(setProfileFanBoardData({...fanBoardData, list: data.list, paging: data.paging}));
+      }
+    })
+  }
+
+  /* 클립 데이터 */
+  const getClipData = () => {
+    const apiParams = {
+      memNo: params.memNo ? params.memNo : context.profile.memNo,
+      page: 1,
+      records: 10
+    }
+    Api.getUploadList(apiParams).then(res => {
+      if (res.result === 'success') {
+        dispatch(setProfileClipData(res.data));
+      } else {
+        context.action.alert({msg: message})
       }
     })
   }
@@ -108,8 +141,20 @@ const Profile = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = () => {
-    setShowSlide({...showSlide, open:true})
+  const openShowSlide = (data, isList = "y") => {
+    const getImgList = data => data.map(item => item.profImg)
+    let list = [];
+    isList === 'y' ? list = getImgList(data) : list.push(data);
+
+    setImgList(list);
+    setShowSlide(true);
+  }
+
+  /* 프로필 데이터 초기화 (피드, 팬보드, 클립) */
+  const resetProfileData = () => {
+    dispatch(setProfileFeedData(profileFeedDefaultState));
+    dispatch(setProfileFanBoardData(profileFanBoardDefaultState));
+    dispatch(setProfileClipData(profileClipDefaultState));
   }
 
   /* 프로필 상단 데이터 */
@@ -119,11 +164,30 @@ const Profile = () => {
 
   /* 피드 데이터 */
   useEffect(() => {
-    getFeedData();
-  }, [])
+    if(socialType === socialTabmenu[0]) {
+      getFeedData();
+    }
+  }, [socialType])
+
+  /* 팬보드 */
+  useEffect(() => {
+    if(socialType === socialTabmenu[1]) {
+      getFanBoardData();
+    }
+  }, [socialType]);
+
+  /* 클립 */
+  useEffect(() => {
+    if(socialType === socialTabmenu[2]) {
+      getClipData();
+    }
+  }, [socialType]);
 
   useEffect(() => {
     setIsMyProfile(!params.memNo);
+    return () => {
+      resetProfileData();
+    }
   }, []);
 
   // 임시 변수
@@ -133,12 +197,11 @@ const Profile = () => {
   return (
     <div id="myprofile" ref={myprofileRef}>
       <Header title={`${profileData.nickNm}`} type={'back'}>
-        {isMyProfile &&
+        {isMyProfile ?
           <div className="buttonGroup">
             <button className='editBtn'>수정</button>
           </div>
-        }
-        {!isMyProfile &&
+          :
           <div className="buttonGroup">
             <button className='moreBtn' onClick={openMoreList}>더보기</button>
           </div>
@@ -168,11 +231,24 @@ const Profile = () => {
           })}
           {isMyProfile && <button>등록</button>}
         </ul>
-        {socialType === socialTabmenu[0] && <FeedSection profileData={profileData} feedData={feedData} />}
-        {socialType === socialTabmenu[1] && <FanboardSection data={profileData} />}
-        {socialType === socialTabmenu[2] && <ClipSection data={profileData} />}
 
-        {showSlide.open === true && <ShowSwiper data={profileData} popClose={setShowSlide} />}
+        {/* 피드 */}
+        {socialType === socialTabmenu[0] &&
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} isMyProfile={isMyProfile} />
+        }
+
+        {/* 팬보드 */}
+        {socialType === socialTabmenu[1] &&
+          <FanboardSection profileData={profileData} fanBoardData={fanBoardData} isMyProfile={isMyProfile} />
+        }
+
+        {/* 클립 */}
+        {socialType === socialTabmenu[2] &&
+          <ClipSection profileData={profileData} clipData={clipData} isMyProfile={isMyProfile} />
+        }
+
+        {/* 프로필 사진 확대 */}
+        {showSlide && <ShowSwiper imageList={imgList} popClose={setShowSlide} />}
       </section>
       {popSlide &&
         <PopSlide setPopSlide={setPopSlide}>

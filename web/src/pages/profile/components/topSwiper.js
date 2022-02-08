@@ -34,7 +34,7 @@ const TopSwiper = (props) => {
         <Swiper {...swiperPicture}>
           {data.profImgList.map((item, index) => {
             return (
-              <div key={index} onClick={openShowSlide}>
+              <div key={index} onClick={() => {openShowSlide(data.profImgList)}}>
                 <div className="photo">
                   <img src={item.profImg.thumb500x500} alt="" />
                 </div>
@@ -44,7 +44,7 @@ const TopSwiper = (props) => {
         </Swiper>
         :
         data.profImgList.length === 1 ?
-          <div onClick={openShowSlide}>
+          <div onClick={() => openShowSlide(data.profImgList)}>
             <div className="photo">
               <img src={data.profImgList[0].profImg.thumb500x500} style={{width:'100%', height:'360px'}} alt="" />
             </div>
