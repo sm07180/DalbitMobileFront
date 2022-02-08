@@ -21,6 +21,7 @@ const SocialSignUp = (props) => {
   if (_.hasIn(snsInfo, 'profImgUrl') && snsInfo.profImgUrl.includes('http://')) {
     snsInfo = {...snsInfo, profImgUrl: snsInfo.profImgUrl.replace('http://', 'https://')}
   }
+  console.log(snsInfo);
 
   const [signForm, setSignForm] = useState({
     phoneNum:"",
@@ -56,6 +57,7 @@ const SocialSignUp = (props) => {
       [name]: value
     });
   };
+
   useDidMountEffect(()=>{
     checkNickName();
   },[signForm.nickName]);
@@ -94,13 +96,11 @@ const SocialSignUp = (props) => {
       const list = ['jpg', 'jpeg', 'png']
       return list.includes(ext)
     }
-
     if (!extValidator(fileExtension)) {
       return context.action.alert({
         msg: 'jpg, png 이미지만 사용 가능합니다.'
       })
     }
-
     //파일을 배열 버퍼로 읽는 최신 약속 기반 API
     reader.readAsArrayBuffer(file)
     //오리엔테이션 뽑아내는 함수
@@ -149,71 +149,8 @@ const SocialSignUp = (props) => {
         orientation: -1
       }
     }
-    //캔버스로 그려서 dataurl 로 뽑아내는 함수
-    function drawAdjustImage(img, orientation) {
-      const cnvs = document.createElement('canvas')
-      const ctx = cnvs.getContext('2d')
-      let dx = 0
-      let dy = 0
-      let dw
-      let dh
-      let deg = 0
-      let vt = 1
-      let hr = 1
-      let rad
-      let sin
-      let cos
-      cnvs.width = orientation >= 5 ? img.height : img.width
-      cnvs.height = orientation >= 5 ? img.width : img.height
-      switch (orientation) {
-        case 2: // flip horizontal
-          hr = -1
-          dx = cnvs.width
-          break
-        case 3: // rotate 180 degrees
-          deg = 180
-          dx = cnvs.width
-          dy = cnvs.height
-          break
-        case 4: // flip upside down
-          vt = -1
-          dy = cnvs.height
-          break
-        case 5: // flip upside down and rotate 90 degrees clock wise
-          vt = -1
-          deg = 90
-          break
-        case 6: // rotate 90 degrees clock wise
-          deg = 90
-          dx = cnvs.width
-          break
-        case 7: // flip upside down and rotate 270 degrees clock wise
-          vt = -1
-          deg = 270
-          dx = cnvs.width
-          dy = cnvs.height
-          break
-        case 8: // rotate 270 degrees clock wise
-          deg = 270
-          dy = cnvs.height
-          break
-      }
-      rad = deg * (Math.PI / 180)
-      sin = Math.sin(rad)
-      cos = Math.cos(rad)
-      ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
-      dw = orientation >= 5 ? cnvs.height : cnvs.width
-      dh = orientation >= 5 ? cnvs.width : cnvs.height
-      ctx.drawImage(img, 0, 0, dw, dh)
-      return cnvs.toDataURL('image/jpeg', 1.0)
-    }
-
     reader.onload = function () {
       if (reader.result) {
-        setSignForm({
-          ...signForm,
-          profImgUrl: reader.result
-        })
         const originalBuffer = reader.result
         const {buffer, orientation} = getOrientation(originalBuffer)
         const blob = new Blob([buffer])
@@ -222,23 +159,17 @@ const SocialSignUp = (props) => {
         const cacheURL = (window.URL || window.webkitURL || window || {}).createObjectURL(blob)
         const img = new Image()
         img.src = cacheURL
-
-        //setTempPhoto(originalCacheURL)
-
         img.onload = async () => {
           const limitSize = 1280
           if (img.width > limitSize || img.height > limitSize) {
             img.width = img.width / 5
             img.height = img.height / 5
           }
-
           const encodedDataAsBase64 = drawAdjustImage(img, orientation)
           uploadImageToServer(encodedDataAsBase64)
         }
       }
     }
-
-
   }
   async function uploadImageToServer(imgData) {
     const {result, data} = await Api.image_upload({
@@ -258,11 +189,13 @@ const SocialSignUp = (props) => {
       })
     }
   }
+
   useEffect(() => {
     if (signForm.profImgUrl.includes('https://')) {
       uploadImageToServer(signForm.profImgUrl)
     }
   }, [signForm.profImgUrl])
+
   useEffect(() => {
     //Facebook,Firebase 이벤트 호출
     try {
@@ -286,7 +219,6 @@ const SocialSignUp = (props) => {
     if (result === 'success') {
       //Facebook,Firebase 이벤트 호출
       addAdsData();
-
       context.action.alert({
         callback: () => {
           //애드브릭스 이벤트 전달
@@ -313,10 +245,11 @@ const SocialSignUp = (props) => {
         memPwd: signForm.password
       }
     })
+    //fixme 소셜로그인 가입후 로그인 문제
+    console.log("loginInfo", loginInfo);
 
     if (loginInfo.result === 'success') {
       const {memNo} = loginInfo.data
-
       context.action.updateToken(loginInfo.data)
       const profileInfo = await Api.profile({params: {memNo}})
       if (profileInfo.result === 'success') {
@@ -327,7 +260,6 @@ const SocialSignUp = (props) => {
             Hybrid('GetLoginToken', loginInfo.data)
           }
         }
-
         if (redirect) {
           const decodedUrl = decodeURIComponent(redirect)
           return (window.location.href = decodedUrl)
@@ -336,10 +268,7 @@ const SocialSignUp = (props) => {
         return history.push('/event/recommend_dj2')
       }
     } else if (loginInfo.result === 'fail') {
-      context.action.alert({
-        title: '로그인 실패',
-        msg: `${loginInfo.message}`
-      })
+      context.action.alert({title: '로그인 실패', msg: `${loginInfo.message}`})
     }
   }
   //2. 애드브릭스
@@ -367,7 +296,6 @@ const SocialSignUp = (props) => {
     }
   }
 
-
   return (
     <div id='signPage'>
       <Header type="back"/>
@@ -378,7 +306,7 @@ const SocialSignUp = (props) => {
 
         <div className="profileUpload">
           <label htmlFor="profileImg">
-            <div className='uploadImg' style={{backgroundImage: `url(${signForm.profImgUrl})`}}></div>
+            <div className='uploadImg' style={{backgroundImage: `url(${PHOTO_SERVER}${signForm.profImgUrl})`}}/>
             <span>클릭 이미지 파일 추가</span>
           </label>
           <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png" onChange={uploadSingleFile}/>
@@ -403,3 +331,63 @@ const SocialSignUp = (props) => {
 };
 
 export default SocialSignUp;
+
+
+//캔버스로 그려서 dataurl 로 뽑아내는 함수
+function drawAdjustImage(img, orientation) {
+  const cnvs = document.createElement('canvas')
+  const ctx = cnvs.getContext('2d')
+  let dx = 0
+  let dy = 0
+  let dw
+  let dh
+  let deg = 0
+  let vt = 1
+  let hr = 1
+  let rad
+  let sin
+  let cos
+  cnvs.width = orientation >= 5 ? img.height : img.width
+  cnvs.height = orientation >= 5 ? img.width : img.height
+  switch (orientation) {
+    case 2: // flip horizontal
+      hr = -1
+      dx = cnvs.width
+      break
+    case 3: // rotate 180 degrees
+      deg = 180
+      dx = cnvs.width
+      dy = cnvs.height
+      break
+    case 4: // flip upside down
+      vt = -1
+      dy = cnvs.height
+      break
+    case 5: // flip upside down and rotate 90 degrees clock wise
+      vt = -1
+      deg = 90
+      break
+    case 6: // rotate 90 degrees clock wise
+      deg = 90
+      dx = cnvs.width
+      break
+    case 7: // flip upside down and rotate 270 degrees clock wise
+      vt = -1
+      deg = 270
+      dx = cnvs.width
+      dy = cnvs.height
+      break
+    case 8: // rotate 270 degrees clock wise
+      deg = 270
+      dy = cnvs.height
+      break
+  }
+  rad = deg * (Math.PI / 180)
+  sin = Math.sin(rad)
+  cos = Math.cos(rad)
+  ctx.setTransform(cos * hr, sin * hr, -sin * vt, cos * vt, dx, dy)
+  dw = orientation >= 5 ? cnvs.height : cnvs.width
+  dh = orientation >= 5 ? cnvs.width : cnvs.height
+  ctx.drawImage(img, 0, 0, dw, dh)
+  return cnvs.toDataURL('image/jpeg', 1.0)
+}
