@@ -245,7 +245,7 @@ const SocialSignUp = (props) => {
         memPwd: signForm.password
       }
     })
-    //fixme 소셜로그인 가입후 로그인 문제
+    //fixme 소셜로그인 가입후 로그인 문제 commit
     console.log("loginInfo", loginInfo);
 
     if (loginInfo.result === 'success') {
