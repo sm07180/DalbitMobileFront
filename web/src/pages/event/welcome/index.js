@@ -73,6 +73,11 @@ const EventWelcome = () => {
       return
     }
 
+    if (!context.token.isLogin) {
+      history.push('/login')
+      return
+    }
+
     if (eventAuth.check === false) {
       context.action.confirm({
         msg: `본인 인증을 해주세요.`,
@@ -146,18 +151,14 @@ const EventWelcome = () => {
   };
 
   useEffect(() => {
-    if (!context.token.isLogin) {
-      history.push('/login')
-    } else {
-      fetchEventAuthInfo();
-      Api.self_auth_check({}).then((res) => {
-        if (res.result === 'success') {
-          setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
-        } else {
-          setEventAuth({...eventAuth, check: false })
-        }
-      })
-    }
+    fetchEventAuthInfo();
+    Api.self_auth_check({}).then((res) => {
+      if (res.result === 'success') {
+        setEventAuth({...eventAuth, check: true, adultYn: res.data.adultYn, phoneNo:res.data.phoneNo})
+      } else {
+        setEventAuth({...eventAuth, check: false })
+      }
+    })
   }, [])
 
   useEffect(() => {

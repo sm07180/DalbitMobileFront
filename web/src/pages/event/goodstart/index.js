@@ -87,29 +87,33 @@ const GoodStart = () => {
         <TabmenuBtn tabBtn1={tabmenu1} tabBtn2={tabmenu2} tab={tabContent.name} setTab={setTabContent} event={'goodstart'} />
       </Tabmenu>
       <section className="bodyContainer">
-        {tabContent.name === tabmenu1 ? 
-          <>
-            {djRankInfo && djRankInfo.map((data, index) => {
-              const {start_date, end_date, good_no} = data
-              const eventStart = Number(moment(start_date).format('YYMMDD')) <= Number(moment().format('YYMMDD'))
-              const eventEnd = Number(moment(end_date).format('YYMMDD')) < Number(moment().format('YYMMDD'))
-              return (
-                <React.Fragment key={index}>
+        {djRankInfo && djRankInfo.map((data, index) => {
+          const {start_date, end_date, good_no} = data
+          const eventStart = Number(moment(start_date).format('YYMMDD')) <= Number(moment().format('YYMMDD'))
+          const eventEnd = Number(moment(end_date).format('YYMMDD')) < Number(moment().format('YYMMDD'))
+          return (
+            <React.Fragment key={index}>
+              {tabContent.name === tabmenu1 ? 
+                <>
                   {eventStart === true && eventEnd !== true &&
                     <img src={`${IMG_SERVER}/event/goodstart/bodybg-dj-${good_no - 1}.png`} className="bgImg" />
                   }
-                </React.Fragment>
-              )
-            })}
-          </>
-          :
-          <>
-            <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-1.png`} className="bgImg" />
-            <button className='fanBtn' onClick={popupExpOpen}>
-              <img src={`${IMG_SERVER}/event/goodstart/body-fanBtn.png`} />
-            </button>
-          </>
-        }
+                </>
+                :
+                <>
+                  {eventStart === true && eventEnd !== true &&
+                    <>
+                    <img src={`${IMG_SERVER}/event/goodstart/bodybg-fan-${good_no - 1}.png`} className="bgImg" />
+                    <button className='fanBtn' onClick={popupExpOpen}>
+                      <img src={`${IMG_SERVER}/event/goodstart/body-fanBtn.png`} />
+                    </button>
+                    </>
+                  }
+                </>
+              }
+            </React.Fragment>
+          )
+        })}
         <div className="notice">
           <button onClick={popupOpen}>
             <img src={`${IMG_SERVER}/event/goodstart/noticeBtn.png`} alt="유의사항" />

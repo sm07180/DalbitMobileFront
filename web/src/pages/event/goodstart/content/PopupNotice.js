@@ -64,8 +64,6 @@ const PopupNotice = (props) => {
                     <li>경품 공지가격 안내<br/>
                       1&#41; 톰브라운 21FW MKA326A Y3001 415 스티치 니트 : 145만원<br/>
                       2&#41; Apple 아이폰 13 mini : 95만원<br/>
-                      3&#41; 뉴발란스 992 그레이 : 49만원<br/>
-                      4&#41; 삼성 스마트 모니터 68.6 cm : 34만원
                     </li>
                     }
                   </>
@@ -82,6 +80,25 @@ const PopupNotice = (props) => {
         {tab === 'fan' && <ul>
           <li><strong>DJ, 팬 2가지 동시 입상시 큰 상품만 당첨되며 중복 당첨되지 않습니다. </strong></li>
           <li>당첨자는 목요일 오후 1시 이후에 발표합니다.</li>
+          {data.map((data, index) => {
+            const {start_date, end_date, good_no} = data
+            const eventStart = Number(moment(start_date).format('YYMMDD')) <= Number(moment().format('YYMMDD'))
+            const eventEnd = Number(moment(end_date).format('YYMMDD')) < Number(moment().format('YYMMDD'))
+            return (
+              <React.Fragment key={index}>
+                {eventStart === true && eventEnd !== true &&
+                  <>
+                    {good_no === '5' && 
+                    <li>경품 공지가격 안내<br/>
+                      1&#41; 휴테크 안마의자 컴마 : 107만원<br/>
+                      2&#41; 핸슨 로디 리클라이너 쇼파 : 70만원<br/>
+                    </li>
+                    }
+                  </>
+                }
+              </React.Fragment>
+            )
+          })}
           <li>특별점수는 이벤트가 종료된 이후에 집계됩니다.<br/>
           만약 내가 1만개씩 선물한 A와 B가 나란히 1,2등에 입상했다면, 이벤트 종료 후 집계시 특별점수 2000점 + 2000점 = 4000점 추가 반영</li>
           <li>부정한 방법으로 참여한 경우 이벤트 당첨이 취소될 수 있습니다.</li>

@@ -50,8 +50,8 @@ export default function bestdj() {
       <Header title="베스트DJ" />
       <div className="subContent">
           <img
-          src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-top.png`}
-          alt="달빛라이브를 대표하는 1월의 베스트DJ"
+          src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-top.png`}
+          alt="달빛라이브를 대표하는 2월의 베스트DJ"
           className="img__full"
           />
           <div className="listWrap">
@@ -59,14 +59,13 @@ export default function bestdj() {
                 return (
                   <div className="list" key={index}>
                     <img
-                    src={`${IMG_SERVER}/event/bestDj/2201/bestDj_2201-mem-${index + 1}.png`}
+                    src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-mem-${index + 1}.png`}
                     alt="베스트DJ"
                     className="img__full"
                     />
                     <div className="clickArea" id={`${item.bestDjMemNo}`} 
                          onClick={() => {history.push(`/mypage/${item.bestDjMemNo}`)}}/>
                     <div className="fanRank">
-                      <div className="fanRankTitle">베스트DJ의 최고의 팬</div>
                       <ul className="fanRankListWrap">
                       {item.fanRankList.length > 0 ?
                         item.fanRankList.map((rankData, idx) => {
@@ -95,10 +94,11 @@ export default function bestdj() {
             }            
           </div>
           <div className="footer">
-            <div className="footerInfo">
-              <strong>베스트DJ</strong>는<br/>
-              <strong>스페셜DJ를 누적 6회 이상</strong> 달성한 DJ입니다.
-            </div>
+            <img
+            src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-bottom.png`}
+            alt="스페셜DJ를 누적 6회 이상 달성한 DJ입니다."
+            className="img__full"
+            />
             <a onClick={() => history.push('/event/bestdj_intro')} className="footerBtn">베스트DJ자세히보기</a>
           </div>
         </div>
