@@ -196,9 +196,34 @@
       margin-top: 10px;
       .logTop {
         @include flex(center, space-between);
+        margin-bottom: 8px;
         span {
           @include font(12px, 400, #FF3C7B);
         }
+      }
+      .logWrap {
+        .logHead{
+          @include flex(center);
+          border-top: 1px solid #FF3C7B;
+          border-bottom: 1px solid #FF3C7B;
+          padding: 5px 0;
+          span {
+            flex: 1;
+            @include font(12px, 400, #FF3C7B);
+          }
+        }
+        .logContent{
+          max-height: 300px;
+          &:last-child {
+            border-bottom: none;
+          }
+          span {
+            flex: 1;
+            padding: 5px 0;
+            text-align: center;
+            @include font(13px, 400, #202020);
+          }
+        }        
       }
     }
   }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './style.scss'
 import Api from "context/api";
 
@@ -12,6 +12,7 @@ import InputItems from "components/ui/inputItems/inputItems";
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 const SocialSignUp = (props) => {
+  const [uploadImg, setUploadImg] = useState("");
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode
@@ -20,6 +21,15 @@ const SocialSignUp = (props) => {
   const onBlur = (e) => {
     const targetClassName = e.target.parentNode
     targetClassName.classList.remove('focus')
+  }
+
+  const profileImgUpload = (e) => {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function(){
+      setUploadImg(reader.result)
+    }
   }
 
   return (
@@ -32,10 +42,10 @@ const SocialSignUp = (props) => {
 
         <div className="profileUpload">
           <label htmlFor="profileImg">
-            <div></div>
+            <div className='uploadImg' style={{backgroundImage: `url(${uploadImg})`}}></div>
             <span>클릭 이미지 파일 추가</span>
           </label>
-          <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png"/>
+          <input type="file" id="profileImg" accept="image/jpg, image/jpeg, image/png" onChange={profileImgUpload}/>
         </div>
 
         <div className='inputWrap'>

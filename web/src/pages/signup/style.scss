@@ -44,11 +44,14 @@ $errorMsg : #FF1919;
       height: 0;
       width: 0;
     }
-    div {
+    .uploadImg {
       width: 72px;
       height: 72px;
       border-radius: 50%;
       border: 1px solid #202020;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
     div.on {
       img {
