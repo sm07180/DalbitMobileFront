@@ -19,7 +19,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {Context} from "context";
 import {isDesktop} from "lib/agent";
-import Layout from "common/layout";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -146,7 +145,7 @@ const MainPage = () => {
       </section>
     </div>
   </>;
-  return isDesktop() ? <Layout>{MainLayout}</Layout> : MainLayout
+  return MainLayout;
 }
  
 export default MainPage

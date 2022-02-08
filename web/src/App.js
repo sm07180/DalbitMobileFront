@@ -96,6 +96,7 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 
 
 import './styles/navigation.scss'
+import Layout from "common/layout";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
@@ -652,7 +653,14 @@ const App = () => {
         ready ? (
           <>
             <Interface />
-            <Route />
+            { isDesktop() &&
+               <Layout>
+                 <Route />
+               </Layout>
+            }
+            { !isDesktop() &&
+                <Route />
+            }
             {isFooterPage && <Navigation />}
           </>
         ) : (
