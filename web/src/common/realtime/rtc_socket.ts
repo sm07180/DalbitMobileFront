@@ -1445,14 +1445,13 @@ export class AgoraListenerRtc extends RtcSocketHandler{
          */
         // client.subscribe({uid:client.uid, hasAudio}，"video");
       }else if(client.connectionState === 'DISCONNECTED'){
-        await client.setClientRole("audience", {level: 1});
-        client.on("user-published", this.handleUserPublished);
-        client.on("user-unpublished", this.handleUserUnpublished);
-        let uid = await client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null);
+        client.setClientRole("audience", {level: 1}).then(()=>{
+          client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null).then(()=>{
+            client.on("user-published", this.handleUserPublished);
+            client.on("user-unpublished", this.handleUserUnpublished);
+          });
+        });
       }
-
-
-
     } catch (err) {
       console.error(err)
     }

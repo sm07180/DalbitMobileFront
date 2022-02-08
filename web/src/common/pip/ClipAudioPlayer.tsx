@@ -95,7 +95,6 @@ const ClipAudioPlayer = ()=>{
               <p className="title">{`${clipInfo.nickName}`}</p>
               <p>{clipInfo.title}</p>
             </div>
-            {/* .counting - 임시코드로 추정됨 */}
             <div className="counting"/>
           </div>
           <img src={CloseBtn} className="close-btn" onClick={closeClickEvent} alt={"close"}/>
@@ -106,7 +105,5 @@ const ClipAudioPlayer = ()=>{
     return (<></>)
   }
 }
-
-
 
 export default ClipAudioPlayer
