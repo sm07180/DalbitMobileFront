@@ -8,11 +8,9 @@ import BroadCastVideoPlayer from "./BroadCastVideoPlayer";
 import BroadCastAudioPlayer from "./BroadCastAudioPlayer";
 import {rtcSessionClear, UserType} from "../realtime/rtc_socket";
 import {broadcastExit, broadcastInfoNew} from "../api";
-import {BroadcastContext} from "../../context/broadcast_ctx";
 
 const BroadCastPlayer = ()=> {
   const {globalAction, globalState} = useContext(GlobalContext);
-  const {broadcastAction} = useContext(BroadcastContext);
   const {baseData, rtcInfo, chatInfo, guestInfo} = globalState;
   const mediaType = rtcInfo?.roomInfo?.mediaType;
 

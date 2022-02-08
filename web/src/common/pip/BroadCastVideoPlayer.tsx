@@ -17,7 +17,6 @@ const BroadCastVideoPlayer = ()=>{
   const {globalState, globalAction} = useContext(GlobalContext);
   const {chatInfo, rtcInfo, isShowPlayer, guestInfo, exitMarbleInfo} = globalState;
   const displayWrapRef = useRef<HTMLDivElement>(null);
-  const [playerState, setPlayerState] = useState<'play'|'stop'>('stop');
 
   const disconnectGuest = () => {
     if (guestInfo === null) {
@@ -79,33 +78,16 @@ const BroadCastVideoPlayer = ()=>{
     history.push(`/broadcast/${rtcInfo?.getRoomNo()}`);
   };
 
-  // globalAction.dispatchAgoraRtc({ type: "init", data: agora });
-  //console.log(`@@rtcInfo`, rtcInfo)
-  //console.log(`@@chatInfo`, chatInfo)
-  // console.log(`@@isShowPlayer`, isShowPlayer)
-  // console.log(`@@guestInfo`, guestInfo)
-  // console.log(`@@exitMarbleInfo`, exitMarbleInfo)
-  // console.log(`@@agoraRtc`, agoraRtc)
-
-  // setDisplayWrapRef
-
   useEffect(()=>{
     if(!rtcInfo){
       return
     }
     if (rtcInfo.userType === UserType.HOST) {
-      // broadcastExit({ roomNo:rtcInfo?.getRoomNo() as string }).then(({result})=>{
-      //   if (result === "success") {
-      //     rtcSessionClear();
-      //     globalAction.setIsShowPlayer(false);
-      //   }
-      // })
       rtcInfo.join(rtcInfo.roomInfo);
     }else{
       if(!rtcInfo?.getDisplayListWrapRef()){
         rtcInfo?.setDisplayWrapRef(displayWrapRef)
       }
-
       rtcInfo.join(rtcInfo.roomInfo);
     }
   }, [rtcInfo]);
