@@ -4,18 +4,16 @@ import Api from 'context/api'
 import Swiper from 'react-id-swiper'
 import moment from 'moment'
 // global components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
-import ListRow from 'components/ui/listRow/ListRow'
 // components
 import Tabmenu from '../Tabmenu'
 
 import './blockReport.scss'
 
-const PopRelation = (props) => {
+const blockReportTabmenu = ['차단하기','신고하기']
+
+const BlockReport = (props) => {
   const {type} = props
-  const tabMenuRef = useRef();
-  const [showList, setShowList] = useState([]);
-  const [fanStarLikeState, setFanStarLikeState] = useState({type: '', title: '', tab: [], subTab: []});
+  const [tabType, setTabType] = useState(blockReportTabmenu[0])
   
   // 팬 조회
 
@@ -24,15 +22,12 @@ const PopRelation = (props) => {
     slidesPerView: 'auto',
   }
 
-  useEffect(() => {
-    
-  },[])
-
   return (
     <section className="blockReport">
-      
+      <Tabmenu data={blockReportTabmenu} tab={tabType} setTab={setTabType} />
+      <div className="contents"></div>
     </section>
   )
 }
 
-export default PopRelation
+export default BlockReport

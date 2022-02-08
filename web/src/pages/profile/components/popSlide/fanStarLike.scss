@@ -4,6 +4,7 @@
   .slideLayer {
     padding: 0;
   }
+  // 팬 스타 좋아요 보기
   .relationList {
     @include flex($fd:column);
     width:100%;
@@ -25,6 +26,7 @@
       height:100%;
       > .tabmenu {
         @include subTabmenuStyle-1;
+        margin-bottom:12px;
         .swiper-slide {
           width:auto;
           &:first-child {
@@ -93,6 +95,17 @@
           }
         }
       }
+    }
+  }
+  // 차단/신고하기
+  .blockReport {
+    @include flex($fd:column);
+    width:100%;
+    padding-top:20px;
+    .tabmenu {
+      margin-bottom:20px;
+      padding:0 16px;
+      @include tabmenuStyle-1;
     }
   }
 }

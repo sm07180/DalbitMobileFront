@@ -8,7 +8,7 @@ import FrameItems from 'components/ui/frameItems/FrameItems'
 import './profileCard.scss'
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopRelation} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStarLike} = props
 
   return (
     <div className="cardWrap">
@@ -29,15 +29,15 @@ const ProfileCard = (props) => {
         </div>
       </div>
       <div className="count">
-        <div data-target-type="fan" onClick={openPopRelation} className="item">
+        <div data-target-type="fan" onClick={openPopFanStarLike} className="item">
           <span>{data.fanCnt}</span>
           <i>팬</i>
         </div>
-        <div data-target-type="star" onClick={openPopRelation} className="item">
+        <div data-target-type="star" onClick={openPopFanStarLike} className="item">
           <span>{data.starCnt}</span>
           <i>스타</i>
         </div>
-        <div data-target-type="like" onClick={openPopRelation} className="item">
+        <div data-target-type="like" onClick={openPopFanStarLike} className="item">
           <span>{data.likeTotCnt}</span>
           <i>좋아요</i>
         </div>
@@ -45,7 +45,11 @@ const ProfileCard = (props) => {
       {!isMyProfile &&
         <div className="buttonWrap">
           <button>선물하기</button>
-          <button className='addFan'>팬등록</button>
+          {true ?
+            <button className='isFan'>팬</button>
+            :
+            <button>+ 팬등록</button>
+          }
         </div>
       }
     </div>

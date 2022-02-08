@@ -12,6 +12,7 @@ import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
 import Tabmenu from './components/Tabmenu'
 import FanStarLike from './components/popSlide/FanStarLike'
+import BlockReport from './components/popSlide/BlockReport'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
@@ -38,7 +39,8 @@ const ProfilePage = () => {
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
   const [popFanStarLike, setPopFanStarLike] = useState(false);
-  const [openRelationType, setOpenRelationType] = useState('');
+  const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
+  const [popBlockReport, setPopBlockReport] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -48,7 +50,6 @@ const ProfilePage = () => {
     let targetMemNo = params.memNo ? params.memNo : context.profile.memNo;
 
     Api.profile({params: {memNo: targetMemNo }}).then(res => {
-      console.log('res', res);
       if(res.code === '0') {
         dispatch(setProfileData(res.data))
       }else {
@@ -86,9 +87,9 @@ const ProfilePage = () => {
   }
 
   /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
-  const openPopRelation = (e) => {
+  const openPopFanStarLike = (e) => {
     const {targetType} = e.currentTarget.dataset
-    setOpenRelationType(targetType)
+    setOpenFanStarLikeType(targetType)
     setPopFanStarLike(true)
   }
 
@@ -122,7 +123,7 @@ const ProfilePage = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopRelation={openPopRelation} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopFanStarLike={openPopFanStarLike} />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
@@ -150,7 +151,12 @@ const ProfilePage = () => {
       }
       {popFanStarLike &&
         <PopSlide setPopSlide={setPopFanStarLike}>
-          <FanStarLike type={openRelationType} isMyProfile={isMyProfile} />
+          <FanStarLike type={openFanStarLikeType} isMyProfile={isMyProfile} />
+        </PopSlide>
+      }
+      {popBlockReport &&
+        <PopSlide setPopSlide={setPopBlockReport}>
+          <BlockReport />
         </PopSlide>
       }
     </div>
