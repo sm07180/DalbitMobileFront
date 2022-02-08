@@ -97,6 +97,9 @@ const baseSetting = async (globalCtx, broadcastAction) => {
 
 import './styles/navigation.scss'
 import Layout from "common/layout";
+import Common from "common";
+import Alert from "common/alert";
+import MoveToAlert from "common/alert/MoveToAlert";
 
 let alarmCheckIntervalId = 0;
 const App = () => {
@@ -647,18 +650,22 @@ const App = () => {
     }
   }, [chatInfo, globalCtx.globalState.splashData]);
 
+  let isPcDesktop = isDesktop();
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       {globalCtx.noServiceInfo.showPageYn === 'n' ? (
         ready ? (
           <>
             <Interface />
-            { isDesktop() &&
+            { isPcDesktop &&
                <Layout>
-                 <Route />
+                 <Common />
+                    <Route />
+                 <Alert />
+                 <MoveToAlert />
                </Layout>
             }
-            { !isDesktop() &&
+            { !isPcDesktop &&
                 <Route />
             }
             {isFooterPage && <Navigation />}

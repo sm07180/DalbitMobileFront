@@ -109,7 +109,6 @@ const ClipPlayer = React.lazy(() => import("pages/clip_player"));
 const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
 const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
 const Mailbox = React.lazy(() => import("pages/mailbox"));
-const MoveToAlert = React.lazy(() => import( "common/alert/MoveToAlert"));
 
 const Router = () => {
   const context = useContext(Context);
@@ -120,7 +119,6 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <Common />
       <ScrollToTop />
       <Popup />
       <Switch>
@@ -237,8 +235,6 @@ const Router = () => {
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
       </Switch>
-      <Alert />
-      <MoveToAlert />
     </React.Suspense>
   )
 };
