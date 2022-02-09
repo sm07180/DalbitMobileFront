@@ -15,24 +15,45 @@ import { MediaType } from "./constant";
 
 // others
 import "./index.scss";
-import Layout from "../../common/layout";
+import {broadcastInfoNew} from "../../common/api";
+import {useParams} from "react-router-dom";
 
 export default function Broadcast() {
-  const { broadcastState } = useContext(BroadcastContext);
-
+  const { globalState } = useContext(GlobalContext);
+  const { broadcastState, broadcastAction } = useContext(BroadcastContext);
   const { roomInfo, flipIsLeft } = broadcastState;
+  const { roomNo } = useParams<{ roomNo: string }>();
+  const { baseData } = globalState;
+
+  useEffect(()=>{
+    broadcastInfoNew({ roomNo }).then(res=>{
+      if (res.result === "success") {
+        const roomInfo = {
+          ...res.data,
+          currentMemNo: baseData.isLogin ? baseData.memNo : "",
+          broadState: res.data.state !== 2,
+        };
+        broadcastAction.dispatchRoomInfo({
+          type: "reset",
+          data: roomInfo,
+        });
+        sessionStorage.setItem("broadcast_data", JSON.stringify(roomInfo));
+      }
+    });
+  }, [baseData]);
+
   return (
-      <BroadcastLayerProvider>
-          <GuestProvider>
-              <div id="broadcast-page">
-                  <div
-                      className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
-                      "reverse"} ${broadcastState.isWide && "wide"} `}
-                  >
-                      <SideWrapper />
-                  </div>
-              </div>
-          </GuestProvider>
-      </BroadcastLayerProvider>
+    <BroadcastLayerProvider>
+      <GuestProvider>
+        <div id="broadcast-page">
+          <div
+            className={`broadcastWrap ${roomInfo?.mediaType === MediaType.VIDEO && "video"} ${flipIsLeft === false &&
+              "reverse"} ${broadcastState.isWide && "wide"} `}
+          >
+            <SideWrapper />
+          </div>
+        </div>
+      </GuestProvider>
+    </BroadcastLayerProvider>
   );
 }

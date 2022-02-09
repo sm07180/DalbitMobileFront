@@ -233,6 +233,13 @@ const initialData = {
     alertStatus: {
       status: false,
     },
+    moveToAlert: {
+      state: 'ready',
+      dest: '',
+      alertStatus: {
+        status: false
+      }
+    },
     layerPopStatus: {
       status: false,
     },
@@ -476,6 +483,9 @@ const GlobalProvider = (props) => {
   );
   const [layerPopStatus, setLayerPopStatus] = useState(
     initialData.globalState.layerPopStatus
+  );
+  const [moveToAlert, setMoveToAlert] = useState(
+      initialData.globalState.moveToAlert
   );
   const [toastStatus, callSetToastStatus] = useState(
       initialData.globalState.toastStatus
@@ -1087,6 +1097,7 @@ const GlobalProvider = (props) => {
     baseData,
     alertStatus,
     layerPopStatus,
+    moveToAlert,
     tooltipStatus,
     toastStatus,
     layerStatus,
@@ -1132,6 +1143,7 @@ const GlobalProvider = (props) => {
     setBaseData,
     setAlertStatus,
     setLayerPopStatus,
+    setMoveToAlert,
     setTooltipStatus,
     callSetToastStatus,
     setUserProfile,
@@ -1163,6 +1175,7 @@ const GlobalProvider = (props) => {
     setMailBlockUser,
     setMultiViewer : action.updateMultiViewer,
     setIsMailboxOn,
+    setAgeData,
     setbestDjData : setBestDjData,
     setAuthFormRef,
     setNoServiceInfo,

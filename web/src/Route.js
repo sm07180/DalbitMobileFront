@@ -121,7 +121,6 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <Common />
       <ScrollToTop />
       <Popup />
       <Switch>
@@ -239,7 +238,6 @@ const Router = () => {
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
       </Switch>
-      <Alert />
     </React.Suspense>
   )
 };

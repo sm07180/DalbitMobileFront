@@ -168,15 +168,15 @@ export class MailChatSocketHandler {
     });
     this.socket.on(CHAT_CONFIG.event.socket.ERROR, (errorCode: number) => {
       this.disconnected(true);
-      this.reConnect.reConnect();
+      //this.reConnect.reConnect();
     });
     this.socket.on(CHAT_CONFIG.event.socket.CLOSE, (errorCode: number) => {
       this.disconnected(true);
-      this.reConnect.reConnect();
+      //this.reConnect.reConnect();
     });
     this.socket.on(CHAT_CONFIG.event.socket.DISCONNECT, (errorCode: number) => {
       this.disconnected(true);
-      this.reConnect.reConnect();
+      //this.reConnect.reConnect();
     });
   }
 

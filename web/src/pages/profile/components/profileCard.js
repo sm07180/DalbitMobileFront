@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle, openPresentPop} = props
   const dispatch = useDispatch();
 
   /* fan toggle 데이터 변경 */
@@ -55,7 +55,7 @@ const ProfileCard = (props) => {
       </div>
       {!isMyProfile &&
         <div className="buttonWrap">
-          <button>선물하기</button>
+          <button onClick={openPresentPop}>선물하기</button>
           <button className={`${data.isFan ? 'isFan' : ''}`}
                   onClick={() => {
                     fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)

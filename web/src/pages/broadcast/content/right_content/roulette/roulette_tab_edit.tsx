@@ -2,9 +2,9 @@
 import React, { useCallback, useEffect, useMemo, } from "react";
 
 // Component
-import DalbitCheckbox from "common/ui/dalbit_checkbox";
-import DalbitInput from "common/ui/dalbit_input";
-import {DalbitScroll} from "common/ui/dalbit_scroll";
+import DalbitCheckbox from "../../../../../common/ui/dalbit_checkbox";
+import DalbitInput from "../../../../../common/ui/dalbit_input";
+import {DalbitScroll} from "../../../../../common/ui/dalbit_scroll";
 
 // Api
 import {

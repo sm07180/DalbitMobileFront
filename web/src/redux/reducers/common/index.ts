@@ -2,7 +2,8 @@ import { createReducer } from "typesafe-actions";
 import { CommonActions, CommonState } from "../../types/commonType";
 
 const initialState:CommonState = {
-  isLoading:false
+  isLoading:false,
+  isDesktop:false
 }
 
 const common = createReducer<CommonState,CommonActions>(initialState,{
@@ -12,6 +13,9 @@ const common = createReducer<CommonState,CommonActions>(initialState,{
     }else{
       return {...state,isLoading:payload.isLoading}
     }
+  },
+  "common/SET_IS_DESKTOP":(state, {payload}) => {
+    return {...state,isDesktop:payload}
   }
 });
 
