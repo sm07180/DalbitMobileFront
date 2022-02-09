@@ -404,7 +404,7 @@ const Ranking = function() {
     }
   }, []);
   return (
-    <Layout>
+    <>
       <div id="ranking-page">
         <div className="header">
           <h2 className="header__title">
@@ -501,7 +501,7 @@ const Ranking = function() {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

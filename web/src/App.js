@@ -657,12 +657,14 @@ const App = () => {
           <>
             <Interface />
             { isDesktop &&
-               <Layout>
-                 <Common />
+                <>
+                  <Common />
+                  <Layout>
                     <Route />
-                 <Alert />
-                 <MoveToAlert />
-               </Layout>
+                  </Layout>
+                  <Alert />
+                  <MoveToAlert />
+                </>
             }
             { !isDesktop &&
                 <Route />
