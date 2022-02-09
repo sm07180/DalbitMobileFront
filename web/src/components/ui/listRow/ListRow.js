@@ -3,10 +3,10 @@ import React from 'react'
 import './listRow.scss'
 
 const ListRow = (props) => {
-  const {photo, children} = props
+  const {photo, children, onClick} = props
 
   return (
-    <div className="listRow">
+    <div className="listRow" onClick={onClick}>
       <div className="photo">
         <img src={photo} alt="" />
       </div>
@@ -16,3 +16,7 @@ const ListRow = (props) => {
 }
 
 export default ListRow
+
+ListRow.defaultProps = {
+  onClick: () => {}
+};

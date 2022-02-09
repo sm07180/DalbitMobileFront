@@ -36,6 +36,7 @@ const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
+const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -171,6 +172,8 @@ const Router = () => {
                  }
                }}
         />
+
+        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
