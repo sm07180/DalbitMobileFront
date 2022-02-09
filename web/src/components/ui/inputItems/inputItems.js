@@ -16,8 +16,8 @@ const InputItems = (props) => {
 
   return (
     <>
-      {title && <div className="title">{title}</div>}
       <div className={`inputItems`}>
+        {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
             <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>

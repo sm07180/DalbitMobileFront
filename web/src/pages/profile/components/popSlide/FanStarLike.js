@@ -9,7 +9,7 @@ import ListRow from 'components/ui/listRow/ListRow'
 // components
 import Tabmenu from '../Tabmenu'
 
-import './fanStarLike.scss'
+import './style.scss'
 
 const title = {
   myProfile: ['팬 관리','스타 관리'],
@@ -93,7 +93,7 @@ const PopRelation = (props) => {
   },[])
 
   return (
-    <section className="relationList">
+    <section className="FanStarLike">
       {isMyProfile === true ?
         <>
         {fanStarLikeState.type === 'fan' || fanStarLikeState.type === 'star' ?
@@ -134,9 +134,9 @@ const PopRelation = (props) => {
                   setTab: setLikeSubType,
                 }
                 return (
-                    <div className="swiper-slide" key={index}>
-                      <TabBtn param={param} />
-                    </div>
+                  <div className="swiper-slide" key={index}>
+                    <TabBtn param={param} />
+                  </div>
                 )
               })}
             </ul>
@@ -158,6 +158,7 @@ const PopRelation = (props) => {
                   </div>
                 )
               })}
+              <button>?</button>
             </ul>
           }
           </>
