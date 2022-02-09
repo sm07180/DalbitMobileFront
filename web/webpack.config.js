@@ -11,15 +11,19 @@ const fs = require('fs')
 const ENV_URL = {
   dev: {
     WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
+    //API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    API_SERVER_URL: JSON.stringify('https://devm-khj.dalbitlive.com:463'),
+    CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto2.dalbitlive.com'),
-    PAY_SERVER_URL: JSON.stringify('https://devpay.dalbitlive.com'),
-    SOCIAL_URL: JSON.stringify('https://devwww.dalbitlive.com/social')
+    PAY_SERVER_URL: JSON.stringify('https://devm-khj.dalbitlive.com:4432'),
+    SOCIAL_URL: JSON.stringify('https://devm-khj.dalbitlive.com:4443/social'),
+    // SOCIAL_URL: JSON.stringify('https://devwww.dalbitlive.com/social')
   },
   stage: {
-    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
-    API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    //API_SERVER_URL: JSON.stringify('https://devapi.dalbitlive.com'),
+    API_SERVER_URL: JSON.stringify('https://devm-khj.dalbitlive.com:463'),
     CHAT_SOCKET_URL: JSON.stringify("devsv1.dalbitlive.com"),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),
     USER_PHOTO_SERVER_URL: JSON.stringify('https://devphoto.dalbitlive.com'),
@@ -27,7 +31,7 @@ const ENV_URL = {
     SOCIAL_URL: JSON.stringify('https://devwww.dalbitlive.com/social')
   },
   real: {
-    WEBRTC_SOCKET_URL: JSON.stringify('wss://v154.dalbitlive.com:5443/WebRTCAppEE/websocket'),
+    WEBRTC_SOCKET_URL: JSON.stringify('wss://vo.dalbitlive.com:5443/WebRTCAppEE/websocket'),
     CHAT_SOCKET_URL: JSON.stringify("sv.dalbitlive.com"),
     API_SERVER_URL: JSON.stringify('https://api.dalbitlive.com'),
     STATIC_PHOTO_SERVER_URL: JSON.stringify('https://image.dalbitlive.com'),

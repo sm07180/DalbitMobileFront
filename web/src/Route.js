@@ -37,8 +37,10 @@ const ReHonor = React.lazy(() => import('pages/rehonor'))
 const Profile = React.lazy(() => import('pages/profile'))
 const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
 // 스토어
-const Store = React.lazy(() => import('pages/restore'))
-const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+const Store = React.lazy(() => import('pages/store'))
+const DalCharge= React.lazy(() => import('pages/store/contents/dalCharge/dalCharge'))
+const Coocon = React.lazy(() => import('pages/store/contents/bankTransfer/bankTransfer'))
+const CooconResult = React.lazy(() => import('pages/store/contents/bankTransfer/bankResult'))
 // 내지갑
 const Wallet = React.lazy(() => import('pages/rewallet'))
 const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
@@ -139,6 +141,8 @@ const Router = () => {
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
+        <Route exact path="/pay/bank" component={Coocon}/>
+        <Route exact path="/pay/bankInfo" component={CooconResult}/>
 
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
