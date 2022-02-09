@@ -28,7 +28,7 @@ const Layout = (props) => {
     if(locationStateHistory.location.pathname.search(nonContainerPath) > -1){
       setContainer("")
     }else{
-      setContainer(container)
+      setContainer("container")
     }
   },[locationStateHistory.location])
   return (
