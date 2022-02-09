@@ -13,8 +13,8 @@ import Message from 'pages/common/message'
 // import Main from 'pages/main'
 const Main = React.lazy(() => import('pages/main'))
 
-const Clip = React.lazy(() => import('pages/reclip'))
-const ClipDetail = React.lazy(() => import('pages/reclip/contents/clipDetail'))
+const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'))
+const ClipDetail = React.lazy(() => import('pages/clip/components/clipDetail'))
 
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
@@ -78,6 +78,8 @@ const Service = React.lazy(() => import('pages/service'))
 const NoService = React.lazy(() => import('pages/no_service'))
 
 const Story = React.lazy(() => import('pages/story'))
+
+const SearchPage = React.lazy(() => import('pages/search/SearchPage.js'));
 
 export default () => {
   return (
@@ -156,7 +158,7 @@ export default () => {
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
-        <Redirect to="/error" />
+        <Route exact path="/search" component={SearchPage} />
       </Switch>
     </React.Suspense>
   )

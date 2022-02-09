@@ -8,9 +8,9 @@ import TabBtn from 'components/ui/tabBtn/TabBtn'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 // components
-import FilterBtn from '../components/FilterBtn'
+import FilterBtn from './FilterBtn'
 
-import './clipDetail.scss'
+import '../scss/clipDetail.scss'
 
 const clipTitle = ['전체보기','최근 들은 클립','좋아요한 클립']
 const clipTabmenu = ['ALL','커버/노래','작사/작곡','힐링','수다/대화','ASMR','고민/사연','성우','더빙']
