@@ -1,43 +1,17 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
+import React from 'react'
 
-// global components
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 // components
-import SocialList from '../../components/SocialList'
-
-const fanboardTabmenu = ['전체','내댓글']
+import FanSocialList from '../../components/FanSocialList'
 
 const FanboardSection = (props) => {
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
-  
-  const [fanboardType, setFanboardType] = useState(fanboardTabmenu[0])
-
-  const data = profile
+  const { profileData, fanBoardData, isMyProfile } = props;
 
   return (
     <div className="fanboardSection">
-      <ul className="subTabmenu">
-        {fanboardTabmenu.map((data,index) => {
-          const param = {
-            item: data,
-            tab: fanboardType,
-            setTab: setFanboardType,
-            // setPage: setPage
-          }
-          return (
-            <TabBtn param={param} key={index} />
-          )
-        })}
-      </ul>
       <div className="subArea">
-        <div className="title">전체 2,222</div>
-        <button className='filter'>최신순</button>
+        <div className="title">전체 {fanBoardData.list.length}</div>
       </div>
-      <SocialList data={data} />
+      <FanSocialList profileData={profileData} list={fanBoardData.list} isMyProfile={isMyProfile} />
     </div>
   )
 }

@@ -8,7 +8,7 @@ const ListRow = (props) => {
   return (
     <div className="listRow">
       <div className="photo">
-        <img src={photo} />
+        <img src={photo} alt="" />
       </div>
       {children}
     </div>

@@ -1,0 +1,44 @@
+@import "components/ui/_mixin.scss";
+
+#honor {
+  .content {
+    position: relative;
+    @include flex(flex-start, flex-start, column);
+    width: 100%;
+    padding: 0 16px;
+    .tabmenu {
+      position:relative;
+      @include flex(center);
+      width: 100%;
+      li {
+        flex: 1;
+        @include flex(center, center);
+        padding: 10px 0;
+        border-bottom: 2px solid #ccc;
+        @include font(16px,500,#ccc);
+        &.active {
+          @include font(16px,700,#333);   
+          border-bottom: 2px solid #333;       
+        }
+      }
+    }
+    .infomation {
+      @include font(14px,400,#FF3C7B);
+      margin: 8px 0;
+    }
+    .myHonor {
+      position: relative;
+      @include flex;
+      width: 100%;
+      padding: 5px;
+      border-radius: 16px;
+      background-color: #FFF5F8;
+      box-sizing: border-box;
+      .myInfoWrap {
+        position: relative;
+        @include flex(flex-start, center, column);
+        width: 70%;
+      }          
+    }
+  }
+}

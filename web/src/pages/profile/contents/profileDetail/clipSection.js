@@ -1,46 +1,34 @@
-import React, {useEffect, useState, useContext} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Context} from 'context'
-import {IMG_SERVER} from 'context/config'
+import React from 'react'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 const ClipSection = (props) => {
-  //context
-  const context = useContext(Context)
-  const {token, profile} = context
-
-  const data = profile
+  const { profileData, clipData, isMyProfile } = props;
 
   return (
     <div className="clipSection">
       <div className="subArea">
-        <div className="title">내클립</div>
+        <div className="title">
+          {isMyProfile ? '내클립' : `${profileData.nickNm}님 클립`}
+        </div>
       </div>
       <div className="clipContent">
-        <ListColumn photo={data.profImg.thumb336x336}>
-          <div className="title">제목</div>
-          <div className="info">
-            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
-            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
-          </div>
-        </ListColumn>
-        <ListColumn photo={data.profImg.thumb336x336}>
-          <div className="title">제목</div>
-          <div className="info">
-            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
-            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
-          </div>
-        </ListColumn>
-        <ListColumn photo={data.profImg.thumb336x336}>
-          <div className="title">제목</div>
-          <div className="info">
-            <DataCnt type={`goodCnt`} value={data.goodCnt ? data.goodCnt : "123"}/>
-            <DataCnt type={"replyCnt"} value={data.replyCnt ? data.replyCnt : "123"}/>
-          </div>
-        </ListColumn>
+        {clipData.list.map((item, index) => {
+          return (
+            <ListColumn photo={item.bgImg.thumb336x336} key={index}>
+              <div className="title">{item.title}</div>
+              <div className="info">
+                <DataCnt type={`goodCnt`} value={item.goodCnt}/>
+                <DataCnt type={"replyCnt"} value={item.replyCnt}/>
+              </div>
+            </ListColumn>
+          )
+        })}
+        {clipData.list.length === 0 &&
+          <>클립 등록하기 해야됨</>
+        }
       </div>
     </div>
   )
