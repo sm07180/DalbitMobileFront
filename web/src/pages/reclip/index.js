@@ -15,7 +15,7 @@ import HotClipList from '../clip/components/HotClipList'
 import SwiperList from '../clip/components/SwiperList'
 import NowClipList from '../clip/components/NowClipList'
 // contents
-import ClipDetail from '../clip/components/clipDetail'
+import ClipDetail from '../clip/components/ClipDetail'
 
 
 import './style.scss'
