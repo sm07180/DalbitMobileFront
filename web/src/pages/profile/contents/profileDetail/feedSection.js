@@ -46,7 +46,7 @@ const FeedSection = (props) => {
         </Swiper>
       </div>
       }
-      <SocialList profileData={profileData} feedList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} />
+      <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed" />
     </div>
   )
 }

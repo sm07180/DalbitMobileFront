@@ -35,7 +35,7 @@ const ReSetting = React.lazy(() => import('pages/resetting'))
 const ReHonor = React.lazy(() => import('pages/rehonor'))
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileWrite = React.lazy(() => import('pages/profile/contents/profile/profileWrite'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
 const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))

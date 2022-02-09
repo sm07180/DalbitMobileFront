@@ -1,7 +1,7 @@
 /* 
   @color
 */
-$MAINCOLOR: #8581FF;
+$MAINCOLOR: #FF3C7B;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
@@ -116,7 +116,10 @@ $MORE-ZINDEX: 5000;
         background-size:18px;
       }
       &.dal {
-        @include BGIMG('mypage/dalla/icon_dal.png');
+        &::before {
+          @include BGIMG('mypage/dalla/icon_dal.png');
+          background-size:16px;
+        }
       }
       &.byeol {
         &::before {
@@ -284,6 +287,39 @@ $MORE-ZINDEX: 5000;
         width: 2px;height: 2px;
         background: #757575;
       }
+    }
+  }
+}
+
+// 탭 메뉴
+@mixin tabmenuStyle-1 {
+  @include flex(center);
+  li {
+    flex:1;
+    line-height:40px;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom:2px solid #f2f2f2;
+    @include font(16px,500,#acacac);
+    &.active {
+      @include font(16px,bold,#202020);
+      border-bottom: solid 2px #202020;
+    }
+  }
+}
+
+@mixin subTabmenuStyle-1 {
+  @include flex(center);
+  li {
+    line-height:34px;
+    margin-right:4px;
+    padding:0 16px;
+    border-radius:100px;
+    background-color: #F2F2F2;
+    @include font(13px,400,#ACACAC);
+    &.active {
+      background-color: #202020;
+      color:white;
     }
   }
 }

@@ -1,17 +1,13 @@
-import React, {useContext, useEffect, useRef} from 'react'
-import {IMG_SERVER} from 'context/config'
+import React from 'react'
 
 // global components
-import ListRow from 'components/ui/listRow/ListRow'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import './socialList.scss'
-import {Context} from "context";
+import ListRowComponent from "./ListRowComponent";
 
 const SocialList = (props) => {
-  const {profileData, feedList, openShowSlide, isMyProfile} = props
-  const moreRef = useRef([]);
-  const context = useContext(Context);
+  const {socialList, openShowSlide, isMyProfile, type} = props
 
   // 스와이퍼
   const swiperFeeds = {
@@ -23,76 +19,17 @@ const SocialList = (props) => {
     }
   }
 
-  /* 더보기 박스 열기 */
-  const moreBoxOpenAction = (target) => {
-    target.classList.remove('hidden');
-    target.classList.add('isOpenMoreBox');
-  }
-
-  /* 더보기 박스 닫기 */
-  const moreBoxCloseAction = (target) => {
-    target.classList.add('hidden')
-    target.classList.remove('isOpenMoreBox')
-  }
-
-  /* 피드 더보기 박스 클릭 */
-  const moreBoxClick = (index) => {
-    const currentTarget = moreRef.current[index];
-
-    // 이전에 열려있는 박스가 있으면 닫는다
-    const prevTarget = document.getElementsByClassName('isOpenMoreBox')[0]
-    if(prevTarget) {
-      moreBoxCloseAction(prevTarget);
-    }
-
-    if(prevTarget !== currentTarget) {
-      if(currentTarget.classList.contains('hidden')) {
-        moreBoxOpenAction(currentTarget);
-      }else {
-        moreBoxCloseAction(currentTarget);
-      }
-    }
-  }
-
-  /* 피드 더보기 박스 닫기 (외부 클릭) */
-  const moreBoxClose = (e) => {
-    if(!e.target.classList.contains('moreBoxImg')) {
-      const target = document.getElementsByClassName('isOpenMoreBox')[0];
-      if(target) {
-        moreBoxCloseAction(target);
-      }
-    }
-  }
-
-  useEffect(() => {
-    document.addEventListener('click', moreBoxClose);
-    return () => document.removeEventListener('click', moreBoxClose);
-  }, []);
-
   return (
     <div className="socialList">
-      {feedList.map((item, index) => {
+      {socialList.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx}>
-            <ListRow photo={profileData.profImg ? profileData.profImg.thumb50x50 : ""}>
-              <div className="listContent">
-                <div className="nick">{item.nickName}</div>
-                <div className="time">{item.writeDate}</div>
-              </div>
-              <button className='more' onClick={() => moreBoxClick(index)}>
-                <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
-                <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
-                  {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
-                  {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
-                  {context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}
-                </div>
-              </button>
-            </ListRow>
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" />
             <div className="socialContent">
               <div className="text">
                 {item.contents}
               </div>
-              {item.photoInfoList.length > 1 ?
+              {type === 'feed' && (item.photoInfoList.length > 1 ?
                 <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList)}>
                   <Swiper {...swiperFeeds}>
                     {item.photoInfoList.map((photo) => {
@@ -106,17 +43,16 @@ const SocialList = (props) => {
                     })}
                   </Swiper>
                 </div>
-                : !item.profImg.isDefaultImg ?
+                : item.photoInfoList.length === 1 ?
                   <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
                     <div className="photo">
-                      <img src={item.profImg.thumb190x190} alt="" />
+                      <img src={item.photoInfoList[0].profImg.thumb190x190} alt="" />
                     </div>
                   </div>
-                  : <></>
-              }
-
+                    : <></>
+              )}
               <div className="info">
-                <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0} />
+                <DataCnt type={"replyCnt"} value={item.replyCnt} />
               </div>
             </div>
           </React.Fragment>

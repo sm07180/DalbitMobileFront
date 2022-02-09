@@ -51,36 +51,25 @@ const ProfileEdit = () => {
           <div className="title">커버사진 <small>(최대 10장)</small></div>
           <Swiper {...swiperParams}>
             <div>
-              <div className="photo">
+              <label>
                 <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt="" />
-              </div>
+                <button className="cancelBtn"></button>
+              </label>
             </div>
             <div>
-              <button>+</button>
+              <label>
+                <img src={profile && profile.profImg && profile.profImg.thumb100x100} alt="" />
+                <button className="cancelBtn"></button>
+              </label>
             </div>
             <div>
-              <button>+</button>
+              <div className='empty'>+</div>
             </div>
             <div>
-              <button>+</button>
+              <div className='empty'>+</div>
             </div>
             <div>
-              <button>+</button>
-            </div>
-            <div>
-              <button>+</button>
-            </div>
-            <div>
-              <button>+</button>
-            </div>
-            <div>
-              <button>+</button>
-            </div>
-            <div>
-              <button>+</button>
-            </div>
-            <div>
-              <button>+</button>
+              <div className='empty'>+</div>
             </div>
           </Swiper>
         </div>
@@ -97,38 +86,19 @@ const ProfileEdit = () => {
           <input type="password" maxLength="20" placeholder='' />
           <button className='inputChange'>변경</button>
         </InputItems>
-        <div className="inputGroup">
-          <InputItems title={'생년월일'}>
-            <button className='inputChange'>변경</button>
-          </InputItems>
-          <InputItems title={'성별'}>
-            <div className="innerBox">
-              <GenderItems data={profile.gender} size={18} />
-              {profile.gender === 'm' ? 
-                <span className='text'>남자</span>
-                :
-                <span className='text'>여자</span>
-              }
-            </div>
-          </InputItems>
+        <div className="inputItems">
+          <div className="title">성별</div>
+          <ul className="selectMenu">
+            <li className='active'>남성</li>
+            <li>여성</li>
+          </ul>
+          <ul className="selectMenu">
+            <li className='active fixGender'>남성</li>
+          </ul>
         </div>
         <InputItems title={'프로필 메시지'} type={'textarea'}>
           <textarea rows="4" maxLength="100" placeholder='입력해주세요.'></textarea>
           <div className="textCount">0/100</div>
-        </InputItems>
-      </section>
-      <section className="passwordEdit">
-        <InputItems title={'휴대폰 번호'} button={'인증하기'}>
-          <input type="tel" maxLength="15" placeholder='번호를 입력해주세요.' />
-        </InputItems>
-        <InputItems title={'인증번호'} button={'확인'}>
-          <input type="text" maxLength="9" placeholder='인증번호를 입력해주세요.' />
-        </InputItems>
-        <InputItems title={'비밀번호'}>
-          <input type="password" maxLength="9" placeholder='8~20자 영문/숫자/특수문자 중 2가지 이상 조합' />
-        </InputItems>
-        <InputItems title={'비밀번호 확인'}>
-          <input type="password" maxLength="9" placeholder='비밀번호를 한번 더 입력해주세요.' />
         </InputItems>
       </section>
     </div>

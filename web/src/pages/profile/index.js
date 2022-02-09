@@ -1,21 +1,23 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './index.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
-// contents
-import FeedSection from './contents/profile/feedSection'
-import FanboardSection from './contents/profile/fanboardSection'
-import ClipSection from './contents/profile/clipSection'
+import Tabmenu from './components/Tabmenu'
+import FanStarLike from './components/popSlide/FanStarLike'
+import BlockReport from './components/popSlide/BlockReport'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
+// contents
+import FeedSection from './contents/profileDetail/feedSection'
+import FanboardSection from './contents/profileDetail/fanboardSection'
+import ClipSection from './contents/profileDetail/clipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -23,12 +25,9 @@ import {profileClipDefaultState, profileFanBoardDefaultState, profileFeedDefault
 
 const socialTabmenu = ['피드','팬보드','클립']
 
-const Profile = () => {
+const ProfilePage = () => {
   const history = useHistory()
-  //context
   const context = useContext(Context)
-  const tabMenuRef = useRef();
-  const myprofileRef = useRef();
   const params = useParams();
 
   const [showSlide, setShowSlide] = useState(false);
@@ -36,6 +35,9 @@ const Profile = () => {
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
+  const [popFanStarLike, setPopFanStarLike] = useState(false);
+  const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
+  const [popBlockReport, setPopBlockReport] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -120,6 +122,44 @@ const Profile = () => {
     })
   }
 
+  /* 팬 등록 해제 */
+  const fanToggle = (memNo, memNick, isFanYn, callback) => {
+    isFanYn ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick, callback) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        if(typeof callback === 'function') callback();
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick, callback) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            if(typeof callback === 'function') callback();
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
@@ -148,6 +188,13 @@ const Profile = () => {
 
     setImgList(list);
     setShowSlide(true);
+  }
+
+  /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
+  const openPopFanStarLike = (e) => {
+    const {targetType} = e.currentTarget.dataset
+    setOpenFanStarLikeType(targetType)
+    setPopFanStarLike(true)
   }
 
   /* 프로필 데이터 초기화 (피드, 팬보드, 클립) */
@@ -195,7 +242,7 @@ const Profile = () => {
 
   // 페이지 시작
   return (
-    <div id="myprofile" ref={myprofileRef}>
+    <div id="myprofile">
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
@@ -211,26 +258,17 @@ const Profile = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
+                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle}  />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
-        <ul className="tabmenu" ref={tabMenuRef}>
-          {socialTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: socialType,
-              setTab: setSocialType,
-              // setPage: setPage
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
+        <div className="tabmenuWrap">
+          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
           {isMyProfile && <button>등록</button>}
-        </ul>
+        </div>
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
@@ -260,8 +298,18 @@ const Profile = () => {
           </section>
         </PopSlide>
       }
+      {popFanStarLike &&
+        <PopSlide setPopSlide={setPopFanStarLike}>
+          <FanStarLike type={openFanStarLikeType} isMyProfile={isMyProfile} />
+        </PopSlide>
+      }
+      {popBlockReport &&
+        <PopSlide setPopSlide={setPopBlockReport}>
+          <BlockReport />
+        </PopSlide>
+      }
     </div>
   )
 }
 
-export default Profile
+export default ProfilePage
