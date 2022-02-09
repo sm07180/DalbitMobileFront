@@ -39,7 +39,7 @@ const ProfilePage = () => {
   const [popFanStarLike, setPopFanStarLike] = useState(false);
   const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
   const [popBlockReport, setPopBlockReport] = useState(false);
-  const [popPresent, setPopPresent] = useState(true);
+  const [popPresent, setPopPresent] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);

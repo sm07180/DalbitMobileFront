@@ -111,7 +111,7 @@ const MainPage = () => {
   return (
     <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title={'메인'} />
+        <Header title="메인" />
       </div>
       <section className='topSwiper'>
         <MainSlide data={mainState.topBanner} />
