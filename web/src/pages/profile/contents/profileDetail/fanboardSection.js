@@ -1,17 +1,17 @@
 import React from 'react'
 
 // components
-import FanSocialList from '../../components/FanSocialList'
+import SocialList from "../../components/socialList";
 
 const FanboardSection = (props) => {
-  const { profileData, fanBoardData, isMyProfile } = props;
+  const { fanBoardData, isMyProfile } = props;
 
   return (
     <div className="fanboardSection">
       <div className="subArea">
         <div className="title">전체 {fanBoardData.list.length}</div>
       </div>
-      <FanSocialList profileData={profileData} list={fanBoardData.list} isMyProfile={isMyProfile} />
+      <SocialList socialList={fanBoardData.list} isMyProfile={isMyProfile} type="fanBoard" />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './index.scss'
@@ -28,10 +28,7 @@ const socialTabmenu = ['피드','팬보드','클립']
 
 const ProfilePage = () => {
   const history = useHistory()
-  //context
   const context = useContext(Context)
-  const tabMenuRef = useRef();
-  const myprofileRef = useRef();
   const params = useParams();
 
   const [showSlide, setShowSlide] = useState(false);
@@ -127,6 +124,44 @@ const ProfilePage = () => {
     })
   }
 
+  /* 팬 등록 해제 */
+  const fanToggle = (memNo, memNick, isFanYn, callback) => {
+    isFanYn ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick, callback) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        if(typeof callback === 'function') callback();
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick, callback) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            if(typeof callback === 'function') callback();
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
@@ -209,7 +244,7 @@ const ProfilePage = () => {
 
   // 페이지 시작
   return (
-    <div id="myprofile" ref={myprofileRef}>
+    <div id="myprofile">
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
@@ -225,14 +260,15 @@ const ProfilePage = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopFanStarLike={openPopFanStarLike} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
+                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle}  />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
         <div className="tabmenuWrap">
-          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />  
+          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
           {isMyProfile && <button>등록</button>}
         </div>
 
