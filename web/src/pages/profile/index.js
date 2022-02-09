@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext, useRef} from 'react'
+import React, {useEffect, useState, useContext} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
 import {Context} from 'context'
 import './index.scss'
@@ -27,10 +27,7 @@ const socialTabmenu = ['피드','팬보드','클립']
 
 const ProfilePage = () => {
   const history = useHistory()
-  //context
   const context = useContext(Context)
-  const tabMenuRef = useRef();
-  const myprofileRef = useRef();
   const params = useParams();
 
   const [showSlide, setShowSlide] = useState(false);
@@ -245,7 +242,7 @@ const ProfilePage = () => {
 
   // 페이지 시작
   return (
-    <div id="myprofile" ref={myprofileRef}>
+    <div id="myprofile">
       <Header title={`${profileData.nickNm}`} type={'back'}>
         {isMyProfile ?
           <div className="buttonGroup">
@@ -261,8 +258,8 @@ const ProfilePage = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopFanStarLike={openPopFanStarLike}
-                     fanToggle={fanToggle}  />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
+                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle}  />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />

@@ -119,6 +119,7 @@ interface IFanBoardData {
   writeDt: string;
   writeTs: number;
   writerMemNo: string;
+  mem_no: string;
 }
 
 interface IClipData {

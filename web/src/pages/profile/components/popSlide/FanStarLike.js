@@ -44,8 +44,7 @@ const PopRelation = (props) => {
           setShowList(res.data.list)
         }
       })
-    }
-    if (type === 'star') {
+    }else if (type === 'star') {
       Api.getNewStarList({
         memNo: '11584609206286',
         sortType: 2,
@@ -56,8 +55,7 @@ const PopRelation = (props) => {
           setShowList(res.data.list)
         }
       })
-    }
-    if (type === 'like') {
+    }else if (type === 'like') {
       Api.mypage_good_ranking({
         params: {
           memNo: '11584609206286'
