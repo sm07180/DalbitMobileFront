@@ -79,6 +79,16 @@ const MainPage = () => {
     })
   }, [currentPage, liveListType]);
 
+  const mainDataReset = () => {
+    fetchMainInfo();
+    fetchLiveInfo();
+    setTopRankType(topTenTabMenu[0])
+    setLiveListType(liveTabMenu[0])
+    setHeaderFixed(false);
+    setCurrentPage(0);
+
+  }
+
   // scroll
   const scrollEvent = useCallback(() => {
     // 탑메뉴 스크롤시 스타일 클래스 추가
@@ -159,8 +169,8 @@ const MainPage = () => {
           refreshIconNode.style.transform = `rotate(${current_angle}deg)`
         }, 17)
 
-        fetchMainInfo();
-        fetchLiveInfo();
+        mainDataReset();
+
         await new Promise((resolve, _) => setTimeout(() => resolve(), 300))
         clearInterval(loadIntervalId)
 

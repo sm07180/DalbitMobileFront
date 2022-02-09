@@ -465,12 +465,33 @@ const App = () => {
     }
   }
 
+  /* 모바일웹용 푸터 */
   const isFooter = () => {
     if(!isDesktop && !isHybrid()) {
       const pages = ['/', '/clip', '/search', '/mypage'];
       const isFooterPage = pages.findIndex(item => item === location.pathname) > -1;
 
       setIsFooterPage(isFooterPage);
+    }
+  }
+
+  /* 네이티브용 푸터 관리 */
+  const nativeFooterManager = () => {
+    if(isHybrid()) {
+      const currentPages = location.pathname;
+      const footerViewPages = {
+        '/': 'main',
+        '/clip': 'clip',
+        '/search': 'search',
+        '/mypage': 'mypage'
+      };
+      const visible = !!footerViewPages[currentPages];
+      const stateFooterParam = {
+        tabName: visible ? footerViewPages[currentPages] : '',
+        visible: visible
+      };
+
+      Hybrid('stateFooter', stateFooterParam)
     }
   }
 
@@ -548,6 +569,7 @@ const App = () => {
 
   useEffect(() => {
     isFooter();
+    nativeFooterManager();
   }, [location.pathname]);
 
   const [cookieAuthToken, setCookieAuthToken] = useState('')
