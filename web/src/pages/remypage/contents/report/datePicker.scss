@@ -1,0 +1,24 @@
+@import "../../../../components/ui/mixin";
+
+#report{
+  .MuiFormControl-root {
+    width: 100%;
+    margin: 0;
+  }
+  .MuiInput-underline:after,
+  .MuiInput-underline:before {
+    display: none;
+  }
+  .MuiInput-formControl {
+    margin-top: 0;
+    input {
+      margin: 0;
+    }
+  }
+  .MuiInput-underline:hover:not(.Mui-disabled):before {
+    display: none;
+  }
+  .MuiInputBase-input {
+    @include font(16px,500,#303030);
+  }
+}

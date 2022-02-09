@@ -74,10 +74,8 @@ export default function mailBoxContent() {
   // ---------------------------------------------------------
   return (
     <Fragment>
-      <Layout>
         {/* view */}
         <div id="mailBoxPage">{createContent()}</div>
-      </Layout>
     </Fragment>
   );
 }

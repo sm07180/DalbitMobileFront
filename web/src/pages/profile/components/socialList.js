@@ -36,7 +36,7 @@ const SocialList = (props) => {
                       return (
                         <div>
                           <div className="photo">
-                            <img src={photo.profImg.thumb500x500} alt="" />
+                            <img src={photo.profImg?.thumb500x500} alt="" />
                           </div>
                         </div>
                       )
@@ -46,7 +46,7 @@ const SocialList = (props) => {
                 : item.photoInfoList.length === 1 ?
                   <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
                     <div className="photo">
-                      <img src={item.photoInfoList[0].profImg.thumb190x190} alt="" />
+                      <img src={item.photoInfoList[0].profImg?.thumb190x190} alt="" />
                     </div>
                   </div>
                     : <></>

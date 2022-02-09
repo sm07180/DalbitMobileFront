@@ -27,13 +27,13 @@ export default (props) => {
   }, []);
 
   return (
-    <Layout>
+    <>
       <Header title={subTitle} />
       <div id="ranking-guide-page" className={`subContent ${guideType !== "benefit" ? `gray` : ``}`}>
         {guideType === "benefit" && <Benefit></Benefit>}
         {guideType === "pick" && <MarketingPick></MarketingPick>}
         {guideType === "marketing" && <MarketingAdv></MarketingAdv>}
       </div>
-    </Layout>
+    </>
   );
 };

@@ -1,13 +1,16 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {Context} from "context";
 
 const MainSlide = (props) => {
   const {data} = props
+  const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
@@ -22,7 +25,7 @@ const MainSlide = (props) => {
     },
     on:{
       click: (swiper, event) => {
-        if(event.type === 'touchend') {
+        if(event.type === 'touchend' || event.type === 'pointerup') {
           const paths = event.path || event.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {
@@ -33,7 +36,7 @@ const MainSlide = (props) => {
                 history.push(target.roomNo);
               }else {
                 // 방송방으로 이동
-                history.push('/rank');
+                RoomValidateFromClip(target.roomNo, context, history, target.nickNm);
               }
             }
           })
@@ -54,7 +57,9 @@ const MainSlide = (props) => {
                   :
                   <ListColumn photo={list.profImg.thumb500x500} index={index}>
                     <div className='info'>
-                      <BadgeItems data={list.liveBadgeList} />
+                      <div className="badgGroup">
+                        <BadgeItems data={list.liveBadgeList} />
+                      </div>
                       <span className="title">{list.title}</span>
                       <span className="nick">{list.nickNm}</span>
                     </div>

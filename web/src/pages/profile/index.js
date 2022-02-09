@@ -39,7 +39,7 @@ const ProfilePage = () => {
   const [popFanStarLike, setPopFanStarLike] = useState(false);
   const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
   const [popBlockReport, setPopBlockReport] = useState(false);
-  const [popPresent, setPopPresent] = useState(true);
+  const [popPresent, setPopPresent] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -199,6 +199,16 @@ const ProfilePage = () => {
     setPopFanStarLike(true)
   }
 
+  /* 선물하기 팝업 열기 */
+  const openPresentPop = () => {
+    setPopPresent(true);
+  }
+
+  /* 선물하기 팝업 닫기 */
+  const closePresentPop = () => {
+    setPopPresent(false);
+  }
+
   /* 프로필 데이터 초기화 (피드, 팬보드, 클립) */
   const resetProfileData = () => {
     dispatch(setProfileFeedData(profileFeedDefaultState));
@@ -261,7 +271,7 @@ const ProfilePage = () => {
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
-                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle}  />
+                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle} openPresentPop={openPresentPop}  />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
@@ -312,7 +322,7 @@ const ProfilePage = () => {
       }
       {popPresent &&
         <PopSlide setPopSlide={setPopPresent}>
-          <Present />
+          <Present profileData={profileData} closePresentPop={closePresentPop} />
         </PopSlide>
       }
     </div>
