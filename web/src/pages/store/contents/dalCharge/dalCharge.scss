@@ -79,6 +79,11 @@
           border-color: #FF3C7B;
           color: #FF3C7B;
         }
+        &.disabled{
+          border: none;
+          background: #e3e3e3;
+          color: #fff;
+        }
       }
     }
   }
