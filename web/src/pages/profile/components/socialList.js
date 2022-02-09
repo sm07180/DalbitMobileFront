@@ -23,7 +23,7 @@ const SocialList = (props) => {
     <div className="socialList">
       {socialList.map((item, index) => {
         return (
-          <React.Fragment key={item.noticeIdx}>
+          <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
             <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" />
             <div className="socialContent">
               <div className="text">

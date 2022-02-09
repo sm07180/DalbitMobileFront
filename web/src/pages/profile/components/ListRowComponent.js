@@ -60,14 +60,14 @@ const ListRowComponent = (props) => {
         <div className="nick">{item.nickName}</div>
         <div className="time">{item.writeDate ? item.writeDate : item.writeDt}</div>
       </div>
-      <button className='more' onClick={() => moreBoxClick(index)}>
+      <div className='moreBtn' onClick={() => moreBoxClick(index)}>
         <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
         <div ref={(el) => moreRef.current[index] = el} className="isMore hidden">
           {(context.profile.memNo === item.mem_no || context.adminChecker) && <button>수정하기</button>}
           {(isMyProfile || context.profile.memNo === item.mem_no || context.adminChecker) && <button>삭제하기</button>}
           {context.profile.memNo !== item.mem_no && <button>차단/신고하기</button>}
         </div>
-      </button>
+      </div>
     </ListRow>
   )
 };
