@@ -43,7 +43,7 @@ const LayerPop = (props) => {
   return (
     <div id="layerPop" onClick={closePopupDim}>
       <div className="popLayer">
-        <div className="popContent">
+        <div className="popContainer">
           {children}
         </div>
         <div className='closeWrap'>
