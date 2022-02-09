@@ -59,7 +59,7 @@ export default function bestdj() {
                 return (
                   <div className="list" key={index}>
                     <img
-                    src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-mem-${index + 1}.png`}
+                    src={`${IMG_SERVER}/event/bestDj/2202/bestDj_2202-user-${index + 1}.png`}
                     alt="베스트DJ"
                     className="img__full"
                     />
