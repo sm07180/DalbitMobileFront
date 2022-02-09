@@ -13,6 +13,7 @@ import TotalInfo from './components/TotalInfo'
 import Tabmenu from './components/Tabmenu'
 import FanStarLike from './components/popSlide/FanStarLike'
 import BlockReport from './components/popSlide/BlockReport'
+import Present from './components/popSlide/Present'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
@@ -38,6 +39,7 @@ const ProfilePage = () => {
   const [popFanStarLike, setPopFanStarLike] = useState(false);
   const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
   const [popBlockReport, setPopBlockReport] = useState(false);
+  const [popPresent, setPopPresent] = useState(true);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -306,6 +308,11 @@ const ProfilePage = () => {
       {popBlockReport &&
         <PopSlide setPopSlide={setPopBlockReport}>
           <BlockReport />
+        </PopSlide>
+      }
+      {popPresent &&
+        <PopSlide setPopSlide={setPopPresent}>
+          <Present />
         </PopSlide>
       }
     </div>
