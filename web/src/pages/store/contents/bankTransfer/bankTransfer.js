@@ -4,18 +4,11 @@ import {Context} from "context";
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
 
-// global components
 import Header from 'components/ui/header/Header'
 import InputItems from 'components/ui/inputItems/InputItems'
 import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
-// components
-import Tabmenu from '../../components/Tabmenu'
-// contents
-import BankResult from './bankResult'
-// css
 import './bankTransfer.scss'
 import {useHistory, useLocation} from "react-router-dom";
-
 
 const BankTransfer = () => {
   const location = useLocation()

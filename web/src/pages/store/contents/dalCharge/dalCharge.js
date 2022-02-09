@@ -1,9 +1,8 @@
-import React, {useEffect, useState, useContext, useMemo} from 'react'
+import React, {useEffect, useState, useContext, useMemo, useRef} from 'react'
 import {Context} from "context";
 
 import Api from 'context/api'
 import Utility from 'components/lib/utility'
-import qs from 'query-string'
 
 // global components
 import Header from 'components/ui/header/Header'
@@ -14,7 +13,8 @@ import PopSlide from '../../components/PopSlide'
 // contents
 // css
 import './dalCharge.scss'
-import {useHistory} from "react-router-dom";
+import {useHistory, useLocation} from "react-router-dom";
+import {OS_TYPE} from "context/config";
 
 
 const paymentList = [
@@ -36,12 +36,12 @@ const paymentList = [
 const DalCharge = () => {
   const history = useHistory();
   const context = useContext(Context);
-  const [select, setSelect] = useState(3);
+  const location = useLocation();
+  const [select, setSelect] = useState(-1);
   const [popSlide, setPopSlide] = useState(false);
   const customHeader = JSON.parse(Api.customHeader)
-  const { itemNm, dal, price, itemNo, webview} = qs.parse(location.search)
-
-  console.log(dal, price,itemNo )
+  const formTag = useRef(null);
+  const { itemNm, dal, price, itemNo, webview} =location.state
 
   const [buyItemInfo, setBuyItemInfo] = useState({
     dal: Number(dal),
@@ -51,12 +51,23 @@ const DalCharge = () => {
   });
 
   const onSelectMethod = (index, payment) => {
-    console.log(index, payment)
     setSelect(index);
+
+    if (customHeader['os'] === OS_TYPE['Android'] && customHeader['appBuild'] < 20 && fetch === 'pay_letter') {
+      return context.action.confirm({
+        msg: `해당 결제수단은 앱 업데이트 후 이용 가능합니다. 업데이트 받으시겠습니까?`,
+        callback: () => {
+          window.location.href = 'market://details?id=kr.co.inforexseoul.radioproject'
+        }
+      })
+    }
+
     if (payment.code === "simple") {
         simplePay();
     }else if(payment.code === "coocon"){
         cooconPay();
+    }else{
+        etcPay(payment)
     }
   }
 
@@ -86,14 +97,60 @@ const DalCharge = () => {
       state: {
         webview: webview,
         prdtNm: itemNm,
-        prdtPrice:price * buyItemInfo.itemAmount,
+        prdtPrice: price * buyItemInfo.itemAmount,
         itemNo: buyItemInfo.itemNo,
         itemAmt: buyItemInfo.itemAmount
       }
     })
   }
 
+  //기타 결제
+  const etcPay = async (payment, ciData) =>{
+    const { result, data, message } = await Api[payment.fetch]({
+      data: {
+        Prdtnm: itemNm,
+        Prdtprice: price * buyItemInfo.itemAmount,
+        itemNo: itemNo,
+        pageCode: webview === 'new' ? '2' : '1',
+        pgCode: payment.code,
+        itemAmt: buyItemInfo.itemAmount,
+        ci:ciData
+      }
+    })
 
+    if (result === 'success') {
+      sessionStorage.setItem('buy_item_data', price * buyItemInfo.itemAmount);
+
+      if (data.hasOwnProperty('mobileUrl') || data.hasOwnProperty('url')) {
+        return (window.location.href = data.mobileUrl ? data.mobileUrl : data.url);
+      } else if (data.hasOwnProperty('next_redirect_mobile_url')) {
+        return (window.location.href = data.next_redirect_mobile_url)
+      }
+
+      let payForm = formTag.current
+      const makeHiddenInput = (key, value) => {
+        const input = document.createElement('input')
+        input.setAttribute('type', 'hidden')
+        input.setAttribute('name', key)
+        input.setAttribute('id', key)
+        input.setAttribute('value', value)
+        return input
+      }
+      Object.keys(data).forEach((key) => {
+        payForm.append(makeHiddenInput(key, data[key]))
+      })
+      MCASH_PAYMENT(payForm)
+      payForm.innerHTML = ''
+    } else {
+      context.action.alert({
+        msg: message
+      })
+    }
+
+  }
+
+
+  //상품수량 +,-
   const calcBuyItem = (type) => {
     if(type === '+'){
       if (buyItemInfo.itemAmount === 10) return context.action.toast({ msg: '최대 10개까지 구매 가능합니다.' })
@@ -103,6 +160,7 @@ const DalCharge = () => {
       setBuyItemInfo({...buyItemInfo, itemAmount: buyItemInfo.itemAmount-1})}
   }
 
+  //보너스달
   const bonusDal = useMemo(() => {
     if(Number(price) * buyItemInfo.itemAmount >= 1100000) {
       return Math.floor(buyItemInfo.dal * buyItemInfo.itemAmount * 0.05);
@@ -110,6 +168,7 @@ const DalCharge = () => {
     return null;
   }, [price, buyItemInfo.itemAmount, (Number(price) * buyItemInfo.itemAmount)])
 
+  //보너스달 지급유무
   const isBonusDalYn = useMemo(() => {
     return Number(price) * buyItemInfo.itemAmount >= 1100000;
   }, [price, buyItemInfo.itemAmount, (Number(price) * buyItemInfo.itemAmount)])
@@ -118,23 +177,19 @@ const DalCharge = () => {
   return (
     <div id="dalCharge">
       <Header title="달 충전하기" position="sticky" type="back" />
-
       <section className="purchaseInfo">
         <CntTitle title="구매내역" />
         <div className="infoBox">
-
           <div className="infoList">
             <div className="title">구매상품</div>
             <p>{Utility.addComma(buyItemInfo.dal)} <strong>개</strong></p>
           </div>
-
           {isBonusDalYn && (
             <div className="infoList">
               <div className="title">추가지급</div>
               <p>{Utility.addComma(bonusDal)} <strong>개</strong></p>
             </div>
           )}
-
           <div className="infoList">
             <div className="title">상품수량</div>
             <p className="quantity">
@@ -143,22 +198,18 @@ const DalCharge = () => {
               <button className="plus" onClick={()=>calcBuyItem('+')}>+</button>
             </p>
           </div>
-
           <div className="infoList">
             <div className="title">총</div>
             <p>{Utility.addComma(dal * buyItemInfo.itemAmount)} <strong>개</strong></p>
           </div>
         </div>
-
         <div className="infoBox" style={{marginTop:'10px'}}>
           <div className="infoList">
             <div className='title'>결제금액</div>
             <p>{Utility.addComma(price * buyItemInfo.itemAmount)} <strong>원</strong></p>
           </div>
         </div>
-
       </section>
-
       <section className="paymentMethod">
         <CntTitle title="결제수단" />
         <div className="selectWrap">
@@ -170,7 +221,6 @@ const DalCharge = () => {
           })}
         </div>
       </section>
-
       <section className="noticeInfo">
         <h3>유의사항</h3>
         <p>충전한 달의 유효기간은 구매일로부터 5년입니다.</p>
@@ -178,11 +228,10 @@ const DalCharge = () => {
         <p>미성년자가 결제할 경우 법정대리인이 동의하지 아니하면 본인 또는 법정대리인은 계약을 취소할 수 있습니다.</p>
         <p>사용하지 아니한 달은 7일 이내에 청약철회 등 환불을 할 수 있습니다.</p>
       </section>
-
       <section className="bottomInfo">
         결제문의 <span>1522-0251</span>
       </section>
-
+      <form ref={formTag} name="payForm" acceptCharset="euc-kr" id="payForm"/>
       {popSlide === true &&
         <PopSlide setPopSlide={setPopSlide}>
           <div className='title'>인증 정보를 확인해주세요!</div>
