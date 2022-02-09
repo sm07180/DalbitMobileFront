@@ -1,0 +1,13 @@
+@import "components/ui/_mixin.scss";
+
+#popSlide {
+  .slideLayer {
+    padding: 0;
+  }
+  .blockReport {
+    @include flex($fd:column);
+    width:100%;
+    height:600px;
+    padding-top:20px;
+  }
+}

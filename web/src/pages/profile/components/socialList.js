@@ -114,7 +114,6 @@ const SocialList = (props) => {
                   </div>
                   : <></>
               }
-
               <div className="info">
                 <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0} />
               </div>

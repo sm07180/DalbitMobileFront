@@ -10,7 +10,7 @@ import {useDispatch} from "react-redux";
 import {setProfileData} from "redux/actions/profile";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, fanToggle} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle} = props
   const dispatch = useDispatch();
 
   const fanToggleCallback = () => dispatch(setProfileData({...data, isFan: !data.isFan}))
@@ -41,15 +41,15 @@ const ProfileCard = (props) => {
         </div>
       </div>
       <div className="count">
-        <div className="item">
+        <div data-target-type="fan" onClick={openPopFanStarLike} className="item">
           <span>{data.fanCnt}</span>
           <i>팬</i>
         </div>
-        <div className="item">
+        <div data-target-type="star" onClick={openPopFanStarLike} className="item">
           <span>{data.starCnt}</span>
           <i>스타</i>
         </div>
-        <div className="item">
+        <div data-target-type="like" onClick={openPopFanStarLike} className="item">
           <span>{data.likeTotCnt}</span>
           <i>좋아요</i>
         </div>
@@ -58,12 +58,10 @@ const ProfileCard = (props) => {
         <div className="buttonWrap">
           <button>선물하기</button>
           {data.isFan ?
-            <button className='asdasd'
+            <button className='isFan'
                     onClick={fanToggleAction}
             >팬</button>
-            : <button className='addFan'
-                      onClick={fanToggleAction}
-            >팬등록</button>
+            : <button onClick={fanToggleAction}>+ 팬등록</button>
           }
         </div>
       }

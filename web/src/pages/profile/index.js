@@ -5,17 +5,19 @@ import './index.scss'
 import Api from 'context/api'
 // global components
 import Header from 'components/ui/header/Header'
-import TabBtn from 'components/ui/tabBtn/TabBtn'
 import PopSlide from 'components/ui/popSlide/PopSlide'
 // components
 import TopSwiper from './components/TopSwiper'
 import ProfileCard from './components/ProfileCard'
 import TotalInfo from './components/TotalInfo'
-// contents
-import FeedSection from './contents/profile/feedSection'
-import FanboardSection from './contents/profile/fanboardSection'
-import ClipSection from './contents/profile/clipSection'
+import Tabmenu from './components/Tabmenu'
+import FanStarLike from './components/popSlide/FanStarLike'
+import BlockReport from './components/popSlide/BlockReport'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
+// contents
+import FeedSection from './contents/profileDetail/feedSection'
+import FanboardSection from './contents/profileDetail/fanboardSection'
+import ClipSection from './contents/profileDetail/clipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -23,7 +25,7 @@ import {profileClipDefaultState, profileFanBoardDefaultState, profileFeedDefault
 
 const socialTabmenu = ['피드','팬보드','클립']
 
-const Profile = () => {
+const ProfilePage = () => {
   const history = useHistory()
   //context
   const context = useContext(Context)
@@ -36,6 +38,9 @@ const Profile = () => {
   const [socialType, setSocialType] = useState(socialTabmenu[0])
   const [isMyProfile, setIsMyProfile] = useState(false);
   const [popSlide, setPopSlide] = useState(false);
+  const [popFanStarLike, setPopFanStarLike] = useState(false);
+  const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
+  const [popBlockReport, setPopBlockReport] = useState(false);
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -188,6 +193,13 @@ const Profile = () => {
     setShowSlide(true);
   }
 
+  /* 팬,스타,좋아요 슬라이드 팝업 열기/닫기 */
+  const openPopFanStarLike = (e) => {
+    const {targetType} = e.currentTarget.dataset
+    setOpenFanStarLikeType(targetType)
+    setPopFanStarLike(true)
+  }
+
   /* 프로필 데이터 초기화 (피드, 팬보드, 클립) */
   const resetProfileData = () => {
     dispatch(setProfileFeedData(profileFeedDefaultState));
@@ -249,27 +261,17 @@ const Profile = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
-                     fanToggle={fanToggle} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} openPopFanStarLike={openPopFanStarLike}
+                     fanToggle={fanToggle}  />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
       </section>
       <section className="socialWrap">
-        <ul className="tabmenu" ref={tabMenuRef}>
-          {socialTabmenu.map((data,index) => {
-            const param = {
-              item: data,
-              tab: socialType,
-              setTab: setSocialType,
-              // setPage: setPage
-            }
-            return (
-              <TabBtn param={param} key={index} />
-            )
-          })}
+        <div className="tabmenuWrap">
+          <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />
           {isMyProfile && <button>등록</button>}
-        </ul>
+        </div>
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
@@ -299,8 +301,18 @@ const Profile = () => {
           </section>
         </PopSlide>
       }
+      {popFanStarLike &&
+        <PopSlide setPopSlide={setPopFanStarLike}>
+          <FanStarLike type={openFanStarLikeType} isMyProfile={isMyProfile} />
+        </PopSlide>
+      }
+      {popBlockReport &&
+        <PopSlide setPopSlide={setPopBlockReport}>
+          <BlockReport />
+        </PopSlide>
+      }
     </div>
   )
 }
 
-export default Profile
+export default ProfilePage
