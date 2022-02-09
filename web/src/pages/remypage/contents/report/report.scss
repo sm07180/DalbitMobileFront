@@ -119,4 +119,46 @@
     @include font(13px, 400, #666);
     margin-bottom: 6px;
   }
+  #popSlide{
+    .slideLayer{
+      .slideHeader{
+        @include font(16px, 600);
+        margin-bottom: 23px;
+      }
+      .tabmenu{
+        padding: 0;
+        li{
+          width: 54px;
+          line-height: 36px;
+          @include border(#e3e3e3, 18px);
+          @include font(13px, 400, #303030);
+          margin-right: 4px;
+          &:last-child{margin-right: 0;}
+          &.active{
+            border: none;
+            background-color: #202020;
+            @include font(13px, 500, #fff);
+          }
+        }
+      }
+      .inputItems{
+        margin-bottom: 12px;
+        &:last-child{margin-bottom: 0;}
+        .inputBox{
+          padding: 0 8px 0 20px;
+          @include font(16px, 500);
+          .iconCalendar{
+            width: 40px;
+            height: 40px;
+            @include BGIMG('mypage/dalla/report/ico_calendar.png');
+            margin-left: auto;
+          }
+        }
+      }
+      .submitBtn{
+        width: 100%;
+        margin-top: 20px;
+      }
+    }
+  }
 }

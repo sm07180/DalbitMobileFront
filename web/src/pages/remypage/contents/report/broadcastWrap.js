@@ -1,7 +1,11 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 //global components
 import InputItems from 'components/ui/inputItems/InputItems'
+import PopSlide from 'components/ui/popSlide/PopSlide'
+import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
+// components
+import Tabmenu from '../../components/tabmenu'
 
 import './report.scss'
 
@@ -27,14 +31,20 @@ const brSumList = [
     amount : '546,234'
   },
 ]
+const tabmenu = ['오늘', '어제', '주간', '월간']
 
 const broadcastWrap = () =>{
+  const [tabType, setTabType] = useState(tabmenu[3])
+  const [bottomSlide, setBottomSlide] = useState(false);
+
   return(
     <>
       <section className="periodWrap">
         <div className="cntTitle">조회기간</div>
-        <InputItems button={'월간'} btnClass={'periodBtn'}>
-          <div>2022-01-02 ~ 2022-01-08</div>
+        <InputItems button={'월간'} btnClass={'periodBtn'} onClick={()=>{setBottomSlide(!bottomSlide)}}>
+          <div onClick={()=>{setBottomSlide(!bottomSlide)}}>
+            <span>2022-01-02</span> ~ <span>2022-01-08</span>
+          </div>
         </InputItems>
       </section>
       <section className="summaryWrap">
@@ -74,6 +84,21 @@ const broadcastWrap = () =>{
           </div>
         </div>
       </section>
+      {bottomSlide &&
+        <PopSlide setPopSlide={setBottomSlide}>
+          <div className='slideHeader'>기간 설정</div>
+          <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
+          <InputItems>
+            <div>2022-01-02</div>
+            <span className="iconCalendar"></span>
+          </InputItems>
+          <InputItems>
+            <div>2022-01-02</div>
+            <span className="iconCalendar"></span>
+          </InputItems>
+          <SubmitBtn text={'기간적용'} />
+        </PopSlide>
+      }
     </>
   )
 }
