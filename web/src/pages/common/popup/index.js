@@ -27,7 +27,7 @@ import SpecialdjGoodsDetail from 'pages/common/specialdjGoodsDetail'
 import SpecialdjStarting from 'pages/common/specialdjStarting'
 
 //
-export default (props) => {
+let Popup = (props) => {
   //state
   const [layout, setLayout] = useState('')
   //context
@@ -214,7 +214,8 @@ export default (props) => {
       )}
     </Popup>
   )
-}
+};
+export default Popup
 
 //---------------------------------------------------------------------
 const Popup = styled.section``

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React, {useContext, useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
@@ -7,9 +7,12 @@ import Swiper from 'react-id-swiper'
 // css
 import './swiperList.scss'
 import {useHistory} from "react-router-dom";
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {Context} from "context";
 
 const SwiperList = (props) => {
   const {data, profImgName, type} = props
+  const context = useContext(Context);
   const history = useHistory();
 
   const swiperParams = {
@@ -22,7 +25,7 @@ const SwiperList = (props) => {
     if(type === 'top10' || type === 'myStar') {
       goProfile(item.memNo)
     }else if(type === 'daldungs') {
-      // 방송방으로 이동
+      RoomValidateFromClip(item.roomNo, context, history, item.bjNickNm);
     }
   }
 
