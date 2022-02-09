@@ -226,9 +226,7 @@ const MainPage = () => {
       onTouchEnd={mainTouchEnd}
       style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
 
-
       <div id="main">
-
         <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
           <Header title={'메인'}/>
         </div>
@@ -263,8 +261,6 @@ const MainPage = () => {
           <LiveView data={liveList.list}/>
         </section>
       </div>
-
-
     </div>
   </>;
   return MainLayout;
