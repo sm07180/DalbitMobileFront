@@ -156,7 +156,7 @@ function BroadcastEndByDj() {
               dispatchDimLayer({
                 type: "INIT",
               });
-              globalAction.setExitMarbleInfo &&
+              /*globalAction.setExitMarbleInfo &&
                 globalAction.setExitMarbleInfo({
                   ...globalState.exitMarbleInfo,
                   rMarbleCnt: exitMarbleInfo.rMarbleCnt,
@@ -166,8 +166,8 @@ function BroadcastEndByDj() {
                   isBjYn: exitMarbleInfo.isBjYn,
                   marbleCnt: exitMarbleInfo.marbleCnt,
                   pocketCnt: exitMarbleInfo.pocketCnt,
-                });
-              if (
+                });*/
+              /*if (
                 (globalState.exitMarbleInfo &&
                   globalState.exitMarbleInfo.marbleCnt > 0) ||
                 (globalState.exitMarbleInfo &&
@@ -178,7 +178,7 @@ function BroadcastEndByDj() {
                     ...globalState.exitMarbleInfo,
                     showState: true,
                   });
-              }
+              }*/
             }}
           >
             확인

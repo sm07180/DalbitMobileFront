@@ -1,5 +1,7 @@
 import React from 'react'
 
+import Utility from 'components/lib/utility'
+
 import './dataCnt.scss'
 
 const DataCnt = (props) => {
@@ -12,9 +14,9 @@ const DataCnt = (props) => {
     <>
       {
         type === "cupid" ?
-          <i className={`cupid`} onClick={clickEvent}>{value}</i>
+          <i className={`cupid`} onClick={clickEvent}>{value ? Utility.printNumber(value) : 0}</i>
         :
-          <i className={`dataCnt ${type}`} onClick={clickEvent}>{value}</i>
+          <i className={`dataCnt ${type}`} onClick={clickEvent}>{value ? Utility.printNumber(value) : 0}</i>
       }
     </>
   )

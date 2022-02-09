@@ -7,7 +7,7 @@ import React, {
   useMemo,
 } from "react";
 import { useHistory } from "react-router-dom";
-import { RoomTypeConvertToText } from "pages/main_www/content/common_fn";
+import { RoomTypeConvertToText } from "pages/main/content/common_fn";
 import { printNumber } from "lib/common_fn";
 
 // ctx
@@ -19,6 +19,7 @@ import { broadcastList, broadcastExit } from "common/api";
 import SelectBox from "common/ui/dalbit_selectbox";
 import { DalbitScroll } from "common/ui/dalbit_scroll";
 import NoResult from "common/ui/no_result";
+import {rtcSessionClear} from "../../../../common/realtime/rtc_socket";
 
 type ActionType = {
   type: string;
@@ -149,7 +150,7 @@ export default function LiveList(props: {
               rtcInfo.stop();
               globalAction.dispatchRtcInfo &&
                 globalAction.dispatchRtcInfo({ type: "empty" });
-              sessionStorage.removeItem("room_no");
+              rtcSessionClear();
             }
             window.location.href = `/broadcast/${targetRoomNo}`;
           }

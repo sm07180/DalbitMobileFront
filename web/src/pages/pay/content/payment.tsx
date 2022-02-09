@@ -426,7 +426,7 @@ export default function Payment() {
   }, []);
 
   return (
-    <Layout>
+    <>
       <Header title="달 충전하기" />
 
       <div id="pay" className="subContent gray">
@@ -530,6 +530,6 @@ export default function Payment() {
         acceptCharset="euc-kr"
         id="payForm"
       ></form>
-    </Layout>
+    </>
   );
 }

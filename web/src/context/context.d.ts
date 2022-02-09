@@ -1,16 +1,21 @@
 /** global context type */
+type MoveToAlertType = {
+  state: 'ready' | 'moved';
+  dest: string;
+  alertStatus: AlertStatusType;
+};
 type AlertStatusType = {
   status: boolean;
   type?: string;
   width?: number;
   height?: number;
   title?:
-    | string
-    | {
-        text?: string;
-        color?: string;
-        border?: string;
-      };
+      | string
+      | {
+    text?: string;
+    color?: string;
+    border?: string;
+  };
   titleStyle?: {
     [key: string]: any;
   };
@@ -84,6 +89,7 @@ type chatAnimationType = {
   memNo: string;
   ttsItemInfo?: any;
   isTTSItem?: boolean;
+  soundOffLocationFlag?: string | null;
 };
 
 type userCountType = {
@@ -177,6 +183,11 @@ type roomInfoType = {
   useGuest: boolean;
   miniGameList: Array<any>;
   useFilter: boolean;
+  /* Agora */
+  platform:string;
+  agoraAppId:string;
+  agoraToken:string;
+  agoraAccount:string;
 
   /* Wowza */
   webRtcAppName: string;
@@ -198,6 +209,8 @@ type roomInfoType = {
   isVideo: boolean;
   isMic: boolean;
 
+  // 웰컴 이벤트 객체
+  eventInfoMap?: { imgURL ?: string; pageLink ?: string; positionX ?: number; positionY ?: number; visible : boolean;} | null;
   // state: boolean;
 
   // bjMemNo: string;

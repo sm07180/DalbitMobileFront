@@ -424,7 +424,7 @@ export default function Main() {
       switch (type) {
         case "alarm":
           if (globalState.alarmMoveUrl === "") {
-            history.push(`/alarm`);
+            history.push('/menu/alarm');
           } else {
             history.push(`${globalState.alarmMoveUrl}`);
           }
@@ -470,7 +470,7 @@ export default function Main() {
   }, [liveList, listReady]);
 
   return (
-    <Layout>
+    <>
       <div id="mainPage" ref={MainRef}>
         <div className="headerWrap" ref={mainHeaderRef}>
           <div className="icon-wrap">
@@ -904,6 +904,6 @@ export default function Main() {
         </select>}
 
       </div>
-    </Layout>
+    </>
   );
 }

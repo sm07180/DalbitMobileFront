@@ -274,7 +274,7 @@ let Profile = () => {
       <>
         {profileData !== null ? (
             <div className="tabProfile">
-              <div id="mypage" className="broadcast">
+              <div id="profile_pc" className="broadcast">
                 <h3 className="tabContent__title">프로필</h3>
                 <div className="profileTopWrap">
                   <div className="profileBox">

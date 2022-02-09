@@ -17,6 +17,7 @@ import './style.scss'
 import {useDispatch, useSelector} from "react-redux";
 import {setMainData, setMainLiveList} from "redux/actions/main";
 import {Context} from "context";
+import {isDesktop} from "lib/agent";
 
 const topTenTabMenu = ['DJ','FAN','LOVER']
 const liveTabMenu = ['전체','VIDEO','RADIO','신입DJ']
@@ -89,7 +90,7 @@ const MainPage = () => {
     if (totalPage > currentPage && Utility.isHitBottom()) {
       setCurrentPage(currentPage + 1)
     }
-  }, [currentPage]);
+  })
 
   useEffect(() => {
     if (currentPage === 0) setCurrentPage(1)
@@ -107,20 +108,20 @@ const MainPage = () => {
   }, [currentPage, liveListType])
  
   // 페이지 시작
-  return (
+  let MainLayout = <>
     <div id="main">
       <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-        <Header title={'메인'} />
+        <Header title={'메인'}/>
       </div>
       <section className='topSwiper'>
-        <MainSlide data={mainState.topBanner} />
+        <MainSlide data={mainState.topBanner}/>
       </section>
       <section className='favorites' ref={overRef}>
         <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP10'} more={'rank'}>
-          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType} />
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
         </CntTitle>
         <SwiperList
           data={topRankType === 'DJ' ? mainState.dayRanking.djRank
@@ -135,15 +136,16 @@ const MainPage = () => {
         <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
       </section>
       <section className='bannerWrap'>
-        <BannerSlide />
+        <BannerSlide/>
       </section>
       <section className='liveView'>
-        <CntTitle title={'🚀 지금 라이브 중!'} />
-        <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage} />
-        <LiveView data={liveList.list} />
+        <CntTitle title={'🚀 지금 라이브 중!'}/>
+        <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+        <LiveView data={liveList.list}/>
       </section>
     </div>
-  )
+  </>;
+  return MainLayout;
 }
  
 export default MainPage
