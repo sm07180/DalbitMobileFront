@@ -15,7 +15,7 @@ import HotClipList from '../components/HotClipList'
 import SwiperList from '../components/SwiperList'
 import NowClipList from '../components/NowClipList'
 // contents
-import ClipDetail from '../components/clipDetail'
+import ClipDetail from '../components/ClipDetail'
 
 
 import '../scss/clipPage.scss'
@@ -191,7 +191,7 @@ const ClipPage = () => {
         </section>
         }*/}
         <section className='hotClipWrap'>
-          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/'} />
+          <CntTitle title={'지금, 핫한 클립을 한눈에!'} more={'/clip_rank'} />
           {hotClipInfo.length > 0 &&
             <Swiper {...swiperParams}>
               {hotClipInfo.map((row, index) => {
@@ -221,13 +221,13 @@ const ClipPage = () => {
           }
           {listenClipInfo.list &&
             <>
-              <ClipSubTitle title={'최근 들은 클립'} more={'/clip/detail'}/>
+              <ClipSubTitle title={'최근 들은 클립'} more={'clip/listen/list'}/>
               <SwiperList data={listenClipInfo.list} />
             </>
           }
           {likeClipInfo.list &&
             <>
-              <ClipSubTitle title={'좋아요 한 클립'} more={'/'}/>
+              <ClipSubTitle title={'좋아요 한 클립'} more={'clip/like/list'}/>
               <SwiperList data={likeClipInfo.list} />
             </>
           }

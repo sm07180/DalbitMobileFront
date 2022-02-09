@@ -32,7 +32,7 @@
         width: 24px;
         height: 24px;
         margin-left: 2px;
-        background: url('src/pages/clip/static/arrow_right.svg');
+        background: url('../static/arrow_right.svg');
       }
     }
   }
@@ -122,7 +122,7 @@
           margin-left: 4px;
           width: 24px;
           height: 24px;
-          background: url('src/pages/clip/static/infomyclip.png') no-repeat center center;
+          background: url('../static/infomyclip.png') no-repeat center center;
           background-size: 24px 24px;
           cursor: pointer;
         }
@@ -175,22 +175,22 @@
         }
         &.upload {
           em {
-            background: #1f9de6 url('src/pages/clip/static/upload.svg') no-repeat center center / 24px;
+            background: #1f9de6 url('../static/upload.svg') no-repeat center center / 24px;
           }
         }
         &.listen {
           em {
-            background: #ffa929 url('src/pages/clip/static/listen.svg') no-repeat center center / 24px;
+            background: #ffa929 url('../static/listen.svg') no-repeat center center / 24px;
           }
         }
         &.like {
           em {
-            background: #ec455f url('src/pages/clip/static/like.svg') no-repeat center center / 24px;
+            background: #ec455f url('../static/like.svg') no-repeat center center / 24px;
           }
         }
         &.gift {
           em {
-            background: #994bff url('src/pages/clip/static/gift.svg') no-repeat center center / 24px;
+            background: #994bff url('../static/gift.svg') no-repeat center center / 24px;
           }
         }
         span {
@@ -320,7 +320,7 @@
         content: '';
         width: 24px;
         height: 24px;
-        background: url('src/pages/clip/static/arrow_right.svg');
+        background: url('../static/arrow_right.svg');
       }
     }
 
@@ -470,7 +470,7 @@
         width: 12px;
         height: 12px;
         margin-right: 4px;
-        background: url(src/pages/clip/static/hint_b.svg);
+        background: url(../static/hint_b.svg);
       }
     }
     &__btn {
@@ -859,7 +859,7 @@
         right: 25px;
         font-size: 14px;
         padding-right: 28px;
-        background: url('src/pages/clip/static/arrow_down_g.svg') no-repeat right;
+        background: url('../static/arrow_down_g.svg') no-repeat right;
       }
 
       &__subTitle {
@@ -1283,16 +1283,16 @@
       font-size: 8px;
       line-height: 15px;
       box-sizing: border-box;
-      background: url('src/pages/clip/static/allrestrict.svg');
+      background: url('../static/allrestrict.svg');
       text-align: center;
       color: #fff;
       border-radius: 8px;
     }
     .fanIcon {
-      background: url('src/pages/clip/static/fanrestrict.svg');
+      background: url('../static/fanrestrict.svg');
     }
     .twentyIcon {
-      background: url('src/pages/clip/static/twentyrestrict.svg');
+      background: url('../static/twentyrestrict.svg');
     }
     .male,
     .female {
