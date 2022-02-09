@@ -6,10 +6,15 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import FrameItems from 'components/ui/frameItems/FrameItems'
 
 import './profileCard.scss'
+import {useDispatch} from "react-redux";
+import {setProfileData} from "redux/actions/profile";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide} = props
+  const {data, isMyProfile, openShowSlide, fanToggle} = props
+  const dispatch = useDispatch();
 
+  const fanToggleCallback = () => dispatch(setProfileData({...data, isFan: !data.isFan}))
+  const fanToggleAction = () => fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback);
   return (
     <div className="cardWrap">
       <div className="userInfo">
@@ -52,7 +57,14 @@ const ProfileCard = (props) => {
       {!isMyProfile &&
         <div className="buttonWrap">
           <button>선물하기</button>
-          <button className='addFan'>팬등록</button>
+          {data.isFan ?
+            <button className='asdasd'
+                    onClick={fanToggleAction}
+            >팬</button>
+            : <button className='addFan'
+                      onClick={fanToggleAction}
+            >팬등록</button>
+          }
         </div>
       }
     </div>

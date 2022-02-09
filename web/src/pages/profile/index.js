@@ -120,6 +120,44 @@ const Profile = () => {
     })
   }
 
+  /* 팬 등록 해제 */
+  const fanToggle = (memNo, memNick, isFanYn, callback) => {
+    isFanYn ? deleteFan(memNo, memNick, callback) : addFan(memNo, memNick, callback);
+  }
+
+  /* 팬 등록 */
+  const addFan = (memNo, memNick, callback) => {
+    Api.fan_change({data: {memNo}}).then(res => {
+      if (res.result === 'success') {
+        if(typeof callback === 'function') callback();
+        context.action.toast({
+          msg: `${memNick ? `${memNick}님의 팬이 되었습니다` : '팬등록에 성공하였습니다'}`
+        })
+      } else if (res.result === 'fail') {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    })
+  }
+
+  /* 팬 해제 */
+  const deleteFan = (memNo, memNick, callback) => {
+    context.action.confirm({
+      msg: `${memNick} 님의 팬을 취소 하시겠습니까?`,
+      callback: () => {
+        Api.mypage_fan_cancel({data: {memNo}}).then(res => {
+          if (res.result === 'success') {
+            if(typeof callback === 'function') callback();
+            context.action.toast({ msg: res.message })
+          } else if (res.result === 'fail') {
+            context.action.alert({ msg: res.message })
+          }
+        });
+      }
+    })
+  }
+
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
@@ -211,7 +249,8 @@ const Profile = () => {
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
-        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide} />
+        <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
+                     fanToggle={fanToggle} />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
