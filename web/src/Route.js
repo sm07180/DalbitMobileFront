@@ -4,35 +4,65 @@
  * @notice React Router에 관해서 Back-End쪽에서 허용처리가 필요함, 추가될때마다 요청필요.
  */
 import ScrollToTop from 'components/lib/ScrollToTop'
-import React from 'react'
+import React, {useContext} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
 import Navigator from './pages/navigator'
 
-import Message from 'pages/common/message'
+import Popup from 'components/ui/popup'
+
+import Common from "common";
+import Modal from "common/modal";
+import Alert from "common/alert";
+import {Context} from "context";
+import {route} from "express/lib/router";
 
 // import Main from 'pages/main'
+//----- dalla -----//
 const Main = React.lazy(() => import('pages/main'))
-
+// 클립
 const Clip = React.lazy(() => import('pages/clip/pages/ClipPage'))
 const ClipDetail = React.lazy(() => import('pages/clip/components/clipDetail'))
-
+// 랭킹
 const Ranking = React.lazy(() => import('pages/reranking'))
 const RankingDetail = React.lazy(() => import('pages/reranking/contents/rankingDetail'))
-
+// 마이페이지
 const MyPage = React.lazy(() => import('pages/remypage'))
-
+// 검색
 const ReSearch = React.lazy(() => import('pages/research'))
-
+// 셋팅
 const ReSetting = React.lazy(() => import('pages/resetting'))
+// 명예의 전당
+const ReHonor = React.lazy(() => import('pages/rehonor'))
+// 고객센터
+const ReCustomer = React.lazy(() => import('pages/recustomer'))
+
+
+// 프로필
+const Profile = React.lazy(() => import('pages/profile'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
+// 스토어
+const Store = React.lazy(() => import('pages/restore'))
+const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
+// 내지갑
+const Wallet = React.lazy(() => import('pages/rewallet'))
+const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeDal'))
+const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
+// 로그인
+const Login = React.lazy(() => import('pages/login'))
+const LoginStart = React.lazy(() => import('pages/login/contents/start'))
+const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
+// 회원가입
+const SignUp = React.lazy(() => import('pages/signup'))
+const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
+//----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
 const MySetting = React.lazy(() => import('pages/mysetting'))
-
-const Store = React.lazy(() => import('pages/restore'))
+const Exchange = React.lazy(() => import('pages/reExchange'))
+const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const Exchange = React.lazy(() => import('pages/reExchange'))
-const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
 
@@ -55,11 +85,7 @@ const ClipRank = React.lazy(() => import('pages/clip_rank'))
 const ClipRankGuide = React.lazy(() => import('pages/clip_rank/components'))
 const Live = React.lazy(() => import('pages/live'))
 
-const Login = React.lazy(() => import('pages/login'))
-const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
-const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
 
-const SignUp = React.lazy(() => import('pages/resignup'))
 const Password = React.lazy(() => import('pages/password'))
 const SelfAuth = React.lazy(() => import('pages/self_auth'))
 const LegalAuth = React.lazy(() => import('pages/self_auth/legal_auth'))
@@ -71,7 +97,6 @@ const ErrorPage = React.lazy(() => import('pages/common/error'))
 const TempLogin = React.lazy(() => import('pages/common/redirect'))
 const TempPage = React.lazy(() => import('pages/temp'))
 
-const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 const MoneyExchangeResult = React.lazy(() => import('pages/money_exchange_result'))
 
 const Service = React.lazy(() => import('pages/service'))
@@ -79,9 +104,16 @@ const NoService = React.lazy(() => import('pages/no_service'))
 
 const Story = React.lazy(() => import('pages/story'))
 
-const SearchPage = React.lazy(() => import('pages/search/SearchPage.js'));
+// const ClipRecoding = React.lazy(() => import("pages/clip_recoding"));
+// const ClipUpload = React.lazy(() => import("pages/clip_recoding/upload"));
+// const ClipPlayer = React.lazy(() => import("pages/clip_player"));
 
-export default () => {
+const Broadcast =  React.lazy(() => import("pages/broadcast/index"))
+const BroadcastSetting =  React.lazy(() => import("pages/broadcast_setting/index"))
+const Mailbox = React.lazy(() => import("pages/mailbox"));
+
+const Router = () => {
+  const context = useContext(Context);
   return (
     <React.Suspense
       fallback={
@@ -89,44 +121,75 @@ export default () => {
           <span></span>
         </div>
       }>
+      <Common />
       <ScrollToTop />
-      <Message />
+      <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-        
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
 
         <Route exact path="/setting" component={ReSetting} />
         <Route exact path="/setting/:type" component={ReSetting} />
-        
+        <Route exact path="/setting/:type/:category" component={ReSetting} />
+
+        <Route exact path="/honor" component={ReHonor} />
+
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
+        <Route exact path="/store/dalcharge" component={DalCharge} />
+
+        <Route exact path="/wallet" component={Wallet} />
+        <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
+        <Route exact path="/wallet/result" component={ExchangeResult} />
 
         <Route exact path="/pay" component={Pay} />
         <Route exact path="/pay/:title" component={Pay} />
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/login/sns" component={LoginSns} />
-        <Route exact path="/login/form" component={LoginForm} />
+        <Route exact path="/login/start" component={LoginStart} />
+        <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/socialSignUp" component={SocialSignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
         <Route exact path="/selfauth_result" component={SelfAuthResult} />
-        <Route exact path="/mypage/:memNo" component={MyPage} />
+        <Route exact path="/mypage" component={MyPage} />
+        <Route exact path="/mypage/:memNo" main={MyPage}
+               render={() => <Redirect to={{ pathname: '/mypage' }} />}
+        />
+        <Route exact path="/myProfile" component={Profile} />
+        <Route exact path="/profile/:memNo" main={Profile}
+               render={({ match}) => {
+                 const myMemNo = context.profile.memNo;
+                 const targetMemNo = match.params.memNo
+                 if(myMemNo === targetMemNo) {
+                   return <Redirect to={{ pathname: '/myProfile' }} />
+                 }else {
+                   return <Route component={Profile} />
+                 }
+               }}
+        />
+
+        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
+        {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
+
+        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
+
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
-        <Route exact path="/customer/" component={Customer} />
-        <Route exact path="/customer/:title" component={Customer} />
-        <Route exact path="/customer/:title/:num" component={Customer} />
+        <Route exact path="/customer/" component={ReCustomer} />
+        <Route exact path="/customer/:title" component={ReCustomer} />
+        <Route exact path="/customer/:title/:num" component={ReCustomer} />
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
@@ -158,8 +221,26 @@ export default () => {
         <Route exact path="/ImageEditor" component={ImageEditor} />
         <Route exact path="/story" component={Story} />
         <Route exact path="/story/:roomNo" component={Story} />
-        <Route exact path="/search" component={SearchPage} />
+
+        {/*  www 클립 라우터  */}
+        <Route exact path="/clip_recoding" component={ClipRecoding}  />
+        <Route exact path="/clip_upload" component={ClipUpload} />
+        <Route exact path="/clip/:clipNo" component={ClipPlayer} />
+
+        {/*  www 방송 청취 및 세팅  */}
+        <Route exact path="/broadcast/:roomNo" component={Broadcast} />
+        <Route exact path="/broadcast_setting" component={BroadcastSetting} />
+
+        {/*  www 우체통관련  */}
+        <Route exact path="/mailbox" component={Mailbox} />
+        <Route exact path="/mailbox/:category" component={Mailbox} />
+        <Route exact path="/mailbox/:category/:mailNo" component={Mailbox} />
+
+        <Route path="/modal/:type" component={Modal} />
+        <Redirect to="/error" />
       </Switch>
+      <Alert />
     </React.Suspense>
   )
-}
+};
+export default Router

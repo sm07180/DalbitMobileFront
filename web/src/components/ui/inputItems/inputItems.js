@@ -3,7 +3,7 @@ import React, {useState} from 'react'
 import './inputItems.scss'
 
 const InputItems = (props) => {
-  const {title,type,button,onClick,children} = props
+  const {title,type,button,onClick,children,logYn} = props
 
   const onFocus = (e) => {
     const targetClassName = e.target.parentNode
@@ -20,18 +20,19 @@ const InputItems = (props) => {
         {title && <div className="title">{title}</div>}
         {type === 'text' &&
           <>
-            <div className="inputBox" onFocus={onFocus} onBlur={onBlur}>
+            <label className="inputBox" onFocus={onFocus} onBlur={onBlur}>
               {children}
-            </div>
+            </label>
             {button &&
-              <button className='inputBtn' onClick={onClick}>{button}</button>
+              <button type="button" className='inputBtn' onClick={onClick}>{button}</button>
             }
+            {logYn && <p className='textLog'/>}
           </>
         }
         {type === 'textarea' &&
-          <div className="textareaBox">
+          <label className="textareaBox" onFocus={onFocus} onBlur={onBlur}>
             {children}
-          </div>
+          </label>
         }
       </div>
     </>

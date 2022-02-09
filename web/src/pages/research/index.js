@@ -1,24 +1,26 @@
 import React, {useState, useCallback, useEffect} from 'react'
 //context
 import API from 'context/api'
-import Swiper from 'react-id-swiper'
-// component
+// global component
 import Header from 'components/ui/header/Header.js'
-import SwipeList from './components/swipeList'
-import SearchHistory from './components/searchHistory'
-import SearchResult from './components/searchResult'
-
-//scss
+import CntTitle from 'components/ui/cntTitle/CntTitle'
+import InputItems from 'components/ui/inputItems/InputItems'
+// component
+import SwiperList from './components/swiperList'
+// contents
+import SearchHistory from './contents/searchHistory'
+import SearchResult from './contents/searchResult'
+// scss
 import './style.scss'
 
-export default (props) => {  
+const SearchPage = (props) => {
   const [searchVal, setSearchVal] = useState('') // 검색 value 값
   const [searching, setSearching] = useState('noValue');
   const [cancelBtn, setCancelBtn] = useState(false);
 
-  const [djSearch, setDjSearch] = useState('') 
-  const [liveSearch, setLiveSearch] = useState('') 
-  const [clipSearch, setClipSearch] = useState('') 
+  const [djSearch, setDjSearch] = useState([]) 
+  const [liveSearch, setLiveSearch] = useState([]) 
+  const [clipSearch, setClipSearch] = useState([]) 
 
   const selectedAgeArr = [1, 2, 3, 4]
   const selectedGenderArr = ['m', 'f']
@@ -28,7 +30,7 @@ export default (props) => {
     const ageList = joinChar(selectedAgeArr)
     const gender = joinChar(selectedGenderArr)
 
-    const {result, data} = await API.getRecommendedDJ({ageList, gender})
+    const {result, data} = await API.getRecommendedDJ({ageList:1, gender:'m'})
     if (result === 'success') {
       setDjSearch(data.list);
     }
@@ -51,11 +53,6 @@ export default (props) => {
         setClipSearch(resClip.data.list)
       }
   }
-
-  const swiperParams = {
-    slidesPerView: 'auto',
-    spaceBetween: 12
-  }  
 
   const onChange = (e) => {
     setSearchVal(e.target.value);
@@ -101,97 +98,46 @@ export default (props) => {
   }, [searchVal])
 
   return (
-    <div id="search">
-      <Header title={"검색"}>
-        <div className="searchField">
-          <form className='searchForm' onSubmit={handleSubmit}>
+    <div id="searchPage">
+      <Header title="검색">
+        <form className='searchForm' onSubmit={handleSubmit}>
+          <InputItems>
             <input
               type="text"
-              className='searchInput'
               id='searchInput'
               placeholder='닉네임, 방송, 클립을 입력해주세요.'
               onChange={onChange}
               onFocus={focusIn}
               onBlur={focusOut}
             />
-            {searching && <button className='removeValue' onClick={removeValue}/>}
-          </form>
+            {searching && <button className='inputDel' onClick={removeValue}></button>}
+          </InputItems>
           {cancelBtn && <button className='searchCancel' onClick={removeValue}>취소</button>}
-        </div>
+        </form>
       </Header>
-      <div className='content'>
-        {
-          searching === "noValue" ?
-            <>
-              <section className='djSection'>
-                {djSearch && djSearch.length > 0 &&
-                  <SwipeList title={"믿고 보는 DJ"}>
-                      <Swiper {...swiperParams}>
-                        {djSearch.map((list,index) => {
-                          return (
-                            <div className='swipeList' key={index}>
-                              <div className='swipeImg'>
-                                <img src={list.profImg.thumb190x190} alt={list.nickNm} className=''/>
-                              </div>
-                              <div className='swipeText'>
-                                <span className={`gender ${list.gender === "m" ? "male" : "female"}`}></span>
-                                <span className='swipeNick'>{list.nickNm}</span>
-                              </div>
-                              {list.isFan ? <button className='followBtn'>팔로잉</button> : <button className='fanBtn'>+ 팬</button>}
-                            </div>
-                          )
-                        })}
-                      </Swiper>
-                  </SwipeList>
-                }
-              </section>
-
-              <section className='liveSection'>
-                {liveSearch && liveSearch.length > 0 &&
-                  <SwipeList title={"🔥 지금 핫한 라이브"}>
-                      <Swiper {...swiperParams}>
-                        {liveSearch.map((list,index) => {
-                          return (
-                            <div className='swipeList' key={index} style={{backgroundImage: `url(${list.bgImg.thumb190x190})`}}>
-                              {!list.isVideo && <div className='videoTag'></div>}
-                              <div className='swipeText'>{list.title}</div>
-                            </div>
-                          )
-                        })}
-                      </Swiper>
-                  </SwipeList>
-                }
-              </section>
-              
-              <section className='clipSection'>
-                {clipSearch && clipSearch.length > 0 &&
-                  <SwipeList title={"오늘 인기 있는 클립"}>
-                      <Swiper {...swiperParams}>
-                        {clipSearch.map((list,index) => {
-                          return (
-                            <div className='swipeList' key={index}>
-                              <div className='swipeImg'>
-                                <img src={list.bgImg.thumb190x190} alt={list.nickNm} className=''/>
-                              </div>
-                              <div className='swipeText'>
-                                <span className='swipeNick'>{list.nickName}</span>
-                                <span className='swipeClip'>{list.title}</span>
-                              </div>
-                            </div>
-                          )
-                        })}
-                      </Swiper>
-                  </SwipeList>
-                }
-              </section>
-            </>            
-          :
-          searching === "ing" ?
-            <SearchHistory/>
-          :
-            <SearchResult searchResult={searchVal}/>            
-        }   
-      </div>
+      {searching === "noValue" ?
+        <>
+          <section className='djSection'>
+            <CntTitle title="믿고 보는 DJ" />
+            <SwiperList data={liveSearch} type="dj" />
+          </section>
+          <section className='liveSection'>
+            <CntTitle title="🔥 지금 핫한 라이브" />
+            <SwiperList data={liveSearch} type="live" />
+          </section>
+          <section className='clipSection'>
+            <CntTitle title="오늘 인기 있는 클립" />
+            <SwiperList data={clipSearch} type="clip" />
+          </section>
+        </>            
+        : 
+        searching === "ing" ?
+          <SearchHistory/>
+        :
+        <SearchResult searchResult={searchVal}/>
+      }
     </div>
   )
 }
+
+export default SearchPage

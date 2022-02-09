@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="240" height="240" viewBox="0 0 240 240">
+  <defs>
+    <clipPath id="clip-path">
+      <rect width="240" height="240" transform="translate(2021 1003)" fill="none" stroke="#707070" stroke-width="1"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(-2021 -1003)" clip-path="url(#clip-path)">
+    <g transform="translate(1383.376 -448.277) rotate(25.714)">
+      <path d="M1458.047,1011.989a119.766,119.766,0,0,0-93.7-45.038v119.762Z" fill="#e9f9cf"/>
+      <path d="M1364.347,966.951a119.768,119.768,0,0,0-93.7,45.038l93.7,74.724Z" fill="#d0f4ee"/>
+      <path d="M1481.409,1113.432a120.18,120.18,0,0,0-23.362-101.443l-93.7,74.724Z" fill="#fed9cf"/>
+      <path d="M1247.285,1113.432a120.222,120.222,0,0,0,64.892,81.613l52.17-108.332Z" fill="#f2e1ff"/>
+      <path d="M1312.177,1195.045a120.263,120.263,0,0,0,104.34,0l-52.17-108.332Z" fill="#c7d7fe"/>
+      <path d="M1270.646,1011.989a120.183,120.183,0,0,0-23.361,101.443l117.062-26.719Z" fill="#fef2b8"/>
+      <path d="M1481.409,1113.432l-117.062-26.719,52.17,108.332A120.228,120.228,0,0,0,1481.409,1113.432Z" fill="#fffef8"/>
+    </g>
+  </g>
+</svg>

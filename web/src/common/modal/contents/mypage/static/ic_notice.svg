@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <circle cx="8" cy="8" r="8" fill="#424242"/>
+    <text fill="#fff" font-family="NanumSquareEB, NanumSquare" font-size="9px" letter-spacing="-0.025em" transform="translate(7.933 10.667)">
+        <tspan x="-1.44" y="0">!</tspan>
+    </text>
+</svg>

@@ -13,12 +13,9 @@ const LoginPage = () => {
   const context = useContext(Context)
   const {token} = context
 
-  // 조회 Api
-
-  //-- 동작 함수
-  const loginSnsOpen = () => {
+  const loginStart = () => {
     if (!token.isLogin) {
-      history.push('/login/sns');
+      history.push('/login/start');
     }
   };
 
@@ -38,7 +35,7 @@ const LoginPage = () => {
           <p className='mainText'>달라에서 매일<br/>재미있는 라이브를 즐겨보아요!</p>
           <p className='subText'>로그인 후 이용할 수 있습니다.</p>
         </div>
-        <button className='loginBtn' onClick={loginSnsOpen}>로그인</button>
+        <button className='loginBtn' onClick={loginStart}>로그인</button>
       </section>
     </div>
   )

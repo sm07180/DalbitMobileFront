@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
+    <defs>
+        <clipPath id="tlh54ql26a">
+            <circle cx="120" cy="120" r="120" fill="none" transform="translate(725.617 953.223)"/>
+        </clipPath>
+    </defs>
+    <g>
+        <g clip-path="url(#tlh54ql26a)" transform="translate(-725.617 -953.223)">
+            <g>
+                <g>
+                    <path fill="#ffded5" d="M760.765 988.077a120 120 0 0 0 0 169.7l84.853-84.853z"/>
+                    <path fill="#f2e1ff" d="M930.47 988.077a120 120 0 0 0-169.7 0l84.853 84.852z"/>
+                    <path fill="#fef7d5" d="M930.47 988.077l-84.852 84.852 84.852 84.853a120 120 0 0 0 0-169.705z"/>
+                    <path fill="#d0f4ee" d="M760.765 1157.782a120 120 0 0 0 169.7 0l-84.852-84.853z"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

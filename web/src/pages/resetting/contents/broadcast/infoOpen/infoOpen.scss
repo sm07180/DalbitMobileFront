@@ -1,0 +1,62 @@
+@import "components/ui/_mixin.scss";
+
+#setting #infoOpen { 
+  .subContent {
+    position: relative;
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    .locationState {
+      @include flex(center);
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+      pointer-events: none;
+      &.active {
+        pointer-events: auto;
+        .title {color: #303030 !important;}
+        .radioCategoty {color: #303030 !important;}
+      }
+      .title {
+        flex: 1;
+        @include font(15px, 400, #D2D2D4);
+      }
+      .radioWrap {
+        @include flex(center);
+        .radioLabel {
+          position: relative;
+          @include flex(center);
+          margin-right: 40px;
+          &:last-child {
+            margin-right: 0px;
+          }
+          cursor: pointer;
+          .blind {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0 0 0 0);
+            &:checked + .radioBtn {
+              border: 5px solid #FF3C7B;
+            }
+          }
+          .radioBtn {
+            flex: none;
+            position: relative;
+            width: 23px;
+            height: 23px;
+            margin-right: 8px;
+            border-radius: 50%;
+            border: 2px solid #E3E3E3;
+            box-sizing: border-box;
+          }
+          .radioCategoty {
+            @include font(13px, 400, #D2D2D4);
+          }
+        }  
+      }
+    }
+  }
+}

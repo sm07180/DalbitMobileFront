@@ -1,0 +1,54 @@
+@import "components/ui/_mixin.scss";
+
+.searchResultWrap {
+  padding:0 16px;
+  .listRow {
+    @include flex(center);
+    width: 100%;
+    &:last-child {
+      margin-bottom: 0px;
+    }
+    .photo {
+      flex: none;
+      @include flex(center,center);
+      img {
+        width:100%;
+        object-fit: cover;
+      }
+    }
+    .listContent {
+      flex: 1;
+      @include flex($fd:column);
+      .listItem {
+        @include flex(center);
+        .subject {
+          @include font(12px, 400, #999999);
+          margin-right: 6px;
+        }
+        .title {
+          @include font(16px, 700, #303030);
+        }           
+        .nickNm {
+          margin-left:4px;
+          @include font(13px, 400, #303030);
+        }
+        .userId {
+          @include font(12px, 400, #A4A4A4);
+        }
+        &.dataCtn {
+          margin-top: 5px;
+          & > span {
+            margin-right: 6px;
+            &:last-child {
+              margin-right: 0px;
+            }
+          }
+        }
+      }              
+    }
+  }
+  .searchNoResult {
+    min-height:120px;
+    @include font(14px,400,#999);
+  }
+}

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="prefix__ic_menu_normal" width="48" height="48" viewBox="0 0 48 48">
+    <defs>
+        <style>
+            .prefix__cls-2{fill:#632beb;fill-rule:evenodd}
+        </style>
+    </defs>
+    <path id="prefix__사각형_239" d="M0 0H48V48H0z" data-name="사각형 239" transform="rotate(-90 24 24)" style="fill:none"/>
+    <g id="prefix__Layer" transform="rotate(-90 22.417 11.416)">
+        <g id="prefix__Vrstva_216" data-name="Vrstva 216">
+            <path id="prefix__패스_374" d="M1.417 26.75a1.56 1.56 0 001.417-1.672V1.672A1.56 1.56 0 001.417 0 1.56 1.56 0 000 1.672v23.406a1.56 1.56 0 001.417 1.672z" class="prefix__cls-2" data-name="패스 374"/>
+            <path id="prefix__패스_375" d="M1.417 26.75a1.56 1.56 0 001.417-1.672V1.672A1.56 1.56 0 001.417 0 1.56 1.56 0 000 1.672v23.406a1.56 1.56 0 001.417 1.672z" class="prefix__cls-2" data-name="패스 375" transform="translate(8.5)"/>
+            <path id="prefix__패스_376" d="M1.417 26.75a1.56 1.56 0 001.417-1.672V1.672A1.56 1.56 0 001.417 0 1.56 1.56 0 000 1.672v23.406a1.56 1.56 0 001.417 1.672z" class="prefix__cls-2" data-name="패스 376" transform="translate(17)"/>
+        </g>
+    </g>
+</svg>

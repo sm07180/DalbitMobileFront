@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_heart" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .cls-1,.cls-2{fill:none}.cls-1{stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.5px}
+        </style>
+    </defs>
+    <g id="그룹_9625" data-name="그룹 9625" transform="translate(6 6)">
+        <path id="패스_408" d="M20.885 5.464a4.59 4.59 0 0 0-8.446 2.5 4.591 4.591 0 0 0-8.447-2.5C1.051 9.731 3.95 17.206 12.439 21.5c8.488-4.294 11.387-11.769 8.446-16.036z" class="cls-1" data-name="패스 408" transform="translate(-.377 -.833)"/>
+        <path id="사각형_222" d="M0 0h24v24H0z" class="cls-2" data-name="사각형 222"/>
+    </g>
+    <path id="사각형_223" d="M0 0h36v36H0z" class="cls-2" data-name="사각형 223"/>
+</svg>

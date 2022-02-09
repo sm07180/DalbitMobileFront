@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_snowman_b" width="40" height="40" viewBox="0 0 40 40">
+    <defs>
+        <style>
+            .cls-2,.cls-4{stroke:#fff;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.4px}.cls-3,.cls-4{fill:#fff}.cls-7{fill:none}.cls-6{stroke:none}
+        </style>
+    </defs>
+    <circle id="타원_1123" cx="20" cy="20" r="20" fill="#5ac4fb"/>
+    <g id="그룹_19476" transform="translate(-355.579 -885.443)">
+        <g id="그룹_19473" transform="translate(372.786 897.879)">
+            <g id="타원_1124" class="cls-2">
+                <circle cx=".787" cy=".787" r=".787" class="cls-6"/>
+                <circle cx=".787" cy=".787" r=".087" class="cls-7"/>
+            </g>
+            <g id="타원_1125" class="cls-2" transform="translate(3.599)">
+                <circle cx=".787" cy=".787" r=".787" class="cls-6"/>
+                <circle cx=".787" cy=".787" r=".087" class="cls-7"/>
+            </g>
+        </g>
+        <g id="그룹_19474" transform="translate(374.81 905.297)">
+            <circle id="타원_1126" cx=".562" cy=".562" r=".562" class="cls-3"/>
+            <circle id="타원_1127" cx=".562" cy=".562" r=".562" class="cls-3" transform="translate(0 1.912)"/>
+            <circle id="타원_1128" cx=".562" cy=".562" r=".562" class="cls-3" transform="translate(0 3.936)"/>
+        </g>
+        <path id="선_258" d="M0 0L3.262 0" class="cls-4" transform="translate(373.742 901.59)"/>
+        <g id="그룹_19475" transform="translate(380.996 901.647)">
+            <path id="선_259" d="M0 4.499L5.061 0" class="cls-4"/>
+            <path id="선_260" d="M0 0L0 1.799" class="cls-4" transform="translate(3.037)"/>
+            <path id="선_261" d="M0 0L2.563 0.458" class="cls-4" transform="translate(1.148 3.478)"/>
+        </g>
+        <path id="패스_13780" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4px" d="M380.969 903.355a8.023 8.023 0 0 0-.616-.516 5.4 5.4 0 0 0 .867-2.937 5.854 5.854 0 0 0-11.7 0 5.4 5.4 0 0 0 .867 2.937 7.632 7.632 0 0 0-3.116 6.114 8.105 8.105 0 0 0 16.2 0 7.365 7.365 0 0 0-.2-1.686"/>
+    </g>
+</svg>

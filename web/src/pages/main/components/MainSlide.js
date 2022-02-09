@@ -1,11 +1,10 @@
-import React, {useState, useEffect} from 'react'
+import React from 'react'
 import Swiper from 'react-id-swiper'
 
 // global components
 import ListColumn from 'components/ui/listColumn/ListColumn'
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import {useHistory} from "react-router-dom";
-import MovePage from "components/module/MovePage";
 
 const MainSlide = (props) => {
   const {data} = props
@@ -22,21 +21,20 @@ const MainSlide = (props) => {
       type: 'fraction'
     },
     on:{
-      click: (e) => {
-        console.log(e);
-        if(e.type === 'touchend') {
-          const paths = e.path || e.composedPath();
+      click: (swiper, event) => {
+        if(event.type === 'touchend') {
+          const paths = event.path || event.composedPath();
           let swiperIndex = "";
           paths.forEach(dom => {
             if(dom.dataset && dom.dataset.swiperIndex) {
               swiperIndex = dom.dataset.swiperIndex;
               const target = data[parseInt(swiperIndex)];
               if(target.nickNm === 'banner' && target.roomType === 'link') {
-                MovePage({url: target.roomNo, history});
+                history.push(target.roomNo);
               }else {
-                MovePage({url: '/rank', history});
+                // 방송방으로 이동
+                history.push('/rank');
               }
-              console.log(data[parseInt(swiperIndex)])
             }
           })
         }

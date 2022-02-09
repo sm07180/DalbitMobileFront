@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_ic_br_narrow" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+        <style>
+            .cls-2{fill:#fff;stroke:#000;stroke-width:1.5px}.cls-4{stroke:none}.cls-5{fill:none}
+        </style>
+    </defs>
+    <g id="사각형_11494" class="cls-2" transform="translate(6 7)">
+        <rect width="6" height="18" class="cls-4" rx="2"/>
+        <rect width="4.5" height="16.5" x=".75" y=".75" class="cls-5" rx="1.25"/>
+    </g>
+    <g id="사각형_11496" class="cls-2" transform="translate(20 7)">
+        <rect width="6" height="18" class="cls-4" rx="2"/>
+        <rect width="4.5" height="16.5" x=".75" y=".75" class="cls-5" rx="1.25"/>
+    </g>
+    <rect id="사각형_11495" width="6" height="18" fill="#632beb" rx="2" transform="translate(13 7)"/>
+</svg>

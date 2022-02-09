@@ -1,471 +1,236 @@
 @import '../../styles/global.scss';
 @import "components/ui/_mixin.scss";
 
-#search {
-  // 페이지내 공통 
-  .gender {
-    flex: none;
-    display: inline-block;
-    width: 14px; height: 14px;
-    margin-right: 2px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    &.male {
-      background-image: url("https://image.dalbitlive.com/common/icon/icoMale.png");
-    }
-    &.female {
-      background-image: url("https://image.dalbitlive.com/common/icon/icoFemale.png");
-    }
-  }
-
-  Header {
+#searchPage {
+  header {
     align-items: flex-start;
     flex-direction: column;
     height: auto;
     padding: 0 16px;
     h1 {
-      @include flex(center, flex-start);
-      width: 100%; height: 48px;
+      height: 48px;
     }
-    .searchField {
-      @include flex(center, space-between);
-      width: 100%;
-      padding: 12px 0;
-      box-sizing: border-box;
-      .searchForm {
-        flex: 1;
-        position: relative;
-        height: 40px;
-        padding: 5px 30px 5px 40px;
-        border-radius: 8px;
-        background: url("https://image.dalbitlive.com/common/icon/icon-search.png") #F6F6F6 no-repeat;
-        background-position: 12px center;
-        background-size: 18px 18px;
-        .searchInput {
-          width: 100%;
-          @include font(13px, 400, #333333);
-          line-height: 30px;
-        }
-        .removeValue {
-          position: absolute;
-          top: 50%; right: 10px;
-          transform: translateY(-50%);
-          display: inline-block;
-          width: 14px; height: 14px;
-          border-radius: 50%;
-          background-image: url("https://image.dalbitlive.com/common/input/input-removeValue.png");
-          background-repeat: no-repeat;
-          background-position: center;
-          background-size: contain;
-          cursor: pointer;
+    .searchForm {
+      position: relative;
+      @include flex(center);
+      width:100%;
+      height:64px;
+      .inputItems {
+        flex:1;
+        margin-bottom:0;
+        .inputBox {
+          height:40px;
+          &:before {
+            content:"";
+            width:40px;
+            height:40px;
+            background: url("https://image.dalbitlive.com/common/icon/icon-search.png") 12px center/17px no-repeat;
+          }
+          input {
+            margin:0;
+          }
+          .inputDel {
+            width:14px;height:14px;
+            margin-right:8px;
+          }
         }
       }
       .searchCancel {
+        line-height:40px;
         margin-left: 14px;
         @include font(13px, 400, #999999);
       }
     }
   }
-  .content {
-    position: relative;
-    @include flex(flex-start, flex-start, column);
-    width: 100%;
-    box-sizing: border-box;
-
-    .djSection {
-      @include flex(flex-start, center, column);
-      width: 100%;
-      margin-bottom: 30px;
-      
-      .swipeTitle {
-        width: 100%;
-        @include font(20px, 500, #202020);
-        padding-left: 16px;
-        margin-bottom: 12px;
-      }
-      .swiper-container {
-        width: 100%;
-        padding-left: 16px;
-        box-sizing: border-box;
-      }    
-      .swipeList {
-        position: relative;
-        @include flex(center, center, column);
-        width: 87px;
-        .swipeImg {
-          display: inline-block;
-          width: 87px;
-          height: 87px;
-          border-radius: 50%;
-          border: 1px solid #eee;
-          overflow: hidden;
-          img {
-            width: 100%;
-          }
-        }
-        .swipeText {
-          @include flex(center);
-          max-width: 100%;
-          margin: 7px 0;          
-          .swipeNick {
-            display: block;
-            @include font(12px, 400, #666666);
-            @include fontCut;
-          }
-        }
-        .followBtn {
-          @include flex(center, center);
-          width: 68px; height: 25px;
-          border: 1px solid #999999;
-          border-radius: 100px;
-          line-height: 23px;
-          @include font(12px, 500, #999999);
-          box-sizing: border-box;
-        }
-        .fanBtn {
-          @include flex(center, center);
-          width: 68px; height: 25px;
-          background-color: #202020;
-          border-radius: 100px;
-          line-height: 25px;
-          @include font(12px, 500, #fff);
-          box-sizing: border-box;
-
-        }
-      }
+  section {
+    position:relative;
+    width:100%;
+    margin-bottom: 26px;
+    &:last-child {
+      margin-bottom: 0;
+      padding-bottom:40px;
     }
-
-    .liveSection {
-      @include flex(flex-start, center, column);
-      width: 100%;
-      margin-bottom: 30px;      
-      .swipeTitle {
-        width: 100%;
-        @include font(20px, 500, #202020);
-        padding-left: 16px;
-        margin-bottom: 12px;
+  }
+  .cntTitle {
+    margin-bottom:12px;
+  }
+  .djSection {
+    padding-top:10px;
+    .listColumn {
+      width: 87px;
+      .photo {
+        height:87px;
+        img {
+          border-radius:50%;
+        }
       }
-      .swiper-container {
-        width: 100%;
-        padding-left: 16px;
-        box-sizing: border-box;
-      }    
-      .swipeList {
-        position: relative;
-        @include flex(center, flex-end, column);
-        width: 113px;
-        height: 150px;
-        border-radius: 16px;
-        overflow: hidden;
-        &::after {
-          content: "";
-          position: absolute;
-          top: 0; left: 0;
-          width: 100%; height: 100%;
-          border-radius: 16px;
-          background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
-          z-index: 1;
-        }
-        .videoTag {
-          position: absolute;
-          top: 6px; right: 6px;
-          display: inline-block;
-          width: 20px; height: 20px;
-          background-image: url("https://image.dalbitlive.com/common/broadcast/broadcastType-video.png");
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-        }
-        .swipeText {
-          width: 100%;
-          padding: 8px; 
-          @include font(13px, 500, #fff);
+      .listItem {
+        @include flex(center,center);
+        width:100%;
+        margin: 6px 0;
+        .nick {
+          margin-left:4px;
+          @include font(12px, 400, #666666);
           @include fontCut;
-          box-sizing: border-box;
-          z-index: 2;
-        }        
-      }
-    }
-
-    .clipSection {
-      @include flex(flex-start, center, column);
-      width: 100%;
-      margin-bottom: 30px;      
-      .swipeTitle {
-        width: 100%;
-        @include font(20px, 500, #202020);
-        padding-left: 16px;
-        margin-bottom: 12px;
-      }
-      .swiper-container {
-        width: 100%;
-        padding-left: 16px;
-        box-sizing: border-box;
-      }    
-      .swipeList {
-        position: relative;
-        @include flex(center, flex-end, column);
-        width: 113px;
-        .swipeImg {
-          display: inline-block;
-          width: 113px;
-          height: 113px;
-          border-radius: 16px;
-          border: 1px solid #eee;
-          overflow: hidden;
-          img {
-            width: 100%;
-          }
-        }
-        .swipeText {
-          @include flex(flex-start, center, column);
-          width: 100%;
-          margin-top: 2px;
-          .swipeNick {
-            width: 100%;
-            @include font(12px, 400, #666666);
-            @include fontCut;
-          }
-          .swipeClip {
-            width: 100%;
-            @include font(14px, 700, #202020);
-            @include fontCut;
-          }
-        }        
-      }
-    }
-
-    .searchHistory {
-      width: 100%;
-      padding: 12px 16px;
-      .titleWrap {
-        @include flex(center, space-between);
-        .title {
-          @include font(20px, 500, #202020);
-        }
-        .removeAll {
-          @include font(13px, 400, #999999);
-          cursor: pointer;
         }
       }
-      .historyWrap {
-        position: relative;
-        @include flex(center, center, column);
-        width: 100%;
-        padding: 20px 0;
-        .historylist {
-          width: 100%;
-          margin-bottom: 20px;
-          @include font(14px, 400, #43464A);
-          cursor: pointer;
-          &:last-child {
-            margin-bottom: 0;
-          }
+      button {
+        width: 62px;
+        line-height: 30px;
+        background-color: #202020;
+        @include border(#202020,100px);
+        @include font(12px, 500, #fff);
+        &.active {
+          background-color: white;
+          border-color: #E3E3E3;
+          @include font(12px, 500, #303030);
         }
       }
     }
+  }
+  .liveSection {
+    .listColumn {
+      width: 113px;
+      height: 150px;
+      border-radius: 16px;
+      overflow: hidden;
+      .nick {
+        @include position-bottom-left;
+        width:100%;
+        padding:24px 8px 8px;
+        background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0));
+        @include font(13px, 500, #fff);
+      }
+      .badgeVideo {
+        @include position-top-right(6px,6px);
+        width: 20px; height: 20px;
+        @include BGIMG("common/broadcast/broadcastType-video.png");
+      }
+    }
+  }
+  .clipSection {
+    .listColumn {
+      width: 113px;
+      .photo {
+        height:113px;
+        img {
+          border-radius:16px;
+        }
+      }
+      .nick {
+        width:100%;
+        line-height:20px;
+        @include font(12px, 400, #666666);
+        @include fontCut;
+      }
+      .title {
+        width:100%;
+        line-height:22px;
+        @include font(14px, 700, #202020);
+        @include fontCut;
+      }
+    }
+  }
 
-    .searchResult {
-      position: relative;
+  .searchHistory {
+    padding-top:10px;
+    .historyWrap {
       @include flex(center, center, column);
       width: 100%;
-      .tabmenu {
-        @include flex(center);
+      padding: 20px 16px;
+      .historylist {
         width: 100%;
-        padding: 4px 16px;
-        box-sizing: border-box;
-        li {
-          @include flex(center, center);
-          height: 36px;
-          padding: 0 15px;
-          border-radius: 100px;
-          margin-right: 4px;
-          background-color: #F6F6F6;
-          @include font(13px, 400, #ACACAC);
-          &:last-child {
-            margin-right: 0px;
-          }
-          &.active {
-            background-color: #202020;
-            @include font(13px, 500, #fff);
-          }
+        margin-bottom: 20px;
+        @include font(14px, 400, #43464A);
+        cursor: pointer;
+        &:last-child {
+          margin-bottom: 0;
         }
       }
-      .resultContent {
-        position: relative;
-        @include flex(flex-start, flex-start, column);
-        width: 100%;
-        padding: 20px 16px;
-        box-sizing: border-box;
-        & > div {
-          width: 100%;
-          margin-bottom: 30px;
-          &:last-child {
-            margin-bottom: 0px;
-          }
+    }
+  }
+
+  // searchResult page
+  .tabmenu {
+    @include flex(center);
+    margin-bottom:18px;
+    padding: 4px 16px;
+    li {
+      @include flex(center, center);
+      height: 36px;
+      padding: 0 15px;
+      border-radius: 100px;
+      margin-right: 4px;
+      background-color: #F6F6F6;
+      @include font(13px, 400, #ACACAC);
+      &:last-child {
+        margin-right: 0px;
+      }
+      &.active {
+        background-color: #202020;
+        @include font(13px, 500, #fff);
+      }
+    }
+  }
+  .djResult {
+    .listRow {
+      margin-bottom:16px;
+      .photo {
+        width:64px;
+        height:64px;
+        img {
+          border-radius:50%;
         }
-        .resultHeader {
-          @include flex(center, space-between);
-          width: 100%;
-          margin-bottom: 12px;
-          .resultTitle{
-            @include font(20px, 500, #202020);
-          }
-          .more {
-            @include font(13px, 400, #999999);
-            cursor: pointer;
-          }
+      }
+      .listContent {
+        margin-left:16px;
+      }
+    }
+  }
+  .liveResult {
+    .listRow {
+      align-items: normal;
+      margin-bottom:12px;
+      .listItem:nth-child(3) {
+        margin-top: auto;
+      }
+      .title {
+        @include fontLineCut();
+        overflow: hidden;
+      }
+      .photo {
+        width:112px;
+        height:112px;
+        img {
+          border-radius:16px;
         }
-        .resultWrap {
-          position: relative;
-          @include flex(flex-start, flex-start, column);
-          width: 100%;
-          .noData {
-            width: 100%;
-            height: 150px;
-            @include font(14px, 400, #999999);
-          }                 
+      }
+      .listContent {
+        margin-left:16px;
+        padding: 5px 0;
+      }
+    }
+  }
+  .clipResult {
+    .listRow {
+      margin-bottom:12px;
+      .photo {
+        width:72px;
+        height:72px;
+        img {
+          border-radius:16px;
         }
-        .djResult {
-          .listRow {
-            width: 100%;
-            margin-bottom: 22px;
-            &:last-child {
-              margin-bottom: 0px;
-            }
-            .photo {
-              display: inline-block;
-              width: 58px; height: 58px;
-              border: 1px solid #eee;
-              border-radius: 50%;
-              overflow: hidden;
-              box-sizing: border-box;
-            }
-            .listContent {
-              flex: 1;
-              @include flex(flex-start, flex-start, column);
-              margin-left: 17px;
-              .listItem {
-                @include flex(center);
-                width: 100%;               
-                .nickNm {
-                  @include font(12px, 400, #303030);
-                }
-                .uid {
-                  @include font(12px, 400, #A4A4A4);
-                }
-                &.dataCtn {
-                  margin-top: 2px;
-                  & > span {
-                    margin-right: 6px;
-                    &:last-child {
-                      margin-right: 0px;
-                    }
-                  }
-                }
-              }              
-            }
-          }   
+      }
+      .listContent {
+        margin-left:12px;
+        overflow: hidden;
+        .listItem {
+          margin-top: 4px;
         }
-        .liveResult {
-          .listRow {
-            width: 100%;
-            margin-bottom: 12px;
-            &:last-child {
-              margin-bottom: 0px;
-            }
-            .photo {
-              display: inline-block;
-              width: 112px; height: 112px;
-              border: 1px solid #eee;
-              border-radius: 16px;
-              overflow: hidden;
-              box-sizing: border-box;
-            }
-            .listContent {
-              flex: 1;
-              @include flex(flex-start, flex-start, column);
-              margin-left: 16px;
-              .listItem {
-                @include flex(center);
-                width: 100%;
-                .title {
-                  display: -webkit-box;
-                  width: 100%; height: 40px;
-                  @include font(16px, 700, #303030);
-                  line-height: 20px;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  -webkit-line-clamp: 2; 
-                  -webkit-box-orient: vertical;
-                }    
-                .nickNm {
-                  @include font(12px, 400, #303030);
-                }
-                &.dataCtn {
-                  margin-top: 2px;
-                  & > span {
-                    margin-right: 6px;
-                    &:last-child {
-                      margin-right: 0px;
-                    }
-                  }
-                }
-              }              
-            }
-          }   
+        .title {
+          @include fontCut();
         }
-        .clipResult {
-          .listRow {
-            width: 100%;
-            margin-bottom: 12px;
-            &:last-child {
-              margin-bottom: 0px;
-            }
-            .photo {
-              display: inline-block;
-              width: 72px; height: 72px;
-              border: 1px solid #eee;
-              border-radius: 16px;
-              overflow: hidden;
-              box-sizing: border-box;
-            }
-            .listContent {
-              flex: 1;
-              @include flex(flex-start, flex-start, column);
-              margin-left: 16px;
-              .listItem {
-                @include flex(center);
-                width: 100%;
-                .subjectType {
-                  flex: none;
-                  @include font(12px, 400, #999999);
-                  margin-right: 6px;
-                }
-                .title {
-                  flex: 1;
-                  @include font(14px, 500, #202020);
-                  @include fontCut;
-                  line-height: 20px;
-                }    
-                .nickNm {
-                  @include font(12px, 400, #303030);
-                }
-                &.dataCtn {
-                  margin-top: 2px;
-                  & > span {
-                    margin-right: 6px;
-                    &:last-child {
-                      margin-right: 0px;
-                    }
-                  }
-                }
-              }              
-            }
-          }   
-        }
-      }      
+      }
     }
   }
 }

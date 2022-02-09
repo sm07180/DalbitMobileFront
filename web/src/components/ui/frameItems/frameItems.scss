@@ -3,8 +3,8 @@
 .frame {
   @include position-center;
   z-index: 10;
-  width:100px;
-  height:100px;
+  width:135%;
+  height:135%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat; 
@@ -12,8 +12,8 @@
 .frameBg {
   @include position-center;
   z-index: 5;
-  width:160px;
-  height:100px;
+  width:216%;
+  height:135%;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat; 

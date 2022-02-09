@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_time" width="18" height="18" viewBox="0 0 18 18">
+    <defs>
+        <style>
+            .cls-1{fill:none;stroke:#424242;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <g id="그룹_140">
+        <g id="그룹_139" transform="translate(3 3)">
+            <g id="그룹_138">
+                <circle id="타원_38" cx="6.111" cy="6.111" r="6.111" class="cls-1"/>
+                <g id="그룹_137" transform="translate(6.111 2.547)">
+                    <path id="선_14" d="M0 0L0 3.64" class="cls-1"/>
+                    <path id="선_15" d="M2.359 2.359L0 0" class="cls-1" transform="translate(0 3.64)"/>
+                </g>
+            </g>
+        </g>
+        <path id="사각형_263" fill="none" d="M0 0H18V18H0z"/>
+    </g>
+</svg>

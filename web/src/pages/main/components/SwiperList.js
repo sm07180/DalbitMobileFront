@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 
 import Swiper from 'react-id-swiper'
 
@@ -6,13 +6,25 @@ import Swiper from 'react-id-swiper'
 // components
 // css
 import './swiperList.scss'
+import {useHistory} from "react-router-dom";
 
 const SwiperList = (props) => {
   const {data, profImgName} = props
+  const history = useHistory();
 
   const swiperParams = {
     slidesPerView: 'auto',
   }
+
+  const goProfile = memNo => history.push(`/profile/${memNo}`);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      const swiper = document.querySelector('.top10 .swiper-container').swiper;
+      swiper.update();
+      swiper.slideTo(0);
+    }
+  }, [data]);
 
   return (
     <>
@@ -21,7 +33,7 @@ const SwiperList = (props) => {
         {data.map((list,index) => {
           return (
             <div key={index}>
-              <div className="listColumn">
+              <div className="listColumn" onClick={() => goProfile(list.memNo)}>
                 <div className="photo">
                   <img src={list[profImgName].thumb150x150} />
                   {list.rank && <div className={`rank-${list.rank}`}></div>}

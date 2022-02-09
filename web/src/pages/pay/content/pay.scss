@@ -1,0 +1,667 @@
+@import "../../../asset/scss/common/global";
+
+#pay {
+  position: relative;
+
+  .pageTitle {
+    padding: 12px 0 0 0;
+    font-weight: $bold;
+    font-size: 16px;
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #d2d2d2;
+    box-sizing: border-box;
+    padding: 12px 16px;
+
+    &__title {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    &__button {
+      &--back {
+        display: block;
+        position: absolute;
+        top: 6px;
+        left: 2%;
+        width: 36px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .content {
+    padding: 0 16px;
+    letter-spacing: -0.35px;
+    min-height: auto;
+    background: none;
+  }
+
+  .charge {
+    &__title {
+      padding: 24px 0 4px;
+      font-size: 16px;
+      line-height: 1.25;
+      color: $black;
+    }
+  }
+
+  .buyList {
+    &.result {
+      .buyList__value {
+        font-size: 14px;
+        font-weight: $bold;
+        color: $black;
+      }
+    }
+    &__wrap {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding: 0px 16px;
+      border: 1px solid $lightGray;
+      background: $white;
+      border-radius: 12px;
+    }
+
+    &__label,
+    &__value {
+      font-size: 14px;
+      font-weight: $bold;
+    }
+
+    &__label {
+      font-size: 14px;
+      line-height: 42px;
+    }
+
+    &__value {
+      @include flex();
+
+      line-height: 42px;
+      font-size: 18px;
+      font-weight: $bold;
+      color: $primary;
+
+      button {
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        text-align: center;
+        background: $primary;
+        vertical-align: top;
+      }
+      span.quantity {
+        color: $black;
+        display: inline-block;
+        width: 50px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: $bold;
+        line-height: 24px;
+      }
+
+      &--point {
+        padding-left: 24px;
+        color: $primary;
+        font-size: 18px;
+        font-weight: $bold;
+      }
+    }
+  }
+
+  .payMathod {
+    &__box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    &__button {
+      @include flex;
+      border: 1px solid #d2d2d2;
+      width: 49%;
+      height: 42px;
+      margin-bottom: 4px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: $bold;
+      background: $white;
+      &:disabled {
+        background: $whiteGray;
+        color: $gray;
+      }
+
+      &.new {
+        &::after {
+          content: "";
+          margin-left: 6px;
+          width: 15px;
+          height: 15px;
+          background: url("https://image.dalbitlive.com/mypage/210218/ic_new_item@2x.png")
+            no-repeat center / 15px;
+        }
+      }
+
+      &--forced {
+        border-color: $primary;
+        color: $primary;
+
+        &:disabled {
+          color: $primary;
+        }
+      }
+      &--contain {
+        width: 100%;
+      }
+    }
+  }
+
+  .depositInfo {
+    padding-top: 6px;
+    &__wrap {
+      display: flex;
+      position: relative;
+      margin: 4px 0;
+    }
+    .label__wrap {
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      background: $white;
+    }
+    &__label,
+    &__value {
+      font-size: 14px;
+      font-weight: $bold;
+      line-height: 42px;
+    }
+
+    &__label {
+      z-index: 2;
+      font-size: 12px;
+      font-weight: $regular;
+      line-height: 44px;
+      padding-left: 16px;
+    }
+
+    &__value {
+      margin-left: auto;
+      width: calc(100% - 92px);
+      text-align: left;
+
+      .dalIcon {
+        margin-right: 5px;
+      }
+
+      &--point {
+        font-size: 18px;
+      }
+    }
+
+    &__input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      padding: 0 16px 0 92px;
+      margin: 0px 0;
+      border: solid 1px $lightGray;
+      background: $white;
+      border-radius: 12px;
+      line-height: 42px;
+      box-sizing: border-box;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    &__input:focus {
+      border: solid 1px $black;
+    }
+  }
+
+  .receipt {
+    .receipt__btn__wrap {
+      display: flex;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      button {
+        position: relative;
+        width: 33.7%;
+        height: 44px;
+        margin-left: -1px;
+        border: 1px solid $lightGray;
+        background: $whiteGray;
+        font-size: 14px;
+        color: $mediumGray;
+        font-weight: $bold;
+      }
+      button:first-child {
+        margin-left: 0;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+      }
+      button:last-child {
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+      }
+      button.on {
+        border: 1px solid $primary;
+        color: $primary;
+        background: $white;
+        z-index: 2;
+      }
+    }
+
+    &__box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    &__button {
+      border: 1px solid $mediumGray;
+      width: 33.333%;
+      height: 42px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      font-size: 14px;
+
+      &--forced {
+        border-color: $primary;
+        color: $primary;
+      }
+    }
+
+    &__sub {
+      display: flex;
+      // padding: 8px 0;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &__label {
+      font-size: 14px;
+      font-weight: $bold;
+      &.select {
+        width: 32.2%;
+        height: 40px;
+        border: 1px solid $mediumGray;
+        border-radius: 10px;
+        font-weight: $regular;
+        text-indent: 8px;
+        background: $white url(../static/ico_selectdown_g_s.svg) no-repeat right
+          2px center;
+      }
+    }
+
+    &__input {
+      width: 66%;
+      min-height: 40px;
+      padding: 0 12px;
+      border: solid 1px $mediumGray;
+      border-radius: 10px;
+      font-weight: $light;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: $white;
+    }
+  }
+
+  .notice {
+    padding: 24px 0 0 0;
+    font-size: 12px;
+    line-height: 20px;
+    color: $darkGray;
+
+    &__title {
+      padding-bottom: 7px;
+
+      &--icon {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: solid 1px $darkGray;
+        border-radius: 50%;
+        background-color: $darkGray;
+        font-size: 7px;
+        line-height: 10px;
+        letter-spacing: -0.18px;
+        text-align: center;
+        color: $white;
+      }
+    }
+  }
+
+  .payHold {
+    overflow: hidden;
+    border-radius: 13px;
+    background: $lighterGray;
+
+    &__title {
+      font-size: 16px;
+      line-height: 18px;
+      color: $black;
+      padding: 16px 0 10px 0;
+      font-weight: $bold;
+    }
+
+    &__object {
+      margin-right: 6px;
+    }
+
+    &__dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: $primary;
+      margin-left: 6px;
+      margin-bottom: 4px;
+      vertical-align: bottom;
+      border: 0px;
+    }
+
+    &__text {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+    }
+
+    &__sub {
+      margin-bottom: 8px;
+      border: 1px solid $red;
+      border-radius: 12px;
+      background: $white;
+      padding: 16px;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: center;
+      span {
+        color: $red;
+      }
+      p {
+        padding-top: 6px;
+        font-weight: $bold;
+        color: $greishGray;
+      }
+    }
+  }
+
+  .phone {
+    margin-bottom: 32px;
+    text-align: center;
+
+    &__text {
+      font-size: 14px;
+    }
+
+    &__title {
+      display: block;
+      color: $primary;
+      font-weight: $bold;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+  }
+
+  .deposit {
+    &__list {
+      display: flex;
+      justify-content: space-between;
+      line-height: 42px;
+      font-size: 14px;
+      border: 1px solid $lightGray;
+      border-radius: 12px;
+      font-weight: $bold;
+      margin-bottom: 4px;
+      background: $white;
+      padding: 0 16px;
+      .list__label {
+        color: $primary;
+      }
+    }
+
+    &__value {
+      font-size: 14px;
+      color: $black;
+    }
+  }
+
+  .inquiry {
+    padding: 20px 0 32px;
+    font-weight: $bold;
+    text-align: center;
+
+    &__number {
+      padding-left: 8px;
+      color: $primary;
+    }
+  }
+
+  .info__wrap {
+    margin-top: 22px;
+    h5 {
+      display: flex;
+      margin-bottom: 8px;
+      padding-left: 16px;
+      background: url("../static/hint_b_s.svg") no-repeat left center;
+      color: $greishBrown;
+      font-size: 12px;
+      font-weight: $bold;
+      line-height: 20px;
+      span {
+        display: inline-block;
+        margin-left: auto;
+        color: $primary;
+        font-weight: $bold;
+        strong {
+          padding-right: 4px;
+          color: $black;
+        }
+      }
+
+      button {
+        display: inline-block;
+        height: 20px;
+        padding: 0 8px;
+        margin-left: auto;
+        color: $white;
+        background-color: $black;
+        border-radius: 18px;
+        font-size: 11px;
+      }
+    }
+    p {
+      position: relative;
+      padding-left: 16px;
+      color: $greishGray;
+      font-size: 12px;
+      line-height: 20px;
+
+      strong {
+        color: $greishBrown;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      &::before {
+        position: absolute;
+        left: 6px;
+        top: 9px;
+        width: 2px;
+        height: 2px;
+        background: $greishGray;
+        content: "";
+      }
+    }
+  }
+
+  .payButton {
+    width: 100%;
+    height: 44px;
+    margin-bottom: 16px;
+    border-radius: 10px;
+    background: $mediumGray;
+    color: $white;
+    font-size: 16px;
+    margin-top: 10px;
+    font-weight: $bold;
+
+    &--active {
+      background: $primary;
+    }
+    &--fixed {
+      // position: absolute;
+      // bottom: 0;
+      left: 16px;
+      width: calc(100% - 32px);
+    }
+  }
+
+  .buyResult__text {
+    padding: 20px 0;
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .bankInfoWrap {
+    padding: 16px;
+
+    table {
+      th {
+        padding: 5px 0;
+        border-top: 1px solid $primary;
+        border-bottom: 1px solid $primary;
+        font-size: 12px;
+        color: $primary;
+      }
+
+      td {
+        padding: 10px 0 10px 8px;
+        font-size: 12px;
+        border-bottom: 1px solid $lightGray;
+        color: $greishBrown;
+        line-height: 16px;
+
+        &:first-child {
+          font-weight: $bold;
+          color: $black;
+
+          img {
+            display: inline-block;
+            width: 20px;
+          }
+        }
+      }
+    }
+
+    .notice {
+      padding: 25px 0 10px;
+
+      p {
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: $bold;
+        color: $greishBrown;
+
+        img {
+          display: inline-block;
+          margin-top: -2px;
+          margin-right: 4px;
+          vertical-align: middle;
+        }
+      }
+
+      li {
+        position: relative;
+        padding-left: 20px;
+        font-size: 12px;
+        line-height: 20px;
+        color: $greishGray;
+
+        &::before {
+          content: "";
+          width: 1px;
+          height: 1px;
+          position: absolute;
+          top: 10px;
+          left: 6px;
+          background-color: $greishGray;
+        }
+      }
+    }
+  }
+
+  .bankInfoBox {
+    background-color: $lighterGray;
+    padding: 0 16px 16px;
+    border-radius: 0 0 12px 12px;
+
+    &__time {
+      padding: 4px 0 10px;
+      font-size: 16px;
+      line-height: 24px;
+      letter-spacing: -0.4px;
+      font-weight: $bold;
+      text-align: center;
+      span {
+        color: $primary;
+        letter-spacing: -1.8px;
+      }
+    }
+    &__desc {
+      padding-bottom: 20px;
+      font-size: 13px;
+      color: $greishGray;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .bankTime {
+      padding: 16px 0;
+      border-radius: 12px;
+      border: solid 1px $lightGray;
+      background-color: $white;
+      font-size: 12px;
+      line-height: 16px;
+      text-align: center;
+
+      span {
+        color: $red;
+      }
+
+      button {
+        margin-bottom: 12px;
+        padding: 0 10px;
+        height: 27px;
+        border-radius: 18px;
+        background-color: $black;
+        color: $white;
+        font-size: 13px;
+      }
+    }
+
+    .btnWrap {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 16px;
+
+      button {
+        width: 49%;
+        height: 44px;
+        border-radius: 12px;
+        background-color: $greishGray;
+        color: $white;
+        font-size: 18px;
+
+        &:last-child {
+          background-color: $primary;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+@import "components/ui/_mixin.scss";
+
+#setting #alarmUser{
+  section{
+    position: relative;
+    padding:0 16px;
+    &.listWrap {
+      padding-top:16px;
+    }
+  }
+  .listWrap{
+    display: flex;
+    flex-direction: column;
+    .listRow{
+      margin-bottom: 16px;
+      .photo{
+        width: 63px;
+        height: 63px;
+        border-radius: 100%;
+        margin-right: 16px;
+        overflow: hidden;
+      }
+      .listInfo{
+        width: calc(100% - 163px);
+        margin-right: 8px;
+        .listItem{
+          @include fontCut;
+          .nickNm{@include font(12px, 400);}
+          .regDt{@include font(12px, 400, #a4a4a4);}
+        }
+      }
+      button{
+        flex: none;
+        width: 76px;
+        line-height: 36px;
+        border-radius: 18px;
+        &.delete{
+          @include font(14px,500,#666);
+          border: 1px solid #d8d8d8;
+        }
+        &.add{
+          @include font(14px,500,white);
+          background: black;
+        }
+      }
+    }
+  }
+  @include noticeInfo;
+  .noResult{
+    @include font(14px,400,#999);
+  }
+}

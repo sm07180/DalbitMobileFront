@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="ic_emoticon" width="36" height="36" viewBox="0 0 36 36">
+    <defs>
+        <style>
+            .cls-3{fill:none;stroke:#fff;stroke-linecap:round;stroke-linejoin:round}
+        </style>
+    </defs>
+    <path id="사각형_3344" fill="none" d="M0 0H36V36H0z" data-name="사각형 3344"/>
+    <g id="icon" transform="translate(5 8)">
+        <path id="합치기_5" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5px" d="M-12520.6 1217.527h-15.4V1201h22v16.527h-.05l-6.549 4.473z" data-name="합치기 5" transform="translate(12538 -1201)"/>
+        <path id="선_163" d="M0 0L1.72 0" class="cls-3" data-name="선 163" transform="translate(6.714 5)"/>
+        <path id="선_164" d="M0 0L1.72 0" class="cls-3" data-name="선 164" transform="translate(16.853 5)"/>
+        <path id="패스_9211" fill="rgba(0,0,0,0)" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" d="M18.463 11c0 2.209-2.118 4-4.731 4S9 13.209 9 11" data-name="패스 9211" transform="translate(-.934 -3)"/>
+    </g>
+</svg>
