@@ -77,13 +77,13 @@
         &:first-child {
           border-left:none;
         }
-        &.addFan {
+        &.isFan {
           &:before {
             display:inline-block;
             content:"";
             width:17px;
             height:17px;
-            background:url("#{$IMGSERVER}/mypage/dalla/fan_ico.png") center/cover no-repeat;
+            @include BGIMG("mypage/dalla/check_ico.png");
             vertical-align: bottom;
           }
         }

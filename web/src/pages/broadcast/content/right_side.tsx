@@ -459,7 +459,10 @@ export default function RightSide(props: {
               );
             })}
           </div>
-          <div className="tabContent">{typeRender(rightTabType)}</div>
+          {
+            globalState.rtcInfo && globalState.chatInfo.privateChannelHandle &&
+            <div className="tabContent">{typeRender(rightTabType)}</div>
+          }
         </>
       }
     </div>

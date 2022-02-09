@@ -11,7 +11,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { tabType } from "../../constant";
 
 import NoResult from "common/ui/no_result";
-import GuidePopup from "common/modal/contents/mypage/guide_user";
+import GuidePopup from "../../../../common/modal/contents/mypage/guide_user";
 
 import goldMedal from "../../../../common/modal/contents/mypage/static/medal_gold_m@2x.png";
 import silverMedal from "../../../../common/modal/contents/mypage/static/medal_silver_m@2x.png";

@@ -5,7 +5,7 @@ import Swiper from 'react-id-swiper'
 import './showSwiper.scss'
 
 const ShowSwiper = (props) => {
-  const {data, popClose} = props
+  const {imageList, popClose} = props
 
   const swiperParams = {
     slidesPerView: 'auto',
@@ -19,37 +19,37 @@ const ShowSwiper = (props) => {
   const clickPopClose = (e) => {
     const target = e.target
     if (target.className === 'popClose') {
-      popClose({open: false})
+      popClose(false)
     }
   }
 
   useEffect(() => {
-    if (data.profImgList.length > 1) {
+    if (imageList.length > 1) {
       const swiper = document.querySelector('#popShowSwiper .swiper-container').swiper;
       swiper.update();
       swiper.slideTo(0);
     }
-  }, [data]);
+  }, [imageList]);
 
   return (
     <div id="popShowSwiper">
-      {data.profImgList.length > 1 ?
+      {imageList.length > 1 ?
         <Swiper {...swiperParams}>
-          {data.profImgList.map((item, index) => {
+          {imageList.map((item, index) => {
             return (
               <div key={index}>
                 <div className="photo">
-                  <img src={item.profImg.thumb500x500} alt="" />
+                  <img src={item.thumb500x500} alt="" />
                 </div>
               </div>
             )
           })}
         </Swiper>
-        : data.profImgList.length === 1 &&
+        : imageList.length === 1 &&
         (
           <div>
             <div className="photo">
-              <img src={data.profImgList[0].profImg.thumb500x500} alt="" />
+              <img src={imageList[0].thumb500x500} alt="" />
             </div>
           </div>
         )

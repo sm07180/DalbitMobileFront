@@ -1,18 +1,18 @@
 /* 
   @color
 */
-$MAINCOLOR: #8581FF;
+$MAINCOLOR: #FF3C7B;
 $IMGSERVER: unquote("https://image.dalbitlive.com");
 
 // height 값 관리
 $HEADER-HEIGHT: 48px;
 
 // z-inde 관리
-$ALERT-ZINDEX: 90000;
-$POPUP-ZINDEX: 30000;
-$NAVIGATION-ZINDEX: 10000;
-$HEADER-ZINDEX: 10000;
-$MORE-ZINDEX: 5000;
+$ALERT-ZINDEX: 60;
+$POPUP-ZINDEX: 60;
+$NAVIGATION-ZINDEX: 30;
+$HEADER-ZINDEX: 30;
+$MORE-ZINDEX: 50;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;
@@ -95,6 +95,13 @@ $MORE-ZINDEX: 5000;
   background-color:rgba(0,0,0,.4);
 }
 
+@mixin btnMainStyle($height,$radius,$font) {
+  line-height: $height;
+  background-color:$MAINCOLOR;
+  @include border($MAINCOLOR,$radius);
+  @include font($font,500,white);
+}
+
 // 스토어 구매, 달교환
 @mixin purchaseList {
   .myhaveDal {
@@ -116,7 +123,10 @@ $MORE-ZINDEX: 5000;
         background-size:18px;
       }
       &.dal {
-        @include BGIMG('mypage/dalla/icon_dal.png');
+        &::before {
+          @include BGIMG('mypage/dalla/icon_dal.png');
+          background-size:16px;
+        }
       }
       &.byeol {
         &::before {
@@ -284,6 +294,39 @@ $MORE-ZINDEX: 5000;
         width: 2px;height: 2px;
         background: #757575;
       }
+    }
+  }
+}
+
+// 탭 메뉴
+@mixin tabmenuStyle-1 {
+  @include flex(center);
+  li {
+    flex:1;
+    line-height:40px;
+    text-align: center;
+    background-color: #ffffff;
+    border-bottom:2px solid #f2f2f2;
+    @include font(16px,500,#acacac);
+    &.active {
+      @include font(16px,bold,#202020);
+      border-bottom: solid 2px #202020;
+    }
+  }
+}
+
+@mixin subTabmenuStyle-1 {
+  @include flex(center);
+  li {
+    line-height:34px;
+    margin-right:4px;
+    padding:0 16px;
+    border-radius:100px;
+    background-color: #F2F2F2;
+    @include font(13px,400,#ACACAC);
+    &.active {
+      background-color: #202020;
+      color:white;
     }
   }
 }

@@ -1,15 +1,9 @@
 @import "components/ui/_mixin.scss";
 
-#main {
-  // max-width:480px;
-  // margin: 0 auto;
-  // border-left:1px solid #ddd;
-  // border-right:1px solid #ddd;
-  // background-color: $MAINCOLOR;
-  // font-family: 'NotoSansKR', sans-serif;
-  .headerWrap1 {
+#mainPage {
+  .headerWrap {
     position:fixed;
-    z-index:10000;
+    z-index:$HEADER-ZINDEX;
     width:100%;
     header {
       text-indent:-99999px;
@@ -23,8 +17,7 @@
         background-color:white;
         h1 {
           width:71px;height:25px;
-          // @include BGING('common/header/LOGO.png');
-          background-color:#ddd;
+          @include BGIMG("common/header/LOGO.png");
         }
         .ranking {background-image:url("#{$IMGSERVER}/common/header/icoRank-b.png");}
         .message {background-image:url("#{$IMGSERVER}/common/header/icoMessage-b.png");}
@@ -75,10 +68,9 @@
       @include flex(flex-start,center,column);
       width:100%;
       padding: 25px 16px 12px;
-      .badge {
-        display:inline-block;
+      .badgeGroup {
+        @include flex(center);
         height:16px;
-        background-color:#FF41EC;
       }
       .title {
         width:72%;

@@ -28,8 +28,7 @@ import { tabType } from "pages/broadcast/constant";
 import { AuthType } from "constant";
 import { MANAGER_TYPE } from "./constant";
 import BadgeList from "../../../../common/badge_list";
-
-import "../../../../asset/scss/module/mypage/index.scss";
+import 'asset/scss/module/mypage/index.scss'
 
 export default function Profile(props: { roomInfo: roomInfoType; profile: any; roomNo: string; roomOwner: boolean }) {
   const { roomInfo, profile, roomNo, roomOwner } = props;
@@ -449,7 +448,7 @@ export default function Profile(props: { roomInfo: roomInfoType; profile: any; r
   return (
     <>
       {profileData !== null && (
-        <div id="mypage" className="broadcast">
+        <div id="profile_pc" className="broadcast">
           <h3 className="tabTitle">프로필</h3>
           <div className="profileTopWrap">
             <div className="profileBox">

@@ -17,7 +17,7 @@ const Report = () =>{
 
   return(
     <div id="report">
-      <Header position={'sticky'} title={'리포트'} type={'back'} />
+      <Header title="리포트" type="back" position="sticky" />
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
       {tabType === tabmenu[0] ? 
         <BroadcastWrap />
