@@ -1,4 +1,5 @@
 import React from 'react'
+import {useHistory} from 'react-router-dom'
 
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
@@ -8,14 +9,16 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 
 const LiveView = (props) => {
   const {data} = props
-
+  let locationStateHistory = useHistory();
   return (
     <div className="liveListWrap">
       {data && data.length > 0 ?
         <>
           {data.map((list,index) => {
             return (
-              <div className="listRow" key={index}>
+              <div className="listRow" key={index} onClick={()=>{
+                locationStateHistory.push(`/broadcast/${list.roomNo}`)
+              }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
                 </div>

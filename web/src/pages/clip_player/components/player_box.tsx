@@ -12,26 +12,11 @@ import ClipPlayerBanner from "./player_banner";
 import { GlobalContext } from "context";
 
 export default () => {
-  const history = useHistory();
-
   const { globalState } = useContext(GlobalContext);
   const { clipInfo, clipPlayMode } = globalState;
   const { clipPlayer } = globalState;
   const { clipAudioTag } = clipPlayer!;
   const clipPlayNo = clipInfo!.clipNo;
-
-  const audioEndHandler = async () => {
-    if (globalState.clipPlayList?.length === 0) return null;
-    if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
-      if (clipPlayMode === "allLoop") {
-        return history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
-      } else {
-        return console.log("마지막곡입니다");
-      }
-    }
-    const isNotClipPlayerPage = window.location.pathname.indexOf("/clip/") === -1;
-    if (!isNotClipPlayerPage) history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
-  };
 
   const createCoverClassName = useCallback((e) => {
     const { classList } = e.currentTarget;
@@ -81,4 +66,22 @@ export default () => {
       </div>
     </>
   );
+};
+
+
+export const audioEndHandler = async () => {
+  const history = useHistory();
+  const { globalState } = useContext(GlobalContext);
+  const { clipPlayer, clipPlayMode } = globalState;
+
+  if (globalState.clipPlayList?.length === 0) return null;
+  if (globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1] === undefined) {
+    if (clipPlayMode === "allLoop") {
+      return history.push(`/clip/${globalState.clipPlayList![0].clipNo}`);
+    } else {
+      return console.log("마지막곡입니다");
+    }
+  }
+  const isNotClipPlayerPage = window.location.pathname.indexOf("/clip/") === -1;
+  if (!isNotClipPlayerPage) history.push(`/clip/${globalState.clipPlayList![clipPlayer?.isPlayingIdx! + 1].clipNo}`);
 };

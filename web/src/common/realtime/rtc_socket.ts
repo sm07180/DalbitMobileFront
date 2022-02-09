@@ -1,4 +1,9 @@
-import { NODE_ENV } from "../../constant/define";
+import {NODE_ENV} from "../../constant/define";
+//agora
+import AgoraRTC from 'agora-rtc-sdk-ng';
+import {modifyBroadcastState, postErrorSave} from "common/api";
+import {SystemStartMsg} from "pages/broadcast/lib/chat_msg_format";
+import {MediaType} from "../../pages/broadcast/constant";
 
 export enum UserType {
   HOST,
@@ -27,6 +32,17 @@ const MEDIA_TYPE = {
 //   offerToReceiveVideo: false,
 // };
 
+//agora 셋팅
+
+const client = AgoraRTC.createClient({mode: "live", codec: "vp8"});
+type localTracksType = {
+  videoTrack?: any,
+  audioTrack?: any
+};
+let localTracks: localTracksType = {}
+let remoteUsers = {};
+let agoraAudio;
+
 let retryCnt = 0;
 let reTryTimer;
 const intervalTime = 3000;
@@ -38,7 +54,7 @@ let constraints: {
   video: {
     width: 480,
     height: 640,
-    advanced: [{ aspectRatio: 0.75 }],
+    advanced: [{aspectRatio: 0.75}],
   },
   audio: {
     channelCount: 2,
@@ -47,14 +63,14 @@ let constraints: {
 };
 
 const Resolusion = {
-  144: { width: 192, height: 144 },
-  288: { width: 352, height: 288 },
-  360: { width: 480, height: 360 },
-  480: { width: 640, height: 480 },
-  540: { width: 960, height: 540 },
-  720: { width: 1280, height: 720 },
-  1080: { width: 1920, height: 1080 },
-  2160: { width: 3840, height: 2160 },
+  144: {width: 192, height: 144},
+  288: {width: 352, height: 288},
+  360: {width: 480, height: 360},
+  480: {width: 640, height: 480},
+  540: {width: 960, height: 540},
+  720: {width: 1280, height: 720},
+  1080: {width: 1920, height: 1080},
+  2160: {width: 3840, height: 2160},
 };
 
 const videoFilter = {
@@ -65,9 +81,6 @@ const videoFilter = {
   Bright: "brightness(200%)",
 };
 
-import { postErrorSave, modifyBroadcastState } from "common/api";
-import { SystemStartMsg } from "pages/broadcast/lib/chat_msg_format";
-
 const initInterval = (callback: () => boolean) => {
   const id = setInterval(() => {
     const result = callback();
@@ -77,6 +90,7 @@ const initInterval = (callback: () => boolean) => {
     }
   }, intervalTime);
 };
+
 export class RtcSocketHandler {
   public userType: UserType;
   public roomInfo: roomInfoType | null;
@@ -253,7 +267,7 @@ export class RtcSocketHandler {
     } else {
       constraints.video = {
         ...Resolusion[this.videoConstraints.videoResolution],
-        advanced: [{ aspectRatio: 0.75 }],
+        advanced: [{aspectRatio: 0.75}],
       };
     }
   }
@@ -273,7 +287,6 @@ export class RtcSocketHandler {
   }
 
   public getPeerConnectionCheck() {
-    // console.log(this.peerConnection);
     if (this.peerConnection) {
       return this.peerConnection.connectionState === "connected";
     }
@@ -320,27 +333,88 @@ export class RtcSocketHandler {
   }
 
   /** interface */
-  public socketConnect() {}
-  public stop() {}
+  public socketConnect() {
+  }
+
+  public stop() {
+  }
 
   // host
-  public publish() {}
-  public addTrackToPeerStream(type?: string) {}
-  public removeTrackFromPeerStream(type?: string) {}
+  public publish() {
+  }
+
+  public addTrackToPeerStream(type?: string) {
+  }
+
+  public removeTrackFromPeerStream(type?: string) {
+  }
 
   // listener
-  public play() {}
-  public playMediaTag() {}
-  public mutedMediaTag() {}
+  public play() {
+  }
+
+  public playMediaTag() {
+  }
+
+  public mutedMediaTag() {
+  }
+
   /** interface */
-  public initVideoTag() {}
-  public flip() {}
-  public getVideoTag(): any {}
-  public effectChange(label: any): any {}
+  public initVideoTag() {
+  }
+
+  public flip() {
+  }
+
+  public getVideoTag(): any {
+  }
+
+  public effectChange(label: any): any {
+  }
+  public join(roomInfo:any){
+
+  }
+  public leave(){
+  }
+  public videoMute(value:boolean) { }
+  public audioMute(value:boolean) { }
+  public audioVolume(value:number) { }
 }
 
 const audioBitrate = 128; // KBps
 const videoBitrate = 1500;
+
+export const rtcSessionClear = ()=>{
+  sessionStorage.removeItem("room_no");
+  sessionStorage.removeItem("wowza_rtc");
+  sessionStorage.removeItem("agora_rtc");
+  sessionStorage.removeItem("broadcast_data");
+}
+export const getArgoraRtc = (rtcInfo:AgoraHostRtc|AgoraListenerRtc)=>{
+  const roomInfo = rtcInfo.roomInfo as roomInfoType;
+  const videoConstraints = { isVideo: roomInfo.mediaType === MediaType.VIDEO };
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+      new AgoraHostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, videoConstraints)
+      : new AgoraListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, videoConstraints);
+  returnRTC.setRoomInfo(roomInfo);
+  return returnRTC;
+}
+export const getWowzaRtc = (rtcInfo:HostRtc|ListenerRtc)=>{
+  const roomInfo = rtcInfo.roomInfo as roomInfoType;
+  const hostVideoConstraints = {
+    isVideo: roomInfo.mediaType === MediaType.VIDEO,
+    videoFrameRate: roomInfo.videoFrameRate,
+    videoResolution: roomInfo.videoResolution,
+  };
+  const listenerVideoConstraints = {
+    isVideo: roomInfo.mediaType === MediaType.VIDEO,
+  }
+  const returnRTC = rtcInfo.userType === UserType.HOST ?
+      new HostRtc(UserType.HOST, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, false, hostVideoConstraints)
+      : new ListenerRtc(UserType.LISTENER, roomInfo.webRtcUrl, roomInfo.webRtcAppName, roomInfo.webRtcStreamName, roomInfo.roomNo, listenerVideoConstraints);
+  returnRTC.setRoomInfo(roomInfo);
+  return returnRTC;
+}
 
 export class HostRtc extends RtcSocketHandler {
   private audioStream: MediaStream | null = null;
@@ -372,7 +446,7 @@ export class HostRtc extends RtcSocketHandler {
     this.detectDevice = async () => {
       let videoDeviceExist;
       let micDeivceExist: boolean = false;
-      await navigator.mediaDevices.enumerateDevices().then(function(devices) {
+      await navigator.mediaDevices.enumerateDevices().then(function (devices) {
         devices.forEach((d) => {
           if (d.kind === "audioinput") {
             micDeivceExist = true;
@@ -478,7 +552,7 @@ export class HostRtc extends RtcSocketHandler {
         let licenseKey;
         if (NODE_ENV === "start") {
           // Local
-          licenseKey = "90b592e580e8ceee5fdfefe5ca99947440b27c5c9629e210b04907d09ee3cda21494c3e97e5f19b7";
+          licenseKey = "c5574f1deddfddbd2beaf0691a0b6b99d05ccf69d0c18bb7f39cabf9dc0de23d59541aab4ca325c7";
         } else if (NODE_ENV === "dev") {
           // 내부서버
           licenseKey = "0074b3870c21a3f91b49621db892ef43eade7dfffc18fee2a89f72b16e739e4cb1e9a8733e7c3f66";
@@ -490,62 +564,62 @@ export class HostRtc extends RtcSocketHandler {
           licenseKey = "3a6cd69ee862dd6a5a34ecbbe55f26cc7e46a30b3771e5a1c744dd0f010161f9fbe519277e4908dc";
         }
         try {
-          const deepAr = window["DeepAR"]({
-            licenseKey: licenseKey,
-            canvasWidth: width,
-            canvasHeight: height,
-            canvas: document.getElementById("deepar-canvas"),
-            numberOfFaces: 1, // how many faces we want to track min 1, max 4
-            onInitialize: () => {
-              deepAr.setVideoElement(this.videoTag);
+          // const deepAr = window["DeepAR"]({
+          //   licenseKey: licenseKey,
+          //   canvasWidth: width,
+          //   canvasHeight: height,
+          //   canvas: document.getElementById("deepar-canvas"),
+          //   numberOfFaces: 1, // how many faces we want to track min 1, max 4
+          //   onInitialize: () => {
+          //     deepAr.setVideoElement(this.videoTag);
+          //
+          //     const videoEffect = sessionStorage.getItem("videoEffect");
+          //     if (videoEffect) {
+          //       this.effectChange(JSON.parse(videoEffect));
+          //     }
+          //
+          //     const drawFrmae = () => {
+          //       try {
+          //         if (this.canvasTag !== null && this.videoStream !== null) {
+          //           const ctx = this.canvasTag.getContext("2d");
+          //           const video = this.videoStream.getVideoTracks()[0];
+          //           if (ctx) {
+          //             if (video.enabled) {
+          //               ctx?.drawImage(document.getElementById("deepar-canvas") as CanvasElement, 0, 0);
+          //             } else {
+          //               ctx?.clearRect(0, 0, this.canvasTag.width, this.canvasTag.height);
+          //               ctx?.drawImage(emptyTag, 0, 0);
+          //             }
+          //           }
+          //         }
+          //
+          //         requestAnimationFrame(drawFrmae);
+          //       } catch (err) {
+          //         console.log(err);
+          //       }
+          //     };
+          //
+          //     requestAnimationFrame(drawFrmae);
+          //   },
+          //   onError: (errorType, message) => {
+          //     postErrorSave({
+          //       os: "pc",
+          //       appVer: "pc",
+          //       dataType: NODE_ENV,
+          //       commandType: window.location.pathname,
+          //       desc: "deepAR Error " + errorType + "|" + message,
+          //     });
+          //   },
+          //   liPath: "/lib",
+          // });
+          //
+          // this.deepArObj = deepAr;
+          // this.deepArObj.downloadFaceTrackingModel("/lib/models-68-extreme.bin");
 
-              const videoEffect = sessionStorage.getItem("videoEffect");
-              if (videoEffect) {
-                this.effectChange(JSON.parse(videoEffect));
-              }
-
-              const drawFrmae = () => {
-                try {
-                  if (this.canvasTag !== null && this.videoStream !== null) {
-                    const ctx = this.canvasTag.getContext("2d");
-                    const video = this.videoStream.getVideoTracks()[0];
-                    if (ctx) {
-                      if (video.enabled) {
-                        ctx?.drawImage(document.getElementById("deepar-canvas") as CanvasElement, 0, 0);
-                      } else {
-                        ctx?.clearRect(0, 0, this.canvasTag.width, this.canvasTag.height);
-                        ctx?.drawImage(emptyTag, 0, 0);
-                      }
-                    }
-                  }
-
-                  requestAnimationFrame(drawFrmae);
-                } catch (err) {
-                  console.log(err);
-                }
-              };
-
-              requestAnimationFrame(drawFrmae);
-            },
-            onError: (errorType, message) => {
-              postErrorSave({
-                os: "pc",
-                appVer: "pc",
-                dataType: NODE_ENV,
-                commandType: window.location.pathname,
-                desc: "deepAR Error " + errorType + "|" + message,
-              });
-            },
-            liPath: "/lib",
-          });
-
-          this.deepArObj = deepAr;
-          this.deepArObj.downloadFaceTrackingModel("/lib/models-68-extreme.bin");
-
-          const captureStream = this.canvasTag?.captureStream(25);
-          if (captureStream) {
-            this.canvasStream = captureStream;
-          }
+          // const captureStream = this.canvasTag?.captureStream(25);
+          // if (captureStream) {
+          //   this.canvasStream = captureStream;
+          // }
           // this.videoTag.srcObject = this.canvasStream;
         } catch (err) {
           console.log(err);
@@ -623,7 +697,7 @@ export class HostRtc extends RtcSocketHandler {
       };
       this.wsConnection.onmessage = async (msg) => {
         const format = JSON.parse(msg.data);
-        const { status, iceCandidates } = format;
+        const {status, iceCandidates} = format;
 
         if (status === StatusType.OK) {
           if (format && format.hasOwnProperty("sdp")) {
@@ -633,8 +707,8 @@ export class HostRtc extends RtcSocketHandler {
               videoBitrate:
                 this.videoConstraints !== null && this.videoConstraints.isVideo
                   ? this.userType === UserType.GUEST
-                    ? 500
-                    : videoBitrate
+                  ? 500
+                  : videoBitrate
                   : undefined,
               videoFrameRate: this.videoConstraints !== null && this.videoConstraints.videoFrameRate,
             };
@@ -925,11 +999,11 @@ export class ListenerRtc extends RtcSocketHandler {
   private retryCount: number = 0;
   public audioTag: HTMLAudioElement = document.createElement("audio");
   public videoTag: HTMLVideoElement | null = null;
-
   private videoStream: MediaStream | null = null;
+
   constructor(type: UserType, socketUrl: string, appName: string, streamName: string, roomNo: string, videoConstraints: any) {
     super(type, socketUrl, appName, streamName, roomNo, false, videoConstraints);
-
+    // debugger
     this.socketConnect();
     this.audioTag.muted = true;
   }
@@ -946,7 +1020,8 @@ export class ListenerRtc extends RtcSocketHandler {
     this.retryCount = 0;
   }
 
-  public play() {}
+  public play() {
+  }
 
   public playMediaTag() {
     this.audioTag.muted = false;
@@ -1031,7 +1106,7 @@ export class ListenerRtc extends RtcSocketHandler {
 
       this.wsConnection.onmessage = async (msg) => {
         const format = JSON.parse(msg.data);
-        const { command, status, streamInfo, iceCandidates } = format;
+        const {command, status, streamInfo, iceCandidates} = format;
 
         if (status === StatusType.READY || status === StatusType.NO_STREAM) {
           if (true) {
@@ -1118,15 +1193,15 @@ export class ListenerRtc extends RtcSocketHandler {
     // this.peerConnection && (await this.peerConnection.setLocalDescription(description));
 
     this.peerConnection &&
-      this.peerConnection.setLocalDescription(description).then(() => {
-        const message = {
-          direction: "play",
-          command: "sendResponse",
-          streamInfo: this.getStreamInfo(),
-          sdp: description,
-        };
-        this.socketSendMsg(message);
-      });
+    this.peerConnection.setLocalDescription(description).then(() => {
+      const message = {
+        direction: "play",
+        command: "sendResponse",
+        streamInfo: this.getStreamInfo(),
+        sdp: description,
+      };
+      this.socketSendMsg(message);
+    });
   }
 
   private enhanceSDP(sdpStr: string) {
@@ -1142,4 +1217,352 @@ export class ListenerRtc extends RtcSocketHandler {
       })
       .join("\r\n");
   }
+}
+
+export class AgoraHostRtc extends RtcSocketHandler{
+  private audioStream: MediaStream | null = null;
+  private videoStream: MediaStream | null = null;
+  private canvasStream: MediaStream | null = null;
+  private deepArObj: any = null;
+
+  private micSettingInfo: any = null;
+  private camSettingInfo: any = null;
+
+  private audioCtx = (() => {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+    return audioCtx;
+  })();
+
+  private detectDevice: () => Promise<void>;
+  private isPublish = false;
+
+  constructor(
+    type: UserType,
+    socketUrl: string,
+    appName: string,
+    streamName: string,
+    roomNo: string,
+    isMono: boolean = false,
+    videoConstraints: any = null
+  ) {
+    super(type, socketUrl, appName, streamName, roomNo, isMono, videoConstraints);
+    //this.socketConnect();
+    this.detectDevice = async () => {
+      let videoDeviceExist;
+      let micDeivceExist: boolean = false;
+      await navigator.mediaDevices.enumerateDevices().then(function (devices) {
+        devices.forEach((d) => {
+          if (d.kind === "audioinput") {
+            micDeivceExist = true;
+          }
+        });
+        videoDeviceExist = devices.some((d) => {
+          return d.kind === "videoinput";
+        });
+      });
+      if (
+        micDeivceExist === false ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === false)
+      ) {
+        postErrorSave({
+          os: "pc",
+          appVer: "pc",
+          dataType: NODE_ENV,
+          commandType: window.location.pathname,
+          desc: "micDeviceNotExist " + this.appName + " |" + this.streamName + " |" + this.roomNo,
+        });
+        if (this.audioStream !== null) {
+          this.stop();
+        } else if (this.videoStream !== null) {
+          this.stop();
+        }
+      } else if (
+        micDeivceExist === true ||
+        (this.videoConstraints !== null && this.videoConstraints.isVideo && videoDeviceExist === true)
+      ) {
+        if (this.audioStream === null) {
+          if (this.getWsConnectionCheck()) {
+            // console.log('@@@ not yet join 1')
+            this.publish();
+          } else {
+            // this.socketConnect();
+            initInterval(() => {
+              if (this.getWsConnectionCheck()) {
+                // console.log('@@@ not yet join 2')
+                this.publish();
+                return true;
+              }
+              return false;
+            });
+          }
+        }
+      }
+    };
+
+  }
+  async join(roomInfo) {
+      try {
+        if(client.connectionState === 'CONNECTED'){
+          client.remoteUsers.forEach(user=>{
+            if(user.hasVideo){
+              user.videoTrack?.play(`local-player`,{mirror:false})
+            }
+          })
+          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
+          localTracks.videoTrack.play("local-player",{mirror:false});
+          // await client.publish(Object.values(localTracks));
+        }else if(client.connectionState === 'DISCONNECTED'){
+          await client.setClientRole("host");
+          let micId:any = sessionStorage.getItem("mic");
+          let camId:any = sessionStorage.getItem("cam");
+          let uid = await client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null);
+          [localTracks.audioTrack, localTracks.videoTrack] = await Promise.all([
+            //AgoraRTC.createMicrophoneAudioTrack({encoderConfig: 'high_quality_stereo'}),
+            AgoraRTC.createMicrophoneAudioTrack({
+              encoderConfig: {
+                sampleRate: 48000,
+                stereo: true,
+                bitrate: 192,
+              },
+              microphoneId:micId?.replaceAll("\"","")
+            }),
+            AgoraRTC.createCameraVideoTrack({ encoderConfig: {
+                width: 1280,
+                // Specify a value range and an ideal value
+                height: { ideal: 720, min: 720, max: 1280 },
+                frameRate: 24,
+                bitrateMin: 1130, bitrateMax: 2000,
+              },cameraId:camId?.replaceAll("\"","")})
+          ]);
+          await localTracks.videoTrack.setBeautyEffect(true, { lighteningContrastLevel: 1, lighteningLevel: 0.7, rednessLevel: 0.1, smoothnessLevel: 0.5 });
+          localTracks.videoTrack.play("local-player",{mirror:false});
+          // publish local tracks to channel
+          await client.publish(Object.values(localTracks));
+          console.log("publish success");
+        }
+      } catch (err) {
+        console.error(err)
+      }
+  }
+  async stop() {
+    Object.keys(localTracks).forEach(trackName => {
+      let track = localTracks[trackName];
+      if (track) {
+        track.stop();
+        track.close();
+        localTracks[trackName] = undefined;
+      }
+    })
+    client.remoteUsers.forEach(user=>{
+      if(user.hasAudio){
+        user.audioTrack?.stop();
+      }
+      if(user.hasVideo){
+        user.videoTrack?.stop();
+      }
+    })
+    client.leave();
+
+    // await client.leave();
+  }
+  async videoMute(value) {
+    if ( localTracks.videoTrack !== undefined ) {
+      await localTracks.videoTrack.setMuted(value);
+
+    }
+  }
+
+  async audioMute(value) {
+    if ( localTracks.audioTrack !== undefined ) {
+      await localTracks.audioTrack.setMuted(value);
+    }
+  }
+}
+
+export class AgoraListenerRtc extends RtcSocketHandler{
+  private retryCount: number = 0;
+  public audioTag: HTMLAudioElement = document.createElement("audio");
+  public videoTag: HTMLVideoElement | null = null;
+  private videoStream: MediaStream | null = null;
+
+  constructor(type: UserType, socketUrl: string, appName: string, streamName: string, roomNo: string, videoConstraints: any) {
+    super(type, socketUrl, appName, streamName, roomNo, false, videoConstraints);
+    // this.socketConnect();
+    //this.audioTag.muted = true;
+  }
+
+
+  async join(roomInfo) {
+    if (!roomInfo) {
+      console.log(`rtc_socket join not found roomInfo`);
+      return;
+    }
+    try {
+      if(client.connectionState === 'CONNECTED'){
+        client.remoteUsers.forEach(user=>{
+          if(user.hasVideo){
+            user.videoTrack?.play(`local-player`)
+          }
+          if(user.hasAudio){
+            user.audioTrack?.play()
+          }
+        })
+
+        if(client.remoteUsers.length < 1){
+          // 불완전하게 종료되었을때 처리
+          client.leave().then(value => {
+          })
+
+        }
+
+        //localTracks.videoTrack.play("local-player",{fit: 'cover'});
+        // await client.leave();
+
+        /**
+         * uid: UID;
+         * The ID of the remote user.
+         */
+        /**
+         * audioTrack?: IRemoteAudioTrack;
+         * The subscribed audio track.
+         */
+        /**
+         * videoTrack?: IRemoteVideoTrack;
+         * The subscribed video track.
+         */
+        /**
+         * hasAudio: boolean;
+         * Whether the remote user is sending an audio track.
+         * - `true`: The remote user is sending an audio track.
+         * - `false`: The remote user is not sending an audio track.
+         */
+        /**
+         * hasVideo: boolean;
+         * Whether the remote user is sending a video track.
+         * - `true`: The remote user is sending an audio track.
+         * - `false`: The remote user is not sending an audio track.
+         */
+        // client.subscribe({uid:client.uid, hasAudio}，"video");
+      }else if(client.connectionState === 'DISCONNECTED'){
+        client.setClientRole("audience", {level: 1}).then(()=>{
+          client.join(roomInfo.agoraAppId, roomInfo.roomNo, roomInfo.agoraToken || null, roomInfo.agoraAccount || null).then(()=>{
+            client.on("user-published", this.handleUserPublished);
+            client.on("user-unpublished", this.handleUserUnpublished);
+          });
+        });
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  async stop() {
+    // await localTracks.videoTrack.setMuted(value)
+    // await localTracks.audioTrack.setMuted(value)
+    client.remoteUsers.forEach(user=>{
+      if(user.hasAudio){
+        user.audioTrack?.stop();
+      }
+      if(user.hasVideo){
+        user.videoTrack?.stop();
+      }
+    })
+    client.leave();
+    // Object.keys(localTracks).forEach(trackName => {
+    //   let track = localTracks[trackName];
+    //   if (track) {
+    //     track.stop();
+    //     track.close();
+    //     localTracks[trackName] = undefined;
+    //   }
+    // })
+    // await client.leave();
+
+
+  }
+
+  async handleUserPublished(user, mediaType) {
+    const id = user.uid;
+    remoteUsers[id] = user;
+    await client.subscribe(user, mediaType);
+    if (mediaType === 'video') {
+      user.videoTrack.play(`local-player`);
+    }
+    if (mediaType === 'audio') {
+      user.audioTrack.play();
+      agoraAudio = user.audioTrack;
+    }
+  }
+
+  handleUserUnpublished(user) {
+    const id = user.uid;
+    delete remoteUsers[id];
+  }
+
+  audioVolume(value){
+    try {
+      agoraAudio.setVolume(value*100);
+    }catch (e){
+    }
+
+  }
+
+
+  public playMediaTag() {
+    this.audioTag.muted = false;
+    this.audioTag.play();
+    if (this.videoTag !== null) {
+      this.videoTag.play();
+    }
+  }
+
+  public mutedMediaTag() {
+    this.audioTag.muted = true;
+    this.audioTag.pause();
+    if (this.videoTag !== null) {
+      this.videoTag.pause();
+    }
+  }
+
+  public getVideoTag() {
+    return this.videoTag;
+  }
+
+  // <div id="local-player" className="player"/>
+  public initVideoTag() {
+    // debugger
+    if (this.videoStream === null) {
+      return;
+    }
+    // if (this.videoTag === null) {
+    //   this.videoTag = document.createElement("div");
+    //   this.videoTag.id = "videoViewer";
+    // }
+    // // this.videoTag.setAttribute("playsinline", "");
+    // if (this.userType === UserType.GUEST_LISTENER) {
+    //   this.videoTag.classList.add("broadcast-video-guest");
+    // } else {
+    //   this.videoTag.classList.add("broadcast-video");
+    // }
+    //
+    // this.videoTag.muted = true;
+    //
+    // if (this.videoStream !== null) {
+    //   this.videoTag.srcObject = this.videoStream;
+    // }
+    const divElement = document.createElement("div");
+    divElement.id = "local-player";
+    divElement.className = "player";
+    if (this.getDisplayListWrapRef() && this.getDisplayListWrapRef().current) {
+      this.getDisplayListWrapRef().current.prepend(divElement);
+    }
+  }
+
+  public addVideoTag() {
+    if (this.getDisplayListWrapRef() && this.getDisplayListWrapRef().current) {
+      this.getDisplayListWrapRef().current.prepend(this.videoTag);
+    }
+  }
+
 }

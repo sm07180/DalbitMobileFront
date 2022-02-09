@@ -8,7 +8,7 @@ import crownIcon from "../static/ic_crown_y.svg";
 
 function RankBenefit() {
   return (
-    <Layout>
+    <>
       <Header title="랭킹 혜택" />
       <div id="ranking-pageModal">
         <div className="rankGuideWrap">
@@ -232,7 +232,7 @@ function RankBenefit() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }
 export default React.memo(RankBenefit);

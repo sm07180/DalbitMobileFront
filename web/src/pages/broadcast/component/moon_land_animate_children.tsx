@@ -8,7 +8,7 @@ const MoonLandAnimateChildren = (props: any) => {
           type, score, roomNo, autoTouch, mediaType} = props.data;
 
   const thisElRef = useRef<any>(null);
-  const timerRef = useRef<any>(0);
+  const timerRef = useRef(0);
   const animateRef = useRef<any>(); //동전 애니메이션
   const scoreAnimateRef = useRef<any>();  //점수 애니메이션
 
@@ -81,7 +81,7 @@ const MoonLandAnimateChildren = (props: any) => {
               setWebpPlaying({playBool: true, scoreText: score}); //wepb 실행
               if (scoreAnimateRef.current)
                 scoreAnimateRef.current.animate([{top: "-5px", zIndex: "2"}], {duration: 330, fill: "forwards"});
-            }, Math.floor(Math.random() * 4001 + 1000));
+            }, Math.floor(Math.random() * 2001 + 2000));
           }
           
         }
