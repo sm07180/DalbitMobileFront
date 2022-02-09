@@ -13,5 +13,12 @@
         @include font(28px, 700, #FF3C7B);
       }
     }
+    .subText {
+      margin-top: 8px;
+      @include font(13px, 400, #999999);
+      span {        
+        @include font(13px, 400, #666666);
+      }
+    }
   }
 }

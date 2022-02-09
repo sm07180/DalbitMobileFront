@@ -38,7 +38,7 @@ const Customer = () => {
                 <span>궁금한게 있으시다구요?</span>
               </div>
               <div className='subText'>
-                고객센터 <strong>전화문의</strong> 또는 <strong>1:1문의</strong>로 접수해주세요.<br/>
+                고객센터 <span>전화문의</span> 또는 <span>1:1문의</span>로 접수해주세요.<br/>
                 최대한 빨리 답변 드릴게요!
               </div>
               <div className='categotyWrap'>
