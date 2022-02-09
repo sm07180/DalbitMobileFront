@@ -210,57 +210,51 @@ const MainPage = () => {
  
   // 페이지 시작
   let MainLayout = <>
-    <div
-      className="refresh-wrap"
+    <div className="refresh-wrap"
       ref={iconWrapRef}
       style={{position: customHeader['os'] === OS_TYPE['Desktop'] ? 'relative' : 'absolute'}}>
       <div className="icon-wrap">
         <img className="arrow-refresh-icon" src={arrowRefreshIcon} ref={arrowRefreshRef} alt="" />
       </div>
     </div>
-    <div
-      className="main-wrap"
-      ref={MainRef}
+    <div id="mainPage" ref={MainRef} 
       onTouchStart={mainTouchStart}
       onTouchMove={mainTouchMove}
       onTouchEnd={mainTouchEnd}
       style={{marginTop: customHeader['os'] !== OS_TYPE['Desktop'] ? '48px' : ''}}>
-
-      <div id="main">
-        <div className={`headerWrap1 ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
-          <Header title={'메인'}/>
-        </div>
-        <section className='topSwiper'>
-          <MainSlide data={mainState.topBanner}/>
-        </section>
-        <section className='favorites' ref={overRef}>
-          <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
-        </section>
-        <section className='top10'>
-          <CntTitle title={'일간 TOP10'} more={'rank'}>
-            <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
-          </CntTitle>
-          <SwiperList
-            data={topRankType === 'DJ' ? mainState.dayRanking.djRank
-              : topRankType === 'FAN' ? mainState.dayRanking.fanRank
-                : mainState.dayRanking.loverRank}
-            profImgName="profImg"
-            type="top10"
-          />
-        </section>
-        <section className='daldungs'>
-          <CntTitle title={'방금 착륙한 NEW 달둥스'} />
-          <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
-        </section>
-        <section className='bannerWrap'>
-          <BannerSlide/>
-        </section>
-        <section className='liveView'>
-          <CntTitle title={'🚀 지금 라이브 중!'}/>
-          <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
-          <LiveView data={liveList.list}/>
-        </section>
+      <div className={`headerWrap ${headerFixed === true ? 'isShow' : ''}`} ref={headerRef}>
+        <Header title={'메인'}/>
       </div>
+      <section className='topSwiper'>
+        <MainSlide data={mainState.topBanner}/>
+      </section>
+      <section className='favorites' ref={overRef}>
+        <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
+      </section>
+      <section className='top10'>
+        <CntTitle title={'일간 TOP10'} more={'rank'}>
+          <Tabmenu data={topTenTabMenu} tab={topRankType} setTab={setTopRankType}/>
+        </CntTitle>
+        <SwiperList
+          data={topRankType === 'DJ' ? mainState.dayRanking.djRank
+            : topRankType === 'FAN' ? mainState.dayRanking.fanRank
+              : mainState.dayRanking.loverRank}
+          profImgName="profImg"
+          type="top10"
+        />
+      </section>
+      <section className='daldungs'>
+        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
+      </section>
+      <section className='bannerWrap'>
+        <BannerSlide/>
+      </section>
+      <section className='liveView'>
+        <CntTitle title={'🚀 지금 라이브 중!'}/>
+        <Tabmenu data={liveTabMenu} tab={liveListType} setTab={setLiveListType} setPage={setCurrentPage}/>
+        <LiveView data={liveList.list}/>
+      </section>
     </div>
   </>;
   return MainLayout;

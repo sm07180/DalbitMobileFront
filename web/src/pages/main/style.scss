@@ -1,7 +1,7 @@
 @import "components/ui/_mixin.scss";
 
-#main {
-  .headerWrap1 {
+#mainPage {
+  .headerWrap {
     position:fixed;
     z-index:$HEADER-ZINDEX;
     width:100%;
