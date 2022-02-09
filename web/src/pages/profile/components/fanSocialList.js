@@ -8,8 +8,8 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 import './socialList.scss'
 import {Context} from "context";
 
-const SocialList = (props) => {
-  const {profileData, feedList, openShowSlide, isMyProfile} = props
+const FanSocialList = (props) => {
+  const {profileData, list, isMyProfile} = props
   const moreRef = useRef([]);
   const context = useContext(Context);
 
@@ -35,7 +35,7 @@ const SocialList = (props) => {
     target.classList.remove('isOpenMoreBox')
   }
 
-  /* 피드 더보기 박스 클릭 */
+  /* 더보기 박스 클릭 */
   const moreBoxClick = (index) => {
     const currentTarget = moreRef.current[index];
 
@@ -54,7 +54,7 @@ const SocialList = (props) => {
     }
   }
 
-  /* 피드 더보기 박스 닫기 (외부 클릭) */
+  /* 더보기 박스 닫기 (외부 클릭) */
   const moreBoxClose = (e) => {
     if(!e.target.classList.contains('moreBoxImg')) {
       const target = document.getElementsByClassName('isOpenMoreBox')[0];
@@ -71,13 +71,13 @@ const SocialList = (props) => {
 
   return (
     <div className="socialList">
-      {feedList.map((item, index) => {
+      {list.map((item, index) => {
         return (
-          <React.Fragment key={item.noticeIdx}>
+          <React.Fragment key={item.replyIdx}>
             <ListRow photo={profileData.profImg ? profileData.profImg.thumb50x50 : ""}>
               <div className="listContent">
                 <div className="nick">{item.nickName}</div>
-                <div className="time">{item.writeDate}</div>
+                <div className="time">{item.writeDt}</div>
               </div>
               <button className='more' onClick={() => moreBoxClick(index)}>
                 <img className="moreBoxImg" src={`${IMG_SERVER}/mypage/dalla/btn_more.png`} alt="더보기" />
@@ -92,28 +92,6 @@ const SocialList = (props) => {
               <div className="text">
                 {item.contents}
               </div>
-              {item.photoInfoList.length > 1 ?
-                <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList)}>
-                  <Swiper {...swiperFeeds}>
-                    {item.photoInfoList.map((photo) => {
-                      return (
-                        <div>
-                          <div className="photo">
-                            <img src={photo.profImg.thumb500x500} alt="" />
-                          </div>
-                        </div>
-                      )
-                    })}
-                  </Swiper>
-                </div>
-                : !item.profImg.isDefaultImg ?
-                  <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
-                    <div className="photo">
-                      <img src={item.profImg.thumb190x190} alt="" />
-                    </div>
-                  </div>
-                  : <></>
-              }
               <div className="info">
                 <DataCnt type={"replyCnt"} value={item.replyCnt ? item.replyCnt : 0} />
               </div>
@@ -125,4 +103,4 @@ const SocialList = (props) => {
   )
 }
 
-export default SocialList
+export default FanSocialList

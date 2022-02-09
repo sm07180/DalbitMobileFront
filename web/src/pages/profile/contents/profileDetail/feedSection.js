@@ -1,18 +1,13 @@
-import React, {useContext} from 'react'
-import {Context} from 'context'
+import React from 'react'
 
 import Swiper from 'react-id-swiper'
 // components
 import SocialList from '../../components/SocialList'
 
 const FeedSection = (props) => {
-  const { profileData, feedData } = props;
-  const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
+  const { profileData, feedData, openShowSlide, isMyProfile } = props;
   //context
-  const context = useContext(Context)
-  const {token, profile} = context
-
-  const data = profile
+  const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
 
   // 스와이퍼
   const swiperParams = {
@@ -51,7 +46,7 @@ const FeedSection = (props) => {
         </Swiper>
       </div>
       }
-      <SocialList profileData={profileData} list={feedList} picture={true}/>
+      <SocialList profileData={profileData} feedList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} />
     </div>
   )
 }
