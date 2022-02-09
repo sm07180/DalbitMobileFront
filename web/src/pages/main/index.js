@@ -116,7 +116,7 @@ const MainPage = () => {
         <MainSlide data={mainState.topBanner} />
       </section>
       <section className='favorites' ref={overRef}>
-        <SwiperList data={mainState.myStar} profImgName="profImg" />
+        <SwiperList data={mainState.myStar} profImgName="profImg" type="myStar" />
       </section>
       <section className='top10'>
         <CntTitle title={'일간 TOP10'} more={'rank'}>
@@ -127,11 +127,12 @@ const MainPage = () => {
             : topRankType === 'FAN' ? mainState.dayRanking.fanRank
               : mainState.dayRanking.loverRank}
           profImgName="profImg"
+          type="top10"
         />
       </section>
       <section className='daldungs'>
-        <CntTitle title={'방금 착륙한 NEW 달둥스'} more={'clip'} />
-        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" />
+        <CntTitle title={'방금 착륙한 NEW 달둥스'} />
+        <SwiperList data={mainState.newBjList} profImgName="bj_profileImageVo" type="daldungs" />
       </section>
       <section className='bannerWrap'>
         <BannerSlide />

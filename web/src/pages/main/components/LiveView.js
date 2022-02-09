@@ -1,13 +1,18 @@
-import React from 'react'
+import React, {useContext} from 'react'
 
 // global components
 import BadgeItems from 'components/ui/badgeItems/BadgeItems'
 import GenderItems from 'components/ui/genderItems/GenderItems'
 import NoResult from 'components/ui/new_noResult'
 import DataCnt from 'components/ui/dataCnt/DataCnt'
+import {RoomValidateFromClip} from "common/audio/clip_func";
+import {Context} from "context";
+import {useHistory} from "react-router-dom";
 
 const LiveView = (props) => {
   const {data} = props
+  const history = useHistory();
+  const context = useContext(Context);
 
   return (
     <div className="liveListWrap">
@@ -15,7 +20,9 @@ const LiveView = (props) => {
         <>
           {data.map((list,index) => {
             return (
-              <div className="listRow" key={index}>
+              <div className="listRow" key={index} onClick={() => {
+                RoomValidateFromClip(list.roomNo, context, history, list.bjNickNm);
+              }}>
                 <div className="photo">
                   <img src={list.bjProfImg.thumb100x100} alt="" />
                 </div>
