@@ -33,9 +33,14 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
+// 고객센터
+const ReCustomer = React.lazy(() => import('pages/recustomer'))
+
+
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
 const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileDetail = React.lazy(() => import('pages/remypage/contents/profile/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
@@ -58,7 +63,6 @@ const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
 
@@ -172,6 +176,8 @@ const Router = () => {
                  }
                }}
         />
+
+        <Route exact path={"/profile/:memNo/:type/:index"} component={ProfileDetail}/>
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
@@ -180,9 +186,9 @@ const Router = () => {
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
-        <Route exact path="/customer/" component={Customer} />
-        <Route exact path="/customer/:title" component={Customer} />
-        <Route exact path="/customer/:title/:num" component={Customer} />
+        <Route exact path="/customer/" component={ReCustomer} />
+        <Route exact path="/customer/:title" component={ReCustomer} />
+        <Route exact path="/customer/:title/:num" component={ReCustomer} />
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />

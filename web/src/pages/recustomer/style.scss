@@ -1,0 +1,24 @@
+@import "components/ui/_mixin.scss";
+
+#customer {
+  .content {
+    width: 100%;
+    padding: 20px 28px;
+    box-sizing: border-box;
+    .mainText {
+      @include flex(flex-start, flex-start, column);
+      @include font(28px, 700, #202328);
+      line-height: 38px;
+      strong {
+        @include font(28px, 700, #FF3C7B);
+      }
+    }
+    .subText {
+      margin-top: 8px;
+      @include font(13px, 400, #999999);
+      span {        
+        @include font(13px, 400, #666666);
+      }
+    }
+  }
+}

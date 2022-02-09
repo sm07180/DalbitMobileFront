@@ -6,24 +6,28 @@ import GenderItems from 'components/ui/genderItems/GenderItems'
 import FrameItems from 'components/ui/frameItems/FrameItems'
 
 import './profileCard.scss'
+import {useDispatch} from "react-redux";
+import {setProfileData} from "redux/actions/profile";
 
 const ProfileCard = (props) => {
-  const {data, isMyProfile, openShowSlide, openPopFanStarLike} = props
+  const {data, isMyProfile, openShowSlide, openPopFanStarLike, fanToggle} = props
+  const dispatch = useDispatch();
+
+  /* fan toggle 데이터 변경 */
+  const fanToggleCallback = () => dispatch(setProfileData({...data, isFan: !data.isFan}))
 
   return (
     <div className="cardWrap">
       <div className="userInfo">
-        {data.profImg && (data.profImg.isDefaultImg ?
-            <div className="photo">
-              <img src={data.profImg.thumb500x500} alt="" />
-              <FrameItems content={data} />
-            </div>
-            :
-            <div className="photo" onClick={() => openShowSlide(data.profImgList)}>
-              <img src={data.profImg.thumb500x500} alt="" />
-              <FrameItems content={data} />
-            </div>
-        )}
+        {data.profImg &&
+          <div className="photo"
+               onClick={() => {
+                 if(!data.profImg.isDefaultImg) openShowSlide(data.profImgList)
+               }}>
+            <img src={data.profImg.thumb500x500} alt="" />
+            <FrameItems content={data} />
+          </div>
+        }
         <div className="info">
           <div className="item">
             <LevelItems data={data.level} />
@@ -52,11 +56,10 @@ const ProfileCard = (props) => {
       {!isMyProfile &&
         <div className="buttonWrap">
           <button>선물하기</button>
-          {true ?
-            <button className='isFan'>팬</button>
-            :
-            <button>+ 팬등록</button>
-          }
+          <button className={`${data.isFan ? 'isFan' : ''}`}
+                  onClick={() => {
+                    fanToggle(data.memNo, data.nickNm, data.isFan, fanToggleCallback)
+                  }}>{data.isFan ? '팬' : '+ 팬등록'}</button>
         </div>
       }
     </div>

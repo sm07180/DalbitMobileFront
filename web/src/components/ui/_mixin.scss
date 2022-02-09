@@ -95,6 +95,13 @@ $MORE-ZINDEX: 5000;
   background-color:rgba(0,0,0,.4);
 }
 
+@mixin btnMainStyle($height,$radius,$font) {
+  line-height: $height;
+  background-color:$MAINCOLOR;
+  @include border($MAINCOLOR,$radius);
+  @include font($font,500,white);
+}
+
 // 스토어 구매, 달교환
 @mixin purchaseList {
   .myhaveDal {

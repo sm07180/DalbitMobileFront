@@ -9,7 +9,7 @@ import ListRow from 'components/ui/listRow/ListRow'
 // components
 import Tabmenu from '../Tabmenu'
 
-import './fanStarLike.scss'
+import './style.scss'
 
 const title = {
   myProfile: ['팬 관리','스타 관리'],
@@ -44,8 +44,7 @@ const PopRelation = (props) => {
           setShowList(res.data.list)
         }
       })
-    }
-    if (type === 'star') {
+    }else if (type === 'star') {
       Api.getNewStarList({
         memNo: '11584609206286',
         sortType: 2,
@@ -56,8 +55,7 @@ const PopRelation = (props) => {
           setShowList(res.data.list)
         }
       })
-    }
-    if (type === 'like') {
+    }else if (type === 'like') {
       Api.mypage_good_ranking({
         params: {
           memNo: '11584609206286'
@@ -93,7 +91,7 @@ const PopRelation = (props) => {
   },[])
 
   return (
-    <section className="relationList">
+    <section className="FanStarLike">
       {isMyProfile === true ?
         <>
         {fanStarLikeState.type === 'fan' || fanStarLikeState.type === 'star' ?
@@ -134,9 +132,9 @@ const PopRelation = (props) => {
                   setTab: setLikeSubType,
                 }
                 return (
-                    <div className="swiper-slide" key={index}>
-                      <TabBtn param={param} />
-                    </div>
+                  <div className="swiper-slide" key={index}>
+                    <TabBtn param={param} />
+                  </div>
                 )
               })}
             </ul>
@@ -158,6 +156,7 @@ const PopRelation = (props) => {
                   </div>
                 )
               })}
+              <button>?</button>
             </ul>
           }
           </>
