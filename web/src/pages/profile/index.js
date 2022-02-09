@@ -15,9 +15,9 @@ import FanStarLike from './components/popSlide/FanStarLike'
 import BlockReport from './components/popSlide/BlockReport'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
-import FeedSection from './contents/profile/feedSection'
-import FanboardSection from './contents/profile/fanboardSection'
-import ClipSection from './contents/profile/clipSection'
+import FeedSection from './contents/profileDetail/feedSection'
+import FanboardSection from './contents/profileDetail/fanboardSection'
+import ClipSection from './contents/profileDetail/clipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
@@ -233,7 +233,7 @@ const ProfilePage = () => {
           <Tabmenu data={socialTabmenu} tab={socialType} setTab={setSocialType} />  
           {isMyProfile && <button>등록</button>}
         </div>
-        
+
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
           <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} isMyProfile={isMyProfile} />
