@@ -1,0 +1,172 @@
+@import "components/ui/_mixin.scss";
+
+#profileDetail {
+  height:100%;
+  header {
+    .buttonGroup {
+      div.moreBtn {
+        position:relative;
+        width:40px;
+        height:40px;
+        cursor: pointer;
+        img {
+          width:100%;
+        }
+        .isMore {
+          @include position-top-right(100%,0);
+          z-index: $MORE-ZINDEX;
+          @include flex($fd:column);
+          width:124px;
+          border-radius:8px;
+          background-color:white;
+          box-shadow: 0 1px 8px rgba(black,.16);
+          button {
+            line-height:40px;
+            text-indent:12px;
+            text-align:left;
+            @include font(13px,400,#303030);
+            + button {
+              border-top:1px solid #F2F2F2;;
+            }
+          }
+        }
+      }
+    }
+  }
+  section {
+    position: relative;
+  }
+  .detailWrap {
+    flex:1;
+    @include flex($fd:column);
+    height:calc(100% - 48px);
+    .detail {
+      padding: 20px 16px;
+      border-bottom:8px solid #F6F6F6;
+      .listRow {
+        margin-bottom:15px;
+        .photo {
+          width:36px;
+          height:36px;
+          margin-right:8px;
+          img {
+            border-radius:50%;
+          }
+        }
+        .listContent {
+          .nick {
+            @include font(13px,500,#202020);
+          }
+          .time {
+            @include font(12px,400,#707070);
+          }
+        }
+      }
+      .text {
+        margin-bottom:20px;
+        @include font(14px,400,black);
+      }
+      .info {
+        @include flex(center);
+        i {
+          display:inline-block;
+          width:20px;height:20px;
+          margin-right:4px;
+          &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
+          &.like.active {@include BGIMG('mypage/dalla/icolike-p.png');}
+          &.comment {@include BGIMG('mypage/dalla/icocomment-g.png');}
+        }
+        span {
+          height:20px;
+          line-height:18px;
+          margin-right:8px;
+          @include font(13px,400,#6B6B6B);
+        }
+      }
+    }
+    .listWrap {
+      padding:0 16px;
+      .listRow {
+        padding:12px 0;
+        border-bottom:1px solid #F2F2F2;
+        .photo {
+          width:40px;height:40px;
+          margin-right:8px;
+          margin-bottom: auto;
+          img {
+            width:100%;
+            border-radius:50%;
+          }
+        }
+        .listContent {
+          .listItems {
+            @include flex(center);
+            &:first-child {
+              height:40px;
+            }
+            .nick {
+              margin-right:8px;
+              @include font(13px,500,#202020);
+              @include fontCut;
+            }
+            .time {
+              @include font(12px,400,#707070);
+            }
+            .text {
+              margin-bottom:8px;
+              @include font(14px,400,black);
+            }
+            i {
+              display:inline-block;
+              width:20px;height:20px;
+              margin-right:4px;
+              &.like {@include BGIMG('mypage/dalla/icolike-g.png');}
+            }
+            span {
+              @include font(13px,400,#6B6B6B);
+            }
+          }
+        }
+      }
+    }
+    .bottomWrite {
+      @include flex(center);
+      margin-top:auto;
+      padding: 10px 15px 10px 20px;
+      border-top:1px solid #F2F2F2;
+      .trickTextarea {
+        position:relative;
+        flex:1;
+        width:calc(100% - 86px);
+        max-height:80px;
+        line-height:20px;
+        @include font(13px,400,#202020);
+        overflow:auto;
+        &::before {
+          content:"댓글을 입력해주세요.";
+          @include position-vertical;
+          left:0;
+          @include font(13px,400,#ACACAC);
+        }
+        &:focus::before {
+          display:none;
+        }
+        &.isText {
+          &::before {
+            display:none;
+          }
+        }
+      }
+      button {
+        flex-shrink: 0;
+        width:62px;
+        line-height:32px;
+        margin-top:auto;
+        margin-left:24px;
+        border-radius:100px;
+        background-color:$MAINCOLOR;
+        @include font(13px,500,white);
+      }
+    }
+  }
+}

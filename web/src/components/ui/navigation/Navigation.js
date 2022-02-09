@@ -9,7 +9,7 @@ const Navigation = (props) => {
     <>
     <div id="navigation">
       <nav>
-        <div className="navi"></div>
+        <div className="navi" onClick={() => history.push('/')} />
         <div className="navi" onClick={() => history.push('/clip')} />
         <div className="navi"></div>
         <div className="navi" onClick={() => history.push('/search')} />
