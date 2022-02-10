@@ -387,12 +387,12 @@ export default function GNB() {
           </div>
           <nav className="gnbNavigation">
             <ul>
-              <li className="active"></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li className="active" onClick={() => history.push('/')} />
+              <li onClick={() => history.push('/clip')}/>
+              <li onClick={() => history.push('/search')}/>
+              <li onClick={() => history.push('/rank')}/>
+              <li onClick={() => history.push('/my')}/>
+              <li onClick={() => history.push('/')}/>
             </ul>
           </nav>
         </div>

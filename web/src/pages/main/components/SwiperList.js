@@ -39,7 +39,7 @@ const SwiperList = (props) => {
 
   return (
     <>
-    {data.length > 0 &&
+    {data.length > 0 ?
       <Swiper {...swiperParams}>
         {data.map((item,index) => {
           return (
@@ -48,6 +48,7 @@ const SwiperList = (props) => {
                 <div className="photo">
                   <img src={item[profImgName].thumb150x150} />
                   {item.rank && <div className={`rank-${item.rank}`}></div>}
+                  {true && <div className="video"></div>}
                 </div>
                 <p className='userNick'>{item.nickNm ? item.nickNm : item.bj_nickName}</p>
               </div>
@@ -55,6 +56,10 @@ const SwiperList = (props) => {
           )
         })}
       </Swiper>
+      : data.length === 0 &&
+      <div className="empty">
+        데이터가 없습니다.
+      </div>
     }
     </>
   )
