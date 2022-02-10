@@ -1,6 +1,25 @@
 @import "components/ui/_mixin.scss";
 
+/*
+  피씨일때 헤더 없애기
+*/
+#root {
+  .container {
+    padding-top:20px;
+    .totalWrap {
+      .refresh-wrap {
+        display:none;
+      }
+      #mainPage {
+        header {display:none;}
+      }
+    }
+  }
+}
+
 #mainPage {
+  font-family: "SUIT", sans-serif !important;
+  letter-spacing: 0 !important;
   .headerWrap {
     position:fixed;
     z-index:$HEADER-ZINDEX;

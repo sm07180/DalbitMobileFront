@@ -330,3 +330,31 @@ $MORE-ZINDEX: 50;
     }
   }
 }
+
+@mixin navigationStyle {
+  #navigation {
+    height:50px;
+    pointer-events: none;
+    nav.bottomGnb {
+      position:fixed;
+      bottom:0;
+      z-index: 50;
+      display:flex;
+      align-items:center;
+      width:100%;
+      max-width:460px;
+      height:50px;
+      background-color:white;
+      pointer-events: initial;
+      .navi {
+        flex:1;
+        height:100%;
+        &:nth-child(1) {@include BGIMG('common/icon/navi_live.png');background-size:40px;}
+        &:nth-child(2) {@include BGIMG('common/icon/navi_clip.png');background-size:40px;}
+        &:nth-child(3) {@include BGIMG('common/icon/navi_plus.png');background-size:40px;}
+        &:nth-child(4) {@include BGIMG('common/icon/navi_search.png');background-size:40px;}
+        &:nth-child(5) {@include BGIMG('common/icon/navi_profile.png');background-size:40px;}
+      }
+    }
+  }
+}

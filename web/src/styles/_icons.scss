@@ -1,229 +1,229 @@
-.icon_wrap {
-  flex-shrink: 0;
-  display: inline-block;
-  width: 51px;
-  height: 16px;
-  margin-left: 2px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  text-indent: -99999px;
-  &:first-child {
-    margin-left: 0;
-  }
-  &.icon_specialdj {
-    width: 60px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_2103.png');
-  }
-  &.icon_specialdj_half {
-    width: 100%;
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_half.png');
-  }
-  &.icon_contentsdj {
-    width: 72px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_2103.png');
-  }
-  &.icon_contentsdj_half {
-    width: 100%;
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_half.png');
-  }
-  &.icon_contentsdj_profile {
-    width: 76px;
-    height: 28px;
-    margin-top: 12px;
-    vertical-align: bottom;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_profile.png');
-  }
-  &.icon_shiningdj {
-    background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj.png');
-  }
-  &.icon_shinigdj_half {
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj_half.png');
-  }
-  &.icon_bestdj {
-    width: 72px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_2103.png');
-  }
-  &.icon_bestdj_half {
-    width: 100%;
-    z-index: 1;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_half_2109.png');
-  }
-  &.icon_specialdj_label {
-    width: 16px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_label.png');
-  }
-  &.icon_shiningdj_label {
-    width: 16px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj_label.png');
-  }
-  &.ico_restrict20_label {
-    width: 24px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_restrict20_label.svg');
-  }
-  &.ico_fan_label {
-    width: 24px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_fan_label.png');
-  }
-  &.ico_all_label {
-    width: 24px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_all_label.png');
-  }
-  &.icon_newdj {
-    width: 39px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_newdj.png');
-  }
-  &.icon_event {
-    background-image: url('https://image.dalbitlive.com/main/common/ico_event.png');
-  }
-  &.icon_pc {
-    width: 26px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_pc.png');
-  }
-  &.icon_pc_circle {
-    width: 16px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_circle_pc.png');
-  }
-  &.icon_male {
-    width: 24px;
-    background-image: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
-  }
-  &.icon_male_circle {
-    width: 16px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_circle_male.svg');
-  }
-  &.icon_female {
-    width: 24px;
-    background-image: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
-  }
-  &.icon_female_circle {
-    width: 16px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_circle_female.svg');
-  }
-  &.icon_roomtype {
-    display: flex;
-    align-items: center;
-    width: 54px;
-    height: 16px;
-    text-indent: -9999px;
-    background: url('https://image.dalbitlive.com/main/ico_live_audio.png') no-repeat 0 0;
-    background-size: contain;
-    &.icon_roomtype_video {
-      background: url('https://image.dalbitlive.com/main/icon_live_video.png') no-repeat 0 0;
-      background-size: contain;
-    }
-  }
+// .icon_wrap {
+//   flex-shrink: 0;
+//   display: inline-block;
+//   width: 51px;
+//   height: 16px;
+//   margin-left: 2px;
+//   background-size: contain;
+//   background-repeat: no-repeat;
+//   background-position: 0 0;
+//   text-indent: -99999px;
+//   &:first-child {
+//     margin-left: 0;
+//   }
+//   &.icon_specialdj {
+//     width: 60px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_2103.png');
+//   }
+//   &.icon_specialdj_half {
+//     width: 100%;
+//     z-index: 1;
+//     position: absolute;
+//     left: 0px;
+//     top: 0px;
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_half.png');
+//   }
+//   &.icon_contentsdj {
+//     width: 72px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_2103.png');
+//   }
+//   &.icon_contentsdj_half {
+//     width: 100%;
+//     z-index: 1;
+//     position: absolute;
+//     left: 0px;
+//     top: 0px;
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_half.png');
+//   }
+//   &.icon_contentsdj_profile {
+//     width: 76px;
+//     height: 28px;
+//     margin-top: 12px;
+//     vertical-align: bottom;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_contentsdj_profile.png');
+//   }
+//   &.icon_shiningdj {
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj.png');
+//   }
+//   &.icon_shinigdj_half {
+//     z-index: 1;
+//     position: absolute;
+//     left: 0px;
+//     top: 0px;
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj_half.png');
+//   }
+//   &.icon_bestdj {
+//     width: 72px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_2103.png');
+//   }
+//   &.icon_bestdj_half {
+//     width: 100%;
+//     z-index: 1;
+//     position: absolute;
+//     left: 0px;
+//     top: 0px;
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_bestdj_half_2109.png');
+//   }
+//   &.icon_specialdj_label {
+//     width: 16px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_specialdj_label.png');
+//   }
+//   &.icon_shiningdj_label {
+//     width: 16px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_shiningdj_label.png');
+//   }
+//   &.ico_restrict20_label {
+//     width: 24px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_restrict20_label.svg');
+//   }
+//   &.ico_fan_label {
+//     width: 24px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_fan_label.png');
+//   }
+//   &.ico_all_label {
+//     width: 24px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_all_label.png');
+//   }
+//   &.icon_newdj {
+//     width: 39px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_newdj.png');
+//   }
+//   &.icon_event {
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_event.png');
+//   }
+//   &.icon_pc {
+//     width: 26px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_pc.png');
+//   }
+//   &.icon_pc_circle {
+//     width: 16px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_circle_pc.png');
+//   }
+//   &.icon_male {
+//     width: 24px;
+//     background-image: url('https://image.dalbitlive.com/svg/gender_m_w.svg');
+//   }
+//   &.icon_male_circle {
+//     width: 16px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_circle_male.svg');
+//   }
+//   &.icon_female {
+//     width: 24px;
+//     background-image: url('https://image.dalbitlive.com/svg/gender_w_w.svg');
+//   }
+//   &.icon_female_circle {
+//     width: 16px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_circle_female.svg');
+//   }
+//   &.icon_roomtype {
+//     display: flex;
+//     align-items: center;
+//     width: 54px;
+//     height: 16px;
+//     text-indent: -9999px;
+//     background: url('https://image.dalbitlive.com/main/ico_live_audio.png') no-repeat 0 0;
+//     background-size: contain;
+//     &.icon_roomtype_video {
+//       background: url('https://image.dalbitlive.com/main/icon_live_video.png') no-repeat 0 0;
+//       background-size: contain;
+//     }
+//   }
 
-  // 라이브,청취 아이콘
-  &.icon_live_text {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    width: 42px;
-    height: 42px;
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_live_main.png');
-  }
-  &.icon_live_text_ranking {
-    width: 28px;
-    height: 28px;
-    background-image: url('https://image.dalbitlive.com/main/common/ico_live.png');
-  }
-  &.icon_live {
-    margin-left: 0;
-    background-image: url('https://image.dalbitlive.com/svg/ic_live.svg');
-    &.icon_live_ranking {
-      position: absolute;
-      bottom: 1px;
-      right: 1px;
-      width: 24px;
-      height: 24px;
-    }
-    &.icon_live_star {
-      position: absolute;
-      bottom: 1px;
-      right: 1px;
-      width: 20px;
-      height: 20px;
-    }
-    &.icon_live_28 {
-      width: 28px;
-      height: 28px;
-    }
-  }
+//   // 라이브,청취 아이콘
+//   &.icon_live_text {
+//     position: absolute;
+//     right: 8px;
+//     top: 8px;
+//     width: 42px;
+//     height: 42px;
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_live_main.png');
+//   }
+//   &.icon_live_text_ranking {
+//     width: 28px;
+//     height: 28px;
+//     background-image: url('https://image.dalbitlive.com/main/common/ico_live.png');
+//   }
+//   &.icon_live {
+//     margin-left: 0;
+//     background-image: url('https://image.dalbitlive.com/svg/ic_live.svg');
+//     &.icon_live_ranking {
+//       position: absolute;
+//       bottom: 1px;
+//       right: 1px;
+//       width: 24px;
+//       height: 24px;
+//     }
+//     &.icon_live_star {
+//       position: absolute;
+//       bottom: 1px;
+//       right: 1px;
+//       width: 20px;
+//       height: 20px;
+//     }
+//     &.icon_live_28 {
+//       width: 28px;
+//       height: 28px;
+//     }
+//   }
 
-  &.icon_listen_text_ranking {
-    width: 28px;
-    height: 28px;
-    background-image: url('https://image.dalbitlive.com/svg/ico_ranking_listen.svg');
-  }
-  &.icon_listen {
-    width: 28px;
-    height: 28px;
-    background-image: url('https://image.dalbitlive.com/svg/ico_listen.svg');
-    &.icon_listen_ranking {
-      position: absolute;
-      bottom: 1px;
-      right: 1px;
-      width: 24px;
-      height: 24px;
-      margin-left: 0;
-    }
-  }
+//   &.icon_listen_text_ranking {
+//     width: 28px;
+//     height: 28px;
+//     background-image: url('https://image.dalbitlive.com/svg/ico_ranking_listen.svg');
+//   }
+//   &.icon_listen {
+//     width: 28px;
+//     height: 28px;
+//     background-image: url('https://image.dalbitlive.com/svg/ico_listen.svg');
+//     &.icon_listen_ranking {
+//       position: absolute;
+//       bottom: 1px;
+//       right: 1px;
+//       width: 24px;
+//       height: 24px;
+//       margin-left: 0;
+//     }
+//   }
 
-  &.icon_mail {
-    width: 28px;
-    height: 28px;
-    background-image: url('https://image.dalbitlive.com/svg/ico_postbox_p.svg');
-  }
+//   &.icon_mail {
+//     width: 28px;
+//     height: 28px;
+//     background-image: url('https://image.dalbitlive.com/svg/ico_postbox_p.svg');
+//   }
 
-  // 뱃지 아이콘
-  &.icon_badge {
-    font-size: 11px;
-    line-height: 1.1;
-    text-indent: 0;
-    &.img {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: auto;
-      height: auto;
-      padding: 0 5px 0 3px;
-      color: $white;
-      border-radius: 14px;
-      box-sizing: border-box;
-      .img {
-        height: 16px;
-      }
-    }
-    &.text {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: auto;
-      height: 16px;
-      color: $white;
-      border-radius: 14px;
-      box-sizing: border-box;
-    }
-  }
-}
+//   // 뱃지 아이콘
+//   &.icon_badge {
+//     font-size: 11px;
+//     line-height: 1.1;
+//     text-indent: 0;
+//     &.img {
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
+//       width: auto;
+//       height: auto;
+//       padding: 0 5px 0 3px;
+//       color: $white;
+//       border-radius: 14px;
+//       box-sizing: border-box;
+//       .img {
+//         height: 16px;
+//       }
+//     }
+//     &.text {
+//       display: flex;
+//       align-items: center;
+//       justify-content: center;
+//       width: auto;
+//       height: 16px;
+//       color: $white;
+//       border-radius: 14px;
+//       box-sizing: border-box;
+//     }
+//   }
+// }
