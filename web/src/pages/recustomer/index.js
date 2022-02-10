@@ -12,6 +12,7 @@ import Header from 'components/ui/header/Header'
 //Content
 import Faq from './contents/faq/Faq'
 import Inquire from './contents/inquire'
+import InquireDetail from './contents/inquireDetail/InquireDetail'
 
 import './style.scss'
 
@@ -19,6 +20,7 @@ const Customer = () => {
   let history = useHistory()
   const params = useParams();
   const category = params.title;
+  const qnaIdx = params.num;
   const globalCtx = useContext(Context);
   const {token, profile} = globalCtx;
   const [categoryList, setCategory] = useState([
@@ -99,7 +101,7 @@ const Customer = () => {
         category === "inquire" ?
           <Inquire/>
         :
-          <></>
+          <InquireDetail/>
       }
     </div>
   )

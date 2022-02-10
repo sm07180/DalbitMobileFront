@@ -6,9 +6,9 @@ import SubmitBtn from 'components/ui/submitBtn/SubmitBtn'
 
 import InquireInput from '../../../components/InquireInput'
 // components
-import '../inquire.scss'
+import './inquireWrite.scss'
 
-const Write = (props) => { 
+const InquireWrite = () => { 
   const inquireContent = `아래 내용을 함께 보내주시면 더욱 빠른 처리가 가능합니다.
 
 OS (ex-Window 버전10) : 
@@ -18,7 +18,7 @@ OS (ex-Window 버전10) :
 `
 
   return (
-    <div id='write'>
+    <div id='inquireWrite'>
       <InquireInput title="문의 제목" type="text" required={true} placeholder="문의 제목을 입력해주세요."/>
       <InquireInput title="문의 유형" type="select" required={true} placeholder="문의 유형을 선택해주세요."/>
       <InquireInput title="문의 내용" type="textArea" required={true} placeholder={inquireContent}/>
@@ -34,4 +34,4 @@ OS (ex-Window 버전10) :
   )
 }
 
-export default Write
+export default InquireWrite
