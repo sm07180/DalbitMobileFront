@@ -8,11 +8,11 @@ $IMGSERVER: unquote("https://image.dalbitlive.com");
 $HEADER-HEIGHT: 48px;
 
 // z-inde 관리
-$ALERT-ZINDEX: 90000;
-$POPUP-ZINDEX: 30000;
-$NAVIGATION-ZINDEX: 10000;
-$HEADER-ZINDEX: 10000;
-$MORE-ZINDEX: 5000;
+$ALERT-ZINDEX: 60;
+$POPUP-ZINDEX: 60;
+$NAVIGATION-ZINDEX: 30;
+$HEADER-ZINDEX: 30;
+$MORE-ZINDEX: 50;
 
 @mixin position-horizon ($top: null,$bottom: null,$left: 50%) {
   position:absolute;transform:translateX(-50%);left:$left;top:$top;bottom:$bottom;

@@ -378,96 +378,58 @@ export default function GNB() {
 
   return (
     <>
-      { isDesktop &&
-      <header id="gnb">
+      {isDesktop &&
+      <aside id="gnb">
         <div className="gnbBox">
           <h1>
             <NavLink
-                to={`/`}
-                onClick={() => {
-                  scrollToTop();
-                  sessionStorage.setItem("isBeforeMailbox", "N");
-                }}
-                title="달빛라이브"
-            >
-              <img src={`${IMG_SERVER}/ani/webp/main/gnb_logo.gif`} alt="logo" width={80} height={80} />
-              {/* <Lottie
-                options={{
-                  loop: true,
-                  autoplay: true,
-                  animationData: gnbLogo,
-                }}
-                width={80}
-                height={80}
-              />*/}
-            </NavLink>
-          </h1>
-
-          <button
-              className="gnbBox__liveBtn"
+              to={`/`}
               onClick={() => {
-                if (baseData.isLogin === true) {
-                  scrollToTop();
-                  return globalAction.setBroadClipDim!(true);
-                } else {
-                  return history.push("/login");
-                }
+                scrollToTop();
+                sessionStorage.setItem("isBeforeMailbox", "N");
               }}
+              title="달빛라이브"
           >
-            {/* <Lottie
-              options={{
-                loop: true,
-                autoplay: true,
-                animationData: broadBtn,
+            <img src={`${IMG_SERVER}/common/header/LOGO.png`} alt="logo" />
+          </NavLink>
+        </h1>
+        <div className="navWrap">
+          <NavLink
+              to={`/`}
+              className="navItem"
+              activeClassName={"navItem__active"}
+              onClick={() => {
+                scrollToTop();
+                sessionStorage.setItem("isBeforeMailbox", "N");
               }}
-              width={48}
-              height={48}
-            /> */}
-
-            <img src={`${IMG_SERVER}/ani/webp/main/gnb_broadcast.gif`} alt="방송하기" width={48} height={48} />
-            <span>
-              <img src={broadText} alt="방송하기" />
-            </span>
-          </button>
-
-          <div className="navWrap">
-            <NavLink
-                to={`/`}
-                className="navItem"
-                activeClassName={"navItem__active"}
-                onClick={() => {
-                  scrollToTop();
-                  sessionStorage.setItem("isBeforeMailbox", "N");
-                }}
-                exact
-                title="메인 이동"
-            ></NavLink>
-            <NavLink to={`/clip`} className="navItem" activeClassName={"navItem__active"} title="클립페이지 이동"></NavLink>
-            {/* <NavLink to={`/rank`} className="navItem" activeClassName={"navItem__active"} title="랭킹페이지 이동"></NavLink> */}
-            <NavLink
-                to={"/rank"}
-                className="navItem"
-                activeClassName={"navItem__active"}
-                title="랭킹페이지 이동"
-                onClick={() => {
-                  rankAction.formDispatch!({
-                    type: "PAGE_TYPE",
-                    val: "ranking",
-                  });
-                  sessionStorage.setItem("isBeforeMailbox", "N");
-                }}
-            ></NavLink>
-            <NavLink
-                to={`${baseData.isLogin === true ? `/mypage/${globalState.baseData.memNo}` : "/mypage"}`}
-                className="navItem"
-                activeClassName={"navItem__active"}
-                onClick={() => {
-                  sessionStorage.setItem("isBeforeMailbox", "N");
-                }}
-                title="마이페이지 이동"
-            ></NavLink>
-          </div>
-
+              exact
+              title="메인 이동"
+          ></NavLink>
+          <NavLink to={`/clip`} className="navItem" activeClassName={"navItem__active"} title="클립페이지 이동"></NavLink>
+          {/* <NavLink to={`/rank`} className="navItem" activeClassName={"navItem__active"} title="랭킹페이지 이동"></NavLink> */}
+          <NavLink
+              to={"/rank"}
+              className="navItem"
+              activeClassName={"navItem__active"}
+              title="랭킹페이지 이동"
+              onClick={() => {
+                rankAction.formDispatch!({
+                  type: "PAGE_TYPE",
+                  val: "ranking",
+                });
+                sessionStorage.setItem("isBeforeMailbox", "N");
+              }}
+          ></NavLink>
+          <NavLink
+              to={`${baseData.isLogin === true ? `/mypage/${globalState.baseData.memNo}` : "/mypage"}`}
+              className="navItem"
+              activeClassName={"navItem__active"}
+              onClick={() => {
+                sessionStorage.setItem("isBeforeMailbox", "N");
+              }}
+              title="마이페이지 이동"
+          ></NavLink>
+        </div>
           <div className="etcWrap">
             <button
                 type="button"
@@ -557,7 +519,7 @@ export default function GNB() {
                 ))}
           </div>
         </div>
-      </header>}
+      </aside>}
       {globalState.broadClipDim && (
         <div id="dim-layer" onClick={() => globalAction.setBroadClipDim!(false)}>
           <div className="broadcast-menu">
