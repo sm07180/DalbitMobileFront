@@ -8,7 +8,7 @@ import hint from "../static/ico_hint_b_s@2x.png";
 
 export default function bankInfo() {
   return (
-    <Layout>
+    <>
       <Header title="은행별 시스템 점검시간" />
 
       <div id="pay">
@@ -194,6 +194,6 @@ export default function bankInfo() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

@@ -1,11 +1,13 @@
 import React from 'react'
 
 import Swiper from 'react-id-swiper'
+// global components
+import NoResult from 'components/ui/noResult/NoResult'
 // components
 import SocialList from '../../components/socialList'
 
 const FeedSection = (props) => {
-  const { profileData, feedData, openShowSlide, isMyProfile } = props;
+  const { profileData, feedData, openShowSlide, isMyProfile, openBlockReportPop } = props;
   //context
   const { feedList, fixedFeedList, fixCnt, scrollPaging } = feedData;
 
@@ -46,7 +48,13 @@ const FeedSection = (props) => {
         </Swiper>
       </div>
       }
-      <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed" />
+      {feedList.length > 0 ?
+        <SocialList socialList={feedList} openShowSlide={openShowSlide} isMyProfile={isMyProfile} type="feed"
+                    openBlockReportPop={openBlockReportPop}
+        />
+        :
+        <NoResult />
+      }
     </div>
   )
 }

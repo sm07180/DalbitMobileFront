@@ -47,28 +47,19 @@ export default function RealTimeBroadUI() {
     };
   }, [globalState.realtimeBroadStatus]);
 
-  const msgData = useMemo(() => {
+
+  const [msgData , setMsgData ] = useState<any[]>([]);
+  useEffect( () => {
     const { message, roomNo, profImg, time, nickNm, memNo } = globalState.realtimeBroadStatus;
-    if (last === true) {
-      globalAction.setRealtimeBroadStatus!({
-        message: "",
-        roomNo: "",
-        time: "",
-        nickNm: "",
-        memNo: "",
-        type: "",
-        status: false,
-      });
-      return [];
-    }
     if (message && message !== "") {
+      let newMsgValue = { message: message, roomNo: roomNo, profImg: profImg, time: time, nickNm: nickNm, memNo: memNo };
       if (copyArray.length > 0) {
-        return [...msgArray, { message: message, roomNo: roomNo, profImg: profImg, time: time, nickNm: nickNm, memNo: memNo }];
+        setMsgData([...msgArray, newMsgValue]);
       } else {
-        return [{ message: message, roomNo: roomNo, profImg: profImg, time: time, nickNm: nickNm, memNo: memNo }];
+        setMsgData([newMsgValue]);
       }
     } else {
-      return [];
+      setMsgData([]);
     }
   }, [globalState.realtimeBroadStatus, last]);
 
@@ -187,6 +178,7 @@ export default function RealTimeBroadUI() {
                 );
               })
             : msgData.map((item, idx) => {
+              console.log(item)
                 return (
                   <React.Fragment key={idx}>
                     <RealtimeBroadWrap>
@@ -201,6 +193,13 @@ export default function RealTimeBroadUI() {
               })}
         </Wrap>
       )}
+      <RealtimeBroadWrap>
+        <div className="wrapper">
+          <img src={"https://devphoto2.dalbitlive.com/profile_3/profile_m_200327.jpg?150x150"} alt="프로필 이미지" className="thumb" />
+          <span className="broadMsg">{"item.message"}</span>
+          <button  className="close" />
+        </div>
+      </RealtimeBroadWrap>
     </>
   );
 }

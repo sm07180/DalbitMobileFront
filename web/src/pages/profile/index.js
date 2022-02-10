@@ -1,6 +1,6 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, {useEffect, useState, useContext, useCallback} from 'react'
 import {useHistory, useParams} from 'react-router-dom'
-import {Context} from 'context'
+import {Context, GlobalContext} from 'context'
 import './index.scss'
 import Api from 'context/api'
 // global components
@@ -13,6 +13,7 @@ import TotalInfo from './components/TotalInfo'
 import Tabmenu from './components/Tabmenu'
 import FanStarLike from './components/popSlide/FanStarLike'
 import BlockReport from './components/popSlide/BlockReport'
+import Present from './components/popSlide/Present'
 import ShowSwiper from "components/ui/showSwiper/showSwiper";
 // contents
 import FeedSection from './contents/profileDetail/feedSection'
@@ -21,13 +22,22 @@ import ClipSection from './contents/profileDetail/clipSection'
 // redux
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileClipData, setProfileData, setProfileFanBoardData, setProfileFeedData} from "redux/actions/profile";
-import {profileClipDefaultState, profileFanBoardDefaultState, profileFeedDefaultState} from "redux/types/profileType";
+import {
+  profileClipDefaultState,
+  profileDefaultState,
+  profileFanBoardDefaultState,
+  profileFeedDefaultState
+} from "redux/types/profileType";
+import {goMail} from "common/mailbox/mail_func";
+import {MailboxContext} from "context/mailbox_ctx";
 
 const socialTabmenu = ['피드','팬보드','클립']
 
 const ProfilePage = () => {
   const history = useHistory()
   const context = useContext(Context)
+  const { globalState, globalAction } = useContext(GlobalContext);
+  const { mailboxAction } = useContext(MailboxContext);
   const params = useParams();
 
   const [showSlide, setShowSlide] = useState(false);
@@ -38,6 +48,8 @@ const ProfilePage = () => {
   const [popFanStarLike, setPopFanStarLike] = useState(false);
   const [openFanStarLikeType, setOpenFanStarLikeType] = useState('');
   const [popBlockReport, setPopBlockReport] = useState(false);
+  const [popPresent, setPopPresent] = useState(false);
+  const [blockReportInfo, setBlockReportInfo] = useState({memNo: '', memNick: ''});
 
   const dispatch = useDispatch();
   const profileData = useSelector(state => state.profile);
@@ -160,6 +172,54 @@ const ProfilePage = () => {
     })
   }
 
+  /* 방송시작 알림 설정 api */
+  const editAlarms = useCallback((title, msg, isReceive) => {
+    const editAlarmParams = {
+      memNo: profileData.memNo,
+      isReceive
+    }
+    Api.editPushMembers(editAlarmParams).then(res => {
+      if (res.result === 'success') {
+        dispatch(setProfileData({
+          ...profileData,
+          isReceive
+        }))
+
+        context.action.alert({title, msg})
+      } else {
+        context.action.alert({
+          msg: res.message
+        })
+      }
+    });
+  }, [profileData.memNo, profileData.isReceive])
+
+  /* 방송시작 알림 설정 */
+  const editAlarm = useCallback(() => {
+    const isReceive = profileData.isReceive;
+    if(isReceive) {
+      context.action.confirm({
+        msg: `선택한 회원의 방송 알림 설정을<br/>해제 하시겠습니까?`,
+        callback: () => {
+          editAlarms('', '설정해제가 완료되었습니다.', !isReceive)
+        }
+      })
+    }else {
+      context.action.confirm({
+        title: '알림받기 설정',
+        msg: `팬으로 등록하지 않아도 🔔알림받기를 설정하면 방송시작에 대한 알림 메시지를 받을 수 있습니다.`,
+        buttonText: {right: '설정하기'},
+        callback: () => {
+          editAlarms(
+            '방송 알림 설정을 완료하였습니다',
+            `마이페이지 > 서비스 설정 ><br/> [알림설정 관리]에서 설정한 회원을<br/> 확인하고 삭제 할 수 있습니다.`,
+            !isReceive
+          )
+        }
+      })
+    }
+  },[profileData.memNo, profileData.isReceive])
+
   /* 프로필 이동 */
   const goProfile = memNo => {
     if(memNo) {
@@ -180,6 +240,19 @@ const ProfilePage = () => {
     setPopSlide(true)
   }
 
+  /* 차단/신고 팝업 열기 */
+  const openBlockReportPop = (blockReportInfo) => {
+    if(popSlide) setPopSlide(false);
+    setPopBlockReport(true);
+    setBlockReportInfo(blockReportInfo);
+  }
+
+  /* 차단/신고 팝업 닫기 */
+  const closeBlockReportPop = () => {
+    setPopBlockReport(false);
+    setBlockReportInfo({memNo: '', memNick: ''});
+  }
+
   /* 프로필 사진 확대 */
   const openShowSlide = (data, isList = "y", keyName='profImg') => {
     const getImgList = data => data.map(item => item[keyName])
@@ -197,8 +270,20 @@ const ProfilePage = () => {
     setPopFanStarLike(true)
   }
 
-  /* 프로필 데이터 초기화 (피드, 팬보드, 클립) */
+  /* 우체통 이동 */
+  const goMailAction = () => {
+    const goMailParams = {
+      context,
+      mailboxAction,
+      targetMemNo: profileData.memNo,
+      history
+    }
+    goMail(goMailParams);
+  }
+
+  /* 프로필 데이터 초기화 */
   const resetProfileData = () => {
+    dispatch(setProfileData(profileDefaultState));
     dispatch(setProfileFeedData(profileFeedDefaultState));
     dispatch(setProfileFanBoardData(profileFanBoardDefaultState));
     dispatch(setProfileClipData(profileClipDefaultState));
@@ -237,9 +322,6 @@ const ProfilePage = () => {
     }
   }, []);
 
-  // 임시 변수
-  let isIos = true
-
   // 페이지 시작
   return (
     <div id="myprofile">
@@ -254,12 +336,14 @@ const ProfilePage = () => {
           </div>
         }
       </Header>
+      <div onClick={goMailAction}>askldjlkasdjf</div>
       <section className='topSwiper'>
         <TopSwiper data={profileData} openShowSlide={openShowSlide} />
       </section>
       <section className="profileCard">
         <ProfileCard data={profileData} isMyProfile={isMyProfile} openShowSlide={openShowSlide}
-                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle}  />
+                     openPopFanStarLike={openPopFanStarLike} fanToggle={fanToggle} setPopPresent={setPopPresent}
+        />
       </section>
       <section className='totalInfo'>
         <TotalInfo data={profileData} goProfile={goProfile} />
@@ -272,7 +356,8 @@ const ProfilePage = () => {
 
         {/* 피드 */}
         {socialType === socialTabmenu[0] &&
-          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData} isMyProfile={isMyProfile} />
+          <FeedSection profileData={profileData} openShowSlide={openShowSlide} feedData={feedData}
+                       isMyProfile={isMyProfile} openBlockReportPop={openBlockReportPop} />
         }
 
         {/* 팬보드 */}
@@ -291,10 +376,12 @@ const ProfilePage = () => {
       {popSlide &&
         <PopSlide setPopSlide={setPopSlide}>
           <section className='profileMore'>
-            <div className="moreList">메세지</div>
-            <div className="moreList">방송 알림 OFF</div>
-            {isIos && <div className="moreList">팬 취소하기</div>}
-            <div className="moreList">차단/신고</div>
+            <div className="moreList" onClick={goMailAction}>메세지</div>
+            {!profileData.isFan && <div className="moreList" onClick={editAlarm}>방송 알림 {profileData.isReceive ? 'OFF' : 'ON'}</div>}
+            <div className="moreList"
+                 onClick={() => {
+                   openBlockReportPop({memNo: profileData.memNo, memNick: profileData.nickNm});
+                 }}>차단/신고</div>
           </section>
         </PopSlide>
       }
@@ -305,7 +392,12 @@ const ProfilePage = () => {
       }
       {popBlockReport &&
         <PopSlide setPopSlide={setPopBlockReport}>
-          <BlockReport />
+          <BlockReport blockReportInfo={blockReportInfo} closeBlockReportPop={closeBlockReportPop} />
+        </PopSlide>
+      }
+      {popPresent &&
+        <PopSlide setPopSlide={setPopPresent}>
+          <Present profileData={profileData} setPopPresent={setPopPresent} />
         </PopSlide>
       }
     </div>

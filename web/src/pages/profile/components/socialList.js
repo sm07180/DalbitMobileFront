@@ -8,7 +8,7 @@ import ListRowComponent from "./ListRowComponent";
 import Swiper from "react-id-swiper";
 
 const SocialList = (props) => {
-  const {socialList, openShowSlide, isMyProfile, type} = props
+  const {socialList, openShowSlide, isMyProfile, type, openBlockReportPop} = props
 
   // 스와이퍼
   const swiperFeeds = {
@@ -25,7 +25,7 @@ const SocialList = (props) => {
       {socialList.map((item, index) => {
         return (
           <React.Fragment key={item.noticeIdx ? item.noticeIdx : item.replyIdx}>
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" />
+            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type="feed" openBlockReportPop={openBlockReportPop} />
             <div className="socialContent">
               <div className="text">
                 {item.contents}

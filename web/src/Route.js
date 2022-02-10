@@ -33,9 +33,13 @@ const ReSearch = React.lazy(() => import('pages/research'))
 const ReSetting = React.lazy(() => import('pages/resetting'))
 // 명예의 전당
 const ReHonor = React.lazy(() => import('pages/rehonor'))
+// 고객센터
+const ReCustomer = React.lazy(() => import('pages/recustomer'))
+
+
 // 프로필
 const Profile = React.lazy(() => import('pages/profile'))
-const ProfileEdit = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
+const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit/profileEdit'))
 // 프로필 - 피드, 팬보드 (작성, 수정)
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
@@ -49,10 +53,11 @@ const ExchangeDal = React.lazy(() => import('pages/rewallet/contents/exchange/Ex
 const ExchangeResult = React.lazy(() => import('pages/rewallet/contents/exchange/ExchangeResult'))
 // 로그인
 const Login = React.lazy(() => import('pages/login'))
-const LoginSns = React.lazy(() => import('pages/login/contents/loginSns'))
-const LoginForm = React.lazy(() => import('pages/login/contents/LoginForm'))
+const LoginStart = React.lazy(() => import('pages/login/contents/start'))
+const DidLogin = React.lazy(() => import('pages/login/contents/DidLogin'))
 // 회원가입
-const SignUp = React.lazy(() => import('pages/resignup'))
+const SignUp = React.lazy(() => import('pages/signup'))
+const SocialSignUp = React.lazy(() => import('pages/signup/socialSignUp'))
 //----- dalla -----//
 
 const Menu = React.lazy(() => import('pages/menu'))
@@ -61,7 +66,6 @@ const Exchange = React.lazy(() => import('pages/reExchange'))
 const MoneyExchange = React.lazy(() => import('pages/remoneyExchange'))
 
 const Pay = React.lazy(() => import('pages/new_pay'))
-const Customer = React.lazy(() => import('pages/customer'))
 const ImageEditor = React.lazy(() => import('pages/common/imageEditor'))
 const Event = React.lazy(() => import('pages/event'))
 
@@ -120,14 +124,13 @@ const Router = () => {
           <span></span>
         </div>
       }>
-      <Common />
       <ScrollToTop />
       <Popup />
       <Switch>
         <Route exact path="/" component={Main} />
         <Route exact path="/menu/:category" component={Menu} />
         <Route exact path="/search" component={ReSearch} />
-        
+
         <Route exact path="/rank" component={Ranking} />
         <Route exact path="/rank/:type" component={RankingDetail} />
 
@@ -136,13 +139,13 @@ const Router = () => {
         <Route exact path="/setting/:type/:category" component={ReSetting} />
 
         <Route exact path="/honor" component={ReHonor} />
-        
+
         <Route exact path="/event/:title" component={Event} />
         <Route exact path="/event/:title/:type" component={Event} />
 
         <Route exact path="/store" component={Store} />
         <Route exact path="/store/dalcharge" component={DalCharge} />
-        
+
         <Route exact path="/wallet" component={Wallet} />
         <Route exact path="/wallet/exchangedal" component={ExchangeDal} />
         <Route exact path="/wallet/result" component={ExchangeResult} />
@@ -152,9 +155,10 @@ const Router = () => {
         <Route exact path="/exchange" component={Exchange} />
         <Route exact path="/live" component={Live} />
         <Route exact path="/login" component={Login} />
-        <Route exact path="/login/sns" component={LoginSns} />
-        <Route exact path="/login/form" component={LoginForm} />
+        <Route exact path="/login/start" component={LoginStart} />
+        <Route exact path="/login/didLogin" component={DidLogin} />
         <Route exact path="/signup" component={SignUp} />
+        <Route exact path="/socialSignUp" component={SocialSignUp} />
         <Route exact path="/password" component={Password} />
         <Route exact path="/selfauth" component={SelfAuth} />
         <Route exact path="/legalauth" component={LegalAuth} />
@@ -206,14 +210,14 @@ const Router = () => {
         <Route exact path="/mypage/:memNo/:category" component={MyPage} />
         <Route exact path="/mypage/:memNo/:category/:addpage" component={MyPage} />
         {/*<Route exact path="/profile/:memNo" component={Profile} />*/}
-        
-        <Route exact path="/profile/:memNo/edit" component={ProfileEdit} />
+
+        <Route exact path="/profile/:memNo/write" component={ProfileWrite} />
 
         <Route exact path="/level" component={LevelInfo} />
         <Route exact path="/private" component={MySetting} />
-        <Route exact path="/customer/" component={Customer} />
-        <Route exact path="/customer/:title" component={Customer} />
-        <Route exact path="/customer/:title/:num" component={Customer} />
+        <Route exact path="/customer/" component={ReCustomer} />
+        <Route exact path="/customer/:title" component={ReCustomer} />
+        <Route exact path="/customer/:title/:num" component={ReCustomer} />
         <Route exact path="/setting" component={Setting} />
         <Route exact path="/secession" component={Secession} />
         <Route exact path="/navigator" component={Navigator} />
@@ -263,7 +267,6 @@ const Router = () => {
         <Route path="/modal/:type" component={Modal} />
         <Redirect to="/error" />
       </Switch>
-      <Alert />
     </React.Suspense>
   )
 };

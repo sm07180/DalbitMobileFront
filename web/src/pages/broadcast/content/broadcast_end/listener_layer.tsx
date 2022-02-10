@@ -14,7 +14,6 @@ function BroadcastEndByListener() {
   const history = useHistory();
 
   const { globalAction } = useContext(GlobalContext);
-
   const { dimLayer, dispatchDimLayer } = useContext(BroadcastLayerContext);
 
   const [summary, setSummary] = useState<{ [key: string]: any } | null>(null);
@@ -65,7 +64,7 @@ function BroadcastEndByListener() {
 
   const linkFanboard = useCallback(() => {
     if (summary !== null) {
-      history.push(`/mypage/${summary.djMemNo}`);
+        history.replace(`/mypage/${summary.djMemNo}`);
     }
   }, [summary]);
 
@@ -80,13 +79,11 @@ function BroadcastEndByListener() {
 
     fetchData();
 
-    return () => {
-      history.push("/");
-    };
   }, []);
 
   return (
-    <div id="boradcast-end-modal" className="listener" onClick={(e) => e.stopPropagation()}>
+    <div id="boradcast-end-modal" className="listener" onClick={(e) => {e.stopPropagation()}}
+    >
       <button
         onClick={() => {
           // dispatchDimLayer({
@@ -95,7 +92,7 @@ function BroadcastEndByListener() {
           history.push("/");
         }}
         className="cancel"
-      ></button>
+      />
       {summary !== null && (
         <div className="listener">
           {summary.bannerImgUrl && (

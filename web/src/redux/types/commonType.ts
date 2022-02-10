@@ -5,6 +5,7 @@ export type CommonActions = ActionType<typeof actions>;
 
 export interface CommonState {
   isLoading: boolean;
+  isDesktop: boolean;
 }
 
 export type Gender = "" | "m" | "f";

@@ -190,19 +190,19 @@
       position: absolute;
       width: 146px;
       right: 50px;
-      bottom: -39px;
+      bottom: -80px;
       border-radius: 12px;
       background-color: black;
       font-size: 14px;
       color: white;
 
-      &.listener {
-        bottom: 74px;
-      }
-
-      &.listener.video {
-        bottom: 170px;
-      }
+      //&.listener {
+      //  bottom: -80px;
+      //}
+      //
+      //&.listener.video {
+      //  bottom: -80px;
+      //}
 
       & > div {
         display: flex;

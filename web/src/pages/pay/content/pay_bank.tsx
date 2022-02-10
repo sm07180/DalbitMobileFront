@@ -220,7 +220,7 @@ export default function Payment() {
   }, []);
 
   return (
-    <Layout>
+    <>
       <Header title="무통장 입금(계좌이체)" />
       <div id="pay" className="subContent gray">
         <div className="content">
@@ -308,6 +308,6 @@ export default function Payment() {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 }

@@ -14,7 +14,7 @@ import { IMG_SERVER } from "constant/define";
 import { ChatSocketHandler } from "common/realtime/chat_socket";
 import {
   HostRtc,
-  ListenerRtc,
+  ListenerRtc, rtcSessionClear,
   RtcSocketHandler,
   UserType,
 } from "common/realtime/rtc_socket";
@@ -48,11 +48,8 @@ const initInterval = (callback: () => boolean) => {
   }, intervalTime);
 };
 
-export default function Player(props: {
-  clipInfo?: any;
-  clipPlayer?: any;
-  mode?: string;
-}) {
+// !Deprecated
+export default function Player(props: { clipInfo?: any; clipPlayer?: any; mode?: string; }) {
   const history = useHistory();
   const historyState = history.location.state;
   const { globalState, globalAction } = useContext(GlobalContext);
@@ -227,7 +224,7 @@ export default function Player(props: {
             disconnectGuest();
             globalAction.dispatchRtcInfo!({ type: "empty" });
           }
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
           globalAction.setAlertStatus &&
             globalAction.setAlertStatus({
               status: true,
@@ -288,7 +285,7 @@ export default function Player(props: {
             disconnectGuest();
             globalAction.dispatchRtcInfo!({ type: "empty" });
           }
-          sessionStorage.removeItem("room_no");
+          rtcSessionClear();
           globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
           // globalAction.setAlertStatus &&
           //   globalAction.setAlertStatus({
@@ -353,7 +350,7 @@ export default function Player(props: {
         const roomExit = async () => {
           const { result } = await broadcastExit({ roomNo });
           if (result === "success") {
-            sessionStorage.removeItem("room_no");
+            rtcSessionClear();
             globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
             if (rtcInfo !== null && globalAction.dispatchRtcInfo) {
               chatInfo.privateChannelDisconnect();
@@ -372,6 +369,7 @@ export default function Player(props: {
   }, [roomInfo, baseData.isLogin]);
 
   useEffect(() => {
+    console.log("broadcast====>",1)
     if (mode === "broadcast") {
       if (chatInfo !== null && rtcInfo !== undefined && rtcInfo !== null) {
         setBgImage(rtcInfo.roomInfo!.bjProfImg["thumb120x120"]);
@@ -383,6 +381,7 @@ export default function Player(props: {
         setRoomOwner(chatInfo.roomOwner);
       } else {
         if (roomNo !== "") {
+          console.log("broadcast====>",3)
           broadcastInit();
         } else {
           globalAction.setIsShowPlayer && globalAction.setIsShowPlayer(false);
@@ -554,7 +553,7 @@ export default function Player(props: {
                 });
             }
 
-            sessionStorage.removeItem("room_no");
+            rtcSessionClear();
             if (
               chatInfo &&
               chatInfo !== null &&

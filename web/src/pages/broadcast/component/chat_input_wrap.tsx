@@ -7,7 +7,6 @@ import { BroadcastContext } from "context/broadcast_ctx";
 import { BroadcastLayerContext } from "context/broadcast_layer_ctx";
 
 // component
-import IconWrap from "./icon_wrap";
 import GiftComponent from "./gift_component";
 
 // constant
@@ -15,6 +14,7 @@ import { tabType } from "pages/broadcast/constant";
 
 // others
 import { UserType } from "common/realtime/rtc_socket";
+import {IconWrap} from "./icon_wrap";
 
 export default function ChatInputWrap(props: {
   roomNo: string;
