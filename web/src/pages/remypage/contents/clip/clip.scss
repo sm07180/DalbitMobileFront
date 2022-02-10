@@ -8,6 +8,16 @@
     padding: 0 16px;
     margin-bottom: 15px;
   }
+  header{
+    .buttonGroup{
+      display: none;
+    }
+    .headerBtn{
+      margin-left: auto;
+      margin-right: 12px;
+      @include font(16px, 500);
+    }
+  }
   .tabmenu {
     @include flex(center);
     margin-bottom: 16px;
@@ -24,12 +34,19 @@
         border-bottom: solid 2px #202020;
       }
     }
+    .swiper-wrapper{
+      padding-left: 16px;
+      .swiper-slide{
+        width: auto;
+        margin-right: 4px;
+      }
+    }
   }
   .contentWrap{
     .tabmenu {
-      @include flex(center);
       margin-bottom: 20px;
-      padding: 0 16px;
+      padding: 0;
+      &.listen{padding-left: 16px;}
       li {
         flex:none;
         line-height:36px;
@@ -48,7 +65,6 @@
         }
       }
     }
-    .swiper-slide{width: auto;}
   }
   .totalWrap{
     .total{
@@ -122,6 +138,21 @@
           box-shadow: 0px 0px 11px 0px rgba(0,0,0,0.26);
           padding: 0 12px;
         }
+      }
+    }
+    .empty{
+      @include flex(center,center,column);
+      @include font(15px, 500, #202020);
+      padding-top:39px;
+      &.listen{padding-top: 83px;}
+      p{text-align: center;}
+      button{
+        width: 112px;
+        line-height: 36px;
+        @include font(14px,500,#666);
+        @include border(#d5d5d5, 20px);
+        text-align: center;
+        margin-top: 18px;
       }
     }
   }

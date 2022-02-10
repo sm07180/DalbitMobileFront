@@ -19,9 +19,14 @@ const tabmenu = ['업로드', '청취내역']
 
 const Clip = () =>{
   const [tabType, setTabType] = useState(tabmenu[0])
+
   return(
     <div id="mypageClip">
-      <Header position={'sticky'} title={'클립'} type={'back'} />
+      <Header position={'sticky'} title={'클립'} type={'back'}>
+        {tabType === tabmenu[0] &&
+          <button className="headerBtn">등록</button>
+        }
+      </Header>
       <Tabmenu data={tabmenu} tab={tabType} setTab={setTabType} />
       <div className="contentWrap">
         {tabType === tabmenu[0] ?

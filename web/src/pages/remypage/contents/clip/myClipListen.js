@@ -12,7 +12,7 @@ const MyClipListen =()=>{
 
   return(
     <>
-      <ul className="tabmenu">
+      <ul className="tabmenu listen">
         {listenTab.map((data, index)=>{
           const param ={
             item: data,
@@ -42,6 +42,10 @@ const MyClipListen =()=>{
               </div>
             </div>
           </ListRow>
+          <div className="empty listen">
+            <p>청취 내역이 없어요<br/>지금 바로 청취해보세요!</p>
+            <button>청취하러 가기</button>
+          </div>
         </section>
     </>
   )

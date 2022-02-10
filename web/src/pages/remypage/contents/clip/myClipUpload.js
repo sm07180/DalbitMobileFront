@@ -21,6 +21,49 @@ const MyClipUpload =()=>{
     setMorePop(!morePop)
   }
 
+  const TotalWrap =()=>{
+    switch(uploadType){
+      case '마이 클립':
+       return(
+        <div className='total'>
+          <div className="title">내가 등록한 클립:</div>
+          <span className="count">0건</span>
+        </div>
+       )
+      case '청취 회원':
+        return(
+          <div className='total'>
+            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_listener.png" className="icon" />
+            <div className="title">최근 <span>3개월</span> 내 클립 청취 회원:</div>
+            <span className="count">0명</span>
+          </div>
+        )
+      case '좋아요 회원':
+        return(
+          <div className='total'>
+            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_heart.png" className="icon" />
+            <div className="title">최근 <span>3개월</span> 내 클립 좋아요한 회원:</div>
+            <span className="count">0명</span>
+          </div>
+        )
+      case '선물한 회원':
+        return(
+          <div className='total'>
+            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_present.png" className="icon" />
+            <div className="title">최근 <span>3개월</span> 내 클립 선물한 회원:</div>
+            <span className="count">0명</span>
+          </div>
+        )
+      default:
+        return(
+          <div className='total'>
+            <div className="title">내가 등록한 클립:</div>
+            <span className="count">0건</span>
+          </div>
+        )
+    }
+  }
+
   return(
     <>
       <ul className="tabmenu">
@@ -43,11 +86,7 @@ const MyClipUpload =()=>{
       </ul>
       <section className="totalWrap">
         <div className='total'>
-          {uploadType !== uploadTab[0] &&
-            <img src="https://image.dalbitlive.com/mypage/dalla/clip/ico_listener.png" className="icon" />
-          }
-          <div className="title">내가 등록한 클립:</div>
-          <span className="count">0건</span>
+          <TotalWrap />
         </div>
       </section>
       <section className="listWrap">
@@ -73,6 +112,10 @@ const MyClipUpload =()=>{
               </div>
             }
           </ListRow>
+          <div className="empty">
+            <p>등록된 클립이 없어요<br/>클립을 업로드 해보세요!</p>
+            <button>클립 업로드</button>
+          </div>
         </section>
     </>
   )
