@@ -13,7 +13,7 @@ const blockReportTabmenu = ['차단하기','신고하기']
 const dalList = [50, 100, 500, 1000, 2000, 3000, 5000, 10000];
 
 const Present = (props) => {
-  const { profileData, closePresentPop } = props
+  const { profileData, setPopPresent } = props
   const context = useContext(Context);
   const history = useHistory();
   const [selected, setSelected] = useState(0);
@@ -53,7 +53,7 @@ const Present = (props) => {
       </InputItems>
       <span className='log'>달은 10개 이상부터 선물이 가능합니다.</span>
       <div className="buttonGroup">
-        <button className='cancel' onClick={closePresentPop}>취소</button>
+        <button className='cancel' onClick={() => setPopPresent(false)}>취소</button>
         <button className={false ? 'active' : 'disabled'}>선물하기</button>
       </div>
     </section>

@@ -1,4 +1,29 @@
-import { mailChatEnter, checkIsMailboxNew, getMailboxChatList } from "common/api";
+import { mailChatEnter } from "common/api";
+import {CHAT_CONFIG} from "../../constant/define";
+import {isDesktop} from "../../lib/agent";
+import {Hybrid, isHybrid} from "../../context/hybrid";
+
+/* 우체통 */
+export const goMail = ({context, mailboxAction, targetMemNo, history}) => {
+  const { globalState, globalAction } = context;
+
+  if(isDesktop()) {
+    const socketUser = {
+      authToken: globalState.baseData.authToken,
+      memNo: globalState.baseData.memNo,
+      locale: CHAT_CONFIG.locale.ko_KR,
+      roomNo: null,
+    };
+
+    globalState.mailChatInfo?.setUserInfo(socketUser);
+    globalState.mailChatInfo?.privateChannelDisconnect();
+    mailBoxJoin(targetMemNo, mailboxAction, globalAction, history);
+  }else if (isHybrid()) {
+    Hybrid('JoinMailBox', targetMemNo)
+  } else {
+    context.action.updatePopup('APPDOWN', 'appDownAlrt', 5)
+  }
+}
 
 export function mailBoxJoin(memNo: string, mailboxAction: any, globalAction: any, history: any, prevMemNo?: any) {
   const mailBoxEnter = async () => {
