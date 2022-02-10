@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import GenderItems from "components/ui/genderItems/GenderItems";
 import DataCnt from "components/ui/dataCnt/DataCnt";
+import clip from '../static/clip.svg';
 
-const ClipLikeCore = (props) => {
-  const [itemInfo, setItemInfo] = useState(props.item);
+const ClipDetailCore = (props) => {
+  //const [itemInfo, setItemInfo] = useState(props.item);
+  const itemInfo = props.item;
+
+  const handleImgError = (e) => {
+    e.currentTarget.src = clip;
+  };
 
   return (
     <div className="listRow" onClick={() => {}}>
       <div className="photo">
-        <img src={itemInfo.bgImg.url} alt={`${itemInfo.nickName}`} />
+        <img src={itemInfo.bgImg.url} alt={`${itemInfo.nickName}`} onError={handleImgError}/>
       </div>
       <div className="listInfo">
         <div className="listItem">
@@ -17,17 +23,15 @@ const ClipLikeCore = (props) => {
         <div className="listItem">
           <GenderItems data={itemInfo.gender} />
           <span className="nickNm">{itemInfo.nickName}</span>
+          <div>{itemInfo.subjectType}</div>
         </div>
         <div className="listItem">
-          <DataCnt type={"replyCnt"} value={itemInfo.replyCnt ? itemInfo.replyCnt : "123"}/>
-          <DataCnt type={"goodCnt"} value={itemInfo.goodCnt ? itemInfo.replyCnt : "123"}/>
+          <DataCnt type={"replyCnt"} value={itemInfo.playCnt}/>
+          <DataCnt type={"goodCnt"} value={itemInfo.goodCnt}/>
         </div>
       </div>
-      <button className="heart">
-        <img src="https://image.dalbitlive.com/clip/dalla/heartOn.png" />
-      </button>
     </div>
   );
 };
 
-export default ClipLikeCore;
+export default ClipDetailCore;

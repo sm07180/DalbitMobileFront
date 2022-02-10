@@ -21,10 +21,17 @@ import ClipDetail from '../components/ClipDetail'
 import '../scss/clipPage.scss'
 import HotClip from "pages/clip/components/HotClip";
 import NowClip from "pages/clip/components/NowClip";
+import API from "context/api";
+import {useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import errorImg from "pages/broadcast/static/img_originalbox.svg";
+import {ClipPlayerJoin} from "common/audio/clip_func";
 
 const ClipPage = () => {
   const context = useContext(Context);
 
+  const history = useHistory();
+  const subjectType = useSelector((state)=> state.clip.subjectType); //
   const [popularClipInfo, setPopularClipInfo] = useState([]); // 방금 떠오른 클립
   const [newClipInfo, setNewClipInfo] = useState([]); // 새로 등록한 클립
   const [hotClipInfo, setHotClipInfo] = useState([]); // 핫 클립
@@ -69,32 +76,6 @@ const ClipPage = () => {
     })
   }
 
-  // 인기 클립 리스트 가져오기
-  const fetchPopularClipInfo = () => {
-    Api.getPopularList({}).then((res) => {
-      if (res.result === 'success') {
-        let tempHotClipList = [];
-        let temp = [];
-        for (let i = 0; i < res.data.totalCnt; i++) {
-
-          if (res.data.totalCnt > i) {
-            temp.push(res.data.list[i]);
-          } else {
-            temp.push({});
-          }
-
-          if (i % 3 === 2) {
-            tempHotClipList.push(temp);
-            temp = [];
-          }
-        }
-
-        console.log(tempHotClipList);
-        setPopularClipInfo(tempHotClipList);
-      }
-    })
-  }
-
   // 좋아요 누른 클립 리스트 가져오기
   const getClipLikeList = () => {
     if (context.token.memNo === undefined) return;
@@ -122,59 +103,57 @@ const ClipPage = () => {
 
   // 방금 떠오른 클립 리스트 가져오기
   const getClipLastList = () => {
+    API.getClipList({ search: '', slctType: 1, dateType: 0, page: 1, records: 9 }).then(res => {
+      if (res.code === 'C001') {
+        let tempHotClipList = [];
+        let temp = [];
+        for (let i = 0; i < res.data.paging.records; i++) {
 
-  }
+          if (res.data.paging.records > i) {
+            temp.push(res.data.list[i]);
+          } else {
+            temp.push({});
+          }
+
+          if (i % 3 === 2) {
+            tempHotClipList.push(temp);
+            temp = [];
+          }
+        }
+
+        setPopularClipInfo(tempHotClipList);
+      }
+    })
+  };
+
+  const handleSubjectClick = (e) => {
+    const { value } = e.currentTarget.dataset;
+
+    if (value !== undefined) {
+      history.push(`/clip/detail/${value}`);
+    }
+  };
+
+  const playClip = (e) => {
+    const { clipNo } = e.currentTarget.datset;
+
+    if (clipNo !== undefined) {
+      /*ClipPlayerJoin(e);
+      ClipPlayerJoin(clipNo, globalCtx, history);*/
+      history.push(`/clip/${clipNo}`);
+    }
+  };
 
   // 스와이퍼 params
   const swiperParams = {
     slidesPerView: 'auto',
   };
 
-
-  const likeSubjectLists = [
-    {
-      icon : '🎵',
-      name : '전체보기'
-    },
-    {
-      icon : '🎤',
-      name : '커버/노래'
-    },
-    {
-      icon : '🌱',
-      name : '힐링'
-    },
-    {
-      icon : '🎼',
-      name : '작사/작곡'
-    },
-    {
-      icon : '🤧',
-      name : '고민/사연'
-    },
-    {
-      icon : '💃',
-      name : '성우'
-    },
-    {
-      icon : '📺',
-      name : '더빙'
-    },
-    {
-      icon : '😄',
-      name : '수다/대화'
-    },
-    {
-      icon : '🎧',
-      name : 'ASMR'
-    },
-  ];
-
   useEffect(() => {
     fetchHotClipInfo();
-    fetchPopularClipInfo();
     fetchNewClipInfo();
 
+    getClipLastList();
     getClipLikeList();
     getClipListenList();
   },[])
@@ -233,35 +212,38 @@ const ClipPage = () => {
           }
         </section>
         <section className="nowClipWrap">
-          <CntTitle title={'방금 떠오른 클립'} more={'/'} />
           {popularClipInfo.length > 0 &&
-          <Swiper {...swiperParams}>
-            {popularClipInfo.map((row, index) => {
-              console.log(row);
-              return (<div key={index}>
-                {row.map((coreRow, coreIndex) => {
-                  if (Object.keys(coreRow).length > 0) {
-                    return (<NowClip key={coreIndex} info={coreRow}/>)
-                  } else {
-                    return <></>;
-                  }
-                })}
-              </div>);
-            })}
-          </Swiper>}
+          <>
+            <CntTitle title={'방금 떠오른 클립'} more={'/'} />
+            <Swiper {...swiperParams}>
+              {popularClipInfo.map((row, index) => {
+                console.log(row);
+                return (<div key={index}>
+                  {row.map((coreRow, coreIndex) => {
+                    if (Object.keys(coreRow).length > 0) {
+                      return (<NowClip key={coreIndex} info={coreRow}/>)
+                    } else {
+                      return <></>;
+                    }
+                  })}
+                </div>);
+              })}
+            </Swiper>
+          </>
+          }
         </section>
         <section className='likeSubWrap'>
-          <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/'} />
+          <CntTitle title={'좋아하는 주제를 골라볼까요?'} more={'/clip/detail/00'} />
           <Swiper {...swiperParams}>
-            {likeSubjectLists.map((list, index)=>{
-              return(
-                <div className="likeSubWrap" key={index}>
+            {subjectType.map((list, index)=>{
+              return (
+                <div className="likeSubWrap" key={index} data-value={list.value} onClick={handleSubjectClick}>
                   <div className="likeSub">
                     <p>{list.icon}</p>
-                    <p>{list.name}</p>
+                    <p>{list.cdNm}</p>
                   </div>
                 </div>
-              )
+              );
             })}
           </Swiper>
         </section>
@@ -278,6 +260,6 @@ const ClipPage = () => {
       }*/}
     </>
   );
-}
+};
 
 export default ClipPage;

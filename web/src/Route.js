@@ -214,7 +214,7 @@ const Router = () => {
         <Route exact path="/clip" component={Clip} />
         <Route exact path="/clip/like/list" component={ClipLikeList}/>
         <Route exact path="/clip/listen/list" component={ClipListenList}/>
-        <Route exact path="/clip/detail" component={ClipDetail} />
+        <Route exact path="/clip/detail/:type" component={ClipDetail} />
         <Route exact path="/clip_rank" component={ClipRank} />
         <Route exact path="/clip_rank/:type" component={ClipRankGuide} />
         <Route exact path="/clip_recommend" component={ClipRecommend} />

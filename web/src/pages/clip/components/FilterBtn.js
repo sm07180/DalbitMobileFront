@@ -3,35 +3,41 @@ import React, {useState} from 'react'
 // global components
 
 const FilterBtn = (props) => {
-  const {data} = props
-  const [filterOpen, setFilterOpen] = useState(false)
-  const [filterTextType, setFilterTextType] = useState(data[0])
+  const {data, list, handleSelect} = props;
+  const [filterOpen, setFilterOpen] = useState(false);
 
   // 필터 열고닫기
   const openFilterGroup = () => {
-    setFilterOpen(!filterOpen)
-  }
-  const clickFilterList = (e) => {
-    const {filterIndex} = e.currentTarget.dataset
-    
-    setFilterTextType(data[filterIndex])
-  }
+    setFilterOpen(!filterOpen);
+  };
 
+  // 필터 닫기
+  const closeFilterGroup = () => {
+    console.log('aaa');
+    setFilterOpen(false);
+  };
+
+  const clickFilterList = (e) => {
+    const {filterIndex} = e.currentTarget.dataset;
+
+    handleSelect(filterIndex);
+  };
+  
   return (
     <button className="filterBtn" onClick={openFilterGroup}>
-      {filterTextType}
-      <span className={filterOpen ? 'arrowUp' : 'arrowDown'}></span>
+      {data.name}
+      <span className={`${filterOpen ? 'arrowUp' : 'arrowDown'}`}/>
       {filterOpen &&
-        <ul className="option">
-          {data.map((list,index) => {
-            return (
-              <li className={`${filterTextType === list && 'checked'}`} data-filter-index={index} onClick={clickFilterList} key={index}>{list}</li>
-            )
-          })}
-        </ul>
+      <ul className="option" onMouseLeave={closeFilterGroup}>
+        {list.map((row, index) => {
+          return (
+            <li className={`${data.name === row.name && 'checked'}`} data-filter-index={row.index} onClick={clickFilterList} key={index}>{row.name}</li>
+          )
+        })}
+      </ul>
       }
     </button>
-  )
-}
+  );
+};
 
-export default FilterBtn
+export default FilterBtn;

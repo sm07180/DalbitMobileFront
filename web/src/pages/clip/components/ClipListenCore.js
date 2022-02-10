@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, {useState} from 'react';
 import GenderItems from "components/ui/genderItems/GenderItems";
 import DataCnt from "components/ui/dataCnt/DataCnt";
 
-const ClipLikeCore = (props) => {
+const ClipListenCore = (props) => {
   const [itemInfo, setItemInfo] = useState(props.item);
 
   return (
@@ -18,16 +18,12 @@ const ClipLikeCore = (props) => {
           <GenderItems data={itemInfo.gender} />
           <span className="nickNm">{itemInfo.nickName}</span>
         </div>
-        <div className="listItem">
-          <DataCnt type={"replyCnt"} value={itemInfo.replyCnt ? itemInfo.replyCnt : "123"}/>
-          <DataCnt type={"goodCnt"} value={itemInfo.goodCnt ? itemInfo.replyCnt : "123"}/>
-        </div>
       </div>
-      <button className="heart">
-        <img src="https://image.dalbitlive.com/clip/dalla/heartOn.png" />
-      </button>
+      {/*<button className="trash">
+        <img src="https://image.dalbitlive.com/clip/dalla/icoTrash.png" />
+      </button>*/}
     </div>
   );
 };
 
-export default ClipLikeCore;
+export default ClipListenCore;
