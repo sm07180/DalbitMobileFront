@@ -26,11 +26,9 @@ const ProfileReplyComponent = (props) => {
         </div>
 
         <div className="listItems">
-          <div className="text">
-            <pre>
-              {item?.contents}
-            </pre>
-          </div>
+          <pre className="text">
+            {item?.contents}
+          </pre>
         </div>
         {(isMyProfile || context.adminChecker) && <div><button onClick={() => replyDelete(item?.replyIdx)}>삭제</button></div>}
         {isMyProfile && <div><button onClick={() => {
@@ -46,4 +44,4 @@ const ProfileReplyComponent = (props) => {
   );
 }
 
-export default ProfileReplyComponent;
+export default React.memo(ProfileReplyComponent);

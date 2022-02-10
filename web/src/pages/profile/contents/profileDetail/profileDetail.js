@@ -8,6 +8,7 @@ import Header from 'components/ui/header/Header'
 import './profileDetail.scss'
 import ListRowComponent from "pages/profile/components/ListRowComponent";
 import ProfileReplyComponent from "pages/profile/components/ProfileReplyComponent";
+import Utility from "components/lib/utility";
 
 const ProfileDetail = () => {
   const history = useHistory()
@@ -100,7 +101,7 @@ const ProfileDetail = () => {
     getReplyList(_page, records);
   }
 
-  //어떠한 요소를 클릭했을때 blur를 막으려면 이 함수를 호출
+  //어떠한 요소를 클릭했을때 blur(inputFormFocusEvent)를 막으려면 이 함수를 호출
   const blurBlock = () => {
     blurBlockStatus.current = true;
   };
@@ -113,8 +114,10 @@ const ProfileDetail = () => {
         if (inputMode.action === 'edit') {
           setInputModeAction('add');
         }
+        if (replyRef.current) {
           replyRef.current.innerText = '';
-          setText('');
+        }
+        setText('');
       }
     }
     blurBlockStatus.current = false;
@@ -168,7 +171,7 @@ const ProfileDetail = () => {
   },[]);
 
   const goModifyPage = () => {
-    history.push(`/profileWrite/${type}/modify/${index}`);
+    history.push(`/profileWrite/${memNo}/${type}/modify/${index}`);
   };
 
   //댓글 삭제
@@ -189,7 +192,7 @@ const ProfileDetail = () => {
         noticeIdx: index,
         contents: text
       });
-      console.dir(replyRef.current);
+
       context.action.toast({msg: message});
       if (result === 'success') {
         setText('');
@@ -301,7 +304,7 @@ const ProfileDetail = () => {
             <div className="isMore">
               {(isMyProfile && context?.profile?.memNo === item?.mem_no || context?.adminChecker) &&
                 <button onClick={goModifyPage}>수정하기</button>}
-              {(isMyProfile && context?.profile?.memNo === item?.mem_no || context.adminChecker) &&
+              {(isMyProfile && context?.profile?.memNo === item?.mem_no || context?.adminChecker) &&
                 <button onClick={deleteContents}>삭제하기</button>}
                 <button>차단/신고하기</button>
             </div>
@@ -310,16 +313,15 @@ const ProfileDetail = () => {
       </Header>
       <section className='detailWrap'>
         <div className="detail">
-          {
-            item &&
-            <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type}/>
-          }
+          {item && <ListRowComponent item={item} isMyProfile={isMyProfile} index={index} type={type} disableMoreButton={false}/>}
           <div className="text">
             <pre>{item?.contents}</pre>
           </div>
           <div className="info">
+            {/*<i className='like'></i>
+            <span>{Utility.addComma(123)}</span>*/}
             <i className='comment'/>
-            <span>{replyList.length}</span>
+            <span>{Utility.addComma(replyList.length)}</span>
           </div>
         </div>
         
