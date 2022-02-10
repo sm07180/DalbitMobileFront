@@ -181,8 +181,8 @@ const ProfilePage = () => {
   }
 
   /* 프로필 사진 확대 */
-  const openShowSlide = (data, isList = "y") => {
-    const getImgList = data => data.map(item => item.profImg)
+  const openShowSlide = (data, isList = "y", keyName='profImg') => {
+    const getImgList = data => data.map(item => item[keyName])
     let list = [];
     isList === 'y' ? list = getImgList(data) : list.push(data);
 

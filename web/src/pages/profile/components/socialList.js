@@ -5,6 +5,7 @@ import DataCnt from 'components/ui/dataCnt/DataCnt'
 // css
 import './socialList.scss'
 import ListRowComponent from "./ListRowComponent";
+import Swiper from "react-id-swiper";
 
 const SocialList = (props) => {
   const {socialList, openShowSlide, isMyProfile, type} = props
@@ -30,13 +31,13 @@ const SocialList = (props) => {
                 {item.contents}
               </div>
               {type === 'feed' && (item.photoInfoList.length > 1 ?
-                <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList)}>
+                <div className="swiperPhoto" onClick={() => openShowSlide(item.photoInfoList, 'y', 'imgObj')}>
                   <Swiper {...swiperFeeds}>
                     {item.photoInfoList.map((photo) => {
                       return (
                         <div>
                           <div className="photo">
-                            <img src={photo.profImg.thumb500x500} alt="" />
+                            <img src={photo?.imgObj?.thumb500x500} alt="" />
                           </div>
                         </div>
                       )
@@ -44,9 +45,9 @@ const SocialList = (props) => {
                   </Swiper>
                 </div>
                 : item.photoInfoList.length === 1 ?
-                  <div className="swiperPhoto" onClick={() => openShowSlide(item.profImg, "n")}>
+                  <div className="swiperPhoto" onClick={() => openShowSlide(item?.photoInfoList[0]?.imgObj, 'n')}>
                     <div className="photo">
-                      <img src={item.photoInfoList[0].profImg.thumb190x190} alt="" />
+                      <img src={item?.photoInfoList[0]?.imgObj?.thumb190x190} alt="" />
                     </div>
                   </div>
                     : <></>
