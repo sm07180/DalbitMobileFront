@@ -44,6 +44,7 @@ const ProfileWrite = React.lazy(() => import('pages/profile/contents/profileEdit
 const ProfileContentsWrite = React.lazy(() => import('pages/profile/contents/profileDetail/profileWrite'))
 // 프로필 - 피드, 팬보드 (상세)
 const ProfileContentsDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
+const ProfileDetail = React.lazy(() => import('pages/profile/contents/profileDetail/profileDetail'))
 // 스토어
 const Store = React.lazy(() => import('pages/restore'))
 const DalCharge= React.lazy(() => import('pages/restore/contents/dalCharge/dalCharge'))
